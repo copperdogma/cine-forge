@@ -23,6 +23,16 @@ from .registry import (
     ValidationResult,
     validate_against_schema,
 )
+from .scene import (
+    FieldProvenance,
+    InferredField,
+    NarrativeBeat,
+    Scene,
+    SceneIndex,
+    SceneIndexEntry,
+    ScriptElement,
+    SourceSpan,
+)
 
 __all__ = [
     "Artifact",
@@ -39,6 +49,14 @@ __all__ = [
     "RawInput",
     "QAIssue",
     "QAResult",
+    "ScriptElement",
+    "SourceSpan",
+    "NarrativeBeat",
+    "InferredField",
+    "FieldProvenance",
+    "Scene",
+    "SceneIndexEntry",
+    "SceneIndex",
     "SchemaRegistry",
     "ValidationErrorDetail",
     "ValidationResult",

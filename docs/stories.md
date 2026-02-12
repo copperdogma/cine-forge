@@ -25,7 +25,7 @@ This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 | 002 | Pipeline Foundation (Driver, Artifact Store, Schemas) | 0 — Foundation | High | Done | [story-002](stories/story-002-pipeline-foundation.md) |
 | 003 | Story Ingestion Module | 1 — MVP Pipeline | High | Done | [story-003](stories/story-003-story-ingestion.md) |
 | 004 | Script Normalization Module | 1 — MVP Pipeline | High | Done | [story-004](stories/story-004-script-normalization.md) |
-| 005 | Scene Extraction Module | 1 — MVP Pipeline | High | To Do | [story-005](stories/story-005-scene-extraction.md) |
+| 005 | Scene Extraction Module | 1 — MVP Pipeline | High | Done | [story-005](stories/story-005-scene-extraction.md) |
 | 006 | Project Configuration (Auto-Initialized) | 1 — MVP Pipeline | High | To Do | [story-006](stories/story-006-project-configuration.md) |
 | 007 | MVP Recipe and End-to-End Smoke Test | 1 — MVP Pipeline | High | To Do | [story-007](stories/story-007-mvp-recipe-smoke-test.md) |
 | 008 | Bible Infrastructure and Character Bible | 2 — World Building | High | To Do | [story-008](stories/story-008-character-bible.md) |

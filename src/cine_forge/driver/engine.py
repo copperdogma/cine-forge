@@ -29,6 +29,8 @@ from cine_forge.schemas import (
     CostRecord,
     QAResult,
     RawInput,
+    Scene,
+    SceneIndex,
     SchemaRegistry,
 )
 
@@ -46,6 +48,8 @@ class DriverEngine:
         self.schemas.register("dict", dict)
         self.schemas.register("raw_input", RawInput)
         self.schemas.register("canonical_script", CanonicalScript)
+        self.schemas.register("scene", Scene)
+        self.schemas.register("scene_index", SceneIndex)
         self.schemas.register("qa_result", QAResult)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
@@ -183,7 +187,11 @@ class DriverEngine:
                 persisted_outputs: list[dict[str, Any]] = []
                 for artifact in outputs:
                     output_data = artifact["data"]
-                    for schema_name in module_manifest.output_schemas:
+                    schema_names = self._schema_names_for_artifact(
+                        artifact=artifact,
+                        output_schemas=module_manifest.output_schemas,
+                    )
+                    for schema_name in schema_names:
                         validation = self.schemas.validate(
                             schema_name=schema_name,
                             data=output_data,
@@ -445,6 +453,20 @@ class DriverEngine:
             return order
         start_idx = order.index(start_from)
         return order[start_idx:]
+
+    @staticmethod
+    def _schema_names_for_artifact(
+        artifact: dict[str, Any], output_schemas: list[str]
+    ) -> list[str]:
+        schema_name = artifact.get("schema_name")
+        if isinstance(schema_name, str):
+            return [schema_name]
+        if len(output_schemas) <= 1:
+            return output_schemas
+        artifact_type = artifact.get("artifact_type")
+        if isinstance(artifact_type, str) and artifact_type in output_schemas:
+            return [artifact_type]
+        return output_schemas
 
     @staticmethod
     def _append_event(events_path: Path, payload: dict[str, Any]) -> None:

@@ -1,0 +1,34 @@
+module_id: scene_extract_v1
+stage: ingest
+description: "Extracts structured per-scene data from canonical screenplay text."
+input_schemas:
+  - canonical_script
+output_schemas:
+  - scene
+  - scene_index
+parameters:
+  model:
+    type: string
+    required: false
+    default: "gpt-4o"
+    description: "LLM model used for scene enrichment on unresolved fields."
+  qa_model:
+    type: string
+    required: false
+    default: "gpt-4o-mini"
+    description: "LLM model used for per-scene QA verification."
+  max_retries:
+    type: integer
+    required: false
+    default: 2
+    description: "Max retries per scene on QA failure."
+  skip_qa:
+    type: boolean
+    required: false
+    default: false
+    description: "Skip QA verification to reduce cost."
+  parser_coverage_threshold:
+    type: number
+    required: false
+    default: 0.25
+    description: "Minimum parser coverage to consider parser extraction high-confidence."

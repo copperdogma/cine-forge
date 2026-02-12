@@ -390,3 +390,19 @@ def test_driver_start_from_reuses_runtime_param_fingerprint(tmp_path: Path) -> N
     assert resumed["stages"]["a"]["status"] == "skipped_reused"
     assert resumed["stages"]["b"]["status"] == "done"
     assert latest_echo.data["marker"] == "same"
+
+
+@pytest.mark.unit
+def test_driver_registers_scene_schemas(tmp_path: Path) -> None:
+    engine = DriverEngine(workspace_root=tmp_path)
+    assert engine.schemas.has("scene") is True
+    assert engine.schemas.has("scene_index") is True
+
+
+@pytest.mark.unit
+def test_driver_schema_selection_prefers_artifact_type_for_multi_output() -> None:
+    selected = DriverEngine._schema_names_for_artifact(
+        artifact={"artifact_type": "scene"},
+        output_schemas=["scene", "scene_index"],
+    )
+    assert selected == ["scene"]
