@@ -1,6 +1,15 @@
 """Artifact schema package."""
 
-from .models import Artifact, ArtifactHealth, ArtifactMetadata, ArtifactRef, CostRecord
+from .models import (
+    Artifact,
+    ArtifactHealth,
+    ArtifactMetadata,
+    ArtifactRef,
+    CostRecord,
+    FormatClassification,
+    RawInput,
+    SourceFileInfo,
+)
 from .registry import (
     SchemaRegistry,
     ValidationErrorDetail,
@@ -14,6 +23,9 @@ __all__ = [
     "ArtifactMetadata",
     "ArtifactRef",
     "CostRecord",
+    "SourceFileInfo",
+    "FormatClassification",
+    "RawInput",
     "SchemaRegistry",
     "ValidationErrorDetail",
     "ValidationResult",

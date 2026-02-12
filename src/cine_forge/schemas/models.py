@@ -63,3 +63,29 @@ class Artifact(BaseModel):
 
     metadata: ArtifactMetadata
     data: dict[str, Any]
+
+
+class SourceFileInfo(BaseModel):
+    """Metadata describing the ingested source file."""
+
+    original_filename: str
+    file_size_bytes: int = Field(ge=0)
+    character_count: int = Field(ge=0)
+    line_count: int = Field(ge=0)
+    file_format: Literal["txt", "md", "fountain", "pdf"]
+
+
+class FormatClassification(BaseModel):
+    """Heuristic classification for the ingested input format."""
+
+    detected_format: Literal["screenplay", "prose", "hybrid", "notes", "unknown"]
+    confidence: float = Field(ge=0.0, le=1.0)
+    evidence: list[str] = Field(default_factory=list)
+
+
+class RawInput(BaseModel):
+    """First immutable artifact preserving source text and format signals."""
+
+    content: str
+    source_info: SourceFileInfo
+    classification: FormatClassification

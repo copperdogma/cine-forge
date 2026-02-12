@@ -5,6 +5,7 @@ This file is the project-wide source of truth for agent behavior in CineForge.
 ## Prime Directives
 
 - Do not run `git commit`, `git push`, or modify remotes unless the user explicitly asks.
+- Do not add, modify, or rely on GitHub Actions CI workflows unless the user explicitly requests it.
 - This is an AI-first system: prefer prompt/role/artifact thinking over ad-hoc business rules.
 - Immutability is mandatory: never mutate existing artifact versions in place.
 - Inspect outputs, not only logs: correctness requires reviewing produced artifacts.
@@ -104,8 +105,10 @@ Entry format:
 ## Known Pitfalls
 
 - 2026-02-11 — Hidden schema drift: adding output fields without schema updates can silently drop data after validation.
+- 2026-02-12 — Runtime-only inputs can bypass cache invalidation: when adding CLI/runtime params that affect module outputs, include them in stage fingerprints (`src/cine_forge/driver/engine.py`) or reuse may return stale artifacts.
 
 ## Lessons Learned
 
 - 2026-02-11 — Keep cross-agent instructions centralized in `AGENTS.md` and reference from tool-specific files to avoid divergence.
 - 2026-02-12 — Build the pipeline spine before AI modules: landing immutable artifacts, schema validation, and deterministic graph invalidation first unblocks later stories with minimal rework (`src/cine_forge/artifacts/`, `src/cine_forge/schemas/`, `src/cine_forge/driver/`).
+- 2026-02-12 — Heuristic prose tuning needs counterweights for list-heavy inputs: when increasing prose sensitivity for wrapped/public-domain text and PDF extraction noise, add explicit list-structure penalties so `notes` classification does not regress (`src/cine_forge/modules/ingest/story_ingest_v1/main.py`, `tests/unit/test_story_ingest_module.py`).

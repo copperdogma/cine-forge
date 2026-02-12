@@ -26,6 +26,7 @@ from cine_forge.schemas import (
     ArtifactMetadata,
     ArtifactRef,
     CostRecord,
+    RawInput,
     SchemaRegistry,
 )
 
@@ -41,6 +42,7 @@ class DriverEngine:
         self.store = ArtifactStore(project_dir=self.project_dir)
         self.schemas = SchemaRegistry()
         self.schemas.register("dict", dict)
+        self.schemas.register("raw_input", RawInput)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(
@@ -51,6 +53,7 @@ class DriverEngine:
         start_from: str | None = None,
         force: bool = False,
         instrument: bool = False,
+        runtime_params: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         run_id = run_id or f"run-{uuid.uuid4().hex[:8]}"
         run_dir = self.workspace_root / "output" / "runs" / run_id
@@ -106,6 +109,7 @@ class DriverEngine:
             stage_cache=stage_cache,
             recipe_id=recipe.recipe_id,
             recipe_fingerprint=recipe_fingerprint,
+            runtime_params=runtime_params or {},
         )
 
         for stage_id in ordered_stages:
@@ -121,6 +125,7 @@ class DriverEngine:
                 stage=stage,
                 module_manifest=module_manifest,
                 upstream_refs=upstream_refs,
+                runtime_params=runtime_params or {},
             )
             stage_state = run_state["stages"][stage_id]
             if (
@@ -159,7 +164,11 @@ class DriverEngine:
                 module_result = module_runner(
                     inputs=module_inputs,
                     params=stage.params,
-                    context={"run_id": run_id, "stage_id": stage_id},
+                    context={
+                        "run_id": run_id,
+                        "stage_id": stage_id,
+                        "runtime_params": runtime_params or {},
+                    },
                 )
                 outputs = module_result.get("artifacts", [])
                 cost_record = _coerce_cost(module_result.get("cost"))
@@ -350,6 +359,7 @@ class DriverEngine:
         stage_cache: dict[str, dict[str, dict[str, Any]]],
         recipe_id: str,
         recipe_fingerprint: str,
+        runtime_params: dict[str, Any],
     ) -> dict[str, list[dict[str, Any]]]:
         stage_map = {stage.id: stage for stage in recipe.stages}
         needed: set[str] = set()
@@ -377,6 +387,7 @@ class DriverEngine:
                 stage=stage,
                 module_manifest=module_manifest,
                 upstream_refs=upstream_refs,
+                runtime_params=runtime_params,
             )
             if self._can_reuse_stage(
                 recipe_id=recipe_id,
@@ -406,6 +417,7 @@ class DriverEngine:
         stage: RecipeStage,
         module_manifest: ModuleManifest,
         upstream_refs: list[ArtifactRef],
+        runtime_params: dict[str, Any],
     ) -> str:
         module_entrypoint = Path(module_manifest.entrypoint)
         module_code_hash = _hash_module_tree(Path(module_manifest.module_path))
@@ -419,6 +431,7 @@ class DriverEngine:
             "module_entrypoint_hash": _hash_file(module_entrypoint),
             "module_code_hash": module_code_hash,
             "upstream_refs": [ref.key() for ref in upstream_refs],
+            "runtime_params": runtime_params,
         }
         return _hash_json(payload)
 

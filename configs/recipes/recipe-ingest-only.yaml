@@ -1,0 +1,9 @@
+recipe_id: recipe-ingest-only
+description: Ingest-only recipe for raw input capture.
+project: {}
+stages:
+  - id: ingest
+    module: story_ingest_v1
+    params:
+      input_file: samples/sample-screenplay.fountain
+    needs: []

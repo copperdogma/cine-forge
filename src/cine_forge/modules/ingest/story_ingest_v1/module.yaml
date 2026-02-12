@@ -1,0 +1,11 @@
+module_id: story_ingest_v1
+stage: ingest
+description: "Accepts raw story input, detects format, stores as first project artifact."
+input_schemas: []
+output_schemas:
+  - raw_input
+parameters:
+  input_file:
+    type: string
+    required: true
+    description: "Path to the input file (txt, md, fountain, or pdf)"

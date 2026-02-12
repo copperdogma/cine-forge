@@ -16,6 +16,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--start-from", help="Start execution from a stage id.")
     parser.add_argument("--force", action="store_true", help="Force stage execution.")
     parser.add_argument(
+        "--input-file",
+        help="Optional runtime input file path exposed to modules as runtime params.",
+    )
+    parser.add_argument(
         "--instrument",
         action="store_true",
         help="Enable instrumentation marker in run state.",
@@ -35,6 +39,7 @@ def main() -> None:
         start_from=args.start_from,
         force=args.force,
         instrument=args.instrument,
+        runtime_params={"input_file": args.input_file} if args.input_file else None,
     )
 
 
