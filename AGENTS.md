@@ -101,6 +101,9 @@ Entry format:
 ## Effective Patterns
 
 - 2026-02-11 — Story-first implementation: Implement stories in dependency order and validate each with focused smoke checks.
+- 2026-02-12 — FDX-first screenplay intake: detect Final Draft XML early and normalize to Fountain before AI routing to keep parser validation deterministic (`src/cine_forge/ai/fdx.py`, `src/cine_forge/modules/ingest/script_normalize_v1/main.py`).
+- 2026-02-12 — Live AI tests must be cost-gated: keep real-model integration coverage behind explicit env toggles (`CINE_FORGE_LIVE_TESTS`, `OPENAI_API_KEY`) so default CI/local runs remain deterministic and free (`tests/integration/test_script_normalize_integration.py`).
+- 2026-02-12 — Interop should include ingest, not just transform: when adding format interoperability (e.g., FDX), update source-format schema literals and ingest module support so integration tests can exercise true file-path intake (`src/cine_forge/schemas/models.py`, `src/cine_forge/modules/ingest/story_ingest_v1/main.py`).
 
 ## Known Pitfalls
 

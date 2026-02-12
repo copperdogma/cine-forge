@@ -1,5 +1,11 @@
 """Artifact schema package."""
 
+from .canonical_script import (
+    Assumption,
+    CanonicalScript,
+    Invention,
+    NormalizationMetadata,
+)
 from .models import (
     Artifact,
     ArtifactHealth,
@@ -10,6 +16,7 @@ from .models import (
     RawInput,
     SourceFileInfo,
 )
+from .qa import QAIssue, QAResult
 from .registry import (
     SchemaRegistry,
     ValidationErrorDetail,
@@ -23,9 +30,15 @@ __all__ = [
     "ArtifactMetadata",
     "ArtifactRef",
     "CostRecord",
+    "Invention",
+    "Assumption",
+    "NormalizationMetadata",
+    "CanonicalScript",
     "SourceFileInfo",
     "FormatClassification",
     "RawInput",
+    "QAIssue",
+    "QAResult",
     "SchemaRegistry",
     "ValidationErrorDetail",
     "ValidationResult",

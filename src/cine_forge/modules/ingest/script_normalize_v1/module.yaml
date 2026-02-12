@@ -1,0 +1,48 @@
+module_id: script_normalize_v1
+stage: ingest
+description: "Normalizes raw input to canonical screenplay format using AI."
+input_schemas:
+  - raw_input
+output_schemas:
+  - canonical_script
+parameters:
+  model:
+    type: string
+    required: false
+    default: "gpt-4o"
+    description: "LLM model to use for normalization."
+  qa_model:
+    type: string
+    required: false
+    default: "gpt-4o-mini"
+    description: "LLM model used for QA second-pass verification."
+  max_retries:
+    type: integer
+    required: false
+    default: 2
+    description: "Max retries on QA failure or parse issues."
+  max_tokens:
+    type: integer
+    required: false
+    default: 3500
+    description: "Maximum completion tokens allowed per LLM call."
+  patch_fuzzy_threshold:
+    type: number
+    required: false
+    default: 0.85
+    description: "Minimum fuzzy match ratio when applying SEARCH/REPLACE edits."
+  cost_ceiling_usd:
+    type: number
+    required: false
+    default: 2.0
+    description: "Per-script cost guardrail; overflow marks artifact needs_review."
+  skip_qa:
+    type: boolean
+    required: false
+    default: false
+    description: "Skip QA verification for cost-sensitive workflows."
+  export_formats:
+    type: array
+    required: false
+    default: []
+    description: "Optional screenplay handoff exports to prepare in annotations (e.g., fdx,pdf)."

@@ -1,0 +1,22 @@
+{
+  "source_format": "prose",
+  "strategy": "full_conversion",
+  "inventions": [
+    {
+      "description": "Added scene heading INT. MARKET - DAWN from location clues.",
+      "location": "Opening scene",
+      "rationale": "Source narrative implied indoor market setting."
+    }
+  ],
+  "assumptions": [
+    {
+      "description": "Assumed protagonist and messenger share the same location in first beat.",
+      "rationale": "Dialogue flow suggested continuous interaction.",
+      "alternatives_considered": [
+        "Split into two separate scenes with cross-cut transitions."
+      ]
+    }
+  ],
+  "overall_confidence": 0.74,
+  "rationale": "Converted prose to screenplay while preserving story beats and tone."
+}

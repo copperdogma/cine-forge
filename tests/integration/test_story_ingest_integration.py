@@ -55,18 +55,20 @@ def test_story_ingest_recipe_persists_raw_input_and_versions() -> None:
 
 @pytest.mark.integration
 @pytest.mark.parametrize(
-    ("fixture_name", "expected_file_format", "expected_detected_format"),
+    ("fixture_name", "expected_file_format", "expected_detected_format", "min_confidence"),
     [
-        ("owl_creek_bridge.txt", "txt", "prose"),
-        ("owl_creek_bridge_excerpt.md", "md", "prose"),
-        ("run_like_hell_teaser.fountain", "fountain", "screenplay"),
-        ("pit_and_pendulum.pdf", "pdf", "prose"),
+        ("owl_creek_bridge.txt", "txt", "prose", 0.3),
+        ("owl_creek_bridge_excerpt.md", "md", "prose", 0.3),
+        ("run_like_hell_teaser.fountain", "fountain", "screenplay", 0.3),
+        ("pit_and_pendulum.pdf", "pdf", "prose", 0.3),
+        ("sample_script.fdx", "fdx", "screenplay", 0.3),
     ],
 )
 def test_story_ingest_supports_all_fixture_formats(
     fixture_name: str,
     expected_file_format: str,
     expected_detected_format: str,
+    min_confidence: float,
 ) -> None:
     if expected_file_format == "pdf" and importlib.util.find_spec("pypdf") is None:
         if os.getenv("CI"):
@@ -93,4 +95,4 @@ def test_story_ingest_supports_all_fixture_formats(
     assert artifact.data["source_info"]["original_filename"] == fixture_name
     assert artifact.data["content"] or expected_file_format == "pdf"
     assert artifact.data["classification"]["detected_format"] == expected_detected_format
-    assert artifact.data["classification"]["confidence"] >= 0.3
+    assert artifact.data["classification"]["confidence"] >= min_confidence

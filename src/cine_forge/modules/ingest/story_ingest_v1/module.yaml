@@ -8,4 +8,4 @@ parameters:
   input_file:
     type: string
     required: true
-    description: "Path to the input file (txt, md, fountain, or pdf)"
+    description: "Path to the input file (txt, md, fountain, fdx, or pdf)"

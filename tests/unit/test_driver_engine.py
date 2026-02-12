@@ -159,13 +159,7 @@ def _rewrite_module_default_payload(workspace_root: Path, message: str) -> None:
 
 def _touch_module_helper_file(workspace_root: Path, text: str) -> None:
     helper_path = (
-        workspace_root
-        / "src"
-        / "cine_forge"
-        / "modules"
-        / "test"
-        / "echo_v1"
-        / "helper.py"
+        workspace_root / "src" / "cine_forge" / "modules" / "test" / "echo_v1" / "helper.py"
     )
     helper_path.write_text(text, encoding="utf-8")
 

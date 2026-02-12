@@ -1,0 +1,18 @@
+recipe_id: recipe-ingest-normalize
+description: Ingest + script normalization recipe.
+project: {}
+stages:
+  - id: ingest
+    module: story_ingest_v1
+    params:
+      input_file: samples/sample-screenplay.fountain
+    needs: []
+  - id: normalize
+    module: script_normalize_v1
+    params:
+      model: mock
+      qa_model: mock
+      max_retries: 1
+      skip_qa: false
+    needs:
+      - ingest

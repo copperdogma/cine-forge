@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-SUPPORTED_FILE_FORMATS = {"txt", "md", "fountain", "pdf"}
+SUPPORTED_FILE_FORMATS = {"txt", "md", "fountain", "pdf", "fdx"}
 
 
 def read_source_text(input_path: Path) -> str:
@@ -33,6 +33,13 @@ def detect_file_format(input_path: Path) -> str:
 
 def classify_format(content: str, file_format: str) -> dict[str, Any]:
     """Classify ingested content format using deterministic heuristics."""
+    if file_format == "fdx":
+        return {
+            "detected_format": "screenplay",
+            "confidence": 0.99,
+            "evidence": ["File extension is .fdx, a screenplay-oriented XML format"],
+        }
+
     lines = [line.rstrip() for line in content.splitlines()]
     non_empty = [line for line in lines if line.strip()]
     non_empty_count = max(len(non_empty), 1)
@@ -45,18 +52,12 @@ def classify_format(content: str, file_format: str) -> dict[str, Any]:
         if re.match(r"^(INT\.|EXT\.|INT/EXT\.|EST\.)\s", line.strip(), flags=re.IGNORECASE)
     )
     transition_count = sum(
-        1
-        for line in non_empty
-        if re.match(r"^[A-Z][A-Z0-9 '\-]+TO:$", line.strip())
+        1 for line in non_empty if re.match(r"^[A-Z][A-Z0-9 '\-]+TO:$", line.strip())
     )
-    parenthetical_count = sum(
-        1 for line in non_empty if re.match(r"^\([^)]+\)$", line.strip())
-    )
+    parenthetical_count = sum(1 for line in non_empty if re.match(r"^\([^)]+\)$", line.strip()))
     character_cue_count = sum(1 for line in non_empty if _looks_like_character_cue(line))
 
-    bullet_count = sum(
-        1 for line in non_empty if re.match(r"^(\-|\*|\+)\s+\S+", line.strip())
-    )
+    bullet_count = sum(1 for line in non_empty if re.match(r"^(\-|\*|\+)\s+\S+", line.strip()))
     numbered_count = sum(1 for line in non_empty if re.match(r"^\d+[.)]\s+\S+", line.strip()))
     colon_heading_count = sum(
         1 for line in non_empty if re.match(r"^[A-Za-z][^:]{1,40}:\s+\S+", line.strip())
@@ -88,7 +89,7 @@ def classify_format(content: str, file_format: str) -> dict[str, Any]:
             + 0.2 * _ratio(character_cue_count, non_empty_count)
             + 0.2 * _ratio(transition_count, non_empty_count)
             + 0.1 * _ratio(parenthetical_count, non_empty_count)
-            + (0.35 if file_format == "fountain" else 0.0)
+            + (0.35 if file_format in {"fountain", "fdx"} else 0.0)
         ),
     )
     notes_score = min(
@@ -125,8 +126,8 @@ def classify_format(content: str, file_format: str) -> dict[str, Any]:
         )
     if prose_paragraph_count:
         evidence.append(f"Detected {prose_paragraph_count} long narrative-style paragraphs")
-    if file_format == "fountain":
-        evidence.append("File extension is .fountain, a screenplay-oriented format")
+    if file_format in {"fountain", "fdx"}:
+        evidence.append(f"File extension is .{file_format}, a screenplay-oriented format")
 
     label = "unknown"
     confidence = 0.25

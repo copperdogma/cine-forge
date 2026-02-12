@@ -15,6 +15,7 @@ class ArtifactHealth(StrEnum):
     VALID = "valid"
     STALE = "stale"
     NEEDS_REVISION = "needs_revision"
+    NEEDS_REVIEW = "needs_review"
     CONFIRMED_VALID = "confirmed_valid"
 
 
@@ -25,6 +26,8 @@ class CostRecord(BaseModel):
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
     estimated_cost_usd: float = Field(ge=0.0)
+    latency_seconds: float | None = Field(default=None, ge=0.0)
+    request_id: str | None = None
 
 
 class ArtifactRef(BaseModel):
@@ -53,6 +56,7 @@ class ArtifactMetadata(BaseModel):
     producing_module: str | None = None
     producing_role: str | None = None
     cost_data: CostRecord | None = None
+    annotations: dict[str, Any] = Field(default_factory=dict)
     health: ArtifactHealth = ArtifactHealth.VALID
     schema_version: str = "1.0.0"
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
@@ -72,7 +76,7 @@ class SourceFileInfo(BaseModel):
     file_size_bytes: int = Field(ge=0)
     character_count: int = Field(ge=0)
     line_count: int = Field(ge=0)
-    file_format: Literal["txt", "md", "fountain", "pdf"]
+    file_format: Literal["txt", "md", "fountain", "pdf", "fdx"]
 
 
 class FormatClassification(BaseModel):

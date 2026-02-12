@@ -90,10 +90,7 @@ class DependencyGraph:
         node = graph["nodes"].get(artifact_ref.key())
         if not node:
             return []
-        return [
-            ArtifactRef.model_validate(graph["nodes"][key]["ref"])
-            for key in node["upstream"]
-        ]
+        return [ArtifactRef.model_validate(graph["nodes"][key]["ref"]) for key in node["upstream"]]
 
     def get_dependents(self, artifact_ref: ArtifactRef) -> list[ArtifactRef]:
         graph = self._read_graph()
@@ -101,8 +98,7 @@ class DependencyGraph:
         if not node:
             return []
         return [
-            ArtifactRef.model_validate(graph["nodes"][key]["ref"])
-            for key in node["downstream"]
+            ArtifactRef.model_validate(graph["nodes"][key]["ref"]) for key in node["downstream"]
         ]
 
     def get_stale(self) -> list[ArtifactRef]:

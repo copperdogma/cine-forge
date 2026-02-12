@@ -25,7 +25,9 @@ from cine_forge.schemas import (
     ArtifactHealth,
     ArtifactMetadata,
     ArtifactRef,
+    CanonicalScript,
     CostRecord,
+    QAResult,
     RawInput,
     SchemaRegistry,
 )
@@ -43,6 +45,8 @@ class DriverEngine:
         self.schemas = SchemaRegistry()
         self.schemas.register("dict", dict)
         self.schemas.register("raw_input", RawInput)
+        self.schemas.register("canonical_script", CanonicalScript)
+        self.schemas.register("qa_result", QAResult)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(

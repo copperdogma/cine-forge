@@ -15,6 +15,10 @@ Each extracted scene is its own artifact, independently versioned. This enables 
 
 This is the second AI module and builds on the AI call wrapper, QA check utility, and long document strategy from Story 004.
 
+## Story 004 Dependency Carryover
+
+- [ ] **Moved from Story 004**: implement downstream canonical script span references (scene-level `start_line` / `end_line` and any index-level span linkage) so Story 004 canonical span-reference acceptance is satisfied through Story 005 outputs.
+
 ## Acceptance Criteria
 
 ### Scene Boundary Detection

@@ -17,6 +17,7 @@ def test_detect_file_format_supports_expected_extensions() -> None:
     assert detect_file_format(Path("a.txt")) == "txt"
     assert detect_file_format(Path("a.md")) == "md"
     assert detect_file_format(Path("a.fountain")) == "fountain"
+    assert detect_file_format(Path("a.fdx")) == "fdx"
     assert detect_file_format(Path("a.pdf")) == "pdf"
 
 
@@ -67,6 +68,20 @@ def test_classify_screenplay_detects_structural_signals() -> None:
     assert result["detected_format"] == "screenplay"
     assert result["confidence"] >= 0.6
     assert result["evidence"]
+
+
+@pytest.mark.unit
+def test_classify_fdx_defaults_to_screenplay() -> None:
+    xml_content = (
+        "<FinalDraft><Content><Paragraph Type='Scene Heading'>"
+        "<Text>INT. LAB - NIGHT</Text></Paragraph></Content></FinalDraft>"
+    )
+    result = classify_format(
+        content=xml_content,
+        file_format="fdx",
+    )
+    assert result["detected_format"] == "screenplay"
+    assert result["confidence"] >= 0.9
 
 
 @pytest.mark.unit
