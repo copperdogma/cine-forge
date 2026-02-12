@@ -35,7 +35,7 @@ This story produces zero pipeline functionality — it produces the scaffolding 
   - [x] A trivial passing test (`tests/unit/test_placeholder.py`) to verify the test harness works.
   - [x] `Makefile` (or `justfile`) with `test`, `test-unit`, `test-integration`, `test-smoke`, `lint`, and `format` targets.
 - [x] `README.md` with project overview, setup instructions, and quick-start for agentic development.
-- [ ] All files committed as the initial commit.
+- [x] All files committed as the initial commit.
 
 ## Project Directory Layout
 
@@ -216,7 +216,7 @@ Documents how to execute the pipeline:
 - [x] Verify: `make test-unit` passes.
 - [x] Verify: `make lint` passes (or produces only acceptable pre-existing warnings).
 - [ ] Verify: all three agents (Cursor, Claude Code, Codex) can read the AGENTS.md. For Cursor, confirm the rule loads. For Claude Code, confirm the symlink resolves. For Codex, confirm AGENTS.md is at root. (Manual runtime verification pending in each tool UI.)
-- [ ] Initial commit with all scaffolding.
+- [x] Initial commit with all scaffolding.
 
 ## Notes
 
@@ -261,4 +261,5 @@ As of February 2026, the AI coding agent landscape has converged on two key cros
 - 2026-02-11 — Added cross-agent skills: `skills/create-module/SKILL.md`, `skills/create-story/SKILL.md`, `skills/create-role/SKILL.md`, and `skills/run-pipeline/SKILL.md`.
 - 2026-02-11 — Added TDD baseline (`tests/conftest.py`, unit/integration/smoke packages, `tests/unit/test_placeholder.py`).
 - 2026-02-11 — Verification: created local virtual environment (`.venv`), installed editable dev dependencies, and passed `make test-unit` and `make lint` using `PYTHON=.venv/bin/python`.
-- 2026-02-11 — Remaining items intentionally not executed here: cross-agent runtime verification in Cursor/Claude/Codex and initial git commit (commit deferred until explicitly requested by user).
+- 2026-02-11 — Initial commit created: `2b8d223` with full Story 001 scaffolding and docs.
+- 2026-02-11 — Remaining item requiring manual verification: cross-agent runtime checks in Cursor, Claude Code, and Codex UIs.
