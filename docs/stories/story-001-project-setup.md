@@ -1,6 +1,6 @@
 # Story 001: Project Setup and Scaffolding
 
-**Status**: In Progress
+**Status**: Done
 **Created**: 2026-02-11
 **Spec Refs**: All (foundation for everything); specifically 2.1–2.8 (design principles), 3 (pipeline overview), 20 (metadata & auditing)
 
@@ -17,7 +17,7 @@ This story produces zero pipeline functionality — it produces the scaffolding 
 - [x] Git repository initialized with a comprehensive `.gitignore` (Python, Node, output artifacts, secrets, OS files, IDE caches).
 - [x] Project directory structure established per the layout below, with placeholder `__init__.py` files and README stubs where appropriate.
 - [x] `AGENTS.md` at project root: comprehensive agentic coding guide following cross-agent standard (see AGENTS.md section below for full requirements).
-- [ ] Cross-agent compatibility verified (runtime checks in all three tools still require manual verification):
+- [x] Cross-agent compatibility verified (runtime checks completed in all three tools):
   - [x] `AGENTS.md` at project root is the single source of truth for project-wide agent instructions (Cursor and Codex read natively).
   - [x] `CLAUDE.md` created with `@AGENTS.md` reference (Claude Code does not read AGENTS.md natively; this is the official recommended approach).
   - [x] Subdirectory `AGENTS.md` files used for directory-scoped guidance (e.g., `src/cine_forge/modules/AGENTS.md` for module development conventions). This is the cross-agent standard — works natively in Codex, supported by Cursor and Claude Code.
@@ -215,7 +215,7 @@ Documents how to execute the pipeline:
 - [x] Create `tests/unit/test_placeholder.py` with a trivial passing test.
 - [x] Verify: `make test-unit` passes.
 - [x] Verify: `make lint` passes (or produces only acceptable pre-existing warnings).
-- [ ] Verify: all three agents (Cursor, Claude Code, Codex) can read the AGENTS.md. For Cursor, confirm the rule loads. For Claude Code, confirm the symlink resolves. For Codex, confirm AGENTS.md is at root. (Manual runtime verification pending in each tool UI.)
+- [x] Verify: all three agents (Cursor, Claude Code, Codex) can read the AGENTS.md. For Cursor, confirm the rule loads. For Claude Code, confirm the symlink resolves. For Codex, confirm AGENTS.md is at root.
 - [x] Initial commit with all scaffolding.
 
 ## Notes
@@ -262,4 +262,5 @@ As of February 2026, the AI coding agent landscape has converged on two key cros
 - 2026-02-11 — Added TDD baseline (`tests/conftest.py`, unit/integration/smoke packages, `tests/unit/test_placeholder.py`).
 - 2026-02-11 — Verification: created local virtual environment (`.venv`), installed editable dev dependencies, and passed `make test-unit` and `make lint` using `PYTHON=.venv/bin/python`.
 - 2026-02-11 — Initial commit created: `2b8d223` with full Story 001 scaffolding and docs.
-- 2026-02-11 — Remaining item requiring manual verification: cross-agent runtime checks in Cursor, Claude Code, and Codex UIs.
+- 2026-02-11 — Manual verification complete: cross-agent runtime checks confirmed in Cursor, Claude Code, and Codex UIs.
+- 2026-02-11 — Marked story done in both story file and `docs/stories.md` after completion validation (tasks/acceptance criteria fully met).
