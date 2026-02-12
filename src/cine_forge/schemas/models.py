@@ -1,0 +1,65 @@
+"""Core artifact and metadata schemas for the pipeline foundation."""
+
+from __future__ import annotations
+
+from datetime import UTC, datetime
+from enum import StrEnum
+from typing import Any, Literal
+
+from pydantic import BaseModel, Field
+
+
+class ArtifactHealth(StrEnum):
+    """Structural health state for an artifact in the dependency graph."""
+
+    VALID = "valid"
+    STALE = "stale"
+    NEEDS_REVISION = "needs_revision"
+    CONFIRMED_VALID = "confirmed_valid"
+
+
+class CostRecord(BaseModel):
+    """Per-call cost envelope for module execution."""
+
+    model: str
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
+    estimated_cost_usd: float = Field(ge=0.0)
+
+
+class ArtifactRef(BaseModel):
+    """Reference to a specific immutable artifact version."""
+
+    artifact_type: str
+    entity_id: str | None = None
+    version: int = Field(ge=1)
+    path: str
+
+    def key(self) -> str:
+        entity_key = self.entity_id or "__project__"
+        return f"{self.artifact_type}:{entity_key}:v{self.version}"
+
+
+class ArtifactMetadata(BaseModel):
+    """Audit and lineage metadata attached to every artifact snapshot."""
+
+    ref: ArtifactRef | None = None
+    lineage: list[ArtifactRef] = Field(default_factory=list)
+    intent: str
+    rationale: str
+    alternatives_considered: list[str] | None = None
+    confidence: float = Field(ge=0.0, le=1.0)
+    source: Literal["ai", "human", "hybrid"]
+    producing_module: str | None = None
+    producing_role: str | None = None
+    cost_data: CostRecord | None = None
+    health: ArtifactHealth = ArtifactHealth.VALID
+    schema_version: str = "1.0.0"
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+
+class Artifact(BaseModel):
+    """Persisted artifact snapshot payload."""
+
+    metadata: ArtifactMetadata
+    data: dict[str, Any]

@@ -1,21 +1,22 @@
 PYTHON ?= python3
+PYTHONPATH ?= src
 
 .PHONY: test test-unit test-integration test-smoke lint format
 
 test:
-	$(PYTHON) -m pytest
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest
 
 test-unit:
-	$(PYTHON) -m pytest -m unit
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest -m unit
 
 test-integration:
-	$(PYTHON) -m pytest -m integration
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest -m integration
 
 test-smoke:
-	$(PYTHON) -m pytest -m smoke
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest -m smoke
 
 lint:
-	$(PYTHON) -m ruff check .
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m ruff check .
 
 format:
-	$(PYTHON) -m ruff format .
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m ruff format .

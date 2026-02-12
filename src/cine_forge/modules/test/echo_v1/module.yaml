@@ -1,0 +1,14 @@
+module_id: test.echo_v1
+stage: test
+description: Echo module for pipeline foundation tests.
+input_schemas:
+  - dict
+output_schemas:
+  - dict
+parameters:
+  artifact_type:
+    type: string
+  entity_id:
+    type: string
+  payload:
+    type: object

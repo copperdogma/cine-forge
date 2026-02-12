@@ -46,6 +46,21 @@ Entry format:
 - Roles represent AI personas with permissions/review responsibilities.
 - Human interaction supports approve/reject, creative sessions, and direct edits.
 
+## Pipeline Foundation Architecture (Story 002)
+
+- `src/cine_forge/schemas/models.py` defines `ArtifactRef`, `ArtifactMetadata`, `ArtifactHealth`, `CostRecord`, and `Artifact`.
+- `src/cine_forge/schemas/registry.py` provides schema registration, structured validation errors, and compatibility checks.
+- `src/cine_forge/artifacts/store.py` persists immutable versioned snapshots and supports `list_versions`/`diff_versions`.
+- `src/cine_forge/artifacts/graph.py` tracks upstream/downstream artifact dependencies and layer-1 stale propagation.
+- `src/cine_forge/driver/` handles module discovery, recipe validation/toposort, stage execution, run state, and event logging.
+
+## Common Driver Commands
+
+- Validate only: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --dry-run`
+- Execute recipe: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --run-id test-001`
+- Resume from stage: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --start-from echo --run-id test-002`
+- Mark instrumented run: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --instrument`
+
 ## Repo Map
 
 - `src/cine_forge/driver/`: orchestration runtime
@@ -93,3 +108,4 @@ Entry format:
 ## Lessons Learned
 
 - 2026-02-11 — Keep cross-agent instructions centralized in `AGENTS.md` and reference from tool-specific files to avoid divergence.
+- 2026-02-12 — Build the pipeline spine before AI modules: landing immutable artifacts, schema validation, and deterministic graph invalidation first unblocks later stories with minimal rework (`src/cine_forge/artifacts/`, `src/cine_forge/schemas/`, `src/cine_forge/driver/`).

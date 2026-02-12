@@ -1,0 +1,20 @@
+recipe_id: recipe-test-echo
+description: Test recipe for driver + artifact pipeline foundation.
+project: {}
+stages:
+  - id: seed
+    module: test.echo_v1
+    params:
+      artifact_type: project_input
+      entity_id: project
+      payload:
+        story: "hello cine-forge"
+        version: 1
+    needs: []
+  - id: echo
+    module: test.echo_v1
+    params:
+      artifact_type: echo_output
+      entity_id: project
+    needs:
+      - seed
