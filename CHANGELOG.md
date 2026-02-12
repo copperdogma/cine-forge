@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-02-12] - Implement Story 006 project configuration module and confirmation flow
+
+### Added
+- New `project_config_v1` ingest module with AI-assisted project parameter detection, draft file output, confirmation modes (`--accept-config`, `--config-file`, `--autonomous`), and schema-validated draft/canonical artifact handling.
+- New `ProjectConfig` and `DetectedValue` schemas, plus unit/integration coverage for schema validation, module behavior, and end-to-end project config persistence.
+- New recipe `configs/recipes/recipe-ingest-extract-config.yaml` for ingest -> normalize -> scene extraction -> project config flow.
+- New Story 019 scaffold at `docs/stories/story-019-human-interaction.md` to track deferred non-CLI interaction scope (web UI / Director chat).
+
+### Changed
+- Driver runtime now supports config confirmation flags, stage pause state (`paused`), and runtime fingerprint hashing of `input_file`/`config_file` contents for safer cache invalidation.
+- Driver schema registry now includes `project_config`.
+- Story tracking updates: Story 006 marked `Done` with completed acceptance/tasks/work-log evidence, and deferred interaction scope moved to Story 019.
+- Added driver tests proving stale propagation for downstream artifacts when `project_config` changes.
+
 ## [2026-02-12] - Implement Story 005 scene extraction pipeline
 
 ### Added

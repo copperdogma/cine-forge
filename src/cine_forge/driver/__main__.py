@@ -24,6 +24,20 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Enable instrumentation marker in run state.",
     )
+    parser.add_argument(
+        "--accept-config",
+        action="store_true",
+        help="Auto-confirm draft project configuration output.",
+    )
+    parser.add_argument(
+        "--config-file",
+        help="Path to a user-edited project config draft to apply and confirm.",
+    )
+    parser.add_argument(
+        "--autonomous",
+        action="store_true",
+        help="Set autonomous human control mode and auto-confirm config draft.",
+    )
     return parser
 
 
@@ -32,6 +46,16 @@ def main() -> None:
     args = parser.parse_args()
     workspace_root = Path.cwd()
     engine = DriverEngine(workspace_root=workspace_root)
+    runtime_params = {}
+    if args.input_file:
+        runtime_params["input_file"] = args.input_file
+    if args.accept_config:
+        runtime_params["accept_config"] = True
+    if args.config_file:
+        runtime_params["config_file"] = args.config_file
+    if args.autonomous:
+        runtime_params["autonomous"] = True
+
     engine.run(
         recipe_path=Path(args.recipe),
         run_id=args.run_id,
@@ -39,7 +63,7 @@ def main() -> None:
         start_from=args.start_from,
         force=args.force,
         instrument=args.instrument,
-        runtime_params={"input_file": args.input_file} if args.input_file else None,
+        runtime_params=runtime_params or None,
     )
 
 

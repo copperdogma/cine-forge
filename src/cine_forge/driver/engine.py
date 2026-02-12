@@ -27,6 +27,7 @@ from cine_forge.schemas import (
     ArtifactRef,
     CanonicalScript,
     CostRecord,
+    ProjectConfig,
     QAResult,
     RawInput,
     Scene,
@@ -50,6 +51,7 @@ class DriverEngine:
         self.schemas.register("canonical_script", CanonicalScript)
         self.schemas.register("scene", Scene)
         self.schemas.register("scene_index", SceneIndex)
+        self.schemas.register("project_config", ProjectConfig)
         self.schemas.register("qa_result", QAResult)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
@@ -234,6 +236,22 @@ class DriverEngine:
                     outputs=persisted_outputs,
                     stage_fingerprint=stage_fingerprint,
                 )
+                pause_reason = module_result.get("pause_reason")
+                if pause_reason:
+                    stage_state["status"] = "paused"
+                    stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
+                    self._append_event(
+                        events_path,
+                        {
+                            "event": "stage_paused",
+                            "stage_id": stage_id,
+                            "reason": str(pause_reason),
+                            "artifacts": stage_state["artifact_refs"],
+                        },
+                    )
+                    self._write_run_state(state_path, run_state)
+                    break
+
                 stage_state["status"] = "done"
                 stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
                 self._append_event(
@@ -443,7 +461,10 @@ class DriverEngine:
             "module_entrypoint_hash": _hash_file(module_entrypoint),
             "module_code_hash": module_code_hash,
             "upstream_refs": [ref.key() for ref in upstream_refs],
-            "runtime_params": runtime_params,
+            "runtime_params": _runtime_params_fingerprint_payload(
+                runtime_params=runtime_params,
+                workspace_root=self.workspace_root,
+            ),
         }
         return _hash_json(payload)
 
@@ -544,3 +565,25 @@ def _hash_module_tree(module_dir: Path) -> str:
             }
         )
     return _hash_json({"python_files": file_hashes})
+
+
+def _runtime_params_fingerprint_payload(
+    runtime_params: dict[str, Any],
+    workspace_root: Path,
+) -> dict[str, Any]:
+    normalized: dict[str, Any] = {}
+    for key, value in sorted(runtime_params.items()):
+        if not isinstance(value, str):
+            normalized[key] = value
+            continue
+        if key not in {"input_file", "config_file"}:
+            normalized[key] = value
+            continue
+        candidate = Path(value)
+        if not candidate.is_absolute():
+            candidate = workspace_root / candidate
+        normalized[key] = {
+            "path": value,
+            "file_sha256": _hash_file(candidate),
+        }
+    return normalized

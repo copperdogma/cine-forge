@@ -93,3 +93,36 @@ class RawInput(BaseModel):
     content: str
     source_info: SourceFileInfo
     classification: FormatClassification
+
+
+class DetectedValue(BaseModel):
+    """An auto-detected or defaulted project configuration field."""
+
+    value: Any
+    confidence: float = Field(ge=0.0, le=1.0)
+    rationale: str
+    source: Literal["auto_detected", "user_specified", "default"]
+
+
+class ProjectConfig(BaseModel):
+    """Project-level configuration used by all downstream modules and roles."""
+
+    title: str
+    format: str
+    genre: list[str] = Field(default_factory=list)
+    tone: list[str] = Field(default_factory=list)
+    estimated_duration_minutes: float | None = Field(default=None, ge=0.0)
+    primary_characters: list[str] = Field(default_factory=list)
+    supporting_characters: list[str] = Field(default_factory=list)
+    location_count: int = Field(ge=0)
+    locations_summary: list[str] = Field(default_factory=list)
+    target_audience: str | None = None
+    aspect_ratio: str
+    production_mode: Literal["ai_generated", "irl", "hybrid"]
+    human_control_mode: Literal["autonomous", "checkpoint", "advisory"]
+    style_packs: dict[str, str] = Field(default_factory=dict)
+    budget_cap_usd: float | None = Field(default=None, ge=0.0)
+    default_model: str
+    detection_details: dict[str, DetectedValue] = Field(default_factory=dict)
+    confirmed: bool
+    confirmed_at: str | None = None

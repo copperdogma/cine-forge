@@ -18,6 +18,7 @@ class StageStatus(StrEnum):
     DONE = "done"
     FAILED = "failed"
     SKIPPED_REUSED = "skipped_reused"
+    PAUSED = "paused"
 
 
 class StageRunState(BaseModel):

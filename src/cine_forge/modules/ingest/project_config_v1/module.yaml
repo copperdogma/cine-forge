@@ -1,0 +1,28 @@
+module_id: project_config_v1
+stage: ingest
+description: "Auto-detects project parameters and produces a draft config for user confirmation."
+input_schemas:
+  - canonical_script
+  - scene_index
+output_schemas:
+  - project_config
+parameters:
+  model:
+    type: string
+    required: false
+    default: "gpt-4o"
+    description: "LLM model for auto-detection."
+  qa_model:
+    type: string
+    required: false
+    default: "gpt-4o-mini"
+    description: "LLM model for config QA review."
+  accept_config:
+    type: boolean
+    required: false
+    default: false
+    description: "Auto-confirm the draft config without human review."
+  config_file:
+    type: string
+    required: false
+    description: "Path to a user-edited config file to use instead of auto-detection."
