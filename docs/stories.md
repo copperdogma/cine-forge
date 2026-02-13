@@ -11,9 +11,11 @@ Guiding priorities: **get a working pipeline fast** (MVP: script in → structur
 5. **005 — Scene Extraction Module**: AI extracts structured scenes from canonical script.
 6. **006 — Project Configuration**: Auto-initialize project parameters from ingested story; user confirms/modifies.
 7. **007 — MVP Recipe and Smoke Test**: Wire 003–006 into a recipe, run end-to-end, verify artifacts. First "it works" milestone.
-8. **008 — Bible Infrastructure and Character Bible**: Folder-based bible model with manifest, character extraction from script.
-9. **009 — Location and Prop Bibles**: Same pattern as characters for locations and props.
-10. **010 — Entity Relationship Graph**: Cross-entity typed relationship edges extracted from script and bibles.
+8. **007b — Operator Console Lite**: Thin GUI for starting/opening projects, running MVP recipe, monitoring runs/events, and browsing artifacts.
+9. **007c — MVP Reality Validation and Remediation**: Fix upstream fidelity issues uncovered by first real UI-driven runs (PDF/script ingestion → normalization → scene extraction → project config), backed by realistic fixtures and stronger assertions.
+10. **008 — Bible Infrastructure and Character Bible**: Folder-based bible model with manifest, character extraction from script.
+11. **009 — Location and Prop Bibles**: Same pattern as characters for locations and props.
+12. **010 — Entity Relationship Graph**: Cross-entity typed relationship edges extracted from script and bibles.
 
 This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 
@@ -28,6 +30,8 @@ This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 | 005 | Scene Extraction Module | 1 — MVP Pipeline | High | Done | [story-005](stories/story-005-scene-extraction.md) |
 | 006 | Project Configuration (Auto-Initialized) | 1 — MVP Pipeline | High | Done | [story-006](stories/story-006-project-configuration.md) |
 | 007 | MVP Recipe and End-to-End Smoke Test | 1 — MVP Pipeline | High | Done | [story-007](stories/story-007-mvp-recipe-smoke-test.md) |
+| 007b | Operator Console Lite (Start/Open Project + Run + Artifacts) | 1 — MVP Pipeline | High | Done | [story-007b](stories/story-007b-operator-console-lite.md) |
+| 007c | MVP Reality Validation and Remediation | 1 — MVP Pipeline | High | To Do | [story-007c](stories/story-007c-mvp-reality-remediation.md) |
 | 008 | Bible Infrastructure and Character Bible | 2 — World Building | High | To Do | [story-008](stories/story-008-character-bible.md) |
 | 009 | Location and Prop Bibles | 2 — World Building | High | To Do | [story-009](stories/story-009-location-prop-bibles.md) |
 | 010 | Entity Relationship Graph | 2 — World Building | Medium | To Do | [story-010](stories/story-010-entity-graph.md) |

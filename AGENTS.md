@@ -80,6 +80,7 @@ Entry format:
 - Keep recipes declarative; modules should be referenced by module id.
 - Run `make test-unit` and `make lint` before declaring completion.
 - Update active story files with acceptance progress and work notes.
+- For UI work, manual browser verification is required before completion: interact with the real app (not only tests), validate desktop and mobile layouts, confirm key flows work end-to-end, and capture visual evidence (screenshots + brief notes) in the active story work log.
 
 ## Cross-Agent Notes
 
@@ -112,6 +113,9 @@ Entry format:
 - 2026-02-11 — Hidden schema drift: adding output fields without schema updates can silently drop data after validation.
 - 2026-02-12 — Runtime-only inputs can bypass cache invalidation: when adding CLI/runtime params that affect module outputs, include them in stage fingerprints (`src/cine_forge/driver/engine.py`) or reuse may return stale artifacts.
 - 2026-02-12 — Live structured LLM schemas break on unresolved or untyped envelopes: Pydantic models used for strict JSON response format must call `model_rebuild()` when needed and avoid unconstrained `Any` fields, or OpenAI rejects `response_format` at runtime (`src/cine_forge/modules/ingest/script_normalize_v1/main.py`, `src/cine_forge/modules/ingest/project_config_v1/main.py`).
+- 2026-02-12 — Reused run IDs can produce false integration results: API/integration tests that poll `output/runs/<run_id>/run_state.json` may read stale run-state from prior executions if run IDs are fixed; generate unique IDs per test invocation (`tests/integration/test_operator_console_integration.py`).
+- 2026-02-12 — Local UI can fail with generic “Failed to fetch” when Vite changes port: CORS allowlists limited to `5173` break dev sessions if Vite auto-selects `5174+`; allow localhost/127.0.0.1 by regex across local ports and surface explicit backend-start guidance in frontend fetch errors (`src/cine_forge/operator_console/app.py`, `ui/operator-console-lite/src/api.ts`).
+- 2026-02-12 — Project-switch overlays can block onboarding actions when no active project: if a drawer is mandatory at startup, render it inline (not modal) so primary create-project controls remain clickable (`ui/operator-console-lite/src/App.tsx`, `ui/operator-console-lite/src/styles.css`).
 
 ## Lessons Learned
 

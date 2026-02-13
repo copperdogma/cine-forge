@@ -1,5 +1,27 @@
 # Changelog
 
+## [2026-02-13] - Deliver Operator Console Lite and add MVP fidelity remediation story
+
+### Added
+- New Operator Console Lite backend service under `src/cine_forge/operator_console/` with project lifecycle, run start/state/events, artifact browsing, recent-project discovery, and input upload endpoints.
+- New React + Vite UI under `ui/operator-console-lite/` with file-first project creation (drag/drop + file picker), run controls, runs/events inspection, artifact browser, and on-demand project switcher drawer.
+- New test coverage:
+  - `tests/unit/test_operator_console_api.py`
+  - `tests/integration/test_operator_console_integration.py`
+  - `ui/operator-console-lite/e2e/operator-console.spec.ts`
+- New remediation planning story `docs/stories/story-007c-mvp-reality-remediation.md` to address real-run artifact fidelity issues discovered via UI-led validation.
+
+### Fixed
+- Resolved local dev CORS failures causing UI “Failed to fetch” by allowing localhost/127.0.0.1 origins across local ports in Operator Console API middleware.
+- Improved artifact browser UX with explicit selected group/version highlighting and auto-selection of latest/single version.
+- Stabilized Playwright test startup behavior in UI config for deterministic local runs.
+
+### Changed
+- Updated Story 007b acceptance/task wording to align with approved UX (`Project Switcher` replacing dedicated `Open Project` route while preserving open-existing-project functionality).
+- Updated docs in `README.md` and story index in `docs/stories.md` for Operator Console flows and new 007c scope.
+- Extended project guidance in `AGENTS.md` for mandatory manual UI verification and captured pitfalls from recent execution.
+- Updated `.gitignore` for UI build/test artifacts (`*.tsbuildinfo`, `test-results/`, `playwright-report/`).
+
 ## [2026-02-13] - Complete Story 007 MVP recipe smoke coverage and runtime parameter UX
 
 ### Added
