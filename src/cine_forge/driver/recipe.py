@@ -37,6 +37,15 @@ def load_recipe(recipe_path: Path) -> Recipe:
     return Recipe.model_validate(payload)
 
 
+def resolve_runtime_params(recipe: Recipe, runtime_params: dict[str, Any]) -> Recipe:
+    """Resolve `${param}` placeholders in stage params using runtime params."""
+    resolved_stages: list[RecipeStage] = []
+    for stage in recipe.stages:
+        resolved_params = _resolve_value(stage.params, runtime_params=runtime_params)
+        resolved_stages.append(stage.model_copy(update={"params": resolved_params}))
+    return recipe.model_copy(update={"stages": resolved_stages})
+
+
 def validate_recipe(
     recipe: Recipe, module_registry: dict[str, ModuleManifest], schema_registry: SchemaRegistry
 ) -> None:
@@ -105,3 +114,25 @@ def _assert_schema_compatibility(
                     f"Schema mismatch: stage '{upstream_id}' outputs {produced}, "
                     f"but stage '{stage.id}' requires {required}"
                 )
+
+
+def _resolve_value(value: Any, runtime_params: dict[str, Any]) -> Any:
+    if isinstance(value, dict):
+        return {
+            key: _resolve_value(item, runtime_params=runtime_params)
+            for key, item in value.items()
+        }
+    if isinstance(value, list):
+        return [_resolve_value(item, runtime_params=runtime_params) for item in value]
+    if not isinstance(value, str):
+        return value
+
+    text = value.strip()
+    if not (text.startswith("${") and text.endswith("}")):
+        return value
+    param_name = text[2:-1]
+    if not param_name:
+        return value
+    if param_name not in runtime_params:
+        raise ValueError(f"Missing runtime parameter for placeholder '{value}'")
+    return runtime_params[param_name]

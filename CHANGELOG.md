@@ -1,5 +1,23 @@
 # Changelog
 
+## [2026-02-13] - Complete Story 007 MVP recipe smoke coverage and runtime parameter UX
+
+### Added
+- New Story 007 end-to-end recipe at `configs/recipes/recipe-mvp-ingest.yaml` with runtime placeholders for input/model/acceptance controls.
+- New Story 007 fixture corpus under `tests/fixtures/` including screenplay/prose inputs and mocked AI response bundles for normalization, scene QA, and project config detection.
+- New integration suite `tests/integration/test_mvp_recipe_smoke.py` covering mocked smoke, live-gated smoke, staleness propagation, and fixture integrity preflight checks.
+- New CLI unit coverage in `tests/unit/test_driver_cli.py` for `--params-file` loading, `--param` override precedence, and non-mapping params-file rejection.
+
+### Fixed
+- Resolved live structured-output schema failures by rebuilding normalization envelope models and tightening project-config detected-field typing.
+- Repaired mocked fixture regression by replacing empty per-scene fixture files with valid JSON and adding preflight validation to prevent recurrence.
+
+### Changed
+- Driver CLI now supports generic runtime parameter injection via `--param` and `--params-file`, with improved failure summaries and success output.
+- Driver runtime now resolves `${...}` recipe placeholders before validation/execution and supports optional stage-level lineage aggregation for aggregate artifacts.
+- Updated Story 007 docs/work-log status to Done and synchronized story index status in `docs/stories.md`.
+- Added `smoke-test` and `live-test` Make targets and expanded README runbook docs for MVP smoke execution and artifact inspection.
+
 ## [2026-02-12] - Implement Story 006 project configuration module and confirmation flow
 
 ### Added

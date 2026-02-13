@@ -42,6 +42,48 @@ make test-unit
 make lint
 ```
 
+## MVP Pipeline Smoke Run
+
+Run the full Story 007 MVP pipeline (ingest -> normalize -> scene extract -> project config)
+using mocked AI calls and the canonical Story 007 fixture:
+
+```bash
+PYTHONPATH=src python -m cine_forge.driver \
+  --recipe configs/recipes/recipe-mvp-ingest.yaml \
+  --run-id smoke-test-001 \
+  --param input_file=tests/fixtures/sample_screenplay.fountain \
+  --param default_model=mock \
+  --param qa_model=mock \
+  --param accept_config=true
+```
+
+Equivalent convenience target:
+
+```bash
+make smoke-test
+```
+
+Optional live-model run (manual only; requires `OPENAI_API_KEY`):
+
+```bash
+make live-test
+```
+
+## Produced Artifacts
+
+The MVP recipe produces immutable artifacts under `output/project/artifacts/`:
+
+- `raw_input/project/vN.json`: source text and format classification.
+- `canonical_script/project/vN.json`: normalized screenplay with QA/cost metadata.
+- `scene/scene_XXX/vN.json`: per-scene structured extraction artifacts.
+- `scene_index/project/vN.json`: scene index and aggregate scene QA summary.
+- `project_config/project/vN.json`: confirmed project configuration.
+
+Per-run execution state is written to `output/runs/<run_id>/`:
+
+- `run_state.json`: stage statuses, artifact refs, durations, and total cost.
+- `pipeline_events.jsonl`: ordered stage start/finish events.
+
 ## Notes
 
 - Artifacts are immutable snapshots. Never mutate an existing artifact in place.

@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel
@@ -37,6 +39,20 @@ def call_llm(
     """Call an LLM and return text (or parsed schema) with call metadata."""
     if max_retries < 0:
         raise ValueError("max_retries must be >= 0")
+    if model == "fixture":
+        started = time.perf_counter()
+        parsed = _fixture_response(prompt=prompt, response_schema=response_schema)
+        latency = time.perf_counter() - started
+        metadata = {
+            "model": model,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+            "latency_seconds": round(latency, 6),
+            "request_id": "fixture-response",
+            "finish_reason": "stop",
+        }
+        return parsed, metadata
 
     sender = transport or _openai_transport
     last_error: Exception | None = None
@@ -189,3 +205,149 @@ def _is_transient_error(error: Exception) -> bool:
     message = str(error).lower()
     transient_tokens = ("rate", "timeout", "tempor", "503", "429", "connection reset")
     return any(token in message for token in transient_tokens)
+
+
+def _fixture_response(
+    prompt: str,
+    response_schema: type[BaseModel] | None,
+) -> str | BaseModel:
+    root_path = os.getenv("CINE_FORGE_MOCK_FIXTURE_DIR")
+    if not root_path:
+        raise LLMCallError("CINE_FORGE_MOCK_FIXTURE_DIR is required for model='fixture'")
+    fixture_root = Path(root_path)
+    lowered_prompt = prompt.lower()
+
+    if response_schema is None:
+        if "search/replace blocks" in lowered_prompt:
+            return ""
+        screenplay_fixture = fixture_root / "normalization_screenplay_cleanup.txt"
+        prose_fixture = fixture_root / "normalization_prose_conversion.txt"
+        source_path = (
+            screenplay_fixture
+            if "source format: screenplay" in lowered_prompt
+            else prose_fixture
+        )
+        return source_path.read_text(encoding="utf-8")
+
+    schema_name = response_schema.__name__
+    if schema_name == "_MetadataEnvelope":
+        source_format = "screenplay" if "source format: screenplay" in lowered_prompt else "prose"
+        payload = {
+            "source_format": source_format,
+            "strategy": (
+                "passthrough_cleanup"
+                if "strategy: passthrough_cleanup" in lowered_prompt
+                else "full_conversion"
+            ),
+            "inventions": [],
+            "assumptions": [],
+            "overall_confidence": 0.92,
+            "rationale": "Fixture-backed metadata response.",
+        }
+        return response_schema.model_validate(payload)
+
+    if schema_name in {"QAResult", "QARepairPlan"}:
+        scene_match = re.search(r"scene_[0-9]{3}", lowered_prompt)
+        scene_id = scene_match.group(0) if scene_match else None
+        if scene_id:
+            qa_source = fixture_root / "qa" / f"{scene_id}_qa.json"
+            scene_source = fixture_root / "scenes" / f"{scene_id}.json"
+        else:
+            qa_source = fixture_root / "normalization_qa.json"
+            scene_source = None
+
+        if not qa_source.exists():
+            qa_source = fixture_root / "normalization_qa.json"
+        qa_payload = json.loads(qa_source.read_text(encoding="utf-8"))
+        scene_payload = (
+            json.loads(scene_source.read_text(encoding="utf-8"))
+            if scene_source and scene_source.exists()
+            else {}
+        )
+        issues = [
+            {
+                "severity": issue.get("severity", "note"),
+                "description": issue.get("description", "fixture note"),
+                "location": issue.get("location", "unknown"),
+            }
+            for issue in qa_payload.get("issues", [])
+        ]
+        result_payload = {
+            "passed": bool(qa_payload.get("passed", True)),
+            "confidence": float(qa_payload.get("confidence", 0.95)),
+            "issues": issues,
+            "summary": str(
+                scene_payload.get("note")
+                or qa_payload.get("summary")
+                or "Fixture QA result"
+            ),
+        }
+        if schema_name == "QAResult":
+            return response_schema.model_validate(result_payload)
+        return response_schema.model_validate({"qa_result": result_payload, "edits": []})
+
+    if schema_name == "_BoundaryValidation":
+        return response_schema.model_validate(
+            {
+                "is_sensible": True,
+                "confidence": 0.8,
+                "rationale": "Fixture boundary validation accepted chunk boundary.",
+            }
+        )
+
+    if schema_name == "_EnrichmentEnvelope":
+        return response_schema.model_validate(
+            {
+                "narrative_beats": [],
+                "tone_mood": "neutral",
+                "tone_shifts": [],
+                "heading": None,
+                "location": None,
+                "time_of_day": None,
+                "int_ext": None,
+                "characters_present": None,
+            }
+        )
+
+    if schema_name == "_DetectedConfigEnvelope":
+        config_fixture = fixture_root / "project_config_autodetect.json"
+        raw = json.loads(config_fixture.read_text(encoding="utf-8"))
+        payload = {
+            "title": {"value": raw["title"], "confidence": 0.9, "rationale": "Fixture title"},
+            "format": {"value": raw["format"], "confidence": 0.9, "rationale": "Fixture format"},
+            "genre": {"value": raw["genre"], "confidence": 0.86, "rationale": "Fixture genre"},
+            "tone": {"value": raw["tone"], "confidence": 0.84, "rationale": "Fixture tone"},
+            "estimated_duration_minutes": {
+                "value": raw["estimated_duration_minutes"],
+                "confidence": 0.85,
+                "rationale": "Fixture runtime estimate",
+            },
+            "primary_characters": {
+                "value": raw["primary_characters"],
+                "confidence": 0.85,
+                "rationale": "Fixture primary characters",
+            },
+            "supporting_characters": {
+                "value": raw["supporting_characters"],
+                "confidence": 0.8,
+                "rationale": "Fixture supporting characters",
+            },
+            "location_count": {
+                "value": raw["location_count"],
+                "confidence": 0.9,
+                "rationale": "Fixture location count",
+            },
+            "locations_summary": {
+                "value": raw["locations_summary"],
+                "confidence": 0.9,
+                "rationale": "Fixture locations summary",
+            },
+            "target_audience": {
+                "value": raw["target_audience"],
+                "confidence": 0.7,
+                "rationale": "Fixture audience",
+            },
+        }
+        return response_schema.model_validate(payload)
+
+    raise LLMCallError(f"Unsupported fixture response schema: {schema_name}")

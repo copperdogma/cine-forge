@@ -248,6 +248,31 @@ def _write_runtime_recipe(workspace_root: Path) -> Path:
     return recipe_path
 
 
+def _write_placeholder_recipe(workspace_root: Path) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "placeholder_recipe.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: placeholder-recipe",
+                "description: runtime placeholders",
+                "stages:",
+                "  - id: a",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: seed",
+                "      entity_id: project",
+                "      payload:",
+                "        hello: ${message}",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
 def _write_pause_module(workspace_root: Path) -> None:
     module_dir = workspace_root / "src" / "cine_forge" / "modules" / "test" / "pause_v1"
     module_dir.mkdir(parents=True, exist_ok=True)
@@ -630,6 +655,34 @@ def test_driver_start_from_reuses_runtime_param_fingerprint(tmp_path: Path) -> N
     assert resumed["stages"]["a"]["status"] == "skipped_reused"
     assert resumed["stages"]["b"]["status"] == "done"
     assert latest_echo.data["marker"] == "same"
+
+
+@pytest.mark.unit
+def test_driver_resolves_runtime_placeholders_in_stage_params(tmp_path: Path) -> None:
+    _write_echo_module(tmp_path)
+    recipe_path = _write_placeholder_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    state = engine.run(
+        recipe_path=recipe_path,
+        run_id="placeholder",
+        runtime_params={"message": "galaxy"},
+    )
+    latest_seed_ref = engine.store.list_versions("seed", "project")[-1]
+    latest_seed = engine.store.load_artifact(latest_seed_ref)
+
+    assert state["stages"]["a"]["status"] == "done"
+    assert latest_seed.data == {"hello": "galaxy"}
+
+
+@pytest.mark.unit
+def test_driver_raises_when_runtime_placeholder_missing(tmp_path: Path) -> None:
+    _write_echo_module(tmp_path)
+    recipe_path = _write_placeholder_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    with pytest.raises(ValueError, match="Missing runtime parameter"):
+        engine.run(recipe_path=recipe_path, run_id="placeholder-missing")
 
 
 @pytest.mark.unit

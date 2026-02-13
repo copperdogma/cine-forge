@@ -18,6 +18,7 @@ from cine_forge.driver.recipe import (
     RecipeStage,
     load_recipe,
     resolve_execution_order,
+    resolve_runtime_params,
     validate_recipe,
 )
 from cine_forge.driver.state import RunState
@@ -70,9 +71,13 @@ class DriverEngine:
         run_dir.mkdir(parents=True, exist_ok=True)
         events_path = run_dir / "pipeline_events.jsonl"
         state_path = run_dir / "run_state.json"
+        resolved_runtime_params = runtime_params or {}
 
         module_registry = discover_modules(modules_root=self.modules_root)
-        recipe = load_recipe(recipe_path=recipe_path)
+        recipe = resolve_runtime_params(
+            recipe=load_recipe(recipe_path=recipe_path),
+            runtime_params=resolved_runtime_params,
+        )
         validate_recipe(
             recipe=recipe,
             module_registry=module_registry,
@@ -103,6 +108,7 @@ class DriverEngine:
 
         if dry_run:
             self._append_event(events_path, {"event": "dry_run_validated", "run_id": run_id})
+            print(f"[{run_id}] Recipe validated (dry-run).")
             return run_state
 
         if start_from and start_from not in run_state["stages"]:
@@ -119,7 +125,7 @@ class DriverEngine:
             stage_cache=stage_cache,
             recipe_id=recipe.recipe_id,
             recipe_fingerprint=recipe_fingerprint,
-            runtime_params=runtime_params or {},
+            runtime_params=resolved_runtime_params,
         )
 
         for stage_id in ordered_stages:
@@ -135,7 +141,7 @@ class DriverEngine:
                 stage=stage,
                 module_manifest=module_manifest,
                 upstream_refs=upstream_refs,
-                runtime_params=runtime_params or {},
+                runtime_params=resolved_runtime_params,
             )
             stage_state = run_state["stages"][stage_id]
             if (
@@ -158,6 +164,7 @@ class DriverEngine:
                 stage_state["artifact_refs"] = [
                     output["ref"].model_dump() for output in reused_outputs
                 ]
+                print(f"[{run_id}] Stage '{stage_id}' reused from cache.")
                 self._append_event(
                     events_path,
                     {"event": "stage_skipped_reused", "stage_id": stage_id},
@@ -167,6 +174,7 @@ class DriverEngine:
 
             stage_state["status"] = "running"
             stage_started = time.time()
+            print(f"[{run_id}] Stage '{stage_id}' starting...")
             self._append_event(events_path, {"event": "stage_started", "stage_id": stage_id})
             self._write_run_state(state_path, run_state)
             try:
@@ -177,7 +185,7 @@ class DriverEngine:
                     context={
                         "run_id": run_id,
                         "stage_id": stage_id,
-                        "runtime_params": runtime_params or {},
+                        "runtime_params": resolved_runtime_params,
                     },
                 )
                 outputs = module_result.get("artifacts", [])
@@ -203,12 +211,18 @@ class DriverEngine:
                                 f"Stage '{stage_id}' failed schema validation: {validation}"
                             )
 
+                    stage_lineage_refs = (
+                        [item["ref"] for item in persisted_outputs]
+                        if artifact.get("include_stage_lineage")
+                        else []
+                    )
                     metadata = ArtifactMetadata.model_validate(
                         {
                             **artifact.get("metadata", {}),
                             "lineage": _merge_lineage(
                                 module_lineage=artifact.get("metadata", {}).get("lineage", []),
                                 upstream_refs=upstream_refs,
+                                stage_refs=stage_lineage_refs,
                             ),
                             "producing_module": module_manifest.module_id,
                             "cost_data": cost_record,
@@ -249,6 +263,7 @@ class DriverEngine:
                             "artifacts": stage_state["artifact_refs"],
                         },
                     )
+                    print(f"[{run_id}] Stage '{stage_id}' paused: {pause_reason}")
                     self._write_run_state(state_path, run_state)
                     break
 
@@ -263,6 +278,11 @@ class DriverEngine:
                         "artifacts": stage_state["artifact_refs"],
                     },
                 )
+                print(
+                    f"[{run_id}] Stage '{stage_id}' done in "
+                    f"{stage_state['duration_seconds']}s (cost ${stage_state['cost_usd']:.4f}; "
+                    f"total ${run_state['total_cost_usd']:.4f})."
+                )
                 self._write_run_state(state_path, run_state)
             except Exception as exc:  # noqa: BLE001
                 stage_state["status"] = "failed"
@@ -271,11 +291,13 @@ class DriverEngine:
                     events_path,
                     {"event": "stage_failed", "stage_id": stage_id, "error": str(exc)},
                 )
+                print(f"[{run_id}] Stage '{stage_id}' failed: {exc}")
                 self._write_run_state(state_path, run_state)
                 raise
 
         run_state["finished_at"] = time.time()
         self._write_run_state(state_path, run_state)
+        print(f"[{run_id}] Run complete. Total cost ${run_state['total_cost_usd']:.4f}.")
         return run_state
 
     def _collect_inputs(
@@ -529,6 +551,7 @@ def _load_module_runner(module_manifest: ModuleManifest):
 def _merge_lineage(
     module_lineage: list[dict[str, Any]],
     upstream_refs: list[ArtifactRef],
+    stage_refs: list[ArtifactRef],
 ) -> list[dict[str, Any]]:
     merged: list[ArtifactRef] = [ArtifactRef.model_validate(ref) for ref in module_lineage]
     known = {ref.key() for ref in merged}
@@ -536,6 +559,10 @@ def _merge_lineage(
         if upstream.key() not in known:
             merged.append(upstream)
             known.add(upstream.key())
+    for stage_ref in stage_refs:
+        if stage_ref.key() not in known:
+            merged.append(stage_ref)
+            known.add(stage_ref.key())
     return [ref.model_dump() for ref in merged]
 
 

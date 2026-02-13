@@ -105,11 +105,13 @@ Entry format:
 - 2026-02-12 — Live AI tests must be cost-gated: keep real-model integration coverage behind explicit env toggles (`CINE_FORGE_LIVE_TESTS`, `OPENAI_API_KEY`) so default CI/local runs remain deterministic and free (`tests/integration/test_script_normalize_integration.py`).
 - 2026-02-12 — Interop should include ingest, not just transform: when adding format interoperability (e.g., FDX), update source-format schema literals and ingest module support so integration tests can exercise true file-path intake (`src/cine_forge/schemas/models.py`, `src/cine_forge/modules/ingest/story_ingest_v1/main.py`).
 - 2026-02-12 — Multi-output module validation should resolve schema per artifact: when a stage emits multiple artifact schemas, select validation schema by explicit `schema_name` or `artifact_type` to avoid false validation failures (`src/cine_forge/driver/engine.py`, `tests/unit/test_driver_engine.py`).
+- 2026-02-12 — Stage-level lineage can include prior outputs when explicitly requested: use an artifact flag (`include_stage_lineage`) for aggregate artifacts like `scene_index` so dependency graphs capture sibling artifact edges without polluting all outputs (`src/cine_forge/driver/engine.py`, `src/cine_forge/modules/ingest/scene_extract_v1/main.py`).
 
 ## Known Pitfalls
 
 - 2026-02-11 — Hidden schema drift: adding output fields without schema updates can silently drop data after validation.
 - 2026-02-12 — Runtime-only inputs can bypass cache invalidation: when adding CLI/runtime params that affect module outputs, include them in stage fingerprints (`src/cine_forge/driver/engine.py`) or reuse may return stale artifacts.
+- 2026-02-12 — Live structured LLM schemas break on unresolved or untyped envelopes: Pydantic models used for strict JSON response format must call `model_rebuild()` when needed and avoid unconstrained `Any` fields, or OpenAI rejects `response_format` at runtime (`src/cine_forge/modules/ingest/script_normalize_v1/main.py`, `src/cine_forge/modules/ingest/project_config_v1/main.py`).
 
 ## Lessons Learned
 

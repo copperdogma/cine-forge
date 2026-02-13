@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTHONPATH ?= src
 
-.PHONY: test test-unit test-integration test-smoke lint format
+.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest
@@ -14,6 +14,12 @@ test-integration:
 
 test-smoke:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest -m smoke
+
+smoke-test:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest tests/integration/test_mvp_recipe_smoke.py -k mocked
+
+live-test:
+	PYTHONPATH=$(PYTHONPATH) CINE_FORGE_LIVE_TESTS=1 $(PYTHON) -m pytest tests/integration/test_mvp_recipe_smoke.py -k live
 
 lint:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m ruff check .

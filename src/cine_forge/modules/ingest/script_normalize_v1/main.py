@@ -47,6 +47,10 @@ class _PatchList(BaseModel):
     edits: list[_ScriptPatch] = Field(default_factory=list)
 
 
+_MetadataEnvelope.model_rebuild()
+_PatchList.model_rebuild()
+
+
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:

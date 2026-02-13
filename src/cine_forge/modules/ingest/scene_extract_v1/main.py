@@ -274,6 +274,7 @@ def run_module(
         {
             "artifact_type": "scene_index",
             "entity_id": "project",
+            "include_stage_lineage": True,
             "data": scene_index,
             "metadata": {
                 "intent": "Provide aggregated table-of-contents for extracted scene artifacts",

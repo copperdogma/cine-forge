@@ -18,7 +18,7 @@ from cine_forge.schemas import ArtifactHealth, ProjectConfig, QAResult
 
 
 class _DetectedField(BaseModel):
-    value: Any
+    value: str | int | float | list[str] | None
     confidence: float = Field(ge=0.0, le=1.0)
     rationale: str
 
