@@ -136,4 +136,13 @@ This story creates relationship *stubs* (basic edges with confidence). Story 010
   - Added unit tests in `tests/unit/test_bible_infrastructure.py` and `tests/unit/test_character_bible_module.py`.
   - Added integration test in `tests/integration/test_world_building_integration.py`.
   - All tests passed, lint clean.
-- **Next:** Proceed to Story 009 (Location and Prop Bibles).
+
+### 20260214-1930 — Landed Resilient Orchestration and High-Fidelity Extraction
+- **Result:** Success.
+- **Evidence:**
+  - Implemented **3-tier Subsumption Model Strategy** (Work/Verify/Escalate).
+  - Added **Robust JSON Parsing** (regex extraction + markdown stripping) to `call_llm`.
+  - Implemented **Orphaned Run Detection** and persistent background error logging.
+  - Verified full Mariner pipeline (Ingest -> Normalize -> Extract -> Config -> Bibles) in 7 minutes using `gpt-4o-mini` with zero errors.
+  - Standardized "code" model reporting for deterministic stages.
+  - Enhanced UI with color-coded status badges and detailed model hover info.

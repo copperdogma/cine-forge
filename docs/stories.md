@@ -38,7 +38,7 @@ NOTES from Cam:
 | 007b | Operator Console Lite (Stopgap GUI) | 1 — MVP Pipeline | High | Done | [story-007b](stories/story-007b-operator-console-lite.md) |
 | 007c | MVP Reality Validation and Remediation | 1 — MVP Pipeline | High | Done | [story-007c](stories/story-007c-mvp-reality-remediation.md) |
 | 008 | Bible Infrastructure and Character Bible | 2 — World Building | High | Done | [story-008](stories/story-008-character-bible.md) |
-| 009 | Location and Prop Bibles | 2 — World Building | High | To Do | [story-009](stories/story-009-location-prop-bibles.md) |
+| 009 | Location and Prop Bibles | 2 — World Building | High | Done | [story-009](stories/story-009-location-prop-bibles.md) |
 | 010 | Entity Relationship Graph | 2 — World Building | Medium | To Do | [story-010](stories/story-010-entity-graph.md) |
 | 011 | Asset State Tracking (Continuity) | 2 — World Building | Medium | To Do | [story-011](stories/story-011-continuity-tracking.md) |
 | 011b | Operator Console — Production UI | 2.5 — UI | High | To Do | [story-011b](stories/story-011b-operator-console.md) |
