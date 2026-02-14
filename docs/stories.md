@@ -16,6 +16,7 @@ Guiding priorities: **get a working pipeline fast** (MVP: script in → structur
 10. **010 — Entity Relationship Graph**: Cross-entity typed relationship edges extracted from script and bibles.
 11. **011 — Asset State Tracking (Continuity)**: Track asset states across scenes; completes Phase 2 artifact model.
 12. **011b — Operator Console (Production UI)**: Replace stopgap console with polished, public-releasable UI. Research-first: AI tooling, app landscape, persona workflows, then design and build. Foundation for all subsequent UI surfaces.
+13. **011c — Resource-oriented Routing**: Transition to hierarchical, resource-based URL structure (/:projectId/run) to support project scoping and deep linking.
 
 This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 
@@ -72,7 +73,7 @@ NOTES from Cam:
 - **Phase 0 — Foundation** (001–002): Project scaffolding and pipeline infrastructure. Artifact store with immutability, snapshot versioning, dependency graph (structural invalidation), audit metadata, cost tracking hooks, and structural validation.
 - **Phase 1 — MVP Pipeline** (003–007): First working pipeline: script in → canonical script + scenes + project config out. End-to-end smoke test.
 - **Phase 2 — World Building** (008–011): Folder-based bibles (characters, locations, props), entity relationship graph, continuity state tracking.
-- **Phase 2.5 — UI** (011b): Production-quality Operator Console. Research-driven design (AI tooling, app landscape, persona workflows), then build. Replaces stopgap 007b console. Foundation for Phase 3+ UI surfaces.
+- **Phase 2.5 — UI** (011b–011c): Production-quality Operator Console and resource-oriented routing. Research-driven design (AI tooling, app landscape, persona workflows), then build. Replaces stopgap 007b console. Foundation for Phase 3+ UI surfaces.
 - **Phase 3 — Timeline** (012–013): Timeline data artifact with scene/story ordering, stacked tracks, always-playable rule.
 - **Phase 4 — Role System** (014–019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, human interaction (control modes, creative sessions with @agent, direct artifact editing).
 - **Phase 5 — Creative Direction** (020–024): Each creative role produces structured direction artifacts (editorial, visual, sound, performance). Direction convergence review before shot planning.
