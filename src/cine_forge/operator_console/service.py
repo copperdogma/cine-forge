@@ -398,6 +398,7 @@ class OperatorConsoleService:
                 "run_id": run_id,
                 "force": bool(request.get("force", False)),
                 "runtime_params": runtime_params,
+                "start_from": request.get("start_from"),
             },
             daemon=True,
         )
@@ -426,6 +427,7 @@ class OperatorConsoleService:
         run_id: str,
         force: bool,
         runtime_params: dict[str, Any],
+        start_from: str | None = None,
     ) -> None:
         try:
             engine = DriverEngine(
@@ -437,6 +439,7 @@ class OperatorConsoleService:
                 run_id=run_id,
                 force=force,
                 runtime_params=runtime_params,
+                start_from=start_from,
             )
             with self._run_lock:
                 self._run_errors.pop(run_id, None)

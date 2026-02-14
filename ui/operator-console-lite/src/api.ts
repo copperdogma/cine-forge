@@ -26,6 +26,7 @@ export type RunStartPayload = {
   accept_config: boolean;
   run_id?: string;
   force?: boolean;
+  start_from?: string;
   config_file?: string;
   config_overrides?: Record<string, unknown>;
 };

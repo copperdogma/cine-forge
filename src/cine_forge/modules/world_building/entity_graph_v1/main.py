@@ -1,9 +1,6 @@
 """Extract entity relationship graph from bibles and scene artifacts."""
 
-from __future__ import annotations
-
-from typing import Any
-
+from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import (
     EntityEdge,
     EntityGraph,
@@ -46,9 +43,6 @@ def run_module(
 
     # Tiered Model Strategy
     work_model = params.get("work_model") or params.get("model") or "gpt-4o-mini"
-    # verify_model = params.get("verify_model") or "gpt-4o-mini"
-    # escalate_model = params.get("escalate_model") or "gpt-4o"
-    # skip_qa = bool(params.get("skip_qa", False))
 
     edges: list[EntityEdge] = []
 
@@ -58,16 +52,15 @@ def run_module(
     # 3. Merge Relationship Stubs from Bibles
     edges.extend(_merge_bible_stubs(character_bibles, location_bibles, prop_bibles))
 
-    # 4. AI Extraction Pass (Optional for MVP but required by story)
-    # For now, we'll implement a simple pass that looks for missed connections
+    # 4. AI Extraction Pass
+    total_cost = {"model": work_model, "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
     if work_model != "mock":
         new_edges, cost = _extract_new_relationships(
             character_bibles, location_bibles, prop_bibles, scene_index, work_model
         )
         edges.extend(new_edges)
-    else:
-        cost = {"model": "mock", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
-
+        total_cost = cost
+    
     # 5. Deduplicate and Resolve Conflicts
     final_edges = _deduplicate_edges(edges)
 
@@ -102,7 +95,7 @@ def run_module(
                 },
             }
         ],
-        "cost": cost,
+        "cost": total_cost,
     }
 
 
@@ -120,7 +113,7 @@ def _generate_co_occurrence_edges(scene_index: dict[str, Any]) -> list[EntityEdg
             for char in characters:
                 edges.append(EntityEdge(
                     source_type="character",
-                    source_id=char.lower(), # assume id is slugified name
+                    source_id=char.lower(),
                     target_type="location",
                     target_id=_slugify(location),
                     relationship_type="presence",
@@ -164,13 +157,10 @@ def _merge_bible_stubs(
                 target_type="character",
                 target_id=_slugify(stub["target_character"]),
                 relationship_type=stub["relationship_type"],
-                direction="source_to_target", # Usually bibles define outgoing
+                direction="source_to_target",
                 evidence=[stub["evidence"]],
                 confidence=stub["confidence"],
             ))
-            
-    # Location stubs (containment/adjacency) if implemented in schema
-    # ...
     
     return edges
 
@@ -183,9 +173,40 @@ def _extract_new_relationships(
     model: str
 ) -> tuple[list[EntityEdge], dict[str, Any]]:
     """Use AI to find deeper narrative relationships."""
-    # This would involve a complex prompt summarizing all entities.
-    # For MVP, we return empty or simple stub.
-    return [], {"model": model, "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
+    
+    # 1. Build a summary of what we know
+    char_list = ", ".join([c["name"] for c in characters])
+    loc_list = ", ".join([l["name"] for l in locations])
+    prop_list = ", ".join([p["name"] for l in props for p in l.get("files", [])]) # simple prop names
+
+    prompt = f"""You are a narrative architect. Review the following entities from a story and identify significant narrative relationships that might have been missed in individual analysis.
+    
+    Characters: {char_list}
+    Locations: {loc_list}
+    Props: {prop_list}
+    
+    Task: Identify exactly 3-5 high-impact relationships. 
+    Focus on:
+    - Familial links.
+    - Secret rivalries.
+    - Ownership of key props.
+    - Primary locations for specific characters.
+    
+    Return JSON matching a list of EntityEdge schemas.
+    """
+    
+    # Since we need a list, we'll wrap it in a temporary container for call_llm
+    from pydantic import RootModel
+    class EdgeList(RootModel):
+        root: list[EntityEdge]
+
+    result, cost = call_llm(
+        prompt=prompt,
+        model=model,
+        response_schema=EdgeList
+    )
+    
+    return result.root, cost
 
 
 def _deduplicate_edges(edges: list[EntityEdge]) -> list[EntityEdge]:
@@ -200,13 +221,20 @@ def _deduplicate_edges(edges: list[EntityEdge]) -> list[EntityEdge]:
         if key in seen:
             existing = seen[key]
             # Merge evidence and scenes
-            existing.evidence = list(set(existing.evidence + edge.evidence))
-            existing.scene_refs = list(set(existing.scene_refs + edge.scene_refs))
+            new_evidence = list(set((existing.evidence or []) + (edge.evidence or [])))
+            new_scenes = list(set((existing.scene_refs or []) + (edge.scene_refs or [])))
+            existing.evidence = new_evidence
+            existing.scene_refs = new_scenes
             existing.confidence = max(existing.confidence, edge.confidence)
         else:
             seen[key] = edge
             
     return list(seen.values())
+
+
+def _slugify(name: str) -> str:
+    import re
+    return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
 
 
 def _slugify(name: str) -> str:

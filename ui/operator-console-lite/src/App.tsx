@@ -82,7 +82,8 @@ function formatDuration(seconds: number): string {
 }
 
 function formatModel(model: string | null | undefined, callCount: number | undefined): { label: string; title?: string } {
-  if (!model || model === "code" || model === "none") {
+  // If callCount is 0, it means no AI was actually called (deterministic pass)
+  if (!model || model === "code" || model === "none" || callCount === 0) {
     return { label: "code" };
   }
   
@@ -663,7 +664,7 @@ function RunPage({ seedInputPath }: { seedInputPath: string }) {
     });
   }, [runState]);
 
-  async function start(acceptConfig: boolean, configOverrides?: Record<string, unknown>) {
+  async function start(acceptConfig: boolean, configOverrides?: Record<string, unknown>, startFrom?: string) {
     if (!project) {
       status.from(new Error("Choose or create a project first."));
       return;
@@ -704,6 +705,7 @@ function RunPage({ seedInputPath }: { seedInputPath: string }) {
         skip_qa: profile === "mock",
         force: true,
         config_overrides: configOverrides,
+        start_from: startFrom,
       });
       setRunId(started.run_id);
       await waitForInitialRunState(started.run_id);
@@ -920,6 +922,7 @@ function RunPage({ seedInputPath }: { seedInputPath: string }) {
                 <th>Model</th>
                 <th>Duration</th>
                 <th>Cost (USD)</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -943,6 +946,16 @@ function RunPage({ seedInputPath }: { seedInputPath: string }) {
                   </td>
                   <td>{formatDuration(stage.duration_seconds)}</td>
                   <td>{stage.cost_usd > 0 ? `$${stage.cost_usd.toFixed(4)}` : "—"}</td>
+                  <td>
+                    <button
+                      className="ghost compact"
+                      disabled={isPolling || stage.status === "running"}
+                      title="Re-run this stage and all downstream dependencies"
+                      onClick={() => void start(true, undefined, stageId)}
+                    >
+                      ↺ Re-run
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

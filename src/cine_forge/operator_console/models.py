@@ -80,6 +80,7 @@ class RunStartRequest(BaseModel):
     config_overrides: dict[str, Any] | None = None
     run_id: str | None = None
     force: bool = False
+    start_from: str | None = None
 
 
 class RunStartResponse(BaseModel):
