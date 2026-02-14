@@ -1353,6 +1353,12 @@ function ArtifactsPage() {
           <ArtifactMetadataSummary detail={selectedDetail} />
         </div>
       ) : null}
+      {selectedDetail?.artifact_type === "entity_graph" && (
+        <div className="card">
+          <h3>Entity Relationship Graph</h3>
+          <EntityGraphViewer data={displayData} />
+        </div>
+      )}
       {selectedDetail ? (
         <div className="card">
           <h3>Artifact JSON {selFile ? `(${selFile})` : "(Manifest)"}</h3>
@@ -1416,5 +1422,53 @@ function ArtifactMetadataSummary({ detail }: { detail: ArtifactDetailResponse })
       <li>Cost (USD): {typeof costUsd === "number" ? costUsd : "n/a"}</li>
       <li>Producing module: {metadata.producing_module ?? "unknown"}</li>
     </ul>
+  );
+}
+
+function EntityGraphViewer({ data }: { data: any }) {
+  const edges = (data.edges || []) as any[];
+  return (
+    <div style={{ marginTop: "12px" }}>
+      <table className="table" style={{ fontSize: "0.85em" }}>
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Relationship</th>
+            <th>Target</th>
+            <th>Confidence</th>
+            <th>Evidence</th>
+          </tr>
+        </thead>
+        <tbody>
+          {edges.map((edge, i) => (
+            <tr key={i}>
+              <td>
+                <small className="muted">{edge.source_type}</small>
+                <br />
+                <strong>{edge.source_id}</strong>
+              </td>
+              <td>
+                <span className="badge badge-info">{edge.relationship_type}</span>
+                <br />
+                <small className="muted">{edge.direction}</small>
+              </td>
+              <td>
+                <small className="muted">{edge.target_type}</small>
+                <br />
+                <strong>{edge.target_id}</strong>
+              </td>
+              <td>{(edge.confidence * 100).toFixed(0)}%</td>
+              <td>
+                <ul style={{ margin: 0, paddingLeft: "16px" }}>
+                  {(edge.evidence || []).map((ev: string, j: number) => (
+                    <li key={j}>{ev}</li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

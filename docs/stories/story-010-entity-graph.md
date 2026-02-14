@@ -50,6 +50,7 @@ The graph powers continuity checking (Story 011), narrative consistency, and sho
   - [x] "Which characters share scenes?" → co-occurrence matrix.
   - [x] "What props appear at this location?" → location inventory.
   - [x] "Who are character X's relationships?" → filtered edge list.
+  - [x] "What is the shortest path between entity A and entity B?" → graph traversal.
 - [x] Query results include evidence and confidence.
 
 ### Extraction Module
@@ -67,9 +68,13 @@ The graph powers continuity checking (Story 011), narrative consistency, and sho
 ### Testing
 - [x] Unit tests for graph construction from bible stubs.
 - [x] Unit tests for AI edge extraction (mocked).
+- [x] Unit tests for query API (co-occurrence, filtered edges, path traversal).
 - [x] Unit tests for edge deduplication and conflict resolution.
 - [x] Integration test: bibles → entity graph module → graph artifact in store.
 - [x] Schema validation on all outputs.
+
+### Basic UI Visualization
+- [x] Basic list/table view of graph edges in the Operator Console when `entity_graph` artifact is selected.
 
 ---
 
@@ -98,6 +103,7 @@ When a bible entry is updated (new version), the entity graph should be updatabl
 - [x] Update `recipe-world-building.yaml` to include entity graph stage.
 - [x] Write unit tests for graph construction and queries.
 - [x] Write integration test.
+- [x] Implement basic graph visualization in Operator Console.
 - [x] Run `make test-unit` and `make lint`.
 - [x] Update AGENTS.md with any lessons learned.
 
@@ -113,4 +119,11 @@ When a bible entry is updated (new version), the entity graph should be updatabl
   - Implemented `entity_graph_v1` module with bible stub merging and co-occurrence generation.
   - Updated bible modules to output dual artifacts (data + manifest).
   - Verified with 124 unit tests and updated world-building integration test.
+
+### 20260215-0010 — Implemented Basic UI Visualization
+- **Result:** Success.
+- **Evidence:**
+  - Added `EntityGraphViewer` component to `App.tsx`.
+  - Display table of edges when `entity_graph` artifact is selected.
+  - Verified with `npm run build`.
 - **Next Step:** Proceed to Story 011 (Continuity Tracking).
