@@ -1,5 +1,13 @@
 """Artifact schema package."""
 
+from .bible import (
+    BibleFileEntry,
+    BibleManifest,
+    CharacterBible,
+    CharacterEvidence,
+    CharacterRelationshipStub,
+    InferredTrait,
+)
 from .canonical_script import (
     Assumption,
     CanonicalScript,
@@ -41,6 +49,12 @@ __all__ = [
     "ArtifactHealth",
     "ArtifactMetadata",
     "ArtifactRef",
+    "BibleFileEntry",
+    "BibleManifest",
+    "CharacterBible",
+    "CharacterEvidence",
+    "CharacterRelationshipStub",
+    "InferredTrait",
     "CostRecord",
     "DetectedValue",
     "Invention",

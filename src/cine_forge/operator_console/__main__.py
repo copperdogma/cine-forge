@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import uvicorn
 
-from cine_forge.operator_console.app import create_app
-
 
 def main() -> None:
     # Use import string for hot-reloading support

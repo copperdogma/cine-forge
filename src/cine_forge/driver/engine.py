@@ -26,7 +26,9 @@ from cine_forge.schemas import (
     ArtifactHealth,
     ArtifactMetadata,
     ArtifactRef,
+    BibleManifest,
     CanonicalScript,
+    CharacterBible,
     CostRecord,
     ProjectConfig,
     QAResult,
@@ -53,6 +55,8 @@ class DriverEngine:
         self.schemas.register("scene", Scene)
         self.schemas.register("scene_index", SceneIndex)
         self.schemas.register("project_config", ProjectConfig)
+        self.schemas.register("bible_manifest", BibleManifest)
+        self.schemas.register("character_bible", CharacterBible)
         self.schemas.register("qa_result", QAResult)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
@@ -228,12 +232,22 @@ class DriverEngine:
                             "cost_data": cost_record,
                         }
                     )
-                    artifact_ref = self.store.save_artifact(
-                        artifact_type=artifact["artifact_type"],
-                        entity_id=artifact.get("entity_id"),
-                        data=output_data,
-                        metadata=metadata,
-                    )
+                    if artifact["artifact_type"] == "bible_manifest":
+                        artifact_ref = self.store.save_bible_entry(
+                            entity_type=output_data["entity_type"],
+                            entity_id=output_data["entity_id"],
+                            display_name=output_data["display_name"],
+                            files=output_data["files"],
+                            data_files=artifact.get("bible_files", {}),
+                            metadata=metadata,
+                        )
+                    else:
+                        artifact_ref = self.store.save_artifact(
+                            artifact_type=artifact["artifact_type"],
+                            entity_id=artifact.get("entity_id"),
+                            data=output_data,
+                            metadata=metadata,
+                        )
                     stage_state["artifact_refs"].append(artifact_ref.model_dump())
                     persisted_outputs.append(
                         {

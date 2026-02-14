@@ -1,0 +1,30 @@
+recipe_id: world_building
+description: "World building pipeline: ingest -> character bibles."
+project: {}
+stages:
+  - id: ingest
+    module: story_ingest_v1
+    params:
+      input_file: ${input_file}
+    needs: []
+  - id: normalize
+    module: script_normalize_v1
+    params:
+      model: ${default_model}
+      qa_model: ${default_model}
+    needs:
+      - ingest
+  - id: extract_scenes
+    module: scene_extract_v1
+    params:
+      model: ${default_model}
+      qa_model: ${default_model}
+    needs:
+      - normalize
+  - id: character_bible
+    module: character_bible_v1
+    params:
+      model: ${default_model}
+    needs:
+      - normalize
+      - extract_scenes

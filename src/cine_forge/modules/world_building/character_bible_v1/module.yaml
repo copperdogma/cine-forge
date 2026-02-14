@@ -1,0 +1,19 @@
+module_id: character_bible_v1
+stage: world_building
+description: "Extracts character master definitions from scene artifacts and canonical script."
+input_schemas: ["scene_index", "canonical_script"]
+output_schemas: ["character_bible", "bible_manifest"]
+parameters:
+  model:
+    type: string
+    required: false
+    default: "gpt-4o"
+  min_scene_appearances:
+    type: integer
+    required: false
+    default: 1
+    description: "Minimum scene appearances to create a bible entry."
+  skip_qa:
+    type: boolean
+    required: false
+    default: false

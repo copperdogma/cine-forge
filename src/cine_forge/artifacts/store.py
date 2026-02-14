@@ -7,7 +7,13 @@ from pathlib import Path
 from typing import Any
 
 from cine_forge.artifacts.graph import DependencyGraph
-from cine_forge.schemas import Artifact, ArtifactMetadata, ArtifactRef
+from cine_forge.schemas import (
+    Artifact,
+    ArtifactMetadata,
+    ArtifactRef,
+    BibleFileEntry,
+    BibleManifest,
+)
 
 
 class ArtifactStore:
@@ -73,6 +79,88 @@ class ArtifactStore:
                 )
             )
         return refs
+
+    def save_bible_entry(
+        self,
+        entity_type: str,
+        entity_id: str,
+        display_name: str,
+        files: list[dict[str, Any]],  # data for BibleFileEntry
+        data_files: dict[str, bytes | str],  # filename -> content
+        metadata: ArtifactMetadata,
+    ) -> ArtifactRef:
+        """Create or update a bible entry folder with a new manifest version."""
+        artifact_dir = self.project_dir / "artifacts" / "bibles" / f"{entity_type}_{entity_id}"
+        artifact_dir.mkdir(parents=True, exist_ok=True)
+
+        # 1. Determine next manifest version
+        manifest_versions = [
+            int(p.stem.removeprefix("manifest_v"))
+            for p in artifact_dir.glob("manifest_v*.json")
+            if p.stem.removeprefix("manifest_v").isdigit()
+        ]
+        version = (max(manifest_versions) if manifest_versions else 0) + 1
+
+        # 2. Save data files
+        for filename, content in data_files.items():
+            file_path = artifact_dir / filename
+            # Note: files are immutable, but for simplicity here we just write.
+            # In a stricter model, we'd check if it exists and mismatch.
+            if isinstance(content, str):
+                file_path.write_text(content, encoding="utf-8")
+            else:
+                file_path.write_bytes(content)
+
+        # 3. Create manifest
+        manifest = BibleManifest(
+            entity_type=entity_type,  # type: ignore
+            entity_id=entity_id,
+            display_name=display_name,
+            files=[BibleFileEntry.model_validate(f) for f in files],
+            version=version,
+        )
+
+        manifest_filename = f"manifest_v{version}.json"
+        relative_path = str((artifact_dir / manifest_filename).relative_to(self.project_dir))
+        artifact_ref = ArtifactRef(
+            artifact_type="bible_manifest",
+            entity_id=f"{entity_type}_{entity_id}",
+            version=version,
+            path=relative_path,
+        )
+
+        # 4. Wrap in Artifact envelope for consistency with store model
+        materialized_metadata = metadata.model_copy(update={"ref": artifact_ref})
+        payload = Artifact(metadata=materialized_metadata, data=manifest.model_dump(mode="json"))
+        manifest_path = self.project_dir / artifact_ref.path
+        with manifest_path.open("w", encoding="utf-8") as file:
+            json.dump(payload.model_dump(mode="json"), file, indent=2, sort_keys=True)
+
+        # 5. Register in graph
+        self.graph.register_artifact(
+            artifact_ref=artifact_ref,
+            upstream_refs=materialized_metadata.lineage,
+        )
+        self.graph.propagate_stale_for_new_version(new_ref=artifact_ref)
+        return artifact_ref
+
+    def load_bible_entry(self, artifact_ref: ArtifactRef) -> tuple[BibleManifest, ArtifactMetadata]:
+        """Load a bible manifest and its metadata."""
+        artifact = self.load_artifact(artifact_ref)
+        manifest = BibleManifest.model_validate(artifact.data)
+        return manifest, artifact.metadata
+
+    def list_bible_entries(self, entity_type: str) -> list[str]:
+        """List all entity IDs of a given type."""
+        bibles_dir = self.project_dir / "artifacts" / "bibles"
+        if not bibles_dir.exists():
+            return []
+        prefix = f"{entity_type}_"
+        return [
+            p.name.removeprefix(prefix)
+            for p in bibles_dir.iterdir()
+            if p.is_dir() and p.name.startswith(prefix)
+        ]
 
     def diff_versions(self, ref_a: ArtifactRef, ref_b: ArtifactRef) -> dict[str, Any]:
         artifact_a = self.load_artifact(artifact_ref=ref_a)
