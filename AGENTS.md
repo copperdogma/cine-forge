@@ -4,6 +4,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 
 ## Core Agent Mandates
 
+- **No Implicit Commits**: NEVER commit or push changes unless explicitly requested by the user. 
 - **Security First**: NEVER stage or commit secrets, API keys, or sensitive credentials.
 - **Permissioned Actions**: NEVER run `git commit`, `git push`, or modify remotes without explicit user permission.
 - **Verify, Don't Assume**: NEVER assume a library is available or a file has a specific content. Use `read_file` and dependency checks (`package.json`, `pyproject.toml`) to ground your work.
