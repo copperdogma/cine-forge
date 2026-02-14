@@ -103,7 +103,7 @@ Per-run execution state is written to `output/runs/<run_id>/`:
 
 ## Operator Console Lite API (Story 007b)
 
-Run the backend API locally:
+Run the backend API locally (with hot-reloading enabled):
 
 ```bash
 PYTHONPATH=src python -m cine_forge.operator_console

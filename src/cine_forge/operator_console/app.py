@@ -175,3 +175,6 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         return JSONResponse(status_code=exc.status_code, content=payload.model_dump())
 
     return app
+
+
+app = create_app()
