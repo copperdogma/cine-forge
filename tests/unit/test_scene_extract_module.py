@@ -40,6 +40,15 @@ def test_split_into_scene_chunks_detects_int_ext_boundaries() -> None:
 
 
 @pytest.mark.unit
+def test_split_into_scene_chunks_handles_compact_headings_without_space() -> None:
+    text = "EXT.CITY - NIGHT\nMARA\nReady.\n\nINT.LAB - DAY\nJON\nGo."
+    chunks = _split_into_scene_chunks(text)
+    assert len(chunks) == 2
+    assert chunks[0].raw_text.splitlines()[0] == "EXT.CITY - NIGHT"
+    assert chunks[1].raw_text.splitlines()[0] == "INT.LAB - DAY"
+
+
+@pytest.mark.unit
 def test_split_into_scene_chunks_handles_missing_headings() -> None:
     chunks = _split_into_scene_chunks("MARA walks through rain.\nShe stops.")
     assert len(chunks) == 1
@@ -78,6 +87,33 @@ def test_run_module_emits_scene_and_scene_index_artifacts() -> None:
     assert "MARA" in scenes[0]["data"]["characters_present"]
     assert scene_index["data"]["total_scenes"] == 2
     assert scene_index["data"]["estimated_runtime_minutes"] == 2.0
+
+
+@pytest.mark.unit
+def test_run_module_filters_pronoun_character_noise() -> None:
+    script = (
+        "INT. LAB - NIGHT\n"
+        "HE moves to the door.\n"
+        "IT falls.\n"
+        "MARINER\n"
+        "Move.\n\n"
+        "EXT. STREET - DAY\n"
+        "ROSE\n"
+        "Now.\n"
+    )
+    result = run_module(
+        inputs={"normalize": _canonical_payload(script)},
+        params={"model": "mock", "qa_model": "mock", "skip_qa": False},
+        context={"run_id": "unit", "stage_id": "extract"},
+    )
+    scene_index = next(
+        item for item in result["artifacts"] if item["artifact_type"] == "scene_index"
+    )
+    unique = set(scene_index["data"]["unique_characters"])
+    assert "MARINER" in unique
+    assert "ROSE" in unique
+    assert "HE" not in unique
+    assert "IT" not in unique
 
 
 @pytest.mark.unit

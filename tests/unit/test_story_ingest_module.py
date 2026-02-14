@@ -6,8 +6,10 @@ import pytest
 
 from cine_forge.modules.ingest.story_ingest_v1.main import (
     classify_format,
+    classify_format_with_diagnostics,
     detect_file_format,
     read_source_text,
+    read_source_text_with_diagnostics,
     run_module,
 )
 
@@ -132,6 +134,127 @@ def test_classification_confidence_higher_for_clear_signals() -> None:
 
 
 @pytest.mark.unit
+def test_classify_tokenized_pdf_screenplay_detects_screenplay_signals() -> None:
+    content = "\n".join(
+        [
+            "FADE",
+            "IN:",
+            "EXT.",
+            "CITY",
+            "CENTRE",
+            "-",
+            "NIGHT",
+            "A",
+            "ruined",
+            "city.",
+            "EXT.",
+            "RUDDY",
+            "&",
+            "GREENE",
+            "BUILDING",
+            "-",
+            "FRONT",
+            "-",
+            "NIGHT",
+            "THE",
+            "MARINER",
+            "enters.",
+        ]
+        * 4
+    )
+    result, diagnostics = classify_format_with_diagnostics(content=content, file_format="pdf")
+    assert result["detected_format"] == "screenplay"
+    assert diagnostics["signals"]["tokenized_heading_sequences"] >= 2
+    assert diagnostics["score_breakdown"]["screenplay"] > diagnostics["score_breakdown"]["prose"]
+
+
+@pytest.mark.unit
+def test_read_source_text_repairs_tokenized_pdf_layout(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "tokenized.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+    tokenized = "\n".join(
+        [
+            "FADE",
+            "IN:",
+            "EXT.",
+            "CITY",
+            "CENTRE",
+            "-",
+            "NIGHT",
+            "A",
+            "ruined",
+            "city.",
+            "CUT",
+            "TO:",
+            "EXT.",
+            "DOCKS",
+            "-",
+            "DAWN",
+            "The",
+            "Mariner",
+            "waits.",
+        ]
+        * 6
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text",
+        lambda _: tokenized,
+    )
+
+    repaired, diagnostics = read_source_text_with_diagnostics(source)
+    assert diagnostics["tokenized_layout_detected"] is True
+    assert diagnostics["reflow_applied"] is True
+    assert "EXT. CITY CENTRE - NIGHT" in repaired
+    assert "CUT TO:" in repaired
+
+
+@pytest.mark.unit
+def test_read_source_text_repairs_compact_pdf_scene_headings(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "compact.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text",
+        lambda _: "\n".join(
+            [
+                "EXT.CITYCENTRE- NIGHT",
+                "Action line.",
+                "INT.RUDDY& GREENBUILDING- ELEVATOR",
+                "Another line.",
+                "BEGINFLASHBACK:EXT.COASTLINE- DAY- PAST",
+            ]
+        ),
+    )
+
+    repaired, diagnostics = read_source_text_with_diagnostics(source)
+    assert "EXT. CITYCENTRE - NIGHT" in repaired
+    assert "INT. RUDDY& GREENBUILDING - ELEVATOR" in repaired
+    assert "BEGINFLASHBACK:\nEXT. COASTLINE - DAY - PAST" in repaired
+    assert diagnostics["compact_heading_repairs"] >= 2
+
+
+@pytest.mark.unit
+def test_classify_compact_pdf_screenplay_detects_screenplay_signals() -> None:
+    content = "\n".join(
+        [
+            "EXT. CITYCENTRE - NIGHT",
+            "A ruined city.",
+            "INT. RUDDY& GREENBUILDING - ELEVATOR",
+            "ROSE",
+            "Where are we?",
+            "CUT TO:",
+            "EXT. COASTLINE - DAY",
+        ]
+    )
+    result = classify_format(content=content, file_format="pdf")
+    assert result["detected_format"] in {"screenplay", "hybrid"}
+    assert result["confidence"] >= 0.3
+
+
+@pytest.mark.unit
 def test_run_module_builds_raw_input_payload(tmp_path: Path) -> None:
     source = tmp_path / "notes.md"
     source_text = "- beat one\n- beat two\n"
@@ -154,3 +277,45 @@ def test_run_module_builds_raw_input_payload(tmp_path: Path) -> None:
         "prose",
         "screenplay",
     }
+
+
+@pytest.mark.unit
+def test_run_module_records_classification_and_extraction_diagnostics(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "tokenized.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text",
+        lambda _: "\n".join(
+            [
+                "EXT.",
+                "CITY",
+                "CENTRE",
+                "-",
+                "NIGHT",
+                "THE",
+                "MARINER",
+                "moves",
+                "EXT.",
+                "DOCKS",
+                "-",
+                "DAWN",
+                "He",
+                "stops",
+            ]
+            * 8
+        ),
+    )
+
+    result = run_module(
+        inputs={},
+        params={"input_file": str(source)},
+        context={"run_id": "unit", "stage_id": "ingest", "runtime_params": {}},
+    )
+    metadata = result["artifacts"][0]["metadata"]
+    diagnostics = metadata["annotations"]
+    assert "classification_diagnostics" in diagnostics
+    assert diagnostics["classification_diagnostics"]["signals"]["scene_headings"] >= 2
+    assert result["artifacts"][0]["data"]["classification"]["detected_format"] != "unknown"
+    assert diagnostics["extraction_diagnostics"]["tokenized_layout_detected"] is True

@@ -262,3 +262,143 @@ def test_mvp_staleness_propagation_after_new_raw_input_version() -> None:
     canonical_v2 = ArtifactRef.model_validate(state_v2["stages"]["normalize"]["artifact_refs"][0])
     assert canonical_v2.version > canonical_v1.version
     assert engine.store.graph.get_health(canonical_v2) == ArtifactHealth.VALID
+
+
+@pytest.mark.integration
+def test_mvp_recipe_handles_tokenized_pdf_screenplay_without_placeholder_fallback(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    run_id = f"smoke-mvp-tokenized-{uuid.uuid4().hex[:8]}"
+    project_dir = tmp_path / "project_tokenized_pdf"
+    input_file = tmp_path / "tokenized_input.pdf"
+    input_file.write_bytes(b"%PDF-1.4 tokenized fixture")
+
+    tokenized_pdf_text = "\n".join(
+        [
+            "FADE",
+            "IN:",
+            "EXT.",
+            "CITY",
+            "CENTRE",
+            "-",
+            "NIGHT",
+            "A",
+            "ruined",
+            "city",
+            "THE",
+            "MARINER",
+            "charges",
+            "in",
+            "CUT",
+            "TO:",
+            "EXT.",
+            "RUDDY",
+            "&",
+            "GREENE",
+            "BUILDING",
+            "-",
+            "FRONT",
+            "-",
+            "NIGHT",
+            "Gunshots",
+            "echo",
+        ]
+        * 5
+    )
+    class _FakePage:
+        def extract_text(self) -> str:
+            return tokenized_pdf_text
+
+    class _FakePdfReader:
+        def __init__(self, _: str) -> None:
+            self.pages = [_FakePage()]
+
+    monkeypatch.setattr("pypdf.PdfReader", _FakePdfReader)
+
+    engine, state = _run_mvp_recipe(
+        workspace_root=workspace_root,
+        run_id=run_id,
+        input_file=input_file,
+        default_model="mock",
+        qa_model="mock",
+        project_dir=project_dir,
+    )
+
+    assert state["stages"]["project_config"]["status"] == "done"
+
+    canonical_ref = ArtifactRef.model_validate(state["stages"]["normalize"]["artifact_refs"][0])
+    canonical = engine.store.load_artifact(canonical_ref)
+    assert "UNKNOWN LOCATION" not in canonical.data["script_text"]
+
+    extract_refs = [
+        ArtifactRef.model_validate(item)
+        for item in state["stages"]["extract_scenes"]["artifact_refs"]
+    ]
+    scene_index_ref = next(ref for ref in extract_refs if ref.artifact_type == "scene_index")
+    scene_index = engine.store.load_artifact(scene_index_ref)
+
+    assert scene_index.data["total_scenes"] >= 2
+    assert "Unknown Location" not in scene_index.data["unique_locations"]
+
+
+@pytest.mark.integration
+def test_mvp_recipe_handles_compact_pdf_scene_headings_without_placeholder_fallback(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    run_id = f"smoke-mvp-compact-{uuid.uuid4().hex[:8]}"
+    project_dir = tmp_path / "project_compact_pdf"
+    input_file = tmp_path / "compact_input.pdf"
+    input_file.write_bytes(b"%PDF-1.4 compact fixture")
+
+    compact_pdf_text = "\n".join(
+        [
+            "EXT.CITYCENTRE- NIGHT",
+            "A ruined city.",
+            "EXT.RUDDY& GREENEBUILDING- FRONT- NIGHT",
+            "Cars idle outside.",
+            "INT.RUDDY& GREENBUILDING- ELEVATOR",
+            "ROSE",
+            "Where are we?",
+            "INT.11THFLOOR- CONTINUOUS",
+            "MARINER",
+            "Move.",
+        ]
+    )
+
+    class _FakePage:
+        def extract_text(self) -> str:
+            return compact_pdf_text
+
+    class _FakePdfReader:
+        def __init__(self, _: str) -> None:
+            self.pages = [_FakePage()]
+
+    monkeypatch.setattr("pypdf.PdfReader", _FakePdfReader)
+
+    engine, state = _run_mvp_recipe(
+        workspace_root=workspace_root,
+        run_id=run_id,
+        input_file=input_file,
+        default_model="mock",
+        qa_model="mock",
+        project_dir=project_dir,
+    )
+
+    ingest_ref = ArtifactRef.model_validate(state["stages"]["ingest"]["artifact_refs"][0])
+    canonical_ref = ArtifactRef.model_validate(state["stages"]["normalize"]["artifact_refs"][0])
+    extract_refs = [
+        ArtifactRef.model_validate(item)
+        for item in state["stages"]["extract_scenes"]["artifact_refs"]
+    ]
+    scene_index_ref = next(ref for ref in extract_refs if ref.artifact_type == "scene_index")
+
+    raw = engine.store.load_artifact(ingest_ref)
+    canonical = engine.store.load_artifact(canonical_ref)
+    scene_index = engine.store.load_artifact(scene_index_ref)
+
+    assert raw.data["classification"]["detected_format"] == "screenplay"
+    assert "UNKNOWN LOCATION" not in canonical.data["script_text"]
+    assert scene_index.data["total_scenes"] >= 3
+    assert "Unknown Location" not in scene_index.data["unique_locations"]

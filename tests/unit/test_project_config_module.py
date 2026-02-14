@@ -123,6 +123,79 @@ def test_mock_detection_splits_primary_and_supporting_characters(
 
 
 @pytest.mark.unit
+def test_mock_detection_filters_pronoun_and_noise_characters(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    result = run_module(
+        inputs={
+            "normalize": _canonical_script(
+                "Noise",
+                (
+                    "INT. ROOM - NIGHT\n"
+                    "MARINER\nGo.\n"
+                    "ROSE\nNow.\n"
+                    "HE\nNo.\n"
+                    "IT\nWait.\n"
+                ),
+            ),
+            "extract": _scene_index(
+                12.0,
+                ["MARINER", "ROSE", "HE", "IT", "GO", "ENDFLASHBACK."],
+                ["ROOM"],
+                10,
+                entries=[
+                    {"characters_present": ["MARINER", "ROSE", "HE"]},
+                    {"characters_present": ["MARINER", "IT"]},
+                ],
+            ),
+        },
+        params={"model": "mock", "qa_model": "mock", "accept_config": True},
+        context={"run_id": "unit", "stage_id": "config", "runtime_params": {}},
+    )
+    data = result["artifacts"][0]["data"]
+    assert "MARINER" in data["primary_characters"] + data["supporting_characters"]
+    assert "ROSE" in data["primary_characters"] + data["supporting_characters"]
+    assert "HE" not in data["primary_characters"] + data["supporting_characters"]
+    assert "IT" not in data["primary_characters"] + data["supporting_characters"]
+    assert "GO" not in data["primary_characters"] + data["supporting_characters"]
+
+
+@pytest.mark.unit
+def test_mock_detection_filters_derivative_noise_names(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    result = run_module(
+        inputs={
+            "normalize": _canonical_script(
+                "Derivative",
+                "INT. ROOM - NIGHT\nMARINER\nGo.\nROSE\nNow.\n",
+            ),
+            "extract": _scene_index(
+                10.0,
+                ["MARINER", "ROSE", "ROSESWALLOWS", "MARINERAIRTAG"],
+                ["ROOM"],
+                8,
+                entries=[
+                    {"characters_present": ["MARINER", "ROSESWALLOWS"]},
+                    {"characters_present": ["ROSE", "MARINERAIRTAG"]},
+                ],
+            ),
+        },
+        params={"model": "mock", "qa_model": "mock", "accept_config": True},
+        context={"run_id": "unit", "stage_id": "config", "runtime_params": {}},
+    )
+    merged = result["artifacts"][0]["data"]["primary_characters"] + result["artifacts"][0]["data"][
+        "supporting_characters"
+    ]
+    assert "MARINER" in merged
+    assert "ROSE" in merged
+    assert "ROSESWALLOWS" not in merged
+    assert "MARINERAIRTAG" not in merged
+
+
+@pytest.mark.unit
 def test_config_file_overrides_values_and_marks_user_specified(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

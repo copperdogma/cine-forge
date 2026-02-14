@@ -77,6 +77,30 @@ def test_is_screenplay_path_uses_parser_signal(monkeypatch: pytest.MonkeyPatch) 
 
 
 @pytest.mark.unit
+def test_is_screenplay_path_handles_compact_scene_headings(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    raw = _raw_input_payload(
+        "EXT.CITYCENTRE- NIGHT\nMARA\nGo.\nINT.RUDDY& GREENBUILDING- ELEVATOR\nROSE\nNow.",
+        detected_format="prose",
+        confidence=0.2,
+    )
+
+    class FakeResult:
+        parseable = False
+        coverage = 0.0
+        parser_backend = "test"
+        issues: list[str] = []
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.script_normalize_v1.main.validate_fountain_structure",
+        lambda _: FakeResult(),
+    )
+
+    assert _is_screenplay_path(raw) is True
+
+
+@pytest.mark.unit
 def test_run_module_with_mock_model_produces_canonical_script() -> None:
     result = run_module(
         inputs={"ingest": _raw_input_payload("INT. LAB - NIGHT\nMARA\nWe begin.")},
@@ -254,6 +278,31 @@ def test_run_module_marks_needs_review_when_cost_ceiling_exceeded() -> None:
     metadata = result["artifacts"][0]["metadata"]
     assert metadata["health"] == "needs_review"
     assert metadata["annotations"]["cost_ceiling_exceeded"] is True
+
+
+@pytest.mark.unit
+def test_normalization_prevents_degenerate_output_from_degraded_input() -> None:
+    # Simulating the case where ingestion repair has worked, or we have compact headings
+    content = "\n".join(
+        [
+            "EXT. CITY CENTRE - NIGHT",
+            "A ruined city.",
+            "EXT. RUDDY& GREENEBUILDING - FRONT - NIGHT",
+            "MARINER",
+            "Move.",
+        ]
+    )
+    # If the input is correctly identified as screenplay, normalization should preserve it
+    result = run_module(
+        inputs={"ingest": _raw_input_payload(content, detected_format="screenplay")},
+        params={"model": "mock", "qa_model": "mock", "skip_qa": True},
+        context={"run_id": "unit", "stage_id": "normalize"},
+    )
+    artifact = result["artifacts"][0]
+    script_text = artifact["data"]["script_text"]
+    assert "UNKNOWN LOCATION" not in script_text
+    assert "EXT. CITY CENTRE - NIGHT" in script_text
+    assert "EXT. RUDDY& GREENEBUILDING - FRONT - NIGHT" in script_text
 
 
 @pytest.mark.unit
