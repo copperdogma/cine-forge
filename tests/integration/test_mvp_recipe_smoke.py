@@ -402,3 +402,28 @@ def test_mvp_recipe_handles_compact_pdf_scene_headings_without_placeholder_fallb
     assert "UNKNOWN LOCATION" not in canonical.data["script_text"]
     assert scene_index.data["total_scenes"] >= 3
     assert "Unknown Location" not in scene_index.data["unique_locations"]
+
+
+@pytest.mark.integration
+def test_mvp_recipe_handles_docx_screenplay(tmp_path: Path) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    run_id = f"smoke-mvp-docx-{uuid.uuid4().hex[:8]}"
+    project_dir = tmp_path / "project_docx"
+    input_file = workspace_root / "tests" / "fixtures" / "ingest_inputs" / "the_signal.docx"
+    
+    engine, state = _run_mvp_recipe(
+        workspace_root=workspace_root,
+        run_id=run_id,
+        input_file=input_file,
+        default_model="mock",
+        qa_model="mock",
+        project_dir=project_dir,
+    )
+
+    assert state["stages"]["project_config"]["status"] == "done"
+    
+    ingest_ref = ArtifactRef.model_validate(state["stages"]["ingest"]["artifact_refs"][0])
+    raw = engine.store.load_artifact(ingest_ref)
+    assert raw.data["classification"]["detected_format"] == "screenplay"
+    assert raw.data["source_info"]["file_format"] == "docx"
+    assert "INT. COMMUNITY RADIO STUDIO" in raw.data["content"]

@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-SUPPORTED_FILE_FORMATS = {"txt", "md", "fountain", "pdf", "fdx"}
+SUPPORTED_FILE_FORMATS = {"txt", "md", "fountain", "pdf", "fdx", "docx"}
 TOKENIZED_TIME_WORDS = {
     "DAY",
     "NIGHT",
@@ -47,6 +47,10 @@ def read_source_text_with_diagnostics(input_path: Path) -> tuple[str, dict[str, 
         diagnostics["original_character_count"] = len(extracted)
         diagnostics["repaired_character_count"] = len(repaired)
         return repaired, diagnostics
+
+    if file_format == "docx":
+        extracted = _extract_docx_text(input_path)
+        return extracted, {"docx_extracted": True}
 
     return input_path.read_text(encoding="utf-8"), {}
 
@@ -131,7 +135,7 @@ def classify_format_with_diagnostics(
             + min(0.6, scene_heading_count * 0.06)
             + min(0.25, transition_count * 0.05)
             + min(0.5, tokenized_heading_sequences * 0.18)
-            + (0.35 if file_format in {"fountain", "fdx"} else 0.0)
+            + (0.35 if file_format in {"fountain", "fdx", "docx", "pdf"} else 0.0)
         ),
     )
     notes_score = min(
@@ -312,6 +316,24 @@ def _extract_pdf_text(input_path: Path) -> str:
     for page in reader.pages:
         pages.append(page.extract_text() or "")
     return "\n".join(pages)
+
+
+def _extract_docx_text(input_path: Path) -> str:
+    try:
+        from docx import Document
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "DOCX input requires optional dependency 'python-docx'. "
+            "Install project dependencies first."
+        ) from exc
+
+    doc = Document(str(input_path))
+    paragraphs: list[str] = []
+    for para in doc.paragraphs:
+        text = para.text.strip()
+        if text:
+            paragraphs.append(text)
+    return "\n\n".join(paragraphs)
 
 
 def _repair_pdf_tokenized_layout(extracted: str) -> tuple[str, dict[str, Any]]:

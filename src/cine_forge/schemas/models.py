@@ -76,7 +76,7 @@ class SourceFileInfo(BaseModel):
     file_size_bytes: int = Field(ge=0)
     character_count: int = Field(ge=0)
     line_count: int = Field(ge=0)
-    file_format: Literal["txt", "md", "fountain", "pdf", "fdx"]
+    file_format: Literal["txt", "md", "fountain", "pdf", "fdx", "docx"]
 
 
 class FormatClassification(BaseModel):

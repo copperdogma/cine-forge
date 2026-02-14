@@ -21,12 +21,13 @@ def test_detect_file_format_supports_expected_extensions() -> None:
     assert detect_file_format(Path("a.fountain")) == "fountain"
     assert detect_file_format(Path("a.fdx")) == "fdx"
     assert detect_file_format(Path("a.pdf")) == "pdf"
+    assert detect_file_format(Path("a.docx")) == "docx"
 
 
 @pytest.mark.unit
 def test_detect_file_format_rejects_unknown_extension() -> None:
     with pytest.raises(ValueError, match="Unsupported input format"):
-        detect_file_format(Path("a.docx"))
+        detect_file_format(Path("a.xlsx"))
 
 
 @pytest.mark.unit
@@ -51,6 +52,24 @@ def test_read_source_text_extracts_pdf_via_reader(
     )
 
     assert read_source_text(source) == "INT. ROOM - NIGHT\nMARA\nHello there."
+
+
+@pytest.mark.unit
+def test_read_source_text_extracts_docx_via_python_docx(tmp_path: Path) -> None:
+    from docx import Document
+    source = tmp_path / "sample.docx"
+    doc = Document()
+    doc.add_paragraph("INT. LAB - NIGHT")
+    doc.add_paragraph("MARA")
+    doc.add_paragraph("Testing DOCX.")
+    doc.save(str(source))
+
+    # read_source_text uses read_source_text_with_diagnostics
+    content, diagnostics = read_source_text_with_diagnostics(source)
+    assert "INT. LAB - NIGHT" in content
+    assert "MARA" in content
+    assert "Testing DOCX." in content
+    assert diagnostics["docx_extracted"] is True
 
 
 @pytest.mark.unit

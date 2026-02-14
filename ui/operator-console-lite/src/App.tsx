@@ -382,7 +382,7 @@ function NewProjectPage({
           ref={fileInputRef}
           className="hidden-input"
           type="file"
-          accept=".fountain,.fdx,.txt,.md,.pdf"
+          accept=".fountain,.fdx,.txt,.md,.pdf,.docx"
           onChange={(event) => {
             const file = event.target.files?.[0] ?? null;
             setSelectedFile(file);

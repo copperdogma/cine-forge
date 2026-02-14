@@ -30,6 +30,7 @@ NOTES from Cam:
 | 001 | Project Setup and Scaffolding | 0 — Foundation | High | Done | [story-001](stories/story-001-project-setup.md) |
 | 002 | Pipeline Foundation (Driver, Artifact Store, Schemas) | 0 — Foundation | High | Done | [story-002](stories/story-002-pipeline-foundation.md) |
 | 003 | Story Ingestion Module | 1 — MVP Pipeline | High | Done | [story-003](stories/story-003-story-ingestion.md) |
+| 003b | DOCX Ingestion Support | 1 — MVP Pipeline | Medium | Done | [story-003b](stories/story-003b-docx-support.md) |
 | 004 | Script Normalization Module | 1 — MVP Pipeline | High | Done | [story-004](stories/story-004-script-normalization.md) |
 | 005 | Scene Extraction Module | 1 — MVP Pipeline | High | Done | [story-005](stories/story-005-scene-extraction.md) |
 | 006 | Project Configuration (Auto-Initialized) | 1 — MVP Pipeline | High | Done | [story-006](stories/story-006-project-configuration.md) |
