@@ -57,11 +57,14 @@ export type RunStateResponse = {
       string,
       {
         status: string;
+        model_used?: string | null;
+        call_count?: number;
         duration_seconds: number;
         cost_usd: number;
         artifact_refs: Array<Record<string, unknown>>;
       }
     >;
+    runtime_params: Record<string, unknown>;
     total_cost_usd: number;
   };
   background_error?: string | null;
@@ -77,4 +80,5 @@ export type ArtifactDetailResponse = {
   entity_id: string | null;
   version: number;
   payload: Record<string, unknown>;
+  bible_files?: Record<string, unknown>;
 };

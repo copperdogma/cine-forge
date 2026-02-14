@@ -20,6 +20,7 @@ class RecipeStage(BaseModel):
     module: str
     params: dict[str, Any] = Field(default_factory=dict)
     needs: list[str] = Field(default_factory=list)
+    store_inputs: dict[str, str] = Field(default_factory=dict)
 
 
 class Recipe(BaseModel):
@@ -59,6 +60,17 @@ def validate_recipe(
         for dependency in stage.needs:
             if dependency not in stage_ids:
                 raise ValueError(f"Stage '{stage.id}' references missing dependency '{dependency}'")
+        overlap = set(stage.needs) & set(stage.store_inputs.keys())
+        if overlap:
+            raise ValueError(
+                f"Stage '{stage.id}' has keys in both 'needs' and 'store_inputs': {overlap}"
+            )
+        for input_key, artifact_type in stage.store_inputs.items():
+            if not schema_registry.has(artifact_type):
+                raise ValueError(
+                    f"Stage '{stage.id}' store_input '{input_key}' references "
+                    f"unregistered artifact type '{artifact_type}'"
+                )
 
     _assert_acyclic(recipe=recipe)
     _assert_schema_compatibility(

@@ -6,13 +6,13 @@ import hashlib
 import json
 import re
 import threading
+import time
 import uuid
 from pathlib import Path
 from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
-from cine_forge.schemas import ArtifactRef
 
 
 class ServiceError(Exception):
@@ -33,6 +33,7 @@ class OperatorConsoleService:
         self.workspace_root = workspace_root.resolve()
         self._project_registry: dict[str, Path] = {}
         self._run_errors: dict[str, str] = {}
+        self._run_threads: dict[str, threading.Thread] = {}
         self._run_lock = threading.Lock()
 
     @staticmethod
@@ -204,6 +205,28 @@ class OperatorConsoleService:
         groups: list[dict[str, Any]] = []
         for artifact_type_dir in sorted(path for path in artifacts_root.iterdir() if path.is_dir()):
             artifact_type = artifact_type_dir.name
+            if artifact_type == "bibles":
+                # Special handling for folder-based bibles
+                bibles_iter = (path for path in artifact_type_dir.iterdir() if path.is_dir())
+                for entity_type_dir in sorted(bibles_iter):
+                    # entity_type_dir name is like "character_aria"
+                    entity_id = entity_type_dir.name
+                    # For folder-based bibles, the manifest is the versioned artifact
+                    refs = store.list_versions(artifact_type="bible_manifest", entity_id=entity_id)
+                    if not refs:
+                        continue
+                    latest = refs[-1]
+                    health = store.graph.get_health(latest)
+                    groups.append(
+                        {
+                            "artifact_type": "bible_manifest",
+                            "entity_id": entity_id,
+                            "latest_version": latest.version,
+                            "health": health.value if health else None,
+                        }
+                    )
+                continue
+
             for entity_dir in sorted(path for path in artifact_type_dir.iterdir() if path.is_dir()):
                 entity_id = None if entity_dir.name == "__project__" else entity_dir.name
                 refs = store.list_versions(artifact_type=artifact_type, entity_id=entity_id)
@@ -252,18 +275,13 @@ class OperatorConsoleService:
         project_path = self.require_project_path(project_id)
         normalized_entity = None if entity_id == "__project__" else entity_id
         store = ArtifactStore(project_dir=project_path)
-        ref = ArtifactRef(
-            artifact_type=artifact_type,
-            entity_id=normalized_entity,
-            version=version,
-            path=_artifact_rel_path(
-                artifact_type=artifact_type,
-                entity_id=normalized_entity,
-                version=version,
-            ),
-        )
-        artifact_path = project_path / ref.path
-        if not artifact_path.exists():
+        
+        # Load all versions to find the one with the matching version number
+        # This ensures we get the correct relative path from the store
+        refs = store.list_versions(artifact_type=artifact_type, entity_id=normalized_entity)
+        ref = next((r for r in refs if r.version == version), None)
+        
+        if not ref:
             raise ServiceError(
                 code="artifact_not_found",
                 message=(
@@ -273,23 +291,62 @@ class OperatorConsoleService:
                 hint="Check available versions via the artifact versions endpoint.",
                 status_code=404,
             )
+            
         artifact = store.load_artifact(ref)
-        return {
+        response = {
             "artifact_type": artifact_type,
             "entity_id": normalized_entity,
             "version": version,
             "payload": artifact.model_dump(mode="json"),
         }
 
+        # If it's a bible manifest, load the contents of the files it references
+        if artifact_type == "bible_manifest":
+            bible_files = {}
+            # Ref path is artifacts/bibles/{entity_id}/manifest_vN.json
+            # project_path is already absolute.
+            bible_dir = (project_path / ref.path).parent
+            
+            # Manifest data is in artifact.data
+            manifest_data = artifact.data
+            
+            # Ensure we have a dict to work with
+            if not isinstance(manifest_data, dict):
+                try:
+                    manifest_data = manifest_data.model_dump()
+                except AttributeError:
+                    manifest_data = {}
+
+            files_list = manifest_data.get("files") or []
+            for file_entry in files_list:
+                filename = file_entry.get("filename")
+                if filename:
+                    file_path = bible_dir / filename
+                    if file_path.exists():
+                        # Try to load as JSON first for rich UI display
+                        try:
+                            bible_files[filename] = json.loads(
+                                file_path.read_text(encoding="utf-8")
+                            )
+                        except json.JSONDecodeError:
+                            bible_files[filename] = file_path.read_text(encoding="utf-8")
+            response["bible_files"] = bible_files
+
+        return response
+
     def start_run(self, project_id: str, request: dict[str, Any]) -> str:
         project_path = self.require_project_path(project_id)
         run_id = request.get("run_id") or f"run-{uuid.uuid4().hex[:8]}"
-        recipe_path = self.workspace_root / "configs" / "recipes" / "recipe-mvp-ingest.yaml"
+        
+        recipe_id = request.get("recipe_id") or "mvp_ingest"
+        recipe_filename = f"recipe-{recipe_id.replace('_', '-')}.yaml"
+        recipe_path = self.workspace_root / "configs" / "recipes" / recipe_filename
+        
         if not recipe_path.exists():
             raise ServiceError(
                 code="recipe_not_found",
-                message=f"MVP recipe file not found: {recipe_path}",
-                hint="Ensure configs/recipes/recipe-mvp-ingest.yaml exists in workspace.",
+                message=f"Recipe file not found: {recipe_path}",
+                hint=f"Ensure configs/recipes/{recipe_filename} exists in workspace.",
                 status_code=500,
             )
 
@@ -298,8 +355,20 @@ class OperatorConsoleService:
             "default_model": request["default_model"],
             "accept_config": bool(request.get("accept_config", False)),
         }
-        if request.get("qa_model"):
-            runtime_params["qa_model"] = request["qa_model"]
+        # Map tiered models to ensure all possible recipe placeholders are satisfied
+        work = request.get("work_model") or request["default_model"]
+        verify = request.get("verify_model") or request.get("qa_model") or work
+        escalate = request.get("escalate_model") or work
+
+        runtime_params.update({
+            "work_model": work,
+            "utility_model": work,  # Aliased for recipes using utility naming
+            "verify_model": verify,
+            "qa_model": verify,
+            "escalate_model": escalate,
+            "sota_model": escalate, # Aliased for recipes using sota naming
+            "skip_qa": bool(request.get("skip_qa", False))
+        })
 
         run_dir = self.workspace_root / "output" / "runs" / run_id
         run_dir.mkdir(parents=True, exist_ok=True)
@@ -332,6 +401,8 @@ class OperatorConsoleService:
             },
             daemon=True,
         )
+        with self._run_lock:
+            self._run_threads[run_id] = worker
         worker.start()
         return run_id
 
@@ -372,10 +443,37 @@ class OperatorConsoleService:
         except Exception as exc:  # noqa: BLE001
             with self._run_lock:
                 self._run_errors[run_id] = str(exc)
+            # Persist error to disk
+            error_path = self.workspace_root / "output" / "runs" / run_id / "background_error.log"
+            try:
+                error_path.write_text(str(exc), encoding="utf-8")
+            except Exception:  # noqa: BLE001
+                pass
+        finally:
+            with self._run_lock:
+                self._run_threads.pop(run_id, None)
 
     def read_run_state(self, run_id: str) -> dict[str, Any]:
         state_path = self.workspace_root / "output" / "runs" / run_id / "run_state.json"
         if not state_path.exists():
+            # Check if it failed during early initialization before it could write the file
+            with self._run_lock:
+                background_error = self._run_errors.get(run_id)
+            if background_error:
+                return {
+                    "run_id": run_id,
+                    "state": {
+                        "run_id": run_id,
+                        "recipe_id": "failed_init",
+                        "dry_run": False,
+                        "started_at": time.time(),
+                        "stages": {},
+                        "total_cost_usd": 0.0,
+                        "instrumented": False,
+                    },
+                    "background_error": background_error,
+                }
+
             raise ServiceError(
                 code="run_state_not_found",
                 message=f"Run state not found for run_id='{run_id}'.",
@@ -383,8 +481,36 @@ class OperatorConsoleService:
                 status_code=404,
             )
         state = json.loads(state_path.read_text(encoding="utf-8"))
+
+        # Compute live elapsed duration for running stages
+        now = time.time()
+        for stage_state in state.get("stages", {}).values():
+            if stage_state.get("status") == "running" and "started_at" in stage_state:
+                stage_state["duration_seconds"] = round(now - stage_state["started_at"], 4)
+
         with self._run_lock:
             background_error = self._run_errors.get(run_id)
+            is_active = run_id in self._run_threads
+
+        if not background_error:
+            # Check disk for persisted error
+            error_path = self.workspace_root / "output" / "runs" / run_id / "background_error.log"
+            if error_path.exists():
+                background_error = error_path.read_text(encoding="utf-8")
+
+        # Detect orphaned runs (marked running/pending but no thread active)
+        if not is_active and not state.get("finished_at"):
+            # If the backend restarted, the thread map is empty.
+            # We treat any non-finished run as failed/orphaned.
+            any_stuck = False
+            for stage in state.get("stages", {}).values():
+                if stage.get("status") in ("running", "pending"):
+                    stage["status"] = "failed"
+                    any_stuck = True
+            
+            if any_stuck and not background_error:
+                background_error = "Run orphaned (backend restart or crash)"
+
         return {"run_id": run_id, "state": state, "background_error": background_error}
 
     def read_run_events(self, run_id: str) -> dict[str, Any]:

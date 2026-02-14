@@ -9,6 +9,7 @@ from typing import Any
 from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import (
     CharacterBible,
+    QAResult,
 )
 
 CHARACTER_STOPWORDS = {
@@ -56,6 +57,18 @@ CHARACTER_STOPWORDS = {
     "WE",
     "YOU",
     "LUXURIOUS",
+    "CLEAN",
+    "DIMLY",
+    "LIT",
+    "DISCARDED",
+    "BOTTLES",
+    "RUG",
+    "RUSTY",
+    "WEIGHTS",
+    "WEEDS",
+    "OPENING",
+    "TITLE",
+    "THUG",
 }
 
 
@@ -64,37 +77,82 @@ def run_module(
 ) -> dict[str, Any]:
     """Execute character bible extraction."""
     canonical_script, scene_index = _extract_inputs(inputs)
-    model = str(params.get("model", "gpt-4o"))
-    min_appearances = int(params.get("min_scene_appearances", 1))
+    
+    # Tiered Model Strategy (Subsumption)
+    work_model = params.get("work_model") or params.get("model") or "gpt-4o-mini"
+    verify_model = params.get("verify_model") or "gpt-4o-mini"
+    escalate_model = params.get("escalate_model") or "gpt-4o"
+    skip_qa = bool(params.get("skip_qa", False))
+    
+    # Higher default for bibles to avoid noise pollution
+    min_appearances = int(params.get("min_scene_appearances", 3))
 
     # 1. Aggregate and Filter
     characters = _aggregate_characters(scene_index)
     ranked = _rank_characters(characters, canonical_script, scene_index)
-    
-    # Filter by minimum appearances
-    candidates = [c for c in ranked if c["scene_count"] >= min_appearances]
+
+    # Filter by minimum appearances OR presence of dialogue
+    # Ghost characters usually have 0 dialogue
+    candidates = [
+        c
+        for c in ranked
+        if (c["scene_count"] >= min_appearances) or (c["dialogue_count"] >= 1)
+    ]
+    # Final sanity check: skip anything that is JUST stopwords after filtering
+    candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
 
     artifacts = []
-    total_cost = {"model": model, "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
+    models_seen: set[str] = set()
+    total_cost = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
 
     # 2. Extract for each candidate
     for entry in candidates:
         char_name = entry["name"]
         slug = _slugify(char_name)
         
+        # Pass 1: Work
         definition, cost = _extract_character_definition(
             char_name=char_name,
             entry=entry,
             canonical_script=canonical_script,
             scene_index=scene_index,
-            model=model,
+            model=work_model,
         )
-        
-        # Update cost
-        total_cost["input_tokens"] += cost["input_tokens"]
-        total_cost["output_tokens"] += cost["output_tokens"]
-        total_cost["estimated_cost_usd"] += cost["estimated_cost_usd"]
+        _update_total_cost(total_cost, cost)
+        if cost.get("model") and cost["model"] != "code":
+            models_seen.add(cost["model"])
 
+        qa_result: QAResult | None = None
+        if not skip_qa and work_model != "mock":
+            # Pass 2: Verify
+            qa_result, qa_cost = _run_character_qa(
+                char_name=char_name,
+                definition=definition,
+                script_text=canonical_script["script_text"],
+                model=verify_model,
+            )
+            _update_total_cost(total_cost, qa_cost)
+            if qa_cost.get("model") and qa_cost["model"] != "code":
+                models_seen.add(qa_cost["model"])
+
+            if not qa_result.passed:
+                # Pass 3: Escalate
+                definition, esc_cost = _extract_character_definition(
+                    char_name=char_name,
+                    entry=entry,
+                    canonical_script=canonical_script,
+                    scene_index=scene_index,
+                    model=escalate_model,
+                    feedback=qa_result.summary,
+                )
+                _update_total_cost(total_cost, esc_cost)
+                if esc_cost.get("model") and esc_cost["model"] != "code":
+                    models_seen.add(esc_cost["model"])
+        
         # 3. Build manifest and artifact bundle
         version = 1  # Module currently only produces v1 for new bibles
         master_filename = f"master_v{version}.json"
@@ -133,10 +191,19 @@ def run_module(
             }
         })
 
+    model_label = "+".join(sorted(list(models_seen))) if models_seen else "code"
+    total_cost["model"] = model_label
+
     return {
         "artifacts": artifacts,
         "cost": total_cost,
     }
+
+
+def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None:
+    total["input_tokens"] += call_cost.get("input_tokens", 0)
+    total["output_tokens"] += call_cost.get("output_tokens", 0)
+    total["estimated_cost_usd"] += call_cost.get("estimated_cost_usd", 0.0)
 
 
 def _extract_inputs(inputs: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -207,6 +274,7 @@ def _extract_character_definition(
     canonical_script: dict[str, Any],
     scene_index: dict[str, Any],
     model: str,
+    feedback: str = "",
 ) -> tuple[CharacterBible, dict[str, Any]]:
     if model == "mock":
         return _mock_extract(char_name, entry), {
@@ -216,7 +284,7 @@ def _extract_character_definition(
             "estimated_cost_usd": 0.0,
         }
 
-    prompt = _build_extraction_prompt(char_name, entry, canonical_script, scene_index)
+    prompt = _build_extraction_prompt(char_name, entry, canonical_script, scene_index, feedback)
     definition, cost = call_llm(
         prompt=prompt,
         model=model,
@@ -225,15 +293,37 @@ def _extract_character_definition(
     return definition, cost
 
 
+def _run_character_qa(
+    char_name: str,
+    definition: CharacterBible,
+    script_text: str,
+    model: str,
+) -> tuple[QAResult, dict[str, Any]]:
+    from cine_forge.ai import qa_check
+
+    return qa_check(
+        original_input=script_text[:5000],  # Give enough for context
+        prompt_used="Character extraction prompt",
+        output_produced=definition.model_dump_json(),
+        model=model,
+        criteria=["accuracy", "depth", "vividness"],
+    )
+
+
 def _build_extraction_prompt(
-    char_name: str, entry: dict[str, Any], script: dict[str, Any], index: dict[str, Any]
+    char_name: str,
+    entry: dict[str, Any],
+    script: dict[str, Any],
+    index: dict[str, Any],
+    feedback: str = "",
 ) -> str:
     # Ideally we'd only send relevant scenes to save context
     # For now, we'll send the whole thing if it's small, or just a summary
+    feedback_block = f"\nQA Feedback to address: {feedback}\n" if feedback else ""
     return f"""You are a character analyst. Extract a master definition for character: {char_name}.
     
     Return JSON matching CharacterBible schema.
-    
+    {feedback_block}
     Character Context:
     - Name: {char_name}
     - Scene Count: {entry['scene_count']}
@@ -265,17 +355,29 @@ def _normalize_character_name(value: Any) -> str:
     text = str(value or "").strip().upper()
     text = re.sub(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT’D|OFF|ON RADIO)\)\s*$", "", text)
     text = re.sub(r"^[^A-Z0-9]+|[^A-Z0-9']+$", "", text)
+    if re.match(r"^THE[A-Z]{4,}$", text):
+        text = text[3:]
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 
 def _is_plausible_character_name(name: str) -> bool:
-    if not name or len(name) < 2 or len(name) > 28:
+    if not name:
         return False
-    tokens = [t.rstrip(".") for t in name.split()]
+    if len(name) < 2 or len(name) > 28:
+        return False
+    tokens = name.split()
+    if len(tokens) > 3:
+        return False
+    if any(not re.match(r"^[A-Z']+$", token) for token in tokens):
+        return False
+    if any(len(token) > 12 for token in tokens):
+        return False
     if any(token in CHARACTER_STOPWORDS for token in tokens):
         return False
     if not any(char.isalpha() for char in name):
+        return False
+    if re.match(r"^\d+$", name):
         return False
     return True
 

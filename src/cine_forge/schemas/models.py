@@ -87,6 +87,17 @@ class FormatClassification(BaseModel):
     evidence: list[str] = Field(default_factory=list)
 
 
+class ModelStrategy(BaseModel):
+    """Tiered model selection strategy for resilient task execution."""
+
+    model_config = {"protected_namespaces": ()}
+
+    work: str = "gpt-4o-mini"
+    verify: str = "gpt-4o-mini"
+    escalate: str = "gpt-4o"
+    # Future namespacing: text_work, video_work, etc.
+
+
 class RawInput(BaseModel):
     """First immutable artifact preserving source text and format signals."""
 
@@ -107,6 +118,8 @@ class DetectedValue(BaseModel):
 class ProjectConfig(BaseModel):
     """Project-level configuration used by all downstream modules and roles."""
 
+    model_config = {"protected_namespaces": ()}
+
     title: str
     format: str
     genre: list[str] = Field(default_factory=list)
@@ -122,6 +135,7 @@ class ProjectConfig(BaseModel):
     human_control_mode: Literal["autonomous", "checkpoint", "advisory"]
     style_packs: dict[str, str] = Field(default_factory=dict)
     budget_cap_usd: float | None = Field(default=None, ge=0.0)
+    model_strategy: ModelStrategy = Field(default_factory=ModelStrategy)
     default_model: str
     detection_details: dict[str, DetectedValue] = Field(default_factory=dict)
     confirmed: bool

@@ -10,26 +10,30 @@ stages:
   - id: normalize
     module: script_normalize_v1
     params:
-      model: ${default_model}
-      qa_model: ${default_model}
+      model: ${utility_model}
+      work_model: ${utility_model}
+      verify_model: ${utility_model}
+      escalate_model: ${sota_model}
       max_retries: 1
-      skip_qa: false
+      skip_qa: ${skip_qa}
     needs:
       - ingest
   - id: extract_scenes
     module: scene_extract_v1
     params:
-      model: ${default_model}
-      qa_model: ${default_model}
+      model: ${utility_model}
+      work_model: ${utility_model}
+      verify_model: ${utility_model}
+      escalate_model: ${sota_model}
       max_retries: 1
-      skip_qa: false
+      skip_qa: ${skip_qa}
     needs:
       - normalize
   - id: project_config
     module: project_config_v1
     params:
-      model: ${default_model}
-      qa_model: ${default_model}
+      model: ${utility_model}
+      qa_model: ${utility_model}
       accept_config: ${accept_config}
     needs:
       - normalize

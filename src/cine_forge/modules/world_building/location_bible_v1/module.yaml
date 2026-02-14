@@ -1,8 +1,8 @@
-module_id: character_bible_v1
+module_id: location_bible_v1
 stage: world_building
-description: "Extracts character master definitions from scene artifacts and canonical script."
+description: "Extracts location master definitions from scene artifacts and canonical script."
 input_schemas: ["scene_index", "canonical_script"]
-output_schemas: ["character_bible", "bible_manifest"]
+output_schemas: ["location_bible", "bible_manifest"]
 parameters:
   model:
     type: string

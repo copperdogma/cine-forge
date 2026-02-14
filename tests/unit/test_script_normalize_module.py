@@ -145,12 +145,29 @@ def test_run_module_retries_after_qa_error(monkeypatch: pytest.MonkeyPatch) -> N
             {"model": "mock", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0},
         )
 
+    def fake_normalize_once(content, **kwargs):
+        # Return content as-is to ensure lint/parser pass
+        return (
+            content,
+            {
+                "source_format": "screenplay",
+                "strategy": "test",
+                "overall_confidence": 1.0,
+                "rationale": "test",
+            },
+            [{"model": "mock", "estimated_cost_usd": 0.0}],
+            "test-prompt",
+        )
+
     monkeypatch.setattr("cine_forge.modules.ingest.script_normalize_v1.main._run_qa", fake_run_qa)
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.script_normalize_v1.main._normalize_once", fake_normalize_once
+    )
 
     result = run_module(
         inputs={
             "ingest": _raw_input_payload(
-                "A prose paragraph.", detected_format="prose", confidence=0.6
+                "INT. ROOM - NIGHT\nMARA\nHello.", detected_format="screenplay", confidence=0.9
             )
         },
         params={"model": "mock", "qa_model": "gpt-4o-mini", "max_retries": 2, "skip_qa": False},
@@ -337,3 +354,64 @@ def test_run_module_detects_fdx_and_records_export_annotations() -> None:
     assert annotations["fdx_input_detected"] is True
     assert annotations["interop_exports"][0]["format"] == "fdx"
     assert annotations["interop_exports"][0]["success"] is True
+
+
+@pytest.mark.unit
+def test_truncation_retry_increases_token_budget(monkeypatch: pytest.MonkeyPatch) -> None:
+    """When the LLM truncates output, retries should use a larger token budget."""
+    from cine_forge.ai.llm import LLMCallError
+
+    max_tokens_seen: list[int] = []
+
+    def tracking_normalize_once(
+        content: str,
+        source_format: str,
+        target_strategy: str,
+        long_doc_strategy: str,
+        model: str,
+        feedback: str,
+        max_tokens: int,
+        patch_fuzzy_threshold: float,
+    ) -> tuple:
+        max_tokens_seen.append(max_tokens)
+        if len(max_tokens_seen) == 1:
+            raise LLMCallError("LLM output truncated due to max token limit")
+        return (
+            content,
+            {
+                "source_format": source_format,
+                "strategy": target_strategy,
+                "overall_confidence": 0.9,
+                "rationale": "test",
+            },
+            [{"model": model, "estimated_cost_usd": 0.0}],
+            "test-prompt",
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.script_normalize_v1.main._normalize_once",
+        tracking_normalize_once,
+    )
+
+    result = run_module(
+        inputs={
+            "ingest": _raw_input_payload(
+                "INT. ROOM - NIGHT\nMARA\nHello.",
+                detected_format="screenplay",
+                confidence=0.9,
+            )
+        },
+        params={
+            "model": "mock",
+            "qa_model": "mock",
+            "max_retries": 1,
+            "skip_qa": True,
+            "max_tokens": 4000,
+        },
+        context={"run_id": "unit", "stage_id": "normalize"},
+    )
+
+    assert len(max_tokens_seen) == 2
+    assert max_tokens_seen[0] == 4000
+    assert max_tokens_seen[1] == 6000  # 4000 * 1.5
+    assert result["artifacts"][0]["artifact_type"] == "canonical_script"

@@ -49,7 +49,7 @@ def _write_echo_module(workspace_root: Path) -> None:
                 "            },",
                 "        }],",
                 "        'cost': {",
-                "            'model': 'none',",
+                "            'model': 'code',",
                 "            'input_tokens': 0,",
                 "            'output_tokens': 0,",
                 "            'estimated_cost_usd': 0.0,",
@@ -146,7 +146,7 @@ def _rewrite_module_default_payload(workspace_root: Path, message: str) -> None:
                 "            },",
                 "        }],",
                 "        'cost': {",
-                "            'model': 'none',",
+                "            'model': 'code',",
                 "            'input_tokens': 0,",
                 "            'output_tokens': 0,",
                 "            'estimated_cost_usd': 0.0,",
@@ -207,7 +207,7 @@ def _write_runtime_echo_module(workspace_root: Path) -> None:
                 "            },",
                 "        }],",
                 "        'cost': {",
-                "            'model': 'none',",
+                "            'model': 'code',",
                 "            'input_tokens': 0,",
                 "            'output_tokens': 0,",
                 "            'estimated_cost_usd': 0.0,",
@@ -310,7 +310,7 @@ def _write_pause_module(workspace_root: Path) -> None:
                 "            },",
                 "        }],",
                 "        'cost': {",
-                "            'model': 'none',",
+                "            'model': 'code',",
                 "            'input_tokens': 0,",
                 "            'output_tokens': 0,",
                 "            'estimated_cost_usd': 0.0,",
@@ -419,7 +419,7 @@ def _write_project_config_producer_module(workspace_root: Path) -> None:
                 "            },",
                 "        }],",
                 "        'cost': {",
-                "            'model': 'none',",
+                "            'model': 'code',",
                 "            'input_tokens': 0,",
                 "            'output_tokens': 0,",
                 "            'estimated_cost_usd': 0.0,",
@@ -473,7 +473,7 @@ def _write_project_config_consumer_module(workspace_root: Path) -> None:
                 "            },",
                 "        }],",
                 "        'cost': {",
-                "            'model': 'none',",
+                "            'model': 'code',",
                 "            'input_tokens': 0,",
                 "            'output_tokens': 0,",
                 "            'estimated_cost_usd': 0.0,",
@@ -748,6 +748,173 @@ def test_driver_records_paused_stage_and_stops_downstream(tmp_path: Path) -> Non
     events_path = tmp_path / "output" / "runs" / "paused" / "pipeline_events.jsonl"
     events = events_path.read_text(encoding="utf-8")
     assert "stage_paused" in events
+
+
+def _write_store_inputs_recipe(workspace_root: Path, store_inputs: dict[str, str]) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "store_inputs_recipe.yaml"
+    store_inputs_yaml = "\n".join(f"        {k}: {v}" for k, v in store_inputs.items())
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: store-inputs-recipe",
+                "description: store inputs test",
+                "stages:",
+                "  - id: consumer",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: project",
+                "    needs: []",
+                "    store_inputs:",
+                store_inputs_yaml,
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
+def _write_store_inputs_overlap_recipe(workspace_root: Path) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "overlap_recipe.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: overlap-recipe",
+                "description: overlap test",
+                "stages:",
+                "  - id: producer",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: seed",
+                "      entity_id: project",
+                "    needs: []",
+                "  - id: consumer",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: result",
+                "      entity_id: project",
+                "    needs: [producer]",
+                "    store_inputs:",
+                "      producer: dict",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
+@pytest.mark.unit
+def test_store_inputs_resolves_from_store(tmp_path: Path) -> None:
+    """Run recipe A to produce a 'dict' artifact, then recipe B with store_inputs resolves it."""
+    _write_echo_module(tmp_path)
+
+    # First run: produce an 'echo' (type=dict-compatible) artifact in the store.
+    # The default echo module saves artifact_type based on params; use a recipe
+    # that produces artifact_type='dict' so store_inputs validation passes.
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    producer_path = recipe_dir / "producer.yaml"
+    producer_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: producer-recipe",
+                "description: produce dict artifact",
+                "stages:",
+                "  - id: a",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: dict",
+                "      entity_id: project",
+                "      payload:",
+                "        hello: world",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    engine = DriverEngine(workspace_root=tmp_path)
+    engine.run(recipe_path=producer_path, run_id="producer-run")
+
+    dict_versions = engine.store.list_versions("dict", "project")
+    assert len(dict_versions) >= 1
+
+    # Second run: consume via store_inputs
+    consumer_recipe = _write_store_inputs_recipe(tmp_path, {"upstream": "dict"})
+    state = engine.run(recipe_path=consumer_recipe, run_id="consumer-run")
+
+    assert state["stages"]["consumer"]["status"] == "done"
+    # The echo module passes through the last input value as payload
+    echo_ref = engine.store.list_versions("echo", "project")[-1]
+    echo_artifact = engine.store.load_artifact(echo_ref)
+    assert echo_artifact.data == {"hello": "world"}
+
+
+@pytest.mark.unit
+def test_store_inputs_error_when_missing(tmp_path: Path) -> None:
+    """store_inputs referencing a non-existent artifact type raises ValueError."""
+    _write_echo_module(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    consumer_recipe = _write_store_inputs_recipe(tmp_path, {"upstream": "dict"})
+    with pytest.raises(ValueError, match="none exist in the store"):
+        engine.run(recipe_path=consumer_recipe, run_id="missing-run")
+
+
+@pytest.mark.unit
+def test_store_inputs_error_when_stale(tmp_path: Path) -> None:
+    """store_inputs referencing a stale artifact raises ValueError."""
+    _write_echo_module(tmp_path)
+
+    # Produce a dict artifact
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    producer_path = recipe_dir / "producer.yaml"
+    producer_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: producer-recipe",
+                "description: produce dict artifact",
+                "stages:",
+                "  - id: a",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: dict",
+                "      entity_id: project",
+                "      payload:",
+                "        data: test",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    engine = DriverEngine(workspace_root=tmp_path)
+    engine.run(recipe_path=producer_path, run_id="producer-run")
+
+    # Mark the artifact as stale by directly manipulating the graph file
+    dict_ref = engine.store.list_versions("dict", "project")[-1]
+    graph = engine.store.graph._read_graph()
+    graph["nodes"][dict_ref.key()]["health"] = ArtifactHealth.STALE.value
+    engine.store.graph._write_graph(graph)
+
+    consumer_recipe = _write_store_inputs_recipe(tmp_path, {"upstream": "dict"})
+    with pytest.raises(ValueError, match="has health"):
+        engine.run(recipe_path=consumer_recipe, run_id="stale-run")
+
+
+@pytest.mark.unit
+def test_store_inputs_rejects_overlap_with_needs(tmp_path: Path) -> None:
+    """Validation rejects a stage with the same key in both needs and store_inputs."""
+    _write_echo_module(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    overlap_recipe = _write_store_inputs_overlap_recipe(tmp_path)
+    with pytest.raises(ValueError, match="both 'needs' and 'store_inputs'"):
+        engine.run(recipe_path=overlap_recipe, run_id="overlap-run")
 
 
 @pytest.mark.unit

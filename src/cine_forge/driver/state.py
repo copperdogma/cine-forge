@@ -24,10 +24,15 @@ class StageStatus(StrEnum):
 class StageRunState(BaseModel):
     """Run-state details for one stage."""
 
+    model_config = {"protected_namespaces": ()}
+
     status: StageStatus
+    model_used: str | None = None
+    call_count: int = 0
     artifact_refs: list[ArtifactRef] = Field(default_factory=list)
     duration_seconds: float = Field(ge=0.0, default=0.0)
     cost_usd: float = Field(ge=0.0, default=0.0)
+    started_at: float | None = None
 
 
 class RunState(BaseModel):
@@ -38,6 +43,7 @@ class RunState(BaseModel):
     dry_run: bool
     started_at: float
     stages: dict[str, StageRunState]
+    runtime_params: dict[str, Any] = Field(default_factory=dict)
     total_cost_usd: float = Field(ge=0.0)
     instrumented: bool
     finished_at: float | None = None

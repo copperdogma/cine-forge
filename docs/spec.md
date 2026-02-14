@@ -91,27 +91,28 @@ The user or Director may also manually decide which stale artifacts to revise wi
 	•	Cost data is recorded in run artifacts for auditability.
 
 2.8 Quality Validation (QA)
+... (existing content) ...
+artifact's audit metadata.
 
-Every AI-generated artifact may have a quality validation step. QA is not a single role — it is a capability available at every stage.
+2.9 Subsumption-based Model Strategy
 
-Validation tiers:
-	•	Automated structural check: does the artifact conform to its schema? Are required fields present? Are references valid? (No AI call required.)
-	•	Role-level review: the responsible role (or a Canon Guardian) evaluates the artifact for quality, correctness, and creative alignment. This is the standard review gate already built into the pipeline.
-	•	Dedicated QA pass: an explicit AI call that evaluates the artifact against its intent, upstream inputs, and project standards. For generated media (video, audio, images), this requires a model with genuine perception of that media type — a text-only model cannot QA video.
-	•	Human review: the user inspects the artifact directly. Always available regardless of mode.
+The pipeline supports a tiered model assignment strategy to balance cost, speed, and intelligence.
 
-QA behavior by operating mode:
-	•	Autonomous: structural + role-level + optional dedicated QA pass (Director may escalate to human if confidence is low)
-	•	Checkpoint: structural + role-level + human approval required before proceeding
-	•	Advisory: human drives; AI provides QA feedback on request
+Model Tiers (Slots):
+	•	work: The primary model for task execution (e.g., gpt-4o-mini).
+	•	verify: The model responsible for QA/validation passes.
+	•	escalate: A high-intelligence model (SOTA) used only when the work model fails verification.
 
-Error and retry policy:
-	•	Transient failures (API errors, timeouts): automatic retry with exponential backoff, configurable max attempts
-	•	Low-confidence output: flagged for review; the Director (or human) decides whether to accept, retry with a different prompt strategy, or escalate
-	•	Repeated failures at a stage: surfaced to the user with diagnostic context (what was attempted, what failed, why)
-	•	One scene failing does not block other scenes — the pipeline continues where it can and surfaces blocked items
+Precedence Hierarchy (Subsumption):
+	1.	Module Override: Specific module code defines a mandatory model.
+	2.	Recipe Params: The YAML recipe provides specific model overrides for a stage.
+	3.	Project Global: The default tiers selected at the project/run level (e.g., via UI Profiles).
 
-QA results are recorded as part of the artifact's audit metadata.
+Namespacing:
+The strategy supports namespaces (e.g., text.work, video.work) to allow specialized models for different media types while maintaining a fallback to generic slots.
+
+Resilient Work Pattern:
+Modules should attempt work with the 'work' slot, validate with 'verify', and automatically retry using the 'escalate' slot if validation fails.
 
 ⸻
 

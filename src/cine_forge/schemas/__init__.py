@@ -7,6 +7,8 @@ from .bible import (
     CharacterEvidence,
     CharacterRelationshipStub,
     InferredTrait,
+    LocationBible,
+    PropBible,
 )
 from .canonical_script import (
     Assumption,
@@ -22,6 +24,7 @@ from .models import (
     CostRecord,
     DetectedValue,
     FormatClassification,
+    ModelStrategy,
     ProjectConfig,
     RawInput,
     SourceFileInfo,
@@ -55,6 +58,8 @@ __all__ = [
     "CharacterEvidence",
     "CharacterRelationshipStub",
     "InferredTrait",
+    "LocationBible",
+    "PropBible",
     "CostRecord",
     "DetectedValue",
     "Invention",
@@ -63,6 +68,7 @@ __all__ = [
     "CanonicalScript",
     "SourceFileInfo",
     "FormatClassification",
+    "ModelStrategy",
     "ProjectConfig",
     "RawInput",
     "QAIssue",

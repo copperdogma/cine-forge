@@ -68,8 +68,12 @@ class ArtifactStore:
         if not artifact_dir.exists():
             return []
         refs: list[ArtifactRef] = []
-        for file_path in sorted(artifact_dir.glob("v*.json")):
-            version = int(file_path.stem.removeprefix("v"))
+        
+        pattern = "manifest_v*.json" if artifact_type == "bible_manifest" else "v*.json"
+        prefix = "manifest_v" if artifact_type == "bible_manifest" else "v"
+        
+        for file_path in sorted(artifact_dir.glob(pattern)):
+            version = int(file_path.stem.removeprefix(prefix))
             refs.append(
                 ArtifactRef(
                     artifact_type=artifact_type,
@@ -168,14 +172,24 @@ class ArtifactStore:
         return _diff_dicts(artifact_a.data, artifact_b.data)
 
     def _artifact_directory(self, artifact_type: str, entity_id: str | None) -> Path:
+        if artifact_type == "bible_manifest":
+            return self.project_dir / "artifacts" / "bibles" / (entity_id or "__project__")
         entity_key = entity_id or "__project__"
         return self.project_dir / "artifacts" / artifact_type / entity_key
 
     def _next_version(self, artifact_dir: Path) -> int:
+        pattern = "v*.json"
+        prefix = "v"
+        
+        # Check if it looks like a bible folder (contains manifest_v*.json)
+        if any(artifact_dir.glob("manifest_v*.json")):
+            pattern = "manifest_v*.json"
+            prefix = "manifest_v"
+
         versions = [
-            int(file_path.stem.removeprefix("v"))
-            for file_path in artifact_dir.glob("v*.json")
-            if file_path.stem.removeprefix("v").isdigit()
+            int(file_path.stem.removeprefix(prefix))
+            for file_path in artifact_dir.glob(pattern)
+            if file_path.stem.removeprefix(prefix).isdigit()
         ]
         return (max(versions) if versions else 0) + 1
 

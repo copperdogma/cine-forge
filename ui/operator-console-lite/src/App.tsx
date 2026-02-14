@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
-import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
+import { NavLink, Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 
 import {
   createProject,
@@ -31,7 +31,6 @@ type SessionProject = {
 };
 
 const DEFAULT_INPUT = "tests/fixtures/sample_screenplay.fountain";
-const DEFAULT_MODEL = "mock";
 
 function useProjectSession(): [SessionProject | null, (value: SessionProject | null) => void] {
   const [project, setProject] = useState<SessionProject | null>(() => {
@@ -84,6 +83,58 @@ function filenameStem(pathValue: string): string {
   const clean = pathValue.trim().split(/[\\/]/).filter(Boolean).pop() ?? "project";
   const withoutExt = clean.replace(/\.[^.]+$/, "");
   return withoutExt || "project";
+}
+
+function formatDuration(seconds: number): string {
+  if (seconds < 1) {
+    return `${Math.round(seconds * 1000)}ms`;
+  }
+  if (seconds < 60) {
+    return `${seconds.toFixed(1)}s`;
+  }
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.round(seconds % 60);
+  return `${mins}m ${secs}s`;
+}
+
+function formatModel(model: string | null | undefined, callCount: number | undefined): { label: string; title?: string } {
+  if (!model || model === "code" || model === "none") {
+    return { label: "code" };
+  }
+  
+  const calls = callCount && callCount > 1 ? ` (${callCount} calls)` : "";
+  
+  if (model.startsWith("mixed:")) {
+    const models = model.substring(6); // remove "mixed:"
+    return { 
+      label: `Code + ${models.split("+")[0]}${calls}`, 
+      title: `Hybrid: Code and ${models.replace(/\+/g, ", ")}`
+    };
+  }
+  
+  if (model.includes("+")) {
+    const list = model.split("+");
+    return {
+      label: `${list[0]}${calls}`,
+      title: `Multiple models: ${list.join(", ")}`
+    };
+  }
+
+  return { label: `${model}${calls}` };
+}
+
+function StatusBadge({ status }: { status: string }) {
+  let className = "badge";
+  if (status === "done" || status === "skipped_reused") {
+    className += " badge-success";
+  } else if (status === "failed") {
+    className += " badge-error";
+  } else if (status === "running") {
+    className += " badge-info badge-pulse";
+  } else {
+    className += " badge-muted";
+  }
+  return <span className={className}>{status}</span>;
 }
 
 export function App() {
@@ -419,13 +470,33 @@ function NewProjectPage({
   );
 }
 
+type ModelProfile = "mock" | "draft" | "production";
+
 function RunPage({ project, seedInputPath }: { project: SessionProject | null; seedInputPath: string }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const runId = searchParams.get("run_id") || "";
+  const setRunId = (id: string) => {
+    setSearchParams((prev) => {
+      if (id) {
+        prev.set("run_id", id);
+      } else {
+        prev.delete("run_id");
+      }
+      return prev;
+    });
+  };
+
   const [inputFile, setInputFile] = useState(seedInputPath || DEFAULT_INPUT);
-  const [defaultModel, setDefaultModel] = useState(DEFAULT_MODEL);
-  const [qaModel, setQaModel] = useState(DEFAULT_MODEL);
+  const [profile, setProfile] = useState<ModelProfile>("mock");
+  const [expertMode, setExpertMode] = useState(false);
+  const [workModel, setWorkModel] = useState("gpt-4o-mini");
+  const [verifyModel, setVerifyModel] = useState("gpt-4o-mini");
+  const [escalateModel, setEscalateModel] = useState("gpt-4o");
+  
+  const [recipeId, setRecipeId] = useState("mvp_ingest");
   const [runMode, setRunMode] = useState<"accept" | "review">("accept");
-  const [runId, setRunId] = useState<string>("");
   const [runState, setRunState] = useState<RunStateResponse | null>(null);
+  const [isPolling, setIsPolling] = useState(false);
   const [draftDetail, setDraftDetail] = useState<ArtifactDetailResponse | null>(null);
   const [draftEdit, setDraftEdit] = useState<Record<string, unknown> | null>(null);
   const [draftLoading, setDraftLoading] = useState(false);
@@ -435,25 +506,58 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
     setInputFile(seedInputPath || DEFAULT_INPUT);
   }, [seedInputPath]);
 
+  // Initial fetch on mount if runId exists
+  useEffect(() => {
+    if (runId && !runState) {
+      void getRunState(runId).then(setRunState).catch(() => {});
+    }
+  }, [runId]);
+
   useEffect(() => {
     if (!runId) {
+      setIsPolling(false);
       return;
     }
+    setIsPolling(true);
     const timer = window.setInterval(() => {
       void getRunState(runId)
-        .then((result) => setRunState(result))
-        .catch(() => {
-          // ignore transient polling errors in view loop
+        .then((result) => {
+          setRunState(result);
+          // Stop polling if run is finished or failed
+          const stageValues = Object.values(result.state.stages);
+          const statuses = stageValues.map((s) => s.status);
+          const hasFailed = statuses.includes("failed") || result.background_error;
+          const isAllDone =
+            stageValues.length > 0 &&
+            statuses.every((s) => ["done", "skipped_reused", "paused"].includes(s));
+          const hasFinished = result.state.finished_at != null;
+          if (hasFailed || isAllDone || hasFinished) {
+            window.clearInterval(timer);
+            setIsPolling(false);
+          }
+        })
+        .catch((err) => {
+          console.warn("[CineForge] polling error:", err);
         });
     }, 1000);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearInterval(timer);
+      setIsPolling(false);
+    };
   }, [runId]);
 
   const stageRows = useMemo(() => {
     if (!runState) {
       return [];
     }
-    return Object.entries(runState.state.stages);
+    return Object.entries(runState.state.stages).sort((a, b) => {
+      const aStart = a[1].started_at || Number.MAX_SAFE_INTEGER;
+      const bStart = b[1].started_at || Number.MAX_SAFE_INTEGER;
+      if (aStart !== bStart) {
+        return aStart - bStart;
+      }
+      return a[0].localeCompare(b[0]);
+    });
   }, [runState]);
 
   async function start(acceptConfig: boolean, configOverrides?: Record<string, unknown>) {
@@ -464,13 +568,37 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
     status.clear();
     setDraftDetail(null);
     setDraftEdit(null);
+
+    const sota = "gpt-4o";
+    const utility = "gpt-4o-mini";
+
+    let work = expertMode ? workModel : "mock";
+    let verify = expertMode ? verifyModel : "mock";
+    let escalate = expertMode ? escalateModel : "mock";
+
+    if (!expertMode) {
+      if (profile === "draft") {
+        work = utility;
+        verify = utility;
+        escalate = sota;
+      } else if (profile === "production") {
+        work = utility;
+        verify = sota;
+        escalate = sota;
+      }
+    }
+
     try {
       const started = await startRun({
         project_id: project.id,
         input_file: inputFile,
-        default_model: defaultModel,
-        qa_model: qaModel,
+        default_model: work, // backward compat
+        work_model: work,
+        verify_model: verify,
+        escalate_model: escalate,
+        recipe_id: recipeId,
         accept_config: acceptConfig,
+        skip_qa: profile === "mock",
         force: true,
         config_overrides: configOverrides,
       });
@@ -488,13 +616,13 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
   }
 
   async function waitForInitialRunState(activeRunId: string): Promise<void> {
-    for (let attempt = 0; attempt < 10; attempt += 1) {
+    for (let attempt = 0; attempt < 20; attempt += 1) {
       try {
         const current = await getRunState(activeRunId);
         setRunState(current);
         return;
       } catch {
-        await new Promise((resolve) => window.setTimeout(resolve, 250));
+        await new Promise((resolve) => window.setTimeout(resolve, 500));
       }
     }
     throw new Error(`Run state not found for run_id='${activeRunId}'.`);
@@ -551,6 +679,28 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
     });
   }
 
+  function updateModelStrategyField(key: string, value: string) {
+    setDraftEdit((current) => {
+      if (!current) {
+        return current;
+      }
+      const strategy = (current.model_strategy as Record<string, string>) || {
+        work: "gpt-4o-mini",
+        verify: "gpt-4o-mini",
+        escalate: "gpt-4o",
+      };
+      return {
+        ...current,
+        model_strategy: {
+          ...strategy,
+          [key]: value,
+        },
+      };
+    });
+  }
+
+  const modelStrategy = (draftEdit?.model_strategy as Record<string, string>) || {};
+
   return (
     <section className="card">
       <h2>Run Pipeline</h2>
@@ -565,16 +715,27 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
           />
         </div>
         <div>
-          <label htmlFor="default-model">Default Model</label>
-          <input
-            id="default-model"
-            value={defaultModel}
-            onChange={(event) => setDefaultModel(event.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="qa-model">QA Model</label>
-          <input id="qa-model" value={qaModel} onChange={(event) => setQaModel(event.target.value)} />
+          <label htmlFor="model-profile">Model Profile</label>
+          <select
+            id="model-profile"
+            value={profile}
+            disabled={expertMode}
+            onChange={(event) => setProfile(event.target.value as ModelProfile)}
+          >
+            <option value="mock">Mock (Fast/Free)</option>
+            <option value="draft">Drafting (Cheap/Mini)</option>
+            <option value="production">Production (SOTA)</option>
+          </select>
+          <div style={{ marginTop: "4px" }}>
+            <label className="small">
+              <input
+                type="checkbox"
+                checked={expertMode}
+                onChange={(e) => setExpertMode(e.target.checked)}
+              />{" "}
+              Expert Mode (Manual Overrides)
+            </label>
+          </div>
         </div>
         <div>
           <label htmlFor="run-mode">Config Confirmation Mode</label>
@@ -587,7 +748,52 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
             <option value="review">Draft then review/edit</option>
           </select>
         </div>
+        <div>
+          <label htmlFor="recipe-id">Pipeline Recipe</label>
+          <select
+            id="recipe-id"
+            value={recipeId}
+            onChange={(event) => setRecipeId(event.target.value)}
+          >
+            <option value="mvp_ingest">MVP Ingest (Basic)</option>
+            <option value="world_building">World Building (Bibles)</option>
+          </select>
+        </div>
       </div>
+
+      {expertMode ? (
+        <div
+          className="grid"
+          style={{
+            marginTop: "10px",
+            padding: "10px",
+            background: "#f9f9f9",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+          }}
+        >
+          <div>
+            <label htmlFor="work-model">Work Model</label>
+            <input id="work-model" value={workModel} onChange={(e) => setWorkModel(e.target.value)} />
+          </div>
+          <div>
+            <label htmlFor="verify-model">Verify Model</label>
+            <input
+              id="verify-model"
+              value={verifyModel}
+              onChange={(e) => setVerifyModel(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="escalate-model">Escalate Model</label>
+            <input
+              id="escalate-model"
+              value={escalateModel}
+              onChange={(e) => setEscalateModel(e.target.value)}
+            />
+          </div>
+        </div>
+      ) : null}
       <div className="row" style={{ marginTop: "10px" }}>
         <button disabled={!project} onClick={() => void start(runMode === "accept")}>
           Start Run
@@ -608,22 +814,37 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
               <tr>
                 <th>Stage</th>
                 <th>Status</th>
-                <th>Duration (s)</th>
+                <th>Model</th>
+                <th>Duration</th>
                 <th>Cost (USD)</th>
               </tr>
             </thead>
             <tbody>
               {stageRows.map(([stageId, stage]) => (
                 <tr key={stageId}>
-                  <td>{stageId}</td>
-                  <td>{stage.status}</td>
-                  <td>{stage.duration_seconds}</td>
-                  <td>{stage.cost_usd}</td>
+                  <td>
+                    <strong>{stageId}</strong>
+                  </td>
+                  <td>
+                    <StatusBadge status={stage.status} />
+                  </td>
+                  <td>
+                    {(() => {
+                      const { label, title } = formatModel(stage.model_used, stage.call_count);
+                      return (
+                        <code style={{ fontSize: "0.9em" }} title={title}>
+                          {label}
+                        </code>
+                      );
+                    })()}
+                  </td>
+                  <td>{formatDuration(stage.duration_seconds)}</td>
+                  <td>{stage.cost_usd > 0 ? `$${stage.cost_usd.toFixed(4)}` : "—"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <RunOutcomeSummary runState={runState} />
+          <RunOutcomeSummary runState={runState} isPolling={isPolling} />
           {runState.background_error ? (
             <p className="status-error">Background error: {runState.background_error}</p>
           ) : null}
@@ -687,6 +908,30 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
                 }
               />
             </div>
+            <div>
+              <label htmlFor="strategy-work">Global Work Model</label>
+              <input
+                id="strategy-work"
+                value={modelStrategy.work ?? ""}
+                onChange={(e) => updateModelStrategyField("work", e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="strategy-verify">Global Verify Model</label>
+              <input
+                id="strategy-verify"
+                value={modelStrategy.verify ?? ""}
+                onChange={(e) => updateModelStrategyField("verify", e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="strategy-escalate">Global Escalate Model</label>
+              <input
+                id="strategy-escalate"
+                value={modelStrategy.escalate ?? ""}
+                onChange={(e) => updateModelStrategyField("escalate", e.target.value)}
+              />
+            </div>
           </div>
           <button
             style={{ marginTop: "8px" }}
@@ -722,8 +967,20 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
 }
 
 function RunsPage({ project }: { project: SessionProject | null }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedRunId = searchParams.get("run_id") || "";
+  const setSelectedRunId = (id: string) => {
+    setSearchParams((prev) => {
+      if (id) {
+        prev.set("run_id", id);
+      } else {
+        prev.delete("run_id");
+      }
+      return prev;
+    });
+  };
+
   const [runs, setRuns] = useState<RunSummary[]>([]);
-  const [selectedRunId, setSelectedRunId] = useState("");
   const [state, setState] = useState<RunStateResponse | null>(null);
   const [events, setEvents] = useState<RunEventsResponse | null>(null);
   const status = useAsyncError();
@@ -765,6 +1022,10 @@ function RunsPage({ project }: { project: SessionProject | null }) {
     }
   }
 
+  useEffect(() => {
+    void loadRunData();
+  }, [selectedRunId]);
+
   return (
     <section className="card">
       <h2>Runs / Events</h2>
@@ -793,7 +1054,7 @@ function RunsPage({ project }: { project: SessionProject | null }) {
       {state ? (
         <div className="card">
           <h3>Run State</h3>
-          <RunOutcomeSummary runState={state} />
+          <RunOutcomeSummary runState={state} isPolling={false} />
           <pre className="code">{JSON.stringify(state.state, null, 2)}</pre>
         </div>
       ) : null}
@@ -808,12 +1069,22 @@ function RunsPage({ project }: { project: SessionProject | null }) {
 }
 
 function ArtifactsPage({ project }: { project: SessionProject | null }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selType = searchParams.get("type") || "";
+  const selEntity = searchParams.get("entity") || "";
+  const selVersionStr = searchParams.get("v") || "";
+  const selFile = searchParams.get("file") || "";
+
   const [groups, setGroups] = useState<ArtifactGroupSummary[]>([]);
-  const [selectedGroup, setSelectedGroup] = useState<ArtifactGroupSummary | null>(null);
   const [versions, setVersions] = useState<ArtifactVersionSummary[]>([]);
-  const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
   const [selectedDetail, setSelectedDetail] = useState<ArtifactDetailResponse | null>(null);
   const status = useAsyncError();
+
+  const selectedGroup = useMemo(() => {
+    return groups.find((g) => g.artifact_type === selType && (g.entity_id ?? "__project__") === selEntity) || null;
+  }, [groups, selType, selEntity]);
+
+  const selectedVersion = selVersionStr ? parseInt(selVersionStr, 10) : null;
 
   async function loadGroups() {
     if (!project) {
@@ -823,10 +1094,12 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
     try {
       const next = await listArtifactGroups(project.id);
       setGroups(next);
-      setSelectedDetail(null);
-      setSelectedVersion(null);
-      if (next.length && !selectedGroup) {
-        setSelectedGroup(next[0]);
+      if (next.length && !selType) {
+        setSearchParams((prev) => {
+          prev.set("type", next[0].artifact_type);
+          prev.set("entity", next[0].entity_id ?? "__project__");
+          return prev;
+        });
       }
     } catch (error) {
       status.from(error);
@@ -839,6 +1112,7 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
 
   useEffect(() => {
     if (!project || !selectedGroup) {
+      setVersions([]);
       return;
     }
     const entityId = selectedGroup.entity_id ?? "__project__";
@@ -846,31 +1120,86 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
       .then((next) => {
         setVersions(next);
         if (!next.length) {
-          setSelectedVersion(null);
           setSelectedDetail(null);
           return;
         }
-        const latest = next[next.length - 1];
-        setSelectedVersion(latest.version);
-        void loadDetail(latest.version);
+        if (!selectedVersion) {
+          const latest = next[next.length - 1];
+          setSearchParams((prev) => {
+            prev.set("v", String(latest.version));
+            return prev;
+          });
+        }
       })
       .catch((error: unknown) => status.from(error));
   }, [project, selectedGroup]);
 
-  async function loadDetail(version: number) {
-    if (!project || !selectedGroup) {
+  useEffect(() => {
+    if (!project || !selectedGroup || !selectedVersion) {
+      setSelectedDetail(null);
       return;
     }
-    status.clear();
-    try {
-      const entityId = selectedGroup.entity_id ?? "__project__";
-      const detail = await getArtifact(project.id, selectedGroup.artifact_type, entityId, version);
-      setSelectedVersion(version);
-      setSelectedDetail(detail);
-    } catch (error) {
-      status.from(error);
-    }
+    const entityId = selectedGroup.entity_id ?? "__project__";
+    void getArtifact(project.id, selectedGroup.artifact_type, entityId, selectedVersion)
+      .then((detail) => {
+        setSelectedDetail(detail);
+        
+        // Auto-select master_definition if no file is selected and it's a bible
+        if (detail.artifact_type === "bible_manifest" && !selFile) {
+          const manifest = detail.payload.data as { files?: Array<{ filename: string; purpose: string }> };
+          const masterFile = manifest.files?.find(f => f.purpose === "master_definition");
+          if (masterFile) {
+            setSearchParams((prev) => {
+              prev.set("file", masterFile.filename);
+              return prev;
+            });
+          }
+        }
+      })
+      .catch((error: unknown) => status.from(error));
+  }, [project, selectedGroup, selectedVersion]);
+
+  function selectGroup(group: ArtifactGroupSummary) {
+    setSearchParams((prev) => {
+      prev.set("type", group.artifact_type);
+      prev.set("entity", group.entity_id ?? "__project__");
+      prev.delete("v");
+      prev.delete("file");
+      return prev;
+    });
   }
+
+  function selectVersion(v: number) {
+    setSearchParams((prev) => {
+      prev.set("v", String(v));
+      prev.delete("file");
+      return prev;
+    });
+  }
+
+  function selectFile(filename: string) {
+    setSearchParams((prev) => {
+      if (filename) {
+        prev.set("file", filename);
+      } else {
+        prev.delete("file");
+      }
+      return prev;
+    });
+  }
+
+  const bibleFileNames = useMemo(() => {
+    if (!selectedDetail?.bible_files) return [];
+    return Object.keys(selectedDetail.bible_files).sort();
+  }, [selectedDetail]);
+
+  const displayData = useMemo(() => {
+    if (!selectedDetail) return null;
+    if (selectedDetail.artifact_type === "bible_manifest" && selFile && selectedDetail.bible_files) {
+      return selectedDetail.bible_files[selFile] || selectedDetail.payload.data;
+    }
+    return selectedDetail.payload.data;
+  }, [selectedDetail, selFile]);
 
   return (
     <section className="card">
@@ -888,16 +1217,12 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
               key={`${group.artifact_type}-${group.entity_id ?? "project"}`}
               className={`ghost ${
                 selectedGroup?.artifact_type === group.artifact_type &&
-                selectedGroup?.entity_id === group.entity_id
+                (selectedGroup?.entity_id ?? "__project__") === (group.entity_id ?? "__project__")
                   ? "selected"
                   : ""
               }`}
               style={{ marginBottom: "6px" }}
-              onClick={() => {
-                setSelectedGroup(group);
-                setSelectedVersion(null);
-                setSelectedDetail(null);
-              }}
+              onClick={() => selectGroup(group)}
             >
               {group.artifact_type}/{group.entity_id ?? "__project__"} v{group.latest_version}
             </button>
@@ -910,12 +1235,34 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
               key={version.version}
               className={`ghost ${selectedVersion === version.version ? "selected" : ""}`}
               style={{ marginBottom: "6px" }}
-              onClick={() => void loadDetail(version.version)}
+              onClick={() => selectVersion(version.version)}
             >
               v{version.version} ({version.health ?? "unknown"})
             </button>
           ))}
         </div>
+        {bibleFileNames.length > 0 && (
+          <div className="card">
+            <h3>Bible Files</h3>
+            <button
+              className={`ghost ${!selFile ? "selected" : ""}`}
+              style={{ marginBottom: "6px" }}
+              onClick={() => selectFile("")}
+            >
+              (Manifest)
+            </button>
+            {bibleFileNames.map((name) => (
+              <button
+                key={name}
+                className={`ghost ${selFile === name ? "selected" : ""}`}
+                style={{ marginBottom: "6px" }}
+                onClick={() => selectFile(name)}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       {selectedDetail ? (
         <div className="card">
@@ -925,21 +1272,22 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
       ) : null}
       {selectedDetail ? (
         <div className="card">
-          <h3>Artifact JSON</h3>
-          <pre className="code">{JSON.stringify(selectedDetail.payload, null, 2)}</pre>
+          <h3>Artifact JSON {selFile ? `(${selFile})` : "(Manifest)"}</h3>
+          <pre className="code">{JSON.stringify(displayData, null, 2)}</pre>
         </div>
       ) : null}
     </section>
   );
 }
 
-function RunOutcomeSummary({ runState }: { runState: RunStateResponse }) {
+function RunOutcomeSummary({ runState, isPolling }: { runState: RunStateResponse; isPolling: boolean }) {
   const stageEntries = Object.entries(runState.state.stages);
   const failedStage = stageEntries.find(([, stage]) => stage.status === "failed");
   const producedRefs = stageEntries.reduce((count, [, stage]) => count + stage.artifact_refs.length, 0);
+  const params = runState.state.runtime_params || {};
 
   return (
-    <div>
+    <div style={{ marginTop: "12px", borderTop: "1px solid #eee", paddingTop: "8px" }}>
       <p>
         Produced artifact refs: <strong>{producedRefs}</strong>
       </p>
@@ -950,6 +1298,18 @@ function RunOutcomeSummary({ runState }: { runState: RunStateResponse }) {
       ) : (
         <p className="status-ok">No failed stage detected.</p>
       )}
+      {runState.background_error && (
+        <p className="status-error" style={{ fontSize: "0.85em", marginTop: "4px" }}>
+          Error: {runState.background_error}
+        </p>
+      )}
+      {isPolling ? <p className="small muted italic">Polling for updates...</p> : null}
+      <details className="small" style={{ marginTop: "8px" }}>
+        <summary>Runtime Parameters</summary>
+        <pre className="code" style={{ fontSize: "0.8em" }}>
+          {JSON.stringify(params, null, 2)}
+        </pre>
+      </details>
     </div>
   );
 }

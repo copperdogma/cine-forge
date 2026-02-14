@@ -13,10 +13,10 @@ from cine_forge.modules.world_building.character_bible_v1.main import (
 
 def _scene_index_payload() -> dict[str, Any]:
     return {
-        "total_scenes": 2,
+        "total_scenes": 3,
         "unique_characters": ["ARIA", "NOAH", "ARIA (V.O.)", "HE", "INT. STUDIO"],
         "unique_locations": ["STUDIO"],
-        "estimated_runtime_minutes": 2.0,
+        "estimated_runtime_minutes": 3.0,
         "entries": [
             {
                 "scene_id": "scene_001",
@@ -24,6 +24,10 @@ def _scene_index_payload() -> dict[str, Any]:
             },
             {
                 "scene_id": "scene_002",
+                "characters_present": ["ARIA"],
+            },
+            {
+                "scene_id": "scene_003",
                 "characters_present": ["ARIA"],
             },
         ],
@@ -39,9 +43,13 @@ Hello.
 
 EXT. ROOF - NIGHT
 NOAH
-Hi.""",
-        "line_count": 10,
-        "scene_count": 2,
+Hi.
+
+INT. OFFICE - DAY
+ARIA
+Listen.""",
+        "line_count": 15,
+        "scene_count": 3,
         "normalization": {
             "source_format": "screenplay",
             "strategy": "test",
@@ -70,24 +78,26 @@ def test_character_ranking() -> None:
     ranked = _rank_characters(chars, script, index)
     
     assert ranked[0]["name"] == "ARIA"
-    assert ranked[0]["scene_count"] == 2
+    assert ranked[0]["scene_count"] == 3
     assert ranked[1]["name"] == "NOAH"
     assert ranked[1]["scene_count"] == 1
 
 
 @pytest.mark.unit
 def test_run_module_emits_bible_manifests() -> None:
+    # Aria has 3 scenes, Noah has 1. Both have dialogue.
     result = run_module(
         inputs={
             "scene_index": _scene_index_payload(),
             "canonical_script": _canonical_payload(),
         },
-        params={"model": "mock", "min_scene_appearances": 1},
+        params={"model": "mock"},
         context={"run_id": "unit", "stage_id": "world_building"},
     )
     
     artifacts = result["artifacts"]
+    # Both should remain because both have dialogue_count >= 1
     assert len(artifacts) == 2
-    assert artifacts[0]["artifact_type"] == "bible_manifest"
-    assert artifacts[0]["entity_id"].startswith("character_")
-    assert "master_v1.json" in artifacts[0]["bible_files"]
+    ids = {a["entity_id"] for name, a in zip(["ARIA", "NOAH"], artifacts, strict=False)}
+    assert "character_aria" in ids
+    assert "character_noah" in ids

@@ -151,11 +151,17 @@ def run_module(
     del context
     canonical = _extract_canonical_script(inputs)
     script_text = canonical["script_text"]
+    
+    # Tiered Model Strategy (Subsumption)
     model = params.get("model", "gpt-4o")
-    qa_model = params.get("qa_model", "gpt-4o-mini")
+    work_model = params.get("work_model") or model
+    verify_model = params.get("verify_model") or params.get("qa_model") or "gpt-4o-mini"
+    escalate_model = params.get("escalate_model") or "gpt-4o"
+
+    qa_model = verify_model
+    parser_coverage_threshold = float(params.get("parser_coverage_threshold", 0.25))
     max_retries = int(params.get("max_retries", 2))
     skip_qa = bool(params.get("skip_qa", False))
-    parser_coverage_threshold = float(params.get("parser_coverage_threshold", 0.25))
 
     parser_adapter = _SceneParserAdapter()
     parse_ctx = parser_adapter.validate(script_text)
@@ -179,41 +185,50 @@ def run_module(
         boundary_validation: _BoundaryValidation | None = None
 
         for attempt in range(max_retries + 1):
-            base_scene = _extract_scene_deterministic(
-                chunk=chunk,
-                parser_backend=parse_ctx.parser_backend,
-                parser_confident=parse_ctx.coverage >= parser_coverage_threshold,
-            )
-            unresolved_fields = _identify_unresolved_fields(base_scene=base_scene, chunk=chunk)
+            # Escalate on later attempts
+            active_model = work_model if attempt == 0 else escalate_model
 
-            if chunk.boundary_uncertain:
-                boundary_validation, boundary_cost = _validate_boundary_if_uncertain(
-                    source_text=chunk.raw_text,
-                    scene_number=chunk.scene_number,
-                    model=model,
+            try:
+                base_scene = _extract_scene_deterministic(
+                    chunk=chunk,
+                    parser_backend=parse_ctx.parser_backend,
+                    parser_confident=parse_ctx.coverage >= parser_coverage_threshold,
                 )
-                scene_costs.append(boundary_cost)
-                if boundary_validation and not boundary_validation.is_sensible:
-                    scene_health = ArtifactHealth.NEEDS_REVIEW
+                unresolved_fields = _identify_unresolved_fields(base_scene=base_scene, chunk=chunk)
 
-            if unresolved_fields:
-                enriched, enrichment_cost, extraction_prompt = _enrich_scene(
-                    scene=base_scene,
-                    source_text=chunk.raw_text,
-                    model=model,
-                    feedback=feedback,
-                    unresolved_fields=unresolved_fields,
-                )
-                scene_costs.append(enrichment_cost)
-                base_scene, disagreement = _apply_enrichment(
-                    scene=base_scene,
-                    enrichment=enriched,
-                    unresolved_fields=unresolved_fields,
-                )
-                if disagreement:
-                    scene_health = ArtifactHealth.NEEDS_REVIEW
-            else:
-                extraction_prompt = "deterministic extraction only (no unresolved fields)"
+                if chunk.boundary_uncertain:
+                    boundary_validation, boundary_cost = _validate_boundary_if_uncertain(
+                        source_text=chunk.raw_text,
+                        scene_number=chunk.scene_number,
+                        model=active_model,
+                    )
+                    scene_costs.append(boundary_cost)
+                    if boundary_validation and not boundary_validation.is_sensible:
+                        scene_health = ArtifactHealth.NEEDS_REVIEW
+
+                if unresolved_fields:
+                    enriched, enrichment_cost, extraction_prompt = _enrich_scene(
+                        scene=base_scene,
+                        source_text=chunk.raw_text,
+                        model=active_model,
+                        feedback=feedback,
+                        unresolved_fields=unresolved_fields,
+                    )
+                    scene_costs.append(enrichment_cost)
+                    base_scene, disagreement = _apply_enrichment(
+                        scene=base_scene,
+                        enrichment=enriched,
+                        unresolved_fields=unresolved_fields,
+                    )
+                    if disagreement:
+                        scene_health = ArtifactHealth.NEEDS_REVIEW
+                else:
+                    extraction_prompt = "deterministic extraction only (no unresolved fields)"
+            except Exception as exc:
+                if attempt >= max_retries:
+                    raise
+                feedback = f"Prior attempt failed with error: {exc}. Retrying with escalation."
+                continue
 
             if skip_qa:
                 qa_result = None
@@ -807,9 +822,23 @@ def _overall_confidence(
 def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:
     total_input = sum(int(item.get("input_tokens", 0) or 0) for item in costs)
     total_output = sum(int(item.get("output_tokens", 0) or 0) for item in costs)
-    total_usd = round(sum(float(item.get("estimated_cost_usd", 0.0) or 0.0) for item in costs), 8)
+    total_usd = round(
+        sum(float(item.get("estimated_cost_usd", 0.0) or 0.0) for item in costs), 8
+    )
+
+    models = {
+        item.get("model")
+        for item in costs
+        if item.get("model") and item.get("model") != "code"
+    }
+    if not models:
+        model_label = "code"
+    else:
+        # Sort for deterministic output
+        model_label = "mixed:" + "+".join(sorted(list(models)))
+
     return {
-        "model": "mixed",
+        "model": model_label,
         "input_tokens": total_input,
         "output_tokens": total_output,
         "estimated_cost_usd": total_usd,

@@ -77,6 +77,19 @@ class DriverEngine:
         state_path = run_dir / "run_state.json"
         resolved_runtime_params = runtime_params or {}
 
+        # 1. Write minimal state immediately so pollers don't 404 during discovery/validation
+        initial_run_state = {
+            "run_id": run_id,
+            "recipe_id": "initializing",
+            "dry_run": dry_run,
+            "started_at": time.time(),
+            "stages": {},
+            "runtime_params": resolved_runtime_params,
+            "total_cost_usd": 0.0,
+            "instrumented": instrument,
+        }
+        self._write_run_state(state_path, initial_run_state)
+
         module_registry = discover_modules(modules_root=self.modules_root)
         recipe = resolve_runtime_params(
             recipe=load_recipe(recipe_path=recipe_path),
@@ -99,12 +112,15 @@ class DriverEngine:
             "stages": {
                 stage.id: {
                     "status": "pending",
+                    "model_used": None,
+                    "call_count": 0,
                     "artifact_refs": [],
                     "duration_seconds": 0.0,
                     "cost_usd": 0.0,
                 }
                 for stage in recipe.stages
             },
+            "runtime_params": resolved_runtime_params,
             "total_cost_usd": 0.0,
             "instrumented": instrument,
         }
@@ -178,6 +194,13 @@ class DriverEngine:
 
             stage_state["status"] = "running"
             stage_started = time.time()
+            stage_state["started_at"] = stage_started
+
+            # Pre-emptively set model if known from params to avoid "code" flip-flop in UI
+            guessed_model = stage.params.get("work_model") or stage.params.get("model")
+            if guessed_model:
+                stage_state["model_used"] = str(guessed_model)
+
             print(f"[{run_id}] Stage '{stage_id}' starting...")
             self._append_event(events_path, {"event": "stage_started", "stage_id": stage_id})
             self._write_run_state(state_path, run_state)
@@ -283,6 +306,22 @@ class DriverEngine:
 
                 stage_state["status"] = "done"
                 stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
+                
+                # Determine model used and call count
+                model_used = module_result.get("model")
+                raw_cost = module_result.get("cost")
+                call_count = 0
+                if isinstance(raw_cost, list):
+                    call_count = len(raw_cost)
+                elif isinstance(raw_cost, dict):
+                    call_count = 1
+
+                if not model_used and cost_record:
+                    model_used = cost_record.model
+                
+                stage_state["model_used"] = model_used or "code"
+                stage_state["call_count"] = call_count
+
                 self._append_event(
                     events_path,
                     {
@@ -300,12 +339,15 @@ class DriverEngine:
                 self._write_run_state(state_path, run_state)
             except Exception as exc:  # noqa: BLE001
                 stage_state["status"] = "failed"
+                if not stage_state.get("model_used"):
+                    stage_state["model_used"] = "code"
                 stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
                 self._append_event(
                     events_path,
                     {"event": "stage_failed", "stage_id": stage_id, "error": str(exc)},
                 )
                 print(f"[{run_id}] Stage '{stage_id}' failed: {exc}")
+                run_state["finished_at"] = time.time()
                 self._write_run_state(state_path, run_state)
                 raise
 
@@ -322,10 +364,12 @@ class DriverEngine:
     ) -> tuple[dict[str, Any], list[ArtifactRef]]:
         stage_by_id = {stage.id: stage for stage in recipe.stages}
         stage = stage_by_id[stage_id]
-        if not stage.needs:
+        if not stage.needs and not stage.store_inputs:
             return {}, []
         collected: dict[str, Any] = {}
         lineage: list[ArtifactRef] = []
+
+        # Resolve in-recipe stage dependencies
         for dependency in stage.needs:
             outputs = stage_outputs.get(dependency, [])
             if not outputs:
@@ -334,6 +378,31 @@ class DriverEngine:
                 )
             collected[dependency] = outputs[-1]["data"]
             lineage.append(outputs[-1]["ref"])
+
+        # Resolve store_inputs from artifact store
+        for input_key, artifact_type in stage.store_inputs.items():
+            versions = self.store.list_versions(
+                artifact_type=artifact_type, entity_id="project"
+            )
+            if not versions:
+                raise ValueError(
+                    f"Stage '{stage_id}' store_input '{input_key}' requires "
+                    f"artifact type '{artifact_type}', but none exist in the store. "
+                    f"Run the upstream recipe first."
+                )
+            latest_ref = versions[-1]
+            health = self.store.graph.get_health(latest_ref)
+            if health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
+                raise ValueError(
+                    f"Stage '{stage_id}' store_input '{input_key}': latest "
+                    f"'{artifact_type}' (v{latest_ref.version}) has health "
+                    f"'{health.value if health else 'unknown'}'. Re-run the upstream "
+                    f"recipe to produce a healthy version."
+                )
+            artifact = self.store.load_artifact(artifact_ref=latest_ref)
+            collected[input_key] = artifact.data
+            lineage.append(latest_ref)
+
         return collected, lineage
 
     def _load_stage_cache(self) -> dict[str, dict[str, dict[str, Any]]]:
@@ -493,6 +562,7 @@ class DriverEngine:
             "stage_module": stage.module,
             "stage_params": stage.params,
             "stage_needs": stage.needs,
+            "stage_store_inputs": stage.store_inputs,
             "module_manifest": module_manifest.model_dump(mode="json"),
             "module_entrypoint_hash": _hash_file(module_entrypoint),
             "module_code_hash": module_code_hash,

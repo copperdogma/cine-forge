@@ -295,6 +295,11 @@ def _build_draft_config(
         "human_control_mode": "autonomous" if autonomous else "checkpoint",
         "style_packs": {},
         "budget_cap_usd": None,
+        "model_strategy": {
+            "work": default_model,
+            "verify": default_model,
+            "escalate": "gpt-4o" if default_model != "mock" else "mock",
+        },
         "default_model": default_model,
         "detection_details": {},
         "confirmed": False,
@@ -337,6 +342,7 @@ def _build_draft_config(
         "human_control_mode": draft["human_control_mode"],
         "style_packs": draft["style_packs"],
         "budget_cap_usd": draft["budget_cap_usd"],
+        "model_strategy": draft["model_strategy"],
         "default_model": draft["default_model"],
     }
     for field_name, field_value in defaults.items():
@@ -372,6 +378,7 @@ def _apply_user_overrides(draft: dict[str, Any], overrides: dict[str, Any]) -> d
         "human_control_mode",
         "style_packs",
         "budget_cap_usd",
+        "model_strategy",
         "default_model",
     }
 

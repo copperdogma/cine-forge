@@ -168,10 +168,30 @@ def _parse_response(
     if not response_schema:
         return text, metadata
 
+    # 1. Try to find a JSON code block with regex
+    # This handles cases where the model puts the JSON inside ```json ... ```
+    # but also includes other conversational text.
+    cleaned_text = text.strip()
+    json_match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", cleaned_text)
+    if json_match:
+        cleaned_text = json_match.group(1).strip()
+    else:
+        # Fallback: simple stripping of markdown markers if regex failed
+        if cleaned_text.startswith("```"):
+            cleaned_text = re.sub(r"^```[a-zA-Z]*\n", "", cleaned_text)
+            cleaned_text = re.sub(r"\n```$", "", cleaned_text)
+            cleaned_text = cleaned_text.strip()
+
     try:
-        payload = json.loads(text)
+        payload = json.loads(cleaned_text)
     except json.JSONDecodeError as exc:
-        raise LLMCallError("Structured response was not valid JSON") from exc
+        # For autonomous debugging: log the actual malformed text
+        print(
+            f"\n[DEBUG] Structured response was not valid JSON. "
+            f"First 500 chars:\n{cleaned_text[:500]}..."
+        )
+        print(f"[DEBUG] Raw response was (first 500 chars):\n{text[:500]}...")
+        raise LLMCallError(f"Structured response was not valid JSON: {exc}") from exc
     return response_schema.model_validate(payload), metadata
 
 
@@ -191,7 +211,7 @@ def _openai_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=60) as response:  # noqa: S310
+        with urllib.request.urlopen(request, timeout=300) as response:  # noqa: S310
             body = response.read().decode("utf-8")
             return json.loads(body)
     except urllib.error.HTTPError as exc:

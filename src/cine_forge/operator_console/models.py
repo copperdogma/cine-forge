@@ -74,6 +74,7 @@ class RunStartRequest(BaseModel):
     input_file: str = Field(min_length=1)
     default_model: str = Field(min_length=1)
     qa_model: str | None = None
+    recipe_id: str | None = "mvp_ingest"
     accept_config: bool = False
     config_file: str | None = None
     config_overrides: dict[str, Any] | None = None
@@ -119,3 +120,4 @@ class ArtifactDetailResponse(BaseModel):
     entity_id: str | None = None
     version: int = Field(ge=1)
     payload: dict[str, Any]
+    bible_files: dict[str, Any] | None = None

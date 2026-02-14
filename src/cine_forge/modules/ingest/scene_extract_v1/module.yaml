@@ -12,6 +12,15 @@ parameters:
     required: false
     default: "gpt-4o"
     description: "LLM model used for scene enrichment on unresolved fields."
+  work_model:
+    type: string
+    required: false
+  verify_model:
+    type: string
+    required: false
+  escalate_model:
+    type: string
+    required: false
   qa_model:
     type: string
     required: false

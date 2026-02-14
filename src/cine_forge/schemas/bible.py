@@ -80,3 +80,27 @@ class CharacterBible(BaseModel):
     narrative_role_confidence: float = Field(ge=0.0, le=1.0)
     relationships: list[CharacterRelationshipStub] = Field(default_factory=list)
     overall_confidence: float = Field(ge=0.0, le=1.0)
+
+
+class LocationBible(BaseModel):
+    """Master definition for a location entity."""
+
+    location_id: str
+    name: str
+    aliases: list[str] = Field(default_factory=list)
+    description: str
+    physical_traits: list[str] = Field(default_factory=list)
+    scene_presence: list[str] = Field(default_factory=list)
+    narrative_significance: str
+    overall_confidence: float = Field(ge=0.0, le=1.0)
+
+
+class PropBible(BaseModel):
+    """Master definition for a prop entity."""
+
+    prop_id: str
+    name: str
+    description: str
+    scene_presence: list[str] = Field(default_factory=list)
+    narrative_significance: str
+    overall_confidence: float = Field(ge=0.0, le=1.0)

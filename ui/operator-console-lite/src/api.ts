@@ -17,6 +17,11 @@ export type RunStartPayload = {
   project_id: string;
   input_file: string;
   default_model: string;
+  work_model?: string;
+  verify_model?: string;
+  escalate_model?: string;
+  recipe_id?: string;
+  skip_qa?: boolean;
   qa_model?: string;
   accept_config: boolean;
   run_id?: string;

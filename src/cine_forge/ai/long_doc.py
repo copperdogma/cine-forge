@@ -49,7 +49,7 @@ def select_strategy(
     source_format: str,
     confidence: float,
     text: str,
-    short_doc_threshold: int = 5000,
+    short_doc_threshold: int = 2000,
 ) -> LongDocStrategy:
     """Pick a normalization strategy based on source shape and size."""
     estimated_tokens = estimate_token_count(text)

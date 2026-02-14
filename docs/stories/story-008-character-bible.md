@@ -18,24 +18,23 @@ This story establishes the bible artifact pattern that Stories 009 (locations/pr
 ## Acceptance Criteria
 
 ### Bible Infrastructure (Shared by 008/009/011)
-- [x] Folder-based bible artifact model implemented:
-  - [x] Each entity is a directory: `{project}/artifacts/bibles/{entity_type}_{entity_id}/`
-  - [x] Directory contains a `manifest_vN.json` tracking all files, versions, and provenance.
-  - [x] Individual files within the folder are immutable; "updating" means adding new files and producing a new manifest version.
-  - [x] Manifest schema defined and registered.
-- [x] Bible manifest tracks:
-  - [x] All files in the folder with their purpose (master definition, evidence, reference image, etc.).
-  - [x] Per-file version and provenance (AI-generated, user-injected, extracted).
-  - [x] Creation timestamp and producing module/role.
-- [x] Artifact store supports folder-based artifacts:
-  - [x] `save_bible_entry()` creates/updates a bible folder with a new manifest version.
-  - [x] `load_bible_entry()` loads the current manifest and any referenced files.
-  - [x] `list_bible_entries()` lists all entities of a given type.
+... (existing items) ...
 - [x] Bible entries integrate with the dependency graph:
   - [x] Character bibles depend on scene artifacts (lineage tracked).
   - [x] Downstream artifacts can depend on specific bible entries.
 
-### Character Bible Extraction
+### Subsumption Model Strategy (Infra)
+- [ ] `ModelStrategy` schema implemented and integrated into `ProjectConfig`.
+- [ ] Driver supports hierarchical model resolution (Module > Recipe > Project).
+- [ ] UI supports "Model Profiles" (Mock, Drafting, Production) that map to tiered slots.
+- [ ] `RunState` persists `runtime_params` for full execution traceability.
+
+### Character Bible Extraction (Resilient Pattern)
+- [ ] Character extraction module implements the "Resilient Work" pattern:
+  - [ ] Attempt extraction with `work` model.
+  - [ ] Validate with `verify` model.
+  - [ ] Automatically escalate to `escalate` model on validation failure.
+... (existing character items) ...
 - [x] Character extraction module reads scene artifacts and canonical script to build character master definitions.
 - [x] Each character bible includes:
   - [x] **Name**: canonical character name (normalized from scene extraction).

@@ -71,10 +71,14 @@ def run_module(
     source_confidence = 1.0 if fdx_conversion.is_fdx else float(classification["confidence"])
 
     model = params.get("model", "gpt-4o")
-    qa_model = params.get("qa_model", "gpt-4o-mini")
+    work_model = params.get("work_model") or model
+    verify_model = params.get("verify_model") or params.get("qa_model") or "gpt-4o-mini"
+    escalate_model = params.get("escalate_model") or "gpt-4o"
+
+    qa_model = verify_model
     max_retries = int(params.get("max_retries", 2))
     skip_qa = bool(params.get("skip_qa", False))
-    max_tokens = int(params.get("max_tokens", 3500))
+    max_tokens = int(params.get("max_tokens", 16000))
     cost_ceiling_usd = float(params.get("cost_ceiling_usd", 2.0))
     patch_fuzzy_threshold = float(params.get("patch_fuzzy_threshold", 0.85))
     export_formats = _normalize_export_formats(params.get("export_formats", []))
@@ -97,17 +101,32 @@ def run_module(
     reroutes = 0
     parser_check = validate_fountain_structure(content)
 
+    from cine_forge.ai.llm import LLMCallError
+
     for attempt in range(max_retries + 1):
-        script_text, normalization_meta, call_costs, prompt_used = _normalize_once(
-            content=content,
-            source_format=source_format,
-            target_strategy=target_strategy,
-            long_doc_strategy=long_doc_strategy.name,
-            model=model,
-            feedback=normalization_feedback,
-            max_tokens=max_tokens,
-            patch_fuzzy_threshold=patch_fuzzy_threshold,
-        )
+        # Escalate on later attempts
+        active_model = work_model if attempt == 0 else escalate_model
+
+        try:
+            script_text, normalization_meta, call_costs, prompt_used = _normalize_once(
+                content=content,
+                source_format=source_format,
+                target_strategy=target_strategy,
+                long_doc_strategy=long_doc_strategy.name,
+                model=active_model,
+                feedback=normalization_feedback,
+                max_tokens=max_tokens,
+                patch_fuzzy_threshold=patch_fuzzy_threshold,
+            )
+        except LLMCallError as exc:
+            if attempt >= max_retries:
+                raise
+            # Increase token budget on truncation failures
+            if "truncated" in str(exc).lower():
+                max_tokens = int(max_tokens * 1.5)
+            normalization_feedback = f"Prior attempt failed with error: {exc}. Please try again."
+            continue
+
         normalization_costs.extend(call_costs)
         script_text = normalize_fountain_text(script_text)
         lint = lint_fountain_text(script_text)
@@ -457,8 +476,21 @@ def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:
     total_input = sum(int(item.get("input_tokens", 0) or 0) for item in costs)
     total_output = sum(int(item.get("output_tokens", 0) or 0) for item in costs)
     total_estimated = sum(float(item.get("estimated_cost_usd", 0.0) or 0.0) for item in costs)
+
+    models = {
+        item.get("model")
+        for item in costs
+        if item.get("model") and item.get("model") != "code"
+    }
+    if not models:
+        model_label = "code"
+    elif len(models) == 1:
+        model_label = list(models)[0]
+    else:
+        model_label = "+".join(sorted(list(models)))
+
     return {
-        "model": "multi-call",
+        "model": model_label,
         "input_tokens": total_input,
         "output_tokens": total_output,
         "estimated_cost_usd": round(total_estimated, 8),

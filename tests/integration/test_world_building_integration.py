@@ -19,12 +19,30 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
     input_file = workspace_root / "tests" / "fixtures" / "sample_screenplay.fountain"
     
     engine = DriverEngine(workspace_root=workspace_root, project_dir=project_dir)
+    # Run ingest first to populate the store for store_inputs
+    engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-mvp-ingest.yaml",
+        run_id=f"ingest-{run_id}",
+        runtime_params={
+            "input_file": str(input_file),
+            "default_model": "mock",
+            "utility_model": "mock",
+            "sota_model": "mock",
+            "skip_qa": True,
+            "accept_config": True,
+        }
+    )
+
     state = engine.run(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-world-building.yaml",
         run_id=run_id,
         runtime_params={
             "input_file": str(input_file),
             "default_model": "mock",
+            "utility_model": "mock",
+            "sota_model": "mock",
+            "skip_qa": True,
+            "accept_config": True,
         }
     )
     
@@ -35,7 +53,25 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
         ArtifactRef.model_validate(ref)
         for ref in state["stages"]["character_bible"]["artifact_refs"]
     ]
-    assert len(bible_refs) >= 3 # Aria, Noah, June at least
+    # In Signal in the Rain: Aria (6), Noah (6), June (8), Kell (5)
+    # should all pass min_appearances=3
+    assert len(bible_refs) >= 4
+
+    location_refs = [
+        ref
+        for ref in state["stages"]["location_bible"]["artifact_refs"]
+        if ref["artifact_type"] == "bible_manifest"
+    ]
+    # STUDIO should be produced
+    assert len(location_refs) >= 1
+
+    prop_refs = [
+        ref
+        for ref in state["stages"]["prop_bible"]["artifact_refs"]
+        if ref["artifact_type"] == "bible_manifest"
+    ]
+    # Mock returns 2 props
+    assert len(prop_refs) == 2
     
     for ref in bible_refs:
         assert ref.artifact_type == "bible_manifest"

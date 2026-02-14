@@ -274,3 +274,46 @@ button.ghost.selected {
     flex-direction: column;
   }
 }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background: #e6f4ea;
+  color: #0f6f2f;
+}
+
+.badge-error {
+  background: #fce8e6;
+  color: #a42a1b;
+}
+
+.badge-info {
+  background: #e8f0fe;
+  color: #1a73e8;
+}
+
+.badge-muted {
+  background: #f1f3f4;
+  color: #5f6368;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.badge-pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.italic {
+  font-style: italic;
+}
