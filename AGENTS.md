@@ -55,6 +55,16 @@ Entry format:
 - `src/cine_forge/artifacts/graph.py` tracks upstream/downstream artifact dependencies and layer-1 stale propagation.
 - `src/cine_forge/driver/` handles module discovery, recipe validation/toposort, stage execution, run state, and event logging.
 
+## Deep Research
+
+For multi-model research tasks (e.g., technology evaluation, design research, competitive analysis), use the `deep-research` CLI tool ([github.com/copperdogma/deep-research-manager](https://github.com/copperdogma/deep-research-manager)).
+
+- Install: `pip install "git+https://github.com/copperdogma/deep-research-manager.git#egg=deep-research[all]"`
+- Workflow: `deep-research init <topic>` → write `research-prompt.md` → `deep-research run` → `deep-research format` → `deep-research final`
+- The folder is the state. Every step can be done manually (paste into files) or automated via API keys.
+- Research outputs go under `docs/research/` and feed into story acceptance criteria and design documents.
+- Requires API keys in environment: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, `XAI_API_KEY` (all optional; more keys = more providers).
+
 ## Common Driver Commands
 
 - Validate only: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --dry-run`
@@ -72,6 +82,8 @@ Entry format:
 - `configs/recipes/`: YAML pipeline recipes
 - `tests/`: unit, integration, smoke test suites
 - `skills/`: cross-agent skill definitions
+- `docs/design/`: project-level UI design docs (principles, personas, research outputs)
+- `docs/research/`: deep research outputs organized by topic
 
 ## Development Workflow
 
