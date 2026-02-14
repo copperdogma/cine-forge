@@ -96,8 +96,10 @@ def test_run_module_emits_bible_manifests() -> None:
     )
     
     artifacts = result["artifacts"]
-    # Both should remain because both have dialogue_count >= 1
-    assert len(artifacts) == 2
-    ids = {a["entity_id"] for name, a in zip(["ARIA", "NOAH"], artifacts, strict=False)}
+    # 2 characters, each produces a character_bible AND a bible_manifest
+    assert len(artifacts) == 4
+    ids = {a["entity_id"] for a in artifacts}
+    assert "aria" in ids
     assert "character_aria" in ids
+    assert "noah" in ids
     assert "character_noah" in ids

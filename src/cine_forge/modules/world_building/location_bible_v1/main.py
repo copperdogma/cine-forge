@@ -110,6 +110,18 @@ def run_module(
         }
 
         artifacts.append({
+            "artifact_type": "location_bible",
+            "entity_id": slug,
+            "data": definition.model_dump(mode="json"),
+            "metadata": {
+                "intent": f"Establish master definition for location '{loc_name}'",
+                "rationale": "Extracted from canonical script and scene headings.",
+                "confidence": definition.overall_confidence,
+                "source": "ai",
+            }
+        })
+
+        artifacts.append({
             "artifact_type": "bible_manifest",
             "entity_id": f"location_{slug}",
             "data": manifest_data,

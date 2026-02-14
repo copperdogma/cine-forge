@@ -16,6 +16,7 @@ from .canonical_script import (
     Invention,
     NormalizationMetadata,
 )
+from .graph import EntityEdge, EntityGraph
 from .models import (
     Artifact,
     ArtifactHealth,
@@ -66,6 +67,8 @@ __all__ = [
     "Assumption",
     "NormalizationMetadata",
     "CanonicalScript",
+    "EntityEdge",
+    "EntityGraph",
     "SourceFileInfo",
     "FormatClassification",
     "ModelStrategy",

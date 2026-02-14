@@ -30,7 +30,11 @@ from cine_forge.schemas import (
     CanonicalScript,
     CharacterBible,
     CostRecord,
+    EntityEdge,
+    EntityGraph,
+    LocationBible,
     ProjectConfig,
+    PropBible,
     QAResult,
     RawInput,
     Scene,
@@ -57,6 +61,10 @@ class DriverEngine:
         self.schemas.register("project_config", ProjectConfig)
         self.schemas.register("bible_manifest", BibleManifest)
         self.schemas.register("character_bible", CharacterBible)
+        self.schemas.register("location_bible", LocationBible)
+        self.schemas.register("prop_bible", PropBible)
+        self.schemas.register("entity_edge", EntityEdge)
+        self.schemas.register("entity_graph", EntityGraph)
         self.schemas.register("qa_result", QAResult)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
@@ -378,6 +386,16 @@ class DriverEngine:
                 )
             collected[dependency] = outputs[-1]["data"]
             lineage.append(outputs[-1]["ref"])
+
+        for dependency in stage.needs_all:
+            outputs = stage_outputs.get(dependency, [])
+            if not outputs:
+                raise ValueError(
+                    f"Missing required upstream outputs for '{stage_id}': "
+                    f"dependency '{dependency}' (needs_all)"
+                )
+            collected[dependency] = [o["data"] for o in outputs]
+            lineage.extend([o["ref"] for o in outputs])
 
         # Resolve store_inputs from artifact store
         for input_key, artifact_type in stage.store_inputs.items():

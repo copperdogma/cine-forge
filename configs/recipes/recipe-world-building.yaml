@@ -37,3 +37,12 @@ stages:
     store_inputs:
       normalize: canonical_script
       extract_scenes: scene_index
+
+  - id: entity_graph
+    module: entity_graph_v1
+    params:
+      work_model: ${utility_model}
+    needs: []
+    needs_all: [character_bible, location_bible, prop_bible]
+    store_inputs:
+      extract_scenes: scene_index

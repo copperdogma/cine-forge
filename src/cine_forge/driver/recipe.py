@@ -20,6 +20,7 @@ class RecipeStage(BaseModel):
     module: str
     params: dict[str, Any] = Field(default_factory=dict)
     needs: list[str] = Field(default_factory=list)
+    needs_all: list[str] = Field(default_factory=list)
     store_inputs: dict[str, str] = Field(default_factory=dict)
 
 
@@ -57,10 +58,10 @@ def validate_recipe(
     for stage in recipe.stages:
         if stage.module not in module_registry:
             raise ValueError(f"Recipe references unknown module '{stage.module}'")
-        for dependency in stage.needs:
+        for dependency in stage.needs + stage.needs_all:
             if dependency not in stage_ids:
                 raise ValueError(f"Stage '{stage.id}' references missing dependency '{dependency}'")
-        overlap = set(stage.needs) & set(stage.store_inputs.keys())
+        overlap = (set(stage.needs) | set(stage.needs_all)) & set(stage.store_inputs.keys())
         if overlap:
             raise ValueError(
                 f"Stage '{stage.id}' has keys in both 'needs' and 'store_inputs': {overlap}"
@@ -82,8 +83,9 @@ def resolve_execution_order(recipe: Recipe) -> list[str]:
     incoming_counts: dict[str, int] = {}
     children: dict[str, list[str]] = defaultdict(list)
     for stage in recipe.stages:
-        incoming_counts[stage.id] = len(stage.needs)
-        for upstream in stage.needs:
+        dependencies = stage.needs + stage.needs_all
+        incoming_counts[stage.id] = len(dependencies)
+        for upstream in dependencies:
             children[upstream].append(stage.id)
 
     queue = deque(sorted(stage_id for stage_id, count in incoming_counts.items() if count == 0))
@@ -111,7 +113,7 @@ def _assert_schema_compatibility(
     stages_by_id = {stage.id: stage for stage in recipe.stages}
     for stage in recipe.stages:
         consumer = module_registry[stage.module]
-        for upstream_id in stage.needs:
+        for upstream_id in stage.needs + stage.needs_all:
             producer_module = module_registry[stages_by_id[upstream_id].module]
             produced = producer_module.output_schemas
             required = consumer.input_schemas

@@ -33,7 +33,8 @@ def test_location_bible_module_extracts_mock(mock_inputs: dict[str, Any]) -> Non
     assert "artifacts" in result
     artifacts = result["artifacts"]
     
-    # We expect 1 bible_manifest for STUDIO
+    # We expect 1 location_bible and 1 bible_manifest for STUDIO
+    assert len(artifacts) == 2
     manifests = [a for a in artifacts if a["artifact_type"] == "bible_manifest"]
     assert len(manifests) == 1
     assert manifests[0]["entity_id"] == "location_studio"

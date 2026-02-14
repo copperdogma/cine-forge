@@ -100,6 +100,18 @@ def run_module(
         }
 
         artifacts.append({
+            "artifact_type": "prop_bible",
+            "entity_id": slug,
+            "data": definition.model_dump(mode="json"),
+            "metadata": {
+                "intent": f"Establish master definition for prop '{prop_name}'",
+                "rationale": "AI-identified significant object from canonical script.",
+                "confidence": definition.overall_confidence,
+                "source": "ai",
+            }
+        })
+
+        artifacts.append({
             "artifact_type": "bible_manifest",
             "entity_id": f"prop_{slug}",
             "data": manifest_data,

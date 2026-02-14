@@ -175,6 +175,18 @@ def run_module(
         }
 
         artifacts.append({
+            "artifact_type": "character_bible",
+            "entity_id": slug,
+            "data": definition.model_dump(mode="json"),
+            "metadata": {
+                "intent": f"Establish master definition for character '{char_name}'",
+                "rationale": "Extracted from canonical script and scene co-occurrence data.",
+                "confidence": definition.overall_confidence,
+                "source": "ai",
+            }
+        })
+
+        artifacts.append({
             "artifact_type": "bible_manifest",
             "entity_id": f"character_{slug}",
             "data": manifest_data,

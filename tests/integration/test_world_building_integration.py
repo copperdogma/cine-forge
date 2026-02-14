@@ -72,21 +72,28 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
     ]
     # Mock returns 2 props
     assert len(prop_refs) == 2
-    
+
+    # Check entity graph
+    assert state["stages"]["entity_graph"]["status"] == "done"
+    graph_refs = state["stages"]["entity_graph"]["artifact_refs"]
+    assert len(graph_refs) == 1
+    assert graph_refs[0]["artifact_type"] == "entity_graph"
+
     for ref in bible_refs:
-        assert ref.artifact_type == "bible_manifest"
-        manifest, metadata = engine.store.load_bible_entry(ref)
-        assert manifest.entity_type == "character"
-        assert manifest.version == 1
-        assert len(manifest.files) == 1
-        assert manifest.files[0].purpose == "master_definition"
-        
-        # Check master file exists
-        master_path = (
-            project_dir
-            / "artifacts"
-            / "bibles"
-            / f"character_{manifest.entity_id}"
-            / manifest.files[0].filename
-        )
-        assert master_path.exists()
+        assert ref.artifact_type in ["bible_manifest", "character_bible"]
+        if ref.artifact_type == "bible_manifest":
+            manifest, metadata = engine.store.load_bible_entry(ref)
+            assert manifest.entity_type == "character"
+            assert manifest.version == 1
+            assert len(manifest.files) == 1
+            assert manifest.files[0].purpose == "master_definition"
+            
+            # Check master file exists
+            master_path = (
+                project_dir
+                / "artifacts"
+                / "bibles"
+                / f"character_{manifest.entity_id}"
+                / manifest.files[0].filename
+            )
+            assert master_path.exists()

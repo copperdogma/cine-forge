@@ -33,7 +33,8 @@ def test_prop_bible_module_extracts_mock(mock_inputs: dict[str, Any]) -> None:
     assert "artifacts" in result
     artifacts = result["artifacts"]
     
-    # We expect bible_manifests for discovered props
+    # We expect 2 bible_manifests + 2 prop_bibles for discovered props
+    assert len(artifacts) == 4
     # Mock returns ["Hero Sword", "Secret Map"]
     manifests = [a for a in artifacts if a["artifact_type"] == "bible_manifest"]
     assert len(manifests) == 2
