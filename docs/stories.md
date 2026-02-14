@@ -11,13 +11,17 @@ Guiding priorities: **get a working pipeline fast** (MVP: script in → structur
 5. **005 — Scene Extraction Module**: AI extracts structured scenes from canonical script.
 6. **006 — Project Configuration**: Auto-initialize project parameters from ingested story; user confirms/modifies.
 7. **007 — MVP Recipe and Smoke Test**: Wire 003–006 into a recipe, run end-to-end, verify artifacts. First "it works" milestone.
-8. **007b — Operator Console Lite**: Thin GUI for starting/opening projects, running MVP recipe, monitoring runs/events, and browsing artifacts.
-9. **007c — MVP Reality Validation and Remediation**: Fix upstream fidelity issues uncovered by first real UI-driven runs (PDF/script ingestion → normalization → scene extraction → project config), backed by realistic fixtures and stronger assertions.
-10. **008 — Bible Infrastructure and Character Bible**: Folder-based bible model with manifest, character extraction from script.
-11. **009 — Location and Prop Bibles**: Same pattern as characters for locations and props.
-12. **010 — Entity Relationship Graph**: Cross-entity typed relationship edges extracted from script and bibles.
+8. **008 — Bible Infrastructure and Character Bible**: Folder-based bible model with manifest, character extraction from script.
+9. **009 — Location and Prop Bibles**: Same pattern as characters for locations and props.
+10. **010 — Entity Relationship Graph**: Cross-entity typed relationship edges extracted from script and bibles.
+11. **011 — Asset State Tracking (Continuity)**: Track asset states across scenes; completes Phase 2 artifact model.
+12. **011b — Operator Console (Production UI)**: Replace stopgap console with polished, public-releasable UI. Research-first: AI tooling, app landscape, persona workflows, then design and build. Foundation for all subsequent UI surfaces.
 
 This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
+
+NOTES from Cam:
+- 20260212: Seeddance 2.0 released and it's insane: https://x.com/altryne/status/2021967972055842893?s=20
+  - "Takes a TEXT STORYBOARD image + character ref + scene ref + prop ref → coherent 15-second film."
 
 ## Story List
 
@@ -30,12 +34,13 @@ This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 | 005 | Scene Extraction Module | 1 — MVP Pipeline | High | Done | [story-005](stories/story-005-scene-extraction.md) |
 | 006 | Project Configuration (Auto-Initialized) | 1 — MVP Pipeline | High | Done | [story-006](stories/story-006-project-configuration.md) |
 | 007 | MVP Recipe and End-to-End Smoke Test | 1 — MVP Pipeline | High | Done | [story-007](stories/story-007-mvp-recipe-smoke-test.md) |
-| 007b | Operator Console Lite (Start/Open Project + Run + Artifacts) | 1 — MVP Pipeline | High | Done | [story-007b](stories/story-007b-operator-console-lite.md) |
-| 007c | MVP Reality Validation and Remediation | 1 — MVP Pipeline | High | To Do | [story-007c](stories/story-007c-mvp-reality-remediation.md) |
+| 007b | Operator Console Lite (Stopgap GUI) | 1 — MVP Pipeline | High | Done | [story-007b](stories/story-007b-operator-console-lite.md) |
+| 007c | MVP Reality Validation and Remediation | 1 — MVP Pipeline | High | Done | [story-007c](stories/story-007c-mvp-reality-remediation.md) |
 | 008 | Bible Infrastructure and Character Bible | 2 — World Building | High | To Do | [story-008](stories/story-008-character-bible.md) |
 | 009 | Location and Prop Bibles | 2 — World Building | High | To Do | [story-009](stories/story-009-location-prop-bibles.md) |
 | 010 | Entity Relationship Graph | 2 — World Building | Medium | To Do | [story-010](stories/story-010-entity-graph.md) |
 | 011 | Asset State Tracking (Continuity) | 2 — World Building | Medium | To Do | [story-011](stories/story-011-continuity-tracking.md) |
+| 011b | Operator Console — Production UI | 2.5 — UI | High | To Do | [story-011b](stories/story-011b-operator-console.md) |
 | 012 | Timeline Data Artifact | 3 — Timeline | Medium | To Do | [story-012](stories/story-012-timeline-artifact.md) |
 | 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | To Do | [story-013](stories/story-013-track-system.md) |
 | 014 | Role System Foundation | 4 — Role System | High | To Do | [story-014](stories/story-014-role-system-foundation.md) |
@@ -65,6 +70,7 @@ This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 - **Phase 0 — Foundation** (001–002): Project scaffolding and pipeline infrastructure. Artifact store with immutability, snapshot versioning, dependency graph (structural invalidation), audit metadata, cost tracking hooks, and structural validation.
 - **Phase 1 — MVP Pipeline** (003–007): First working pipeline: script in → canonical script + scenes + project config out. End-to-end smoke test.
 - **Phase 2 — World Building** (008–011): Folder-based bibles (characters, locations, props), entity relationship graph, continuity state tracking.
+- **Phase 2.5 — UI** (011b): Production-quality Operator Console. Research-driven design (AI tooling, app landscape, persona workflows), then build. Replaces stopgap 007b console. Foundation for Phase 3+ UI surfaces.
 - **Phase 3 — Timeline** (012–013): Timeline data artifact with scene/story ordering, stacked tracks, always-playable rule.
 - **Phase 4 — Role System** (014–019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, human interaction (control modes, creative sessions with @agent, direct artifact editing).
 - **Phase 5 — Creative Direction** (020–024): Each creative role produces structured direction artifacts (editorial, visual, sound, performance). Direction convergence review before shot planning.

@@ -69,6 +69,23 @@ Optional live-model run (manual only; requires `OPENAI_API_KEY`):
 make live-test
 ```
 
+## Quality Gates and Semantic Validation
+
+CineForge employs semantic quality gates to ensure that the pipeline produces meaningful artifacts
+rather than structurally valid but empty or placeholder-heavy outputs.
+
+### Automated Checks
+
+- **Ingest Fidelity**: Detects and repairs tokenized or compact PDF layouts (e.g., from OCR or one-token-per-line extraction) to ensure scene-bearing structure is preserved.
+- **Normalization Safeguards**: Rejects "degenerate" screenplay outputs (e.g., those defaulting to `UNKNOWN LOCATION` or `NARRATOR` when source content contains real scene headings).
+- **Extraction Precision**: Validates scene counts and location/character presence against source expectations. Character extraction includes pronoun/noise filtering and derivative OCR suppression.
+- **Metadata Health**: Artifacts failing semantic predicates are marked with `health: needs_review`.
+
+### Known Limitations
+
+- **Severely Mangled OCR**: While CineForge repairs common PDF extraction artifacts (merged tokens, token-per-line), extremely noisy OCR without recognizable screenplay signals may still fallback to `prose` classification or `needs_review` health.
+- **Non-Standard Formatting**: Scripts with highly unconventional scene heading formats may require manual normalization or custom role-prompt adjustments.
+
 ## Produced Artifacts
 
 The MVP recipe produces immutable artifacts under `output/project/artifacts/`:

@@ -26,6 +26,10 @@ from cine_forge.ai import (
 from cine_forge.ai.fountain_validate import lint_fountain_text, normalize_fountain_text
 from cine_forge.schemas import ArtifactHealth, Assumption, CanonicalScript, Invention, QAResult
 
+SCENE_HEADING_RE = re.compile(
+    r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
+)
+
 
 class _MetadataEnvelope(BaseModel):
     source_format: str
@@ -446,11 +450,7 @@ def _line_count(text: str) -> int:
 def _scene_count(text: str) -> int:
     if not text:
         return 0
-    return sum(
-        1
-        for line in text.splitlines()
-        if re.match(r"^(INT\.|EXT\.|INT/EXT\.|EST\.)\s", line.strip(), flags=re.IGNORECASE)
-    )
+    return sum(1 for line in text.splitlines() if SCENE_HEADING_RE.match(line.strip()))
 
 
 def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:
@@ -484,7 +484,7 @@ def _is_screenplay_path(raw_input: dict[str, Any]) -> bool:
     heading_count = sum(
         1
         for line in content.splitlines()
-        if re.match(r"^(INT\.|EXT\.|INT/EXT\.|EST\.)\s", line.strip(), flags=re.IGNORECASE)
+        if SCENE_HEADING_RE.match(line.strip())
     )
     cue_count = sum(
         1 for line in content.splitlines() if re.match(r"^[A-Z0-9 .'\-()]{2,35}$", line.strip())

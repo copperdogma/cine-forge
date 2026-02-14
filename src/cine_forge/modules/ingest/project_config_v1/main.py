@@ -16,6 +16,52 @@ from cine_forge.ai import qa_check
 from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import ArtifactHealth, ProjectConfig, QAResult
 
+CHARACTER_STOPWORDS = {
+    "A",
+    "AN",
+    "AND",
+    "AS",
+    "AT",
+    "BACK",
+    "BLACK",
+    "BEGIN",
+    "CONTINUOUS",
+    "CUT",
+    "DAY",
+    "END",
+    "ENDFLASHBACK",
+    "EXT",
+    "FADE",
+    "FOR",
+    "FROM",
+    "GO",
+    "HE",
+    "HER",
+    "HIS",
+    "I",
+    "IN",
+    "INT",
+    "IT",
+    "LATER",
+    "NIGHT",
+    "NO",
+    "NOBODY",
+    "NOW",
+    "OF",
+    "ON",
+    "OUT",
+    "PRESENT",
+    "SHE",
+    "THE",
+    "THEY",
+    "THWACK",
+    "TO",
+    "UNKNOWN",
+    "UNSPECIFIED",
+    "WE",
+    "YOU",
+    "LUXURIOUS",
+}
 
 class _DetectedField(BaseModel):
     value: str | int | float | list[str] | None
@@ -514,7 +560,22 @@ def _rank_characters(
     canonical_script: dict[str, Any],
     scene_index: dict[str, Any],
 ) -> tuple[list[str], list[str], str]:
-    unique_characters = _normalize_str_list(scene_index.get("unique_characters", []))
+    normalized_unique = (
+        _normalize_character_name(raw) for raw in scene_index.get("unique_characters", [])
+    )
+    initial_candidates = [
+        item for item in normalized_unique if _is_plausible_character_name(item)
+    ]
+    base_tokens = {
+        candidate
+        for candidate in initial_candidates
+        if " " not in candidate and len(candidate) >= 4
+    }
+    unique_characters = [
+        candidate
+        for candidate in initial_candidates
+        if not _looks_like_derivative_noise(candidate, base_tokens)
+    ]
     if not unique_characters:
         return [], [], "No characters available for ranking."
 
@@ -524,7 +585,7 @@ def _rank_characters(
             continue
         for raw_name in entry.get("characters_present", []):
             normalized = _normalize_character_name(raw_name)
-            if normalized in scene_counts:
+            if normalized in scene_counts and _is_plausible_character_name(normalized):
                 scene_counts[normalized] += 1
 
     dialogue_counts = _count_dialogue_mentions(
@@ -562,8 +623,42 @@ def _count_dialogue_mentions(script_text: str, character_names: list[str]) -> di
 def _normalize_character_name(value: Any) -> str:
     text = str(value or "").strip().upper()
     text = re.sub(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT’D|OFF|ON RADIO)\)\s*$", "", text)
+    text = re.sub(r"^[^A-Z0-9]+|[^A-Z0-9']+$", "", text)
+    if re.match(r"^THE[A-Z]{4,}$", text):
+        text = text[3:]
     text = re.sub(r"\s+", " ", text).strip()
     return text
+
+
+def _is_plausible_character_name(name: str) -> bool:
+    if not name:
+        return False
+    if len(name) < 2 or len(name) > 28:
+        return False
+    tokens = name.split()
+    if len(tokens) > 3:
+        return False
+    if any(not re.match(r"^[A-Z']+$", token) for token in tokens):
+        return False
+    if any(len(token) > 12 for token in tokens):
+        return False
+    if any(token in CHARACTER_STOPWORDS for token in tokens):
+        return False
+    if not any(char.isalpha() for char in name):
+        return False
+    if re.match(r"^\d+$", name):
+        return False
+    return True
+
+
+def _looks_like_derivative_noise(name: str, base_tokens: set[str]) -> bool:
+    for token in name.split():
+        for base in base_tokens:
+            if token == base:
+                continue
+            if token.startswith(base) and len(token) >= len(base) + 3:
+                return True
+    return False
 
 
 def _clone_for_metadata(value: Any) -> Any:

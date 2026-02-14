@@ -341,3 +341,14 @@ Rationale:
 - **Result:** Success.
 - **Notes:** Updated Story 007b acceptance/tasks language to match approved UI behavior (project switcher drawer replaces dedicated `Open Project` route/view requirement while preserving existing-project open capability). Stabilized Playwright config for deterministic startup (`ui/operator-console-lite/playwright.config.ts`: strict port, disable reuse, explicit timeout). Removed stray root artifact file generated during package install (`=0.0.9`).
 - **Next:** Re-run validation checks and re-score Story 007b against updated acceptance language.
+
+---
+
+## Post-Implementation Remediation (Story 007c)
+
+Real-world runs performed via this UI (specifically with the `The Mariner` PDF) exposed upstream pipeline degradation. These issues (degraded PDF text handling, placeholder collapse) were remediated in [Story 007c](./story-007c-mvp-reality-remediation.md).
+
+The UI now benefits from:
+- Improved PDF ingestion classification and repair.
+- Semantic quality gates that prevent placeholder-only artifacts from being presented as "done" without a `needs_review` flag.
+- Precise character and location extraction which improves the `Project Config` review experience.

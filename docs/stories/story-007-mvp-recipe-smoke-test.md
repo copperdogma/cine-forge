@@ -337,3 +337,16 @@ The `sample_prose.txt` file exercises the hardest path: prose → screenplay con
   - `make test-unit PYTHON=.venv/bin/python` → pass (`99 passed, 19 deselected`)
   - `make lint PYTHON=.venv/bin/python` → pass (`ruff` clean)
 - **Next:** None.
+
+---
+
+## Post-Implementation Remediation (Story 007c)
+
+Following real UI runs with PDF inputs, several fidelity gaps were identified (placeholder collapse, PDF classification skew). These were remediated in [Story 007c](./story-007c-mvp-reality-remediation.md):
+
+- **New Quality Gates**: See [README.md](../../README.md#quality-gates-and-semantic-validation) for documented semantic validation rules.
+- **Regression Tests**:
+  - `tests/integration/test_mvp_recipe_smoke.py`: `test_mvp_recipe_handles_tokenized_pdf_screenplay_without_placeholder_fallback`
+  - `tests/integration/test_mvp_recipe_smoke.py`: `test_mvp_recipe_handles_compact_pdf_scene_headings_without_placeholder_fallback`
+  - `tests/unit/test_story_ingest_module.py`: PDF reflow and compact heading repair tests.
+- **Fidelity Fixture**: `tests/fixtures/ingest_inputs/the_mariner_degraded.txt`

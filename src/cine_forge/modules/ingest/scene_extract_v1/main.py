@@ -21,12 +21,70 @@ from cine_forge.schemas import (
 )
 from cine_forge.schemas.qa import QAResult
 
-SCENE_HEADING_RE = re.compile(r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s+", flags=re.IGNORECASE)
+SCENE_HEADING_RE = re.compile(
+    r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
+)
 TRANSITION_RE = re.compile(r"^[A-Z][A-Z0-9 '\-]+TO:$")
 NOTE_RE = re.compile(r"^(\[\[.*\]\]|NOTE:)", flags=re.IGNORECASE)
 SHOT_RE = re.compile(r"^(ANGLE ON|CLOSE ON|WIDE ON|POV|INSERT)\b", flags=re.IGNORECASE)
 CHAR_MOD_RE = re.compile(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT’D|OFF|ON RADIO)\)\s*$", re.IGNORECASE)
 DEFAULT_TONE = "neutral"
+CHARACTER_STOPWORDS = {
+    "A",
+    "AN",
+    "AND",
+    "AS",
+    "AT",
+    "BACK",
+    "BLACK",
+    "BEGIN",
+    "BEGINFLASHBACK",
+    "BOOM",
+    "CONT",
+    "CRACK",
+    "CRASH",
+    "CREAK",
+    "DING",
+    "ENDFLASHBACK",
+    "CONTINUOUS",
+    "CUT",
+    "DAY",
+    "DISGUST",
+    "EMPTYROOM",
+    "END",
+    "EXT",
+    "FADE",
+    "FOR",
+    "FROM",
+    "FULL",
+    "GO",
+    "HE",
+    "HER",
+    "HIS",
+    "I",
+    "IN",
+    "INT",
+    "IT",
+    "LATER",
+    "NIGHT",
+    "NO",
+    "NOBODY",
+    "NOW",
+    "OPENINGTITLE",
+    "OF",
+    "ON",
+    "OUT",
+    "PRESENT",
+    "SHE",
+    "THE",
+    "THEY",
+    "TO",
+    "UNKNOWN",
+    "UNSPECIFIED",
+    "WHISPERING",
+    "WE",
+    "YOU",
+}
 
 
 class _SceneChunk:
@@ -514,7 +572,9 @@ def _extract_elements(lines: list[str]) -> tuple[list[ScriptElement], set[str]]:
             continue
         if _looks_like_character_cue(stripped):
             elements.append(ScriptElement(element_type="character", content=stripped))
-            characters.add(_normalize_character_name(stripped))
+            normalized = _normalize_character_name(stripped)
+            if _is_plausible_character_name(normalized):
+                characters.add(normalized)
             prev_type = "character"
             continue
         if prev_type in {"character", "parenthetical", "dialogue"}:
@@ -529,21 +589,48 @@ def _extract_elements(lines: list[str]) -> tuple[list[ScriptElement], set[str]]:
 
 def _extract_character_mentions(action_text: str) -> set[str]:
     upper_matches = re.findall(
-        r"\b([A-Z][A-Z0-9']{1,}(?:\s+[A-Z][A-Z0-9']{1,}){0,2})\b", action_text
+        r"\b([A-Z][A-Z0-9']{2,}(?:\s+[A-Z][A-Z0-9']{2,}){0,2})(?=,|\s*\()",
+        action_text,
     )
-    title_matches = re.findall(r"\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b", action_text)
-    combined = set(upper_matches) | set(title_matches)
-    return {_normalize_character_name(match) for match in combined if len(match) <= 28}
+    normalized = {_normalize_character_name(match) for match in upper_matches if len(match) <= 28}
+    return {name for name in normalized if _is_plausible_character_name(name)}
 
 
 def _normalize_character_name(value: str) -> str:
     cleaned = CHAR_MOD_RE.sub("", value.strip().upper())
+    cleaned = re.sub(r"\([^)]*\)", " ", cleaned)
+    cleaned = re.sub(r"[^A-Z0-9' ]+", " ", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned)
+    if re.match(r"^THE[A-Z]{4,}$", cleaned):
+        cleaned = cleaned[3:]
     return cleaned
+
+
+def _is_plausible_character_name(name: str) -> bool:
+    if not name:
+        return False
+    if len(name) < 2 or len(name) > 28:
+        return False
+    tokens = name.split()
+    if len(tokens) > 3:
+        return False
+    if any(not re.match(r"^[A-Z']+$", token) for token in tokens):
+        return False
+    if any(len(token) > 12 for token in tokens):
+        return False
+    if any(token in CHARACTER_STOPWORDS for token in tokens):
+        return False
+    if not any(char.isalpha() for char in name):
+        return False
+    if re.match(r"^\d+$", name):
+        return False
+    return True
 
 
 def _looks_like_character_cue(line: str) -> bool:
     if not line or len(line) > 35 or SCENE_HEADING_RE.match(line):
+        return False
+    if any(char in line for char in {":", "-", "!", "?", "/"}):
         return False
     if not re.match(r"^[A-Z0-9 .'\-()]+$", line):
         return False
