@@ -43,7 +43,7 @@ NOTES from Cam:
 | 010 | Entity Relationship Graph | 2 — World Building | Medium | To Do | [story-010](stories/story-010-entity-graph.md) |
 | 011 | Asset State Tracking (Continuity) | 2 — World Building | Medium | To Do | [story-011](stories/story-011-continuity-tracking.md) |
 | 011b | Operator Console — Production UI | 2.5 — UI | High | To Do | [story-011b](stories/story-011b-operator-console.md) |
-| 011c | Resource-oriented Routing | 2.5 — UI | Medium | To Do | [story-011c](stories/story-011c-resource-oriented-routing.md) |
+| 011c | Resource-oriented Routing | 2.5 — UI | Medium | Done | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 012 | Timeline Data Artifact | 3 — Timeline | Medium | To Do | [story-012](stories/story-012-timeline-artifact.md) |
 | 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | To Do | [story-013](stories/story-013-track-system.md) |
 | 014 | Role System Foundation | 4 — Role System | High | To Do | [story-014](stories/story-014-role-system-foundation.md) |

@@ -62,6 +62,7 @@ export type RunStateResponse = {
         duration_seconds: number;
         cost_usd: number;
         artifact_refs: Array<Record<string, unknown>>;
+        started_at?: number | null;
       }
     >;
     runtime_params: Record<string, unknown>;

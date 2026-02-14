@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
-import { NavLink, Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type DragEvent } from "react";
+import { Navigate, NavLink, Route, Routes, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import {
   createProject,
   getArtifact,
+  getProject,
   getRunEvents,
   getRunState,
   listArtifactGroups,
@@ -18,6 +19,7 @@ import type {
   ArtifactDetailResponse,
   ArtifactGroupSummary,
   ArtifactVersionSummary,
+  ProjectSummary,
   RecentProjectSummary,
   RunEventsResponse,
   RunStateResponse,
@@ -30,31 +32,13 @@ type SessionProject = {
   path: string;
 };
 
-const DEFAULT_INPUT = "tests/fixtures/sample_screenplay.fountain";
+const ProjectContext = createContext<SessionProject | null>(null);
 
-function useProjectSession(): [SessionProject | null, (value: SessionProject | null) => void] {
-  const [project, setProject] = useState<SessionProject | null>(() => {
-    const raw = localStorage.getItem("operator-console-project");
-    if (!raw) {
-      return null;
-    }
-    try {
-      return JSON.parse(raw) as SessionProject;
-    } catch {
-      return null;
-    }
-  });
-
-  useEffect(() => {
-    if (!project) {
-      localStorage.removeItem("operator-console-project");
-      return;
-    }
-    localStorage.setItem("operator-console-project", JSON.stringify(project));
-  }, [project]);
-
-  return [project, setProject];
+function useProject() {
+  return useContext(ProjectContext);
 }
+
+const DEFAULT_INPUT = "tests/fixtures/sample_screenplay.fountain";
 
 function useAsyncError() {
   const [error, setError] = useState<string>("");
@@ -138,11 +122,10 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export function App() {
-  const [project, setProject] = useProjectSession();
   const [seedInputPath, setSeedInputPath] = useState(DEFAULT_INPUT);
   const [recentProjects, setRecentProjects] = useState<RecentProjectSummary[]>([]);
   const [projectsError, setProjectsError] = useState("");
-  const [switcherOpen, setSwitcherOpen] = useState(!project);
+  const [switcherOpen, setSwitcherOpen] = useState(false);
 
   async function refreshProjects() {
     setProjectsError("");
@@ -150,11 +133,7 @@ export function App() {
       const projects = await listRecentProjects();
       setRecentProjects(projects);
     } catch (error) {
-      if (error instanceof Error) {
-        setProjectsError(error.message);
-      } else {
-        setProjectsError(String(error));
-      }
+      setProjectsError(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -164,28 +143,54 @@ export function App() {
 
   return (
     <div className="container">
-      <header className="topbar">
-        <div>
-          <h1>CineForge Operator Console Lite</h1>
-          <p>
-            Active project: <strong>{project ? project.label : "(none)"}</strong>
-          </p>
-        </div>
-        <button className="secondary projects-toggle" onClick={() => setSwitcherOpen(true)}>
-          Projects
-        </button>
-      </header>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <LandingPage
+              projects={recentProjects}
+              error={projectsError}
+              refresh={refreshProjects}
+              setSeedInputPath={setSeedInputPath}
+            />
+          }
+        />
+        <Route
+          path="/new"
+          element={
+            <div className="page-wrapper">
+              <Header label="(new project)" onOpenSwitcher={() => setSwitcherOpen(true)} />
+              <NewProjectPage
+                onProjectCreated={(_, inputPath) => {
+                  setSeedInputPath(inputPath);
+                  setSwitcherOpen(false);
+                }}
+                refreshProjects={refreshProjects}
+              />
+            </div>
+          }
+        />
+        <Route
+          path="/:projectId/*"
+          element={
+            <ProjectLayout
+              recentProjects={recentProjects}
+              seedInputPath={seedInputPath}
+              setSwitcherOpen={setSwitcherOpen}
+            />
+          }
+        />
+      </Routes>
 
       {switcherOpen ? (
         <ProjectSwitcher
-          activeProject={project}
+          activeProject={null}
           projects={recentProjects}
           projectsError={projectsError}
-          canClose={Boolean(project)}
-          modal={Boolean(project)}
+          canClose={true}
+          modal={true}
           onClose={() => setSwitcherOpen(false)}
-          onActivate={(next, inputPath) => {
-            setProject(next);
+          onActivate={(_, inputPath) => {
             if (inputPath) {
               setSeedInputPath(inputPath);
             }
@@ -194,54 +199,153 @@ export function App() {
           onRefresh={() => void refreshProjects()}
         />
       ) : null}
-
-      <nav className="nav">
-        <NavLink className={({ isActive }) => (isActive ? "active" : "")} to="/new">
-          New Project
-        </NavLink>
-        <NavLink className={({ isActive }) => (isActive ? "active" : "")} to="/run">
-          Run Pipeline
-        </NavLink>
-        <NavLink className={({ isActive }) => (isActive ? "active" : "")} to="/runs">
-          Runs / Events
-        </NavLink>
-        <NavLink className={({ isActive }) => (isActive ? "active" : "")} to="/artifacts">
-          Artifacts
-        </NavLink>
-      </nav>
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <NewProjectPage
-              onProjectCreated={(next, inputPath) => {
-                setProject(next);
-                setSeedInputPath(inputPath);
-                setSwitcherOpen(false);
-              }}
-              refreshProjects={refreshProjects}
-            />
-          }
-        />
-        <Route
-          path="/new"
-          element={
-            <NewProjectPage
-              onProjectCreated={(next, inputPath) => {
-                setProject(next);
-                setSeedInputPath(inputPath);
-                setSwitcherOpen(false);
-              }}
-              refreshProjects={refreshProjects}
-            />
-          }
-        />
-        <Route path="/run" element={<RunPage project={project} seedInputPath={seedInputPath} />} />
-        <Route path="/runs" element={<RunsPage project={project} />} />
-        <Route path="/artifacts" element={<ArtifactsPage project={project} />} />
-      </Routes>
     </div>
+  );
+}
+
+function Header({ label, onOpenSwitcher }: { label: string; onOpenSwitcher: () => void }) {
+  return (
+    <header className="topbar">
+      <div>
+        <h1>CineForge Operator Console Lite</h1>
+        <p>
+          Active project: <strong>{label}</strong>
+        </p>
+      </div>
+      <button className="secondary projects-toggle" onClick={onOpenSwitcher}>
+        Projects
+      </button>
+    </header>
+  );
+}
+
+function LandingPage({
+  projects,
+  error,
+  refresh,
+  setSeedInputPath,
+}: {
+  projects: RecentProjectSummary[];
+  error: string;
+  refresh: () => void;
+  setSeedInputPath: (path: string) => void;
+}) {
+  const navigate = useNavigate();
+  return (
+    <div className="page-wrapper">
+      <Header label="(select project)" onOpenSwitcher={() => {}} />
+      <ProjectSwitcher
+        activeProject={null}
+        projects={projects}
+        projectsError={error}
+        canClose={false}
+        modal={false}
+        onClose={() => {}}
+        onActivate={(next, inputPath) => {
+          if (inputPath) setSeedInputPath(inputPath);
+          navigate(`/${next.id}/run`);
+        }}
+        onRefresh={refresh}
+      />
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button className="secondary" onClick={() => navigate("/new")}>
+          Create Brand New Project
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Breadcrumbs({ project, page }: { project: { label: string; id: string } | null; page: string }) {
+  return (
+    <div className="small muted" style={{ marginBottom: "12px" }}>
+      <NavLink to="/" style={{ color: "inherit", textDecoration: "none" }}>
+        Projects
+      </NavLink>
+      {" > "}
+      {project ? (
+        <NavLink to={`/${project.id}/run`} style={{ color: "inherit", textDecoration: "none" }}>
+          {project.label}
+        </NavLink>
+      ) : (
+        "..."
+      )}
+      {" > "}
+      <strong>{page}</strong>
+    </div>
+  );
+}
+
+function ProjectLayout({
+  recentProjects,
+  seedInputPath,
+  setSwitcherOpen,
+}: {
+  recentProjects: RecentProjectSummary[];
+  seedInputPath: string;
+  setSwitcherOpen: (o: boolean) => void;
+}) {
+  const { projectId } = useParams();
+  const [fetchedProject, setFetchedProject] = useState<SessionProject | null>(null);
+
+  const project = useMemo(() => {
+    const p = recentProjects.find((p) => p.project_id === projectId);
+    if (p) return { id: p.project_id, label: p.display_name, path: p.project_path };
+    return fetchedProject;
+  }, [recentProjects, projectId, fetchedProject]);
+
+  useEffect(() => {
+    if (projectId && !recentProjects.find((p) => p.project_id === projectId)) {
+      getProject(projectId)
+        .then((p: ProjectSummary) => {
+          setFetchedProject({ id: p.project_id, label: p.display_name, path: "" });
+        })
+        .catch(() => {
+          // ignore project fetch error in layout, sub-pages will handle missing project
+        });
+    }
+  }, [projectId, recentProjects]);
+
+  // Determine current page label for breadcrumbs
+  const location = window.location.pathname;
+  let pageLabel = "Dashboard";
+  if (location.endsWith("/run")) pageLabel = "Run Pipeline";
+  if (location.endsWith("/runs")) pageLabel = "Runs / Events";
+  if (location.endsWith("/artifacts")) pageLabel = "Artifacts Browser";
+
+  return (
+    <ProjectContext.Provider value={project || { id: projectId!, label: projectId!, path: "" }}>
+      <div className="project-wrapper">
+        <Header label={project?.label || projectId || ""} onOpenSwitcher={() => setSwitcherOpen(true)} />
+
+        <Breadcrumbs project={project || { id: projectId!, label: projectId! }} page={pageLabel} />
+
+        <nav className="nav">
+          <NavLink className={({ isActive }) => (isActive ? "active" : "")} to={`/${projectId}/run`}>
+            Run Pipeline
+          </NavLink>
+          <NavLink className={({ isActive }) => (isActive ? "active" : "")} to={`/${projectId}/runs`}>
+            Runs / Events
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => (isActive ? "active" : "")}
+            to={`/${projectId}/artifacts`}
+          >
+            Artifacts
+          </NavLink>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Navigate to="run" replace />} />
+          <Route path="run" element={<RunPage seedInputPath={seedInputPath} />} />
+          <Route path="run/:runId" element={<RunPage seedInputPath={seedInputPath} />} />
+          <Route path="runs" element={<RunsPage />} />
+          <Route path="runs/:runId" element={<RunsPage />} />
+          <Route path="artifacts" element={<ArtifactsPage />} />
+          <Route path="artifacts/:artifactType/:entityId/:version" element={<ArtifactsPage />} />
+        </Routes>
+      </div>
+    </ProjectContext.Provider>
   );
 }
 
@@ -273,7 +377,7 @@ function ProjectSwitcher({
     try {
       const result = await openProject(projectPath);
       onActivate({ id: result.project_id, label: result.display_name, path: projectPath });
-      navigate("/run");
+      navigate(`/${result.project_id}/run`);
       onRefresh();
     } catch (error) {
       status.from(error);
@@ -387,7 +491,7 @@ function NewProjectPage({
       };
       onProjectCreated(nextProject, upload.stored_path);
       await refreshProjects();
-      navigate("/run");
+      navigate(`/${project.project_id}/run`);
     } catch (error) {
       status.from(error);
     }
@@ -472,18 +576,17 @@ function NewProjectPage({
 
 type ModelProfile = "mock" | "draft" | "production";
 
-function RunPage({ project, seedInputPath }: { project: SessionProject | null; seedInputPath: string }) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const runId = searchParams.get("run_id") || "";
+function RunPage({ seedInputPath }: { seedInputPath: string }) {
+  const project = useProject();
+  const { runId = "" } = useParams();
+  const navigate = useNavigate();
+
   const setRunId = (id: string) => {
-    setSearchParams((prev) => {
-      if (id) {
-        prev.set("run_id", id);
-      } else {
-        prev.delete("run_id");
-      }
-      return prev;
-    });
+    if (id) {
+      navigate(`/${project?.id}/run/${id}`, { replace: true });
+    } else {
+      navigate(`/${project?.id}/run`, { replace: true });
+    }
   };
 
   const [inputFile, setInputFile] = useState(seedInputPath || DEFAULT_INPUT);
@@ -966,18 +1069,13 @@ function RunPage({ project, seedInputPath }: { project: SessionProject | null; s
   );
 }
 
-function RunsPage({ project }: { project: SessionProject | null }) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const selectedRunId = searchParams.get("run_id") || "";
+function RunsPage() {
+  const project = useProject();
+  const { runId: selectedRunId = "" } = useParams();
+  const navigate = useNavigate();
+
   const setSelectedRunId = (id: string) => {
-    setSearchParams((prev) => {
-      if (id) {
-        prev.set("run_id", id);
-      } else {
-        prev.delete("run_id");
-      }
-      return prev;
-    });
+    navigate(`/${project?.id}/runs/${id}`);
   };
 
   const [runs, setRuns] = useState<RunSummary[]>([]);
@@ -1003,10 +1101,12 @@ function RunsPage({ project }: { project: SessionProject | null }) {
 
   useEffect(() => {
     void refreshRuns();
-  }, [project]);
+  }, [project?.id]);
 
   async function loadRunData() {
     if (!selectedRunId) {
+      setState(null);
+      setEvents(null);
       return;
     }
     status.clear();
@@ -1068,12 +1168,12 @@ function RunsPage({ project }: { project: SessionProject | null }) {
   );
 }
 
-function ArtifactsPage({ project }: { project: SessionProject | null }) {
+function ArtifactsPage() {
+  const project = useProject();
+  const { artifactType: selType = "", entityId: selEntity = "", version: selVersionStr = "" } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const selType = searchParams.get("type") || "";
-  const selEntity = searchParams.get("entity") || "";
-  const selVersionStr = searchParams.get("v") || "";
   const selFile = searchParams.get("file") || "";
+  const navigate = useNavigate();
 
   const [groups, setGroups] = useState<ArtifactGroupSummary[]>([]);
   const [versions, setVersions] = useState<ArtifactVersionSummary[]>([]);
@@ -1095,11 +1195,7 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
       const next = await listArtifactGroups(project.id);
       setGroups(next);
       if (next.length && !selType) {
-        setSearchParams((prev) => {
-          prev.set("type", next[0].artifact_type);
-          prev.set("entity", next[0].entity_id ?? "__project__");
-          return prev;
-        });
+        navigate(`/${project.id}/artifacts/${next[0].artifact_type}/${next[0].entity_id ?? "__project__"}/latest`, { replace: true });
       }
     } catch (error) {
       status.from(error);
@@ -1108,7 +1204,7 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
 
   useEffect(() => {
     void loadGroups();
-  }, [project]);
+  }, [project?.id]);
 
   useEffect(() => {
     if (!project || !selectedGroup) {
@@ -1123,16 +1219,13 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
           setSelectedDetail(null);
           return;
         }
-        if (!selectedVersion) {
+        if (!selectedVersion && selVersionStr === "latest") {
           const latest = next[next.length - 1];
-          setSearchParams((prev) => {
-            prev.set("v", String(latest.version));
-            return prev;
-          });
+          navigate(`/${project.id}/artifacts/${selectedGroup.artifact_type}/${entityId}/${latest.version}`, { replace: true });
         }
       })
       .catch((error: unknown) => status.from(error));
-  }, [project, selectedGroup]);
+  }, [project?.id, selectedGroup, selVersionStr]);
 
   useEffect(() => {
     if (!project || !selectedGroup || !selectedVersion) {
@@ -1152,29 +1245,19 @@ function ArtifactsPage({ project }: { project: SessionProject | null }) {
             setSearchParams((prev) => {
               prev.set("file", masterFile.filename);
               return prev;
-            });
+            }, { replace: true });
           }
         }
       })
       .catch((error: unknown) => status.from(error));
-  }, [project, selectedGroup, selectedVersion]);
+  }, [project?.id, selectedGroup, selectedVersion]);
 
   function selectGroup(group: ArtifactGroupSummary) {
-    setSearchParams((prev) => {
-      prev.set("type", group.artifact_type);
-      prev.set("entity", group.entity_id ?? "__project__");
-      prev.delete("v");
-      prev.delete("file");
-      return prev;
-    });
+    navigate(`/${project?.id}/artifacts/${group.artifact_type}/${group.entity_id ?? "__project__"}/latest`);
   }
 
   function selectVersion(v: number) {
-    setSearchParams((prev) => {
-      prev.set("v", String(v));
-      prev.delete("file");
-      return prev;
-    });
+    navigate(`/${project?.id}/artifacts/${selType}/${selEntity}/${v}`);
   }
 
   function selectFile(filename: string) {
