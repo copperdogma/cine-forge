@@ -12,6 +12,12 @@ Ideas worth keeping but not in scope for current work. Review periodically.
 
 - **Entity graph visualization**: Visual graph of character/location/prop relationships. May be overkill — character relationships could just be a list view in the character bible. Revisit if entity count grows. *(Source: 011b landscape research)*
 
+- **Smart project name inference on file pick**: When the user selects a screenplay (drag-and-drop or file picker), immediately attempt to guess a project name. Could be as simple as the filename sans extension, or we could read the first few pages of the PDF/FDX to extract a title page. Auto-populate the project name field so the user can accept or edit. Relevant to both the NewProject page and the Pipeline drop zone. *(Source: Cam, 011d build)*
+
+## Data & Identity
+
+- **Human-readable project slugs**: Currently project IDs are raw hashes (e.g., `ed0e25e86b3cb84...`). These are ugly in URLs, breadcrumbs, and the sidebar. Proposed: Generate slugs from the project's display name ("The Mariner" → `the-mariner`), with numeric suffixes for collisions (`the-mariner-2`). Store both `project_id` (hash, internal) and `slug` (human-readable, for URLs). UI routes use the slug (`/:slug/run` instead of `/:projectId/run`). Backend resolves slug → project_id on each request. Slug should be editable; changing the project name updates the slug with confirmation. Scope: Backend change (service layer + API) + UI routing update. Do when hooking the console to real API. *(Source: 011e operator-console research)*
+
 ## Workflow
 
 - **Story-to-screenplay conversion**: For non-screenplay inputs (short stories, novels, treatments), send to a strong model with "make this into a screenplay" and take the output. Good for commercials and short-form. Not primary workflow but worth having as a convenience path. *(Source: Cam, 011b review)*

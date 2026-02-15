@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from cine_forge.operator_console.app import create_app
+from cine_forge.api.app import create_app
 
 
 def _await_run_done(client: TestClient, run_id: str, timeout_seconds: float = 20.0) -> dict:

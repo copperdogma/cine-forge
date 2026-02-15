@@ -21,7 +21,7 @@ def test_run_sequence():
     env = os.environ.copy()
     env["PYTHONPATH"] = "src"
     backend = subprocess.Popen(
-        [sys.executable, "-m", "cine_forge.operator_console", "--port", "8003", "--no-reload"],
+        [sys.executable, "-m", "cine_forge.api", "--port", "8003", "--no-reload"],
         env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

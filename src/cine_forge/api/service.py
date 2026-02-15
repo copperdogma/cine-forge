@@ -1,4 +1,4 @@
-"""Service layer for Operator Console Lite backend."""
+"""Service layer for CineForge API backend."""
 
 from __future__ import annotations
 
@@ -10,6 +10,8 @@ import time
 import uuid
 from pathlib import Path
 from typing import Any
+
+import yaml
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
@@ -109,7 +111,9 @@ class OperatorConsoleService:
             for run_dir in runs_dir.iterdir():
                 if not run_dir.is_dir():
                     continue
-                meta_path = run_dir / "operator_console_run_meta.json"
+                meta_path = run_dir / "run_meta.json"
+                if not meta_path.exists():
+                    meta_path = run_dir / "operator_console_run_meta.json"
                 if not meta_path.exists():
                     continue
                 try:
@@ -275,12 +279,12 @@ class OperatorConsoleService:
         project_path = self.require_project_path(project_id)
         normalized_entity = None if entity_id == "__project__" else entity_id
         store = ArtifactStore(project_dir=project_path)
-        
+
         # Load all versions to find the one with the matching version number
         # This ensures we get the correct relative path from the store
         refs = store.list_versions(artifact_type=artifact_type, entity_id=normalized_entity)
         ref = next((r for r in refs if r.version == version), None)
-        
+
         if not ref:
             raise ServiceError(
                 code="artifact_not_found",
@@ -291,7 +295,7 @@ class OperatorConsoleService:
                 hint="Check available versions via the artifact versions endpoint.",
                 status_code=404,
             )
-            
+
         artifact = store.load_artifact(ref)
         response = {
             "artifact_type": artifact_type,
@@ -306,10 +310,10 @@ class OperatorConsoleService:
             # Ref path is artifacts/bibles/{entity_id}/manifest_vN.json
             # project_path is already absolute.
             bible_dir = (project_path / ref.path).parent
-            
+
             # Manifest data is in artifact.data
             manifest_data = artifact.data
-            
+
             # Ensure we have a dict to work with
             if not isinstance(manifest_data, dict):
                 try:
@@ -333,6 +337,101 @@ class OperatorConsoleService:
             response["bible_files"] = bible_files
 
         return response
+
+    def edit_artifact(
+        self,
+        project_id: str,
+        artifact_type: str,
+        entity_id: str,
+        data: dict[str, Any],
+        rationale: str,
+    ) -> dict[str, Any]:
+        """Create a new version of an artifact with human-edited data."""
+        from cine_forge.schemas import ArtifactMetadata
+
+        project_path = self.require_project_path(project_id)
+        normalized_entity = None if entity_id == "__project__" else entity_id
+        store = ArtifactStore(project_dir=project_path)
+
+        # Verify the artifact group exists
+        refs = store.list_versions(artifact_type=artifact_type, entity_id=normalized_entity)
+        if not refs:
+            raise ServiceError(
+                code="artifact_not_found",
+                message=f"No existing artifact found for {artifact_type}/{entity_id}.",
+                hint="You can only edit existing artifacts.",
+                status_code=404,
+            )
+
+        # Get the latest version to use as lineage
+        latest_ref = refs[-1]
+
+        # Create metadata for the new version
+        metadata = ArtifactMetadata(
+            lineage=[latest_ref],
+            intent="override",
+            rationale=rationale,
+            confidence=1.0,
+            source="human",
+            producing_module="operator_console.manual_edit",
+        )
+
+        # Save the new artifact version
+        new_ref = store.save_artifact(
+            artifact_type=artifact_type,
+            entity_id=normalized_entity,
+            data=data,
+            metadata=metadata,
+        )
+
+        return {
+            "artifact_type": artifact_type,
+            "entity_id": normalized_entity,
+            "version": new_ref.version,
+            "path": new_ref.path,
+        }
+
+    def list_recipes(self) -> list[dict[str, Any]]:
+        """List available recipe files from configs/recipes/."""
+        recipes_dir = self.workspace_root / "configs" / "recipes"
+        if not recipes_dir.exists():
+            return []
+
+        recipes: list[dict[str, Any]] = []
+        for recipe_file in sorted(recipes_dir.glob("recipe-*.yaml")):
+            # Skip test fixtures
+            if recipe_file.name == "recipe-test-echo.yaml":
+                continue
+
+            try:
+                recipe_data = yaml.safe_load(recipe_file.read_text(encoding="utf-8"))
+            except (yaml.YAMLError, OSError):
+                continue
+
+            if not isinstance(recipe_data, dict):
+                continue
+
+            # Convert filename to recipe_id: recipe-mvp-ingest.yaml -> mvp_ingest
+            recipe_filename = recipe_file.stem  # e.g., "recipe-mvp-ingest"
+            if recipe_filename.startswith("recipe-"):
+                recipe_id = recipe_filename[7:].replace("-", "_")
+            else:
+                recipe_id = recipe_filename
+
+            # Extract metadata from YAML
+            name = recipe_data.get("name", recipe_id.replace("_", " ").title())
+            description = recipe_data.get("description", "")
+            stages = recipe_data.get("stages", [])
+            stage_count = len(stages) if isinstance(stages, list) else 0
+
+            recipes.append({
+                "recipe_id": recipe_id,
+                "name": name,
+                "description": description,
+                "stage_count": stage_count,
+            })
+
+        return recipes
 
     def start_run(self, project_id: str, request: dict[str, Any]) -> str:
         project_path = self.require_project_path(project_id)
@@ -538,7 +637,9 @@ class OperatorConsoleService:
         project_path: Path,
         run_state: dict[str, Any],
     ) -> bool:
-        run_meta_path = run_dir / "operator_console_run_meta.json"
+        run_meta_path = run_dir / "run_meta.json"
+        if not run_meta_path.exists():
+            run_meta_path = run_dir / "operator_console_run_meta.json"
         if not run_meta_path.exists():
             return False
         run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
@@ -555,7 +656,7 @@ class OperatorConsoleService:
 
     @staticmethod
     def _write_run_meta(run_dir: Path, project_id: str, project_path: Path) -> None:
-        meta_path = run_dir / "operator_console_run_meta.json"
+        meta_path = run_dir / "run_meta.json"
         payload = {
             "project_id": project_id,
             "project_path": str(project_path),

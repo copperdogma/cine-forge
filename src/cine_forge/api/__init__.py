@@ -1,4 +1,4 @@
-"""Operator Console Lite backend package."""
+"""CineForge API backend package."""
 
 from .app import create_app
 

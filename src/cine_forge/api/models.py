@@ -1,4 +1,4 @@
-"""Pydantic models for Operator Console Lite API."""
+"""Pydantic models for CineForge API."""
 
 from __future__ import annotations
 
@@ -73,6 +73,9 @@ class RunStartRequest(BaseModel):
     project_id: str = Field(min_length=1)
     input_file: str = Field(min_length=1)
     default_model: str = Field(min_length=1)
+    work_model: str | None = None
+    verify_model: str | None = None
+    escalate_model: str | None = None
     qa_model: str | None = None
     recipe_id: str | None = "mvp_ingest"
     accept_config: bool = False
@@ -81,6 +84,7 @@ class RunStartRequest(BaseModel):
     run_id: str | None = None
     force: bool = False
     start_from: str | None = None
+    skip_qa: bool = False
 
 
 class RunStartResponse(BaseModel):
@@ -122,3 +126,28 @@ class ArtifactDetailResponse(BaseModel):
     version: int = Field(ge=1)
     payload: dict[str, Any]
     bible_files: dict[str, Any] | None = None
+
+
+class ArtifactEditRequest(BaseModel):
+    """Request payload for editing an artifact (creating a new version)."""
+
+    data: dict[str, Any] = Field(min_length=1)
+    rationale: str = Field(min_length=1)
+
+
+class ArtifactEditResponse(BaseModel):
+    """Response payload for artifact edit operation."""
+
+    artifact_type: str
+    entity_id: str | None = None
+    version: int = Field(ge=1)
+    path: str
+
+
+class RecipeSummary(BaseModel):
+    """Recipe metadata for recipe listing endpoint."""
+
+    recipe_id: str
+    name: str
+    description: str
+    stage_count: int = Field(ge=0)

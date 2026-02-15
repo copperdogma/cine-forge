@@ -12,7 +12,7 @@ def test_run_sequence():
     env["PYTHONPATH"] = "src"
     # Use --no-reload for test process stability
     backend = subprocess.Popen(
-        [sys.executable, "-m", "cine_forge.operator_console", "--port", "8001", "--no-reload"],
+        [sys.executable, "-m", "cine_forge.api", "--port", "8001", "--no-reload"],
         env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

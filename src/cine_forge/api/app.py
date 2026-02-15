@@ -1,4 +1,4 @@
-"""FastAPI app for Operator Console Lite."""
+"""FastAPI app for CineForge API."""
 
 from __future__ import annotations
 
@@ -9,14 +9,17 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from cine_forge.operator_console.models import (
+from cine_forge.api.models import (
     ArtifactDetailResponse,
+    ArtifactEditRequest,
+    ArtifactEditResponse,
     ArtifactGroupSummary,
     ArtifactVersionSummary,
     ErrorPayload,
     ProjectPathRequest,
     ProjectSummary,
     RecentProjectSummary,
+    RecipeSummary,
     RunEventsResponse,
     RunStartRequest,
     RunStartResponse,
@@ -24,7 +27,7 @@ from cine_forge.operator_console.models import (
     RunSummary,
     UploadedInputResponse,
 )
-from cine_forge.operator_console.service import OperatorConsoleService, ServiceError
+from cine_forge.api.service import OperatorConsoleService, ServiceError
 
 UPLOAD_FILE_PARAM = File(...)
 
@@ -32,7 +35,7 @@ UPLOAD_FILE_PARAM = File(...)
 def create_app(workspace_root: Path | None = None) -> FastAPI:
     resolved_workspace = workspace_root or Path(__file__).resolve().parents[3]
     service = OperatorConsoleService(workspace_root=resolved_workspace)
-    app = FastAPI(title="CineForge Operator Console Lite API", version="0.1.0")
+    app = FastAPI(title="CineForge API", version="0.1.0")
     app.state.console_service = service
 
     app.add_middleware(
@@ -61,6 +64,10 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     @app.get("/api/health")
     async def health() -> dict[str, str]:
         return {"status": "ok"}
+
+    @app.get("/api/recipes", response_model=list[RecipeSummary])
+    async def list_recipes() -> list[RecipeSummary]:
+        return [RecipeSummary.model_validate(r) for r in service.list_recipes()]
 
     @app.get("/api/projects/recent", response_model=list[RecentProjectSummary])
     async def list_recent_projects() -> list[RecentProjectSummary]:
@@ -149,6 +156,22 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     ) -> ArtifactDetailResponse:
         return ArtifactDetailResponse.model_validate(
             service.read_artifact(project_id, artifact_type, entity_id, version)
+        )
+
+    @app.post(
+        "/api/projects/{project_id}/artifacts/{artifact_type}/{entity_id}/edit",
+        response_model=ArtifactEditResponse,
+    )
+    async def edit_artifact(
+        project_id: str,
+        artifact_type: str,
+        entity_id: str,
+        request: ArtifactEditRequest,
+    ) -> ArtifactEditResponse:
+        return ArtifactEditResponse.model_validate(
+            service.edit_artifact(
+                project_id, artifact_type, entity_id, request.data, request.rationale
+            )
         )
 
     @app.post("/api/runs/start", response_model=RunStartResponse)

@@ -1,4 +1,4 @@
-"""CLI entrypoint to run Operator Console Lite API."""
+"""CLI entrypoint to run CineForge API."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import uvicorn
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run Operator Console Lite API")
+    parser = argparse.ArgumentParser(description="Run CineForge API")
     parser.add_argument("--port", type=int, default=8000, help="Port to listen on")
     parser.add_argument(
         "--reload", action="store_true", default=True, help="Enable hot-reloading"
@@ -26,7 +26,7 @@ def main() -> None:
         reload_kwargs["reload_dirs"] = ["src"]
 
     uvicorn.run(
-        "cine_forge.operator_console.app:app",
+        "cine_forge.api.app:app",
         host="127.0.0.1",
         port=args.port,
         reload=args.reload,

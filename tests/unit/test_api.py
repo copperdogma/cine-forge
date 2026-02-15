@@ -5,8 +5,8 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
+from cine_forge.api.app import create_app
 from cine_forge.artifacts import ArtifactStore
-from cine_forge.operator_console.app import create_app
 from cine_forge.schemas import ArtifactMetadata
 
 
@@ -279,3 +279,83 @@ def test_project_runs_endpoint_filters_by_project(tmp_path: Path) -> None:
     runs_b = client.get(f"/api/projects/{project_b_id}/runs")
     assert runs_b.status_code == 200
     assert [item["run_id"] for item in runs_b.json()] == ["run-b"]
+
+
+def test_edit_artifact_creates_new_version(tmp_path: Path) -> None:
+    """Test that editing an artifact creates a new version with human provenance."""
+    client = _make_client(tmp_path)
+    project_path = tmp_path / "project-edit"
+    project_id = _init_project(client, project_path)
+
+    # Create an initial artifact
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="initial",
+        rationale="First version",
+        confidence=0.9,
+        source="ai",
+        producing_module="test.module",
+    )
+    store.save_artifact(
+        artifact_type="entity_graph",
+        entity_id=None,
+        data={"entities": ["Alice", "Bob"], "relationships": []},
+        metadata=metadata,
+    )
+
+    # Edit the artifact
+    edit_response = client.post(
+        f"/api/projects/{project_id}/artifacts/entity_graph/__project__/edit",
+        json={
+            "data": {"entities": ["Alice", "Bob", "Charlie"], "relationships": ["friends"]},
+            "rationale": "Added Charlie and defined friendship relationship",
+        },
+    )
+    assert edit_response.status_code == 200
+    edit_payload = edit_response.json()
+    assert edit_payload["artifact_type"] == "entity_graph"
+    assert edit_payload["entity_id"] is None
+    assert edit_payload["version"] == 2
+    assert "path" in edit_payload
+
+    # Verify the new version was created
+    versions = client.get(f"/api/projects/{project_id}/artifacts/entity_graph/__project__")
+    assert versions.status_code == 200
+    versions_payload = versions.json()
+    assert len(versions_payload) == 2
+    assert versions_payload[1]["version"] == 2
+    assert versions_payload[1]["producing_module"] == "operator_console.manual_edit"
+
+    # Verify the new version has the edited data
+    detail = client.get(f"/api/projects/{project_id}/artifacts/entity_graph/__project__/2")
+    assert detail.status_code == 200
+    detail_payload = detail.json()
+    assert detail_payload["payload"]["data"]["entities"] == ["Alice", "Bob", "Charlie"]
+    assert detail_payload["payload"]["data"]["relationships"] == ["friends"]
+    assert detail_payload["payload"]["metadata"]["source"] == "human"
+    assert detail_payload["payload"]["metadata"]["confidence"] == 1.0
+    assert (
+        detail_payload["payload"]["metadata"]["rationale"]
+        == "Added Charlie and defined friendship relationship"
+    )
+
+    # Verify lineage points to v1
+    lineage = detail_payload["payload"]["metadata"]["lineage"]
+    assert len(lineage) == 1
+    assert lineage[0]["version"] == 1
+
+
+def test_edit_artifact_requires_existing_artifact(tmp_path: Path) -> None:
+    """Test that editing a non-existent artifact returns 404."""
+    client = _make_client(tmp_path)
+    project_path = tmp_path / "project-edit-missing"
+    project_id = _init_project(client, project_path)
+
+    # Try to edit a non-existent artifact
+    edit_response = client.post(
+        f"/api/projects/{project_id}/artifacts/nonexistent/__project__/edit",
+        json={"data": {"test": "data"}, "rationale": "Test edit"},
+    )
+    assert edit_response.status_code == 404
+    edit_payload = edit_response.json()
+    assert edit_payload["code"] == "artifact_not_found"
