@@ -1,6 +1,7 @@
 ---
 name: create-story
 description: Scaffold a numbered story file and update the story index.
+user-invocable: true
 ---
 
 # create-story

@@ -1,6 +1,7 @@
 ---
 name: check-in-diff
 description: Audit local git changes and prepare a safe commit checklist and message.
+user-invocable: true
 ---
 
 # check-in-diff

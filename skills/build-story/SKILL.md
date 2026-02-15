@@ -1,6 +1,7 @@
 ---
 name: build-story
 description: Implement a story with checklist hygiene, validation, and work-log discipline.
+user-invocable: true
 ---
 
 # build-story

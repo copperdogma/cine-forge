@@ -1,6 +1,7 @@
 ---
 name: validate
 description: Evaluate implementation quality and requirement coverage from local diffs.
+user-invocable: true
 ---
 
 # validate

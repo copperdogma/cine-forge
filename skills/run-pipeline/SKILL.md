@@ -1,6 +1,7 @@
 ---
 name: run-pipeline
 description: Run a CineForge recipe through the driver with standard flags and inspection steps.
+user-invocable: true
 ---
 
 # run-pipeline

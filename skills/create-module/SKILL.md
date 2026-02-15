@@ -1,6 +1,7 @@
 ---
 name: create-module
 description: Scaffold a new pipeline module with manifest, entry point, and tests.
+user-invocable: true
 ---
 
 # create-module

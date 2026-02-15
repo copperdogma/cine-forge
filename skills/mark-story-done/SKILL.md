@@ -1,6 +1,7 @@
 ---
 name: mark-story-done
 description: Validate a story is complete and update story statuses safely.
+user-invocable: true
 ---
 
 # mark-story-done

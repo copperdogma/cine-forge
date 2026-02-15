@@ -1,6 +1,7 @@
 ---
 name: create-role
 description: Scaffold an AI role definition with persona, capabilities, and style pack slot.
+user-invocable: true
 ---
 
 # create-role
