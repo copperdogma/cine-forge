@@ -1,136 +1,54 @@
-# Story 011b: Operator Console — Production UI
+# Story 011b: Operator Console — Research & Design Decisions
 
-**Status**: To Do
+**Status**: Done
 **Created**: 2026-02-13
+**Completed**: 2026-02-15
 **Spec Refs**: 2.5 (Human Control), 3.1 (Stage Progression), 4–6 (Ingestion/Normalization/Config), 6–7 (Bibles/Entity Graph/Continuity), 8.7 (Human Interaction Model), 20 (Metadata & Auditing), 21 (Operating Modes)
 **Depends On**: Story 011 (Continuity Tracking — completes Phase 2 artifact model)
-**Replaces / Evolves**: Story 007b (Operator Console Lite — stopgap GUI)
-**Design Docs**: `docs/design/principles.md`, `docs/design/personas.md`, `docs/design/landscape.md`, `docs/design/ui-stack.md`
+**Continued By**: Story 011c (Operator Console — Design & Build)
+**Design Docs**: `docs/design/principles.md`, `docs/design/personas.md`, `docs/design/landscape.md`, `docs/design/ui-stack.md`, `docs/design/decisions.md`
 
 ---
 
 ## Goal
 
-Replace the stopgap Operator Console Lite with a production-quality UI for CineForge. The console must feel like a creative tool, not an admin panel. The primary user is a storyteller with scripts who knows nothing about film production — the UI should make their default path effortless.
-
-See `docs/design/principles.md` for the interaction philosophy and `docs/design/personas.md` for user modes.
+Research and establish the design direction, technology stack, and interaction patterns for the production CineForge Operator Console. This story produces the research artifacts and reviewed decisions that Story 011c will implement.
 
 ---
 
-## Phases
+## Deliverables
 
-### Phase 1: Research (Deep Research)
+All complete:
 
-Produce the two research artifacts that inform design and build decisions. These are project-level docs, not story-scoped deliverables.
-
-- [ ] Run deep research: app landscape and design inspiration → `docs/design/landscape.md`
-  - Creative tool UX patterns, pipeline visualization, artifact browsing, film tool patterns
-  - Focus on interaction paradigms worth stealing, not competitive positioning
-- [ ] Run deep research: UI stack evaluation → `docs/design/ui-stack.md`
-  - Component library selection optimized for AI-assisted development quality
-  - Viewer library recommendations for screenplay, structured data, graphs, timelines
-- [ ] Review and finalize both docs before proceeding to design
-
-### Phase 2: Design
-
-Synthesize research into a concrete UI plan. Design artifacts live in `docs/design/`.
-
-- [ ] Define information architecture and navigation model
-  - How does the user move between project overview, pipeline stages, artifact inspection?
-  - How does progressive disclosure work in practice (summary → detail → raw)?
-- [ ] Define the golden path: drag-and-drop script → AI fills everything → user approves → artifacts appear
-- [ ] Define artifact viewer patterns by type:
-  - Text artifacts (scripts, canonical text) — script-formatted viewer
-  - Structured data (scenes, project config, bibles) — collapsible structured viewer
-  - Graph data (entity relationships, dependency graphs) — graph visualization
-  - Timeline / temporal data — track-based visualization (future-proof for Phase 3)
-  - Health/status indicators — inline with clear visual language
-- [ ] Define the override/drill-in interaction model
-  - How does the user go from "OK" mode to "I want to change this"?
-  - How do they return to autopilot?
-- [ ] Low-fidelity wireframes or screen sketches for key flows
-- [ ] Document design plan in `docs/design/ui-plan.md`
-
-### Phase 3: Build
-
-Iterative implementation. Each flow is built, browser-verified (per AGENTS.md), and validated before moving to the next.
-
-- [ ] Set up new UI project (or migrate 007b) with chosen stack from `docs/design/ui-stack.md`
-- [ ] Implement app shell: navigation, project switching, responsive layout
-- [ ] Implement new-project flow: drag-and-drop → AI parse → review draft config → confirm
-- [ ] Implement pipeline run view: start run, stage progress, success/failure summary
-- [ ] Implement artifact browser: type-aware viewers, version history, metadata, lineage
-- [ ] Implement artifact override/edit flows: inline editing → new version → stale propagation feedback
-- [ ] Implement pipeline events and run history views
-- [ ] Backend API adjustments as needed to support new UI patterns
-- [ ] Cross-browser and responsive testing (desktop primary, tablet secondary)
-
-### Phase 4: Polish
-
-- [ ] Visual polish: animations, transitions, loading states, empty states, error states
-- [ ] Error handling: network failures, malformed artifacts, long-running pipelines
-- [ ] Accessibility check (WCAG 2.1 AA minimum)
-- [ ] Performance check with realistic artifact volumes
-- [ ] End-to-end walkthrough of the golden path with a real screenplay
+- [x] Run deep research: app landscape and design inspiration → `docs/design/landscape.md`
+  - 3 providers (GPT-5.2, Claude Opus 4.6, Gemini 3), synthesized into final report
+  - Research: `docs/research/011b-landscape-inspiration/final-synthesis.md`
+- [x] **Discuss with Cam**: Review landscape findings — visual personality direction, artifact browser mental model, which patterns to steal vs. skip
+- [x] Run deep research: UI stack evaluation → `docs/design/ui-stack.md`
+  - 3 providers (GPT-5.2, Claude Opus 4.6, Gemini 3), synthesized into final report
+  - Research: `docs/research/011b-ui-stack-evaluation/final-synthesis.md`
+- [x] **Discuss with Cam**: Review UI stack findings — component library choice, framework decision, viewer library picks
+- [x] Synthesize final reports and update `docs/design/landscape.md` and `docs/design/ui-stack.md` with decisions
+- [x] **Discuss with Cam**: Final sign-off on research conclusions
+- [x] Capture all reviewed decisions in `docs/design/decisions.md`
+- [x] Create `docs/ideas.md` for deferred features and future concepts
 
 ---
 
-## Acceptance Criteria
+## Key Decisions Made
 
-### Design Quality
-- [ ] A new user can go from "I have a script" to "pipeline running" in under 60 seconds.
-- [ ] Progressive disclosure works: the autopilot user and the learning user both succeed without mode-switching.
-- [ ] The UI looks like a creative tool, not a developer dashboard.
+See `docs/design/decisions.md` for the full set. Highlights:
 
-### Functional Completeness
-- [ ] All Phase 1–2 artifact types have dedicated, type-appropriate viewers.
-- [ ] Artifact version history is browsable with visual diffs.
-- [ ] Pipeline runs can be started, monitored, and inspected entirely from UI.
-- [ ] Project creation works via drag-and-drop with AI auto-fill.
-- [ ] AI suggestions are presented with one-click approval.
-- [ ] User can override any AI decision and return to autopilot.
-
-### Technical Quality
-- [ ] Responsive layout (desktop-first, tablet-usable).
-- [ ] Accessibility: WCAG 2.1 AA minimum.
-- [ ] Performance: artifact browser loads within 1s for typical project sizes.
-- [ ] Existing backend API contracts preserved or cleanly migrated.
-
-### Research Deliverables (preconditions for build)
-- [ ] `docs/design/landscape.md` completed via deep research.
-- [ ] `docs/design/ui-stack.md` completed via deep research with recommended stack.
-
----
-
-## Constraints
-
-- The current Operator Console Lite (React 18 + Vite + TypeScript, no component library) may be migrated or replaced depending on `docs/design/ui-stack.md` findings.
-- The backend API (`src/cine_forge/operator_console/app.py`) should be evolved, not rewritten — the data model is sound.
-- This story does NOT implement Phase 4+ features (role chat, creative sessions, collaborative review). It builds the foundation those features will plug into.
-- Phase 3 stories (012 Timeline, 013 Tracks) will build their UI surfaces on top of whatever this story establishes — the UI architecture must accommodate timeline/track visualization even if it doesn't implement it.
-
----
-
-## Out of Scope
-
-- Multi-user collaboration and auth.
-- Rich role-chat experiences (@agent creative sessions — Story 019).
-- Full timeline editing UI (Stories 012–013 build on this foundation).
-- Shot planning, storyboard, and render controls.
-
----
-
-## Tasks
-
-Summary of all phases:
-
-- [ ] **Phase 1**: Deep research — landscape inspiration and UI stack evaluation
-- [ ] **Phase 2**: Design — IA, golden path, artifact viewers, wireframes
-- [ ] **Phase 3**: Build — shell, project flow, pipeline view, artifact browser, overrides
-- [ ] **Phase 4**: Polish — visual, accessibility, performance, end-to-end validation
-- [ ] Update `README.md` with new UI launch instructions
-- [ ] Run `make test-unit` and `make lint` with any backend changes
-- [ ] Manual browser verification per AGENTS.md development workflow
+- **Story-centric UI**, not pipeline-centric — scenes, characters, locations as primary objects
+- **shadcn/ui + React 19 + Vite + Tailwind + Zustand + TanStack Query**
+- **Dark, warm, cinematic theme** (Arc Studio Pro, Frame.io, Linear references)
+- **Inbox/review queue** as the "what do I do next?" surface
+- **Variational presentation** for subjective AI decisions (unlimited rounds with feedback)
+- **Implicit acceptance** for objective extractions (edit-in-place)
+- **Script is source of truth** — derived artifacts enrich but don't rename upstream
+- **Fresh build** from scratch (not migration of Operator Console Lite)
+- **AI-driven visual identity** — AI generates theme variations, Cam steers with taste feedback
+- **v0.dev for component prototyping** — generated code transfers directly into codebase
 
 ---
 
@@ -143,3 +61,15 @@ Summary of all phases:
 - **Notes:** Original 011b mixed product-level design foundations with build work. Extracted design principles, personas, and research scope into project-level docs under `docs/design/`. Research stubs created for deep-research execution. Story now focuses on research → design → build → polish with clear phase gates.
 - **Evidence:** `docs/design/principles.md`, `docs/design/personas.md`, `docs/design/landscape.md`, `docs/design/ui-stack.md`.
 - **Next:** Run deep research for landscape and UI stack before design phase.
+
+### 20260214 — Deep research completed (landscape + UI stack)
+- **Result:** Success.
+- **Notes:** Ran both research topics through 3 AI providers (GPT-5.2, Claude Opus 4.6, Gemini 3). Patched deep-research Anthropic provider to use streaming API for long-running calls. All 6 reports formatted and synthesized into final reports.
+- **Evidence:** `docs/research/011b-landscape-inspiration/final-synthesis.md`, `docs/research/011b-ui-stack-evaluation/final-synthesis.md`.
+- **Next:** Review findings with Cam at discussion checkpoints.
+
+### 20260215 — Research review and design decisions finalized
+- **Result:** Success.
+- **Notes:** Reviewed both research syntheses with Cam. Captured all decisions in `docs/design/decisions.md`. Created `docs/ideas.md` for deferred features (ghost-text suggestions, AI preference learning, entity graph viz, story-to-screenplay conversion). Updated `docs/design/landscape.md` and `docs/design/ui-stack.md` to reference decisions. Added Ideas Backlog section to `AGENTS.md`. Split remaining work (design, build, polish) into Story 011c.
+- **Evidence:** `docs/design/decisions.md`, `docs/ideas.md`, updated `AGENTS.md`.
+- **Next:** Story 011c — design and build the production UI.

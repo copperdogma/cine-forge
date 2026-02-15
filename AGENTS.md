@@ -44,6 +44,11 @@ For multi-model research tasks, use the `deep-research` CLI tool.
 - Workflow: `deep-research init <topic>` → write `research-prompt.md` → `deep-research run` → `deep-research format` → `deep-research final`
 - Outputs go under `docs/research/`.
 
+### Ideas Backlog
+- `docs/ideas.md` captures features, patterns, and design concepts that are good but not in scope for current work.
+- When a feature is deferred during story work, move it to `docs/ideas.md` rather than losing it.
+- When a conversation surfaces a good idea that's out of scope, add it to `docs/ideas.md`.
+
 ### Repo Map
 - `src/cine_forge/driver/`: Orchestration runtime.
 - `src/cine_forge/modules/`: Pipeline modules by stage.
