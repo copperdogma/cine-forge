@@ -56,6 +56,9 @@ def call_llm(
 
     sender = transport or _openai_transport
     last_error: Exception | None = None
+    active_max_tokens = max_tokens
+    active_temp = temperature
+
     for attempt in range(max_retries + 1):
         try:
             started = time.perf_counter()
@@ -63,8 +66,8 @@ def call_llm(
                 {
                     "model": model,
                     "messages": [{"role": "user", "content": prompt}],
-                    "temperature": temperature,
-                    **({"max_completion_tokens": max_tokens} if max_tokens else {}),
+                    "temperature": active_temp,
+                    **({"max_completion_tokens": active_max_tokens} if active_max_tokens else {}),
                     **_response_format_payload(response_schema),
                 }
             )
@@ -78,14 +81,30 @@ def call_llm(
             if fail_on_truncation and metadata.get("finish_reason") == "length":
                 raise LLMCallError("LLM output truncated due to max token limit")
             return parsed, metadata
-        except LLMCallError:
-            raise
-        except Exception as exc:  # noqa: BLE001
+        except (LLMCallError, Exception) as exc:
             last_error = exc
-            if attempt >= max_retries or not _is_transient_error(exc):
-                break
-            # Simple linear backoff keeps retries deterministic for tests.
-            time.sleep(0.2 * (attempt + 1))
+            
+            # Decide if we should retry
+            is_json_error = "valid json" in str(exc).lower()
+            is_truncation = "truncated" in str(exc).lower() or (
+                isinstance(exc, LLMCallError) and "max token limit" in str(exc)
+            )
+            
+            if attempt < max_retries and (is_json_error or is_truncation or _is_transient_error(exc)):
+                # Adjust params for retry
+                if is_truncation and active_max_tokens:
+                    active_max_tokens = int(active_max_tokens * 1.5)
+                if is_json_error:
+                    # SOTA models sometimes benefit from a tiny bit of heat on a retry
+                    active_temp = min(active_temp + 0.1, 0.7)
+                
+                time.sleep(0.5 * (attempt + 1))
+                continue
+            
+            # Terminal failure
+            if isinstance(exc, LLMCallError):
+                raise
+            break
 
     raise LLMCallError(f"LLM call failed after retries: {last_error}") from last_error
 

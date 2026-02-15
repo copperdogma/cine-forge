@@ -1,0 +1,29 @@
+recipe_id: narrative_analysis
+description: "Narrative logic pipeline: entity graph and continuity tracking from bibles."
+project: {}
+stages:
+  - id: entity_graph
+    module: entity_graph_v1
+    params:
+      work_model: ${utility_model}
+    needs: []
+    # These resolve from store since world_building is an upstream recipe
+    store_inputs:
+      extract_scenes: scene_index
+    store_inputs_all:
+      character_bible: character_bible
+      location_bible: location_bible
+      prop_bible: prop_bible
+
+  - id: continuity_tracking
+    module: continuity_tracking_v1
+    params:
+      work_model: ${utility_model}
+    needs: []
+    store_inputs:
+      normalize: canonical_script
+      extract_scenes: scene_index
+    store_inputs_all:
+      character_bible: character_bible
+      location_bible: location_bible
+      prop_bible: prop_bible

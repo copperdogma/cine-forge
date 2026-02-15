@@ -45,9 +45,24 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
             "accept_config": True,
         }
     )
-    
+
     assert state["stages"]["character_bible"]["status"] == "done"
-    
+
+    # Run narrative analysis to populate graph and continuity
+    analysis_id = f"analysis-{run_id}"
+    analysis_state = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-narrative-analysis.yaml",
+        run_id=analysis_id,
+        runtime_params={
+            "input_file": str(input_file),
+            "default_model": "mock",
+            "utility_model": "mock",
+            "sota_model": "mock",
+            "skip_qa": True,
+            "accept_config": True,
+        }
+    )
+
     # Check bible artifacts
     bible_refs = [
         ArtifactRef.model_validate(ref)
@@ -62,6 +77,7 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
         for ref in state["stages"]["location_bible"]["artifact_refs"]
         if ref["artifact_type"] == "bible_manifest"
     ]
+
     # STUDIO should be produced
     assert len(location_refs) >= 1
 
@@ -74,10 +90,15 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
     assert len(prop_refs) == 2
 
     # Check entity graph
-    assert state["stages"]["entity_graph"]["status"] == "done"
-    graph_refs = state["stages"]["entity_graph"]["artifact_refs"]
+    assert analysis_state["stages"]["entity_graph"]["status"] == "done"
+    graph_refs = analysis_state["stages"]["entity_graph"]["artifact_refs"]
     assert len(graph_refs) == 1
     assert graph_refs[0]["artifact_type"] == "entity_graph"
+
+    # Check continuity
+    assert analysis_state["stages"]["continuity_tracking"]["status"] == "done"
+    cont_refs = analysis_state["stages"]["continuity_tracking"]["artifact_refs"]
+    assert any(r["artifact_type"] == "continuity_index" for r in cont_refs)
 
     for ref in bible_refs:
         assert ref.artifact_type in ["bible_manifest", "character_bible"]
@@ -97,3 +118,5 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
                 / manifest.files[0].filename
             )
             assert master_path.exists()
+
+    

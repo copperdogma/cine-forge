@@ -57,7 +57,7 @@ def test_run_sequence():
             "default_model": "gpt-4o-mini",
             "work_model": "gpt-4o-mini",
             "verify_model": "gpt-4o-mini",
-            "escalate_model": "gpt-4o-mini",
+            "escalate_model": "gpt-4o",
             "recipe_id": "mvp_ingest",
             "accept_config": True,
             "skip_qa": False

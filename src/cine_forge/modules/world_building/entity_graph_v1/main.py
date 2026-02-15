@@ -1,10 +1,25 @@
 """Extract entity relationship graph from bibles and scene artifacts."""
 
+from __future__ import annotations
+
+from typing import Any
+
+from pydantic import RootModel
+
 from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import (
     EntityEdge,
     EntityGraph,
 )
+
+
+class EdgeList(RootModel):
+    """Temporary container for list of edges."""
+
+    root: list[EntityEdge]
+
+
+EdgeList.model_rebuild()
 
 
 def run_module(
@@ -53,7 +68,12 @@ def run_module(
     edges.extend(_merge_bible_stubs(character_bibles, location_bibles, prop_bibles))
 
     # 4. AI Extraction Pass
-    total_cost = {"model": work_model, "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
+    total_cost = {
+        "model": work_model,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
     if work_model != "mock":
         new_edges, cost = _extract_new_relationships(
             character_bibles, location_bibles, prop_bibles, scene_index, work_model
@@ -176,30 +196,22 @@ def _extract_new_relationships(
     
     # 1. Build a summary of what we know
     char_list = ", ".join([c["name"] for c in characters])
-    loc_list = ", ".join([l["name"] for l in locations])
-    prop_list = ", ".join([p["name"] for l in props for p in l.get("files", [])]) # simple prop names
+    loc_list = ", ".join([loc["name"] for loc in locations])
+    prop_list = ", ".join([p["name"] for prop in props for p in prop.get("files", [])])
 
-    prompt = f"""You are a narrative architect. Review the following entities from a story and identify significant narrative relationships that might have been missed in individual analysis.
+    prompt = (
+        "You are a narrative architect. Review the following entities from a story "
+        "and identify significant narrative relationships that might have been missed "
+        "in individual analysis.\n\n"
+        f"Characters: {char_list}\n"
+        f"Locations: {loc_list}\n"
+        f"Props: {prop_list}\n\n"
+        "Task: Identify exactly 3-5 high-impact relationships.\n"
+        "Focus on: Familial links, Secret rivalries, Ownership of key props, "
+        "Primary locations for specific characters.\n\n"
+        "Return JSON matching a list of EntityEdge schemas."
+    )
     
-    Characters: {char_list}
-    Locations: {loc_list}
-    Props: {prop_list}
-    
-    Task: Identify exactly 3-5 high-impact relationships. 
-    Focus on:
-    - Familial links.
-    - Secret rivalries.
-    - Ownership of key props.
-    - Primary locations for specific characters.
-    
-    Return JSON matching a list of EntityEdge schemas.
-    """
-    
-    # Since we need a list, we'll wrap it in a temporary container for call_llm
-    from pydantic import RootModel
-    class EdgeList(RootModel):
-        root: list[EntityEdge]
-
     result, cost = call_llm(
         prompt=prompt,
         model=model,
@@ -230,11 +242,6 @@ def _deduplicate_edges(edges: list[EntityEdge]) -> list[EntityEdge]:
             seen[key] = edge
             
     return list(seen.values())
-
-
-def _slugify(name: str) -> str:
-    import re
-    return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
 
 
 def _slugify(name: str) -> str:

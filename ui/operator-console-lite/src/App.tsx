@@ -862,6 +862,7 @@ function RunPage({ seedInputPath }: { seedInputPath: string }) {
           >
             <option value="mvp_ingest">MVP Ingest (Basic)</option>
             <option value="world_building">World Building (Bibles)</option>
+            <option value="narrative_analysis">Narrative Analysis (Graph + Continuity)</option>
           </select>
         </div>
       </div>
@@ -1372,6 +1373,12 @@ function ArtifactsPage() {
           <EntityGraphViewer data={displayData} />
         </div>
       )}
+      {selectedDetail?.artifact_type === "continuity_index" && (
+        <div className="card">
+          <h3>Asset Continuity Timelines</h3>
+          <ContinuityViewer data={displayData} />
+        </div>
+      )}
       {selectedDetail ? (
         <div className="card">
           <h3>Artifact JSON {selFile ? `(${selFile})` : "(Manifest)"}</h3>
@@ -1482,6 +1489,28 @@ function EntityGraphViewer({ data }: { data: any }) {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function ContinuityViewer({ data }: { data: any }) {
+  const timelines = data.timelines || {};
+  return (
+    <div style={{ marginTop: "12px" }}>
+      {Object.entries(timelines).map(([key, tl]: [string, any]) => (
+        <div key={key} className="card" style={{ marginBottom: "12px" }}>
+          <h4>{key}</h4>
+          <div className="row" style={{ flexWrap: "wrap" }}>
+            {tl.states.map((stateId: string) => (
+              <div key={stateId} style={{ padding: "4px", border: "1px solid #ddd", borderRadius: "4px", fontSize: "0.8em" }}>
+                <strong>Scene {stateId.split("_").pop()}</strong>
+                <br />
+                <span className="badge badge-success">v1</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

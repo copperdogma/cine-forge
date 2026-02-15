@@ -63,6 +63,20 @@ class ArtifactStore:
             payload = json.load(file)
         return Artifact.model_validate(payload)
 
+    def list_entities(self, artifact_type: str) -> list[str]:
+        """List all entity IDs that have artifacts of a given type."""
+        # For bibles, entities are folders under artifacts/bibles/
+        if artifact_type == "bible_manifest":
+            bibles_dir = self.project_dir / "artifacts" / "bibles"
+            if not bibles_dir.exists():
+                return []
+            return [p.name for p in bibles_dir.iterdir() if p.is_dir()]
+        
+        type_dir = self.project_dir / "artifacts" / artifact_type
+        if not type_dir.exists():
+            return []
+        return [p.name for p in type_dir.iterdir() if p.is_dir()]
+
     def list_versions(self, artifact_type: str, entity_id: str | None) -> list[ArtifactRef]:
         artifact_dir = self._artifact_directory(artifact_type=artifact_type, entity_id=entity_id)
         if not artifact_dir.exists():

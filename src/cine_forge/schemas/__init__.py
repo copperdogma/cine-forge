@@ -16,6 +16,13 @@ from .canonical_script import (
     Invention,
     NormalizationMetadata,
 )
+from .continuity import (
+    ContinuityEvent,
+    ContinuityIndex,
+    ContinuityState,
+    EntityTimeline,
+    StateProperty,
+)
 from .graph import EntityEdge, EntityGraph
 from .models import (
     Artifact,
@@ -61,6 +68,11 @@ __all__ = [
     "InferredTrait",
     "LocationBible",
     "PropBible",
+    "ContinuityEvent",
+    "ContinuityIndex",
+    "ContinuityState",
+    "EntityTimeline",
+    "StateProperty",
     "CostRecord",
     "DetectedValue",
     "Invention",

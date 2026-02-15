@@ -29,6 +29,8 @@ from cine_forge.schemas import (
     BibleManifest,
     CanonicalScript,
     CharacterBible,
+    ContinuityIndex,
+    ContinuityState,
     CostRecord,
     EntityEdge,
     EntityGraph,
@@ -65,6 +67,8 @@ class DriverEngine:
         self.schemas.register("prop_bible", PropBible)
         self.schemas.register("entity_edge", EntityEdge)
         self.schemas.register("entity_graph", EntityGraph)
+        self.schemas.register("continuity_state", ContinuityState)
+        self.schemas.register("continuity_index", ContinuityIndex)
         self.schemas.register("qa_result", QAResult)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
@@ -420,6 +424,32 @@ class DriverEngine:
             artifact = self.store.load_artifact(artifact_ref=latest_ref)
             collected[input_key] = artifact.data
             lineage.append(latest_ref)
+
+        # Resolve store_inputs_all from artifact store
+        for input_key, artifact_type in stage.store_inputs_all.items():
+            entities = self.store.list_entities(artifact_type=artifact_type)
+            if not entities:
+                raise ValueError(
+                    f"Stage '{stage_id}' store_inputs_all '{input_key}' requires "
+                    f"artifact type '{artifact_type}', but none exist in the store."
+                )
+            
+            all_data = []
+            for ent_id in entities:
+                versions = self.store.list_versions(artifact_type=artifact_type, entity_id=ent_id)
+                if not versions:
+                    continue
+                latest_ref = versions[-1]
+                # Skip unhealthy artifacts
+                health = self.store.graph.get_health(latest_ref)
+                if health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
+                    continue
+                
+                artifact = self.store.load_artifact(artifact_ref=latest_ref)
+                all_data.append(artifact.data)
+                lineage.append(latest_ref)
+            
+            collected[input_key] = all_data
 
         return collected, lineage
 

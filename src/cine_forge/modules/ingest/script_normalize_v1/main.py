@@ -121,10 +121,14 @@ def run_module(
         except LLMCallError as exc:
             if attempt >= max_retries:
                 raise
-            # Increase token budget on truncation failures
-            if "truncated" in str(exc).lower():
+            
+            # If it failed with JSON error or truncation, try to adapt
+            error_msg = str(exc).lower()
+            if "truncated" in error_msg or "max token limit" in error_msg:
                 max_tokens = int(max_tokens * 1.5)
+            
             normalization_feedback = f"Prior attempt failed with error: {exc}. Please try again."
+            print(f"[{active_model}] Normalization attempt {attempt+1} failed: {exc}. Retrying...")
             continue
 
         normalization_costs.extend(call_costs)
@@ -435,14 +439,23 @@ def _build_metadata_prompt(
     target_strategy: str,
     screenplay_text: str,
 ) -> str:
+    # Truncate very long scripts to avoid context overflow in metadata turn
+    def truncate(text: str, limit: int = 4000) -> str:
+        if len(text) <= limit:
+            return text
+        return f"{text[:limit//2]}\n\n[... TRUNCATED ...]\n\n{text[-limit//2:]}"
+
+    safe_content = truncate(content)
+    safe_script = truncate(screenplay_text)
+
     return (
         "Analyze screenplay normalization work and return strict JSON matching schema.\n"
         f"Source format: {source_format}\n"
         f"Strategy: {target_strategy}\n\n"
-        "Original input:\n"
-        f"{content}\n\n"
-        "Produced screenplay:\n"
-        f"{screenplay_text}\n"
+        "Original input (truncated if long):\n"
+        f"{safe_content}\n\n"
+        "Produced screenplay (truncated if long):\n"
+        f"{safe_script}\n"
     )
 
 

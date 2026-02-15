@@ -80,3 +80,6 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-13 — Validate the Service Layer: Passing a module test does not guarantee the UI can see or run it. Test through the `OperatorConsoleService` boundary.
 - 2026-02-13 — Prefer Dynamic Discovery: UI services should scan folders for recipes/actions rather than hardcoding paths.
 - 2026-02-13 — Ensure Cache Invalidation across Recipe Changes: When moving from a partial recipe (MVP) to a broader one (World Building) in the same project folder, verify that upstream artifacts are either explicitly forced to rerun or are strictly compatible with the new pipeline's expectations.
+- 2026-02-14 — Establish LLM Resilience: LLM calls for long documents are prone to truncation and malformed JSON. Implement catch-and-retry logic that increments `max_tokens` and escalates to stronger models (e.g., Mini -> SOTA) on failure (`src/cine_forge/ai/llm.py`).
+- 2026-02-14 — 3-Recipe Architecture: Partition the pipeline into Intake, Synthesis, and Analysis. This limits the "blast radius" of AI failures and provides natural human-in-the-loop verification gates between expensive world-building steps.
+- 2026-02-14 — Resource-Oriented UI: Identity (Project, Run, Artifact) belongs in the URL Path, not Search Params or LocalStorage. This makes the UI stateless, shareable, and multi-tab friendly.
