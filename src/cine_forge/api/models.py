@@ -27,6 +27,7 @@ class InputFileSummary(BaseModel):
     filename: str
     original_name: str
     size_bytes: int = Field(ge=0)
+    stored_path: str = ""
 
 
 class ProjectSummary(BaseModel):
@@ -161,3 +162,42 @@ class RecipeSummary(BaseModel):
     name: str
     description: str
     stage_count: int = Field(ge=0)
+
+
+class SlugPreviewRequest(BaseModel):
+    """Request to generate a project slug from screenplay content."""
+
+    content_snippet: str = Field(min_length=1)
+    original_filename: str = Field(min_length=1)
+
+
+class SlugPreviewResponse(BaseModel):
+    """LLM-generated project name and slug."""
+
+    slug: str
+    display_name: str
+    alternatives: list[str] = []
+
+
+class ProjectCreateRequest(BaseModel):
+    """Create a project using a slug and display name."""
+
+    slug: str = Field(min_length=1, pattern=r"^[a-z0-9][a-z0-9-]*$")
+    display_name: str = Field(min_length=1)
+
+
+class ProjectSettingsUpdate(BaseModel):
+    """Partial update for project settings (display name, etc.)."""
+
+    display_name: str | None = None
+
+
+class ChatMessagePayload(BaseModel):
+    """A single chat message for the project journal."""
+
+    id: str = Field(min_length=1)
+    type: str = Field(min_length=1)
+    content: str
+    timestamp: float
+    actions: list[dict[str, Any]] | None = None
+    needsAction: bool | None = None

@@ -1,46 +1,56 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Upload, Plus } from 'lucide-react'
+import { ArrowLeft, Upload, Plus, Loader2, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useCreateProject } from '@/lib/hooks'
-import { uploadProjectInput } from '@/lib/api'
+import { uploadProjectInput, previewSlug } from '@/lib/api'
 
-function cleanProjectName(filename: string): string {
-  let name = filename
-    // Strip extension
-    .replace(/\.(pdf|fdx|fountain|txt|md|docx)$/i, '')
-    // Strip leading timestamp patterns
-    .replace(/^\d{10,15}[_-]/, '')
-    // Replace underscores and hyphens with spaces
-    .replace(/[_-]/g, ' ')
-    // Remove common suffixes like "No ID"
-    .replace(/\s+No\s+ID\s*$/i, '')
-    // Collapse whitespace
-    .replace(/\s+/g, ' ')
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
     .trim()
-  // Title case
-  if (name) {
-    name = name
-      .split(' ')
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-      .join(' ')
-  }
-  return name
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || 'project'
 }
 
 export default function NewProject() {
   const navigate = useNavigate()
   const [projectName, setProjectName] = useState('')
-  const [projectPath, setProjectPath] = useState('output/')
+  const [slug, setSlug] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [isNaming, setIsNaming] = useState(false)
+  const [nameSource, setNameSource] = useState<'ai' | 'user' | 'filename'>('filename')
 
   const createProject = useCreateProject()
+
+  const generateSlugFromContent = useCallback(async (file: File) => {
+    setIsNaming(true)
+    try {
+      // Read first 2000 chars of the file for LLM analysis
+      const text = await file.text()
+      const snippet = text.slice(0, 2000)
+      const result = await previewSlug(snippet, file.name)
+      setProjectName(result.display_name)
+      setSlug(result.slug)
+      setNameSource('ai')
+    } catch {
+      // LLM failed — fall back to filename-based naming
+      const fallbackName = cleanFilename(file.name)
+      setProjectName(fallbackName)
+      setSlug(slugify(fallbackName))
+      setNameSource('filename')
+    } finally {
+      setIsNaming(false)
+    }
+  }, [])
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
@@ -63,10 +73,7 @@ export default function NewProject() {
 
     if (validFile) {
       setSelectedFile(validFile)
-      // Auto-populate project name from filename if empty
-      if (!projectName) {
-        setProjectName(cleanProjectName(validFile.name))
-      }
+      generateSlugFromContent(validFile)
     }
   }
 
@@ -74,30 +81,32 @@ export default function NewProject() {
     const files = e.target.files
     if (files && files.length > 0) {
       setSelectedFile(files[0])
-      // Auto-populate project name from filename if empty
-      if (!projectName) {
-        setProjectName(cleanProjectName(files[0].name))
-      }
+      generateSlugFromContent(files[0])
     }
   }
 
-  const handleCreate = async () => {
-    if (!selectedFile) return
+  const handleNameChange = (value: string) => {
+    setProjectName(value)
+    setSlug(slugify(value))
+    setNameSource('user')
+  }
 
-    const timestamp = Date.now()
-    const sanitizedName = projectName.trim().replace(/[^a-zA-Z0-9_-]/g, '_')
-    const fullPath = `${projectPath.replace(/\/$/, '')}/${timestamp}_${sanitizedName}`
+  const handleCreate = async () => {
+    if (!selectedFile || !slug) return
 
     try {
       setIsUploading(true)
 
-      // Step 1: Create the project
-      const project = await createProject.mutateAsync(fullPath)
+      // Step 1: Create the project with slug
+      const project = await createProject.mutateAsync({
+        slug,
+        displayName: projectName.trim(),
+      })
 
-      // Step 2: Upload the input file (call API directly — hook would have stale projectId)
+      // Step 2: Upload the input file
       await uploadProjectInput(project.project_id, selectedFile)
 
-      // Step 3: Success — navigate to the project
+      // Step 3: Navigate to the new project
       toast.success('Project created successfully')
       navigate(`/${project.project_id}`)
     } catch (error) {
@@ -108,7 +117,7 @@ export default function NewProject() {
     }
   }
 
-  const canCreate = projectName.trim() !== '' && selectedFile !== null
+  const canCreate = projectName.trim() !== '' && slug !== '' && selectedFile !== null && !isNaming
   const isProcessing = createProject.isPending || isUploading
 
   return (
@@ -121,35 +130,6 @@ export default function NewProject() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Project Name */}
-          <div className="space-y-2">
-            <label htmlFor="project-name" className="text-sm font-medium">
-              Project Name
-            </label>
-            <Input
-              id="project-name"
-              placeholder="Enter project name"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-            />
-          </div>
-
-          {/* Project Path */}
-          <div className="space-y-2">
-            <label htmlFor="project-path" className="text-sm font-medium">
-              Project Path
-            </label>
-            <Input
-              id="project-path"
-              placeholder="/data/projects/"
-              value={projectPath}
-              onChange={(e) => setProjectPath(e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">
-              Base directory where project artifacts will be stored
-            </p>
-          </div>
-
           {/* Screenplay Upload */}
           <div className="space-y-2">
             <label htmlFor="screenplay-upload" className="text-sm font-medium">
@@ -210,6 +190,39 @@ export default function NewProject() {
             </div>
           </div>
 
+          {/* Project Name — appears after file selection */}
+          {selectedFile && (
+            <div className="space-y-2">
+              <label htmlFor="project-name" className="text-sm font-medium flex items-center gap-2">
+                Project Name
+                {isNaming && (
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Reading title...
+                  </span>
+                )}
+                {!isNaming && nameSource === 'ai' && (
+                  <span className="flex items-center gap-1 text-xs text-primary">
+                    <Sparkles className="h-3 w-3" />
+                    AI-detected
+                  </span>
+                )}
+              </label>
+              <Input
+                id="project-name"
+                placeholder="Enter project name"
+                value={projectName}
+                onChange={(e) => handleNameChange(e.target.value)}
+                disabled={isNaming}
+              />
+              {slug && !isNaming && (
+                <p className="text-xs text-muted-foreground">
+                  URL: <code className="rounded bg-muted px-1 py-0.5">/{slug}</code>
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Actions */}
           <div className="flex gap-3 pt-4">
             <Button
@@ -233,4 +246,21 @@ export default function NewProject() {
       </Card>
     </div>
   )
+}
+
+function cleanFilename(filename: string): string {
+  let name = filename
+    .replace(/\.(pdf|fdx|fountain|txt|md|docx)$/i, '')
+    .replace(/^\d{10,15}[_-]/, '')
+    .replace(/[_-]/g, ' ')
+    .replace(/\s+No\s+ID\s*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  if (name) {
+    name = name
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(' ')
+  }
+  return name
 }

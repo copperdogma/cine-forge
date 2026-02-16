@@ -2,7 +2,7 @@
 
 Living document capturing reviewed and approved design decisions. These drive implementation.
 
-**Status**: In progress — landscape and UI stack decisions captured.
+**Status**: Active — updated through Story 011e (UX Golden Path).
 
 ---
 
@@ -19,8 +19,15 @@ If a derived artifact is edited and then the script is re-processed, conflicts s
 ### Story-centric, not pipeline-centric
 The UI is organized around the user's *story* — scenes, characters, locations, shots — not around pipeline stages or module names. The pipeline is invisible plumbing. Users should feel like they're working with their screenplay, not watching a DAG execute.
 
+### The screenplay is always the home page
+The screenplay is the center of gravity for every project state. It is never replaced by a dashboard, stats view, or admin panel. At every stage of development — freshly imported, being processed, fully analyzed — the screenplay remains the primary content on the home page.
+
+This is the foundational design decision. The user imported a screenplay because they care about their story. The moment we replace it with a grid of numbers, we've told them "the system matters more than your story."
+
+Everything else — scenes detected, artifacts produced, run history, artifact health — is secondary information accessible via the chat panel, nav pages, or the inspector. None of it displaces the script.
+
 ### Scene strips / index cards
-Scenes are the universal structural unit. Scene strips or index cards are the primary navigation and organization metaphor.
+Scenes are the universal structural unit. Scene strips or index cards are the primary navigation and organization metaphor. They appear in the chat panel as materialized results and on dedicated Scenes pages, but do not replace the screenplay on the home page.
 
 ### Artifacts as first-class objects
 Everything the system produces is a browsable, inspectable artifact with version history, provenance, health status, and type-appropriate rendering.
@@ -34,6 +41,47 @@ The primary workflow is importing a finished screenplay. Story-to-screenplay con
 
 ### Intake flow
 Drag-and-drop script file → AI parses and extracts → review draft → confirm. Under 60 seconds of user attention for the happy path.
+
+### The golden path (implemented)
+1. Upload screenplay on New Project page
+2. LLM extracts the title, generates a clean slug (e.g., `the-mariner`)
+3. User confirms name → lands on the screenplay, beautifully rendered in CodeMirror
+4. Chat panel suggests "Ready to bring your story to life?" with one-click Start Analysis
+5. Click → processing begins. **The screenplay stays visible.** Progress appears in the chat panel.
+6. Stage-by-stage updates: "Converting to standard format..." → "Finding scene boundaries..." → "Working on project config..."
+7. On completion: "Analysis complete! I found 17 artifacts." with [View Results] and [Run Details] buttons
+8. User clicks through at their own pace. System suggests next steps. No dead ends.
+
+### Processing stays on the screenplay
+Clicking "Start Analysis" does NOT navigate away. The screenplay remains visible while the chat panel shows real-time progress. A subtle processing banner appears at the top. Power users can click "View Run Details" to see the pipeline stage view, but this is never forced.
+
+### Progressive depth with user control
+Analysis recipes (extraction of scenes, characters, locations) fire automatically or with one click. Creative recipes (character bibles, world-building, visual style) are suggested via the chat panel after extraction completes. The user decides how far to go — different personas exit at different depths. No recipe names are ever shown to the user.
+
+### Analysis vs creative: the clean line
+Anything that extracts what's already in the script runs automatically — the app is useless without it. Anything that adds something new requiring creative judgment pauses and suggests.
+
+**Automatic (analysis):** Scene boundaries, character identification, prop detection, location identification, relationship mapping, dialogue attribution, format/structure analysis.
+
+**Pause and suggest (creative):** Character backstories/bibles, visual style, tone/mood, shot planning, storyboard generation, music/sound, casting suggestions.
+
+The line: **extracting = automatic. Creating = suggest first.**
+
+---
+
+## Project Identity
+
+### Slug-based naming
+Projects are identified by human-readable slugs derived from the screenplay content (e.g., `the-mariner`), not SHA-256 hashes. On screenplay upload, a fast LLM call (Haiku) extracts the title and generates a URL-friendly slug. The slug becomes the folder name (`output/the-mariner/`), URL path (`/the-mariner/runs`), and internal project ID.
+
+### LLM-powered title extraction
+The system reads the first ~2000 characters of the screenplay and extracts the title via LLM. This produces clean, meaningful names without requiring the user to type anything. Fallback: filename-based slug if LLM fails.
+
+### Collision handling
+If a slug already exists (e.g., uploading a second screenplay called "The Mariner"), the system appends `-2`, `-3`, etc. Uniqueness is enforced by scanning the output directory.
+
+### Display name is editable
+The display name (shown in the header, breadcrumbs, and landing page) is editable inline — click the project title to rename it. The slug/folder name does not change after creation.
 
 ---
 
@@ -55,6 +103,37 @@ Every AI-generated value carries visible provenance (which model, which prompt, 
 
 ### The preview IS the artifact
 No separate "preview" vs "final" — what you see is what you get. Editing happens in-place on the real artifact. (ElevenLabs pattern.)
+
+---
+
+## Chat Panel — Primary Control Surface
+
+The chat panel is the primary way users interact with the app. It is not a secondary "copilot" or hint banner — it is the main interaction surface.
+
+### Architecture
+Suggestions are AI messages with action buttons. User clicks are logged as user messages. The full history is the project journal. Scroll back to see every decision, every approval, every override — lineage tracking made human-readable.
+
+### Message types
+- **AI status**: Progress updates during processing ("Converting to standard screenplay format...")
+- **AI suggestion**: Rich messages with context + action buttons ("Analysis complete! [View Results] [Go Deeper]")
+- **User action**: Logged when user clicks a button ("Start Analysis ✓")
+- **User override**: Logged when user edits an artifact (future)
+
+### Three personas, one interface
+- **Autopilot users** click through suggestions: yes, yes, yes
+- **Learning users** read the detail in each message
+- **Directing users** click "configure" or "choose" options
+
+Same messages, three personas served.
+
+### Chat history IS the project journal
+Every project action is a message. The chat panel doubles as a complete audit trail of decisions. This is intentional — no separate "activity log" or "history" page needed.
+
+### Inbox is a filtered view of chat
+The inbox shows only chat messages that need user action (stale artifacts, pending approvals, AI questions, errors). Resolving an inbox item updates the corresponding chat message. One source of truth (the chat), inbox is just a lens on it.
+
+### Future: conversational AI (Story 011f)
+Enable the text input so users can ask questions, discuss story ideas, and request actions. The chat architecture is already in place — just add an LLM behind the input field with tool use for project operations.
 
 ---
 
@@ -102,28 +181,48 @@ Field-level marking distinguishes AI-generated values from user overrides. User 
 ## Layout and Navigation
 
 ### Three-panel workspace
-- **Navigator** (left): Project structure, scene list, artifact collections
-- **Content Canvas** (center): Primary working area — artifact viewer, script reader, variant selector
-- **Inspector** (right): Metadata, provenance, version history, properties of selected item
+- **Navigator** (left): Project-level navigation. Story-centric items (Home, Runs, Artifacts, Inbox). Eventually: Script, Scenes, Characters, Locations, World.
+- **Content Canvas** (center): Primary working area — the screenplay is always the home view. Other pages (Runs, Artifacts) use the same canvas.
+- **Right Panel** (right): Tabbed — **Chat** (primary interaction surface, always default) and **Inspector** (metadata, provenance, version history when viewing artifacts). Chat is the default tab; Inspector activates contextually.
+
+### Current navigation (implemented)
+Primary: **Home** (screenplay), **Runs**, **Artifacts**, **Inbox**
+
+"Pipeline" was removed from primary nav — a pipeline is just a run detail, accessible from the Runs page or chat links. The word "pipeline" is never shown to the Storyteller persona.
+
+### Target navigation (Phase 4)
+Primary: **Script**, **Scenes**, **Characters**, **Locations**, **World**, **Inbox**
+Advanced (collapsed): Runs, raw Artifacts
+
+Nav items that have no content yet are grayed with hint text or hidden until artifacts exist.
+
+### Props are contextual, not a nav item
+Props exist at the intersection of characters, locations, and scenes. A sidearm shows up on the character's page. A macguffin appears everywhere it's relevant. "All props" is a filtered view, not a primary nav concern.
 
 ### Slide-over detail pattern
 Drilling into an artifact opens a slide-over panel rather than a full page navigation. Maintains context of where you came from.
 
 ### Keyboard-first navigation
-Support keyboard shortcuts for common actions. Power users should be able to move through the review queue, approve/reject, navigate scenes, and switch views without touching the mouse.
+Support keyboard shortcuts for common actions (⌘B toggle sidebar, ⌘I toggle right panel, ⌘0-3 nav items, ⌘K command palette). Power users should be able to move through the review queue, approve/reject, navigate scenes, and switch views without touching the mouse.
 
 ---
 
-## Pipeline Visualization
+## Pipeline and Processing
 
 ### Hidden by default
-The pipeline DAG is not shown to users. Instead, the UI presents artifacts as things that "exist or don't yet."
+The pipeline DAG is not shown to users. Instead, the UI presents artifacts as things that "exist or don't yet." The word "pipeline" never appears in the primary UI.
 
-### Vertical phase list for progress
-When a pipeline is running, show a simple vertical list of phases with completion status. Not a full DAG — just "what's done, what's running, what's next."
+### Progress via chat, not a separate page
+When processing runs, progress appears as messages in the chat panel: "Converting to standard format...", "Finding scene boundaries...", "Scenes identified." The user stays on the screenplay page. A "View Run Details" link is available for power users who want the stage-by-stage breakdown with costs and durations.
+
+### Run detail page for power users
+The Runs page and Run Detail view provide full pipeline visibility: stage status, duration, cost per stage, model used, artifacts produced, event log. This is the "Advanced" view — accessible but never the default experience.
+
+### Live-updating run details
+Run duration ticks live (updates every second while running). Event log polls for new entries. Stage statuses update via polling (every 2 seconds). When the run completes, polling stops automatically.
 
 ### Progressive materialization (skeleton UI)
-While the pipeline runs, show skeleton placeholders that fill in with real content as artifacts are produced. The UI comes alive incrementally rather than appearing all at once.
+While the pipeline runs, show skeleton placeholders that fill in with real content as artifacts are produced. The UI comes alive incrementally rather than appearing all at once. (Phase 3 — not yet implemented.)
 
 ### Provenance on the artifact, not in a separate diagram
 Lineage information (what produced this, what it depends on) is a property of each artifact, accessible from the artifact inspector. No separate "lineage view" needed for MVP.
@@ -162,25 +261,32 @@ Allow annotations and comments attached to specific elements within an artifact 
 
 ## Anti-Patterns to Avoid
 
-1. **"Processing..." with no context**: Always show what's happening, what's been produced so far, and estimated progress.
-2. **Modal approval workflows**: Don't block the entire UI for a single approval. Use the inbox pattern instead.
-3. **Separate "AI settings" panels**: AI configuration should be contextual to what the user is looking at, not buried in a settings menu.
-4. **Silent overwrites**: Never replace user work without explicit consent.
-5. **Pipeline-centric navigation**: Never organize the UI around stage names (ingest, normalize, extract). Always use story concepts (scenes, characters, locations).
+1. **Dashboard displacing the script**: Never replace the screenplay with a grid of stats, artifact counts, or run summaries. The screenplay is the home page. Stats are secondary.
+2. **Navigating away during processing**: Never force the user to a pipeline/progress page when they click "Start Analysis." Stay on the screenplay; show progress in the chat.
+3. **"Processing..." with no context**: Always show what's happening, what's been produced so far, and estimated progress — via chat messages, not a loading spinner.
+4. **Modal approval workflows**: Don't block the entire UI for a single approval. Use the inbox pattern instead.
+5. **Separate "AI settings" panels**: AI configuration should be contextual to what the user is looking at, not buried in a settings menu.
+6. **Silent overwrites**: Never replace user work without explicit consent.
+7. **Pipeline-centric navigation**: Never organize the UI around stage names (ingest, normalize, extract). Always use story concepts (scenes, characters, locations).
+8. **Hash-based or system-generated identifiers in the UI**: Project names, URLs, and breadcrumbs should always be human-readable. Internal IDs stay internal.
+9. **Dead-end screens**: Every screen must have an obvious next action. If the user has to wonder "what do I do now?", the UI has failed. The chat panel's suggested next action is the safety net.
 
 ---
 
 ## Scope Boundaries (MVP)
 
 ### In scope
-- Screenplay import (primary workflow)
+- Screenplay import with LLM-powered title extraction and slug-based identity
+- Screenplay-first home page for all project states
+- Chat panel as primary interaction surface with state-driven suggestions
+- One-click analysis with chat-driven progress (stay on screenplay)
 - Artifact browsing and inspection with type-appropriate viewers
 - AI review with variational presentation
-- Inbox/review queue
-- Pipeline progress (simple vertical list)
+- Inbox/review queue (filtered chat view)
+- Run detail with live-updating duration and event log
 - Override/edit with staleness tracking
-- Dark cinematic theme
-- Desktop-first, keyboard-friendly
+- Dark cinematic theme (slate with sage/teal accents)
+- Desktop-first, keyboard-friendly (⌘B, ⌘I, ⌘K, ⌘0-3)
 
 ### Out of scope for MVP
 - Story-to-screenplay conversion (see `docs/ideas.md`)
@@ -227,6 +333,10 @@ The existing Operator Console Lite (`ui/operator-console-lite/`) is a throwaway 
 
 ## Open Questions
 
-1. **Script format detection**: Best effort with warnings in the inbox for issues encountered? *(Leaning yes.)*
+1. ~~**Script format detection**~~: **Resolved.** Best effort with warnings in the inbox for issues encountered.
 2. **Mobile/tablet**: Ideally works on mobile devices. How much effort to invest? *(Defer detailed mobile design to post-MVP but don't make choices that prevent it.)*
 3. **Re-run blast radius**: When a user has done extensive manual editing and then regenerates something large upstream, the inbox-based staleness approach handles notification — but the UX of "merge" for complex artifacts needs design work. *(Defer detailed merge UX to implementation phase.)*
+4. ~~**Chat panel width**~~: **Resolved.** 320px fixed width for the right panel (Chat + Inspector tabs). Screenplay gets center stage.
+5. ~~**Chat vs inbox overlap**~~: **Resolved.** Inbox is a filtered view of chat. One source of truth.
+6. ~~**Chat input field**~~: **Resolved.** Visible but disabled with "Chat coming in a future update..." placeholder. Signals conversational future without confusing users.
+7. **Message density during fast operations**: Many things happen fast during extraction (13 scenes, 7 characters). Currently each stage transition gets its own message. May need batching if it gets noisy.

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   Play,
@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Circle,
   XCircle,
+  FileText,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,7 +19,7 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { SceneStrip } from '@/components/SceneStrip'
 import { RunEventLog, mockRunEvents } from '@/components/RunEventLog'
-import { useUploadInput, useStartRun, useRunState, useRecipes, useScenes } from '@/lib/hooks'
+import { useUploadInput, useStartRun, useRunState, useRecipes, useScenes, useProjectInputs } from '@/lib/hooks'
 import { toast } from 'sonner'
 
 // Fallback recipes in case API fails
@@ -56,9 +57,21 @@ export default function ProjectRun() {
   const { data: runStateData, isLoading: runStateLoading } = useRunState(runId || '')
   const { data: recipesData, isLoading: recipesLoading } = useRecipes()
   const { data: scenesData = [] } = useScenes(projectId)
+  const { data: existingInputs } = useProjectInputs(projectId)
 
   // Use real recipes from API, fallback to hardcoded list if API fails
   const recipes = recipesData || fallbackRecipes
+
+  // Auto-populate from existing project inputs (screenplay already uploaded during project creation)
+  useEffect(() => {
+    if (uploadedFile || !existingInputs?.length) return
+    const latest = existingInputs[existingInputs.length - 1]
+    setUploadedFile({
+      original_name: latest.original_name,
+      stored_path: latest.stored_path,
+      size_bytes: latest.size_bytes,
+    })
+  }, [existingInputs, uploadedFile])
 
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -273,13 +286,16 @@ export default function ProjectRun() {
           </CardHeader>
           <CardContent>
             {uploadedFile ? (
-              <div className="rounded-lg border-2 border-primary bg-primary/5 p-4">
+              <div className="rounded-lg border border-border bg-muted/30 p-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium">{uploadedFile.original_name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {(uploadedFile.size_bytes / 1024).toFixed(1)} KB
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-5 w-5 text-primary shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium">{uploadedFile.original_name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(uploadedFile.size_bytes / 1024).toFixed(1)} KB
+                      </p>
+                    </div>
                   </div>
                   <Button
                     variant="ghost"
@@ -287,7 +303,7 @@ export default function ProjectRun() {
                     onClick={() => setUploadedFile(null)}
                     disabled={uploadMutation.isPending || startRunMutation.isPending}
                   >
-                    Change
+                    Replace
                   </Button>
                 </div>
               </div>

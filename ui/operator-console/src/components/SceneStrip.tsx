@@ -72,7 +72,7 @@ export function SceneStrip({
     <div
       ref={containerRef}
       className={cn(
-        'relative w-full',
+        'relative w-full overflow-hidden',
         'before:absolute before:left-0 before:top-0 before:bottom-0 before:w-8 before:bg-gradient-to-r before:from-background before:to-transparent before:z-10 before:pointer-events-none',
         'after:absolute after:right-0 after:top-0 after:bottom-0 after:w-8 after:bg-gradient-to-l after:from-background after:to-transparent after:z-10 after:pointer-events-none',
         className

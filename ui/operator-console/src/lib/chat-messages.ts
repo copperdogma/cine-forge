@@ -42,7 +42,7 @@ export function getWelcomeMessages(
           content: "I'll read through the screenplay and identify all the scenes, characters, and locations. This usually takes about a minute.",
           timestamp: now + 1,
           actions: [
-            { id: 'start_analysis', label: 'Start Analysis', variant: 'default', route: 'run' },
+            { id: 'start_analysis', label: 'Start Analysis', variant: 'default' },
             { id: 'just_read', label: 'Just Let Me Read', variant: 'outline' },
           ],
           needsAction: true,
@@ -75,7 +75,7 @@ export function getWelcomeMessages(
           timestamp: now + 1,
           actions: [
             { id: 'review', label: 'Review Scenes', variant: 'default', route: 'artifacts' },
-            { id: 'go_deeper', label: 'Go Deeper', variant: 'secondary', route: 'run' },
+            { id: 'go_deeper', label: 'Go Deeper', variant: 'secondary' },
           ],
           needsAction: true,
         },
@@ -115,4 +115,67 @@ function cleanFilename(name: string): string {
     .replace(/\s+No\s+ID\s*$/i, '')
     .replace(/\s+/g, ' ')
     .trim()
+}
+
+// --- Stage progress descriptions ---
+
+const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }> = {
+  ingest: {
+    start: 'Reading your document...',
+    done: 'Document loaded successfully.',
+  },
+  normalize: {
+    start: 'Converting to standard screenplay format...',
+    done: 'Screenplay format standardized.',
+  },
+  classify: {
+    start: 'Classifying your document type — screenplay, treatment, or prose...',
+    done: 'Document classified.',
+  },
+  extract_scenes: {
+    start: 'Finding scene boundaries and structure...',
+    done: 'Scenes identified.',
+  },
+  scene_breakdown: {
+    start: 'Breaking down scenes — identifying characters, locations, and action in each scene...',
+    done: 'Scene breakdown complete.',
+  },
+  extract: {
+    start: 'Extracting story elements from your screenplay...',
+    done: 'Extraction complete.',
+  },
+  entity_graph: {
+    start: 'Building relationships between characters, locations, and story elements...',
+    done: 'Story graph built.',
+  },
+  world_overview: {
+    start: 'Building your story world — themes, tone, and setting...',
+    done: 'World overview created.',
+  },
+  character_bibles: {
+    start: 'Writing character bibles — backstories, motivations, and arcs...',
+    done: 'Character bibles written.',
+  },
+  location_bibles: {
+    start: 'Developing location details, atmosphere, and visual identity...',
+    done: 'Location bibles written.',
+  },
+  qa: {
+    start: 'Running quality checks on produced artifacts...',
+    done: 'Quality checks passed.',
+  },
+}
+
+export function humanizeStageName(name: string): string {
+  return name
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+export function getStageStartMessage(stageName: string): string {
+  return STAGE_DESCRIPTIONS[stageName]?.start ?? `Working on ${humanizeStageName(stageName)}...`
+}
+
+export function getStageCompleteMessage(stageName: string): string {
+  return STAGE_DESCRIPTIONS[stageName]?.done ?? `${humanizeStageName(stageName)} finished.`
 }

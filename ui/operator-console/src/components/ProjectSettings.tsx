@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Settings, Cpu, Workflow } from "lucide-react"
 import { toast } from "sonner"
+import { useQueryClient } from "@tanstack/react-query"
 
 import { cn } from "@/lib/utils"
 import {
@@ -26,6 +27,7 @@ import {
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import { updateProjectSettings } from "@/lib/api"
 
 interface ProjectSettingsProps {
   projectId: string
@@ -45,13 +47,14 @@ export function ProjectSettings({
   const [internalOpen, setInternalOpen] = React.useState(false)
   const open = controlledOpen ?? internalOpen
   const setOpen = controlledOnOpenChange ?? setInternalOpen
+  const queryClient = useQueryClient()
 
-  // Mock initial values
-  const [generalSettings, setGeneralSettings] = React.useState({
-    name: projectName,
-    path: `/Users/cam/Documents/Projects/cine-forge/projects/${projectId}`,
-    created: "2026-02-15T10:30:00Z",
-  })
+  // Track the editable display name — sync from prop when dialog opens
+  const [editName, setEditName] = React.useState(projectName)
+  const [saving, setSaving] = React.useState(false)
+  React.useEffect(() => {
+    if (open) setEditName(projectName)
+  }, [open, projectName])
 
   const [modelSettings, setModelSettings] = React.useState({
     defaultModel: "claude-sonnet-4-5",
@@ -78,8 +81,23 @@ export function ProjectSettings({
     { value: "narrative-analysis", label: "Narrative Analysis" },
   ]
 
-  const handleSaveGeneral = () => {
-    toast.success("Settings saved")
+  const handleSaveGeneral = async () => {
+    if (!editName.trim() || editName === projectName) {
+      toast.info("No changes to save")
+      return
+    }
+    setSaving(true)
+    try {
+      await updateProjectSettings(projectId, { display_name: editName.trim() })
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      toast.success("Project name updated")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to save"
+      toast.error(message)
+    } finally {
+      setSaving(false)
+    }
   }
 
   const handleSaveModels = () => {
@@ -88,17 +106,6 @@ export function ProjectSettings({
 
   const handleSavePipeline = () => {
     toast.success("Settings saved")
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date)
   }
 
   return (
@@ -140,46 +147,31 @@ export function ProjectSettings({
                 </label>
                 <Input
                   id="project-name"
-                  value={generalSettings.name}
-                  onChange={(e) =>
-                    setGeneralSettings({
-                      ...generalSettings,
-                      name: e.target.value,
-                    })
-                  }
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
                   placeholder="Enter project name"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label
-                  htmlFor="project-path"
-                  className="text-sm font-medium text-muted-foreground"
-                >
-                  Project Path
-                </label>
-                <Input
-                  id="project-path"
-                  value={generalSettings.path}
-                  readOnly
-                  className="bg-muted/50 cursor-not-allowed"
-                />
-              </div>
-
-              <div className="space-y-1.5">
                 <label className="text-sm font-medium text-muted-foreground">
-                  Created
+                  Slug
                 </label>
-                <div className="text-sm px-3 py-2 rounded-md bg-muted/50">
-                  {formatDate(generalSettings.created)}
+                <div className="text-sm px-3 py-2 rounded-md bg-muted/50 font-mono text-muted-foreground">
+                  {projectId}
                 </div>
+                <p className="text-xs text-muted-foreground">
+                  Used in URLs and as the project folder name. Cannot be changed.
+                </p>
               </div>
             </div>
 
             <Separator />
 
             <div className="flex justify-end">
-              <Button onClick={handleSaveGeneral}>Save</Button>
+              <Button onClick={handleSaveGeneral} disabled={saving}>
+                {saving ? "Saving..." : "Save"}
+              </Button>
             </div>
           </TabsContent>
 

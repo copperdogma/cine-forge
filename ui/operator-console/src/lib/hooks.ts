@@ -1,5 +1,6 @@
 // TanStack React Query hooks for CineForge API client.
 
+import { useEffect, useRef } from 'react'
 import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 import type {
   ArtifactDetailResponse,
@@ -58,8 +59,8 @@ export function useProject(projectId: string | undefined) {
 
 export function useCreateProject() {
   const queryClient = useQueryClient()
-  return useMutation<ProjectSummary, Error, string>({
-    mutationFn: api.createProject,
+  return useMutation<ProjectSummary, Error, { slug: string; displayName: string }>({
+    mutationFn: ({ slug, displayName }) => api.createProject(slug, displayName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] })
     },
@@ -159,6 +160,10 @@ export function useRunState(runId: string | undefined) {
       const data = query.state.data
       return data?.state?.finished_at ? false : 2000
     },
+    refetchIntervalInBackground: true,
+    // Must disable structural sharing so every poll triggers a re-render,
+    // even when stage statuses haven't changed between polls.
+    structuralSharing: false,
   })
 }
 
@@ -167,6 +172,8 @@ export function useRunEvents(runId: string | undefined) {
     queryKey: ['runs', runId, 'events'],
     queryFn: () => api.getRunEvents(runId!),
     enabled: !!runId,
+    refetchInterval: 3000,
+    refetchIntervalInBackground: true,
   })
 }
 
@@ -344,4 +351,50 @@ export function useScenes(projectId: string | undefined) {
     data: scenes,
     isLoading,
   }
+}
+
+// --- Chat Loader ---
+// Loads chat messages from the backend JSONL on mount.
+// Must be called from a component that's always mounted (e.g., AppShell).
+
+import { useChatStore } from './chat-store'
+import { getWelcomeMessages } from './chat-messages'
+
+export function useChatLoader(projectId: string | undefined) {
+  const projectState = useProjectState(projectId)
+  const { data: project, isLoading } = useProject(projectId)
+  const initializedRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (!projectId || !project || isLoading) return
+    if (initializedRef.current === projectId) return
+
+    const store = useChatStore.getState()
+    if (store.isLoaded(projectId)) {
+      initializedRef.current = projectId
+      return
+    }
+
+    initializedRef.current = projectId
+
+    api.getChatMessages(projectId)
+      .then((backendMessages) => {
+        if (backendMessages.length > 0) {
+          useChatStore.getState().loadMessages(projectId, backendMessages)
+        } else {
+          const welcomeMessages = getWelcomeMessages(projectState, project)
+          useChatStore.getState().loadMessages(projectId, [])
+          for (const msg of welcomeMessages) {
+            useChatStore.getState().addMessage(projectId, msg)
+          }
+        }
+      })
+      .catch(() => {
+        const store = useChatStore.getState()
+        if (!store.hasMessages(projectId)) {
+          const welcomeMessages = getWelcomeMessages(projectState, project)
+          store.loadMessages(projectId, welcomeMessages)
+        }
+      })
+  }, [projectId, projectState, project, isLoading])
 }

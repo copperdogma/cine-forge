@@ -74,6 +74,7 @@ NOTES from Cam:
 | 037 | Production Deployment to cineforge.copper-dog.com | Cross-Cutting | High | In Progress | [story-037](stories/story-037-production-deployment.md) |
 | 038 | Multi-Provider LLM Transport | Cross-Cutting | High | To Do | [story-038](stories/story-038-multi-provider-transport.md) |
 | 039 | Apply Model Selections to Production | Cross-Cutting | Medium | To Do | [story-039](stories/story-039-apply-model-selections.md) |
+| 040 | Pipeline Performance Optimization | Cross-Cutting | High | In Progress | [story-040](stories/story-040-pipeline-performance-optimization.md) |
 
 ## Phase Summary
 

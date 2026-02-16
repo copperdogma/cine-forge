@@ -124,12 +124,21 @@ export type RecipeSummary = {
   stage_count: number
 }
 
+// --- Slug Preview ---
+
+export type SlugPreviewResponse = {
+  slug: string
+  display_name: string
+  alternatives: string[]
+}
+
 // --- Input Files ---
 
 export type InputFileSummary = {
   filename: string
   original_name: string
   size_bytes: number
+  stored_path: string
 }
 
 // --- Project State ---
@@ -138,7 +147,7 @@ export type ProjectState = 'empty' | 'fresh_import' | 'processing' | 'analyzed' 
 
 // --- Chat ---
 
-export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_suggestion' | 'user_action'
+export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_status_done' | 'ai_suggestion' | 'user_action'
 
 export type ChatAction = {
   id: string

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
   CheckCircle2,
@@ -148,6 +149,21 @@ export default function RunDetail() {
   const { data: runStateResponse, isLoading, error, refetch } = useRunState(runId)
   const { data: eventsResponse, isLoading: eventsLoading } = useRunEvents(runId)
 
+  // Derive running state (safe even when data is undefined)
+  const overallStatus = runStateResponse
+    ? getOverallStatus(runStateResponse.state.stages)
+    : 'pending'
+  const isRunning = overallStatus === 'running'
+
+  // Live-ticking duration: ticks every second while running
+  // Must be above early returns to satisfy Rules of Hooks
+  const [now, setNow] = useState(() => Date.now() / 1000)
+  useEffect(() => {
+    if (!isRunning) return
+    const id = setInterval(() => setNow(Date.now() / 1000), 1000)
+    return () => clearInterval(id)
+  }, [isRunning])
+
   if (isLoading) {
     return <DetailSkeleton />
   }
@@ -187,13 +203,20 @@ export default function RunDetail() {
   const runState = runStateResponse
 
   const { state } = runState
-  const overallStatus = getOverallStatus(state.stages)
   const recipeName = state.recipe_id.replace('recipe-', '').replace(/-/g, ' ')
+
   const duration = state.finished_at && state.started_at
     ? state.finished_at - state.started_at
-    : 0
+    : state.started_at
+      ? now - state.started_at
+      : 0
 
-  const stageEntries = Object.entries(state.stages)
+  const stageEntries = Object.entries(state.stages).sort(([, a], [, b]) => {
+    // Sort by started_at ascending; stages that haven't started go last
+    const aTime = a.started_at ?? Infinity
+    const bTime = b.started_at ?? Infinity
+    return aTime - bTime
+  })
   const completedStages = stageEntries.filter(([, s]) => s.status === 'done' || s.status === 'skipped_reused').length
   const totalStages = stageEntries.length
 

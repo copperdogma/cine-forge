@@ -211,6 +211,19 @@ Extraction starts automatically after import. Deeper processing is one click wit
 - [ ] **Exit at any station**: The system suggests but never requires the next step. Clear "I'm done for now" dismissal.
 - [ ] **Discuss with Cam**: Test the auto-start → progressive depth flow end-to-end
 
+### Phase 2.5: Server-Side Chat Persistence
+
+Chat history is the project journal — it must survive browser clears and work across devices. Store it on disk, not in localStorage.
+
+- [x] **Backend: JSONL chat file** — each project gets `output/{slug}/chat.jsonl`, one JSON message per line, append-only
+- [x] **Backend: GET endpoint** — `GET /api/projects/{id}/chat` reads the JSONL file, returns all messages as a JSON array
+- [x] **Backend: POST endpoint** — `POST /api/projects/{id}/chat` appends a single message to the JSONL file (idempotent by message ID)
+- [x] **Frontend: Load from API** — on mount, fetch chat from backend instead of relying on localStorage
+- [x] **Frontend: Write-through** — `addMessage` writes to Zustand (for instant rendering) AND POSTs to backend (for durability)
+- [x] **Frontend: Drop localStorage persistence** — remove `zustand/persist` middleware; backend is the source of truth
+- [x] **Initialization** — if `chat.jsonl` doesn't exist (first visit), generate welcome messages and persist them via POST
+- [x] **Verify:** Clear all browser data → reload project → full chat history still visible
+
 ### Phase 3: Progressive Materialization
 
 While processing runs, the UI comes alive incrementally.
@@ -417,3 +430,64 @@ The system tracks inheritance (script → scene → shot style cascading). The u
 - **Checks:** `tsc --noEmit` clean, `npm run build` passes (660KB), 125 unit tests pass, ruff clean.
 - **Bug fixed:** `useEffect` with Zustand selectors (`addMessage`, `hasMessages`) in deps caused infinite re-render loop for projects with data. Root cause: Zustand store mutations triggered re-renders that changed `projectState` (as queries loaded), causing the effect to re-fire. Fix: use `useRef` to track initialization and `useChatStore.getState()` for non-reactive access.
 - **Next:** Verify inspector backward compat on artifact pages, verify chat persistence across refresh, then checkpoint with Cam.
+
+### 20260215 — Phase 1.5: Slug-Based Project Identity — complete
+- **Problem:** Project IDs are SHA-256 hashes of filesystem paths (e.g., `2015d888796a02ff...`). URLs are ugly, project names in settings are meaningless hashes, folder names are unreadable.
+- **Solution:** LLM-powered slug generation. On screenplay upload, call Haiku to extract the title and generate a URL-friendly slug (e.g., `the-mariner`). Slug becomes the folder name, URL identifier, and project ID.
+- **Backend changes:**
+  - `models.py`: Added `SlugPreviewRequest`, `SlugPreviewResponse`, `ProjectCreateRequest`
+  - `service.py`: Added `generate_slug()` (LLM call to Haiku), `ensure_unique_slug()` (collision `-2`), `create_project_from_slug()`, `_write_project_json()`, `_read_project_json()`, `_list_inputs_from_path()`. Replaced SHA-256 `project_id_for_path()` with folder-name-as-slug. `project_summary()` reads display_name from `project.json`. `list_recent_projects()` scans `output/` folders by name.
+  - `app.py`: Added `POST /api/projects/preview-slug`, changed `POST /api/projects/new` to accept `{slug, display_name}` instead of `{project_path}`.
+  - Fixed markdown-fenced JSON from LLM (strip ` ```json ``` ` before parsing).
+- **Frontend changes:**
+  - `types.ts`: Added `SlugPreviewResponse` type.
+  - `api.ts`: Added `previewSlug()`, changed `createProject()` to `(slug, displayName)`.
+  - `hooks.ts`: Updated `useCreateProject` mutation signature.
+  - `NewProject.tsx`: Rewritten — file upload triggers `previewSlug()` LLM call, auto-populates project name with "AI-detected" badge, shows slug preview (e.g., `URL: /the-mariner`). Removed "Project Path" field. User can edit name → slug re-derives client-side.
+- **Evidence:** `curl` tests pass (slug generation, uniqueness, project creation, legacy loading). 125 unit tests pass. ruff clean. `tsc --noEmit` clean. `npm run build` clean.
+- **Next:** Browser-test the full NewProject flow once Chrome MCP extension is available.
+
+### 20260215 — Phase 2: Chat-Driven Analysis Progress — started
+- **Problem:** Clicking "Start Analysis" navigates away to the pipeline view, breaking the screenplay-centric experience. The user loses context and lands on a system-oriented page.
+- **Solution:** Stay on the screenplay page. Update the chat panel with stage-by-stage progress messages. Offer a link to the run detail view for power users. On completion, show a summary with action buttons (View Results, Go Deeper). Fold "Pipeline" into "Runs" since a pipeline is just a run detail.
+- **Plan:**
+  1. Chat store: add `activeRunId` tracking, make `addMessage` idempotent (stable IDs prevent duplicates)
+  2. Stage descriptions: human-friendly messages per stage (e.g., "Breaking down scenes — identifying characters, locations, and action...")
+  3. `useRunProgressChat` hook: polls run state, diffs stage transitions via ref, adds progress messages, handles completion/errors, invalidates caches
+  4. ChatPanel: remove `navigate()` after run start, set `activeRunId` instead, add "Analysis started" message with [View Run Details] link
+  5. AppShell: remove "Pipeline" from primary nav, update keyboard shortcuts, wire the progress hook
+- **Nav after change:** Home, Runs, Artifacts, Inbox (Pipeline removed; run detail accessible from Runs page or chat links)
+- **Key design decisions:**
+  - Hook lives in AppShell (always mounted) so progress tracking continues even if chat panel is collapsed
+  - First poll initializes stage ref without reporting (catch-up) — only subsequent transitions get messages
+  - Stable message IDs (`progress_{runId}_{stage}_{event}`) make addMessage idempotent
+  - Completion message includes both "View Results" and "Run Details" actions
+  - Cache invalidation on run completion refreshes ProjectHome state (fresh_import → analyzed)
+- **Implementation complete. Files changed:**
+  - `chat-store.ts`: Added `activeRunId` tracking, `setActiveRun()`, `clearActiveRun()`, idempotent `addMessage`
+  - `chat-messages.ts`: Added `STAGE_DESCRIPTIONS`, `humanizeStageName()`, `getStageStartMessage()`, `getStageCompleteMessage()`
+  - `use-run-progress.ts`: New hook — polls run state, diffs stage transitions, adds progress messages, handles completion
+  - `ChatPanel.tsx`: Removed navigate-away on run start, now sets activeRunId and adds "Analysis started" message
+  - `AppShell.tsx`: Removed Pipeline from nav, wired `useRunProgressChat`, updated keyboard shortcuts
+  - `hooks.ts`: Fixed `useRunState` — added `structuralSharing: false` and `refetchIntervalInBackground: true` to ensure reliable polling for progress tracking
+- **Bug found and fixed:** TanStack Query v5's structural sharing prevented re-renders between polls when stage statuses hadn't changed. This meant the `useEffect` in `useRunProgressChat` never fired for transitions. Fix: `structuralSharing: false` on `useRunState` ensures every poll triggers a re-render, enabling transition detection.
+- **Evidence:** Browser-verified full flow — uploaded screenplay, clicked "Start Analysis", stayed on screenplay page, chat showed stage-by-stage progress (normalize → extract_scenes → project_config), completion message with "View Results" / "Run Details" buttons, ProjectHome auto-transitioned to analyzed view (13 scenes, 17 artifacts).
+- **Checks:** `tsc --noEmit` clean, `npm run build` passes (667KB).
+
+### 20260215 — Phase 2.5: Server-Side Chat Persistence — complete
+- **Problem:** Chat stored only in localStorage (`zustand/persist`). Clearing browser data erased entire project journal. Not viable for a feature that will become the conversational AI interface in Story 011f.
+- **Solution:** JSONL file per project (`output/{slug}/chat.jsonl`). Backend is source of truth. Zustand is in-memory view only.
+- **Backend changes:**
+  - `models.py`: Added `ChatMessagePayload` model (id, type, content, timestamp, actions, needsAction)
+  - `service.py`: Added `list_chat_messages()` (reads JSONL), `append_chat_message()` (appends, idempotent by message ID)
+  - `app.py`: Added `GET /api/projects/{id}/chat` and `POST /api/projects/{id}/chat`
+- **Frontend changes:**
+  - `api.ts`: Added `getChatMessages()` and `postChatMessage()`
+  - `chat-store.ts`: Removed `zustand/persist` middleware. Added `loadMessages()` for bulk backend load, `isLoaded()` tracker. `addMessage()` now writes through to backend via fire-and-forget POST.
+  - `ProjectHome.tsx`: Chat init now fetches from `GET /chat` on mount. If backend has messages → load them. If empty (first visit) → generate welcome messages via `addMessage()` (which writes through to backend). Fallback for backend unreachable.
+- **Evidence:** Cleared all localStorage + sessionStorage → reloaded page → chat messages loaded from backend JSONL file. No `cineforge-chat` key in localStorage (confirmed via console). `curl` tests verified idempotent POST and GET.
+- **Checks:** `tsc --noEmit` clean, `ruff check` clean.
+
+### 20260215 — UI bug fixes
+- **Screenplay fills content area:** Removed hardcoded `height: calc(100vh - 200px)` and double-border nesting from FreshImportView. Changed AppShell outlet wrapper to `flex flex-col min-h-full`. FreshImportView uses `flex-1 min-h-0` so screenplay fills from header to bottom edge. Removed CodeMirror `maxHeight: 600px` cap on `.cm-scroller`.
+- **Files:** `AppShell.tsx` (flex outlet wrapper), `ProjectHome.tsx` (flex FreshImportView/ProcessingView), `ScreenplayEditor.tsx` (removed maxHeight, removed border, added h-full).

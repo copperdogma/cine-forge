@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
+import logging
 import re
 import threading
 import time
@@ -15,6 +15,8 @@ import yaml
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
+
+log = logging.getLogger(__name__)
 
 
 class ServiceError(Exception):
@@ -43,18 +45,129 @@ class OperatorConsoleService:
         return Path(project_path).expanduser().resolve(strict=False)
 
     @staticmethod
-    def project_id_for_path(path: Path) -> str:
-        normalized = str(path.resolve(strict=False))
-        return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+    def slugify(text: str) -> str:
+        """Convert text to a URL-friendly slug."""
+        slug = text.lower().strip()
+        slug = re.sub(r"[^a-z0-9\s-]", "", slug)
+        slug = re.sub(r"[\s_]+", "-", slug)
+        slug = re.sub(r"-+", "-", slug)
+        slug = slug.strip("-")
+        return slug or "project"
+
+    def ensure_unique_slug(self, slug: str) -> str:
+        """Return *slug* if unused, otherwise append -2, -3, etc."""
+        output_dir = self.workspace_root / "output"
+        if not output_dir.exists():
+            return slug
+        existing = {p.name for p in output_dir.iterdir() if p.is_dir()}
+        if slug not in existing:
+            return slug
+        for n in range(2, 1000):
+            candidate = f"{slug}-{n}"
+            if candidate not in existing:
+                return candidate
+        return f"{slug}-{uuid.uuid4().hex[:6]}"
+
+    def generate_slug(
+        self, content_snippet: str, original_filename: str,
+    ) -> dict[str, Any]:
+        """Use a fast LLM to extract a title and slug from screenplay content."""
+        prompt = (
+            "You are a screenplay title extractor. Given the first part of a "
+            "screenplay or script document, extract:\n"
+            "1. The most likely title of the work\n"
+            "2. One alternative title/name (if available)\n\n"
+            "Respond with JSON only:\n"
+            '{"title": "The Main Title", "alt_title": "Alternative Name or null"}\n\n'
+            f"Original filename: {original_filename}\n\n"
+            f"--- Document content (first ~2000 chars) ---\n{content_snippet[:2000]}"
+        )
+        try:
+            from cine_forge.ai.llm import call_llm
+            result, _meta = call_llm(
+                prompt=prompt,
+                model="claude-haiku-4-5-20251001",
+                max_retries=1,
+                max_tokens=256,
+                temperature=0.0,
+            )
+            text = result if isinstance(result, str) else str(result)
+            # Strip markdown fences if present
+            text = text.strip()
+            if text.startswith("```"):
+                text = re.sub(r"^```(?:json)?\s*", "", text)
+                text = re.sub(r"\s*```$", "", text)
+                text = text.strip()
+            # Parse the JSON response
+            parsed = json.loads(text)
+            title = str(parsed.get("title", "")).strip()
+            alt = str(parsed.get("alt_title") or "").strip()
+        except Exception:
+            log.warning("LLM slug generation failed, falling back to filename")
+            title = ""
+            alt = ""
+
+        # Fall back to filename-derived name
+        if not title:
+            title = self._clean_display_name(Path("x"), [original_filename])
+
+        slug = self.slugify(title)
+        slug = self.ensure_unique_slug(slug)
+        alternatives = [alt] if alt and alt.lower() != "null" else []
+
+        return {"slug": slug, "display_name": title, "alternatives": alternatives}
+
+    @staticmethod
+    def _write_project_json(
+        project_path: Path, slug: str, display_name: str,
+    ) -> None:
+        meta = {"slug": slug, "display_name": display_name}
+        (project_path / "project.json").write_text(
+            json.dumps(meta, indent=2), encoding="utf-8",
+        )
+
+    @staticmethod
+    def _read_project_json(project_path: Path) -> dict[str, str] | None:
+        pj = project_path / "project.json"
+        if not pj.exists():
+            return None
+        try:
+            return json.loads(pj.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            return None
+
+    def update_project_settings(
+        self, project_id: str, display_name: str | None = None,
+    ) -> dict[str, Any]:
+        """Update mutable project settings (display_name, etc.)."""
+        path = self.require_project_path(project_id)
+        pj = self._read_project_json(path) or {"slug": project_id}
+        if display_name is not None:
+            pj["display_name"] = display_name
+        self._write_project_json(path, pj.get("slug", project_id), pj["display_name"])
+        return self.project_summary(project_id)
+
+    def create_project_from_slug(self, slug: str, display_name: str) -> str:
+        """Create a new project under output/{slug}/ and return the slug as project_id."""
+        slug = self.ensure_unique_slug(slug)
+        project_path = self.workspace_root / "output" / slug
+        project_path.mkdir(parents=True, exist_ok=True)
+        (project_path / "artifacts").mkdir(parents=True, exist_ok=True)
+        (project_path / "graph").mkdir(parents=True, exist_ok=True)
+        self._write_project_json(project_path, slug, display_name)
+        self._project_registry[slug] = project_path
+        return slug
 
     def create_project(self, project_path: str) -> str:
+        """Legacy: create project from an explicit path (slug = folder name)."""
         path = self.normalize_project_path(project_path)
         path.mkdir(parents=True, exist_ok=True)
         (path / "artifacts").mkdir(parents=True, exist_ok=True)
         (path / "graph").mkdir(parents=True, exist_ok=True)
-        project_id = self.project_id_for_path(path)
-        self._project_registry[project_id] = path
-        return project_id
+        slug = path.name
+        self._write_project_json(path, slug, self._clean_display_name(path, []))
+        self._project_registry[slug] = path
+        return slug
 
     def open_project(self, project_path: str) -> str:
         path = self.normalize_project_path(project_path)
@@ -74,9 +187,15 @@ class OperatorConsoleService:
                 hint="Run 'New Project' to initialize project structure.",
                 status_code=422,
             )
-        project_id = self.project_id_for_path(path)
-        self._project_registry[project_id] = path
-        return project_id
+        slug = path.name
+        # Backfill project.json for legacy folders
+        if not (path / "project.json").exists():
+            inputs = self._list_inputs_from_path(path)
+            input_files = [inp["original_name"] for inp in inputs]
+            display_name = self._clean_display_name(path, input_files)
+            self._write_project_json(path, slug, display_name)
+        self._project_registry[slug] = path
+        return slug
 
     def require_project_path(self, project_id: str) -> Path:
         path = self._project_registry.get(project_id)
@@ -95,7 +214,9 @@ class OperatorConsoleService:
         run_count = len(self.list_runs(project_id))
         inputs = self.list_project_inputs(project_id)
         input_files = [inp["original_name"] for inp in inputs]
-        display_name = self._clean_display_name(path, input_files)
+        # Prefer display_name from project.json, fall back to heuristic
+        pj = self._read_project_json(path)
+        display_name = (pj or {}).get("display_name") or self._clean_display_name(path, input_files)
         return {
             "project_id": project_id,
             "display_name": display_name,
@@ -104,6 +225,26 @@ class OperatorConsoleService:
             "has_inputs": len(inputs) > 0,
             "input_files": input_files,
         }
+
+    @staticmethod
+    def _list_inputs_from_path(project_path: Path) -> list[dict[str, Any]]:
+        """List input files from a project path (no project_id needed)."""
+        inputs_dir = project_path / "inputs"
+        if not inputs_dir.exists():
+            return []
+        inputs: list[dict[str, Any]] = []
+        for entry in sorted(inputs_dir.iterdir()):
+            if not entry.is_file():
+                continue
+            name = entry.name
+            original_name = re.sub(r"^[0-9a-f]{8}_", "", name)
+            inputs.append({
+                "filename": name,
+                "original_name": original_name,
+                "size_bytes": entry.stat().st_size,
+                "stored_path": str(entry),
+            })
+        return inputs
 
     def list_project_inputs(self, project_id: str) -> list[dict[str, Any]]:
         """List input files for a project."""
@@ -123,6 +264,7 @@ class OperatorConsoleService:
                 "filename": name,
                 "original_name": original_name,
                 "size_bytes": entry.stat().st_size,
+                "stored_path": str(entry),
             })
         return inputs
 
@@ -171,10 +313,13 @@ class OperatorConsoleService:
 
     def list_recent_projects(self) -> list[dict[str, Any]]:
         candidates: dict[str, Path] = {}
-        for project_id, project_path in self._project_registry.items():
-            if self._is_valid_project_dir(project_path):
-                candidates[project_id] = project_path
 
+        # 1. Already-registered projects
+        for slug, project_path in self._project_registry.items():
+            if self._is_valid_project_dir(project_path):
+                candidates[slug] = project_path
+
+        # 2. Discover projects from run metadata
         runs_dir = self.workspace_root / "output" / "runs"
         if runs_dir.exists():
             for run_dir in runs_dir.iterdir():
@@ -195,10 +340,11 @@ class OperatorConsoleService:
                 project_path = self.normalize_project_path(project_path_raw)
                 if not self._is_valid_project_dir(project_path):
                     continue
-                project_id = self.project_id_for_path(project_path)
-                candidates[project_id] = project_path
-                self._project_registry[project_id] = project_path
+                slug = project_path.name
+                candidates[slug] = project_path
+                self._project_registry[slug] = project_path
 
+        # 3. Scan output/ for project folders
         output_root = self.workspace_root / "output"
         if output_root.exists():
             for child in output_root.iterdir():
@@ -206,15 +352,15 @@ class OperatorConsoleService:
                     continue
                 if not self._is_valid_project_dir(child):
                     continue
-                project_id = self.project_id_for_path(child)
-                candidates[project_id] = child
-                self._project_registry[project_id] = child
+                slug = child.name
+                candidates[slug] = child
+                self._project_registry[slug] = child
 
         projects: list[dict[str, Any]] = []
-        for project_id, project_path in candidates.items():
+        for slug, project_path in candidates.items():
             with self._run_lock:
-                self._project_registry[project_id] = project_path
-            summary = self.project_summary(project_id)
+                self._project_registry[slug] = project_path
+            summary = self.project_summary(slug)
             summary["project_path"] = str(project_path)
             projects.append(summary)
 
@@ -459,6 +605,51 @@ class OperatorConsoleService:
             "version": new_ref.version,
             "path": new_ref.path,
         }
+
+    # --- Chat persistence (JSONL) ---
+
+    def _chat_path(self, project_id: str) -> Path:
+        project_path = self.require_project_path(project_id)
+        return project_path / "chat.jsonl"
+
+    def list_chat_messages(self, project_id: str) -> list[dict[str, Any]]:
+        """Read all chat messages from the project's chat.jsonl file."""
+        path = self._chat_path(project_id)
+        if not path.exists():
+            return []
+        messages: list[dict[str, Any]] = []
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                messages.append(json.loads(line))
+            except json.JSONDecodeError:
+                log.warning("Skipping malformed chat line in %s", path)
+        return messages
+
+    def append_chat_message(self, project_id: str, message: dict[str, Any]) -> dict[str, Any]:
+        """Append a chat message to the project's chat.jsonl (idempotent by message ID)."""
+        path = self._chat_path(project_id)
+        msg_id = message.get("id", "")
+
+        # Idempotency check — scan for existing ID
+        if path.exists() and msg_id:
+            for line in path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    existing = json.loads(line)
+                    if existing.get("id") == msg_id:
+                        return existing  # Already persisted
+                except json.JSONDecodeError:
+                    continue
+
+        # Append
+        with path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(message, separators=(",", ":")) + "\n")
+        return message
 
     def list_recipes(self) -> list[dict[str, Any]]:
         """List available recipe files from configs/recipes/."""

@@ -17,9 +17,13 @@ from pydantic import BaseModel
 MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
     "gpt-4o": (5.0, 15.0),
     "gpt-4o-mini": (0.15, 0.6),
+    "claude-sonnet-4-5-20250929": (3.0, 15.0),
+    "claude-opus-4-6": (15.0, 75.0),
+    "claude-haiku-4-5-20251001": (0.80, 4.0),
 }
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
+ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 
 
 class LLMCallError(RuntimeError):
@@ -54,7 +58,8 @@ def call_llm(
         }
         return parsed, metadata
 
-    sender = transport or _openai_transport
+    use_anthropic = transport is None and _is_anthropic_model(model)
+    sender = transport or (_anthropic_transport if use_anthropic else _openai_transport)
     last_error: Exception | None = None
     active_max_tokens = max_tokens
     active_temp = temperature
@@ -62,15 +67,25 @@ def call_llm(
     for attempt in range(max_retries + 1):
         try:
             started = time.perf_counter()
-            raw_response = sender(
-                {
+            if use_anthropic:
+                payload = _build_anthropic_payload(
+                    model=model,
+                    prompt=prompt,
+                    temperature=active_temp,
+                    max_tokens=active_max_tokens,
+                    response_schema=response_schema,
+                )
+            else:
+                payload = {
                     "model": model,
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": active_temp,
                     **({"max_completion_tokens": active_max_tokens} if active_max_tokens else {}),
                     **_response_format_payload(response_schema),
                 }
-            )
+            raw_response = sender(payload)
+            if use_anthropic:
+                raw_response = _normalize_anthropic_response(raw_response)
             latency = time.perf_counter() - started
             parsed, metadata = _parse_response(
                 raw_response=raw_response,
@@ -86,11 +101,15 @@ def call_llm(
             
             # Decide if we should retry
             is_json_error = "valid json" in str(exc).lower()
-            is_truncation = "truncated" in str(exc).lower() or (
-                isinstance(exc, LLMCallError) and "max token limit" in str(exc)
+            exc_msg = str(exc).lower()
+            is_truncation = (
+                "truncated" in exc_msg
+                or "max token limit" in exc_msg
+                or "unterminated string" in exc_msg
             )
             
-            if attempt < max_retries and (is_json_error or is_truncation or _is_transient_error(exc)):
+            retryable = is_json_error or is_truncation or _is_transient_error(exc)
+            if attempt < max_retries and retryable:
                 # Adjust params for retry
                 if is_truncation and active_max_tokens:
                     active_max_tokens = int(active_max_tokens * 1.5)
@@ -187,6 +206,12 @@ def _parse_response(
     if not response_schema:
         return text, metadata
 
+    # Fail early on truncated structured output — retries can bump max_tokens.
+    if finish_reason == "length":
+        raise LLMCallError(
+            "LLM output truncated due to max token limit"
+        )
+
     # 1. Try to find a JSON code block with regex
     # This handles cases where the model puts the JSON inside ```json ... ```
     # but also includes other conversational text.
@@ -238,6 +263,89 @@ def _openai_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         raise LLMCallError(f"OpenAI HTTP error {exc.code}: {detail}") from exc
     except urllib.error.URLError as exc:
         raise LLMCallError(f"OpenAI request failed: {exc.reason}") from exc
+
+
+def _is_anthropic_model(model: str) -> bool:
+    return model.startswith("claude-")
+
+
+def _build_anthropic_payload(
+    model: str,
+    prompt: str,
+    temperature: float,
+    max_tokens: int | None,
+    response_schema: type[BaseModel] | None,
+) -> dict[str, Any]:
+    """Build an Anthropic Messages API request payload."""
+    payload: dict[str, Any] = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": temperature,
+        "max_tokens": max_tokens or 16384,
+    }
+    if response_schema:
+        schema_json = json.dumps(response_schema.model_json_schema(), indent=2)
+        payload["system"] = (
+            f"You must respond with valid JSON matching this schema:\n{schema_json}\n\n"
+            "Output ONLY the JSON object, no markdown fences, no explanation."
+        )
+    return payload
+
+
+def _normalize_anthropic_response(raw: dict[str, Any]) -> dict[str, Any]:
+    """Convert Anthropic Messages API response to OpenAI-compatible format."""
+    content_blocks = raw.get("content", [])
+    text = "".join(
+        block.get("text", "")
+        for block in content_blocks
+        if block.get("type") == "text"
+    )
+    usage = raw.get("usage", {})
+    stop_reason = raw.get("stop_reason", "end_turn")
+    finish_reason_map = {
+        "end_turn": "stop",
+        "max_tokens": "length",
+        "stop_sequence": "stop",
+    }
+    return {
+        "id": raw.get("id", ""),
+        "choices": [{
+            "message": {"content": text},
+            "finish_reason": finish_reason_map.get(stop_reason, stop_reason),
+        }],
+        "usage": {
+            "prompt_tokens": usage.get("input_tokens", 0),
+            "completion_tokens": usage.get("output_tokens", 0),
+        },
+    }
+
+
+def _anthropic_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
+    """Send request to Anthropic Messages API."""
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        raise LLMCallError("ANTHROPIC_API_KEY is required for Anthropic transport")
+
+    encoded = json.dumps(request_payload).encode("utf-8")
+    request = urllib.request.Request(
+        ANTHROPIC_MESSAGES_URL,
+        data=encoded,
+        headers={
+            "x-api-key": api_key,
+            "Content-Type": "application/json",
+            "anthropic-version": "2023-06-01",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=300) as response:  # noqa: S310
+            body = response.read().decode("utf-8")
+            return json.loads(body)
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise LLMCallError(f"Anthropic HTTP error {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise LLMCallError(f"Anthropic request failed: {exc.reason}") from exc
 
 
 def _is_transient_error(error: Exception) -> bool:

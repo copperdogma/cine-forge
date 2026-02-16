@@ -1,7 +1,6 @@
 import { NavLink, Outlet, useNavigate, useParams, useLocation, Link } from 'react-router-dom'
 import {
   Film,
-  Play,
   History,
   Package,
   Inbox,
@@ -10,7 +9,6 @@ import {
   PanelLeftOpen,
   PanelRightClose,
   PanelRightOpen,
-  ChevronDown,
   ChevronRight,
   Settings,
   X,
@@ -29,12 +27,12 @@ import { GlobalSearch } from '@/components/GlobalSearch'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
 import { useShortcuts } from '@/lib/shortcuts'
-import { useProject } from '@/lib/hooks'
+import { useProject, useChatLoader } from '@/lib/hooks'
+import { useRunProgressChat } from '@/lib/use-run-progress'
 import { cn } from '@/lib/utils'
 
 const navItems = [
   { to: '', label: 'Home', icon: Home, end: true },
-  { to: 'run', label: 'Pipeline', icon: Play },
   { to: 'runs', label: 'Runs', icon: History },
   { to: 'artifacts', label: 'Artifacts', icon: Package },
   { to: 'inbox', label: 'Inbox', icon: Inbox, badge: 0 },
@@ -52,24 +50,28 @@ function ShellInner() {
 
   const displayName = project?.display_name ?? projectId?.slice(0, 12) ?? 'Project'
 
+  // Load chat from backend JSONL (runs on every page, not just Home)
+  useChatLoader(projectId)
+
+  // Track active run progress — adds chat messages as stages complete
+  useRunProgressChat(projectId)
+
   // Keyboard shortcuts
   useShortcuts([
     { key: 'b', meta: true, action: () => setNavOpen(v => !v), label: 'Toggle sidebar' },
     { key: 'i', meta: true, action: () => panel.toggle(), label: 'Toggle right panel' },
     { key: '0', meta: true, action: () => navigate(''), label: 'Go to Home' },
-    { key: '1', meta: true, action: () => navigate('run'), label: 'Go to Pipeline' },
-    { key: '2', meta: true, action: () => navigate('runs'), label: 'Go to Runs' },
-    { key: '3', meta: true, action: () => navigate('artifacts'), label: 'Go to Artifacts' },
-    { key: '4', meta: true, action: () => navigate('inbox'), label: 'Go to Inbox' },
+    { key: '1', meta: true, action: () => navigate('runs'), label: 'Go to Runs' },
+    { key: '2', meta: true, action: () => navigate('artifacts'), label: 'Go to Artifacts' },
+    { key: '3', meta: true, action: () => navigate('inbox'), label: 'Go to Inbox' },
     { key: ',', meta: true, action: () => setSettingsOpen(true), label: 'Open settings' },
-    { key: 'Escape', action: () => { if (panel.state.open) panel.close() }, label: 'Close right panel' },
   ])
 
   // Determine current page from pathname (check longer paths first)
   const getCurrentPage = () => {
     const path = location.pathname
     if (path.includes('/runs')) return 'Runs'
-    if (path.includes('/run')) return 'Pipeline'
+    if (path.includes('/run')) return 'Run Details'
     if (path.includes('/artifacts')) return 'Artifacts'
     if (path.includes('/inbox')) return 'Inbox'
     if (path === `/${projectId}`) return 'Home'
@@ -79,7 +81,7 @@ function ShellInner() {
   const currentPage = getCurrentPage()
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="fixed inset-0 flex overflow-hidden">
       <CommandPalette
         onToggleSidebar={() => setNavOpen(v => !v)}
         onToggleInspector={() => panel.toggle()}
@@ -95,44 +97,18 @@ function ShellInner() {
       {/* Left Navigator Panel */}
       <aside
         className={cn(
-          'flex flex-col border-r border-border bg-sidebar transition-all duration-200',
-          navOpen ? 'w-56' : 'w-0 overflow-hidden',
+          'flex flex-col border-r border-border bg-sidebar transition-all duration-200 overflow-hidden',
+          navOpen ? 'w-56' : 'w-0',
         )}
       >
-        {/* Project header */}
-        <div className="flex items-center gap-2 px-4 py-3">
+        {/* App branding — links to project list */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 px-4 py-3 hover:bg-accent/50 transition-colors"
+        >
           <Film className="h-5 w-5 text-primary shrink-0" />
-          <div className="min-w-0 flex-1">
-            <ProjectSettings
-              projectId={projectId ?? ''}
-              projectName={displayName}
-            >
-              <button
-                aria-label={`Project ${displayName} settings`}
-                className="flex items-center gap-1 text-sm font-semibold truncate hover:text-primary transition-colors cursor-pointer"
-              >
-                <span className="truncate">{displayName}</span>
-                <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-60" />
-              </button>
-            </ProjectSettings>
-          </div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <ProjectSettings
-                projectId={projectId ?? ''}
-                projectName={displayName}
-              >
-                <button
-                  aria-label="Open project settings"
-                  className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                >
-                  <Settings className="h-3.5 w-3.5" />
-                </button>
-              </ProjectSettings>
-            </TooltipTrigger>
-            <TooltipContent side="right">Project settings</TooltipContent>
-          </Tooltip>
-        </div>
+          <span className="text-sm font-semibold">CineForge</span>
+        </Link>
 
         <Separator />
 
@@ -162,24 +138,17 @@ function ShellInner() {
                 )}
               </NavLink>
             ))}
+            <Separator className="my-2" />
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors cursor-pointer"
+            >
+              <Settings className="h-4 w-4 shrink-0" />
+              <span className="truncate">Settings</span>
+            </button>
           </nav>
         </ScrollArea>
 
-        {/* Footer — home link */}
-        <Separator />
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              aria-label="Go to all projects"
-              className="flex items-center gap-2 px-4 py-3 text-xs text-muted-foreground hover:text-primary transition-colors text-left cursor-pointer w-full"
-              onClick={() => navigate('/')}
-            >
-              <Film className="h-3.5 w-3.5 shrink-0" />
-              CineForge
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="right">All projects</TooltipContent>
-        </Tooltip>
       </aside>
 
       {/* Center Content Canvas */}
@@ -259,8 +228,8 @@ function ShellInner() {
         {/* Content + optional Right Panel */}
         <div className="flex flex-1 min-h-0">
           {/* Page content */}
-          <ScrollArea className="flex-1">
-            <div className="p-6">
+          <ScrollArea className="flex-1 min-w-0">
+            <div className="p-6 flex flex-col min-h-full">
               <Outlet />
             </div>
           </ScrollArea>

@@ -46,7 +46,6 @@ const screenplayTheme = EditorView.theme(
     },
     '.cm-scroller': {
       overflow: 'auto',
-      maxHeight: '600px',
     },
     '.cm-line': {
       padding: '0',
@@ -148,7 +147,7 @@ export function ScreenplayEditor({ content, readOnly = true }: ScreenplayEditorP
     }
   }, [content, readOnly])
 
-  return <div ref={editorRef} className="screenplay-editor rounded-md border border-border overflow-hidden" />
+  return <div ref={editorRef} className="screenplay-editor h-full overflow-hidden" />
 }
 
 // Default export for lazy loading

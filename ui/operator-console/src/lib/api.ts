@@ -8,6 +8,7 @@ import type {
   ArtifactEditResponse,
   ArtifactGroupSummary,
   ArtifactVersionSummary,
+  ChatMessage,
   InputFileSummary,
   ProjectSummary,
   RecentProjectSummary,
@@ -16,6 +17,7 @@ import type {
   RunStartPayload,
   RunStateResponse,
   RunSummary,
+  SlugPreviewResponse,
   UploadedInputResponse,
 } from './types'
 
@@ -70,10 +72,20 @@ export function listRecentProjects(): Promise<RecentProjectSummary[]> {
   return request<RecentProjectSummary[]>('/api/projects/recent')
 }
 
-export function createProject(projectPath: string): Promise<ProjectSummary> {
+export function previewSlug(
+  contentSnippet: string,
+  originalFilename: string,
+): Promise<SlugPreviewResponse> {
+  return request<SlugPreviewResponse>('/api/projects/preview-slug', {
+    method: 'POST',
+    body: JSON.stringify({ content_snippet: contentSnippet, original_filename: originalFilename }),
+  })
+}
+
+export function createProject(slug: string, displayName: string): Promise<ProjectSummary> {
   return request<ProjectSummary>('/api/projects/new', {
     method: 'POST',
-    body: JSON.stringify({ project_path: projectPath }),
+    body: JSON.stringify({ slug, display_name: displayName }),
   })
 }
 
@@ -86,6 +98,16 @@ export function openProject(projectPath: string): Promise<ProjectSummary> {
 
 export function getProject(projectId: string): Promise<ProjectSummary> {
   return request<ProjectSummary>(`/api/projects/${projectId}`)
+}
+
+export function updateProjectSettings(
+  projectId: string,
+  settings: { display_name?: string },
+): Promise<ProjectSummary> {
+  return request<ProjectSummary>(`/api/projects/${projectId}/settings`, {
+    method: 'PATCH',
+    body: JSON.stringify(settings),
+  })
 }
 
 export async function uploadProjectInput(
@@ -144,6 +166,19 @@ export async function getProjectInputContent(
     throw new ApiRequestError(`Failed to fetch input file (${response.status})`)
   }
   return response.text()
+}
+
+// --- Chat ---
+
+export function getChatMessages(projectId: string): Promise<ChatMessage[]> {
+  return request<ChatMessage[]>(`/api/projects/${projectId}/chat`)
+}
+
+export function postChatMessage(projectId: string, message: ChatMessage): Promise<ChatMessage> {
+  return request<ChatMessage>(`/api/projects/${projectId}/chat`, {
+    method: 'POST',
+    body: JSON.stringify(message),
+  })
 }
 
 // --- Runs ---

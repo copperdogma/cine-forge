@@ -15,9 +15,12 @@ from cine_forge.api.models import (
     ArtifactEditResponse,
     ArtifactGroupSummary,
     ArtifactVersionSummary,
+    ChatMessagePayload,
     ErrorPayload,
     InputFileSummary,
+    ProjectCreateRequest,
     ProjectPathRequest,
+    ProjectSettingsUpdate,
     ProjectSummary,
     RecentProjectSummary,
     RecipeSummary,
@@ -26,6 +29,8 @@ from cine_forge.api.models import (
     RunStartResponse,
     RunStateResponse,
     RunSummary,
+    SlugPreviewRequest,
+    SlugPreviewResponse,
     UploadedInputResponse,
 )
 from cine_forge.api.service import OperatorConsoleService, ServiceError
@@ -77,10 +82,15 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             for item in service.list_recent_projects()
         ]
 
+    @app.post("/api/projects/preview-slug", response_model=SlugPreviewResponse)
+    async def preview_slug(request: SlugPreviewRequest) -> SlugPreviewResponse:
+        result = service.generate_slug(request.content_snippet, request.original_filename)
+        return SlugPreviewResponse.model_validate(result)
+
     @app.post("/api/projects/new", response_model=ProjectSummary)
-    async def new_project(request: ProjectPathRequest) -> ProjectSummary:
-        project_id = service.create_project(request.project_path)
-        return ProjectSummary.model_validate(service.project_summary(project_id))
+    async def new_project(request: ProjectCreateRequest) -> ProjectSummary:
+        slug = service.create_project_from_slug(request.slug, request.display_name)
+        return ProjectSummary.model_validate(service.project_summary(slug))
 
     @app.post("/api/projects/open", response_model=ProjectSummary)
     async def open_project(request: ProjectPathRequest) -> ProjectSummary:
@@ -90,6 +100,14 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     @app.get("/api/projects/{project_id}", response_model=ProjectSummary)
     async def get_project(project_id: str) -> ProjectSummary:
         return ProjectSummary.model_validate(service.project_summary(project_id))
+
+    @app.patch("/api/projects/{project_id}/settings", response_model=ProjectSummary)
+    async def update_project_settings(
+        project_id: str, request: ProjectSettingsUpdate,
+    ) -> ProjectSummary:
+        return ProjectSummary.model_validate(
+            service.update_project_settings(project_id, display_name=request.display_name)
+        )
 
     @app.post(
         "/api/projects/{project_id}/inputs/upload",
@@ -132,6 +150,16 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     async def get_project_input_content(project_id: str, filename: str) -> PlainTextResponse:
         content = service.read_project_input(project_id, filename)
         return PlainTextResponse(content)
+
+    @app.get("/api/projects/{project_id}/chat")
+    async def list_chat_messages(project_id: str) -> list[dict]:
+        return service.list_chat_messages(project_id)
+
+    @app.post("/api/projects/{project_id}/chat")
+    async def append_chat_message(
+        project_id: str, message: ChatMessagePayload,
+    ) -> dict:
+        return service.append_chat_message(project_id, message.model_dump(exclude_none=True))
 
     @app.get("/api/projects/{project_id}/runs", response_model=list[RunSummary])
     async def list_runs(project_id: str) -> list[RunSummary]:

@@ -1,5 +1,7 @@
-import { useEffect, useRef, Suspense, lazy } from 'react'
+import { useEffect, useRef, useState, Suspense, lazy } from 'react'
+// Chat loading moved to useChatLoader in AppShell — runs on every page.
 import { useParams, useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Film,
   FileText,
@@ -12,7 +14,9 @@ import {
   History,
   ExternalLink,
   Calendar,
+  Pencil,
 } from 'lucide-react'
+import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -33,14 +37,106 @@ import {
   useProjectInputContent,
   useProjectState,
 } from '@/lib/hooks'
-import { useChatStore } from '@/lib/chat-store'
-import { getWelcomeMessages } from '@/lib/chat-messages'
+import { updateProjectSettings } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import type { ProjectState } from '@/lib/types'
 
 const ScreenplayEditor = lazy(() =>
   import('@/components/ScreenplayEditor').then(m => ({ default: m.ScreenplayEditor })),
 )
+
+// --- Editable inline title ---
+
+function EditableTitle({
+  projectId,
+  displayName,
+  className,
+}: {
+  projectId: string
+  displayName: string
+  className?: string
+}) {
+  const [editing, setEditing] = useState(false)
+  const [value, setValue] = useState(displayName)
+  const [saving, setSaving] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const queryClient = useQueryClient()
+
+  // Sync from prop when not editing
+  useEffect(() => {
+    if (!editing) setValue(displayName)
+  }, [displayName, editing])
+
+  // Focus + select all when entering edit mode
+  useEffect(() => {
+    if (editing) {
+      inputRef.current?.focus()
+      inputRef.current?.select()
+    }
+  }, [editing])
+
+  const save = async () => {
+    const trimmed = value.trim()
+    if (!trimmed || trimmed === displayName) {
+      setValue(displayName)
+      setEditing(false)
+      return
+    }
+    setSaving(true)
+    try {
+      await updateProjectSettings(projectId, { display_name: trimmed })
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      setEditing(false)
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : 'Failed to rename'
+      toast.error(msg)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const cancel = () => {
+    setValue(displayName)
+    setEditing(false)
+  }
+
+  if (editing) {
+    return (
+      <input
+        ref={inputRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={save}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') save()
+          if (e.key === 'Escape') cancel()
+        }}
+        disabled={saving}
+        className={cn(
+          'bg-transparent border-b border-primary outline-none font-bold tracking-tight truncate w-full',
+          className,
+        )}
+      />
+    )
+  }
+
+  return (
+    <h1
+      role="button"
+      tabIndex={0}
+      onClick={() => setEditing(true)}
+      onKeyDown={(e) => { if (e.key === 'Enter') setEditing(true) }}
+      className={cn(
+        'font-bold tracking-tight truncate cursor-pointer group flex items-center gap-2',
+        className,
+      )}
+    >
+      {displayName}
+      <Pencil className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+    </h1>
+  )
+}
 
 // --- Shared helpers ---
 
@@ -101,14 +197,16 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const { data: content, isLoading } = useProjectInputContent(projectId, latestInput?.filename)
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col flex-1 min-h-0 gap-4">
       {/* Header */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 shrink-0">
         <FileText className="h-6 w-6 text-primary shrink-0" />
-        <div className="min-w-0">
-          <h1 className="text-2xl font-bold tracking-tight truncate">
-            {project?.display_name ?? 'Your Screenplay'}
-          </h1>
+        <div className="min-w-0 flex-1">
+          <EditableTitle
+            projectId={projectId}
+            displayName={project?.display_name ?? 'Your Screenplay'}
+            className="text-2xl"
+          />
           {latestInput && (
             <p className="text-sm text-muted-foreground">
               {latestInput.original_name} — {(latestInput.size_bytes / 1024).toFixed(1)} KB
@@ -117,14 +215,14 @@ function FreshImportView({ projectId }: { projectId: string }) {
         </div>
       </div>
 
-      {/* Screenplay content */}
+      {/* Screenplay content — fills remaining space */}
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           <span className="ml-2 text-sm text-muted-foreground">Loading screenplay...</span>
         </div>
       ) : content ? (
-        <div className="rounded-lg border border-border overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
+        <div className="flex-1 min-h-0 overflow-hidden">
           <Suspense
             fallback={
               <div className="flex items-center justify-center h-full">
@@ -169,10 +267,12 @@ function AnalyzedView({ projectId }: { projectId: string }) {
       {/* Header */}
       <div className="flex items-center gap-3">
         <Film className="h-8 w-8 text-primary" />
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            {project?.display_name ?? projectId}
-          </h1>
+        <div className="min-w-0 flex-1">
+          <EditableTitle
+            projectId={projectId}
+            displayName={project?.display_name ?? projectId}
+            className="text-3xl"
+          />
           <p className="text-sm text-muted-foreground">
             {totalArtifacts} artifacts · {totalRuns} runs
           </p>
@@ -373,8 +473,8 @@ function AnalyzedView({ projectId }: { projectId: string }) {
 
 function ProcessingView({ projectId }: { projectId: string }) {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
+    <div className="flex flex-col flex-1 min-h-0 gap-4">
+      <div className="flex items-center gap-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-3 shrink-0">
         <Loader2 className="h-5 w-5 text-blue-400 animate-spin shrink-0" />
         <div>
           <p className="text-sm font-medium text-blue-400">Processing your screenplay...</p>
@@ -407,27 +507,7 @@ function EmptyView() {
 export default function ProjectHome() {
   const { projectId } = useParams()
   const projectState = useProjectState(projectId)
-  const { data: project, isLoading } = useProject(projectId)
-  const initializedRef = useRef<string | null>(null)
-
-  // Initialize chat messages once when project state is determined.
-  // Uses store.getState() directly to avoid subscription-driven re-render loops.
-  useEffect(() => {
-    if (!projectId || !project || isLoading) return
-    if (initializedRef.current === projectId) return
-
-    const store = useChatStore.getState()
-    if (store.hasMessages(projectId)) {
-      initializedRef.current = projectId
-      return
-    }
-
-    const messages = getWelcomeMessages(projectState, project)
-    for (const msg of messages) {
-      store.addMessage(projectId, msg)
-    }
-    initializedRef.current = projectId
-  }, [projectId, projectState, project, isLoading])
+  const { isLoading } = useProject(projectId)
 
   if (isLoading) {
     return (
@@ -447,13 +527,12 @@ function HomeContent({ projectId, projectState }: { projectId: string; projectSt
   switch (projectState) {
     case 'empty':
       return <EmptyView />
-    case 'fresh_import':
-      return <FreshImportView projectId={projectId} />
     case 'processing':
       return <ProcessingView projectId={projectId} />
+    case 'fresh_import':
     case 'analyzed':
     case 'complete':
-      return <AnalyzedView projectId={projectId} />
+      return <FreshImportView projectId={projectId} />
     default:
       return <EmptyView />
   }

@@ -215,12 +215,6 @@ export const GLOBAL_SHORTCUTS: ShortcutDefinition[] = [
     label: 'Toggle inspector',
     category: 'UI Controls',
   },
-  {
-    key: 'Escape',
-    label: 'Close dialog/inspector',
-    category: 'UI Controls',
-  },
-
   // Help
   {
     key: '?',
