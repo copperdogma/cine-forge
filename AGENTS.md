@@ -87,6 +87,121 @@ For multi-model research tasks, use the `deep-research` CLI tool.
   - `--agents N` flag controls how many manual paste slots are created.
 - Fix applied: Patched `call_anthropic()` in `/Users/cam/miniconda3/lib/python3.11/site-packages/deep_research/providers.py` to use `client.messages.stream()` instead of `client.messages.create()` (fixes "Streaming is required for operations that may take longer than 10 minutes" error). This fix may be lost on pip upgrade.
 
+### Model Benchmarking (promptfoo)
+
+We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality across pipeline tasks. Benchmark workspace lives in a separate git worktree (`cine-forge-sidequests` on `sidequests/model-benchmarking`).
+
+#### Prerequisites
+- **Node.js 24 LTS** (v24.13.1+). Promptfoo requires Node 22+. Installed via nvm.
+- **promptfoo** installed globally: `npm install -g promptfoo` (v0.120.24+).
+- Shell sessions need nvm loaded: `source ~/.nvm/nvm.sh && nvm use 24`.
+- API keys: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and `GEMINI_API_KEY` must be set in environment.
+
+#### Workspace Structure
+```
+benchmarks/
+├── tasks/           # promptfoo YAML configs (one per eval task)
+├── prompts/         # Prompt templates with {{variable}} placeholders
+├── golden/          # Hand-crafted reference data for scoring
+├── input/           # Test input files (screenplays, scene excerpts)
+├── scorers/         # Python scoring scripts
+├── results/         # JSON output from eval runs
+└── scripts/         # Analysis helpers
+```
+
+#### Running Benchmarks
+```bash
+# From the benchmarks/ directory in the sidequests worktree:
+source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
+
+# Run a benchmark (no cache for reproducibility)
+promptfoo eval -c tasks/character-extraction.yaml --no-cache -j 3
+
+# Save results to file
+promptfoo eval -c tasks/character-extraction.yaml --no-cache --output results/run-name.json
+
+# View results in web UI
+promptfoo view
+
+# Override the judge/grader model
+promptfoo eval -c tasks/character-extraction.yaml --grader anthropic:messages:claude-opus-4-6
+```
+
+#### Judge / Grader Model
+
+**Default**: promptfoo uses `gpt-5` (OpenAI) for `llm-rubric` assertions when `OPENAI_API_KEY` is set.
+
+**Our standard**: Use **`claude-opus-4-6`** as the judge for all evals. Rationale:
+- The judge must be at least as capable as the models being tested (we test GPT-5.2, Opus 4.6, and Gemini 2.5 Pro).
+- Cross-provider judging reduces same-provider bias (Claude judging OpenAI/Google outputs and vice versa).
+- Opus 4.6 has the strongest reasoning capabilities available.
+
+**Provider prefixes**: `openai:`, `anthropic:messages:`, `google:` (uses `GEMINI_API_KEY`). Always evaluate models from all three providers.
+
+Override per-eval in the YAML config:
+```yaml
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+```
+
+Or per-assertion:
+```yaml
+assert:
+  - type: llm-rubric
+    value: "Evaluate the output..."
+    provider: anthropic:messages:claude-opus-4-6
+```
+
+Or via CLI: `--grader anthropic:messages:claude-opus-4-6`
+
+#### Python Scorer Interface
+
+Promptfoo calls `get_assert(output, context)` from Python scorer files:
+
+```python
+def get_assert(output: str, context: dict) -> dict:
+    """
+    Args:
+        output: Raw model response text
+        context: Dict with 'vars' (test variables), 'prompt', etc.
+    Returns:
+        {"pass": bool, "score": float 0-1, "reason": str}
+    """
+```
+
+- Access test variables via `context["vars"]["variable_name"]`
+- `file://` in vars loads file *content*, not paths — use plain strings for paths the scorer will resolve itself.
+
+#### Dual Evaluation Pattern
+
+Every eval should use both:
+1. **Python scorer** — Deterministic, structural quality (JSON validity, field completeness, trait/relationship matching against golden reference). Fast, reproducible, catches structural failures.
+2. **LLM rubric** — Semantic quality (coherence, insight depth, evidence grounding). Catches qualitative issues the structural scorer misses. More expensive, slightly non-deterministic.
+
+A test case passes only if *both* assertions pass. This is intentional — Mini scored 0.915 on a Python scorer but 0.62 on the LLM judge for the same output, meaning the judge caught shallow reasoning the structural check missed.
+
+#### Pitfalls and Gotchas
+
+- **`max_tokens` is NOT set by default for OpenAI models.** Always set `max_tokens` in provider config or outputs will truncate silently (producing invalid JSON). Anthropic requires it; OpenAI doesn't enforce it but needs it for long outputs.
+- **`---` in prompt files is a prompt separator.** Promptfoo treats `---` as a delimiter between multiple prompts. Use `==========` or another delimiter if you need a visual separator in your prompt text.
+- **`file://` paths resolve relative to the config file**, not CWD. A config at `tasks/foo.yaml` referencing `file://../prompts/bar.txt` resolves to `prompts/bar.txt` from the `benchmarks/` root.
+- **`file://` in test vars loads content, not path.** If a scorer needs a file *path* (to load itself), use a plain string without `file://` prefix.
+- **Anthropic models wrap output in ```json blocks.** Scorers must handle this (strip markdown fences before JSON.parse). The scorer should still work but may penalize slightly (0.9 vs 1.0 for JSON validity).
+- **Exit code 100 = test failures**, not system errors. This is normal when models fail assertions.
+- **`--dry-run` doesn't exist.** Use `--filter-first-n 1` to validate config with a single test case.
+- **Concurrency**: Use `-j N` to control parallelism. `-j 3` is a good default (avoids rate limits while keeping runs under 10 min).
+
+#### Adding a New Eval (for future modules)
+
+When a new AI-powered module lands:
+1. Copy test input to `benchmarks/input/`
+2. Create golden reference in `benchmarks/golden/` (hand-crafted, expert-validated)
+3. Write prompt template in `benchmarks/prompts/` (use `{{var}}` placeholders)
+4. Write Python scorer in `benchmarks/scorers/` (implement `get_assert(output, context)`)
+5. Create promptfoo config in `benchmarks/tasks/` (providers × test cases × assertions)
+6. Run eval, analyze, pick models, update defaults in `src/cine_forge/schemas/models.py`
+
 ### Ideas Backlog
 - `docs/ideas.md` captures features, patterns, and design concepts that are good but not in scope for current work.
 - When a feature is deferred during story work, move it to `docs/ideas.md` rather than losing it.
@@ -195,6 +310,9 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-13 — Cast-quality filters: Remove pronouns and derivative noise before ranking characters.
 - 2026-02-14 — Cross-recipe artifact reuse via `store_inputs`: Downstream recipes declare `store_inputs: {input_key: artifact_type}` to resolve inputs from the artifact store instead of re-executing upstream stages. Validated against registered schemas, rejects stale/unhealthy artifacts, and included in stage fingerprints for cache correctness (`src/cine_forge/driver/recipe.py`, `src/cine_forge/driver/engine.py`, `configs/recipes/recipe-world-building.yaml`).
 
+- 2026-02-15 — Dual evaluation catches what code can't: Python scorers measure structural quality (JSON validity, field coverage, trait matching) but miss semantic issues. LLM rubric judges catch shallow reasoning, over-segmentation, and missed subtext. Always use both. Example: GPT-4.1 Mini scored 0.915 on Python scorer but 0.62 on LLM judge for the same character extraction — the judge caught that it found all the right fields but missed the character's emotional arc entirely.
+- 2026-02-15 — Cross-provider judging reduces bias: When evaluating model outputs, use a judge from a different provider than the model being tested. Claude Opus 4.6 as default judge works well for evaluating both OpenAI and Anthropic models.
+
 ### Known Pitfalls
 - 2026-02-11 — Hidden schema drift: adding output fields without schema updates can silently drop data.
 - 2026-02-12 — Runtime-only inputs bypass cache: Include CLI params in stage fingerprints or reuse returns stale data.
@@ -204,6 +322,8 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-13 — Directory depth fragility: Discovery logic assuming fixed depth (e.g. `artifacts/{type}/{id}/`) fails on nested/folder-based types.
 - 2026-02-13 — Project Directory Pollution: Reusing the same project directory for manual testing and user runs can lead to "ghost" artifacts appearing if cache reuse is not explicitly invalidated after recipe or input changes.
 - 2026-02-13 — Deceptive "Zero-Second" Success: Mock models finish in microseconds, making a run appear to "pass" instantly while producing only stubs. Always verify `cost_usd` or `runtime_params` before declaring a high-fidelity success.
+- 2026-02-15 — promptfoo `max_tokens` trap: OpenAI providers don't require `max_tokens` but will silently truncate long outputs (producing invalid JSON that fails every scorer). Always set `max_tokens: 4096` or `8192` for all providers.
+- 2026-02-15 — promptfoo `---` separator trap: Three dashes in prompt files are interpreted as a prompt separator, splitting one prompt into two. The second fragment may lack required instructions (e.g., missing "return JSON"), causing confusing failures. Use `==========` or similar instead.
 - 2026-02-15 — Build Pass ≠ Working UI: `tsc --noEmit` and `npm run build` only prove static types and bundling. They cannot catch runtime crashes from data mismatches (e.g., backend sends `'done'` but UI switch only handles `'completed'` — both are `string`, so TypeScript is silent). **After any UI change that touches data flow, open the app in a browser with the real backend and click through every affected page before declaring done.** A green build is necessary but not sufficient.
 
 ### Lessons Learned

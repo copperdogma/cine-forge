@@ -69,6 +69,8 @@ NOTES from Cam:
 | 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | To Do | [story-032](stories/story-032-cost-tracking.md) |
 | 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | To Do | [story-033](stories/story-033-memory-model.md) |
 | 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | To Do | [story-034](stories/story-034-style-pack-creator.md) |
+| 035 | Model Benchmarking Tooling (promptfoo) | Cross-Cutting | High | Done | (sidequests worktree) |
+| 036 | Model Selection and Eval Framework | Cross-Cutting | High | To Do | [story-036](stories/story-036-model-selection.md) |
 
 ## Phase Summary
 
