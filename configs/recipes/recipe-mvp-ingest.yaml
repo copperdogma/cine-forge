@@ -10,15 +10,15 @@ stages:
   - id: normalize
     module: script_normalize_v1
     params:
-      max_retries: 1
-      skip_qa: ${skip_qa}
+      max_retries: 2
+      skip_qa: false
     needs:
       - ingest
   - id: extract_scenes
     module: scene_extract_v1
     params:
-      max_retries: 1
-      skip_qa: ${skip_qa}
+      max_retries: 2
+      skip_qa: false
     needs:
       - normalize
   - id: project_config
