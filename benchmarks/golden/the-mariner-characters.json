@@ -1,0 +1,118 @@
+{
+  "THE MARINER": {
+    "character_id": "the-mariner",
+    "name": "THE MARINER",
+    "aliases": ["Billy", "Will", "Mariner"],
+    "narrative_role": "protagonist",
+    "key_traits": [
+      "physically powerful",
+      "morally rigid",
+      "emotionally repressed",
+      "protective",
+      "vulnerable"
+    ],
+    "must_have_relationships": [
+      {"target": "ROSE", "type": "sibling"},
+      {"target": "DAD", "type": "parent"},
+      {"target": "SALVATORI", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "EXT. RUDDY & GREENE BUILDING - REAR",
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+      "INT. 11TH FLOOR",
+      "INT. 13TH FLOOR",
+      "INT. 15TH FLOOR"
+    ],
+    "must_have_evidence": [
+      "built like a pro-wrestler",
+      "Dad tattoo",
+      "Mariner's code",
+      "wounded child"
+    ],
+    "key_facts": [
+      "His real name is Billy (or Will)",
+      "Rose is his sister",
+      "He wears fishing-themed combat gear including an oar weapon",
+      "He tracked Rose via AirTag",
+      "He believed his father was dead",
+      "His father actually abandoned the family",
+      "He romanticized his abusive childhood",
+      "He has a moral code he calls the Mariner's code"
+    ]
+  },
+  "ROSE": {
+    "character_id": "rose",
+    "name": "ROSE",
+    "aliases": ["Rosey", "Rosie"],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "resourceful",
+      "sharp-tongued",
+      "brave",
+      "emotionally grounded",
+      "cunning"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "sibling"},
+      {"target": "VINNIE", "type": "romantic_ex"},
+      {"target": "SALVATORI", "type": "adversary"},
+      {"target": "DAD", "type": "parent"}
+    ],
+    "must_mention_scenes": [
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+      "INT. 11TH FLOOR",
+      "INT. STAIRWELL",
+      "INT. 15TH FLOOR"
+    ],
+    "must_have_evidence": [
+      "mid-30s",
+      "Tim Hortons uniform",
+      "stole gang money",
+      "blockchain password"
+    ],
+    "key_facts": [
+      "She is Mariner's sister",
+      "She wears a Tim Hortons uniform",
+      "She stole $20 million in cryptocurrency from Salvatori's gang",
+      "Vinnie was her ex-boyfriend",
+      "She knows the truth about their father",
+      "She delivers the final speech redefining Mariner as a hero",
+      "The password is hidden on a chip in her purse lining"
+    ]
+  },
+  "DAD": {
+    "character_id": "dad",
+    "name": "DAD",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "abusive",
+      "alcoholic",
+      "manipulative",
+      "absent"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "parent"},
+      {"target": "ROSE", "type": "parent"}
+    ],
+    "must_mention_scenes": [
+      "EXT. COASTLINE - DAY",
+      "EXT. BACKYARD - DAY"
+    ],
+    "must_have_evidence": [
+      "punches young Mariner",
+      "drinking",
+      "Chimney Bay"
+    ],
+    "key_facts": [
+      "He appears only in flashbacks",
+      "He is presented in two versions: idealized and dark/true",
+      "The idealized version shows warm teaching moments",
+      "The dark version reveals physical abuse and alcoholism",
+      "He abandoned the family and lives in Chimney Bay",
+      "Mariner believed he was dead",
+      "His 'hero' speech is self-aggrandizing in the dark version",
+      "He is a fisherman"
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+# Character Extraction Benchmark
+# Evaluates models on extracting structured character data from a screenplay.
+# This mirrors CineForge's character_bible_v1 module — the core AI task.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/character-extraction.yaml
+# View:  promptfoo view
+
+description: "Character extraction from screenplay — The Mariner"
+
+# Use Opus as judge — strongest reasoning, cross-provider for OpenAI models
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/character-extraction.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-nano
+    label: "GPT-4.1 Nano"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  # --- Mid tier ---
+  - id: openai:gpt-4.1
+    label: "GPT-4.1"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-5-20250929
+    label: "Claude Sonnet 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  # --- SOTA tier ---
+  - id: openai:gpt-5.2
+    label: "GPT-5.2"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+tests:
+  # Test 1: THE MARINER — protagonist, present in most scenes, emotional arc
+  - vars:
+      character_name: "THE MARINER"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-characters.json
+    assert:
+      - type: python
+        value: file://../scorers/character_extraction_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the character extraction for THE MARINER from the screenplay "The Mariner."
+
+          Key quality criteria:
+          1. Does it identify him as the protagonist?
+          2. Does it mention his real name (Billy/Will)?
+          3. Does it describe his fishing-themed vigilante outfit (oar, net cape, bracers, flare gun)?
+          4. Does it identify his relationships (sister Rose, father Dad, antagonist Salvatori)?
+          5. Does it capture his emotional arc — believing his father was a hero, then learning the truth?
+          6. Does it note his moral code ("honesty, bravery, and grit")?
+          7. Does it distinguish between his outward strength and inner vulnerability?
+          8. Is evidence grounded in the actual screenplay text?
+
+          Score strictly: a good extraction captures both surface traits AND the deeper arc.
+
+  # Test 2: ROSE — co-lead, sharp dialogue, hidden backstory
+  - vars:
+      character_name: "ROSE"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-characters.json
+    assert:
+      - type: python
+        value: file://../scorers/character_extraction_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the character extraction for ROSE from the screenplay "The Mariner."
+
+          Key quality criteria:
+          1. Does it identify her relationship to Mariner (sister)?
+          2. Does it mention she stole $20 million in cryptocurrency from the gang?
+          3. Does it note Vinnie as her ex-boyfriend?
+          4. Does it capture her Tim Hortons uniform and mid-30s age?
+          5. Does it identify her role as the one who knows the truth about their father?
+          6. Does it capture her final speech redefining Mariner as a true hero?
+          7. Does it note her resourcefulness and sharp tongue?
+          8. Is evidence grounded in the actual screenplay text?
+
+          Score strictly: Rose is a complex character hiding crucial information.
+
+  # Test 3: DAD — flashback-only, dual presentation, thematic catalyst
+  - vars:
+      character_name: "DAD"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-characters.json
+    assert:
+      - type: python
+        value: file://../scorers/character_extraction_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the character extraction for DAD from the screenplay "The Mariner."
+
+          Key quality criteria:
+          1. Does it note he appears ONLY in flashbacks, never in present-day scenes?
+          2. Does it identify the dual presentation — idealized vs. dark/true versions?
+          3. In the idealized version: warm, teaching, encouraging?
+          4. In the dark version: abusive, alcoholic, violent, neglectful?
+          5. Does it mention he punches young Mariner?
+          6. Does it note he abandoned the family and lives in Chimney Bay?
+          7. Does it capture that Mariner believed he was dead?
+          8. Does it identify the Newfoundland dialect in his speech?
+
+          Score strictly: the dual presentation is the most important narrative device
+          in the screenplay and a good extraction MUST capture it.
