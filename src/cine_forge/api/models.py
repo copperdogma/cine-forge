@@ -201,3 +201,34 @@ class ChatMessagePayload(BaseModel):
     timestamp: float
     actions: list[dict[str, Any]] | None = None
     needsAction: bool | None = None
+
+
+# --- Search ---
+
+
+class SearchResultScene(BaseModel):
+    """Scene match in search results."""
+
+    scene_id: str
+    heading: str
+    location: str
+    time_of_day: str
+    int_ext: str
+
+
+class SearchResultEntity(BaseModel):
+    """Bible entity match in search results."""
+
+    entity_id: str
+    display_name: str
+    entity_type: str  # character, location, prop
+
+
+class SearchResponse(BaseModel):
+    """Unified search results across project entities."""
+
+    query: str
+    scenes: list[SearchResultScene] = []
+    characters: list[SearchResultEntity] = []
+    locations: list[SearchResultEntity] = []
+    props: list[SearchResultEntity] = []

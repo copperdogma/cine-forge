@@ -17,6 +17,7 @@ import type {
   RunStartPayload,
   RunStateResponse,
   RunSummary,
+  SearchResponse,
   SlugPreviewResponse,
   UploadedInputResponse,
 } from './types'
@@ -179,6 +180,12 @@ export function postChatMessage(projectId: string, message: ChatMessage): Promis
     method: 'POST',
     body: JSON.stringify(message),
   })
+}
+
+// --- Search ---
+
+export function searchProject(projectId: string, query: string): Promise<SearchResponse> {
+  return request<SearchResponse>(`/api/projects/${projectId}/search?q=${encodeURIComponent(query)}`)
 }
 
 // --- Runs ---

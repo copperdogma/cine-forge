@@ -6,7 +6,6 @@ import {
   Loader2,
   DollarSign,
   Layers,
-  Cpu,
   History,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -14,22 +13,10 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useInspector } from '@/lib/right-panel'
-import { useRuns } from '@/lib/hooks'
+import { useRuns, useRunState } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
 import { cn } from '@/lib/utils'
 import type { RunSummary } from '@/lib/types'
-
-// Shape for mock run data used in inspector
-interface MockRun {
-  run_id: string
-  status: string
-  recipe: string
-  default_model: string
-  started_at: number
-  finished_at: number | null
-  stages: Array<{ name: string; status: string; duration: string | null; cost: number }>
-  cost_usd: number
-}
 
 function statusIcon(status: string) {
   switch (status) {
@@ -79,50 +66,77 @@ function stageStatusIcon(status: string) {
   }
 }
 
-function RunInspectorContent({ run }: { run: MockRun | RunSummary }) {
-  // Check if it's the full mock run with stages
-  const isMockRun = 'stages' in run && 'recipe' in run && 'cost_usd' in run
+function RunInspectorContent({ runId }: { runId: string }) {
+  const { data: runStateData, isLoading } = useRunState(runId)
 
-  if (isMockRun) {
-    const mockRun = run as MockRun
+  if (isLoading) {
     return (
-      <div className="space-y-4">
-        {/* Summary */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            {statusBadge(mockRun.status)}
-            <span className="text-xs text-muted-foreground">{mockRun.recipe}</span>
+      <div className="space-y-3">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-4 w-48" />
+        <Skeleton className="h-4 w-24" />
+      </div>
+    )
+  }
+
+  if (!runStateData?.state) {
+    return (
+      <p className="text-xs text-muted-foreground">
+        Could not load run details.
+      </p>
+    )
+  }
+
+  const { state } = runStateData
+  const stageEntries = Object.entries(state.stages || {})
+  const doneCount = stageEntries.filter(
+    ([, s]) => s.status === 'done' || s.status === 'skipped_reused'
+  ).length
+
+  const formatDuration = (seconds: number) => {
+    if (!seconds || seconds <= 0) return null
+    const rounded = Math.round(seconds)
+    if (rounded < 60) return `${rounded}s`
+    const mins = Math.floor(rounded / 60)
+    const secs = rounded % 60
+    return `${mins}m ${secs}s`
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Summary */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          {statusBadge(state.finished_at ? 'done' : 'running')}
+          <span className="text-xs text-muted-foreground">{state.recipe_id}</span>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <DollarSign className="h-3 w-3" />
+            ${(state.total_cost_usd ?? 0).toFixed(2)}
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <DollarSign className="h-3 w-3" />
-              ${mockRun.cost_usd.toFixed(2)}
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Layers className="h-3 w-3" />
-              {mockRun.stages.filter(s => s.status === 'done' || s.status === 'skipped_reused').length}/{mockRun.stages.length} stages
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Cpu className="h-3 w-3" />
-              {mockRun.default_model}
-            </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Layers className="h-3 w-3" />
+            {doneCount}/{stageEntries.length} stages
+          </div>
+          {state.started_at && (
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Clock className="h-3 w-3" />
-              {timeAgo(mockRun.started_at)}
+              {timeAgo(state.started_at * 1000)}
             </div>
-          </div>
+          )}
         </div>
+      </div>
 
-        <Separator />
+      <Separator />
 
-        {/* Stage list */}
-        <div className="space-y-1">
-          <p className="text-xs font-medium text-muted-foreground mb-2">Stages</p>
-          {mockRun.stages.map(stage => (
-            <div
-              key={stage.name}
-              className="flex items-center gap-2 py-1.5"
-            >
+      {/* Stage list */}
+      <div className="space-y-1">
+        <p className="text-xs font-medium text-muted-foreground mb-2">Stages</p>
+        {stageEntries.map(([stageName, stage]) => {
+          const duration = formatDuration(stage.duration_seconds)
+          return (
+            <div key={stageName} className="flex items-center gap-2 py-1.5">
               {stageStatusIcon(stage.status)}
               <span
                 className={cn(
@@ -130,46 +144,18 @@ function RunInspectorContent({ run }: { run: MockRun | RunSummary }) {
                   stage.status === 'pending' ? 'text-muted-foreground' : 'text-foreground',
                 )}
               >
-                {stage.name}
+                {stageName}
               </span>
-              {stage.duration && (
-                <span className="text-xs text-muted-foreground">{stage.duration}</span>
+              {duration && (
+                <span className="text-xs text-muted-foreground">{duration}</span>
               )}
-              {stage.cost > 0 && (
-                <span className="text-xs text-muted-foreground">${stage.cost.toFixed(2)}</span>
+              {stage.cost_usd > 0 && (
+                <span className="text-xs text-muted-foreground">${stage.cost_usd.toFixed(2)}</span>
               )}
             </div>
-          ))}
-        </div>
+          )
+        })}
       </div>
-    )
-  }
-
-  // Simplified view for real run data (until we add a separate query for run details)
-  const realRun = run as RunSummary
-  return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          {statusBadge(realRun.status)}
-        </div>
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            Started: {realRun.started_at ? timeAgo(realRun.started_at * 1000) : 'Unknown'}
-          </div>
-          {realRun.finished_at && (
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <CheckCircle2 className="h-3 w-3" />
-              Finished: {timeAgo(realRun.finished_at * 1000)}
-            </div>
-          )}
-        </div>
-      </div>
-      <Separator />
-      <p className="text-xs text-muted-foreground">
-        Full run details coming soon. Use the API to view run state and events.
-      </p>
     </div>
   )
 }
@@ -209,7 +195,7 @@ export default function ProjectRuns() {
   function selectRun(run: RunSummary) {
     inspector.open(
       run.run_id,
-      <RunInspectorContent run={run} />,
+      <RunInspectorContent runId={run.run_id} />,
     )
   }
 

@@ -244,6 +244,7 @@ Reshape the nav around the story, not the system.
 - [ ] **Inbox as chat filter**: Inbox page shows only actionable chat messages (pending approvals, stale artifacts, errors). Resolving an item updates the chat message. Badge count = unresolved actionable messages.
 - [ ] **Advanced section**: Collapsible section at bottom of nav for Pipeline, Runs, raw Artifacts (findable, not primary)
 - [ ] **Update keyboard shortcuts**: Match new nav structure (Cmd+1=Script, Cmd+2=Scenes, etc.)
+- [ ] ~~**Unified command palette**~~: Merged GlobalSearch + CommandPalette + KeyboardShortcutsHelp into a single `/`-triggered Spotlight-style palette → **moved to Story 041**
 - [ ] **Story-centric pages**: Each nav item is a curated, filtered view of the artifact store with the appropriate viewer
 - [ ] **Discuss with Cam**: Navigate the full story structure — does it feel like working with a story, not a system?
 
@@ -364,6 +365,7 @@ The system tracks inheritance (script → scene → shot style cascading). The u
 ## Out of Scope
 
 - **Conversational AI chat** — enabling free-form text input with LLM responses and tool use. This story builds the chat panel architecture; **Story 011f** adds the AI conversation layer.
+- **Unified command palette** — merging GlobalSearch, CommandPalette, and KeyboardShortcutsHelp into a single `/`-triggered Spotlight-style interface. See **Story 041**.
 - Real-time SSE/WebSocket streaming (polling is fine for now).
 - Screenplay content parsing for title extraction (can use filename heuristics first).
 - Story-to-screenplay conversion (separate story in ideas.md).

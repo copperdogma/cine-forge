@@ -153,25 +153,25 @@ export function useShortcuts(shortcuts: Shortcut[]) {
 export const GLOBAL_SHORTCUTS: ShortcutDefinition[] = [
   // Navigation
   {
-    key: '1',
+    key: '0',
     meta: true,
-    label: 'Go to Pipeline',
+    label: 'Go to Home',
     category: 'Navigation',
   },
   {
-    key: '2',
+    key: '1',
     meta: true,
     label: 'Go to Runs',
     category: 'Navigation',
   },
   {
-    key: '3',
+    key: '2',
     meta: true,
     label: 'Go to Artifacts',
     category: 'Navigation',
   },
   {
-    key: '4',
+    key: '3',
     meta: true,
     label: 'Go to Inbox',
     category: 'Navigation',
@@ -180,13 +180,13 @@ export const GLOBAL_SHORTCUTS: ShortcutDefinition[] = [
   // Actions
   {
     key: '/',
-    label: 'Global search',
+    label: 'Command palette',
     category: 'Actions',
   },
   {
     key: 'k',
     meta: true,
-    label: 'Open command palette',
+    label: 'Command palette',
     category: 'Actions',
   },
   {
@@ -214,13 +214,6 @@ export const GLOBAL_SHORTCUTS: ShortcutDefinition[] = [
     meta: true,
     label: 'Toggle inspector',
     category: 'UI Controls',
-  },
-  // Help
-  {
-    key: '?',
-    shift: true,
-    label: 'Show keyboard shortcuts',
-    category: 'Help',
   },
 ];
 

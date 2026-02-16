@@ -245,7 +245,8 @@ function FreshImportView({ projectId }: { projectId: string }) {
 
 // --- Analyzed / Complete View: Dashboard with scenes, artifacts, runs ---
 
-function AnalyzedView({ projectId }: { projectId: string }) {
+// TODO: Wire AnalyzedView into project state switch (Story 041 Phase 3)
+export function AnalyzedView({ projectId }: { projectId: string }) {
   const navigate = useNavigate()
   const { data: project } = useProject(projectId)
   const { data: runs } = useRuns(projectId)

@@ -18,8 +18,9 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { SceneStrip } from '@/components/SceneStrip'
-import { RunEventLog, mockRunEvents } from '@/components/RunEventLog'
-import { useUploadInput, useStartRun, useRunState, useRecipes, useScenes, useProjectInputs } from '@/lib/hooks'
+import { RunEventLog } from '@/components/RunEventLog'
+import type { RunEvent } from '@/components/RunEventLog'
+import { useUploadInput, useStartRun, useRunState, useRunEvents, useRecipes, useScenes, useProjectInputs } from '@/lib/hooks'
 import { toast } from 'sonner'
 
 // Fallback recipes in case API fails
@@ -28,6 +29,24 @@ const fallbackRecipes = [
   { recipe_id: 'world_building', name: 'World Building', description: 'Synthesis pipeline: world, characters, locations', stage_count: 7 },
   { recipe_id: 'narrative_analysis', name: 'Narrative Analysis', description: 'Analysis pipeline: themes, arcs, structure', stage_count: 5 },
 ]
+
+/** Transform backend pipeline events into RunEvent format for the event log UI. */
+function transformBackendEvents(events?: Array<Record<string, unknown>>): RunEvent[] {
+  if (!events || events.length === 0) return []
+  return events.map((evt) => {
+    const type = (evt.type as string) ?? 'info'
+    const validTypes = ['stage_start', 'stage_end', 'ai_call', 'artifact_produced', 'error', 'warning', 'info']
+    return {
+      timestamp: typeof evt.timestamp === 'number'
+        ? evt.timestamp * 1000 // backend uses seconds, UI uses ms
+        : Date.now(),
+      type: (validTypes.includes(type) ? type : 'info') as RunEvent['type'],
+      stage: (evt.stage as string) ?? undefined,
+      message: (evt.message as string) ?? (evt.event as string) ?? type,
+      details: (evt.details as Record<string, unknown>) ?? undefined,
+    }
+  })
+}
 
 type RunView = 'config' | 'progress'
 
@@ -55,6 +74,7 @@ export default function ProjectRun() {
   const uploadMutation = useUploadInput(projectId || '')
   const startRunMutation = useStartRun()
   const { data: runStateData, isLoading: runStateLoading } = useRunState(runId || '')
+  const { data: runEventsData } = useRunEvents(runId || '')
   const { data: recipesData, isLoading: recipesLoading } = useRecipes()
   const { data: scenesData = [] } = useScenes(projectId)
   const { data: existingInputs } = useProjectInputs(projectId)
@@ -257,7 +277,7 @@ export default function ProjectRun() {
           <h2 className="text-sm font-semibold text-muted-foreground mb-2">Event Log</h2>
           <Card>
             <CardContent className="p-0">
-              <RunEventLog events={mockRunEvents} maxHeight="300px" />
+              <RunEventLog events={transformBackendEvents(runEventsData?.events)} maxHeight="300px" />
             </CardContent>
           </Card>
         </div>
