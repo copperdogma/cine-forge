@@ -1,0 +1,95 @@
+{
+  "description": "Golden reference for entity relationship discovery — The Mariner screenplay",
+  "must_find_relationships": [
+    {
+      "relationship_id": "mariner-rose-siblings",
+      "source_type": "character",
+      "source_id": "the-mariner",
+      "target_type": "character",
+      "target_id": "rose",
+      "relationship_type_keywords": ["sibling", "brother", "sister", "family"],
+      "direction": "symmetric",
+      "must_mention_evidence": ["sister", "Billy", "Will", "Rosey"],
+      "min_confidence": 0.9,
+      "importance": "critical"
+    },
+    {
+      "relationship_id": "mariner-dad-parent",
+      "source_type": "character",
+      "source_id": "dad",
+      "target_type": "character",
+      "target_id": "the-mariner",
+      "relationship_type_keywords": ["parent", "father", "son", "family"],
+      "direction": "source_to_target",
+      "must_mention_evidence": ["father", "dad", "flashback", "abandon"],
+      "min_confidence": 0.9,
+      "importance": "critical"
+    },
+    {
+      "relationship_id": "mariner-salvatori-adversary",
+      "source_type": "character",
+      "source_id": "the-mariner",
+      "target_type": "character",
+      "target_id": "salvatori",
+      "relationship_type_keywords": ["adversary", "antagonist", "enemy", "rival", "opponent"],
+      "direction": "symmetric",
+      "must_mention_evidence": ["confrontation", "fight", "building", "gang"],
+      "min_confidence": 0.8,
+      "importance": "critical"
+    },
+    {
+      "relationship_id": "mariner-oar-weapon",
+      "source_type": "character",
+      "source_id": "the-mariner",
+      "target_type": "prop",
+      "target_id": "oar",
+      "relationship_type_keywords": ["owns", "wields", "weapon", "uses", "carries"],
+      "direction": "source_to_target",
+      "must_mention_evidence": ["BOSUN", "weapon", "oar"],
+      "min_confidence": 0.9,
+      "importance": "important"
+    },
+    {
+      "relationship_id": "rose-purse-macguffin",
+      "source_type": "character",
+      "source_id": "rose",
+      "target_type": "prop",
+      "target_id": "purse",
+      "relationship_type_keywords": ["owns", "possesses", "carries", "hides"],
+      "direction": "source_to_target",
+      "must_mention_evidence": ["blockchain", "password", "chip", "stolen", "million"],
+      "min_confidence": 0.8,
+      "importance": "important"
+    },
+    {
+      "relationship_id": "salvatori-15th-floor-headquarters",
+      "source_type": "character",
+      "source_id": "salvatori",
+      "target_type": "location",
+      "target_id": "15th-floor",
+      "relationship_type_keywords": ["headquarters", "office", "occupies", "controls", "base"],
+      "direction": "source_to_target",
+      "must_mention_evidence": ["office", "15th", "floor", "luxur"],
+      "min_confidence": 0.8,
+      "importance": "important"
+    },
+    {
+      "relationship_id": "rose-vinnie-ex",
+      "source_type": "character",
+      "source_id": "rose",
+      "target_type": "character",
+      "target_id": "vinnie",
+      "relationship_type_keywords": ["romantic", "ex", "boyfriend", "former"],
+      "direction": "symmetric",
+      "must_mention_evidence": ["ex", "boyfriend", "Vinnie"],
+      "min_confidence": 0.7,
+      "importance": "secondary"
+    }
+  ],
+  "min_must_find": 4,
+  "max_total_edges": 15,
+  "false_positive_examples": [
+    "Any relationship between entities that never interact in the screenplay",
+    "Relationships invented from general knowledge rather than script evidence"
+  ]
+}

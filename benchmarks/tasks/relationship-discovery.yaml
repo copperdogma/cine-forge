@@ -1,0 +1,129 @@
+# Relationship Discovery Benchmark
+# Evaluates models on discovering narrative relationships between screenplay entities.
+# Mirrors CineForge's entity_graph_v1 module — AI relationship discovery step.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/relationship-discovery.yaml --no-cache -j 3
+# View:  promptfoo view
+
+description: "Entity relationship discovery from screenplay — The Mariner"
+
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/relationship-discovery.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-nano
+    label: "GPT-4.1 Nano"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: google:gemini-2.5-flash-lite
+    label: "Gemini 2.5 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- Mid tier ---
+  - id: openai:gpt-4.1
+    label: "GPT-4.1"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-5-20250929
+    label: "Claude Sonnet 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash
+    label: "Gemini 2.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-flash-preview
+    label: "Gemini 3 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- SOTA tier ---
+  - id: openai:gpt-5.2
+    label: "GPT-5.2"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-pro
+    label: "Gemini 2.5 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-pro-preview
+    label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+tests:
+  # Single test case — relationship discovery uses all entities at once
+  - vars:
+      characters: "THE MARINER, ROSE, DAD, SALVATORI, VINNIE, GIRL IN CAGE, CONSIGLIERE"
+      locations: "RUDDY & GREENE BUILDING, 15TH FLOOR, COASTLINE, ELEVATOR, STAIRWELL, 13TH FLOOR"
+      props: "OAR (BOSUN), PURSE, FLARE GUN"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-relationships.json
+    assert:
+      - type: python
+        value: file://../scorers/relationship_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the relationship discovery output for "The Mariner" screenplay.
+
+          The model was given character, location, and prop entity lists and asked to identify
+          5-10 high-impact narrative relationships.
+
+          Key quality criteria:
+          1. Does it identify the SIBLING relationship between The Mariner and Rose?
+          2. Does it identify the PARENT relationship between Dad and The Mariner?
+          3. Does it identify the ADVERSARY relationship between The Mariner and Salvatori?
+          4. Does it connect The Mariner to his OAR (BOSUN) as a defining weapon/prop?
+          5. Does it identify Rose's PURSE as containing the blockchain password MacGuffin?
+          6. Does it connect Salvatori to the 15TH FLOOR as his headquarters?
+          7. Does it identify Rose and Vinnie as former romantic partners?
+          8. Is evidence grounded in the actual screenplay (specific quotes or scene references)?
+          9. Are relationship types meaningful and specific (not generic "related to")?
+          10. Are there any obviously false or fabricated relationships?
+
+          Score strictly: a good relationship extraction captures the NARRATIVE structure
+          of the screenplay, not just surface-level co-occurrences. Critical family and
+          adversarial relationships must be present.

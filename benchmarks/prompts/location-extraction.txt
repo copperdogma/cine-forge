@@ -1,0 +1,23 @@
+You are a location analyst working on a film production. Extract a master definition for the location "{{location_name}}" from the following screenplay.
+
+Return ONLY valid JSON with these fields:
+- location_id: A URL-safe slug (e.g., "ruddy-and-greene-building")
+- name: The location name as it appears in scene headings
+- aliases: Array of alternative names or references used for this location
+- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story
+- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)
+- scene_presence: Array of scene headings where this location appears
+- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot
+- overall_confidence: Float 0-1 indicating certainty of the extraction
+
+Important:
+- Ground all physical traits in actual screenplay descriptions, not inferences
+- Include sub-locations that are part of this location (e.g., rooms within a building)
+- Note if the location appears differently at different points (e.g., flashback vs. present)
+- Capture atmosphere and mood conveyed through the location's description
+- Distinguish between what is explicitly described vs. implied
+
+SCREENPLAY:
+==========
+{{screenplay}}
+==========

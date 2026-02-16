@@ -1,0 +1,21 @@
+You are a props analyst working on a film production. Extract a master definition for the prop "{{prop_name}}" from the following screenplay.
+
+Return ONLY valid JSON with these fields:
+- prop_id: A URL-safe slug (e.g., "oar-bosun")
+- name: The prop's name as it appears in the screenplay
+- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story
+- scene_presence: Array of scene headings where this prop appears or is referenced
+- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot
+- overall_confidence: Float 0-1 indicating certainty of the extraction
+
+Important:
+- Ground all descriptions in actual screenplay text, not inferences
+- Include every scene where the prop appears, is mentioned, or is visible
+- Note who interacts with the prop and how
+- Capture any symbolic meaning or thematic resonance
+- If the prop transforms or changes state during the story, describe that progression
+
+SCREENPLAY:
+==========
+{{screenplay}}
+==========

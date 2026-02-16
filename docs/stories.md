@@ -70,8 +70,10 @@ NOTES from Cam:
 | 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | To Do | [story-033](stories/story-033-memory-model.md) |
 | 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | To Do | [story-034](stories/story-034-style-pack-creator.md) |
 | 035 | Model Benchmarking Tooling (promptfoo) | Cross-Cutting | High | Done | [story-035](stories/story-035-model-benchmarking.md) |
-| 036 | Model Selection and Eval Framework | Cross-Cutting | High | To Do | [story-036](stories/story-036-model-selection.md) |
+| 036 | Model Selection and Eval Framework | Cross-Cutting | High | Done | [story-036](stories/story-036-model-selection.md) |
 | 037 | Production Deployment to cineforge.copper-dog.com | Cross-Cutting | High | In Progress | [story-037](stories/story-037-production-deployment.md) |
+| 038 | Multi-Provider LLM Transport | Cross-Cutting | High | To Do | [story-038](stories/story-038-multi-provider-transport.md) |
+| 039 | Apply Model Selections to Production | Cross-Cutting | Medium | To Do | [story-039](stories/story-039-apply-model-selections.md) |
 
 ## Phase Summary
 
