@@ -1,0 +1,37 @@
+You are a character analyst working on a film production. Extract a master definition for the character "{{character_name}}" from the following screenplay.
+
+Return ONLY valid JSON with these fields:
+- character_id: A URL-safe slug (e.g., "the-mariner")
+- name: The character's name as it appears in dialogue cues
+- aliases: Array of other names used for this character (nicknames, real names, etc.)
+- description: 2-4 sentence description covering appearance, role in the story, and key arc
+- explicit_evidence: Array of objects, each with:
+  - trait: What the evidence establishes (e.g., "physical strength", "moral code")
+  - quote: A direct or near-direct quote from the screenplay
+  - source_scene: The scene heading where this evidence appears
+- inferred_traits: Array of objects, each with:
+  - trait: The characteristic name (e.g., "emotionally repressed")
+  - value: Brief description of how this trait manifests
+  - confidence: Float 0-1 indicating certainty
+  - rationale: Why you infer this trait
+- scene_presence: Array of scene headings where this character appears or is heard
+- dialogue_summary: 1-2 sentences characterizing how this character speaks
+- narrative_role: One of "protagonist", "antagonist", "supporting", "minor"
+- relationships: Array of objects, each with:
+  - target_character: The other character's name
+  - relationship_type: e.g., "sibling", "parent", "romantic_ex", "adversary"
+  - evidence: Brief textual evidence for this relationship
+  - confidence: Float 0-1
+- overall_confidence: Float 0-1 for the extraction as a whole
+
+Important:
+- Ground all evidence in the actual screenplay text
+- Include characters heard off-screen (O.S.) in scene_presence
+- Distinguish between what is explicitly stated vs. inferred
+- For flashback characters, note which scenes are flashbacks vs. present-day
+- Pay attention to revelations that recontextualize earlier scenes
+
+SCREENPLAY:
+==========
+{{screenplay}}
+==========

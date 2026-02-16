@@ -1,0 +1,28 @@
+You are a professional screenplay analyst. Extract all scenes from the following screenplay.
+
+For each scene, provide:
+- scene_number: Sequential integer starting from 1
+- heading: The scene heading exactly as written (e.g., "INT. OFFICE - DAY")
+- int_ext: One of "INT", "EXT", or "INT/EXT"
+- location: The location name (without INT/EXT and time of day)
+- time_of_day: e.g., "DAY", "NIGHT", "DAWN", "CONTINUOUS"
+- summary: A 1-2 sentence summary of what happens in the scene
+- characters: Array of character names present or heard in the scene
+
+Important:
+- Include embedded flashbacks (marked with "BEGIN FLASHBACK" / "END FLASHBACK") as separate scenes
+- Include scenes that intercut between flashback and present
+- Scene headings may use backslash-escaped characters like \- for hyphens
+- Characters heard off-screen (O.S.) should be included
+
+Return ONLY valid JSON in this exact format:
+{
+  "title": "...",
+  "scene_count": <number>,
+  "scenes": [ { "scene_number": ..., "heading": ..., "int_ext": ..., "location": ..., "time_of_day": ..., "summary": ..., "characters": [...] } ]
+}
+
+SCREENPLAY:
+==========
+{{screenplay}}
+==========

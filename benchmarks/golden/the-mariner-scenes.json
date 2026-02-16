@@ -1,0 +1,141 @@
+{
+  "title": "The Mariner",
+  "scene_count": 15,
+  "scenes": [
+    {
+      "scene_number": 1,
+      "heading": "EXT. CITY CENTRE - NIGHT",
+      "int_ext": "EXT",
+      "location": "CITY CENTRE",
+      "time_of_day": "NIGHT",
+      "summary": "Opening establishing shot of a ruined city with fires, homeless, rubble from collapsed skyscrapers. Title card explains the pandemic and economic collapse backstory.",
+      "characters": []
+    },
+    {
+      "scene_number": 2,
+      "heading": "EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT",
+      "int_ext": "EXT",
+      "location": "RUDDY & GREENE BUILDING - FRONT",
+      "time_of_day": "NIGHT",
+      "summary": "Exterior of a bullet-scarred 15-story sandstone building with high-end SUVs parked outside.",
+      "characters": []
+    },
+    {
+      "scene_number": 3,
+      "heading": "EXT. RUDDY & GREENE BUILDING - REAR - NIGHT",
+      "int_ext": "EXT",
+      "location": "RUDDY & GREENE BUILDING - REAR",
+      "time_of_day": "NIGHT",
+      "summary": "The Mariner arrives in a fish delivery van, storms the building through the back door, fights his way up via elevator, rescues Rose from the top floor.",
+      "characters": ["THE MARINER", "ROSE"]
+    },
+    {
+      "scene_number": 4,
+      "heading": "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+      "int_ext": "INT",
+      "location": "RUDDY & GREEN BUILDING - ELEVATOR",
+      "time_of_day": "NIGHT",
+      "summary": "Mariner and Rose ride the elevator down. She discovers skull fragments. He reveals he tracked her via AirTag. Thugs ambush them on floor 12; Mariner fights them off. Rose decides to go up to floor 11 instead of escaping.",
+      "characters": ["THE MARINER", "ROSE", "THUG 1", "THUG 2", "THUG 3"]
+    },
+    {
+      "scene_number": 5,
+      "heading": "INT. 11TH FLOOR - CONTINUOUS",
+      "int_ext": "INT",
+      "location": "11TH FLOOR",
+      "time_of_day": "NIGHT",
+      "summary": "Rose and Mariner search for a stairwell through dim corridors. They hide from a passing thug. Mariner has a flashback to his father teaching him to fish.",
+      "characters": ["THE MARINER", "ROSE"]
+    },
+    {
+      "scene_number": 6,
+      "heading": "EXT. COASTLINE - DAY (FLASHBACK)",
+      "int_ext": "EXT",
+      "location": "COASTLINE",
+      "time_of_day": "DAY",
+      "summary": "Young Mariner and his father in a sailboat. Dad teaches him to cast a line and tells him what a hero is. Warm, golden, idyllic.",
+      "characters": ["YOUNG MARINER", "DAD"]
+    },
+    {
+      "scene_number": 7,
+      "heading": "INT. STAIRWELL - CONTINUOUS",
+      "int_ext": "INT",
+      "location": "STAIRWELL",
+      "time_of_day": "NIGHT",
+      "summary": "Rose wants to go up to retrieve her purse containing a blockchain password worth $20 million. Mariner wants to leave. Rose reveals she stole gang money.",
+      "characters": ["THE MARINER", "ROSE"]
+    },
+    {
+      "scene_number": 8,
+      "heading": "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
+      "int_ext": "INT",
+      "location": "12TH FLOOR STAIRWELL",
+      "time_of_day": "NIGHT",
+      "summary": "Rosco ambushes them at the stairwell door. Mariner subdues him. Rose forces Rosco to explain blockchain at gunpoint. Rosco reveals the stolen amount is $20 million before Mariner knocks him out.",
+      "characters": ["THE MARINER", "ROSE", "ROSCO"]
+    },
+    {
+      "scene_number": 9,
+      "heading": "INT. 13TH FLOOR",
+      "int_ext": "INT",
+      "location": "13TH FLOOR",
+      "time_of_day": "NIGHT",
+      "summary": "Three thugs (Vinnie, Mikey, Carlos) patrol the corridor discussing cryptocurrency. They hear Mariner and Rose arguing about his code of honor. Confrontation: Mariner shoots Vinnie with a flare gun, then defeats Mikey and Carlos. Rose tends to Mariner's wounds and reveals Vinnie was her ex-boyfriend.",
+      "characters": ["THE MARINER", "ROSE", "VINNIE", "MIKEY", "CARLOS"]
+    },
+    {
+      "scene_number": 10,
+      "heading": "INT. 15TH FLOOR",
+      "int_ext": "INT",
+      "location": "15TH FLOOR",
+      "time_of_day": "NIGHT",
+      "summary": "Clean, luxurious floor (Salvatori's office). Mariner forces open a locked door. Rose retrieves her purse. She questions Mariner about their father. Rose reveals their dad didn't die — he abandoned the family and lives in Chimney Bay. Mariner is devastated.",
+      "characters": ["THE MARINER", "ROSE"]
+    },
+    {
+      "scene_number": 11,
+      "heading": "EXT. BACKYARD - DAY (FLASHBACK)",
+      "int_ext": "EXT",
+      "location": "BACKYARD",
+      "time_of_day": "DAY",
+      "summary": "Young Mariner's dad teaches him weightlifting in an idyllic backyard. Encouraging and warm. Dad tells him never to run from a fight.",
+      "characters": ["YOUNG MARINER", "DAD"]
+    },
+    {
+      "scene_number": 12,
+      "heading": "EXT. BACKYARD - DAY (FLASHBACK - DARK)",
+      "int_ext": "EXT",
+      "location": "BACKYARD",
+      "time_of_day": "DAY",
+      "summary": "The true version: the yard is overgrown with weeds and bottles. Dad punches Young Mariner in the face, berates him for being weak, tells him to lift weights. Dad leaves in disgust. The earlier warm memories were Mariner's romanticized versions.",
+      "characters": ["YOUNG MARINER", "DAD"]
+    },
+    {
+      "scene_number": 13,
+      "heading": "INT. STAIRWELL - (BACK TO PRESENT)",
+      "int_ext": "INT",
+      "location": "STAIRWELL",
+      "time_of_day": "NIGHT",
+      "summary": "Salvatori confronts Mariner and Rose with thugs and a submachine gun. Mariner, shattered by the revelations about his father, kneels in defeat. He says he's nobody.",
+      "characters": ["THE MARINER", "ROSE", "SALVATORI"]
+    },
+    {
+      "scene_number": 14,
+      "heading": "EXT. COASTLINE - DAY (FLASHBACK - DARK)",
+      "int_ext": "EXT",
+      "location": "COASTLINE",
+      "time_of_day": "DAY",
+      "summary": "The true version of the fishing memory: Dad is drunk, pissing off the boat. Young Mariner is underdressed and shivering. Dad's 'hero' speech is self-aggrandizing and crude.",
+      "characters": ["YOUNG MARINER", "DAD"]
+    },
+    {
+      "scene_number": 15,
+      "heading": "EXT. BACKYARD - DAY (FLASHBACK) / INT. STAIRWELL (PRESENT)",
+      "int_ext": "INT",
+      "location": "STAIRWELL",
+      "time_of_day": "NIGHT",
+      "summary": "Salvatori demands the password at gunpoint. Rose delivers a speech redefining Mariner as a true hero — not because of his father's teachings, but despite them. Mariner clenches his fists, renewed. Cut to black.",
+      "characters": ["THE MARINER", "ROSE", "SALVATORI"]
+    }
+  ]
+}

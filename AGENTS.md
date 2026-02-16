@@ -32,6 +32,31 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Core Stack**: Python 3.12+, Pydantic (schemas), YAML (recipes), React (UI).
 - **Core Pattern**: Driver orchestrates Modules which consume/produce versioned Artifacts stored in an ArtifactStore.
 
+## Subagent Strategy
+
+Use subagents aggressively to parallelize work and protect the main context window. The orchestrating agent (Opus) is responsible for final quality — always review subagent output before accepting it.
+
+### Model Selection by Task Type
+
+| Task | Model | Rationale |
+|------|-------|-----------|
+| File search, glob, grep, simple reads | **Haiku** | Fast, cheap, mechanical |
+| Write a single focused component/page | **Sonnet** | Good code quality, fast enough |
+| Multi-file refactor, architecture decisions | **Opus** | Needs full context and judgment |
+| Research/exploration across codebase | **Sonnet** | Good at synthesis, thorough |
+| Writing tests for existing code | **Sonnet** | Needs to understand contracts |
+| Reviewing/validating generated code | **Opus** | Quality gate, catches subtle issues |
+| Writing docs, updating AGENTS.md | **Haiku** | Mechanical text, Opus reviews |
+
+### Guidelines
+- **Parallelize independent work**: If building 3 pages that don't depend on each other, launch 3 subagents simultaneously.
+- **Opus orchestrates, delegates, reviews**: The main agent reads results, spots issues, and iterates — never blindly trusts.
+- **Context protection**: Use subagents for tasks that produce large output (exploration, research) to avoid flooding the main context.
+- **Fail fast**: If a subagent produces bad output, don't retry the same prompt — adjust the approach or do it yourself.
+
+### Running Log
+Track model performance observations in `/memory/subagent-log.md` to refine the table above over time.
+
 ## Operational Guide
 
 ### Common Driver Commands
@@ -39,29 +64,130 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Execute recipe**: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --run-id test-001`
 - **Resume from stage**: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --start-from echo --run-id test-002`
 
+### Test Commands
+- **Unit tests**: `.venv/bin/python -m pytest -m unit` (not system pytest — version mismatch)
+- **Lint**: `.venv/bin/python -m ruff check src/ tests/`
+
 ### Deep Research
 For multi-model research tasks, use the `deep-research` CLI tool.
-- Workflow: `deep-research init <topic>` → write `research-prompt.md` → `deep-research run` → `deep-research format` → `deep-research final`
-- Outputs go under `docs/research/`.
+- Installed at `/Users/cam/miniconda3/bin/deep-research`
+- Available providers: OpenAI (gpt-5.2), Anthropic (claude-opus-4-6). Google and xAI keys not configured.
+- Outputs go under `docs/research/<topic>/`.
+- Workflow:
+  1. `deep-research init "<topic>" --dir docs/research/` — creates folder with template files
+  2. Edit `research-prompt.md` — write the research prompt (keep frontmatter)
+  3. `deep-research run` — sends to all available providers in parallel
+  4. `deep-research format` — renames placeholder files based on content
+  5. `deep-research final [model]` — synthesizes all reports into final report (default: opus)
+  6. `deep-research prepare-final` — assembles for manual pasting if API fails
+- Pitfalls:
+  - **NEVER `cd` into a research dir then delete it** — kills CWD and breaks all subsequent shell commands. Always use absolute paths.
+  - `deep-research run` expects to be run from within the project directory (where `research-prompt.md` lives).
+  - If a report file already exists (even an error file), `run` will prompt to overwrite — delete old files first.
+  - `--agents N` flag controls how many manual paste slots are created.
+- Fix applied: Patched `call_anthropic()` in `/Users/cam/miniconda3/lib/python3.11/site-packages/deep_research/providers.py` to use `client.messages.stream()` instead of `client.messages.create()` (fixes "Streaming is required for operations that may take longer than 10 minutes" error). This fix may be lost on pip upgrade.
 
 ### Ideas Backlog
 - `docs/ideas.md` captures features, patterns, and design concepts that are good but not in scope for current work.
 - When a feature is deferred during story work, move it to `docs/ideas.md` rather than losing it.
 - When a conversation surfaces a good idea that's out of scope, add it to `docs/ideas.md`.
 
+### UI Development Workflow
+
+When building or substantially redesigning a UI, follow this process:
+
+#### 1. Project Setup (mechanical)
+- Scaffold with `npm create vite@latest` (React + TypeScript template).
+- Install the standard stack: `shadcn/ui`, `tailwindcss`, `@tailwindcss/vite`, `zustand`, `@tanstack/react-query`, `react-router-dom`, `lucide-react`, `class-variance-authority`, `clsx`, `tailwind-merge`.
+- Run `npx shadcn@latest init -d` to initialize shadcn/ui with default dark theme and CSS variables.
+- Add base components: `npx shadcn@latest add button card badge input separator tooltip`.
+- Set up path alias (`@/` → `./src/*`) in both `tsconfig.json` and `tsconfig.app.json`.
+- Configure Vite with Tailwind plugin, path aliases, and a unique dev port to avoid conflicts.
+- Port or create the API client and TypeScript types for backend communication.
+- Set up routing with the resource-oriented URL structure (identity in path, not search params).
+
+#### 2. Visual Identity Bootstrap (design-in-browser)
+- **Do NOT write design docs on paper first.** Build a `/theme` dev-only route that showcases the design system live in the browser.
+- Generate 3–4 theme variations as CSS variable configs. Each theme is a set of `oklch()` color values for the shadcn/ui CSS variables (`--background`, `--foreground`, `--primary`, `--card`, `--muted`, `--border`, etc.).
+- The showcase page should render: typography scale, color swatches, buttons (all variants), cards, badges (status states), input fields, a sample layout skeleton with the planned panel arrangement.
+- Add a theme switcher at the top so the user can toggle between variations instantly.
+- **Checkpoint with user**: They pick a direction. Iterate if needed. Once chosen, lock in design tokens.
+
+#### 3. Build Loop (screenshot-verified)
+- Build one component or page at a time.
+- After each significant change: take a screenshot via Chrome MCP → inspect the result → fix issues → screenshot again.
+- **Never generate large amounts of UI code without visual verification.** This is the #1 anti-pattern — blind CSS/HTML generation produces garbage.
+- **After wiring pages to real API data**, reload the app with the backend running and click through every modified page. Check `read_console_messages` for runtime errors. `npm run build` passing does NOT mean the UI works — runtime data mismatches (e.g., backend sends `'done'` but switch handles `'completed'`) only crash in the browser.
+- Use the Chrome MCP tools: `screenshot` to see results, `read_page` to inspect DOM, `read_console_messages` to catch errors, `find` to locate elements.
+
+#### 4. Checkpoints
+- After the app shell is built (layout, navigation, routing), checkpoint with the user.
+- After core pages are wired up and the golden path works end-to-end, checkpoint with the user.
+- Users react better to real running UI than to descriptions or wireframes.
+
+#### Key Principles
+- **Design tokens are the source of truth** for visual consistency. All colors, spacing, and typography come from CSS variables defined once and referenced everywhere via Tailwind.
+- **shadcn/ui components are copied into the codebase** (not imported from a package). This means they can be customized freely.
+- **Resource-oriented URLs**: Project/Run/Artifact identity belongs in the URL path, not search params or localStorage. Makes the UI stateless, shareable, and multi-tab friendly.
+- **v0.dev for exploration**: When unsure what a component should look like, generate variations in v0, copy the code into the codebase, and adapt to real data. Code transfers directly since v0 uses the same React + shadcn/ui + Tailwind stack.
+
 ### Repo Map
 - `src/cine_forge/driver/`: Orchestration runtime.
 - `src/cine_forge/modules/`: Pipeline modules by stage.
 - `src/cine_forge/schemas/`: Pydantic artifact schemas.
 - `src/cine_forge/artifacts/`: Storage, versioning, and dependency graph.
-- `src/cine_forge/operator_console/`: Backend API for the UI.
-- `ui/operator-console-lite/`: React frontend.
+- `src/cine_forge/api/`: Backend API for the UI.
+- `ui/operator-console/`: Production React frontend (shadcn/ui + React 19 + Zustand).
+- `ui/operator-console-lite/`: Legacy stopgap frontend (reference only).
+
+### Worktree Strategy
+
+The user runs multiple Claude Code sessions in parallel. To prevent git conflicts between sessions, we use **git worktrees** — each session works in its own directory on its own branch.
+
+#### Orientation: Which Worktree Am I In?
+
+When starting a session, run `git worktree list` to understand the layout. Common setup:
+
+| Directory | Branch | Purpose |
+|---|---|---|
+| `cine-forge/` | `main` | Production code — pipeline, modules, UI, backend |
+| `cine-forge-sidequests/` | `sidequests/<topic>` | Research, tooling, docs-only stories |
+
+**If you are in `cine-forge/`** — you are on the main branch. Do code work here. Do NOT touch files that belong to an active side quest branch.
+
+**If you are in `cine-forge-sidequests/`** (or similar) — you are on a feature branch. Do research, tooling evaluation, and documentation here. When done, tell the user so they can merge.
+
+#### Rules
+
+1. **Never work across worktrees.** Each session stays in its own directory. Don't read or write files in sibling worktrees.
+2. **Branch naming**: `sidequests/<topic>` for research/tooling, `feature/<topic>` for code features.
+3. **Merging**: Only the user (or the main session at the user's request) merges branches. Side quest sessions do NOT merge into main.
+4. **Commits**: Each session commits to its own branch per the normal "No Implicit Commits" mandate. Commits on side quest branches are fine when the user requests them — they won't affect main.
+5. **Shared files**: AGENTS.md, CLAUDE.md, and other root config files are tracked by git and shared across worktrees at their respective commit points. Avoid conflicting edits to these files across sessions — coordinate with the user.
+
+#### Creating a New Worktree
+
+When the user wants to start a new parallel workstream:
+
+```bash
+# From the main repo
+git worktree add ../cine-forge-sidequests -b sidequests/<topic-name>
+```
+
+When a side quest is done and merged:
+
+```bash
+# Clean up
+git worktree remove ../cine-forge-sidequests
+git branch -d sidequests/<topic-name>
+```
 
 ## Agent Memory: AI Self-Improvement Log
 
 Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title`: summary plus explanation including file paths.
 
 ### Effective Patterns
+- 2026-02-15 — Design-in-browser with theme showcase: Instead of writing design docs, build a `/theme` route with live-switchable CSS variable themes. Showcase real shadcn/ui components (buttons, cards, badges, inputs, layout skeleton) so the user reacts to actual rendered UI, not descriptions. This produces better feedback, faster decisions, and a working design token system as a side effect. See `AGENTS.md > UI Development Workflow` for the full process (`ui/operator-console/src/pages/ThemeShowcase.tsx`).
 - 2026-02-11 — Story-first implementation: Implement stories in dependency order and validate each with focused smoke checks.
 - 2026-02-12 — FDX-first screenplay intake: detect Final Draft XML early and normalize to Fountain before AI routing.
 - 2026-02-12 — Multi-output module validation: Resolve schema per artifact by explicit `schema_name` to avoid false failures.
@@ -78,6 +204,7 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-13 — Directory depth fragility: Discovery logic assuming fixed depth (e.g. `artifacts/{type}/{id}/`) fails on nested/folder-based types.
 - 2026-02-13 — Project Directory Pollution: Reusing the same project directory for manual testing and user runs can lead to "ghost" artifacts appearing if cache reuse is not explicitly invalidated after recipe or input changes.
 - 2026-02-13 — Deceptive "Zero-Second" Success: Mock models finish in microseconds, making a run appear to "pass" instantly while producing only stubs. Always verify `cost_usd` or `runtime_params` before declaring a high-fidelity success.
+- 2026-02-15 — Build Pass ≠ Working UI: `tsc --noEmit` and `npm run build` only prove static types and bundling. They cannot catch runtime crashes from data mismatches (e.g., backend sends `'done'` but UI switch only handles `'completed'` — both are `string`, so TypeScript is silent). **After any UI change that touches data flow, open the app in a browser with the real backend and click through every affected page before declaring done.** A green build is necessary but not sufficient.
 
 ### Lessons Learned
 - 2026-02-12 — Build the pipeline spine before AI modules: Land immutable store and graph first.
