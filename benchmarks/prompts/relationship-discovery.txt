@@ -1,0 +1,37 @@
+You are a narrative architect analyzing a screenplay. Given the following entities extracted from the story, identify the most significant relationships between them.
+
+==========
+ENTITIES:
+
+Characters: {{characters}}
+Locations: {{locations}}
+Props: {{props}}
+
+==========
+SCREENPLAY:
+
+{{screenplay}}
+
+==========
+TASK:
+
+Identify 5-10 high-impact narrative relationships between these entities. Focus on:
+- Familial links (parent-child, siblings)
+- Adversarial relationships (protagonist vs antagonist)
+- Romantic connections (current or past)
+- Prop ownership or symbolic association
+- Character-location associations (headquarters, homes, workplaces)
+- Secret or hidden connections revealed through the plot
+
+For each relationship, provide:
+- source_type: "character", "location", or "prop"
+- source_id: lowercase-hyphenated identifier (e.g., "the-mariner", "rose", "oar")
+- target_type: "character", "location", or "prop"
+- target_id: lowercase-hyphenated identifier
+- relationship_type: short label (e.g., "sibling", "adversary", "owns", "headquarters")
+- direction: "symmetric" (mutual), "source_to_target", or "target_to_source"
+- evidence: list of 2-4 specific quotes or references from the screenplay
+- scene_refs: list of scene headings where this relationship is established
+- confidence: 0.0-1.0 based on how explicitly the relationship is stated
+
+Return a JSON object with a single key "edges" containing an array of relationship objects. Only include relationships supported by evidence in the screenplay text.

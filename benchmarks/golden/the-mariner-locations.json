@@ -1,0 +1,87 @@
+{
+  "RUDDY & GREENE BUILDING": {
+    "location_id": "ruddy-and-greene-building",
+    "name": "RUDDY & GREENE BUILDING",
+    "aliases": ["Ruddy & Green Building", "the building"],
+    "physical_traits": [
+      "classic 15-story sandstone building",
+      "riddled with bullet holes and graffiti",
+      "once beautiful, now decayed",
+      "multiple floors used by Salvatori's gang"
+    ],
+    "must_mention_scenes": [
+      "EXT. RUDDY & GREENE BUILDING - FRONT",
+      "EXT. RUDDY & GREENE BUILDING - REAR",
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR"
+    ],
+    "key_facts": [
+      "Main setting for the entire screenplay",
+      "Houses Salvatori's criminal operation across multiple floors",
+      "Mariner enters from the rear after fighting at the front",
+      "Rose was held here before Mariner's rescue",
+      "15 stories tall"
+    ],
+    "narrative_significance_must_mention": [
+      "primary setting",
+      "criminal operation",
+      "vertical journey"
+    ]
+  },
+  "15TH FLOOR": {
+    "location_id": "15th-floor",
+    "name": "15TH FLOOR",
+    "aliases": ["Salvatori's office", "penthouse office"],
+    "physical_traits": [
+      "clean and luxurious",
+      "dimly lit like an old nightclub",
+      "huge wooden desk",
+      "thick Persian rug",
+      "bookshelves of leather-bound books",
+      "fine booze in glass case",
+      "pool table",
+      "cigar lounge"
+    ],
+    "must_mention_scenes": [
+      "INT. 15TH FLOOR"
+    ],
+    "key_facts": [
+      "Salvatori's personal office and headquarters",
+      "Contains Rose's purse with the blockchain password",
+      "Scene of the climactic confrontation",
+      "Evidence of earlier violence (pooled blood, gouged walls)",
+      "Still-burning cigar and melting ice indicate Salvatori left recently"
+    ],
+    "narrative_significance_must_mention": [
+      "climax",
+      "confrontation",
+      "revelation"
+    ]
+  },
+  "COASTLINE": {
+    "location_id": "coastline",
+    "name": "EXT. COASTLINE - DAY - PAST",
+    "aliases": ["shore", "shoreline", "coastline flashback"],
+    "physical_traits": [
+      "shoreline with wooden sailboat",
+      "golden light in idealized version",
+      "empty beer bottles littering boat bottom in dark version",
+      "young Mariner shivering and under-dressed in dark version"
+    ],
+    "must_mention_scenes": [
+      "EXT. COASTLINE - DAY"
+    ],
+    "key_facts": [
+      "Appears only in flashbacks",
+      "Shown in two contrasting versions: idealized and dark",
+      "Idealized: Dad teaches young Mariner to cast, warm golden light",
+      "Dark: Dad is drunk, mocking, demanding beer",
+      "Young Mariner is approximately 8 years old in these scenes"
+    ],
+    "narrative_significance_must_mention": [
+      "flashback",
+      "dual presentation",
+      "memory",
+      "father"
+    ]
+  }
+}

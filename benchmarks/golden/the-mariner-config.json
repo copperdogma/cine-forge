@@ -1,0 +1,71 @@
+{
+  "description": "Golden reference for project config detection — The Mariner screenplay",
+  "fields": {
+    "title": {
+      "expected_value": "The Mariner",
+      "match_type": "substring",
+      "min_confidence": 0.9,
+      "importance": "critical"
+    },
+    "format": {
+      "expected_values": ["feature", "feature film", "screenplay", "short", "short film", "pilot"],
+      "match_type": "any_keyword",
+      "note": "The 436-line Fountain file is ~10-15 formatted pages. Both 'feature film' and 'short film' are defensible answers. Accept any screenplay-related format.",
+      "min_confidence": 0.6,
+      "importance": "secondary"
+    },
+    "genre": {
+      "expected_keywords": ["action", "crime", "thriller", "drama"],
+      "must_include_at_least": 2,
+      "match_type": "keyword_overlap",
+      "min_confidence": 0.7,
+      "importance": "important"
+    },
+    "tone": {
+      "expected_keywords": ["dark", "gritty", "violent", "intense", "noir"],
+      "must_include_at_least": 1,
+      "match_type": "keyword_overlap",
+      "min_confidence": 0.7,
+      "importance": "important"
+    },
+    "estimated_duration_minutes": {
+      "expected_range": [8, 130],
+      "match_type": "numeric_range",
+      "note": "Wide range: 8-20 min if treating as short film (10-15 pages), 85-130 min if extrapolating to feature. Both are reasonable interpretations.",
+      "min_confidence": 0.3,
+      "importance": "secondary"
+    },
+    "primary_characters": {
+      "must_include": ["MARINER", "ROSE"],
+      "match_type": "list_contains",
+      "min_confidence": 0.8,
+      "importance": "critical"
+    },
+    "supporting_characters": {
+      "should_include_any": ["DAD", "SALVATORI", "VINNIE", "CONSIGLIERE", "GIRL"],
+      "min_count": 2,
+      "match_type": "list_overlap",
+      "min_confidence": 0.6,
+      "importance": "secondary"
+    },
+    "location_count": {
+      "expected_range": [5, 20],
+      "match_type": "numeric_range",
+      "min_confidence": 0.5,
+      "importance": "secondary"
+    },
+    "locations_summary": {
+      "must_mention": ["building", "floor", "elevator"],
+      "match_type": "text_contains",
+      "min_confidence": 0.6,
+      "importance": "secondary"
+    },
+    "target_audience": {
+      "expected_keywords": ["adult", "mature", "R", "18+", "restricted"],
+      "match_type": "any_keyword",
+      "allow_null": true,
+      "min_confidence": 0.4,
+      "importance": "secondary"
+    }
+  }
+}

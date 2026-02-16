@@ -1,0 +1,84 @@
+{
+  "OAR": {
+    "prop_id": "oar-bosun",
+    "name": "Wooden Oar",
+    "aliases": ["BOSUN", "the oar", "stout wooden oar"],
+    "physical_traits": [
+      "stout wooden oar",
+      "edged with metal",
+      "word BOSUN carved into the wood",
+      "dripping with blood"
+    ],
+    "must_mention_scenes": [
+      "EXT. RUDDY & GREENE BUILDING",
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+      "INT. 13TH FLOOR"
+    ],
+    "key_facts": [
+      "Primary melee weapon used by the Mariner",
+      "Has the word BOSUN carved into it",
+      "Edged with metal for combat use",
+      "Dripping with blood from multiple fights",
+      "Taken from Mariner before the final confrontation"
+    ],
+    "narrative_significance_must_mention": [
+      "weapon",
+      "maritime",
+      "identity",
+      "father"
+    ]
+  },
+  "PURSE": {
+    "prop_id": "roses-purse",
+    "name": "Rose's Purse",
+    "aliases": ["the purse", "Rose's bag"],
+    "physical_traits": [
+      "ordinary-looking purse",
+      "chip hidden in lining",
+      "contains blockchain password"
+    ],
+    "must_mention_scenes": [
+      "INT. STAIRWELL",
+      "INT. 15TH FLOOR"
+    ],
+    "key_facts": [
+      "Contains a hidden chip with the blockchain password",
+      "Password accesses $20 million in stolen cryptocurrency",
+      "Rose stole the money from Salvatori's gang",
+      "Rose goes back into danger to retrieve it",
+      "Found on Salvatori's desk on the 15th floor",
+      "Primary MacGuffin driving the second half of the plot"
+    ],
+    "narrative_significance_must_mention": [
+      "MacGuffin",
+      "cryptocurrency",
+      "stolen money",
+      "plot driver"
+    ]
+  },
+  "FLARE GUN": {
+    "prop_id": "flare-gun",
+    "name": "Flare Gun",
+    "aliases": ["bright-orange pistol", "flare pistol"],
+    "physical_traits": [
+      "fat bright-orange pistol",
+      "fires blinding red flares",
+      "maritime emergency equipment"
+    ],
+    "must_mention_scenes": [
+      "INT. 13TH FLOOR"
+    ],
+    "key_facts": [
+      "Part of Mariner's maritime-themed arsenal",
+      "Bright orange color makes it look absurd to the thugs",
+      "Used to shoot Vinnie in the chest on the 13th floor",
+      "Thugs mock it before it is fired",
+      "Creates horror-movie lighting during subsequent fight"
+    ],
+    "narrative_significance_must_mention": [
+      "maritime",
+      "weapon",
+      "absurd"
+    ]
+  }
+}

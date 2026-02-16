@@ -1,0 +1,36 @@
+You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.
+
+==========
+SCREENPLAY:
+
+{{screenplay}}
+
+==========
+TASK:
+
+Detect the following 10 project configuration fields. For each field, provide:
+- value: the detected value
+- confidence: 0.0-1.0 confidence score
+- rationale: brief explanation of how you determined the value
+
+Return a JSON object with these fields:
+
+1. title (string): The title of the screenplay/film
+2. format (string): The format type (e.g., "feature film", "short film", "pilot", "limited series")
+3. genre (array of strings): Primary genres (e.g., ["action", "crime", "drama"])
+4. tone (array of strings): Tonal qualities (e.g., ["dark", "gritty", "suspenseful"])
+5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)
+6. primary_characters (array of strings): Main characters (protagonists/antagonists)
+7. supporting_characters (array of strings): Supporting and minor characters
+8. location_count (integer): Number of distinct locations
+9. locations_summary (string): Brief description of the key locations
+10. target_audience (string or null): Target audience rating/demographic, null if uncertain
+
+Be conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.
+
+Example structure:
+{
+  "title": {"value": "...", "confidence": 0.95, "rationale": "..."},
+  "format": {"value": "...", "confidence": 0.9, "rationale": "..."},
+  ...
+}
