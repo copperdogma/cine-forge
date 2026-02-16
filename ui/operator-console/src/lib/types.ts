@@ -17,6 +17,7 @@ export type ProjectSummary = {
 
 export type RecentProjectSummary = ProjectSummary & {
   project_path: string
+  last_modified?: number | null
 }
 
 export type RunSummary = {

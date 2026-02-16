@@ -362,6 +362,10 @@ class OperatorConsoleService:
                 self._project_registry[slug] = project_path
             summary = self.project_summary(slug)
             summary["project_path"] = str(project_path)
+            try:
+                summary["last_modified"] = project_path.stat().st_mtime
+            except OSError:
+                summary["last_modified"] = None
             projects.append(summary)
 
         def _mtime(item: dict[str, Any]) -> float:

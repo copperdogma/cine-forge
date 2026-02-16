@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Film, Plus, FolderOpen, Clock, Package, Play, AlertCircle, RefreshCw } from 'lucide-react'
+import { Film, Plus, FolderOpen, Clock, Package, Play, AlertCircle, RefreshCw, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -17,12 +17,30 @@ import {
 import { Input } from '@/components/ui/input'
 import { useRecentProjects, useOpenProject } from '@/lib/hooks'
 
+const INITIAL_SHOW = 5
+
+function timeAgo(epochSeconds: number): string {
+  const seconds = Math.floor(Date.now() / 1000 - epochSeconds)
+  if (seconds < 60) return 'just now'
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `${days}d ago`
+  const weeks = Math.floor(days / 7)
+  if (weeks < 5) return `${weeks}w ago`
+  const months = Math.floor(days / 30)
+  return `${months}mo ago`
+}
+
 export default function Landing() {
   const navigate = useNavigate()
   const { data: projects, isLoading, error, refetch } = useRecentProjects()
   const openProject = useOpenProject()
   const [showOpenDialog, setShowOpenDialog] = useState(false)
   const [projectPath, setProjectPath] = useState('')
+  const [showAll, setShowAll] = useState(false)
 
   const handleOpenExisting = () => {
     setShowOpenDialog(true)
@@ -46,8 +64,12 @@ export default function Landing() {
     }
   }
 
+  const totalCount = projects?.length ?? 0
+  const visibleProjects = showAll ? projects : projects?.slice(0, INITIAL_SHOW)
+  const hiddenCount = totalCount - (visibleProjects?.length ?? 0)
+
   return (
-    <div className="flex h-screen items-center justify-center p-8">
+    <div className="flex min-h-screen items-start justify-center p-8 pt-[12vh]">
       <div className="w-full max-w-2xl space-y-8">
         {/* Header */}
         <div className="text-center space-y-2">
@@ -145,9 +167,9 @@ export default function Landing() {
           )}
 
           {/* Success State — Project List */}
-          {!isLoading && !error && projects && projects.length > 0 && (
+          {!isLoading && !error && visibleProjects && visibleProjects.length > 0 && (
             <div className="space-y-2">
-              {projects.map(project => (
+              {visibleProjects.map(project => (
                 <Card
                   key={project.project_id}
                   className="cursor-pointer transition-colors hover:bg-accent/50"
@@ -164,6 +186,11 @@ export default function Landing() {
                       </p>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
+                      {project.last_modified != null && (
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
+                          {timeAgo(project.last_modified)}
+                        </span>
+                      )}
                       <Badge variant="secondary" className="text-xs gap-1">
                         <Package className="h-3 w-3" />
                         {project.artifact_groups}
@@ -176,6 +203,21 @@ export default function Landing() {
                   </CardContent>
                 </Card>
               ))}
+
+              {/* Show more / Show less */}
+              {totalCount > INITIAL_SHOW && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full text-muted-foreground"
+                  onClick={() => setShowAll(prev => !prev)}
+                >
+                  <ChevronDown className={`h-4 w-4 mr-2 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+                  {showAll
+                    ? 'Show less'
+                    : `Show ${hiddenCount} more project${hiddenCount === 1 ? '' : 's'}`}
+                </Button>
+              )}
             </div>
           )}
         </div>

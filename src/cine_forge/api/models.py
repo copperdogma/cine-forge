@@ -45,6 +45,7 @@ class RecentProjectSummary(ProjectSummary):
     """Project summary plus filesystem path for sidebar listing."""
 
     project_path: str
+    last_modified: float | None = None
 
 
 class RunSummary(BaseModel):
