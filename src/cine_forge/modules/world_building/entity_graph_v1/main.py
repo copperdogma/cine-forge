@@ -57,7 +57,7 @@ def run_module(
         raise ValueError("entity_graph_v1 requires scene_index input")
 
     # Tiered Model Strategy
-    work_model = params.get("work_model") or params.get("model") or "gpt-4o-mini"
+    work_model = params.get("work_model") or params.get("model") or "claude-haiku-4-5-20251001"
 
     edges: list[EntityEdge] = []
 

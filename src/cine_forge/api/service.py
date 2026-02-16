@@ -712,22 +712,23 @@ class OperatorConsoleService:
         runtime_params: dict[str, Any] = {
             "input_file": request["input_file"],
             "default_model": request["default_model"],
+            "model": request["default_model"],
+            # Backward-compat aliases for custom recipes using ${utility_model}/${sota_model}
+            "utility_model": request.get("work_model") or request["default_model"],
+            "sota_model": request.get("escalate_model") or request["default_model"],
             "accept_config": bool(request.get("accept_config", False)),
+            "skip_qa": bool(request.get("skip_qa", False)),
         }
-        # Map tiered models to ensure all possible recipe placeholders are satisfied
-        work = request.get("work_model") or request["default_model"]
-        verify = request.get("verify_model") or request.get("qa_model") or work
-        escalate = request.get("escalate_model") or work
-
-        runtime_params.update({
-            "work_model": work,
-            "utility_model": work,  # Aliased for recipes using utility naming
-            "verify_model": verify,
-            "qa_model": verify,
-            "escalate_model": escalate,
-            "sota_model": escalate, # Aliased for recipes using sota naming
-            "skip_qa": bool(request.get("skip_qa", False))
-        })
+        # Only override tier-specific module params if explicitly provided.
+        # Otherwise, modules use their built-in defaults (e.g., Haiku for QA).
+        if request.get("work_model"):
+            runtime_params["work_model"] = request["work_model"]
+        if request.get("verify_model") or request.get("qa_model"):
+            v = request.get("verify_model") or request["qa_model"]
+            runtime_params["verify_model"] = v
+            runtime_params["qa_model"] = v
+        if request.get("escalate_model"):
+            runtime_params["escalate_model"] = request["escalate_model"]
 
         run_dir = self.workspace_root / "output" / "runs" / run_id
         run_dir.mkdir(parents=True, exist_ok=True)

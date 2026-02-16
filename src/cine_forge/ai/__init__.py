@@ -6,7 +6,11 @@ from .fdx import (
     detect_and_convert_fdx,
     export_screenplay_text,
 )
-from .fountain_parser import FountainParseResult, validate_fountain_structure
+from .fountain_parser import (
+    FountainParseResult,
+    compute_structural_quality,
+    validate_fountain_structure,
+)
 from .llm import LLMCallError, call_llm, estimate_cost_usd
 from .long_doc import (
     LongDocStrategy,
@@ -25,6 +29,7 @@ from .patching import (
     parse_search_replace_blocks,
 )
 from .qa import QARepairPlan, qa_check, qa_check_with_repairs
+from .scene_context import extract_scenes_for_entity
 
 __all__ = [
     "LLMCallError",
@@ -35,6 +40,7 @@ __all__ = [
     "detect_and_convert_fdx",
     "export_screenplay_text",
     "FountainParseResult",
+    "compute_structural_quality",
     "validate_fountain_structure",
     "LongDocStrategy",
     "RunningMetadata",
@@ -51,4 +57,5 @@ __all__ = [
     "qa_check",
     "QARepairPlan",
     "qa_check_with_repairs",
+    "extract_scenes_for_entity",
 ]

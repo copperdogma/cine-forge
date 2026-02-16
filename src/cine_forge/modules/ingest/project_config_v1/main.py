@@ -91,8 +91,8 @@ def run_module(
     runtime_params = context.get("runtime_params", {}) if context else {}
     canonical_script, scene_index = _extract_inputs(inputs)
 
-    model = str(params.get("model", "gpt-4o"))
-    qa_model = str(params.get("qa_model", "gpt-4o-mini"))
+    model = str(params.get("model", "claude-haiku-4-5-20251001"))
+    qa_model = str(params.get("qa_model", "claude-haiku-4-5-20251001"))
     config_file = runtime_params.get("config_file") or params.get("config_file")
     accept_config = bool(runtime_params.get("accept_config") or params.get("accept_config", False))
     autonomous = bool(runtime_params.get("autonomous", False))

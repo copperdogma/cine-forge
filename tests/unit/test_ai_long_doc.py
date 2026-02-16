@@ -20,10 +20,10 @@ def test_select_strategy_short_doc_uses_single_pass() -> None:
 
 
 @pytest.mark.unit
-def test_select_strategy_long_screenplay_prefers_edit_list_cleanup() -> None:
+def test_select_strategy_long_screenplay_prefers_chunked_conversion() -> None:
     long_text = "word " * 6000
     strategy = select_strategy(source_format="screenplay", confidence=0.9, text=long_text)
-    assert strategy.name == "edit_list_cleanup"
+    assert strategy.name == "chunked_conversion"
 
 
 @pytest.mark.unit

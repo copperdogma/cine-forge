@@ -1,11 +1,11 @@
-recipe_id: world_building
-description: "World building pipeline: entity bibles from pre-ingested artifacts."
+recipe_id: world_building_production
+description: "Production world building — uses code-default model tiers, skip QA for cost efficiency."
 project: {}
 stages:
   - id: character_bible
     module: character_bible_v1
     params:
-      skip_qa: ${skip_qa}
+      skip_qa: true
     needs: []
     store_inputs:
       normalize: canonical_script
@@ -14,7 +14,7 @@ stages:
   - id: location_bible
     module: location_bible_v1
     params:
-      skip_qa: ${skip_qa}
+      skip_qa: true
     needs: []
     store_inputs:
       normalize: canonical_script
@@ -23,7 +23,7 @@ stages:
   - id: prop_bible
     module: prop_bible_v1
     params:
-      skip_qa: ${skip_qa}
+      skip_qa: true
     needs: []
     store_inputs:
       normalize: canonical_script

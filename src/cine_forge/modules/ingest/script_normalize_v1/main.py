@@ -9,9 +9,11 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 from cine_forge.ai import (
+    LongDocStrategy,
     SearchReplacePatch,
     apply_search_replace_patches,
     call_llm,
+    compute_structural_quality,
     detect_and_convert_fdx,
     export_screenplay_text,
     group_scenes_into_chunks,
@@ -70,20 +72,71 @@ def run_module(
     source_format = "fdx" if fdx_conversion.is_fdx else classification["detected_format"]
     source_confidence = 1.0 if fdx_conversion.is_fdx else float(classification["confidence"])
 
-    model = params.get("model", "gpt-4o")
-    work_model = params.get("work_model") or model
-    verify_model = params.get("verify_model") or params.get("qa_model") or "gpt-4o-mini"
-    escalate_model = params.get("escalate_model") or "gpt-4o"
+    export_formats = _normalize_export_formats(params.get("export_formats", []))
+    cost_ceiling_usd = float(params.get("cost_ceiling_usd", 2.0))
 
+    # --- Tier classification ---
+    screenplay_path = _is_screenplay_path(raw_input)
+    parser_check = validate_fountain_structure(content)
+    quality_score = compute_structural_quality(parser_check)
+    tier = _classify_tier(
+        screenplay_path=screenplay_path,
+        parser_check=parser_check,
+        quality_score=quality_score,
+        source_format=source_format,
+    )
+
+    # --- Tier 1: Code-only passthrough (zero LLM calls) ---
+    if tier == 1:
+        result = _run_tier1(
+            content=content,
+            source_format=source_format,
+            parser_check=parser_check,
+            quality_score=quality_score,
+        )
+        if result is not None:
+            script_text, normalization_meta, deterministic_lint_issues = result
+            return _build_output(
+                raw_input=raw_input,
+                script_text=script_text,
+                normalization_meta=normalization_meta,
+                normalization_costs=[],
+                qa_costs=[],
+                qa_result=None,
+                deterministic_lint_issues=deterministic_lint_issues,
+                parser_check=parser_check,
+                fdx_conversion=fdx_conversion,
+                export_formats=export_formats,
+                cost_ceiling_usd=cost_ceiling_usd,
+                tier=1,
+                long_doc_strategy_name="code_passthrough",
+                screenplay_path=screenplay_path,
+                reroutes=0,
+            )
+        # Tier 1 failed lint — fall through to Tier 2
+        tier = 2
+
+    # --- Tier 3: Reject non-screenplay ---
+    if tier == 3:
+        return _build_rejection_output(
+            raw_input=raw_input,
+            source_format=source_format,
+            parser_check=parser_check,
+            fdx_conversion=fdx_conversion,
+        )
+
+    # --- Tier 2: Smart chunk-skip (LLM only for broken scenes) ---
+    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-5-20250929"
+    verify_model = (
+        params.get("verify_model") or params.get("qa_model") or "claude-haiku-4-5-20251001"
+    )
+    escalate_model = params.get("escalate_model") or "claude-sonnet-4-5-20250929"
     qa_model = verify_model
     max_retries = int(params.get("max_retries", 2))
     skip_qa = bool(params.get("skip_qa", False))
     max_tokens = int(params.get("max_tokens", 16000))
-    cost_ceiling_usd = float(params.get("cost_ceiling_usd", 2.0))
     patch_fuzzy_threshold = float(params.get("patch_fuzzy_threshold", 0.85))
-    export_formats = _normalize_export_formats(params.get("export_formats", []))
 
-    screenplay_path = _is_screenplay_path(raw_input)
     target_strategy = "passthrough_cleanup" if screenplay_path else "full_conversion"
     long_doc_strategy = select_strategy(
         source_format="screenplay" if screenplay_path else source_format,
@@ -91,6 +144,49 @@ def run_module(
         text=content,
     )
 
+    # For already-formatted screenplays, edit_list_cleanup is unreliable —
+    # small docs should use single_pass, large docs should use chunked_conversion
+    strategy = long_doc_strategy.name
+    is_clean_screenplay = (
+        source_format in ("screenplay", "fountain") and source_confidence >= 0.8
+    )
+    if strategy == "edit_list_cleanup" and is_clean_screenplay:
+        long_doc_strategy = LongDocStrategy(
+            name="single_pass",
+            estimated_tokens=long_doc_strategy.estimated_tokens,
+        )
+
+    # Try smart chunk-skip first for screenplay passthrough
+    if screenplay_path and target_strategy == "passthrough_cleanup":
+        smart_result = _normalize_smart_chunks(
+            content=content,
+            model=work_model,
+            max_tokens=max_tokens,
+        )
+        if smart_result is not None:
+            script_text, normalization_costs, scenes_fixed = smart_result
+            lint = lint_fountain_text(script_text)
+            deterministic_lint_issues = lint.issues
+            normalization_meta = _code_passthrough_metadata(source_format, scenes_fixed)
+            return _build_output(
+                raw_input=raw_input,
+                script_text=script_text,
+                normalization_meta=normalization_meta,
+                normalization_costs=normalization_costs,
+                qa_costs=[],
+                qa_result=None,
+                deterministic_lint_issues=deterministic_lint_issues,
+                parser_check=parser_check,
+                fdx_conversion=fdx_conversion,
+                export_formats=export_formats,
+                cost_ceiling_usd=cost_ceiling_usd,
+                tier=2,
+                long_doc_strategy_name="smart_chunk_skip",
+                screenplay_path=screenplay_path,
+                reroutes=0,
+            )
+
+    # Fall back to original LLM-based normalization for Tier 2
     normalization_feedback = ""
     qa_result: QAResult | None = None
     normalization_costs: list[dict[str, Any]] = []
@@ -99,12 +195,10 @@ def run_module(
     normalization_meta: dict[str, Any] = {}
     deterministic_lint_issues: list[str] = []
     reroutes = 0
-    parser_check = validate_fountain_structure(content)
 
     from cine_forge.ai.llm import LLMCallError
 
     for attempt in range(max_retries + 1):
-        # Escalate on later attempts
         active_model = work_model if attempt == 0 else escalate_model
 
         try:
@@ -112,7 +206,7 @@ def run_module(
                 content=content,
                 source_format=source_format,
                 target_strategy=target_strategy,
-                long_doc_strategy=long_doc_strategy.name,
+                long_doc_strategy=long_doc_strategy,
                 model=active_model,
                 feedback=normalization_feedback,
                 max_tokens=max_tokens,
@@ -121,12 +215,11 @@ def run_module(
         except LLMCallError as exc:
             if attempt >= max_retries:
                 raise
-            
-            # If it failed with JSON error or truncation, try to adapt
+
             error_msg = str(exc).lower()
             if "truncated" in error_msg or "max token limit" in error_msg:
                 max_tokens = int(max_tokens * 1.5)
-            
+
             normalization_feedback = f"Prior attempt failed with error: {exc}. Please try again."
             print(f"[{active_model}] Normalization attempt {attempt+1} failed: {exc}. Retrying...")
             continue
@@ -138,7 +231,7 @@ def run_module(
         deterministic_lint_issues = lint.issues
         deterministic_lint_issues.extend(parser_validation.issues)
 
-        if skip_qa:
+        if skip_qa or (screenplay_path and target_strategy == "passthrough_cleanup"):
             qa_result = None
             if lint.valid:
                 break
@@ -172,12 +265,165 @@ def run_module(
             break
         if attempt >= max_retries:
             break
+
+        if screenplay_path and target_strategy == "passthrough_cleanup":
+            break
+
         if error_issues:
             normalization_feedback = "\n".join(f"- {issue.description}" for issue in error_issues)
         elif lint.issues:
             normalization_feedback = "\n".join(f"- {issue}" for issue in lint.issues)
         reroutes += 1
 
+    return _build_output(
+        raw_input=raw_input,
+        script_text=script_text,
+        normalization_meta=normalization_meta,
+        normalization_costs=normalization_costs,
+        qa_costs=qa_costs,
+        qa_result=qa_result,
+        deterministic_lint_issues=deterministic_lint_issues,
+        parser_check=parser_check,
+        fdx_conversion=fdx_conversion,
+        export_formats=export_formats,
+        cost_ceiling_usd=cost_ceiling_usd,
+        tier=2,
+        long_doc_strategy_name=long_doc_strategy.name,
+        screenplay_path=screenplay_path,
+        reroutes=reroutes,
+    )
+
+
+def _classify_tier(
+    screenplay_path: bool,
+    parser_check: Any,
+    quality_score: float,
+    source_format: str,
+) -> int:
+    """Classify input into processing tier.
+
+    Tier 1: Code-only passthrough (valid Fountain, good structural quality)
+    Tier 2: LLM-assisted (screenplay but needs fixes)
+    Tier 3: Reject (not a screenplay at all)
+    """
+    # Quality gate: even if heuristics think it's a screenplay, reject if
+    # the parser finds no real screenplay elements (scenes, characters, dialogue)
+    if quality_score < 0.3 and source_format not in ("screenplay", "fountain", "fdx"):
+        return 3
+    if screenplay_path and parser_check.parseable and quality_score >= 0.6:
+        return 1
+    if screenplay_path or source_format in ("screenplay", "fountain", "fdx"):
+        return 2
+    return 3
+
+
+def _run_tier1(
+    content: str,
+    source_format: str,
+    parser_check: Any,
+    quality_score: float,
+) -> tuple[str, dict[str, Any], list[str]] | None:
+    """Attempt code-only normalization. Returns None if lint fails."""
+    script_text = normalize_fountain_text(content)
+    lint = lint_fountain_text(script_text)
+    if not lint.valid:
+        return None
+    meta = _code_passthrough_metadata(source_format, scenes_fixed_by_llm=0)
+    return script_text, meta, lint.issues
+
+
+def _code_passthrough_metadata(source_format: str, scenes_fixed_by_llm: int = 0) -> dict[str, Any]:
+    strategy = "code_passthrough" if scenes_fixed_by_llm == 0 else "smart_chunk_skip"
+    return {
+        "source_format": source_format,
+        "strategy": strategy,
+        "inventions": [],
+        "assumptions": [],
+        "overall_confidence": 0.95 if scenes_fixed_by_llm == 0 else 0.85,
+        "rationale": (
+            "Code-only normalization — input was already valid Fountain format"
+            if scenes_fixed_by_llm == 0
+            else f"Smart chunk-skip — {scenes_fixed_by_llm} scene(s) required LLM fixes"
+        ),
+    }
+
+
+def _normalize_smart_chunks(
+    content: str,
+    model: str,
+    max_tokens: int,
+) -> tuple[str, list[dict[str, Any]], int] | None:
+    """Split by scene, lint each, only send failing scenes to LLM.
+
+    Returns (script_text, costs, scenes_fixed_count) or None on failure.
+    """
+    scenes = split_screenplay_by_scene(content)
+    if len(scenes) < 2:
+        # Too few scenes to do smart chunking — fall through to full LLM
+        return None
+
+    output_scenes: list[str] = []
+    costs: list[dict[str, Any]] = []
+    scenes_fixed = 0
+
+    chunk_system = (
+        "You are a professional script supervisor normalizing creative writing "
+        "into standard Fountain screenplay format.\n"
+        "Fix ONLY structural/formatting issues in this scene excerpt:\n"
+        "- Scene headings: INT./EXT. on their own line, ALL CAPS\n"
+        "- Character cues: ALL CAPS on their own line, preceded by blank line\n"
+        "- Dialogue: plain text on lines immediately after character cue\n"
+        "- Parentheticals: (lowercase in parens) on their own line\n"
+        "- Action: plain text paragraphs separated by blank lines\n"
+        "- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n"
+        "- Do NOT escape special characters (no \\- or \\!)\n"
+        "Return only the corrected scene text. Preserve author voice."
+    )
+
+    for scene in scenes:
+        normalized_scene = normalize_fountain_text(scene)
+        lint = lint_fountain_text(normalized_scene)
+        if lint.valid:
+            output_scenes.append(normalized_scene)
+        else:
+            # This scene needs LLM help
+            prompt = f"{chunk_system}\n\nScene to fix:\n{scene}"
+            try:
+                fixed_scene, cost = call_llm(
+                    prompt=prompt,
+                    model=model,
+                    max_tokens=max_tokens,
+                    fail_on_truncation=True,
+                )
+                assert isinstance(fixed_scene, str)
+                output_scenes.append(normalize_fountain_text(fixed_scene))
+                costs.append(cost)
+                scenes_fixed += 1
+            except Exception:  # noqa: BLE001
+                # LLM failed for this scene — use code-normalized version
+                output_scenes.append(normalized_scene)
+
+    return "\n\n".join(output_scenes), costs, scenes_fixed
+
+
+def _build_output(
+    raw_input: dict[str, Any],
+    script_text: str,
+    normalization_meta: dict[str, Any],
+    normalization_costs: list[dict[str, Any]],
+    qa_costs: list[dict[str, Any]],
+    qa_result: Any,
+    deterministic_lint_issues: list[str],
+    parser_check: Any,
+    fdx_conversion: Any,
+    export_formats: list[str],
+    cost_ceiling_usd: float,
+    tier: int,
+    long_doc_strategy_name: str,
+    screenplay_path: bool,
+    reroutes: int,
+) -> dict[str, Any]:
+    """Build the standard module output dict."""
     canonical_payload = CanonicalScript.model_validate(
         {
             "title": _guess_title(raw_input),
@@ -193,6 +439,7 @@ def run_module(
     cost_exceeded = total_cost["estimated_cost_usd"] > cost_ceiling_usd
     if (
         qa_result
+        and hasattr(qa_result, "passed")
         and not qa_result.passed
         and any(issue.severity == "error" for issue in qa_result.issues)
     ):
@@ -200,9 +447,11 @@ def run_module(
     if deterministic_lint_issues or cost_exceeded:
         health = ArtifactHealth.NEEDS_REVIEW
 
+    target_strategy = "passthrough_cleanup" if screenplay_path else "full_conversion"
     metadata_annotations: dict[str, Any] = {
         "normalization_strategy": target_strategy,
-        "long_doc_strategy": long_doc_strategy.name,
+        "normalization_tier": tier,
+        "long_doc_strategy": long_doc_strategy_name,
         "screenplay_path": screenplay_path,
         "normalization_call_costs": normalization_costs,
         "qa_call_costs": qa_costs,
@@ -223,7 +472,7 @@ def run_module(
             screenplay_text=script_text,
             export_formats=export_formats,
         )
-    if qa_result:
+    if qa_result and hasattr(qa_result, "model_dump"):
         metadata_annotations["qa_result"] = qa_result.model_dump(mode="json")
 
     return {
@@ -245,7 +494,7 @@ def run_module(
                         "store prose as canonical without screenplay conversion",
                     ],
                     "confidence": canonical_payload["normalization"]["overall_confidence"],
-                    "source": "ai",
+                    "source": "code" if tier == 1 else "ai",
                     "schema_version": "1.0.0",
                     "health": health.value,
                     "annotations": metadata_annotations,
@@ -256,11 +505,69 @@ def run_module(
     }
 
 
+def _build_rejection_output(
+    raw_input: dict[str, Any],
+    source_format: str,
+    parser_check: Any,
+    fdx_conversion: Any,
+) -> dict[str, Any]:
+    """Build output for Tier 3 — rejected non-screenplay input."""
+    canonical_payload = CanonicalScript.model_validate(
+        {
+            "title": _guess_title(raw_input),
+            "script_text": "",
+            "line_count": 0,
+            "scene_count": 0,
+            "normalization": {
+                "source_format": source_format,
+                "strategy": "rejected",
+                "inventions": [],
+                "assumptions": [],
+                "overall_confidence": 0.0,
+                "rationale": (
+                    "Input does not appear to be a screenplay"
+                    " — rejected without processing"
+                ),
+            },
+        }
+    ).model_dump(mode="json")
+
+    return {
+        "artifacts": [
+            {
+                "artifact_type": "canonical_script",
+                "entity_id": "project",
+                "data": canonical_payload,
+                "metadata": {
+                    "intent": "Reject non-screenplay input",
+                    "rationale": (
+                        "Input lacks screenplay structure"
+                        " (scene headings, character cues, dialogue)"
+                    ),
+                    "alternatives_considered": [],
+                    "confidence": 0.0,
+                    "source": "code",
+                    "schema_version": "1.0.0",
+                    "health": ArtifactHealth.NEEDS_REVISION.value,
+                    "annotations": {
+                        "normalization_strategy": "rejected",
+                        "normalization_tier": 3,
+                        "parser_backend": parser_check.parser_backend,
+                        "screenplay_parseable_input": parser_check.parseable,
+                        "fdx_input_detected": fdx_conversion.is_fdx,
+                    },
+                },
+            }
+        ],
+        "cost": _sum_costs([]),
+    }
+
+
 def _normalize_once(
     content: str,
     source_format: str,
     target_strategy: str,
-    long_doc_strategy: str,
+    long_doc_strategy: LongDocStrategy,
     model: str,
     feedback: str,
     max_tokens: int,
@@ -273,24 +580,30 @@ def _normalize_once(
         metadata = _mock_metadata(source_format=source_format, strategy=target_strategy)
         return script_text, metadata, [_empty_cost(model)], "mock-normalization"
 
+    strategy_name = long_doc_strategy.name
     prompt = _build_normalization_prompt(
         content=content,
         source_format=source_format,
         target_strategy=target_strategy,
-        long_doc_strategy=long_doc_strategy,
+        long_doc_strategy=strategy_name,
         feedback=feedback,
     )
 
     cost_records: list[dict[str, Any]] = []
-    if long_doc_strategy == "chunked_conversion" and target_strategy == "full_conversion":
+    if strategy_name == "chunked_conversion":
         script_text, chunk_costs = _normalize_chunked(
             prompt=prompt,
             content=content,
             model=model,
             max_tokens=max_tokens,
+            chunk_size_tokens=long_doc_strategy.chunk_size_tokens or 4000,
+            overlap_tokens=long_doc_strategy.overlap_tokens or 400,
         )
         cost_records.extend(chunk_costs)
-    elif long_doc_strategy == "edit_list_cleanup" and target_strategy == "passthrough_cleanup":
+    elif (
+        strategy_name == "edit_list_cleanup"
+        and target_strategy == "passthrough_cleanup"
+    ):
         patch_text, patch_cost = call_llm(
             prompt=(
                 f"{prompt}\nReturn only SEARCH/REPLACE blocks with this format:\n"
@@ -342,32 +655,38 @@ def _normalize_chunked(
     content: str,
     model: str,
     max_tokens: int,
+    chunk_size_tokens: int = 4000,
+    overlap_tokens: int = 400,
 ) -> tuple[str, list[dict[str, Any]]]:
-    strategy = select_strategy(source_format="prose", confidence=0.0, text=content)
-    if not strategy.chunk_size_tokens or strategy.overlap_tokens is None:
-        raise ValueError("Chunked strategy requires chunk sizing")
     scenes = split_screenplay_by_scene(content)
     if len(scenes) > 1:
         chunks = group_scenes_into_chunks(
             scenes=scenes,
-            target_chunk_tokens=strategy.chunk_size_tokens,
-            overlap_tokens=strategy.overlap_tokens,
+            target_chunk_tokens=chunk_size_tokens,
+            overlap_tokens=overlap_tokens,
         )
     else:
         chunks = split_text_into_chunks(
             text=content,
-            chunk_size_tokens=strategy.chunk_size_tokens,
-            overlap_tokens=strategy.overlap_tokens,
+            chunk_size_tokens=chunk_size_tokens,
+            overlap_tokens=overlap_tokens,
         )
     running_metadata = initialize_running_metadata(content)
     chunk_outputs: list[str] = []
     costs: list[dict[str, Any]] = []
+
+    # Build a chunk-specific system prompt WITHOUT the full source content
+    # (the full prompt includes all source text, which would blow rate limits)
+    chunk_system = _build_chunk_system_prompt(prompt)
+
     for index, chunk in enumerate(chunks, start=1):
         chunk_prompt = (
-            f"{prompt}\n\nChunk {index}/{len(chunks)} to convert:\n"
+            f"{chunk_system}\n\n"
+            f"Chunk {index}/{len(chunks)} to normalize:\n"
             f"{chunk}\n\n"
             "Running metadata (preserve continuity):\n"
             f"{running_metadata.as_text()}\n"
+            "Return only the normalized screenplay text for this chunk. "
             "Preserve continuity with prior chunks."
         )
         chunk_result, chunk_cost = call_llm(
@@ -381,6 +700,20 @@ def _normalize_chunked(
         costs.append(chunk_cost)
         running_metadata = update_running_metadata(running_metadata, chunk_result)
     return "\n\n".join(chunk_outputs), costs
+
+
+def _build_chunk_system_prompt(full_prompt: str) -> str:
+    """Extract the instruction portion of the prompt, excluding source content.
+
+    The full normalization prompt ends with 'Source content:\\n{content}'.
+    For chunked processing, each chunk provides its own content, so we strip
+    the source content to avoid sending the entire document in every call.
+    """
+    marker = "\nSource content:\n"
+    idx = full_prompt.find(marker)
+    if idx >= 0:
+        return full_prompt[:idx]
+    return full_prompt
 
 
 def _run_qa(
@@ -422,11 +755,20 @@ def _build_normalization_prompt(
     feedback_block = f"\nQA feedback to fix:\n{feedback}\n" if feedback else ""
     return (
         "You are a professional script supervisor normalizing creative writing "
-        "into screenplay form.\n"
+        "into standard Fountain screenplay format.\n"
         f"Detected source format: {source_format}.\n"
         f"Selected strategy: {target_strategy} ({long_doc_strategy}).\n"
-        f"Task: {strategy_text}.\n"
-        "Return only screenplay text. Preserve author voice and avoid unnecessary inventions."
+        f"Task: {strategy_text}.\n\n"
+        "Fountain format rules:\n"
+        "- Scene headings: INT./EXT. on their own line, ALL CAPS\n"
+        "- Character cues: ALL CAPS on their own line, preceded by blank line\n"
+        "- Dialogue: plain text on lines immediately after character cue\n"
+        "- Parentheticals: (lowercase in parens) on their own line\n"
+        "- Action: plain text paragraphs separated by blank lines\n"
+        "- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n"
+        "- Do NOT escape special characters (no \\- or \\!)\n\n"
+        "Return only the screenplay text. "
+        "Preserve author voice and avoid unnecessary inventions."
         f"{feedback_block}\n\n"
         "Source content:\n"
         f"{content}"

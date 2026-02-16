@@ -21,13 +21,21 @@ def run_module(
     canonical_script, scene_index = _extract_inputs(inputs)
     
     # Tiered Model Strategy (Subsumption)
-    work_model = params.get("work_model") or params.get("model") or "gpt-4o-mini"
-    verify_model = params.get("verify_model") or "gpt-4o-mini"
-    escalate_model = params.get("escalate_model") or "gpt-4o"
+    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-5-20250929"
+    verify_model = params.get("verify_model") or "claude-haiku-4-5-20251001"
+    escalate_model = params.get("escalate_model") or "claude-opus-4-6"
     skip_qa = bool(params.get("skip_qa", False))
 
     # discovery pass for props since they aren't in scene_index
     props = _discover_props(canonical_script, work_model)
+
+    # Sanity check: typical screenplay has 3-8 significant props
+    if len(props) > 25:
+        print(
+            f"[prop_bible] WARNING: Discovered {len(props)} props, which is unusually high. "
+            "Truncating to 25. This may indicate over-extraction or preamble filter failure."
+        )
+        props = props[:25]
 
     artifacts = []
     models_seen: set[str] = set()
@@ -49,6 +57,7 @@ def run_module(
             prop_name=prop_name,
             canonical_script=canonical_script,
             model=work_model,
+            scene_index=scene_index,
         )
         _update_total_cost(total_cost, cost)
         if cost.get("model") and cost["model"] != "code":
@@ -73,6 +82,7 @@ def run_module(
                     canonical_script=canonical_script,
                     model=escalate_model,
                     feedback=qa_result.summary,
+                    scene_index=scene_index,
                 )
                 _update_total_cost(total_cost, esc_cost)
                 if esc_cost.get("model") and esc_cost["model"] != "code":
@@ -158,16 +168,58 @@ def _extract_inputs(inputs: dict[str, Any]) -> tuple[dict[str, Any], dict[str, A
 def _discover_props(script: dict[str, Any], model: str) -> list[str]:
     if model == "mock":
         return ["Hero Sword", "Secret Map"]
-    
+
     prompt = f"""You are a prop scout. Identify significant props in the following script.
-    A significant prop is an object that is repeatedly used or has narrative importance.
-    Return a simple list of prop names, one per line.
-    
+
+    A significant prop is an object that is:
+    - Physically handled by characters
+    - Has narrative significance (not just set dressing)
+    - Appears in multiple scenes OR is crucial to a key moment
+
+    List ONLY props that meet these criteria. Do not include generic items,
+    background objects, or set dressing.
+    Typically a screenplay has 3-10 significant props.
+
+    Return a simple list of prop names, one per line. No preamble, no commentary, no numbering.
+
     Script Text:
     {script['script_text'][:5000]}
     """
     text, _ = call_llm(prompt=prompt, model=model)
-    return [line.strip() for line in text.splitlines() if line.strip()]
+
+    # Filter out preamble, commentary, and clean up formatting
+    preamble_patterns = [
+        r'\b(based\s+on|here\s+are|i\s+found|analysis|the\s+following|significant)\b',
+        r'\b(identified|extracted|discovered|below|above)\b',
+    ]
+    preamble_regex = re.compile('|'.join(preamble_patterns), re.IGNORECASE)
+
+    props = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+
+        # Skip obvious preamble/commentary lines
+        if preamble_regex.search(line):
+            continue
+
+        # Skip lines with too many words (prop names are typically 1-3 words)
+        if len(line.split()) > 5:
+            continue
+
+        # Strip leading bullet markers and numbering
+        line = re.sub(r'^[\-\*\•]\s*', '', line)  # bullets
+        line = re.sub(r'^\d+[\.\)]\s*', '', line)  # numbering like "1. " or "1) "
+
+        # Strip trailing punctuation
+        line = re.sub(r'[\.\:\;]+$', '', line)
+        line = line.strip()
+
+        if line:
+            props.append(line)
+
+    return props
 
 
 def _extract_prop_definition(
@@ -175,6 +227,7 @@ def _extract_prop_definition(
     canonical_script: dict[str, Any],
     model: str,
     feedback: str = "",
+    scene_index: dict[str, Any] | None = None,
 ) -> tuple[PropBible, dict[str, Any]]:
     if model == "mock":
         return _mock_extract(prop_name), {
@@ -184,7 +237,7 @@ def _extract_prop_definition(
             "estimated_cost_usd": 0.0,
         }
 
-    prompt = _build_extraction_prompt(prop_name, canonical_script, feedback)
+    prompt = _build_extraction_prompt(prop_name, canonical_script, feedback, scene_index)
     definition, cost = call_llm(
         prompt=prompt,
         model=model,
@@ -212,14 +265,26 @@ def _build_extraction_prompt(
     prop_name: str,
     script: dict[str, Any],
     feedback: str = "",
+    scene_index: dict[str, Any] | None = None,
 ) -> str:
+    from cine_forge.ai import extract_scenes_for_entity
+
+    if scene_index:
+        relevant_text = extract_scenes_for_entity(
+            script_text=script["script_text"],
+            scene_index=scene_index,
+            entity_type="prop",
+            entity_name=prop_name,
+        )
+    else:
+        relevant_text = script["script_text"]
     feedback_block = f"\nQA Feedback to address: {feedback}\n" if feedback else ""
     return f"""You are a prop analyst. Extract a master definition for prop: {prop_name}.
-    
+
     Return JSON matching PropBible schema.
     {feedback_block}
-    Script Text:
-    {script['script_text']}
+    Relevant Script Scenes (mentioning {prop_name}):
+    {relevant_text}
     """
 
 

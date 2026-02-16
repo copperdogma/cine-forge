@@ -112,7 +112,9 @@ def test_run_module_with_mock_model_produces_canonical_script() -> None:
     assert artifact["artifact_type"] == "canonical_script"
     assert "script_text" in artifact["data"]
     assert artifact["data"]["line_count"] > 0
-    assert artifact["metadata"]["annotations"]["qa_result"]["passed"] is True
+    # QA is skipped for passthrough cleanup of already-formatted screenplays
+    assert "qa_result" not in artifact["metadata"]["annotations"] or \
+        artifact["metadata"]["annotations"]["qa_result"]["passed"] is True
     assert result["cost"]["estimated_cost_usd"] == 0.0
 
 
@@ -163,6 +165,10 @@ def test_run_module_retries_after_qa_error(monkeypatch: pytest.MonkeyPatch) -> N
     monkeypatch.setattr(
         "cine_forge.modules.ingest.script_normalize_v1.main._normalize_once", fake_normalize_once
     )
+    # Disable passthrough bypass so QA retry logic is exercised
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.script_normalize_v1.main._is_screenplay_path", lambda _: False
+    )
 
     result = run_module(
         inputs={
@@ -202,81 +208,41 @@ def test_run_module_skip_qa_does_not_call_qa(monkeypatch: pytest.MonkeyPatch) ->
 
 
 @pytest.mark.unit
-def test_run_module_marks_needs_review_after_qa_retries_exhausted(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    def fail_qa(**_: Any):
-        return (
-            QAResult(
-                passed=False,
-                confidence=0.4,
-                issues=[
-                    {
-                        "severity": "error",
-                        "description": "Format invalid",
-                        "location": "Scene 2",
-                    }
-                ],
-                summary="Still broken",
-            ),
-            [],
-            {"model": "mock", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0},
-        )
-
-    monkeypatch.setattr("cine_forge.modules.ingest.script_normalize_v1.main._run_qa", fail_qa)
-
+def test_run_module_marks_needs_review_when_lint_fails() -> None:
+    """Screenplay with lint issues should get needs_review health."""
+    # Content has orphaned character cue — falls through to Tier 2
+    screenplay_content = "INT. ROOM - DAY\n\nALICE\n\nBOB\nHi.\n"
     result = run_module(
         inputs={
             "ingest": _raw_input_payload(
-                "A prose paragraph.", detected_format="prose", confidence=0.6
+                screenplay_content, detected_format="screenplay", confidence=0.9
             )
         },
-        params={"model": "mock", "qa_model": "gpt-4o-mini", "max_retries": 1, "skip_qa": False},
+        params={"model": "mock", "max_retries": 1},
         context={"run_id": "unit", "stage_id": "normalize"},
     )
 
     metadata = result["artifacts"][0]["metadata"]
     assert metadata["health"] == "needs_review"
-    assert metadata["annotations"]["qa_result"]["passed"] is False
 
 
 @pytest.mark.unit
-def test_run_module_keeps_valid_health_when_qa_has_only_warnings(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    def warning_qa(**_: Any):
-        return (
-            QAResult(
-                passed=True,
-                confidence=0.75,
-                issues=[
-                    {
-                        "severity": "warning",
-                        "description": "Scene transition abrupt",
-                        "location": "Scene 3",
-                    }
-                ],
-                summary="Pass with warning",
-            ),
-            [],
-            {"model": "mock", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0},
-        )
-
-    monkeypatch.setattr("cine_forge.modules.ingest.script_normalize_v1.main._run_qa", warning_qa)
-
+def test_run_module_keeps_valid_health_for_clean_screenplay() -> None:
+    """Clean screenplay should get valid health via Tier 1 code passthrough."""
+    screenplay_content = "INT. ROOM - DAY\n\nALICE\nHello.\n\nEXT. STREET - NIGHT\n\nBOB\nBye.\n"
     result = run_module(
         inputs={
             "ingest": _raw_input_payload(
-                "A prose paragraph.", detected_format="prose", confidence=0.6
+                screenplay_content, detected_format="screenplay", confidence=0.9
             )
         },
-        params={"model": "mock", "qa_model": "gpt-4o-mini", "max_retries": 1, "skip_qa": False},
+        params={"model": "mock", "max_retries": 1},
         context={"run_id": "unit", "stage_id": "normalize"},
     )
 
     metadata = result["artifacts"][0]["metadata"]
     assert metadata["health"] == "valid"
-    assert metadata["annotations"]["qa_result"]["issues"][0]["severity"] == "warning"
+    assert metadata["annotations"]["normalization_tier"] == 1
 
 
 @pytest.mark.unit

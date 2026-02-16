@@ -49,7 +49,7 @@ def select_strategy(
     source_format: str,
     confidence: float,
     text: str,
-    short_doc_threshold: int = 2000,
+    short_doc_threshold: int = 8000,
 ) -> LongDocStrategy:
     """Pick a normalization strategy based on source shape and size."""
     estimated_tokens = estimate_token_count(text)
@@ -57,11 +57,13 @@ def select_strategy(
         return LongDocStrategy(name="single_pass", estimated_tokens=estimated_tokens)
 
     if source_format == "screenplay" and confidence >= 0.8:
+        # Large screenplays (>8K tokens) need chunked processing —
+        # edit_list_cleanup is unreliable and single_pass timeouts on 50K+ tokens
         return LongDocStrategy(
-            name="edit_list_cleanup",
+            name="chunked_conversion",
             estimated_tokens=estimated_tokens,
-            chunk_size_tokens=2500,
-            overlap_tokens=300,
+            chunk_size_tokens=4000,
+            overlap_tokens=400,
         )
 
     return LongDocStrategy(

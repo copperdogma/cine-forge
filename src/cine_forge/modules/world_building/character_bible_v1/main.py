@@ -79,9 +79,9 @@ def run_module(
     canonical_script, scene_index = _extract_inputs(inputs)
     
     # Tiered Model Strategy (Subsumption)
-    work_model = params.get("work_model") or params.get("model") or "gpt-4o-mini"
-    verify_model = params.get("verify_model") or "gpt-4o-mini"
-    escalate_model = params.get("escalate_model") or "gpt-4o"
+    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-5-20250929"
+    verify_model = params.get("verify_model") or "claude-haiku-4-5-20251001"
+    escalate_model = params.get("escalate_model") or "claude-opus-4-6"
     skip_qa = bool(params.get("skip_qa", False))
     
     # Higher default for bibles to avoid noise pollution
@@ -329,20 +329,26 @@ def _build_extraction_prompt(
     index: dict[str, Any],
     feedback: str = "",
 ) -> str:
-    # Ideally we'd only send relevant scenes to save context
-    # For now, we'll send the whole thing if it's small, or just a summary
+    from cine_forge.ai import extract_scenes_for_entity
+
+    relevant_text = extract_scenes_for_entity(
+        script_text=script["script_text"],
+        scene_index=index,
+        entity_type="character",
+        entity_name=char_name,
+    )
     feedback_block = f"\nQA Feedback to address: {feedback}\n" if feedback else ""
     return f"""You are a character analyst. Extract a master definition for character: {char_name}.
-    
+
     Return JSON matching CharacterBible schema.
     {feedback_block}
     Character Context:
     - Name: {char_name}
     - Scene Count: {entry['scene_count']}
     - Dialogue Count: {entry['dialogue_count']}
-    
-    Script Text:
-    {script['script_text']}
+
+    Relevant Script Scenes (containing {char_name}):
+    {relevant_text}
     """
 
 

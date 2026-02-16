@@ -52,7 +52,7 @@ class ArtifactMetadata(BaseModel):
     rationale: str
     alternatives_considered: list[str] | None = None
     confidence: float = Field(ge=0.0, le=1.0)
-    source: Literal["ai", "human", "hybrid"]
+    source: Literal["ai", "human", "hybrid", "code"]
     producing_module: str | None = None
     producing_role: str | None = None
     cost_data: CostRecord | None = None

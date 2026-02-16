@@ -6,7 +6,9 @@ import pytest
 
 from cine_forge.modules.ingest.scene_extract_v1.main import (
     _EnrichmentEnvelope,
+    _extract_elements,
     _normalize_character_name,
+    _parse_heading,
     _split_into_scene_chunks,
     run_module,
 )
@@ -59,6 +61,82 @@ def test_split_into_scene_chunks_handles_missing_headings() -> None:
 def test_character_normalization_removes_voice_modifiers() -> None:
     assert _normalize_character_name("JOHN (V.O.)") == "JOHN"
     assert _normalize_character_name("MARA (CONT'D)") == "MARA"
+
+
+@pytest.mark.unit
+def test_parse_heading_multi_segment_location() -> None:
+    """INT. BUILDING - HALLWAY - NIGHT should keep full location."""
+    result = _parse_heading("INT. BUILDING - HALLWAY - NIGHT")
+    assert result["int_ext"] == "INT"
+    assert result["location"] == "Building - Hallway"
+    assert result["time_of_day"] == "NIGHT"
+
+
+@pytest.mark.unit
+def test_parse_heading_three_segment_location_with_time() -> None:
+    """INT. HOTEL - LOBBY - ELEVATOR BANK - DAY should keep all location parts."""
+    result = _parse_heading("INT. HOTEL - LOBBY - ELEVATOR BANK - DAY")
+    assert result["int_ext"] == "INT"
+    assert result["location"] == "Hotel - Lobby - Elevator Bank"
+    assert result["time_of_day"] == "DAY"
+
+
+@pytest.mark.unit
+def test_parse_heading_no_time_keeps_all_as_location() -> None:
+    """INT. BUILDING - ROOFTOP should treat last segment as location if not a time."""
+    result = _parse_heading("INT. BUILDING - ROOFTOP")
+    assert result["location"] == "Building - Rooftop"
+    assert result["time_of_day"] == "UNSPECIFIED"
+
+
+@pytest.mark.unit
+def test_parse_heading_strips_narrative_modifiers() -> None:
+    """EXT. COASTLINE - DAY - PAST should strip PAST and use DAY as time."""
+    result = _parse_heading("EXT. COASTLINE - DAY - PAST")
+    assert result["location"] == "Coastline"
+    assert result["time_of_day"] == "DAY"
+
+
+@pytest.mark.unit
+def test_parse_heading_strips_flashback_modifier() -> None:
+    """EXT. BACKYARD - DAY - (FLASHBACK) should strip the modifier."""
+    result = _parse_heading("EXT. BACKYARD - DAY - (FLASHBACK)")
+    assert result["location"] == "Backyard"
+    assert result["time_of_day"] == "DAY"
+
+
+@pytest.mark.unit
+def test_extract_elements_classifies_fade_in_as_transition() -> None:
+    lines = ["INT. LAB - NIGHT", "FADE IN:", "MARA", "Hello."]
+    elements, _ = _extract_elements(lines)
+    fade = next(e for e in elements if "FADE" in e.content)
+    assert fade.element_type == "transition"
+
+
+@pytest.mark.unit
+def test_extract_elements_classifies_end_flashback_as_transition() -> None:
+    lines = ["INT. LAB - NIGHT", "Some action.", "", "END FLASHBACK"]
+    elements, _ = _extract_elements(lines)
+    fb = next(e for e in elements if "FLASHBACK" in e.content)
+    assert fb.element_type == "transition"
+
+
+@pytest.mark.unit
+def test_extract_elements_classifies_smash_cut_as_transition() -> None:
+    lines = ["INT. LAB - NIGHT", "MARA", "Hello.", "", "SMASH CUT:"]
+    elements, _ = _extract_elements(lines)
+    cut = next(e for e in elements if "SMASH" in e.content)
+    assert cut.element_type == "transition"
+
+
+@pytest.mark.unit
+def test_extract_elements_contd_is_character_cue() -> None:
+    """MARA (CONT'D) should be classified as a character cue, not action."""
+    lines = ["INT. LAB - NIGHT", "", "MARA (CONT'D)", "I'm back."]
+    elements, chars = _extract_elements(lines)
+    mara = next(e for e in elements if "MARA" in e.content)
+    assert mara.element_type == "character"
+    assert "MARA" in chars
 
 
 @pytest.mark.unit
@@ -148,8 +226,9 @@ def test_run_module_retries_scene_when_qa_errors(monkeypatch: pytest.MonkeyPatch
         fake_run_scene_qa,
     )
 
+    # Use a scene with unresolved time_of_day so QA triggers
     result = run_module(
-        inputs={"normalize": _canonical_payload("INT. LAB - NIGHT\nMARA\nHi.")},
+        inputs={"normalize": _canonical_payload("INT. LAB\nMARA\nHi.")},
         params={"model": "mock", "qa_model": "gpt-4o-mini", "skip_qa": False, "max_retries": 2},
         context={"run_id": "unit", "stage_id": "extract"},
     )
@@ -176,8 +255,9 @@ def test_run_module_marks_needs_review_after_qa_retries(monkeypatch: pytest.Monk
         always_fail_qa,
     )
 
+    # Use a scene with unresolved time_of_day so QA actually triggers
     result = run_module(
-        inputs={"normalize": _canonical_payload("INT. LAB - NIGHT\nMARA\nHi.")},
+        inputs={"normalize": _canonical_payload("INT. LAB\nMARA\nHi.")},
         params={"model": "mock", "qa_model": "gpt-4o-mini", "skip_qa": False, "max_retries": 1},
         context={"run_id": "unit", "stage_id": "extract"},
     )
@@ -279,7 +359,8 @@ def test_run_module_cost_is_lower_when_skip_qa(monkeypatch: pytest.MonkeyPatch) 
         priced_qa,
     )
 
-    script = "INT. LAB - NIGHT\nMARA\nGo."
+    # Use a scene with unresolved time_of_day so QA actually triggers
+    script = "INT. LAB\nMARA\nGo."
     with_qa = run_module(
         inputs={"normalize": _canonical_payload(script)},
         params={"model": "gpt-4o", "qa_model": "gpt-4o-mini", "skip_qa": False},

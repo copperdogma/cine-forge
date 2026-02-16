@@ -24,11 +24,48 @@ from cine_forge.schemas.qa import QAResult
 SCENE_HEADING_RE = re.compile(
     r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
 )
-TRANSITION_RE = re.compile(r"^[A-Z][A-Z0-9 '\-]+TO:$")
+TRANSITION_RE = re.compile(
+    r"^("
+    r"[A-Z][A-Z0-9 '\-]+TO:"
+    r"|FADE IN:?"
+    r"|FADE OUT[.:]?"
+    r"|FADE TO BLACK[.:]?"
+    r"|CUT TO BLACK[.:]?"
+    r"|SMASH CUT:?"
+    r"|MATCH CUT:?"
+    r"|INTERCUT:?"
+    r"|END CREDITS[.:]?"
+    r"|TITLE CARD:?"
+    r"|SUPER:?"
+    r"|OPENING TITLE[S]?:?"
+    r"|CLOSING TITLE[S]?:?"
+    r"|THE END[.:]?"
+    r"|END FLASHBACK[.:]?"
+    r"|BEGIN FLASHBACK[.:]?"
+    r"|BACK TO[.:]?"
+    r"|TIME CUT:?"
+    r")$"
+)
 NOTE_RE = re.compile(r"^(\[\[.*\]\]|NOTE:)", flags=re.IGNORECASE)
 SHOT_RE = re.compile(r"^(ANGLE ON|CLOSE ON|WIDE ON|POV|INSERT)\b", flags=re.IGNORECASE)
-CHAR_MOD_RE = re.compile(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT’D|OFF|ON RADIO)\)\s*$", re.IGNORECASE)
+CHAR_MOD_RE = re.compile(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT'D|OFF|ON RADIO)\)\s*$", re.IGNORECASE)
 DEFAULT_TONE = "neutral"
+VALID_TIME_OF_DAY = {
+    "DAY",
+    "NIGHT",
+    "DAWN",
+    "DUSK",
+    "MORNING",
+    "EVENING",
+    "AFTERNOON",
+    "LATER",
+    "MOMENTS LATER",
+    "SAME TIME",
+    "MAGIC HOUR",
+    "SUNSET",
+    "SUNRISE",
+    "CONTINUOUS",
+}
 CHARACTER_STOPWORDS = {
     "A",
     "AN",
@@ -84,6 +121,95 @@ CHARACTER_STOPWORDS = {
     "WHISPERING",
     "WE",
     "YOU",
+    # Camera/shot directions
+    "CLOSE UP",
+    "WIDE SHOT",
+    "POV",
+    "ANGLE ON",
+    "FADE IN",
+    "FADE OUT",
+    "FADE TO",
+    "CUT TO",
+    "SMASH CUT",
+    "MATCH CUT",
+    "DISSOLVE TO",
+    "INTERCUT",
+    "SPLIT SCREEN",
+    "FREEZE FRAME",
+    "SLOW MOTION",
+    "TIME LAPSE",
+    "MONTAGE",
+    "FLASHBACK",
+    "FLASH FORWARD",
+    "SUPER",
+    "TITLE CARD",
+    "CREDIT",
+    "CREDITS",
+    # Action words that appear in ALL-CAPS
+    "BANG",
+    "SLAM",
+    "THUD",
+    "SNAP",
+    "SPLASH",
+    "SCREECH",
+    "RING",
+    "BUZZ",
+    "CLICK",
+    "BEEP",
+    "HONK",
+    "SILENCE",
+    "PAUSE",
+    "BEAT",
+    "WHAM",
+    "POW",
+    "THWACK",
+    "ZAP",
+    "WHOOSH",
+    "KABOOM",
+    # Set dressing / descriptive words (false positives from ALL-CAPS action lines)
+    "CLEAN",
+    "DARK",
+    "DIMLY LIT",
+    "DIRTY",
+    "DISCARDED",
+    "EMPTY",
+    "LARGE",
+    "LIT",
+    "LUXURIOUS",
+    "OLD",
+    "OPEN",
+    "QUIET",
+    "RUG",
+    "RUSTY",
+    "RUSTY WEIGHTS",
+    "SMALL",
+    "WEEDS",
+    "WORN",
+    # Location/set elements
+    "ELEVATOR",
+    "HALLWAY",
+    "BATHROOM",
+    "KITCHEN",
+    "BEDROOM",
+    "LIVING ROOM",
+    "ROOFTOP",
+    "BASEMENT",
+    "GARAGE",
+    "STAIRWELL",
+    "LOBBY",
+    "CORRIDOR",
+    # Other common false positives
+    "MEANWHILE",
+    "SUDDENLY",
+    "THEN",
+    "FINALLY",
+    "NOTE",
+    "TITLE",
+    "SERIES OF SHOTS",
+    "BACK TO SCENE",
+    "RESUME",
+    "OMITTED",
+    "THE END",
 }
 
 
@@ -153,10 +279,11 @@ def run_module(
     script_text = canonical["script_text"]
     
     # Tiered Model Strategy (Subsumption)
-    model = params.get("model", "gpt-4o")
-    work_model = params.get("work_model") or model
-    verify_model = params.get("verify_model") or params.get("qa_model") or "gpt-4o-mini"
-    escalate_model = params.get("escalate_model") or "gpt-4o"
+    work_model = params.get("work_model") or params.get("model") or "claude-haiku-4-5-20251001"
+    verify_model = (
+        params.get("verify_model") or params.get("qa_model") or "claude-haiku-4-5-20251001"
+    )
+    escalate_model = params.get("escalate_model") or "claude-sonnet-4-5-20250929"
 
     qa_model = verify_model
     parser_coverage_threshold = float(params.get("parser_coverage_threshold", 0.25))
@@ -230,7 +357,9 @@ def run_module(
                 feedback = f"Prior attempt failed with error: {exc}. Retrying with escalation."
                 continue
 
-            if skip_qa:
+            if skip_qa or not unresolved_fields:
+                # Skip QA when explicitly disabled or when all fields were
+                # resolved deterministically (no AI enrichment needed)
                 qa_result = None
                 break
 
@@ -529,7 +658,9 @@ def _identify_unresolved_fields(base_scene: dict[str, Any], chunk: _SceneChunk) 
 
 
 def _parse_heading(heading: str) -> dict[str, str]:
-    normalized = heading.strip().upper()
+    # Strip trailing backslashes from markdown escapes
+    cleaned_heading = heading.strip().rstrip("\\")
+    normalized = cleaned_heading.upper()
     int_ext = "INT/EXT"
     if normalized.startswith("INT/EXT.") or normalized.startswith("I/E."):
         int_ext = "INT/EXT"
@@ -538,7 +669,7 @@ def _parse_heading(heading: str) -> dict[str, str]:
     elif normalized.startswith("EXT."):
         int_ext = "EXT"
 
-    content = re.sub(r"^(INT/EXT\.|I/E\.|INT\.|EXT\.|EST\.)\s*", "", heading.strip(), flags=re.I)
+    content = re.sub(r"^(INT/EXT\.|I/E\.|INT\.|EXT\.|EST\.)\s*", "", cleaned_heading, flags=re.I)
     segments = [segment.strip() for segment in re.split(r"\s*-\s*", content) if segment.strip()]
     if not segments:
         return {"int_ext": int_ext, "location": "UNKNOWN", "time_of_day": "UNSPECIFIED"}
@@ -548,10 +679,32 @@ def _parse_heading(heading: str) -> dict[str, str]:
             "location": segments[0].title(),
             "time_of_day": "UNSPECIFIED",
         }
+
+    # Strip narrative modifiers from the end (PAST, FLASHBACK, etc.)
+    # These are temporal context but not part of the location name
+    _NARRATIVE_MODIFIERS = {
+        "PAST", "PRESENT", "FLASHBACK", "(FLASHBACK)", "BACK TO PRESENT",
+        "(BACK TO PRESENT)", "SAME", "INTERCUT", "STOCK",
+    }
+    while len(segments) > 1 and segments[-1].strip("()").upper() in _NARRATIVE_MODIFIERS:
+        segments = segments[:-1]
+
+    # Validate time_of_day against whitelist
+    time_of_day = segments[-1].upper()
+    if time_of_day in VALID_TIME_OF_DAY:
+        # Last segment is time — everything before it is location
+        location_segments = segments[:-1]
+    else:
+        # Last segment is NOT a valid time — it's part of the location
+        time_of_day = "UNSPECIFIED"
+        location_segments = segments
+
+    location = " - ".join(seg.title() for seg in location_segments)
+
     return {
         "int_ext": int_ext,
-        "location": segments[0].title(),
-        "time_of_day": segments[-1].upper(),
+        "location": location,
+        "time_of_day": time_of_day,
     }
 
 
@@ -613,12 +766,13 @@ def _extract_character_mentions(action_text: str) -> set[str]:
 
 def _normalize_character_name(value: str) -> str:
     cleaned = CHAR_MOD_RE.sub("", value.strip().upper())
+    cleaned = cleaned.rstrip("\\")  # Strip trailing backslashes from markdown escapes
     cleaned = re.sub(r"\([^)]*\)", " ", cleaned)
     cleaned = re.sub(r"[^A-Z0-9' ]+", " ", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned)
     if re.match(r"^THE[A-Z]{4,}$", cleaned):
         cleaned = cleaned[3:]
-    return cleaned
+    return cleaned.strip()
 
 
 def _is_plausible_character_name(name: str) -> bool:
