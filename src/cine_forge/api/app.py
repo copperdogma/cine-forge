@@ -7,7 +7,7 @@ from pathlib import Path
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 
 from cine_forge.api.models import (
     ArtifactDetailResponse,
@@ -16,6 +16,7 @@ from cine_forge.api.models import (
     ArtifactGroupSummary,
     ArtifactVersionSummary,
     ErrorPayload,
+    InputFileSummary,
     ProjectPathRequest,
     ProjectSummary,
     RecentProjectSummary,
@@ -116,6 +117,21 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         return UploadedInputResponse.model_validate(
             service.save_project_input(project_id, file.filename, content)
         )
+
+    @app.get(
+        "/api/projects/{project_id}/inputs",
+        response_model=list[InputFileSummary],
+    )
+    async def list_project_inputs(project_id: str) -> list[InputFileSummary]:
+        return [
+            InputFileSummary.model_validate(item)
+            for item in service.list_project_inputs(project_id)
+        ]
+
+    @app.get("/api/projects/{project_id}/inputs/{filename}")
+    async def get_project_input_content(project_id: str, filename: str) -> PlainTextResponse:
+        content = service.read_project_input(project_id, filename)
+        return PlainTextResponse(content)
 
     @app.get("/api/projects/{project_id}/runs", response_model=list[RunSummary])
     async def list_runs(project_id: str) -> list[RunSummary]:

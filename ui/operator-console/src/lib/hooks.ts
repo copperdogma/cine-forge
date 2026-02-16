@@ -7,7 +7,9 @@ import type {
   ArtifactEditResponse,
   ArtifactGroupSummary,
   ArtifactVersionSummary,
+  InputFileSummary,
   ProjectSummary,
+  ProjectState,
   RecentProjectSummary,
   RecipeSummary,
   RunEventsResponse,
@@ -78,6 +80,52 @@ export function useUploadInput(projectId: string) {
   return useMutation<UploadedInputResponse, Error, File>({
     mutationFn: (file: File) => api.uploadProjectInput(projectId, file),
   })
+}
+
+// --- Inputs ---
+
+export function useProjectInputs(projectId: string | undefined) {
+  return useQuery<InputFileSummary[]>({
+    queryKey: ['projects', projectId, 'inputs'],
+    queryFn: () => api.listProjectInputs(projectId!),
+    enabled: !!projectId,
+  })
+}
+
+export function useProjectInputContent(projectId: string | undefined, filename: string | undefined) {
+  return useQuery<string>({
+    queryKey: ['projects', projectId, 'inputs', filename, 'content'],
+    queryFn: () => api.getProjectInputContent(projectId!, filename!),
+    enabled: !!(projectId && filename),
+    staleTime: Infinity,
+  })
+}
+
+// --- Project State ---
+
+export function useProjectState(projectId: string | undefined): ProjectState {
+  const { data: project } = useProject(projectId)
+  const { data: runs } = useRuns(projectId)
+  const { data: artifactGroups } = useArtifactGroups(projectId)
+
+  if (!project) return 'empty'
+
+  const hasInputs = project.has_inputs
+  const hasArtifacts = (artifactGroups?.length ?? 0) > 0
+  const hasRuns = (runs?.length ?? 0) > 0
+  const hasActiveRun = runs?.some(r => r.status === 'running' || r.status === 'pending') ?? false
+
+  if (!hasInputs) return 'empty'
+  if (hasActiveRun) return 'processing'
+  if (hasArtifacts) {
+    // Check if we have creative artifacts (bibles, etc.) beyond just extraction
+    const hasCreativeArtifacts = artifactGroups?.some(
+      g => g.artifact_type === 'bible_manifest' || g.artifact_type === 'entity_graph'
+    ) ?? false
+    return hasCreativeArtifacts ? 'complete' : 'analyzed'
+  }
+  if (hasRuns && !hasArtifacts) return 'analyzed' // runs completed but artifacts may be zero (edge case)
+  return 'fresh_import'
 }
 
 // --- Runs ---

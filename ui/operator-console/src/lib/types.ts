@@ -11,6 +11,8 @@ export type ProjectSummary = {
   display_name: string
   artifact_groups: number
   run_count: number
+  has_inputs: boolean
+  input_files: string[]
 }
 
 export type RecentProjectSummary = ProjectSummary & {
@@ -120,4 +122,36 @@ export type RecipeSummary = {
   name: string
   description: string
   stage_count: number
+}
+
+// --- Input Files ---
+
+export type InputFileSummary = {
+  filename: string
+  original_name: string
+  size_bytes: number
+}
+
+// --- Project State ---
+
+export type ProjectState = 'empty' | 'fresh_import' | 'processing' | 'analyzed' | 'complete'
+
+// --- Chat ---
+
+export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_suggestion' | 'user_action'
+
+export type ChatAction = {
+  id: string
+  label: string
+  variant: 'default' | 'secondary' | 'outline'
+  route?: string
+}
+
+export type ChatMessage = {
+  id: string
+  type: ChatMessageType
+  content: string
+  timestamp: number
+  actions?: ChatAction[]
+  needsAction?: boolean
 }

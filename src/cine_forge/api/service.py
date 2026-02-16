@@ -93,12 +93,81 @@ class OperatorConsoleService:
         path = self.require_project_path(project_id)
         artifact_groups = len(self.list_artifact_groups(project_id))
         run_count = len(self.list_runs(project_id))
+        inputs = self.list_project_inputs(project_id)
+        input_files = [inp["original_name"] for inp in inputs]
+        display_name = self._clean_display_name(path, input_files)
         return {
             "project_id": project_id,
-            "display_name": path.name,
+            "display_name": display_name,
             "artifact_groups": artifact_groups,
             "run_count": run_count,
+            "has_inputs": len(inputs) > 0,
+            "input_files": input_files,
         }
+
+    def list_project_inputs(self, project_id: str) -> list[dict[str, Any]]:
+        """List input files for a project."""
+        project_path = self.require_project_path(project_id)
+        inputs_dir = project_path / "inputs"
+        if not inputs_dir.exists():
+            return []
+        inputs: list[dict[str, Any]] = []
+        for entry in sorted(inputs_dir.iterdir()):
+            if not entry.is_file():
+                continue
+            # Files stored as {uuid}_{original_name}
+            name = entry.name
+            # Strip the uuid prefix (8 hex chars + underscore)
+            original_name = re.sub(r"^[0-9a-f]{8}_", "", name)
+            inputs.append({
+                "filename": name,
+                "original_name": original_name,
+                "size_bytes": entry.stat().st_size,
+            })
+        return inputs
+
+    def read_project_input(self, project_id: str, filename: str) -> str:
+        """Read a project input file as text. Guards against path traversal."""
+        project_path = self.require_project_path(project_id)
+        inputs_dir = project_path / "inputs"
+        # Prevent path traversal
+        safe_name = Path(filename).name
+        if safe_name != filename or ".." in filename:
+            raise ServiceError(
+                code="invalid_filename",
+                message="Invalid filename.",
+                hint="Use the exact filename from the inputs listing.",
+                status_code=400,
+            )
+        target = inputs_dir / safe_name
+        if not target.exists() or not target.is_file():
+            raise ServiceError(
+                code="input_not_found",
+                message=f"Input file not found: {filename}",
+                hint="List available inputs via GET /api/projects/{id}/inputs.",
+                status_code=404,
+            )
+        return target.read_text(encoding="utf-8", errors="replace")
+
+    @staticmethod
+    def _clean_display_name(project_path: Path, input_files: list[str]) -> str:
+        """Derive a human-readable display name from input files or project path."""
+        # Prefer the input filename (cleaned up)
+        raw = input_files[0] if input_files else project_path.name
+        # Strip file extension
+        name = re.sub(r"\.(pdf|fdx|fountain|txt|md|docx)$", "", raw, flags=re.IGNORECASE)
+        # Strip leading timestamp patterns (e.g., 1771196674098_)
+        name = re.sub(r"^\d{10,15}[_-]", "", name)
+        # Replace underscores and hyphens with spaces
+        name = name.replace("_", " ").replace("-", " ")
+        # Remove common suffixes like "No ID"
+        name = re.sub(r"\s+No\s+ID\s*$", "", name, flags=re.IGNORECASE)
+        # Collapse multiple spaces
+        name = re.sub(r"\s+", " ", name).strip()
+        # Title case
+        if name:
+            name = name.title()
+        return name or project_path.name
 
     def list_recent_projects(self) -> list[dict[str, Any]]:
         candidates: dict[str, Path] = {}

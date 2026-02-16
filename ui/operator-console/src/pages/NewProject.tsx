@@ -9,6 +9,29 @@ import { cn } from '@/lib/utils'
 import { useCreateProject } from '@/lib/hooks'
 import { uploadProjectInput } from '@/lib/api'
 
+function cleanProjectName(filename: string): string {
+  let name = filename
+    // Strip extension
+    .replace(/\.(pdf|fdx|fountain|txt|md|docx)$/i, '')
+    // Strip leading timestamp patterns
+    .replace(/^\d{10,15}[_-]/, '')
+    // Replace underscores and hyphens with spaces
+    .replace(/[_-]/g, ' ')
+    // Remove common suffixes like "No ID"
+    .replace(/\s+No\s+ID\s*$/i, '')
+    // Collapse whitespace
+    .replace(/\s+/g, ' ')
+    .trim()
+  // Title case
+  if (name) {
+    name = name
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(' ')
+  }
+  return name
+}
+
 export default function NewProject() {
   const navigate = useNavigate()
   const [projectName, setProjectName] = useState('')
@@ -42,8 +65,7 @@ export default function NewProject() {
       setSelectedFile(validFile)
       // Auto-populate project name from filename if empty
       if (!projectName) {
-        const nameWithoutExt = validFile.name.replace(/\.(pdf|fdx|fountain|txt|md|docx)$/i, '')
-        setProjectName(nameWithoutExt)
+        setProjectName(cleanProjectName(validFile.name))
       }
     }
   }
@@ -54,8 +76,7 @@ export default function NewProject() {
       setSelectedFile(files[0])
       // Auto-populate project name from filename if empty
       if (!projectName) {
-        const nameWithoutExt = files[0].name.replace(/\.(pdf|fdx|fountain|txt|md|docx)$/i, '')
-        setProjectName(nameWithoutExt)
+        setProjectName(cleanProjectName(files[0].name))
       }
     }
   }

@@ -14,6 +14,8 @@ import {
   ChevronRight,
   Settings,
   X,
+  MessageSquare,
+  Info,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -21,11 +23,13 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
-import { InspectorProvider, useInspector } from '@/lib/inspector'
+import { RightPanelProvider, useRightPanel, useInspector } from '@/lib/right-panel'
 import { CommandPalette } from '@/components/CommandPalette'
 import { GlobalSearch } from '@/components/GlobalSearch'
 import { ProjectSettings } from '@/components/ProjectSettings'
+import { ChatPanel } from '@/components/ChatPanel'
 import { useShortcuts } from '@/lib/shortcuts'
+import { useProject } from '@/lib/hooks'
 import { cn } from '@/lib/utils'
 
 const navItems = [
@@ -42,19 +46,23 @@ function ShellInner() {
   const location = useLocation()
   const [navOpen, setNavOpen] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const panel = useRightPanel()
   const inspector = useInspector()
+  const { data: project } = useProject(projectId)
+
+  const displayName = project?.display_name ?? projectId?.slice(0, 12) ?? 'Project'
 
   // Keyboard shortcuts
   useShortcuts([
     { key: 'b', meta: true, action: () => setNavOpen(v => !v), label: 'Toggle sidebar' },
-    { key: 'i', meta: true, action: () => inspector.toggle(), label: 'Toggle inspector' },
+    { key: 'i', meta: true, action: () => panel.toggle(), label: 'Toggle right panel' },
     { key: '0', meta: true, action: () => navigate(''), label: 'Go to Home' },
     { key: '1', meta: true, action: () => navigate('run'), label: 'Go to Pipeline' },
     { key: '2', meta: true, action: () => navigate('runs'), label: 'Go to Runs' },
     { key: '3', meta: true, action: () => navigate('artifacts'), label: 'Go to Artifacts' },
     { key: '4', meta: true, action: () => navigate('inbox'), label: 'Go to Inbox' },
     { key: ',', meta: true, action: () => setSettingsOpen(true), label: 'Open settings' },
-    { key: 'Escape', action: () => { if (inspector.state.open) inspector.close() }, label: 'Close inspector' },
+    { key: 'Escape', action: () => { if (panel.state.open) panel.close() }, label: 'Close right panel' },
   ])
 
   // Determine current page from pathname (check longer paths first)
@@ -64,7 +72,6 @@ function ShellInner() {
     if (path.includes('/run')) return 'Pipeline'
     if (path.includes('/artifacts')) return 'Artifacts'
     if (path.includes('/inbox')) return 'Inbox'
-    // Check if we're at project root
     if (path === `/${projectId}`) return 'Home'
     return null
   }
@@ -75,13 +82,13 @@ function ShellInner() {
     <div className="flex h-screen overflow-hidden">
       <CommandPalette
         onToggleSidebar={() => setNavOpen(v => !v)}
-        onToggleInspector={() => inspector.toggle()}
+        onToggleInspector={() => panel.toggle()}
       />
       <GlobalSearch />
       {/* Keyboard-triggered settings dialog */}
       <ProjectSettings
         projectId={projectId ?? ''}
-        projectName={projectId?.slice(0, 12) ?? 'Project'}
+        projectName={displayName}
         open={settingsOpen}
         onOpenChange={setSettingsOpen}
       />
@@ -98,13 +105,13 @@ function ShellInner() {
           <div className="min-w-0 flex-1">
             <ProjectSettings
               projectId={projectId ?? ''}
-              projectName={projectId?.slice(0, 12) ?? 'Project'}
+              projectName={displayName}
             >
               <button
-                aria-label={`Project ${projectId?.slice(0, 12) ?? 'Project'} settings`}
+                aria-label={`Project ${displayName} settings`}
                 className="flex items-center gap-1 text-sm font-semibold truncate hover:text-primary transition-colors cursor-pointer"
               >
-                <span className="truncate">{projectId?.slice(0, 12) ?? 'Project'}</span>
+                <span className="truncate">{displayName}</span>
                 <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-60" />
               </button>
             </ProjectSettings>
@@ -113,7 +120,7 @@ function ShellInner() {
             <TooltipTrigger asChild>
               <ProjectSettings
                 projectId={projectId ?? ''}
-                projectName={projectId?.slice(0, 12) ?? 'Project'}
+                projectName={displayName}
               >
                 <button
                   aria-label="Open project settings"
@@ -206,7 +213,7 @@ function ShellInner() {
                 to={`/${projectId}`}
                 className="text-muted-foreground hover:text-foreground transition-colors truncate max-w-[200px]"
               >
-                {projectId.slice(0, 24)}
+                {displayName}
               </Link>
               {currentPage && (
                 <>
@@ -234,9 +241,9 @@ function ShellInner() {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 cursor-pointer"
-                onClick={() => inspector.toggle()}
+                onClick={() => panel.toggle()}
               >
-                {inspector.state.open ? (
+                {panel.state.open ? (
                   <PanelRightClose className="h-4 w-4" />
                 ) : (
                   <PanelRightOpen className="h-4 w-4" />
@@ -244,12 +251,12 @@ function ShellInner() {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              {inspector.state.open ? 'Hide inspector' : 'Show inspector'}
+              {panel.state.open ? 'Hide panel' : 'Show panel'}
             </TooltipContent>
           </Tooltip>
         </header>
 
-        {/* Content + optional Inspector */}
+        {/* Content + optional Right Panel */}
         <div className="flex flex-1 min-h-0">
           {/* Page content */}
           <ScrollArea className="flex-1">
@@ -258,36 +265,65 @@ function ShellInner() {
             </div>
           </ScrollArea>
 
-          {/* Right Inspector Panel */}
-          {inspector.state.open && (
-            <aside role="complementary" aria-label="Inspector panel" className="w-80 border-l border-border bg-card shrink-0 flex flex-col min-h-0">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
-                <h3 className="text-sm font-semibold truncate">
-                  {inspector.state.title ?? 'Inspector'}
-                </h3>
+          {/* Right Panel — Chat + Inspector tabs */}
+          {panel.state.open && (
+            <aside role="complementary" aria-label="Chat and inspector panel" className="w-80 border-l border-border bg-card shrink-0 flex flex-col min-h-0">
+              {/* Tab bar */}
+              <div className="flex items-center border-b border-border shrink-0">
+                <button
+                  onClick={() => panel.setTab('chat')}
+                  className={cn(
+                    'flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium transition-colors cursor-pointer',
+                    panel.state.activeTab === 'chat'
+                      ? 'text-foreground border-b-2 border-primary'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <MessageSquare className="h-3.5 w-3.5" />
+                  Chat
+                </button>
+                <button
+                  onClick={() => panel.setTab('inspector')}
+                  className={cn(
+                    'flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium transition-colors cursor-pointer',
+                    panel.state.activeTab === 'inspector'
+                      ? 'text-foreground border-b-2 border-primary'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <Info className="h-3.5 w-3.5" />
+                  Inspector
+                </button>
+                <div className="flex-1" />
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6 cursor-pointer"
-                      onClick={() => inspector.close()}
+                      className="h-6 w-6 mr-2 cursor-pointer"
+                      onClick={() => panel.close()}
                     >
                       <X className="h-3.5 w-3.5" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side="left">Close inspector</TooltipContent>
+                  <TooltipContent side="left">Close panel</TooltipContent>
                 </Tooltip>
               </div>
-              <ScrollArea className="flex-1">
-                <div className="p-4">
-                  {inspector.state.content ?? (
-                    <p className="text-xs text-muted-foreground">
-                      Select an item to inspect its details.
-                    </p>
-                  )}
-                </div>
-              </ScrollArea>
+
+              {/* Tab content */}
+              {panel.state.activeTab === 'chat' ? (
+                <ChatPanel />
+              ) : (
+                <ScrollArea className="flex-1">
+                  <div className="p-4">
+                    {inspector.state.content ?? (
+                      <p className="text-xs text-muted-foreground">
+                        Select an item to inspect its details.
+                      </p>
+                    )}
+                  </div>
+                </ScrollArea>
+              )}
             </aside>
           )}
         </div>
@@ -298,8 +334,8 @@ function ShellInner() {
 
 export default function AppShell() {
   return (
-    <InspectorProvider>
+    <RightPanelProvider>
       <ShellInner />
-    </InspectorProvider>
+    </RightPanelProvider>
   )
 }

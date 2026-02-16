@@ -21,6 +21,14 @@ class ProjectPathRequest(BaseModel):
     project_path: str = Field(min_length=1)
 
 
+class InputFileSummary(BaseModel):
+    """Metadata for a project input file."""
+
+    filename: str
+    original_name: str
+    size_bytes: int = Field(ge=0)
+
+
 class ProjectSummary(BaseModel):
     """Project snapshot for list/open/new responses."""
 
@@ -28,6 +36,8 @@ class ProjectSummary(BaseModel):
     display_name: str
     artifact_groups: int = Field(ge=0)
     run_count: int = Field(ge=0)
+    has_inputs: bool = False
+    input_files: list[str] = []
 
 
 class RecentProjectSummary(ProjectSummary):

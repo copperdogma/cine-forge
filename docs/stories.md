@@ -71,6 +71,7 @@ NOTES from Cam:
 | 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | To Do | [story-034](stories/story-034-style-pack-creator.md) |
 | 035 | Model Benchmarking Tooling (promptfoo) | Cross-Cutting | High | Done | [story-035](stories/story-035-model-benchmarking.md) |
 | 036 | Model Selection and Eval Framework | Cross-Cutting | High | To Do | [story-036](stories/story-036-model-selection.md) |
+| 037 | Production Deployment to cineforge.copper-dog.com | Cross-Cutting | High | In Progress | [story-037](stories/story-037-production-deployment.md) |
 
 ## Phase Summary
 

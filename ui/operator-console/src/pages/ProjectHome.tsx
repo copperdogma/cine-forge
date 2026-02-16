@@ -1,16 +1,17 @@
+import { useEffect, useRef, Suspense, lazy } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Play,
-  Package,
-  Inbox,
-  History,
   Film,
+  FileText,
   AlertTriangle,
   CheckCircle2,
   Clock,
-  TrendingUp,
-  Calendar,
+  Loader2,
+  Package,
+  Inbox,
+  History,
   ExternalLink,
+  Calendar,
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -23,8 +24,25 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { SceneStrip } from '@/components/SceneStrip'
-import { useProject, useRuns, useArtifactGroups, useScenes } from '@/lib/hooks'
+import {
+  useProject,
+  useRuns,
+  useArtifactGroups,
+  useScenes,
+  useProjectInputs,
+  useProjectInputContent,
+  useProjectState,
+} from '@/lib/hooks'
+import { useChatStore } from '@/lib/chat-store'
+import { getWelcomeMessages } from '@/lib/chat-messages'
 import { cn } from '@/lib/utils'
+import type { ProjectState } from '@/lib/types'
+
+const ScreenplayEditor = lazy(() =>
+  import('@/components/ScreenplayEditor').then(m => ({ default: m.ScreenplayEditor })),
+)
+
+// --- Shared helpers ---
 
 function getStatusConfig(status: string) {
   switch (status) {
@@ -33,35 +51,24 @@ function getStatusConfig(status: string) {
       return {
         icon: CheckCircle2,
         label: status === 'done' ? 'Done' : 'Reused',
-        variant: 'default' as const,
         className: 'bg-green-500/20 text-green-400 border-green-500/30',
       }
     case 'failed':
       return {
         icon: AlertTriangle,
         label: 'Failed',
-        variant: 'destructive' as const,
         className: 'bg-red-500/20 text-red-400 border-red-500/30',
       }
     case 'running':
       return {
         icon: Clock,
         label: 'Running',
-        variant: 'secondary' as const,
         className: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      }
-    case 'paused':
-      return {
-        icon: Clock,
-        label: 'Paused',
-        variant: 'outline' as const,
-        className: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
       }
     default:
       return {
         icon: Clock,
         label: 'Pending',
-        variant: 'outline' as const,
         className: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
       }
   }
@@ -85,275 +92,108 @@ function formatDuration(seconds: number): string {
   return `${minutes}m ${remainingSeconds}s`
 }
 
-export default function ProjectHome() {
-  const { projectId } = useParams()
-  const navigate = useNavigate()
+// --- Fresh Import View: Screenplay displayed in CodeMirror ---
 
-  const { data: project, isLoading: projectLoading } = useProject(projectId)
-  const { data: runs, isLoading: runsLoading } = useRuns(projectId)
-  const { data: artifactGroups, isLoading: artifactGroupsLoading } = useArtifactGroups(projectId)
-  const { data: scenes, isLoading: scenesLoading } = useScenes(projectId)
+function FreshImportView({ projectId }: { projectId: string }) {
+  const { data: project } = useProject(projectId)
+  const { data: inputs } = useProjectInputs(projectId)
+  const latestInput = inputs?.[inputs.length - 1]
+  const { data: content, isLoading } = useProjectInputContent(projectId, latestInput?.filename)
 
-  const isLoading = projectLoading || runsLoading || artifactGroupsLoading
-
-  // Derive stats from real data
-  const totalRuns = runs?.length ?? 0
-  const completedRuns = runs?.filter((r) => r.status === 'done').length ?? 0
-  const failedRuns = runs?.filter((r) => r.status === 'failed').length ?? 0
-  const totalArtifacts = artifactGroups?.length ?? 0
-  const staleArtifacts = artifactGroups?.filter((g) => g.health === 'stale').length ?? 0
-  const pendingReviews = staleArtifacts // Approximate with stale artifacts for now
-  const pipelineStatus = failedRuns > 0 || staleArtifacts > 0 ? 'degraded' : 'healthy'
-
-  // Sort runs by started_at (most recent first) and take first 5
-  const recentRuns = runs
-    ? [...runs]
-        .sort((a, b) => (b.started_at ?? 0) - (a.started_at ?? 0))
-        .slice(0, 5)
-    : []
-
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <Film className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold tracking-tight">{projectId}</h1>
-          </div>
-          <p className="text-sm text-muted-foreground">Loading project data...</p>
-        </div>
-        <Separator />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="h-4 w-24 bg-muted animate-pulse rounded" />
-              </CardHeader>
-              <CardContent>
-                <div className="h-8 w-16 bg-muted animate-pulse rounded" />
-              </CardContent>
-            </Card>
-          ))}
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <FileText className="h-6 w-6 text-primary shrink-0" />
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight truncate">
+            {project?.display_name ?? 'Your Screenplay'}
+          </h1>
+          {latestInput && (
+            <p className="text-sm text-muted-foreground">
+              {latestInput.original_name} — {(latestInput.size_bytes / 1024).toFixed(1)} KB
+            </p>
+          )}
         </div>
       </div>
-    )
-  }
+
+      {/* Screenplay content */}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading screenplay...</span>
+        </div>
+      ) : content ? (
+        <div className="rounded-lg border border-border overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center h-full">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            }
+          >
+            <ScreenplayEditor content={content} readOnly />
+          </Suspense>
+        </div>
+      ) : (
+        <div className="text-center py-20 text-muted-foreground">
+          <FileText className="h-12 w-12 mx-auto mb-3 opacity-50" />
+          <p className="text-sm">No screenplay content found.</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// --- Analyzed / Complete View: Dashboard with scenes, artifacts, runs ---
+
+function AnalyzedView({ projectId }: { projectId: string }) {
+  const navigate = useNavigate()
+  const { data: project } = useProject(projectId)
+  const { data: runs } = useRuns(projectId)
+  const { data: artifactGroups } = useArtifactGroups(projectId)
+  const { data: scenes, isLoading: scenesLoading } = useScenes(projectId)
+
+  const totalRuns = runs?.length ?? 0
+  const completedRuns = runs?.filter(r => r.status === 'done').length ?? 0
+  const failedRuns = runs?.filter(r => r.status === 'failed').length ?? 0
+  const totalArtifacts = artifactGroups?.length ?? 0
+  const staleArtifacts = artifactGroups?.filter(g => g.health === 'stale').length ?? 0
+
+  const recentRuns = runs
+    ? [...runs].sort((a, b) => (b.started_at ?? 0) - (a.started_at ?? 0)).slice(0, 5)
+    : []
 
   return (
     <div className="space-y-6">
-      {/* Project Header */}
-      <div className="space-y-1">
-        <div className="flex items-center gap-3">
-          <Film className="h-8 w-8 text-primary" />
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <Film className="h-8 w-8 text-primary" />
+        <div>
           <h1 className="text-3xl font-bold tracking-tight">
             {project?.display_name ?? projectId}
           </h1>
+          <p className="text-sm text-muted-foreground">
+            {totalArtifacts} artifacts · {totalRuns} runs
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground">
-          ~/Documents/Projects/cine-forge/projects/{projectId}
-        </p>
       </div>
 
       <Separator />
 
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Runs</CardTitle>
-            <History className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalRuns}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              <span className="text-green-400">{completedRuns} completed</span>
-              {failedRuns > 0 && (
-                <>
-                  {' · '}
-                  <span className="text-red-400">{failedRuns} failed</span>
-                </>
-              )}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Artifacts</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalArtifacts}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {staleArtifacts > 0 ? (
-                <>
-                  <span className="text-amber-400">{staleArtifacts} stale</span>
-                  {' · '}
-                  <span className="text-green-400">
-                    {totalArtifacts - staleArtifacts} healthy
-                  </span>
-                </>
-              ) : (
-                <span className="text-green-400">All healthy</span>
-              )}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Reviews</CardTitle>
-            <Inbox className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{pendingReviews}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {pendingReviews > 0 ? 'Requires attention' : 'Inbox clear'}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pipeline Status</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              {pipelineStatus === 'healthy' ? (
-                <CheckCircle2 className="h-5 w-5 text-green-400" />
-              ) : (
-                <AlertTriangle className="h-5 w-5 text-amber-400" />
-              )}
-              <span className="text-2xl font-bold capitalize">{pipelineStatus}</span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">All systems operational</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Activity Section */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Last 5 pipeline runs</CardDescription>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('runs')}
-              className="gap-2"
-            >
-              View All
-              <ExternalLink className="h-3.5 w-3.5" />
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {recentRuns.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <History className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">No runs yet. Start your first pipeline run to begin.</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {recentRuns.map((run) => {
-                const statusConfig = getStatusConfig(run.status)
-                const StatusIcon = statusConfig.icon
-                const duration =
-                  run.finished_at && run.started_at
-                    ? formatDuration(run.finished_at - run.started_at)
-                    : null
-                return (
-                  <div
-                    key={run.run_id}
-                    className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors cursor-pointer"
-                    onClick={() => navigate(`runs/${run.run_id}`)}
-                  >
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <StatusIcon className={cn('h-4 w-4 shrink-0', statusConfig.className)} />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-sm truncate">{run.run_id}</span>
-                          <Badge
-                            variant="outline"
-                            className={cn('text-xs px-1.5 py-0', statusConfig.className)}
-                          >
-                            {statusConfig.label}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground shrink-0">
-                      {run.started_at && (
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {timeAgo(run.started_at)}
-                        </div>
-                      )}
-                      {duration && (
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {duration}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common operations for this project</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3">
-            <Button onClick={() => navigate('run')} className="gap-2">
-              <Play className="h-4 w-4" />
-              Start New Run
-            </Button>
-            <Button variant="outline" onClick={() => navigate('artifacts')} className="gap-2">
-              <Package className="h-4 w-4" />
-              View Artifacts
-            </Button>
-            <Button variant="outline" onClick={() => navigate('inbox')} className="gap-2">
-              <Inbox className="h-4 w-4" />
-              Check Inbox
-              {pendingReviews > 0 && (
-                <Badge variant="secondary" className="ml-1 px-1.5 py-0">
-                  {pendingReviews}
-                </Badge>
-              )}
-            </Button>
-            <Button variant="outline" onClick={() => navigate('runs')} className="gap-2">
-              <History className="h-4 w-4" />
-              Run History
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Scene Overview (if screenplay data exists) */}
+      {/* Scene overview */}
       {scenes && scenes.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Scene Overview</CardTitle>
+            <CardTitle>Scenes</CardTitle>
             <CardDescription>
-              {scenes.length} scene{scenes.length !== 1 ? 's' : ''} detected in latest screenplay
+              {scenes.length} scene{scenes.length !== 1 ? 's' : ''} detected
             </CardDescription>
           </CardHeader>
           <CardContent className="px-0">
             {scenesLoading ? (
-              <div className="text-center py-8 text-muted-foreground">
-                <p className="text-sm">Loading scenes...</p>
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             ) : (
               <SceneStrip scenes={scenes} />
@@ -362,97 +202,259 @@ export default function ProjectHome() {
         </Card>
       )}
 
-      {/* Artifact Health Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Quick stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="cursor-pointer hover:bg-accent/30 transition-colors" onClick={() => navigate('artifacts')}>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <Package className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <div className="text-2xl font-bold">{totalArtifacts}</div>
+                <p className="text-xs text-muted-foreground">
+                  {staleArtifacts > 0
+                    ? <><span className="text-amber-400">{staleArtifacts} stale</span> · {totalArtifacts - staleArtifacts} healthy</>
+                    : 'All healthy'
+                  }
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:bg-accent/30 transition-colors" onClick={() => navigate('runs')}>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <History className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <div className="text-2xl font-bold">{totalRuns}</div>
+                <p className="text-xs text-muted-foreground">
+                  <span className="text-green-400">{completedRuns} completed</span>
+                  {failedRuns > 0 && <> · <span className="text-red-400">{failedRuns} failed</span></>}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:bg-accent/30 transition-colors" onClick={() => navigate('inbox')}>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <Inbox className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <div className="text-2xl font-bold">{staleArtifacts}</div>
+                <p className="text-xs text-muted-foreground">
+                  {staleArtifacts > 0 ? 'Items need attention' : 'Inbox clear'}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Recent runs */}
+      {recentRuns.length > 0 && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Recent Runs</CardTitle>
+              <Button variant="outline" size="sm" onClick={() => navigate('runs')} className="gap-2">
+                View All <ExternalLink className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {recentRuns.map(run => {
+                const statusConfig = getStatusConfig(run.status)
+                const StatusIcon = statusConfig.icon
+                const duration = run.finished_at && run.started_at
+                  ? formatDuration(run.finished_at - run.started_at)
+                  : null
+                return (
+                  <div
+                    key={run.run_id}
+                    className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors cursor-pointer"
+                    onClick={() => navigate(`runs/${run.run_id}`)}
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <StatusIcon className={cn('h-4 w-4 shrink-0', statusConfig.className)} />
+                      <span className="font-mono text-sm truncate">{run.run_id}</span>
+                      <Badge variant="outline" className={cn('text-xs px-1.5 py-0', statusConfig.className)}>
+                        {statusConfig.label}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground shrink-0">
+                      {run.started_at && (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {timeAgo(run.started_at)}
+                        </span>
+                      )}
+                      {duration && (
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {duration}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Artifact health */}
+      {totalArtifacts > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Artifact Health</CardTitle>
-            <CardDescription>Current state of all project artifacts</CardDescription>
           </CardHeader>
           <CardContent>
-            {totalArtifacts === 0 ? (
-              <div className="text-center py-4 text-muted-foreground">
-                <p className="text-xs">No artifacts yet. Run a pipeline to generate artifacts.</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
+            <div className="space-y-3">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center justify-between cursor-help">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
+                        <span className="text-sm">Healthy</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-mono text-muted-foreground">
+                          {totalArtifacts - staleArtifacts}
+                        </span>
+                        <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-green-500"
+                            style={{ width: `${((totalArtifacts - staleArtifacts) / totalArtifacts) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Up to date and passed all quality checks.</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              {staleArtifacts > 0 && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex items-center justify-between cursor-help">
                         <div className="flex items-center gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-green-400" />
-                          <span className="text-sm">Healthy</span>
+                          <AlertTriangle className="h-4 w-4 text-amber-400" />
+                          <span className="text-sm">Stale</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-mono text-muted-foreground">
-                            {totalArtifacts - staleArtifacts}
-                          </span>
+                          <span className="text-sm font-mono text-muted-foreground">{staleArtifacts}</span>
                           <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-green-500"
-                              style={{
-                                width: `${((totalArtifacts - staleArtifacts) / totalArtifacts) * 100}%`,
-                              }}
+                              className="h-full bg-amber-500"
+                              style={{ width: `${(staleArtifacts / totalArtifacts) * 100}%` }}
                             />
                           </div>
                         </div>
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      <p>These artifacts are up to date and have passed all quality checks.</p>
-                    </TooltipContent>
+                    <TooltipContent>Upstream changes detected. Regeneration recommended.</TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                {staleArtifacts > 0 && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center justify-between cursor-help">
-                          <div className="flex items-center gap-2">
-                            <AlertTriangle className="h-4 w-4 text-amber-400" />
-                            <span className="text-sm">Stale</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-mono text-muted-foreground">
-                              {staleArtifacts}
-                            </span>
-                            <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-amber-500"
-                                style={{ width: `${(staleArtifacts / totalArtifacts) * 100}%` }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Upstream artifacts have changed. These artifacts need to be regenerated.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Pipeline Cost</CardTitle>
-            <CardDescription>Aggregate cost tracking</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-4 text-muted-foreground">
-              <p className="text-xs">
-                Cost data available in individual run details.
-                <br />
-                Aggregate tracking coming soon.
-              </p>
+              )}
             </div>
           </CardContent>
         </Card>
-      </div>
+      )}
     </div>
   )
+}
+
+// --- Processing View: Screenplay with processing banner ---
+
+function ProcessingView({ projectId }: { projectId: string }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
+        <Loader2 className="h-5 w-5 text-blue-400 animate-spin shrink-0" />
+        <div>
+          <p className="text-sm font-medium text-blue-400">Processing your screenplay...</p>
+          <p className="text-xs text-muted-foreground">Extracting scenes, characters, and locations.</p>
+        </div>
+      </div>
+      <FreshImportView projectId={projectId} />
+    </div>
+  )
+}
+
+// --- Empty View: No inputs uploaded ---
+
+function EmptyView() {
+  const navigate = useNavigate()
+  return (
+    <div className="flex flex-col items-center justify-center py-20 text-center">
+      <Film className="h-16 w-16 text-muted-foreground/30 mb-4" />
+      <h2 className="text-xl font-semibold mb-2">No screenplay yet</h2>
+      <p className="text-sm text-muted-foreground mb-6">
+        Upload a screenplay to begin building your story world.
+      </p>
+      <Button onClick={() => navigate('/new')}>Upload Screenplay</Button>
+    </div>
+  )
+}
+
+// --- Main component ---
+
+export default function ProjectHome() {
+  const { projectId } = useParams()
+  const projectState = useProjectState(projectId)
+  const { data: project, isLoading } = useProject(projectId)
+  const initializedRef = useRef<string | null>(null)
+
+  // Initialize chat messages once when project state is determined.
+  // Uses store.getState() directly to avoid subscription-driven re-render loops.
+  useEffect(() => {
+    if (!projectId || !project || isLoading) return
+    if (initializedRef.current === projectId) return
+
+    const store = useChatStore.getState()
+    if (store.hasMessages(projectId)) {
+      initializedRef.current = projectId
+      return
+    }
+
+    const messages = getWelcomeMessages(projectState, project)
+    for (const msg of messages) {
+      store.addMessage(projectId, msg)
+    }
+    initializedRef.current = projectId
+  }, [projectId, projectState, project, isLoading])
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <span className="ml-2 text-sm text-muted-foreground">Loading project...</span>
+      </div>
+    )
+  }
+
+  if (!projectId) return <EmptyView />
+
+  return <HomeContent projectId={projectId} projectState={projectState} />
+}
+
+function HomeContent({ projectId, projectState }: { projectId: string; projectState: ProjectState }) {
+  switch (projectState) {
+    case 'empty':
+      return <EmptyView />
+    case 'fresh_import':
+      return <FreshImportView projectId={projectId} />
+    case 'processing':
+      return <ProcessingView projectId={projectId} />
+    case 'analyzed':
+    case 'complete':
+      return <AnalyzedView projectId={projectId} />
+    default:
+      return <EmptyView />
+  }
 }

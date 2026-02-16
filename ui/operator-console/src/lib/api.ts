@@ -8,6 +8,7 @@ import type {
   ArtifactEditResponse,
   ArtifactGroupSummary,
   ArtifactVersionSummary,
+  InputFileSummary,
   ProjectSummary,
   RecentProjectSummary,
   RecipeSummary,
@@ -118,6 +119,31 @@ export async function uploadProjectInput(
     throw new ApiRequestError(message, payload?.hint ?? undefined)
   }
   return (await response.json()) as UploadedInputResponse
+}
+
+// --- Inputs ---
+
+export function listProjectInputs(projectId: string): Promise<InputFileSummary[]> {
+  return request<InputFileSummary[]>(`/api/projects/${projectId}/inputs`)
+}
+
+export async function getProjectInputContent(
+  projectId: string,
+  filename: string,
+): Promise<string> {
+  let response: Response
+  try {
+    response = await fetch(`${API_BASE}/api/projects/${projectId}/inputs/${encodeURIComponent(filename)}`)
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new ApiRequestError(`Cannot reach API at ${API_BASE}. Start the backend.`)
+    }
+    throw error
+  }
+  if (!response.ok) {
+    throw new ApiRequestError(`Failed to fetch input file (${response.status})`)
+  }
+  return response.text()
 }
 
 // --- Runs ---
