@@ -175,6 +175,127 @@ def test_run_start_and_run_polling_endpoints(tmp_path: Path, monkeypatch) -> Non
     assert events.json()["events"][0]["event"] == "stage_started"
 
 
+def _create_project(client: TestClient, slug: str, display_name: str) -> str:
+    """Create a project using the new slug-based API and return the project_id."""
+    response = client.post(
+        "/api/projects/new",
+        json={"slug": slug, "display_name": display_name},
+    )
+    assert response.status_code == 200
+    return response.json()["project_id"]
+
+
+def test_search_returns_scenes_and_entities(tmp_path: Path) -> None:
+    """Test search endpoint finds scenes and entities."""
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "search-test", "Search Test")
+    project_path = tmp_path / "output" / "search-test"
+
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="seed",
+        rationale="test fixture",
+        confidence=1.0,
+        source="human",
+        producing_module="test.fixture",
+    )
+
+    # Seed a scene_index artifact
+    store.save_artifact(
+        artifact_type="scene_index",
+        entity_id=None,
+        data={
+            "entries": [
+                {
+                    "scene_id": "scene-001",
+                    "heading": "INT. WAREHOUSE - NIGHT",
+                    "location": "Warehouse",
+                    "time_of_day": "NIGHT",
+                },
+                {
+                    "scene_id": "scene-002",
+                    "heading": "EXT. ROOFTOP - DAY",
+                    "location": "Rooftop",
+                    "time_of_day": "DAY",
+                },
+            ]
+        },
+        metadata=metadata,
+    )
+
+    # Seed bible_manifest artifacts using save_bible_entry (production code path)
+    store.save_bible_entry(
+        entity_type="character",
+        entity_id="detective-jones",
+        display_name="Detective Jones",
+        files=[],
+        data_files={},
+        metadata=metadata,
+    )
+
+    store.save_bible_entry(
+        entity_type="location",
+        entity_id="warehouse",
+        display_name="The Warehouse",
+        files=[],
+        data_files={},
+        metadata=metadata,
+    )
+
+    store.save_bible_entry(
+        entity_type="prop",
+        entity_id="revolver",
+        display_name="Revolver",
+        files=[],
+        data_files={},
+        metadata=metadata,
+    )
+
+    # Search for "warehouse" — should match scene + location
+    resp = client.get(f"/api/projects/{project_id}/search?q=warehouse")
+    assert resp.status_code == 200
+    payload = resp.json()
+    assert payload["query"] == "warehouse"
+    assert len(payload["scenes"]) == 1
+    assert payload["scenes"][0]["scene_id"] == "scene-001"
+    assert payload["scenes"][0]["int_ext"] == "INT"
+    assert len(payload["locations"]) == 1
+    assert payload["locations"][0]["display_name"] == "The Warehouse"
+    assert payload["locations"][0]["entity_type"] == "location"
+    assert len(payload["characters"]) == 0
+    assert len(payload["props"]) == 0
+
+    # Search for "jones" — should match character only
+    resp2 = client.get(f"/api/projects/{project_id}/search?q=jones")
+    assert resp2.status_code == 200
+    payload2 = resp2.json()
+    assert len(payload2["characters"]) == 1
+    assert payload2["characters"][0]["display_name"] == "Detective Jones"
+    assert len(payload2["scenes"]) == 0
+
+    # Search for "revolver" — should match prop
+    resp3 = client.get(f"/api/projects/{project_id}/search?q=revolver")
+    assert resp3.status_code == 200
+    payload3 = resp3.json()
+    assert len(payload3["props"]) == 1
+    assert payload3["props"][0]["display_name"] == "Revolver"
+
+    # Empty query returns empty results
+    resp4 = client.get(f"/api/projects/{project_id}/search?q=")
+    assert resp4.status_code == 200
+    payload4 = resp4.json()
+    assert payload4["scenes"] == []
+    assert payload4["characters"] == []
+
+
+def test_search_requires_open_project(tmp_path: Path) -> None:
+    """Test that searching a non-opened project returns 404."""
+    client = _make_client(tmp_path)
+    resp = client.get("/api/projects/unknown/search?q=test")
+    assert resp.status_code == 404
+    assert resp.json()["code"] == "project_not_opened"
+
+
 def test_project_scoped_endpoint_requires_open_project(tmp_path: Path) -> None:
     client = _make_client(tmp_path)
     response = client.get("/api/projects/unknown/artifacts")

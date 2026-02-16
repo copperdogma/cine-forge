@@ -23,7 +23,6 @@ import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { RightPanelProvider, useRightPanel, useInspector } from '@/lib/right-panel'
 import { CommandPalette } from '@/components/CommandPalette'
-import { GlobalSearch } from '@/components/GlobalSearch'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
 import { useShortcuts } from '@/lib/shortcuts'
@@ -86,7 +85,6 @@ function ShellInner() {
         onToggleSidebar={() => setNavOpen(v => !v)}
         onToggleInspector={() => panel.toggle()}
       />
-      <GlobalSearch />
       {/* Keyboard-triggered settings dialog */}
       <ProjectSettings
         projectId={projectId ?? ''}

@@ -18,9 +18,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useState, useMemo } from 'react'
-import { VariationalReview, mockVariations } from '@/components/VariationalReview'
+import { VariationalReview } from '@/components/VariationalReview'
+import type { Variation } from '@/components/VariationalReview'
 import { toast } from 'sonner'
-import { useArtifactGroups } from '@/lib/hooks'
+import { useArtifactGroups, useRuns } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 
 type InboxItemType = 'stale' | 'review' | 'error'
@@ -35,24 +36,14 @@ interface InboxItem {
   timestamp: number
 }
 
-// Mock items for types not yet backed by API
-// TODO: Wire to run events API for errors, review requests
-const mockNonStaleItems: InboxItem[] = [
+
+// Placeholder until multi-model variation generation is implemented
+const placeholderVariations: Variation[] = [
   {
-    id: 'mock-error-1',
-    type: 'error',
-    title: 'Narrative Analysis failed at theme extraction',
-    description: 'LLM returned malformed JSON. May need to re-run with a stronger model.',
-    timestamp: Date.now() - 14_400_000,
-  },
-  {
-    id: 'mock-review-1',
-    type: 'review',
-    title: 'World Bible ready for review',
-    description: 'First version generated. Review for accuracy before downstream stages use it.',
-    artifact_type: 'world_bible',
-    entity_id: 'project',
-    timestamp: Date.now() - 28_800_000,
+    id: 'placeholder-1',
+    model: 'default',
+    confidence: 0,
+    content: 'Multi-model variation generation is not yet available. Approve the current version or re-run with different settings.',
   },
 ]
 
@@ -186,6 +177,7 @@ export default function ProjectInbox() {
   const [reviewingId, setReviewingId] = useState<string | null>(null)
 
   const { data: artifactGroups, isLoading, error, refetch } = useArtifactGroups(projectId)
+  const { data: runs } = useRuns(projectId)
 
   // Derive stale items from artifact groups
   const staleItems = useMemo<InboxItem[]>(() => {
@@ -199,16 +191,52 @@ export default function ProjectInbox() {
         description: 'Upstream inputs have changed since this artifact was produced.',
         artifact_type: group.artifact_type,
         entity_id: group.entity_id ?? undefined,
-        timestamp: 0, // No real timestamp available from API yet
+        timestamp: 0,
       }))
   }, [artifactGroups])
 
-  // Combine real stale items with mock items for other types
-  const allItems = useMemo(() => [...staleItems, ...mockNonStaleItems], [staleItems])
+  // Derive error items from failed runs
+  const errorItems = useMemo<InboxItem[]>(() => {
+    if (!runs) return []
+    return runs
+      .filter(run => run.status === 'failed')
+      .map(run => ({
+        id: `error-${run.run_id}`,
+        type: 'error' as const,
+        title: `Run ${run.run_id} failed`,
+        description: 'Pipeline execution failed. Review the run details and retry.',
+        timestamp: (run.finished_at ?? run.started_at ?? 0) * 1000,
+      }))
+  }, [runs])
+
+  // Derive review items from new (v1) bible artifacts that may need human review
+  const reviewItems = useMemo<InboxItem[]>(() => {
+    if (!artifactGroups) return []
+    return artifactGroups
+      .filter(group =>
+        group.artifact_type === 'bible_manifest' &&
+        group.latest_version === 1 &&
+        group.health !== 'stale'
+      )
+      .map((group, index) => ({
+        id: `review-${group.artifact_type}-${group.entity_id ?? 'null'}-${index}`,
+        type: 'review' as const,
+        title: `${group.entity_id ?? 'Unknown'} — ${formatArtifactType(group.artifact_type)} ready for review`,
+        description: 'First version generated. Review for accuracy before downstream stages use it.',
+        artifact_type: group.artifact_type,
+        entity_id: group.entity_id ?? undefined,
+        timestamp: 0,
+      }))
+  }, [artifactGroups])
+
+  const allItems = useMemo(
+    () => [...staleItems, ...errorItems, ...reviewItems],
+    [staleItems, errorItems, reviewItems],
+  )
 
   const staleCount = staleItems.length
-  const errorCount = mockNonStaleItems.filter(i => i.type === 'error').length
-  const reviewCount = mockNonStaleItems.filter(i => i.type === 'review').length
+  const errorCount = errorItems.length
+  const reviewCount = reviewItems.length
 
   // Loading state
   if (isLoading) {
@@ -326,7 +354,7 @@ export default function ProjectInbox() {
             <VariationalReview
               title={item?.title ?? 'Artifact Review'}
               artifactType={item?.artifact_type ?? 'unknown'}
-              variations={mockVariations}
+              variations={placeholderVariations}
               onRegenerate={(id) => toast.info(`Regenerating variation ${id}`)}
               onApprove={() => {
                 toast.success('Variation approved!')

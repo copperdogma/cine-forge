@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 
-interface Variation {
+export interface Variation {
   id: string
   model: string
   confidence: number
@@ -198,52 +198,3 @@ export function VariationalReview({
     </div>
   )
 }
-
-// Mock data for demonstration
-export const mockVariations: Variation[] = [
-  {
-    id: "var-1",
-    model: "claude-opus-4",
-    confidence: 92,
-    content: `Rick Deckard is a complex, world-weary protagonist haunted by the ambiguity of his own existence. A former blade runner reluctantly pulled back into service, he embodies the moral exhaustion of enforcing an unjust system while questioning the very nature of humanity and artificial life.
-
-His character arc centers on the gradual erosion of his certainty—initially treating replicants as mere machines to be "retired," he comes to recognize their capacity for emotion, memory, and suffering. This recognition forces him to confront uncomfortable truths about empathy, autonomy, and what it means to be human in a world where the line between natural and artificial has blurred beyond recognition.
-
-Deckard's relationship with Rachael catalyzes his transformation. Her artificial memories feel as real to her as his own do to him, raising the existential question: if synthetic experiences can produce genuine feelings, what makes "real" humanity superior? This relationship becomes both his salvation and his curse, as love for a replicant destined to die young forces him to choose between the system he once served and a fleeting chance at authentic connection.`,
-    highlights: [
-      "Emphasizes existential ambiguity",
-      "Focus on moral exhaustion",
-      "Rachael as catalytic relationship",
-    ],
-  },
-  {
-    id: "var-2",
-    model: "gpt-4o",
-    confidence: 85,
-    content: `Rick Deckard is a disillusioned detective navigating a decaying Los Angeles in 2019, tasked with hunting down rogue replicants—bioengineered beings virtually indistinguishable from humans. Once a skilled blade runner, Deckard has grown cynical and detached, his sense of purpose eroded by years of morally compromising work.
-
-Throughout the narrative, Deckard undergoes a profound transformation. Initially viewing replicants as dangerous tools to be eliminated, his encounters with them—particularly Roy Batty and Rachael—force him to reckon with their humanity. The replicants' desperate yearning for life and identity mirrors his own spiritual emptiness, creating an unexpected symmetry between hunter and hunted.
-
-His evolving relationship with Rachael serves as the emotional core of his journey. As he falls for her, knowing she is a replicant with implanted memories and a predetermined expiration date, Deckard must confront the arbitrary nature of the distinctions he's built his career upon. The film leaves ambiguous whether Deckard himself might be a replicant—a question that underscores the central theme: the measure of humanity lies not in origin, but in the depth of one's emotional experience.`,
-    highlights: [
-      "Noir detective framing",
-      "Hunter-hunted symmetry",
-      "Ambiguous replicant status",
-    ],
-  },
-  {
-    id: "var-3",
-    model: "claude-sonnet-4",
-    confidence: 78,
-    content: `Rick Deckard is a burned-out blade runner operating in a dystopian future where the boundaries between human and machine have become dangerously fluid. Hardened by his profession, he approaches his work with cold professionalism, seeing replicants as problems to be solved rather than beings with inner lives.
-
-His character journey is one of reluctant awakening. Each replicant he encounters chips away at his detachment—Leon's desperate violence, Zhora's survival instinct, Pris's childlike vulnerability, and Roy Batty's poetic rage against mortality. These encounters accumulate into a crisis of conscience that Deckard can no longer suppress.
-
-The introduction of Rachael represents the breaking point. Unlike previous models, she doesn't know she's a replicant—her implanted memories are so convincing that she believes herself fully human. Deckard's growing attachment to her forces him to acknowledge that the empathy he's relied upon to distinguish humans from replicants is not a biological marker but a cultivated capacity that replicants can possess in equal or greater measure. His final choice to flee with Rachael is both an act of rebellion against the dehumanizing system he served and an acceptance of a connection that transcends the artificial categories imposed by his world.`,
-    highlights: [
-      "Reluctant awakening arc",
-      "Accumulation of encounters",
-      "Empathy as cultivated capacity",
-    ],
-  },
-]

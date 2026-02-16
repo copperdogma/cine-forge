@@ -17,6 +17,7 @@ import type {
   RunStartPayload,
   RunStateResponse,
   RunSummary,
+  SearchResponse,
   UploadedInputResponse,
 } from './types'
 import * as api from './api'
@@ -29,6 +30,17 @@ export interface Scene {
   intExt: 'INT' | 'EXT' | 'INT/EXT'
   timeOfDay: string
   summary: string
+}
+
+// --- Search ---
+
+export function useSearch(projectId: string | undefined, query: string) {
+  return useQuery<SearchResponse>({
+    queryKey: ['search', projectId, query],
+    queryFn: () => api.searchProject(projectId!, query),
+    enabled: !!projectId && query.length > 0,
+    staleTime: 30_000,
+  })
 }
 
 // --- Recipes ---

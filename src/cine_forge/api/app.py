@@ -29,6 +29,7 @@ from cine_forge.api.models import (
     RunStartResponse,
     RunStateResponse,
     RunSummary,
+    SearchResponse,
     SlugPreviewRequest,
     SlugPreviewResponse,
     UploadedInputResponse,
@@ -150,6 +151,10 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     async def get_project_input_content(project_id: str, filename: str) -> PlainTextResponse:
         content = service.read_project_input(project_id, filename)
         return PlainTextResponse(content)
+
+    @app.get("/api/projects/{project_id}/search", response_model=SearchResponse)
+    async def search_project(project_id: str, q: str = "") -> SearchResponse:
+        return SearchResponse.model_validate(service.search_entities(project_id, q))
 
     @app.get("/api/projects/{project_id}/chat")
     async def list_chat_messages(project_id: str) -> list[dict]:

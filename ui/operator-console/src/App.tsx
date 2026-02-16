@@ -13,7 +13,6 @@ import ProjectArtifacts from '@/pages/ProjectArtifacts'
 import ArtifactDetail from '@/pages/ArtifactDetail'
 import ProjectInbox from '@/pages/ProjectInbox'
 import ThemeShowcase from '@/pages/ThemeShowcase'
-import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,7 +49,6 @@ export default function App() {
             </Routes>
           </div>
           <Toaster richColors position="bottom-right" />
-          <KeyboardShortcutsHelp />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

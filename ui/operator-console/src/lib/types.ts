@@ -165,3 +165,27 @@ export type ChatMessage = {
   actions?: ChatAction[]
   needsAction?: boolean
 }
+
+// --- Search ---
+
+export type SearchResultScene = {
+  scene_id: string
+  heading: string
+  location: string
+  time_of_day: string
+  int_ext: string
+}
+
+export type SearchResultEntity = {
+  entity_id: string
+  display_name: string
+  entity_type: string
+}
+
+export type SearchResponse = {
+  query: string
+  scenes: SearchResultScene[]
+  characters: SearchResultEntity[]
+  locations: SearchResultEntity[]
+  props: SearchResultEntity[]
+}

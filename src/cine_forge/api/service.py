@@ -655,6 +655,86 @@ class OperatorConsoleService:
             f.write(json.dumps(message, separators=(",", ":")) + "\n")
         return message
 
+    def search_entities(self, project_id: str, query: str) -> dict[str, Any]:
+        """Search across scenes, characters, locations, and props for a project."""
+        project_path = self.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+        q = query.lower().strip()
+        if not q:
+            return {"query": query, "scenes": [], "characters": [], "locations": [], "props": []}
+
+        scenes: list[dict[str, Any]] = []
+        characters: list[dict[str, Any]] = []
+        locations: list[dict[str, Any]] = []
+        props: list[dict[str, Any]] = []
+
+        # Search scene_index artifact for scene headings/locations
+        scene_index_refs = store.list_versions(artifact_type="scene_index", entity_id=None)
+        if scene_index_refs:
+            latest = scene_index_refs[-1]
+            try:
+                artifact = store.load_artifact(latest)
+                raw = artifact.data
+                data = raw if isinstance(raw, dict) else raw.model_dump()
+                for entry in data.get("entries", []):
+                    heading = entry.get("heading", "")
+                    loc = entry.get("location", "")
+                    tod = entry.get("time_of_day", "")
+                    if q in heading.lower() or q in loc.lower() or q in tod.lower():
+                        first_word = heading.split(" ")[0].rstrip(".") if heading else ""
+                        int_ext = first_word if first_word in ("INT", "EXT", "INT/EXT") else ""
+                        scenes.append({
+                            "scene_id": entry.get("scene_id", ""),
+                            "heading": heading,
+                            "location": loc,
+                            "time_of_day": tod,
+                            "int_ext": int_ext,
+                        })
+            except Exception:
+                log.warning("Failed to load scene_index for search", exc_info=True)
+
+        # Search bible manifests for characters, locations, props
+        artifacts_root = project_path / "artifacts"
+        bibles_root = artifacts_root / "bibles"
+        if bibles_root.exists():
+            for entity_dir in sorted(p for p in bibles_root.iterdir() if p.is_dir()):
+                entity_id = entity_dir.name
+                refs = store.list_versions(artifact_type="bible_manifest", entity_id=entity_id)
+                if not refs:
+                    continue
+                try:
+                    artifact = store.load_artifact(refs[-1])
+                    raw = artifact.data
+                    data = raw if isinstance(raw, dict) else raw.model_dump()
+                    display_name = data.get("display_name", entity_id)
+                    entity_type = data.get("entity_type", "")
+
+                    if q in display_name.lower() or q in entity_id.lower():
+                        entry = {
+                            "entity_id": entity_id,
+                            "display_name": display_name,
+                            "entity_type": entity_type,
+                        }
+                        if entity_type == "character":
+                            characters.append(entry)
+                        elif entity_type == "location":
+                            locations.append(entry)
+                        elif entity_type == "prop":
+                            props.append(entry)
+                except Exception:
+                    log.warning(
+                        "Failed to load bible manifest %s for search",
+                        entity_id, exc_info=True,
+                    )
+
+        return {
+            "query": query,
+            "scenes": scenes,
+            "characters": characters,
+            "locations": locations,
+            "props": props,
+        }
+
     def list_recipes(self) -> list[dict[str, Any]]:
         """List available recipe files from configs/recipes/."""
         recipes_dir = self.workspace_root / "configs" / "recipes"
