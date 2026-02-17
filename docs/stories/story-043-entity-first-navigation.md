@@ -121,7 +121,7 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 ## Tasks
 
 - [x] Phase 1: Sidebar redesign + new routes + list pages
-- [ ] Phase 2: Entity detail pages (scene, character, location, prop)
+- [x] Phase 2: Entity detail pages (scene, character, location, prop)
 - [ ] Phase 3: Script ↔ Scene bidirectional linking
 - [ ] Phase 4: Polish, empty states, screenshot verification
 
@@ -137,3 +137,12 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 - **Entity detail page**: Phase 1 wrapper that resolves latest artifact version and renders existing viewers
 - **Branch**: `feature/043-entity-first-navigation` in worktree `cine-forge-043`
 - **Next**: Phase 2 — Enrich entity detail pages with cross-references (scene appearances, relationships, continuity)
+
+20260216-1630 — Phase 2 complete: Rich entity detail pages with cross-references
+- **Result**: Build passes. EntityDetailPage.tsx rewritten with cross-reference components.
+- **Files modified**: `EntityDetailPage.tsx` (major rewrite), `hooks.ts` (added `useEntityGraph`)
+- **SceneAppearances**: Reads `scene_presence` from bible data, renders clickable scene links
+- **RelationshipsSection**: Fetches entity_graph artifact, filters edges for current entity, shows related entities with links
+- **SceneEntityRoster**: For scene detail pages — lists characters_present and location with clickable entity links
+- **Entity ID resolution**: Fuzzy matching via `resolveEntityId()` — normalizes names/IDs for cross-linking
+- **Next**: Phase 3 — Script ↔ Scene bidirectional linking
