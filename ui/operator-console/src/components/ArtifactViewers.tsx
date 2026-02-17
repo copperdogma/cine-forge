@@ -363,7 +363,7 @@ export function ProfileViewer({
           <Separator />
           <CollapsibleSection title="Inferred Traits">
             <div className="space-y-2">
-              {inferredTraits.slice(0, 5).map((traitObj, i) => {
+              {inferredTraits.map((traitObj, i) => {
                 if (!isObject(traitObj)) return null
                 const trait = getString(traitObj, 'trait')
                 const value = getString(traitObj, 'value')
@@ -418,16 +418,11 @@ export function ProfileViewer({
             icon={<Film className="h-4 w-4 text-muted-foreground" />}
           >
             <div className="flex flex-wrap gap-1">
-              {scenePresence.slice(0, 10).map((scene, i) => (
+              {scenePresence.map((scene, i) => (
                 <Badge key={i} variant="outline" className="text-xs font-mono">
                   {String(scene)}
                 </Badge>
               ))}
-              {scenePresence.length > 10 && (
-                <span className="text-xs text-muted-foreground self-center">
-                  +{scenePresence.length - 10} more
-                </span>
-              )}
             </div>
           </CollapsibleSection>
         </>
@@ -439,7 +434,7 @@ export function ProfileViewer({
           <Separator />
           <CollapsibleSection title="Evidence (sample)">
             <div className="space-y-2">
-              {explicitEvidence.slice(0, 3).map((evidenceObj, i) => {
+              {explicitEvidence.map((evidenceObj, i) => {
                 if (!isObject(evidenceObj)) return null
                 const trait = getString(evidenceObj, 'trait')
                 const quote = getString(evidenceObj, 'quote')
@@ -596,8 +591,8 @@ export function SceneViewer({ data }: { data: Record<string, unknown> }) {
         <>
           <Separator />
           <CollapsibleSection title="Script Elements">
-            <div className="max-h-[300px] overflow-y-auto rounded-md bg-muted p-3 space-y-1">
-              {elements.slice(0, 20).map((elemObj, i) => {
+            <div className="max-h-[600px] overflow-y-auto rounded-md bg-muted p-3 space-y-1">
+              {elements.map((elemObj, i) => {
                 if (!isObject(elemObj)) return null
                 const elementType = getString(elemObj, 'element_type')
                 const content = getString(elemObj, 'content')
@@ -620,11 +615,6 @@ export function SceneViewer({ data }: { data: Record<string, unknown> }) {
                   </div>
                 )
               })}
-              {elements.length > 20 && (
-                <p className="text-xs text-muted-foreground text-center pt-2">
-                  +{elements.length - 20} more elements
-                </p>
-              )}
             </div>
           </CollapsibleSection>
         </>

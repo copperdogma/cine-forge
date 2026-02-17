@@ -76,7 +76,7 @@ NOTES from Cam:
 | 039 | Apply Model Selections to Production | Cross-Cutting | Medium | To Do | [story-039](stories/story-039-apply-model-selections.md) |
 | 040 | Pipeline Performance Optimization | Cross-Cutting | High | Done | [story-040](stories/story-040-pipeline-performance-optimization.md) |
 | 041 | Artifact Quality Improvements | Cross-Cutting | Medium | To Do | [story-041](stories/story-041-artifact-quality-improvements.md) |
-| 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Draft | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
+| 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Done | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 
 ## Phase Summary
 

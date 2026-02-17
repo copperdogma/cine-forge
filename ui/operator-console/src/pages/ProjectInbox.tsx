@@ -1,7 +1,6 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
   AlertTriangle,
-  RefreshCw,
   Eye,
   XCircle,
   CheckCircle2,
@@ -17,10 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useState, useMemo } from 'react'
-import { VariationalReview } from '@/components/VariationalReview'
-import type { Variation } from '@/components/VariationalReview'
-import { toast } from 'sonner'
+import { useMemo } from 'react'
 import { useArtifactGroups, useRuns } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 
@@ -33,19 +29,12 @@ interface InboxItem {
   description: string
   artifact_type?: string
   entity_id?: string
+  version?: number
+  run_id?: string
   timestamp: number
 }
 
 
-// Placeholder until multi-model variation generation is implemented
-const placeholderVariations: Variation[] = [
-  {
-    id: 'placeholder-1',
-    model: 'default',
-    confidence: 0,
-    content: 'Multi-model variation generation is not yet available. Approve the current version or re-run with different settings.',
-  },
-]
 
 function formatArtifactType(type: string): string {
   return type
@@ -117,19 +106,28 @@ function itemIcon(type: InboxItemType) {
   }
 }
 
-function itemAction(type: InboxItemType, itemId: string, onReview: (id: string) => void) {
-  switch (type) {
+function itemAction(
+  item: InboxItem,
+  projectId: string | undefined,
+  navigate: (path: string) => void,
+) {
+  switch (item.type) {
     case 'stale':
       return (
         <Button
           variant="outline"
           size="sm"
           className="text-xs gap-1.5"
-          aria-label="Re-run pipeline to regenerate stale artifact"
-          onClick={(e) => { e.stopPropagation(); toast.info('Re-run triggered') }}
+          aria-label="View stale artifact"
+          onClick={(e) => {
+            e.stopPropagation()
+            if (projectId && item.artifact_type && item.entity_id) {
+              navigate(`/${projectId}/artifacts/${item.artifact_type}/${item.entity_id}/1`)
+            }
+          }}
         >
-          <RefreshCw className="h-3 w-3" />
-          Re-run
+          <Eye className="h-3 w-3" />
+          View
         </Button>
       )
     case 'error':
@@ -138,11 +136,16 @@ function itemAction(type: InboxItemType, itemId: string, onReview: (id: string) 
           variant="outline"
           size="sm"
           className="text-xs gap-1.5"
-          aria-label="Retry failed pipeline stage"
-          onClick={(e) => { e.stopPropagation(); toast.info('Retry triggered') }}
+          aria-label="View failed run details"
+          onClick={(e) => {
+            e.stopPropagation()
+            if (projectId && item.run_id) {
+              navigate(`/${projectId}/run/${item.run_id}`)
+            }
+          }}
         >
-          <RefreshCw className="h-3 w-3" />
-          Retry
+          <Eye className="h-3 w-3" />
+          View Run
         </Button>
       )
     case 'review':
@@ -151,8 +154,13 @@ function itemAction(type: InboxItemType, itemId: string, onReview: (id: string) 
           variant="outline"
           size="sm"
           className="text-xs gap-1.5"
-          aria-label="Review artifact variations"
-          onClick={(e) => { e.stopPropagation(); onReview(itemId) }}
+          aria-label="Review artifact"
+          onClick={(e) => {
+            e.stopPropagation()
+            if (projectId && item.artifact_type && item.entity_id) {
+              navigate(`/${projectId}/artifacts/${item.artifact_type}/${item.entity_id}/${item.version ?? 1}`)
+            }
+          }}
         >
           <Eye className="h-3 w-3" />
           Review
@@ -174,7 +182,7 @@ function timeAgo(ms: number): string {
 
 export default function ProjectInbox() {
   const { projectId } = useParams<{ projectId: string }>()
-  const [reviewingId, setReviewingId] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const { data: artifactGroups, isLoading, error, refetch } = useArtifactGroups(projectId)
   const { data: runs } = useRuns(projectId)
@@ -205,16 +213,18 @@ export default function ProjectInbox() {
         type: 'error' as const,
         title: `Run ${run.run_id} failed`,
         description: 'Pipeline execution failed. Review the run details and retry.',
+        run_id: run.run_id,
         timestamp: (run.finished_at ?? run.started_at ?? 0) * 1000,
       }))
   }, [runs])
 
   // Derive review items from new (v1) bible artifacts that may need human review
+  const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
   const reviewItems = useMemo<InboxItem[]>(() => {
     if (!artifactGroups) return []
     return artifactGroups
       .filter(group =>
-        group.artifact_type === 'bible_manifest' &&
+        BIBLE_TYPES.includes(group.artifact_type) &&
         group.latest_version === 1 &&
         group.health !== 'stale'
       )
@@ -225,6 +235,7 @@ export default function ProjectInbox() {
         description: 'First version generated. Review for accuracy before downstream stages use it.',
         artifact_type: group.artifact_type,
         entity_id: group.entity_id ?? undefined,
+        version: group.latest_version,
         timestamp: 0,
       }))
   }, [artifactGroups])
@@ -330,7 +341,7 @@ export default function ProjectInbox() {
                     </p>
                   </div>
                   <div className="shrink-0 mt-0.5">
-                    {itemAction(item.type, item.id, setReviewingId)}
+                    {itemAction(item, projectId, navigate)}
                   </div>
                 </div>
                 {i < allItems.length - 1 && <Separator />}
@@ -340,30 +351,6 @@ export default function ProjectInbox() {
         </Card>
       )}
 
-      {/* Variational Review Panel */}
-      {reviewingId && (() => {
-        const item = allItems.find(i => i.id === reviewingId)
-        return (
-          <div className="mt-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">AI Review</h2>
-              <Button variant="ghost" size="sm" aria-label="Dismiss review panel" onClick={() => setReviewingId(null)}>
-                Dismiss
-              </Button>
-            </div>
-            <VariationalReview
-              title={item?.title ?? 'Artifact Review'}
-              artifactType={item?.artifact_type ?? 'unknown'}
-              variations={placeholderVariations}
-              onRegenerate={(id) => toast.info(`Regenerating variation ${id}`)}
-              onApprove={() => {
-                toast.success('Variation approved!')
-                setReviewingId(null)
-              }}
-            />
-          </div>
-        )
-      })()}
     </div>
   )
 }

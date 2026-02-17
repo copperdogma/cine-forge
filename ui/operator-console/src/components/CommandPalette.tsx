@@ -305,7 +305,7 @@ export function CommandPalette({
                     onSelect={() =>
                       runCommand(() => {
                         if (projectId)
-                          navigate(`/${projectId}/scenes/${scene.scene_id}`)
+                          navigate(`/${projectId}/artifacts/scene/${scene.scene_id}/1`)
                       })
                     }
                   >
@@ -337,7 +337,7 @@ export function CommandPalette({
                       runCommand(() => {
                         if (projectId)
                           navigate(
-                            `/${projectId}/characters/${char.entity_id}`
+                            `/${projectId}/artifacts/${char.artifact_type}/${char.entity_id}/1`
                           )
                       })
                     }
@@ -361,7 +361,7 @@ export function CommandPalette({
                       runCommand(() => {
                         if (projectId)
                           navigate(
-                            `/${projectId}/locations/${loc.entity_id}`
+                            `/${projectId}/artifacts/${loc.artifact_type}/${loc.entity_id}/1`
                           )
                       })
                     }
@@ -382,7 +382,7 @@ export function CommandPalette({
                     onSelect={() =>
                       runCommand(() => {
                         if (projectId)
-                          navigate(`/${projectId}/props/${prop.entity_id}`)
+                          navigate(`/${projectId}/artifacts/${prop.artifact_type}/${prop.entity_id}/1`)
                       })
                     }
                   >

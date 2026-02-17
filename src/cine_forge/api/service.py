@@ -706,14 +706,23 @@ class OperatorConsoleService:
                     artifact = store.load_artifact(refs[-1])
                     raw = artifact.data
                     data = raw if isinstance(raw, dict) else raw.model_dump()
-                    display_name = data.get("display_name", entity_id)
+                    # The manifest's own entity_id is unprefixed (e.g., "mariner")
+                    # while the directory name is prefixed (e.g., "character_mariner").
+                    # Use the manifest's entity_id for navigation.
+                    manifest_entity_id = data.get("entity_id", entity_id)
+                    display_name = data.get("display_name", manifest_entity_id)
                     entity_type = data.get("entity_type", "")
+                    artifact_type = f"{entity_type}_bible" if entity_type else ""
 
-                    if q in display_name.lower() or q in entity_id.lower():
+                    searchable = (
+                        display_name.lower(), manifest_entity_id.lower(), entity_id.lower(),
+                    )
+                    if any(q in s for s in searchable):
                         entry = {
-                            "entity_id": entity_id,
+                            "entity_id": manifest_entity_id,
                             "display_name": display_name,
                             "entity_type": entity_type,
+                            "artifact_type": artifact_type,
                         }
                         if entity_type == "character":
                             characters.append(entry)

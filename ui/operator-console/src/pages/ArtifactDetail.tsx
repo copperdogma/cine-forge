@@ -8,7 +8,6 @@ import {
   Clapperboard,
   MessageSquare,
   ArrowLeft,
-  ChevronRight,
   Clock,
   GitBranch,
   AlertTriangle,
@@ -225,6 +224,16 @@ export default function ArtifactDetail() {
   const currentVersion = versions?.find(v => v.version === versionNum)
   const health = currentVersion?.health ?? null
 
+  // Extract a human-friendly display name from the artifact data
+  const data = artifact?.payload?.data as Record<string, unknown> | undefined
+  const displayName = (
+    data?.display_name ??
+    data?.name ??
+    data?.heading ??
+    data?.scene_heading ??
+    data?.title
+  ) as string | undefined
+
   function switchVersion(newVersion: number) {
     navigate(`/${projectId}/artifacts/${artifactType}/${entityId}/${newVersion}`)
   }
@@ -356,15 +365,23 @@ export default function ArtifactDetail() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-2xl font-bold tracking-tight truncate">{meta.label}</h1>
+              <h1 className="text-2xl font-bold tracking-tight truncate">
+                {displayName ?? entityId ?? meta.label}
+              </h1>
               {healthBadge(health)}
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span className="truncate">{entityId ?? 'project'}</span>
-              <ChevronRight className="h-4 w-4 flex-shrink-0" />
+              <span>{meta.label}</span>
+              {entityId && displayName && (
+                <>
+                  <span className="text-muted-foreground/50">&middot;</span>
+                  <span className="truncate font-mono text-xs">{entityId}</span>
+                </>
+              )}
+              <span className="text-muted-foreground/50">&middot;</span>
               <span className="flex items-center gap-1.5">
                 <GitBranch className="h-3.5 w-3.5" />
-                Version {versionNum}
+                v{versionNum}
               </span>
             </div>
           </div>

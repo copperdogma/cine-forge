@@ -66,18 +66,39 @@ function ShellInner() {
     { key: ',', meta: true, action: () => setSettingsOpen(true), label: 'Open settings' },
   ])
 
-  // Determine current page from pathname (check longer paths first)
-  const getCurrentPage = () => {
+  // Build breadcrumb segments from the current path
+  const getBreadcrumbs = (): { label: string; path?: string }[] => {
     const path = location.pathname
-    if (path.includes('/runs')) return 'Runs'
-    if (path.includes('/run')) return 'Run Details'
-    if (path.includes('/artifacts')) return 'Artifacts'
-    if (path.includes('/inbox')) return 'Inbox'
-    if (path === `/${projectId}`) return 'Home'
-    return null
+    if (!projectId) return []
+
+    // Artifact detail: /:projectId/artifacts/:type/:entityId/:version
+    const artifactMatch = path.match(new RegExp(`^/${projectId}/artifacts/([^/]+)/([^/]+)/(\\d+)$`))
+    if (artifactMatch) {
+      const [, artifactType, entityId] = artifactMatch
+      const typeLabel = artifactType.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+      return [
+        { label: 'Artifacts', path: `/${projectId}/artifacts` },
+        { label: `${typeLabel} — ${entityId}` },
+      ]
+    }
+
+    // Run detail: /:projectId/run/:runId
+    const runMatch = path.match(new RegExp(`^/${projectId}/run/([^/]+)$`))
+    if (runMatch) {
+      return [
+        { label: 'Runs', path: `/${projectId}/runs` },
+        { label: runMatch[1] },
+      ]
+    }
+
+    if (path.includes('/runs')) return [{ label: 'Runs' }]
+    if (path.includes('/artifacts')) return [{ label: 'Artifacts' }]
+    if (path.includes('/inbox')) return [{ label: 'Inbox' }]
+    if (path === `/${projectId}`) return [{ label: 'Home' }]
+    return []
   }
 
-  const currentPage = getCurrentPage()
+  const breadcrumbs = getBreadcrumbs()
 
   return (
     <div className="fixed inset-0 flex overflow-hidden">
@@ -182,12 +203,21 @@ function ShellInner() {
               >
                 {displayName}
               </Link>
-              {currentPage && (
-                <>
+              {breadcrumbs.map((crumb, i) => (
+                <span key={i} className="flex items-center gap-1.5">
                   <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
-                  <span className="text-foreground font-medium">{currentPage}</span>
-                </>
-              )}
+                  {crumb.path ? (
+                    <Link
+                      to={crumb.path}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {crumb.label}
+                    </Link>
+                  ) : (
+                    <span className="text-foreground font-medium truncate max-w-[300px]">{crumb.label}</span>
+                  )}
+                </span>
+              ))}
             </nav>
           )}
 

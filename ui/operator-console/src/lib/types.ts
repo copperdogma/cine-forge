@@ -180,6 +180,7 @@ export type SearchResultEntity = {
   entity_id: string
   display_name: string
   entity_type: string
+  artifact_type: string
 }
 
 export type SearchResponse = {

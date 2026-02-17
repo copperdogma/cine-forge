@@ -4,19 +4,14 @@ import {
   XCircle,
   Clock,
   Loader2,
-  DollarSign,
-  Layers,
   History,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useInspector } from '@/lib/right-panel'
-import { useRuns, useRunState } from '@/lib/hooks'
+import { useRuns } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
-import { cn } from '@/lib/utils'
-import type { RunSummary } from '@/lib/types'
 
 function statusIcon(status: string) {
   switch (status) {
@@ -52,114 +47,6 @@ function timeAgo(ms: number): string {
   return `${days}d ago`
 }
 
-function stageStatusIcon(status: string) {
-  switch (status) {
-    case 'done':
-    case 'skipped_reused':
-      return <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-    case 'failed':
-      return <XCircle className="h-3.5 w-3.5 text-destructive" />
-    case 'running':
-      return <Loader2 className="h-3.5 w-3.5 text-primary animate-spin" />
-    default:
-      return <Clock className="h-3.5 w-3.5 text-muted-foreground/40" />
-  }
-}
-
-function RunInspectorContent({ runId }: { runId: string }) {
-  const { data: runStateData, isLoading } = useRunState(runId)
-
-  if (isLoading) {
-    return (
-      <div className="space-y-3">
-        <Skeleton className="h-4 w-32" />
-        <Skeleton className="h-4 w-48" />
-        <Skeleton className="h-4 w-24" />
-      </div>
-    )
-  }
-
-  if (!runStateData?.state) {
-    return (
-      <p className="text-xs text-muted-foreground">
-        Could not load run details.
-      </p>
-    )
-  }
-
-  const { state } = runStateData
-  const stageEntries = Object.entries(state.stages || {})
-  const doneCount = stageEntries.filter(
-    ([, s]) => s.status === 'done' || s.status === 'skipped_reused'
-  ).length
-
-  const formatDuration = (seconds: number) => {
-    if (!seconds || seconds <= 0) return null
-    const rounded = Math.round(seconds)
-    if (rounded < 60) return `${rounded}s`
-    const mins = Math.floor(rounded / 60)
-    const secs = rounded % 60
-    return `${mins}m ${secs}s`
-  }
-
-  return (
-    <div className="space-y-4">
-      {/* Summary */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          {statusBadge(state.finished_at ? 'done' : 'running')}
-          <span className="text-xs text-muted-foreground">{state.recipe_id}</span>
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <DollarSign className="h-3 w-3" />
-            ${(state.total_cost_usd ?? 0).toFixed(2)}
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Layers className="h-3 w-3" />
-            {doneCount}/{stageEntries.length} stages
-          </div>
-          {state.started_at && (
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Clock className="h-3 w-3" />
-              {timeAgo(state.started_at * 1000)}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <Separator />
-
-      {/* Stage list */}
-      <div className="space-y-1">
-        <p className="text-xs font-medium text-muted-foreground mb-2">Stages</p>
-        {stageEntries.map(([stageName, stage]) => {
-          const duration = formatDuration(stage.duration_seconds)
-          return (
-            <div key={stageName} className="flex items-center gap-2 py-1.5">
-              {stageStatusIcon(stage.status)}
-              <span
-                className={cn(
-                  'text-xs flex-1',
-                  stage.status === 'pending' ? 'text-muted-foreground' : 'text-foreground',
-                )}
-              >
-                {stageName}
-              </span>
-              {duration && (
-                <span className="text-xs text-muted-foreground">{duration}</span>
-              )}
-              {stage.cost_usd > 0 && (
-                <span className="text-xs text-muted-foreground">${stage.cost_usd.toFixed(2)}</span>
-              )}
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
 function RunListSkeleton() {
   return (
     <Card>
@@ -189,15 +76,7 @@ function RunListSkeleton() {
 export default function ProjectRuns() {
   const { projectId } = useParams()
   const navigate = useNavigate()
-  const inspector = useInspector()
   const { data: runs, isLoading, error, refetch } = useRuns(projectId)
-
-  function selectRun(run: RunSummary) {
-    inspector.open(
-      run.run_id,
-      <RunInspectorContent runId={run.run_id} />,
-    )
-  }
 
   if (isLoading) {
     return (
@@ -260,7 +139,7 @@ export default function ProjectRuns() {
             <div key={run.run_id}>
               <button
                 className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-accent/50 transition-colors"
-                onClick={() => selectRun(run)}
+                onClick={() => navigate(`/${projectId}/run/${run.run_id}`)}
               >
                 {statusIcon(run.status)}
                 <div className="min-w-0 flex-1">

@@ -223,6 +223,7 @@ class SearchResultEntity(BaseModel):
     entity_id: str
     display_name: str
     entity_type: str  # character, location, prop
+    artifact_type: str  # character_bible, location_bible, prop_bible
 
 
 class SearchResponse(BaseModel):
