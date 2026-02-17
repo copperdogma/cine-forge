@@ -480,3 +480,61 @@ def test_edit_artifact_requires_existing_artifact(tmp_path: Path) -> None:
     assert edit_response.status_code == 404
     edit_payload = edit_response.json()
     assert edit_payload["code"] == "artifact_not_found"
+
+
+def test_project_ui_preferences_persist(tmp_path: Path) -> None:
+    """Test that UI preferences can be saved and retrieved via project settings."""
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "pref-test", "Preference Test")
+
+    # Initial project should have empty ui_preferences
+    resp = client.get(f"/api/projects/{project_id}")
+    assert resp.status_code == 200
+    payload = resp.json()
+    assert payload["ui_preferences"] == {}
+
+    # Update with some preferences
+    update_resp = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={
+            "ui_preferences": {
+                "characters.sort": "prominence",
+                "characters.density": "compact",
+            }
+        },
+    )
+    assert update_resp.status_code == 200
+    update_payload = update_resp.json()
+    assert update_payload["ui_preferences"]["characters.sort"] == "prominence"
+    assert update_payload["ui_preferences"]["characters.density"] == "compact"
+
+    # Verify preferences persist across reads
+    resp2 = client.get(f"/api/projects/{project_id}")
+    assert resp2.status_code == 200
+    payload2 = resp2.json()
+    assert payload2["ui_preferences"]["characters.sort"] == "prominence"
+
+    # Update again (shallow merge — new keys added, existing preserved)
+    update_resp2 = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={
+            "ui_preferences": {
+                "locations.sort": "script-order",
+                "characters.density": "medium",  # overwrite existing key
+            }
+        },
+    )
+    assert update_resp2.status_code == 200
+    final_payload = update_resp2.json()
+    assert final_payload["ui_preferences"]["characters.sort"] == "prominence"  # preserved
+    assert final_payload["ui_preferences"]["characters.density"] == "medium"  # updated
+    assert final_payload["ui_preferences"]["locations.sort"] == "script-order"  # added
+
+    # Verify project.json file contains the preferences
+    project_path = tmp_path / "output" / "pref-test"
+    project_json_path = project_path / "project.json"
+    assert project_json_path.exists()
+    project_data = json.loads(project_json_path.read_text(encoding="utf-8"))
+    assert "ui_preferences" in project_data
+    assert project_data["ui_preferences"]["characters.sort"] == "prominence"
+    assert project_data["ui_preferences"]["locations.sort"] == "script-order"

@@ -1,20 +1,20 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Clapperboard } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState, ListSkeleton } from "@/components/StateViews";
 import { EntityListControls, type SortMode, type ViewDensity, type SortDirection } from "@/components/EntityListControls";
-import { useScenes } from "@/lib/hooks";
+import { useScenes, useStickyPreference } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
 export default function ScenesList() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const { data: scenes, isLoading } = useScenes(projectId!);
-  const [sort, setSort] = useState<SortMode>('script-order');
-  const [density, setDensity] = useState<ViewDensity>('medium');
-  const [direction, setDirection] = useState<SortDirection>('asc');
+  const [sort, setSort] = useStickyPreference<SortMode>(projectId, 'scenes.sort', 'script-order');
+  const [density, setDensity] = useStickyPreference<ViewDensity>(projectId, 'scenes.density', 'medium');
+  const [direction, setDirection] = useStickyPreference<SortDirection>(projectId, 'scenes.direction', 'asc');
 
   const sortedScenes = useMemo(() => {
     if (!scenes) return [];

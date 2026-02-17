@@ -13,6 +13,7 @@ export type ProjectSummary = {
   run_count: number
   has_inputs: boolean
   input_files: string[]
+  ui_preferences: Record<string, string>
 }
 
 export type RecentProjectSummary = ProjectSummary & {

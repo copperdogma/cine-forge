@@ -1,11 +1,11 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Users, AlertTriangle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ListSkeleton, EmptyState, ErrorState } from '@/components/StateViews'
 import { EntityListControls, type SortMode, type ViewDensity, type SortDirection } from '@/components/EntityListControls'
-import { useEntityDetails } from '@/lib/hooks'
+import { useEntityDetails, useStickyPreference } from '@/lib/hooks'
 import { cn } from '@/lib/utils'
 
 function formatEntityName(entityId: string | null): string {
@@ -19,9 +19,9 @@ export default function CharactersList() {
   const { projectId } = useParams<{ projectId: string }>()
   const navigate = useNavigate()
   
-  const [sortMode, setSortMode] = useState<SortMode>('script-order')
-  const [viewDensity, setViewDensity] = useState<ViewDensity>('medium')
-  const [direction, setDirection] = useState<SortDirection>('asc')
+  const [sortMode, setSortMode] = useStickyPreference<SortMode>(projectId, 'characters.sort', 'script-order')
+  const [viewDensity, setViewDensity] = useStickyPreference<ViewDensity>(projectId, 'characters.density', 'medium')
+  const [direction, setDirection] = useStickyPreference<SortDirection>(projectId, 'characters.direction', 'asc')
   
   const { data, isLoading, error } = useEntityDetails(projectId!, 'character_bible')
 

@@ -39,6 +39,7 @@ class ProjectSummary(BaseModel):
     run_count: int = Field(ge=0)
     has_inputs: bool = False
     input_files: list[str] = []
+    ui_preferences: dict[str, Any] = Field(default_factory=dict)
 
 
 class RecentProjectSummary(ProjectSummary):
@@ -191,6 +192,7 @@ class ProjectSettingsUpdate(BaseModel):
     """Partial update for project settings (display name, etc.)."""
 
     display_name: str | None = None
+    ui_preferences: dict[str, Any] | None = None
 
 
 class ChatMessagePayload(BaseModel):

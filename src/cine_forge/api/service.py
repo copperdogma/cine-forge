@@ -119,11 +119,37 @@ class OperatorConsoleService:
 
     @staticmethod
     def _write_project_json(
-        project_path: Path, slug: str, display_name: str,
+        project_path: Path,
+        slug: str,
+        display_name: str,
+        ui_preferences: dict[str, Any] | None = None,
     ) -> None:
-        meta = {"slug": slug, "display_name": display_name}
-        (project_path / "project.json").write_text(
-            json.dumps(meta, indent=2), encoding="utf-8",
+        """Write project.json with slug, display_name, and optional ui_preferences.
+
+        Uses a read-modify-write approach to preserve existing data.
+        """
+        pj_path = project_path / "project.json"
+
+        # Read existing data if present
+        existing = {}
+        if pj_path.exists():
+            try:
+                existing = json.loads(pj_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                pass
+
+        # Update with new values
+        existing["slug"] = slug
+        existing["display_name"] = display_name
+
+        # Merge ui_preferences if provided (shallow merge)
+        if ui_preferences is not None:
+            existing_prefs = existing.get("ui_preferences", {})
+            existing_prefs.update(ui_preferences)
+            existing["ui_preferences"] = existing_prefs
+
+        pj_path.write_text(
+            json.dumps(existing, indent=2), encoding="utf-8",
         )
 
     @staticmethod
@@ -137,14 +163,32 @@ class OperatorConsoleService:
             return None
 
     def update_project_settings(
-        self, project_id: str, display_name: str | None = None,
+        self,
+        project_id: str,
+        display_name: str | None = None,
+        ui_preferences: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """Update mutable project settings (display_name, etc.)."""
+        """Update mutable project settings (display_name, ui_preferences, etc.)."""
         path = self.require_project_path(project_id)
         pj = self._read_project_json(path) or {"slug": project_id}
+
+        # Update display_name if provided
         if display_name is not None:
             pj["display_name"] = display_name
-        self._write_project_json(path, pj.get("slug", project_id), pj["display_name"])
+
+        # Shallow-merge ui_preferences if provided
+        if ui_preferences is not None:
+            existing_prefs = pj.get("ui_preferences", {})
+            existing_prefs.update(ui_preferences)
+            pj["ui_preferences"] = existing_prefs
+
+        # Write back with all changes
+        self._write_project_json(
+            path,
+            pj.get("slug", project_id),
+            pj["display_name"],
+            pj.get("ui_preferences"),
+        )
         return self.project_summary(project_id)
 
     def create_project_from_slug(self, slug: str, display_name: str) -> str:
@@ -217,6 +261,7 @@ class OperatorConsoleService:
         # Prefer display_name from project.json, fall back to heuristic
         pj = self._read_project_json(path)
         display_name = (pj or {}).get("display_name") or self._clean_display_name(path, input_files)
+        ui_preferences = (pj or {}).get("ui_preferences", {})
         return {
             "project_id": project_id,
             "display_name": display_name,
@@ -224,6 +269,7 @@ class OperatorConsoleService:
             "run_count": run_count,
             "has_inputs": len(inputs) > 0,
             "input_files": input_files,
+            "ui_preferences": ui_preferences,
         }
 
     @staticmethod

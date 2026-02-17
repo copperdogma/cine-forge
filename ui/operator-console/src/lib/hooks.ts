@@ -70,6 +70,42 @@ export function useProject(projectId: string | undefined) {
   })
 }
 
+/**
+ * Returns a [value, setValue] tuple that reads from project ui_preferences
+ * and persists changes back via the settings API. Falls back to defaultValue
+ * while loading or if the key hasn't been set yet.
+ */
+export function useStickyPreference<T extends string>(
+  projectId: string | undefined,
+  key: string,
+  defaultValue: T,
+): [T, (value: T) => void] {
+  const queryClient = useQueryClient()
+  const { data: project } = useProject(projectId)
+  const currentValue = (project?.ui_preferences?.[key] as T) ?? defaultValue
+
+  const setValue = useRef((value: T) => {
+    if (!projectId) return
+    // Optimistic update
+    queryClient.setQueryData<ProjectSummary>(['projects', projectId], old => {
+      if (!old) return old
+      return {
+        ...old,
+        ui_preferences: { ...old.ui_preferences, [key]: value },
+      }
+    })
+    // Fire-and-forget persist
+    api.updateProjectSettings(projectId, {
+      ui_preferences: { [key]: value },
+    }).catch(() => {
+      // Revert on failure
+      queryClient.invalidateQueries({ queryKey: ['projects', projectId] })
+    })
+  }).current
+
+  return [currentValue, setValue]
+}
+
 export function useCreateProject() {
   const queryClient = useQueryClient()
   return useMutation<ProjectSummary, Error, { slug: string; displayName: string }>({

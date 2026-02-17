@@ -111,7 +111,11 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         project_id: str, request: ProjectSettingsUpdate,
     ) -> ProjectSummary:
         return ProjectSummary.model_validate(
-            service.update_project_settings(project_id, display_name=request.display_name)
+            service.update_project_settings(
+                project_id,
+                display_name=request.display_name,
+                ui_preferences=request.ui_preferences,
+            )
         )
 
     @app.post(

@@ -103,7 +103,7 @@ export function getProject(projectId: string): Promise<ProjectSummary> {
 
 export function updateProjectSettings(
   projectId: string,
-  settings: { display_name?: string },
+  settings: { display_name?: string; ui_preferences?: Record<string, string> },
 ): Promise<ProjectSummary> {
   return request<ProjectSummary>(`/api/projects/${projectId}/settings`, {
     method: 'PATCH',
