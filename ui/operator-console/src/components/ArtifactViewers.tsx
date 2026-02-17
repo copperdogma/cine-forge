@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { cn } from '@/lib/utils'
 import { useState, Suspense, lazy } from 'react'
+import { GlossaryTerm, SectionHelp } from '@/components/GlossaryTerm'
 
 // Lazy load the heavy CodeMirror editor to reduce main bundle size
 const ScreenplayEditor = lazy(() => import('@/components/ScreenplayEditor'))
@@ -14,21 +15,27 @@ function CollapsibleSection({
   title,
   icon,
   defaultOpen = true,
+  helpQuestion,
   children
 }: {
   title: string
   icon?: React.ReactNode
   defaultOpen?: boolean
+  /** If set, a small ? icon appears next to the title. Click sends this question to the chat. */
+  helpQuestion?: string
   children: React.ReactNode
 }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center gap-2 w-full text-left group">
-        <ChevronRight className={cn('h-3.5 w-3.5 text-muted-foreground transition-transform', open && 'rotate-90')} />
-        {icon}
-        <span className="text-xs text-muted-foreground font-medium">{title}</span>
-      </CollapsibleTrigger>
+      <div className="flex items-center gap-1.5">
+        <CollapsibleTrigger className="flex items-center gap-2 text-left group">
+          <ChevronRight className={cn('h-3.5 w-3.5 text-muted-foreground transition-transform', open && 'rotate-90')} />
+          {icon}
+          <span className="text-xs text-muted-foreground font-medium">{title}</span>
+        </CollapsibleTrigger>
+        {helpQuestion && <SectionHelp question={helpQuestion} />}
+      </div>
       <CollapsibleContent className="mt-2">
         {children}
       </CollapsibleContent>
@@ -341,7 +348,7 @@ export function ProfileViewer({
       {profileType === 'character' && narrativeRole && (
         <>
           <Separator />
-          <CollapsibleSection title="Narrative Role">
+          <CollapsibleSection title="Narrative Role" helpQuestion="What does this character's narrative role mean for the story?">
             <Badge className="capitalize">{narrativeRole}</Badge>
           </CollapsibleSection>
         </>
@@ -361,7 +368,7 @@ export function ProfileViewer({
       {profileType === 'character' && inferredTraits.length > 0 && (
         <>
           <Separator />
-          <CollapsibleSection title="Inferred Traits">
+          <CollapsibleSection title="Inferred Traits" helpQuestion="How are character traits inferred from the screenplay?">
             <div className="space-y-2">
               {inferredTraits.map((traitObj, i) => {
                 if (!isObject(traitObj)) return null
@@ -403,7 +410,9 @@ export function ProfileViewer({
         <>
           <Separator />
           <div>
-            <p className="text-xs text-muted-foreground mb-2">Narrative Significance</p>
+            <p className="text-xs text-muted-foreground mb-2">
+              <GlossaryTerm term="narrative significance">Narrative Significance</GlossaryTerm>
+            </p>
             <p className="text-sm leading-relaxed">{narrativeSignificance}</p>
           </div>
         </>
@@ -432,7 +441,7 @@ export function ProfileViewer({
       {profileType === 'character' && explicitEvidence.length > 0 && (
         <>
           <Separator />
-          <CollapsibleSection title="Evidence (sample)">
+          <CollapsibleSection title="Evidence (sample)" helpQuestion="What counts as explicit evidence for character analysis?">
             <div className="space-y-2">
               {explicitEvidence.map((evidenceObj, i) => {
                 if (!isObject(evidenceObj)) return null
@@ -485,15 +494,17 @@ export function SceneViewer({ data }: { data: Record<string, unknown> }) {
             <Badge className="text-xs">Scene {sceneNumber}</Badge>
           )}
           {intExt && (
-            <Badge
-              variant="outline"
-              className={cn(
-                'text-xs',
-                intExt === 'INT' ? 'text-blue-400 border-blue-400/30' : 'text-amber-400 border-amber-400/30',
-              )}
-            >
-              {intExt}
-            </Badge>
+            <GlossaryTerm term={intExt}>
+              <Badge
+                variant="outline"
+                className={cn(
+                  'text-xs',
+                  intExt === 'INT' ? 'text-blue-400 border-blue-400/30' : 'text-amber-400 border-amber-400/30',
+                )}
+              >
+                {intExt}
+              </Badge>
+            </GlossaryTerm>
           )}
           {confidence !== null && (
             <Badge variant="outline" className="text-xs ml-auto">
@@ -562,7 +573,7 @@ export function SceneViewer({ data }: { data: Record<string, unknown> }) {
       {narrativeBeats.length > 0 && (
         <>
           <Separator />
-          <CollapsibleSection title="Narrative Beats">
+          <CollapsibleSection title="Narrative Beats" helpQuestion="What are narrative beats and how were they identified in this scene?">
             <div className="space-y-2">
               {narrativeBeats.map((beatObj, i) => {
                 if (!isObject(beatObj)) return null
@@ -572,9 +583,11 @@ export function SceneViewer({ data }: { data: Record<string, unknown> }) {
                   <Card key={i}>
                     <CardContent className="p-3">
                       {beatType && (
-                        <Badge variant="outline" className="text-xs mb-2 capitalize">
-                          {beatType}
-                        </Badge>
+                        <GlossaryTerm term={beatType}>
+                          <Badge variant="outline" className="text-xs mb-2 capitalize">
+                            {beatType.replace('_', ' ')}
+                          </Badge>
+                        </GlossaryTerm>
                       )}
                       {description && <p className="text-xs">{description}</p>}
                     </CardContent>
@@ -781,7 +794,7 @@ export function EntityGraphViewer({ data }: { data: Record<string, unknown> }) {
       {edges.length > 0 && (
         <>
           <Separator />
-          <CollapsibleSection title="Relationships">
+          <CollapsibleSection title="Relationships" helpQuestion="How is the entity graph constructed and what do these relationships mean?">
             <div className="space-y-2 max-h-[500px] overflow-y-auto">
               {edges.map((edgeObj, i) => {
                 if (!isObject(edgeObj)) return null

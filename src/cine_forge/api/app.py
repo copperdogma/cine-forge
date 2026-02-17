@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import json
 import logging
+from pathlib import Path
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.exceptions import RequestValidationError
@@ -247,7 +246,11 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
     @app.post("/api/projects/{project_id}/chat/stream")
     async def chat_stream(project_id: str, request: ChatStreamRequest) -> StreamingResponse:
-        """Stream an AI chat response using SSE."""
+        """Stream an AI chat response using SSE.
+
+        Sends the full conversation thread (not windowed). The system prompt
+        is lean and stable — dynamic project state is fetched via tools.
+        """
         from cine_forge.ai.chat import (
             build_system_prompt,
             compute_project_state,
@@ -256,7 +259,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
         log = logging.getLogger("cine_forge.api.chat")
 
-        # Assemble context
+        # Assemble minimal context for the system prompt
         try:
             summary = service.project_summary(project_id)
             groups = service.list_artifact_groups(project_id)
@@ -271,20 +274,30 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             ) from exc
 
         state_info = compute_project_state(summary, groups, runs)
-        project_state = state_info["state"]
 
-        system_prompt = build_system_prompt(
-            summary, groups, project_state, state_info=state_info
-        )
+        system_prompt = build_system_prompt(summary, state_info)
 
-        # Build messages array for the API
-        # Include recent chat history for conversational continuity
+        # Build messages array — full conversation thread
+        # Activity notes are mapped to user role with [Activity] prefix
+        # so the AI sees them as context it doesn't need to respond to.
         api_messages: list[dict] = []
-        for msg in request.chat_history[-20:]:  # Last 20 messages for context
-            role = "user" if msg.get("type", "").startswith("user") else "assistant"
+        for msg in request.chat_history:
+            msg_type = msg.get("type", "")
             content = msg.get("content", "")
-            if content:
-                api_messages.append({"role": role, "content": content})
+            if not content:
+                continue
+
+            if msg_type == "activity":
+                # Activity notes: compact context for the AI
+                api_messages.append({
+                    "role": "user",
+                    "content": f"[Activity] {content}",
+                })
+            elif msg_type.startswith("user"):
+                api_messages.append({"role": "user", "content": content})
+            elif msg_type in ("ai_response", "ai_welcome", "ai_suggestion"):
+                api_messages.append({"role": "assistant", "content": content})
+            # Skip status/status_done/tool messages — they're UI chrome
 
         # Add the current user message
         api_messages.append({"role": "user", "content": request.message})
@@ -353,11 +366,8 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             ) from exc
 
         state_info = compute_project_state(summary, groups, runs)
-        project_state = state_info["state"]
 
-        system_prompt = build_system_prompt(
-            summary, groups, project_state, state_info=state_info
-        )
+        system_prompt = build_system_prompt(summary, state_info)
 
         # Build the insight prompt based on trigger
         insight_prompt = build_insight_prompt(request.trigger, request.context)

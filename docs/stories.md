@@ -45,7 +45,9 @@ NOTES from Cam:
 | 011 | Asset State Tracking (Continuity) | 2 — World Building | Medium | Done | [story-011](stories/story-011-continuity-tracking.md) |
 | 011b | Operator Console — Research & Design Decisions | 2.5 — UI | High | Done | [story-011b](stories/story-011b-operator-console.md) |
 | 011c | Resource-oriented Routing | 2.5 — UI | Medium | Done | [story-011c](stories/story-011c-resource-oriented-routing.md) |
-| 011d | Operator Console — Design & Build | 2.5 — UI | High | To Do | [story-011d](stories/story-011d-operator-console-build.md) |
+| 011d | Operator Console — Design & Build | 2.5 — UI | High | Done | [story-011d](stories/story-011d-operator-console-build.md) |
+| 011e | Operator Console — UX Golden Path | 2.5 — UI | High | Done | [story-011e](stories/story-011e-ux-golden-path.md) |
+| 011f | Operator Console — Conversational AI Chat | 2.5 — UI | High | Done | [story-011f](stories/story-011f-conversational-ai-chat.md) |
 | 012 | Timeline Data Artifact | 3 — Timeline | Medium | To Do | [story-012](stories/story-012-timeline-artifact.md) |
 | 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | To Do | [story-013](stories/story-013-track-system.md) |
 | 014 | Role System Foundation | 4 — Role System | High | To Do | [story-014](stories/story-014-role-system-foundation.md) |
@@ -77,6 +79,8 @@ NOTES from Cam:
 | 040 | Pipeline Performance Optimization | Cross-Cutting | High | Done | [story-040](stories/story-040-pipeline-performance-optimization.md) |
 | 041 | Artifact Quality Improvements | Cross-Cutting | Medium | To Do | [story-041](stories/story-041-artifact-quality-improvements.md) |
 | 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Done | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
+| 043 | Entity-First Navigation | 2.5 — UI | High | Draft | [story-043](stories/story-043-entity-first-navigation.md) |
+| 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Draft | [story-044](stories/story-044-mobile-friendly-ui.md) |
 
 ## Phase Summary
 

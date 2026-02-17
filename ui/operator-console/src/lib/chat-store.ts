@@ -3,7 +3,7 @@
 
 import { create } from 'zustand'
 import { postChatMessage } from './api'
-import type { ChatAction, ChatMessage, ChatMessageType } from './types'
+import type { ChatAction, ChatMessage, ChatMessageType, ToolCallStatus } from './types'
 
 /**
  * Migrate messages loaded from JSONL: resolve all ai_status spinners.
@@ -11,9 +11,11 @@ import type { ChatAction, ChatMessage, ChatMessageType } from './types'
  * a past event. Convert them all to ai_status_done (static checkmark).
  */
 function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
-  return messages.map((m) =>
-    m.type === 'ai_status' ? { ...m, type: 'ai_status_done' as const } : m,
-  )
+  return messages
+    .filter((m) => m.type !== 'ai_tool_status') // Remove legacy separate tool messages
+    .map((m) =>
+      m.type === 'ai_status' ? { ...m, type: 'ai_status_done' as const } : m,
+    )
 }
 
 interface ChatStore {
@@ -26,12 +28,18 @@ interface ChatStore {
   loadMessages: (projectId: string, messages: ChatMessage[]) => void
   /** Add a message to store and persist to backend (fire-and-forget). */
   addMessage: (projectId: string, message: ChatMessage) => void
+  /** Post a compact activity note to the chat timeline. */
+  addActivity: (projectId: string, content: string, route?: string) => void
   /** Update the type of an existing message (in-memory only, no backend write). */
   updateMessageType: (projectId: string, messageId: string, newType: ChatMessageType) => void
   /** Update the content of an existing message (in-memory only — for streaming). */
   updateMessageContent: (projectId: string, messageId: string, content: string) => void
   /** Attach actions to an existing message (in-memory only — for proposal buttons). */
   attachActions: (projectId: string, messageId: string, actions: ChatAction[]) => void
+  /** Add a tool call to an existing AI message (in-memory only — for inline tool indicators). */
+  addToolCall: (projectId: string, messageId: string, tool: ToolCallStatus) => void
+  /** Mark a tool call as complete on an existing AI message (in-memory only). */
+  completeToolCall: (projectId: string, messageId: string, toolId: string) => void
   /** Finalize a streaming message: remove streaming flag, persist to backend. */
   finalizeStreamingMessage: (projectId: string, messageId: string) => void
   getMessages: (projectId: string) => ChatMessage[]
@@ -67,10 +75,25 @@ export const useChatStore = create<ChatStore>()(
         }
       })
 
+      // Don't persist streaming placeholders — they'll be saved when finalized
+      if (message.streaming) return
+
       // Write-through to backend (fire-and-forget)
       postChatMessage(projectId, message).catch(() => {
         // Silently ignore — backend may be unreachable during dev
       })
+    },
+
+    addActivity: (projectId, content, route) => {
+      const message: ChatMessage = {
+        id: `activity_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+        type: 'activity',
+        content,
+        timestamp: Date.now(),
+        route,
+      }
+      // Use the same addMessage path for persistence
+      get().addMessage(projectId, message)
     },
 
     updateMessageType: (projectId, messageId, newType) =>
@@ -106,20 +129,50 @@ export const useChatStore = create<ChatStore>()(
         return { messages: { ...state.messages, [projectId]: updated } }
       }),
 
+    addToolCall: (projectId, messageId, tool) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        const idx = msgs.findIndex(m => m.id === messageId)
+        if (idx === -1) return state
+        const updated = [...msgs]
+        const existing = updated[idx].toolCalls ?? []
+        updated[idx] = { ...updated[idx], toolCalls: [...existing, tool] }
+        return { messages: { ...state.messages, [projectId]: updated } }
+      }),
+
+    completeToolCall: (projectId, messageId, toolId) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        const idx = msgs.findIndex(m => m.id === messageId)
+        if (idx === -1) return state
+        const updated = [...msgs]
+        const tools = updated[idx].toolCalls?.map(t =>
+          t.id === toolId ? { ...t, done: true } : t,
+        )
+        updated[idx] = { ...updated[idx], toolCalls: tools }
+        return { messages: { ...state.messages, [projectId]: updated } }
+      }),
+
     finalizeStreamingMessage: (projectId, messageId) => {
       const msgs = get().messages[projectId]
       if (!msgs) return
       const msg = msgs.find(m => m.id === messageId)
       if (!msg) return
-      const finalized = { ...msg, streaming: undefined }
+      // Mark all tools as done and remove streaming flag
+      const finalTools = msg.toolCalls?.map(t => ({ ...t, done: true }))
+      const finalized = { ...msg, streaming: undefined, toolCalls: finalTools }
       set((state) => {
         const updated = (state.messages[projectId] ?? []).map(m =>
           m.id === messageId ? finalized : m,
         )
         return { messages: { ...state.messages, [projectId]: updated } }
       })
-      // Persist to backend
-      postChatMessage(projectId, finalized).catch(() => {})
+      // Persist to backend — streaming placeholder was never saved, so this
+      // is the first write for this message ID
+      const { toolCalls: _tc, ...persistable } = finalized
+      postChatMessage(projectId, persistable).catch(() => {})
     },
 
     getMessages: (projectId) => get().messages[projectId] ?? [],

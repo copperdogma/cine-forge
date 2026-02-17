@@ -15,7 +15,7 @@ import {
   MessageSquare,
   Info,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -27,6 +27,7 @@ import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
 import { useShortcuts } from '@/lib/shortcuts'
 import { useProject, useChatLoader } from '@/lib/hooks'
+import { useChatStore } from '@/lib/chat-store'
 import { useRunProgressChat } from '@/lib/use-run-progress'
 import { cn } from '@/lib/utils'
 
@@ -44,6 +45,35 @@ function ShellInner() {
   const [navOpen, setNavOpen] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const panel = useRightPanel()
+  const [panelWidth, setPanelWidth] = useState(380)
+  const isDragging = useRef(false)
+
+  const handleDragStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    isDragging.current = true
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+  }, [])
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return
+      const newWidth = window.innerWidth - e.clientX
+      setPanelWidth(Math.max(280, Math.min(700, newWidth)))
+    }
+    const handleMouseUp = () => {
+      if (!isDragging.current) return
+      isDragging.current = false
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [])
   const inspector = useInspector()
   const { data: project } = useProject(projectId)
 
@@ -54,6 +84,37 @@ function ShellInner() {
 
   // Track active run progress — adds chat messages as stages complete
   useRunProgressChat(projectId)
+
+  // Emit activity notes on meaningful navigation (artifact detail, run detail)
+  const prevPath = useRef(location.pathname)
+  useEffect(() => {
+    if (!projectId || prevPath.current === location.pathname) return
+    prevPath.current = location.pathname
+    const path = location.pathname
+
+    // Artifact detail: /:projectId/artifacts/:type/:entityId/:version
+    const artifactMatch = path.match(new RegExp(`^/${projectId}/artifacts/([^/]+)/([^/]+)/(\\d+)$`))
+    if (artifactMatch) {
+      const [, atype, entityId] = artifactMatch
+      const label = entityId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      useChatStore.getState().addActivity(
+        projectId,
+        `Viewing: ${label}`,
+        `artifacts/${atype}/${entityId}/${artifactMatch[3]}`,
+      )
+      return
+    }
+
+    // Run detail: /:projectId/runs/:runId
+    const runMatch = path.match(new RegExp(`^/${projectId}/run/([^/]+)$`))
+    if (runMatch) {
+      useChatStore.getState().addActivity(
+        projectId,
+        `Viewing run: ${runMatch[1]}`,
+        `run/${runMatch[1]}`,
+      )
+    }
+  }, [location.pathname, projectId])
 
   // Keyboard shortcuts
   useShortcuts([
@@ -264,7 +325,12 @@ function ShellInner() {
 
           {/* Right Panel — Chat + Inspector tabs */}
           {panel.state.open && (
-            <aside role="complementary" aria-label="Chat and inspector panel" className="w-80 border-l border-border bg-card shrink-0 flex flex-col min-h-0">
+            <aside role="complementary" aria-label="Chat and inspector panel" style={{ width: panelWidth }} className="border-l border-border bg-card shrink-0 flex flex-col min-h-0 relative">
+              {/* Drag handle */}
+              <div
+                onMouseDown={handleDragStart}
+                className="absolute -left-1 top-0 bottom-0 w-2 cursor-col-resize hover:bg-primary/40 active:bg-primary/60 transition-colors z-10"
+              />
               {/* Tab bar */}
               <div className="flex items-center border-b border-border shrink-0">
                 <button

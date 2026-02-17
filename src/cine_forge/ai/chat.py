@@ -14,9 +14,9 @@ import logging
 import os
 import ssl
 import time
-import urllib.parse
+from collections.abc import Generator
 from dataclasses import dataclass, field
-from typing import Any, Generator
+from typing import Any
 
 log = logging.getLogger(__name__)
 
@@ -38,38 +38,43 @@ knows the characters intimately, understands film production concepts, and can d
 creative ideas with substance. You're not a chatbot or help desk — you engage in real \
 creative discussion grounded in the user's actual project.
 
-## What You Know
-- **The user's project**: You have access to their project state, artifacts (character \
-bibles, location bibles, scene breakdowns, entity graphs), and chat history. Use tools \
-to look things up when needed.
-- **Film production concepts**: Coverage, blocking, continuity, shot types, lighting, \
-color grading, sound design, editorial structure. Explain these in context of the user's \
-project, never abstractly.
-- **CineForge workflow**: The platform processes screenplays through an analysis pipeline \
-(scene extraction, character/location/prop identification) and then builds creative \
-artifacts (character bibles, location bibles, entity relationship graphs). Users can \
-review, discuss, and iterate on these artifacts.
-
 ## How You Behave
-- **Be concise**: Short, focused responses. No walls of text. Quick answers for simple \
-questions, more depth only when the topic warrants it.
+- **Be concise**: Default to 2-4 sentences. Only go longer when the user \
+asks for detail or the question genuinely requires it. No bullet-point dumps, \
+no preamble, no "Great question!" openers.
 - **Be grounded**: When discussing the user's project, reference specific characters, \
 scenes, locations, and plot points. Use tools to look up details rather than guessing.
 - **Be creative**: When discussing creative ideas, offer specific, actionable suggestions. \
 "The Mariner's motivation in scene 7 seems unclear — his decision could be driven by grief \
 rather than duty" is good. "Consider developing the character more" is bad.
 - **Be honest**: If you don't know something or can't find it, say so. Don't make things up.
-- **Suggest actions**: When an action is possible, offer it. "Want me to look at the \
-character bible?" or "I can check what scenes mention that location."
+- **Match expertise**: When explaining film terms or analysis concepts, give a quick \
+answer — one sentence max. Expand only if the user asks follow-up questions. Don't lecture.
+- **Suggest actions**: When an action is possible, offer it concisely. "Want me to pull \
+up the character bible?" not "I would be happy to help you explore the character bible \
+which contains detailed information about..."
 
-## Project Context
-{project_context}
+## Project
+{project_summary}
 
-## Current State
-{state_context}
+## State Machine
+Your primary job is guiding the user through the project workflow. Follow the state machine:
 
-## State Machine Context
-{state_machine_context}
+{state_machine}
+
+## Using Tools
+You have tools to explore the project — `get_project_state`, `get_artifact`, \
+`list_scenes`, `list_characters`. Use them to ground your answers in real data. \
+Never guess about project content.
+
+The chat history includes **activity notes** — compact records of user actions \
+(navigation, pipeline runs, artifact edits). When you see several activity notes \
+since your last response, call `get_project_state` to refresh your understanding \
+of what has changed. Don't ask the user what happened — look it up yourself.
+
+For write operations, always use the proposal tools (`propose_artifact_edit`, \
+`propose_run`). These show the user a preview with confirmation buttons. Never \
+claim to have made changes without using these tools.
 """
 
 
@@ -112,7 +117,10 @@ def compute_project_state(
         next_actions.append({
             "action": "start_analysis",
             "recipe_id": "mvp_ingest",
-            "description": "Run initial analysis — scene extraction, normalization, character/location identification.",
+            "description": (
+                "Run initial analysis — scene extraction,"
+                " normalization, character/location identification."
+            ),
         })
     elif state == "analyzed":
         next_actions.append({
@@ -122,7 +130,10 @@ def compute_project_state(
         next_actions.append({
             "action": "go_deeper",
             "recipe_id": "world_building",
-            "description": "Build character bibles, location bibles, entity graph, and creative world details.",
+            "description": (
+                "Build character bibles, location bibles,"
+                " entity graph, and creative world details."
+            ),
         })
     elif state == "complete":
         next_actions.append({
@@ -131,7 +142,10 @@ def compute_project_state(
         })
         next_actions.append({
             "action": "edit_artifacts",
-            "description": "Discuss and refine character bibles, location details, or story elements.",
+            "description": (
+                "Discuss and refine character bibles,"
+                " location details, or story elements."
+            ),
         })
     # 'processing' has no user actions — just wait
 
@@ -151,67 +165,61 @@ def compute_project_state(
     }
 
 
+STATE_DESCRIPTIONS = {
+    "empty": "No screenplay uploaded. User needs to upload a script.",
+    "fresh_import": "Screenplay uploaded, not yet analyzed.",
+    "processing": "Pipeline running. Wait for completion.",
+    "analyzed": "Scenes, characters, locations extracted. Can review or go deeper.",
+    "complete": "Full world-building done. Bibles, entity graph available.",
+}
+
+ALL_STATES = ["empty", "fresh_import", "processing", "analyzed", "complete"]
+
+
 def build_system_prompt(
     project_summary: dict[str, Any],
-    artifact_groups: list[dict[str, Any]],
-    project_state: str,
-    state_info: dict[str, Any] | None = None,
+    state_info: dict[str, Any],
 ) -> str:
-    """Assemble the system prompt with project-specific context."""
-    project_context = (
-        f"Project: {project_summary.get('display_name', 'Unknown')}\n"
-        f"Input files: {', '.join(project_summary.get('input_files', [])) or 'None'}\n"
-        f"Artifact groups: {len(artifact_groups)}\n"
-        f"Runs completed: {project_summary.get('run_count', 0)}"
-    )
+    """Assemble a lean, stable system prompt.
 
-    artifact_summary = ""
-    if artifact_groups:
-        artifact_lines = []
-        for ag in artifact_groups:
-            entity = ag.get("entity_id") or "project"
-            artifact_lines.append(
-                f"  - {ag['artifact_type']}/{entity} (v{ag['latest_version']}, "
-                f"health: {ag.get('health', 'unknown')})"
-            )
-        artifact_summary = "\nAvailable artifacts:\n" + "\n".join(artifact_lines)
+    The prompt includes identity, project summary, and the state machine.
+    Dynamic project details (artifact listings, etc.) are fetched via
+    tools when the AI needs them — not injected here.
+    """
+    display_name = project_summary.get("display_name", "Unknown")
+    input_files = ", ".join(project_summary.get("input_files", [])) or "None"
+    current_state = state_info.get("state", "empty")
 
-    state_context = f"Project state: {project_state}{artifact_summary}"
+    # 1-2 line project summary
+    project_summary_text = f"**{display_name}** — Input: {input_files}"
 
-    # Build state machine context — tells the AI what the deterministic state
-    # machine would suggest, so the AI can augment with creative insight.
-    state_machine_lines = [f"The project is in the **{project_state}** state."]
+    # Compact state machine: all states, mark current, show next actions
+    sm_lines = ["States:"]
+    for s in ALL_STATES:
+        marker = " ← current" if s == current_state else ""
+        desc = STATE_DESCRIPTIONS.get(s, "")
+        sm_lines.append(f"  {'→' if s == current_state else ' '} **{s}**: {desc}{marker}")
 
-    state_descriptions = {
-        "empty": "No screenplay uploaded yet. The user needs to upload a script to begin.",
-        "fresh_import": "A screenplay has been uploaded but not analyzed. The next step is running the initial analysis pipeline.",
-        "processing": "A pipeline run is currently in progress. Wait for it to complete.",
-        "analyzed": "Initial analysis is complete — scenes, characters, and locations have been extracted. The user can review these or run the world-building pipeline for deeper creative artifacts.",
-        "complete": "Full analysis and world-building are done. Character bibles, location bibles, and the entity graph are available. The user can explore, discuss, and refine artifacts.",
-    }
-    state_machine_lines.append(state_descriptions.get(project_state, ""))
-
-    if state_info and state_info.get("next_actions"):
-        state_machine_lines.append("\nAvailable next steps:")
-        for action in state_info["next_actions"]:
+    next_actions = state_info.get("next_actions", [])
+    if next_actions:
+        sm_lines.append("\nAvailable actions:")
+        for action in next_actions:
             recipe = action.get("recipe_id", "")
             recipe_hint = f" (recipe: {recipe})" if recipe else ""
-            state_machine_lines.append(
-                f"- **{action['action']}**: {action['description']}{recipe_hint}"
-            )
+            sm_lines.append(f"  - {action['action']}: {action['description']}{recipe_hint}")
+    elif current_state == "processing":
+        sm_lines.append("\nNo user actions — pipeline is running.")
 
-    state_machine_lines.append(
-        "\nYou should be aware of these state-driven suggestions and enrich them "
-        "with project-specific creative insight. When suggesting a next step, reference "
-        "specific characters, scenes, or story elements the user will encounter."
+    sm_lines.append(
+        "\nGuide the user toward the next state transition. "
+        "Enrich suggestions with project-specific creative insight."
     )
 
-    state_machine_context = "\n".join(state_machine_lines)
+    state_machine = "\n".join(sm_lines)
 
     return SYSTEM_PROMPT.format(
-        project_context=project_context,
-        state_context=state_context,
-        state_machine_context=state_machine_context,
+        project_summary=project_summary_text,
+        state_machine=state_machine,
     )
 
 
@@ -245,11 +253,21 @@ CHAT_TOOLS = [
             "properties": {
                 "artifact_type": {
                     "type": "string",
-                    "description": "The artifact type (e.g., 'scene_extract', 'bible_manifest', 'entity_graph', 'project_config', 'normalized_script').",
+                    "description": (
+                        "The artifact type (e.g., 'scene_extract',"
+                        " 'bible_manifest', 'entity_graph',"
+                        " 'project_config', 'normalized_script')."
+                    ),
                 },
                 "entity_id": {
                     "type": "string",
-                    "description": "The entity ID (e.g., 'character_the_mariner', 'location_harbor', '__project__' for project-level artifacts, or a scene ID like 'scene_001').",
+                    "description": (
+                        "The entity ID (e.g.,"
+                        " 'character_the_mariner',"
+                        " 'location_harbor', '__project__'"
+                        " for project-level artifacts, or a"
+                        " scene ID like 'scene_001')."
+                    ),
                 },
             },
             "required": ["artifact_type", "entity_id"],
@@ -430,7 +448,8 @@ def execute_tool(
                 None,
             )
             if not match:
-                return ToolResult(content=json.dumps({"error": f"Artifact not found: {atype}/{eid}"}))
+                err = {"error": f"Artifact not found: {atype}/{eid}"}
+                return ToolResult(content=json.dumps(err))
             detail = service.read_artifact(
                 project_id, atype, eid, match["latest_version"]
             )
@@ -445,7 +464,8 @@ def execute_tool(
                 g for g in groups if g["artifact_type"] == "scene_extract"
             ]
             if not scene_groups:
-                return ToolResult(content=json.dumps({"scenes": [], "note": "No scenes extracted yet."}))
+                empty = {"scenes": [], "note": "No scenes extracted yet."}
+                return ToolResult(content=json.dumps(empty))
             scenes = []
             for sg in scene_groups:
                 eid = sg.get("entity_id") or "__project__"
@@ -464,7 +484,8 @@ def execute_tool(
                     })
                 except Exception:
                     scenes.append({"entity_id": eid, "error": "Could not load"})
-            return ToolResult(content=json.dumps({"scenes": scenes, "count": len(scenes)}, indent=2))
+            result = {"scenes": scenes, "count": len(scenes)}
+            return ToolResult(content=json.dumps(result, indent=2))
 
         elif tool_name == "list_characters":
             groups = service.list_artifact_groups(project_id)
@@ -601,7 +622,6 @@ def _execute_propose_run(
 ) -> ToolResult:
     """Build a run preview and emit confirmation action buttons."""
     recipe_id = tool_input.get("recipe_id", "mvp_ingest")
-    rationale = tool_input.get("rationale", "AI-proposed run")
 
     # Look up the recipe
     recipes = service.list_recipes()
@@ -614,7 +634,6 @@ def _execute_propose_run(
         }))
 
     # Get project info for the run payload
-    summary = service.project_summary(project_id)
     inputs = service.list_project_inputs(project_id)
     if not inputs:
         return ToolResult(content=json.dumps({
@@ -701,7 +720,6 @@ def _stream_anthropic_sse(
             )
 
         # Read SSE events line by line
-        buffer = ""
         event_type = ""
 
         for raw_line in response:
@@ -760,7 +778,6 @@ def stream_chat_response(
         current_tool_name = ""
         current_tool_input_json = ""
         has_tool_use = False
-        stop_reason = ""
 
         for event in _stream_anthropic_sse(payload):
             etype = event.get("_event", "")
@@ -791,7 +808,10 @@ def stream_chat_response(
             elif etype == "content_block_stop":
                 if current_tool_id and current_tool_name:
                     try:
-                        tool_input = json.loads(current_tool_input_json) if current_tool_input_json else {}
+                        tool_input = (
+                            json.loads(current_tool_input_json)
+                            if current_tool_input_json else {}
+                        )
                     except json.JSONDecodeError:
                         tool_input = {}
                     tool_use_blocks.append({
@@ -804,8 +824,7 @@ def stream_chat_response(
                     current_tool_input_json = ""
 
             elif etype == "message_delta":
-                delta = event.get("delta", {})
-                stop_reason = delta.get("stop_reason", "")
+                pass  # stop_reason etc. — not needed currently
 
         # If there were tool calls, execute them and continue the loop
         if has_tool_use and tool_use_blocks:
@@ -829,10 +848,15 @@ def stream_chat_response(
                 result = execute_tool(
                     tb["name"], tb["input"], service, project_id
                 )
-                preview = result.content[:500] + "..." if len(result.content) > 500 else result.content
+                preview = (
+                    result.content[:500] + "..."
+                    if len(result.content) > 500
+                    else result.content
+                )
                 yield {
                     "type": "tool_result",
                     "name": tb["name"],
+                    "id": tb["id"],
                     "content": preview,
                 }
                 tool_results.append({
@@ -896,4 +920,5 @@ def build_insight_prompt(trigger: str, context: dict[str, Any]) -> str:
     try:
         return template.format(**context)
     except KeyError:
-        return template.format_map({**context, **{k: f"({k})" for k in ["recipe_id", "artifact_summary"]}})
+        defaults = {k: f"({k})" for k in ["recipe_id", "artifact_summary"]}
+        return template.format_map({**context, **defaults})

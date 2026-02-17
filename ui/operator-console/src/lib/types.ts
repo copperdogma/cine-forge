@@ -148,7 +148,7 @@ export type ProjectState = 'empty' | 'fresh_import' | 'processing' | 'analyzed' 
 
 // --- Chat ---
 
-export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_status_done' | 'ai_suggestion' | 'user_action' | 'user_message' | 'ai_response' | 'ai_tool_status'
+export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_status_done' | 'ai_suggestion' | 'user_action' | 'user_message' | 'ai_response' | 'ai_tool_status' | 'ai_tool_done' | 'activity'
 
 export type ConfirmAction = {
   type: 'edit_artifact' | 'start_run'
@@ -162,6 +162,15 @@ export type ChatAction = {
   variant: 'default' | 'secondary' | 'outline'
   route?: string
   confirm_action?: ConfirmAction
+  /** If set, clicking this action re-sends the given text as a new chat message. */
+  retry_text?: string
+}
+
+export type ToolCallStatus = {
+  id: string
+  name: string
+  displayName: string
+  done: boolean
 }
 
 export type ChatMessage = {
@@ -172,6 +181,9 @@ export type ChatMessage = {
   actions?: ChatAction[]
   needsAction?: boolean
   streaming?: boolean
+  toolCalls?: ToolCallStatus[]
+  /** Optional route for activity notes (e.g., "artifacts/bible_manifest/character_the_mariner/1") */
+  route?: string
 }
 
 // --- Search ---
