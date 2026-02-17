@@ -110,7 +110,7 @@ Start the API and UI in two terminals:
 PYTHONPATH=src python -m cine_forge.api
 
 # Terminal 2: UI
-cd ui/operator-console && npm install && npm run dev
+cd ui && npm install && npm run dev
 ```
 
 - **API**: http://localhost:8000 (OpenAPI docs at `/docs`)

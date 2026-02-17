@@ -79,7 +79,7 @@ NOTES from Cam:
 | 040 | Pipeline Performance Optimization | Cross-Cutting | High | Done | [story-040](stories/story-040-pipeline-performance-optimization.md) |
 | 041 | Artifact Quality Improvements | Cross-Cutting | Medium | To Do | [story-041](stories/story-041-artifact-quality-improvements.md) |
 | 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Done | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
-| 043 | Entity-First Navigation | 2.5 — UI | High | Draft | [story-043](stories/story-043-entity-first-navigation.md) |
+| 043 | Entity-First Navigation | 2.5 — UI | High | Done | [story-043](stories/story-043-entity-first-navigation.md) |
 | 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Draft | [story-044](stories/story-044-mobile-friendly-ui.md) |
 | 045 | Entity Cross-Linking | 2.5 — UI | Medium | Draft | [story-045](stories/story-045-entity-cross-linking.md) |
 | 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Draft | [story-046](stories/story-046-theme-system.md) |

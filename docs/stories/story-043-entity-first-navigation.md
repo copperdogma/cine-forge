@@ -2,7 +2,7 @@
 
 **Phase**: 2.5 — UI
 **Priority**: High
-**Status**: Draft
+**Status**: Done
 **Depends on**: Story 042 (Wire Mock UI — Done), Story 011f (Conversational AI Chat — In Progress)
 
 ## Goal
@@ -121,22 +121,22 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 
 ## Acceptance Criteria
 
-- [ ] Sidebar shows: Script, Scenes, Characters, Locations, Props, Inbox, Advanced (Runs/Artifacts/Settings)
-- [ ] Each entity type has a list page showing all entities with name, key metadata, and artifact count/version
-- [ ] Each entity type has a detail page showing bible content + cross-references
-- [ ] Scene detail shows character/location/prop roster for that scene
-- [ ] Character/Location detail shows scene appearances (which scenes they appear in)
-- [ ] Character detail shows relationships (from entity_graph data)
-- [ ] Clicking an entity in a scene → navigates to that entity's detail page
-- [ ] Clicking a scene reference on an entity page → navigates to that scene's detail (or script anchor)
-- [ ] Runs and Artifacts are accessible under a collapsed Advanced section
-- [ ] Project status is visible on the Script/Home page
-- [ ] Entity lists are sortable by: script order (first appearance), alphabetical, prominence (scene count)
-- [ ] Entity lists support three view densities: compact, medium, large
-- [ ] Sort and density preferences are sticky (stored in project.json, remembered per entity type)
-- [ ] Keyboard shortcuts updated and working
-- [ ] All pages verified with screenshots against running backend with real data
-- [ ] `ui/operator-console-lite/` deleted
+- [x] Sidebar shows: Script, Scenes, Characters, Locations, Props, Inbox, Advanced (Runs/Artifacts/Settings)
+- [x] Each entity type has a list page showing all entities with name, key metadata, and artifact count/version
+- [x] Each entity type has a detail page showing bible content + cross-references
+- [x] Scene detail shows character/location/prop roster for that scene
+- [x] Character/Location detail shows scene appearances (which scenes they appear in)
+- [x] Character detail shows relationships (from entity_graph data)
+- [x] Clicking an entity in a scene → navigates to that entity's detail page
+- [x] Clicking a scene reference on an entity page → navigates to that scene's detail (or script anchor)
+- [x] Runs and Artifacts are accessible under a collapsed Advanced section
+- [x] Project status is visible on the Script/Home page
+- [x] Entity lists are sortable by: script order (first appearance), alphabetical, prominence (scene count)
+- [x] Entity lists support three view densities: compact, medium, large
+- [x] Sort and density preferences are sticky (stored in project.json, remembered per entity type)
+- [x] Keyboard shortcuts updated and working
+- [x] All pages verified with screenshots against running backend with real data
+- [x] `ui/operator-console-lite/` deleted
 
 ## Tasks
 
@@ -145,7 +145,7 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 - [x] Phase 2b: List sorting (script order / alphabetical / prominence) and view density (compact / medium / large)
 - [x] Phase 3: Script ↔ Scene bidirectional linking
 - [x] Phase 4a: Polish — build fixes, browser verification, runtime bug fixes
-- [ ] Phase 4b: Flatten `ui/operator-console/` → `ui/` (requires commit of current changes first)
+- [x] Phase 4b: Flatten `ui/operator-console/` → `ui/`
 - [x] Housekeeping: Delete operator-console-lite (legacy stopgap)
 
 ## Work Log
@@ -195,3 +195,10 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 - **Bidirectional linking verified**: Script heading click → scene detail, Scene "View in Script" → script with auto-scroll.
 - **No console errors** in any page (only unrelated Chrome extension noise).
 - **Remaining**: Phase 4b — flatten `ui/operator-console/` → `ui/` (deferred — needs current changes committed first since `git mv` requires clean working tree for moved files).
+
+20260217-0620 — Sticky preferences + Phase 4b complete: Story done
+- **Sticky preferences**: Extended backend `PATCH /settings` to accept `ui_preferences` dict with shallow merge. Frontend `useStickyPreference` hook reads from project summary, optimistic updates, fire-and-forget persistence. All 4 list pages (Scenes, Characters, Locations, Props) now persist sort, density, and direction per entity type to `project.json`.
+- **Backend files**: `models.py` (ui_preferences on ProjectSummary + ProjectSettingsUpdate), `service.py` (merge-based write), `app.py` (pass-through)
+- **Frontend files**: `types.ts`, `api.ts`, `hooks.ts` (useStickyPreference), all 4 list pages
+- **Phase 4b**: Flattened `ui/operator-console/` → `ui/` via `git mv` (74 files). Updated AGENTS.md repo map, README.md dev command, index.html title → "CineForge".
+- **All acceptance criteria met.** Story 043 complete.
