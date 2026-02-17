@@ -188,6 +188,153 @@ export function searchProject(projectId: string, query: string): Promise<SearchR
   return request<SearchResponse>(`/api/projects/${projectId}/search?q=${encodeURIComponent(query)}`)
 }
 
+// --- Streaming Chat ---
+
+export interface ChatStreamChunk {
+  type: 'text' | 'tool_start' | 'tool_result' | 'actions' | 'done' | 'error'
+  content?: string
+  name?: string
+  id?: string
+  actions?: Array<{
+    id: string
+    label: string
+    variant: 'default' | 'secondary' | 'outline'
+    route?: string
+    confirm_action?: {
+      type: 'edit_artifact' | 'start_run'
+      endpoint: string
+      payload: Record<string, unknown>
+    }
+  }>
+}
+
+export async function streamChatMessage(
+  projectId: string,
+  message: string,
+  chatHistory: Array<{ type: string; content: string }>,
+  onChunk: (chunk: ChatStreamChunk) => void,
+  onDone: () => void,
+  onError: (error: Error) => void,
+): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE}/api/projects/${projectId}/chat/stream`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        chat_history: chatHistory,
+      }),
+    })
+
+    if (!response.ok) {
+      const text = await response.text()
+      throw new ApiRequestError(`Chat stream failed (${response.status}): ${text}`)
+    }
+
+    const reader = response.body?.getReader()
+    if (!reader) throw new Error('No stream reader')
+
+    const decoder = new TextDecoder()
+    let buffer = ''
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      buffer = lines.pop() ?? ''
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const dataStr = line.slice(6)
+          try {
+            const chunk = JSON.parse(dataStr) as ChatStreamChunk
+            if (chunk.type === 'done') {
+              onDone()
+              return
+            }
+            if (chunk.type === 'error') {
+              onError(new Error(chunk.content ?? 'Stream error'))
+              return
+            }
+            onChunk(chunk)
+          } catch {
+            // Skip malformed chunks
+          }
+        }
+      }
+    }
+    // Stream ended without explicit done
+    onDone()
+  } catch (error) {
+    onError(error instanceof Error ? error : new Error('Stream failed'))
+  }
+}
+
+// --- Auto-Insight (proactive AI commentary) ---
+
+export async function streamAutoInsight(
+  projectId: string,
+  trigger: string,
+  context: Record<string, unknown>,
+  onChunk: (chunk: ChatStreamChunk) => void,
+  onDone: () => void,
+  onError: (error: Error) => void,
+): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE}/api/projects/${projectId}/chat/insight`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ trigger, context }),
+    })
+
+    if (!response.ok) {
+      const text = await response.text()
+      throw new ApiRequestError(`Insight stream failed (${response.status}): ${text}`)
+    }
+
+    const reader = response.body?.getReader()
+    if (!reader) throw new Error('No stream reader')
+
+    const decoder = new TextDecoder()
+    let buffer = ''
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      buffer = lines.pop() ?? ''
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const dataStr = line.slice(6)
+          try {
+            const chunk = JSON.parse(dataStr) as ChatStreamChunk
+            if (chunk.type === 'done') {
+              onDone()
+              return
+            }
+            if (chunk.type === 'error') {
+              onError(new Error(chunk.content ?? 'Stream error'))
+              return
+            }
+            onChunk(chunk)
+          } catch {
+            // Skip malformed chunks
+          }
+        }
+      }
+    }
+    // Stream ended without explicit done
+    onDone()
+  } catch (error) {
+    onError(error instanceof Error ? error : new Error('Insight stream failed'))
+  }
+}
+
 // --- Runs ---
 
 export function listRuns(projectId: string): Promise<RunSummary[]> {

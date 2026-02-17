@@ -4,6 +4,7 @@
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
+import { streamAutoInsight } from './api'
 import { getStageStartMessage, getStageCompleteMessage, humanizeStageName } from './chat-messages'
 import { useRunState } from './hooks'
 import type { StageState } from './types'
@@ -190,6 +191,9 @@ export function useRunProgressChat(projectId: string | undefined) {
             needsAction: true,
           })
         }
+
+        // Trigger AI commentary — proactive insight about what was produced
+        requestPostRunInsight(projectId, recipeId, summary)
       }
 
       // Invalidate project data so UI reflects new state
@@ -204,4 +208,61 @@ export function useRunProgressChat(projectId: string | undefined) {
       store.clearActiveRun(projectId)
     }
   }, [runState, activeRunId, projectId, queryClient])
+}
+
+/**
+ * Fire-and-forget AI insight after a run completes.
+ * Adds a streaming AI message to the chat with creative commentary
+ * about the artifacts that were just produced.
+ */
+function requestPostRunInsight(
+  projectId: string,
+  recipeId: string,
+  artifactSummary: string,
+) {
+  const store = useChatStore.getState()
+  const aiMsgId = `ai_insight_${Date.now()}`
+
+  // Add streaming placeholder
+  store.addMessage(projectId, {
+    id: aiMsgId,
+    type: 'ai_response',
+    content: '',
+    timestamp: Date.now() + 2, // After the completion messages
+    streaming: true,
+  })
+
+  let fullContent = ''
+
+  streamAutoInsight(
+    projectId,
+    'run_completed',
+    {
+      recipe_id: recipeId,
+      artifact_summary: artifactSummary || 'various artifacts',
+    },
+    (chunk) => {
+      if (chunk.type === 'text') {
+        fullContent += chunk.content ?? ''
+        useChatStore.getState().updateMessageContent(projectId, aiMsgId, fullContent)
+      }
+      // tool_start/tool_result from insight are silent — the AI uses tools
+      // internally to read artifacts but we don't show those indicators
+    },
+    () => {
+      // Done — finalize the streaming message
+      useChatStore.getState().finalizeStreamingMessage(projectId, aiMsgId)
+    },
+    () => {
+      // Error — silently remove the placeholder if nothing was produced
+      if (!fullContent) {
+        // Remove the empty streaming message by finalizing with a fallback
+        useChatStore.getState().updateMessageContent(
+          projectId, aiMsgId,
+          'I can tell you more about what was produced — just ask!',
+        )
+      }
+      useChatStore.getState().finalizeStreamingMessage(projectId, aiMsgId)
+    },
+  )
 }

@@ -234,3 +234,21 @@ class SearchResponse(BaseModel):
     characters: list[SearchResultEntity] = []
     locations: list[SearchResultEntity] = []
     props: list[SearchResultEntity] = []
+
+
+# --- Streaming Chat ---
+
+
+class ChatStreamRequest(BaseModel):
+    """Request payload for the streaming chat endpoint."""
+
+    message: str = Field(min_length=1)
+    chat_history: list[dict[str, Any]] = []
+    page_context: str | None = None
+
+
+class InsightRequest(BaseModel):
+    """Request payload for auto-generated AI insights."""
+
+    trigger: str = Field(min_length=1)
+    context: dict[str, Any] = {}
