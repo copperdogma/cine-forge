@@ -4,12 +4,17 @@ import {
   History,
   Package,
   Inbox,
-  Home,
+  FileText,
+  Clapperboard,
+  Users,
+  MapPin,
+  Wrench,
   PanelLeftClose,
   PanelLeftOpen,
   PanelRightClose,
   PanelRightOpen,
   ChevronRight,
+  ChevronDown,
   Settings,
   X,
   MessageSquare,
@@ -21,6 +26,7 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
 import { RightPanelProvider, useRightPanel, useInspector } from '@/lib/right-panel'
 import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
@@ -30,11 +36,18 @@ import { useProject, useChatLoader } from '@/lib/hooks'
 import { useRunProgressChat } from '@/lib/use-run-progress'
 import { cn } from '@/lib/utils'
 
-const navItems = [
-  { to: '', label: 'Home', icon: Home, end: true },
+const mainNavItems = [
+  { to: '', label: 'Script', icon: FileText, end: true },
+  { to: 'scenes', label: 'Scenes', icon: Clapperboard },
+  { to: 'characters', label: 'Characters', icon: Users },
+  { to: 'locations', label: 'Locations', icon: MapPin },
+  { to: 'props', label: 'Props', icon: Wrench },
+  { to: 'inbox', label: 'Inbox', icon: Inbox, badge: 0 },
+]
+
+const advancedNavItems = [
   { to: 'runs', label: 'Runs', icon: History },
   { to: 'artifacts', label: 'Artifacts', icon: Package },
-  { to: 'inbox', label: 'Inbox', icon: Inbox, badge: 0 },
 ]
 
 function ShellInner() {
@@ -43,6 +56,7 @@ function ShellInner() {
   const location = useLocation()
   const [navOpen, setNavOpen] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [advancedOpen, setAdvancedOpen] = useState(false)
   const panel = useRightPanel()
   const inspector = useInspector()
   const { data: project } = useProject(projectId)
@@ -59,10 +73,12 @@ function ShellInner() {
   useShortcuts([
     { key: 'b', meta: true, action: () => setNavOpen(v => !v), label: 'Toggle sidebar' },
     { key: 'i', meta: true, action: () => panel.toggle(), label: 'Toggle right panel' },
-    { key: '0', meta: true, action: () => navigate(''), label: 'Go to Home' },
-    { key: '1', meta: true, action: () => navigate('runs'), label: 'Go to Runs' },
-    { key: '2', meta: true, action: () => navigate('artifacts'), label: 'Go to Artifacts' },
-    { key: '3', meta: true, action: () => navigate('inbox'), label: 'Go to Inbox' },
+    { key: '0', meta: true, action: () => navigate(''), label: 'Go to Script' },
+    { key: '1', meta: true, action: () => navigate('scenes'), label: 'Go to Scenes' },
+    { key: '2', meta: true, action: () => navigate('characters'), label: 'Go to Characters' },
+    { key: '3', meta: true, action: () => navigate('locations'), label: 'Go to Locations' },
+    { key: '4', meta: true, action: () => navigate('props'), label: 'Go to Props' },
+    { key: '5', meta: true, action: () => navigate('inbox'), label: 'Go to Inbox' },
     { key: ',', meta: true, action: () => setSettingsOpen(true), label: 'Open settings' },
   ])
 
@@ -70,6 +86,18 @@ function ShellInner() {
   const getBreadcrumbs = (): { label: string; path?: string }[] => {
     const path = location.pathname
     if (!projectId) return []
+
+    // Entity detail: /:projectId/characters/:entityId (etc.)
+    const entityDetailMatch = path.match(new RegExp(`^/${projectId}/(characters|locations|props|scenes)/([^/]+)$`))
+    if (entityDetailMatch) {
+      const [, section, entityId] = entityDetailMatch
+      const sectionLabel = section.charAt(0).toUpperCase() + section.slice(1)
+      const entityName = entityId.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      return [
+        { label: sectionLabel, path: `/${projectId}/${section}` },
+        { label: entityName },
+      ]
+    }
 
     // Artifact detail: /:projectId/artifacts/:type/:entityId/:version
     const artifactMatch = path.match(new RegExp(`^/${projectId}/artifacts/([^/]+)/([^/]+)/(\\d+)$`))
@@ -91,14 +119,21 @@ function ShellInner() {
       ]
     }
 
+    if (path.includes('/scenes')) return [{ label: 'Scenes' }]
+    if (path.includes('/characters')) return [{ label: 'Characters' }]
+    if (path.includes('/locations')) return [{ label: 'Locations' }]
+    if (path.includes('/props')) return [{ label: 'Props' }]
     if (path.includes('/runs')) return [{ label: 'Runs' }]
     if (path.includes('/artifacts')) return [{ label: 'Artifacts' }]
     if (path.includes('/inbox')) return [{ label: 'Inbox' }]
-    if (path === `/${projectId}`) return [{ label: 'Home' }]
+    if (path === `/${projectId}`) return [{ label: 'Script' }]
     return []
   }
 
   const breadcrumbs = getBreadcrumbs()
+
+  // Auto-open advanced section if we're on a runs/artifacts page
+  const isOnAdvancedPage = location.pathname.includes('/runs') || location.pathname.includes('/artifacts')
 
   return (
     <div className="fixed inset-0 flex overflow-hidden">
@@ -134,7 +169,8 @@ function ShellInner() {
         {/* Navigation */}
         <ScrollArea className="flex-1 py-2">
           <nav aria-label="Project navigation" className="flex flex-col gap-0.5 px-2">
-            {navItems.map(item => (
+            {/* Main entity navigation */}
+            {mainNavItems.map(item => (
               <NavLink
                 key={item.to}
                 to={item.to}
@@ -157,14 +193,46 @@ function ShellInner() {
                 )}
               </NavLink>
             ))}
+
+            {/* Advanced section */}
             <Separator className="my-2" />
-            <button
-              onClick={() => setSettingsOpen(true)}
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors cursor-pointer"
-            >
-              <Settings className="h-4 w-4 shrink-0" />
-              <span className="truncate">Settings</span>
-            </button>
+            <Collapsible open={advancedOpen || isOnAdvancedPage} onOpenChange={setAdvancedOpen}>
+              <CollapsibleTrigger className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors w-full cursor-pointer">
+                <ChevronDown className={cn(
+                  'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
+                  !(advancedOpen || isOnAdvancedPage) && '-rotate-90',
+                )} />
+                <span className="truncate text-xs uppercase tracking-wider">Advanced</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="flex flex-col gap-0.5 mt-0.5">
+                  {advancedNavItems.map(item => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={({ isActive }) =>
+                        cn(
+                          'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ml-2',
+                          isActive
+                            ? 'bg-accent text-accent-foreground'
+                            : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                        )
+                      }
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{item.label}</span>
+                    </NavLink>
+                  ))}
+                  <button
+                    onClick={() => setSettingsOpen(true)}
+                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors cursor-pointer ml-2"
+                  >
+                    <Settings className="h-4 w-4 shrink-0" />
+                    <span className="truncate">Settings</span>
+                  </button>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </nav>
         </ScrollArea>
 
