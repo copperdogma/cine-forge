@@ -1,0 +1,35 @@
+app = "cineforge-app"
+primary_region = "ord"
+
+[build]
+
+[env]
+  PYTHONPATH = "/app/src"
+  CINEFORGE_STATIC_DIR = "/app/static"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+[[http_service.checks]]
+  interval = "15s"
+  timeout = "3s"
+  grace_period = "10s"
+  method = "GET"
+  path = "/api/health"
+
+[mounts]
+  source = "cineforge_data"
+  destination = "/app/output"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

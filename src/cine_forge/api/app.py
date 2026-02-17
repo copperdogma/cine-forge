@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, StreamingResponse
 
 from cine_forge.api.models import (
     ArtifactDetailResponse,
@@ -52,7 +53,10 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[],
-        allow_origin_regex=r"^http://(localhost|127\.0\.0\.1)(:\d+)?$",
+        allow_origin_regex=(
+            r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"
+            r"|^https://cineforge\.copper-dog\.com$"
+        ),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -404,6 +408,26 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         detail = exc.detail if isinstance(exc.detail, str) else "HTTP error"
         payload = ErrorPayload(code="http_error", message=detail, hint=None)
         return JSONResponse(status_code=exc.status_code, content=payload.model_dump())
+
+    # --- Static file serving for production (SPA) ---
+    static_dir_env = os.environ.get("CINEFORGE_STATIC_DIR", "")
+    static_dir = Path(static_dir_env) if static_dir_env else resolved_workspace / "static"
+    if static_dir.exists() and (static_dir / "index.html").exists():
+        _log = logging.getLogger("cine_forge.api.static")
+        _log.info("Serving frontend from %s", static_dir)
+
+        @app.get("/{full_path:path}")
+        async def serve_spa(full_path: str) -> FileResponse:
+            """Serve static files or fall back to index.html for SPA routing."""
+            if full_path:
+                file_path = (static_dir / full_path).resolve()
+                if (
+                    file_path.is_relative_to(static_dir.resolve())
+                    and file_path.exists()
+                    and file_path.is_file()
+                ):
+                    return FileResponse(file_path)
+            return FileResponse(static_dir / "index.html")
 
     return app
 
