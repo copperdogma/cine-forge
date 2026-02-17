@@ -147,13 +147,20 @@ export type ProjectState = 'empty' | 'fresh_import' | 'processing' | 'analyzed' 
 
 // --- Chat ---
 
-export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_status_done' | 'ai_suggestion' | 'user_action'
+export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_status_done' | 'ai_suggestion' | 'user_action' | 'user_message' | 'ai_response' | 'ai_tool_status'
+
+export type ConfirmAction = {
+  type: 'edit_artifact' | 'start_run'
+  endpoint: string
+  payload: Record<string, unknown>
+}
 
 export type ChatAction = {
   id: string
   label: string
   variant: 'default' | 'secondary' | 'outline'
   route?: string
+  confirm_action?: ConfirmAction
 }
 
 export type ChatMessage = {
@@ -163,4 +170,5 @@ export type ChatMessage = {
   timestamp: number
   actions?: ChatAction[]
   needsAction?: boolean
+  streaming?: boolean
 }

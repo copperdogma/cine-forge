@@ -4,10 +4,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import json
+import logging
+
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
 
 from cine_forge.api.models import (
     ArtifactDetailResponse,
@@ -16,8 +19,10 @@ from cine_forge.api.models import (
     ArtifactGroupSummary,
     ArtifactVersionSummary,
     ChatMessagePayload,
+    ChatStreamRequest,
     ErrorPayload,
     InputFileSummary,
+    InsightRequest,
     ProjectCreateRequest,
     ProjectPathRequest,
     ProjectSettingsUpdate,
@@ -234,6 +239,146 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     @app.get("/api/runs/{run_id}/events", response_model=RunEventsResponse)
     async def run_events(run_id: str) -> RunEventsResponse:
         return RunEventsResponse.model_validate(service.read_run_events(run_id))
+
+    @app.post("/api/projects/{project_id}/chat/stream")
+    async def chat_stream(project_id: str, request: ChatStreamRequest) -> StreamingResponse:
+        """Stream an AI chat response using SSE."""
+        from cine_forge.ai.chat import (
+            build_system_prompt,
+            compute_project_state,
+            stream_chat_response,
+        )
+
+        log = logging.getLogger("cine_forge.api.chat")
+
+        # Assemble context
+        try:
+            summary = service.project_summary(project_id)
+            groups = service.list_artifact_groups(project_id)
+            runs = service.list_runs(project_id)
+        except ServiceError:
+            raise
+        except Exception as exc:
+            raise ServiceError(
+                code="context_assembly_failed",
+                message=f"Failed to assemble project context: {exc}",
+                status_code=500,
+            ) from exc
+
+        state_info = compute_project_state(summary, groups, runs)
+        project_state = state_info["state"]
+
+        system_prompt = build_system_prompt(
+            summary, groups, project_state, state_info=state_info
+        )
+
+        # Build messages array for the API
+        # Include recent chat history for conversational continuity
+        api_messages: list[dict] = []
+        for msg in request.chat_history[-20:]:  # Last 20 messages for context
+            role = "user" if msg.get("type", "").startswith("user") else "assistant"
+            content = msg.get("content", "")
+            if content:
+                api_messages.append({"role": role, "content": content})
+
+        # Add the current user message
+        api_messages.append({"role": "user", "content": request.message})
+
+        # Ensure messages alternate correctly (Anthropic requires this)
+        cleaned: list[dict] = []
+        for msg in api_messages:
+            if cleaned and cleaned[-1]["role"] == msg["role"]:
+                # Merge consecutive same-role messages
+                cleaned[-1]["content"] += "\n" + msg["content"]
+            else:
+                cleaned.append(msg)
+        # Ensure first message is from user
+        if cleaned and cleaned[0]["role"] != "user":
+            cleaned = cleaned[1:]
+
+        def event_stream():
+            try:
+                for chunk in stream_chat_response(
+                    messages=cleaned,
+                    system_prompt=system_prompt,
+                    service=service,
+                    project_id=project_id,
+                ):
+                    yield f"data: {json.dumps(chunk)}\n\n"
+            except Exception as exc:
+                log.exception("Chat stream error")
+                yield f"data: {json.dumps({'type': 'error', 'content': str(exc)})}\n\n"
+
+        return StreamingResponse(
+            event_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
+    @app.post("/api/projects/{project_id}/chat/insight")
+    async def chat_insight(project_id: str, request: InsightRequest) -> StreamingResponse:
+        """Generate a proactive AI insight (e.g., after a run completes).
+
+        Unlike /chat/stream, this endpoint does not require a visible user message.
+        The AI generates commentary based on the trigger type and project context.
+        """
+        from cine_forge.ai.chat import (
+            build_insight_prompt,
+            build_system_prompt,
+            compute_project_state,
+            stream_chat_response,
+        )
+
+        log = logging.getLogger("cine_forge.api.chat")
+
+        try:
+            summary = service.project_summary(project_id)
+            groups = service.list_artifact_groups(project_id)
+            runs = service.list_runs(project_id)
+        except ServiceError:
+            raise
+        except Exception as exc:
+            raise ServiceError(
+                code="context_assembly_failed",
+                message=f"Failed to assemble project context: {exc}",
+                status_code=500,
+            ) from exc
+
+        state_info = compute_project_state(summary, groups, runs)
+        project_state = state_info["state"]
+
+        system_prompt = build_system_prompt(
+            summary, groups, project_state, state_info=state_info
+        )
+
+        # Build the insight prompt based on trigger
+        insight_prompt = build_insight_prompt(request.trigger, request.context)
+        messages = [{"role": "user", "content": insight_prompt}]
+
+        def event_stream():
+            try:
+                for chunk in stream_chat_response(
+                    messages=messages,
+                    system_prompt=system_prompt,
+                    service=service,
+                    project_id=project_id,
+                ):
+                    yield f"data: {json.dumps(chunk)}\n\n"
+            except Exception as exc:
+                log.exception("Insight stream error")
+                yield f"data: {json.dumps({'type': 'error', 'content': str(exc)})}\n\n"
+
+        return StreamingResponse(
+            event_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "X-Accel-Buffering": "no",
+            },
+        )
 
     @app.exception_handler(HTTPException)
     async def _handle_http_exception(_, exc: HTTPException) -> JSONResponse:
