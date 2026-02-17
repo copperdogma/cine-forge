@@ -12,6 +12,11 @@ import RunDetail from '@/pages/RunDetail'
 import ProjectArtifacts from '@/pages/ProjectArtifacts'
 import ArtifactDetail from '@/pages/ArtifactDetail'
 import ProjectInbox from '@/pages/ProjectInbox'
+import ScenesList from '@/pages/ScenesList'
+import CharactersList from '@/pages/CharactersList'
+import LocationsList from '@/pages/LocationsList'
+import PropsList from '@/pages/PropsList'
+import EntityDetailPage from '@/pages/EntityDetailPage'
 import ThemeShowcase from '@/pages/ThemeShowcase'
 
 const queryClient = new QueryClient({
@@ -38,13 +43,27 @@ export default function App() {
               {/* Project-scoped routes (wrapped in AppShell) */}
               <Route path="/:projectId" element={<AppShell />}>
                 <Route index element={<ProjectHome />} />
+
+                {/* Entity-first navigation */}
+                <Route path="scenes" element={<ScenesList />} />
+                <Route path="scenes/:entityId" element={<EntityDetailPage section="scenes" />} />
+                <Route path="characters" element={<CharactersList />} />
+                <Route path="characters/:entityId" element={<EntityDetailPage section="characters" />} />
+                <Route path="locations" element={<LocationsList />} />
+                <Route path="locations/:entityId" element={<EntityDetailPage section="locations" />} />
+                <Route path="props" element={<PropsList />} />
+                <Route path="props/:entityId" element={<EntityDetailPage section="props" />} />
+
+                {/* Inbox */}
+                <Route path="inbox" element={<ProjectInbox />} />
+
+                {/* Advanced: Pipeline & raw artifacts */}
                 <Route path="run" element={<ProjectRun />} />
                 <Route path="run/:runId" element={<ProjectRun />} />
                 <Route path="runs" element={<ProjectRuns />} />
                 <Route path="runs/:runId" element={<RunDetail />} />
                 <Route path="artifacts" element={<ProjectArtifacts />} />
                 <Route path="artifacts/:artifactType/:entityId/:version" element={<ArtifactDetail />} />
-                <Route path="inbox" element={<ProjectInbox />} />
               </Route>
             </Routes>
           </div>

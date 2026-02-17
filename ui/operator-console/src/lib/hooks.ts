@@ -247,6 +247,24 @@ export function useEditArtifact() {
   })
 }
 
+// --- Entity Graph (derived from artifacts) ---
+
+/**
+ * Fetches the entity_graph artifact for a project.
+ * Returns the graph data with edges for cross-referencing.
+ */
+export function useEntityGraph(projectId: string | undefined) {
+  const { data: groups } = useArtifactGroups(projectId)
+  const graphGroup = groups?.find(g => g.artifact_type === 'entity_graph')
+
+  return useArtifact(
+    projectId,
+    'entity_graph',
+    graphGroup?.entity_id ?? 'project',
+    graphGroup?.latest_version,
+  )
+}
+
 // --- Scenes (derived from artifacts) ---
 
 /**
