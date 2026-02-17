@@ -48,11 +48,14 @@ The current sidebar has four items: **Home, Runs, Artifacts, Inbox**. "Artifacts
 - Sidebar redesign with entity-centric nav items
 - Route structure for all new pages
 - **List pages**: Scenes, Characters, Locations, Props (each showing entity cards with key metadata)
+- **List sorting**: Three sort modes per list — script order (default), alphabetical, prominence (scene count / mention frequency)
+- **List view density**: Three view sizes — compact (single-line rows), medium (current card grid), large (expanded cards with summary/description)
 - **Detail pages**: Scene detail (entity roster + script link), Character detail (bible + appearances + relationships + continuity), Location detail (bible + appearances + relationships), Prop detail (bible + appearances)
 - **Bidirectional linking**: Scene ↔ Script anchors, Entity detail → Scene appearances, Scene detail → Entity details
 - Project status indicator (bar or sidebar element)
 - Collapse Runs/Artifacts into Advanced section
 - Keyboard shortcuts updated for new nav items
+- Delete `ui/operator-console-lite/` — legacy stopgap, fully superseded by the production UI
 
 ### Out of Scope
 
@@ -91,6 +94,19 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 - Prop detail page: bible profile, scene appearances
 - All detail pages link bidirectionally to scenes and related entities
 
+### Phase 2b — List Sorting and View Density
+- Sort toggle (toolbar at top of list pages): Script Order (default), Alphabetical, Prominence
+  - Script Order = first appearance scene number. Industry standard default.
+  - Alphabetical = by entity name. Universal fallback for quick lookup.
+  - Prominence = by scene count (number of scenes the entity appears in). Production-focused — identifies who/what gets the most screen time.
+  - Future consideration: "By Dialogue Lines" for characters (needs data from script analysis).
+- View density toggle (compact / medium / large):
+  - Compact: single-line rows — icon, name, scene count badge. Dense, scannable.
+  - Medium: current card grid — name, version, health, key metadata.
+  - Large: expanded cards — name + summary/description snippet + scene count + relationship count.
+- Preferences stored in project settings (project.json), sticky per entity type (e.g., characters=alphabetical+compact, scenes=script-order+medium)
+- Research notes: Final Draft uses Order of Appearance as default. Highland 2 offers "by number of scenes" and "by number of lines." StudioBinder uses production-oriented grouping. No tool offers AI-driven "dramatic importance" ranking — future CineForge differentiator.
+
 ### Phase 3 — Script ↔ Scene Integration
 - Add scene anchors/sections to the script view (scrollable TOC or visual markers)
 - "Jump to script" from scene detail page
@@ -115,15 +131,22 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 - [ ] Clicking a scene reference on an entity page → navigates to that scene's detail (or script anchor)
 - [ ] Runs and Artifacts are accessible under a collapsed Advanced section
 - [ ] Project status is visible on the Script/Home page
+- [ ] Entity lists are sortable by: script order (first appearance), alphabetical, prominence (scene count)
+- [ ] Entity lists support three view densities: compact, medium, large
+- [ ] Sort and density preferences are sticky (stored in project.json, remembered per entity type)
 - [ ] Keyboard shortcuts updated and working
 - [ ] All pages verified with screenshots against running backend with real data
+- [ ] `ui/operator-console-lite/` deleted
 
 ## Tasks
 
 - [x] Phase 1: Sidebar redesign + new routes + list pages
 - [x] Phase 2: Entity detail pages (scene, character, location, prop)
-- [ ] Phase 3: Script ↔ Scene bidirectional linking
-- [ ] Phase 4: Polish, empty states, screenshot verification
+- [x] Phase 2b: List sorting (script order / alphabetical / prominence) and view density (compact / medium / large)
+- [x] Phase 3: Script ↔ Scene bidirectional linking
+- [x] Phase 4a: Polish — build fixes, browser verification, runtime bug fixes
+- [ ] Phase 4b: Flatten `ui/operator-console/` → `ui/` (requires commit of current changes first)
+- [x] Housekeeping: Delete operator-console-lite (legacy stopgap)
 
 ## Work Log
 
@@ -146,3 +169,29 @@ If the existing artifact API doesn't support filtering by type efficiently, we m
 - **SceneEntityRoster**: For scene detail pages — lists characters_present and location with clickable entity links
 - **Entity ID resolution**: Fuzzy matching via `resolveEntityId()` — normalizes names/IDs for cross-linking
 - **Next**: Phase 3 — Script ↔ Scene bidirectional linking
+
+20260216-2100 — Phase 2b complete: Sort controls + view density toggles on all list pages
+- **Result**: Build passes. All 4 list pages have toolbar with 3 sort modes + 3 density views.
+- **Files created**: `EntityListControls.tsx` (shared toolbar component)
+- **Files modified**: `ScenesList.tsx`, `CharactersList.tsx`, `LocationsList.tsx`, `PropsList.tsx`
+- **Sort modes**: Script Order (default), Alphabetical (A-Z), Prominence (TODO: wire to scene data for bible entities)
+- **View densities**: Compact (single-line rows), Medium (card grid), Large (expanded 2-col cards)
+- **Housekeeping**: Deleted `ui/operator-console-lite/`, updated AGENTS.md repo map, removed stray root `package.json`
+- **Provenance**: De-emphasized from standalone card to inline badge in entity detail header
+
+20260216-2130 — Phase 3 complete: Script ↔ Scene bidirectional linking
+- **Result**: Build passes. Clickable scene headings in editor + "View in Script" on scene detail pages.
+- **Files modified**: `ScreenplayEditor.tsx` (forwardRef, scrollToLine/scrollToHeading, onSceneHeadingClick), `ProjectHome.tsx` (?scene= param handling, heading click → scene detail nav), `EntityDetailPage.tsx` ("View in Script" button)
+- **Flow**: Scene detail → "View in Script" → Script page with `?scene=heading` → auto-scrolls editor to that scene heading
+- **Flow**: Script page → click scene heading (amber text) → navigates to scene detail page
+- **Next**: Phase 4 — Polish, screenshot verification, flatten ui/ directory
+
+20260217-0043 — Phase 4a complete: Browser verification + runtime bug fixes
+- **Result**: Build passes. All pages verified in browser with real backend data (The Mariner project, 71 artifact groups).
+- **Bug found & fixed**: React hooks ordering violation in CharactersList, LocationsList, PropsList — `useMemo` was called after early returns (`isLoading`/`error` guards). Moved `useMemo` above all early returns in all three files. ScenesList was already correct.
+- **Bug found & fixed**: Missing `navigate` variable in EntityDetailPage (used in "View in Script" button but never declared in component scope). Added `const navigate = useNavigate()`.
+- **Bug found & fixed**: Type-only imports needed for `SortMode`/`ViewDensity` in all 4 list pages (verbatimModuleSyntax).
+- **Verified pages**: Landing, Script/Home, Scenes list (all 3 densities + sort), Scene detail (entity roster, View in Script), Characters list (sort + density), Character detail (scene appearances, bible content), Locations list, Props list, Advanced section expand/collapse.
+- **Bidirectional linking verified**: Script heading click → scene detail, Scene "View in Script" → script with auto-scroll.
+- **No console errors** in any page (only unrelated Chrome extension noise).
+- **Remaining**: Phase 4b — flatten `ui/operator-console/` → `ui/` (deferred — needs current changes committed first since `git mv` requires clean working tree for moved files).

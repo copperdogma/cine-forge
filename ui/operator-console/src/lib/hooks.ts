@@ -1,6 +1,6 @@
 // TanStack React Query hooks for CineForge API client.
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 import type {
   ArtifactDetailResponse,
@@ -24,6 +24,7 @@ import * as api from './api'
 
 // Scene data types for UI components
 export interface Scene {
+  entityId: string
   index: number
   heading: string
   location: string
@@ -247,6 +248,147 @@ export function useEditArtifact() {
   })
 }
 
+// --- Scene Index (for entity sort ordering) ---
+
+/**
+ * Fetches the scene_index artifact — a fast lookup table mapping
+ * scene headings → scene numbers. Used by useEntityDetails for
+ * computing script order (first appearance) and prominence.
+ */
+export function useSceneIndex(projectId: string | undefined) {
+  const { data: groups } = useArtifactGroups(projectId)
+  const sceneIndexGroup = groups?.find(g => g.artifact_type === 'scene_index')
+
+  return useArtifact(
+    projectId,
+    'scene_index',
+    sceneIndexGroup?.entity_id ?? 'project',
+    sceneIndexGroup?.latest_version,
+  )
+}
+
+// --- Entity Details (enriched bible entities for list pages) ---
+
+export interface EnrichedEntity {
+  entity_id: string | null
+  artifact_type: string
+  latest_version: number
+  health: string | null
+  description: string | null
+  sceneCount: number
+  firstSceneNumber: number | null
+  isLoaded: boolean
+}
+
+const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+function stripDescription(heading: string): string {
+  const colonIdx = heading.indexOf(':')
+  return colonIdx > 0 ? heading.slice(0, colonIdx).trim() : heading
+}
+
+/**
+ * Computes the earliest scene number where an entity appears,
+ * by cross-referencing scene_presence headings against scene_index entries.
+ */
+function computeFirstSceneNumber(
+  scenePresence: string[],
+  sceneIndexData: any,
+): number | null {
+  if (!scenePresence?.length || !sceneIndexData) return null
+
+  const entries: any[] = sceneIndexData?.payload?.data?.entries ?? []
+  if (!entries.length) return null
+
+  // Build heading → scene_number map
+  const headingToNumber = new Map<string, number>()
+  for (const entry of entries) {
+    if (entry.heading) {
+      headingToNumber.set(normalize(entry.heading), entry.scene_number)
+    }
+  }
+
+  let minScene: number | null = null
+  for (const presence of scenePresence) {
+    // Try exact normalized match first, then strip description suffix
+    const key = normalize(presence)
+    let num = headingToNumber.get(key)
+    if (num == null) {
+      num = headingToNumber.get(normalize(stripDescription(presence)))
+    }
+    // Prefix match fallback: does presence start with a known heading?
+    if (num == null) {
+      for (const [normHeading, sceneNum] of headingToNumber) {
+        if (key.startsWith(normHeading)) {
+          num = sceneNum
+          break
+        }
+      }
+    }
+    if (num != null && (minScene == null || num < minScene)) {
+      minScene = num
+    }
+  }
+
+  return minScene
+}
+
+/**
+ * Batch-fetches all bible artifacts of a given type and enriches them
+ * with description, scene count, and first scene number for sorting.
+ */
+export function useEntityDetails(
+  projectId: string | undefined,
+  artifactType: 'character_bible' | 'location_bible' | 'prop_bible',
+) {
+  const { data: groups, isLoading: groupsLoading, error: groupsError } = useArtifactGroups(projectId)
+  const { data: sceneIndexData } = useSceneIndex(projectId)
+
+  const entities = useMemo(
+    () => groups?.filter(g => g.artifact_type === artifactType) ?? [],
+    [groups, artifactType],
+  )
+
+  const detailQueries = useQueries({
+    queries: entities.map(e => ({
+      queryKey: ['projects', projectId, 'artifacts', artifactType, e.entity_id, e.latest_version],
+      queryFn: () => api.getArtifact(projectId!, artifactType, e.entity_id!, e.latest_version),
+      enabled: !!projectId && entities.length > 0,
+      staleTime: 60_000,
+    })),
+  })
+
+  const enriched: EnrichedEntity[] = useMemo(() => {
+    return entities.map((group, idx) => {
+      const detail = detailQueries[idx]?.data
+      const data = detail?.payload?.data as any
+
+      return {
+        entity_id: group.entity_id,
+        artifact_type: group.artifact_type,
+        latest_version: group.latest_version,
+        health: group.health,
+        description: data?.description ?? null,
+        sceneCount: data?.scene_presence?.length ?? 0,
+        firstSceneNumber: computeFirstSceneNumber(
+          data?.scene_presence ?? [],
+          sceneIndexData,
+        ),
+        isLoaded: !!detail,
+      }
+    })
+  }, [entities, detailQueries, sceneIndexData])
+
+  const detailsLoading = detailQueries.some(q => q.isLoading)
+
+  return {
+    data: enriched,
+    isLoading: groupsLoading,
+    detailsLoading,
+    error: groupsError,
+  }
+}
+
 // --- Entity Graph (derived from artifacts) ---
 
 /**
@@ -265,13 +407,185 @@ export function useEntityGraph(projectId: string | undefined) {
   )
 }
 
+// --- Entity Resolver (global cross-reference resolution) ---
+
+export interface ResolvedLink {
+  path: string
+  label: string
+}
+
+type EntityType = 'character' | 'location' | 'prop' | 'scene'
+
+const ARTIFACT_TYPE_MAP: Record<EntityType, string> = {
+  character: 'character_bible',
+  location: 'location_bible',
+  prop: 'prop_bible',
+  scene: 'scene',
+}
+
+const SECTION_MAP: Record<EntityType, string> = {
+  character: 'characters',
+  location: 'locations',
+  prop: 'props',
+  scene: 'scenes',
+}
+
+/**
+ * Global entity resolver hook. Builds normalized lookup maps from artifact groups
+ * and scene data so any component can resolve a name/heading/id to a route.
+ *
+ * Handles:
+ * - Entity names → entity detail routes (e.g., "SARAH" → /proj/characters/sarah)
+ * - Scene headings → scene detail routes (e.g., "INT. 13TH FLOOR" → /proj/scenes/scene_001)
+ * - Scene entity_ids → scene detail routes (e.g., "scene_001" → /proj/scenes/scene_001)
+ * - Raw entity_ids → entity detail routes (e.g., "sarah" → /proj/characters/sarah)
+ */
+export function useEntityResolver(projectId: string | undefined) {
+  const { data: groups } = useArtifactGroups(projectId)
+  const { data: scenes } = useScenes(projectId)
+
+  const resolver = useMemo(() => {
+    // Normalize a string for fuzzy matching: lowercase, strip non-alphanumeric
+    const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+    // Build entity lookup: normalized name/id → { entityId, section }
+    // Multiple keys map to the same entity for fuzzy matching
+    const entityMap = new Map<string, { entityId: string; section: string }>()
+
+    for (const g of groups ?? []) {
+      if (!g.entity_id) continue
+      for (const [type, artifactType] of Object.entries(ARTIFACT_TYPE_MAP)) {
+        if (g.artifact_type !== artifactType) continue
+        const section = SECTION_MAP[type as EntityType]
+        const entry = { entityId: g.entity_id, section }
+        // Index by normalized entity_id
+        entityMap.set(norm(g.entity_id), entry)
+        // Also index by raw lowercase entity_id
+        entityMap.set(g.entity_id.toLowerCase(), entry)
+      }
+    }
+
+    // Build scene heading lookup: normalized heading → scene entityId
+    // We store both exact keys and keep an ordered list for prefix matching.
+    const sceneHeadingMap = new Map<string, string>()
+    // Ordered by longest heading first so prefix match is greedy
+    const sceneHeadingPrefixes: Array<{ norm: string; entityId: string }> = []
+
+    for (const scene of scenes ?? []) {
+      if (scene.heading) {
+        const headingNorm = norm(scene.heading)
+        sceneHeadingMap.set(headingNorm, scene.entityId)
+        sceneHeadingMap.set(scene.heading.toLowerCase(), scene.entityId)
+        sceneHeadingPrefixes.push({ norm: headingNorm, entityId: scene.entityId })
+      }
+      if (scene.location) {
+        if (!sceneHeadingMap.has(norm(scene.location))) {
+          sceneHeadingMap.set(norm(scene.location), scene.entityId)
+        }
+      }
+      sceneHeadingMap.set(`scene${scene.index}`, scene.entityId)
+      sceneHeadingMap.set(`scene_${String(scene.index).padStart(3, '0')}`, scene.entityId)
+    }
+    // Sort longest first for greedy prefix matching
+    sceneHeadingPrefixes.sort((a, b) => b.norm.length - a.norm.length)
+
+    /**
+     * Try to match a scene reference string against known scene headings.
+     * Handles exact match, then prefix match (for "HEADING: description" patterns
+     * common in scene_presence data).
+     */
+    function resolveScene(input: string): string | null {
+      const inputNorm = norm(input)
+      const inputLower = input.toLowerCase()
+
+      // 1. Exact match
+      const exact = sceneHeadingMap.get(inputNorm) ?? sceneHeadingMap.get(inputLower)
+      if (exact) return exact
+
+      // 2. Try stripping description after colon (common in scene_presence)
+      const colonIdx = input.indexOf(':')
+      if (colonIdx > 0) {
+        const beforeColon = input.slice(0, colonIdx).trim()
+        const match = sceneHeadingMap.get(norm(beforeColon)) ?? sceneHeadingMap.get(beforeColon.toLowerCase())
+        if (match) return match
+      }
+
+      // 3. Prefix match: does the input start with a known heading?
+      for (const prefix of sceneHeadingPrefixes) {
+        if (inputNorm.startsWith(prefix.norm)) return prefix.entityId
+      }
+
+      return null
+    }
+
+    /**
+     * Resolve any entity reference to a route.
+     * @param name - Entity name, heading, or ID (e.g., "SARAH", "INT. 13TH FLOOR", "scene_001")
+     * @param type - Optional type hint to narrow the search
+     * @returns ResolvedLink with path and label, or null if unresolvable
+     */
+    function resolve(name: string, type?: EntityType): ResolvedLink | null {
+      if (!projectId || !name) return null
+
+      const normalized = norm(name)
+      const lowered = name.toLowerCase()
+
+      // If type is specified, try direct match first
+      if (type) {
+        if (type === 'scene') {
+          // Try scene resolution (exact + colon-strip + prefix)
+          const sceneId = resolveScene(name)
+          if (sceneId) {
+            return { path: `/${projectId}/scenes/${sceneId}`, label: name }
+          }
+          // Try entity map for scene artifact IDs
+          const entry = entityMap.get(normalized) ?? entityMap.get(lowered)
+          if (entry?.section === 'scenes') {
+            return { path: `/${projectId}/scenes/${entry.entityId}`, label: name }
+          }
+          return null
+        }
+
+        const artifactType = ARTIFACT_TYPE_MAP[type]
+        const section = SECTION_MAP[type]
+        // Try entity map filtered by type
+        for (const g of groups ?? []) {
+          if (g.artifact_type !== artifactType || !g.entity_id) continue
+          if (norm(g.entity_id) === normalized || g.entity_id.toLowerCase() === lowered) {
+            return { path: `/${projectId}/${section}/${g.entity_id}`, label: name }
+          }
+        }
+        return null
+      }
+
+      // No type hint: try scene resolution first (handles headings, descriptions, IDs)
+      const sceneId = resolveScene(name)
+      if (sceneId) {
+        return { path: `/${projectId}/scenes/${sceneId}`, label: name }
+      }
+
+      // Try entity map (covers characters, locations, props, scene IDs)
+      const entry = entityMap.get(normalized) ?? entityMap.get(lowered)
+      if (entry) {
+        return { path: `/${projectId}/${entry.section}/${entry.entityId}`, label: name }
+      }
+
+      return null
+    }
+
+    return { resolve }
+  }, [projectId, groups, scenes])
+
+  return resolver
+}
+
 // --- Scenes (derived from artifacts) ---
 
 /**
  * Transforms artifact data into Scene format for the SceneStrip component.
  * Handles both individual scene artifacts and scene_breakdown artifacts.
  */
-function transformArtifactToScene(artifact: ArtifactDetailResponse, fallbackIndex: number): Scene | null {
+function transformArtifactToScene(artifact: ArtifactDetailResponse, entityId: string, fallbackIndex: number): Scene | null {
   const data = artifact.payload.data as any
 
   // Extract fields from artifact data
@@ -292,6 +606,7 @@ function transformArtifactToScene(artifact: ArtifactDetailResponse, fallbackInde
   }
 
   return {
+    entityId,
     index: sceneNumber,
     heading,
     location,
@@ -339,6 +654,7 @@ export function useScenes(projectId: string | undefined) {
 
       sceneList.forEach((sceneData: any, idx: number) => {
         const sceneNumber = sceneData?.scene_number ?? idx + 1
+        const sceneEntityId = sceneData?.scene_id ?? `scene_${String(sceneNumber).padStart(3, '0')}`
         const heading = sceneData?.heading ?? sceneData?.scene_heading ?? `Scene ${sceneNumber}`
         const location = sceneData?.location ?? sceneData?.scene_location ?? heading
         const intExtRaw = sceneData?.int_ext ?? sceneData?.interior_exterior ?? 'INT'
@@ -354,6 +670,7 @@ export function useScenes(projectId: string | undefined) {
         }
 
         scenes.push({
+          entityId: sceneEntityId,
           index: sceneNumber,
           heading,
           location,
@@ -364,7 +681,7 @@ export function useScenes(projectId: string | undefined) {
       })
     } else {
       // Handle individual scene artifact
-      const scene = transformArtifactToScene(artifact, index + 1)
+      const scene = transformArtifactToScene(artifact, group.entity_id ?? `scene_${String(index + 1).padStart(3, '0')}`, index + 1)
       if (scene) {
         scenes.push(scene)
       }

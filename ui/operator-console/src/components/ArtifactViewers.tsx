@@ -426,11 +426,11 @@ export function ProfileViewer({
             title={`Scene Presence (${scenePresence.length})`}
             icon={<Film className="h-4 w-4 text-muted-foreground" />}
           >
-            <div className="flex flex-wrap gap-1">
+            <div className="space-y-1">
               {scenePresence.map((scene, i) => (
-                <Badge key={i} variant="outline" className="text-xs font-mono">
+                <div key={i} className="rounded-md border border-border px-2.5 py-1.5 text-xs font-mono truncate max-w-full">
                   {String(scene)}
-                </Badge>
+                </div>
               ))}
             </div>
           </CollapsibleSection>

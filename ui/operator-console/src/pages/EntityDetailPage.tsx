@@ -24,7 +24,13 @@ import {
   DefaultViewer,
 } from '@/components/ArtifactViewers'
 import { ProvenanceBadge } from '@/components/ProvenanceBadge'
-import { useArtifact, useArtifactGroups, useEntityGraph } from '@/lib/hooks'
+import {
+  useArtifact,
+  useArtifactGroups,
+  useEntityGraph,
+  useEntityResolver,
+  type ResolvedLink,
+} from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
 
 // --- Config ---
@@ -103,53 +109,78 @@ function healthBadge(health: string | null) {
   )
 }
 
-// Resolve a character name to an entity_id by fuzzy matching artifact groups
-function resolveEntityId(
-  name: string,
-  groups: Array<{ artifact_type: string; entity_id: string | null }>,
-  artifactType: string,
-): string | null {
-  const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, '')
-  const match = groups.find(g => {
-    if (g.artifact_type !== artifactType || !g.entity_id) return false
-    const gNorm = g.entity_id.toLowerCase().replace(/[^a-z0-9]/g, '')
-    return gNorm === normalized || g.entity_id.toLowerCase() === name.toLowerCase()
-  })
-  return match?.entity_id ?? null
+/** Renders a name as a link if resolvable, plain text otherwise */
+function EntityLink({
+  resolved,
+  label,
+  icon: Icon,
+  iconColor,
+  showArrow,
+  compact,
+}: {
+  resolved: ResolvedLink | null
+  label: string
+  icon?: typeof Users
+  iconColor?: string
+  showArrow?: boolean
+  /** If true, renders as an inline chip. If false, renders full-width with truncation. */
+  compact?: boolean
+}) {
+  const baseClass = compact
+    ? 'inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-medium hover:bg-accent/50 transition-colors'
+    : 'flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-accent/50 transition-colors min-w-0 max-w-full'
+
+  if (resolved) {
+    return (
+      <Link to={resolved.path} className={baseClass}>
+        {Icon && <Icon className={cn('h-3 w-3 shrink-0', iconColor)} />}
+        <span className={compact ? undefined : 'truncate'}>{label}</span>
+        {showArrow && <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />}
+      </Link>
+    )
+  }
+  return (
+    <span className={baseClass}>
+      {Icon && <Icon className="h-3 w-3 shrink-0" />}
+      <span className={compact ? undefined : 'truncate'}>{label}</span>
+    </span>
+  )
 }
 
 // --- Cross-Reference Components ---
 
-/** Clickable scene appearance links */
+/** Clickable scene appearance links — resolves headings, IDs, etc. via global resolver */
 function SceneAppearances({
-  projectId,
-  sceneIds,
+  sceneRefs,
+  resolve,
 }: {
-  projectId: string
-  sceneIds: string[]
+  sceneRefs: string[]
+  resolve: (name: string, type?: 'scene') => ResolvedLink | null
 }) {
-  if (sceneIds.length === 0) return null
+  if (sceneRefs.length === 0) return null
 
   return (
     <Card>
       <CardHeader className="pb-3">
         <CardTitle className="text-sm flex items-center gap-2">
           <Clapperboard className="h-4 w-4 text-violet-400" />
-          Scene Appearances ({sceneIds.length})
+          Scene Appearances ({sceneRefs.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-wrap gap-1.5">
-          {sceneIds.map(sceneId => (
-            <Link
-              key={sceneId}
-              to={`/${projectId}/scenes/${sceneId}`}
-              className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-mono hover:bg-accent/50 transition-colors"
-            >
-              <Clapperboard className="h-3 w-3 text-violet-400" />
-              {sceneId}
-            </Link>
-          ))}
+        <div className="space-y-1.5">
+          {sceneRefs.map(ref => {
+            const resolved = resolve(ref, 'scene')
+            return (
+              <EntityLink
+                key={ref}
+                resolved={resolved}
+                label={ref}
+                icon={Clapperboard}
+                iconColor="text-violet-400"
+              />
+            )
+          })}
         </div>
       </CardContent>
     </Card>
@@ -158,15 +189,13 @@ function SceneAppearances({
 
 /** Relationship edges from entity graph */
 function RelationshipsSection({
-  projectId,
   entityId,
   graphData,
-  groups,
+  resolve,
 }: {
-  projectId: string
   entityId: string
   graphData: Record<string, unknown> | undefined
-  groups: Array<{ artifact_type: string; entity_id: string | null }> | undefined
+  resolve: (name: string, type?: 'character' | 'location' | 'prop') => ResolvedLink | null
 }) {
   if (!graphData) return null
 
@@ -201,26 +230,11 @@ function RelationshipsSection({
             const confidence = edge.confidence as number | undefined
             const sceneRefs = (edge.scene_refs as string[]) ?? []
 
-            // Determine which entity is the "other" one
             const isSource = sourceId?.toLowerCase() === entityId.toLowerCase()
             const otherId = isSource ? targetId : sourceId
             const otherType = isSource ? targetType : sourceType
 
-            // Resolve the other entity to a route
-            const typeToSection: Record<string, string> = {
-              character: 'characters',
-              location: 'locations',
-              prop: 'props',
-            }
-            const otherSection = typeToSection[otherType]
-            const typeToArtifact: Record<string, string> = {
-              character: 'character_bible',
-              location: 'location_bible',
-              prop: 'prop_bible',
-            }
-            const resolvedId = groups
-              ? resolveEntityId(otherId, groups, typeToArtifact[otherType] ?? '')
-              : null
+            const resolved = resolve(otherId, otherType as 'character' | 'location' | 'prop')
 
             const TypeIcon = otherType === 'character' ? Users : otherType === 'location' ? MapPin : Wrench
             const typeColor = otherType === 'character' ? 'text-amber-400' : otherType === 'location' ? 'text-rose-400' : 'text-orange-400'
@@ -232,9 +246,9 @@ function RelationshipsSection({
               >
                 <TypeIcon className={cn('h-4 w-4 shrink-0', typeColor)} />
                 <div className="flex-1 min-w-0">
-                  {resolvedId && otherSection ? (
+                  {resolved ? (
                     <Link
-                      to={`/${projectId}/${otherSection}/${resolvedId}`}
+                      to={resolved.path}
                       className="text-sm font-medium hover:underline"
                     >
                       {formatEntityName(otherId)}
@@ -267,23 +281,16 @@ function RelationshipsSection({
 
 /** Entity roster for a scene — lists characters, location, with clickable links */
 function SceneEntityRoster({
-  projectId,
   sceneData,
-  groups,
+  resolve,
 }: {
-  projectId: string
   sceneData: Record<string, unknown>
-  groups: Array<{ artifact_type: string; entity_id: string | null }> | undefined
+  resolve: (name: string, type?: 'character' | 'location' | 'prop') => ResolvedLink | null
 }) {
   const characters = (sceneData.characters_present as string[] | undefined) ?? []
   const location = sceneData.location as string | undefined
 
   if (characters.length === 0 && !location) return null
-
-  // Resolve location name to entity_id
-  const locationEntityId = location && groups
-    ? resolveEntityId(location, groups, 'location_bible')
-    : null
 
   return (
     <Card>
@@ -294,59 +301,36 @@ function SceneEntityRoster({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Characters */}
         {characters.length > 0 && (
           <div>
             <p className="text-xs text-muted-foreground mb-2">Characters ({characters.length})</p>
             <div className="flex flex-wrap gap-1.5">
-              {characters.map(charName => {
-                const charEntityId = groups
-                  ? resolveEntityId(charName, groups, 'character_bible')
-                  : null
-
-                if (charEntityId) {
-                  return (
-                    <Link
-                      key={charName}
-                      to={`/${projectId}/characters/${charEntityId}`}
-                      className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-medium hover:bg-accent/50 transition-colors"
-                    >
-                      <Users className="h-3 w-3 text-amber-400" />
-                      {charName}
-                      <ArrowRight className="h-3 w-3 text-muted-foreground" />
-                    </Link>
-                  )
-                }
-                return (
-                  <Badge key={charName} variant="secondary" className="text-xs gap-1">
-                    <Users className="h-3 w-3" />
-                    {charName}
-                  </Badge>
-                )
-              })}
+              {characters.map(charName => (
+                <EntityLink
+                  key={charName}
+                  resolved={resolve(charName, 'character')}
+                  label={charName}
+                  icon={Users}
+                  iconColor="text-amber-400"
+                  showArrow
+                  compact
+                />
+              ))}
             </div>
           </div>
         )}
 
-        {/* Location */}
         {location && (
           <div>
             <p className="text-xs text-muted-foreground mb-2">Location</p>
-            {locationEntityId ? (
-              <Link
-                to={`/${projectId}/locations/${locationEntityId}`}
-                className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-medium hover:bg-accent/50 transition-colors"
-              >
-                <MapPin className="h-3 w-3 text-rose-400" />
-                {location}
-                <ArrowRight className="h-3 w-3 text-muted-foreground" />
-              </Link>
-            ) : (
-              <Badge variant="secondary" className="text-xs gap-1">
-                <MapPin className="h-3 w-3" />
-                {location}
-              </Badge>
-            )}
+            <EntityLink
+              resolved={resolve(location, 'location')}
+              label={location}
+              icon={MapPin}
+              iconColor="text-rose-400"
+              showArrow
+              compact
+            />
           </div>
         )}
       </CardContent>
@@ -358,6 +342,7 @@ function SceneEntityRoster({
 
 export default function EntityDetailPage({ section }: { section: string }) {
   const { projectId, entityId } = useParams()
+  const navigate = useNavigate()
   const [showRawJson, setShowRawJson] = useState(false)
 
   const config = sectionConfig[section]
@@ -366,6 +351,9 @@ export default function EntityDetailPage({ section }: { section: string }) {
   }
 
   const Icon = config.icon
+
+  // Global entity resolver for all cross-reference links
+  const { resolve } = useEntityResolver(projectId)
 
   // Resolve latest version from artifact groups
   const { data: groups, isLoading: groupsLoading } = useArtifactGroups(projectId)
@@ -471,70 +459,67 @@ export default function EntityDetailPage({ section }: { section: string }) {
             <h1 className="text-2xl font-bold tracking-tight truncate">{displayName}</h1>
             {healthBadge(group.health)}
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
             <span>{config.label}</span>
             <span className="text-muted-foreground/50">&middot;</span>
             <span className="flex items-center gap-1.5">
               <GitBranch className="h-3.5 w-3.5" />
               v{group.latest_version}
             </span>
+            {meta && (
+              <>
+                <span className="text-muted-foreground/50">&middot;</span>
+                <ProvenanceBadge
+                  model={
+                    (meta.producing_role as string) ||
+                    (meta.producing_module as string) ||
+                    'unknown'
+                  }
+                  confidence={
+                    typeof meta.confidence === 'number'
+                      ? Math.round(meta.confidence * 100)
+                      : 0
+                  }
+                  rationale={
+                    (meta.rationale as string) ||
+                    (meta.intent as string) ||
+                    undefined
+                  }
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Scene-specific: Entity roster (characters + location links) */}
+      {/* Scene-specific: Jump to Script button + Entity roster */}
       {section === 'scenes' && data && (
-        <SceneEntityRoster
-          projectId={projectId}
-          sceneData={data}
-          groups={groups}
-        />
+        <>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => navigate(`/${projectId}?scene=${encodeURIComponent(displayName)}`)}
+          >
+            <FileText className="h-3.5 w-3.5" />
+            View in Script
+          </Button>
+          <SceneEntityRoster sceneData={data} resolve={resolve} />
+        </>
       )}
 
       {/* Bible-type: Scene appearances */}
       {section !== 'scenes' && scenePresence.length > 0 && (
-        <SceneAppearances
-          projectId={projectId}
-          sceneIds={scenePresence}
-        />
+        <SceneAppearances sceneRefs={scenePresence} resolve={resolve} />
       )}
 
       {/* Bible-type: Relationships from entity graph */}
       {section !== 'scenes' && graphData && (
         <RelationshipsSection
-          projectId={projectId}
           entityId={entityId}
           graphData={graphData}
-          groups={groups}
+          resolve={resolve}
         />
-      )}
-
-      {/* Provenance */}
-      {meta && (
-        <Card>
-          <CardHeader className="pb-3">
-            <h2 className="text-sm font-semibold">Provenance</h2>
-          </CardHeader>
-          <CardContent>
-            <ProvenanceBadge
-              model={
-                (meta.producing_role as string) ||
-                (meta.producing_module as string) ||
-                'unknown'
-              }
-              confidence={
-                typeof meta.confidence === 'number'
-                  ? Math.round(meta.confidence * 100)
-                  : 0
-              }
-              rationale={
-                (meta.rationale as string) ||
-                (meta.intent as string) ||
-                undefined
-              }
-            />
-          </CardContent>
-        </Card>
       )}
 
       {/* Main content (bible viewer / scene viewer) */}

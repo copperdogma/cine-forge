@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useImperativeHandle, forwardRef, useCallback } from 'react'
 import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
 import { StreamLanguage } from '@codemirror/language'
@@ -65,90 +65,154 @@ const screenplayHighlighting = HighlightStyle.define([
 // Create a custom highlight extension
 const screenplaySyntax = syntaxHighlighting(screenplayHighlighting)
 
+export interface ScreenplayEditorHandle {
+  /** Scroll to a 1-indexed line number */
+  scrollToLine: (line: number) => void
+  /** Find the first line matching a scene heading pattern and scroll to it */
+  scrollToHeading: (heading: string) => void
+}
+
 export interface ScreenplayEditorProps {
   content: string
   readOnly?: boolean
+  /** Called when a scene heading line is clicked. Receives the heading text. */
+  onSceneHeadingClick?: (heading: string) => void
 }
 
-export function ScreenplayEditor({ content, readOnly = true }: ScreenplayEditorProps) {
-  const editorRef = useRef<HTMLDivElement>(null)
-  const viewRef = useRef<EditorView | null>(null)
+const isSceneHeading = (line: string) => /^(INT\.|EXT\.|INT\/EXT\.|I\/E\.)/i.test(line)
 
-  useEffect(() => {
-    if (!editorRef.current) return
+export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, ScreenplayEditorProps>(
+  function ScreenplayEditor({ content, readOnly = true, onSceneHeadingClick }, ref) {
+    const editorRef = useRef<HTMLDivElement>(null)
+    const viewRef = useRef<EditorView | null>(null)
+    const onClickRef = useRef(onSceneHeadingClick)
+    onClickRef.current = onSceneHeadingClick
 
-    // Create editor state
-    const state = EditorState.create({
-      doc: content,
-      extensions: [
-        basicSetup,
-        screenplayTheme,
-        screenplaySyntax,
-        StreamLanguage.define({
-          token(stream) {
-            const line = stream.string
-
-            // Scene headings
-            if (stream.sol()) {
-              if (line.match(/^(INT\.|EXT\.|INT\/EXT\.|I\/E\.)/i)) {
-                stream.skipToEnd()
-                return 'heading'
-              }
-
-              // Transitions
-              if (line.match(/^(FADE|CUT|DISSOLVE|MATCH CUT)/i) || line.match(/TO:\s*$/)) {
-                stream.skipToEnd()
-                return 'transition'
-              }
-
-              // Character names
-              const trimmed = line.trim()
-              if (
-                trimmed === trimmed.toUpperCase() &&
-                trimmed.length > 0 &&
-                trimmed.length < 30 &&
-                !trimmed.match(/^(INT\.|EXT\.|INT\/EXT\.|I\/E\.)/i) &&
-                !trimmed.match(/[.:]$/)
-              ) {
-                stream.skipToEnd()
-                return 'character'
-              }
-
-              // Parentheticals
-              if (line.match(/^\s*\([^)]*\)\s*$/)) {
-                stream.skipToEnd()
-                return 'parenthetical'
-              }
+    useImperativeHandle(ref, () => ({
+      scrollToLine(lineNumber: number) {
+        const view = viewRef.current
+        if (!view) return
+        const maxLines = view.state.doc.lines
+        const clampedLine = Math.max(1, Math.min(lineNumber, maxLines))
+        const pos = view.state.doc.line(clampedLine).from
+        view.dispatch({
+          effects: EditorView.scrollIntoView(pos, { y: 'start', yMargin: 50 }),
+        })
+      },
+      scrollToHeading(heading: string) {
+        const view = viewRef.current
+        if (!view) return
+        const norm = heading.toLowerCase().replace(/[^a-z0-9]/g, '')
+        for (let i = 1; i <= view.state.doc.lines; i++) {
+          const lineText = view.state.doc.line(i).text
+          if (isSceneHeading(lineText)) {
+            const lineNorm = lineText.toLowerCase().replace(/[^a-z0-9]/g, '')
+            if (lineNorm.includes(norm) || norm.includes(lineNorm)) {
+              const pos = view.state.doc.line(i).from
+              view.dispatch({
+                effects: EditorView.scrollIntoView(pos, { y: 'start', yMargin: 50 }),
+              })
+              return
             }
+          }
+        }
+      },
+    }))
 
-            stream.skipToEnd()
-            return null
-          },
-        }),
-        keymap.of(searchKeymap),
-        EditorView.lineWrapping,
-        EditorState.readOnly.of(readOnly),
-        EditorView.editable.of(!readOnly),
-      ],
-    })
+    // Click handler for scene headings
+    const handleClick = useCallback((view: EditorView, pos: number) => {
+      if (!onClickRef.current) return false
+      const line = view.state.doc.lineAt(pos)
+      if (isSceneHeading(line.text)) {
+        onClickRef.current(line.text)
+        return true
+      }
+      return false
+    }, [])
 
-    // Create editor view
-    const view = new EditorView({
-      state,
-      parent: editorRef.current,
-    })
+    useEffect(() => {
+      if (!editorRef.current) return
 
-    viewRef.current = view
+      const state = EditorState.create({
+        doc: content,
+        extensions: [
+          basicSetup,
+          screenplayTheme,
+          screenplaySyntax,
+          StreamLanguage.define({
+            token(stream) {
+              const line = stream.string
 
-    // Cleanup on unmount
-    return () => {
-      view.destroy()
-      viewRef.current = null
-    }
-  }, [content, readOnly])
+              if (stream.sol()) {
+                if (isSceneHeading(line)) {
+                  stream.skipToEnd()
+                  return 'heading'
+                }
 
-  return <div ref={editorRef} className="screenplay-editor h-full overflow-hidden" />
-}
+                if (line.match(/^(FADE|CUT|DISSOLVE|MATCH CUT)/i) || line.match(/TO:\s*$/)) {
+                  stream.skipToEnd()
+                  return 'transition'
+                }
+
+                const trimmed = line.trim()
+                if (
+                  trimmed === trimmed.toUpperCase() &&
+                  trimmed.length > 0 &&
+                  trimmed.length < 30 &&
+                  !isSceneHeading(trimmed) &&
+                  !trimmed.match(/[.:]$/)
+                ) {
+                  stream.skipToEnd()
+                  return 'character'
+                }
+
+                if (line.match(/^\s*\([^)]*\)\s*$/)) {
+                  stream.skipToEnd()
+                  return 'parenthetical'
+                }
+              }
+
+              stream.skipToEnd()
+              return null
+            },
+          }),
+          keymap.of(searchKeymap),
+          EditorView.lineWrapping,
+          EditorState.readOnly.of(readOnly),
+          EditorView.editable.of(!readOnly),
+          // Make scene headings clickable with cursor pointer
+          EditorView.domEventHandlers({
+            click(event, view) {
+              const pos = view.posAtCoords({ x: event.clientX, y: event.clientY })
+              if (pos != null) return handleClick(view, pos)
+              return false
+            },
+          }),
+          // Style scene heading lines with pointer cursor when callback is set
+          EditorView.theme({
+            '.cm-line:has(.tok-heading)': {
+              cursor: 'pointer',
+            },
+          }),
+        ],
+      })
+
+      const view = new EditorView({
+        state,
+        parent: editorRef.current,
+      })
+
+      viewRef.current = view
+
+      return () => {
+        view.destroy()
+        viewRef.current = null
+      }
+    }, [content, readOnly, handleClick])
+
+    return <div ref={editorRef} className="screenplay-editor h-full overflow-hidden" />
+  },
+)
 
 // Default export for lazy loading
 export default ScreenplayEditor

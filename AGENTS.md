@@ -25,6 +25,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Conservative Heuristics**: When building classifiers (screenplay vs. prose), use weighted evidence and confidence scores. Favor "needs_review" over silent incorrectness.
 - **Lineage Tracking**: Every transformation must record its upstream sources. Data without provenance is noise.
 - **Context Traceability**: Every run must persist its full execution context (e.g., `runtime_params`, recipe fingerprints) in its core artifacts (`run_state.json`). Never leave the operator guessing which model or flag produced an outcome.
+- **Project-Scoped Preferences**: Store user preferences and settings in `project.json`, not `localStorage`. `localStorage` is ephemeral — it doesn't survive browser clears, doesn't sync across machines, and isn't visible to the backend. Only use `localStorage` for truly throwaway UI state (e.g., collapsed panel memory within a single session). Anything the user would miss if it vanished belongs in project settings.
 
 ## Project Context (CineForge)
 
@@ -202,6 +203,23 @@ When a new AI-powered module lands:
 5. Create promptfoo config in `benchmarks/tasks/` (providers × test cases × assertions)
 6. Run eval, analyze, pick models, update defaults in `src/cine_forge/schemas/models.py`
 
+#### Eval Catalog (Feb 2026)
+
+Quick reference for every promptfoo eval. Re-run these when new models drop.
+
+| Eval | Config | Summary | Tests | Top Model |
+|------|--------|---------|-------|-----------|
+| Character Extraction | `tasks/character-extraction.yaml` | Structured character bible: traits, arc, relationships, evidence | 3 (Mariner, Rose, Dad) | Opus 4.6 (0.916) |
+| Location Extraction | `tasks/location-extraction.yaml` | Structured location bible: physical detail, narrative function, scene refs | 3 (Ruddy & Greene, 15th Floor, Coastline) | Gemini 2.5 Pro (0.847) |
+| Prop Extraction | `tasks/prop-extraction.yaml` | Structured prop bible: description, symbolism, plot function | 3 (Oar, Purse, Flare Gun) | Sonnet 4.5 (0.861) |
+| Relationship Discovery | `tasks/relationship-discovery.yaml` | Narrative relationships: family, adversary, ownership edges | 1 (all entities) | 6-way tie (0.990) |
+| Config Detection | `tasks/config-detection.yaml` | Auto-detect project metadata: title, genre, tone, format, duration, cast | 1 (full screenplay) | Haiku 4.5 (LLM: 0.90) |
+| Scene Extraction | `tasks/scene-extraction.yaml` | Scene boundaries, headings, characters, summaries | 1 (full screenplay) | *Reference only* |
+
+All evals: 12 providers (4 OpenAI, 3 Anthropic, 5 Google), dual scoring (Python + LLM rubric), judge = Opus 4.6.
+
+**To re-run for a new model:** add provider block to each `tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache -j 3` → `promptfoo view` → update table above.
+
 ### Ideas Backlog
 - `docs/ideas.md` captures features, patterns, and design concepts that are good but not in scope for current work.
 - When a feature is deferred during story work, move it to `docs/ideas.md` rather than losing it.
@@ -253,7 +271,6 @@ When building or substantially redesigning a UI, follow this process:
 - `src/cine_forge/artifacts/`: Storage, versioning, and dependency graph.
 - `src/cine_forge/api/`: Backend API for the UI.
 - `ui/operator-console/`: Production React frontend (shadcn/ui + React 19 + Zustand).
-- `ui/operator-console-lite/`: Legacy stopgap frontend (reference only).
 
 ### Worktree Strategy
 

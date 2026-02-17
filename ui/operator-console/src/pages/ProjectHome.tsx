@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, Suspense, lazy } from 'react'
 // Chat loading moved to useChatLoader in AppShell — runs on every page.
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   Film,
@@ -40,6 +40,8 @@ import {
 import { updateProjectSettings } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import type { ProjectState } from '@/lib/types'
+
+import type { ScreenplayEditorHandle } from '@/components/ScreenplayEditor'
 
 const ScreenplayEditor = lazy(() =>
   import('@/components/ScreenplayEditor').then(m => ({ default: m.ScreenplayEditor })),
@@ -191,10 +193,43 @@ function formatDuration(seconds: number): string {
 // --- Fresh Import View: Screenplay displayed in CodeMirror ---
 
 function FreshImportView({ projectId }: { projectId: string }) {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { data: project } = useProject(projectId)
   const { data: inputs } = useProjectInputs(projectId)
+  const { data: scenes } = useScenes(projectId)
   const latestInput = inputs?.[inputs.length - 1]
   const { data: content, isLoading } = useProjectInputContent(projectId, latestInput?.filename)
+  const editorRef = useRef<ScreenplayEditorHandle>(null)
+
+  // Handle ?scene= query param — scroll to that scene heading after editor mounts
+  useEffect(() => {
+    const sceneParam = searchParams.get('scene')
+    if (sceneParam && editorRef.current) {
+      // Small delay to let CodeMirror finish rendering
+      const timer = setTimeout(() => {
+        editorRef.current?.scrollToHeading(sceneParam)
+      }, 200)
+      // Clear the param so it doesn't re-scroll on re-renders
+      setSearchParams({}, { replace: true })
+      return () => clearTimeout(timer)
+    }
+  }, [searchParams, setSearchParams, content])
+
+  // When a scene heading is clicked in the editor, navigate to its detail page
+  const handleSceneHeadingClick = (heading: string) => {
+    if (!scenes) return
+    // Normalize for matching
+    const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+    const headingNorm = norm(heading)
+    const scene = scenes.find(s => {
+      const sNorm = norm(s.heading)
+      return sNorm === headingNorm || headingNorm.includes(sNorm) || sNorm.includes(headingNorm)
+    })
+    if (scene) {
+      navigate(`/${projectId}/scenes/${scene.entityId}`)
+    }
+  }
 
   return (
     <div className="flex flex-col flex-1 min-h-0 gap-4">
@@ -230,7 +265,12 @@ function FreshImportView({ projectId }: { projectId: string }) {
               </div>
             }
           >
-            <ScreenplayEditor content={content} readOnly />
+            <ScreenplayEditor
+              ref={editorRef}
+              content={content}
+              readOnly
+              onSceneHeadingClick={handleSceneHeadingClick}
+            />
           </Suspense>
         </div>
       ) : (
