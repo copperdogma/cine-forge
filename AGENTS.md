@@ -4,7 +4,8 @@ This file is the project-wide source of truth for agent behavior and engineering
 
 ## Core Agent Mandates
 
-- **No Implicit Commits**: NEVER commit or push changes unless explicitly requested by the user. 
+- **GREENFIELD PROJECT — NO BACKWARDS COMPATIBILITY**: This app is under active development with zero real users, zero valuable user data, and zero old processes or file formats to preserve. Do NOT waste time on backwards compatibility shims, migration paths, deprecation warnings, old format support, or "gentle" transitions. When something needs to change, **change it directly**. Delete the old code. Update all call sites. If a schema changes, change it — don't version it. If an API changes, change it — don't keep the old endpoint. The only cost is a `git revert` away.
+- **No Implicit Commits**: NEVER commit or push changes unless explicitly requested by the user.
 - **Security First**: NEVER stage or commit secrets, API keys, or sensitive credentials.
 - **Permissioned Actions**: NEVER run `git commit`, `git push`, or modify remotes without explicit user permission.
 - **Verify, Don't Assume**: NEVER assume a library is available or a file has a specific content. Use `read_file` and dependency checks (`package.json`, `pyproject.toml`) to ground your work.

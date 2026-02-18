@@ -15,15 +15,32 @@ from pydantic import BaseModel
 
 # Input/output pricing in USD per 1M tokens.
 MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
+    # OpenAI
     "gpt-4o": (5.0, 15.0),
     "gpt-4o-mini": (0.15, 0.6),
+    "gpt-4.1": (2.0, 8.0),
+    "gpt-4.1-mini": (0.40, 1.60),
+    "gpt-5.2": (2.0, 8.0),
+    # Anthropic
     "claude-sonnet-4-5-20250929": (3.0, 15.0),
+    "claude-sonnet-4-6": (3.0, 15.0),
     "claude-opus-4-6": (15.0, 75.0),
     "claude-haiku-4-5-20251001": (0.80, 4.0),
+    # Google
+    "gemini-2.5-flash-lite": (0.0, 0.0),  # Free tier
+    "gemini-2.5-flash": (0.15, 0.60),
+    "gemini-2.5-pro": (1.25, 10.0),
+    "gemini-3-flash-preview": (0.15, 0.60),
 }
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
+GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+
+# Provider identifiers used by _parse_provider().
+PROVIDER_OPENAI = "openai"
+PROVIDER_ANTHROPIC = "anthropic"
+PROVIDER_GOOGLE = "google"
 
 
 class LLMCallError(RuntimeError):
@@ -58,8 +75,21 @@ def call_llm(
         }
         return parsed, metadata
 
-    use_anthropic = transport is None and _is_anthropic_model(model)
-    sender = transport or (_anthropic_transport if use_anthropic else _openai_transport)
+    provider, bare_model = _parse_provider(model)
+    if transport is not None:
+        # Injected transport (testing) — bypass provider dispatch entirely.
+        sender = transport
+        normalizer = None
+    elif provider == PROVIDER_ANTHROPIC:
+        sender = _anthropic_transport
+        normalizer = _normalize_anthropic_response
+    elif provider == PROVIDER_GOOGLE:
+        sender = _gemini_transport
+        normalizer = _normalize_gemini_response
+    else:
+        sender = _openai_transport
+        normalizer = None  # OpenAI is the canonical format
+
     last_error: Exception | None = None
     active_max_tokens = max_tokens
     active_temp = temperature
@@ -67,9 +97,17 @@ def call_llm(
     for attempt in range(max_retries + 1):
         try:
             started = time.perf_counter()
-            if use_anthropic:
+            if provider == PROVIDER_ANTHROPIC and transport is None:
                 payload = _build_anthropic_payload(
-                    model=model,
+                    model=bare_model,
+                    prompt=prompt,
+                    temperature=active_temp,
+                    max_tokens=active_max_tokens,
+                    response_schema=response_schema,
+                )
+            elif provider == PROVIDER_GOOGLE and transport is None:
+                payload = _build_gemini_payload(
+                    model=bare_model,
                     prompt=prompt,
                     temperature=active_temp,
                     max_tokens=active_max_tokens,
@@ -77,19 +115,19 @@ def call_llm(
                 )
             else:
                 payload = {
-                    "model": model,
+                    "model": bare_model,
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": active_temp,
                     **({"max_completion_tokens": active_max_tokens} if active_max_tokens else {}),
                     **_response_format_payload(response_schema),
                 }
             raw_response = sender(payload)
-            if use_anthropic:
-                raw_response = _normalize_anthropic_response(raw_response)
+            if normalizer is not None:
+                raw_response = normalizer(raw_response)
             latency = time.perf_counter() - started
             parsed, metadata = _parse_response(
                 raw_response=raw_response,
-                model=model,
+                model=bare_model,
                 response_schema=response_schema,
                 latency_seconds=latency,
             )
@@ -265,8 +303,28 @@ def _openai_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         raise LLMCallError(f"OpenAI request failed: {exc.reason}") from exc
 
 
-def _is_anthropic_model(model: str) -> bool:
-    return model.startswith("claude-")
+def _parse_provider(model: str) -> tuple[str, str]:
+    """Parse provider prefix from model string, falling back to auto-detection.
+
+    Accepted formats:
+        "anthropic:claude-sonnet-4-6"  -> ("anthropic", "claude-sonnet-4-6")
+        "google:gemini-2.5-pro"        -> ("google", "gemini-2.5-pro")
+        "openai:gpt-4.1"              -> ("openai", "gpt-4.1")
+        "claude-sonnet-4-6"           -> ("anthropic", "claude-sonnet-4-6")
+        "gemini-2.5-pro"              -> ("google", "gemini-2.5-pro")
+        "gpt-4.1"                     -> ("openai", "gpt-4.1")
+    """
+    if ":" in model:
+        provider, bare_model = model.split(":", 1)
+        provider = provider.lower()
+        if provider in (PROVIDER_OPENAI, PROVIDER_ANTHROPIC, PROVIDER_GOOGLE):
+            return provider, bare_model
+    # Auto-detect from model name
+    if model.startswith("claude-"):
+        return PROVIDER_ANTHROPIC, model
+    if model.startswith("gemini-"):
+        return PROVIDER_GOOGLE, model
+    return PROVIDER_OPENAI, model
 
 
 def _build_anthropic_payload(
@@ -346,6 +404,158 @@ def _anthropic_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         raise LLMCallError(f"Anthropic HTTP error {exc.code}: {detail}") from exc
     except urllib.error.URLError as exc:
         raise LLMCallError(f"Anthropic request failed: {exc.reason}") from exc
+
+
+def _build_gemini_payload(
+    model: str,
+    prompt: str,
+    temperature: float,
+    max_tokens: int | None,
+    response_schema: type[BaseModel] | None,
+) -> dict[str, Any]:
+    """Build a Gemini generateContent request payload."""
+    generation_config: dict[str, Any] = {
+        "temperature": temperature,
+        "max_output_tokens": max_tokens or 16384,
+    }
+    if response_schema:
+        generation_config["response_mime_type"] = "application/json"
+        generation_config["response_schema"] = _to_gemini_schema(
+            response_schema.model_json_schema()
+        )
+    payload: dict[str, Any] = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generation_config": generation_config,
+    }
+    # Stash model name for _gemini_transport to build the URL.
+    payload["_model"] = model
+    return payload
+
+
+def _to_gemini_schema(schema: dict[str, Any]) -> dict[str, Any]:
+    """Convert a Pydantic JSON schema to Gemini's responseSchema format.
+
+    Gemini uses a subset of OpenAPI 3.0 schema:
+    - Type names are UPPERCASE: STRING, NUMBER, INTEGER, BOOLEAN, ARRAY, OBJECT
+    - No $defs/$ref support — must be inlined
+    - No title, default, additionalProperties fields
+    """
+    defs = schema.get("$defs", {})
+
+    type_map = {
+        "string": "STRING",
+        "number": "NUMBER",
+        "integer": "INTEGER",
+        "boolean": "BOOLEAN",
+        "array": "ARRAY",
+        "object": "OBJECT",
+        "null": "STRING",  # Gemini lacks null; approximate as STRING
+    }
+
+    def resolve(node: Any) -> Any:
+        if isinstance(node, dict):
+            # Resolve $ref
+            ref = node.get("$ref")
+            if ref and ref.startswith("#/$defs/"):
+                def_name = ref[len("#/$defs/"):]
+                if def_name in defs:
+                    return resolve(defs[def_name])
+                return {}
+
+            # Handle anyOf (Pydantic uses this for Optional fields)
+            if "anyOf" in node:
+                variants = node["anyOf"]
+                non_null = [v for v in variants if v.get("type") != "null"]
+                if non_null:
+                    return resolve(non_null[0])
+                return {"type": "STRING"}
+
+            result: dict[str, Any] = {}
+            # Convert type
+            if "type" in node:
+                raw_type = node["type"]
+                result["type"] = type_map.get(raw_type, raw_type.upper())
+
+            # Copy supported fields
+            if "description" in node:
+                result["description"] = node["description"]
+            if "enum" in node:
+                result["enum"] = node["enum"]
+            if "properties" in node:
+                result["properties"] = {
+                    k: resolve(v) for k, v in node["properties"].items()
+                }
+            if "required" in node:
+                result["required"] = node["required"]
+            if "items" in node:
+                result["items"] = resolve(node["items"])
+
+            return result
+
+        if isinstance(node, list):
+            return [resolve(item) for item in node]
+        return node
+
+    return resolve(schema)
+
+
+def _normalize_gemini_response(raw: dict[str, Any]) -> dict[str, Any]:
+    """Convert Gemini generateContent response to OpenAI-compatible format."""
+    candidates = raw.get("candidates", [])
+    if not candidates:
+        raise LLMCallError("Gemini response missing candidates")
+
+    candidate = candidates[0]
+    parts = candidate.get("content", {}).get("parts", [])
+    text = "".join(part.get("text", "") for part in parts)
+
+    finish_reason_raw = candidate.get("finishReason", "STOP")
+    finish_reason_map = {
+        "STOP": "stop",
+        "MAX_TOKENS": "length",
+        "SAFETY": "content_filter",
+        "RECITATION": "content_filter",
+        "OTHER": "stop",
+    }
+
+    usage = raw.get("usageMetadata", {})
+    return {
+        "id": "",
+        "choices": [{
+            "message": {"content": text},
+            "finish_reason": finish_reason_map.get(finish_reason_raw, "stop"),
+        }],
+        "usage": {
+            "prompt_tokens": usage.get("promptTokenCount", 0),
+            "completion_tokens": usage.get("candidatesTokenCount", 0),
+        },
+    }
+
+
+def _gemini_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
+    """Send request to Gemini generateContent API."""
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise LLMCallError("GEMINI_API_KEY is required for Google transport")
+
+    model = request_payload.pop("_model")
+    url = f"{GEMINI_BASE_URL}/{model}:generateContent?key={api_key}"
+    encoded = json.dumps(request_payload).encode("utf-8")
+    request = urllib.request.Request(
+        url,
+        data=encoded,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=300) as response:  # noqa: S310
+            body = response.read().decode("utf-8")
+            return json.loads(body)
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise LLMCallError(f"Gemini HTTP error {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise LLMCallError(f"Gemini request failed: {exc.reason}") from exc
 
 
 def _is_transient_error(error: Exception) -> bool:

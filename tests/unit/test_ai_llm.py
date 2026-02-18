@@ -5,7 +5,14 @@ from typing import Any
 import pytest
 from pydantic import BaseModel
 
-from cine_forge.ai.llm import LLMCallError, call_llm, estimate_cost_usd
+from cine_forge.ai.llm import (
+    LLMCallError,
+    _normalize_gemini_response,
+    _parse_provider,
+    _to_gemini_schema,
+    call_llm,
+    estimate_cost_usd,
+)
 
 
 class DemoSchema(BaseModel):
@@ -98,3 +105,160 @@ def test_call_llm_detects_truncation_when_fail_on_truncation() -> None:
             fail_on_truncation=True,
             transport=truncated_transport,
         )
+
+
+# --- Provider Parsing ---
+
+
+@pytest.mark.unit
+def test_parse_provider_prefixed() -> None:
+    assert _parse_provider("anthropic:claude-sonnet-4-6") == ("anthropic", "claude-sonnet-4-6")
+    assert _parse_provider("google:gemini-2.5-pro") == ("google", "gemini-2.5-pro")
+    assert _parse_provider("openai:gpt-4.1") == ("openai", "gpt-4.1")
+
+
+@pytest.mark.unit
+def test_parse_provider_autodetect() -> None:
+    assert _parse_provider("claude-sonnet-4-6") == ("anthropic", "claude-sonnet-4-6")
+    assert _parse_provider("claude-haiku-4-5-20251001") == (
+        "anthropic", "claude-haiku-4-5-20251001"
+    )
+    assert _parse_provider("gemini-2.5-pro") == ("google", "gemini-2.5-pro")
+    assert _parse_provider("gemini-2.5-flash") == ("google", "gemini-2.5-flash")
+    assert _parse_provider("gpt-4.1") == ("openai", "gpt-4.1")
+    assert _parse_provider("gpt-4o-mini") == ("openai", "gpt-4o-mini")
+
+
+@pytest.mark.unit
+def test_parse_provider_unknown_prefix_falls_through() -> None:
+    # Unknown prefix treated as part of model name, auto-detects to openai
+    assert _parse_provider("unknown:some-model") == ("openai", "unknown:some-model")
+
+
+# --- Gemini Response Normalization ---
+
+
+@pytest.mark.unit
+def test_normalize_gemini_response_basic() -> None:
+    raw = {
+        "candidates": [{
+            "content": {"parts": [{"text": "hello world"}]},
+            "finishReason": "STOP",
+        }],
+        "usageMetadata": {
+            "promptTokenCount": 100,
+            "candidatesTokenCount": 50,
+        },
+    }
+    normalized = _normalize_gemini_response(raw)
+    assert normalized["choices"][0]["message"]["content"] == "hello world"
+    assert normalized["choices"][0]["finish_reason"] == "stop"
+    assert normalized["usage"]["prompt_tokens"] == 100
+    assert normalized["usage"]["completion_tokens"] == 50
+
+
+@pytest.mark.unit
+def test_normalize_gemini_response_truncation() -> None:
+    raw = {
+        "candidates": [{
+            "content": {"parts": [{"text": "partial"}]},
+            "finishReason": "MAX_TOKENS",
+        }],
+        "usageMetadata": {"promptTokenCount": 10, "candidatesTokenCount": 10},
+    }
+    normalized = _normalize_gemini_response(raw)
+    assert normalized["choices"][0]["finish_reason"] == "length"
+
+
+@pytest.mark.unit
+def test_normalize_gemini_response_missing_candidates() -> None:
+    with pytest.raises(LLMCallError, match="missing candidates"):
+        _normalize_gemini_response({"candidates": []})
+
+
+# --- Gemini Schema Conversion ---
+
+
+@pytest.mark.unit
+def test_to_gemini_schema_simple() -> None:
+    schema = DemoSchema.model_json_schema()
+    result = _to_gemini_schema(schema)
+    assert result["type"] == "OBJECT"
+    assert result["properties"]["value"]["type"] == "STRING"
+    assert "title" not in result
+    assert "additionalProperties" not in result
+
+
+@pytest.mark.unit
+def test_to_gemini_schema_with_optional_field() -> None:
+    class WithOptional(BaseModel):
+        name: str
+        nickname: str | None = None
+
+    schema = WithOptional.model_json_schema()
+    result = _to_gemini_schema(schema)
+    assert result["properties"]["name"]["type"] == "STRING"
+    # Optional resolves to the non-null variant
+    assert result["properties"]["nickname"]["type"] == "STRING"
+
+
+@pytest.mark.unit
+def test_to_gemini_schema_nested_model() -> None:
+    class Inner(BaseModel):
+        score: float
+
+    class Outer(BaseModel):
+        name: str
+        detail: Inner
+
+    schema = Outer.model_json_schema()
+    result = _to_gemini_schema(schema)
+    assert result["properties"]["name"]["type"] == "STRING"
+    detail = result["properties"]["detail"]
+    assert detail["type"] == "OBJECT"
+    assert detail["properties"]["score"]["type"] == "NUMBER"
+
+
+# --- Gemini end-to-end via call_llm with injected transport ---
+
+
+@pytest.mark.unit
+def test_call_llm_with_gemini_model_uses_transport() -> None:
+    """Verify gemini-* auto-detects to google and works with injected transport."""
+
+    def fake_gemini_transport(_: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "id": "",
+            "choices": [{"message": {"content": '{"value":"gemini_ok"}'}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 50, "completion_tokens": 20},
+        }
+
+    result, metadata = call_llm(
+        prompt="test",
+        model="gemini-2.5-pro",
+        response_schema=DemoSchema,
+        transport=fake_gemini_transport,
+    )
+    assert isinstance(result, DemoSchema)
+    assert result.value == "gemini_ok"
+
+
+@pytest.mark.unit
+def test_call_llm_with_prefixed_model_string() -> None:
+    """Verify provider-prefixed model strings work through call_llm."""
+
+    def fake_transport(_: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "id": "req_prefix",
+            "choices": [{"message": {"content": "prefixed"}}],
+            "usage": {"prompt_tokens": 5, "completion_tokens": 5},
+        }
+
+    result, metadata = call_llm(
+        prompt="test",
+        model="anthropic:claude-sonnet-4-6",
+        transport=fake_transport,
+    )
+    assert result == "prefixed"
+    # bare_model is used for cost estimation
+    assert metadata["model"] == "claude-sonnet-4-6"

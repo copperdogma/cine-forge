@@ -92,9 +92,9 @@ class ModelStrategy(BaseModel):
 
     model_config = {"protected_namespaces": ()}
 
-    work: str = "gpt-4o-mini"
-    verify: str = "gpt-4o-mini"
-    escalate: str = "gpt-4o"
+    work: str = "claude-sonnet-4-6"
+    verify: str = "claude-haiku-4-5-20251001"
+    escalate: str = "claude-opus-4-6"
     # Future namespacing: text_work, video_work, etc.
 
 
