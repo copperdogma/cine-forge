@@ -11,11 +11,15 @@ Apply Story 036's task-specific model selections to production code and recipe c
 
 ## Context
 
-Story 036 benchmarked 5 eval types across 12 models and produced task-specific try-validate-escalate triads. Story 038 unblocks using non-OpenAI models in production. This story wires the selections into actual module configs and fills in the remaining eval gaps.
+Story 036 benchmarked 5 eval types across 12 models and produced task-specific try-validate-escalate triads. Story 047 added Sonnet 4.6 to all evals and updated winners.
+
+**Already applied (Story 047, 2026-02-17)**: Sonnet 4.5 → 4.6 defaults updated in character_bible, prop_bible, scene_extract (escalate), script_normalize, and ai/chat.py. Location_bible intentionally kept at Sonnet 4.5 (it scores better there). These changes work within the existing Anthropic transport — no multi-provider needed.
+
+**Remaining work**: Story 038 multi-provider transport unblocks using Gemini/OpenAI models in production. Deferred eval types still needed. Recipe configs not yet updated.
 
 ## Acceptance Criteria
 
-- [ ] Model defaults in `src/cine_forge/schemas/models.py` reflect Story 036 task-specific triads
+- [x] Model defaults in pipeline modules reflect Story 036/047 task-specific triads (Sonnet 4.5 → 4.6 applied where benchmarks justify)
 - [ ] Recipe configs reference new model defaults
 - [ ] All pipeline modules work end-to-end with their assigned models
 - [ ] Build normalization eval (text-comparison scorer pattern — deferred from Story 036)
@@ -32,7 +36,7 @@ Story 036 benchmarked 5 eval types across 12 models and produced task-specific t
 
 ## Tasks
 
-- [ ] Update `ModelConfig` defaults per task in `src/cine_forge/schemas/models.py`
+- [x] Update module-level model defaults (Story 047: Sonnet 4.5 → 4.6 in character_bible, prop_bible, scene_extract, script_normalize, chat)
 - [ ] Update recipe YAML configs with provider-prefixed model strings
 - [ ] Build normalization eval: text-comparison scorer (Fountain structural validity + content preservation)
 - [ ] Build scene enrichment eval: scene-level golden references from The Mariner
@@ -44,3 +48,7 @@ Story 036 benchmarked 5 eval types across 12 models and produced task-specific t
 - [ ] Update Story 036 with final comprehensive results
 
 ## Work Log
+
+### 20260217-2100 — Partial completion via Story 047
+
+Model defaults updated for 5 modules where Sonnet 4.6 benchmarks justify the change. Location_bible intentionally kept at Sonnet 4.5 (better score: 0.895 vs 0.870). Remaining work: recipe configs, deferred evals, end-to-end smoke test, multi-provider transport (Story 038).

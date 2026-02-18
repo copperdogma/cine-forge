@@ -79,7 +79,7 @@ def run_module(
     canonical_script, scene_index = _extract_inputs(inputs)
     
     # Tiered Model Strategy (Subsumption)
-    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-5-20250929"
+    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-6"
     verify_model = params.get("verify_model") or "claude-haiku-4-5-20251001"
     escalate_model = params.get("escalate_model") or "claude-opus-4-6"
     skip_qa = bool(params.get("skip_qa", False))

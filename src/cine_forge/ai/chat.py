@@ -20,7 +20,7 @@ from typing import Any
 
 log = logging.getLogger(__name__)
 
-CHAT_MODEL = "claude-sonnet-4-5-20250929"
+CHAT_MODEL = "claude-sonnet-4-6"
 ANTHROPIC_HOST = "api.anthropic.com"
 MAX_TOKENS = 4096
 
@@ -646,7 +646,7 @@ def _execute_propose_run(
     run_payload = {
         "project_id": project_id,
         "input_file": latest_input["stored_path"],
-        "default_model": "claude-sonnet-4-5-20250929",
+        "default_model": "claude-sonnet-4-6",
         "recipe_id": recipe_id,
         "accept_config": True,
     }

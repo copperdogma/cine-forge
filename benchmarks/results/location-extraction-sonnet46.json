@@ -1,0 +1,613 @@
+{
+  "evalId": "eval-4lJ-2026-02-18T01:29:44",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-02-18T01:29:44.102Z",
+    "prompts": [
+      {
+        "raw": "You are a location analyst working on a film production. Extract a master definition for the location \"{{location_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "label": "prompts/location-extraction.txt: You are a location analyst working on a film production. Extract a master definition for the location \"{{location_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "id": "25ff848f28e387bc59dae997d0e9a32be732485ac9a261d09c05595a56f6cfda",
+        "provider": "Claude Sonnet 4.6",
+        "metrics": {
+          "score": 2.6104000000000003,
+          "testPassCount": 3,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 6,
+          "assertFailCount": 0,
+          "totalLatencyMs": 46178,
+          "tokenUsage": {
+            "prompt": 15838,
+            "completion": 1921,
+            "cached": 0,
+            "total": 17759,
+            "numRequests": 3,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 3914,
+              "prompt": 3038,
+              "completion": 876,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.8425,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1504,
+            "prompt": 1208,
+            "completion": 296,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.735,
+              "reason": "description_quality=1.00 | fact_recall=0.60 | field_completeness=1.00 | json_valid=0.90 | name_identification=0.75 | narrative_quality=0.00 | physical_coverage=1.00 | scene_coverage=1.00 | JSON extracted from code block | Aliases: 1/2 | Facts: 3/5 recalled | Narrative themes: 0/3",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/bible_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the location extraction for RUDDY & GREENE BUILDING from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the building as a classic 15-story sandstone structure, now decayed?\n2. Does it mention bullet holes, graffiti, and the contrast with its former beauty?\n3. Does it identify the building as the main setting housing Salvatori's criminal operation?\n4. Does it note the multi-floor structure (elevator, stairwells, floors 11-15)?\n5. Does it capture the vertical journey as a narrative device?\n6. Does it list relevant scene headings (front, rear, elevator)?\n7. Is the description grounded in actual screenplay text?\n\nScore strictly: the building is the central location and a good extraction captures both physical detail and narrative function.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The extraction excellently covers all key quality criteria: 1) It clearly describes the building as a 'classic 15-story sandstone construction' that is now decayed. 2) It mentions bullet holes, graffiti, and the contrast with former beauty ('Once beautiful exterior, now riddled with bullet holes and graffiti'). 3) It identifies the building as Salvatori's headquarters and criminal operation center. 4) It thoroughly notes the multi-floor structure including elevator, stairwells, and specific floors 11-15. 5) It captures the vertical journey as a narrative device in the narrative_significance section ('vertical structure literalizes Mariner's journey of revelation'). 6) It lists relevant scene headings including front, rear, elevator, and multiple floors. 7) The description appears well-grounded in screenplay text with specific details like muzak songs, the Persian rug, leather-bound books, and the cigar. The physical_traits list is comprehensive and detailed, the narrative_significance is insightful and well-articulated, and the overall extraction demonstrates both physical detail and narrative function. Minor note: one alias has a typo ('Ruddy & Green' vs 'Ruddy & Greene') but this may reflect actual screenplay text variation.",
+              "tokensUsed": {
+                "total": 1504,
+                "prompt": 1208,
+                "completion": 296,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"location_id\\\": \\\"ruddy-and-greene-building\\\",\\n  \\\"name\\\": \\\"RUDDY & GREENE BUILDING\\\",\\n  \\\"aliases\\\": [\\n    \\\"Ruddy & Green Building\\\",\\n    \\\"the building\\\"\\n  ],\\n  \\\"description\\\": \\\"A classic 15-story sandstone building that was once beautiful but is now riddled with bullet holes and graffiti, reflecting the broader urban decay of the post-2025 economic collapse. It serves as the headquarters of the Salvatori crime organization, with most floors in a state of ruin while the top floor is maintained as a clean, luxurious, dimly lit space reminiscent of an old nightclub. The building is the primary action set piece of the story, where Mariner infiltrates to rescue Rose and ultimately confronts Salvatori. High-end European SUVs parked out front signal the criminal wealth operating within its deteriorated shell.\\\",\\n  \\\"physical_traits\\\": [\\n    \\\"Classic 15-story sandstone construction\\\",\\n    \\\"Once beautiful exterior, now riddled with bullet holes and graffiti\\\",\\n    \\\"Rows of high-end European SUVs parked out front\\\",\\n    \\\"Grimy rear alley with a back delivery entrance\\\",\\n    \\\"Dim corridors with flickering lights on lower floors\\\",\\n    \\\"Papers and office furniture littering hallways on middle floors\\\",\\n    \\\"15th floor is clean, luxurious, and dimly lit like an old nightclub\\\",\\n    \\\"15th floor shows evidence of Mariner's earlier fight: pooled blood and gouged walls\\\",\\n    \\\"15th floor corridor contains rooms including a pool table, cigar lounge, and a room with a chair and ropes\\\",\\n    \\\"Top-floor office features a huge wooden desk atop a thick Persian rug, bookshelves of leather-bound books, a glass case of fine booze, mismatched paintings of different periods, a bowl of mints, and a still-burning cigar\\\",\\n    \\\"Elevator plays muzak versions of pop songs (George Michael's 'Faith', UB40's 'I Can't Help Falling in Love With You')\\\",\\n    \\\"Stairwells connecting floors used as combat and chase spaces\\\",\\n    \\\"Windows light up floor by floor as Mariner ascends\\\"\\n  ],\\n  \\\"scene_presence\\\": [\\n    \\\"EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT\\\",\\n    \\\"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\\\",\\n    \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n    \\\"INT. 11TH FLOOR - CONTINUOUS\\\",\\n    \\\"INT. STAIRWELL - CONTINUOUS\\\",\\n    \\\"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\\\",\\n    \\\"INT. 13TH FLOOR\\\",\\n    \\\"INT. 15TH FLOOR\\\"\\n  ],\\n  \\\"narrative_significance\\\": \\\"The Ruddy & Greene Building functions as a microcosm of the story's world — its beautiful sandstone exterior corrupted by violence and crime mirrors the way Mariner's idealized origin story conceals a darker truth. The building's vertical structure literalizes Mariner's journey of revelation: as he fights upward floor by floor, he simultaneously ascends toward the emotional confrontation on the 15th floor where his heroic self-mythology is dismantled and then reforged. The contrast between the ruined lower floors and the preserved luxury of Salvatori's top-floor suite underscores the theme of criminal power thriving within societal collapse.\\\",\\n  \\\"overall_confidence\\\": 0.93\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate the location extraction for RUDDY & GREENE BUILDING from \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it describe the building as a classic 15-story sandstone structure, now decayed?\\n2. Does it mention bullet holes, graffiti, and the contrast with its former beauty?\\n3. Does it identify the building as the main setting housing Salvatori's criminal operation?\\n4. Does it note the multi-floor structure (elevator, stairwells, floors 11-15)?\\n5. Does it capture the vertical journey as a narrative device?\\n6. Does it list relevant scene headings (front, rear, elevator)?\\n7. Is the description grounded in actual screenplay text?\\n\\nScore strictly: the building is the central location and a good extraction captures both physical detail and narrative function.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "8b43afd2-019d-486b-8e83-3310091f6733",
+        "latencyMs": 19299,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a location analyst working on a film production. Extract a master definition for the location \"RUDDY & GREENE BUILDING\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "prompts/location-extraction.txt: You are a location analyst working on a film production. Extract a master definition for the location \"{{location_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "25ff848f28e387bc59dae997d0e9a32be732485ac9a261d09c05595a56f6cfda",
+        "promptIdx": 0,
+        "provider": {
+          "id": "anthropic:messages:claude-sonnet-4-6",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "```json\n{\n  \"location_id\": \"ruddy-and-greene-building\",\n  \"name\": \"RUDDY & GREENE BUILDING\",\n  \"aliases\": [\n    \"Ruddy & Green Building\",\n    \"the building\"\n  ],\n  \"description\": \"A classic 15-story sandstone building that was once beautiful but is now riddled with bullet holes and graffiti, reflecting the broader urban decay of the post-2025 economic collapse. It serves as the headquarters of the Salvatori crime organization, with most floors in a state of ruin while the top floor is maintained as a clean, luxurious, dimly lit space reminiscent of an old nightclub. The building is the primary action set piece of the story, where Mariner infiltrates to rescue Rose and ultimately confronts Salvatori. High-end European SUVs parked out front signal the criminal wealth operating within its deteriorated shell.\",\n  \"physical_traits\": [\n    \"Classic 15-story sandstone construction\",\n    \"Once beautiful exterior, now riddled with bullet holes and graffiti\",\n    \"Rows of high-end European SUVs parked out front\",\n    \"Grimy rear alley with a back delivery entrance\",\n    \"Dim corridors with flickering lights on lower floors\",\n    \"Papers and office furniture littering hallways on middle floors\",\n    \"15th floor is clean, luxurious, and dimly lit like an old nightclub\",\n    \"15th floor shows evidence of Mariner's earlier fight: pooled blood and gouged walls\",\n    \"15th floor corridor contains rooms including a pool table, cigar lounge, and a room with a chair and ropes\",\n    \"Top-floor office features a huge wooden desk atop a thick Persian rug, bookshelves of leather-bound books, a glass case of fine booze, mismatched paintings of different periods, a bowl of mints, and a still-burning cigar\",\n    \"Elevator plays muzak versions of pop songs (George Michael's 'Faith', UB40's 'I Can't Help Falling in Love With You')\",\n    \"Stairwells connecting floors used as combat and chase spaces\",\n    \"Windows light up floor by floor as Mariner ascends\"\n  ],\n  \"scene_presence\": [\n    \"EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT\",\n    \"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\",\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"INT. 11TH FLOOR - CONTINUOUS\",\n    \"INT. STAIRWELL - CONTINUOUS\",\n    \"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\",\n    \"INT. 13TH FLOOR\",\n    \"INT. 15TH FLOOR\"\n  ],\n  \"narrative_significance\": \"The Ruddy & Greene Building functions as a microcosm of the story's world — its beautiful sandstone exterior corrupted by violence and crime mirrors the way Mariner's idealized origin story conceals a darker truth. The building's vertical structure literalizes Mariner's journey of revelation: as he fights upward floor by floor, he simultaneously ascends toward the emotional confrontation on the 15th floor where his heroic self-mythology is dismantled and then reforged. The contrast between the ruined lower floors and the preserved luxury of Salvatori's top-floor suite underscores the theme of criminal power thriving within societal collapse.\",\n  \"overall_confidence\": 0.93\n}\n```",
+          "tokenUsage": {
+            "total": 6108,
+            "prompt": 5282,
+            "completion": 826
+          },
+          "finishReason": "stop"
+        },
+        "score": 0.8425,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "location_name": "RUDDY & GREENE BUILDING",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-locations.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/bible_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the location extraction for RUDDY & GREENE BUILDING from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the building as a classic 15-story sandstone structure, now decayed?\n2. Does it mention bullet holes, graffiti, and the contrast with its former beauty?\n3. Does it identify the building as the main setting housing Salvatori's criminal operation?\n4. Does it note the multi-floor structure (elevator, stairwells, floors 11-15)?\n5. Does it capture the vertical journey as a narrative device?\n6. Does it list relevant scene headings (front, rear, elevator)?\n7. Is the description grounded in actual screenplay text?\n\nScore strictly: the building is the central location and a good extraction captures both physical detail and narrative function.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "location_name": "RUDDY & GREENE BUILDING",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-locations.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.9299999999999999,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1246,
+            "prompt": 987,
+            "completion": 259,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.89,
+              "reason": "description_quality=1.00 | fact_recall=1.00 | field_completeness=1.00 | json_valid=0.90 | name_identification=0.50 | narrative_quality=0.67 | physical_coverage=1.00 | scene_coverage=1.00 | JSON extracted from code block | Aliases: 0/2 | Narrative themes: 2/3",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/bible_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the location extraction for the 15TH FLOOR from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the luxurious, dimly lit office atmosphere?\n2. Does it mention specific details: wooden desk, Persian rug, leather-bound books, fine booze?\n3. Does it identify this as Salvatori's personal headquarters?\n4. Does it note this is where the climactic confrontation occurs?\n5. Does it mention evidence of earlier violence (pooled blood, gouged walls)?\n6. Does it capture the contrast between luxury and violence?\n7. Does it note the still-burning cigar and melting ice as environmental storytelling?\n\nScore strictly: this is the climactic location where the story's revelations happen.\n"
+              },
+              "pass": true,
+              "score": 0.97,
+              "reason": "The output excels on all seven criteria: (1) It describes the luxurious, dimly lit atmosphere resembling an old nightclub. (2) It specifically mentions the huge wooden desk, thick Persian rug, leather-bound books, and fine booze in a glass case. (3) It clearly identifies this as Salvatori's lair/personal headquarters. (4) It identifies this as the site of the climactic confrontation. (5) It mentions pooled blood and gouged walls from Mariner's earlier fight. (6) It captures the contrast between luxury and the ruined floors below, and between luxury and violence. (7) It specifically notes the still-burning cigar and ice melting in a tumbler of scotch as environmental details. The description is thorough, well-organized, and narratively insightful, noting how Mariner's identity is 'shattered and reforged' here. The physical traits list is comprehensive and the narrative significance section eloquently captures the thematic weight of the location. The confidence score of 0.91 is reasonable. This is an excellent extraction.",
+              "tokensUsed": {
+                "total": 1246,
+                "prompt": 987,
+                "completion": 259,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"location_id\\\": \\\"15th-floor\\\",\\n  \\\"name\\\": \\\"15TH FLOOR\\\",\\n  \\\"aliases\\\": [\\n    \\\"the top floor\\\",\\n    \\\"Salvatori's floor\\\",\\n    \\\"the office\\\"\\n  ],\\n  \\\"description\\\": \\\"The 15th floor of the Ruddy & Greene Building stands in stark contrast to the ruined floors below — it is clean, luxurious, and dimly lit, described as resembling an old nightclub. The floor contains a corridor lined with various rooms including a pool table, cigar lounge, and a room with a chair and ropes, culminating in a fortified private office. It serves as the lair of crime boss Salvatori and the site of the screenplay's climactic confrontation, where Mariner's identity and origin story are simultaneously shattered and reforged.\\\",\\n  \\\"physical_traits\\\": [\\n    \\\"Clean and undestroyed, unlike the lower floors\\\",\\n    \\\"Luxurious atmosphere, dimly lit like an old nightclub\\\",\\n    \\\"Corridor with multiple rooms: pool table room, cigar lounge\\\",\\n    \\\"A smashed door with a chair and ropes on the floor (evidence of prior captivity)\\\",\\n    \\\"Pooled blood and gouged walls from Mariner's earlier fight\\\",\\n    \\\"Sturdy, locked door at the end of the hallway requiring forced entry\\\",\\n    \\\"Private office with a huge wooden desk atop a thick Persian rug\\\",\\n    \\\"Bookshelves of leather-bound books\\\",\\n    \\\"Glass case filled with fine booze\\\",\\n    \\\"Mismatched paintings of different periods\\\",\\n    \\\"Bowl of mints on the desk\\\",\\n    \\\"Still-burning cigar on the desk when protagonists arrive\\\",\\n    \\\"Ice melting in a tumbler of scotch on the desk\\\",\\n    \\\"A purse (Rose's) on the desk\\\"\\n  ],\\n  \\\"scene_presence\\\": [\\n    \\\"INT. 15TH FLOOR\\\",\\n    \\\"INT. STAIRWELL — (BACK TO PRESENT)\\\"\\n  ],\\n  \\\"narrative_significance\\\": \\\"The 15th floor is the story's dramatic apex — the only floor preserved in luxury amid a ruined building, visually embodying the insulated power of organized crime above the chaos it exploits below. It is here that Mariner's fabricated heroic origin is dismantled by Rose's revelations about their father, and then reconstructed on more honest, self-determined terms. The climactic standoff with Salvatori in this opulent office forces Mariner to choose between the false mythology he has lived by and a truer, harder-won sense of identity.\\\",\\n  \\\"overall_confidence\\\": 0.91\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate the location extraction for the 15TH FLOOR from \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it describe the luxurious, dimly lit office atmosphere?\\n2. Does it mention specific details: wooden desk, Persian rug, leather-bound books, fine booze?\\n3. Does it identify this as Salvatori's personal headquarters?\\n4. Does it note this is where the climactic confrontation occurs?\\n5. Does it mention evidence of earlier violence (pooled blood, gouged walls)?\\n6. Does it capture the contrast between luxury and violence?\\n7. Does it note the still-burning cigar and melting ice as environmental storytelling?\\n\\nScore strictly: this is the climactic location where the story's revelations happen.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "95f9e4d4-5044-4d1d-9f3a-00f6b996b221",
+        "latencyMs": 15419,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a location analyst working on a film production. Extract a master definition for the location \"15TH FLOOR\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "prompts/location-extraction.txt: You are a location analyst working on a film production. Extract a master definition for the location \"{{location_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "25ff848f28e387bc59dae997d0e9a32be732485ac9a261d09c05595a56f6cfda",
+        "promptIdx": 0,
+        "provider": {
+          "id": "anthropic:messages:claude-sonnet-4-6",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "```json\n{\n  \"location_id\": \"15th-floor\",\n  \"name\": \"15TH FLOOR\",\n  \"aliases\": [\n    \"the top floor\",\n    \"Salvatori's floor\",\n    \"the office\"\n  ],\n  \"description\": \"The 15th floor of the Ruddy & Greene Building stands in stark contrast to the ruined floors below — it is clean, luxurious, and dimly lit, described as resembling an old nightclub. The floor contains a corridor lined with various rooms including a pool table, cigar lounge, and a room with a chair and ropes, culminating in a fortified private office. It serves as the lair of crime boss Salvatori and the site of the screenplay's climactic confrontation, where Mariner's identity and origin story are simultaneously shattered and reforged.\",\n  \"physical_traits\": [\n    \"Clean and undestroyed, unlike the lower floors\",\n    \"Luxurious atmosphere, dimly lit like an old nightclub\",\n    \"Corridor with multiple rooms: pool table room, cigar lounge\",\n    \"A smashed door with a chair and ropes on the floor (evidence of prior captivity)\",\n    \"Pooled blood and gouged walls from Mariner's earlier fight\",\n    \"Sturdy, locked door at the end of the hallway requiring forced entry\",\n    \"Private office with a huge wooden desk atop a thick Persian rug\",\n    \"Bookshelves of leather-bound books\",\n    \"Glass case filled with fine booze\",\n    \"Mismatched paintings of different periods\",\n    \"Bowl of mints on the desk\",\n    \"Still-burning cigar on the desk when protagonists arrive\",\n    \"Ice melting in a tumbler of scotch on the desk\",\n    \"A purse (Rose's) on the desk\"\n  ],\n  \"scene_presence\": [\n    \"INT. 15TH FLOOR\",\n    \"INT. STAIRWELL — (BACK TO PRESENT)\"\n  ],\n  \"narrative_significance\": \"The 15th floor is the story's dramatic apex — the only floor preserved in luxury amid a ruined building, visually embodying the insulated power of organized crime above the chaos it exploits below. It is here that Mariner's fabricated heroic origin is dismantled by Rose's revelations about their father, and then reconstructed on more honest, self-determined terms. The climactic standoff with Salvatori in this opulent office forces Mariner to choose between the false mythology he has lived by and a truer, harder-won sense of identity.\",\n  \"overall_confidence\": 0.91\n}\n```",
+          "tokenUsage": {
+            "total": 5896,
+            "prompt": 5279,
+            "completion": 617
+          },
+          "finishReason": "stop"
+        },
+        "score": 0.9299999999999999,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "location_name": "15TH FLOOR",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-locations.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/bible_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the location extraction for the 15TH FLOOR from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the luxurious, dimly lit office atmosphere?\n2. Does it mention specific details: wooden desk, Persian rug, leather-bound books, fine booze?\n3. Does it identify this as Salvatori's personal headquarters?\n4. Does it note this is where the climactic confrontation occurs?\n5. Does it mention evidence of earlier violence (pooled blood, gouged walls)?\n6. Does it capture the contrast between luxury and violence?\n7. Does it note the still-burning cigar and melting ice as environmental storytelling?\n\nScore strictly: this is the climactic location where the story's revelations happen.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "location_name": "15TH FLOOR",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-locations.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.8379000000000001,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1164,
+            "prompt": 843,
+            "completion": 321,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.7758,
+              "reason": "description_quality=1.00 | fact_recall=0.20 | field_completeness=1.00 | json_valid=0.90 | name_identification=0.83 | narrative_quality=0.75 | physical_coverage=1.00 | scene_coverage=1.00 | JSON extracted from code block | Aliases: 2/3 | Facts: 1/5 recalled | Narrative themes: 3/4",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/bible_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the location extraction for the COASTLINE from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify this as a flashback-only location?\n2. Does it capture the DUAL PRESENTATION — idealized vs. dark versions?\n3. Idealized version: golden light, warm teaching moment, father-son bonding?\n4. Dark version: beer bottles, shivering child, drunk/mocking father?\n5. Does it connect this to Mariner's false memories about his father?\n6. Does it note the thematic significance — memory vs. truth?\n7. Is evidence grounded in actual screenplay descriptions?\n\nScore strictly: the dual presentation is the screenplay's most important narrative device and MUST be captured.\n"
+              },
+              "pass": true,
+              "score": 0.9,
+              "reason": "The output excels on nearly all criteria. (1) It clearly identifies the coastline as a flashback-only location, with scene presence listing two flashback scenes. (2) The dual presentation is captured explicitly — 'first bathed in golden light as an idyllic father-son memory, then revisited in a darker second flashback that recontextualises the same setting.' (3) The idealized version mentions golden light and father-son bonding/teaching moment (fishing, casting). (4) The dark version mentions beer bottles and shivering/under-dressed child, though it doesn't explicitly mention the father being drunk or mocking — it references 'neglect, alcohol, and manipulation' which partially captures this. (5) It connects this to Mariner's false memories, calling the origin story 'a fiction' and 'built on a lie.' (6) It explicitly addresses memory vs. truth as the core theme — 'the gap between the hero a person constructs from their past and the painful truth that past actually holds.' (7) Evidence is grounded in screenplay descriptions (golden light, beer bottles, shivering child, wooden sailboat). The only minor gap is not explicitly describing the father as drunk or mocking in the dark version, though 'alcohol and manipulation' implies this. Overall, the dual presentation — the screenplay's most important narrative device — is thoroughly and accurately captured.",
+              "tokensUsed": {
+                "total": 1164,
+                "prompt": 843,
+                "completion": 321,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"location_id\\\": \\\"coastline\\\",\\n  \\\"name\\\": \\\"COASTLINE\\\",\\n  \\\"aliases\\\": [\\\"the shoreline\\\", \\\"the boat\\\"],\\n  \\\"description\\\": \\\"A coastal waterway where a young Billy (Mariner) and his father fish together from a wooden sailboat near the shoreline. The location appears twice in flashback, first bathed in golden light as an idyllic father-son memory, then revisited in a darker second flashback that recontextualises the same setting: the boat's bottom is littered with empty beer bottles, and the boy is under-dressed and shivering. The coastline serves as the crucible of Mariner's origin story, the place where his ideals of heroism were planted — and, by the film's end, quietly exposed as a fiction.\\\",\\n  \\\"physical_traits\\\": [\\n    \\\"Wooden sailboat near the shoreline\\\",\\n    \\\"Golden light bathing the scene (first flashback)\\\",\\n    \\\"Boat bottom littered with empty beer bottles (second flashback)\\\",\\n    \\\"Young Mariner visibly under-dressed and shivering (second flashback)\\\"\\n  ],\\n  \\\"scene_presence\\\": [\\n    \\\"EXT. COASTLINE - DAY - PAST (BEGIN FLASHBACK)\\\",\\n    \\\"EXT. COASTLINE - DAY - (FLASHBACK)\\\"\\n  ],\\n  \\\"narrative_significance\\\": \\\"The coastline is the symbolic birthplace of the Mariner's identity: the place where his father first defined heroism for him and where he learned to fish and cast, skills that became the foundation of his vigilante persona. The location appears twice in deliberate contrast — first as a warm, golden memory of mentorship, then as a bleak revision showing neglect, alcohol, and manipulation — mirroring the screenplay's central dramatic revelation that Mariner's heroic origin story is built on a lie. This duality makes the coastline the physical embodiment of the film's core theme: the gap between the hero a person constructs from their past and the painful truth that past actually holds.\\\",\\n  \\\"overall_confidence\\\": 0.91\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate the location extraction for the COASTLINE from \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it identify this as a flashback-only location?\\n2. Does it capture the DUAL PRESENTATION — idealized vs. dark versions?\\n3. Idealized version: golden light, warm teaching moment, father-son bonding?\\n4. Dark version: beer bottles, shivering child, drunk/mocking father?\\n5. Does it connect this to Mariner's false memories about his father?\\n6. Does it note the thematic significance — memory vs. truth?\\n7. Is evidence grounded in actual screenplay descriptions?\\n\\nScore strictly: the dual presentation is the screenplay's most important narrative device and MUST be captured.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "4023f223-a265-4f23-a509-13d1ae73c812",
+        "latencyMs": 11460,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a location analyst working on a film production. Extract a master definition for the location \"COASTLINE\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "prompts/location-extraction.txt: You are a location analyst working on a film production. Extract a master definition for the location \"{{location_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- location_id: A URL-safe slug (e.g., \"ruddy-and-greene-building\")\n- name: The location name as it appears in scene headings\n- aliases: Array of alternative names or references used for this location\n- description: 2-4 sentence description covering physical appearance, atmosphere, and role in the story\n- physical_traits: Array of observable physical characteristics mentioned in the screenplay (architecture, decor, lighting, condition, etc.)\n- scene_presence: Array of scene headings where this location appears\n- narrative_significance: 2-3 sentences explaining this location's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all physical traits in actual screenplay descriptions, not inferences\n- Include sub-locations that are part of this location (e.g., rooms within a building)\n- Note if the location appears differently at different points (e.g., flashback vs. present)\n- Capture atmosphere and mood conveyed through the location's description\n- Distinguish between what is explicitly described vs. implied\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "25ff848f28e387bc59dae997d0e9a32be732485ac9a261d09c05595a56f6cfda",
+        "promptIdx": 0,
+        "provider": {
+          "id": "anthropic:messages:claude-sonnet-4-6",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "```json\n{\n  \"location_id\": \"coastline\",\n  \"name\": \"COASTLINE\",\n  \"aliases\": [\"the shoreline\", \"the boat\"],\n  \"description\": \"A coastal waterway where a young Billy (Mariner) and his father fish together from a wooden sailboat near the shoreline. The location appears twice in flashback, first bathed in golden light as an idyllic father-son memory, then revisited in a darker second flashback that recontextualises the same setting: the boat's bottom is littered with empty beer bottles, and the boy is under-dressed and shivering. The coastline serves as the crucible of Mariner's origin story, the place where his ideals of heroism were planted — and, by the film's end, quietly exposed as a fiction.\",\n  \"physical_traits\": [\n    \"Wooden sailboat near the shoreline\",\n    \"Golden light bathing the scene (first flashback)\",\n    \"Boat bottom littered with empty beer bottles (second flashback)\",\n    \"Young Mariner visibly under-dressed and shivering (second flashback)\"\n  ],\n  \"scene_presence\": [\n    \"EXT. COASTLINE - DAY - PAST (BEGIN FLASHBACK)\",\n    \"EXT. COASTLINE - DAY - (FLASHBACK)\"\n  ],\n  \"narrative_significance\": \"The coastline is the symbolic birthplace of the Mariner's identity: the place where his father first defined heroism for him and where he learned to fish and cast, skills that became the foundation of his vigilante persona. The location appears twice in deliberate contrast — first as a warm, golden memory of mentorship, then as a bleak revision showing neglect, alcohol, and manipulation — mirroring the screenplay's central dramatic revelation that Mariner's heroic origin story is built on a lie. This duality makes the coastline the physical embodiment of the film's core theme: the gap between the hero a person constructs from their past and the painful truth that past actually holds.\",\n  \"overall_confidence\": 0.91\n}\n```",
+          "tokenUsage": {
+            "total": 5755,
+            "prompt": 5277,
+            "completion": 478
+          },
+          "finishReason": "stop"
+        },
+        "score": 0.8379000000000001,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "location_name": "COASTLINE",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-locations.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/bible_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the location extraction for the COASTLINE from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify this as a flashback-only location?\n2. Does it capture the DUAL PRESENTATION — idealized vs. dark versions?\n3. Idealized version: golden light, warm teaching moment, father-son bonding?\n4. Dark version: beer bottles, shivering child, drunk/mocking father?\n5. Does it connect this to Mariner's false memories about his father?\n6. Does it note the thematic significance — memory vs. truth?\n7. Is evidence grounded in actual screenplay descriptions?\n\nScore strictly: the dual presentation is the screenplay's most important narrative device and MUST be captured.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "location_name": "COASTLINE",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-locations.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 3,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 15838,
+        "completion": 1921,
+        "cached": 0,
+        "total": 17759,
+        "numRequests": 3,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 3914,
+          "prompt": 3038,
+          "completion": 876,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 25957
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Location extraction from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/Documents/Projects/cine-forge/benchmarks/prompts/location-extraction.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "location_name": "RUDDY & GREENE BUILDING",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-locations.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/bible_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the location extraction for RUDDY & GREENE BUILDING from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the building as a classic 15-story sandstone structure, now decayed?\n2. Does it mention bullet holes, graffiti, and the contrast with its former beauty?\n3. Does it identify the building as the main setting housing Salvatori's criminal operation?\n4. Does it note the multi-floor structure (elevator, stairwells, floors 11-15)?\n5. Does it capture the vertical journey as a narrative device?\n6. Does it list relevant scene headings (front, rear, elevator)?\n7. Is the description grounded in actual screenplay text?\n\nScore strictly: the building is the central location and a good extraction captures both physical detail and narrative function.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "location_name": "15TH FLOOR",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-locations.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/bible_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the location extraction for the 15TH FLOOR from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the luxurious, dimly lit office atmosphere?\n2. Does it mention specific details: wooden desk, Persian rug, leather-bound books, fine booze?\n3. Does it identify this as Salvatori's personal headquarters?\n4. Does it note this is where the climactic confrontation occurs?\n5. Does it mention evidence of earlier violence (pooled blood, gouged walls)?\n6. Does it capture the contrast between luxury and violence?\n7. Does it note the still-burning cigar and melting ice as environmental storytelling?\n\nScore strictly: this is the climactic location where the story's revelations happen.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "location_name": "COASTLINE",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-locations.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/bible_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the location extraction for the COASTLINE from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify this as a flashback-only location?\n2. Does it capture the DUAL PRESENTATION — idealized vs. dark versions?\n3. Idealized version: golden light, warm teaching moment, father-son bonding?\n4. Dark version: beer bottles, shivering child, drunk/mocking father?\n5. Does it connect this to Mariner's false memories about his father?\n6. Does it note the thematic significance — memory vs. truth?\n7. Is evidence grounded in actual screenplay descriptions?\n\nScore strictly: the dual presentation is the screenplay's most important narrative device and MUST be captured.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/location-extraction-sonnet46.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.24",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-02-18T01:30:10.145Z",
+    "evaluationCreatedAt": "2026-02-18T01:29:44.102Z"
+  }
+}

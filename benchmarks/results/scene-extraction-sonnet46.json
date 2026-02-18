@@ -1,0 +1,318 @@
+{
+  "evalId": "eval-0e7-2026-02-18T01:29:49",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-02-18T01:29:49.987Z",
+    "prompts": [
+      {
+        "raw": "You are a professional screenplay analyst. Extract all scenes from the following screenplay.\n\nFor each scene, provide:\n- scene_number: Sequential integer starting from 1\n- heading: The scene heading exactly as written (e.g., \"INT. OFFICE - DAY\")\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\"\n- summary: A 1-2 sentence summary of what happens in the scene\n- characters: Array of character names present or heard in the scene\n\nImportant:\n- Include embedded flashbacks (marked with \"BEGIN FLASHBACK\" / \"END FLASHBACK\") as separate scenes\n- Include scenes that intercut between flashback and present\n- Scene headings may use backslash-escaped characters like \\- for hyphens\n- Characters heard off-screen (O.S.) should be included\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"title\": \"...\",\n  \"scene_count\": <number>,\n  \"scenes\": [ { \"scene_number\": ..., \"heading\": ..., \"int_ext\": ..., \"location\": ..., \"time_of_day\": ..., \"summary\": ..., \"characters\": [...] } ]\n}\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "label": "prompts/scene-extraction.txt: You are a professional screenplay analyst. Extract all scenes from the following screenplay.\n\nFor each scene, provide:\n- scene_number: Sequential integer starting from 1\n- heading: The scene heading exactly as written (e.g., \"INT. OFFICE - DAY\")\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\"\n- summary: A 1-2 sentence summary of what happens in the scene\n- characters: Array of character names present or heard in the scene\n\nImportant:\n- Include embedded flashbacks (marked with \"BEGIN FLASHBACK\" / \"END FLASHBACK\") as separate scenes\n- Include scenes that intercut between flashback and present\n- Scene headings may use backslash-escaped characters like \\- for hyphens\n- Characters heard off-screen (O.S.) should be included\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"title\": \"...\",\n  \"scene_count\": <number>,\n  \"scenes\": [ { \"scene_number\": ..., \"heading\": ..., \"int_ext\": ..., \"location\": ..., \"time_of_day\": ..., \"summary\": ..., \"characters\": [...] } ]\n}\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "id": "332009e096b0dfefb5bb46af9f9f4fb89af96655c95efb5b0e13f831e2d655c0",
+        "provider": "Claude Sonnet 4.6",
+        "metrics": {
+          "score": 0.815,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 38562,
+          "tokenUsage": {
+            "prompt": 5307,
+            "completion": 2494,
+            "cached": 0,
+            "total": 7801,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 3497,
+              "prompt": 2872,
+              "completion": 625,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.815,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 3497,
+            "prompt": 2872,
+            "completion": 625,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.91,
+              "reason": "character_recall=0.92 | field_completeness=1.00 | heading_match=1.00 | heading_quality=0.93 | json_valid=0.90 | scene_count=0.70 | summary_completeness=1.00 | JSON extracted from code block | Count: 16 vs 15 golden (off by 1) | Missing chars: THE MARINER",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/scene_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the scene extraction output for the screenplay \"The Mariner.\"\n\nThe screenplay has approximately 13-15 scenes including embedded flashbacks.\nKey quality criteria:\n1. Are all scenes identified, including embedded flashbacks (BEGIN FLASHBACK / END FLASHBACK)?\n2. Are scene headings accurate and complete?\n3. Are INT/EXT designations correct?\n4. Are character names correctly identified for each scene (including O.S. characters)?\n5. Are summaries meaningful — capturing the key action, not just restating the heading?\n6. Is the time_of_day correct (NIGHT for present-day scenes, DAY for flashbacks)?\n7. Are the flashback scenes properly distinguished from present-day scenes?\n\nScore strictly: partial credit for close but imperfect extraction.\n"
+              },
+              "pass": true,
+              "score": 0.72,
+              "reason": "The output identifies 16 scenes, which is within the approximate range of 13-15 (slightly over, but reasonable given how flashbacks can be counted). Let me evaluate each criterion:\n\n1. **Scene identification including flashbacks**: The output identifies all major scenes and flashback sequences. The flashbacks at scenes 6, 11, 13, and 15 are properly identified. However, scene 16's heading says 'EXT. BACKYARD - DAY - (FLASHBACK)' but the summary describes present-day action with Salvatori, Rose, and Mariner - this is a significant error, suggesting the heading and content are mismatched. Scene 3 combines what might be multiple scenes (the rear exterior, the fighting through floors, and the elevator muzak) into one, which could be debatable.\n\n2. **Scene headings**: Generally accurate with escaped hyphens. Some minor issues: Scene 4 has 'RUDDY & GREEN' instead of 'RUDDY & GREENE' (missing 'E'). Scene 16's heading appears incorrect as noted above.\n\n3. **INT/EXT designations**: These appear correct for the scenes listed. The flashback scenes correctly use EXT for outdoor locations.\n\n4. **Character identification**: Generally good. Characters are identified in each scene. Scene 3 includes ROSE which may be premature if she doesn't appear until later. The thugs in scene 4 are named. Salvatori's thugs in scene 14 aren't individually named but that's acceptable if they aren't named in the script.\n\n5. **Summaries**: The summaries are detailed and meaningful, capturing key plot points, character motivations, and action. They go well beyond restating headings. The revelation about Mariner's father, the blockchain password subplot, and character dynamics are well captured.\n\n6. **Time of day**: Present-day scenes correctly use NIGHT, flashbacks correctly use DAY. Scene 5 uses CONTINUOUS which is appropriate. Scene 16 is problematic - it says DAY but describes present-day action.\n\n7. **Flashback distinction**: Flashbacks are clearly marked in headings with 'PAST' or '(FLASHBACK)' designations and are distinguished from present-day scenes. The recontextualized flashbacks (scenes 13, 15) showing darker versions of earlier memories are properly identified.\n\nMain issues: Scene 16's heading/content mismatch is a notable error. The typo in scene 4's heading. Scene 3 potentially combining multiple scenes. Overall, the extraction is quite thorough and detailed with meaningful summaries, but has some accuracy issues.",
+              "tokensUsed": {
+                "total": 3497,
+                "prompt": 2872,
+                "completion": 625,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"title\\\": \\\"The Mariner\\\",\\n  \\\"scene_count\\\": 16,\\n  \\\"scenes\\\": [\\n    {\\n      \\\"scene_number\\\": 1,\\n      \\\"heading\\\": \\\"EXT. CITY CENTRE \\\\\\\\- NIGHT\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"CITY CENTRE\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"A ruined, post-collapse city is established: fires burn, a fallen skyscraper fills an intersection with rubble, and distant sirens and gunshots fill the air. An opening title card explains the societal collapse that gave rise to vigilantes.\\\",\\n      \\\"characters\\\": []\\n    },\\n    {\\n      \\\"scene_number\\\": 2,\\n      \\\"heading\\\": \\\"EXT. RUDDY & GREENE BUILDING \\\\\\\\- FRONT \\\\\\\\- NIGHT\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"RUDDY & GREENE BUILDING - FRONT\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"A classic sandstone building, now bullet-riddled and graffitied, is shown with rows of high-end European SUVs parked outside, suggesting a criminal operation within.\\\",\\n      \\\"characters\\\": []\\n    },\\n    {\\n      \\\"scene_number\\\": 3,\\n      \\\"heading\\\": \\\"EXT. RUDDY & GREENE BUILDING \\\\\\\\- REAR \\\\\\\\- NIGHT\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"RUDDY & GREENE BUILDING - REAR\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"The Mariner arrives in a fish delivery van, charges into the building through the back, and fights his way through multiple floors, humming along to muzak in the elevator as lights illuminate each floor he clears.\\\",\\n      \\\"characters\\\": [\\\"MARINER\\\", \\\"ROSE\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 4,\\n      \\\"heading\\\": \\\"INT. RUDDY & GREEN BUILDING \\\\\\\\- ELEVATOR\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"Rose and Mariner, both bloodied and panting, ride the elevator together; Rose is disgusted by a piece of skull while Mariner's full costume and weapons are revealed. Their escape is interrupted when the doors open on the 12th floor to three armed thugs, leading to a brief violent confrontation before they close the doors and redirect to the 11th floor.\\\",\\n      \\\"characters\\\": [\\\"ROSE\\\", \\\"MARINER\\\", \\\"THUG 1\\\", \\\"THUG 2\\\", \\\"THUG 3\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 5,\\n      \\\"heading\\\": \\\"INT. 11TH FLOOR \\\\\\\\- CONTINUOUS\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"11TH FLOOR\\\",\\n      \\\"time_of_day\\\": \\\"CONTINUOUS\\\",\\n      \\\"summary\\\": \\\"Rose and Mariner creep through dim corridors searching for a stairwell; Mariner pulls Rose into an empty room to hide from a passing guard, and he glances at his 'Dad' tattoo, triggering a flashback.\\\",\\n      \\\"characters\\\": [\\\"ROSE\\\", \\\"MARINER\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 6,\\n      \\\"heading\\\": \\\"EXT. COASTLINE \\\\\\\\- DAY \\\\\\\\- PAST\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"COASTLINE\\\",\\n      \\\"time_of_day\\\": \\\"DAY\\\",\\n      \\\"summary\\\": \\\"In a warm flashback, a young Mariner and his father fish happily from a sailboat; his dad teaches him to cast and offers a folksy definition of a hero, sending the boy to fetch him a beer.\\\",\\n      \\\"characters\\\": [\\\"YOUNG MARINER\\\", \\\"DAD\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 7,\\n      \\\"heading\\\": \\\"INT. STAIRWELL \\\\\\\\- CONTINUOUS\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"STAIRWELL\\\",\\n      \\\"time_of_day\\\": \\\"CONTINUOUS\\\",\\n      \\\"summary\\\": \\\"Rose reveals she has hidden a blockchain password worth her life savings in her purse lining, convincing a reluctant Mariner to head back upstairs to retrieve it rather than escape.\\\",\\n      \\\"characters\\\": [\\\"ROSE\\\", \\\"MARINER\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 8,\\n      \\\"heading\\\": \\\"INT. 12TH FLOOR STAIRWELL \\\\\\\\- CONTINUOUS\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"12TH FLOOR STAIRWELL\\\",\\n      \\\"time_of_day\\\": \\\"CONTINUOUS\\\",\\n      \\\"summary\\\": \\\"Thug Rosco bursts through the stairwell door and is quickly subdued by Mariner and Rose; under duress, Rosco explains blockchain and lets slip that the stolen sum is 20 million dollars before being knocked out, forcing Rose to admit she stole gang money.\\\",\\n      \\\"characters\\\": [\\\"ROSE\\\", \\\"MARINER\\\", \\\"ROSCO\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 9,\\n      \\\"heading\\\": \\\"INT. 13TH FLOOR\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"13TH FLOOR\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"Three patrolling thugs hear Rose and Mariner arguing about the Mariner's code and close in; a confrontation erupts in which Mariner fires a flare gun at Vinnie and beats the other two thugs, while Rose reveals that Vinnie was her ex-boyfriend who convinced her to steal the gang's money.\\\",\\n      \\\"characters\\\": [\\\"VINNIE\\\", \\\"MIKEY\\\", \\\"CARLOS\\\", \\\"ROSE\\\", \\\"MARINER\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 10,\\n      \\\"heading\\\": \\\"INT. 15TH FLOOR\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"15TH FLOOR\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"Rose and Mariner reach the luxurious top floor, find the locked office, and Mariner forces the door open; Rose retrieves her purse while Mariner checks side doors, and she questions whether his strength comes from steroids, triggering a flashback.\\\",\\n      \\\"characters\\\": [\\\"ROSE\\\", \\\"MARINER\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 11,\\n      \\\"heading\\\": \\\"EXT. BACKYARD \\\\\\\\- DAY \\\\\\\\- PAST\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"BACKYARD\\\",\\n      \\\"time_of_day\\\": \\\"DAY\\\",\\n      \\\"summary\\\": \\\"In a warm-toned flashback, young Mariner's father patiently teaches him to bench press in an idyllic backyard, encouraging him to be a fighter and a MacAngus, while Mariner resolves to be strong.\\\",\\n      \\\"characters\\\": [\\\"YOUNG MARINER\\\", \\\"DAD\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 12,\\n      \\\"heading\\\": \\\"INT. 15TH FLOOR\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"15TH FLOOR\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"Back in the office, Rose shatters Mariner's idealized image of his father, revealing he is alive and living in Chimney Bay, and that the 'heroic' summer was actually his father abandoning him in a deadbeat friend's yard while getting drunk. Their confrontation is interrupted by the arrival of crime boss Salvatori and his thugs.\\\",\\n      \\\"characters\\\": [\\\"ROSE\\\", \\\"MARINER\\\", \\\"SALVATORI\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 13,\\n      \\\"heading\\\": \\\"EXT. BACKYARD \\\\\\\\- DAY \\\\\\\\- (FLASHBACK)\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"BACKYARD\\\",\\n      \\\"time_of_day\\\": \\\"DAY\\\",\\n      \\\"summary\\\": \\\"A darker flashback recontextualizes the earlier weightlifting memory: the backyard is overgrown and littered with bottles, and Mariner's father punches him repeatedly, berating him for being weak and running from fights before storming off in disgust.\\\",\\n      \\\"characters\\\": [\\\"YOUNG MARINER\\\", \\\"DAD\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 14,\\n      \\\"heading\\\": \\\"INT. STAIRWELL \\\\\\\\- (BACK TO PRESENT)\\\",\\n      \\\"int_ext\\\": \\\"INT\\\",\\n      \\\"location\\\": \\\"STAIRWELL\\\",\\n      \\\"time_of_day\\\": \\\"NIGHT\\\",\\n      \\\"summary\\\": \\\"Salvatori confronts Mariner, taunting him about trying to be a hero; Mariner, shaken by the revelations about his father, quietly denies being one and is forced to his knees by Salvatori's thugs.\\\",\\n      \\\"characters\\\": [\\\"SALVATORI\\\", \\\"MARINER\\\", \\\"ROSE\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 15,\\n      \\\"heading\\\": \\\"EXT. COASTLINE \\\\\\\\- DAY \\\\\\\\- (FLASHBACK)\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"COASTLINE\\\",\\n      \\\"time_of_day\\\": \\\"DAY\\\",\\n      \\\"summary\\\": \\\"A brief, bleak flashback shows young Mariner shivering in a boat littered with empty beer bottles while his drunk father urinates off the side and mocks the concept of heroism, demanding another beer.\\\",\\n      \\\"characters\\\": [\\\"YOUNG MARINER\\\", \\\"DAD\\\"]\\n    },\\n    {\\n      \\\"scene_number\\\": 16,\\n      \\\"heading\\\": \\\"EXT. BACKYARD \\\\\\\\- DAY \\\\\\\\- (FLASHBACK)\\\",\\n      \\\"int_ext\\\": \\\"EXT\\\",\\n      \\\"location\\\": \\\"BACKYARD\\\",\\n      \\\"time_of_day\\\": \\\"DAY\\\",\\n      \\\"summary\\\": \\\"Salvatori demands the password at gunpoint while Rose delivers a defiant speech redefining Mariner as a true hero — one who forged his own path despite an abusive, absent father — reigniting Mariner's resolve just as Salvatori threatens to shoot her, ending on a cut to black.\\\",\\n      \\\"characters\\\": [\\\"SALVATORI\\\", \\\"ROSE\\\", \\\"MARINER\\\"]\\n    }\\n  ]\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate the scene extraction output for the screenplay \\\"The Mariner.\\\"\\n\\nThe screenplay has approximately 13-15 scenes including embedded flashbacks.\\nKey quality criteria:\\n1. Are all scenes identified, including embedded flashbacks (BEGIN FLASHBACK / END FLASHBACK)?\\n2. Are scene headings accurate and complete?\\n3. Are INT/EXT designations correct?\\n4. Are character names correctly identified for each scene (including O.S. characters)?\\n5. Are summaries meaningful — capturing the key action, not just restating the heading?\\n6. Is the time_of_day correct (NIGHT for present-day scenes, DAY for flashbacks)?\\n7. Are the flashback scenes properly distinguished from present-day scenes?\\n\\nScore strictly: partial credit for close but imperfect extraction.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "2fe5ebca-bf3c-4f7a-a19e-6a4c7db35561",
+        "latencyMs": 38562,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional screenplay analyst. Extract all scenes from the following screenplay.\n\nFor each scene, provide:\n- scene_number: Sequential integer starting from 1\n- heading: The scene heading exactly as written (e.g., \"INT. OFFICE - DAY\")\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\"\n- summary: A 1-2 sentence summary of what happens in the scene\n- characters: Array of character names present or heard in the scene\n\nImportant:\n- Include embedded flashbacks (marked with \"BEGIN FLASHBACK\" / \"END FLASHBACK\") as separate scenes\n- Include scenes that intercut between flashback and present\n- Scene headings may use backslash-escaped characters like \\- for hyphens\n- Characters heard off-screen (O.S.) should be included\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"title\": \"...\",\n  \"scene_count\": <number>,\n  \"scenes\": [ { \"scene_number\": ..., \"heading\": ..., \"int_ext\": ..., \"location\": ..., \"time_of_day\": ..., \"summary\": ..., \"characters\": [...] } ]\n}\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "prompts/scene-extraction.txt: You are a professional screenplay analyst. Extract all scenes from the following screenplay.\n\nFor each scene, provide:\n- scene_number: Sequential integer starting from 1\n- heading: The scene heading exactly as written (e.g., \"INT. OFFICE - DAY\")\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\"\n- summary: A 1-2 sentence summary of what happens in the scene\n- characters: Array of character names present or heard in the scene\n\nImportant:\n- Include embedded flashbacks (marked with \"BEGIN FLASHBACK\" / \"END FLASHBACK\") as separate scenes\n- Include scenes that intercut between flashback and present\n- Scene headings may use backslash-escaped characters like \\- for hyphens\n- Characters heard off-screen (O.S.) should be included\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"title\": \"...\",\n  \"scene_count\": <number>,\n  \"scenes\": [ { \"scene_number\": ..., \"heading\": ..., \"int_ext\": ..., \"location\": ..., \"time_of_day\": ..., \"summary\": ..., \"characters\": [...] } ]\n}\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "332009e096b0dfefb5bb46af9f9f4fb89af96655c95efb5b0e13f831e2d655c0",
+        "promptIdx": 0,
+        "provider": {
+          "id": "anthropic:messages:claude-sonnet-4-6",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "```json\n{\n  \"title\": \"The Mariner\",\n  \"scene_count\": 16,\n  \"scenes\": [\n    {\n      \"scene_number\": 1,\n      \"heading\": \"EXT. CITY CENTRE \\\\- NIGHT\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"CITY CENTRE\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"A ruined, post-collapse city is established: fires burn, a fallen skyscraper fills an intersection with rubble, and distant sirens and gunshots fill the air. An opening title card explains the societal collapse that gave rise to vigilantes.\",\n      \"characters\": []\n    },\n    {\n      \"scene_number\": 2,\n      \"heading\": \"EXT. RUDDY & GREENE BUILDING \\\\- FRONT \\\\- NIGHT\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"RUDDY & GREENE BUILDING - FRONT\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"A classic sandstone building, now bullet-riddled and graffitied, is shown with rows of high-end European SUVs parked outside, suggesting a criminal operation within.\",\n      \"characters\": []\n    },\n    {\n      \"scene_number\": 3,\n      \"heading\": \"EXT. RUDDY & GREENE BUILDING \\\\- REAR \\\\- NIGHT\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"RUDDY & GREENE BUILDING - REAR\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"The Mariner arrives in a fish delivery van, charges into the building through the back, and fights his way through multiple floors, humming along to muzak in the elevator as lights illuminate each floor he clears.\",\n      \"characters\": [\"MARINER\", \"ROSE\"]\n    },\n    {\n      \"scene_number\": 4,\n      \"heading\": \"INT. RUDDY & GREEN BUILDING \\\\- ELEVATOR\",\n      \"int_ext\": \"INT\",\n      \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"Rose and Mariner, both bloodied and panting, ride the elevator together; Rose is disgusted by a piece of skull while Mariner's full costume and weapons are revealed. Their escape is interrupted when the doors open on the 12th floor to three armed thugs, leading to a brief violent confrontation before they close the doors and redirect to the 11th floor.\",\n      \"characters\": [\"ROSE\", \"MARINER\", \"THUG 1\", \"THUG 2\", \"THUG 3\"]\n    },\n    {\n      \"scene_number\": 5,\n      \"heading\": \"INT. 11TH FLOOR \\\\- CONTINUOUS\",\n      \"int_ext\": \"INT\",\n      \"location\": \"11TH FLOOR\",\n      \"time_of_day\": \"CONTINUOUS\",\n      \"summary\": \"Rose and Mariner creep through dim corridors searching for a stairwell; Mariner pulls Rose into an empty room to hide from a passing guard, and he glances at his 'Dad' tattoo, triggering a flashback.\",\n      \"characters\": [\"ROSE\", \"MARINER\"]\n    },\n    {\n      \"scene_number\": 6,\n      \"heading\": \"EXT. COASTLINE \\\\- DAY \\\\- PAST\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"COASTLINE\",\n      \"time_of_day\": \"DAY\",\n      \"summary\": \"In a warm flashback, a young Mariner and his father fish happily from a sailboat; his dad teaches him to cast and offers a folksy definition of a hero, sending the boy to fetch him a beer.\",\n      \"characters\": [\"YOUNG MARINER\", \"DAD\"]\n    },\n    {\n      \"scene_number\": 7,\n      \"heading\": \"INT. STAIRWELL \\\\- CONTINUOUS\",\n      \"int_ext\": \"INT\",\n      \"location\": \"STAIRWELL\",\n      \"time_of_day\": \"CONTINUOUS\",\n      \"summary\": \"Rose reveals she has hidden a blockchain password worth her life savings in her purse lining, convincing a reluctant Mariner to head back upstairs to retrieve it rather than escape.\",\n      \"characters\": [\"ROSE\", \"MARINER\"]\n    },\n    {\n      \"scene_number\": 8,\n      \"heading\": \"INT. 12TH FLOOR STAIRWELL \\\\- CONTINUOUS\",\n      \"int_ext\": \"INT\",\n      \"location\": \"12TH FLOOR STAIRWELL\",\n      \"time_of_day\": \"CONTINUOUS\",\n      \"summary\": \"Thug Rosco bursts through the stairwell door and is quickly subdued by Mariner and Rose; under duress, Rosco explains blockchain and lets slip that the stolen sum is 20 million dollars before being knocked out, forcing Rose to admit she stole gang money.\",\n      \"characters\": [\"ROSE\", \"MARINER\", \"ROSCO\"]\n    },\n    {\n      \"scene_number\": 9,\n      \"heading\": \"INT. 13TH FLOOR\",\n      \"int_ext\": \"INT\",\n      \"location\": \"13TH FLOOR\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"Three patrolling thugs hear Rose and Mariner arguing about the Mariner's code and close in; a confrontation erupts in which Mariner fires a flare gun at Vinnie and beats the other two thugs, while Rose reveals that Vinnie was her ex-boyfriend who convinced her to steal the gang's money.\",\n      \"characters\": [\"VINNIE\", \"MIKEY\", \"CARLOS\", \"ROSE\", \"MARINER\"]\n    },\n    {\n      \"scene_number\": 10,\n      \"heading\": \"INT. 15TH FLOOR\",\n      \"int_ext\": \"INT\",\n      \"location\": \"15TH FLOOR\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"Rose and Mariner reach the luxurious top floor, find the locked office, and Mariner forces the door open; Rose retrieves her purse while Mariner checks side doors, and she questions whether his strength comes from steroids, triggering a flashback.\",\n      \"characters\": [\"ROSE\", \"MARINER\"]\n    },\n    {\n      \"scene_number\": 11,\n      \"heading\": \"EXT. BACKYARD \\\\- DAY \\\\- PAST\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"BACKYARD\",\n      \"time_of_day\": \"DAY\",\n      \"summary\": \"In a warm-toned flashback, young Mariner's father patiently teaches him to bench press in an idyllic backyard, encouraging him to be a fighter and a MacAngus, while Mariner resolves to be strong.\",\n      \"characters\": [\"YOUNG MARINER\", \"DAD\"]\n    },\n    {\n      \"scene_number\": 12,\n      \"heading\": \"INT. 15TH FLOOR\",\n      \"int_ext\": \"INT\",\n      \"location\": \"15TH FLOOR\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"Back in the office, Rose shatters Mariner's idealized image of his father, revealing he is alive and living in Chimney Bay, and that the 'heroic' summer was actually his father abandoning him in a deadbeat friend's yard while getting drunk. Their confrontation is interrupted by the arrival of crime boss Salvatori and his thugs.\",\n      \"characters\": [\"ROSE\", \"MARINER\", \"SALVATORI\"]\n    },\n    {\n      \"scene_number\": 13,\n      \"heading\": \"EXT. BACKYARD \\\\- DAY \\\\- (FLASHBACK)\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"BACKYARD\",\n      \"time_of_day\": \"DAY\",\n      \"summary\": \"A darker flashback recontextualizes the earlier weightlifting memory: the backyard is overgrown and littered with bottles, and Mariner's father punches him repeatedly, berating him for being weak and running from fights before storming off in disgust.\",\n      \"characters\": [\"YOUNG MARINER\", \"DAD\"]\n    },\n    {\n      \"scene_number\": 14,\n      \"heading\": \"INT. STAIRWELL \\\\- (BACK TO PRESENT)\",\n      \"int_ext\": \"INT\",\n      \"location\": \"STAIRWELL\",\n      \"time_of_day\": \"NIGHT\",\n      \"summary\": \"Salvatori confronts Mariner, taunting him about trying to be a hero; Mariner, shaken by the revelations about his father, quietly denies being one and is forced to his knees by Salvatori's thugs.\",\n      \"characters\": [\"SALVATORI\", \"MARINER\", \"ROSE\"]\n    },\n    {\n      \"scene_number\": 15,\n      \"heading\": \"EXT. COASTLINE \\\\- DAY \\\\- (FLASHBACK)\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"COASTLINE\",\n      \"time_of_day\": \"DAY\",\n      \"summary\": \"A brief, bleak flashback shows young Mariner shivering in a boat littered with empty beer bottles while his drunk father urinates off the side and mocks the concept of heroism, demanding another beer.\",\n      \"characters\": [\"YOUNG MARINER\", \"DAD\"]\n    },\n    {\n      \"scene_number\": 16,\n      \"heading\": \"EXT. BACKYARD \\\\- DAY \\\\- (FLASHBACK)\",\n      \"int_ext\": \"EXT\",\n      \"location\": \"BACKYARD\",\n      \"time_of_day\": \"DAY\",\n      \"summary\": \"Salvatori demands the password at gunpoint while Rose delivers a defiant speech redefining Mariner as a true hero — one who forged his own path despite an abusive, absent father — reigniting Mariner's resolve just as Salvatori threatens to shoot her, ending on a cut to black.\",\n      \"characters\": [\"SALVATORI\", \"ROSE\", \"MARINER\"]\n    }\n  ]\n}\n```",
+          "tokenUsage": {
+            "total": 7801,
+            "prompt": 5307,
+            "completion": 2494
+          },
+          "finishReason": "stop"
+        },
+        "score": 0.815,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-scenes.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/scene_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the scene extraction output for the screenplay \"The Mariner.\"\n\nThe screenplay has approximately 13-15 scenes including embedded flashbacks.\nKey quality criteria:\n1. Are all scenes identified, including embedded flashbacks (BEGIN FLASHBACK / END FLASHBACK)?\n2. Are scene headings accurate and complete?\n3. Are INT/EXT designations correct?\n4. Are character names correctly identified for each scene (including O.S. characters)?\n5. Are summaries meaningful — capturing the key action, not just restating the heading?\n6. Is the time_of_day correct (NIGHT for present-day scenes, DAY for flashbacks)?\n7. Are the flashback scenes properly distinguished from present-day scenes?\n\nScore strictly: partial credit for close but imperfect extraction.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-scenes.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 5307,
+        "completion": 2494,
+        "cached": 0,
+        "total": 7801,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 3497,
+          "prompt": 2872,
+          "completion": 625,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 56046
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Scene extraction from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/Documents/Projects/cine-forge/benchmarks/prompts/scene-extraction.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 8192
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-scenes.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/scene_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the scene extraction output for the screenplay \"The Mariner.\"\n\nThe screenplay has approximately 13-15 scenes including embedded flashbacks.\nKey quality criteria:\n1. Are all scenes identified, including embedded flashbacks (BEGIN FLASHBACK / END FLASHBACK)?\n2. Are scene headings accurate and complete?\n3. Are INT/EXT designations correct?\n4. Are character names correctly identified for each scene (including O.S. characters)?\n5. Are summaries meaningful — capturing the key action, not just restating the heading?\n6. Is the time_of_day correct (NIGHT for present-day scenes, DAY for flashbacks)?\n7. Are the flashback scenes properly distinguished from present-day scenes?\n\nScore strictly: partial credit for close but imperfect extraction.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/scene-extraction-sonnet46.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.24",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-02-18T01:30:46.079Z",
+    "evaluationCreatedAt": "2026-02-18T01:29:49.987Z"
+  }
+}

@@ -283,7 +283,7 @@ def run_module(
     verify_model = (
         params.get("verify_model") or params.get("qa_model") or "claude-haiku-4-5-20251001"
     )
-    escalate_model = params.get("escalate_model") or "claude-sonnet-4-5-20250929"
+    escalate_model = params.get("escalate_model") or "claude-sonnet-4-6"
 
     qa_model = verify_model
     parser_coverage_threshold = float(params.get("parser_coverage_threshold", 0.25))

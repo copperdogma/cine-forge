@@ -1,0 +1,613 @@
+{
+  "evalId": "eval-xAc-2026-02-18T01:29:45",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-02-18T01:29:45.463Z",
+    "prompts": [
+      {
+        "raw": "You are a props analyst working on a film production. Extract a master definition for the prop \"{{prop_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "label": "prompts/prop-extraction.txt: You are a props analyst working on a film production. Extract a master definition for the prop \"{{prop_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "id": "6e6c06d104f445ec8a1f99a1d9e2beb9088ca7d506cdf2c315ee3d2523c0f857",
+        "provider": "Claude Sonnet 4.6",
+        "metrics": {
+          "score": 2.52295,
+          "testPassCount": 3,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 6,
+          "assertFailCount": 0,
+          "totalLatencyMs": 31237,
+          "tokenUsage": {
+            "prompt": 15674,
+            "completion": 1190,
+            "cached": 0,
+            "total": 16864,
+            "numRequests": 3,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 3169,
+              "prompt": 2324,
+              "completion": 845,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.8352999999999999,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1099,
+            "prompt": 862,
+            "completion": 237,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.8506,
+              "reason": "description_quality=1.00 | fact_recall=0.80 | field_completeness=0.71 | json_valid=0.90 | name_identification=1.00 | narrative_quality=0.75 | physical_coverage=1.00 | scene_coverage=0.67 | JSON extracted from code block | Missing fields: location_id, physical_traits | Scenes: 2/3 covered | Facts: 4/5 recalled | Narrative themes: 3/4",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/bible_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the prop extraction for the OAR (BOSUN) from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the oar as stout, wooden, edged with metal?\n2. Does it mention the word \"BOSUN\" carved into the wood?\n3. Does it identify this as Mariner's primary melee weapon?\n4. Does it note the oar is dripping with blood throughout the story?\n5. Does it capture the maritime/fisherman symbolism connecting to his father?\n6. Does it mention the oar being taken from Mariner before the final confrontation?\n7. Does it connect the prop to Mariner's constructed identity?\n\nScore strictly: the oar is the most important prop and a symbol of Mariner's entire identity.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "The output covers most key criteria well: (1) describes the oar as stout, wooden, edged with metal ✓; (2) mentions 'BOSUN' carved into the wood ✓; (3) identifies it as Mariner's primary melee weapon ✓; (4) does NOT mention the oar dripping with blood throughout the story ✗; (5) captures the maritime/fisherman symbolism connecting to his father ✓; (6) mentions the oar being taken from Mariner before the final confrontation ✓; (7) connects the prop to Mariner's constructed identity ✓. The missing detail about the oar dripping with blood is a notable omission since it's a persistent visual element that reinforces the violence of the Mariner's crusade. However, the overall extraction is strong, with excellent narrative significance analysis connecting the oar to the father's mythology and the BOSUN carving. Six of seven criteria are met.",
+              "tokensUsed": {
+                "total": 1099,
+                "prompt": 862,
+                "completion": 237,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"prop_id\\\": \\\"oar-bosun\\\",\\n  \\\"name\\\": \\\"OAR\\\",\\n  \\\"description\\\": \\\"A stout wooden oar edged with metal, with the word 'BOSUN' carved into the wood. It is wielded by the Mariner as his primary melee weapon throughout the film, used to disarm and incapacitate enemies — swinging in an arc to knock a gun from a thug's hand, flashing through closing elevator doors to wound a pursuer, and being shoved into a doorframe as a lever to crack open a locked office door. By the story's end, the thugs seize the oar and force Mariner to his knees, temporarily stripping him of his weapon and his sense of identity before Rose's speech reignites his resolve.\\\",\\n  \\\"scene_presence\\\": [\\n    \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n    \\\"INT. 11TH FLOOR - CONTINUOUS\\\",\\n    \\\"INT. STAIRWELL - CONTINUOUS\\\",\\n    \\\"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\\\",\\n    \\\"INT. 13TH FLOOR\\\",\\n    \\\"INT. 15TH FLOOR\\\"\\n  ],\\n  \\\"narrative_significance\\\": \\\"The oar is the Mariner's defining weapon and a direct extension of his nautical, fishing-themed vigilante identity, which the screenplay reveals is itself an homage to his father — a man he idealized as a heroic fisherman but who was in reality an abusive, neglectful drunk. The word 'BOSUN' carved into the wood directly echoes his father's repeated use of that term of endearment, making the oar a physical embodiment of the false origin story the Mariner has built his entire heroic persona upon. When the thugs take the oar and force him to his knees, it visually externalizes the collapse of that mythology, and his reclamation of purpose through Rose's speech sets the stage for him to reclaim both the weapon and a more honest sense of self.\\\",\\n  \\\"overall_confidence\\\": 0.97\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate the prop extraction for the OAR (BOSUN) from \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it describe the oar as stout, wooden, edged with metal?\\n2. Does it mention the word \\\"BOSUN\\\" carved into the wood?\\n3. Does it identify this as Mariner's primary melee weapon?\\n4. Does it note the oar is dripping with blood throughout the story?\\n5. Does it capture the maritime/fisherman symbolism connecting to his father?\\n6. Does it mention the oar being taken from Mariner before the final confrontation?\\n7. Does it connect the prop to Mariner's constructed identity?\\n\\nScore strictly: the oar is the most important prop and a symbol of Mariner's entire identity.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "4989fbf0-7261-4304-8d61-b83a9ca10e0a",
+        "latencyMs": 11819,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a props analyst working on a film production. Extract a master definition for the prop \"OAR\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "prompts/prop-extraction.txt: You are a props analyst working on a film production. Extract a master definition for the prop \"{{prop_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "6e6c06d104f445ec8a1f99a1d9e2beb9088ca7d506cdf2c315ee3d2523c0f857",
+        "promptIdx": 0,
+        "provider": {
+          "id": "anthropic:messages:claude-sonnet-4-6",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "```json\n{\n  \"prop_id\": \"oar-bosun\",\n  \"name\": \"OAR\",\n  \"description\": \"A stout wooden oar edged with metal, with the word 'BOSUN' carved into the wood. It is wielded by the Mariner as his primary melee weapon throughout the film, used to disarm and incapacitate enemies — swinging in an arc to knock a gun from a thug's hand, flashing through closing elevator doors to wound a pursuer, and being shoved into a doorframe as a lever to crack open a locked office door. By the story's end, the thugs seize the oar and force Mariner to his knees, temporarily stripping him of his weapon and his sense of identity before Rose's speech reignites his resolve.\",\n  \"scene_presence\": [\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"INT. 11TH FLOOR - CONTINUOUS\",\n    \"INT. STAIRWELL - CONTINUOUS\",\n    \"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\",\n    \"INT. 13TH FLOOR\",\n    \"INT. 15TH FLOOR\"\n  ],\n  \"narrative_significance\": \"The oar is the Mariner's defining weapon and a direct extension of his nautical, fishing-themed vigilante identity, which the screenplay reveals is itself an homage to his father — a man he idealized as a heroic fisherman but who was in reality an abusive, neglectful drunk. The word 'BOSUN' carved into the wood directly echoes his father's repeated use of that term of endearment, making the oar a physical embodiment of the false origin story the Mariner has built his entire heroic persona upon. When the thugs take the oar and force him to his knees, it visually externalizes the collapse of that mythology, and his reclamation of purpose through Rose's speech sets the stage for him to reclaim both the weapon and a more honest sense of self.\",\n  \"overall_confidence\": 0.97\n}\n```",
+          "tokenUsage": {
+            "total": 5707,
+            "prompt": 5224,
+            "completion": 483
+          },
+          "finishReason": "stop"
+        },
+        "score": 0.8352999999999999,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "prop_name": "OAR",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-props.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/bible_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the prop extraction for the OAR (BOSUN) from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the oar as stout, wooden, edged with metal?\n2. Does it mention the word \"BOSUN\" carved into the wood?\n3. Does it identify this as Mariner's primary melee weapon?\n4. Does it note the oar is dripping with blood throughout the story?\n5. Does it capture the maritime/fisherman symbolism connecting to his father?\n6. Does it mention the oar being taken from Mariner before the final confrontation?\n7. Does it connect the prop to Mariner's constructed identity?\n\nScore strictly: the oar is the most important prop and a symbol of Mariner's entire identity.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "prop_name": "OAR",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-props.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.91195,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1018,
+            "prompt": 729,
+            "completion": 289,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.8239,
+              "reason": "description_quality=1.00 | fact_recall=1.00 | field_completeness=0.71 | json_valid=0.90 | name_identification=0.75 | narrative_quality=0.25 | physical_coverage=1.00 | scene_coverage=1.00 | JSON extracted from code block | Missing fields: location_id, physical_traits | Aliases: 1/2 | Narrative themes: 1/4",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/bible_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the prop extraction for ROSE'S PURSE from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify the purse as belonging to Rose?\n2. Does it mention the hidden chip in the purse lining?\n3. Does it explain the blockchain password accessing $20 million in cryptocurrency?\n4. Does it note that Rose stole this money from Salvatori's gang?\n5. Does it identify the purse as the primary MacGuffin driving the second half?\n6. Does it mention Rose going back into danger to retrieve it from the 15th floor?\n7. Does it capture how the purse reveals Rose's true mission vs. Mariner's rescue?\n\nScore strictly: the purse is the central plot device and must be understood as more than a simple object.\n"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The output thoroughly addresses all seven key quality criteria: 1) It clearly identifies the purse as Rose's personal handbag. 2) It mentions the hidden chip sewn into the lining. 3) It explains the blockchain password accessing approximately $20 million. 4) It notes that Rose stole this money from Salvatori's gang. 5) It explicitly identifies the purse as the central MacGuffin driving the rescue mission. 6) It describes Rose retrieving it from Salvatori's 15th-floor office (tiptoeing in, picking it up from beside a bowl of mints on the desk). 7) It captures how the purse reveals the complicated dynamic between siblings - Rose's theft of gang money vs. Mariner's rescue mission, and the moral tension between his personal code and the reality of the situation. The description demonstrates deep understanding of the purse as a central plot device rather than a simple object, connecting it to the AirTag tracking, the blockchain password, the hostage situation, and the sibling dynamics. The confidence score of 0.97 is appropriate. The only minor note is that the scene_presence could potentially include more scenes where the purse is discussed or referenced, but the key scenes are captured.",
+              "tokensUsed": {
+                "total": 1018,
+                "prompt": 729,
+                "completion": 289,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"prop_id\\\": \\\"purse-rose\\\",\\n  \\\"name\\\": \\\"PURSE\\\",\\n  \\\"description\\\": \\\"Rose's personal handbag, whose physical appearance is not described in detail beyond its presence on the desk in Salvatori's luxurious 15th-floor office. The purse contains two critical hidden items: an AirTag covertly planted by Mariner during the previous Thanksgiving, and a chip sewn into the lining storing a blockchain password worth approximately 20 million dollars in stolen gang funds. Rose retrieves it by tiptoeing into Salvatori's office and picking it up from beside a bowl of mints on the large wooden desk.\\\",\\n  \\\"scene_presence\\\": [\\n    \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n    \\\"INT. STAIRWELL - CONTINUOUS\\\",\\n    \\\"INT. 15TH FLOOR\\\"\\n  ],\\n  \\\"narrative_significance\\\": \\\"The purse is the central MacGuffin driving the entire rescue mission: Mariner's hidden AirTag inside it is what allowed him to locate and save Rose, while the blockchain password chip concealed in its lining represents Rose's stolen 20-million-dollar lifeline and the reason Salvatori's gang has taken her hostage. It also serves as the catalyst that exposes the complicated dynamic between the siblings, forcing Rose to reveal her theft of gang money and Mariner to confront the moral tension between his personal code and the reality of the situation.\\\",\\n  \\\"overall_confidence\\\": 0.97\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate the prop extraction for ROSE'S PURSE from \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it identify the purse as belonging to Rose?\\n2. Does it mention the hidden chip in the purse lining?\\n3. Does it explain the blockchain password accessing $20 million in cryptocurrency?\\n4. Does it note that Rose stole this money from Salvatori's gang?\\n5. Does it identify the purse as the primary MacGuffin driving the second half?\\n6. Does it mention Rose going back into danger to retrieve it from the 15th floor?\\n7. Does it capture how the purse reveals Rose's true mission vs. Mariner's rescue?\\n\\nScore strictly: the purse is the central plot device and must be understood as more than a simple object.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "f9faaedd-5b7a-464f-b6a5-fc3119d68776",
+        "latencyMs": 9953,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a props analyst working on a film production. Extract a master definition for the prop \"PURSE\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "prompts/prop-extraction.txt: You are a props analyst working on a film production. Extract a master definition for the prop \"{{prop_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "6e6c06d104f445ec8a1f99a1d9e2beb9088ca7d506cdf2c315ee3d2523c0f857",
+        "promptIdx": 0,
+        "provider": {
+          "id": "anthropic:messages:claude-sonnet-4-6",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "```json\n{\n  \"prop_id\": \"purse-rose\",\n  \"name\": \"PURSE\",\n  \"description\": \"Rose's personal handbag, whose physical appearance is not described in detail beyond its presence on the desk in Salvatori's luxurious 15th-floor office. The purse contains two critical hidden items: an AirTag covertly planted by Mariner during the previous Thanksgiving, and a chip sewn into the lining storing a blockchain password worth approximately 20 million dollars in stolen gang funds. Rose retrieves it by tiptoeing into Salvatori's office and picking it up from beside a bowl of mints on the large wooden desk.\",\n  \"scene_presence\": [\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"INT. STAIRWELL - CONTINUOUS\",\n    \"INT. 15TH FLOOR\"\n  ],\n  \"narrative_significance\": \"The purse is the central MacGuffin driving the entire rescue mission: Mariner's hidden AirTag inside it is what allowed him to locate and save Rose, while the blockchain password chip concealed in its lining represents Rose's stolen 20-million-dollar lifeline and the reason Salvatori's gang has taken her hostage. It also serves as the catalyst that exposes the complicated dynamic between the siblings, forcing Rose to reveal her theft of gang money and Mariner to confront the moral tension between his personal code and the reality of the situation.\",\n  \"overall_confidence\": 0.97\n}\n```",
+          "tokenUsage": {
+            "total": 5573,
+            "prompt": 5224,
+            "completion": 349
+          },
+          "finishReason": "stop"
+        },
+        "score": 0.91195,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "prop_name": "PURSE",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-props.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/bible_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the prop extraction for ROSE'S PURSE from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify the purse as belonging to Rose?\n2. Does it mention the hidden chip in the purse lining?\n3. Does it explain the blockchain password accessing $20 million in cryptocurrency?\n4. Does it note that Rose stole this money from Salvatori's gang?\n5. Does it identify the purse as the primary MacGuffin driving the second half?\n6. Does it mention Rose going back into danger to retrieve it from the 15th floor?\n7. Does it capture how the purse reveals Rose's true mission vs. Mariner's rescue?\n\nScore strictly: the purse is the central plot device and must be understood as more than a simple object.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "prop_name": "PURSE",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-props.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.7757000000000001,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1052,
+            "prompt": 733,
+            "completion": 319,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.7314,
+              "reason": "description_quality=1.00 | fact_recall=0.60 | field_completeness=0.71 | json_valid=0.90 | name_identification=0.50 | narrative_quality=0.67 | physical_coverage=0.67 | scene_coverage=1.00 | JSON extracted from code block | Missing fields: location_id, physical_traits | Aliases: 0/2 | Missing traits: maritime emergency equipment | Facts: 3/5 recalled | Narrative themes: 2/3",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/bible_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the prop extraction for the FLARE GUN from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the flare gun as a fat, bright-orange pistol?\n2. Does it mention the thugs mocking it before it is fired?\n3. Does it describe the scene where Mariner shoots Vinnie on the 13th floor?\n4. Does it note the blinding red flare and horror-movie lighting effect?\n5. Does it connect the flare gun to Mariner's maritime-themed arsenal?\n6. Does it capture the absurd/effective contrast — looks ridiculous but is lethal?\n7. Is evidence grounded in actual screenplay text?\n\nScore strictly: a good extraction captures both the physical description and the thematic contrast.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "The extraction is strong on most criteria. (1) It describes the flare gun as a 'fat, bright-orange pistol' — yes. (2) It mentions the thugs laughing/mocking it before it's fired — yes. (3) It describes Mariner shooting Vinnie on the 13th floor, including the detail about the flare burning on contact and Vinnie screaming — yes. (4) It mentions the 'blinding red flare' but does not specifically note the 'horror-movie lighting effect' — partial. (5) It connects the flare gun to Mariner's maritime-themed arsenal by mentioning it complements the oar and is part of his 'vigilante kit' — yes, though the maritime connection could be more explicit. (6) It captures the absurd/effective contrast very well — the thugs laugh at it as a joke but it proves devastatingly effective — yes. (7) The evidence appears grounded in actual screenplay text with specific details (Vinnie, 13th floor, bright-orange, thugs laughing). The narrative significance section is thoughtful and well-articulated, connecting appearance vs. reality themes. The main gap is the lack of explicit mention of the horror-movie lighting effect from the flare, and the maritime connection could be slightly stronger. Overall, this is a high-quality extraction.",
+              "tokensUsed": {
+                "total": 1052,
+                "prompt": 733,
+                "completion": 319,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"prop_id\\\": \\\"flare-gun\\\",\\n  \\\"name\\\": \\\"FLARE GUN\\\",\\n  \\\"description\\\": \\\"A fat, bright-orange pistol holstered on Mariner's person as part of his vigilante kit. It fires a blinding red flare that burns on contact, and Mariner deploys it in combat on the 13th floor by firing it into Vinnie's chest, causing the thug to drop and continue screaming as the flare burns. The weapon is initially met with laughter from the thugs who mistake it for a joke, but its devastating real-world effect immediately silences that mockery. It functions as Mariner's ranged sidearm, complementing his primary melee weapon, the oar.\\\",\\n  \\\"scene_presence\\\": [\\n    \\\"INT. 13TH FLOOR\\\"\\n  ],\\n  \\\"narrative_significance\\\": \\\"The flare gun embodies the screenplay's central tension between appearance and reality: the thugs laugh at it as absurd, just as they underestimate Mariner himself, only to be proven catastrophically wrong. Its bright-orange body and blinding red discharge visually echo Mariner's bold, unconventional heroism — garish and unorthodox on the surface, but lethally effective in practice. The moment it fires marks the turning point in the 13th-floor confrontation and reinforces the theme that Mariner's identity as a hero, however cobbled together from a painful past, is genuine and formidable.\\\",\\n  \\\"overall_confidence\\\": 0.97\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate the prop extraction for the FLARE GUN from \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it describe the flare gun as a fat, bright-orange pistol?\\n2. Does it mention the thugs mocking it before it is fired?\\n3. Does it describe the scene where Mariner shoots Vinnie on the 13th floor?\\n4. Does it note the blinding red flare and horror-movie lighting effect?\\n5. Does it connect the flare gun to Mariner's maritime-themed arsenal?\\n6. Does it capture the absurd/effective contrast — looks ridiculous but is lethal?\\n7. Is evidence grounded in actual screenplay text?\\n\\nScore strictly: a good extraction captures both the physical description and the thematic contrast.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "e55f97db-57c5-42c2-a578-6ae444824060",
+        "latencyMs": 9465,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a props analyst working on a film production. Extract a master definition for the prop \"FLARE GUN\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "prompts/prop-extraction.txt: You are a props analyst working on a film production. Extract a master definition for the prop \"{{prop_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- prop_id: A URL-safe slug (e.g., \"oar-bosun\")\n- name: The prop's name as it appears in the screenplay\n- description: 2-4 sentence description covering physical appearance, how it is used, and its role in the story\n- scene_presence: Array of scene headings where this prop appears or is referenced\n- narrative_significance: 2-3 sentences explaining this prop's thematic importance and role in the plot\n- overall_confidence: Float 0-1 indicating certainty of the extraction\n\nImportant:\n- Ground all descriptions in actual screenplay text, not inferences\n- Include every scene where the prop appears, is mentioned, or is visible\n- Note who interacts with the prop and how\n- Capture any symbolic meaning or thematic resonance\n- If the prop transforms or changes state during the story, describe that progression\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "6e6c06d104f445ec8a1f99a1d9e2beb9088ca7d506cdf2c315ee3d2523c0f857",
+        "promptIdx": 0,
+        "provider": {
+          "id": "anthropic:messages:claude-sonnet-4-6",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "```json\n{\n  \"prop_id\": \"flare-gun\",\n  \"name\": \"FLARE GUN\",\n  \"description\": \"A fat, bright-orange pistol holstered on Mariner's person as part of his vigilante kit. It fires a blinding red flare that burns on contact, and Mariner deploys it in combat on the 13th floor by firing it into Vinnie's chest, causing the thug to drop and continue screaming as the flare burns. The weapon is initially met with laughter from the thugs who mistake it for a joke, but its devastating real-world effect immediately silences that mockery. It functions as Mariner's ranged sidearm, complementing his primary melee weapon, the oar.\",\n  \"scene_presence\": [\n    \"INT. 13TH FLOOR\"\n  ],\n  \"narrative_significance\": \"The flare gun embodies the screenplay's central tension between appearance and reality: the thugs laugh at it as absurd, just as they underestimate Mariner himself, only to be proven catastrophically wrong. Its bright-orange body and blinding red discharge visually echo Mariner's bold, unconventional heroism — garish and unorthodox on the surface, but lethally effective in practice. The moment it fires marks the turning point in the 13th-floor confrontation and reinforces the theme that Mariner's identity as a hero, however cobbled together from a painful past, is genuine and formidable.\",\n  \"overall_confidence\": 0.97\n}\n```",
+          "tokenUsage": {
+            "total": 5584,
+            "prompt": 5226,
+            "completion": 358
+          },
+          "finishReason": "stop"
+        },
+        "score": 0.7757000000000001,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "prop_name": "FLARE GUN",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-props.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/bible_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the prop extraction for the FLARE GUN from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the flare gun as a fat, bright-orange pistol?\n2. Does it mention the thugs mocking it before it is fired?\n3. Does it describe the scene where Mariner shoots Vinnie on the 13th floor?\n4. Does it note the blinding red flare and horror-movie lighting effect?\n5. Does it connect the flare gun to Mariner's maritime-themed arsenal?\n6. Does it capture the absurd/effective contrast — looks ridiculous but is lethal?\n7. Is evidence grounded in actual screenplay text?\n\nScore strictly: a good extraction captures both the physical description and the thematic contrast.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "prop_name": "FLARE GUN",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-props.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 3,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 15674,
+        "completion": 1190,
+        "cached": 0,
+        "total": 16864,
+        "numRequests": 3,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 3169,
+          "prompt": 2324,
+          "completion": 845,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 17173
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Prop extraction from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/Documents/Projects/cine-forge/benchmarks/prompts/prop-extraction.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "prop_name": "OAR",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-props.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/bible_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the prop extraction for the OAR (BOSUN) from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the oar as stout, wooden, edged with metal?\n2. Does it mention the word \"BOSUN\" carved into the wood?\n3. Does it identify this as Mariner's primary melee weapon?\n4. Does it note the oar is dripping with blood throughout the story?\n5. Does it capture the maritime/fisherman symbolism connecting to his father?\n6. Does it mention the oar being taken from Mariner before the final confrontation?\n7. Does it connect the prop to Mariner's constructed identity?\n\nScore strictly: the oar is the most important prop and a symbol of Mariner's entire identity.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "prop_name": "PURSE",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-props.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/bible_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the prop extraction for ROSE'S PURSE from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify the purse as belonging to Rose?\n2. Does it mention the hidden chip in the purse lining?\n3. Does it explain the blockchain password accessing $20 million in cryptocurrency?\n4. Does it note that Rose stole this money from Salvatori's gang?\n5. Does it identify the purse as the primary MacGuffin driving the second half?\n6. Does it mention Rose going back into danger to retrieve it from the 15th floor?\n7. Does it capture how the purse reveals Rose's true mission vs. Mariner's rescue?\n\nScore strictly: the purse is the central plot device and must be understood as more than a simple object.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "prop_name": "FLARE GUN",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-props.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/bible_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the prop extraction for the FLARE GUN from \"The Mariner.\"\n\nKey quality criteria:\n1. Does it describe the flare gun as a fat, bright-orange pistol?\n2. Does it mention the thugs mocking it before it is fired?\n3. Does it describe the scene where Mariner shoots Vinnie on the 13th floor?\n4. Does it note the blinding red flare and horror-movie lighting effect?\n5. Does it connect the flare gun to Mariner's maritime-themed arsenal?\n6. Does it capture the absurd/effective contrast — looks ridiculous but is lethal?\n7. Is evidence grounded in actual screenplay text?\n\nScore strictly: a good extraction captures both the physical description and the thematic contrast.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/prop-extraction-sonnet46.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.24",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-02-18T01:30:02.714Z",
+    "evaluationCreatedAt": "2026-02-18T01:29:45.463Z"
+  }
+}

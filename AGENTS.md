@@ -209,16 +209,16 @@ Quick reference for every promptfoo eval. Re-run these when new models drop.
 
 | Eval | Config | Summary | Tests | Top Model |
 |------|--------|---------|-------|-----------|
-| Character Extraction | `tasks/character-extraction.yaml` | Structured character bible: traits, arc, relationships, evidence | 3 (Mariner, Rose, Dad) | Opus 4.6 (0.916) |
-| Location Extraction | `tasks/location-extraction.yaml` | Structured location bible: physical detail, narrative function, scene refs | 3 (Ruddy & Greene, 15th Floor, Coastline) | Gemini 2.5 Pro (0.847) |
-| Prop Extraction | `tasks/prop-extraction.yaml` | Structured prop bible: description, symbolism, plot function | 3 (Oar, Purse, Flare Gun) | Sonnet 4.5 (0.861) |
-| Relationship Discovery | `tasks/relationship-discovery.yaml` | Narrative relationships: family, adversary, ownership edges | 1 (all entities) | 6-way tie (0.990) |
-| Config Detection | `tasks/config-detection.yaml` | Auto-detect project metadata: title, genre, tone, format, duration, cast | 1 (full screenplay) | Haiku 4.5 (LLM: 0.90) |
-| Scene Extraction | `tasks/scene-extraction.yaml` | Scene boundaries, headings, characters, summaries | 1 (full screenplay) | *Reference only* |
+| Character Extraction | `tasks/character-extraction.yaml` | Structured character bible: traits, arc, relationships, evidence | 3 (Mariner, Rose, Dad) | **Sonnet 4.6 (0.942)** |
+| Location Extraction | `tasks/location-extraction.yaml` | Structured location bible: physical detail, narrative function, scene refs | 3 (Ruddy & Greene, 15th Floor, Coastline) | Opus 4.6 (0.898) |
+| Prop Extraction | `tasks/prop-extraction.yaml` | Structured prop bible: description, symbolism, plot function | 3 (Oar, Purse, Flare Gun) | Opus 4.6 (0.880) |
+| Relationship Discovery | `tasks/relationship-discovery.yaml` | Narrative relationships: family, adversary, ownership edges | 1 (all entities) | 7-way tie (0.995) |
+| Config Detection | `tasks/config-detection.yaml` | Auto-detect project metadata: title, genre, tone, format, duration, cast | 1 (full screenplay) | Haiku 4.5 (0.886) |
+| Scene Extraction | `tasks/scene-extraction.yaml` | Scene boundaries, headings, characters, summaries | 1 (full screenplay) | **Sonnet 4.6 (0.815)** |
 
-All evals: 12 providers (4 OpenAI, 3 Anthropic, 5 Google), dual scoring (Python + LLM rubric), judge = Opus 4.6.
+All evals: 13 providers (4 OpenAI, 4 Anthropic, 5 Google), dual scoring (Python + LLM rubric), judge = Opus 4.6. Last updated: 2026-02-17 (Sonnet 4.6 added).
 
-**To re-run for a new model:** add provider block to each `tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache -j 3` → `promptfoo view` → update table above.
+**To re-run for a new model:** add provider block to each `tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → compare against existing results → update table above.
 
 ### Ideas Backlog
 - `docs/ideas.md` captures features, patterns, and design concepts that are good but not in scope for current work.

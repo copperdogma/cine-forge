@@ -57,6 +57,12 @@ providers:
       temperature: 0
       max_tokens: 4096
 
+  - id: anthropic:messages:claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
   - id: google:gemini-2.5-flash
     label: "Gemini 2.5 Flash"
     config:

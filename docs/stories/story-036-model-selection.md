@@ -126,6 +126,7 @@ Models to evaluate (as of Feb 2026):
 **Anthropic** (prefix: `anthropic:messages:`):
 - Claude Haiku 4.5
 - Claude Sonnet 4.5
+- Claude Sonnet 4.6 (added 2026-02-17 — new #1 on characters and scenes)
 - Claude Opus 4.6 (SOTA)
 
 **Google** (prefix: `google:`, uses `GEMINI_API_KEY`):
@@ -135,7 +136,7 @@ Models to evaluate (as of Feb 2026):
 - Gemini 3 Flash (preview)
 - Gemini 3 Pro (preview, SOTA)
 
-All three providers must be evaluated for every task. 12 models total (4 OpenAI + 3 Anthropic + 5 Google). Pin to specific model IDs in configs.
+All three providers must be evaluated for every task. 13 models total (4 OpenAI + 4 Anthropic + 5 Google). Pin to specific model IDs in configs.
 
 ## Technical Notes
 
@@ -411,39 +412,42 @@ Based on 5 eval types × 12 models (60 total evaluations). Each task gets its ow
 
 ### Per-Task Triads (Benchmarked)
 
+**Updated 2026-02-17** with Sonnet 4.6 results (Story 047). Scores reflect latest runs.
+
 | Task | Try (work_model) | Verify (QA) | Escalate | Rationale |
 |------|------------------|-------------|----------|-----------|
-| **Character extraction** | Claude Sonnet 4.5 (0.859, #3) | Claude Haiku 4.5 (0.805) | **Claude Opus 4.6** (0.916, #1) | Opus is clearly #1 on characters; Sonnet best quality/cost for try. |
-| **Location extraction** | **Gemini 2.5 Pro** (0.847, #1) | Claude Haiku 4.5 (0.804) | Claude Sonnet 4.5 (0.833, #2) | Gemini 2.5 Pro beats all Anthropic models on locations. |
-| **Prop extraction** | **Claude Sonnet 4.5** (0.861, #1) | Claude Haiku 4.5 (0.780) | Claude Opus 4.6 (0.826, #2) | Sonnet dominant — 0.035 gap over #2. |
-| **Relationship discovery** | **Claude Haiku 4.5** (0.990, #1 tied) | Code-based | Claude Sonnet 4.5 (0.990, #1 tied) | 6 models tie at 0.990 — use cheapest. |
-| **Config detection** | **Claude Haiku 4.5** (0.873 Py, 0.90 LLM) | Code-based | Claude Sonnet 4.5 | Haiku had best LLM rubric. Golden needs recalibration — see notes.† |
+| **Character extraction** | **Claude Sonnet 4.6** (0.942, #1) | Claude Haiku 4.5 | Claude Opus 4.6 (0.933, #2) | Sonnet 4.6 dethroned Opus at 5x lower cost. |
+| **Location extraction** | Claude Sonnet 4.5 (0.895, #2) | Claude Haiku 4.5 | Claude Opus 4.6 (0.898, #1) | Sonnet 4.5 beats 4.6 (0.870) on locations. Opus is #1 but expensive. |
+| **Prop extraction** | **Claude Sonnet 4.6** (0.841, #2) | Claude Haiku 4.5 | Claude Opus 4.6 (0.880, #1) | Sonnet 4.6 big jump over 4.5 (0.756). Only Opus beats it. |
+| **Relationship discovery** | **Claude Haiku 4.5** (0.990, #1 tied) | Code-based | Claude Sonnet 4.6 (0.995, #1 tied) | 7 models tie at 0.995 — use cheapest. |
+| **Config detection** | **Claude Haiku 4.5** (0.886) | Code-based | Claude Sonnet 4.6 | Small-model task. Haiku still #1.† |
+| **Scene extraction** | Claude Haiku 4.5 (0.780, #2) | Claude Haiku 4.5 | **Claude Sonnet 4.6** (0.815, #1) | Sonnet 4.6 dethroned GPT-5.2 (0.803). New #1. |
 
 † Config detection rankings are inverted due to golden reference calibration issue (SOTA models correctly identify the 10-15 page script as "short film" but golden expects "feature film"). Recommendations based on LLM rubric quality rather than raw pass/fail.
 
 ### Per-Task Triads (Not Yet Benchmarked — Inferred)
 
-These tasks were not benchmarked. Recommendations are inferred from related tasks and complexity analysis.
+These tasks were not benchmarked. Recommendations are inferred from related tasks and complexity analysis. Updated 2026-02-17: Sonnet 4.5 → 4.6 for mid-tier tasks (same price, generally better).
 
 | Task | Try (work_model) | Verify (QA) | Escalate | Rationale |
 |------|------------------|-------------|----------|-----------|
-| **Script normalization** | Claude Sonnet 4.5 | Claude Haiku 4.5 | Claude Opus 4.6 | Highest complexity task (text→text). Needs strong reasoning. |
-| **Passthrough cleanup** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.5 | Patch generation is simpler than full conversion. |
-| **Metadata extraction** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.5 | Low complexity, small output. |
-| **Scene enrichment** | Claude Sonnet 4.5 | Claude Haiku 4.5 | Claude Opus 4.6 | Similar to bible extraction in complexity. |
-| **Scene boundary validation** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.5 | Binary classification — cheap model sufficient. |
-| **Prop discovery** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.5 | Enumeration task, simpler than extraction. |
-| **All QA passes** | Claude Haiku 4.5 | — | Claude Sonnet 4.5 | QA is inherently a verify step. |
+| **Script normalization** | Claude Sonnet 4.6 | Claude Haiku 4.5 | Claude Opus 4.6 | Highest complexity task (text→text). Needs strong reasoning. |
+| **Passthrough cleanup** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.6 | Patch generation is simpler than full conversion. |
+| **Metadata extraction** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.6 | Low complexity, small output. |
+| **Scene enrichment** | Claude Sonnet 4.6 | Claude Haiku 4.5 | Claude Opus 4.6 | Similar to bible extraction in complexity. |
+| **Scene boundary validation** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.6 | Binary classification — cheap model sufficient. |
+| **Prop discovery** | Claude Haiku 4.5 | Code-based | Claude Sonnet 4.6 | Enumeration task, simpler than extraction. |
+| **All QA passes** | Claude Haiku 4.5 | — | Claude Sonnet 4.6 | QA is inherently a verify step. |
 
 ### General Model Tiers (For New Tasks)
 
-When no task-specific benchmark exists yet, use this default triad:
+When no task-specific benchmark exists yet, use this default triad (updated 2026-02-17):
 
 | Role | Default | Rationale |
 |------|---------|-----------|
-| Try | Claude Sonnet 4.5 | Best overall quality/cost across benchmarked tasks |
+| Try | **Claude Sonnet 4.6** | New #1 on characters and scenes. Same price as Sonnet 4.5, generally better. |
 | Verify | Claude Haiku 4.5 | Cheapest viable model — adequate for QA/validation |
-| Escalate | Claude Opus 4.6 | Strongest on hardest cases (DAD character, COASTLINE location) |
+| Escalate | Claude Opus 4.6 | Strongest on hardest cases (locations, props) |
 
 ### Cross-Cutting Findings
 
