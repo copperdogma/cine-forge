@@ -1,0 +1,151 @@
+# QA Pass Benchmark
+# Evaluates models on correctly judging AI-extracted scene data as passing or failing QA.
+# This mirrors CineForge's QA verification step — the model acts as quality gate.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml
+# View:  promptfoo view
+
+description: "QA pass — judge scene extraction quality (good vs bad outputs)"
+
+# Use Opus as judge
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/qa-pass.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-nano
+    label: "GPT-4.1 Nano"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: google:gemini-2.5-flash-lite
+    label: "Gemini 2.5 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- Mid tier ---
+  - id: openai:gpt-4.1
+    label: "GPT-4.1"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-5-20250929
+    label: "Claude Sonnet 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash
+    label: "Gemini 2.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-flash-preview
+    label: "Gemini 3 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- SOTA tier ---
+  - id: openai:gpt-5.2
+    label: "GPT-5.2"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-pro
+    label: "Gemini 2.5 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-pro-preview
+    label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+tests:
+  # Test 1: Good extraction — should PASS QA
+  - vars:
+      scene_text: file://../input/enrich-scene-elevator.txt
+      extracted_data: file://../input/qa-good-scene.json
+      golden_path: golden/qa-pass-golden.json
+      test_key: good_scene
+    assert:
+      - type: python
+        value: file://../scorers/qa_pass_scorer.py
+      - type: llm-rubric
+        value: |
+          This QA evaluation was given a GOOD scene extraction that accurately
+          reflects the source text. The QA model should have:
+
+          1. Marked it as passed (true)
+          2. Found zero or very few errors
+          3. Had high confidence in the assessment
+          4. Written a summary confirming accuracy
+
+          If the model incorrectly flagged the good extraction as failing,
+          that's a false negative and should score poorly.
+
+  # Test 2: Bad extraction — should FAIL QA
+  - vars:
+      scene_text: file://../input/enrich-scene-elevator.txt
+      extracted_data: file://../input/qa-bad-scene.json
+      golden_path: golden/qa-pass-golden.json
+      test_key: bad_scene
+    assert:
+      - type: python
+        value: file://../scorers/qa_pass_scorer.py
+      - type: llm-rubric
+        value: |
+          This QA evaluation was given a BAD scene extraction with multiple errors:
+          - Wrong building name (Office Building vs Ruddy & Greene)
+          - Wrong time of day (DAY vs NIGHT)
+          - Wrong character name (Billy instead of Mariner)
+          - Missing thug characters
+          - Fabricated content (grocery discussion never happens)
+
+          The QA model should have:
+          1. Marked it as failed (false)
+          2. Identified at least 2-3 specific errors
+          3. Flagged the fabricated summary content
+          4. Used "error" severity for factual mistakes
+
+          If the model let this pass, that's a dangerous false positive.

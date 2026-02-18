@@ -170,7 +170,7 @@ function ActionButton({
         const result = await startRun.mutateAsync({
           project_id: projectId,
           input_file: inputPath,
-          default_model: 'claude-sonnet-4-5-20250929',
+          default_model: 'claude-sonnet-4-6',
           recipe_id: recipeId,
           accept_config: true,
         })

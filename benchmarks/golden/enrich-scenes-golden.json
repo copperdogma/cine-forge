@@ -1,0 +1,32 @@
+{
+  "elevator": {
+    "heading": "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+    "location": "RUDDY & GREEN BUILDING - ELEVATOR",
+    "time_of_day": "NIGHT",
+    "int_ext": "INT",
+    "characters_present": ["ROSE", "MARINER"],
+    "expected_tone": ["tense", "dark comedy", "absurd", "gritty"],
+    "expected_beat_types": ["character_introduction", "revelation", "conflict", "comic_relief"],
+    "key_details": [
+      "Rose discovers skull fragment — dark comedy beat",
+      "Mariner's full costume description — character establishment",
+      "AirTag revelation — trust/conflict beat",
+      "Muzak contrast with violence — tonal juxtaposition"
+    ]
+  },
+  "flashback": {
+    "heading": "EXT. COASTLINE - DAY (FLASHBACK)",
+    "location": "COASTLINE",
+    "time_of_day": "DAY",
+    "int_ext": "EXT",
+    "characters_present": ["YOUNG MARINER", "DAD"],
+    "expected_tone": ["warm", "nostalgic", "idyllic", "bittersweet"],
+    "expected_beat_types": ["thematic_statement", "character_development", "foreshadowing"],
+    "key_details": [
+      "Father-son bonding over fishing",
+      "Dad defines heroism — thematic core of the screenplay",
+      "Idealized version of Dad (contrasts later dark revelation)",
+      "Golden lighting — visual warmth signaling idealized memory"
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "description": "Golden reference for normalization eval — Signal in the Rain",
+  "expected_scenes": [
+    "INT. COMMUNITY RADIO STUDIO",
+    "EXT. HILLTOP WATER TOWER - NIGHT",
+    "INT. STUDIO HALLWAY - NIGHT",
+    "INT. COMMUNITY RADIO STUDIO - CONTINUOUS"
+  ],
+  "expected_characters": ["JUNE", "NOAH", "ARIA", "KELL"],
+  "required_dialogue": [
+    {"character": "JUNE", "fragment": "half the valley hears us"},
+    {"character": "NOAH", "fragment": "we hear them too"},
+    {"character": "ARIA", "fragment": "stop talking and start listening"},
+    {"character": "NOAH", "fragment": "warm studios and bad coffee"},
+    {"character": "ARIA", "fragment": "coffee dream alive"},
+    {"character": "KELL", "fragment": "Generator room flooded"},
+    {"character": "JUNE", "fragment": "Good evening, Red Creek"}
+  ],
+  "forbidden_patterns": [
+    "^>",
+    "^##",
+    "\\\\-",
+    "\\\\!",
+    "```",
+    "**",
+    "__"
+  ],
+  "structural_rules": {
+    "scene_headings_uppercase": true,
+    "character_cues_uppercase": true,
+    "parentheticals_in_parens": true,
+    "no_markdown_formatting": true,
+    "blank_line_before_character_cue": true
+  }
+}

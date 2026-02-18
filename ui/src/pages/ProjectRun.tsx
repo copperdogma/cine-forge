@@ -65,7 +65,7 @@ export default function ProjectRun() {
   const [dragOver, setDragOver] = useState(false)
   const [selectedScene, setSelectedScene] = useState<number | undefined>(undefined)
   const [uploadedFile, setUploadedFile] = useState<UploadedInputResponse | null>(null)
-  const [defaultModel, setDefaultModel] = useState('claude-sonnet-4-5-20250929')
+  const [defaultModel, setDefaultModel] = useState('claude-sonnet-4-6')
   const [workModel, setWorkModel] = useState('claude-haiku-4-5-20251001')
   const [verifyModel, setVerifyModel] = useState('')
   const [startFrom, setStartFrom] = useState('')

@@ -1,0 +1,27 @@
+You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.
+
+Return a JSON object with these fields:
+- heading: The scene heading in standard format (e.g., "INT. OFFICE - DAY"). Infer from context if not explicitly stated.
+- location: The location name (without INT/EXT and time of day)
+- time_of_day: e.g., "DAY", "NIGHT", "DAWN", "CONTINUOUS". Infer from context clues.
+- int_ext: One of "INT", "EXT", or "INT/EXT"
+- characters_present: Array of character names who appear or speak in this scene
+- narrative_beats: Array of objects, each with:
+  - beat_type: e.g., "character_introduction", "revelation", "conflict", "comic_relief", "thematic_statement", "action", "foreshadowing", "character_development"
+  - description: 1-2 sentence description of the beat
+  - confidence: float 0-1
+- tone_mood: Overall tone/mood of the scene (e.g., "tense", "warm", "dark comedy")
+- tone_shifts: Array of tone changes within the scene (e.g., ["tense to comic relief", "comic relief to conflict"])
+
+Important:
+- Infer location and time from context if not given as a heading
+- Identify ALL characters who speak or are described, including those referred to by name
+- Narrative beats should capture key story moments, not just action descriptions
+- Be specific about tone — "dark comedy" is better than "mixed"
+
+Return ONLY valid JSON. No explanations or markdown fences.
+
+==========
+SCENE EXCERPT:
+{{scene_text}}
+==========

@@ -298,7 +298,7 @@ def _build_draft_config(
         "model_strategy": {
             "work": default_model,
             "verify": default_model,
-            "escalate": "gpt-4o" if default_model != "mock" else "mock",
+            "escalate": "claude-opus-4-6" if default_model != "mock" else "mock",
         },
         "default_model": default_model,
         "detection_details": {},

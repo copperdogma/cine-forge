@@ -1,0 +1,18 @@
+{
+  "good_scene": {
+    "expected_passed": true,
+    "max_errors": 0,
+    "max_warnings": 2,
+    "required_in_summary": ["accurate", "faithful", "correct"]
+  },
+  "bad_scene": {
+    "expected_passed": false,
+    "min_errors": 2,
+    "required_issues": [
+      {"field": "heading", "reason": "Wrong building name — should be Ruddy & Greene, not Office Building"},
+      {"field": "time_of_day", "reason": "Scene heading has no time of day, but extraction claims DAY"},
+      {"field": "characters_present", "reason": "Uses 'Billy' instead of 'Mariner'; missing thugs"},
+      {"field": "summary", "reason": "Fabricated content — no grocery discussion in scene"}
+    ]
+  }
+}

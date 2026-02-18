@@ -42,7 +42,7 @@ def run_module(
     if not scene_index:
         raise ValueError("continuity_tracking_v1 requires scene_index input")
 
-    work_model = params.get("work_model") or params.get("model") or "gpt-4o-mini"
+    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-6"
 
     # 2. Build entity map for tracking
     entities = {}

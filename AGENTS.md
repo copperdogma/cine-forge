@@ -216,8 +216,11 @@ Quick reference for every promptfoo eval. Re-run these when new models drop.
 | Relationship Discovery | `tasks/relationship-discovery.yaml` | Narrative relationships: family, adversary, ownership edges | 1 (all entities) | 7-way tie (0.995) |
 | Config Detection | `tasks/config-detection.yaml` | Auto-detect project metadata: title, genre, tone, format, duration, cast | 1 (full screenplay) | Haiku 4.5 (0.886) |
 | Scene Extraction | `tasks/scene-extraction.yaml` | Scene boundaries, headings, characters, summaries | 1 (full screenplay) | **Sonnet 4.6 (0.815)** |
+| Normalization | `tasks/normalization.yaml` | Prose/broken Fountain → valid Fountain screenplay | 2 (prose, broken fountain) | **Sonnet 4.6 (0.955)** |
+| Scene Enrichment | `tasks/scene-enrichment.yaml` | Scene-level metadata: beats, tone, characters, location | 2 (elevator, flashback) | **Sonnet 4.6 (0.890)** |
+| QA Pass | `tasks/qa-pass.yaml` | QA gate: detect good/bad extractions (seeded pairs) | 2 (good scene, bad scene) | **Sonnet 4.6 (0.998)** |
 
-All evals: 13 providers (4 OpenAI, 4 Anthropic, 5 Google), dual scoring (Python + LLM rubric), judge = Opus 4.6. Last updated: 2026-02-17 (Sonnet 4.6 added).
+All evals: 13 providers (4 OpenAI, 4 Anthropic, 5 Google), dual scoring (Python + LLM rubric), judge = Opus 4.6. Last updated: 2026-02-18 (full 13-provider matrix on all 9 evals).
 
 **To re-run for a new model:** add provider block to each `tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → compare against existing results → update table above.
 

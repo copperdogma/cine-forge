@@ -1,0 +1,148 @@
+# Normalization Benchmark
+# Evaluates models on converting prose/broken formatting to valid Fountain screenplay.
+# This mirrors CineForge's script_normalize_v1 module — the LLM-assisted tier.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/normalization.yaml
+# View:  promptfoo view
+
+description: "Script normalization — prose and broken Fountain to valid Fountain"
+
+# Use Opus as judge
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/normalization.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-nano
+    label: "GPT-4.1 Nano"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash-lite
+    label: "Gemini 2.5 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- Mid tier ---
+  - id: openai:gpt-4.1
+    label: "GPT-4.1"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-5-20250929
+    label: "Claude Sonnet 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash
+    label: "Gemini 2.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-flash-preview
+    label: "Gemini 3 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- SOTA tier ---
+  - id: openai:gpt-5.2
+    label: "GPT-5.2"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-pro
+    label: "Gemini 2.5 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-pro-preview
+    label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+tests:
+  # Test 1: Prose narrative — no Fountain formatting at all
+  - vars:
+      source_text: file://../input/normalize-prose.txt
+      golden_path: golden/normalize-signal-golden.json
+    assert:
+      - type: python
+        value: file://../scorers/normalization_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate this screenplay normalization. The input was a prose narrative
+          with no Fountain formatting. The model should have converted it to
+          standard Fountain format.
+
+          Key quality criteria:
+          1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?
+          2. Are character cues ALL CAPS on their own line?
+          3. Is dialogue preserved exactly as written?
+          4. Are parentheticals in (lowercase parens) format?
+          5. Is there NO markdown formatting (no >, #, **, ``` etc.)?
+          6. Are scene breaks identified correctly from context clues?
+          7. Is the author's voice preserved without inventions?
+
+          Score strictly: structural correctness AND content preservation both matter.
+
+  # Test 2: Broken Fountain — has structure but with markdown artifacts
+  - vars:
+      source_text: file://../input/normalize-broken-fountain.txt
+      golden_path: golden/normalize-signal-golden.json
+    assert:
+      - type: python
+        value: file://../scorers/normalization_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate this screenplay normalization. The input was broken Fountain
+          format with markdown artifacts (## headers, > blockquotes, escaped
+          characters like \-). The model should have fixed these issues while
+          preserving the screenplay structure.
+
+          Key quality criteria:
+          1. Are scene headings ALL CAPS (not lowercase like the input)?
+          2. Are character cues ALL CAPS (not lowercase like the input)?
+          3. Are markdown artifacts removed (no ##, >, \-, \!)?
+          4. Is dialogue preserved exactly?
+          5. Are parentheticals formatted correctly?
+          6. Is the V.O. designation preserved for Noah's line?
+          7. Is the CUT TO: transition plain text, not a markdown header?
+
+          Score strictly: this is a cleanup task — every markdown artifact should be gone.

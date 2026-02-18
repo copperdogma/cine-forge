@@ -279,7 +279,7 @@ def run_module(
     script_text = canonical["script_text"]
     
     # Tiered Model Strategy (Subsumption)
-    work_model = params.get("work_model") or params.get("model") or "claude-haiku-4-5-20251001"
+    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-6"
     verify_model = (
         params.get("verify_model") or params.get("qa_model") or "claude-haiku-4-5-20251001"
     )

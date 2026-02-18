@@ -1,0 +1,153 @@
+# Scene Enrichment Benchmark
+# Evaluates models on inferring scene metadata from raw scene excerpts.
+# This mirrors CineForge's scene_extract_v1 enrichment pass.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/scene-enrichment.yaml
+# View:  promptfoo view
+
+description: "Scene enrichment — infer metadata from scene excerpts (The Mariner)"
+
+# Use Opus as judge
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/scene-enrichment.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-nano
+    label: "GPT-4.1 Nano"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: google:gemini-2.5-flash-lite
+    label: "Gemini 2.5 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- Mid tier ---
+  - id: openai:gpt-4.1
+    label: "GPT-4.1"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-5-20250929
+    label: "Claude Sonnet 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash
+    label: "Gemini 2.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-flash-preview
+    label: "Gemini 3 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- SOTA tier ---
+  - id: openai:gpt-5.2
+    label: "GPT-5.2"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-pro
+    label: "Gemini 2.5 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-pro-preview
+    label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+tests:
+  # Test 1: Elevator scene — dark comedy, action, character introductions
+  - vars:
+      scene_text: file://../input/enrich-scene-elevator.txt
+      golden_path: golden/enrich-scenes-golden.json
+      scene_key: elevator
+    assert:
+      - type: python
+        value: file://../scorers/scene_enrichment_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the scene enrichment for an elevator scene from "The Mariner."
+
+          The scene takes place inside an elevator in a building. Rose and Mariner
+          are escaping after a violent rescue. Key elements:
+
+          1. Does it correctly identify the interior location (elevator/building)?
+          2. Does it identify both Rose and Mariner as present?
+          3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?
+          4. Does it identify the character introduction beat (Mariner's costume description)?
+          5. Does it note the AirTag revelation as a conflict/trust beat?
+          6. Does it recognize the tonal juxtaposition (muzak vs violence)?
+          7. Are narrative beats specific and grounded in the text?
+
+          Score strictly: good enrichment captures subtext and tonal nuance, not just plot.
+
+  # Test 2: Flashback scene — warm, thematic, father-son bonding
+  - vars:
+      scene_text: file://../input/enrich-scene-flashback.txt
+      golden_path: golden/enrich-scenes-golden.json
+      scene_key: flashback
+    assert:
+      - type: python
+        value: file://../scorers/scene_enrichment_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the scene enrichment for a flashback scene from "The Mariner."
+
+          A young boy and his father fishing on a coastline. Key elements:
+
+          1. Does it correctly identify the exterior coastline/ocean location?
+          2. Does it identify both Young Mariner and Dad?
+          3. Does it capture the warm, nostalgic, idyllic tone?
+          4. Does it identify the thematic statement ("what's a hero")?
+          5. Does it note this as a flashback/idealized memory?
+          6. Does it recognize foreshadowing (Dad's definition of heroism)?
+          7. Does it capture the father-son bonding as character development?
+
+          Score strictly: the thematic weight of this scene is critical — it
+          establishes the hero myth that later crumbles.
