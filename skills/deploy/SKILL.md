@@ -5,15 +5,21 @@ Deploy CineForge to production on Fly.io.
 ## Reference
 
 Full infrastructure details, architecture, DNS, and troubleshooting: `docs/deployment.md`
+Browser automation and MCP troubleshooting (cross-environment): `docs/runbooks/browser-automation-and-mcp.md`
 
 ## Expected Duration
 
 **~3 minutes total** (pre-flight ~15s, deploy ~90s, smoke test ~60s). Last updated: 2026-02-18.
 
 Tell the user this estimate before starting. If actual duration deviates by more than 20%, investigate why (slow Docker build? large context transfer? cold remote builder?) and explain in the report. If the new duration reflects a genuine change (e.g., more dependencies, larger frontend), update the estimate above.
+Note: cache-hit deploys with unchanged layers can complete much faster (~60s); call this out explicitly in the report when it happens.
 
 ## Steps
 
+0. **Browser capability check (required before UI smoke test path selection)**:
+   - Check whether Chrome MCP tooling is actually available in the current agent session.
+   - If unavailable, do **not** claim screenshot/console coverage; use the fallback HTTP UI smoke path and report the limitation explicitly.
+   - If available, use Chrome MCP screenshot + console checks as the primary UI verification path.
 1. **Pre-flight checks** (all must pass before deploying):
    - `git branch --show-current` — must be on `main` (or get explicit user approval for other branches)
    - `git status --short` — working tree must be clean. If dirty, commit first (use `/check-in-diff` to ensure CHANGELOG.md is included), then continue.
@@ -37,6 +43,12 @@ Tell the user this estimate before starting. If actual duration deviates by more
      - If no projects exist, upload `tests/fixtures/normalize_inputs/valid_screenplay.fountain` (7-line test script) and verify the project is created
      - Check browser console for errors: `read_console_messages` with pattern `error|Error|ERR`
      - Screenshot final state
+   - **If direct in-session browser tools are unavailable but Codex Playwright MCP is configured**:
+     - Create artifact/log directories first: `mkdir -p tmp/browser-smoke tmp/browser-smoke/logs`
+     - Run nested browser probes and persist outputs:
+       - `codex exec --sandbox workspace-write --skip-git-repo-check -o tmp/browser-smoke/logs/landing.txt "Use playwright MCP to navigate to https://cineforge.copper-dog.com/, take full-page screenshot tmp/browser-smoke/deploy-landing.png, then return browser console errors at level error."`
+       - `codex exec --sandbox workspace-write --skip-git-repo-check -o tmp/browser-smoke/logs/project.txt "Use playwright MCP to navigate to https://cineforge.copper-dog.com/<project-id>, take full-page screenshot tmp/browser-smoke/deploy-project.png, then return browser console errors at level error."`
+     - Verify artifacts exist: `ls -lh tmp/browser-smoke/deploy-landing.png tmp/browser-smoke/deploy-project.png`
    - **If Chrome MCP is unavailable** (fallback):
      - `curl -sf https://cineforge.copper-dog.com/` — returns HTML with `<title>CineForge</title>`
      - Verify the HTML references a JS bundle (`assets/index-*.js`)
@@ -49,6 +61,16 @@ Tell the user this estimate before starting. If actual duration deviates by more
    - UI smoke test results (screenshots taken, any console errors)
    - Version reported by health endpoint
    - Total duration vs expected. If off by >20%, explain why.
+
+## Chrome MCP Troubleshooting
+
+Use the canonical runbook:
+- `docs/runbooks/browser-automation-and-mcp.md`
+
+Deploy-specific rule:
+- Do not claim screenshot/console coverage unless browser tooling actually ran in-session.
+- If browser tooling is unavailable, run fallback HTTP UI checks and report the limitation.
+- When using nested Codex browser checks, include screenshot file paths and console-error summary from saved logs in the deploy report.
 
 ## On Failure
 

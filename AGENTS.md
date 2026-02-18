@@ -256,6 +256,7 @@ When building or substantially redesigning a UI, follow this process:
 - **Never generate large amounts of UI code without visual verification.** This is the #1 anti-pattern — blind CSS/HTML generation produces garbage.
 - **After wiring pages to real API data**, reload the app with the backend running and click through every modified page. Check `read_console_messages` for runtime errors. `npm run build` passing does NOT mean the UI works — runtime data mismatches (e.g., backend sends `'done'` but switch handles `'completed'`) only crash in the browser.
 - Use the Chrome MCP tools: `screenshot` to see results, `read_page` to inspect DOM, `read_console_messages` to catch errors, `find` to locate elements.
+- If browser MCP tooling is unavailable or failing, follow `docs/runbooks/browser-automation-and-mcp.md`.
 
 #### 4. Checkpoints
 - After the app shell is built (layout, navigation, routing), checkpoint with the user.
@@ -324,6 +325,7 @@ CineForge is deployed on **Fly.io** at **https://cineforge.copper-dog.com** (sin
 
 - **To deploy**: Use the `/deploy` skill
 - **Full reference** (architecture, DNS, troubleshooting, setup): `docs/deployment.md`
+- **Browser automation + MCP troubleshooting runbook**: `docs/runbooks/browser-automation-and-mcp.md`
 - **Quick commands**: `fly deploy --depot=false --yes` | `fly status -a cineforge-app` | `fly logs -a cineforge-app`
 
 ## Agent Memory: AI Self-Improvement Log

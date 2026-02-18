@@ -135,6 +135,17 @@ If the API works but the frontend shows a blank page or 404:
 2. Verify the frontend build ran in Docker: `fly ssh console -a cineforge-app` → `ls /app/static/`
 3. Check that the SPA catch-all in `app.py` is serving `index.html` for non-API routes
 
+### Chrome MCP Unavailable During UI Smoke Tests
+If deploy verification expects browser screenshots/console checks but the agent session cannot access Chrome MCP:
+1. Confirm this is a tooling/session availability issue (not an app outage) by running API checks first (`/api/health`, `/api/recipes`, `/api/projects/recent`, `/api/changelog`).
+2. Run fallback UI checks:
+   - `curl -sf https://cineforge.copper-dog.com/` and verify `<title>CineForge</title>`
+   - Verify a referenced JS bundle (`assets/index-*.js`) returns HTTP 200
+3. Restart or reinitialize the agent session after enabling Chrome MCP in the host environment, then retry browser checks.
+4. Report explicitly that browser automation coverage was unavailable in-session if fallback path was used.
+5. For environment-specific setup and recovery steps, use:
+   - `docs/runbooks/browser-automation-and-mcp.md`
+
 ### SSL Certificate Issues
 SSL is auto-renewed by Fly.io via Let's Encrypt. If certs expire:
 ```bash

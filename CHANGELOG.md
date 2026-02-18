@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-02-18] - Centralized browser MCP runbook and hardened deploy smoke workflow
+
+### Added
+- New canonical browser automation + MCP runbook: `docs/runbooks/browser-automation-and-mcp.md`
+- Cross-environment guidance for Codex, Cursor, Claude Code, and Gemini CLI MCP setup/recovery.
+- Codex nested-browser validation pattern with deterministic evidence capture (`codex exec -o ...`, screenshot artifacts, console error summary).
+- Observed failure-mode troubleshooting (wrong MCP config scope, missing log directories, verbose output handling, empty MCP resource list discrepancy).
+
+### Changed
+- `skills/deploy/SKILL.md` now references the canonical browser runbook instead of embedding long tool-specific troubleshooting.
+- Deploy skill now includes:
+  - cache-hit fast deploy interpretation guidance
+  - explicit nested-Codex browser smoke path when direct in-session browser tools are unavailable
+  - reporting requirements for screenshot paths + console error logs
+- `AGENTS.md` now references the browser runbook in UI verification and deployment guidance.
+- `docs/deployment.md` now points to the canonical browser runbook for environment-specific browser automation recovery.
+
+---
+
 ## [2026-02-18] - PDF import preview fix and cross-format normalization test hardening
 
 ### Added
