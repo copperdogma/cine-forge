@@ -320,66 +320,11 @@ git branch -d sidequests/<topic-name>
 
 ## Production Deployment
 
-CineForge is deployed as a single Docker container on Fly.io, with DNS managed by Cloudflare.
+CineForge is deployed on **Fly.io** at **https://cineforge.copper-dog.com** (single Docker container, Cloudflare DNS).
 
-### Infrastructure Map
-
-| Component | Service | Details |
-|---|---|---|
-| **App hosting** | Fly.io | App: `cineforge-app`, region: `ord` (Chicago) |
-| **Domain** | `cineforge.copper-dog.com` | Also accessible at `cineforge-app.fly.dev` |
-| **DNS** | Cloudflare | Zone: `copper-dog.com`, Zone ID: `372acf29f0a6f95c35e9f7ea94aa7efa` |
-| **SSL** | Let's Encrypt (via Fly.io) | Auto-renewed, CNAME-validated |
-| **Storage** | Fly.io Volume | `cineforge_data` 1GB mounted at `/app/output` |
-| **Secrets** | Fly.io Secrets | `ANTHROPIC_API_KEY` |
-| **Container** | Multi-stage Docker | Node 24 (frontend build) → Python 3.12-slim (runtime), ~168MB |
-
-### Deploy Commands
-```bash
-# Deploy latest code to production
-fly deploy --depot=false --yes
-
-# View live logs
-fly logs -a cineforge-app
-
-# Check app status
-fly status -a cineforge-app
-
-# SSH into running container
-fly ssh console -a cineforge-app
-
-# Manage secrets
-fly secrets set KEY=VALUE -a cineforge-app
-fly secrets list -a cineforge-app
-
-# Manage volumes
-fly volumes list -a cineforge-app
-```
-
-### DNS Management (Cloudflare API)
-DNS changes require `CLOUDFLARE_API_TOKEN` env var (stored in `~/.zshenv`). Token has `Zone.DNS` edit permission for `copper-dog.com`.
-```bash
-source ~/.zshenv
-# List DNS records
-curl -s "https://api.cloudflare.com/client/v4/zones/372acf29f0a6f95c35e9f7ea94aa7efa/dns_records" \
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" | python3 -m json.tool
-```
-
-### Architecture Notes
-- **Single container**: FastAPI serves both the API (`/api/*`) and frontend static files (SPA catch-all)
-- **PYTHONPATH=/app/src**: workspace_root resolves to `/app` via `Path(__file__).parents[3]`
-- **CINEFORGE_STATIC_DIR=/app/static**: Frontend Vite build served by FastAPI
-- **Volume at /app/output**: Projects, runs, and artifacts persist across deploys. Configs/recipes baked into image.
-- **Auto-stop**: Machine stops when idle, auto-starts on request (~5-10s cold start). Cost: ~$3-5/month.
-- **Depot builder bug**: Use `--depot=false` flag — Depot has intermittent 401 registry push errors.
-- **No auth**: App is open (2 users: Cam + sister). No login required.
-
-### Key Env Vars (in container)
-| Var | Value | Purpose |
-|---|---|---|
-| `PYTHONPATH` | `/app/src` | Python module resolution |
-| `CINEFORGE_STATIC_DIR` | `/app/static` | Frontend build directory |
-| `ANTHROPIC_API_KEY` | (secret) | AI chat feature |
+- **To deploy**: Use the `/deploy` skill
+- **Full reference** (architecture, DNS, troubleshooting, setup): `docs/deployment.md`
+- **Quick commands**: `fly deploy --depot=false --yes` | `fly status -a cineforge-app` | `fly logs -a cineforge-app`
 
 ## Agent Memory: AI Self-Improvement Log
 
