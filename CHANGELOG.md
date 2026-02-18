@@ -18,6 +18,7 @@
 
 ### Changed
 - `docs/stories.md` updated to include Stories 048 and 049 as Done.
+- Wrapped overlong unit-test lines in `tests/unit/test_story_ingest_module.py` to satisfy Ruff and keep deployment preflight green.
 
 ---
 

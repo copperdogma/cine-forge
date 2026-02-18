@@ -57,10 +57,14 @@ def test_read_source_text_extracts_pdf_via_reader(
 
 
 @pytest.mark.unit
-def test_extract_pdf_text_prefers_layout_mode(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_extract_pdf_text_prefers_layout_mode(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     source = tmp_path / "layout.pdf"
     source.write_bytes(b"%PDF-1.4 mock")
-    monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None)
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None
+    )
 
     class _FakePage:
         def __init__(self) -> None:
@@ -91,7 +95,9 @@ def test_extract_pdf_text_falls_back_when_layout_unsupported(
 ) -> None:
     source = tmp_path / "fallback.pdf"
     source.write_bytes(b"%PDF-1.4 mock")
-    monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None)
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None
+    )
 
     class _FakePage:
         def __init__(self) -> None:
@@ -117,7 +123,9 @@ def test_extract_pdf_text_falls_back_when_layout_unsupported(
 
 
 @pytest.mark.unit
-def test_extract_pdf_text_prefers_pdftotext_layout(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_extract_pdf_text_prefers_pdftotext_layout(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     source = tmp_path / "pdftotext.pdf"
     source.write_bytes(b"%PDF-1.4 mock")
 
