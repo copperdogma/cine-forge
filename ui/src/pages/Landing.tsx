@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import ReactMarkdown from 'react-markdown'
 import { Film, Plus, FolderOpen, Clock, Package, Play, AlertCircle, RefreshCw, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -15,6 +17,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { fetchHealth, fetchChangelog } from '@/lib/api'
 import { useRecentProjects, useOpenProject } from '@/lib/hooks'
 
 const INITIAL_SHOW = 5
@@ -41,6 +44,17 @@ export default function Landing() {
   const [showOpenDialog, setShowOpenDialog] = useState(false)
   const [projectPath, setProjectPath] = useState('')
   const [showAll, setShowAll] = useState(false)
+  const [changelogOpen, setChangelogOpen] = useState(false)
+  const { data: healthData } = useQuery({
+    queryKey: ['health'],
+    queryFn: fetchHealth,
+    staleTime: 5 * 60 * 1000,
+  })
+  const { data: changelogContent } = useQuery({
+    queryKey: ['changelog'],
+    queryFn: fetchChangelog,
+    enabled: changelogOpen,
+  })
 
   const handleOpenExisting = () => {
     setShowOpenDialog(true)
@@ -222,6 +236,28 @@ export default function Landing() {
           )}
         </div>
       </div>
+
+      {/* Version — fixed bottom-left */}
+      {healthData?.version && (
+        <button
+          onClick={() => setChangelogOpen(true)}
+          className="fixed bottom-3 left-4 text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors cursor-pointer"
+        >
+          v{healthData.version}
+        </button>
+      )}
+
+      {/* Changelog Dialog */}
+      <Dialog open={changelogOpen} onOpenChange={setChangelogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Changelog {healthData?.version && `— v${healthData.version}`}</DialogTitle>
+          </DialogHeader>
+          <div className="prose prose-sm prose-invert max-w-none">
+            <ReactMarkdown>{changelogContent ?? 'Loading...'}</ReactMarkdown>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Open Project Dialog */}
       <Dialog open={showOpenDialog} onOpenChange={setShowOpenDialog}>

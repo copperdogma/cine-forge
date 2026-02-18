@@ -5,9 +5,14 @@
 ### Added
 - `/deploy` skill and canonical deployment runbook doc for repeatable production deploys (Story 037 follow-up).
 - Three deferred promptfoo eval configs (location, prop, relationship) built and run across all 13 providers (Story 039).
+- CalVer versioning (`YYYY.MM.DD`) derived from CHANGELOG.md; shown in sidebar footer and landing page.
+- `/api/health` returns `version` field; `/api/changelog` serves full changelog as text.
+- Clickable version badge opens changelog dialog in both AppShell and Landing page.
+- UI smoke test added to `/deploy` skill (screenshots, console error check).
 
 ### Fixed
 - Stale model defaults replaced after benchmarking revealed better-performing models per task (Story 039).
+- Landing page version positioned in fixed bottom-left corner (matching sidebar pattern).
 
 ### Changed
 - Trimmed `AGENTS.md` operational noise; moved deployment detail to dedicated doc.
