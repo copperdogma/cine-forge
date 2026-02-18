@@ -13,13 +13,15 @@ Apply Story 036's task-specific model selections to production code and recipe c
 
 Story 036 benchmarked 5 eval types across 12 models and produced task-specific try-validate-escalate triads. Story 047 added Sonnet 4.6 to all evals and updated winners.
 
-**Already applied (Story 047, 2026-02-17)**: Sonnet 4.5 → 4.6 defaults updated in character_bible, prop_bible, scene_extract (escalate), script_normalize, and ai/chat.py. Location_bible intentionally kept at Sonnet 4.5 (it scores better there). These changes work within the existing Anthropic transport — no multi-provider needed.
+**Already applied (Story 047, 2026-02-17)**: Sonnet 4.5 → 4.6 defaults updated in character_bible, prop_bible, script_normalize, and ai/chat.py. Location_bible intentionally kept at Sonnet 4.5 (it scores better there: 0.895 vs 0.870). `ModelStrategy` defaults in `models.py` are correct (work=sonnet-4-6, verify=haiku-4-5, escalate=opus-4-6).
 
-**Remaining work**: Story 038 multi-provider transport unblocks using Gemini/OpenAI models in production. Deferred eval types still needed. Recipe configs not yet updated.
+**Stale defaults discovered (2026-02-18)**: Audit found 4 modules with outdated hardcoded defaults that Story 047 missed: `scene_extract_v1` (Haiku instead of Sonnet 4.6), `location_bible_v1` (dated suffix), `continuity_tracking_v1` (gpt-4o-mini), `project_config_v1` (gpt-4o escalation).
+
+**Remaining work**: Fix stale module defaults, update recipe configs, build deferred evals, end-to-end smoke test.
 
 ## Acceptance Criteria
 
-- [x] Model defaults in pipeline modules reflect Story 036/047 task-specific triads (Sonnet 4.5 → 4.6 applied where benchmarks justify)
+- [ ] Model defaults in pipeline modules reflect Story 036/047 task-specific triads (4 stale modules remain — see Tasks)
 - [ ] Recipe configs reference new model defaults
 - [ ] All pipeline modules work end-to-end with their assigned models
 - [ ] Build normalization eval (text-comparison scorer pattern — deferred from Story 036)
@@ -36,7 +38,12 @@ Story 036 benchmarked 5 eval types across 12 models and produced task-specific t
 
 ## Tasks
 
-- [x] Update module-level model defaults (Story 047: Sonnet 4.5 → 4.6 in character_bible, prop_bible, scene_extract, script_normalize, chat)
+- [x] Update module-level model defaults (Story 047: Sonnet 4.5 → 4.6 in character_bible, prop_bible, script_normalize, chat)
+- [ ] Fix remaining stale module defaults missed by Story 047:
+  - [ ] `scene_extract_v1/main.py`: default `work_model` is `claude-haiku-4-5` — should be `claude-sonnet-4-6` (benchmark winner, 0.815)
+  - [ ] `location_bible_v1/main.py`: default `work_model` uses stale dated string `claude-sonnet-4-5-20250929` — normalize to `claude-sonnet-4-5`
+  - [ ] `continuity_tracking_v1/main.py`: default `work_model` is `gpt-4o-mini` — update to benchmarked model (no eval yet, but at minimum use `claude-sonnet-4-6`)
+  - [ ] `project_config_v1/main.py:301`: hardcodes `"gpt-4o"` as escalation model in ProjectConfig artifact — should be `claude-opus-4-6`
 - [ ] Update recipe YAML configs with provider-prefixed model strings
 - [ ] Build normalization eval: text-comparison scorer (Fountain structural validity + content preservation)
 - [ ] Build scene enrichment eval: scene-level golden references from The Mariner

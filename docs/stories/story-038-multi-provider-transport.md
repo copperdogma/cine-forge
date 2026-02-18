@@ -2,7 +2,7 @@
 
 **Phase**: Cross-Cutting
 **Priority**: High
-**Status**: To Do
+**Status**: Done
 **Depends on**: Story 036 (Model Selection — provides task-specific model recommendations)
 
 ## Goal
@@ -81,3 +81,7 @@ Current `call_llm()` in `src/cine_forge/ai/llm.py` only supports OpenAI-compatib
 **Evidence**: 169/169 unit tests pass, ruff lint clean.
 
 **Remaining**: Recipe config updates deferred to Story 039. End-to-end pipeline smoke test with Gemini models pending (requires `GEMINI_API_KEY` in production).
+
+### 20260218-0010 — Story marked Done
+
+**Validation**: B+ grade. 9/10 acceptance criteria met. 1 explicitly deferred (recipe configs → Story 039). 4 stale module-level defaults discovered during validation and added to Story 039 (scene_extract_v1, location_bible_v1, continuity_tracking_v1, project_config_v1). 169/169 unit tests pass, lint clean. Commit `aa13cd5`. Production deploy verified — full import/analyze smoke test passed on cineforge.copper-dog.com (PermissionError on `/app/output/runs/` fixed via chown during session).
