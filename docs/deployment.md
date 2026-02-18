@@ -104,6 +104,10 @@ curl -s "https://api.cloudflare.com/client/v4/zones/372acf29f0a6f95c35e9f7ea94aa
 
 ## Troubleshooting
 
+### `fly logs` Hangs Forever
+`fly logs` is a **streaming command** — it tails logs in real-time and never exits. Do not use it as a verification step.
+Fix: Use `timeout 10 fly logs -a cineforge-app 2>&1 | tail -20` if you need recent logs. But prefer the health endpoint (`curl /api/health`) as the deploy success signal — logs are for debugging failures only.
+
 ### Depot 401 Registry Push
 ```
 Error: failed to push to registry: 401 Unauthorized

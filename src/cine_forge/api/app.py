@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 from pathlib import Path
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -44,10 +45,21 @@ from cine_forge.api.service import OperatorConsoleService, ServiceError
 UPLOAD_FILE_PARAM = File(...)
 
 
+def _parse_version(workspace: Path) -> str:
+    """Extract CalVer version (YYYY.MM.DD) from the latest CHANGELOG.md entry."""
+    changelog = workspace / "CHANGELOG.md"
+    if changelog.exists():
+        match = re.search(r"^## \[(\d{4}-\d{2}-\d{2})\]", changelog.read_text(), re.MULTILINE)
+        if match:
+            return match.group(1).replace("-", ".")
+    return "0.0.0"
+
+
 def create_app(workspace_root: Path | None = None) -> FastAPI:
     resolved_workspace = workspace_root or Path(__file__).resolve().parents[3]
     service = OperatorConsoleService(workspace_root=resolved_workspace)
-    app = FastAPI(title="CineForge API", version="0.1.0")
+    app_version = _parse_version(resolved_workspace)
+    app = FastAPI(title="CineForge API", version=app_version)
     app.state.console_service = service
 
     app.add_middleware(
@@ -78,7 +90,14 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
     @app.get("/api/health")
     async def health() -> dict[str, str]:
-        return {"status": "ok"}
+        return {"status": "ok", "version": app_version}
+
+    @app.get("/api/changelog")
+    async def changelog() -> PlainTextResponse:
+        changelog_path = resolved_workspace / "CHANGELOG.md"
+        if not changelog_path.exists():
+            return PlainTextResponse("No changelog available.", status_code=404)
+        return PlainTextResponse(changelog_path.read_text())
 
     @app.get("/api/recipes", response_model=list[RecipeSummary])
     async def list_recipes() -> list[RecipeSummary]:

@@ -20,7 +20,9 @@ import {
   MessageSquare,
   Info,
 } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -31,7 +33,9 @@ import { RightPanelProvider, useRightPanel, useInspector } from '@/lib/right-pan
 import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useShortcuts } from '@/lib/shortcuts'
+import { fetchHealth, fetchChangelog } from '@/lib/api'
 import { useProject, useChatLoader } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import { useRunProgressChat } from '@/lib/use-run-progress'
@@ -58,6 +62,7 @@ function ShellInner() {
   const [navOpen, setNavOpen] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [advancedOpen, setAdvancedOpen] = useState(false)
+  const [changelogOpen, setChangelogOpen] = useState(false)
   const panel = useRightPanel()
   const [panelWidth, setPanelWidth] = useState(380)
   const isDragging = useRef(false)
@@ -92,6 +97,17 @@ function ShellInner() {
   const { data: project } = useProject(projectId)
 
   const displayName = project?.display_name ?? projectId?.slice(0, 12) ?? 'Project'
+
+  const { data: healthData } = useQuery({
+    queryKey: ['health'],
+    queryFn: fetchHealth,
+    staleTime: 5 * 60 * 1000,
+  })
+  const { data: changelogContent } = useQuery({
+    queryKey: ['changelog'],
+    queryFn: fetchChangelog,
+    enabled: changelogOpen,
+  })
 
   // Load chat from backend JSONL (runs on every page, not just Home)
   useChatLoader(projectId)
@@ -297,7 +313,28 @@ function ShellInner() {
           </nav>
         </ScrollArea>
 
+        {/* Version footer */}
+        {healthData?.version && (
+          <button
+            onClick={() => setChangelogOpen(true)}
+            className="px-4 py-2 text-[10px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer border-t border-border"
+          >
+            v{healthData.version}
+          </button>
+        )}
       </aside>
+
+      {/* Changelog dialog */}
+      <Dialog open={changelogOpen} onOpenChange={setChangelogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Changelog {healthData?.version && `— v${healthData.version}`}</DialogTitle>
+          </DialogHeader>
+          <div className="prose prose-sm prose-invert max-w-none">
+            <ReactMarkdown>{changelogContent ?? 'Loading...'}</ReactMarkdown>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Center Content Canvas */}
       <main className="flex-1 flex flex-col min-w-0">

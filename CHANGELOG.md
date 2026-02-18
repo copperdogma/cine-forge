@@ -1,5 +1,107 @@
 # Changelog
 
+## [2026-02-18] - Story 039 deferred evals, Gemini multi-provider fixes, and /deploy skill
+
+### Added
+- `/deploy` skill and canonical deployment runbook doc for repeatable production deploys (Story 037 follow-up).
+- Three deferred promptfoo eval configs (location, prop, relationship) built and run across all 13 providers (Story 039).
+
+### Fixed
+- Stale model defaults replaced after benchmarking revealed better-performing models per task (Story 039).
+
+### Changed
+- Trimmed `AGENTS.md` operational noise; moved deployment detail to dedicated doc.
+- Story 038 marked done; Story 039 scope expanded to include deferred eval coverage.
+
+---
+
+## [2026-02-17] - Production deployment, Gemini support, Sonnet 4.6 benchmarks, and Story 037-038-047
+
+### Added
+- Deployed CineForge to production at `cineforge.copper-dog.com` on Fly.io with Let's Encrypt SSL, Cloudflare DNS, and a persistent 1GB volume (Story 037).
+- Multi-provider LLM transport with Google Gemini support (`gemini-2.5-flash`, `gemini-2.5-pro`); backend now routes to Anthropic, OpenAI, or Google based on model ID prefix (Story 038).
+- Story 045 (Entity Cross-Linking) and Story 046 (Theme System) draft files added to backlog.
+
+### Fixed
+- `PermissionError` crash on Fly.io when the volume `lost+found` directory was encountered during project discovery.
+- Untracked `.claude/settings.local.json` from git and added it to `.gitignore`.
+
+### Changed
+- Benchmarked Sonnet 4.6 across all six promptfoo evals (character extraction, scene extraction, location, prop, relationship, config detection) against 12 other providers; updated model defaults in `src/cine_forge/schemas/models.py` with winning models per task (Story 047).
+
+---
+
+## [2026-02-16] - Conversational AI Chat, Entity-first Navigation, UI wiring, and pipeline performance
+
+### Added
+- Conversational AI Chat (Story 011f): full six-phase implementation including streaming AI responses, persistent chat thread, knowledge layer surfacing relevant artifacts into context, inline tool-use for running pipeline stages, smart suggestions, and lint cleanup.
+- Entity-first navigation (Story 043): dedicated Character, Location, and Prop detail pages with cross-references; enriched sorting by narrative prominence; script-to-scene deep links; breadcrumbs; sticky sort/density preferences persisted to `project.json`.
+- Story 041 (Artifact Quality Improvements) story file added; immediately implemented as Story 042 after renumbering.
+
+### Fixed
+- Wired all mock UI components to real backend APIs, replacing placeholder data with live artifact fetches (Story 042).
+- Entity ID consistency across detail pages; breadcrumb navigation and artifact UX polish (Story 042).
+- World-building cost explosion caused by unnecessary QA passes: hardcoded `skip_qa` and removed dead recipe references.
+- Landing page now shows 5 most recent projects with timestamps and an expand/collapse toggle.
+
+### Changed
+- `ui/operator-console/` directory flattened to `ui/` — Story 043 done and directory structure simplified.
+- Pipeline performance optimized (Story 040): reduced redundant AI calls, improved stage caching, and lowered median run cost.
+- Chat-driven progress replaces polling: server-side chat events drive run state updates (Story 011e Phases 1.5–2.5).
+- Project identity now uses URL slugs (`/projects/:slug`) rather than numeric IDs; chat state persisted server-side (Story 011e).
+
+---
+
+## [2026-02-15] - Operator Console production build, promptfoo benchmarking, and model selection
+
+### Added
+- Production Operator Console build (Story 011d): full React + shadcn/ui UI with file-first project creation, script-centric home page, story-centric navigation (Script / Scenes / Characters / Locations / World / Inbox), and chat panel as the primary interaction surface.
+- Script-centric home page and chat panel Phase 1 implementation (Story 011e): chat replaces sidebar hints; Inbox is a filtered view of `needs_action` chat messages.
+- promptfoo benchmarking tooling evaluation complete (Story 035): workspace structure, dual evaluation pattern (Python scorer + LLM rubric), cross-provider judge strategy, and pitfalls documented in `AGENTS.md`.
+- Model Selection and Eval Framework (Story 036): character extraction eval across 13 providers; Opus 4.6 established as judge; winning models recorded per task.
+- Claude Code skills wired up via `.claude/skills/` symlinks for agent discovery.
+
+### Changed
+- Story 011b Operator Console research and design decisions documented and complete.
+- Story 011c phase summary and recommended order synced in story file.
+- `AGENTS.md` updated with benchmarking workspace structure, eval catalog, model selection table, and lessons learned (promptfoo pitfalls: `max_tokens` trap, `---` separator trap, Gemini token budget).
+
+---
+
+## [2026-02-14] - World-building pipeline, Entity Relationship Graph, 3-Recipe Architecture, and UI routing
+
+### Added
+- High-fidelity world-building infrastructure: bible generation modules, resilient LLM retry logic with token escalation, and catch-and-retry on malformed JSON (`src/cine_forge/ai/llm.py`).
+- Entity Relationship Graph module: AI-powered entity extraction, `needs_all` orchestration pattern, and selective per-entity re-runs.
+- Basic UI visualization for the Entity Relationship Graph.
+- 3-Recipe Architecture (Intake / Synthesis / Analysis): partitions pipeline into independently runnable segments with human-in-the-loop gates between expensive world-building steps.
+- Continuity tracking foundation added alongside 3-Recipe Architecture.
+- Resource-oriented routing foundation for Operator Console: identity in URL path, not search params.
+- Stories 008 and 009 documented and marked done.
+
+### Changed
+- Enhanced Entity Graph with real AI extraction replacing stubs; selective re-run support added.
+- `AGENTS.md`: added "No Implicit Commits" mandate; captured cross-recipe artifact reuse pattern via `store_inputs`; documented 3-Recipe Architecture lesson and resource-oriented UI principle.
+
+---
+
+## [2026-02-13] - Story 007c remediation, DOCX support, hot-reload, and bible module
+
+### Added
+- Semantic quality gates for degraded PDF ingestion: confidence scoring, anomaly detection, and remediation triggers to prevent schema-valid-but-useless artifacts (Story 007c).
+- Unit and integration regression tests for Story 007c PDF quality remediation.
+- DOCX ingestion support: `python-docx` based parser added to the ingest module; UI file picker now accepts `.docx` alongside `.pdf` and `.fountain`.
+- Bible infrastructure and character bible module: `CharacterBible` schema, AI-driven extraction, and versioned artifact output.
+- All missing story files (008–034) scaffolded with design foundations.
+
+### Fixed
+- Hot-reloading enabled for the Operator Console backend via `uvicorn --reload`; eliminates manual restarts during local development.
+
+### Changed
+- Story index (`docs/stories.md`) updated to reflect new stories and status changes.
+
+---
+
 ## [2026-02-13] - Deliver Operator Console Lite and add MVP fidelity remediation story
 
 ### Added
@@ -12,7 +114,7 @@
 - New remediation planning story `docs/stories/story-007c-mvp-reality-remediation.md` to address real-run artifact fidelity issues discovered via UI-led validation.
 
 ### Fixed
-- Resolved local dev CORS failures causing UI “Failed to fetch” by allowing localhost/127.0.0.1 origins across local ports in Operator Console API middleware.
+- Resolved local dev CORS failures causing UI "Failed to fetch" by allowing localhost/127.0.0.1 origins across local ports in Operator Console API middleware.
 - Improved artifact browser UX with explicit selected group/version highlighting and auto-selection of latest/single version.
 - Stabilized Playwright test startup behavior in UI config for deterministic local runs.
 

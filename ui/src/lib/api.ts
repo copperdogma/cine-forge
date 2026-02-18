@@ -61,6 +61,18 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T
 }
 
+// --- Health / Version ---
+
+export function fetchHealth(): Promise<{ status: string; version: string }> {
+  return request<{ status: string; version: string }>('/api/health')
+}
+
+export async function fetchChangelog(): Promise<string> {
+  const response = await fetch(`${API_BASE}/api/changelog`)
+  if (!response.ok) return 'Changelog unavailable.'
+  return response.text()
+}
+
 // --- Recipes ---
 
 export function listRecipes(): Promise<RecipeSummary[]> {

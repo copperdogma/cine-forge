@@ -18,6 +18,9 @@ RUN pip install --no-cache-dir .
 # Copy pipeline configs (recipes, etc.)
 COPY configs/ ./configs/
 
+# Copy changelog for version endpoint
+COPY CHANGELOG.md ./
+
 # Copy frontend build from stage 1
 COPY --from=frontend /app/ui/dist ./static/
 
