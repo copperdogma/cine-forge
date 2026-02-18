@@ -73,6 +73,32 @@ def test_upload_project_input_stores_file(tmp_path: Path) -> None:
     assert stored_path.read_text(encoding="utf-8").startswith("INT. OFFICE")
 
 
+def test_get_project_input_content_uses_ingest_extraction_for_pdf(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "project-pdf-preview", "Project PDF Preview")
+
+    uploaded = client.post(
+        f"/api/projects/{project_id}/inputs/upload",
+        files={"file": ("script.pdf", b"%PDF-1.7\nbinary", "application/pdf")},
+    )
+    assert uploaded.status_code == 200
+    filename = Path(uploaded.json()["stored_path"]).name
+
+    def _fake_read_source_text_with_diagnostics(_path: Path) -> tuple[str, dict[str, object]]:
+        return "INT. HARBOR - NIGHT\nTHE MARINER watches the tide.", {"pdf_preview": True}
+
+    monkeypatch.setattr(
+        "cine_forge.api.service.read_source_text_with_diagnostics",
+        _fake_read_source_text_with_diagnostics,
+    )
+
+    content = client.get(f"/api/projects/{project_id}/inputs/{filename}")
+    assert content.status_code == 200
+    assert content.text.startswith("INT. HARBOR - NIGHT")
+
+
 def test_artifact_browse_endpoints_return_versions_and_payload(tmp_path: Path) -> None:
     client = _make_client(tmp_path)
     project_path = tmp_path / "project-b"

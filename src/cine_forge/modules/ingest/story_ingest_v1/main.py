@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import re
+import shutil
+import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -39,10 +42,11 @@ def read_source_text_with_diagnostics(input_path: Path) -> tuple[str, dict[str, 
         raise ValueError(f"Unsupported input format '{file_format}' for file '{input_path}'")
 
     if file_format == "pdf":
-        extracted = _extract_pdf_text(input_path)
+        extracted, extraction_backend_diagnostics = _extract_pdf_text_with_diagnostics(input_path)
         repaired, diagnostics = _repair_pdf_tokenized_layout(extracted)
         repaired, compact_diagnostics = _repair_compact_screenplay_headings(repaired)
         diagnostics.update(compact_diagnostics)
+        diagnostics.update(extraction_backend_diagnostics)
         diagnostics["reflow_applied"] = repaired != extracted
         diagnostics["original_character_count"] = len(extracted)
         diagnostics["repaired_character_count"] = len(repaired)
@@ -304,6 +308,71 @@ def run_module(
 
 
 def _extract_pdf_text(input_path: Path) -> str:
+    text, _diagnostics = _extract_pdf_text_with_diagnostics(input_path)
+    return text
+
+
+def _extract_pdf_text_with_diagnostics(input_path: Path) -> tuple[str, dict[str, Any]]:
+    attempted: list[str] = []
+    lengths: dict[str, int] = {}
+
+    attempted.append("pdftotext")
+    pdftotext_text = _extract_pdf_text_via_pdftotext(input_path)
+    lengths["pdftotext"] = len(pdftotext_text)
+    if _is_meaningful_pdf_text(pdftotext_text):
+        return pdftotext_text, {
+            "pdf_extractors_attempted": attempted,
+            "pdf_extractor_selected": "pdftotext",
+            "pdf_extractor_output_lengths": lengths,
+        }
+
+    attempted.append("pypdf")
+    pypdf_text = _extract_pdf_text_via_pypdf(input_path)
+    lengths["pypdf"] = len(pypdf_text)
+    if _is_meaningful_pdf_text(pypdf_text):
+        return pypdf_text, {
+            "pdf_extractors_attempted": attempted,
+            "pdf_extractor_selected": "pypdf",
+            "pdf_extractor_output_lengths": lengths,
+        }
+
+    attempted.append("ocrmypdf")
+    ocr_text = _extract_pdf_text_via_ocr(input_path)
+    lengths["ocrmypdf"] = len(ocr_text)
+    if _is_meaningful_pdf_text(ocr_text):
+        return ocr_text, {
+            "pdf_extractors_attempted": attempted,
+            "pdf_extractor_selected": "ocrmypdf",
+            "pdf_extractor_output_lengths": lengths,
+        }
+
+    # Return best available text even if sparse so downstream can still classify/report.
+    fallback_text = pypdf_text or pdftotext_text or ocr_text
+    return fallback_text, {
+        "pdf_extractors_attempted": attempted,
+        "pdf_extractor_selected": "fallback_sparse",
+        "pdf_extractor_output_lengths": lengths,
+    }
+
+
+def _extract_pdf_text_via_pdftotext(input_path: Path) -> str:
+    pdftotext_bin = shutil.which("pdftotext")
+    if pdftotext_bin:
+        try:
+            result = subprocess.run(
+                [pdftotext_bin, "-layout", str(input_path), "-"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return result.stdout.replace("\f", "\n")
+        except Exception:
+            return ""
+    return ""
+
+
+def _extract_pdf_text_via_pypdf(input_path: Path) -> str:
     try:
         from pypdf import PdfReader
     except ModuleNotFoundError as exc:
@@ -314,8 +383,52 @@ def _extract_pdf_text(input_path: Path) -> str:
     reader = PdfReader(str(input_path))
     pages: list[str] = []
     for page in reader.pages:
-        pages.append(page.extract_text() or "")
+        # Prefer layout-aware extraction to preserve inter-word spacing and line structure.
+        # Older pypdf versions may not support extraction_mode, so fall back safely.
+        try:
+            page_text = page.extract_text(extraction_mode="layout") or ""
+        except TypeError:
+            page_text = page.extract_text() or ""
+
+        if not page_text.strip():
+            page_text = page.extract_text() or ""
+        pages.append(page_text)
     return "\n".join(pages)
+
+
+def _extract_pdf_text_via_ocr(input_path: Path) -> str:
+    ocrmypdf_bin = shutil.which("ocrmypdf")
+    if not ocrmypdf_bin:
+        return ""
+
+    with tempfile.TemporaryDirectory(prefix="cineforge-ocr-") as tmpdir:
+        ocr_output = Path(tmpdir) / "ocr_output.pdf"
+        try:
+            result = subprocess.run(
+                [
+                    ocrmypdf_bin,
+                    "--skip-text",
+                    "--quiet",
+                    str(input_path),
+                    str(ocr_output),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode != 0 or not ocr_output.exists():
+                return ""
+            return _extract_pdf_text_via_pdftotext(ocr_output)
+        except Exception:
+            return ""
+
+
+def _is_meaningful_pdf_text(text: str) -> bool:
+    stripped = text.strip()
+    if len(stripped) < 60:
+        return False
+    word_gap_count = len(re.findall(r"\b[A-Za-z]{3,}\s+[A-Za-z]{3,}\b", stripped))
+    return word_gap_count >= 4
 
 
 def _extract_docx_text(input_path: Path) -> str:

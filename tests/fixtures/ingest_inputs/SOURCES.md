@@ -20,3 +20,13 @@ These fixtures were downloaded from publicly accessible free sources for ingesti
   - URL: `https://ibiblio.org/ebooks/Poe/Pit_Pendulum.pdf`
   - Work: *The Pit and the Pendulum* by Edgar Allan Poe
   - Notes: Public-domain short story PDF download.
+
+- `patent_registering_votes_us272011_scan_5p.pdf`
+  - URL: `https://upload.wikimedia.org/wikipedia/commons/f/fc/Patent_for_Apparatus_for_Registering_Votes_US272011.pdf`
+  - Work: *Patent for Apparatus for Registering Votes (US272,011)* by H. Zimmer
+  - Notes: Wikimedia Commons scan of historical U.S. patent (public domain). Short scanned PDF fixture (~5 pages) used to exercise OCR-oriented ingestion behavior.
+
+- `run_like_hell_teaser_scanned_5p.pdf`
+  - Source text: `run_like_hell_teaser.fountain` (Slugline public sample)
+  - Generation method: rendered into 5 grayscale image pages with ImageMagick, then packaged into an image-based PDF using `img2pdf`.
+  - Notes: Deterministic screenplay-like scanned fixture used to validate OCR fallback and extractor diagnostics (`pdf_extractor_selected=ocrmypdf`).

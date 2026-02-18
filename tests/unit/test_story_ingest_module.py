@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
 
 from cine_forge.modules.ingest.story_ingest_v1.main import (
+    _extract_pdf_text,
     classify_format,
     classify_format_with_diagnostics,
     detect_file_format,
@@ -47,11 +49,235 @@ def test_read_source_text_extracts_pdf_via_reader(
     source.write_bytes(b"%PDF-1.4 mock")
 
     monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text",
-        lambda _: "INT. ROOM - NIGHT\nMARA\nHello there.",
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_with_diagnostics",
+        lambda _: ("INT. ROOM - NIGHT\nMARA\nHello there.", {}),
     )
 
     assert read_source_text(source) == "INT. ROOM - NIGHT\nMARA\nHello there."
+
+
+@pytest.mark.unit
+def test_extract_pdf_text_prefers_layout_mode(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    source = tmp_path / "layout.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+    monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None)
+
+    class _FakePage:
+        def __init__(self) -> None:
+            self.calls: list[str | None] = []
+
+        def extract_text(self, extraction_mode: str | None = None) -> str:
+            self.calls.append(extraction_mode)
+            if extraction_mode == "layout":
+                return "INT. ROOM - NIGHT\nMARA\nHello there."
+            return "INT.ROOM-NIGHT"
+
+    page = _FakePage()
+
+    class _FakeReader:
+        def __init__(self, _path: str) -> None:
+            self.pages = [page]
+
+    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
+
+    extracted = _extract_pdf_text(source)
+    assert extracted.startswith("INT. ROOM - NIGHT")
+    assert page.calls[0] == "layout"
+
+
+@pytest.mark.unit
+def test_extract_pdf_text_falls_back_when_layout_unsupported(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "fallback.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+    monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None)
+
+    class _FakePage:
+        def __init__(self) -> None:
+            self.calls: list[str | None] = []
+
+        def extract_text(self, extraction_mode: str | None = None) -> str:
+            self.calls.append(extraction_mode)
+            if extraction_mode is not None:
+                raise TypeError("layout mode unsupported")
+            return "INT. ROOM - NIGHT\nMARA\nFallback extraction."
+
+    page = _FakePage()
+
+    class _FakeReader:
+        def __init__(self, _path: str) -> None:
+            self.pages = [page]
+
+    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
+
+    extracted = _extract_pdf_text(source)
+    assert "Fallback extraction." in extracted
+    assert page.calls == ["layout", None]
+
+
+@pytest.mark.unit
+def test_extract_pdf_text_prefers_pdftotext_layout(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    source = tmp_path / "pdftotext.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which",
+        lambda _: "/usr/local/bin/pdftotext",
+    )
+
+    class _Result:
+        returncode = 0
+        stdout = (
+            "INT. ROOM - NIGHT\n"
+            "MARA\n"
+            "Hello from pdftotext with enough spacing to pass semantic checks.\n"
+            "Another readable sentence with multiple words preserved.\n"
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main.subprocess.run",
+        lambda *args, **kwargs: _Result(),
+    )
+
+    extracted = _extract_pdf_text(source)
+    assert "Hello from pdftotext" in extracted
+
+
+@pytest.mark.unit
+def test_extract_pdf_text_falls_back_when_pdftotext_fails(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "pdftotext-fallback.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which",
+        lambda _: "/usr/local/bin/pdftotext",
+    )
+
+    class _Result:
+        returncode = 1
+        stdout = ""
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main.subprocess.run",
+        lambda *args, **kwargs: _Result(),
+    )
+
+    class _FakePage:
+        def extract_text(self, extraction_mode: str | None = None) -> str:
+            if extraction_mode == "layout":
+                return "INT. ROOM - NIGHT\nMARA\nFallback from pypdf."
+            return ""
+
+    class _FakeReader:
+        def __init__(self, _path: str) -> None:
+            self.pages = [_FakePage()]
+
+    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
+
+    extracted = _extract_pdf_text(source)
+    assert "Fallback from pypdf." in extracted
+
+
+@pytest.mark.unit
+def test_extract_pdf_text_uses_ocr_when_text_extractors_are_sparse(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "ocr-source.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+
+    def _fake_which(name: str) -> str | None:
+        if name == "pdftotext":
+            return "/usr/local/bin/pdftotext"
+        if name == "ocrmypdf":
+            return "/usr/local/bin/ocrmypdf"
+        return None
+
+    monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", _fake_which)
+
+    calls: list[list[str]] = []
+
+    class _Result:
+        def __init__(self, code: int, out: str = "") -> None:
+            self.returncode = code
+            self.stdout = out
+
+    def _fake_run(args: list[str], capture_output: bool, text: bool, check: bool) -> _Result:
+        del capture_output, text, check
+        calls.append(args)
+        exe = Path(args[0]).name
+        if exe == "pdftotext":
+            target = args[2]
+            if target.endswith("ocr_output.pdf"):
+                return _Result(
+                    0,
+                    (
+                        "INT. ROOM - NIGHT\nMARA\n"
+                        "OCR recovered screenplay dialogue with enough readable spacing.\n"
+                        "Additional words keep extraction above the meaningfulness threshold.\n"
+                    ),
+                )
+            return _Result(0, "x")
+        if exe == "ocrmypdf":
+            out_pdf = Path(args[-1])
+            out_pdf.write_bytes(b"%PDF-1.4 ocr")
+            return _Result(0, "")
+        raise AssertionError(f"unexpected command: {args}")
+
+    monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.subprocess.run", _fake_run)
+
+    class _FakePage:
+        def extract_text(self, extraction_mode: str | None = None) -> str:
+            del extraction_mode
+            return "y"
+
+    class _FakeReader:
+        def __init__(self, _path: str) -> None:
+            self.pages = [_FakePage()]
+
+    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
+
+    extracted = _extract_pdf_text(source)
+    assert "OCR recovered screenplay dialogue" in extracted
+    assert any(Path(cmd[0]).name == "ocrmypdf" for cmd in calls)
+
+
+@pytest.mark.unit
+def test_read_source_text_pdf_reports_extractor_path_diagnostics(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "diag.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_pdftotext",
+        lambda _: "x",
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_pypdf",
+        lambda _: "y",
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_ocr",
+        lambda _: "INT. ROOM - NIGHT\nMARA\nOCR path chosen with enough words to pass checks.",
+    )
+
+    def _fake_meaningful(text: str) -> bool:
+        return "OCR path chosen" in text
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._is_meaningful_pdf_text",
+        _fake_meaningful,
+    )
+
+    _content, diagnostics = read_source_text_with_diagnostics(source)
+    assert diagnostics["pdf_extractor_selected"] == "ocrmypdf"
+    assert diagnostics["pdf_extractors_attempted"] == ["pdftotext", "pypdf", "ocrmypdf"]
+    assert diagnostics["pdf_extractor_output_lengths"]["pdftotext"] == 1
+    assert diagnostics["pdf_extractor_output_lengths"]["pypdf"] == 1
+    assert diagnostics["pdf_extractor_output_lengths"]["ocrmypdf"] > 20
 
 
 @pytest.mark.unit
@@ -70,6 +296,43 @@ def test_read_source_text_extracts_docx_via_python_docx(tmp_path: Path) -> None:
     assert "MARA" in content
     assert "Testing DOCX." in content
     assert diagnostics["docx_extracted"] is True
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("fixture_name", "expected_format", "expected_marker"),
+    [
+        ("owl_creek_bridge.txt", "txt", "An Occurrence at Owl Creek Bridge"),
+        ("owl_creek_bridge_excerpt.md", "md", "An Occurrence at Owl Creek Bridge"),
+        ("run_like_hell_teaser.fountain", "fountain", "RUN LIKE HELL"),
+        ("sample_script.fdx", "fdx", "FinalDraft"),
+        ("sample_script.docx", "docx", "INT. LAB - NIGHT"),
+        ("pit_and_pendulum.pdf", "pdf", "THE PIT"),
+        ("patent_registering_votes_us272011_scan_5p.pdf", "pdf", "APPARATUS FOR REGISTERING"),
+        ("run_like_hell_teaser_scanned_5p.pdf", "pdf", "RUN"),
+    ],
+)
+def test_read_source_text_fixture_matrix_has_sane_extraction(
+    fixture_name: str, expected_format: str, expected_marker: str,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    fixture_path = workspace_root / "tests" / "fixtures" / "ingest_inputs" / fixture_name
+    content, diagnostics = read_source_text_with_diagnostics(fixture_path)
+
+    assert detect_file_format(fixture_path) == expected_format
+    assert expected_marker in content
+    assert len(content.strip()) > 40
+    assert "\x00" not in content
+
+    # Basic semantic quality gate: extraction must preserve normal word boundaries.
+    word_gap_count = len(re.findall(r"\b[A-Za-z]{3,}\s+[A-Za-z]{3,}\b", content))
+    min_word_gaps = 3 if expected_format == "docx" else 5
+    assert word_gap_count >= min_word_gaps
+
+    if expected_format == "pdf":
+        assert "reflow_applied" in diagnostics
+        assert diagnostics["repaired_character_count"] >= 0
+        assert diagnostics["original_character_count"] >= 0
 
 
 @pytest.mark.unit
@@ -218,8 +481,8 @@ def test_read_source_text_repairs_tokenized_pdf_layout(
         * 6
     )
     monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text",
-        lambda _: tokenized,
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_with_diagnostics",
+        lambda _: (tokenized, {}),
     )
 
     repaired, diagnostics = read_source_text_with_diagnostics(source)
@@ -236,15 +499,18 @@ def test_read_source_text_repairs_compact_pdf_scene_headings(
     source = tmp_path / "compact.pdf"
     source.write_bytes(b"%PDF-1.4 mock")
     monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text",
-        lambda _: "\n".join(
-            [
-                "EXT.CITYCENTRE- NIGHT",
-                "Action line.",
-                "INT.RUDDY& GREENBUILDING- ELEVATOR",
-                "Another line.",
-                "BEGINFLASHBACK:EXT.COASTLINE- DAY- PAST",
-            ]
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_with_diagnostics",
+        lambda _: (
+            "\n".join(
+                [
+                    "EXT.CITYCENTRE- NIGHT",
+                    "Action line.",
+                    "INT.RUDDY& GREENBUILDING- ELEVATOR",
+                    "Another line.",
+                    "BEGINFLASHBACK:EXT.COASTLINE- DAY- PAST",
+                ]
+            ),
+            {},
         ),
     )
 
@@ -305,25 +571,28 @@ def test_run_module_records_classification_and_extraction_diagnostics(
     source = tmp_path / "tokenized.pdf"
     source.write_bytes(b"%PDF-1.4 mock")
     monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text",
-        lambda _: "\n".join(
-            [
-                "EXT.",
-                "CITY",
-                "CENTRE",
-                "-",
-                "NIGHT",
-                "THE",
-                "MARINER",
-                "moves",
-                "EXT.",
-                "DOCKS",
-                "-",
-                "DAWN",
-                "He",
-                "stops",
-            ]
-            * 8
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_with_diagnostics",
+        lambda _: (
+            "\n".join(
+                [
+                    "EXT.",
+                    "CITY",
+                    "CENTRE",
+                    "-",
+                    "NIGHT",
+                    "THE",
+                    "MARINER",
+                    "moves",
+                    "EXT.",
+                    "DOCKS",
+                    "-",
+                    "DAWN",
+                    "He",
+                    "stops",
+                ]
+                * 8
+            ),
+            {},
         ),
     )
 

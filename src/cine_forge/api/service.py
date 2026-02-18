@@ -15,6 +15,10 @@ import yaml
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
+from cine_forge.modules.ingest.story_ingest_v1.main import (
+    SUPPORTED_FILE_FORMATS,
+    read_source_text_with_diagnostics,
+)
 
 log = logging.getLogger(__name__)
 
@@ -335,6 +339,11 @@ class OperatorConsoleService:
                 hint="List available inputs via GET /api/projects/{id}/inputs.",
                 status_code=404,
             )
+
+        file_format = target.suffix.lower().lstrip(".")
+        if file_format in SUPPORTED_FILE_FORMATS:
+            text, _diagnostics = read_source_text_with_diagnostics(target)
+            return text
         return target.read_text(encoding="utf-8", errors="replace")
 
     @staticmethod

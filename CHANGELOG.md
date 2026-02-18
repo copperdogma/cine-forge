@@ -1,5 +1,26 @@
 # Changelog
 
+## [2026-02-18] - PDF import preview fix and cross-format normalization test hardening
+
+### Added
+- Story docs for:
+  - `story-048-pdf-input-preview-decode.md`
+  - `story-049-import-normalization-format-suite.md`
+- New ingest fixtures:
+  - `tests/fixtures/ingest_inputs/patent_registering_votes_us272011_scan_5p.pdf`
+  - `tests/fixtures/ingest_inputs/run_like_hell_teaser_scanned_5p.pdf`
+- Expanded ingest/normalize coverage across all supported import formats (`txt`, `md`, `fountain`, `fdx`, `docx`, `pdf`) with semantic assertions.
+- PDF extractor diagnostics for observability (`pdf_extractors_attempted`, `pdf_extractor_selected`, `pdf_extractor_output_lengths`).
+
+### Fixed
+- Project input preview endpoint now uses ingest extraction for supported formats, preventing raw binary UTF-8 decode garbage for PDFs.
+- PDF extraction quality improved through staged fallback (`pdftotext -layout` -> `pypdf` -> `ocrmypdf`) plus layout repair handling.
+
+### Changed
+- `docs/stories.md` updated to include Stories 048 and 049 as Done.
+
+---
+
 ## [2026-02-18] - Story 039 deferred evals, Gemini multi-provider fixes, and /deploy skill
 
 ### Added
