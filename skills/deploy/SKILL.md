@@ -15,10 +15,11 @@ Tell the user this estimate before starting. If actual duration deviates by more
 ## Steps
 
 1. **Pre-flight checks** (all must pass before deploying):
-   - `git status --short` — working tree must be clean (no uncommitted changes)
+   - `git branch --show-current` — must be on `main` (or get explicit user approval for other branches)
+   - `git status --short` — working tree must be clean. If dirty, commit first (use `/check-in-diff` to ensure CHANGELOG.md is included), then continue.
+   - `git push origin main` — ensure remote is up to date with local
    - `.venv/bin/python -m pytest -m unit --tb=short -q` — all unit tests pass
    - `.venv/bin/python -m ruff check src/ tests/` — lint clean
-   - Verify on `main` branch: `git branch --show-current`
 2. **Deploy**:
    - Record the start time: `date +%s`
    - `fly deploy --depot=false --yes`
@@ -28,13 +29,19 @@ Tell the user this estimate before starting. If actual duration deviates by more
    - `curl -sf https://cineforge.copper-dog.com/api/recipes` — returns JSON array (backend routing + config loading)
    - `curl -sf https://cineforge.copper-dog.com/api/projects/recent` — returns JSON array (filesystem/volume access)
    - `curl -sf https://cineforge.copper-dog.com/api/changelog` — returns text (CHANGELOG.md in image)
-4. **UI smoke test** (use Chrome MCP browser tools):
-   - Navigate to `https://cineforge.copper-dog.com/`
-   - Screenshot — verify landing page loads (CineForge branding, project list or upload area visible)
-   - If existing projects are listed, click into one and screenshot — verify project shell renders (sidebar nav, content area)
-   - If no projects exist, upload `tests/fixtures/normalize_inputs/valid_screenplay.fountain` (7-line test script) and verify the project is created
-   - Check browser console for errors: `read_console_messages` with pattern `error|Error|ERR`
-   - Screenshot final state
+4. **UI smoke test**:
+   - **If Chrome MCP is available** (preferred):
+     - Navigate to `https://cineforge.copper-dog.com/`
+     - Screenshot — verify landing page loads (CineForge branding, project list or upload area visible)
+     - If existing projects are listed, click into one and screenshot — verify project shell renders (sidebar nav, content area)
+     - If no projects exist, upload `tests/fixtures/normalize_inputs/valid_screenplay.fountain` (7-line test script) and verify the project is created
+     - Check browser console for errors: `read_console_messages` with pattern `error|Error|ERR`
+     - Screenshot final state
+   - **If Chrome MCP is unavailable** (fallback):
+     - `curl -sf https://cineforge.copper-dog.com/` — returns HTML with `<title>CineForge</title>`
+     - Verify the HTML references a JS bundle (`assets/index-*.js`)
+     - `curl -sf -o /dev/null -w "%{http_code}"` the JS bundle URL — returns 200
+     - Note in report that browser-based testing was skipped and why
    - Record end time: `date +%s`
 5. **Report** (only after ALL smoke tests pass):
    - What was deployed (commit hash, key changes)
