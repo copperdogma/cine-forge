@@ -1047,12 +1047,15 @@ class OperatorConsoleService:
 
     @staticmethod
     def _is_valid_project_dir(path: Path) -> bool:
-        return (
-            path.exists()
-            and path.is_dir()
-            and (path / "artifacts").exists()
-            and (path / "graph").exists()
-        )
+        try:
+            return (
+                path.exists()
+                and path.is_dir()
+                and (path / "artifacts").exists()
+                and (path / "graph").exists()
+            )
+        except OSError:
+            return False
 
     @staticmethod
     def _write_run_meta(run_dir: Path, project_id: str, project_path: Path) -> None:
