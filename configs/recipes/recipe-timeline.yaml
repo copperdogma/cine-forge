@@ -1,0 +1,12 @@
+recipe_id: timeline
+description: "Build project timeline artifact from stored scene outputs."
+project: {}
+stages:
+  - id: timeline
+    module: timeline_build_v1
+    params: {}
+    needs: []
+    store_inputs:
+      scene_index: scene_index
+    store_inputs_optional:
+      continuity_index: continuity_index

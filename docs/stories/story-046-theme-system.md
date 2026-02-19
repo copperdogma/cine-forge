@@ -1,5 +1,8 @@
 # Story 046 — Theme System (Light/Dark/Auto + Palettes)
 
+**Architecture Note (2026-02-19)**
+- Needs update due to architectural changes since story was written: UI was flattened from ui/operator-console to ui/, so referenced paths and implementation touchpoints should be updated to current structure.
+
 **Phase**: 2.5 — UI
 **Priority**: Medium
 **Status**: Draft

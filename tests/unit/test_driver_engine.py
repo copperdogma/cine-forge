@@ -1044,6 +1044,36 @@ def _write_store_inputs_recipe(workspace_root: Path, store_inputs: dict[str, str
     return recipe_path
 
 
+def _write_store_inputs_optional_recipe(
+    workspace_root: Path, store_inputs_optional: dict[str, str]
+) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "store_inputs_optional_recipe.yaml"
+    store_inputs_optional_yaml = "\n".join(
+        f"        {k}: {v}" for k, v in store_inputs_optional.items()
+    )
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: store-inputs-optional-recipe",
+                "description: optional store inputs test",
+                "stages:",
+                "  - id: consumer",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: project",
+                "    needs: []",
+                "    store_inputs_optional:",
+                store_inputs_optional_yaml,
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
 def _write_store_inputs_overlap_recipe(workspace_root: Path) -> Path:
     recipe_dir = workspace_root / "configs" / "recipes"
     recipe_dir.mkdir(parents=True, exist_ok=True)
@@ -1183,6 +1213,91 @@ def test_store_inputs_rejects_overlap_with_needs(tmp_path: Path) -> None:
     overlap_recipe = _write_store_inputs_overlap_recipe(tmp_path)
     with pytest.raises(ValueError, match="both 'needs' and 'store_inputs'"):
         engine.run(recipe_path=overlap_recipe, run_id="overlap-run")
+
+
+@pytest.mark.unit
+def test_store_inputs_optional_uses_store_when_available(tmp_path: Path) -> None:
+    _write_echo_module(tmp_path)
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    producer_path = recipe_dir / "producer.yaml"
+    producer_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: producer-recipe",
+                "description: produce dict artifact",
+                "stages:",
+                "  - id: a",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: dict",
+                "      entity_id: project",
+                "      payload:",
+                "        hello: optional-world",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    engine = DriverEngine(workspace_root=tmp_path)
+    engine.run(recipe_path=producer_path, run_id="producer-run")
+
+    consumer_recipe = _write_store_inputs_optional_recipe(tmp_path, {"upstream": "dict"})
+    state = engine.run(recipe_path=consumer_recipe, run_id="consumer-run")
+    assert state["stages"]["consumer"]["status"] == "done"
+    echo_ref = engine.store.list_versions("echo", "project")[-1]
+    echo_artifact = engine.store.load_artifact(echo_ref)
+    assert echo_artifact.data == {"hello": "optional-world"}
+
+
+@pytest.mark.unit
+def test_store_inputs_optional_skips_when_missing_or_unhealthy(tmp_path: Path) -> None:
+    _write_echo_module(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    consumer_recipe = _write_store_inputs_optional_recipe(tmp_path, {"upstream": "dict"})
+    state_missing = engine.run(recipe_path=consumer_recipe, run_id="optional-missing-run")
+    assert state_missing["stages"]["consumer"]["status"] == "done"
+    echo_ref_missing = engine.store.list_versions("echo", "project")[-1]
+    echo_artifact_missing = engine.store.load_artifact(echo_ref_missing)
+    assert echo_artifact_missing.data == {"k": "v"}
+
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    producer_path = recipe_dir / "producer.yaml"
+    producer_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: producer-recipe",
+                "description: produce dict artifact",
+                "stages:",
+                "  - id: a",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: dict",
+                "      entity_id: project",
+                "      payload:",
+                "        hello: stale-world",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    engine.run(recipe_path=producer_path, run_id="producer-run")
+    dict_ref = engine.store.list_versions("dict", "project")[-1]
+    graph = engine.store.graph._read_graph()
+    graph["nodes"][dict_ref.key()]["health"] = ArtifactHealth.STALE.value
+    engine.store.graph._write_graph(graph)
+
+    state_unhealthy = engine.run(
+        recipe_path=consumer_recipe,
+        run_id="optional-unhealthy-run",
+        force=True,
+    )
+    assert state_unhealthy["stages"]["consumer"]["status"] == "done"
+    echo_ref_unhealthy = engine.store.list_versions("echo", "project")[-1]
+    echo_artifact_unhealthy = engine.store.load_artifact(echo_ref_unhealthy)
+    assert echo_artifact_unhealthy.data == {"k": "v"}
 
 
 @pytest.mark.unit

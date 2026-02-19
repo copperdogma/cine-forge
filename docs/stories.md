@@ -48,7 +48,7 @@ NOTES from Cam:
 | 011d | Operator Console — Design & Build | 2.5 — UI | High | Done | [story-011d](stories/story-011d-operator-console-build.md) |
 | 011e | Operator Console — UX Golden Path | 2.5 — UI | High | Done | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 011f | Operator Console — Conversational AI Chat | 2.5 — UI | High | Done | [story-011f](stories/story-011f-conversational-ai-chat.md) |
-| 012 | Timeline Data Artifact | 3 — Timeline | Medium | To Do | [story-012](stories/story-012-timeline-artifact.md) |
+| 012 | Timeline Data Artifact | 3 — Timeline | Medium | Done | [story-012](stories/story-012-timeline-artifact.md) |
 | 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | To Do | [story-013](stories/story-013-track-system.md) |
 | 014 | Role System Foundation | 4 — Role System | High | To Do | [story-014](stories/story-014-role-system-foundation.md) |
 | 015 | Director and Canon Guardians | 4 — Role System | High | To Do | [story-015](stories/story-015-director-canon-guardians.md) |

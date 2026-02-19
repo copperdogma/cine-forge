@@ -1,0 +1,11 @@
+module_id: timeline_build_v1
+stage: timeline
+description: "Builds immutable timeline artifact from scene index (+ optional continuity index)."
+input_schemas: ["scene_index", "continuity_index"]
+output_schemas: ["timeline"]
+parameters:
+  default_scene_duration_seconds:
+    type: number
+    required: false
+    default: 60.0
+    description: "Fallback duration for each scene when no stronger estimate exists."

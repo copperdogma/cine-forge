@@ -46,6 +46,7 @@ from cine_forge.schemas import (
     Scene,
     SceneIndex,
     SchemaRegistry,
+    Timeline,
 )
 
 _DEFAULT_STAGE_FALLBACK_MODELS: dict[str, list[str]] = {
@@ -86,6 +87,7 @@ class DriverEngine:
         self.schemas.register("canonical_script", CanonicalScript)
         self.schemas.register("scene", Scene)
         self.schemas.register("scene_index", SceneIndex)
+        self.schemas.register("timeline", Timeline)
         self.schemas.register("project_config", ProjectConfig)
         self.schemas.register("bible_manifest", BibleManifest)
         self.schemas.register("character_bible", CharacterBible)
@@ -406,6 +408,7 @@ class DriverEngine:
                             "run_id": run_id,
                             "stage_id": stage_id,
                             "runtime_params": resolved_runtime_params,
+                            "project_dir": str(self.project_dir),
                         },
                     )
                     with state_lock:
@@ -833,7 +836,13 @@ class DriverEngine:
     ) -> tuple[dict[str, Any], list[ArtifactRef]]:
         stage_by_id = {stage.id: stage for stage in recipe.stages}
         stage = stage_by_id[stage_id]
-        if not stage.needs and not stage.store_inputs:
+        if (
+            not stage.needs
+            and not stage.needs_all
+            and not stage.store_inputs
+            and not stage.store_inputs_optional
+            and not stage.store_inputs_all
+        ):
             return {}, []
         collected: dict[str, Any] = {}
         lineage: list[ArtifactRef] = []
@@ -878,6 +887,21 @@ class DriverEngine:
                     f"'{health.value if health else 'unknown'}'. Re-run the upstream "
                     f"recipe to produce a healthy version."
                 )
+            artifact = self.store.load_artifact(artifact_ref=latest_ref)
+            collected[input_key] = artifact.data
+            lineage.append(latest_ref)
+
+        # Resolve optional store_inputs from artifact store
+        for input_key, artifact_type in stage.store_inputs_optional.items():
+            versions = self.store.list_versions(
+                artifact_type=artifact_type, entity_id="project"
+            )
+            if not versions:
+                continue
+            latest_ref = versions[-1]
+            health = self.store.graph.get_health(latest_ref)
+            if health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
+                continue
             artifact = self.store.load_artifact(artifact_ref=latest_ref)
             collected[input_key] = artifact.data
             lineage.append(latest_ref)
@@ -1102,6 +1126,8 @@ class DriverEngine:
             "stage_params": stage.params,
             "stage_needs": stage.needs,
             "stage_store_inputs": stage.store_inputs,
+            "stage_store_inputs_optional": stage.store_inputs_optional,
+            "stage_store_inputs_all": stage.store_inputs_all,
             "module_manifest": module_manifest.model_dump(mode="json"),
             "module_entrypoint_hash": _hash_file(module_entrypoint),
             "module_code_hash": module_code_hash,

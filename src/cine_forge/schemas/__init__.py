@@ -54,6 +54,7 @@ from .scene import (
     ScriptElement,
     SourceSpan,
 )
+from .timeline import Timeline, TimelineEntry
 
 __all__ = [
     "Artifact",
@@ -96,6 +97,8 @@ __all__ = [
     "Scene",
     "SceneIndexEntry",
     "SceneIndex",
+    "TimelineEntry",
+    "Timeline",
     "SchemaRegistry",
     "ValidationErrorDetail",
     "ValidationResult",

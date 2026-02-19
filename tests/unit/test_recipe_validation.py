@@ -112,3 +112,26 @@ def test_recipe_validation_schema_mismatch() -> None:
     )
     with pytest.raises(ValueError, match="Schema mismatch"):
         validate_recipe(recipe=recipe, module_registry=modules, schema_registry=_registry())
+
+
+@pytest.mark.unit
+def test_recipe_validation_rejects_overlap_with_store_inputs_optional() -> None:
+    recipe = Recipe(
+        recipe_id="r5",
+        description="overlap optional",
+        stages=[
+            RecipeStage(id="a", module="module.source"),
+            RecipeStage(
+                id="b",
+                module="module.consumer",
+                needs=["a"],
+                store_inputs_optional={"a": "dict"},
+            ),
+        ],
+    )
+    with pytest.raises(ValueError, match="both 'needs' and 'store_inputs'"):
+        validate_recipe(
+            recipe=recipe,
+            module_registry=_module_registry(),
+            schema_registry=_registry(),
+        )

@@ -1,5 +1,32 @@
 # Changelog
 
+## [2026-02-19] - Timeline artifact implementation and ordering-model hardening (Story 012)
+
+### Added
+- New immutable `timeline` artifact model and schema:
+  - `src/cine_forge/schemas/timeline.py`
+  - schema exports in `src/cine_forge/schemas/__init__.py`
+- New timeline build module:
+  - `src/cine_forge/modules/timeline/timeline_build_v1/module.yaml`
+  - `src/cine_forge/modules/timeline/timeline_build_v1/main.py`
+- New timeline recipe:
+  - `configs/recipes/recipe-timeline.yaml`
+- Timeline-focused tests:
+  - `tests/unit/test_timeline_module.py`
+  - `tests/integration/test_timeline_integration.py`
+
+### Changed
+- Driver schema registration now includes `timeline`.
+- Stage module context now includes `project_dir` for store-aware module execution.
+- Recipe/engine input resolution now supports optional cross-recipe dependencies via `store_inputs_optional`:
+  - `src/cine_forge/driver/recipe.py`
+  - `src/cine_forge/driver/engine.py`
+- Timeline reorder operations now require exact scene-id set matching (reject missing/extra IDs).
+- Story tracking/docs updates:
+  - Story 012 marked `Done` with full work log evidence.
+  - Story 013 rewritten to align with current timeline-first architecture.
+  - Story 046 annotated with architecture update note.
+
 ## [2026-02-19] - Full Storybook skill-pack sync (scout, triage, ADR/init, and create-story templates)
 
 ### Added
