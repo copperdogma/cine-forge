@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-02-19] - Cross-CLI skills unification and canonical agent skill layout (Story 053)
+
+### Added
+- Canonical skill source tree at `.agents/skills/` including `create-cross-cli-skill` meta-skill for portable skill creation.
+- Skill synchronization tooling via `scripts/sync-agent-skills.sh` and Makefile targets `skills-sync` / `skills-check`.
+- Gemini CLI compatibility wrappers generated under `.gemini/commands/*.toml` from canonical `SKILL.md` files.
+
+### Changed
+- Story tracking updated: Story 053 marked `Done` in both `docs/stories.md` and `docs/stories/story-053-cross-cli-skills-unification.md`.
+- Claude and Cursor skill discovery now point to canonical source via symlinks (`.claude/skills`, `.cursor/skills`).
+- Legacy prompt-era Cursor commands moved to `.cursor/commands.legacy/` to remove active duplication while preserving reference history.
+
 ## [2026-02-19] - Story 049 OCR-noisy PDF normalization fix and production validation
 
 ### Added

@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTHONPATH ?= src
 
-.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format
+.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format skills-sync skills-check
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest
@@ -26,3 +26,9 @@ lint:
 
 format:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m ruff format .
+
+skills-sync:
+	./scripts/sync-agent-skills.sh
+
+skills-check:
+	./scripts/sync-agent-skills.sh --check

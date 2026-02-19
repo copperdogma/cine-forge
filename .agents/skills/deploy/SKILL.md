@@ -1,3 +1,9 @@
+---
+name: deploy
+description: Deploy CineForge to production on Fly.io with preflight checks and smoke validation.
+user-invocable: true
+---
+
 # deploy
 
 Deploy CineForge to production on Fly.io.

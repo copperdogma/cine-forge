@@ -89,6 +89,7 @@ NOTES from Cam:
 | 050 | Provider Resilience: Retries, Fallbacks, and Stage Resume | Cross-Cutting | High | Done | [story-050](stories/story-050-provider-resilience-retry-fallback.md) |
 | 051 | Chat UX Polish: Ordering, Naming, and Progress Card | 2.5 — UI | High | Done | [story-051](stories/story-051-chat-ux-polish.md) |
 | 052 | Streaming Artifact Yield: Live Per-Entity Progress | Cross-Cutting | Medium | Draft | [story-052](stories/story-052-streaming-artifact-yield.md) |
+| 053 | Cross-CLI Skills/Prompts Unification | Cross-Cutting | High | Done | [story-053](stories/story-053-cross-cli-skills-unification.md) |
 
 ## Phase Summary
 

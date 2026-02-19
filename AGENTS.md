@@ -333,6 +333,7 @@ CineForge is deployed on **Fly.io** at **https://cineforge.copper-dog.com** (sin
 Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title`: summary plus explanation including file paths.
 
 ### Effective Patterns
+- 2026-02-19 — Canonical skills root with thin adapters: Keep `.agents/skills` as the only source of truth, then wire `.claude/skills` and `.cursor/skills` as symlinks and generate `.gemini/commands/*.toml` wrappers from canonical `SKILL.md` files via `scripts/sync-agent-skills.sh`. This removes prompt duplication and keeps cross-CLI behavior aligned with one edit surface.
 - 2026-02-15 — Design-in-browser with theme showcase: Instead of writing design docs, build a `/theme` route with live-switchable CSS variable themes. Showcase real shadcn/ui components (buttons, cards, badges, inputs, layout skeleton) so the user reacts to actual rendered UI, not descriptions. This produces better feedback, faster decisions, and a working design token system as a side effect. See `AGENTS.md > UI Development Workflow` for the full process (`ui/src/pages/ThemeShowcase.tsx`).
 - 2026-02-11 — Story-first implementation: Implement stories in dependency order and validate each with focused smoke checks.
 - 2026-02-12 — FDX-first screenplay intake: detect Final Draft XML early and normalize to Fountain before AI routing.
