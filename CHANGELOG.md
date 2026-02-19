@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-02-19] - Fix TypeScript build parity between local validation and production
+
+### Fixed
+- Validate and deploy skills now use `tsc -b` instead of `tsc --noEmit`, matching the production Docker build. `tsc --noEmit` silently skipped strict checks (`noUnusedLocals`) due to root `tsconfig.json` having `"files": []`.
+
+---
+
 ## [2026-02-19] - Chat UX polish, progress card, live counts, and parallel execution (Story 051)
 
 ### Added

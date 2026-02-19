@@ -43,6 +43,7 @@ Outlier guard:
    - `git push origin main` — ensure remote is up to date with local
    - `.venv/bin/python -m pytest -m unit --tb=short -q` — all unit tests pass
    - `.venv/bin/python -m ruff check src/ tests/` — lint clean
+   - `cd ui && npx tsc -b` — TypeScript build check (MUST use `-b`, not `--noEmit` — `-b` follows tsconfig references and applies `noUnusedLocals` etc. from `tsconfig.app.json`, matching the production Docker build)
 2. **Deploy**:
    - Record the start time: `date +%s`
    - `fly deploy --depot=false --yes`

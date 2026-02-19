@@ -23,8 +23,13 @@ Use this skill to assess what was built against requirements.
 3. If story/ticket known:
    - map each requirement/task to `Met`, `Partial`, `Unmet`
    - provide evidence per item
-4. Run/inspect relevant test and lint evidence.
+4. Run/inspect relevant test and lint evidence:
+   - `.venv/bin/python -m pytest -m unit --tb=short -q` — all unit tests pass
+   - `.venv/bin/python -m ruff check src/ tests/` — lint clean
+   - `cd ui && npx tsc -b` — TypeScript build check (must use `-b`, NOT `--noEmit` — see note below)
 5. Produce findings prioritized by severity.
+
+**IMPORTANT**: Always use `tsc -b` (build mode), never `tsc --noEmit`. The root `tsconfig.json` has `"files": []` with no linting rules — `tsc --noEmit` skips the strict checks in `tsconfig.app.json` (like `noUnusedLocals`). `tsc -b` follows `references` and applies the full config, matching what `npm run build` does in production.
 
 ## Output Format
 
