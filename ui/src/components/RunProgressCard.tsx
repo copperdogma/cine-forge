@@ -90,7 +90,6 @@ export function RunProgressCard({ runId }: { runId: string }) {
   const stages = runState.state.stages
   const recipeId = runState.state.recipe_id
   const stageIds = getOrderedStageIds(recipeId, Object.keys(stages))
-  const isFinished = !!runState.state.finished_at
 
   return (
     <div className="space-y-0.5 py-1">
