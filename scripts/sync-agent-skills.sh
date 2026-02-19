@@ -35,19 +35,23 @@ ensure_symlink() {
   ln -s "$target_rel" "$link_path"
 }
 
-parse_description() {
+parse_frontmatter_field() {
   local skill_file="$1"
-  awk '
+  local field="$2"
+  awk -v field="$field" '
     BEGIN { in_fm=0; fm_seen=0 }
     /^---[[:space:]]*$/ {
       if (fm_seen == 0) { in_fm=1; fm_seen=1; next }
       if (in_fm == 1) { in_fm=0; next }
     }
-    in_fm == 1 && /^description:[[:space:]]*/ {
-      sub(/^description:[[:space:]]*/, "", $0)
-      gsub(/^"|"$/, "", $0)
-      print $0
-      exit
+    in_fm == 1 {
+      pat = "^" field ":[[:space:]]*"
+      if ($0 ~ pat) {
+        sub(pat, "", $0)
+        gsub(/^"|"$/, "", $0)
+        print $0
+        exit
+      }
     }
   ' "$skill_file"
 }
@@ -70,13 +74,25 @@ ensure_symlink "$CURSOR_LINK" "../.agents/skills"
 
 mkdir -p "$GEMINI_DIR"
 
-# Generate command wrappers from canonical skills.
+# In apply mode, clean stale wrappers before regenerating
+if [[ "$MODE" != "check" ]]; then
+  rm -f "$GEMINI_DIR"/*.toml
+fi
+
+# Generate command wrappers from invocable skills.
 skill_count=0
 while IFS= read -r skill_file; do
   [[ -n "$skill_file" ]] || continue
   skill_dir="$(dirname "$skill_file")"
   skill_name="$(basename "$skill_dir")"
-  desc="$(parse_description "$skill_file")"
+
+  # Skip non-invocable skills (e.g., deploy)
+  invocable="$(parse_frontmatter_field "$skill_file" "user-invocable")"
+  if [[ "$invocable" == "false" ]]; then
+    continue
+  fi
+
+  desc="$(parse_frontmatter_field "$skill_file" "description")"
   if [[ -z "$desc" ]]; then
     desc="Run the $skill_name project skill from .agents/skills."
   fi

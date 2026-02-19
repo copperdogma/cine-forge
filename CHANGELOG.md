@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-02-19] - Align cross-CLI skill system with latest storybook architecture
+
+### Changed
+- Updated `scripts/sync-agent-skills.sh` to match the new canonical flow:
+  - parse arbitrary frontmatter fields
+  - generate Gemini wrappers only for `user-invocable` skills
+  - clear stale Gemini wrappers before regeneration
+- Updated `.agents/skills/create-cross-cli-skill/SKILL.md` to require `user-invocable` metadata and include `templates/` as an optional colocated resource.
+- Regenerated `.gemini/commands/*.toml` wrappers from canonical skill definitions after sync.
+
 ## [2026-02-19] - Cross-CLI skills unification and canonical agent skill layout (Story 053)
 
 ### Added

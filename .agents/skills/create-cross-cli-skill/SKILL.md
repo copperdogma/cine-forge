@@ -4,7 +4,7 @@ description: Create a new project skill in canonical format and sync it for Code
 user-invocable: true
 ---
 
-# create-cross-cli-skill
+# /create-cross-cli-skill
 
 Use this skill whenever the user asks to create a new skill.
 
@@ -15,12 +15,13 @@ Create only:
 
 Optional colocated resources:
 - `.agents/skills/<skill-name>/scripts/`
+- `.agents/skills/<skill-name>/templates/`
 - `.agents/skills/<skill-name>/references/`
 - `.agents/skills/<skill-name>/assets/`
 
 ## Rules
 
-1. Use frontmatter with `name` and `description`.
+1. Use frontmatter with `name`, `description`, and `user-invocable: true` (or `false` for scaffolds not yet ready).
 2. Keep instructions implementation-oriented and testable.
 3. Avoid tool-specific primary sources (`.cursor/commands`, `.claude/commands`) for skill content.
 4. After creating or changing skills, run: `scripts/sync-agent-skills.sh`
