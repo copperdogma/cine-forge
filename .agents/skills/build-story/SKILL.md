@@ -1,44 +1,66 @@
 ---
 name: build-story
-description: Implement a story with checklist hygiene, validation, and work-log discipline.
+description: Execute a story from planning through implementation with work-log discipline
 user-invocable: true
 ---
 
-# build-story
+# /build-story [story-number]
 
-Use this skill to execute a story in `docs/stories/` from planning through implementation updates.
-
-## Inputs
-
-- Story reference: id, title, or path.
-- Optional scope constraints (files/modules to focus on).
+Execute a development story end-to-end.
 
 ## Steps
 
-1. Resolve the target story from `docs/stories.md` if needed.
-2. Open story file and verify required sections:
-   - Goal
-   - Acceptance Criteria
-   - Tasks
-   - Work Log
-3. Normalize tasks:
-   - ensure actionable checkbox items exist
-   - preserve intent of existing items
-4. Execute implementation for selected scope.
-5. Run relevant checks (`make test-unit` minimum).
-6. Update:
-   - task checkboxes
-   - acceptance criteria status (if tracked)
-   - work log entries with evidence and next steps
+1. **Resolve story** — Read `docs/stories/story-{NNN}.md`. Verify status is Pending or In Progress.
 
-## Work Log Entry Format
+2. **Understand context** — Read all spec refs, dependency stories, and referenced ADRs. Read the "Files to Modify" list if present.
 
-- `YYYYMMDD-HHMM — action summary`
-- Result status
-- Evidence (files/commands)
-- Next step or blocker
+3. **Plan** — Review tasks and acceptance criteria. If anything is ambiguous, ask before proceeding. Identify files to create/modify.
+
+4. **AI-first check** — Before writing any complex logic, review the story's "AI Considerations" section. For each significant piece of work, ask:
+   - Is this a reasoning/language/understanding problem? → **Try an LLM call first** (structured output with Zod schema via Vercel AI SDK)
+   - Is this orchestration/storage/UI? → Write code
+   - Have you checked current SOTA? Your training data may be stale — web search if unsure what models can do today
+   - See AGENTS.md "AI-First Problem Solving" for full guidance
+
+5. **Implement** — Work through tasks in order. For each task:
+   - Mark task as in progress in the story file
+   - Do the work
+   - Run `pnpm typecheck` after every file change
+   - Run relevant tests
+   - Mark task complete with brief evidence
+
+6. **Verify** — Run full checks:
+   - `pnpm typecheck` (zero errors)
+   - `pnpm test` (all pass)
+   - `pnpm lint` (clean)
+   - Review each acceptance criterion — is it met?
+
+7. **Update docs** — Search all docs in the codebase and update any related to what we touched.
+
+8. **Verify Central Tenets** — Check each tenet checkbox in the story:
+   - Tenet 0: Could any user data be lost? Is capture-first preserved?
+   - Tenet 1: Is the code AI-friendly? Would another AI session understand it?
+   - Tenet 2: Did we over-engineer something AI will handle better soon?
+   - Tenet 3: Are files appropriately sized? Types centralized?
+   - Tenet 4: Is the work log verbose enough for handoff?
+   - Tenet 5: Did we check: can this be simplified toward the ideal?
+
+9. **Update work log** — Add dated entry: what was done, decisions made, evidence, any blockers or follow-ups.
+
+10. **Update status** — If all acceptance criteria met and checks pass, mark story Done. Update `docs/stories.md` index.
+
+## Work Log Format
+
+```
+YYYYMMDD-HHMM — action: result, evidence, next step
+```
+
+Entries should be verbose. Capture decisions, failures, solutions, and learnings. These are build artifacts — any future AI session should be able to pick up context from the log.
 
 ## Guardrails
 
-- Do not mark story done without explicit validation.
-- Do not commit or push unless user asks.
+- Never skip acceptance criteria verification
+- Never mark Done if any check fails
+- Never commit without running typecheck + tests
+- Always update the work log, even for partial progress
+- If blocked, record the blocker and stop — don't guess

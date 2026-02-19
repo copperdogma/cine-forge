@@ -1,5 +1,25 @@
 # Changelog
 
+## [2026-02-19] - Full Storybook skill-pack sync (scout, triage, ADR/init, and create-story templates)
+
+### Added
+- Imported additional canonical skills from Storybook: `create-adr`, `init-project`, `scout`, and `triage`.
+- Added `create-story` scaffolding assets:
+  - `.agents/skills/create-story/scripts/start-story.sh`
+  - `.agents/skills/create-story/templates/story.md`
+  - `.agents/skills/create-story/templates/stories-index.md`
+- Generated new Gemini wrappers for added skills:
+  - `.gemini/commands/create-adr.toml`
+  - `.gemini/commands/init-project.toml`
+  - `.gemini/commands/scout.toml`
+  - `.gemini/commands/triage.toml`
+
+### Changed
+- Synced shared existing skill definitions to Storybook’s latest canonical wording and workflow structure:
+  - `build-story`, `check-in-diff`, `create-story`, `deploy`, `mark-story-done`, `validate`
+- Regenerated `.gemini/commands/*.toml` wrappers from synced canonical skills.
+- `deploy` Gemini wrapper removed because deploy is now non-invocable in canonical frontmatter (`user-invocable: false`).
+
 ## [2026-02-19] - Align cross-CLI skill system with latest storybook architecture
 
 ### Changed

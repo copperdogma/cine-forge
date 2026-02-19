@@ -1,27 +1,33 @@
 ---
 name: check-in-diff
-description: Audit local git changes and prepare a safe commit checklist and message.
+description: Audit git changes before commit — review diff, flag risks, draft commit message
 user-invocable: true
 ---
 
-# check-in-diff
+# /check-in-diff
 
-Use this skill when preparing to commit.
+Audit current git changes before committing.
 
 ## Steps
 
-1. Review local state:
-   - `git status --short`
-   - `git diff --stat`
-   - `git diff`
-   - `git ls-files --others --exclude-standard`
-2. Include untracked files in analysis.
-3. Flag risks:
-   - secrets or credentials
-   - generated outputs (`output/`)
-   - unintended broad edits
-4. Confirm docs/tests alignment with code changes.
-5. Ensure CHANGELOG.md is updated:
+1. **Review state:**
+   - `git status` — what's modified, staged, untracked?
+   - `git diff` — what are the actual changes?
+   - `git diff --staged` — what's already staged?
+
+2. **Flag risks:**
+   - Secrets, API keys, credentials, .env files?
+   - Large binary files or build artifacts?
+   - Changes outside the scope of the current story?
+   - Schema changes without migrations?
+   - Deleted tests or weakened assertions?
+
+3. **Check alignment:**
+   - Do changes match the story's task list?
+   - Are docs updated for any behavioral changes?
+   - Are new files in the right locations per project structure?
+
+4. **Ensure CHANGELOG.md is updated:**
    - Check whether `CHANGELOG.md` appears in `git diff --stat` or `git status --short`.
    - If CHANGELOG.md is already in the diff, verify the entry covers the current changes.
    - If CHANGELOG.md is absent from the diff, write an entry now:
@@ -43,19 +49,21 @@ Use this skill when preparing to commit.
 
      - Use today's date. Only include subsections that apply.
      - Include CHANGELOG.md in the staging plan.
-6. Draft:
-   - concise commit message (why-focused)
-   - staging plan (which files to include — always include CHANGELOG.md)
 
-## Output Template
+5. **Draft commit message:**
+   - Summary line (imperative, <72 chars)
+   - Body: what changed and why
+   - Reference story number if applicable
 
-- Change summary by area
-- Risk findings (if any)
-- CHANGELOG.md status (already updated / entry written)
-- Proposed commit message
-- Suggested staging/commit commands
+6. **Propose staging plan:**
+   - Which files to stage (specific files, not `git add .`)
+   - Any files to exclude from this commit
+   - Always include CHANGELOG.md
+   - Suggest splitting into multiple commits if changes are unrelated
 
 ## Guardrails
 
-- Never commit/push unless the user explicitly asks.
-- Never suggest committing secrets or local runtime outputs.
+- NEVER commit or push without explicit request from the user
+- NEVER suggest committing secrets, credentials, .env files, or build artifacts
+- NEVER use `git add .` or `git add -A` — always stage specific files
+- Flag any changes that look unintentional or outside current story scope

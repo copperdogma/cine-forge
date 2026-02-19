@@ -1,27 +1,31 @@
 ---
 name: mark-story-done
-description: Validate a story is complete and update story statuses safely.
+description: Validate a story is complete and update statuses safely
 user-invocable: true
 ---
 
-# mark-story-done
+# /mark-story-done [story-number]
 
-Use this skill to close a completed story.
+Close a completed story after validation.
 
 ## Inputs
 
-- Story id/title/path (optional if inferable from context).
+- Story id, title, or path (optional if inferable from context)
 
 ## Validation Steps
 
-1. Resolve story file.
-2. Validate:
-   - tasks complete
-   - acceptance criteria met
-   - work log current
-   - dependency constraints addressed
-   - relevant tests/checks executed
-3. Produce completion report with any remaining gaps.
+1. **Resolve story file** — Read `docs/stories/story-{NNN}-*.md`.
+
+2. **Validate completeness:**
+   - [ ] All task checkboxes checked
+   - [ ] All acceptance criteria met (with evidence)
+   - [ ] Work log is current
+   - [ ] Dependencies addressed
+   - [ ] `pnpm typecheck && pnpm test && pnpm lint` — all pass
+   - [ ] Tenet verification checkbox checked
+   - [ ] Doc update checkbox checked
+
+3. **Produce completion report** — List any remaining gaps.
 
 ## Apply Completion
 
@@ -31,12 +35,12 @@ If complete (or user approves remaining gaps):
 2. Update corresponding row in `docs/stories.md` to `Done`.
 3. Append completion note to story work log with date and evidence.
 4. Update CHANGELOG.md:
-   - Grep CHANGELOG.md for the story number (e.g. `grep -i "Story 042" CHANGELOG.md`).
-   - If an entry already exists, skip — do not duplicate.
-   - If no entry exists, prepend a new entry after the `# Changelog` header using Keep a Changelog format:
+   - Search CHANGELOG.md for the story number (e.g., `Story 001`)
+   - If an entry already exists, skip — do not duplicate
+   - If no entry exists, prepend a new entry after the `# Changelog` header:
 
      ```
-     ## [YYYY-MM-DD] - Short summary (Story NNN)
+     ## [YYYY-MM-DD] — Short summary (Story NNN)
 
      ### Added
      - ...
@@ -48,13 +52,14 @@ If complete (or user approves remaining gaps):
      - ...
      ```
 
-   - Use today's date. Derive the summary from the story file's Goal section.
-   - Only include `### Added`, `### Changed`, `### Fixed` subsections that apply.
+   - Use today's date. Derive the summary from the story's Goal section.
+   - Only include subsections that apply.
 
 If not complete, stop and list blockers.
 
 ## Guardrails
 
-- Never hide gaps; always report unmet criteria explicitly.
-- Ask for confirmation when unresolved items remain.
-- Do not duplicate CHANGELOG.md entries — always check before writing.
+- Never hide gaps — always report unmet criteria explicitly
+- Ask for confirmation when unresolved items remain
+- Do not duplicate CHANGELOG.md entries — always check before writing
+- Never mark Done without running the full check suite
