@@ -2,7 +2,7 @@
 
 **Phase**: 1 — MVP Pipeline
 **Priority**: High
-**Status**: To Do
+**Status**: Done
 
 ## Goal
 
@@ -26,9 +26,9 @@ Build explicit import-normalization coverage across supported input formats (`tx
 - [x] Run `make test-unit` and record result.
 - [x] Perform manual per-format output inspection and log findings.
 - [x] Update story index with Story 049.
-- [ ] Add regression coverage for OCR-noisy screenplay PDFs that extract readable text but are misclassified as prose and rejected by normalization.
-- [ ] Tune ingest classification and/or normalization pre-cleanup for OCR-noisy screenplay PDFs so canonical script output is non-empty when screenplay structure is present.
-- [ ] Validate end-to-end on production against `the-body-4` input `d93d9cc3_The_Body.pdf` (or equivalent OCR-noisy screenplay fixture) through `project_config`.
+- [x] Add regression coverage for OCR-noisy screenplay PDFs that extract readable text but are misclassified as prose and rejected by normalization.
+- [x] Tune ingest classification and/or normalization pre-cleanup for OCR-noisy screenplay PDFs so canonical script output is non-empty when screenplay structure is present.
+- [x] Validate end-to-end on production against `the-body-4` input `d93d9cc3_The_Body.pdf` (or equivalent OCR-noisy screenplay fixture) through `project_config`.
 
 ## Work Log
 
@@ -170,3 +170,43 @@ Build explicit import-normalization coverage across supported input formats (`tx
 - Result: Success
 - Notes: The previous entry heading used `1623`; actual action time was `1622`.
 - Next: Continue with deferred OCR/noisy-PDF implementation tasks in Story 049.
+
+### 20260218-1728 — Closed OCR-noisy PDF misclassification regression and validated equivalent end-to-end path
+
+- Action: Implemented OCR-noisy screenplay safeguards in `script_normalize_v1`, added regression tests for misclassified PDF screenplay routing, and validated end-to-end run with OCR-noisy screenplay fixture through `project_config`.
+- Result: Success
+- Evidence:
+  - Code changes: `src/cine_forge/modules/ingest/script_normalize_v1/main.py` (tier gating now preserves low-confidence misclassified screenplay paths while still rejecting high-confidence prose; added OCR-tolerant PDF screenplay signal detection).
+  - Regression tests: `tests/unit/test_script_normalize_module.py` (`test_is_screenplay_path_detects_ocr_noisy_pdf_screenplay`, `test_run_module_routes_ocr_noisy_pdf_misclassified_as_prose_to_tier2`).
+  - Validation commands:
+    - `/Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m pytest tests/unit/test_script_normalize_module.py tests/unit/test_normalize_tiers.py -q` (`23 passed`)
+    - `/Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m pytest tests/integration/test_story_ingest_integration.py -q` (`17 passed`)
+    - `make test-unit PYTHON=/Users/cam/Documents/Projects/cine-forge/.venv/bin/python` (`205 passed, 51 deselected`)
+    - `PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m cine_forge.driver --recipe configs/recipes/recipe-ingest-extract-config.yaml --run-id story049-ocr-noisy-e2e --force --param input_file=tests/fixtures/ingest_inputs/run_like_hell_teaser_scanned_5p.pdf` (all stages `done`, including `config`/`project_config_v1` path).
+- Artifact evidence from end-to-end run:
+    - `output/project/artifacts/raw_input/project/v37.json`: PDF extracted via OCR (`pdf_extractor_selected=ocrmypdf`), classification non-empty and screenplay-oriented.
+    - `output/project/artifacts/canonical_script/project/v17.json`: `normalization_tier=2`, `screenplay_path=true`, non-empty `script_text`, downstream extract/config completed.
+- Next: Re-run production `the-body-4` import when access/context is available to confirm parity with the equivalent fixture result.
+
+### 20260218-2002 — Production parity check on `the-body-4` confirms fix not yet deployed
+
+- Action: Opened production project `/app/output/the-body-4`, verified input preview extraction for `d93d9cc3_The_Body.pdf`, started fresh run on that exact stored input, and inspected run state/events/artifacts.
+- Result: Partial success
+- Evidence:
+  - Extraction is healthy in production: `GET /api/projects/the-body-4/inputs/d93d9cc3_The_Body.pdf` returned readable text (`16440` chars).
+  - New run: `run-75f57743` (started via `POST /api/runs/start`) failed at `extract_scenes` due upstream empty canonical script.
+  - `GET /api/runs/run-75f57743/state` shows `normalize=done` but produced rejected canonical output; `extract_scenes` failed with `scene_extract_v1 requires non-empty canonical script text`.
+  - `GET /api/projects/the-body-4/artifacts/raw_input/project/4`: classification remains `detected_format=prose`, `confidence=0.35`.
+  - `GET /api/projects/the-body-4/artifacts/canonical_script/project/4`: `normalization_tier=3`, `normalization_strategy=rejected`, `script_text=\"\"`.
+- Next: Deploy branch containing `script_normalize_v1` OCR misclassification fixes, then rerun production `the-body-4` validation through `project_config`.
+
+### 20260219-0828 — Deployed fix and confirmed production end-to-end completion on target PDF
+
+- Action: Deployed current local `main` changes to Fly, then reran production validation on `the-body-4` input `/app/output/the-body-4/inputs/d93d9cc3_The_Body.pdf`.
+- Result: Success
+- Evidence:
+  - Deployment succeeded (`fly deploy --depot=false --yes`, duration `103s`), health reports version `2026.02.19`.
+  - Fresh production run `run-8d23cf77` completed with all stages done: `ingest`, `normalize`, `extract_scenes`, `project_config`; `background_error=None`.
+  - `normalize` produced non-empty canonical script (`NORMALIZE_SCRIPT_LEN=5716`, `NORMALIZE_TIER=2`, `NORMALIZE_STRATEGY=passthrough_cleanup`) despite ingest classification remaining `prose` (`0.35`).
+  - This closes the Story 049 OCR-noisy PDF production validation task on the originally failing file.
+- Next: Story 049 can be marked done in index and handed off.

@@ -31,6 +31,9 @@ from cine_forge.schemas import ArtifactHealth, Assumption, CanonicalScript, Inve
 SCENE_HEADING_RE = re.compile(
     r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
 )
+OCR_SCENE_HEADING_RE = re.compile(
+    r"^(INT|EXT|INT/EXT|I/E|EST)[\s.:/\-]+[A-Z0-9]", flags=re.IGNORECASE
+)
 
 
 class _MetadataEnvelope(BaseModel):
@@ -84,6 +87,7 @@ def run_module(
         parser_check=parser_check,
         quality_score=quality_score,
         source_format=source_format,
+        source_confidence=source_confidence,
     )
 
     # --- Tier 1: Code-only passthrough (zero LLM calls) ---
@@ -299,6 +303,7 @@ def _classify_tier(
     parser_check: Any,
     quality_score: float,
     source_format: str,
+    source_confidence: float,
 ) -> int:
     """Classify input into processing tier.
 
@@ -308,7 +313,18 @@ def _classify_tier(
     """
     # Quality gate: even if heuristics think it's a screenplay, reject if
     # the parser finds no real screenplay elements (scenes, characters, dialogue)
-    if quality_score < 0.3 and source_format not in ("screenplay", "fountain", "fdx"):
+    if (
+        not screenplay_path
+        and quality_score < 0.3
+        and source_format not in ("screenplay", "fountain", "fdx")
+    ):
+        return 3
+    if (
+        screenplay_path
+        and source_format == "prose"
+        and source_confidence >= 0.7
+        and quality_score < 0.6
+    ):
         return 3
     if screenplay_path and parser_check.parseable and quality_score >= 0.6:
         return 1
@@ -874,6 +890,8 @@ def _is_screenplay_path(raw_input: dict[str, Any]) -> bool:
     confidence = float(classification.get("confidence", 0.0) or 0.0)
     if detected_format == "screenplay" and confidence >= 0.8:
         return True
+    if detected_format == "hybrid" and confidence >= 0.4:
+        return True
     content = raw_input.get("content", "")
     fdx_conversion = detect_and_convert_fdx(content)
     if fdx_conversion.is_fdx:
@@ -884,15 +902,35 @@ def _is_screenplay_path(raw_input: dict[str, Any]) -> bool:
     parser_check = validate_fountain_structure(content_for_validation)
     if parser_check.parseable:
         return True
-    heading_count = sum(
-        1
-        for line in content.splitlines()
-        if SCENE_HEADING_RE.match(line.strip())
-    )
+    lines = content.splitlines()
+    heading_count = sum(1 for line in lines if SCENE_HEADING_RE.match(line.strip()))
     cue_count = sum(
-        1 for line in content.splitlines() if re.match(r"^[A-Z0-9 .'\-()]{2,35}$", line.strip())
+        1 for line in lines if re.match(r"^[A-Z0-9 .'\-()]{2,35}$", line.strip())
     )
-    return heading_count >= 1 and cue_count >= 2
+    if heading_count >= 1 and cue_count >= 2:
+        return True
+
+    file_format = str(raw_input.get("source_info", {}).get("file_format", "")).lower()
+    if file_format == "pdf":
+        ocr_heading_count = sum(
+            1
+            for line in lines
+            if OCR_SCENE_HEADING_RE.match(line.strip())
+            and any(
+                token in line.upper()
+                for token in (" DAY", " NIGHT", " MORNING", " EVENING", " LATER", " CONTINUOUS")
+            )
+        )
+        loose_cue_count = sum(
+            1
+            for line in lines
+            if re.match(r"^[A-Z][A-Z0-9 '&().-]{1,34}$", line.strip())
+            and not OCR_SCENE_HEADING_RE.match(line.strip())
+        )
+        if ocr_heading_count >= 1 and loose_cue_count >= 2:
+            return True
+
+    return False
 
 
 def _normalize_export_formats(raw_formats: Any) -> list[str]:

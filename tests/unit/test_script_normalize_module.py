@@ -16,6 +16,7 @@ def _raw_input_payload(
     content: str,
     detected_format: str = "screenplay",
     confidence: float = 0.9,
+    file_format: str = "fountain",
 ) -> dict[str, Any]:
     return {
         "content": content,
@@ -24,7 +25,7 @@ def _raw_input_payload(
             "file_size_bytes": len(content.encode("utf-8")),
             "character_count": len(content),
             "line_count": content.count("\n") + 1,
-            "file_format": "fountain",
+            "file_format": file_format,
         },
         "classification": {
             "detected_format": detected_format,
@@ -98,6 +99,56 @@ def test_is_screenplay_path_handles_compact_scene_headings(
     )
 
     assert _is_screenplay_path(raw) is True
+
+
+@pytest.mark.unit
+def test_is_screenplay_path_detects_ocr_noisy_pdf_screenplay() -> None:
+    raw = _raw_input_payload(
+        "\n".join(
+            [
+                "INT CITY STREET - NIGHT",
+                "Wind rips through broken lights.",
+                "MARA",
+                "Keep moving.",
+                "EXT OLD PIER - NIGHT",
+                "ROSE",
+                "I can hear them.",
+            ]
+        ),
+        detected_format="prose",
+        confidence=0.35,
+        file_format="pdf",
+    )
+    assert _is_screenplay_path(raw) is True
+
+
+@pytest.mark.unit
+def test_run_module_routes_ocr_noisy_pdf_misclassified_as_prose_to_tier2() -> None:
+    content = "\n".join(
+        [
+            "INT CITY STREET - NIGHT",
+            "MARA",
+            "Keep moving.",
+            "EXT OLD PIER - NIGHT",
+            "ROSE",
+            "I can hear them.",
+        ]
+    )
+    result = run_module(
+        inputs={
+            "ingest": _raw_input_payload(
+                content,
+                detected_format="prose",
+                confidence=0.35,
+                file_format="pdf",
+            )
+        },
+        params={"model": "mock", "qa_model": "mock", "max_retries": 1, "skip_qa": True},
+        context={"run_id": "unit", "stage_id": "normalize"},
+    )
+    artifact = result["artifacts"][0]
+    assert artifact["metadata"]["annotations"]["normalization_tier"] == 2
+    assert artifact["data"]["script_text"].strip() != ""
 
 
 @pytest.mark.unit

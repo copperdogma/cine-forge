@@ -1,5 +1,22 @@
 # Changelog
 
+## [2026-02-19] - Story 049 OCR-noisy PDF normalization fix and production validation
+
+### Added
+- Regression tests for OCR-noisy PDF screenplay handling in normalization:
+  - `test_is_screenplay_path_detects_ocr_noisy_pdf_screenplay`
+  - `test_run_module_routes_ocr_noisy_pdf_misclassified_as_prose_to_tier2`
+
+### Fixed
+- `script_normalize_v1` now preserves screenplay routing for OCR-noisy/misclassified PDF inputs instead of hard-rejecting to empty canonical script in Tier 3 when screenplay signals are present.
+- Tier routing now still rejects true high-confidence prose, preventing false-positive screenplay promotion.
+
+### Changed
+- Story 049 marked done in `docs/stories.md` and `docs/stories/story-049-import-normalization-format-suite.md` after successful production validation on `the-body-4` input `d93d9cc3_The_Body.pdf`.
+- Deploy timing log updated in `docs/deploy-log.md` with latest successful Fly deploy and smoke evidence.
+
+---
+
 ## [2026-02-19] - Fix TypeScript build parity between local validation and production
 
 ### Fixed
