@@ -595,6 +595,46 @@ def test_project_scoped_endpoint_requires_open_project(tmp_path: Path) -> None:
     assert payload["code"] == "project_not_opened"
 
 
+def test_project_slug_routes_survive_backend_restart(tmp_path: Path) -> None:
+    """Existing output/<slug> projects should resolve without explicit /open after restart."""
+    client_a = _make_client(tmp_path)
+    project_id = _create_project(client_a, "deep-link-project", "Deep Link Project")
+
+    # Simulate backend restart: new app instance with empty in-memory registry.
+    client_b = _make_client(tmp_path)
+
+    summary = client_b.get(f"/api/projects/{project_id}")
+    assert summary.status_code == 200
+    assert summary.json()["project_id"] == project_id
+
+    # Any project-scoped endpoint should now work from slug-only routing.
+    artifacts = client_b.get(f"/api/projects/{project_id}/artifacts")
+    assert artifacts.status_code == 200
+
+
+def test_project_resolution_falls_back_to_run_metadata(tmp_path: Path) -> None:
+    """If a project isn't under output/<slug>, resolve it via run_meta project_path."""
+    service = OperatorConsoleService(workspace_root=tmp_path)
+
+    external_project = tmp_path / "external-project-dir"
+    (external_project / "artifacts").mkdir(parents=True, exist_ok=True)
+    (external_project / "graph").mkdir(parents=True, exist_ok=True)
+
+    run_dir = tmp_path / "output" / "runs" / "run-meta-project-map"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    (run_dir / "run_meta.json").write_text(
+        json.dumps(
+            {
+                "project_id": "external-project",
+                "project_path": str(external_project),
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert service.require_project_path("external-project") == external_project
+
+
 def test_project_runs_endpoint_filters_by_project(tmp_path: Path) -> None:
     client = _make_client(tmp_path)
     project_a = tmp_path / "project-runs-a"

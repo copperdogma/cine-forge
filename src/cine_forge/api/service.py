@@ -248,14 +248,50 @@ class OperatorConsoleService:
 
     def require_project_path(self, project_id: str) -> Path:
         path = self._project_registry.get(project_id)
-        if path is None:
-            raise ServiceError(
-                code="project_not_opened",
-                message="Unknown project_id for this backend session.",
-                hint="Call /api/projects/open or /api/projects/new before project-scoped APIs.",
-                status_code=404,
-            )
-        return path
+        if path is not None and self._is_valid_project_dir(path):
+            return path
+
+        # Survive backend restarts and deep links: resolve known slugs from disk.
+        resolved = self._resolve_project_path(project_id)
+        if resolved is not None:
+            self._project_registry[project_id] = resolved
+            return resolved
+
+        raise ServiceError(
+            code="project_not_opened",
+            message="Unknown project_id for this backend session.",
+            hint="Call /api/projects/open or /api/projects/new before project-scoped APIs.",
+            status_code=404,
+        )
+
+    def _resolve_project_path(self, project_id: str) -> Path | None:
+        candidate = self.workspace_root / "output" / project_id
+        if self._is_valid_project_dir(candidate):
+            return candidate
+
+        runs_dir = self.workspace_root / "output" / "runs"
+        if runs_dir.exists():
+            for run_dir in runs_dir.iterdir():
+                if not run_dir.is_dir():
+                    continue
+                run_meta_path = run_dir / "run_meta.json"
+                if not run_meta_path.exists():
+                    run_meta_path = run_dir / "operator_console_run_meta.json"
+                if not run_meta_path.exists():
+                    continue
+                try:
+                    run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
+                except (json.JSONDecodeError, OSError):
+                    continue
+                if str(run_meta.get("project_id") or "") != project_id:
+                    continue
+                project_path_raw = run_meta.get("project_path")
+                if not isinstance(project_path_raw, str):
+                    continue
+                project_path = self.normalize_project_path(project_path_raw)
+                if self._is_valid_project_dir(project_path):
+                    return project_path
+        return None
 
     def project_summary(self, project_id: str) -> dict[str, Any]:
         path = self.require_project_path(project_id)
