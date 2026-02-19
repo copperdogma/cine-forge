@@ -168,6 +168,16 @@ def test_run_module_emits_scene_and_scene_index_artifacts() -> None:
 
 
 @pytest.mark.unit
+def test_run_module_rejects_empty_canonical_script() -> None:
+    with pytest.raises(ValueError, match="requires non-empty canonical script text"):
+        run_module(
+            inputs={"normalize": _canonical_payload("  \n")},
+            params={"model": "mock", "qa_model": "mock", "skip_qa": True},
+            context={"run_id": "unit", "stage_id": "extract"},
+        )
+
+
+@pytest.mark.unit
 def test_run_module_filters_pronoun_character_noise() -> None:
     script = (
         "INT. LAB - NIGHT\n"

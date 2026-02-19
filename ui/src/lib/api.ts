@@ -360,6 +360,12 @@ export function startRun(payload: RunStartPayload): Promise<{ run_id: string }> 
   })
 }
 
+export function retryFailedStage(runId: string): Promise<{ run_id: string }> {
+  return request<{ run_id: string }>(`/api/runs/${runId}/retry-failed-stage`, {
+    method: 'POST',
+  })
+}
+
 export function getRunState(runId: string): Promise<RunStateResponse> {
   return request<RunStateResponse>(`/api/runs/${runId}/state`)
 }

@@ -119,6 +119,50 @@ def test_run_module_with_mock_model_produces_canonical_script() -> None:
 
 
 @pytest.mark.unit
+def test_run_module_rejects_empty_raw_input_content() -> None:
+    with pytest.raises(ValueError, match="non-empty raw_input content"):
+        run_module(
+            inputs={"ingest": _raw_input_payload("", detected_format="screenplay", confidence=0.9)},
+            params={"model": "mock", "qa_model": "mock", "max_retries": 1, "skip_qa": False},
+            context={"run_id": "unit", "stage_id": "normalize"},
+        )
+
+
+@pytest.mark.unit
+def test_run_module_rejects_empty_normalized_output(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_normalize_once(content: str, **_: Any):
+        return (
+            "   \n",
+            {
+                "source_format": "screenplay",
+                "strategy": "test",
+                "overall_confidence": 1.0,
+                "rationale": "test",
+            },
+            [{"model": "mock", "estimated_cost_usd": 0.0}],
+            "test-prompt",
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.script_normalize_v1.main._normalize_once",
+        fake_normalize_once,
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.script_normalize_v1.main._is_screenplay_path",
+        lambda _: False,
+    )
+
+    with pytest.raises(ValueError, match="produced an empty canonical script"):
+        run_module(
+            inputs={"ingest": _raw_input_payload("INT. LAB - NIGHT\nMARA\nGo.")},
+            params={"model": "mock", "qa_model": "mock", "max_retries": 0, "skip_qa": True},
+            context={"run_id": "unit", "stage_id": "normalize"},
+        )
+
+
+@pytest.mark.unit
 def test_run_module_retries_after_qa_error(monkeypatch: pytest.MonkeyPatch) -> None:
     call_counter = {"count": 0}
 

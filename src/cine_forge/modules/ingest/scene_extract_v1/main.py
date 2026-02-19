@@ -294,7 +294,10 @@ def run_module(
     parse_ctx = parser_adapter.validate(script_text)
     chunks = parser_adapter.split(script_text)
     if not chunks:
-        return {"artifacts": [], "cost": _sum_costs([])}
+        raise ValueError(
+            "scene_extract_v1 found no scene chunks. "
+            "Canonical script is empty or unparsable."
+        )
 
     scene_artifacts: list[dict[str, Any]] = []
     scene_index_entries: list[SceneIndexEntry] = []
@@ -472,6 +475,12 @@ def run_module(
         }
     ).model_dump(mode="json")
 
+    if not scene_artifacts:
+        raise ValueError(
+            "scene_extract_v1 produced no scene artifacts after parsing. "
+            "Cannot continue to downstream stage dependencies."
+        )
+
     scene_artifacts.append(
         {
             "artifact_type": "scene_index",
@@ -508,6 +517,12 @@ def _extract_canonical_script(inputs: dict[str, Any]) -> dict[str, Any]:
     payload = list(inputs.values())[-1]
     if not isinstance(payload, dict) or "script_text" not in payload:
         raise ValueError("scene_extract_v1 requires canonical_script input data")
+    script_text = payload.get("script_text")
+    if not isinstance(script_text, str) or not script_text.strip():
+        raise ValueError(
+            "scene_extract_v1 requires non-empty canonical script text. "
+            "Upstream normalize output is blank."
+        )
     return payload
 
 

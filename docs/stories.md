@@ -85,7 +85,8 @@ NOTES from Cam:
 | 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Draft | [story-046](stories/story-046-theme-system.md) |
 | 047 | Benchmark Sonnet 4.6 Across All Evals | Cross-Cutting | High | Done | [story-047](stories/story-047-sonnet-46-benchmarks.md) |
 | 048 | PDF Input Preview Decode Fix | 2.5 — UI/API | High | Done | [story-048](stories/story-048-pdf-input-preview-decode.md) |
-| 049 | Import Normalization Format Suite | 1 — MVP Pipeline | High | Done | [story-049](stories/story-049-import-normalization-format-suite.md) |
+| 049 | Import Normalization Format Suite | 1 — MVP Pipeline | High | To Do | [story-049](stories/story-049-import-normalization-format-suite.md) |
+| 050 | Provider Resilience: Retries, Fallbacks, and Stage Resume | Cross-Cutting | High | Done | [story-050](stories/story-050-provider-resilience-retry-fallback.md) |
 
 ## Phase Summary
 

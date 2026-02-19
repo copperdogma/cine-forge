@@ -2,7 +2,7 @@
 
 **Phase**: 1 — MVP Pipeline
 **Priority**: High
-**Status**: Done
+**Status**: To Do
 
 ## Goal
 
@@ -26,6 +26,9 @@ Build explicit import-normalization coverage across supported input formats (`tx
 - [x] Run `make test-unit` and record result.
 - [x] Perform manual per-format output inspection and log findings.
 - [x] Update story index with Story 049.
+- [ ] Add regression coverage for OCR-noisy screenplay PDFs that extract readable text but are misclassified as prose and rejected by normalization.
+- [ ] Tune ingest classification and/or normalization pre-cleanup for OCR-noisy screenplay PDFs so canonical script output is non-empty when screenplay structure is present.
+- [ ] Validate end-to-end on production against `the-body-4` input `d93d9cc3_The_Body.pdf` (or equivalent OCR-noisy screenplay fixture) through `project_config`.
 
 ## Work Log
 
@@ -146,3 +149,24 @@ Build explicit import-normalization coverage across supported input formats (`tx
 - Result: Success
 - Notes: `pytest tests/unit/test_story_ingest_module.py tests/integration/test_story_ingest_integration.py -q` -> `47 passed`; `make test-unit` -> `183 passed, 49 deselected`.
 - Next: User acceptance on current extractor thresholds and fixture strategy.
+
+### 20260218-1621 — Reopened for deferred OCR/noisy-PDF normalization gap from Story 050
+
+- Action: Moved unresolved PDF/OCR follow-up from Story 050 into Story 049 scope after live production validation on `the-body-4`.
+- Result: Partial success
+- Notes: OCR extraction now works in production (`ocrmypdf` selected, non-empty raw text), but normalization still classifies `d93d9cc3_The_Body.pdf` as `prose` and emits empty canonical script, causing downstream scene extraction failure.
+- Next: Implement the added Story 049 tasks for OCR-noisy screenplay classification/normalization and revalidate end-to-end run completion.
+
+### 20260218-1623 — Synced story index status after reopening OCR follow-up scope
+
+- Action: Updated `docs/stories.md` row for Story 049 status from `Done` to `To Do` to reflect deferred OCR/noisy-PDF normalization work.
+- Result: Success
+- Notes: Index now matches Story 049 header/task state and avoids false completion signaling.
+- Next: Execute the newly added OCR/noisy-PDF tasks and re-promote Story 049 to done once validated.
+
+### 20260218-1622 — Timestamp correction
+
+- Action: Corrected work-log chronology for the preceding index-sync entry.
+- Result: Success
+- Notes: The previous entry heading used `1623`; actual action time was `1622`.
+- Next: Continue with deferred OCR/noisy-PDF implementation tasks in Story 049.

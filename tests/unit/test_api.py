@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from cine_forge.api.app import create_app
+from cine_forge.api.service import OperatorConsoleService, ServiceError
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
 
@@ -97,6 +99,33 @@ def test_get_project_input_content_uses_ingest_extraction_for_pdf(
     content = client.get(f"/api/projects/{project_id}/inputs/{filename}")
     assert content.status_code == 200
     assert content.text.startswith("INT. HARBOR - NIGHT")
+
+
+def test_get_project_input_content_returns_422_on_empty_extraction(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "project-pdf-empty", "Project PDF Empty")
+
+    uploaded = client.post(
+        f"/api/projects/{project_id}/inputs/upload",
+        files={"file": ("script.pdf", b"%PDF-1.7\nbinary", "application/pdf")},
+    )
+    assert uploaded.status_code == 200
+    filename = Path(uploaded.json()["stored_path"]).name
+
+    def _fake_read_source_text_with_diagnostics(_path: Path) -> tuple[str, dict[str, object]]:
+        return "   ", {"pdf_extractor_selected": "fallback_sparse"}
+
+    monkeypatch.setattr(
+        "cine_forge.api.service.read_source_text_with_diagnostics",
+        _fake_read_source_text_with_diagnostics,
+    )
+
+    content = client.get(f"/api/projects/{project_id}/inputs/{filename}")
+    assert content.status_code == 422
+    payload = content.json()
+    assert payload["code"] == "input_extraction_failed"
 
 
 def test_artifact_browse_endpoints_return_versions_and_payload(tmp_path: Path) -> None:
@@ -199,6 +228,242 @@ def test_run_start_and_run_polling_endpoints(tmp_path: Path, monkeypatch) -> Non
     events = client.get(f"/api/runs/{run_id}/events")
     assert events.status_code == 200
     assert events.json()["events"][0]["event"] == "stage_started"
+
+
+@pytest.mark.unit
+def test_retry_failed_stage_endpoint_returns_new_run_urls(tmp_path: Path, monkeypatch) -> None:
+    client = _make_client(tmp_path)
+    service = client.app.state.console_service
+
+    def _fake_retry_failed_stage(run_id: str) -> str:
+        assert run_id == "run-failed-1"
+        return "run-failed-1-retry-abcd"
+
+    monkeypatch.setattr(service, "retry_failed_stage", _fake_retry_failed_stage)
+
+    response = client.post("/api/runs/run-failed-1/retry-failed-stage")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["run_id"] == "run-failed-1-retry-abcd"
+    assert payload["state_url"] == "/api/runs/run-failed-1-retry-abcd/state"
+    assert payload["events_url"] == "/api/runs/run-failed-1-retry-abcd/events"
+
+
+@pytest.mark.unit
+def test_start_run_accepts_retry_failed_stage_for_run_id(tmp_path: Path, monkeypatch) -> None:
+    client = _make_client(tmp_path)
+    service = client.app.state.console_service
+
+    def _fake_retry_failed_stage(run_id: str) -> str:
+        assert run_id == "run-failed-2"
+        return "run-failed-2-retry-zz99"
+
+    monkeypatch.setattr(service, "retry_failed_stage", _fake_retry_failed_stage)
+
+    response = client.post(
+        "/api/runs/start",
+        json={
+            "project_id": "unused-for-retry-path",
+            "input_file": "unused",
+            "default_model": "fixture",
+            "accept_config": True,
+            "retry_failed_stage_for_run_id": "run-failed-2",
+        },
+    )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["run_id"] == "run-failed-2-retry-zz99"
+
+
+@pytest.mark.unit
+def test_service_retry_failed_stage_bootstraps_new_run_from_failed_stage(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_path = tmp_path / "output" / "resume-project"
+    (project_path / "artifacts").mkdir(parents=True, exist_ok=True)
+    (project_path / "graph").mkdir(parents=True, exist_ok=True)
+    store = ArtifactStore(project_dir=project_path)
+    raw_ref = store.save_artifact(
+        artifact_type="raw_input",
+        entity_id=None,
+        data={
+            "content": "INT. LAB - NIGHT\nMARA\nGo.",
+            "source_info": {"original_filename": "sample.fountain"},
+            "classification": {"detected_format": "screenplay", "confidence": 0.9, "evidence": []},
+        },
+        metadata=ArtifactMetadata(
+            intent="seed",
+            rationale="seed",
+            confidence=1.0,
+            source="human",
+            producing_module="test.module",
+        ),
+    )
+
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "recipe-mvp-ingest.yaml"
+    recipe_path.write_text(
+        "recipe_id: mvp_ingest\ndescription: test\nstages: []\n",
+        encoding="utf-8",
+    )
+
+    run_id = "run-failed-service"
+    run_dir = tmp_path / "output" / "runs" / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    run_state = {
+        "run_id": run_id,
+        "recipe_id": "mvp_ingest",
+        "runtime_params": {"input_file": "x.fountain", "default_model": "fixture"},
+        "stages": {
+            "ingest": {"status": "done", "artifact_refs": [raw_ref.model_dump(mode="json")]},
+            "normalize": {"status": "failed"},
+            "extract_scenes": {"status": "pending"},
+        },
+    }
+    (run_dir / "run_state.json").write_text(json.dumps(run_state), encoding="utf-8")
+    (run_dir / "run_meta.json").write_text(
+        json.dumps(
+            {"project_id": "resume-project", "project_path": str(project_path)},
+            indent=2,
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
+
+    captured: dict[str, object] = {}
+
+    class _FakeThread:
+        def __init__(self, *, target, kwargs, daemon):  # type: ignore[no-untyped-def]
+            captured["target"] = target
+            captured["kwargs"] = kwargs
+            captured["daemon"] = daemon
+            captured["started"] = False
+
+        def start(self) -> None:
+            captured["started"] = True
+
+    monkeypatch.setattr("cine_forge.api.service.threading.Thread", _FakeThread)
+
+    new_run_id = service.retry_failed_stage(run_id)
+    assert new_run_id.startswith(f"{run_id}-retry-")
+    assert captured["started"] is True
+
+    worker_kwargs = captured["kwargs"]
+    assert isinstance(worker_kwargs, dict)
+    assert worker_kwargs["run_id"] == new_run_id
+    assert worker_kwargs["start_from"] == "normalize"
+    assert worker_kwargs["runtime_params"]["input_file"] == "x.fountain"
+    assert worker_kwargs["runtime_params"]["default_model"] == "fixture"
+    assert worker_kwargs["runtime_params"]["__resume_artifact_refs_by_stage"] == {
+        "ingest": [raw_ref.model_dump(mode="json")],
+        "normalize": [],
+        "extract_scenes": [],
+    }
+    assert worker_kwargs["recipe_path"] == recipe_path
+    assert worker_kwargs["project_path"] == project_path
+
+    new_run_dir = tmp_path / "output" / "runs" / new_run_id
+    assert (new_run_dir / "run_meta.json").exists()
+    assert service.require_project_path("resume-project") == project_path
+
+
+@pytest.mark.unit
+def test_service_retry_failed_stage_steps_back_to_ingest_for_empty_raw_input(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_path = tmp_path / "output" / "resume-project-empty"
+    (project_path / "artifacts").mkdir(parents=True, exist_ok=True)
+    (project_path / "graph").mkdir(parents=True, exist_ok=True)
+    store = ArtifactStore(project_dir=project_path)
+    raw_ref = store.save_artifact(
+        artifact_type="raw_input",
+        entity_id=None,
+        data={
+            "content": "   ",
+            "source_info": {"original_filename": "empty.pdf"},
+            "classification": {"detected_format": "unknown", "confidence": 0.2, "evidence": []},
+        },
+        metadata=ArtifactMetadata(
+            intent="seed",
+            rationale="seed",
+            confidence=1.0,
+            source="human",
+            producing_module="test.module",
+        ),
+    )
+
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "recipe-mvp-ingest.yaml"
+    recipe_path.write_text(
+        "recipe_id: mvp_ingest\ndescription: test\nstages: []\n",
+        encoding="utf-8",
+    )
+
+    run_id = "run-failed-empty-raw"
+    run_dir = tmp_path / "output" / "runs" / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    run_state = {
+        "run_id": run_id,
+        "recipe_id": "mvp_ingest",
+        "runtime_params": {"input_file": "empty.pdf", "default_model": "fixture"},
+        "stages": {
+            "ingest": {"status": "done", "artifact_refs": [raw_ref.model_dump(mode="json")]},
+            "normalize": {"status": "failed"},
+            "extract_scenes": {"status": "pending"},
+        },
+    }
+    (run_dir / "run_state.json").write_text(json.dumps(run_state), encoding="utf-8")
+    (run_dir / "run_meta.json").write_text(
+        json.dumps({"project_id": "resume-project-empty", "project_path": str(project_path)}),
+        encoding="utf-8",
+    )
+
+    captured: dict[str, object] = {}
+
+    class _FakeThread:
+        def __init__(self, *, target, kwargs, daemon):  # type: ignore[no-untyped-def]
+            captured["target"] = target
+            captured["kwargs"] = kwargs
+            captured["daemon"] = daemon
+            captured["started"] = False
+
+        def start(self) -> None:
+            captured["started"] = True
+
+    monkeypatch.setattr("cine_forge.api.service.threading.Thread", _FakeThread)
+
+    _ = service.retry_failed_stage(run_id)
+    worker_kwargs = captured["kwargs"]
+    assert isinstance(worker_kwargs, dict)
+    assert worker_kwargs["start_from"] == "ingest"
+    assert worker_kwargs["recipe_path"] == recipe_path
+
+
+@pytest.mark.unit
+def test_service_retry_failed_stage_rejects_runs_without_failed_stage(tmp_path: Path) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    run_id = "run-no-failure"
+    run_dir = tmp_path / "output" / "runs" / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    (run_dir / "run_state.json").write_text(
+        json.dumps(
+            {
+                "run_id": run_id,
+                "recipe_id": "mvp_ingest",
+                "runtime_params": {},
+                "stages": {"ingest": {"status": "done"}},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ServiceError, match="no failed stage"):
+        service.retry_failed_stage(run_id)
 
 
 def _create_project(client: TestClient, slug: str, display_name: str) -> str:

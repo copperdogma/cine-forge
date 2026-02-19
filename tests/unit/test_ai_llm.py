@@ -7,8 +7,14 @@ from pydantic import BaseModel
 
 from cine_forge.ai.llm import (
     LLMCallError,
+    _breaker_state,
+    _is_circuit_breaker_open,
     _normalize_gemini_response,
     _parse_provider,
+    _record_provider_success,
+    _record_provider_transient_failure,
+    _reset_circuit_breakers,
+    _retry_delay_seconds,
     _to_gemini_schema,
     call_llm,
     estimate_cost_usd,
@@ -70,6 +76,32 @@ def test_call_llm_retries_on_transient_error() -> None:
 
 
 @pytest.mark.unit
+def test_call_llm_retries_on_529_overloaded_error() -> None:
+    attempts = {"count": 0}
+
+    def flaky_transport(_: dict[str, Any]) -> dict[str, Any]:
+        attempts["count"] += 1
+        if attempts["count"] == 1:
+            raise RuntimeError("Anthropic HTTP error 529: overloaded_error")
+        return {
+            "id": "req_529",
+            "choices": [{"message": {"content": "ok"}}],
+            "usage": {"prompt_tokens": 10, "completion_tokens": 10},
+        }
+
+    result, metadata = call_llm(
+        prompt="normalize",
+        model="claude-sonnet-4-6",
+        max_retries=2,
+        transport=flaky_transport,
+    )
+
+    assert result == "ok"
+    assert metadata["request_id"] == "req_529"
+    assert attempts["count"] == 2
+
+
+@pytest.mark.unit
 def test_call_llm_fails_after_max_retries() -> None:
     def always_fail(_: dict[str, Any]) -> dict[str, Any]:
         raise RuntimeError("timeout while waiting")
@@ -81,6 +113,78 @@ def test_call_llm_fails_after_max_retries() -> None:
             max_retries=1,
             transport=always_fail,
         )
+
+
+@pytest.mark.unit
+def test_retry_delay_seconds_uses_exponential_backoff_with_jitter(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr("cine_forge.ai.llm.random.uniform", lambda _a, b: b)
+
+    assert _retry_delay_seconds(attempt=0, base_delay_seconds=0.5, jitter_ratio=0.25) == 0.625
+    assert _retry_delay_seconds(attempt=1, base_delay_seconds=0.5, jitter_ratio=0.25) == 1.25
+    assert _retry_delay_seconds(attempt=2, base_delay_seconds=0.5, jitter_ratio=0.25) == 2.5
+
+
+@pytest.mark.unit
+def test_retry_delay_seconds_rejects_negative_inputs() -> None:
+    with pytest.raises(ValueError, match="attempt"):
+        _retry_delay_seconds(attempt=-1)
+    with pytest.raises(ValueError, match="base_delay_seconds"):
+        _retry_delay_seconds(attempt=0, base_delay_seconds=-0.1)
+    with pytest.raises(ValueError, match="jitter_ratio"):
+        _retry_delay_seconds(attempt=0, jitter_ratio=-0.1)
+
+
+@pytest.mark.unit
+def test_circuit_breaker_opens_after_three_transient_failures() -> None:
+    _reset_circuit_breakers()
+    provider = "anthropic"
+
+    _record_provider_transient_failure(provider, now=100.0)
+    _record_provider_transient_failure(provider, now=101.0)
+    assert not _is_circuit_breaker_open(provider, now=101.0)
+
+    _record_provider_transient_failure(provider, now=102.0)
+    assert _is_circuit_breaker_open(provider, now=102.1)
+
+
+@pytest.mark.unit
+def test_circuit_breaker_closes_after_cooldown_and_resets_on_success() -> None:
+    _reset_circuit_breakers()
+    provider = "google"
+
+    _record_provider_transient_failure(provider, now=10.0)
+    _record_provider_transient_failure(provider, now=11.0)
+    _record_provider_transient_failure(provider, now=12.0)
+    assert _is_circuit_breaker_open(provider, now=12.1)
+
+    assert not _is_circuit_breaker_open(provider, now=43.0)
+    assert _breaker_state(provider).consecutive_failures == 0
+
+    _record_provider_transient_failure(provider, now=50.0)
+    _record_provider_success(provider)
+    assert _breaker_state(provider).consecutive_failures == 0
+    assert not _is_circuit_breaker_open(provider, now=50.1)
+
+
+@pytest.mark.unit
+def test_circuit_breaker_half_open_probe_failure_reopens() -> None:
+    _reset_circuit_breakers()
+    provider = "anthropic"
+
+    _record_provider_transient_failure(provider, now=10.0)
+    _record_provider_transient_failure(provider, now=11.0)
+    _record_provider_transient_failure(provider, now=12.0)
+    assert _is_circuit_breaker_open(provider, now=12.1)
+
+    # Cooldown expires; next call is half-open probe.
+    assert not _is_circuit_breaker_open(provider, now=43.0)
+    assert _breaker_state(provider).half_open is True
+
+    # Probe failure should reopen immediately.
+    _record_provider_transient_failure(provider, now=43.1)
+    assert _is_circuit_breaker_open(provider, now=43.2)
 
 
 @pytest.mark.unit

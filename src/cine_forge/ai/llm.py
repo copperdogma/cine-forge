@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import json
 import os
+import random
 import re
 import time
 import urllib.error
 import urllib.request
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +45,19 @@ PROVIDER_OPENAI = "openai"
 PROVIDER_ANTHROPIC = "anthropic"
 PROVIDER_GOOGLE = "google"
 
+_CIRCUIT_BREAKER_FAILURE_THRESHOLD = 3
+_CIRCUIT_BREAKER_COOLDOWN_SECONDS = 30.0
+
+
+@dataclass
+class _CircuitBreakerState:
+    consecutive_failures: int = 0
+    opened_until: float = 0.0
+    half_open: bool = False
+
+
+_CIRCUIT_BREAKERS: dict[str, _CircuitBreakerState] = {}
+
 
 class LLMCallError(RuntimeError):
     """Terminal error for model invocation failures."""
@@ -57,6 +72,8 @@ def call_llm(
     temperature: float = 0.0,
     fail_on_truncation: bool = False,
     transport: Any | None = None,
+    retry_base_delay_seconds: float = 0.5,
+    retry_jitter_ratio: float = 0.25,
 ) -> tuple[str | BaseModel, dict[str, Any]]:
     """Call an LLM and return text (or parsed schema) with call metadata."""
     if max_retries < 0:
@@ -94,6 +111,9 @@ def call_llm(
     last_error: Exception | None = None
     active_max_tokens = max_tokens
     active_temp = temperature
+
+    if transport is None and _is_circuit_breaker_open(provider):
+        raise LLMCallError(f"{provider} circuit breaker open; retry later")
 
     for attempt in range(max_retries + 1):
         try:
@@ -134,6 +154,8 @@ def call_llm(
             )
             if fail_on_truncation and metadata.get("finish_reason") == "length":
                 raise LLMCallError("LLM output truncated due to max token limit")
+            if transport is None:
+                _record_provider_success(provider)
             return parsed, metadata
         except (LLMCallError, Exception) as exc:
             last_error = exc
@@ -148,6 +170,9 @@ def call_llm(
             )
             
             retryable = is_json_error or is_truncation or _is_transient_error(exc)
+            if transport is None and _is_transient_error(exc):
+                _record_provider_transient_failure(provider)
+
             if attempt < max_retries and retryable:
                 # Adjust params for retry
                 if is_truncation and active_max_tokens:
@@ -156,7 +181,12 @@ def call_llm(
                     # SOTA models sometimes benefit from a tiny bit of heat on a retry
                     active_temp = min(active_temp + 0.1, 0.7)
                 
-                time.sleep(0.5 * (attempt + 1))
+                delay_seconds = _retry_delay_seconds(
+                    attempt=attempt,
+                    base_delay_seconds=retry_base_delay_seconds,
+                    jitter_ratio=retry_jitter_ratio,
+                )
+                time.sleep(delay_seconds)
                 continue
             
             # Terminal failure
@@ -559,9 +589,92 @@ def _gemini_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         raise LLMCallError(f"Gemini request failed: {exc.reason}") from exc
 
 
+def _retry_delay_seconds(
+    attempt: int,
+    base_delay_seconds: float = 0.5,
+    jitter_ratio: float = 0.25,
+) -> float:
+    """Exponential backoff with bounded additive jitter."""
+    if attempt < 0:
+        raise ValueError("attempt must be >= 0")
+    if base_delay_seconds < 0:
+        raise ValueError("base_delay_seconds must be >= 0")
+    if jitter_ratio < 0:
+        raise ValueError("jitter_ratio must be >= 0")
+
+    base = base_delay_seconds * (2 ** attempt)
+    jitter = random.uniform(0.0, base * jitter_ratio) if base > 0 else 0.0
+    return base + jitter
+
+
+def _breaker_state(provider: str) -> _CircuitBreakerState:
+    state = _CIRCUIT_BREAKERS.get(provider)
+    if state is None:
+        state = _CircuitBreakerState()
+        _CIRCUIT_BREAKERS[provider] = state
+    return state
+
+
+def _is_circuit_breaker_open(provider: str, *, now: float | None = None) -> bool:
+    state = _breaker_state(provider)
+    current_time = time.time() if now is None else now
+    if state.opened_until <= current_time:
+        if state.opened_until > 0:
+            # Cooldown expired. Allow exactly one probe in half-open mode.
+            state.opened_until = 0.0
+            state.consecutive_failures = 0
+            state.half_open = True
+        return False
+    return True
+
+
+def _record_provider_transient_failure(provider: str, *, now: float | None = None) -> None:
+    state = _breaker_state(provider)
+    if state.half_open:
+        # Probe failed -> reopen immediately.
+        current_time = time.time() if now is None else now
+        state.opened_until = current_time + _CIRCUIT_BREAKER_COOLDOWN_SECONDS
+        state.consecutive_failures = _CIRCUIT_BREAKER_FAILURE_THRESHOLD
+        state.half_open = False
+        return
+    state.consecutive_failures += 1
+    if state.consecutive_failures < _CIRCUIT_BREAKER_FAILURE_THRESHOLD:
+        return
+    current_time = time.time() if now is None else now
+    state.opened_until = current_time + _CIRCUIT_BREAKER_COOLDOWN_SECONDS
+    state.half_open = False
+
+
+def _record_provider_success(provider: str) -> None:
+    state = _breaker_state(provider)
+    state.consecutive_failures = 0
+    state.opened_until = 0.0
+    state.half_open = False
+
+
+def _reset_circuit_breakers() -> None:
+    _CIRCUIT_BREAKERS.clear()
+
+
 def _is_transient_error(error: Exception) -> bool:
     message = str(error).lower()
-    transient_tokens = ("rate", "timeout", "tempor", "503", "429", "connection reset")
+    transient_tokens = (
+        "rate limit",
+        "overload",
+        "overloaded",
+        "overloaded_error",
+        "capacity",
+        "temporarily unavailable",
+        "service unavailable",
+        "timeout",
+        "timed out",
+        "connection reset",
+        "connection aborted",
+        "connection refused",
+        "429",
+        "503",
+        "529",
+    )
     return any(token in message for token in transient_tokens)
 
 

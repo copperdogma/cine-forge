@@ -34,15 +34,37 @@ const fallbackRecipes = [
 function transformBackendEvents(events?: Array<Record<string, unknown>>): RunEvent[] {
   if (!events || events.length === 0) return []
   return events.map((evt) => {
+    const backendEvent = (evt.event as string) ?? ''
     const type = (evt.type as string) ?? 'info'
+    const stageId = (evt.stage as string) ?? (evt.stage_id as string) ?? undefined
+    const eventTypeMap: Record<string, RunEvent['type']> = {
+      stage_started: 'stage_start',
+      stage_finished: 'stage_end',
+      stage_failed: 'error',
+      stage_retrying: 'warning',
+      stage_fallback: 'warning',
+      stage_paused: 'warning',
+    }
     const validTypes = ['stage_start', 'stage_end', 'ai_call', 'artifact_produced', 'error', 'warning', 'info']
+    const mappedType = eventTypeMap[backendEvent] ?? type
+    let message = (evt.message as string) ?? (evt.event as string) ?? type
+    if (backendEvent === 'stage_retrying') {
+      const delay = typeof evt.retry_delay_seconds === 'number'
+        ? ` in ~${evt.retry_delay_seconds.toFixed(1)}s`
+        : ''
+      message = `Retrying ${stageId ?? 'stage'} after transient failure${delay}`
+    } else if (backendEvent === 'stage_fallback') {
+      message = `Fallback model selected: ${(evt.to_model as string) ?? 'unknown'}`
+    } else if (backendEvent === 'stage_failed') {
+      message = (evt.error as string) ?? `Stage ${stageId ?? ''} failed`
+    }
     return {
       timestamp: typeof evt.timestamp === 'number'
         ? evt.timestamp * 1000 // backend uses seconds, UI uses ms
         : Date.now(),
-      type: (validTypes.includes(type) ? type : 'info') as RunEvent['type'],
-      stage: (evt.stage as string) ?? undefined,
-      message: (evt.message as string) ?? (evt.event as string) ?? type,
+      type: (validTypes.includes(mappedType) ? mappedType : 'info') as RunEvent['type'],
+      stage: stageId,
+      message,
       details: (evt.details as Record<string, unknown>) ?? undefined,
     }
   })

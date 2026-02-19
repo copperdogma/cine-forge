@@ -1,5 +1,31 @@
 # Changelog
 
+## [2026-02-19] - Provider resilience hardening, OCR runtime tooling, and deploy estimate recalibration
+
+### Added
+- Stage retry/fallback observability across run state and events, including per-attempt metadata and fallback transitions.
+- New failed-stage resume endpoint: `POST /api/runs/{run_id}/retry-failed-stage`.
+- Artifact metadata annotations for final model/provider used in each stage:
+  - `final_stage_model_used`
+  - `final_stage_provider_used`
+- OCR-capable runtime dependencies in the production image (`poppler-utils`, `ocrmypdf`, `tesseract-ocr`, `tesseract-ocr-eng`, `ghostscript`).
+- Deploy timing memory file: `docs/deploy-log.md`.
+
+### Fixed
+- Transient error classification now covers provider overload/capacity cases (including HTTP `529`) with exponential backoff + jitter.
+- Provider circuit breaker behavior integrated into LLM transport to reduce retry storms and skip unhealthy providers.
+- Resume-from-failure path now supports upstream reuse via prior artifact refs when stage cache is unavailable.
+- Ingest/normalize/extract guards now fail fast on empty extracted/normalized screenplay text with actionable errors.
+
+### Changed
+- Story tracking updates:
+  - Story 050 marked `Done` with resilience scope complete.
+  - Story 049 reopened (`To Do`) for deferred OCR-noisy PDF normalization quality follow-up.
+- Deploy skill now includes a required duration recalibration workflow using recent successful deploy medians.
+- Deploy expected duration recalibrated to `~1.5 minutes` based on recent successful runs.
+
+---
+
 ## [2026-02-18] - Centralized browser MCP runbook and hardened deploy smoke workflow
 
 ### Added

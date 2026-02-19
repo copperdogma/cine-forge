@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -512,6 +513,140 @@ def _write_project_config_dependency_recipe(workspace_root: Path, tone: str) -> 
     return recipe_path
 
 
+def _write_fallback_module(workspace_root: Path) -> None:
+    module_dir = workspace_root / "src" / "cine_forge" / "modules" / "test" / "fallback_v1"
+    module_dir.mkdir(parents=True, exist_ok=True)
+    (module_dir / "module.yaml").write_text(
+        "\n".join(
+            [
+                "module_id: test.fallback_v1",
+                "stage: test",
+                "description: fallback module",
+                "input_schemas: []",
+                "output_schemas:",
+                "  - dict",
+                "parameters: {}",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (module_dir / "main.py").write_text(
+        "\n".join(
+            [
+                "def run_module(inputs, params, context):",
+                "    del inputs, context",
+                "    model = params.get('work_model') or params.get('model') or 'unknown'",
+                "    if model == 'claude-sonnet-4-6':",
+                "        raise RuntimeError('Anthropic HTTP error 529: overloaded_error')",
+                "    return {",
+                "        'artifacts': [{",
+                "            'artifact_type': 'dict',",
+                "            'entity_id': 'project',",
+                "            'data': {'used_model': model},",
+                "            'metadata': {",
+                "                'lineage': [],",
+                "                'intent': 'fallback',",
+                "                'rationale': 'fallback test',",
+                "                'alternatives_considered': [],",
+                "                'confidence': 1.0,",
+                "                'source': 'human',",
+                "            },",
+                "        }],",
+                "        'cost': {",
+                "            'model': model,",
+                "            'input_tokens': 1,",
+                "            'output_tokens': 1,",
+                "            'estimated_cost_usd': 0.0,",
+                "        },",
+                "    }",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+
+def _write_fallback_recipe(workspace_root: Path) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "fallback_recipe.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: fallback-recipe",
+                "description: fallback test",
+                "resilience:",
+                "  retry_base_delay_seconds: 0",
+                "  retry_jitter_ratio: 0",
+                "stages:",
+                "  - id: normalize",
+                "    module: test.fallback_v1",
+                "    params:",
+                "      model: claude-sonnet-4-6",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
+def _write_fallback_recipe_with_resilience_override(workspace_root: Path) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "fallback_recipe_override.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: fallback-recipe-override",
+                "description: fallback override test",
+                "resilience:",
+                "  retry_base_delay_seconds: 0",
+                "  retry_jitter_ratio: 0",
+                "  stage_fallback_models:",
+                "    normalize:",
+                "      - gpt-4.1",
+                "stages:",
+                "  - id: normalize",
+                "    module: test.fallback_v1",
+                "    params:",
+                "      model: claude-sonnet-4-6",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
+def _write_fallback_recipe_with_attempt_budget(workspace_root: Path, max_attempts: int) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "fallback_recipe_budget.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: fallback-recipe-budget",
+                "description: fallback attempt budget test",
+                "resilience:",
+                f"  max_attempts_per_stage: {max_attempts}",
+                "  retry_base_delay_seconds: 0",
+                "  retry_jitter_ratio: 0",
+                "  stage_fallback_models:",
+                "    normalize:",
+                "      - gpt-4.1",
+                "stages:",
+                "  - id: normalize",
+                "    module: test.fallback_v1",
+                "    params:",
+                "      model: claude-sonnet-4-6",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
 @pytest.mark.unit
 def test_driver_dry_run_writes_state(tmp_path: Path) -> None:
     _write_echo_module(tmp_path)
@@ -658,6 +793,34 @@ def test_driver_start_from_reuses_runtime_param_fingerprint(tmp_path: Path) -> N
 
 
 @pytest.mark.unit
+def test_driver_start_from_can_reuse_upstream_from_resume_ref_payloads(tmp_path: Path) -> None:
+    _write_echo_module(tmp_path)
+    recipe_path = _write_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+    baseline = engine.run(recipe_path=recipe_path, run_id="baseline-refs")
+
+    # Simulate historical run without usable stage cache.
+    stage_cache_path = tmp_path / "output" / "project" / "stage_cache.json"
+    if stage_cache_path.exists():
+        stage_cache_path.unlink()
+
+    resume_refs = {
+        stage_id: stage_state["artifact_refs"]
+        for stage_id, stage_state in baseline["stages"].items()
+    }
+    resumed = engine.run(
+        recipe_path=recipe_path,
+        run_id="resume-refs",
+        start_from="b",
+        force=True,
+        runtime_params={"__resume_artifact_refs_by_stage": resume_refs},
+    )
+
+    assert resumed["stages"]["a"]["status"] == "skipped_reused"
+    assert resumed["stages"]["b"]["status"] == "done"
+
+
+@pytest.mark.unit
 def test_driver_resolves_runtime_placeholders_in_stage_params(tmp_path: Path) -> None:
     _write_echo_module(tmp_path)
     recipe_path = _write_placeholder_recipe(tmp_path)
@@ -748,6 +911,111 @@ def test_driver_records_paused_stage_and_stops_downstream(tmp_path: Path) -> Non
     events_path = tmp_path / "output" / "runs" / "paused" / "pipeline_events.jsonl"
     events = events_path.read_text(encoding="utf-8")
     assert "stage_paused" in events
+
+
+@pytest.mark.unit
+def test_driver_falls_back_to_next_model_on_transient_stage_error(tmp_path: Path) -> None:
+    _write_fallback_module(tmp_path)
+    recipe_path = _write_fallback_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    state = engine.run(recipe_path=recipe_path, run_id="fallback")
+
+    assert state["stages"]["normalize"]["status"] == "done"
+    assert state["stages"]["normalize"]["attempt_count"] == 2
+    assert state["stages"]["normalize"]["model_used"] == "claude-opus-4-6"
+    assert state["stages"]["normalize"]["attempts"][0]["status"] == "failed"
+    assert state["stages"]["normalize"]["attempts"][0]["provider"] == "anthropic"
+    assert state["stages"]["normalize"]["attempts"][0]["error_code"] == "529"
+    assert state["stages"]["normalize"]["attempts"][0]["transient"] is True
+    assert state["stages"]["normalize"]["attempts"][1]["status"] == "success"
+
+    latest_ref = engine.store.list_versions("dict", "project")[-1]
+    latest = engine.store.load_artifact(latest_ref)
+    assert latest.data["used_model"] == "claude-opus-4-6"
+    assert latest.metadata.annotations["final_stage_model_used"] == "claude-opus-4-6"
+    assert latest.metadata.annotations["final_stage_provider_used"] == "anthropic"
+
+    events_path = tmp_path / "output" / "runs" / "fallback" / "pipeline_events.jsonl"
+    events = [
+        json.loads(line)
+        for line in events_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    retry_event = next(event for event in events if event["event"] == "stage_retrying")
+    fallback_event = next(event for event in events if event["event"] == "stage_fallback")
+    assert retry_event["error_code"] == "529"
+    assert retry_event["retry_delay_seconds"] == 0.0
+    assert fallback_event["to_model"] == "claude-opus-4-6"
+
+
+@pytest.mark.unit
+def test_driver_uses_recipe_resilience_fallback_override(tmp_path: Path) -> None:
+    _write_fallback_module(tmp_path)
+    recipe_path = _write_fallback_recipe_with_resilience_override(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    state = engine.run(recipe_path=recipe_path, run_id="fallback-override")
+
+    assert state["stages"]["normalize"]["status"] == "done"
+    assert state["stages"]["normalize"]["attempt_count"] == 2
+    assert state["stages"]["normalize"]["model_used"] == "gpt-4.1"
+    assert state["stages"]["normalize"]["attempts"][1]["model"] == "gpt-4.1"
+    latest_ref = engine.store.list_versions("dict", "project")[-1]
+    latest = engine.store.load_artifact(latest_ref)
+    assert latest.metadata.annotations["final_stage_model_used"] == "gpt-4.1"
+    assert latest.metadata.annotations["final_stage_provider_used"] == "openai"
+
+
+@pytest.mark.unit
+def test_driver_skips_unhealthy_provider_models_in_attempt_plan(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _write_fallback_module(tmp_path)
+    recipe_path = _write_fallback_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    monkeypatch.setattr(
+        DriverEngine,
+        "_provider_is_healthy",
+        staticmethod(lambda provider: provider != "anthropic"),
+    )
+
+    state = engine.run(recipe_path=recipe_path, run_id="fallback-skip-unhealthy")
+
+    assert state["stages"]["normalize"]["status"] == "done"
+    assert state["stages"]["normalize"]["attempt_count"] == 1
+    assert state["stages"]["normalize"]["model_used"] == "gpt-4.1"
+    assert state["stages"]["normalize"]["attempts"][0]["model"] == "gpt-4.1"
+
+
+@pytest.mark.unit
+def test_driver_respects_max_attempts_per_stage_budget(tmp_path: Path) -> None:
+    _write_fallback_module(tmp_path)
+    recipe_path = _write_fallback_recipe_with_attempt_budget(tmp_path, max_attempts=1)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    with pytest.raises(RuntimeError, match="529"):
+        engine.run(recipe_path=recipe_path, run_id="fallback-budget")
+
+    state_path = tmp_path / "output" / "runs" / "fallback-budget" / "run_state.json"
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    stage = state["stages"]["normalize"]
+    assert stage["status"] == "failed"
+    assert stage["attempt_count"] == 1
+
+    events_path = tmp_path / "output" / "runs" / "fallback-budget" / "pipeline_events.jsonl"
+    events = [
+        json.loads(line)
+        for line in events_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    failure_event = next(event for event in events if event["event"] == "stage_failed")
+    assert failure_event["attempt_count"] == 1
+    assert failure_event["error_code"] == "529"
+    assert failure_event["provider"] == "anthropic"
+    assert failure_event["terminal_reason"] == "retry_budget_exhausted_or_no_fallback"
+    assert not any(event["event"] == "stage_fallback" for event in events)
 
 
 def _write_store_inputs_recipe(workspace_root: Path, store_inputs: dict[str, str]) -> Path:

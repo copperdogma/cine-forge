@@ -256,11 +256,23 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
     @app.post("/api/runs/start", response_model=RunStartResponse)
     async def start_run(request: RunStartRequest) -> RunStartResponse:
-        run_id = service.start_run(request.project_id, request.model_dump())
+        if request.retry_failed_stage_for_run_id:
+            run_id = service.retry_failed_stage(request.retry_failed_stage_for_run_id)
+        else:
+            run_id = service.start_run(request.project_id, request.model_dump())
         return RunStartResponse(
             run_id=run_id,
             state_url=f"/api/runs/{run_id}/state",
             events_url=f"/api/runs/{run_id}/events",
+        )
+
+    @app.post("/api/runs/{run_id}/retry-failed-stage", response_model=RunStartResponse)
+    async def retry_failed_stage(run_id: str) -> RunStartResponse:
+        new_run_id = service.retry_failed_stage(run_id)
+        return RunStartResponse(
+            run_id=new_run_id,
+            state_url=f"/api/runs/{new_run_id}/state",
+            events_url=f"/api/runs/{new_run_id}/events",
         )
 
     @app.get("/api/runs/{run_id}/state", response_model=RunStateResponse)

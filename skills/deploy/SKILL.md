@@ -9,10 +9,27 @@ Browser automation and MCP troubleshooting (cross-environment): `docs/runbooks/b
 
 ## Expected Duration
 
-**~3 minutes total** (pre-flight ~15s, deploy ~90s, smoke test ~60s). Last updated: 2026-02-18.
+**~1.5 minutes total** (pre-flight ~15s, deploy ~45s, smoke test ~30s). Last updated: 2026-02-18.
 
 Tell the user this estimate before starting. If actual duration deviates by more than 20%, investigate why (slow Docker build? large context transfer? cold remote builder?) and explain in the report. If the new duration reflects a genuine change (e.g., more dependencies, larger frontend), update the estimate above.
 Note: cache-hit deploys with unchanged layers can complete much faster (~60s); call this out explicitly in the report when it happens.
+
+## Duration Recalibration (required)
+
+Use `docs/deploy-log.md` as the single persistent memory for deploy timing.
+
+After every deploy attempt:
+- Append one line with: `timestamp | duration_s | status | cache_hit | note`
+- Keep it append-only; do not rewrite old rows.
+
+When the deploy succeeds:
+- Read the last 7 `success` rows.
+- Compare their median duration to the current expected duration in this file.
+- If median differs by more than 20%, update the `Expected Duration` line and `Last updated` date in this file.
+- Add a short note in the deploy report: what changed and why (for example: "recalibrated from ~3m to ~2m based on last 7 successful deploys, median 109s").
+
+Outlier guard:
+- Exclude obvious anomalies from recalibration (failed deploys, builder outage, repeated retries, network incidents).
 
 ## Steps
 
@@ -61,6 +78,9 @@ Note: cache-hit deploys with unchanged layers can complete much faster (~60s); c
    - UI smoke test results (screenshots taken, any console errors)
    - Version reported by health endpoint
    - Total duration vs expected. If off by >20%, explain why.
+6. **Update deploy log + recalibration check**:
+   - Append the run to `docs/deploy-log.md`.
+   - Apply the recalibration rule above if there are enough successful rows.
 
 ## Chrome MCP Troubleshooting
 

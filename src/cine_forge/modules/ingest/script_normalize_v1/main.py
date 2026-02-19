@@ -424,6 +424,8 @@ def _build_output(
     reroutes: int,
 ) -> dict[str, Any]:
     """Build the standard module output dict."""
+    _require_non_empty_script_text(script_text)
+
     canonical_payload = CanonicalScript.model_validate(
         {
             "title": _guess_title(raw_input),
@@ -561,6 +563,14 @@ def _build_rejection_output(
         ],
         "cost": _sum_costs([]),
     }
+
+
+def _require_non_empty_script_text(script_text: str) -> None:
+    if not isinstance(script_text, str) or not script_text.strip():
+        raise ValueError(
+            "script_normalize_v1 produced an empty canonical script. "
+            "Cannot continue downstream with blank screenplay text."
+        )
 
 
 def _normalize_once(
@@ -808,6 +818,12 @@ def _extract_raw_input(inputs: dict[str, Any]) -> dict[str, Any]:
     required_keys = {"content", "classification", "source_info"}
     if not isinstance(candidate, dict) or not required_keys.issubset(candidate):
         raise ValueError("Upstream payload is not a valid raw_input artifact")
+    content = candidate.get("content")
+    if not isinstance(content, str) or not content.strip():
+        raise ValueError(
+            "script_normalize_v1 requires non-empty raw_input content. "
+            "The source document appears empty after extraction."
+        )
     return candidate
 
 

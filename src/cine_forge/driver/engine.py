@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import random
+import re
 import time
 import uuid
 from collections import deque
@@ -43,6 +45,28 @@ from cine_forge.schemas import (
     SceneIndex,
     SchemaRegistry,
 )
+
+_DEFAULT_STAGE_FALLBACK_MODELS: dict[str, list[str]] = {
+    # Story 050 benchmark-backed fallback order.
+    "normalize": [
+        "claude-sonnet-4-6",
+        "claude-opus-4-6",
+        "gpt-4.1",
+        "gemini-3-flash-preview",
+    ],
+    "extract_scenes": [
+        "claude-sonnet-4-6",
+        "claude-opus-4-6",
+        "gpt-5.2",
+        "gemini-3-flash-preview",
+    ],
+    "project_config": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-4-6",
+        "claude-opus-4-6",
+        "gpt-4.1",
+    ],
+}
 
 
 class DriverEngine:
@@ -113,6 +137,11 @@ class DriverEngine:
             schema_registry=self.schemas,
         )
         execution_order = resolve_execution_order(recipe=recipe)
+        stage_fallback_overrides = recipe.resilience.stage_fallback_models
+        retry_base_delay_seconds = float(recipe.resilience.retry_base_delay_seconds)
+        retry_jitter_ratio = float(recipe.resilience.retry_jitter_ratio)
+        default_max_attempts = int(recipe.resilience.max_attempts_per_stage)
+        stage_max_attempt_overrides = recipe.resilience.stage_max_attempts
         stage_cache = self._load_stage_cache()
         recipe_fingerprint = _hash_json(recipe.model_dump(mode="json"))
 
@@ -126,6 +155,9 @@ class DriverEngine:
                     "status": "pending",
                     "model_used": None,
                     "call_count": 0,
+                    "attempt_count": 0,
+                    "attempts": [],
+                    "final_error_class": None,
                     "artifact_refs": [],
                     "duration_seconds": 0.0,
                     "cost_usd": 0.0,
@@ -218,17 +250,138 @@ class DriverEngine:
             self._write_run_state(state_path, run_state)
             try:
                 module_runner = _load_module_runner(module_manifest=module_manifest)
-                module_result = module_runner(
-                    inputs=module_inputs,
-                    params=stage.params,
-                    context={
-                        "run_id": run_id,
-                        "stage_id": stage_id,
-                        "runtime_params": resolved_runtime_params,
-                    },
+                model_attempt_plan = self._build_stage_model_attempt_plan(
+                    stage_id=stage_id,
+                    stage_params=stage.params,
+                    fallback_overrides=stage_fallback_overrides,
+                    max_attempts=self._max_attempts_for_stage(
+                        stage_id=stage_id,
+                        default_max_attempts=default_max_attempts,
+                        stage_overrides=stage_max_attempt_overrides,
+                    ),
                 )
+                if model_attempt_plan:
+                    stage_state["model_used"] = model_attempt_plan[0]
+                active_attempt_model: str | None = None
+                attempt_index = 0
+                while True:
+                    active_attempt_model = (
+                        model_attempt_plan[attempt_index]
+                        if model_attempt_plan
+                        else None
+                    )
+                    params_for_attempt = (
+                        self._with_stage_model_override(stage.params, active_attempt_model)
+                        if active_attempt_model
+                        else stage.params
+                    )
+                    attempt_started = time.time()
+                    try:
+                        module_result = module_runner(
+                            inputs=module_inputs,
+                            params=params_for_attempt,
+                            context={
+                                "run_id": run_id,
+                                "stage_id": stage_id,
+                                "runtime_params": resolved_runtime_params,
+                            },
+                        )
+                        stage_state["attempt_count"] += 1
+                        stage_state["attempts"].append(
+                            {
+                                "attempt": stage_state["attempt_count"],
+                                "model": active_attempt_model or "code",
+                                "provider": self._provider_from_model(
+                                    active_attempt_model or "code"
+                                ),
+                                "status": "success",
+                                "duration_seconds": round(time.time() - attempt_started, 4),
+                            }
+                        )
+                        break
+                    except Exception as attempt_exc:  # noqa: BLE001
+                        error_message = str(attempt_exc)
+                        transient = self._is_retryable_stage_error(attempt_exc)
+                        stage_state["attempt_count"] += 1
+                        stage_state["attempts"].append(
+                            {
+                                "attempt": stage_state["attempt_count"],
+                                "model": active_attempt_model or "code",
+                                "provider": self._provider_from_model(
+                                    active_attempt_model or "code"
+                                ),
+                                "status": "failed",
+                                "error": error_message,
+                                "error_class": attempt_exc.__class__.__name__,
+                                "error_code": self._extract_error_code(error_message),
+                                "request_id": self._extract_request_id(error_message),
+                                "transient": transient,
+                                "duration_seconds": round(time.time() - attempt_started, 4),
+                            }
+                        )
+                        next_attempt_index = self._next_healthy_attempt_index(
+                            model_attempt_plan,
+                            start_index=attempt_index + 1,
+                        )
+                        has_fallback = next_attempt_index is not None
+                        if has_fallback and transient:
+                            assert next_attempt_index is not None
+                            next_model = model_attempt_plan[next_attempt_index]
+                            skipped_models = model_attempt_plan[
+                                attempt_index + 1 : next_attempt_index
+                            ]
+                            retry_delay_seconds = self._fallback_retry_delay_seconds(
+                                attempt=attempt_index,
+                                base_delay_seconds=retry_base_delay_seconds,
+                                jitter_ratio=retry_jitter_ratio,
+                            )
+                            self._append_event(
+                                events_path,
+                                {
+                                    "event": "stage_retrying",
+                                    "stage_id": stage_id,
+                                    "attempt": stage_state["attempt_count"] + 1,
+                                    "reason": error_message,
+                                    "error_code": self._extract_error_code(error_message),
+                                    "request_id": self._extract_request_id(error_message),
+                                    "retry_delay_seconds": retry_delay_seconds,
+                                },
+                            )
+                            self._append_event(
+                                events_path,
+                                {
+                                    "event": "stage_fallback",
+                                    "stage_id": stage_id,
+                                    "from_model": active_attempt_model,
+                                    "to_model": next_model,
+                                    "reason": error_message,
+                                    "error_code": self._extract_error_code(error_message),
+                                    "request_id": self._extract_request_id(error_message),
+                                    "skipped_models": skipped_models,
+                                },
+                            )
+                            stage_state["model_used"] = next_model
+                            self._write_run_state(state_path, run_state)
+                            if retry_delay_seconds > 0:
+                                time.sleep(retry_delay_seconds)
+                            attempt_index = next_attempt_index
+                            continue
+                        raise
                 outputs = module_result.get("artifacts", [])
                 cost_record = _coerce_cost(module_result.get("cost"))
+                raw_cost = module_result.get("cost")
+                call_count = 0
+                if isinstance(raw_cost, list):
+                    call_count = len(raw_cost)
+                elif isinstance(raw_cost, dict):
+                    call_count = 1
+                model_used = module_result.get("model")
+                if not model_used and cost_record:
+                    model_used = cost_record.model
+                if not model_used and active_attempt_model:
+                    model_used = active_attempt_model
+                stage_state["model_used"] = model_used or "code"
+                stage_state["call_count"] = call_count
                 if cost_record:
                     stage_state["cost_usd"] = cost_record.estimated_cost_usd
                     run_state["total_cost_usd"] += cost_record.estimated_cost_usd
@@ -255,16 +408,27 @@ class DriverEngine:
                         if artifact.get("include_stage_lineage")
                         else []
                     )
+                    source_metadata = artifact.get("metadata", {})
+                    source_annotations = source_metadata.get("annotations", {})
+                    if not isinstance(source_annotations, dict):
+                        source_annotations = {}
                     metadata = ArtifactMetadata.model_validate(
                         {
-                            **artifact.get("metadata", {}),
+                            **source_metadata,
                             "lineage": _merge_lineage(
-                                module_lineage=artifact.get("metadata", {}).get("lineage", []),
+                                module_lineage=source_metadata.get("lineage", []),
                                 upstream_refs=upstream_refs,
                                 stage_refs=stage_lineage_refs,
                             ),
                             "producing_module": module_manifest.module_id,
                             "cost_data": cost_record,
+                            "annotations": {
+                                **source_annotations,
+                                "final_stage_model_used": stage_state["model_used"],
+                                "final_stage_provider_used": self._provider_from_model(
+                                    str(stage_state["model_used"])
+                                ),
+                            },
                         }
                     )
                     if artifact["artifact_type"] == "bible_manifest":
@@ -319,21 +483,6 @@ class DriverEngine:
                 stage_state["status"] = "done"
                 stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
                 
-                # Determine model used and call count
-                model_used = module_result.get("model")
-                raw_cost = module_result.get("cost")
-                call_count = 0
-                if isinstance(raw_cost, list):
-                    call_count = len(raw_cost)
-                elif isinstance(raw_cost, dict):
-                    call_count = 1
-
-                if not model_used and cost_record:
-                    model_used = cost_record.model
-                
-                stage_state["model_used"] = model_used or "code"
-                stage_state["call_count"] = call_count
-
                 self._append_event(
                     events_path,
                     {
@@ -351,12 +500,50 @@ class DriverEngine:
                 self._write_run_state(state_path, run_state)
             except Exception as exc:  # noqa: BLE001
                 stage_state["status"] = "failed"
+                stage_state["final_error_class"] = exc.__class__.__name__
+                last_attempt = (
+                    stage_state["attempts"][-1]
+                    if stage_state["attempts"] and isinstance(stage_state["attempts"][-1], dict)
+                    else None
+                )
+                failure_message = str(exc)
+                failure_error_code = (
+                    str(last_attempt.get("error_code"))
+                    if isinstance(last_attempt, dict) and last_attempt.get("error_code")
+                    else self._extract_error_code(failure_message)
+                )
+                failure_request_id = (
+                    str(last_attempt.get("request_id"))
+                    if isinstance(last_attempt, dict) and last_attempt.get("request_id")
+                    else self._extract_request_id(failure_message)
+                )
+                failure_provider = (
+                    str(last_attempt.get("provider"))
+                    if isinstance(last_attempt, dict) and last_attempt.get("provider")
+                    else self._provider_from_model(str(stage_state.get("model_used") or "code"))
+                )
+                failure_model = (
+                    str(last_attempt.get("model"))
+                    if isinstance(last_attempt, dict) and last_attempt.get("model")
+                    else str(stage_state.get("model_used") or "code")
+                )
                 if not stage_state.get("model_used"):
                     stage_state["model_used"] = "code"
                 stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
                 self._append_event(
                     events_path,
-                    {"event": "stage_failed", "stage_id": stage_id, "error": str(exc)},
+                    {
+                        "event": "stage_failed",
+                        "stage_id": stage_id,
+                        "error": failure_message,
+                        "error_class": exc.__class__.__name__,
+                        "error_code": failure_error_code,
+                        "request_id": failure_request_id,
+                        "provider": failure_provider,
+                        "model": failure_model,
+                        "attempt_count": stage_state.get("attempt_count", 0),
+                        "terminal_reason": self._terminal_reason(stage_state),
+                    },
                 )
                 print(f"[{run_id}] Stage '{stage_id}' failed: {exc}")
                 run_state["finished_at"] = time.time()
@@ -367,6 +554,126 @@ class DriverEngine:
         self._write_run_state(state_path, run_state)
         print(f"[{run_id}] Run complete. Total cost ${run_state['total_cost_usd']:.4f}.")
         return run_state
+
+    @staticmethod
+    def _with_stage_model_override(stage_params: dict[str, Any], model: str) -> dict[str, Any]:
+        updated = dict(stage_params)
+        updated["model"] = model
+        updated["work_model"] = model
+        return updated
+
+    @staticmethod
+    def _build_stage_model_attempt_plan(
+        stage_id: str,
+        stage_params: dict[str, Any],
+        fallback_overrides: dict[str, list[str]] | None = None,
+        max_attempts: int | None = None,
+    ) -> list[str]:
+        primary = stage_params.get("work_model") or stage_params.get("model")
+        if not isinstance(primary, str) or not primary.strip():
+            return []
+        configured_fallbacks = (
+            (fallback_overrides or {}).get(stage_id)
+            or _DEFAULT_STAGE_FALLBACK_MODELS.get(stage_id, [])
+        )
+        candidates = [primary.strip(), *configured_fallbacks]
+        deduped: list[str] = []
+        seen: set[str] = set()
+        for model in candidates:
+            if not isinstance(model, str):
+                continue
+            trimmed = model.strip()
+            if not trimmed or trimmed in seen:
+                continue
+            seen.add(trimmed)
+            deduped.append(trimmed)
+        healthy = [
+            model
+            for model in deduped
+            if DriverEngine._provider_is_healthy(DriverEngine._provider_from_model(model))
+        ]
+        planned = healthy if healthy else deduped
+        if max_attempts is not None and max_attempts > 0:
+            return planned[:max_attempts]
+        return planned
+
+    @staticmethod
+    def _next_healthy_attempt_index(plan: list[str], start_index: int) -> int | None:
+        for idx in range(start_index, len(plan)):
+            provider = DriverEngine._provider_from_model(plan[idx])
+            if DriverEngine._provider_is_healthy(provider):
+                return idx
+        return None
+
+    @staticmethod
+    def _max_attempts_for_stage(
+        stage_id: str,
+        default_max_attempts: int,
+        stage_overrides: dict[str, int] | None = None,
+    ) -> int:
+        if stage_overrides and stage_id in stage_overrides:
+            override = int(stage_overrides[stage_id])
+            return max(1, override)
+        return max(1, int(default_max_attempts))
+
+    @staticmethod
+    def _is_retryable_stage_error(error: Exception) -> bool:
+        from cine_forge.ai.llm import _is_transient_error
+
+        return _is_transient_error(error)
+
+    @staticmethod
+    def _fallback_retry_delay_seconds(
+        attempt: int,
+        base_delay_seconds: float,
+        jitter_ratio: float,
+    ) -> float:
+        if base_delay_seconds <= 0:
+            return 0.0
+        base = base_delay_seconds * (2 ** max(attempt, 0))
+        jitter = random.uniform(0.0, base * max(jitter_ratio, 0.0)) if base > 0 else 0.0
+        return round(base + jitter, 4)
+
+    @staticmethod
+    def _extract_error_code(message: str) -> str | None:
+        match = re.search(r"\b([0-9]{3})\b", message)
+        return match.group(1) if match else None
+
+    @staticmethod
+    def _extract_request_id(message: str) -> str | None:
+        match = re.search(r"\b(req_[A-Za-z0-9]+)\b", message)
+        return match.group(1) if match else None
+
+    @staticmethod
+    def _provider_from_model(model: str) -> str:
+        lowered = model.lower()
+        if lowered.startswith("claude") or lowered.startswith("anthropic:"):
+            return "anthropic"
+        if lowered.startswith("gemini") or lowered.startswith("google:"):
+            return "google"
+        if lowered.startswith("gpt") or lowered.startswith("openai:"):
+            return "openai"
+        return "code"
+
+    @staticmethod
+    def _provider_is_healthy(provider: str) -> bool:
+        if provider == "code":
+            return True
+        from cine_forge.ai.llm import _is_circuit_breaker_open
+
+        return not _is_circuit_breaker_open(provider)
+
+    @staticmethod
+    def _terminal_reason(stage_state: dict[str, Any]) -> str:
+        attempts = stage_state.get("attempts")
+        if not isinstance(attempts, list) or not attempts:
+            return "module_error"
+        last = attempts[-1]
+        if not isinstance(last, dict):
+            return "module_error"
+        if bool(last.get("transient")):
+            return "retry_budget_exhausted_or_no_fallback"
+        return "non_retryable_error"
 
     def _collect_inputs(
         self,
@@ -545,6 +852,9 @@ class DriverEngine:
         runtime_params: dict[str, Any],
     ) -> dict[str, list[dict[str, Any]]]:
         stage_map = {stage.id: stage for stage in recipe.stages}
+        resume_artifact_refs_by_stage = runtime_params.get("__resume_artifact_refs_by_stage")
+        if not isinstance(resume_artifact_refs_by_stage, dict):
+            resume_artifact_refs_by_stage = {}
         needed: set[str] = set()
         queue = deque(ordered_stages)
         while queue:
@@ -588,11 +898,42 @@ class DriverEngine:
                 stage_state["artifact_refs"] = [output["ref"].model_dump() for output in outputs]
                 preloaded_outputs[stage_id] = outputs
             else:
-                raise ValueError(
-                    f"Cannot resume from selected stage because upstream '{stage_id}' "
-                    "has no reusable artifact cache."
-                )
+                payloads = resume_artifact_refs_by_stage.get(stage_id, [])
+                if payloads:
+                    outputs = self._load_outputs_from_ref_payloads(payloads)
+                    stage_state = run_state["stages"][stage_id]
+                    stage_state["status"] = "skipped_reused"
+                    stage_state["artifact_refs"] = [
+                        output["ref"].model_dump() for output in outputs
+                    ]
+                    preloaded_outputs[stage_id] = outputs
+                else:
+                    raise ValueError(
+                        f"Cannot resume from selected stage because upstream '{stage_id}' "
+                        "has no reusable artifact cache."
+                    )
         return preloaded_outputs
+
+    def _load_outputs_from_ref_payloads(
+        self,
+        payloads: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        outputs: list[dict[str, Any]] = []
+        for payload in payloads:
+            artifact_ref = ArtifactRef.model_validate(payload)
+            if not (self.project_dir / artifact_ref.path).exists():
+                raise ValueError(
+                    f"Cannot resume: missing artifact referenced by prior run: {artifact_ref.path}"
+                )
+            health = self.store.graph.get_health(artifact_ref)
+            if health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
+                raise ValueError(
+                    f"Cannot resume: upstream artifact '{artifact_ref.path}' has unhealthy state "
+                    f"'{health.value}'."
+                )
+            artifact = self.store.load_artifact(artifact_ref=artifact_ref)
+            outputs.append({"ref": artifact_ref, "data": artifact.data})
+        return outputs
 
     def _build_stage_fingerprint(
         self,

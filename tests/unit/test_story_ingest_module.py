@@ -615,3 +615,22 @@ def test_run_module_records_classification_and_extraction_diagnostics(
     assert diagnostics["classification_diagnostics"]["signals"]["scene_headings"] >= 2
     assert result["artifacts"][0]["data"]["classification"]["detected_format"] != "unknown"
     assert diagnostics["extraction_diagnostics"]["tokenized_layout_detected"] is True
+
+
+@pytest.mark.unit
+def test_run_module_rejects_empty_extracted_source_text(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path,
+) -> None:
+    source = tmp_path / "empty.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main.read_source_text_with_diagnostics",
+        lambda _: ("", {"pdf_extractor_selected": "fallback_sparse"}),
+    )
+
+    with pytest.raises(ValueError, match="could not extract readable text"):
+        run_module(
+            inputs={},
+            params={"input_file": str(source)},
+            context={"run_id": "unit", "stage_id": "ingest", "runtime_params": {}},
+        )

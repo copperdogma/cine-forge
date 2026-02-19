@@ -29,6 +29,9 @@ class StageRunState(BaseModel):
     status: StageStatus
     model_used: str | None = None
     call_count: int = 0
+    attempt_count: int = 0
+    attempts: list[dict[str, Any]] = Field(default_factory=list)
+    final_error_class: str | None = None
     artifact_refs: list[ArtifactRef] = Field(default_factory=list)
     duration_seconds: float = Field(ge=0.0, default=0.0)
     cost_usd: float = Field(ge=0.0, default=0.0)

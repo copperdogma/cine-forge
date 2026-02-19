@@ -19,6 +19,7 @@ from cine_forge.modules.ingest.story_ingest_v1.main import (
     SUPPORTED_FILE_FORMATS,
     read_source_text_with_diagnostics,
 )
+from cine_forge.schemas import ArtifactRef
 
 log = logging.getLogger(__name__)
 
@@ -343,6 +344,19 @@ class OperatorConsoleService:
         file_format = target.suffix.lower().lstrip(".")
         if file_format in SUPPORTED_FILE_FORMATS:
             text, _diagnostics = read_source_text_with_diagnostics(target)
+            if not text.strip():
+                raise ServiceError(
+                    code="input_extraction_failed",
+                    message=(
+                        f"Unable to extract readable text from '{filename}'. "
+                        "The document appears image-only or extraction failed."
+                    ),
+                    hint=(
+                        "Upload a text-selectable PDF/DOCX or enable OCR-capable extraction "
+                        "in the runtime environment."
+                    ),
+                    status_code=422,
+                )
             return text
         return target.read_text(encoding="utf-8", errors="replace")
 
@@ -914,6 +928,143 @@ class OperatorConsoleService:
             self._run_threads[run_id] = worker
         worker.start()
         return run_id
+
+    def retry_failed_stage(self, run_id: str) -> str:
+        run_dir = self.workspace_root / "output" / "runs" / run_id
+        state_path = run_dir / "run_state.json"
+        if not state_path.exists():
+            raise ServiceError(
+                code="run_state_not_found",
+                message=f"Run state not found for run_id='{run_id}'.",
+                hint="Verify the run id before retrying a failed stage.",
+                status_code=404,
+            )
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        stages = state.get("stages", {})
+        failed_stage_id = next(
+            (stage_id for stage_id, stage in stages.items() if stage.get("status") == "failed"),
+            None,
+        )
+        if not failed_stage_id:
+            raise ServiceError(
+                code="no_failed_stage",
+                message=f"Run '{run_id}' has no failed stage to retry.",
+                hint="Only failed runs can be resumed from a failed stage.",
+                status_code=400,
+            )
+
+        recipe_id = state.get("recipe_id")
+        if not recipe_id or recipe_id == "initializing":
+            raise ServiceError(
+                code="run_recipe_unknown",
+                message=f"Run '{run_id}' does not have a resolvable recipe.",
+                hint="Use a run with a completed run_state recipe_id.",
+                status_code=400,
+            )
+
+        recipe_filename = f"recipe-{str(recipe_id).replace('_', '-')}.yaml"
+        recipe_path = self.workspace_root / "configs" / "recipes" / recipe_filename
+        if not recipe_path.exists():
+            raise ServiceError(
+                code="recipe_not_found",
+                message=f"Recipe file not found for retry: {recipe_path}",
+                hint="Ensure the original run recipe still exists.",
+                status_code=500,
+            )
+
+        run_meta_path = run_dir / "run_meta.json"
+        if not run_meta_path.exists():
+            run_meta_path = run_dir / "operator_console_run_meta.json"
+        if not run_meta_path.exists():
+            raise ServiceError(
+                code="run_meta_not_found",
+                message=f"Run metadata not found for run_id='{run_id}'.",
+                hint="Cannot determine project context for retry.",
+                status_code=500,
+            )
+        run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
+        project_id = str(run_meta.get("project_id") or "")
+        project_path_raw = run_meta.get("project_path")
+        if not project_id or not project_path_raw:
+            raise ServiceError(
+                code="run_meta_invalid",
+                message=f"Run metadata is incomplete for run_id='{run_id}'.",
+                hint="Expected project_id and project_path.",
+                status_code=500,
+            )
+
+        project_path = Path(project_path_raw)
+        # Ensure project can be resolved in the current backend session.
+        self._project_registry[project_id] = project_path
+        store = ArtifactStore(project_dir=project_path)
+
+        effective_start_from = failed_stage_id
+        ingest_stage = stages.get("ingest")
+        if (
+            isinstance(ingest_stage, dict)
+            and ingest_stage.get("status") == "done"
+            and failed_stage_id != "ingest"
+            and not self._has_non_empty_raw_input(ingest_stage, store)
+        ):
+            # Historical runs can contain an "ingest done" artifact with empty content.
+            # Step back to ingest so retry can regenerate raw_input with current extraction logic.
+            effective_start_from = "ingest"
+
+        new_run_id = f"{run_id}-retry-{uuid.uuid4().hex[:4]}"
+        retry_run_dir = self.workspace_root / "output" / "runs" / new_run_id
+        retry_run_dir.mkdir(parents=True, exist_ok=True)
+        self._write_run_meta(
+            run_dir=retry_run_dir,
+            project_id=project_id,
+            project_path=project_path,
+        )
+
+        worker = threading.Thread(
+            target=self._run_pipeline,
+            kwargs={
+                "project_path": project_path,
+                "recipe_path": recipe_path,
+                "run_id": new_run_id,
+                "force": False,
+                "runtime_params": {
+                    **state.get("runtime_params", {}),
+                    "__resume_artifact_refs_by_stage": {
+                        stage_id: stage.get("artifact_refs", [])
+                        for stage_id, stage in stages.items()
+                        if isinstance(stage, dict)
+                    },
+                },
+                "start_from": effective_start_from,
+            },
+            daemon=True,
+        )
+        with self._run_lock:
+            self._run_threads[new_run_id] = worker
+        worker.start()
+        return new_run_id
+
+    @staticmethod
+    def _has_non_empty_raw_input(stage_state: dict[str, Any], store: ArtifactStore) -> bool:
+        refs = stage_state.get("artifact_refs", [])
+        if not isinstance(refs, list):
+            return False
+        for ref_payload in refs:
+            if not isinstance(ref_payload, dict):
+                continue
+            if ref_payload.get("artifact_type") != "raw_input":
+                continue
+            try:
+                ref = ArtifactRef.model_validate(ref_payload)
+                artifact = store.load_artifact(ref)
+            except Exception:  # noqa: BLE001
+                continue
+            raw = artifact.data
+            data = raw if isinstance(raw, dict) else raw.model_dump()
+            content = data.get("content")
+            if isinstance(content, str) and content.strip():
+                return True
+        return False
 
     def save_project_input(self, project_id: str, filename: str, content: bytes) -> dict[str, Any]:
         project_path = self.require_project_path(project_id)

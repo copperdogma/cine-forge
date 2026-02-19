@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
 import { streamAutoInsight } from './api'
 import { getStageStartMessage, getStageCompleteMessage, humanizeStageName } from './chat-messages'
-import { useRunState } from './hooks'
+import { useRunState, useRunEvents } from './hooks'
 import type { StageState } from './types'
 
 /** Build a human-readable summary of what was produced (e.g. "13 scenes and a standardized script"). */
@@ -49,12 +49,15 @@ export function useRunProgressChat(projectId: string | undefined) {
     (s) => (projectId ? s.activeRunId?.[projectId] ?? null : null),
   )
   const { data: runState } = useRunState(activeRunId ?? undefined)
+  const { data: runEvents } = useRunEvents(activeRunId ?? undefined)
   const prevStagesRef = useRef<Record<string, string> | null>(null)
+  const processedEventIdsRef = useRef<Set<string>>(new Set())
   const queryClient = useQueryClient()
 
   // Reset ref when active run changes
   useEffect(() => {
     prevStagesRef.current = null
+    processedEventIdsRef.current = new Set()
   }, [activeRunId])
 
   useEffect(() => {
@@ -67,6 +70,49 @@ export function useRunProgressChat(projectId: string | undefined) {
     }
 
     const store = useChatStore.getState()
+
+    // Surface resilience events from backend stream.
+    const backendEvents = runEvents?.events ?? []
+    for (let i = 0; i < backendEvents.length; i += 1) {
+      const evt = backendEvents[i]
+      const evtType = (evt.event as string) ?? ''
+      if (evtType !== 'stage_retrying' && evtType !== 'stage_fallback') continue
+      const stageName = ((evt.stage_id as string) || (evt.stage as string) || 'stage')
+      const dedupeKey = `${activeRunId}:${i}:${evtType}:${stageName}`
+      if (processedEventIdsRef.current.has(dedupeKey)) continue
+      processedEventIdsRef.current.add(dedupeKey)
+
+      if (evtType === 'stage_retrying') {
+        const retryDelay = typeof evt.retry_delay_seconds === 'number'
+          ? evt.retry_delay_seconds
+          : null
+        const delayText = retryDelay !== null
+          ? ` Retrying in ~${retryDelay.toFixed(1)}s.`
+          : ''
+        store.addMessage(projectId, {
+          id: `progress_${activeRunId}_${stageName}_retry_${i}`,
+          type: 'ai_status',
+          content: `Retrying "${humanizeStageName(stageName)}" after transient provider error...${delayText}`,
+          timestamp: Date.now(),
+        })
+      } else {
+        const toModel = (evt.to_model as string) || 'fallback model'
+        store.addMessage(projectId, {
+          id: `progress_${activeRunId}_${stageName}_fallback_${i}`,
+          type: 'ai_suggestion',
+          content: `Switched "${humanizeStageName(stageName)}" to ${toModel} to keep your run moving.`,
+          timestamp: Date.now(),
+          actions: [
+            {
+              id: 'view_run',
+              label: 'View Details',
+              variant: 'outline',
+              route: `runs/${activeRunId}`,
+            },
+          ],
+        })
+      }
+    }
 
     // First poll — initialize ref and report any currently running stages
     if (prevStagesRef.current === null) {
@@ -207,7 +253,7 @@ export function useRunProgressChat(projectId: string | undefined) {
 
       store.clearActiveRun(projectId)
     }
-  }, [runState, activeRunId, projectId, queryClient])
+  }, [runState, runEvents, activeRunId, projectId, queryClient])
 }
 
 /**

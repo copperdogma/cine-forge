@@ -10,6 +10,16 @@ RUN npm run build
 FROM python:3.12-slim AS runtime
 WORKDIR /app
 
+# Install native PDF extraction backend used by story_ingest_v1.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    poppler-utils \
+    ocrmypdf \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    ghostscript && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install Python dependencies
 COPY pyproject.toml ./
 COPY src/ ./src/

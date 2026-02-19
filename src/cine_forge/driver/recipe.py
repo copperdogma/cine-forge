@@ -25,6 +25,16 @@ class RecipeStage(BaseModel):
     store_inputs_all: dict[str, str] = Field(default_factory=dict)
 
 
+class RecipeResilience(BaseModel):
+    """Resilience policy controls for retry/fallback behavior."""
+
+    stage_fallback_models: dict[str, list[str]] = Field(default_factory=dict)
+    retry_base_delay_seconds: float = Field(default=0.5, ge=0.0)
+    retry_jitter_ratio: float = Field(default=0.25, ge=0.0)
+    max_attempts_per_stage: int = Field(default=4, ge=1)
+    stage_max_attempts: dict[str, int] = Field(default_factory=dict)
+
+
 class Recipe(BaseModel):
     """Recipe envelope."""
 
@@ -32,6 +42,7 @@ class Recipe(BaseModel):
     description: str
     stages: list[RecipeStage]
     project: dict[str, Any] = Field(default_factory=dict)
+    resilience: RecipeResilience = Field(default_factory=RecipeResilience)
 
 
 def load_recipe(recipe_path: Path) -> Recipe:
@@ -46,7 +57,10 @@ def resolve_runtime_params(recipe: Recipe, runtime_params: dict[str, Any]) -> Re
     for stage in recipe.stages:
         resolved_params = _resolve_value(stage.params, runtime_params=runtime_params)
         resolved_stages.append(stage.model_copy(update={"params": resolved_params}))
-    return recipe.model_copy(update={"stages": resolved_stages})
+    resolved_resilience = RecipeResilience.model_validate(
+        _resolve_value(recipe.resilience.model_dump(mode="json"), runtime_params=runtime_params)
+    )
+    return recipe.model_copy(update={"stages": resolved_stages, "resilience": resolved_resilience})
 
 
 def validate_recipe(

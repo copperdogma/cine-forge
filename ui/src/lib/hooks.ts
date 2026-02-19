@@ -200,6 +200,20 @@ export function useStartRun() {
   })
 }
 
+export function useRetryFailedStage() {
+  const queryClient = useQueryClient()
+  return useMutation<{ run_id: string }, Error, { runId: string; projectId?: string }>({
+    mutationFn: ({ runId }) => api.retryFailedStage(runId),
+    onSuccess: (_data, variables) => {
+      if (variables.projectId) {
+        queryClient.invalidateQueries({
+          queryKey: ['projects', variables.projectId, 'runs'],
+        })
+      }
+    },
+  })
+}
+
 export function useRunState(runId: string | undefined) {
   return useQuery<RunStateResponse>({
     queryKey: ['runs', runId, 'state'],

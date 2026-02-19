@@ -21,7 +21,7 @@ import { RunEventLog, type RunEvent } from '@/components/RunEventLog'
 import { ErrorState } from '@/components/StateViews'
 import { cn } from '@/lib/utils'
 import type { StageState } from '@/lib/types'
-import { useRunState, useRunEvents } from '@/lib/hooks'
+import { useRunState, useRunEvents, useRetryFailedStage } from '@/lib/hooks'
 
 function statusBadge(status: string) {
   if (status === 'done' || status === 'skipped_reused') {
@@ -133,13 +133,36 @@ function DetailSkeleton() {
 
 // Helper to map API events to RunEvent format
 function mapApiEventsToRunEvents(apiEvents: Array<Record<string, unknown>>): RunEvent[] {
-  return apiEvents.map((event) => ({
-    timestamp: (event.timestamp as number) || Date.now(),
-    type: (event.type as RunEvent['type']) || 'info',
-    stage: event.stage as string | undefined,
-    message: (event.message as string) || JSON.stringify(event),
-    details: event.details as Record<string, unknown> | undefined,
-  }))
+  const eventTypeMap: Record<string, RunEvent['type']> = {
+    stage_started: 'stage_start',
+    stage_finished: 'stage_end',
+    stage_failed: 'error',
+    stage_retrying: 'warning',
+    stage_fallback: 'warning',
+    stage_paused: 'warning',
+  }
+  return apiEvents.map((event) => {
+    const backendEvent = (event.event as string) ?? ''
+    const stageId = (event.stage as string) ?? (event.stage_id as string) ?? undefined
+    let message = (event.message as string) || JSON.stringify(event)
+    if (backendEvent === 'stage_retrying') {
+      const delay = typeof event.retry_delay_seconds === 'number'
+        ? ` in ~${event.retry_delay_seconds.toFixed(1)}s`
+        : ''
+      message = `Retrying ${stageId ?? 'stage'} after transient failure${delay}`
+    } else if (backendEvent === 'stage_fallback') {
+      message = `Fallback model selected: ${(event.to_model as string) ?? 'unknown'}`
+    } else if (backendEvent === 'stage_failed') {
+      message = (event.error as string) || `Stage ${stageId ?? ''} failed`
+    }
+    return {
+      timestamp: (event.timestamp as number) || Date.now(),
+      type: eventTypeMap[backendEvent] ?? ((event.type as RunEvent['type']) || 'info'),
+      stage: stageId,
+      message,
+      details: event.details as Record<string, unknown> | undefined,
+    }
+  })
 }
 
 export default function RunDetail() {
@@ -148,6 +171,7 @@ export default function RunDetail() {
 
   const { data: runStateResponse, isLoading, error, refetch } = useRunState(runId)
   const { data: eventsResponse, isLoading: eventsLoading } = useRunEvents(runId)
+  const retryFailedStage = useRetryFailedStage()
 
   // Derive running state (safe even when data is undefined)
   const overallStatus = runStateResponse
@@ -235,6 +259,8 @@ export default function RunDetail() {
     ? mapApiEventsToRunEvents(eventsResponse.events)
     : []
 
+  const canRetryFailedStage = overallStatus === 'failed' && !!runId && !retryFailedStage.isPending
+
   return (
     <div>
       {/* Header with back button */}
@@ -256,7 +282,23 @@ export default function RunDetail() {
               {recipeName}
             </p>
           </div>
-          {statusBadge(overallStatus)}
+          <div className="flex items-center gap-2">
+            {canRetryFailedStage && (
+              <Button
+                size="sm"
+                onClick={async () => {
+                  const result = await retryFailedStage.mutateAsync({
+                    runId: runId!,
+                    projectId,
+                  })
+                  navigate(`/${projectId}/run/${result.run_id}`)
+                }}
+              >
+                Retry Failed Stage
+              </Button>
+            )}
+            {statusBadge(overallStatus)}
+          </div>
         </div>
       </div>
 
@@ -340,9 +382,17 @@ export default function RunDetail() {
                   {stage.call_count !== undefined && stage.call_count > 0 && (
                     <div className="text-xs text-muted-foreground mt-0.5">
                       {stage.call_count} AI {stage.call_count === 1 ? 'call' : 'calls'}
+                      {stage.attempt_count !== undefined && stage.attempt_count > 1 && (
+                        <> • {stage.attempt_count} attempts</>
+                      )}
                       {stage.artifact_refs.length > 0 && (
                         <> • {stage.artifact_refs.length} {stage.artifact_refs.length === 1 ? 'artifact' : 'artifacts'}</>
                       )}
+                    </div>
+                  )}
+                  {stage.status === 'failed' && stage.final_error_class && (
+                    <div className="text-xs text-destructive mt-0.5">
+                      Error type: {stage.final_error_class}
                     </div>
                   )}
                 </div>

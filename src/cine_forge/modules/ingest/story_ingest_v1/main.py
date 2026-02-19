@@ -255,6 +255,13 @@ def run_module(
 
     input_path = Path(raw_input_path)
     source_text, extraction_diagnostics = read_source_text_with_diagnostics(input_path)
+    if not source_text.strip():
+        extractor = extraction_diagnostics.get("pdf_extractor_selected", "unknown")
+        raise ValueError(
+            "story_ingest_v1 could not extract readable text from input. "
+            f"Extractor path: {extractor}. "
+            "Upload a text-selectable PDF or DOCX, or enable OCR-capable extraction."
+        )
     file_format = detect_file_format(input_path)
     classification, classification_diagnostics = classify_format_with_diagnostics(
         content=source_text,

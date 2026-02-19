@@ -56,6 +56,9 @@ export type StageState = {
   status: string
   model_used?: string | null
   call_count?: number
+  attempt_count?: number
+  attempts?: Array<Record<string, unknown>>
+  final_error_class?: string | null
   duration_seconds: number
   cost_usd: number
   artifact_refs: Array<Record<string, unknown>>
