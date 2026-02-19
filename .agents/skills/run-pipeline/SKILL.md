@@ -11,7 +11,7 @@ Use this skill to execute pipeline recipes consistently.
 ## Basic Command
 
 ```bash
-python -m cine_forge.driver --recipe <recipe-path> --run-id <run-id>
+PYTHONPATH=src .venv/bin/python -m cine_forge.driver --recipe <recipe-path> --run-id <run-id>
 ```
 
 ## Common Flags

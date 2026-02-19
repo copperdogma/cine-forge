@@ -18,8 +18,8 @@ Takes reference repos (local paths or GitHub URLs), extracts the reusable scaffo
    - `AGENTS.md` / `CLAUDE.md` — Agent instructions and conventions
    - `.agents/skills/` — All skill definitions (canonical cross-CLI location)
    - Doc structure — How docs, stories, decisions, research are organized
-   - Package/monorepo config — `package.json`, workspace config, Turborepo/Nx config
-   - `.gitignore`, `tsconfig.json`, other scaffolding
+   - Build/package config — `pyproject.toml` and/or `package.json`, workspace config, Makefile/task runners
+   - `.gitignore`, type checker config (`mypy/pyright/tsconfig`), and other scaffolding
    - `CHANGELOG.md` — Versioning format
    - AI Learning Log in AGENTS.md — Accumulated wisdom from past sessions
 

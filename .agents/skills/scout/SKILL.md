@@ -57,7 +57,7 @@ This handles all setup in one call:
 6. **Recommend:** End with a clear approval prompt. Example:
    ```
    Items 1-3 (skill infrastructure): Ready for inline implementation.
-   Item 4 (voice mode rewrite): Too large — recommend creating a story.
+   Item 4 (major pipeline refactor): Too large — recommend creating a story.
    Items 5-6: Low value — recommend skipping.
 
    Approve all inline items? Or pick specific ones?

@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-02-19] - Re-align skills to CineForge architecture (Python-first + ui split)
+
+### Changed
+- Reworked validation/build/close-story skill flows to use CineForge-native checks instead of root `pnpm` assumptions.
+- Updated `validate` skill to:
+  - start with full local-diff audit
+  - use scope-based check profiles (backend, UI, full-stack)
+  - require `tsc -b` guidance for UI type-check parity
+- Updated `build-story` skill to restore required story-section checks and repo-appropriate verification flow.
+- Replaced deploy skill scaffold with CineForge-specific Fly.io deployment workflow:
+  - preflight checks, API/UI smoke tests, failure protocol
+  - duration logging/recalibration and runbook references
+  - `--depot=false` guardrail
+- Updated story template and related skills (`mark-story-done`, `run-pipeline`, `init-project`, `scout`) to remove non-CineForge assumptions and align wording/commands with this repo.
+
 ## [2026-02-19] - Timeline artifact implementation and ordering-model hardening (Story 012)
 
 ### Added

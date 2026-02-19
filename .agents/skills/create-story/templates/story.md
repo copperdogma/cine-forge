@@ -32,7 +32,10 @@ Before writing complex code, ask: **"Can an LLM call solve this?"**
 - [ ] {Implementation task 1}
 - [ ] {Implementation task 2}
 - [ ] {Implementation task 3}
-- [ ] Run `pnpm typecheck && pnpm test && pnpm lint` — all pass
+- [ ] Run required checks for touched scope:
+  - [ ] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
+  - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
+  - [ ] UI (if touched): `pnpm --dir ui run lint` and build/typecheck script if defined
 - [ ] Search all docs and update any related to what we touched
 - [ ] Verify adherence to Central Tenets (0-5):
   - [ ] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved?

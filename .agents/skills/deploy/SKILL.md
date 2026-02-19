@@ -1,59 +1,107 @@
 ---
 name: deploy
-description: Deploy Storybook to production
-user-invocable: false
+description: Deploy CineForge production app to Fly.io with preflight and smoke checks
+user-invocable: true
 ---
 
 # /deploy
 
-> **NOT READY — CANNOT BE USED YET.**
-> This is a scaffold based on CineForge's deploy skill. When ready to deploy, `/scout` the CineForge repo for the latest deploy patterns — they evolve frequently.
+Deploy CineForge to production on Fly.io.
 
-Deploy Storybook to production on Fly.io.
+## References
 
-## What CineForge's Deploy Skill Does (Reference)
+- `docs/deployment.md` — infrastructure, architecture, DNS, troubleshooting
+- `docs/runbooks/browser-automation-and-mcp.md` — browser automation + MCP runbook
+- `docs/deploy-log.md` — deploy duration history and recalibration memory
 
-CineForge's deploy skill is the gold standard. Key patterns to adopt:
+## Expected Duration
 
-1. **Pre-flight checks** — Must pass before deploying:
-   - On correct branch (main)
-   - Working tree clean (if dirty, commit first via `/check-in-diff`)
-   - Push to remote so it's up to date
-   - All tests pass
-   - Lint clean
+~1.5 minutes total (preflight ~15s, deploy ~45s, smoke tests ~30s).  
+Tell the user this estimate before starting. If actual duration deviates by more than 20%, explain why.
 
-2. **Deploy** — `fly deploy` with timing
+## Duration Recalibration (required)
 
-3. **Tiered smoke tests** — Three levels of verification:
-   - **API smoke tests** — curl health endpoint, key API routes
-   - **UI smoke tests (browser)** — Navigate via Chrome MCP, screenshot, check console errors
-   - **UI smoke tests (HTTP fallback)** — If browser MCP unavailable, curl HTML and verify JS bundle loads
+After every deploy attempt:
+- Append one line to `docs/deploy-log.md`:
+  - `timestamp | duration_s | status | cache_hit | note`
+- Keep append-only history.
 
-4. **Expected duration tracking** — Estimate before starting, explain deviations >20%, update estimate if it's genuinely changed
+After successful deploy:
+- Read last 7 `success` rows.
+- If median differs by >20% from this skill's expected duration, update the estimate and note why in the report.
+- Exclude obvious anomalies (failed runs, outages, repeated retries).
 
-5. **Failure protocol** — Immediately report what failed, grab logs, check troubleshooting docs, diagnose and propose fix. Never silently retry or declare success.
+## Steps
 
-6. **Guardrails:**
-   - Never deploy with uncommitted changes
-   - Never deploy with failing tests
-   - Never deploy from non-main without approval
-   - Never declare success until ALL smoke tests pass
-   - Never run `fly logs` without timeout (streams forever)
+0. **Browser capability check (required before UI smoke path selection):**
+   - Determine whether in-session browser automation is actually available.
+   - If unavailable, do not claim screenshot/console coverage; use fallback HTTP UI checks and report the limitation.
 
-## Storybook-Specific Adaptations Needed
+1. **Preflight checks (all must pass):**
+   - Branch/context:
+     - `git branch --show-current` (confirm target branch with user if not `main`)
+     - `git status --short` must be clean unless user explicitly overrides
+   - Sync:
+     - `git push origin main` (or approved target branch)
+   - Required checks by scope:
+     - Backend: `make test-unit PYTHON=.venv/bin/python`
+     - Backend lint: `.venv/bin/python -m ruff check src/ tests/`
+     - UI if touched:
+       - `pnpm --dir ui run lint`
+       - `cd ui && npx tsc -b` (use `-b`, not `--noEmit`)
+   - Fly status:
+     - `fly status -a cineforge-app`
 
-When building this out:
+2. **Deploy:**
+   - Capture start time (`date +%s`)
+   - Run:
+     - `fly deploy --depot=false --yes`
+   - Capture end time and duration
+   - Capture post-deploy status:
+     - `fly status -a cineforge-app`
 
-- [ ] Decide deployment target (Fly.io single Docker container per ADR-002)
-- [ ] Define health endpoint (`/api/health`)
-- [ ] Define key API routes to smoke test
-- [ ] Define UI smoke test expectations (landing page, chat interface)
-- [ ] Set up `docs/deployment.md` with full infrastructure reference
-- [ ] Adapt pre-flight checks for pnpm (`pnpm typecheck && pnpm test && pnpm lint`)
-- [ ] Set up DNS / domain
-- [ ] Docker multi-stage build (backend serves frontend as static files)
-- [ ] Consider: browser automation runbook (CineForge has `docs/runbooks/browser-automation-and-mcp.md`)
+3. **API smoke tests (all must pass):**
+   - `curl -sf https://cineforge.copper-dog.com/api/health`
+   - `curl -sf https://cineforge.copper-dog.com/api/recipes`
+   - `curl -sf https://cineforge.copper-dog.com/api/projects/recent`
+   - `curl -sf https://cineforge.copper-dog.com/api/changelog`
 
-## When to Build This
+4. **UI smoke tests:**
+   - If browser tooling available (preferred):
+     - Open `https://cineforge.copper-dog.com/`
+     - Capture screenshot(s) of landing/project flow
+     - Check console for errors
+   - If browser tooling unavailable (fallback):
+     - `curl -sf https://cineforge.copper-dog.com/` and verify title/bundle references
+     - Verify referenced JS bundle returns 200
+     - Report that browser coverage was unavailable in-session
 
-After the first deployable version exists (post-MVP scaffolding stories). Don't build the skill before there's something to deploy.
+5. **Report only after all smoke checks pass:**
+   - Deployed commit hash and summary
+   - API check results
+   - UI check results (including whether browser or fallback path was used)
+   - Health endpoint version/status
+   - Total duration vs expected (+ explanation if >20% off)
+
+6. **Log + recalibration:**
+   - Append deploy row in `docs/deploy-log.md`
+   - Apply recalibration rule if criteria are met
+
+## On Failure
+
+If any check fails:
+1. Report exactly what failed and with what output.
+2. Gather recent logs (bounded):
+   - `timeout 10 fly logs -a cineforge-app 2>&1 | tail -30`
+3. Check relevant troubleshooting in `docs/deployment.md`.
+4. For UI issues, include browser console errors if available.
+5. Propose concrete fix; do not silently retry multiple times.
+
+## Guardrails
+
+- Never deploy with failing required checks.
+- Never deploy with uncommitted changes unless user explicitly approves.
+- Never deploy from non-main without explicit user approval.
+- Never claim success until API + UI smoke checks pass.
+- Never run unbounded `fly logs` streaming.
+- Always use `--depot=false` for deploy command.
