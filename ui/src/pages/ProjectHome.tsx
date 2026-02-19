@@ -39,6 +39,9 @@ import {
 } from '@/lib/hooks'
 import { updateProjectSettings } from '@/lib/api'
 import { cn } from '@/lib/utils'
+import { useChatStore } from '@/lib/chat-store'
+import { useRunState } from '@/lib/hooks'
+import { getStageStartMessage } from '@/lib/chat-messages'
 import type { ProjectState } from '@/lib/types'
 
 import type { ScreenplayEditorHandle } from '@/components/ScreenplayEditor'
@@ -513,13 +516,28 @@ export function AnalyzedView({ projectId }: { projectId: string }) {
 // --- Processing View: Screenplay with processing banner ---
 
 function ProcessingView({ projectId }: { projectId: string }) {
+  const activeRunId = useChatStore(s => s.activeRunId?.[projectId] ?? null)
+  const { data: runState } = useRunState(activeRunId ?? undefined)
+
+  // Find the currently running stage to show its description
+  let statusText = 'Processing your screenplay...'
+  let detailText = 'Extracting scenes, characters, and locations.'
+  if (runState) {
+    const stages = runState.state.stages
+    const runningStage = Object.entries(stages).find(([, s]) => s.status === 'running')
+    if (runningStage) {
+      statusText = getStageStartMessage(runningStage[0])
+      detailText = ''
+    }
+  }
+
   return (
     <div className="flex flex-col flex-1 min-h-0 gap-4">
       <div className="flex items-center gap-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-3 shrink-0">
         <Loader2 className="h-5 w-5 text-blue-400 animate-spin shrink-0" />
         <div>
-          <p className="text-sm font-medium text-blue-400">Processing your screenplay...</p>
-          <p className="text-xs text-muted-foreground">Extracting scenes, characters, and locations.</p>
+          <p className="text-sm font-medium text-blue-400">{statusText}</p>
+          {detailText && <p className="text-xs text-muted-foreground">{detailText}</p>}
         </div>
       </div>
       <FreshImportView projectId={projectId} />

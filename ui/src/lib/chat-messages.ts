@@ -39,10 +39,10 @@ export function getWelcomeMessages(
         {
           id: msgId(),
           type: 'ai_suggestion',
-          content: "I'll read through the screenplay and identify all the scenes, characters, and locations. This usually takes about a minute.",
+          content: "I'll break your screenplay into individual scenes and identify all the characters and locations. Takes about a minute.",
           timestamp: now + 1,
           actions: [
-            { id: 'start_analysis', label: 'Start Analysis', variant: 'default' },
+            { id: 'start_analysis', label: 'Break Down Script', variant: 'default' },
             { id: 'just_read', label: 'Just Let Me Read', variant: 'outline' },
           ],
           needsAction: true,
@@ -65,17 +65,17 @@ export function getWelcomeMessages(
         {
           id: msgId(),
           type: 'ai_welcome',
-          content: `Your screenplay has been analyzed! I found ${artifactCount} story elements ready to explore.`,
+          content: `Your screenplay has been broken down — ${artifactCount} story elements found.`,
           timestamp: now,
         },
         {
           id: msgId(),
           type: 'ai_suggestion',
-          content: 'You can review what I found, or I can go deeper — building character bibles, creative world details, and visual style guides.',
+          content: 'Ready for a deep breakdown? I\'ll extract detailed character profiles, location guides, and map every relationship in your story.',
           timestamp: now + 1,
           actions: [
-            { id: 'review', label: 'Review Scenes', variant: 'default', route: 'artifacts' },
-            { id: 'go_deeper', label: 'Go Deeper', variant: 'secondary' },
+            { id: 'go_deeper', label: 'Deep Breakdown', variant: 'default' },
+            { id: 'review', label: 'Browse Results', variant: 'outline', route: 'artifacts' },
           ],
           needsAction: true,
         },
@@ -119,7 +119,7 @@ function cleanFilename(name: string): string {
 
 // --- Stage progress descriptions ---
 
-const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }> = {
+export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }> = {
   ingest: {
     start: 'Reading your document...',
     done: 'Document loaded successfully.',
@@ -136,29 +136,17 @@ const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }> = {
     start: 'Finding scene boundaries and structure...',
     done: 'Scenes identified.',
   },
-  scene_breakdown: {
-    start: 'Breaking down scenes — identifying characters, locations, and action in each scene...',
-    done: 'Scene breakdown complete.',
-  },
-  extract: {
-    start: 'Extracting story elements from your screenplay...',
-    done: 'Extraction complete.',
-  },
-  entity_graph: {
-    start: 'Building relationships between characters, locations, and story elements...',
-    done: 'Story graph built.',
-  },
-  world_overview: {
-    start: 'Building your story world — themes, tone, and setting...',
-    done: 'World overview created.',
-  },
-  character_bibles: {
+  character_bible: {
     start: 'Writing character bibles — backstories, motivations, and arcs...',
     done: 'Character bibles written.',
   },
-  location_bibles: {
-    start: 'Developing location details, atmosphere, and visual identity...',
+  location_bible: {
+    start: 'Writing location bibles — atmosphere, visual identity, and story role...',
     done: 'Location bibles written.',
+  },
+  prop_bible: {
+    start: 'Writing prop bibles — significance, symbolism, and plot function...',
+    done: 'Prop bibles written.',
   },
   qa: {
     start: 'Running quality checks on produced artifacts...',

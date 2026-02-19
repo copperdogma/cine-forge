@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import ReactMarkdown from 'react-markdown'
 import { Film, Plus, FolderOpen, Clock, Package, Play, AlertCircle, RefreshCw, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -16,8 +15,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { ChangelogDialog } from '@/components/ChangelogDialog'
 import { Input } from '@/components/ui/input'
-import { fetchHealth, fetchChangelog } from '@/lib/api'
+import { fetchHealth } from '@/lib/api'
 import { useRecentProjects, useOpenProject } from '@/lib/hooks'
 
 const INITIAL_SHOW = 5
@@ -49,11 +49,6 @@ export default function Landing() {
     queryKey: ['health'],
     queryFn: fetchHealth,
     staleTime: 5 * 60 * 1000,
-  })
-  const { data: changelogContent } = useQuery({
-    queryKey: ['changelog'],
-    queryFn: fetchChangelog,
-    enabled: changelogOpen,
   })
 
   const handleOpenExisting = () => {
@@ -247,17 +242,7 @@ export default function Landing() {
         </button>
       )}
 
-      {/* Changelog Dialog */}
-      <Dialog open={changelogOpen} onOpenChange={setChangelogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Changelog {healthData?.version && `— v${healthData.version}`}</DialogTitle>
-          </DialogHeader>
-          <div className="prose prose-sm prose-invert max-w-none">
-            <ReactMarkdown>{changelogContent ?? 'Loading...'}</ReactMarkdown>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ChangelogDialog open={changelogOpen} onOpenChange={setChangelogOpen} version={healthData?.version} />
 
       {/* Open Project Dialog */}
       <Dialog open={showOpenDialog} onOpenChange={setShowOpenDialog}>

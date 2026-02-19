@@ -152,7 +152,7 @@ export type ProjectState = 'empty' | 'fresh_import' | 'processing' | 'analyzed' 
 
 // --- Chat ---
 
-export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_status_done' | 'ai_suggestion' | 'user_action' | 'user_message' | 'ai_response' | 'ai_tool_status' | 'ai_tool_done' | 'activity'
+export type ChatMessageType = 'ai_welcome' | 'ai_status' | 'ai_status_done' | 'ai_suggestion' | 'ai_progress' | 'user_action' | 'user_message' | 'ai_response' | 'ai_tool_status' | 'ai_tool_done' | 'activity'
 
 export type ConfirmAction = {
   type: 'edit_artifact' | 'start_run'

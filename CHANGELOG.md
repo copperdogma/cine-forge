@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-02-19] - Chat UX polish, progress card, live counts, and parallel execution (Story 051)
+
+### Added
+- `RunProgressCard` component: single updating widget replaces per-stage chat message spam, stages render in recipe-defined order with live status icons (pending/spinner/checkmark/error/cached).
+- `ChangelogDialog` shared component: extracted from Landing and AppShell, with overflow fixes.
+- Sidebar live count badges: Scenes, Characters, Locations, Props nav items show artifact counts with pulse animation on increment.
+- Inbox unread count badge in sidebar navigation.
+- Progress card artifact counts: inline summaries (e.g., "13 scenes, 4 characters") next to completed stages.
+- Parallel stage execution: independent stages in the same wave run concurrently via `ThreadPoolExecutor`.
+- Thread safety for `ArtifactStore` and `DependencyGraph` (write locks prevent TOCTOU races during parallel execution).
+
+### Changed
+- Chat message ordering: completion summary → AI insight → next-step CTA (previously out of order).
+- Action button naming: "Break Down Script" / "Deep Breakdown" / "Browse Results" with plain-language descriptions.
+- Button hierarchy: golden-path actions use `variant: 'default'`, navigation links use `variant: 'outline'`.
+- Sidebar counts refresh mid-run by invalidating artifact queries on stage completion.
+
+---
+
 ## [2026-02-19] - Provider resilience hardening, OCR runtime tooling, and deploy estimate recalibration
 
 ### Added

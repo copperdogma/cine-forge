@@ -7,9 +7,11 @@ import importlib.util
 import json
 import random
 import re
+import threading
 import time
 import uuid
 from collections import deque
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
@@ -192,100 +194,221 @@ class DriverEngine:
             runtime_params=resolved_runtime_params,
         )
 
-        for stage_id in ordered_stages:
-            stage = stage_by_id[stage_id]
-            module_manifest = module_registry[stage.module]
-            module_inputs, upstream_refs = self._collect_inputs(
-                recipe=recipe,
+        # --- Wave-based execution: parallel stages within each wave ---
+        waves = self._compute_execution_waves(
+            ordered_stages, stage_by_id,
+            already_satisfied=set(stage_outputs.keys()),
+        )
+        # Lock protects shared mutable state accessed by parallel stage threads:
+        # run_state["total_cost_usd"], _write_run_state, _append_event, _update_stage_cache
+        state_lock = threading.Lock()
+
+        run_paused = False
+        for wave in waves:
+            if run_paused:
+                break
+
+            if len(wave) == 1:
+                # Single-stage wave — run inline (no thread overhead)
+                result = self._execute_single_stage(
+                    stage_id=wave[0],
+                    stage_by_id=stage_by_id,
+                    module_registry=module_registry,
+                    recipe=recipe,
+                    run_id=run_id,
+                    run_state=run_state,
+                    stage_outputs=stage_outputs,
+                    stage_cache=stage_cache,
+                    recipe_fingerprint=recipe_fingerprint,
+                    resolved_runtime_params=resolved_runtime_params,
+                    stage_fallback_overrides=stage_fallback_overrides,
+                    retry_base_delay_seconds=retry_base_delay_seconds,
+                    retry_jitter_ratio=retry_jitter_ratio,
+                    default_max_attempts=default_max_attempts,
+                    stage_max_attempt_overrides=stage_max_attempt_overrides,
+                    events_path=events_path,
+                    state_path=state_path,
+                    force=force,
+                    state_lock=state_lock,
+                )
+                if result == "paused":
+                    run_paused = True
+                    break
+            else:
+                # Multi-stage wave — run in parallel
+                print(
+                    f"[{run_id}] Running {len(wave)} stages in parallel: "
+                    f"{', '.join(wave)}"
+                )
+                wave_errors: list[tuple[str, Exception]] = []
+                with ThreadPoolExecutor(max_workers=len(wave)) as pool:
+                    futures = {
+                        pool.submit(
+                            self._execute_single_stage,
+                            stage_id=sid,
+                            stage_by_id=stage_by_id,
+                            module_registry=module_registry,
+                            recipe=recipe,
+                            run_id=run_id,
+                            run_state=run_state,
+                            stage_outputs=stage_outputs,
+                            stage_cache=stage_cache,
+                            recipe_fingerprint=recipe_fingerprint,
+                            resolved_runtime_params=resolved_runtime_params,
+                            stage_fallback_overrides=stage_fallback_overrides,
+                            retry_base_delay_seconds=retry_base_delay_seconds,
+                            retry_jitter_ratio=retry_jitter_ratio,
+                            default_max_attempts=default_max_attempts,
+                            stage_max_attempt_overrides=stage_max_attempt_overrides,
+                            events_path=events_path,
+                            state_path=state_path,
+                            force=force,
+                            state_lock=state_lock,
+                        ): sid
+                        for sid in wave
+                    }
+                    for future in as_completed(futures):
+                        sid = futures[future]
+                        try:
+                            result = future.result()
+                            if result == "paused":
+                                run_paused = True
+                        except Exception as exc:  # noqa: BLE001
+                            wave_errors.append((sid, exc))
+
+                # If any stage in the wave failed, report the first failure
+                if wave_errors:
+                    first_failed_id, first_exc = wave_errors[0]
+                    run_state["finished_at"] = time.time()
+                    self._write_run_state(state_path, run_state)
+                    raise first_exc
+
+        run_state["finished_at"] = time.time()
+        self._write_run_state(state_path, run_state)
+        print(f"[{run_id}] Run complete. Total cost ${run_state['total_cost_usd']:.4f}.")
+        return run_state
+
+    def _execute_single_stage(
+        self,
+        stage_id: str,
+        stage_by_id: dict[str, RecipeStage],
+        module_registry: dict[str, ModuleManifest],
+        recipe: Recipe,
+        run_id: str,
+        run_state: dict[str, Any],
+        stage_outputs: dict[str, list[dict[str, Any]]],
+        stage_cache: dict[str, dict[str, dict[str, Any]]],
+        recipe_fingerprint: str,
+        resolved_runtime_params: dict[str, Any],
+        stage_fallback_overrides: dict[str, list[str]] | None,
+        retry_base_delay_seconds: float,
+        retry_jitter_ratio: float,
+        default_max_attempts: int,
+        stage_max_attempt_overrides: dict[str, int] | None,
+        events_path: Path,
+        state_path: Path,
+        force: bool,
+        state_lock: threading.Lock,
+    ) -> str:
+        """Execute a single stage. Returns 'done', 'skipped', or 'paused'.
+
+        Thread-safe: uses ``state_lock`` for shared state mutations.
+        """
+        stage = stage_by_id[stage_id]
+        module_manifest = module_registry[stage.module]
+        module_inputs, upstream_refs = self._collect_inputs(
+            recipe=recipe,
+            stage_id=stage_id,
+            stage_outputs=stage_outputs,
+        )
+        stage_fingerprint = self._build_stage_fingerprint(
+            recipe_fingerprint=recipe_fingerprint,
+            stage=stage,
+            module_manifest=module_manifest,
+            upstream_refs=upstream_refs,
+            runtime_params=resolved_runtime_params,
+        )
+        stage_state = run_state["stages"][stage_id]
+        if (
+            not force
+            and stage_state["status"] == "pending"
+            and self._can_reuse_stage(
+                recipe_id=recipe.recipe_id,
                 stage_id=stage_id,
-                stage_outputs=stage_outputs,
+                stage_cache=stage_cache,
+                stage_fingerprint=stage_fingerprint,
             )
-            stage_fingerprint = self._build_stage_fingerprint(
-                recipe_fingerprint=recipe_fingerprint,
-                stage=stage,
-                module_manifest=module_manifest,
-                upstream_refs=upstream_refs,
-                runtime_params=resolved_runtime_params,
+        ):
+            reused_outputs = self._load_cached_stage_outputs(
+                recipe_id=recipe.recipe_id,
+                stage_id=stage_id,
+                stage_cache=stage_cache,
             )
-            stage_state = run_state["stages"][stage_id]
-            if (
-                not force
-                and stage_state["status"] == "pending"
-                and self._can_reuse_stage(
-                    recipe_id=recipe.recipe_id,
-                    stage_id=stage_id,
-                    stage_cache=stage_cache,
-                    stage_fingerprint=stage_fingerprint,
-                )
-            ):
-                reused_outputs = self._load_cached_stage_outputs(
-                    recipe_id=recipe.recipe_id,
-                    stage_id=stage_id,
-                    stage_cache=stage_cache,
-                )
+            with state_lock:
                 stage_outputs[stage_id] = reused_outputs
                 stage_state["status"] = "skipped_reused"
                 stage_state["artifact_refs"] = [
                     output["ref"].model_dump() for output in reused_outputs
                 ]
-                print(f"[{run_id}] Stage '{stage_id}' reused from cache.")
                 self._append_event(
                     events_path,
                     {"event": "stage_skipped_reused", "stage_id": stage_id},
                 )
                 self._write_run_state(state_path, run_state)
-                continue
+            print(f"[{run_id}] Stage '{stage_id}' reused from cache.")
+            return "skipped"
 
+        with state_lock:
             stage_state["status"] = "running"
             stage_started = time.time()
             stage_state["started_at"] = stage_started
-
-            # Pre-emptively set model if known from params to avoid "code" flip-flop in UI
             guessed_model = stage.params.get("work_model") or stage.params.get("model")
             if guessed_model:
                 stage_state["model_used"] = str(guessed_model)
-
-            print(f"[{run_id}] Stage '{stage_id}' starting...")
             self._append_event(events_path, {"event": "stage_started", "stage_id": stage_id})
             self._write_run_state(state_path, run_state)
-            try:
-                module_runner = _load_module_runner(module_manifest=module_manifest)
-                model_attempt_plan = self._build_stage_model_attempt_plan(
+
+        print(f"[{run_id}] Stage '{stage_id}' starting...")
+        try:
+            module_runner = _load_module_runner(module_manifest=module_manifest)
+            model_attempt_plan = self._build_stage_model_attempt_plan(
+                stage_id=stage_id,
+                stage_params=stage.params,
+                fallback_overrides=stage_fallback_overrides,
+                max_attempts=self._max_attempts_for_stage(
                     stage_id=stage_id,
-                    stage_params=stage.params,
-                    fallback_overrides=stage_fallback_overrides,
-                    max_attempts=self._max_attempts_for_stage(
-                        stage_id=stage_id,
-                        default_max_attempts=default_max_attempts,
-                        stage_overrides=stage_max_attempt_overrides,
-                    ),
-                )
-                if model_attempt_plan:
+                    default_max_attempts=default_max_attempts,
+                    stage_overrides=stage_max_attempt_overrides,
+                ),
+            )
+            if model_attempt_plan:
+                with state_lock:
                     stage_state["model_used"] = model_attempt_plan[0]
-                active_attempt_model: str | None = None
-                attempt_index = 0
-                while True:
-                    active_attempt_model = (
-                        model_attempt_plan[attempt_index]
-                        if model_attempt_plan
-                        else None
+            active_attempt_model: str | None = None
+            attempt_index = 0
+            while True:
+                active_attempt_model = (
+                    model_attempt_plan[attempt_index]
+                    if model_attempt_plan
+                    else None
+                )
+                params_for_attempt = (
+                    self._with_stage_model_override(stage.params, active_attempt_model)
+                    if active_attempt_model
+                    else stage.params
+                )
+                attempt_started = time.time()
+                try:
+                    module_result = module_runner(
+                        inputs=module_inputs,
+                        params=params_for_attempt,
+                        context={
+                            "run_id": run_id,
+                            "stage_id": stage_id,
+                            "runtime_params": resolved_runtime_params,
+                        },
                     )
-                    params_for_attempt = (
-                        self._with_stage_model_override(stage.params, active_attempt_model)
-                        if active_attempt_model
-                        else stage.params
-                    )
-                    attempt_started = time.time()
-                    try:
-                        module_result = module_runner(
-                            inputs=module_inputs,
-                            params=params_for_attempt,
-                            context={
-                                "run_id": run_id,
-                                "stage_id": stage_id,
-                                "runtime_params": resolved_runtime_params,
-                            },
-                        )
+                    with state_lock:
                         stage_state["attempt_count"] += 1
                         stage_state["attempts"].append(
                             {
@@ -295,13 +418,16 @@ class DriverEngine:
                                     active_attempt_model or "code"
                                 ),
                                 "status": "success",
-                                "duration_seconds": round(time.time() - attempt_started, 4),
+                                "duration_seconds": round(
+                                    time.time() - attempt_started, 4
+                                ),
                             }
                         )
-                        break
-                    except Exception as attempt_exc:  # noqa: BLE001
-                        error_message = str(attempt_exc)
-                        transient = self._is_retryable_stage_error(attempt_exc)
+                    break
+                except Exception as attempt_exc:  # noqa: BLE001
+                    error_message = str(attempt_exc)
+                    transient = self._is_retryable_stage_error(attempt_exc)
+                    with state_lock:
                         stage_state["attempt_count"] += 1
                         stage_state["attempts"].append(
                             {
@@ -316,25 +442,28 @@ class DriverEngine:
                                 "error_code": self._extract_error_code(error_message),
                                 "request_id": self._extract_request_id(error_message),
                                 "transient": transient,
-                                "duration_seconds": round(time.time() - attempt_started, 4),
+                                "duration_seconds": round(
+                                    time.time() - attempt_started, 4
+                                ),
                             }
                         )
-                        next_attempt_index = self._next_healthy_attempt_index(
-                            model_attempt_plan,
-                            start_index=attempt_index + 1,
+                    next_attempt_index = self._next_healthy_attempt_index(
+                        model_attempt_plan,
+                        start_index=attempt_index + 1,
+                    )
+                    has_fallback = next_attempt_index is not None
+                    if has_fallback and transient:
+                        assert next_attempt_index is not None
+                        next_model = model_attempt_plan[next_attempt_index]
+                        skipped_models = model_attempt_plan[
+                            attempt_index + 1 : next_attempt_index
+                        ]
+                        retry_delay_seconds = self._fallback_retry_delay_seconds(
+                            attempt=attempt_index,
+                            base_delay_seconds=retry_base_delay_seconds,
+                            jitter_ratio=retry_jitter_ratio,
                         )
-                        has_fallback = next_attempt_index is not None
-                        if has_fallback and transient:
-                            assert next_attempt_index is not None
-                            next_model = model_attempt_plan[next_attempt_index]
-                            skipped_models = model_attempt_plan[
-                                attempt_index + 1 : next_attempt_index
-                            ]
-                            retry_delay_seconds = self._fallback_retry_delay_seconds(
-                                attempt=attempt_index,
-                                base_delay_seconds=retry_base_delay_seconds,
-                                jitter_ratio=retry_jitter_ratio,
-                            )
+                        with state_lock:
                             self._append_event(
                                 events_path,
                                 {
@@ -342,8 +471,12 @@ class DriverEngine:
                                     "stage_id": stage_id,
                                     "attempt": stage_state["attempt_count"] + 1,
                                     "reason": error_message,
-                                    "error_code": self._extract_error_code(error_message),
-                                    "request_id": self._extract_request_id(error_message),
+                                    "error_code": self._extract_error_code(
+                                        error_message
+                                    ),
+                                    "request_id": self._extract_request_id(
+                                        error_message
+                                    ),
                                     "retry_delay_seconds": retry_delay_seconds,
                                 },
                             )
@@ -355,106 +488,114 @@ class DriverEngine:
                                     "from_model": active_attempt_model,
                                     "to_model": next_model,
                                     "reason": error_message,
-                                    "error_code": self._extract_error_code(error_message),
-                                    "request_id": self._extract_request_id(error_message),
+                                    "error_code": self._extract_error_code(
+                                        error_message
+                                    ),
+                                    "request_id": self._extract_request_id(
+                                        error_message
+                                    ),
                                     "skipped_models": skipped_models,
                                 },
                             )
                             stage_state["model_used"] = next_model
                             self._write_run_state(state_path, run_state)
-                            if retry_delay_seconds > 0:
-                                time.sleep(retry_delay_seconds)
-                            attempt_index = next_attempt_index
-                            continue
-                        raise
-                outputs = module_result.get("artifacts", [])
-                cost_record = _coerce_cost(module_result.get("cost"))
-                raw_cost = module_result.get("cost")
-                call_count = 0
-                if isinstance(raw_cost, list):
-                    call_count = len(raw_cost)
-                elif isinstance(raw_cost, dict):
-                    call_count = 1
-                model_used = module_result.get("model")
-                if not model_used and cost_record:
-                    model_used = cost_record.model
-                if not model_used and active_attempt_model:
-                    model_used = active_attempt_model
+                        if retry_delay_seconds > 0:
+                            time.sleep(retry_delay_seconds)
+                        attempt_index = next_attempt_index
+                        continue
+                    raise
+            outputs = module_result.get("artifacts", [])
+            cost_record = _coerce_cost(module_result.get("cost"))
+            raw_cost = module_result.get("cost")
+            call_count = 0
+            if isinstance(raw_cost, list):
+                call_count = len(raw_cost)
+            elif isinstance(raw_cost, dict):
+                call_count = 1
+            model_used = module_result.get("model")
+            if not model_used and cost_record:
+                model_used = cost_record.model
+            if not model_used and active_attempt_model:
+                model_used = active_attempt_model
+
+            with state_lock:
                 stage_state["model_used"] = model_used or "code"
                 stage_state["call_count"] = call_count
                 if cost_record:
                     stage_state["cost_usd"] = cost_record.estimated_cost_usd
                     run_state["total_cost_usd"] += cost_record.estimated_cost_usd
 
-                persisted_outputs: list[dict[str, Any]] = []
-                for artifact in outputs:
-                    output_data = artifact["data"]
-                    schema_names = self._schema_names_for_artifact(
-                        artifact=artifact,
-                        output_schemas=module_manifest.output_schemas,
+            persisted_outputs: list[dict[str, Any]] = []
+            for artifact in outputs:
+                output_data = artifact["data"]
+                schema_names = self._schema_names_for_artifact(
+                    artifact=artifact,
+                    output_schemas=module_manifest.output_schemas,
+                )
+                for schema_name in schema_names:
+                    validation = self.schemas.validate(
+                        schema_name=schema_name,
+                        data=output_data,
                     )
-                    for schema_name in schema_names:
-                        validation = self.schemas.validate(
-                            schema_name=schema_name,
-                            data=output_data,
+                    if not validation.valid:
+                        raise ValueError(
+                            f"Stage '{stage_id}' failed schema validation: {validation}"
                         )
-                        if not validation.valid:
-                            raise ValueError(
-                                f"Stage '{stage_id}' failed schema validation: {validation}"
-                            )
 
-                    stage_lineage_refs = (
-                        [item["ref"] for item in persisted_outputs]
-                        if artifact.get("include_stage_lineage")
-                        else []
-                    )
-                    source_metadata = artifact.get("metadata", {})
-                    source_annotations = source_metadata.get("annotations", {})
-                    if not isinstance(source_annotations, dict):
-                        source_annotations = {}
-                    metadata = ArtifactMetadata.model_validate(
-                        {
-                            **source_metadata,
-                            "lineage": _merge_lineage(
-                                module_lineage=source_metadata.get("lineage", []),
-                                upstream_refs=upstream_refs,
-                                stage_refs=stage_lineage_refs,
+                stage_lineage_refs = (
+                    [item["ref"] for item in persisted_outputs]
+                    if artifact.get("include_stage_lineage")
+                    else []
+                )
+                source_metadata = artifact.get("metadata", {})
+                source_annotations = source_metadata.get("annotations", {})
+                if not isinstance(source_annotations, dict):
+                    source_annotations = {}
+                metadata = ArtifactMetadata.model_validate(
+                    {
+                        **source_metadata,
+                        "lineage": _merge_lineage(
+                            module_lineage=source_metadata.get("lineage", []),
+                            upstream_refs=upstream_refs,
+                            stage_refs=stage_lineage_refs,
+                        ),
+                        "producing_module": module_manifest.module_id,
+                        "cost_data": cost_record,
+                        "annotations": {
+                            **source_annotations,
+                            "final_stage_model_used": stage_state["model_used"],
+                            "final_stage_provider_used": self._provider_from_model(
+                                str(stage_state["model_used"])
                             ),
-                            "producing_module": module_manifest.module_id,
-                            "cost_data": cost_record,
-                            "annotations": {
-                                **source_annotations,
-                                "final_stage_model_used": stage_state["model_used"],
-                                "final_stage_provider_used": self._provider_from_model(
-                                    str(stage_state["model_used"])
-                                ),
-                            },
-                        }
+                        },
+                    }
+                )
+                if artifact["artifact_type"] == "bible_manifest":
+                    artifact_ref = self.store.save_bible_entry(
+                        entity_type=output_data["entity_type"],
+                        entity_id=output_data["entity_id"],
+                        display_name=output_data["display_name"],
+                        files=output_data["files"],
+                        data_files=artifact.get("bible_files", {}),
+                        metadata=metadata,
                     )
-                    if artifact["artifact_type"] == "bible_manifest":
-                        artifact_ref = self.store.save_bible_entry(
-                            entity_type=output_data["entity_type"],
-                            entity_id=output_data["entity_id"],
-                            display_name=output_data["display_name"],
-                            files=output_data["files"],
-                            data_files=artifact.get("bible_files", {}),
-                            metadata=metadata,
-                        )
-                    else:
-                        artifact_ref = self.store.save_artifact(
-                            artifact_type=artifact["artifact_type"],
-                            entity_id=artifact.get("entity_id"),
-                            data=output_data,
-                            metadata=metadata,
-                        )
+                else:
+                    artifact_ref = self.store.save_artifact(
+                        artifact_type=artifact["artifact_type"],
+                        entity_id=artifact.get("entity_id"),
+                        data=output_data,
+                        metadata=metadata,
+                    )
+                with state_lock:
                     stage_state["artifact_refs"].append(artifact_ref.model_dump())
-                    persisted_outputs.append(
-                        {
-                            "ref": artifact_ref,
-                            "data": output_data,
-                        }
-                    )
+                persisted_outputs.append(
+                    {
+                        "ref": artifact_ref,
+                        "data": output_data,
+                    }
+                )
 
+            with state_lock:
                 stage_outputs[stage_id] = persisted_outputs
                 self._update_stage_cache(
                     stage_cache=stage_cache,
@@ -463,10 +604,14 @@ class DriverEngine:
                     outputs=persisted_outputs,
                     stage_fingerprint=stage_fingerprint,
                 )
-                pause_reason = module_result.get("pause_reason")
-                if pause_reason:
+
+            pause_reason = module_result.get("pause_reason")
+            if pause_reason:
+                with state_lock:
                     stage_state["status"] = "paused"
-                    stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
+                    stage_state["duration_seconds"] = round(
+                        time.time() - stage_started, 4
+                    )
                     self._append_event(
                         events_path,
                         {
@@ -476,13 +621,15 @@ class DriverEngine:
                             "artifacts": stage_state["artifact_refs"],
                         },
                     )
-                    print(f"[{run_id}] Stage '{stage_id}' paused: {pause_reason}")
                     self._write_run_state(state_path, run_state)
-                    break
+                print(f"[{run_id}] Stage '{stage_id}' paused: {pause_reason}")
+                return "paused"
 
+            with state_lock:
                 stage_state["status"] = "done"
-                stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
-                
+                stage_state["duration_seconds"] = round(
+                    time.time() - stage_started, 4
+                )
                 self._append_event(
                     events_path,
                     {
@@ -492,18 +639,22 @@ class DriverEngine:
                         "artifacts": stage_state["artifact_refs"],
                     },
                 )
-                print(
-                    f"[{run_id}] Stage '{stage_id}' done in "
-                    f"{stage_state['duration_seconds']}s (cost ${stage_state['cost_usd']:.4f}; "
-                    f"total ${run_state['total_cost_usd']:.4f})."
-                )
                 self._write_run_state(state_path, run_state)
-            except Exception as exc:  # noqa: BLE001
+
+            print(
+                f"[{run_id}] Stage '{stage_id}' done in "
+                f"{stage_state['duration_seconds']}s (cost ${stage_state['cost_usd']:.4f}; "
+                f"total ${run_state['total_cost_usd']:.4f})."
+            )
+            return "done"
+        except Exception as exc:  # noqa: BLE001
+            with state_lock:
                 stage_state["status"] = "failed"
                 stage_state["final_error_class"] = exc.__class__.__name__
                 last_attempt = (
                     stage_state["attempts"][-1]
-                    if stage_state["attempts"] and isinstance(stage_state["attempts"][-1], dict)
+                    if stage_state["attempts"]
+                    and isinstance(stage_state["attempts"][-1], dict)
                     else None
                 )
                 failure_message = str(exc)
@@ -514,13 +665,16 @@ class DriverEngine:
                 )
                 failure_request_id = (
                     str(last_attempt.get("request_id"))
-                    if isinstance(last_attempt, dict) and last_attempt.get("request_id")
+                    if isinstance(last_attempt, dict)
+                    and last_attempt.get("request_id")
                     else self._extract_request_id(failure_message)
                 )
                 failure_provider = (
                     str(last_attempt.get("provider"))
                     if isinstance(last_attempt, dict) and last_attempt.get("provider")
-                    else self._provider_from_model(str(stage_state.get("model_used") or "code"))
+                    else self._provider_from_model(
+                        str(stage_state.get("model_used") or "code")
+                    )
                 )
                 failure_model = (
                     str(last_attempt.get("model"))
@@ -529,7 +683,9 @@ class DriverEngine:
                 )
                 if not stage_state.get("model_used"):
                     stage_state["model_used"] = "code"
-                stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
+                stage_state["duration_seconds"] = round(
+                    time.time() - stage_started, 4
+                )
                 self._append_event(
                     events_path,
                     {
@@ -545,15 +701,9 @@ class DriverEngine:
                         "terminal_reason": self._terminal_reason(stage_state),
                     },
                 )
-                print(f"[{run_id}] Stage '{stage_id}' failed: {exc}")
-                run_state["finished_at"] = time.time()
                 self._write_run_state(state_path, run_state)
-                raise
-
-        run_state["finished_at"] = time.time()
-        self._write_run_state(state_path, run_state)
-        print(f"[{run_id}] Run complete. Total cost ${run_state['total_cost_usd']:.4f}.")
-        return run_state
+            print(f"[{run_id}] Stage '{stage_id}' failed: {exc}")
+            raise
 
     @staticmethod
     def _with_stage_model_override(stage_params: dict[str, Any], model: str) -> dict[str, Any]:
@@ -962,6 +1112,40 @@ class DriverEngine:
             ),
         }
         return _hash_json(payload)
+
+    @staticmethod
+    def _compute_execution_waves(
+        ordered_stages: list[str],
+        stage_by_id: dict[str, RecipeStage],
+        already_satisfied: set[str] | None = None,
+    ) -> list[list[str]]:
+        """Group stages into waves where all stages in a wave can run in parallel.
+
+        A stage is eligible for a wave when all its ``needs`` and ``needs_all``
+        dependencies have been satisfied by a prior wave (or were pre-satisfied
+        via ``already_satisfied``, e.g. preloaded upstream stages).
+        """
+        completed: set[str] = set(already_satisfied or ())
+        remaining = list(ordered_stages)
+        waves: list[list[str]] = []
+        while remaining:
+            wave: list[str] = []
+            for sid in remaining:
+                stage = stage_by_id[sid]
+                deps = set(stage.needs) | set(stage.needs_all)
+                if deps <= completed:
+                    wave.append(sid)
+            if not wave:
+                # Safety: should never happen with a valid topological order,
+                # but prevents infinite loops on broken graphs.
+                raise ValueError(
+                    f"Cannot schedule remaining stages {remaining}: "
+                    "unresolvable dependencies."
+                )
+            waves.append(wave)
+            completed.update(wave)
+            remaining = [sid for sid in remaining if sid not in completed]
+        return waves
 
     @staticmethod
     def _slice_from_stage(order: list[str], start_from: str | None) -> list[str]:

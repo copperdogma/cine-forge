@@ -1202,3 +1202,130 @@ def test_project_config_change_marks_downstream_artifacts_stale(tmp_path: Path) 
     assert first_summary_ref.version == 1
     assert second_summary_ref.version == 2
     assert engine.store.graph.get_health(first_summary_ref) == ArtifactHealth.STALE
+
+
+def _write_parallel_recipe(workspace_root: Path) -> Path:
+    """Recipe with a seed stage followed by 3 independent stages (parallelizable)."""
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "parallel_recipe.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: parallel-recipe",
+                "description: parallel test",
+                "stages:",
+                "  - id: seed",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: seed",
+                "      entity_id: project",
+                "      payload:",
+                "        hello: world",
+                "    needs: []",
+                "  - id: branch_a",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: branch_a",
+                "    needs: [seed]",
+                "  - id: branch_b",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: branch_b",
+                "    needs: [seed]",
+                "  - id: branch_c",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: branch_c",
+                "    needs: [seed]",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
+@pytest.mark.unit
+def test_driver_parallel_independent_stages(tmp_path: Path) -> None:
+    """Independent stages with the same dependency run in parallel and all complete."""
+    _write_echo_module(tmp_path)
+    recipe_path = _write_parallel_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+
+    state = engine.run(recipe_path=recipe_path, run_id="parallel-1")
+
+    assert state["stages"]["seed"]["status"] == "done"
+    assert state["stages"]["branch_a"]["status"] == "done"
+    assert state["stages"]["branch_b"]["status"] == "done"
+    assert state["stages"]["branch_c"]["status"] == "done"
+    assert state.get("finished_at") is not None
+
+    # All three branches should produce artifacts
+    for entity in ["branch_a", "branch_b", "branch_c"]:
+        versions = engine.store.list_versions("echo", entity)
+        assert len(versions) >= 1
+
+    # Verify wave computation: seed is wave 0, branches are wave 1
+    from cine_forge.driver.recipe import load_recipe, resolve_execution_order
+
+    recipe = load_recipe(recipe_path=recipe_path)
+    order = resolve_execution_order(recipe=recipe)
+    stage_by_id = {s.id: s for s in recipe.stages}
+    waves = DriverEngine._compute_execution_waves(order, stage_by_id)
+    assert waves == [["seed"], ["branch_a", "branch_b", "branch_c"]]
+
+
+@pytest.mark.unit
+def test_driver_parallel_all_independent_stages(tmp_path: Path) -> None:
+    """All stages with needs=[] run in a single wave."""
+    _write_echo_module(tmp_path)
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "all_parallel.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: all-parallel",
+                "description: all parallel",
+                "stages:",
+                "  - id: x",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: x",
+                "    needs: []",
+                "  - id: y",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: y",
+                "    needs: []",
+                "  - id: z",
+                "    module: test.echo_v1",
+                "    params:",
+                "      artifact_type: echo",
+                "      entity_id: z",
+                "    needs: []",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    engine = DriverEngine(workspace_root=tmp_path)
+    state = engine.run(recipe_path=recipe_path, run_id="all-par")
+
+    assert state["stages"]["x"]["status"] == "done"
+    assert state["stages"]["y"]["status"] == "done"
+    assert state["stages"]["z"]["status"] == "done"
+
+    from cine_forge.driver.recipe import load_recipe, resolve_execution_order
+
+    recipe = load_recipe(recipe_path=recipe_path)
+    order = resolve_execution_order(recipe=recipe)
+    stage_by_id = {s.id: s for s in recipe.stages}
+    waves = DriverEngine._compute_execution_waves(order, stage_by_id)
+    # All 3 should be in a single wave
+    assert len(waves) == 1
+    assert set(waves[0]) == {"x", "y", "z"}

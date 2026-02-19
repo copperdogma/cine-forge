@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
 import { streamAutoInsight } from './api'
-import { getStageStartMessage, getStageCompleteMessage, humanizeStageName } from './chat-messages'
+import { humanizeStageName } from './chat-messages'
 import { useRunState, useRunEvents } from './hooks'
 import type { StageState } from './types'
 
@@ -50,13 +50,13 @@ export function useRunProgressChat(projectId: string | undefined) {
   )
   const { data: runState } = useRunState(activeRunId ?? undefined)
   const { data: runEvents } = useRunEvents(activeRunId ?? undefined)
-  const prevStagesRef = useRef<Record<string, string> | null>(null)
+  const completedRef = useRef<Set<string>>(new Set())
   const processedEventIdsRef = useRef<Set<string>>(new Set())
   const queryClient = useQueryClient()
 
-  // Reset ref when active run changes
+  // Reset refs when active run changes
   useEffect(() => {
-    prevStagesRef.current = null
+    completedRef.current = new Set()
     processedEventIdsRef.current = new Set()
   }, [activeRunId])
 
@@ -64,14 +64,32 @@ export function useRunProgressChat(projectId: string | undefined) {
     if (!runState || !activeRunId || !projectId) return
 
     const stages = runState.state.stages
-    const currentStages: Record<string, string> = {}
-    for (const [name, s] of Object.entries(stages)) {
-      currentStages[name] = s.status
-    }
-
     const store = useChatStore.getState()
 
-    // Surface resilience events from backend stream.
+    // --- Ensure a single progress card message exists for this run ---
+    const progressMsgId = `run_progress_${activeRunId}`
+    const existingMessages = store.messages[projectId] ?? []
+    if (!existingMessages.some(m => m.id === progressMsgId)) {
+      // Resolve the "run started" spinner — the progress card replaces it
+      store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
+      store.addMessage(projectId, {
+        id: progressMsgId,
+        type: 'ai_progress',
+        content: activeRunId, // RunProgressCard reads this as the run ID
+        timestamp: Date.now(),
+      })
+    }
+
+    // --- Invalidate artifacts every poll while a run is active (live sidebar counts) ---
+    // Artifacts are written to the store individually as each entity completes,
+    // so counts can tick up mid-stage — not just on stage completion.
+    if (!runState.state.finished_at) {
+      queryClient.invalidateQueries({
+        queryKey: ['projects', projectId, 'artifacts'],
+      })
+    }
+
+    // --- Surface resilience events (retries/fallbacks) as inline notifications ---
     const backendEvents = runEvents?.events ?? []
     for (let i = 0; i < backendEvents.length; i += 1) {
       const evt = backendEvents[i]
@@ -114,61 +132,22 @@ export function useRunProgressChat(projectId: string | undefined) {
       }
     }
 
-    // First poll — initialize ref and report any currently running stages
-    if (prevStagesRef.current === null) {
-      prevStagesRef.current = currentStages
-      for (const [stageName, status] of Object.entries(currentStages)) {
-        if (status === 'running') {
-          store.addMessage(projectId, {
-            id: `progress_${activeRunId}_${stageName}_start`,
-            type: 'ai_status',
-            content: getStageStartMessage(stageName),
-            timestamp: Date.now(),
-          })
-        }
-      }
-      // Still check completion in case run finished before first poll
-      if (!runState.state.finished_at) return
-    }
+    // --- Check if run finished ---
+    if (runState.state.finished_at && !completedRef.current.has(activeRunId)) {
+      completedRef.current.add(activeRunId)
 
-    const prev = prevStagesRef.current
+      // Ensure "run started" spinner is resolved (may already be done when card was added)
+      store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
 
-    // Report stage transitions
-    for (const [stageName, status] of Object.entries(currentStages)) {
-      const prevStatus = prev[stageName]
+      const hasFailed = Object.values(stages).some(
+        (s) => s.status === 'failed',
+      )
 
-      // Stage just started running
-      if (status === 'running' && prevStatus !== 'running') {
+      if (hasFailed) {
         store.addMessage(projectId, {
-          id: `progress_${activeRunId}_${stageName}_start`,
-          type: 'ai_status',
-          content: getStageStartMessage(stageName),
-          timestamp: Date.now(),
-        })
-      }
-
-      // Stage just completed
-      if (
-        (status === 'done' || status === 'skipped_reused') &&
-        prevStatus !== 'done' &&
-        prevStatus !== 'skipped_reused'
-      ) {
-        // Resolve the start message spinner → checkmark
-        store.updateMessageType(projectId, `progress_${activeRunId}_${stageName}_start`, 'ai_status_done')
-        store.addMessage(projectId, {
-          id: `progress_${activeRunId}_${stageName}_done`,
-          type: 'ai_status_done',
-          content: getStageCompleteMessage(stageName),
-          timestamp: Date.now(),
-        })
-      }
-
-      // Stage failed
-      if (status === 'failed' && prevStatus !== 'failed') {
-        store.addMessage(projectId, {
-          id: `progress_${activeRunId}_${stageName}_fail`,
+          id: `progress_${activeRunId}_failed`,
           type: 'ai_suggestion',
-          content: `Something went wrong during "${humanizeStageName(stageName)}". You can view the run details or try again.`,
+          content: 'Some stages failed. You can view the run details to see what went wrong.',
           timestamp: Date.now(),
           actions: [
             {
@@ -179,38 +158,23 @@ export function useRunProgressChat(projectId: string | undefined) {
             },
           ],
         })
-      }
-    }
-
-    // Update ref
-    prevStagesRef.current = currentStages
-
-    // Check if run finished
-    if (runState.state.finished_at) {
-      // Resolve the "run started" spinner
-      store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
-
-      const hasFailed = Object.values(stages).some(
-        (s) => s.status === 'failed',
-      )
-
-      if (!hasFailed) {
+      } else {
         const summary = summarizeArtifacts(stages)
         const recipeId = runState.state.recipe_id
 
-        // Completion summary with persistent navigation links
+        // Completion summary with navigation links (secondary — not the golden path)
         store.addMessage(projectId, {
           id: `progress_${activeRunId}_complete`,
           type: 'ai_suggestion',
           content: summary
-            ? `Analysis complete! I found ${summary} in your screenplay.`
-            : 'Analysis complete!',
+            ? `Breakdown complete! I found ${summary} in your screenplay.`
+            : 'Breakdown complete!',
           timestamp: Date.now(),
           actions: [
             {
               id: 'view_results',
-              label: 'View Results',
-              variant: 'default',
+              label: 'Browse Results',
+              variant: 'outline',
               route: 'artifacts',
             },
             {
@@ -220,26 +184,12 @@ export function useRunProgressChat(projectId: string | undefined) {
               route: `runs/${activeRunId}`,
             },
           ],
-          // No needsAction — these are navigation links that should persist
         })
 
-        // Guide to next step (only after MVP ingest, not after world_building)
-        if (recipeId === 'mvp_ingest') {
-          store.addMessage(projectId, {
-            id: `progress_${activeRunId}_next_steps`,
-            type: 'ai_suggestion',
-            content: 'You can review what I found, or I can go deeper — building character bibles, creative world details, and visual style guides.',
-            timestamp: Date.now() + 1,
-            actions: [
-              { id: 'review', label: 'Review Scenes', variant: 'default', route: 'artifacts' },
-              { id: 'go_deeper', label: 'Go Deeper', variant: 'secondary' },
-            ],
-            needsAction: true,
-          })
-        }
-
-        // Trigger AI commentary — proactive insight about what was produced
-        requestPostRunInsight(projectId, recipeId, summary)
+        // Trigger AI commentary — proactive insight about what was produced.
+        // Next-step CTA is added AFTER the insight finishes so the flow is:
+        // completion summary → AI insight → call-to-action.
+        requestPostRunInsight(projectId, recipeId, summary, activeRunId)
       }
 
       // Invalidate project data so UI reflects new state
@@ -260,11 +210,13 @@ export function useRunProgressChat(projectId: string | undefined) {
  * Fire-and-forget AI insight after a run completes.
  * Adds a streaming AI message to the chat with creative commentary
  * about the artifacts that were just produced.
+ * After the insight finishes, adds the next-step CTA (for mvp_ingest only).
  */
 function requestPostRunInsight(
   projectId: string,
   recipeId: string,
   artifactSummary: string,
+  runId: string,
 ) {
   const store = useChatStore.getState()
   const aiMsgId = `ai_insight_${Date.now()}`
@@ -279,6 +231,23 @@ function requestPostRunInsight(
   })
 
   let fullContent = ''
+
+  /** Add the golden-path CTA after the insight stream (analyze → summary → next step). */
+  function addNextStepsCta() {
+    if (recipeId === 'mvp_ingest') {
+      useChatStore.getState().addMessage(projectId, {
+        id: `progress_${runId}_next_steps`,
+        type: 'ai_suggestion',
+        content: 'Next up: a deep breakdown — detailed character profiles, location guides, and a map of every relationship in your story.',
+        timestamp: Date.now(),
+        actions: [
+          { id: 'go_deeper', label: 'Deep Breakdown', variant: 'default' },
+          { id: 'review', label: 'Browse Results', variant: 'outline', route: 'artifacts' },
+        ],
+        needsAction: true,
+      })
+    }
+  }
 
   streamAutoInsight(
     projectId,
@@ -296,19 +265,20 @@ function requestPostRunInsight(
       // internally to read artifacts but we don't show those indicators
     },
     () => {
-      // Done — finalize the streaming message
+      // Done — finalize the streaming message, then show next-step CTA
       useChatStore.getState().finalizeStreamingMessage(projectId, aiMsgId)
+      addNextStepsCta()
     },
     () => {
-      // Error — silently remove the placeholder if nothing was produced
+      // Error — finalize with fallback, then still show next-step CTA
       if (!fullContent) {
-        // Remove the empty streaming message by finalizing with a fallback
         useChatStore.getState().updateMessageContent(
           projectId, aiMsgId,
           'I can tell you more about what was produced — just ask!',
         )
       }
       useChatStore.getState().finalizeStreamingMessage(projectId, aiMsgId)
+      addNextStepsCta()
     },
   )
 }

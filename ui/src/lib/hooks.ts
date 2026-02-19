@@ -776,6 +776,10 @@ export function useChatLoader(projectId: string | undefined) {
 
     api.getChatMessages(projectId)
       .then((backendMessages) => {
+        // Guard against React strict mode double-mount race: if another
+        // mount already resolved and loaded messages, skip this one.
+        if (useChatStore.getState().isLoaded(projectId)) return
+
         if (backendMessages.length > 0) {
           useChatStore.getState().loadMessages(projectId, backendMessages)
         } else {

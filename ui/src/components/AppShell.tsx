@@ -20,8 +20,7 @@ import {
   MessageSquare,
   Info,
 } from 'lucide-react'
-import ReactMarkdown from 'react-markdown'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -33,22 +32,62 @@ import { RightPanelProvider, useRightPanel, useInspector } from '@/lib/right-pan
 import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { ChangelogDialog } from '@/components/ChangelogDialog'
 import { useShortcuts } from '@/lib/shortcuts'
-import { fetchHealth, fetchChangelog } from '@/lib/api'
-import { useProject, useChatLoader } from '@/lib/hooks'
+import { fetchHealth } from '@/lib/api'
+import { useProject, useChatLoader, useArtifactGroups, useRuns } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import { useRunProgressChat } from '@/lib/use-run-progress'
 import { cn } from '@/lib/utils'
 
-const mainNavItems = [
+/** Artifact type → nav route mapping for count badges. */
+const NAV_ARTIFACT_TYPES: Record<string, string[]> = {
+  scenes: ['scene'],
+  characters: ['character_bible'],
+  locations: ['location_bible'],
+  props: ['prop_bible'],
+}
+
+const mainNavBase = [
   { to: '', label: 'Script', icon: FileText, end: true },
   { to: 'scenes', label: 'Scenes', icon: Clapperboard },
   { to: 'characters', label: 'Characters', icon: Users },
   { to: 'locations', label: 'Locations', icon: MapPin },
   { to: 'props', label: 'Props', icon: Wrench },
-  { to: 'inbox', label: 'Inbox', icon: Inbox, badge: 0 },
+  { to: 'inbox', label: 'Inbox', icon: Inbox },
 ]
+
+/** Animated badge that pulses when count increases. */
+function CountBadge({ count }: { count: number }) {
+  const prevRef = useRef(count)
+  const [pulse, setPulse] = useState(false)
+
+  useEffect(() => {
+    if (count > prevRef.current) {
+      setPulse(true)
+      const t = setTimeout(() => setPulse(false), 600)
+      return () => clearTimeout(t)
+    }
+    prevRef.current = count
+  }, [count])
+
+  // Also update ref when not pulsing (handles decreases)
+  useEffect(() => { prevRef.current = count }, [count])
+
+  if (count === 0) return null
+
+  return (
+    <Badge
+      variant="secondary"
+      className={cn(
+        'ml-auto text-xs px-1.5 py-0 tabular-nums transition-transform duration-300',
+        pulse && 'animate-pulse scale-110',
+      )}
+    >
+      {count}
+    </Badge>
+  )
+}
 
 const advancedNavItems = [
   { to: 'runs', label: 'Runs', icon: History },
@@ -103,17 +142,34 @@ function ShellInner() {
     queryFn: fetchHealth,
     staleTime: 5 * 60 * 1000,
   })
-  const { data: changelogContent } = useQuery({
-    queryKey: ['changelog'],
-    queryFn: fetchChangelog,
-    enabled: changelogOpen,
-  })
 
   // Load chat from backend JSONL (runs on every page, not just Home)
   useChatLoader(projectId)
 
   // Track active run progress — adds chat messages as stages complete
   useRunProgressChat(projectId)
+
+  // --- Live nav counts ---
+  const { data: artifactGroups } = useArtifactGroups(projectId)
+  const { data: runs } = useRuns(projectId)
+
+  const navCounts = useMemo(() => {
+    const counts: Record<string, number> = {}
+    if (artifactGroups) {
+      for (const [route, types] of Object.entries(NAV_ARTIFACT_TYPES)) {
+        counts[route] = artifactGroups.filter(g => types.includes(g.artifact_type)).length
+      }
+    }
+    // Inbox: match ProjectInbox logic — stale artifacts + failed runs + v1 bibles needing review
+    const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
+    const staleCount = artifactGroups?.filter(g => g.health === 'stale').length ?? 0
+    const errorCount = runs?.filter(r => r.status === 'failed').length ?? 0
+    const reviewCount = artifactGroups?.filter(g =>
+      BIBLE_TYPES.includes(g.artifact_type) && g.latest_version === 1 && g.health !== 'stale'
+    ).length ?? 0
+    counts['inbox'] = staleCount + errorCount + reviewCount
+    return counts
+  }, [artifactGroups, runs])
 
   // Emit activity notes on meaningful navigation (artifact detail, run detail)
   const prevPath = useRef(location.pathname)
@@ -247,7 +303,7 @@ function ShellInner() {
         <ScrollArea className="flex-1 py-2">
           <nav aria-label="Project navigation" className="flex flex-col gap-0.5 px-2">
             {/* Main entity navigation */}
-            {mainNavItems.map(item => (
+            {mainNavBase.map(item => (
               <NavLink
                 key={item.to}
                 to={item.to}
@@ -263,11 +319,7 @@ function ShellInner() {
               >
                 <item.icon className="h-4 w-4 shrink-0" />
                 <span className="truncate">{item.label}</span>
-                {item.badge != null && item.badge > 0 && (
-                  <Badge variant="secondary" className="ml-auto text-xs px-1.5 py-0">
-                    {item.badge}
-                  </Badge>
-                )}
+                <CountBadge count={navCounts[item.to] ?? 0} />
               </NavLink>
             ))}
 
@@ -324,17 +376,7 @@ function ShellInner() {
         )}
       </aside>
 
-      {/* Changelog dialog */}
-      <Dialog open={changelogOpen} onOpenChange={setChangelogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Changelog {healthData?.version && `— v${healthData.version}`}</DialogTitle>
-          </DialogHeader>
-          <div className="prose prose-sm prose-invert max-w-none">
-            <ReactMarkdown>{changelogContent ?? 'Loading...'}</ReactMarkdown>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ChangelogDialog open={changelogOpen} onOpenChange={setChangelogOpen} version={healthData?.version} />
 
       {/* Center Content Canvas */}
       <main className="flex-1 flex flex-col min-w-0">

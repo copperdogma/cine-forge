@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -17,11 +18,16 @@ from cine_forge.schemas import (
 
 
 class ArtifactStore:
-    """Persist and retrieve immutable artifact snapshots."""
+    """Persist and retrieve immutable artifact snapshots.
+
+    Thread-safe: ``_write_lock`` serialises write operations to prevent
+    version-numbering races when parallel stages save artifacts concurrently.
+    """
 
     def __init__(self, project_dir: Path) -> None:
         self.project_dir = project_dir
         self.graph = DependencyGraph(project_dir=project_dir)
+        self._write_lock = threading.Lock()
 
     def save_artifact(
         self,
@@ -30,31 +36,38 @@ class ArtifactStore:
         data: dict[str, Any],
         metadata: ArtifactMetadata,
     ) -> ArtifactRef:
-        artifact_dir = self._artifact_directory(artifact_type=artifact_type, entity_id=entity_id)
-        artifact_dir.mkdir(parents=True, exist_ok=True)
-        version = self._next_version(artifact_dir=artifact_dir)
-        filename = f"v{version}.json"
-        relative_path = str((artifact_dir / filename).relative_to(self.project_dir))
-        artifact_ref = ArtifactRef(
-            artifact_type=artifact_type,
-            entity_id=entity_id,
-            version=version,
-            path=relative_path,
-        )
-        artifact_path = self.project_dir / artifact_ref.path
-        if artifact_path.exists():
-            raise FileExistsError(f"Artifact version already exists at {artifact_ref.path}")
+        with self._write_lock:
+            artifact_dir = self._artifact_directory(
+                artifact_type=artifact_type, entity_id=entity_id,
+            )
+            artifact_dir.mkdir(parents=True, exist_ok=True)
+            version = self._next_version(artifact_dir=artifact_dir)
+            filename = f"v{version}.json"
+            relative_path = str((artifact_dir / filename).relative_to(self.project_dir))
+            artifact_ref = ArtifactRef(
+                artifact_type=artifact_type,
+                entity_id=entity_id,
+                version=version,
+                path=relative_path,
+            )
+            artifact_path = self.project_dir / artifact_ref.path
+            if artifact_path.exists():
+                raise FileExistsError(
+                    f"Artifact version already exists at {artifact_ref.path}"
+                )
 
-        materialized_metadata = metadata.model_copy(update={"ref": artifact_ref})
-        payload = Artifact(metadata=materialized_metadata, data=data).model_dump(mode="json")
-        with artifact_path.open("w", encoding="utf-8") as file:
-            json.dump(payload, file, indent=2, sort_keys=True)
+            materialized_metadata = metadata.model_copy(update={"ref": artifact_ref})
+            payload = Artifact(
+                metadata=materialized_metadata, data=data,
+            ).model_dump(mode="json")
+            with artifact_path.open("w", encoding="utf-8") as file:
+                json.dump(payload, file, indent=2, sort_keys=True)
 
-        self.graph.register_artifact(
-            artifact_ref=artifact_ref,
-            upstream_refs=materialized_metadata.lineage,
-        )
-        self.graph.propagate_stale_for_new_version(new_ref=artifact_ref)
+            self.graph.register_artifact(
+                artifact_ref=artifact_ref,
+                upstream_refs=materialized_metadata.lineage,
+            )
+            self.graph.propagate_stale_for_new_version(new_ref=artifact_ref)
         return artifact_ref
 
     def load_artifact(self, artifact_ref: ArtifactRef) -> Artifact:
@@ -108,58 +121,66 @@ class ArtifactStore:
         metadata: ArtifactMetadata,
     ) -> ArtifactRef:
         """Create or update a bible entry folder with a new manifest version."""
-        artifact_dir = self.project_dir / "artifacts" / "bibles" / f"{entity_type}_{entity_id}"
-        artifact_dir.mkdir(parents=True, exist_ok=True)
+        with self._write_lock:
+            artifact_dir = (
+                self.project_dir / "artifacts" / "bibles" / f"{entity_type}_{entity_id}"
+            )
+            artifact_dir.mkdir(parents=True, exist_ok=True)
 
-        # 1. Determine next manifest version
-        manifest_versions = [
-            int(p.stem.removeprefix("manifest_v"))
-            for p in artifact_dir.glob("manifest_v*.json")
-            if p.stem.removeprefix("manifest_v").isdigit()
-        ]
-        version = (max(manifest_versions) if manifest_versions else 0) + 1
+            # 1. Determine next manifest version
+            manifest_versions = [
+                int(p.stem.removeprefix("manifest_v"))
+                for p in artifact_dir.glob("manifest_v*.json")
+                if p.stem.removeprefix("manifest_v").isdigit()
+            ]
+            version = (max(manifest_versions) if manifest_versions else 0) + 1
 
-        # 2. Save data files
-        for filename, content in data_files.items():
-            file_path = artifact_dir / filename
-            # Note: files are immutable, but for simplicity here we just write.
-            # In a stricter model, we'd check if it exists and mismatch.
-            if isinstance(content, str):
-                file_path.write_text(content, encoding="utf-8")
-            else:
-                file_path.write_bytes(content)
+            # 2. Save data files
+            for filename, content in data_files.items():
+                file_path = artifact_dir / filename
+                if isinstance(content, str):
+                    file_path.write_text(content, encoding="utf-8")
+                else:
+                    file_path.write_bytes(content)
 
-        # 3. Create manifest
-        manifest = BibleManifest(
-            entity_type=entity_type,  # type: ignore
-            entity_id=entity_id,
-            display_name=display_name,
-            files=[BibleFileEntry.model_validate(f) for f in files],
-            version=version,
-        )
+            # 3. Create manifest
+            manifest = BibleManifest(
+                entity_type=entity_type,  # type: ignore
+                entity_id=entity_id,
+                display_name=display_name,
+                files=[BibleFileEntry.model_validate(f) for f in files],
+                version=version,
+            )
 
-        manifest_filename = f"manifest_v{version}.json"
-        relative_path = str((artifact_dir / manifest_filename).relative_to(self.project_dir))
-        artifact_ref = ArtifactRef(
-            artifact_type="bible_manifest",
-            entity_id=f"{entity_type}_{entity_id}",
-            version=version,
-            path=relative_path,
-        )
+            manifest_filename = f"manifest_v{version}.json"
+            relative_path = str(
+                (artifact_dir / manifest_filename).relative_to(self.project_dir)
+            )
+            artifact_ref = ArtifactRef(
+                artifact_type="bible_manifest",
+                entity_id=f"{entity_type}_{entity_id}",
+                version=version,
+                path=relative_path,
+            )
 
-        # 4. Wrap in Artifact envelope for consistency with store model
-        materialized_metadata = metadata.model_copy(update={"ref": artifact_ref})
-        payload = Artifact(metadata=materialized_metadata, data=manifest.model_dump(mode="json"))
-        manifest_path = self.project_dir / artifact_ref.path
-        with manifest_path.open("w", encoding="utf-8") as file:
-            json.dump(payload.model_dump(mode="json"), file, indent=2, sort_keys=True)
+            # 4. Wrap in Artifact envelope for consistency with store model
+            materialized_metadata = metadata.model_copy(update={"ref": artifact_ref})
+            payload = Artifact(
+                metadata=materialized_metadata,
+                data=manifest.model_dump(mode="json"),
+            )
+            manifest_path = self.project_dir / artifact_ref.path
+            with manifest_path.open("w", encoding="utf-8") as file:
+                json.dump(
+                    payload.model_dump(mode="json"), file, indent=2, sort_keys=True,
+                )
 
-        # 5. Register in graph
-        self.graph.register_artifact(
-            artifact_ref=artifact_ref,
-            upstream_refs=materialized_metadata.lineage,
-        )
-        self.graph.propagate_stale_for_new_version(new_ref=artifact_ref)
+            # 5. Register in graph
+            self.graph.register_artifact(
+                artifact_ref=artifact_ref,
+                upstream_refs=materialized_metadata.lineage,
+            )
+            self.graph.propagate_stale_for_new_version(new_ref=artifact_ref)
         return artifact_ref
 
     def load_bible_entry(self, artifact_ref: ArtifactRef) -> tuple[BibleManifest, ArtifactMetadata]:

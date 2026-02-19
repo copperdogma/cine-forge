@@ -87,6 +87,8 @@ NOTES from Cam:
 | 048 | PDF Input Preview Decode Fix | 2.5 — UI/API | High | Done | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | 1 — MVP Pipeline | High | To Do | [story-049](stories/story-049-import-normalization-format-suite.md) |
 | 050 | Provider Resilience: Retries, Fallbacks, and Stage Resume | Cross-Cutting | High | Done | [story-050](stories/story-050-provider-resilience-retry-fallback.md) |
+| 051 | Chat UX Polish: Ordering, Naming, and Progress Card | 2.5 — UI | High | Done | [story-051](stories/story-051-chat-ux-polish.md) |
+| 052 | Streaming Artifact Yield: Live Per-Entity Progress | Cross-Cutting | Medium | Draft | [story-052](stories/story-052-streaming-artifact-yield.md) |
 
 ## Phase Summary
 

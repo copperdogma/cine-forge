@@ -8,6 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useChatStore } from '@/lib/chat-store'
 import { useProjectInputs, useStartRun } from '@/lib/hooks'
 import { streamChatMessage } from '@/lib/api'
+import { RunProgressCard } from '@/components/RunProgressCard'
 import type { ChatMessage, ChatAction, ToolCallStatus } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
@@ -53,6 +54,8 @@ function MessageIcon({ type }: { type: ChatMessage['type'] }) {
     case 'ai_tool_status':
     case 'ai_tool_done':
       return <Wrench className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+    case 'ai_progress':
+      return null // Progress card renders its own icons per stage
     case 'activity':
       return <Activity className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0 mt-0.5" />
     default:
@@ -178,7 +181,7 @@ function ActionButton({
         store.addMessage(projectId, {
           id: `run_started_${result.run_id}`,
           type: 'ai_status',
-          content: 'Analysis started — reading your screenplay now...',
+          content: 'Breaking down your screenplay now...',
           timestamp: Date.now(),
           actions: [
             { id: 'view_run_details', label: 'View Run Details', variant: 'outline', route: `runs/${result.run_id}` },
@@ -265,6 +268,15 @@ function ChatMessageItem({
 
   const toolCalls = message.toolCalls
   const isThinking = isStreaming && !message.content && (!toolCalls || toolCalls.length === 0)
+
+  // Progress card — single widget for all pipeline stages
+  if (message.type === 'ai_progress') {
+    return (
+      <div className="py-1">
+        <RunProgressCard runId={message.content} />
+      </div>
+    )
+  }
 
   // Activity notes render as compact, subtle inline entries
   if (isActivity) {
