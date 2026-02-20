@@ -1,0 +1,11 @@
+style_pack_id: lynch
+role_id: sound_designer
+display_name: David Lynch
+summary: Industrial, surreal sound design with heavy use of ambient drones and silence.
+prompt_injection: |
+  Emphasize industrial drones, electrical hums, and oppressive silence.
+  Create unease and surreal tension through abstract soundscapes.
+files:
+  - kind: description
+    path: style.md
+    caption: Lynch sound direction guide.

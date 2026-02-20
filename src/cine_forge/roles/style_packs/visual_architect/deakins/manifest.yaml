@@ -1,0 +1,11 @@
+style_pack_id: deakins
+role_id: visual_architect
+display_name: Roger Deakins
+summary: Naturalistic, grounded visual style with precise motivated lighting.
+prompt_injection: |
+  Prioritize naturalistic lighting, silhouettes, and motivated sources.
+  Use minimal, purposeful camera movement and wide, compositional framing.
+files:
+  - kind: description
+    path: style.md
+    caption: Deakins visual direction guide.

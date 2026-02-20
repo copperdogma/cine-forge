@@ -1,0 +1,11 @@
+style_pack_id: tarantino
+role_id: director
+display_name: Quentin Tarantino
+summary: Bold, non-linear direction with sharp dialogue and stylized violence.
+prompt_injection: |
+  Embrace non-linear storytelling, extended dialogue scenes, and sudden bursts of stylized violence.
+  Prioritize character-driven tension and pop-culture references.
+files:
+  - kind: description
+    path: style.md
+    caption: Tarantino directorial style.

@@ -13,6 +13,10 @@ Implement the suggestion and decision tracking system. Roles continuously genera
 
 ---
 
+
+NOTE: We need to retain ALL agent proposals, even if they are not accepted. This is for debugging and learning purposes as well as giving the user to ability to go revisit a past decision or an idea they remember being suggested.
+
+
 ## Acceptance Criteria
 
 ### Suggestion Artifacts (Spec 8.5)

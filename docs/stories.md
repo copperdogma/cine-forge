@@ -37,8 +37,8 @@ NOTES from Cam:
 | 012 | Timeline Data Artifact | 3 — Timeline | Medium | Done | [story-012](stories/story-012-timeline-artifact.md) |
 | 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | Done | [story-013](stories/story-013-track-system.md) |
 | 014 | Role System Foundation | 4 — Role System | High | Done | [story-014](stories/story-014-role-system-foundation.md) |
-| 015 | Director and Canon Guardians | 4 — Role System | High | To Do | [story-015](stories/story-015-director-canon-guardians.md) |
-| 016 | Style Pack Infrastructure | 4 — Role System | Medium | To Do | [story-016](stories/story-016-style-pack-infrastructure.md) |
+| 015 | Director and Canon Guardians | 4 — Role System | High | Done | [story-015](stories/story-015-director-canon-guardians.md) |
+| 016 | Style Pack Infrastructure | 4 — Role System | Medium | Done | [story-016](stories/story-016-style-pack-infrastructure.md) |
 | 017 | Suggestion and Decision Tracking | 4 — Role System | Medium | To Do | [story-017](stories/story-017-suggestion-decision-tracking.md) |
 | 018 | Inter-Role Communication Protocol | 4 — Role System | Medium | To Do | [story-018](stories/story-018-inter-role-communication.md) |
 | 019 | Human Control Modes and Creative Sessions | 4 — Role System | High | To Do | [story-019](stories/story-019-human-interaction.md) |

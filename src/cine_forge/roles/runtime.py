@@ -48,6 +48,10 @@ class _StructuredRoleAnswer(BaseModel):
     content: str = Field(min_length=1)
     confidence: float = Field(ge=0.0, le=1.0)
     rationale: str = Field(min_length=1)
+    decision: str | None = None
+    override_justification: str | None = None
+    included_roles: list[str] = Field(default_factory=list)
+    objections: list[str] = Field(default_factory=list)
 
 
 class RoleRuntimeError(RuntimeError):
@@ -147,6 +151,32 @@ class RoleCatalog:
             )
         return style_pack
 
+    def list_style_packs(self, role_id: str) -> list[StylePack]:
+        role = self.get_role(role_id)
+        if role.style_pack_slot == StylePackSlot.FORBIDDEN:
+            return []
+
+        style_dir = self.root / "style_packs" / role_id
+        if not style_dir.exists():
+            return []
+
+        style_packs: list[StylePack] = []
+        for pack_dir in style_dir.iterdir():
+            if not pack_dir.is_dir():
+                continue
+            manifest_path = pack_dir / "manifest.yaml"
+            if not manifest_path.exists():
+                continue
+            try:
+                payload = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+                style_pack = StylePack.model_validate(payload)
+                if style_pack.role_id == role_id:
+                    style_packs.append(style_pack)
+            except Exception:
+                # Skip invalid manifests during listing to be robust
+                continue
+        return sorted(style_packs, key=lambda p: p.style_pack_id)
+
 
 class RoleContext:
     """Module-facing role invocation interface."""
@@ -227,6 +257,10 @@ class RoleContext:
             content=structured_response.content,
             confidence=structured_response.confidence,
             rationale=structured_response.rationale,
+            decision=structured_response.decision,
+            override_justification=structured_response.override_justification,
+            included_roles=list(structured_response.included_roles),
+            objections=list(structured_response.objections),
             cost_data=CostRecord.model_validate(cost_meta),
         )
 

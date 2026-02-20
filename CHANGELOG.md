@@ -1,5 +1,50 @@
 # Changelog
 
+## [2026-02-20] — Style Pack infrastructure and built-in example profiles (Story 016)
+
+### Added
+- Folder-based `StylePack` infrastructure for creative persona profiles:
+  - `src/cine_forge/roles/style_packs/` (built-in repository)
+  - `StylePack` and `StylePackFileRef` schema enhancements (`audio_reference` kind)
+- Style pack management and validation:
+  - `RoleCatalog.list_style_packs(role_id)` for dynamic discovery
+  - `RoleCatalog.load_style_pack` with role-type and permission validation
+- Creative research templates:
+  - `style_pack_prompt.md` templates for Director, Visual Architect, Sound Designer, Editorial Architect, and Actor Agent.
+- Built-in `generic` style packs for all creative roles.
+- High-fidelity example style packs:
+  - Director: `tarantino`
+  - Visual Architect: `deakins`
+  - Sound Designer: `lynch`
+  - Editorial Architect: `schoonmaker`
+  - Actor Agent: `ddl` (Daniel Day-Lewis)
+- Automated verification:
+  - `tests/unit/test_style_packs.py` (catalog/context logic)
+  - `tests/integration/test_style_pack_integration.py` (lifecycle + prompt injection)
+
+### Changed
+- `RoleContext` now injects style-pack content into system prompts during role invocation.
+- `RoleDefinition` schemas and role YAMLs now explicitly declare `style_pack_slot` (accepts/forbidden).
+
+## [2026-02-20] — Director and Canon Guardians stage-gating workflow (Story 015)
+
+### Added
+- Canon-level role behaviors and hierarchy enforcement:
+  - `src/cine_forge/roles/canon.py` (`CanonGate` orchestration)
+  - Director authority (canon authority), Script Supervisor and Continuity Supervisor (canon guardians).
+- Stage completion gating:
+  - `StageReviewArtifact` schema for immutable review persistence.
+  - `ReviewDecision`, `ReviewReadiness` enums.
+  - Disagreement protocol (objection + override justification records).
+- Automated verification:
+  - `tests/unit/test_canon_gate.py`
+  - `tests/integration/test_canon_gate_integration.py`
+
+### Changed
+- Role YAMLs updated with specific guardian/authority system prompts and capabilities.
+- Driver schema registry now includes `stage_review`.
+- Director and Continuity Supervisor now declare `image` perception capability.
+
 ## [2026-02-20] - Role system foundation infrastructure for AI persona runtime (Story 014)
 
 ### Added
