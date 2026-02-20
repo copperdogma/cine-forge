@@ -1,6 +1,6 @@
 # Changelog
 
-## [2026-02-20] — Entity Prev/Next Navigation (Story 057)
+## [2026-02-20-03] — Entity Prev/Next Navigation (Story 057)
 
 ### Added
 - New `useEntityNavigation` hook in `ui/src/lib/hooks.ts` for sequential entity traversal.

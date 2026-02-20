@@ -16,3 +16,4 @@ Entries:
 `20260219-1731 | 140 | success | partial | Deploy 0.1.3; pip layer rebuilt, frontend cached; API+Playwright UI smoke passed`
 2026-02-20T21:29:11Z | 94 | success | false | feat: Story 019
 2026-02-20T21:41:02Z | 98 | success | false | chore: deploy v2026.02.20-02
+2026-02-20T22:04:24Z | 102 | success | partial | feat: Story 057 (Entity Navigation) + ruff fix; v2026.02.20-03; frontend rebuilt, pip reinstalled
