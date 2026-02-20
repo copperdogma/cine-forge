@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -40,6 +40,7 @@ class ProjectSummary(BaseModel):
     has_inputs: bool = False
     input_files: list[str] = []
     ui_preferences: dict[str, Any] = Field(default_factory=dict)
+    human_control_mode: str = "autonomous"
 
 
 class RecentProjectSummary(ProjectSummary):
@@ -91,6 +92,7 @@ class RunStartRequest(BaseModel):
     escalate_model: str | None = None
     qa_model: str | None = None
     recipe_id: str | None = "mvp_ingest"
+    human_control_mode: Literal["autonomous", "checkpoint", "advisory"] | None = None
     accept_config: bool = False
     config_file: str | None = None
     config_overrides: dict[str, Any] | None = None
@@ -183,16 +185,19 @@ class SlugPreviewResponse(BaseModel):
 
 
 class ProjectCreateRequest(BaseModel):
-    """Create a project using a slug and display name."""
+    """Create a project using a slug and display name, or an explicit path."""
 
-    slug: str = Field(min_length=1, pattern=r"^[a-z0-9][a-z0-9-]*$")
-    display_name: str = Field(min_length=1)
+    slug: str | None = None
+    display_name: str | None = None
+    project_path: str | None = None
 
 
 class ProjectSettingsUpdate(BaseModel):
     """Partial update for project settings (display name, etc.)."""
 
     display_name: str | None = None
+    human_control_mode: Literal["autonomous", "checkpoint", "advisory"] | None = None
+    style_packs: dict[str, str] | None = None
     ui_preferences: dict[str, Any] | None = None
 
 

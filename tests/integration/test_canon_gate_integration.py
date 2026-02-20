@@ -88,3 +88,39 @@ def test_canon_gate_integration_review_signoff_director_progression(tmp_path: Pa
     assert review.readiness.value == "ready"
     assert review.director_review.role_id == "director"
     assert all(item.decision.value == "sign_off" for item in review.guardian_reviews)
+
+@pytest.mark.integration
+def test_canon_gate_checkpoint_mode_awaiting_user(tmp_path: Path) -> None:
+    catalog = RoleCatalog()
+    catalog.load_definitions()
+    context = RoleContext(
+        catalog=catalog,
+        project_dir=tmp_path / "runtime",
+        model_resolver=lambda _role_id: "mock",
+        llm_callable=_integration_llm,
+    )
+    store = ArtifactStore(project_dir=tmp_path / "project")
+    source_ref = store.save_artifact(
+        artifact_type="scene",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "summary": "integration fixture"},
+        metadata=ArtifactMetadata(
+            intent="Integration seed artifact.",
+            rationale="r",
+            confidence=1.0,
+            source="code",
+            producing_module="m",
+        ),
+    )
+
+    review_ref = CanonGate(role_context=context, store=store).review_stage(
+        stage_id="scene_enrichment",
+        scene_id="scene_001",
+        artifact_refs=[source_ref],
+        control_mode="checkpoint",
+        user_approved=False, # User has not approved yet
+    )
+
+    review_payload = store.load_artifact(review_ref).data
+    review = StageReviewArtifact.model_validate(review_payload)
+    assert review.readiness.value == "awaiting_user"

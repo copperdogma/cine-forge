@@ -4,6 +4,7 @@ import {
   Eye,
   XCircle,
   CheckCircle2,
+  Lock,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -17,10 +18,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useMemo } from 'react'
-import { useArtifactGroups, useRuns } from '@/lib/hooks'
+import { useArtifactGroups, useRuns, useArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 
-type InboxItemType = 'stale' | 'review' | 'error'
+type InboxItemType = 'stale' | 'review' | 'error' | 'gate_review'
 
 interface InboxItem {
   id: string
@@ -31,6 +32,8 @@ interface InboxItem {
   entity_id?: string
   version?: number
   run_id?: string
+  stage_id?: string
+  scene_id?: string
   timestamp: number
 }
 
@@ -51,6 +54,8 @@ function getItemTooltip(type: InboxItemType): string {
       return 'This pipeline stage failed during execution. Review the error and retry.'
     case 'review':
       return 'This artifact was generated successfully but needs human review before use in downstream stages.'
+    case 'gate_review':
+      return 'This pipeline stage is paused and requires human approval before proceeding.'
   }
 }
 
@@ -95,6 +100,21 @@ function itemIcon(type: InboxItemType) {
             <TooltipTrigger asChild>
               <div className="cursor-help">
                 <Eye className="h-4 w-4 text-primary" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{tooltipText}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )
+    case 'gate_review':
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="cursor-help">
+                <Lock className="h-4 w-4 text-primary" />
               </div>
             </TooltipTrigger>
             <TooltipContent>
@@ -164,6 +184,24 @@ function itemAction(
         >
           <Eye className="h-3 w-3" />
           Review
+        </Button>
+      )
+    case 'gate_review':
+      return (
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-xs gap-1.5"
+          aria-label="Review stage"
+          onClick={(e) => {
+            e.stopPropagation()
+            if (projectId && item.artifact_type && item.entity_id) {
+              navigate(`/${projectId}/artifacts/${item.artifact_type}/${item.entity_id}/${item.version ?? 1}`)
+            }
+          }}
+        >
+          <Eye className="h-3 w-3" />
+          Review Stage
         </Button>
       )
   }
@@ -240,14 +278,37 @@ export default function ProjectInbox() {
       }))
   }, [artifactGroups])
 
+  // Derive gate review items from stage_review artifacts
+  const gateReviewItems = useMemo<InboxItem[]>(() => {
+    if (!artifactGroups) return []
+    return artifactGroups
+      .filter(group => group.artifact_type === 'stage_review' && group.health === 'needs_review')
+      .map((group, index) => {
+        const [sceneId, stageId] = (group.entity_id ?? '').split('_')
+        return {
+          id: `gate-${group.entity_id}-${index}`,
+          type: 'gate_review' as const,
+          title: `Stage Review: ${formatArtifactType(stageId ?? 'unknown')} (${sceneId ?? 'project'})`,
+          description: 'Pipeline is paused. Approve or reject this stage to proceed.',
+          artifact_type: group.artifact_type,
+          entity_id: group.entity_id ?? undefined,
+          version: group.latest_version,
+          stage_id: stageId,
+          scene_id: sceneId,
+          timestamp: 0,
+        }
+      })
+  }, [artifactGroups])
+
   const allItems = useMemo(
-    () => [...staleItems, ...errorItems, ...reviewItems],
-    [staleItems, errorItems, reviewItems],
+    () => [...staleItems, ...errorItems, ...reviewItems, ...gateReviewItems],
+    [staleItems, errorItems, reviewItems, gateReviewItems],
   )
 
   const staleCount = staleItems.length
   const errorCount = errorItems.length
   const reviewCount = reviewItems.length
+  const gateReviewCount = gateReviewItems.length
 
   // Loading state
   if (isLoading) {
@@ -310,6 +371,12 @@ export default function ProjectInbox() {
           <Badge variant="secondary" className="text-xs gap-1">
             <Eye className="h-3 w-3" />
             {reviewCount} to review
+          </Badge>
+        )}
+        {gateReviewCount > 0 && (
+          <Badge variant="secondary" className="text-xs gap-1 bg-primary/10 text-primary border-primary/20">
+            <Lock className="h-3 w-3" />
+            {gateReviewCount} stage{gateReviewCount > 1 ? 's' : ''} paused
           </Badge>
         )}
       </div>

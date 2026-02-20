@@ -11,6 +11,7 @@ import threading
 import time
 import uuid
 from collections import deque
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
@@ -26,6 +27,7 @@ from cine_forge.driver.recipe import (
     validate_recipe,
 )
 from cine_forge.driver.state import RunState
+from cine_forge.roles import CanonGate, RoleCatalog, RoleContext
 from cine_forge.schemas import (
     ArtifactHealth,
     ArtifactMetadata,
@@ -80,6 +82,16 @@ _DEFAULT_STAGE_FALLBACK_MODELS: dict[str, list[str]] = {
     ],
 }
 
+REVIEWABLE_ARTIFACT_TYPES: set[str] = {
+    "scene",
+    "bible_manifest",
+    "entity_graph",
+    "timeline",
+    "track_manifest",
+    "project_config",
+    "canonical_script",
+}
+
 
 class DriverEngine:
     """Orchestrates recipe execution and run-state tracking."""
@@ -127,6 +139,8 @@ class DriverEngine:
         force: bool = False,
         instrument: bool = False,
         runtime_params: dict[str, Any] | None = None,
+        human_control_mode: str = "autonomous",
+        llm_callable: Callable[..., Any] | None = None,
     ) -> dict[str, Any]:
         run_id = run_id or f"run-{uuid.uuid4().hex[:8]}"
         run_dir = self.workspace_root / "output" / "runs" / run_id
@@ -143,6 +157,7 @@ class DriverEngine:
             "started_at": time.time(),
             "stages": {},
             "runtime_params": resolved_runtime_params,
+            "human_control_mode": human_control_mode,
             "total_cost_usd": 0.0,
             "instrumented": instrument,
         }
@@ -223,6 +238,22 @@ class DriverEngine:
         # run_state["total_cost_usd"], _write_run_state, _append_event, _update_stage_cache
         state_lock = threading.Lock()
 
+        # Initialize role system for gating and creative feedback
+        role_catalog = RoleCatalog()
+        role_catalog.load_definitions()
+        # Resolve style packs from recipe or project if available
+        style_packs = resolved_runtime_params.get("style_packs", {})
+        
+        from cine_forge.ai.llm import call_llm
+        role_context = RoleContext(
+            catalog=role_catalog,
+            project_dir=self.project_dir,
+            store=self.store,
+            model_resolver=lambda _role_id: resolved_runtime_params.get("default_model", "mock"),
+            style_pack_selections=style_packs,
+            llm_callable=llm_callable or call_llm,
+        )
+
         run_paused = False
         for wave in waves:
             if run_paused:
@@ -250,6 +281,8 @@ class DriverEngine:
                     state_path=state_path,
                     force=force,
                     state_lock=state_lock,
+                    role_context=role_context,
+                    human_control_mode=human_control_mode,
                 )
                 if result == "paused":
                     run_paused = True
@@ -284,6 +317,8 @@ class DriverEngine:
                             state_path=state_path,
                             force=force,
                             state_lock=state_lock,
+                            role_context=role_context,
+                            human_control_mode=human_control_mode,
                         ): sid
                         for sid in wave
                     }
@@ -329,6 +364,8 @@ class DriverEngine:
         state_path: Path,
         force: bool,
         state_lock: threading.Lock,
+        role_context: RoleContext,
+        human_control_mode: str = "autonomous",
     ) -> str:
         """Execute a single stage. Returns 'done', 'skipped', or 'paused'.
 
@@ -615,6 +652,65 @@ class DriverEngine:
                         "data": output_data,
                     }
                 )
+
+            # --- Story 019: Canon review gating ---
+            review_refs = []
+            review_required = any(
+                a["artifact_type"] in REVIEWABLE_ARTIFACT_TYPES for a in outputs
+            )
+            control_mode = human_control_mode or resolved_runtime_params.get(
+                "human_control_mode", "autonomous"
+            )
+            
+            # Skip review if in autonomous mode or advisory mode or if no reviewable artifacts
+            if review_required and control_mode not in ("autonomous", "advisory"):
+                # Find scenes to review
+                scenes_to_review = set()
+                for art in outputs:
+                    if art["artifact_type"] == "scene":
+                        scenes_to_review.add(art.get("entity_id") or "project")
+                
+                if not scenes_to_review:
+                    scenes_to_review.add("project")
+                
+                gate = CanonGate(role_context=role_context, store=self.store)
+                for scene_id in sorted(scenes_to_review):
+                    # Filter artifacts relevant to this scene (or all for 'project')
+                    relevant_refs = [
+                        item["ref"] for item in persisted_outputs
+                        if scene_id == "project" or item["ref"].entity_id == scene_id
+                    ]
+                    
+                    review_ref = gate.review_stage(
+                        stage_id=stage_id,
+                        scene_id=scene_id,
+                        artifact_refs=relevant_refs,
+                        control_mode=control_mode,
+                        user_approved=resolved_runtime_params.get("user_approved")
+                    )
+                    review_refs.append(review_ref)
+                    with state_lock:
+                        stage_state["artifact_refs"].append(review_ref.model_dump())
+                
+                # Check if we should pause
+                from cine_forge.schemas import ReviewReadiness
+                latest_reviews = [self.store.load_artifact(ref).data for ref in review_refs]
+                if any(r.get("readiness") == ReviewReadiness.AWAITING_USER for r in latest_reviews):
+                    with state_lock:
+                        stage_state["status"] = "paused"
+                        stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
+                        self._append_event(
+                            events_path,
+                            {
+                                "event": "stage_paused",
+                                "stage_id": stage_id,
+                                "reason": "awaiting_human_approval",
+                                "artifacts": stage_state["artifact_refs"],
+                            },
+                        )
+                        self._write_run_state(state_path, run_state)
+                    print(f"[{run_id}] Stage '{stage_id}' paused for human approval.")
+                    return "paused"
 
             with state_lock:
                 stage_outputs[stage_id] = persisted_outputs

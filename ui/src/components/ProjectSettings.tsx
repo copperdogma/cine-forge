@@ -28,10 +28,11 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { updateProjectSettings } from "@/lib/api"
+import type { ProjectSummary } from "@/lib/types"
 
 interface ProjectSettingsProps {
   projectId: string
-  projectName: string
+  project: ProjectSummary | undefined
   children?: React.ReactNode
   open?: boolean
   onOpenChange?: (open: boolean) => void
@@ -39,7 +40,7 @@ interface ProjectSettingsProps {
 
 export function ProjectSettings({
   projectId,
-  projectName,
+  project,
   children,
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
@@ -49,12 +50,20 @@ export function ProjectSettings({
   const setOpen = controlledOnOpenChange ?? setInternalOpen
   const queryClient = useQueryClient()
 
+  const projectName = project?.display_name ?? ""
+  const controlMode = project?.human_control_mode ?? "autonomous"
+
   // Track the editable display name — sync from prop when dialog opens
   const [editName, setEditName] = React.useState(projectName)
+  const [editMode, setEditMode] = React.useState(controlMode)
   const [saving, setSaving] = React.useState(false)
+
   React.useEffect(() => {
-    if (open) setEditName(projectName)
-  }, [open, projectName])
+    if (open) {
+      setEditName(projectName)
+      setEditMode(controlMode)
+    }
+  }, [open, projectName, controlMode])
 
   const [modelSettings, setModelSettings] = React.useState({
     defaultModel: "claude-sonnet-4-5",
@@ -81,17 +90,28 @@ export function ProjectSettings({
     { value: "narrative-analysis", label: "Narrative Analysis" },
   ]
 
+  const controlModeOptions = [
+    { value: "autonomous", label: "Autonomous", description: "Director makes progression decisions." },
+    { value: "checkpoint", label: "Checkpoint", description: "Pause for human approval at each stage." },
+    { value: "advisory", label: "Advisory", description: "Human drives, AI provides feedback." },
+  ]
+
   const handleSaveGeneral = async () => {
-    if (!editName.trim() || editName === projectName) {
+    const changes: Parameters<typeof updateProjectSettings>[1] = {}
+    if (editName.trim() !== projectName) changes.display_name = editName.trim()
+    if (editMode !== controlMode) changes.human_control_mode = editMode
+
+    if (Object.keys(changes).length === 0) {
       toast.info("No changes to save")
       return
     }
+
     setSaving(true)
     try {
-      await updateProjectSettings(projectId, { display_name: editName.trim() })
+      await updateProjectSettings(projectId, changes)
       queryClient.invalidateQueries({ queryKey: ['project', projectId] })
       queryClient.invalidateQueries({ queryKey: ['projects'] })
-      toast.success("Project name updated")
+      toast.success("Project settings updated")
     } catch (error) {
       const message = error instanceof Error ? error.message : "Failed to save"
       toast.error(message)
@@ -151,6 +171,30 @@ export function ProjectSettings({
                   onChange={(e) => setEditName(e.target.value)}
                   placeholder="Enter project name"
                 />
+              </div>
+
+              <div className="space-y-1.5">
+                <label htmlFor="control-mode" className="text-sm font-medium">
+                  Human Control Mode
+                </label>
+                <Select
+                  value={editMode}
+                  onValueChange={(value: any) => setEditMode(value)}
+                >
+                  <SelectTrigger id="control-mode" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {controlModeOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        <div className="flex flex-col text-left">
+                          <span className="font-medium">{option.label}</span>
+                          <span className="text-xs text-muted-foreground">{option.description}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">

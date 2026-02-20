@@ -11,6 +11,8 @@ import {
   ArrowLeft,
   Package,
   AlertCircle,
+  Play,
+  PauseCircle,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -21,7 +23,7 @@ import { RunEventLog, type RunEvent } from '@/components/RunEventLog'
 import { ErrorState } from '@/components/StateViews'
 import { cn } from '@/lib/utils'
 import type { StageState } from '@/lib/types'
-import { useRunState, useRunEvents, useRetryFailedStage } from '@/lib/hooks'
+import { useRunState, useRunEvents, useRetryFailedStage, useResumeRun } from '@/lib/hooks'
 
 function statusBadge(status: string) {
   if (status === 'done' || status === 'skipped_reused') {
@@ -48,6 +50,14 @@ function statusBadge(status: string) {
       </Badge>
     )
   }
+  if (status === 'paused') {
+    return (
+      <Badge variant="secondary" className="text-xs bg-amber-400/10 text-amber-400 border-amber-400/20">
+        <PauseCircle className="h-3 w-3 mr-1" />
+        Paused
+      </Badge>
+    )
+  }
   return (
     <Badge variant="secondary" className="text-xs">
       <Clock className="h-3 w-3 mr-1" />
@@ -65,6 +75,8 @@ function stageStatusIcon(status: string) {
       return <XCircle className="h-4 w-4 text-destructive" />
     case 'running':
       return <Loader2 className="h-4 w-4 text-primary animate-spin" />
+    case 'paused':
+      return <PauseCircle className="h-4 w-4 text-amber-400" />
     default:
       return <Clock className="h-4 w-4 text-muted-foreground/40" />
   }
@@ -172,6 +184,7 @@ export default function RunDetail() {
   const { data: runStateResponse, isLoading, error, refetch } = useRunState(runId)
   const { data: eventsResponse, isLoading: eventsLoading } = useRunEvents(runId)
   const retryFailedStage = useRetryFailedStage()
+  const resumeRun = useResumeRun()
 
   // Derive running state (safe even when data is undefined)
   const overallStatus = runStateResponse
@@ -283,6 +296,28 @@ export default function RunDetail() {
             </p>
           </div>
           <div className="flex items-center gap-2">
+            {overallStatus === 'paused' && (
+              <Button
+                size="sm"
+                className="gap-1.5"
+                disabled={resumeRun.isPending}
+                onClick={async () => {
+                  try {
+                    const result = await resumeRun.mutateAsync({
+                      runId: runId!,
+                      projectId,
+                    })
+                    navigate(`/${projectId}/run/${result.run_id}`)
+                    toast.success("Pipeline resumed")
+                  } catch (err) {
+                    toast.error("Failed to resume: " + (err instanceof Error ? err.message : "Unknown error"))
+                  }
+                }}
+              >
+                <Play className="h-3.5 w-3.5" />
+                Resume Pipeline
+              </Button>
+            )}
             {canRetryFailedStage && (
               <Button
                 size="sm"

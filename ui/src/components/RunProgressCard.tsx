@@ -1,4 +1,4 @@
-import { CheckCircle2, Loader2, Circle, AlertCircle, SkipForward } from 'lucide-react'
+import { CheckCircle2, Loader2, Circle, AlertCircle, SkipForward, PauseCircle } from 'lucide-react'
 import { useRunState } from '@/lib/hooks'
 import { STAGE_DESCRIPTIONS, humanizeStageName } from '@/lib/chat-messages'
 import type { StageState } from '@/lib/types'
@@ -62,6 +62,8 @@ function StageIcon({ status }: { status: string }) {
       return <Loader2 className="h-3.5 w-3.5 text-primary shrink-0 animate-spin" />
     case 'failed':
       return <AlertCircle className="h-3.5 w-3.5 text-destructive shrink-0" />
+    case 'paused':
+      return <PauseCircle className="h-3.5 w-3.5 text-warning shrink-0" />
     default: // pending
       return <Circle className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0" />
   }
@@ -72,6 +74,7 @@ function stageLabel(stageId: string, status: string): string {
   if (!desc) return humanizeStageName(stageId)
   if (status === 'done' || status === 'skipped_reused') return desc.done
   if (status === 'running') return desc.start
+  if (status === 'paused') return "Paused for review"
   return humanizeStageName(stageId)
 }
 

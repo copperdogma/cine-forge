@@ -32,6 +32,7 @@ import {
   SceneViewer,
   BibleViewer,
   EntityGraphViewer,
+  StageReviewViewer,
   DefaultViewer,
 } from '@/components/ArtifactViewers'
 import { ProvenanceBadge } from '@/components/ProvenanceBadge'
@@ -337,6 +338,9 @@ export default function ArtifactDetail() {
 
       case 'entity_graph':
         return <EntityGraphViewer data={data} />
+
+      case 'stage_review':
+        return <StageReviewViewer data={data} projectId={projectId ?? ''} />
 
       default:
         return <DefaultViewer data={data} />

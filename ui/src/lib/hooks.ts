@@ -214,6 +214,43 @@ export function useRetryFailedStage() {
   })
 }
 
+export function useResumeRun() {
+  const queryClient = useQueryClient()
+  return useMutation<{ run_id: string }, Error, { runId: string; projectId?: string }>({
+    mutationFn: ({ runId }) => api.resumeRun(runId),
+    onSuccess: (_data, variables) => {
+      if (variables.projectId) {
+        queryClient.invalidateQueries({
+          queryKey: ['projects', variables.projectId, 'runs'],
+        })
+      }
+    },
+  })
+}
+
+export function useRespondToReview() {
+  const queryClient = useQueryClient()
+  return useMutation<
+    api.ArtifactEditResponse,
+    Error,
+    {
+      projectId: string
+      sceneId: string
+      stageId: string
+      approved: boolean
+      feedback?: string
+    }
+  >({
+    mutationFn: ({ projectId, sceneId, stageId, approved, feedback }) =>
+      api.respondToReview(projectId, sceneId, stageId, approved, feedback),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['projects', variables.projectId, 'artifacts'],
+      })
+    },
+  })
+}
+
 export function useRunState(runId: string | undefined) {
   return useQuery<RunStateResponse>({
     queryKey: ['runs', runId, 'state'],

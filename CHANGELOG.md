@@ -1,5 +1,30 @@
 # Changelog
 
+## [2026-02-20] — Human control modes, creative sessions, and direct artifact editing (Story 019)
+
+### Added
+- Three configurable operating modes: `autonomous`, `checkpoint`, and `advisory`.
+- `Checkpoint` mode pipeline enforcement in `DriverEngine` (stage-by-stage pauses).
+- Creative Session infrastructure in chat assistant via `talk_to_role` tool.
+- Multi-role `@role_id` addressing and domain-specific expert consultation.
+- Project Inbox UI for review management and bulk approval.
+- Direct artifact editing with background agent notification and commentary.
+- New `stage_review` artifact type for audit-ready approval tracking.
+- Backend endpoints for run resumption and review responses.
+- Full unit/integration coverage for interaction modes and gating.
+
+### Changed
+- `ProjectConfig` and project settings now track `human_control_mode`.
+- `DriverEngine` integrated with `CanonGate` for review orchestration.
+- Operator Console UI updated with mode selector, inbox, and review viewers.
+- `RunProgressCard` now handles `paused` state with live status indicators.
+
+### Fixed
+- Fixed thread-safety issues when multiple stages write to shared invocation logs.
+- Resolved module export errors in TypeScript for `ProjectSummary`.
+- Fixed 500 errors in project settings updates via correct Pydantic serialization.
+- Corrected indentation and assertion failures in existing integration suites.
+
 ## [2026-02-20] — Inter-role communication protocol and conversation artifacts (Story 018)
 
 ### Added

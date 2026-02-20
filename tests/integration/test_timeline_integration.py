@@ -9,9 +9,11 @@ from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
 
 
 @pytest.mark.integration
-def test_timeline_recipe_builds_project_timeline_from_store_inputs() -> None:
+def test_timeline_recipe_builds_project_timeline_from_store_inputs(tmp_path: Path) -> None:
     workspace_root = Path(__file__).resolve().parents[2]
-    engine = DriverEngine(workspace_root=workspace_root)
+    # Use tmp_path for project_dir to ensure no stale artifacts
+    project_dir = tmp_path / "project"
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=project_dir)
 
     ingest_state = engine.run(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-ingest-extract.yaml",

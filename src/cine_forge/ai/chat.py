@@ -67,6 +67,15 @@ You have tools to explore the project — `get_project_state`, `get_artifact`, \
 `list_scenes`, `list_characters`. Use them to ground your answers in real data. \
 Never guess about project content.
 
+## @agent Addressing
+The user can address specific creative roles using **@role_id** (e.g., @director, \
+@visual_architect). When you see an @mention:
+1.  Identify the target role.
+2.  Use the `talk_to_role` tool to get that role's perspective.
+3.  Incorporate their response into your conversation.
+You can also use `talk_to_role` proactively if you need an expert opinion to answer a \
+user's question more deeply.
+
 The chat history includes **activity notes** — compact records of user actions \
 (navigation, pipeline runs, artifact edits). When you see several activity notes \
 since your last response, call `get_project_state` to refresh your understanding \
@@ -361,6 +370,38 @@ CHAT_TOOLS = [
             "required": ["recipe_id", "rationale"],
         },
     },
+    {
+        "name": "talk_to_role",
+        "description": (
+            "Invoke a specific creative role (Director, Visual Architect, etc.) "
+            "to get their perspective on a topic. Use this when the user addresses "
+            "a specific role using @role, or when you need expert input from a "
+            "specific domain."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "role_id": {
+                    "type": "string",
+                    "description": (
+                        "The ID of the role to invoke. "
+                        "Common roles: 'director', 'visual_architect', 'sound_designer', "
+                        "'editorial_architect', 'actor_agent', 'script_supervisor', "
+                        "'continuity_supervisor'."
+                    ),
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The message or question for the role.",
+                },
+                "context": {
+                    "type": "object",
+                    "description": "Optional extra context for the role.",
+                },
+            },
+            "required": ["role_id", "message"],
+        },
+    },
 ]
 
 
@@ -515,6 +556,34 @@ def execute_tool(
 
         elif tool_name == "propose_run":
             return _execute_propose_run(tool_input, service, project_id)
+
+        elif tool_name == "talk_to_role":
+            role_id = tool_input.get("role_id", "")
+            message = tool_input.get("message", "")
+            extra_context = tool_input.get("context", {})
+            
+            # Get RoleContext from service
+            role_context = service.get_role_context(project_id)
+            
+            # Invoke the role
+            response = role_context.invoke(
+                role_id=role_id,
+                prompt=message,
+                inputs={
+                    "media_types": ["text"],
+                    "context": extra_context
+                }
+            )
+            
+            result = {
+                "role_id": role_id,
+                "content": response.content,
+                "confidence": response.confidence,
+                "rationale": response.rationale,
+                "decision": response.decision,
+                "suggestions": response.suggestion_ids,
+            }
+            return ToolResult(content=json.dumps(result, indent=2))
 
         else:
             return ToolResult(content=json.dumps({"error": f"Unknown tool: {tool_name}"}))

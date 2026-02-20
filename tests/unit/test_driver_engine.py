@@ -75,7 +75,7 @@ def _write_recipe(workspace_root: Path) -> Path:
                 "  - id: a",
                 "    module: test.echo_v1",
                 "    params:",
-                "      artifact_type: seed",
+                "      artifact_type: project_config",
                 "      entity_id: project",
                 "      payload:",
                 "        hello: world",
@@ -701,8 +701,8 @@ def test_driver_records_lineage_and_graph_edges(tmp_path: Path) -> None:
     dependencies = engine.store.graph.get_dependencies(latest_echo_ref)
 
     assert latest_echo.metadata.lineage
-    assert any(ref.artifact_type == "seed" for ref in latest_echo.metadata.lineage)
-    assert any(ref.artifact_type == "seed" for ref in dependencies)
+    assert any(ref.artifact_type == "project_config" for ref in latest_echo.metadata.lineage)
+    assert any(ref.artifact_type == "project_config" for ref in dependencies)
 
 
 @pytest.mark.unit
@@ -747,11 +747,52 @@ def test_driver_cache_invalidates_when_module_code_changes(tmp_path: Path) -> No
 
     _rewrite_module_default_payload(tmp_path, "updated")
     rerun = engine.run(recipe_path=recipe_path, run_id="second")
-
+    
     assert rerun["stages"]["a"]["status"] == "done"
     assert rerun["stages"]["b"]["status"] == "done"
 
+@pytest.mark.unit
+def test_driver_pauses_on_checkpoint_mode(tmp_path: Path) -> None:
+    _write_echo_module(tmp_path)
+    recipe_path = _write_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+    
+    # Run with checkpoint mode
+    def mock_llm(**kwargs):
+        return (
+            {
+                "content": "Mock review: looking good.",
+                "decision": "sign_off",
+                "confidence": 1.0,
+                "rationale": "r",
+            },
+            {
+                "model": "mock", "input_tokens": 1, "output_tokens": 1,
+                "estimated_cost_usd": 0.0, "latency_seconds": 0.1, "request_id": "r1"
+            },
+        )
 
+    state = engine.run(
+        recipe_path=recipe_path, 
+        run_id="checkpoint-1",
+        human_control_mode="checkpoint",
+        llm_callable=mock_llm
+    )
+    
+    # First stage (a) should complete but then trigger a pause before (b)
+    # Actually, the logic in _execute_single_stage triggers AFTER the stage finishes.
+    assert state["stages"]["a"]["status"] == "paused"
+    assert state["stages"]["b"]["status"] == "pending"
+    # Note: engine.run() will set finished_at when it returns, even if paused.
+    # We should check that it didn't finish ALL stages.
+    assert state["finished_at"] is not None 
+    
+    # Verify stage_review artifact produced
+    reviews = engine.store.list_versions("stage_review", "project_a")
+    assert len(reviews) == 1
+    review = engine.store.load_artifact(reviews[0])
+    assert review.data["readiness"] == "awaiting_user"
+    
 @pytest.mark.unit
 def test_driver_cache_invalidates_when_module_helper_changes(tmp_path: Path) -> None:
     _write_echo_module(tmp_path)
@@ -1305,13 +1346,38 @@ def test_project_config_change_marks_downstream_artifacts_stale(tmp_path: Path) 
     _write_project_config_producer_module(tmp_path)
     _write_project_config_consumer_module(tmp_path)
     first_recipe = _write_project_config_dependency_recipe(tmp_path, tone="grounded")
+    
+    def mock_llm(**kwargs):
+        return (
+            {
+                "content": "Mock review: looking good.",
+                "decision": "sign_off",
+                "confidence": 1.0,
+                "rationale": "r",
+            },
+            {
+                "model": "mock", "input_tokens": 1, "output_tokens": 1,
+                "estimated_cost_usd": 0.0, "latency_seconds": 0.1, "request_id": "r1"
+            },
+        )
+    
     engine = DriverEngine(workspace_root=tmp_path)
-
-    engine.run(recipe_path=first_recipe, run_id="first")
+    # Inject mock_llm for gating
+    engine.run(
+        recipe_path=first_recipe,
+        run_id="first",
+        runtime_params={"default_model": "mock"},
+        llm_callable=mock_llm,
+    )
     first_summary_ref = engine.store.list_versions("config_summary", "project")[-1]
 
     second_recipe = _write_project_config_dependency_recipe(tmp_path, tone="dark")
-    engine.run(recipe_path=second_recipe, run_id="second")
+    engine.run(
+        recipe_path=second_recipe,
+        run_id="second",
+        runtime_params={"default_model": "mock"},
+        llm_callable=mock_llm,
+    )
     second_summary_ref = engine.store.list_versions("config_summary", "project")[-1]
 
     assert first_summary_ref.version == 1

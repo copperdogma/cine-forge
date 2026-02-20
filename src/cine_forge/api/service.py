@@ -19,7 +19,8 @@ from cine_forge.modules.ingest.story_ingest_v1.main import (
     SUPPORTED_FILE_FORMATS,
     read_source_text_with_diagnostics,
 )
-from cine_forge.schemas import ArtifactRef
+from cine_forge.roles.runtime import RoleCatalog, RoleContext
+from cine_forge.schemas import ArtifactMetadata, ArtifactRef
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +45,8 @@ class OperatorConsoleService:
         self._run_errors: dict[str, str] = {}
         self._run_threads: dict[str, threading.Thread] = {}
         self._run_lock = threading.Lock()
+        self.role_catalog = RoleCatalog()
+        self.role_catalog.load_definitions()
 
     @staticmethod
     def normalize_project_path(project_path: str) -> Path:
@@ -127,9 +130,11 @@ class OperatorConsoleService:
         project_path: Path,
         slug: str,
         display_name: str,
+        human_control_mode: str | None = None,
+        style_packs: dict[str, str] | None = None,
         ui_preferences: dict[str, Any] | None = None,
     ) -> None:
-        """Write project.json with slug, display_name, and optional ui_preferences.
+        """Write project.json with slug, display_name, and optional settings.
 
         Uses a read-modify-write approach to preserve existing data.
         """
@@ -146,6 +151,10 @@ class OperatorConsoleService:
         # Update with new values
         existing["slug"] = slug
         existing["display_name"] = display_name
+        if human_control_mode is not None:
+            existing["human_control_mode"] = human_control_mode
+        if style_packs is not None:
+            existing["style_packs"] = style_packs
 
         # Merge ui_preferences if provided (shallow merge)
         if ui_preferences is not None:
@@ -158,7 +167,7 @@ class OperatorConsoleService:
         )
 
     @staticmethod
-    def _read_project_json(project_path: Path) -> dict[str, str] | None:
+    def _read_project_json(project_path: Path) -> dict[str, Any] | None:
         pj = project_path / "project.json"
         if not pj.exists():
             return None
@@ -171,30 +180,78 @@ class OperatorConsoleService:
         self,
         project_id: str,
         display_name: str | None = None,
+        human_control_mode: str | None = None,
+        style_packs: dict[str, str] | None = None,
         ui_preferences: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """Update mutable project settings (display_name, ui_preferences, etc.)."""
+        """Update mutable project settings (display_name, human_control_mode, etc.)."""
         path = self.require_project_path(project_id)
         pj = self._read_project_json(path) or {"slug": project_id}
 
-        # Update display_name if provided
-        if display_name is not None:
-            pj["display_name"] = display_name
-
-        # Shallow-merge ui_preferences if provided
-        if ui_preferences is not None:
-            existing_prefs = pj.get("ui_preferences", {})
-            existing_prefs.update(ui_preferences)
-            pj["ui_preferences"] = existing_prefs
+        # Update human_control_mode and sync to config if provided
+        if human_control_mode is not None:
+            self._sync_human_control_mode_to_config(project_id, human_control_mode)
 
         # Write back with all changes
         self._write_project_json(
             path,
             pj.get("slug", project_id),
-            pj["display_name"],
-            pj.get("ui_preferences"),
+            display_name if display_name is not None else pj.get("display_name", project_id),
+            human_control_mode=(
+                human_control_mode if human_control_mode is not None 
+                else pj.get("human_control_mode")
+            ),
+            style_packs=style_packs if style_packs is not None else pj.get("style_packs"),
+            ui_preferences=ui_preferences,
         )
+
         return self.project_summary(project_id)
+
+    def _sync_human_control_mode_to_config(self, project_id: str, mode: str) -> None:
+        """Update the canonical ProjectConfig artifact if it exists."""
+        try:
+            project_path = self.require_project_path(project_id)
+            store = ArtifactStore(project_dir=project_path)
+            versions = store.list_versions(artifact_type="project_config", entity_id="project")
+            if not versions:
+                log.info("No project_config found to sync human_control_mode")
+                return
+
+            latest_ref = versions[-1]
+            artifact = store.load_artifact(latest_ref)
+            data = artifact.data
+            
+            log.info("Syncing human_control_mode to project_config v%d", latest_ref.version)
+            
+            # Use model_dump if it's a Pydantic model, otherwise dict()
+            if hasattr(data, "model_dump"):
+                new_data = data.model_dump()
+            elif isinstance(data, dict):
+                new_data = dict(data)
+            else:
+                new_data = dict(data) # Fallback
+
+            if new_data.get("human_control_mode") == mode:
+                return
+
+            new_data["human_control_mode"] = mode
+
+            metadata = ArtifactMetadata(
+                lineage=[latest_ref],
+                intent="Update human control mode.",
+                rationale=f"User changed mode to '{mode}' via settings.",
+                confidence=1.0,
+                source="human",
+                producing_module="operator_console.settings",
+            )
+            store.save_artifact(
+                artifact_type="project_config",
+                entity_id="project",
+                data=new_data,
+                metadata=metadata,
+            )
+        except Exception:
+            log.exception("Failed to sync human_control_mode to ProjectConfig")
 
     def create_project_from_slug(self, slug: str, display_name: str) -> str:
         """Create a new project under output/{slug}/ and return the slug as project_id."""
@@ -245,6 +302,26 @@ class OperatorConsoleService:
             self._write_project_json(path, slug, display_name)
         self._project_registry[slug] = path
         return slug
+
+    def get_role_context(self, project_id: str) -> RoleContext:
+        """Get a RoleContext for the specified project."""
+        project_path = self.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+        
+        # Load style pack selections from project.json
+        pj = self._read_project_json(project_path) or {}
+        style_packs = pj.get("style_packs", {})
+        
+        # Determine model resolver (could use project defaults)
+        default_model = pj.get("default_model", "claude-sonnet-4-6")
+        
+        return RoleContext(
+            catalog=self.role_catalog,
+            project_dir=project_path,
+            store=store,
+            model_resolver=lambda _role_id: default_model,
+            style_pack_selections=style_packs,
+        )
 
     def require_project_path(self, project_id: str) -> Path:
         path = self._project_registry.get(project_id)
@@ -303,6 +380,7 @@ class OperatorConsoleService:
         pj = self._read_project_json(path)
         display_name = (pj or {}).get("display_name") or self._clean_display_name(path, input_files)
         ui_preferences = (pj or {}).get("ui_preferences", {})
+        human_control_mode = (pj or {}).get("human_control_mode", "autonomous")
         return {
             "project_id": project_id,
             "display_name": display_name,
@@ -311,6 +389,7 @@ class OperatorConsoleService:
             "has_inputs": len(inputs) > 0,
             "input_files": input_files,
             "ui_preferences": ui_preferences,
+            "human_control_mode": human_control_mode,
         }
 
     @staticmethod
@@ -415,6 +494,20 @@ class OperatorConsoleService:
         if name:
             name = name.title()
         return name or project_path.name
+
+    def list_roles(self) -> list[dict[str, Any]]:
+        """List all available roles from the catalog."""
+        roles = self.role_catalog.list_roles()
+        return [
+            {
+                "role_id": r.role_id,
+                "display_name": r.display_name,
+                "tier": r.tier.value,
+                "description": r.description,
+                "style_pack_slot": r.style_pack_slot.value,
+            }
+            for r in roles.values()
+        ]
 
     def list_recent_projects(self) -> list[dict[str, Any]]:
         candidates: dict[str, Path] = {}
@@ -708,12 +801,54 @@ class OperatorConsoleService:
             metadata=metadata,
         )
 
+        # Notify agents in the background
+        threading.Thread(
+            target=self._notify_agents_of_edit,
+            args=(project_id, artifact_type, normalized_entity, new_ref, rationale),
+            daemon=True,
+        ).start()
+
         return {
             "artifact_type": artifact_type,
             "entity_id": normalized_entity,
             "version": new_ref.version,
             "path": new_ref.path,
         }
+
+    def _notify_agents_of_edit(
+        self, project_id: str, artifact_type: str, entity_id: str | None, 
+        new_ref: ArtifactRef, rationale: str
+    ) -> None:
+        """Invoke relevant roles to get commentary on a human edit."""
+        try:
+            role_context = self.get_role_context(project_id)
+            roles = self.role_catalog.list_roles()
+            
+            # Roles to notify: Director + any role with permission for this artifact type
+            to_notify = ["director"]
+            for role_id, role in roles.items():
+                if artifact_type in role.permissions and role_id not in to_notify:
+                    to_notify.append(role_id)
+            
+            for role_id in to_notify:
+                prompt = (
+                    f"A human has authoritatively edited the {artifact_type} artifact "
+                    f"({entity_id or 'project'}).\n"
+                    f"Rationale provided: {rationale}\n"
+                    "Review the change and provide any creative commentary, warnings, or "
+                    "suggestions if this edit creates inconsistencies or opportunities."
+                )
+                # RoleContext.invoke will automatically save any suggestions the role returns
+                role_context.invoke(
+                    role_id=role_id,
+                    prompt=prompt,
+                    inputs={
+                        "artifact_ref": new_ref.model_dump(mode="json"),
+                        "rationale": rationale,
+                    }
+                )
+        except Exception:
+            log.exception("Failed to notify agents of edit")
 
     # --- Chat persistence (JSONL) ---
 
@@ -759,6 +894,121 @@ class OperatorConsoleService:
         with path.open("a", encoding="utf-8") as f:
             f.write(json.dumps(message, separators=(",", ":")) + "\n")
         return message
+
+    def respond_to_review(
+        self,
+        project_id: str,
+        scene_id: str,
+        stage_id: str,
+        approved: bool,
+        feedback: str | None = None,
+    ) -> ArtifactRef:
+        """Handle human approval/rejection of a stage review."""
+        from cine_forge.roles.canon import CanonGate
+        
+        project_path = self.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+        role_context = self.get_role_context(project_id)
+        
+        # Load the latest review to get context
+        review_entity_id = f"{scene_id}_{stage_id}"
+        refs = store.list_versions(artifact_type="stage_review", entity_id=review_entity_id)
+        if not refs:
+            raise ServiceError(
+                code="review_not_found",
+                message=f"No stage review found for {review_entity_id}.",
+                status_code=404,
+            )
+        
+        latest_review_ref = refs[-1]
+        artifact = store.load_artifact(latest_review_ref)
+        review_data = artifact.data
+        
+        # Re-run CanonGate with user response
+        gate = CanonGate(role_context=role_context, store=store)
+        
+        # We need to reconstruct the artifact_refs from the review
+        reviewed_artifact_refs = [
+            ArtifactRef.model_validate(ref) 
+            for ref in review_data.get("reviewed_artifacts", [])
+        ]
+        
+        return gate.review_stage(
+            stage_id=stage_id,
+            scene_id=scene_id,
+            artifact_refs=reviewed_artifact_refs,
+            control_mode=review_data.get("control_mode", "checkpoint"),
+            user_approved=approved,
+            input_payload={"human_feedback": feedback} if feedback else None
+        )
+
+    def resume_run(self, run_id: str) -> str:
+        """Resume a paused pipeline run (e.g. after human approval)."""
+        run_dir = self.workspace_root / "output" / "runs" / run_id
+        state_path = run_dir / "run_state.json"
+        if not state_path.exists():
+            raise ServiceError(
+                code="run_state_not_found",
+                message=f"Run state not found: {run_id}",
+                status_code=404,
+            )
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        stages = state.get("stages", {})
+        
+        # Find the paused stage
+        paused_stage_id = next(
+            (sid for sid, s in stages.items() if s.get("status") == "paused"),
+            None
+        )
+        if not paused_stage_id:
+            raise ServiceError(code="not_paused", message="Run is not paused.", status_code=400)
+
+        # Get project info
+        run_meta_path = run_dir / "run_meta.json"
+        if not run_meta_path.exists():
+            run_meta_path = run_dir / "operator_console_run_meta.json"
+        run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
+        project_id = str(run_meta.get("project_id", ""))
+        project_path = Path(run_meta["project_path"])
+        
+        # Load latest project config for mode
+        pj = self._read_project_json(project_path) or {}
+        mode = pj.get("human_control_mode", "autonomous")
+
+        new_run_id = f"{run_id}-resume-{uuid.uuid4().hex[:4]}"
+        resume_run_dir = self.workspace_root / "output" / "runs" / new_run_id
+        resume_run_dir.mkdir(parents=True, exist_ok=True)
+        self._write_run_meta(resume_run_dir, project_id, project_path)
+
+        runtime_params = dict(state.get("runtime_params", {}))
+        runtime_params["human_control_mode"] = mode
+        runtime_params["user_approved"] = True # Mark as approved so CanonGate lets it pass
+        runtime_params["__resume_artifact_refs_by_stage"] = {
+            sid: s.get("artifact_refs", [])
+            for sid, s in stages.items() if isinstance(s, dict)
+        }
+
+        recipe_id = state.get("recipe_id")
+        recipe_filename = f"recipe-{str(recipe_id).replace('_', '-')}.yaml"
+        recipe_path = self.workspace_root / "configs" / "recipes" / recipe_filename
+
+        worker = threading.Thread(
+            target=self._run_pipeline,
+            kwargs={
+                "project_path": project_path,
+                "recipe_path": recipe_path,
+                "run_id": new_run_id,
+                "force": False,
+                "runtime_params": runtime_params,
+                "start_from": paused_stage_id,
+            },
+            daemon=True,
+        )
+        with self._run_lock:
+            self._run_threads[new_run_id] = worker
+        worker.start()
+        return new_run_id
 
     def search_entities(self, project_id: str, query: str) -> dict[str, Any]:
         """Search across scenes, characters, locations, and props for a project."""
@@ -914,6 +1164,7 @@ class OperatorConsoleService:
             # Backward-compat aliases for custom recipes using ${utility_model}/${sota_model}
             "utility_model": request.get("work_model") or request["default_model"],
             "sota_model": request.get("escalate_model") or request["default_model"],
+            "human_control_mode": request.get("human_control_mode") or "autonomous",
             "accept_config": bool(request.get("accept_config", False)),
             "skip_qa": bool(request.get("skip_qa", False)),
         }

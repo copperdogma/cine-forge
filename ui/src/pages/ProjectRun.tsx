@@ -100,6 +100,7 @@ export default function ProjectRun() {
   const { data: recipesData, isLoading: recipesLoading } = useRecipes()
   const { data: scenesData = [] } = useScenes(projectId)
   const { data: existingInputs } = useProjectInputs(projectId)
+  const { data: project } = useProject(projectId)
 
   // Use real recipes from API, fallback to hardcoded list if API fails
   const recipes = recipesData || fallbackRecipes
@@ -146,6 +147,7 @@ export default function ProjectRun() {
       default_model: defaultModel,
       ...(workModel && { work_model: workModel }),
       ...(verifyModel && { verify_model: verifyModel }),
+      human_control_mode: project?.human_control_mode ?? 'autonomous',
       recipe_id: selectedRecipe,
       accept_config: true,
       ...(startFrom && { start_from: startFrom }),

@@ -14,6 +14,7 @@ export type ProjectSummary = {
   has_inputs: boolean
   input_files: string[]
   ui_preferences: Record<string, string>
+  human_control_mode: 'autonomous' | 'checkpoint' | 'advisory'
 }
 
 export type RecentProjectSummary = ProjectSummary & {
@@ -42,6 +43,7 @@ export type RunStartPayload = {
   verify_model?: string
   escalate_model?: string
   recipe_id?: string
+  human_control_mode?: 'autonomous' | 'checkpoint' | 'advisory'
   skip_qa?: boolean
   qa_model?: string
   accept_config: boolean

@@ -21,6 +21,7 @@ const TOOL_DISPLAY_NAMES: Record<string, string> = {
   list_locations: 'Looking up locations',
   edit_artifact: 'Proposing edits',
   start_pipeline: 'Preparing pipeline run',
+  talk_to_role: 'Consulting expert role',
 }
 
 function friendlyToolName(rawName: string): string {

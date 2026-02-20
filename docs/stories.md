@@ -41,7 +41,7 @@ NOTES from Cam:
 | 016 | Style Pack Infrastructure | 4 — Role System | Medium | Done | [story-016](stories/story-016-style-pack-infrastructure.md) |
 | 017 | Suggestion and Decision Tracking | 4 — Role System | Medium | Done | [story-017](stories/story-017-suggestion-decision-tracking.md) |
 | 018 | Inter-Role Communication Protocol | 4 — Role System | Medium | Done | [story-018](stories/story-018-inter-role-communication.md) |
-| 019 | Human Control Modes and Creative Sessions | 4 — Role System | High | To Do | [story-019](stories/story-019-human-interaction.md) |
+| 019 | Human Control Modes and Creative Sessions | 4 — Role System | High | Done | [story-019](stories/story-019-human-interaction.md) |
 | 020 | Editorial Architect and Editorial Direction | 5 — Creative Direction | Medium | To Do | [story-020](stories/story-020-editorial-architect.md) |
 | 021 | Visual Architect and Visual Direction | 5 — Creative Direction | Medium | To Do | [story-021](stories/story-021-visual-architect.md) |
 | 022 | Sound Designer and Sound Direction | 5 — Creative Direction | Medium | To Do | [story-022](stories/story-022-sound-designer.md) |

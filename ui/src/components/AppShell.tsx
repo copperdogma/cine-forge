@@ -277,7 +277,7 @@ function ShellInner() {
       {/* Keyboard-triggered settings dialog */}
       <ProjectSettings
         projectId={projectId ?? ''}
-        projectName={displayName}
+        project={project}
         open={settingsOpen}
         onOpenChange={setSettingsOpen}
       />

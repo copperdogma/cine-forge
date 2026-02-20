@@ -1,11 +1,15 @@
-import { Users, MapPin, Film, Book, Globe, Package, Clock, ChevronRight } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { Users, MapPin, Film, Book, Globe, Package, Clock, ChevronRight, ShieldCheck, ShieldAlert, UserCheck } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { useState, Suspense, lazy } from 'react'
 import { GlossaryTerm, SectionHelp } from '@/components/GlossaryTerm'
+import { useRespondToReview } from '@/lib/hooks'
+import { toast } from 'sonner'
 
 // Lazy load the heavy CodeMirror editor to reduce main bundle size
 const ScreenplayEditor = lazy(() => import('@/components/ScreenplayEditor'))
@@ -854,6 +858,175 @@ export function EntityGraphViewer({ data }: { data: Record<string, unknown> }) {
             </div>
           </CollapsibleSection>
         </>
+      )}
+    </div>
+  )
+}
+
+// StageReviewViewer - for stage_review artifacts
+export function StageReviewViewer({ data, projectId }: { data: Record<string, unknown>, projectId: string }) {
+  const sceneId = getString(data, 'scene_id')
+  const stageId = getString(data, 'stage_id')
+  const readiness = getString(data, 'readiness')
+  const guardianReviews = getArray(data, 'guardian_reviews')
+  const directorReview = getObject(data, 'director_review')
+  const disagreements = getArray(data, 'disagreements')
+  const userApproved = data.user_approved === true
+  
+  const [feedback, setFeedback] = useState('')
+  const respond = useRespondToReview()
+
+  const handleRespond = async (approved: boolean) => {
+    if (!sceneId || !stageId) return
+    try {
+      await respond.mutateAsync({
+        projectId,
+        sceneId,
+        stageId,
+        approved,
+        feedback: feedback.trim() || undefined
+      })
+      toast.success(approved ? "Stage approved" : "Stage rejected")
+    } catch (err) {
+      toast.error("Failed to respond: " + (err instanceof Error ? err.message : "Unknown error"))
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold">Stage Review: {stageId}</h3>
+          <p className="text-sm text-muted-foreground">Scene: {sceneId}</p>
+        </div>
+        <Badge 
+          variant={readiness === 'ready' ? 'default' : readiness === 'blocked' ? 'destructive' : 'secondary'}
+          className="capitalize"
+        >
+          {readiness?.replace('_', ' ')}
+        </Badge>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {guardianReviews.map((rev: any, i) => (
+          <Card key={i} className={cn(rev.decision === 'block' && 'border-destructive/50 bg-destructive/5')}>
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  {rev.decision === 'sign_off' ? <ShieldCheck className="h-4 w-4 text-primary" /> : <ShieldAlert className="h-4 w-4 text-destructive" />}
+                  {rev.role_id?.replace('_', ' ').toUpperCase()}
+                </CardTitle>
+                <Badge variant="outline" className="text-[10px] uppercase">Guardian</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm font-medium mb-1">{rev.summary}</p>
+              <p className="text-xs text-muted-foreground">{rev.rationale}</p>
+              {rev.objections?.length > 0 && (
+                <div className="mt-3 space-y-1">
+                  <p className="text-[10px] font-bold uppercase text-destructive">Objections:</p>
+                  {rev.objections.map((obj: string, j: number) => (
+                    <p key={j} className="text-xs text-destructive flex items-start gap-1">
+                      <span className="mt-1 block size-1 rounded-full bg-destructive" />
+                      {obj}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {directorReview && (
+        <Card className={cn('border-primary/30', directorReview.decision === 'override' && 'bg-primary/5')}>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <UserCheck className="h-4 w-4 text-primary" />
+                DIRECTOR
+              </CardTitle>
+              <Badge className="text-[10px] uppercase bg-primary/20 text-primary hover:bg-primary/30 border-primary/30">Canon Authority</Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2 mb-2">
+              <Badge variant={directorReview.decision === 'block' ? 'destructive' : 'default'} className="text-[10px] uppercase">
+                {directorReview.decision}
+              </Badge>
+            </div>
+            <p className="text-sm font-medium mb-1">{directorReview.summary}</p>
+            <p className="text-xs text-muted-foreground">{directorReview.rationale}</p>
+            {directorReview.override_justification && (
+              <div className="mt-3 p-2 rounded bg-primary/10 border border-primary/20">
+                <p className="text-[10px] font-bold uppercase text-primary mb-1">Override Justification:</p>
+                <p className="text-xs italic">{directorReview.override_justification}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {disagreements.length > 0 && (
+        <CollapsibleSection title="Disagreements" icon={<ShieldAlert className="h-4 w-4 text-destructive" />}>
+          <div className="space-y-3">
+            {disagreements.map((dis: any, i) => (
+              <div key={i} className="text-xs border-l-2 border-destructive pl-3 py-1 space-y-2">
+                <div>
+                  <span className="font-bold text-destructive uppercase">{dis.guardian_role_id} Objected:</span>
+                  <p className="mt-0.5">{dis.objection_summary}</p>
+                </div>
+                <div className="bg-muted p-2 rounded">
+                  <span className="font-bold uppercase">Director Override:</span>
+                  <p className="mt-0.5 italic">{dis.director_override_rationale}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CollapsibleSection>
+      )}
+
+      {!userApproved && readiness === 'awaiting_user' && (
+        <div className="pt-4 border-t border-border space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Feedback (optional)</label>
+            <Textarea 
+              placeholder="Provide feedback if rejecting, or notes for the team..."
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              className="text-sm min-h-[80px]"
+            />
+          </div>
+          <div className="flex gap-3">
+            <Button 
+              className="flex-1 gap-2" 
+              onClick={() => handleRespond(true)}
+              disabled={respond.isPending}
+            >
+              <CheckCircle2 className="h-4 w-4" />
+              Approve Stage
+            </Button>
+            <Button 
+              variant="destructive" 
+              className="flex-1 gap-2"
+              onClick={() => handleRespond(false)}
+              disabled={respond.isPending}
+            >
+              <ShieldAlert className="h-4 w-4" />
+              Reject Stage
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {userApproved && (
+        <div className="p-4 rounded-md bg-primary/10 border border-primary/20 flex items-center gap-3">
+          <CheckCircle2 className="h-5 w-5 text-primary" />
+          <div className="text-sm">
+            <p className="font-medium text-primary">Human Approved</p>
+            <p className="text-muted-foreground text-xs">This stage has been manually approved and is ready for use.</p>
+          </div>
+        </div>
       )}
     </div>
   )

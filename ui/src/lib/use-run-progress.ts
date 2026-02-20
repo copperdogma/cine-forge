@@ -49,15 +49,17 @@ export function useRunProgressChat(projectId: string | undefined) {
     (s) => (projectId ? s.activeRunId?.[projectId] ?? null : null),
   )
   const { data: runState } = useRunState(activeRunId ?? undefined)
-  const { data: runEvents } = useRunEvents(activeRunId ?? undefined)
-  const completedRef = useRef<Set<string>>(new Set())
-  const processedEventIdsRef = useRef<Set<string>>(new Set())
+  const { data: runs } = useRuns(projectId)
   const queryClient = useQueryClient()
+
+  // Track which stages we've already notified as paused
+  const pausedRef = useRef<Set<string>>(new Set())
 
   // Reset refs when active run changes
   useEffect(() => {
     completedRef.current = new Set()
     processedEventIdsRef.current = new Set()
+    pausedRef.current = new Set()
   }, [activeRunId])
 
   useEffect(() => {
@@ -87,6 +89,30 @@ export function useRunProgressChat(projectId: string | undefined) {
       queryClient.invalidateQueries({
         queryKey: ['projects', projectId, 'artifacts'],
       })
+
+      // Check for newly paused stages
+      for (const [stageId, stage] of Object.entries(stages)) {
+        if (stage.status === 'paused' && !pausedRef.current.has(stageId)) {
+          pausedRef.current.add(stageId)
+          
+          // Find the review artifact ref
+          const reviewRef = stage.artifact_refs.find(r => r.artifact_type === 'stage_review')
+          const route = reviewRef 
+            ? `artifacts/stage_review/${reviewRef.entity_id}/${reviewRef.version}`
+            : 'inbox'
+
+          store.addMessage(projectId, {
+            id: `progress_${activeRunId}_${stageId}_paused`,
+            type: 'ai_suggestion',
+            content: `The "${humanizeStageName(stageId)}" stage is paused for your review.`,
+            timestamp: Date.now(),
+            actions: [
+              { id: `review_${stageId}`, label: 'Review Stage', variant: 'default', route },
+            ],
+            needsAction: true,
+          })
+        }
+      }
     }
 
     // --- Surface resilience events (retries/fallbacks) as inline notifications ---

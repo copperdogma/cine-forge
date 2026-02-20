@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import threading
 import uuid
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -201,6 +202,7 @@ class RoleContext:
         self.project_dir.mkdir(parents=True, exist_ok=True)
         self.store = store
         self._log_path = self.project_dir / "role_invocations.jsonl"
+        self._log_lock = threading.Lock()
         self._model_resolver = model_resolver or (lambda _role_id: "mock")
         self._style_pack_selections = style_pack_selections or {}
         self._llm_callable = llm_callable
@@ -364,5 +366,6 @@ class RoleContext:
             "response": response.model_dump(mode="json"),
             "cost_usd": response.cost_data.estimated_cost_usd if response.cost_data else 0.0,
         }
-        with self._log_path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(log_record, sort_keys=True) + "\n")
+        with self._log_lock:
+            with self._log_path.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(log_record, sort_keys=True) + "\n")

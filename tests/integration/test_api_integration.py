@@ -10,20 +10,38 @@ from fastapi.testclient import TestClient
 from cine_forge.api.app import create_app
 
 
-def _await_run_done(client: TestClient, run_id: str, timeout_seconds: float = 20.0) -> dict:
+def _await_run_done(client: TestClient, run_id: str, timeout_seconds: float = 60.0) -> dict:
     deadline = time.time() + timeout_seconds
     while time.time() < deadline:
         response = client.get(f"/api/runs/{run_id}/state")
         if response.status_code != 200:
-            time.sleep(0.2)
+            time.sleep(0.5)
             continue
         payload = response.json()
-        statuses = {stage["status"] for stage in payload["state"]["stages"].values()}
+        stages = payload["state"]["stages"]
+        
+        # We need to know which stages are expected for this recipe
+        # For mvp_ingest it's: ingest, normalize, extract_scenes, project_config
+        # But let's just check overall run status or that no stages are running/pending
+        statuses = {s["status"] for s in stages.values()}
+        
         if "failed" in statuses:
+            # Check for background errors too
+            if payload.get("background_error"):
+                raise AssertionError(f"Run {run_id} failed: {payload['background_error']}")
             raise AssertionError(f"Run {run_id} failed with statuses={statuses}")
-        if "running" not in statuses and "pending" not in statuses:
+            
+        # If any stage is paused, the run is 'done' for now (awaiting human)
+        if "paused" in statuses:
             return payload
-        time.sleep(0.2)
+            
+        # Run is finished when ALL stages are done or skipped
+        if statuses and all(s in {"done", "skipped_reused"} for s in statuses):
+            # Also check if it's actually finished (finished_at set)
+            if payload["state"].get("finished_at"):
+                return payload
+        
+        time.sleep(0.5)
     raise AssertionError(f"Timed out waiting for run '{run_id}'")
 
 

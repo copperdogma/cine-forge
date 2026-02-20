@@ -115,7 +115,11 @@ export function getProject(projectId: string): Promise<ProjectSummary> {
 
 export function updateProjectSettings(
   projectId: string,
-  settings: { display_name?: string; ui_preferences?: Record<string, string> },
+  settings: {
+    display_name?: string
+    human_control_mode?: 'autonomous' | 'checkpoint' | 'advisory'
+    ui_preferences?: Record<string, string>
+  },
 ): Promise<ProjectSummary> {
   return request<ProjectSummary>(`/api/projects/${projectId}/settings`, {
     method: 'PATCH',
@@ -364,6 +368,28 @@ export function retryFailedStage(runId: string): Promise<{ run_id: string }> {
   return request<{ run_id: string }>(`/api/runs/${runId}/retry-failed-stage`, {
     method: 'POST',
   })
+}
+
+export function resumeRun(runId: string): Promise<{ run_id: string }> {
+  return request<{ run_id: string }>(`/api/runs/${runId}/resume`, {
+    method: 'POST',
+  })
+}
+
+export function respondToReview(
+  projectId: string,
+  sceneId: string,
+  stageId: string,
+  approved: boolean,
+  feedback?: string,
+): Promise<ArtifactEditResponse> {
+  return request<ArtifactEditResponse>(
+    `/api/projects/${projectId}/reviews/${sceneId}/${stageId}/respond`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ approved, feedback }),
+    },
+  )
 }
 
 export function getRunState(runId: string): Promise<RunStateResponse> {

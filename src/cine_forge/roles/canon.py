@@ -6,6 +6,7 @@ from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import (
+    ArtifactHealth,
     ArtifactMetadata,
     ArtifactRef,
     DirectorReview,
@@ -112,7 +113,11 @@ class CanonGate:
             source="ai",
             producing_module="canon_gate_v1",
             producing_role="director",
-            health="valid",
+            health=(
+                ArtifactHealth.NEEDS_REVIEW 
+                if readiness == ReviewReadiness.AWAITING_USER 
+                else ArtifactHealth.VALID
+            ),
             annotations={
                 "control_mode": control_mode,
                 "readiness": stage_review.readiness.value,

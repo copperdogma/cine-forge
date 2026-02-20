@@ -121,3 +121,40 @@ def test_convene_review_orchestration(
     
     # Check history was passed to Director
     # This would require capturing inputs in mock_llm
+
+@pytest.mark.unit
+def test_talk_to_role_integration(
+    store: ArtifactStore, catalog: RoleCatalog, tmp_path: Path
+) -> None:
+    # This tests the RoleContext side of talk_to_role
+    captured_inputs = []
+    def mock_llm(prompt, **kwargs):
+        captured_inputs.append(kwargs.get("inputs"))
+        return ({
+            "content": "Role response",
+            "confidence": 1.0,
+            "rationale": "r",
+            "suggestions": [{"proposal": "p1", "rationale": "r1"}]
+        }, {
+            "model": "mock", "input_tokens": 1, "output_tokens": 1, 
+            "estimated_cost_usd": 0.0, "latency_seconds": 0.1, "request_id": "r1"
+        })
+
+    context = RoleContext(
+        catalog=catalog, project_dir=tmp_path / "project", store=store, llm_callable=mock_llm
+    )
+    
+    response = context.invoke(
+        role_id="visual_architect",
+        prompt="What about lighting?",
+        inputs={"media_types": ["text"]}
+    )
+    
+    assert response.content == "Role response"
+    assert len(response.suggestion_ids) == 1
+    assert response.suggestion_ids[0].startswith("sugg-")
+    
+    # Verify suggestion artifact saved to store
+    sugg_id = response.suggestion_ids[0]
+    versions = store.list_versions("suggestion", sugg_id)
+    assert len(versions) == 1

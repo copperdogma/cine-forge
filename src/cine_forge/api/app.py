@@ -103,6 +103,10 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     async def list_recipes() -> list[RecipeSummary]:
         return [RecipeSummary.model_validate(r) for r in service.list_recipes()]
 
+    @app.get("/api/roles")
+    async def list_roles() -> list[dict]:
+        return service.list_roles()
+
     @app.get("/api/projects/recent", response_model=list[RecentProjectSummary])
     async def list_recent_projects() -> list[RecentProjectSummary]:
         return [
@@ -117,7 +121,15 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
     @app.post("/api/projects/new", response_model=ProjectSummary)
     async def new_project(request: ProjectCreateRequest) -> ProjectSummary:
-        slug = service.create_project_from_slug(request.slug, request.display_name)
+        if request.project_path:
+            slug = service.create_project(request.project_path)
+        elif request.slug and request.display_name:
+            slug = service.create_project_from_slug(request.slug, request.display_name)
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Either project_path or both slug and display_name must be provided."
+            )
         return ProjectSummary.model_validate(service.project_summary(slug))
 
     @app.post("/api/projects/open", response_model=ProjectSummary)
@@ -133,13 +145,21 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     async def update_project_settings(
         project_id: str, request: ProjectSettingsUpdate,
     ) -> ProjectSummary:
-        return ProjectSummary.model_validate(
-            service.update_project_settings(
-                project_id,
-                display_name=request.display_name,
-                ui_preferences=request.ui_preferences,
+        log = logging.getLogger("cine_forge.api.settings")
+        log.info("Updating settings for project %s: %s", project_id, request.model_dump())
+        try:
+            return ProjectSummary.model_validate(
+                service.update_project_settings(
+                    project_id,
+                    display_name=request.display_name,
+                    human_control_mode=request.human_control_mode,
+                    style_packs=request.style_packs,
+                    ui_preferences=request.ui_preferences,
+                )
             )
-        )
+        except Exception as exc:
+            log.exception("Failed to update project settings")
+            raise HTTPException(status_code=500, detail=str(exc)) from exc
 
     @app.post(
         "/api/projects/{project_id}/inputs/upload",
@@ -254,6 +274,27 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             )
         )
 
+    @app.post("/api/projects/{project_id}/reviews/{scene_id}/{stage_id}/respond")
+    async def respond_to_review(
+        project_id: str,
+        scene_id: str,
+        stage_id: str,
+        request: dict, # { "approved": bool, "feedback": str | None }
+    ) -> ArtifactEditResponse:
+        ref = service.respond_to_review(
+            project_id=project_id,
+            scene_id=scene_id,
+            stage_id=stage_id,
+            approved=request.get("approved", True),
+            feedback=request.get("feedback"),
+        )
+        return ArtifactEditResponse(
+            artifact_type=ref.artifact_type,
+            entity_id=ref.entity_id,
+            version=ref.version,
+            path=ref.path,
+        )
+
     @app.post("/api/runs/start", response_model=RunStartResponse)
     async def start_run(request: RunStartRequest) -> RunStartResponse:
         if request.retry_failed_stage_for_run_id:
@@ -269,6 +310,15 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     @app.post("/api/runs/{run_id}/retry-failed-stage", response_model=RunStartResponse)
     async def retry_failed_stage(run_id: str) -> RunStartResponse:
         new_run_id = service.retry_failed_stage(run_id)
+        return RunStartResponse(
+            run_id=new_run_id,
+            state_url=f"/api/runs/{new_run_id}/state",
+            events_url=f"/api/runs/{new_run_id}/events",
+        )
+
+    @app.post("/api/runs/{run_id}/resume", response_model=RunStartResponse)
+    async def resume_run(run_id: str) -> RunStartResponse:
+        new_run_id = service.resume_run(run_id)
         return RunStartResponse(
             run_id=new_run_id,
             state_url=f"/api/runs/{new_run_id}/state",
