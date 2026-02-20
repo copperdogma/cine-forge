@@ -300,6 +300,7 @@ class RoleContext:
                     data=suggestion.model_dump(mode="json"),
                     metadata=metadata,
                 )
+                response.suggestion_ids.append(sugg_id)
 
         self._log_invocation(
             role=role,

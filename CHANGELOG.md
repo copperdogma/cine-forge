@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-02-20] — Inter-role communication protocol and conversation artifacts (Story 018)
+
+### Added
+- New conversation and disagreement schemas:
+  - `src/cine_forge/schemas/conversation.py` (`Conversation`, `ConversationTurn`, `DisagreementArtifact`)
+- New conversation management logic:
+  - `src/cine_forge/roles/communication.py` (`ConversationManager` for multi-role review orchestration)
+- Multi-role review orchestration:
+  - `ConversationManager.convene_review` allows the Director to gather input from multiple roles and synthesize a decision.
+- Disagreement recording:
+  - `ConversationManager.record_disagreement` captures objections and resolution rationales with links to conversations and artifacts.
+- Story-018 coverage:
+  - `tests/unit/test_communication.py`
+  - `tests/integration/test_communication_integration.py`
+
+### Changed
+- `RoleResponse` and `RoleContext` updated to track `suggestion_ids` for turn-to-suggestion linking.
+- `DriverEngine` schema registry updated with `conversation` and `disagreement` types.
+
 ## [2026-02-20] — Creative suggestion and editorial decision tracking (Story 017)
 
 ### Added

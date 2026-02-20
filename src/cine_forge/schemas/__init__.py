@@ -23,6 +23,7 @@ from .continuity import (
     EntityTimeline,
     StateProperty,
 )
+from .conversation import Conversation, ConversationTurn, DisagreementArtifact
 from .entity_adjudication import (
     EntityAdjudicationBatch,
     EntityAdjudicationDecision,
@@ -95,6 +96,9 @@ __all__ = [
     "ContinuityEvent",
     "ContinuityIndex",
     "ContinuityState",
+    "Conversation",
+    "ConversationTurn",
+    "DisagreementArtifact",
     "EntityTimeline",
     "StateProperty",
     "EntityAdjudicationBatch",

@@ -87,6 +87,7 @@ class RoleResponse(BaseModel):
     included_roles: list[str] = Field(default_factory=list)
     objections: list[str] = Field(default_factory=list)
     suggestions: list[dict[str, Any]] = Field(default_factory=list)
+    suggestion_ids: list[str] = Field(default_factory=list)
     cost_data: CostRecord | None = None
 
 

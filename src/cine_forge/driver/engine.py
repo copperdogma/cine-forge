@@ -35,8 +35,10 @@ from cine_forge.schemas import (
     CharacterBible,
     ContinuityIndex,
     ContinuityState,
+    Conversation,
     CostRecord,
     Decision,
+    DisagreementArtifact,
     EntityEdge,
     EntityGraph,
     LocationBible,
@@ -112,6 +114,8 @@ class DriverEngine:
         self.schemas.register("stage_review", StageReviewArtifact)
         self.schemas.register("suggestion", Suggestion)
         self.schemas.register("decision", Decision)
+        self.schemas.register("conversation", Conversation)
+        self.schemas.register("disagreement", DisagreementArtifact)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(
