@@ -84,3 +84,4 @@ Current state: [EntityDetailPage.tsx](file:///Users/cam/Documents/Projects/cine-
 
 20260220-1000 — research: Analyzed `EntityDetailPage.tsx` and list pages. Confirmed `useStickyPreference` is used for sorting state and persists to backend. Decided to use this for shared state. Marking first task complete as list pages already use `useStickyPreference`.
 20260220-1130 — implementation: Created `useEntityNavigation` hook in `hooks.ts`. Moved sorting types to `types.ts`. Extracted `formatEntityName` to `utils.ts`. Integrated hook and navigation buttons in `EntityDetailPage.tsx`. Added keyboard shortcuts (ArrowLeft/Right). Verified via `npm run lint` and `npm run build`. Fixed lint errors related to conditional hooks and dependencies.
+20260220-1200 — completion: Final validation passed. Story marked Done and CHANGELOG updated.
