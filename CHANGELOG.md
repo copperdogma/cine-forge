@@ -1,5 +1,22 @@
 # Changelog
 
+## [2026-02-20-04] — Artifact Quality Improvements (Story 041)
+
+### Added
+- New `entity_discovery_v1` module implementing an incremental AI-first "sliding window" discovery pass.
+- `EntityDiscoveryResults` schema for consolidated candidate tracking.
+- Benchmark tasks for Liberty & Church: Golden list generation, prompt comparison, and Haiku discovery validation.
+- Golden entity dataset for 60-page Liberty & Church pilot.
+
+### Changed
+- `world_building` recipe now includes `entity_discovery` as a prerequisite stage.
+- `character_bible_v1`, `location_bible_v1`, and `prop_bible_v1` now prioritize candidates from the discovery pass.
+- `scene_extract_v1` now enforces narrative analysis (beats, tone) during the enrichment pass.
+
+### Fixed
+- Fixed sparse scene analysis in long screenplays by ensuring narrative fields trigger AI enrichment.
+- Resolved unit test regression in `scene_extract_v1` via new `skip_enrichment` parameter.
+
 ## [2026-02-20-03] — Entity Prev/Next Navigation (Story 057)
 
 ### Added

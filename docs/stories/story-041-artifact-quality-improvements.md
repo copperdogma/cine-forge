@@ -2,7 +2,7 @@
 
 **Phase**: Cross-Cutting
 **Priority**: Medium
-**Status**: To Do
+**Status**: Done
 **Depends on**: Story 040 (Pipeline Performance Optimization — Done)
 
 ## Goal
@@ -187,4 +187,6 @@ Later scenes (from "Int. Abe's Office" onward) have noticeably sparser analysis 
 
 ## Work Log
 
-_No entries yet._
+20260220-1400 — research: Analyzed current module implementations and prompts. Planning targeted improvements for prop, location, and character bibles.
+20260220-1530 — strategy pivot: Switched to AI-first "Sliding Window" discovery pass to overcome long-context fade. Generated Golden dataset for Liberty & Church using Opus 4.6 (26 chars, 45 props).
+20260220-1630 — implementation: Created `entity_discovery_v1` module. Updated `world_building` recipe. Wired Bible modules to use discovery results. Fixed sparse scene analysis in `scene_extract_v1`. Verified via unit tests and promptfoo benchmarks.

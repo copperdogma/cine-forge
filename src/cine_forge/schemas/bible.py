@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -104,3 +104,13 @@ class PropBible(BaseModel):
     scene_presence: list[str] = Field(default_factory=list)
     narrative_significance: str
     overall_confidence: float = Field(ge=0.0, le=1.0)
+
+
+class EntityDiscoveryResults(BaseModel):
+    """Consolidated lists of discovered entity candidates."""
+
+    characters: list[str] = Field(default_factory=list)
+    locations: list[str] = Field(default_factory=list)
+    props: list[str] = Field(default_factory=list)
+    script_title: str
+    processing_metadata: dict[str, Any] = Field(default_factory=dict)

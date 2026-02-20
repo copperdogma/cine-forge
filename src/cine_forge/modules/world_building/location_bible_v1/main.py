@@ -19,7 +19,7 @@ def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
     """Execute location bible extraction."""
-    canonical_script, scene_index = _extract_inputs(inputs)
+    canonical_script, scene_index, discovery_results = _extract_inputs(inputs)
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     if not isinstance(runtime_params, dict):
         runtime_params = {}
@@ -56,12 +56,19 @@ def run_module(
     min_appearances = int(params.get("min_scene_appearances", 1))
 
     # 1. Aggregate and Filter
-    locations = _aggregate_locations(scene_index)
-    ranked = _rank_locations(locations, scene_index)
+    if discovery_results and discovery_results.get("locations"):
+        approved_locations = discovery_results["locations"]
+        print(f"[location_bible] Using {len(approved_locations)} locations from discovery results.")
+        all_locs = _aggregate_locations(scene_index)
+        ranked = _rank_locations(all_locs, scene_index)
+        candidates = [loc for loc in ranked if loc["name"] in approved_locations]
+    else:
+        locations = _aggregate_locations(scene_index)
+        ranked = _rank_locations(locations, scene_index)
 
-    candidates = [
-        loc for loc in ranked if loc["scene_count"] >= min_appearances
-    ]
+        candidates = [
+            loc for loc in ranked if loc["scene_count"] >= min_appearances
+        ]
     (
         candidates,
         adjudication_rejections,
@@ -202,18 +209,23 @@ def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None
     total["estimated_cost_usd"] += call_cost.get("estimated_cost_usd", 0.0)
 
 
-def _extract_inputs(inputs: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def _extract_inputs(
+    inputs: dict[str, Any]
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any] | None]:
     canonical_script = None
     scene_index = None
+    discovery_results = None
     for payload in inputs.values():
         if isinstance(payload, dict) and "script_text" in payload:
             canonical_script = payload
         if isinstance(payload, dict) and "unique_locations" in payload and "entries" in payload:
             scene_index = payload
+        if isinstance(payload, dict) and "props" in payload and "characters" in payload:
+            discovery_results = payload
     
     if not canonical_script or not scene_index:
         raise ValueError("location_bible_v1 requires canonical_script and scene_index inputs")
-    return canonical_script, scene_index
+    return canonical_script, scene_index, discovery_results
 
 
 def _aggregate_locations(scene_index: dict[str, Any]) -> list[str]:

@@ -1,0 +1,32 @@
+name: entity_discovery_v1
+description: "Incremental AI-first discovery of characters, locations, and props using a sliding window."
+version: "1.0.0"
+
+inputs:
+  canonical_script:
+    description: "The full script text to analyze."
+    required: true
+
+params:
+  chunk_size:
+    description: "Size of each text chunk in characters (approx 5 pages)."
+    type: int
+    default: 12000
+  discovery_model:
+    description: "The cheap model used for discovery passes."
+    type: str
+    default: "claude-haiku-4-5-20251001"
+  enable_locations:
+    type: bool
+    default: true
+  enable_props:
+    type: bool
+    default: true
+  enable_characters:
+    type: bool
+    default: true
+
+outputs:
+  entity_discovery_results:
+    description: "Consolidated lists of discovered entity candidates."
+    schema: EntityDiscoveryResults

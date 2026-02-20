@@ -19,7 +19,7 @@ def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
     """Execute prop bible extraction."""
-    canonical_script, scene_index = _extract_inputs(inputs)
+    canonical_script, scene_index, discovery_results = _extract_inputs(inputs)
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     if not isinstance(runtime_params, dict):
         runtime_params = {}
@@ -53,7 +53,11 @@ def run_module(
     skip_qa = bool(params.get("skip_qa", False))
 
     # discovery pass for props since they aren't in scene_index
-    props = _discover_props(canonical_script, work_model)
+    if discovery_results and discovery_results.get("props"):
+        props = discovery_results["props"]
+        print(f"[prop_bible] Using {len(props)} props from discovery results.")
+    else:
+        props = _discover_props(canonical_script, work_model)
 
     # Sanity check: typical screenplay has 3-8 significant props
     if len(props) > 25:
@@ -202,18 +206,23 @@ def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None
     total["estimated_cost_usd"] += call_cost.get("estimated_cost_usd", 0.0)
 
 
-def _extract_inputs(inputs: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def _extract_inputs(
+    inputs: dict[str, Any]
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any] | None]:
     canonical_script = None
     scene_index = None
+    discovery_results = None
     for payload in inputs.values():
         if isinstance(payload, dict) and "script_text" in payload:
             canonical_script = payload
         if isinstance(payload, dict) and "unique_locations" in payload and "entries" in payload:
             scene_index = payload
+        if isinstance(payload, dict) and "props" in payload and "characters" in payload:
+            discovery_results = payload
     
     if not canonical_script or not scene_index:
         raise ValueError("prop_bible_v1 requires canonical_script and scene_index inputs")
-    return canonical_script, scene_index
+    return canonical_script, scene_index, discovery_results
 
 
 def _discover_props(script: dict[str, Any], model: str) -> list[str]:

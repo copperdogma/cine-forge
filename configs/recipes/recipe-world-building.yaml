@@ -2,11 +2,19 @@ recipe_id: world_building
 description: "World building pipeline: entity bibles from pre-ingested artifacts."
 project: {}
 stages:
+  - id: entity_discovery
+    module: entity_discovery_v1
+    params:
+      discovery_model: "claude-haiku-4-5-20251001"
+    needs: []
+    store_inputs:
+      normalize: canonical_script
+
   - id: character_bible
     module: character_bible_v1
     params:
       skip_qa: true
-    needs: []
+    needs: [entity_discovery]
     store_inputs:
       normalize: canonical_script
       extract_scenes: scene_index
@@ -15,7 +23,7 @@ stages:
     module: location_bible_v1
     params:
       skip_qa: true
-    needs: []
+    needs: [entity_discovery]
     store_inputs:
       normalize: canonical_script
       extract_scenes: scene_index
@@ -24,7 +32,7 @@ stages:
     module: prop_bible_v1
     params:
       skip_qa: true
-    needs: []
+    needs: [entity_discovery]
     store_inputs:
       normalize: canonical_script
       extract_scenes: scene_index

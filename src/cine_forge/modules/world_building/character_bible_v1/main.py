@@ -78,7 +78,7 @@ def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
     """Execute character bible extraction."""
-    canonical_script, scene_index = _extract_inputs(inputs)
+    canonical_script, scene_index, discovery_results = _extract_inputs(inputs)
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     if not isinstance(runtime_params, dict):
         runtime_params = {}
@@ -115,16 +115,24 @@ def run_module(
     min_appearances = int(params.get("min_scene_appearances", 3))
 
     # 1. Aggregate and Filter
-    characters = _aggregate_characters(scene_index)
-    ranked = _rank_characters(characters, canonical_script, scene_index)
+    if discovery_results and discovery_results.get("characters"):
+        approved_names = discovery_results["characters"]
+        print(f"[character_bible] Using {len(approved_names)} characters from discovery results.")
+        # Filter ranked list to only include discovered names
+        all_chars = _aggregate_characters(scene_index)
+        ranked = _rank_characters(all_chars, canonical_script, scene_index)
+        candidates = [c for c in ranked if c["name"] in approved_names]
+    else:
+        characters = _aggregate_characters(scene_index)
+        ranked = _rank_characters(characters, canonical_script, scene_index)
 
-    # Filter by minimum appearances OR presence of dialogue
-    # Ghost characters usually have 0 dialogue
-    candidates = [
-        c
-        for c in ranked
-        if (c["scene_count"] >= min_appearances) or (c["dialogue_count"] >= 1)
-    ]
+        # Filter by minimum appearances OR presence of dialogue
+        # Ghost characters usually have 0 dialogue
+        candidates = [
+            c
+            for c in ranked
+            if (c["scene_count"] >= min_appearances) or (c["dialogue_count"] >= 1)
+        ]
     # Final sanity check: skip anything that is JUST stopwords after filtering
     candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
     (
@@ -270,18 +278,23 @@ def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None
     total["estimated_cost_usd"] += call_cost.get("estimated_cost_usd", 0.0)
 
 
-def _extract_inputs(inputs: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def _extract_inputs(
+    inputs: dict[str, Any]
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any] | None]:
     canonical_script = None
     scene_index = None
+    discovery_results = None
     for payload in inputs.values():
         if isinstance(payload, dict) and "script_text" in payload:
             canonical_script = payload
         if isinstance(payload, dict) and "unique_characters" in payload and "entries" in payload:
             scene_index = payload
+        if isinstance(payload, dict) and "props" in payload and "characters" in payload:
+            discovery_results = payload
     
     if not canonical_script or not scene_index:
         raise ValueError("character_bible_v1 requires canonical_script and scene_index inputs")
-    return canonical_script, scene_index
+    return canonical_script, scene_index, discovery_results
 
 
 def _aggregate_characters(scene_index: dict[str, Any]) -> list[str]:

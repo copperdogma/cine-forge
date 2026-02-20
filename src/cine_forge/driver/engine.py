@@ -41,6 +41,7 @@ from cine_forge.schemas import (
     CostRecord,
     Decision,
     DisagreementArtifact,
+    EntityDiscoveryResults,
     EntityEdge,
     EntityGraph,
     LocationBible,
@@ -115,6 +116,7 @@ class DriverEngine:
         self.schemas.register("character_bible", CharacterBible)
         self.schemas.register("location_bible", LocationBible)
         self.schemas.register("prop_bible", PropBible)
+        self.schemas.register("entity_discovery_results", EntityDiscoveryResults)
         self.schemas.register("entity_edge", EntityEdge)
         self.schemas.register("entity_graph", EntityGraph)
         self.schemas.register("continuity_state", ContinuityState)

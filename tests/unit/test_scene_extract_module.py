@@ -338,7 +338,7 @@ def test_run_module_skips_ai_enrichment_when_fields_resolved(
 
     result = run_module(
         inputs={"normalize": _canonical_payload("INT. LAB - NIGHT\nMARA\nGo.")},
-        params={"model": "gpt-4o", "qa_model": "mock", "skip_qa": False},
+        params={"model": "gpt-4o", "qa_model": "mock", "skip_qa": False, "skip_enrichment": True},
         context={"run_id": "unit", "stage_id": "extract"},
     )
     scene = next(item for item in result["artifacts"] if item["artifact_type"] == "scene")

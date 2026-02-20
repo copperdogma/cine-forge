@@ -289,6 +289,7 @@ def run_module(
     parser_coverage_threshold = float(params.get("parser_coverage_threshold", 0.25))
     max_retries = int(params.get("max_retries", 2))
     skip_qa = bool(params.get("skip_qa", False))
+    skip_enrichment = bool(params.get("skip_enrichment", False))
 
     parser_adapter = _SceneParserAdapter()
     parse_ctx = parser_adapter.validate(script_text)
@@ -324,7 +325,9 @@ def run_module(
                     parser_backend=parse_ctx.parser_backend,
                     parser_confident=parse_ctx.coverage >= parser_coverage_threshold,
                 )
-                unresolved_fields = _identify_unresolved_fields(base_scene=base_scene, chunk=chunk)
+                unresolved_fields = _identify_unresolved_fields(
+                    base_scene=base_scene, chunk=chunk, skip_enrichment=skip_enrichment
+                )
 
                 if chunk.boundary_uncertain:
                     boundary_validation, boundary_cost = _validate_boundary_if_uncertain(
@@ -659,7 +662,9 @@ def _extract_scene_deterministic(
     }
 
 
-def _identify_unresolved_fields(base_scene: dict[str, Any], chunk: _SceneChunk) -> list[str]:
+def _identify_unresolved_fields(
+    base_scene: dict[str, Any], chunk: _SceneChunk, skip_enrichment: bool = False
+) -> list[str]:
     unresolved: list[str] = []
     if base_scene.get("location") in {"", "UNKNOWN"}:
         unresolved.append("location")
@@ -669,6 +674,14 @@ def _identify_unresolved_fields(base_scene: dict[str, Any], chunk: _SceneChunk) 
         unresolved.append("characters_present")
     if chunk.boundary_uncertain:
         unresolved.append("boundary")
+    
+    # Narrative depth requirement: ensure these fields are always enriched if missing
+    if not skip_enrichment:
+        if not base_scene.get("narrative_beats"):
+            unresolved.append("narrative_beats")
+        if base_scene.get("tone_mood") == DEFAULT_TONE:
+            unresolved.append("tone_mood")
+        
     return unresolved
 
 
