@@ -42,7 +42,7 @@ If complete (or user approves remaining gaps):
    - If no entry exists, prepend a new entry after the `# Changelog` header:
 
      ```
-     ## [YYYY-MM-DD] — Short summary (Story NNN)
+     ## [YYYY-MM-DD-NN] — Short summary (Story NNN)
 
      ### Added
      - ...
@@ -55,6 +55,7 @@ If complete (or user approves remaining gaps):
      ```
 
    - Use today's date. Derive the summary from the story's Goal section.
+   - **Versioning (CalVer)**: Use the `YYYY-MM-DD-NN` format for the header, where `NN` is the release sequence for that day (e.g., `01`, `02`, `03`). Check the previous entry to increment correctly. The API parses this into `YYYY.MM.DD-NN`.
    - Only include subsections that apply.
 
 If not complete, stop and list blockers.
