@@ -46,12 +46,24 @@ UPLOAD_FILE_PARAM = File(...)
 
 
 def _parse_version(workspace: Path) -> str:
-    """Extract CalVer version (YYYY.MM.DD) from the latest CHANGELOG.md entry."""
+    """Extract CalVer version (YYYY.MM.DD[-NN]) from the latest CHANGELOG.md entry."""
     changelog = workspace / "CHANGELOG.md"
     if changelog.exists():
-        match = re.search(r"^## \[(\d{4}-\d{2}-\d{2})\]", changelog.read_text(), re.MULTILINE)
+        # Match YYYY-MM-DD or YYYY-MM-DD-NN
+        match = re.search(r"^## \[(\d{4}-\d{2}-\d{2}(?:-\d{2})?)\]", changelog.read_text(), re.MULTILINE)
         if match:
-            return match.group(1).replace("-", ".")
+            # Convert YYYY-MM-DD-02 -> 2026.02.20.02 or 2026.02.20-02
+            # Let's stick to replacing dashes with dots for the main date part, 
+            # but keep the suffix dash if present, or dot?
+            # User asked for "v2026.02.20-02".
+            # The regex capture group is "2026-02-20-02"
+            raw = match.group(1)
+            # Split date and suffix
+            parts = raw.split("-")
+            date_part = ".".join(parts[:3])
+            if len(parts) > 3:
+                return f"{date_part}-{parts[3]}"
+            return date_part
     return "0.0.0"
 
 

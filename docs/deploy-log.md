@@ -14,3 +14,4 @@ Entries:
 `20260219-0835 | 80 | success | yes | Cache-hit Fly deploy; API+Playwright UI smoke checks passed`
 `20260219-1214 | 396 | success | partial | Deploy after project_not_opened fix; remote builder wait + pip install layer rebuild; API+Playwright UI smoke passed`
 `20260219-1731 | 140 | success | partial | Deploy 0.1.3; pip layer rebuilt, frontend cached; API+Playwright UI smoke passed`
+2026-02-20T21:29:11Z | 94 | success | false | feat: Story 019

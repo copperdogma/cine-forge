@@ -1,6 +1,6 @@
 # Changelog
 
-## [2026-02-20] — Human control modes, creative sessions, and direct artifact editing (Story 019)
+## [2026-02-20-02] — Human control modes, creative sessions, and direct artifact editing (Story 019)
 
 ### Added
 - Three configurable operating modes: `autonomous`, `checkpoint`, and `advisory`.
