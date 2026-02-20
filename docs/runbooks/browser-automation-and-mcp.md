@@ -38,9 +38,13 @@ This keeps instruction files small and stable while preserving concrete fix proc
 - Verify by executing one minimal browser probe (navigate + screenshot + console check)
 
 ### Gemini CLI
-- Configure MCP server in Gemini CLI config (`~/.gemini/settings.json` or project `.gemini/settings.json`)
-- Restart CLI session
-- Verify with a minimal browser probe command
+- MCP config path: `.gemini/settings.json` (project) or `~/.gemini/settings.json` (global)
+- List servers: `gemini mcp list`
+- Add Playwright MCP: `gemini mcp add playwright npx -- -y @playwright/mcp@latest`
+- Restart CLI session after config changes (tools are discovered at startup). **Verified: Integrated browser tools (navigate, click, screenshot) become available natively after restart.**
+- Verify browser tooling via fallback script if tools are missing:
+  - `npm install playwright`
+  - `node scripts/ui_smoke_probe.mjs` (See `scripts/` for reference implementation)
 
 ## Minimal Browser Probe (Required)
 
@@ -82,6 +86,11 @@ For CineForge production smoke:
    - Symptom: browser tools unavailable even though another app has MCP configured.
    - Cause: MCP configured in Cursor/Claude/Gemini config, but current run is Codex (or vice versa).
    - Fix: configure MCP for the current environment, then restart session.
+
+2. **Gemini CLI requires restart for tool discovery**
+   - Symptom: `gemini mcp add` reports success but tools like `playwright_navigate` are not found.
+   - Cause: Gemini CLI loads available tools once at the beginning of the session.
+   - Fix: Close the current session and start a new one after modifying settings. Use a local Playwright script (`node scripts/smoke_test_ui.mjs`) as a fallback during the current session.
 
 2. **Redirecting logs into non-existent directory**
    - Symptom: shell fails before browser command starts (`No such file or directory`).
