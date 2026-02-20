@@ -4,7 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState, ListSkeleton } from "@/components/StateViews";
-import { EntityListControls, type SortMode, type ViewDensity, type SortDirection } from "@/components/EntityListControls";
+import { EntityListControls } from "@/components/EntityListControls";
+import { type SortMode, type ViewDensity, type SortDirection } from "@/lib/types";
 import { useScenes, useStickyPreference } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 

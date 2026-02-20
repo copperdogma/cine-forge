@@ -1,10 +1,7 @@
 import { ArrowDownAZ, ArrowUpDown, BarChart3, ChevronDown, ChevronUp, LayoutGrid, LayoutList, Rows3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-
-export type SortMode = 'script-order' | 'alphabetical' | 'prominence'
-export type SortDirection = 'asc' | 'desc'
-export type ViewDensity = 'compact' | 'medium' | 'large'
+import { type SortMode, type SortDirection, type ViewDensity } from '@/lib/types'
 
 interface EntityListControlsProps {
   sort: SortMode

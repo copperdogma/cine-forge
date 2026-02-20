@@ -1,5 +1,22 @@
 # Changelog
 
+## [2026-02-20] — Entity Prev/Next Navigation (Story 057)
+
+### Added
+- New `useEntityNavigation` hook in `ui/src/lib/hooks.ts` for sequential entity traversal.
+- Navigation header in `EntityDetailPage.tsx` with previous/next buttons.
+- Keyboard shortcuts (←/→) for navigating between entities.
+- Chronological navigation for scenes (always script-order, regardless of active sort).
+- Shared `formatEntityName` utility in `ui/src/lib/utils.ts`.
+- Shared sorting and density types in `ui/src/lib/types.ts`.
+
+### Changed
+- Refactored `CharactersList`, `LocationsList`, `PropsList`, and `ScenesList` to use centralized sorting types and name formatting.
+- Improved `EntityDetailPage` hook ordering to comply with React strict rules (no conditional hooks).
+
+### Fixed
+- Fixed lint errors across UI list pages (const vs let, unused variables, dependency arrays).
+
 ## [2026-02-20-02] — Human control modes, creative sessions, and direct artifact editing (Story 019)
 
 ### Added

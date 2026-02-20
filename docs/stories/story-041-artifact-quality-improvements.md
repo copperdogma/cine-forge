@@ -133,6 +133,16 @@ Relationships should be bidirectional — if A relates to B, B should also relat
 
 **Fix direction**: Post-extraction relationship completion pass that ensures bidirectionality. For each relationship A→B, verify B→A exists with the inverse relationship type.
 
+### 10. Scenes: Analysis Depth Degrades for Later Scenes
+
+**Severity**: High
+**Module**: `scene_extract_v1` / `scene_enrich_v1`
+**Reported by**: Gill (Liberty & Church screenplay)
+
+Later scenes (from "Int. Abe's Office" onward) have noticeably sparser analysis than earlier scenes — missing depth/tension/conflict annotations that the first scenes had. This is a classic long-context LLM attention fade where the model exhausts its budget on early content.
+
+**Fix direction**: Either process scenes independently (each scene gets its own LLM call with full attention), enforce a minimum-fields checklist in the prompt, or add a post-extraction validation pass that flags scenes with missing analysis fields and re-processes them.
+
 ## Tasks
 
 ### Prop Bible Improvements
@@ -140,6 +150,7 @@ Relationships should be bidirectional — if A relates to B, B should also relat
 - [ ] Add plot-importance weighting to prop extraction prompt
 - [ ] Add distinct-item separation guidance (no generic bundling)
 - [ ] Test with The Mariner — verify purse and flare gun are extracted, costumes excluded
+- [ ] Test with Liberty & Church — verify all significant props are extracted (Gill reported only 2 extracted)
 - [ ] Run promptfoo eval to confirm no quality regression on other test cases
 
 ### Location Bible Improvements
@@ -153,6 +164,12 @@ Relationships should be bidirectional — if A relates to B, B should also relat
 - [ ] Enforce exact entity_id references in relationship fields
 - [ ] Add bidirectional relationship completion (post-processing or prompt)
 - [ ] Test with The Mariner — verify cross-references are valid
+
+### Scene Analysis Consistency (Gill)
+- [ ] Audit scene analysis output for Liberty & Church — identify which fields degrade in later scenes
+- [ ] Add minimum-fields validation to scene enrichment (every scene must have depth, tension, conflict, etc.)
+- [ ] Fix root cause: either per-scene LLM calls or post-extraction re-processing of sparse scenes
+- [ ] Test with Liberty & Church — verify all scenes have consistent analysis depth
 
 ### Cross-Cutting
 - [ ] Add schema-level validation for entity_id format consistency

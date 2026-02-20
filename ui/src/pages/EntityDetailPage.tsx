@@ -11,13 +11,17 @@ import {
   Code,
   Globe,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
+import { cn, formatEntityName } from '@/lib/utils'
 import {
   ProfileViewer,
   SceneViewer,
@@ -29,6 +33,7 @@ import {
   useArtifactGroups,
   useEntityGraph,
   useEntityResolver,
+  useEntityNavigation,
   type ResolvedLink,
 } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
@@ -78,12 +83,6 @@ const sectionConfig: Record<string, {
 }
 
 // --- Helpers ---
-
-function formatEntityName(entityId: string): string {
-  return entityId
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase())
-}
 
 function healthBadge(health: string | null) {
   if (!health) return null
@@ -346,11 +345,26 @@ export default function EntityDetailPage({ section }: { section: string }) {
   const [showRawJson, setShowRawJson] = useState(false)
 
   const config = sectionConfig[section]
-  if (!config || !projectId || !entityId) {
-    return <ErrorState message="Invalid entity route" />
-  }
+  const Icon = config?.icon || FileText
 
-  const Icon = config.icon
+  // Navigation and keyboard shortcuts
+  const nav = useEntityNavigation(projectId, section, entityId)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+
+      if (e.key === 'ArrowLeft' && nav.prev) {
+        navigate(`/${projectId}/${section}/${nav.prev}`)
+      } else if (e.key === 'ArrowRight' && nav.next) {
+        navigate(`/${projectId}/${section}/${nav.next}`)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [projectId, section, nav.prev, nav.next, navigate])
 
   // Global entity resolver for all cross-reference links
   const { resolve } = useEntityResolver(projectId)
@@ -358,7 +372,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
   // Resolve latest version from artifact groups
   const { data: groups, isLoading: groupsLoading } = useArtifactGroups(projectId)
   const group = groups?.find(
-    g => g.artifact_type === config.artifactType && g.entity_id === entityId
+    g => g.artifact_type === config?.artifactType && g.entity_id === entityId
   )
   const latestVersion = group?.latest_version
 
@@ -367,13 +381,17 @@ export default function EntityDetailPage({ section }: { section: string }) {
     data: artifact,
     isLoading: artifactLoading,
     error: artifactError,
-  } = useArtifact(projectId, config.artifactType, entityId, latestVersion)
+  } = useArtifact(projectId, config?.artifactType, entityId, latestVersion)
 
   // Fetch entity graph for cross-references (characters, locations, props)
   const { data: graphArtifact } = useEntityGraph(
     section !== 'scenes' ? projectId : undefined,
   )
   const graphData = graphArtifact?.payload?.data as Record<string, unknown> | undefined
+
+  if (!config || !projectId || !entityId) {
+    return <ErrorState message="Invalid entity route" />
+  }
 
   const isLoading = groupsLoading || artifactLoading
 
@@ -447,7 +465,67 @@ export default function EntityDetailPage({ section }: { section: string }) {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Back navigation */}
-      <BackButton section={config.backPath} projectId={projectId} label={config.backLabel} />
+      <div className="flex items-center justify-between">
+        <BackButton section={config.backPath} projectId={projectId} label={config.backLabel} />
+        
+        <div className="flex items-center gap-2">
+          {/* Main sequence nav (respects current sort) */}
+          <div className="flex items-center bg-card border border-border rounded-lg overflow-hidden h-9">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-full rounded-none px-2 border-r border-border"
+              disabled={!nav.prev}
+              onClick={() => navigate(`/${projectId}/${section}/${nav.prev}`)}
+              title={`Previous ${config.label} (${nav.sortMode} ${nav.sortDirection}) [Left Arrow]`}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <div className="px-3 text-xs font-medium text-muted-foreground bg-muted/30 h-full flex items-center">
+              {nav.sortMode === 'script-order' ? 'Script Order' : nav.sortMode === 'alphabetical' ? 'A–Z' : 'Prominence'}
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-full rounded-none px-2 border-l border-border"
+              disabled={!nav.next}
+              onClick={() => navigate(`/${projectId}/${section}/${nav.next}`)}
+              title={`Next ${config.label} (${nav.sortMode} ${nav.sortDirection}) [Right Arrow]`}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* Scene-specific chronological nav (always script order) */}
+          {section === 'scenes' && (nav.prevChronological || nav.nextChronological) && (
+            <div className="flex items-center bg-card border border-border rounded-lg overflow-hidden h-9">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-full rounded-none px-2 border-r border-border"
+                disabled={!nav.prevChronological}
+                onClick={() => navigate(`/${projectId}/${section}/${nav.prevChronological}`)}
+                title="Previous Chronological Scene"
+              >
+                <ChevronsLeft className="h-4 w-4" />
+              </Button>
+              <div className="px-3 text-xs font-medium text-muted-foreground bg-muted/30 h-full flex items-center">
+                Chronological
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-full rounded-none px-2 border-l border-border"
+                disabled={!nav.nextChronological}
+                onClick={() => navigate(`/${projectId}/${section}/${nav.nextChronological}`)}
+                title="Next Chronological Scene"
+              >
+                <ChevronsRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Header */}
       <div className="flex items-start gap-4">
@@ -572,7 +650,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
 function BackButton({ section, projectId, label }: { section: string; projectId: string; label: string }) {
   const navigate = useNavigate()
   return (
-    <div className="mb-3">
+    <div>
       <Button
         variant="ghost"
         size="sm"

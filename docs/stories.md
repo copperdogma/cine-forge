@@ -79,6 +79,8 @@ NOTES from Cam:
 | 054 | Liberty Church Character Artifact Cleanup Inventory | Cross-Cutting | High | Done | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | Cross-Cutting | High | Done | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
 | 056 | Entity Design Studies (Reference Image Generation Loop) | 6 — Shot Planning & Viz | High | To Do | [story-056](stories/story-056-entity-design-study-reference-images.md) |
+| 057 | Entity Prev/Next Navigation | 2.5 — UI | High | Done | [story-057](stories/story-057-entity-prev-next-navigation.md) |
+| 058 | Comprehensive Export & Share | 2.5 — UI | High | To Do | [story-058](stories/story-058-comprehensive-export-share.md) |
 
 ## Phase Summary
 

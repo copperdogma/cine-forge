@@ -4,16 +4,10 @@ import { Users, AlertTriangle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ListSkeleton, EmptyState, ErrorState } from '@/components/StateViews'
-import { EntityListControls, type SortMode, type ViewDensity, type SortDirection } from '@/components/EntityListControls'
+import { EntityListControls } from '@/components/EntityListControls'
+import { type SortMode, type ViewDensity, type SortDirection } from '@/lib/types'
 import { useEntityDetails, useStickyPreference } from '@/lib/hooks'
-import { cn } from '@/lib/utils'
-
-function formatEntityName(entityId: string | null): string {
-  if (!entityId) return 'Unknown'
-  return entityId
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase())
-}
+import { cn, formatEntityName } from '@/lib/utils'
 
 export default function CharactersList() {
   const { projectId } = useParams<{ projectId: string }>()
@@ -28,7 +22,7 @@ export default function CharactersList() {
   const sortedCharacters = useMemo(() => {
     if (!data) return []
     
-    let sorted = [...data]
+    const sorted = [...data]
 
     switch (sortMode) {
       case 'alphabetical':
