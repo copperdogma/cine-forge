@@ -35,19 +35,11 @@ Audit current git changes before committing.
      - Prepend a new entry after the `# Changelog` header using Keep a Changelog format:
 
        ```
-       ## [YYYY-MM-DD] - Short summary
-
-       ### Added
-       - ...
-
-       ### Changed
-       - ...
-
-       ### Fixed
-       - ...
+       ## [YYYY-MM-DD-NN] - Short summary
        ```
 
-     - Use today's date. Only include subsections that apply.
+     - Use today's date. **Versioning (CalVer)**: Use the `YYYY-MM-DD-NN` format for the header, where `NN` is the release sequence for that day (e.g., `01`, `02`, `03`). Check the previous entry to increment correctly. The API parses this into `YYYY.MM.DD-NN`.
+     - Only include subsections that apply.
      - Include CHANGELOG.md in the staging plan.
 
 5. **Draft commit message:**
