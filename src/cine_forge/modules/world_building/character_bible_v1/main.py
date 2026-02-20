@@ -116,12 +116,12 @@ def run_module(
 
     # 1. Aggregate and Filter
     if discovery_results and discovery_results.get("characters"):
-        approved_names = discovery_results["characters"]
+        approved_names = {n.upper() for n in discovery_results["characters"]}
         print(f"[character_bible] Using {len(approved_names)} characters from discovery results.")
         # Filter ranked list to only include discovered names
         all_chars = _aggregate_characters(scene_index)
         ranked = _rank_characters(all_chars, canonical_script, scene_index)
-        candidates = [c for c in ranked if c["name"] in approved_names]
+        candidates = [c for c in ranked if c["name"].upper() in approved_names]
     else:
         characters = _aggregate_characters(scene_index)
         ranked = _rank_characters(characters, canonical_script, scene_index)

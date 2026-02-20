@@ -57,11 +57,11 @@ def run_module(
 
     # 1. Aggregate and Filter
     if discovery_results and discovery_results.get("locations"):
-        approved_locations = discovery_results["locations"]
+        approved_locations = {n.upper() for n in discovery_results["locations"]}
         print(f"[location_bible] Using {len(approved_locations)} locations from discovery results.")
         all_locs = _aggregate_locations(scene_index)
         ranked = _rank_locations(all_locs, scene_index)
-        candidates = [loc for loc in ranked if loc["name"] in approved_locations]
+        candidates = [loc for loc in ranked if loc["name"].upper() in approved_locations]
     else:
         locations = _aggregate_locations(scene_index)
         ranked = _rank_locations(locations, scene_index)
