@@ -4,20 +4,6 @@
 
 Guiding priorities: **get a working pipeline fast** (MVP: script in → structured scenes + project config out), then layer on world-building, temporal structure, roles, and creative tooling. Build the foundation right — immutable artifacts, dependency tracking, audit metadata, modular architecture — so everything after Phase 1 slots in cleanly.
 
-1. **001 — Project Setup and Scaffolding**: Make the workspace AI-ready. Git, structure, AGENTS.md, cursor skills, story tracking.
-2. **002 — Pipeline Foundation**: Driver, artifact store (immutability, versioning, dependency graph), schemas, module contracts, run isolation. Skeleton pipeline that executes.
-3. **003 — Story Ingestion Module**: Accept screenplay/prose/notes, detect format, store as artifact.
-4. **004 — Script Normalization Module**: AI converts input to canonical screenplay format with confidence and labeled inventions.
-5. **005 — Scene Extraction Module**: AI extracts structured scenes from canonical script.
-6. **006 — Project Configuration**: Auto-initialize project parameters from ingested story; user confirms/modifies.
-7. **007 — MVP Recipe and Smoke Test**: Wire 003–006 into a recipe, run end-to-end, verify artifacts. First "it works" milestone.
-8. **008 — Bible Infrastructure and Character Bible**: Folder-based bible model with manifest, character extraction from script.
-9. **009 — Location and Prop Bibles**: Same pattern as characters for locations and props.
-10. **010 — Entity Relationship Graph**: Cross-entity typed relationship edges extracted from script and bibles.
-11. **011 — Asset State Tracking (Continuity)**: Track asset states across scenes; completes Phase 2 artifact model.
-12. **011b — Operator Console (Research & Design Decisions)**: Deep research (3 AI providers) on app landscape, design inspiration, and UI stack. Reviewed with Cam, decisions captured in `docs/design/decisions.md`. Complete.
-13. **011c — Resource-oriented Routing**: Transition to hierarchical, resource-based URL structure (/:projectId/run) to support project scoping and deep linking.
-14. **011d — Operator Console (Design & Build)**: Design and build the production UI based on 011b research decisions. Fresh build with shadcn/ui + React 19 + Vite + Tailwind + Zustand. Foundation for all subsequent UI surfaces.
 
 This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 
@@ -49,7 +35,7 @@ NOTES from Cam:
 | 011e | Operator Console — UX Golden Path | 2.5 — UI | High | Done | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 011f | Operator Console — Conversational AI Chat | 2.5 — UI | High | Done | [story-011f](stories/story-011f-conversational-ai-chat.md) |
 | 012 | Timeline Data Artifact | 3 — Timeline | Medium | Done | [story-012](stories/story-012-timeline-artifact.md) |
-| 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | To Do | [story-013](stories/story-013-track-system.md) |
+| 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | Done | [story-013](stories/story-013-track-system.md) |
 | 014 | Role System Foundation | 4 — Role System | High | To Do | [story-014](stories/story-014-role-system-foundation.md) |
 | 015 | Director and Canon Guardians | 4 — Role System | High | To Do | [story-015](stories/story-015-director-canon-guardians.md) |
 | 016 | Style Pack Infrastructure | 4 — Role System | Medium | To Do | [story-016](stories/story-016-style-pack-infrastructure.md) |
@@ -92,6 +78,7 @@ NOTES from Cam:
 | 053 | Cross-CLI Skills/Prompts Unification | Cross-Cutting | High | Done | [story-053](stories/story-053-cross-cli-skills-unification.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | Cross-Cutting | High | Done | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | Cross-Cutting | High | Done | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
+| 056 | Entity Design Studies (Reference Image Generation Loop) | 6 — Shot Planning & Viz | High | To Do | [story-056](stories/story-056-entity-design-study-reference-images.md) |
 
 ## Phase Summary
 

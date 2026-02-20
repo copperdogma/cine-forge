@@ -1,0 +1,14 @@
+module_id: track_system_v1
+stage: timeline
+description: "Builds immutable track manifest and always-playable fallback metadata."
+input_schemas: ["timeline", "continuity_index"]
+output_schemas: ["track_manifest"]
+parameters:
+  fallback_order:
+    type: array
+    required: false
+    description: "Preferred fallback order (highest -> lowest representation fidelity)."
+  track_registry:
+    type: object
+    required: false
+    description: "Optional track registry overrides (priority per track type)."

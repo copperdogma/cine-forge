@@ -61,6 +61,7 @@ from .scene import (
     SourceSpan,
 )
 from .timeline import Timeline, TimelineEntry
+from .track import TrackEntry, TrackManifest
 
 __all__ = [
     "Artifact",
@@ -109,6 +110,8 @@ __all__ = [
     "SceneIndex",
     "TimelineEntry",
     "Timeline",
+    "TrackEntry",
+    "TrackManifest",
     "SchemaRegistry",
     "ValidationErrorDetail",
     "ValidationResult",

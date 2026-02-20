@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-02-20] - Track system artifact and always-playable backend resolution (Story 013)
+
+### Added
+- New track schemas for immutable track state:
+  - `src/cine_forge/schemas/track.py` (`TrackEntry`, `TrackManifest`)
+- New timeline track-system module:
+  - `src/cine_forge/modules/timeline/track_system_v1/main.py`
+  - `src/cine_forge/modules/timeline/track_system_v1/module.yaml`
+- New recipe for cross-recipe track manifest construction:
+  - `configs/recipes/recipe-track-system.yaml`
+- New Story-013 test coverage:
+  - `tests/unit/test_track_system_module.py`
+  - `tests/integration/test_track_system_integration.py`
+
+### Changed
+- Driver schema registry now includes `track_manifest` (`src/cine_forge/driver/engine.py`).
+- Schema exports now include `TrackEntry` and `TrackManifest` (`src/cine_forge/schemas/__init__.py`).
+- Story tracking updated: Story 013 marked done in `docs/stories.md` and completion evidence recorded in `docs/stories/story-013-track-system.md`.
+
 ## [2026-02-20] - Story 054/055 completion, LLM-first entity adjudication, and Mariner fallback fix
 
 ### Added

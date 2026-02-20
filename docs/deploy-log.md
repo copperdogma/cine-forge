@@ -13,3 +13,4 @@ Entries:
 `20260219-0746 | 103 | success | partial | Deploy from local main working tree (uncommitted Story 049 files); API+Playwright UI smoke checks passed`
 `20260219-0835 | 80 | success | yes | Cache-hit Fly deploy; API+Playwright UI smoke checks passed`
 `20260219-1214 | 396 | success | partial | Deploy after project_not_opened fix; remote builder wait + pip install layer rebuild; API+Playwright UI smoke passed`
+`20260219-1731 | 140 | success | partial | Deploy 0.1.3; pip layer rebuilt, frontend cached; API+Playwright UI smoke passed`

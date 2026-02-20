@@ -47,6 +47,7 @@ from cine_forge.schemas import (
     SceneIndex,
     SchemaRegistry,
     Timeline,
+    TrackManifest,
 )
 
 _DEFAULT_STAGE_FALLBACK_MODELS: dict[str, list[str]] = {
@@ -88,6 +89,7 @@ class DriverEngine:
         self.schemas.register("scene", Scene)
         self.schemas.register("scene_index", SceneIndex)
         self.schemas.register("timeline", Timeline)
+        self.schemas.register("track_manifest", TrackManifest)
         self.schemas.register("project_config", ProjectConfig)
         self.schemas.register("bible_manifest", BibleManifest)
         self.schemas.register("character_bible", CharacterBible)

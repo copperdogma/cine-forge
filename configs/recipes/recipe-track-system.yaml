@@ -1,0 +1,12 @@
+recipe_id: track-system
+description: "Build project track manifest from timeline and continuity artifacts."
+project: {}
+stages:
+  - id: tracks
+    module: track_system_v1
+    params: {}
+    needs: []
+    store_inputs:
+      timeline: timeline
+    store_inputs_optional:
+      continuity_index: continuity_index
