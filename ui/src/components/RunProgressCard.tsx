@@ -24,7 +24,7 @@ const ARTIFACT_NAMES: Record<string, [string, string]> = {
 }
 
 /** Skip internal artifact types the user doesn't care about. */
-const SKIP_TYPES = new Set(['raw_input', 'project_config', 'scene_index'])
+const SKIP_TYPES = new Set(['raw_input', 'project_config', 'scene_index', 'entity_discovery_results'])
 
 function getOrderedStageIds(recipeId: string, stageKeys: string[]): string[] {
   const knownOrder = RECIPE_STAGE_ORDER[recipeId]
