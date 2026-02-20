@@ -476,8 +476,10 @@ function ShellInner() {
               {/* Drag handle */}
               <div
                 onMouseDown={handleDragStart}
-                className="absolute -left-1 top-0 bottom-0 w-2 cursor-col-resize hover:bg-primary/40 active:bg-primary/60 transition-colors z-10"
-              />
+                className="absolute -left-1 top-0 bottom-0 w-2 cursor-col-resize hover:bg-primary/40 active:bg-primary/60 transition-colors z-10 flex items-center justify-center group"
+              >
+                <div className="h-8 w-1 rounded-full bg-border group-hover:bg-primary/50 transition-colors" />
+              </div>
               {/* Tab bar */}
               <div className="flex items-center border-b border-border shrink-0">
                 <button
