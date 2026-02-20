@@ -23,6 +23,12 @@ from .continuity import (
     EntityTimeline,
     StateProperty,
 )
+from .entity_adjudication import (
+    EntityAdjudicationBatch,
+    EntityAdjudicationDecision,
+    EntityType,
+    EntityVerdict,
+)
 from .graph import EntityEdge, EntityGraph
 from .models import (
     Artifact,
@@ -74,6 +80,10 @@ __all__ = [
     "ContinuityState",
     "EntityTimeline",
     "StateProperty",
+    "EntityAdjudicationBatch",
+    "EntityAdjudicationDecision",
+    "EntityType",
+    "EntityVerdict",
     "CostRecord",
     "DetectedValue",
     "Invention",

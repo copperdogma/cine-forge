@@ -9,6 +9,7 @@ from cine_forge.modules.world_building.character_bible_v1.main import (
     _rank_characters,
     run_module,
 )
+from cine_forge.schemas import EntityAdjudicationDecision
 
 
 def _scene_index_payload() -> dict[str, Any]:
@@ -103,3 +104,152 @@ def test_run_module_emits_bible_manifests() -> None:
     assert "character_aria" in ids
     assert "noah" in ids
     assert "character_noah" in ids
+
+
+@pytest.mark.unit
+def test_run_module_skips_invalid_candidates_via_adjudication(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def _fake_adjudication(**_: Any) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
+        decisions = [
+            EntityAdjudicationDecision(
+                candidate="ARIA",
+                verdict="valid",
+                canonical_name="ARIA",
+                rationale="principal character",
+                confidence=0.95,
+            ),
+            EntityAdjudicationDecision(
+                candidate="NOAH",
+                verdict="invalid",
+                rationale="dialogue fragment in this fixture",
+                confidence=0.91,
+            ),
+        ]
+        return decisions, {
+            "model": "mock",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
+        _fake_adjudication,
+    )
+
+    result = run_module(
+        inputs={
+            "scene_index": _scene_index_payload(),
+            "canonical_script": _canonical_payload(),
+        },
+        params={"model": "mock"},
+        context={"run_id": "unit", "stage_id": "world_building"},
+    )
+
+    artifacts = result["artifacts"]
+    ids = {a["entity_id"] for a in artifacts}
+    assert "aria" in ids
+    assert "character_aria" in ids
+    assert "noah" not in ids
+    assert "character_noah" not in ids
+
+
+@pytest.mark.unit
+def test_run_module_skips_retyped_candidates(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def _fake_adjudication(**_: Any) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
+        decisions = [
+            EntityAdjudicationDecision(
+                candidate="ARIA",
+                verdict="retype",
+                target_entity_type="location",
+                canonical_name="ARIA'S OFFICE",
+                rationale="candidate is a place reference, not a person",
+                confidence=0.93,
+            ),
+            EntityAdjudicationDecision(
+                candidate="NOAH",
+                verdict="valid",
+                canonical_name="NOAH",
+                rationale="actual character",
+                confidence=0.95,
+            ),
+        ]
+        return decisions, {
+            "model": "mock",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
+        _fake_adjudication,
+    )
+
+    result = run_module(
+        inputs={
+            "scene_index": _scene_index_payload(),
+            "canonical_script": _canonical_payload(),
+        },
+        params={"model": "mock"},
+        context={"run_id": "unit", "stage_id": "world_building"},
+    )
+
+    artifacts = result["artifacts"]
+    ids = {a["entity_id"] for a in artifacts}
+    assert "aria" not in ids
+    assert "character_aria" not in ids
+    assert "noah" in ids
+    assert "character_noah" in ids
+
+
+@pytest.mark.unit
+def test_run_module_keeps_valid_candidate_when_llm_canonical_name_is_not_plausible(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def _fake_adjudication(**_: Any) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
+        decisions = [
+            EntityAdjudicationDecision(
+                candidate="ARIA",
+                verdict="valid",
+                canonical_name="THE ARIA",
+                rationale="attempted canonicalization with article prefix",
+                confidence=0.9,
+            ),
+            EntityAdjudicationDecision(
+                candidate="NOAH",
+                verdict="valid",
+                canonical_name="NOAH",
+                rationale="valid character",
+                confidence=0.95,
+            ),
+        ]
+        return decisions, {
+            "model": "mock",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
+        _fake_adjudication,
+    )
+
+    result = run_module(
+        inputs={
+            "scene_index": _scene_index_payload(),
+            "canonical_script": _canonical_payload(),
+        },
+        params={"model": "mock"},
+        context={"run_id": "unit", "stage_id": "world_building"},
+    )
+
+    artifacts = result["artifacts"]
+    ids = {a["entity_id"] for a in artifacts}
+    assert "aria" in ids
+    assert "character_aria" in ids
+    assert "noah" in ids

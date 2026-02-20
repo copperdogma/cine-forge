@@ -1,5 +1,30 @@
 # Changelog
 
+## [2026-02-20] - Story 054/055 completion, LLM-first entity adjudication, and Mariner fallback fix
+
+### Added
+- Story 054 artifact investigation deliverables:
+  - `docs/reports/liberty-church-2-artifact-inventory.md`
+  - `tests/fixtures/liberty_church_2/prod_snapshot_2026-02-19/` (prod snapshot for reproducible debugging)
+  - story record: `docs/stories/story-054-liberty-church-character-artifact-cleanup-inventory.md`
+- Story 055 implementation story record:
+  - `docs/stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md`
+- Shared entity adjudication contract:
+  - schema: `src/cine_forge/schemas/entity_adjudication.py`
+  - helper: `src/cine_forge/ai/entity_adjudication.py`
+
+### Changed
+- World-building modules now run LLM adjudication before bible emission:
+  - `character_bible_v1`, `location_bible_v1`, `prop_bible_v1`
+- Added adjudication decision-trace annotations into artifact metadata for debugging and prompt tuning (`decision_trace`, rationale/confidence, outcomes).
+- Added runtime model-slot fallback in world-building modules to honor `default_model`, `utility_model`, and `sota_model` passed via runtime params.
+- Expanded unit coverage for adjudication outcomes (`valid`, `invalid`, `retype`) across character/location/prop modules.
+- Updated story index with Story 054 and Story 055 marked done (`docs/stories.md`).
+
+### Fixed
+- Resolved regression where a valid character could be dropped after adjudication if canonicalized name failed deterministic plausibility checks (e.g., `MARINER` with canonical `The Mariner`).
+- Character adjudication now falls back to the original validated candidate when canonicalization fails plausibility, preventing false removals of core characters.
+
 ## [2026-02-19] - Re-align skills to CineForge architecture (Python-first + ui split)
 
 ### Changed

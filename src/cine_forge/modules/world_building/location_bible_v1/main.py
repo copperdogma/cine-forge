@@ -6,9 +6,10 @@ import re
 from datetime import UTC, datetime
 from typing import Any
 
-from cine_forge.ai import qa_check
+from cine_forge.ai import adjudicate_entity_candidates, qa_check
 from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import (
+    EntityAdjudicationDecision,
     LocationBible,
     QAResult,
 )
@@ -19,11 +20,36 @@ def run_module(
 ) -> dict[str, Any]:
     """Execute location bible extraction."""
     canonical_script, scene_index = _extract_inputs(inputs)
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
     
     # Tiered Model Strategy (Subsumption)
-    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-5"
-    verify_model = params.get("verify_model") or "claude-haiku-4-5-20251001"
-    escalate_model = params.get("escalate_model") or "claude-sonnet-4-5"
+    work_model = (
+        params.get("work_model")
+        or params.get("model")
+        or params.get("default_model")
+        or runtime_params.get("work_model")
+        or runtime_params.get("default_model")
+        or runtime_params.get("model")
+        or "claude-sonnet-4-5"
+    )
+    verify_model = (
+        params.get("verify_model")
+        or params.get("qa_model")
+        or params.get("utility_model")
+        or runtime_params.get("verify_model")
+        or runtime_params.get("qa_model")
+        or runtime_params.get("utility_model")
+        or "claude-haiku-4-5-20251001"
+    )
+    escalate_model = (
+        params.get("escalate_model")
+        or params.get("sota_model")
+        or runtime_params.get("escalate_model")
+        or runtime_params.get("sota_model")
+        or "claude-sonnet-4-5"
+    )
     skip_qa = bool(params.get("skip_qa", False))
 
     # Higher default for bibles to avoid noise pollution
@@ -36,6 +62,16 @@ def run_module(
     candidates = [
         loc for loc in ranked if loc["scene_count"] >= min_appearances
     ]
+    (
+        candidates,
+        adjudication_rejections,
+        adjudication_decisions,
+        adjudication_cost,
+    ) = _adjudicate_candidates(
+        candidates=candidates,
+        script_text=canonical_script["script_text"],
+        model=work_model,
+    )
 
     artifacts = []
     models_seen: set[str] = set()
@@ -44,6 +80,9 @@ def run_module(
         "output_tokens": 0,
         "estimated_cost_usd": 0.0,
     }
+    _update_total_cost(total_cost, adjudication_cost)
+    if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
+        models_seen.add(str(adjudication_cost["model"]))
 
     # 2. Extract for each candidate
     for entry in candidates:
@@ -118,6 +157,12 @@ def run_module(
                 "rationale": "Extracted from canonical script and scene headings.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
+                "annotations": _adjudication_annotation(
+                    input_count=len(ranked),
+                    approved_count=len(candidates),
+                    rejected=adjudication_rejections,
+                    decisions=adjudication_decisions,
+                ),
             }
         })
 
@@ -130,6 +175,12 @@ def run_module(
                 "rationale": "Consolidate location traits and narrative significance.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
+                "annotations": _adjudication_annotation(
+                    input_count=len(ranked),
+                    approved_count=len(candidates),
+                    rejected=adjudication_rejections,
+                    decisions=adjudication_decisions,
+                ),
             },
             "bible_files": {
                 master_filename: definition.model_dump_json(indent=2)
@@ -212,6 +263,127 @@ def _extract_location_definition(
         response_schema=LocationBible,
     )
     return definition, cost
+
+
+def _adjudicate_candidates(
+    candidates: list[dict[str, Any]],
+    script_text: str,
+    model: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    if not candidates:
+        return [], [], [], _empty_cost(model)
+
+    adjudication_input = [
+        {
+            "candidate": item["name"],
+            "scene_count": item["scene_count"],
+            "scene_presence": item["scene_presence"][:8],
+            "source_hint": "scene_index.unique_locations",
+        }
+        for item in candidates
+    ]
+    decisions, cost = adjudicate_entity_candidates(
+        entity_type="location",
+        candidates=adjudication_input,
+        script_text=script_text,
+        model=model,
+    )
+
+    source_by_name = {item["name"]: item for item in candidates}
+    merged: dict[str, dict[str, Any]] = {}
+    rejected: list[dict[str, Any]] = []
+    decision_log: list[dict[str, Any]] = []
+    for decision in decisions:
+        source = source_by_name.get(decision.candidate)
+        if not source:
+            decision_log.append(
+                {
+                    "candidate": decision.candidate,
+                    "decision_verdict": decision.verdict,
+                    "target_entity_type": decision.target_entity_type,
+                    "canonical_name": decision.canonical_name,
+                    "llm_rationale": decision.rationale,
+                    "llm_confidence": decision.confidence,
+                    "outcome": "ignored_unknown_candidate",
+                }
+            )
+            continue
+        if decision.verdict != "valid":
+            entry = _decision_to_rejection(decision)
+            rejected.append(entry)
+            decision_log.append({**entry, "outcome": "rejected_by_verdict"})
+            continue
+        canonical = (decision.canonical_name or decision.candidate).strip()
+        if not canonical:
+            entry = {
+                **_decision_to_rejection(decision),
+                "rationale": "empty canonical location name",
+                "outcome": "rejected_after_resolution",
+            }
+            rejected.append(entry)
+            decision_log.append(entry)
+            continue
+        decision_log.append(
+            {
+                **_decision_to_rejection(decision),
+                "resolved_name": canonical,
+                "outcome": "accepted",
+            }
+        )
+        existing = merged.get(canonical)
+        if not existing:
+            merged[canonical] = {
+                "name": canonical,
+                "scene_count": source["scene_count"],
+                "scene_presence": list(source["scene_presence"]),
+            }
+            continue
+        existing["scene_count"] += source["scene_count"]
+        existing["scene_presence"] = sorted(
+            list(set(existing["scene_presence"] + list(source["scene_presence"])))
+        )
+
+    approved = sorted(merged.values(), key=lambda item: item["scene_count"], reverse=True)
+    return approved, rejected, decision_log, cost
+
+
+def _decision_to_rejection(decision: EntityAdjudicationDecision) -> dict[str, Any]:
+    return {
+        "candidate": decision.candidate,
+        "decision_verdict": decision.verdict,
+        "target_entity_type": decision.target_entity_type,
+        "canonical_name": decision.canonical_name,
+        "llm_rationale": decision.rationale,
+        "llm_confidence": decision.confidence,
+    }
+
+
+def _adjudication_annotation(
+    *,
+    input_count: int,
+    approved_count: int,
+    rejected: list[dict[str, Any]],
+    decisions: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "entity_adjudication": {
+            "input_candidate_count": input_count,
+            "approved_candidate_count": approved_count,
+            "rejected_candidate_count": len(rejected),
+            "rejected_candidates": rejected[:50],
+            "decision_trace_count": len(decisions),
+            "decision_trace": decisions[:100],
+        }
+    }
+
+
+def _empty_cost(model: str) -> dict[str, Any]:
+    return {
+        "model": model if model == "mock" else "code",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
 
 
 def _run_location_qa(

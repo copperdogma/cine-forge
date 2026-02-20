@@ -6,9 +6,11 @@ import re
 from datetime import UTC, datetime
 from typing import Any
 
+from cine_forge.ai import adjudicate_entity_candidates
 from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import (
     CharacterBible,
+    EntityAdjudicationDecision,
     QAResult,
 )
 
@@ -77,11 +79,36 @@ def run_module(
 ) -> dict[str, Any]:
     """Execute character bible extraction."""
     canonical_script, scene_index = _extract_inputs(inputs)
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
     
     # Tiered Model Strategy (Subsumption)
-    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-6"
-    verify_model = params.get("verify_model") or "claude-haiku-4-5-20251001"
-    escalate_model = params.get("escalate_model") or "claude-opus-4-6"
+    work_model = (
+        params.get("work_model")
+        or params.get("model")
+        or params.get("default_model")
+        or runtime_params.get("work_model")
+        or runtime_params.get("default_model")
+        or runtime_params.get("model")
+        or "claude-sonnet-4-6"
+    )
+    verify_model = (
+        params.get("verify_model")
+        or params.get("qa_model")
+        or params.get("utility_model")
+        or runtime_params.get("verify_model")
+        or runtime_params.get("qa_model")
+        or runtime_params.get("utility_model")
+        or "claude-haiku-4-5-20251001"
+    )
+    escalate_model = (
+        params.get("escalate_model")
+        or params.get("sota_model")
+        or runtime_params.get("escalate_model")
+        or runtime_params.get("sota_model")
+        or "claude-opus-4-6"
+    )
     skip_qa = bool(params.get("skip_qa", False))
     
     # Higher default for bibles to avoid noise pollution
@@ -100,6 +127,16 @@ def run_module(
     ]
     # Final sanity check: skip anything that is JUST stopwords after filtering
     candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
+    (
+        candidates,
+        adjudication_rejections,
+        adjudication_decisions,
+        adjudication_cost,
+    ) = _adjudicate_candidates(
+        candidates=candidates,
+        script_text=canonical_script["script_text"],
+        model=work_model,
+    )
 
     artifacts = []
     models_seen: set[str] = set()
@@ -108,6 +145,9 @@ def run_module(
         "output_tokens": 0,
         "estimated_cost_usd": 0.0,
     }
+    _update_total_cost(total_cost, adjudication_cost)
+    if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
+        models_seen.add(str(adjudication_cost["model"]))
 
     # 2. Extract for each candidate
     for entry in candidates:
@@ -183,6 +223,12 @@ def run_module(
                 "rationale": "Extracted from canonical script and scene co-occurrence data.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
+                "annotations": _adjudication_annotation(
+                    input_count=len(ranked),
+                    approved_count=len(candidates),
+                    rejected=adjudication_rejections,
+                    decisions=adjudication_decisions,
+                ),
             }
         })
 
@@ -197,6 +243,12 @@ def run_module(
                 ),
                 "confidence": definition.overall_confidence,
                 "source": "ai",
+                "annotations": _adjudication_annotation(
+                    input_count=len(ranked),
+                    approved_count=len(candidates),
+                    rejected=adjudication_rejections,
+                    decisions=adjudication_decisions,
+                ),
             },
             "bible_files": {
                 master_filename: definition.model_dump_json(indent=2)
@@ -303,6 +355,164 @@ def _extract_character_definition(
         response_schema=CharacterBible,
     )
     return definition, cost
+
+
+def _adjudicate_candidates(
+    candidates: list[dict[str, Any]],
+    script_text: str,
+    model: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    if not candidates:
+        return [], [], [], _empty_cost(model)
+
+    adjudication_input = [
+        {
+            "candidate": item["name"],
+            "scene_count": item["scene_count"],
+            "dialogue_count": item["dialogue_count"],
+            "scene_presence": item["scene_presence"][:8],
+            "source_hint": "scene_index.unique_characters",
+        }
+        for item in candidates
+    ]
+    decisions, cost = adjudicate_entity_candidates(
+        entity_type="character",
+        candidates=adjudication_input,
+        script_text=script_text,
+        model=model,
+    )
+
+    source_by_name = {item["name"]: item for item in candidates}
+    merged: dict[str, dict[str, Any]] = {}
+    rejected: list[dict[str, Any]] = []
+    decision_log: list[dict[str, Any]] = []
+    for decision in decisions:
+        source = source_by_name.get(decision.candidate)
+        if not source:
+            decision_log.append(
+                {
+                    "candidate": decision.candidate,
+                    "decision_verdict": decision.verdict,
+                    "target_entity_type": decision.target_entity_type,
+                    "canonical_name": decision.canonical_name,
+                    "llm_rationale": decision.rationale,
+                    "llm_confidence": decision.confidence,
+                    "outcome": "ignored_unknown_candidate",
+                }
+            )
+            continue
+        if decision.verdict != "valid":
+            entry = _decision_to_rejection(decision)
+            rejected.append(entry)
+            decision_log.append({**entry, "outcome": "rejected_by_verdict"})
+            continue
+        canonical, resolution_mode = _resolve_character_name(
+            decision=decision,
+            original_candidate=source["name"],
+        )
+        if not _is_plausible_character_name(canonical):
+            entry = {
+                **_decision_to_rejection(decision),
+                "resolution_mode": resolution_mode,
+                "outcome": "rejected_after_resolution",
+                "rationale": "resolved candidate failed plausibility checks",
+            }
+            rejected.append(entry)
+            decision_log.append(entry)
+            continue
+        if resolution_mode == "fallback_to_original_candidate":
+            decision_log.append(
+                {
+                    **_decision_to_rejection(decision),
+                    "resolved_name": canonical,
+                    "resolution_mode": resolution_mode,
+                    "outcome": "accepted_after_fallback",
+                }
+            )
+        else:
+            decision_log.append(
+                {
+                    **_decision_to_rejection(decision),
+                    "resolved_name": canonical,
+                    "resolution_mode": resolution_mode,
+                    "outcome": "accepted",
+                }
+            )
+
+        existing = merged.get(canonical)
+        if not existing:
+            merged[canonical] = {
+                "name": canonical,
+                "scene_count": source["scene_count"],
+                "dialogue_count": source["dialogue_count"],
+                "scene_presence": list(source["scene_presence"]),
+                "score": (source["scene_count"] * 2) + source["dialogue_count"],
+            }
+            continue
+        existing["scene_count"] += source["scene_count"]
+        existing["dialogue_count"] += source["dialogue_count"]
+        existing["scene_presence"] = sorted(
+            list(set(existing["scene_presence"] + list(source["scene_presence"])))
+        )
+        existing["score"] = (existing["scene_count"] * 2) + existing["dialogue_count"]
+
+    approved = sorted(merged.values(), key=lambda item: item["score"], reverse=True)
+    return approved, rejected, decision_log, cost
+
+
+def _resolve_character_name(
+    decision: EntityAdjudicationDecision, original_candidate: str
+) -> tuple[str, str]:
+    canonical_candidate = _normalize_character_name(
+        decision.canonical_name or decision.candidate
+    )
+    if _is_plausible_character_name(canonical_candidate):
+        return canonical_candidate, "canonical_or_candidate"
+
+    fallback = _normalize_character_name(original_candidate)
+    if _is_plausible_character_name(fallback):
+        return fallback, "fallback_to_original_candidate"
+
+    return canonical_candidate, "canonical_invalid_and_fallback_invalid"
+
+
+def _decision_to_rejection(decision: EntityAdjudicationDecision) -> dict[str, Any]:
+    return {
+        "candidate": decision.candidate,
+        "decision_verdict": decision.verdict,
+        "target_entity_type": decision.target_entity_type,
+        "canonical_name": decision.canonical_name,
+        "llm_rationale": decision.rationale,
+        "llm_confidence": decision.confidence,
+    }
+
+
+def _adjudication_annotation(
+    *,
+    input_count: int,
+    approved_count: int,
+    rejected: list[dict[str, Any]],
+    decisions: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "entity_adjudication": {
+            "input_candidate_count": input_count,
+            "approved_candidate_count": approved_count,
+            "rejected_candidate_count": len(rejected),
+            "rejected_candidates": rejected[:50],
+            "decision_trace_count": len(decisions),
+            "decision_trace": decisions[:100],
+        }
+    }
+
+
+def _empty_cost(model: str) -> dict[str, Any]:
+    return {
+        "model": model if model == "mock" else "code",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
 
 
 def _run_character_qa(

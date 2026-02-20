@@ -1,5 +1,6 @@
 """Shared AI infrastructure utilities."""
 
+from .entity_adjudication import adjudicate_entity_candidates
 from .fdx import (
     FDXConversionResult,
     ScreenplayExportResult,
@@ -58,4 +59,5 @@ __all__ = [
     "QARepairPlan",
     "qa_check_with_repairs",
     "extract_scenes_for_entity",
+    "adjudicate_entity_candidates",
 ]

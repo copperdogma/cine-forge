@@ -90,6 +90,8 @@ NOTES from Cam:
 | 051 | Chat UX Polish: Ordering, Naming, and Progress Card | 2.5 — UI | High | Done | [story-051](stories/story-051-chat-ux-polish.md) |
 | 052 | Streaming Artifact Yield: Live Per-Entity Progress | Cross-Cutting | Medium | Draft | [story-052](stories/story-052-streaming-artifact-yield.md) |
 | 053 | Cross-CLI Skills/Prompts Unification | Cross-Cutting | High | Done | [story-053](stories/story-053-cross-cli-skills-unification.md) |
+| 054 | Liberty Church Character Artifact Cleanup Inventory | Cross-Cutting | High | Done | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
+| 055 | LLM-First Entity Adjudication for Character, Location, and Prop | Cross-Cutting | High | Done | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
 
 ## Phase Summary
 

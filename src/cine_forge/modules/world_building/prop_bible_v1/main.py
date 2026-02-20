@@ -6,9 +6,10 @@ import re
 from datetime import UTC, datetime
 from typing import Any
 
-from cine_forge.ai import qa_check
+from cine_forge.ai import adjudicate_entity_candidates, qa_check
 from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import (
+    EntityAdjudicationDecision,
     PropBible,
     QAResult,
 )
@@ -19,11 +20,36 @@ def run_module(
 ) -> dict[str, Any]:
     """Execute prop bible extraction."""
     canonical_script, scene_index = _extract_inputs(inputs)
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
     
     # Tiered Model Strategy (Subsumption)
-    work_model = params.get("work_model") or params.get("model") or "claude-sonnet-4-6"
-    verify_model = params.get("verify_model") or "claude-haiku-4-5-20251001"
-    escalate_model = params.get("escalate_model") or "claude-opus-4-6"
+    work_model = (
+        params.get("work_model")
+        or params.get("model")
+        or params.get("default_model")
+        or runtime_params.get("work_model")
+        or runtime_params.get("default_model")
+        or runtime_params.get("model")
+        or "claude-sonnet-4-6"
+    )
+    verify_model = (
+        params.get("verify_model")
+        or params.get("qa_model")
+        or params.get("utility_model")
+        or runtime_params.get("verify_model")
+        or runtime_params.get("qa_model")
+        or runtime_params.get("utility_model")
+        or "claude-haiku-4-5-20251001"
+    )
+    escalate_model = (
+        params.get("escalate_model")
+        or params.get("sota_model")
+        or runtime_params.get("escalate_model")
+        or runtime_params.get("sota_model")
+        or "claude-opus-4-6"
+    )
     skip_qa = bool(params.get("skip_qa", False))
 
     # discovery pass for props since they aren't in scene_index
@@ -36,6 +62,16 @@ def run_module(
             "Truncating to 25. This may indicate over-extraction or preamble filter failure."
         )
         props = props[:25]
+    (
+        props,
+        adjudication_rejections,
+        adjudication_decisions,
+        adjudication_cost,
+    ) = _adjudicate_candidates(
+        props=props,
+        script_text=canonical_script["script_text"],
+        model=work_model,
+    )
 
     artifacts = []
     models_seen: set[str] = set()
@@ -47,6 +83,9 @@ def run_module(
         "output_tokens": 0,
         "estimated_cost_usd": 0.0,
     }
+    _update_total_cost(total_cost, adjudication_cost)
+    if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
+        models_seen.add(str(adjudication_cost["model"]))
 
     # 2. Extract for each candidate
     for prop_name in props:
@@ -118,6 +157,12 @@ def run_module(
                 "rationale": "AI-identified significant object from canonical script.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
+                "annotations": _adjudication_annotation(
+                    input_count=len(props) + len(adjudication_rejections),
+                    approved_count=len(props),
+                    rejected=adjudication_rejections,
+                    decisions=adjudication_decisions,
+                ),
             }
         })
 
@@ -130,6 +175,12 @@ def run_module(
                 "rationale": "Consolidate prop traits and narrative significance.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
+                "annotations": _adjudication_annotation(
+                    input_count=len(props) + len(adjudication_rejections),
+                    approved_count=len(props),
+                    rejected=adjudication_rejections,
+                    decisions=adjudication_decisions,
+                ),
             },
             "bible_files": {
                 master_filename: definition.model_dump_json(indent=2)
@@ -244,6 +295,112 @@ def _extract_prop_definition(
         response_schema=PropBible,
     )
     return definition, cost
+
+
+def _adjudicate_candidates(
+    props: list[str],
+    script_text: str,
+    model: str,
+) -> tuple[list[str], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    if not props:
+        return [], [], [], _empty_cost(model)
+
+    upper_script = script_text.upper()
+    adjudication_input = [
+        {
+            "candidate": prop_name,
+            "mention_count": upper_script.count(prop_name.upper()),
+            "source_hint": "prop_discovery_pass",
+        }
+        for prop_name in props
+    ]
+    decisions, cost = adjudicate_entity_candidates(
+        entity_type="prop",
+        candidates=adjudication_input,
+        script_text=script_text,
+        model=model,
+    )
+
+    approved: list[str] = []
+    rejected: list[dict[str, Any]] = []
+    decision_log: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for decision in decisions:
+        if decision.verdict != "valid":
+            entry = _decision_to_rejection(decision)
+            rejected.append(entry)
+            decision_log.append({**entry, "outcome": "rejected_by_verdict"})
+            continue
+        canonical = (decision.canonical_name or decision.candidate).strip()
+        if not canonical:
+            entry = {
+                **_decision_to_rejection(decision),
+                "rationale": "empty canonical prop name",
+                "outcome": "rejected_after_resolution",
+            }
+            rejected.append(entry)
+            decision_log.append(entry)
+            continue
+        key = canonical.lower()
+        if key in seen:
+            decision_log.append(
+                {
+                    **_decision_to_rejection(decision),
+                    "resolved_name": canonical,
+                    "outcome": "deduped_duplicate_valid",
+                }
+            )
+            continue
+        seen.add(key)
+        approved.append(canonical)
+        decision_log.append(
+            {
+                **_decision_to_rejection(decision),
+                "resolved_name": canonical,
+                "outcome": "accepted",
+            }
+        )
+
+    return approved, rejected, decision_log, cost
+
+
+def _decision_to_rejection(decision: EntityAdjudicationDecision) -> dict[str, Any]:
+    return {
+        "candidate": decision.candidate,
+        "decision_verdict": decision.verdict,
+        "target_entity_type": decision.target_entity_type,
+        "canonical_name": decision.canonical_name,
+        "llm_rationale": decision.rationale,
+        "llm_confidence": decision.confidence,
+    }
+
+
+def _adjudication_annotation(
+    *,
+    input_count: int,
+    approved_count: int,
+    rejected: list[dict[str, Any]],
+    decisions: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "entity_adjudication": {
+            "input_candidate_count": input_count,
+            "approved_candidate_count": approved_count,
+            "rejected_candidate_count": len(rejected),
+            "rejected_candidates": rejected[:50],
+            "decision_trace_count": len(decisions),
+            "decision_trace": decisions[:100],
+        }
+    }
+
+
+def _empty_cost(model: str) -> dict[str, Any]:
+    return {
+        "model": model if model == "mock" else "code",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
 
 
 def _run_prop_qa(
