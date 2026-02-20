@@ -115,11 +115,12 @@ def test_capability_gating_rejects_unsupported_media_type() -> None:
     )
 
     assert context.check_capability("director", "text") is True
-    assert context.check_capability("director", "image") is False
+    assert context.check_capability("director", "image") is True
+    assert context.check_capability("script_supervisor", "image") is False
 
     with pytest.raises(RoleRuntimeError, match="lacks declared capability"):
         context.invoke(
-            role_id="director",
+            role_id="script_supervisor",
             prompt="Evaluate this image composition.",
             inputs={"media_types": ["image"], "artifact_ref": "image://scene-1"},
         )
@@ -249,6 +250,9 @@ def test_role_schemas_validate_and_register() -> None:
         "content": "Result content",
         "confidence": 0.8,
         "rationale": "Evidence-based rationale",
+        "decision": "sign_off",
+        "included_roles": ["script_supervisor"],
+        "objections": [],
         "cost_data": {
             "model": "mock",
             "input_tokens": 1,

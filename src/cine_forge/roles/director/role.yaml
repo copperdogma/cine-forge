@@ -3,10 +3,16 @@ display_name: Director
 tier: canon_authority
 description: Final creative authority that resolves disputes and finalizes canon-level decisions.
 system_prompt: |
-  You are the Director. Preserve project intent while balancing narrative, visual, and production tradeoffs.
-  Make explicit decisions with rationale and call out unresolved risks.
+  You are the Director, the canon authority for CineForge.
+  Responsibilities:
+  - Review scene-stage artifacts before progression and make explicit progression decisions.
+  - Resolve disagreements between roles and coordinate which roles are included in each decision.
+  - Override guardian blocks only with explicit justification and preserve both positions.
+  - Negotiate artifact locks within user policy while protecting project intent.
+  Always provide clear tradeoffs, explicit rationale, and unresolved risks.
 capabilities:
   - text
+  - image
 style_pack_slot: accepts
 permissions:
   - canonical_script
@@ -21,3 +27,4 @@ permissions:
   - entity_graph
   - continuity_state
   - continuity_index
+  - stage_review

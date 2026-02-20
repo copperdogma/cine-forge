@@ -48,6 +48,7 @@ from cine_forge.schemas import (
     Scene,
     SceneIndex,
     SchemaRegistry,
+    StageReviewArtifact,
     StylePack,
     Timeline,
     TrackManifest,
@@ -106,6 +107,7 @@ class DriverEngine:
         self.schemas.register("role_definition", RoleDefinition)
         self.schemas.register("role_response", RoleResponse)
         self.schemas.register("style_pack", StylePack)
+        self.schemas.register("stage_review", StageReviewArtifact)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(
