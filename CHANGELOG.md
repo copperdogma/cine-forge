@@ -12,6 +12,7 @@
 - `world_building` recipe now includes `entity_discovery` as a prerequisite stage.
 - `character_bible_v1`, `location_bible_v1`, and `prop_bible_v1` now prioritize candidates from the discovery pass.
 - `scene_extract_v1` now enforces narrative analysis (beats, tone) during the enrichment pass.
+- Updated `RunProgressCard` UI to correctly order and label the new `entity_discovery` stage.
 
 ### Fixed
 - Fixed sparse scene analysis in long screenplays by ensuring narrative fields trigger AI enrichment.

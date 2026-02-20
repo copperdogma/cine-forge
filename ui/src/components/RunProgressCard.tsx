@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 /** Canonical stage order per recipe. Unknown stages go at the end. */
 const RECIPE_STAGE_ORDER: Record<string, string[]> = {
   mvp_ingest: ['ingest', 'normalize', 'extract_scenes', 'project_config'],
-  world_building: ['character_bible', 'location_bible', 'prop_bible'],
+  world_building: ['entity_discovery', 'character_bible', 'location_bible', 'prop_bible'],
 }
 
 /** Human-readable names for artifact types produced by stages. */
@@ -20,6 +20,7 @@ const ARTIFACT_NAMES: Record<string, [string, string]> = {
   scene_breakdown: ['scene breakdown', 'scene breakdowns'],
   entity_graph: ['story graph', 'story graphs'],
   world_overview: ['world overview', 'world overviews'],
+  entity_discovery_results: ['entity discovery results', 'entity discovery results'],
 }
 
 /** Skip internal artifact types the user doesn't care about. */

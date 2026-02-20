@@ -136,6 +136,10 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Finding scene boundaries and structure...',
     done: 'Scenes identified.',
   },
+  entity_discovery: {
+    start: 'Discovering characters, locations, and props across your script...',
+    done: 'Entities discovered.',
+  },
   character_bible: {
     start: 'Writing character bibles — backstories, motivations, and arcs...',
     done: 'Character bibles written.',

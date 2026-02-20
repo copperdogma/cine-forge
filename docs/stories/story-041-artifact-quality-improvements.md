@@ -199,4 +199,5 @@ Later scenes (from "Int. Abe's Office" onward) have noticeably sparser analysis 
 20260220-1400 — research: Analyzed current module implementations and prompts. Planning targeted improvements for prop, location, and character bibles.
 20260220-1530 — strategy pivot: Switched to AI-first "Sliding Window" discovery pass to overcome long-context fade. Generated Golden dataset for Liberty & Church using Opus 4.6 (26 chars, 45 props).
 20260220-1630 — implementation: Created `entity_discovery_v1` module. Updated `world_building` recipe. Wired Bible modules to use discovery results. Fixed sparse scene analysis in `scene_extract_v1`. Verified via unit tests and promptfoo benchmarks.
-20260220-1700 — completion: Final validation passed. Story marked Done and CHANGELOG updated.
+20260220-1730 — UI fix: Updated `RunProgressCard` and `chat-messages.ts` to correctly order and label the new discovery stage in the progress UI. Verified via build.
+20260220-1745 — completion: Final validation passed. Story marked Done and CHANGELOG updated.
