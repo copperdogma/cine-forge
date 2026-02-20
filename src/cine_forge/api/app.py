@@ -50,7 +50,8 @@ def _parse_version(workspace: Path) -> str:
     changelog = workspace / "CHANGELOG.md"
     if changelog.exists():
         # Match YYYY-MM-DD or YYYY-MM-DD-NN
-        match = re.search(r"^## \[(\d{4}-\d{2}-\d{2}(?:-\d{2})?)\]", changelog.read_text(), re.MULTILINE)
+        pattern = r"^## \[(\d{4}-\d{2}-\d{2}(?:-\d{2})?)\]"
+        match = re.search(pattern, changelog.read_text(), re.MULTILINE)
         if match:
             # Convert YYYY-MM-DD-02 -> 2026.02.20.02 or 2026.02.20-02
             # Let's stick to replacing dashes with dots for the main date part, 
