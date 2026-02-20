@@ -2,6 +2,7 @@
 
 from .canon import CanonGate, CanonGateError, assert_director_can_override
 from .runtime import RoleCatalog, RoleContext, RoleRuntimeError
+from .suggestion import SuggestionManager
 
 __all__ = [
     "CanonGate",
@@ -9,5 +10,6 @@ __all__ = [
     "RoleCatalog",
     "RoleContext",
     "RoleRuntimeError",
+    "SuggestionManager",
     "assert_director_can_override",
 ]

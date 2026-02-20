@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import uuid
 from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
@@ -12,7 +13,9 @@ import yaml
 from pydantic import BaseModel, Field
 
 from cine_forge.ai.llm import call_llm
+from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import (
+    ArtifactMetadata,
     CostRecord,
     PerceptionCapability,
     RoleDefinition,
@@ -20,6 +23,7 @@ from cine_forge.schemas import (
     RoleTier,
     StylePack,
     StylePackSlot,
+    Suggestion,
 )
 
 TIER_ORDER: dict[RoleTier, int] = {
@@ -52,6 +56,7 @@ class _StructuredRoleAnswer(BaseModel):
     override_justification: str | None = None
     included_roles: list[str] = Field(default_factory=list)
     objections: list[str] = Field(default_factory=list)
+    suggestions: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class RoleRuntimeError(RuntimeError):
@@ -186,6 +191,7 @@ class RoleContext:
         *,
         catalog: RoleCatalog,
         project_dir: Path,
+        store: ArtifactStore | None = None,
         model_resolver: Callable[[str], str] | None = None,
         style_pack_selections: dict[str, str] | None = None,
         llm_callable: Callable[..., tuple[str | BaseModel, dict[str, Any]]] = call_llm,
@@ -193,6 +199,7 @@ class RoleContext:
         self.catalog = catalog
         self.project_dir = project_dir
         self.project_dir.mkdir(parents=True, exist_ok=True)
+        self.store = store
         self._log_path = self.project_dir / "role_invocations.jsonl"
         self._model_resolver = model_resolver or (lambda _role_id: "mock")
         self._style_pack_selections = style_pack_selections or {}
@@ -261,8 +268,38 @@ class RoleContext:
             override_justification=structured_response.override_justification,
             included_roles=list(structured_response.included_roles),
             objections=list(structured_response.objections),
+            suggestions=list(structured_response.suggestions),
             cost_data=CostRecord.model_validate(cost_meta),
         )
+
+        if self.store and response.suggestions:
+            for sugg_payload in response.suggestions:
+                # Augment payload with system metadata if missing
+                sugg_id = f"sugg-{uuid.uuid4().hex[:8]}"
+                suggestion = Suggestion(
+                    suggestion_id=sugg_id,
+                    source_role=role_id,
+                    proposal=sugg_payload.get("proposal", "No proposal provided"),
+                    rationale=sugg_payload.get("rationale", "No rationale provided"),
+                    confidence=sugg_payload.get("confidence", response.confidence),
+                    related_scene_id=sugg_payload.get("related_scene_id"),
+                    related_entity_id=sugg_payload.get("related_entity_id"),
+                    related_artifact_ref=sugg_payload.get("related_artifact_ref"),
+                )
+                metadata = ArtifactMetadata(
+                    intent="Capture creative suggestion from role invocation.",
+                    rationale="Roles continuously generate insights recorded as suggestions.",
+                    confidence=suggestion.confidence,
+                    source="ai",
+                    producing_module="role_runtime_v1",
+                    producing_role=role_id,
+                )
+                self.store.save_artifact(
+                    artifact_type="suggestion",
+                    entity_id=suggestion.suggestion_id,
+                    data=suggestion.model_dump(mode="json"),
+                    metadata=metadata,
+                )
 
         self._log_invocation(
             role=role,

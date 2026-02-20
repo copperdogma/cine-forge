@@ -18,6 +18,7 @@ from cine_forge.schemas import (
 )
 
 from .runtime import RoleContext, RoleRuntimeError
+from .suggestion import SuggestionManager
 
 CANON_GUARDIANS: tuple[str, ...] = ("script_supervisor", "continuity_supervisor")
 
@@ -78,6 +79,19 @@ class CanonGate:
             control_mode=control_mode,
             user_approved=user_approved,
         )
+
+        # Resurface deferred suggestions
+        suggestion_manager = SuggestionManager(self.store)
+        deferred_models = suggestion_manager.list_deferred_suggestions(scene_id=scene_id)
+        # Convert to ArtifactRef list
+        deferred_refs: list[ArtifactRef] = []
+        for sugg in deferred_models:
+            versions = self.store.list_versions(
+                artifact_type="suggestion", entity_id=sugg.suggestion_id
+            )
+            if versions:
+                deferred_refs.append(versions[-1])
+
         stage_review = StageReviewArtifact(
             stage_id=stage_id,
             scene_id=scene_id,
@@ -86,6 +100,7 @@ class CanonGate:
             guardian_reviews=guardian_reviews,
             director_review=director_review,
             disagreements=disagreements,
+            deferred_suggestions=deferred_refs,
             user_approved=user_approved,
             readiness=readiness,
         )

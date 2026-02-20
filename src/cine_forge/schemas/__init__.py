@@ -75,6 +75,7 @@ from .scene import (
     ScriptElement,
     SourceSpan,
 )
+from .suggestion import Decision, Suggestion, SuggestionStatus
 from .timeline import Timeline, TimelineEntry
 from .track import TrackEntry, TrackManifest
 
@@ -136,6 +137,9 @@ __all__ = [
     "Scene",
     "SceneIndexEntry",
     "SceneIndex",
+    "Suggestion",
+    "SuggestionStatus",
+    "Decision",
     "TimelineEntry",
     "Timeline",
     "TrackEntry",

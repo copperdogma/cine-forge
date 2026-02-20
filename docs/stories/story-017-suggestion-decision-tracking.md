@@ -1,6 +1,6 @@
 # Story 017: Suggestion and Decision Tracking
 
-**Status**: To Do
+**Status**: Done
 **Created**: 2026-02-13
 **Spec Refs**: 8.5 (Suggestion System), 8.6 (Inter-Role Communication — decisions), 2.6 (Explanation Mandatory), 20 (Metadata & Auditing)
 **Depends On**: Story 014 (role system foundation), Story 015 (Director and Canon Guardians — decision authority)
@@ -20,42 +20,42 @@ NOTE: We need to retain ALL agent proposals, even if they are not accepted. This
 ## Acceptance Criteria
 
 ### Suggestion Artifacts (Spec 8.5)
-- [ ] Every suggestion is an immutable artifact with:
-  - [ ] **Source role**: who proposed it.
-  - [ ] **Related artifact**: scene, entity, or artifact the suggestion is about.
-  - [ ] **Proposal**: what is being suggested.
-  - [ ] **Confidence and rationale**: why, and how confident.
-  - [ ] **Lifecycle status**: proposed, accepted, rejected, deferred, superseded.
-- [ ] Suggestion lifecycle transitions:
-  - [ ] `proposed` → `accepted`: folded into canon, produces a new artifact version.
-  - [ ] `proposed` → `rejected`: declined, reason recorded.
-  - [ ] `proposed` → `deferred`: starred for later.
-  - [ ] `proposed`/`deferred` → `superseded`: a newer suggestion replaced this one.
-  - [ ] Each transition is recorded with who made the decision and why.
+- [x] Every suggestion is an immutable artifact with:
+  - [x] **Source role**: who proposed it.
+  - [x] **Related artifact**: scene, entity, or artifact the suggestion is about.
+  - [x] **Proposal**: what is being suggested.
+  - [x] **Confidence and rationale**: why, and how confident.
+  - [x] **Lifecycle status**: proposed, accepted, rejected, deferred, superseded.
+- [x] Suggestion lifecycle transitions:
+  - [x] `proposed` → `accepted`: folded into canon, produces a new artifact version.
+  - [x] `proposed` → `rejected`: declined, reason recorded.
+  - [x] `proposed` → `deferred`: starred for later.
+  - [x] `proposed`/`deferred` → `superseded`: a newer suggestion replaced this one.
+  - [x] Each transition is recorded with who made the decision and why.
 
 ### Deferred Suggestion Resurfacing
-- [ ] Deferred suggestions are resurfaced when their related scene or entity comes up for revision.
-- [ ] Resurfacing is automatic: when a scene is re-extracted or a bible entry is updated, related deferred suggestions are flagged for review.
+- [x] Deferred suggestions are resurfaced when their related scene or entity comes up for revision.
+- [x] Resurfacing is automatic: when a scene is re-extracted or a bible entry is updated, related deferred suggestions are flagged for review.
 
 ### Decision Artifacts (Spec 8.6)
-- [ ] Explicit decision artifacts recording:
-  - [ ] What was decided.
-  - [ ] By whom (role or human).
-  - [ ] Why (rationale).
-  - [ ] What alternatives were considered.
-  - [ ] What suggestions informed the decision.
-  - [ ] Links to affected artifacts.
-- [ ] Decisions are immutable and versioned.
+- [x] Explicit decision artifacts recording:
+  - [x] What was decided.
+  - [x] By whom (role or human).
+  - [x] Why (rationale).
+  - [x] What alternatives were considered.
+  - [x] What suggestions informed the decision.
+  - [x] Links to affected artifacts.
+- [x] Decisions are immutable and versioned.
 
 ### Suggestion Browsing
-- [ ] API to browse and search suggestions:
-  - [ ] Filter by role, artifact, status, confidence.
-  - [ ] Sort by recency, confidence, relevance.
-  - [ ] View suggestion history for a specific artifact.
-- [ ] Aggregate statistics: total suggestions, acceptance rate per role, deferred backlog size.
+- [x] API to browse and search suggestions:
+  - [x] Filter by role, artifact, status, confidence.
+  - [x] Sort by recency, confidence, relevance.
+  - [x] View suggestion history for a specific artifact.
+- [x] Aggregate statistics: total suggestions, acceptance rate per role, deferred backlog size.
 
 ### Schema
-- [ ] `Suggestion` Pydantic schema:
+- [x] `Suggestion` Pydantic schema:
   ```python
   class Suggestion(BaseModel):
       suggestion_id: str
@@ -73,16 +73,16 @@ NOTE: We need to retain ALL agent proposals, even if they are not accepted. This
       superseded_by: str | None     # suggestion_id of replacement
       created_at: datetime
   ```
-- [ ] `Decision` Pydantic schema.
-- [ ] Schemas registered in schema registry.
+- [x] `Decision` Pydantic schema.
+- [x] Schemas registered in schema registry.
 
 ### Testing
-- [ ] Unit tests for suggestion lifecycle transitions.
-- [ ] Unit tests for deferred suggestion resurfacing.
-- [ ] Unit tests for decision recording.
-- [ ] Unit tests for suggestion browsing and filtering.
-- [ ] Integration test: role generates suggestion → Director accepts → new artifact version created → decision recorded.
-- [ ] Schema validation on all outputs.
+- [x] Unit tests for suggestion lifecycle transitions.
+- [x] Unit tests for deferred suggestion resurfacing.
+- [x] Unit tests for decision recording.
+- [x] Unit tests for suggestion browsing and filtering.
+- [x] Integration test: role generates suggestion → Director accepts → new artifact version created → decision recorded.
+- [x] Schema validation on all outputs.
 
 ---
 
@@ -98,21 +98,25 @@ Suggestions will accumulate quickly. The browsing API needs to handle filtering 
 
 ## Tasks
 
-- [ ] Design and implement `Suggestion`, `Decision` schemas.
-- [ ] Register schemas in schema registry.
-- [ ] Implement suggestion creation and lifecycle transition API.
-- [ ] Implement deferred suggestion resurfacing logic.
-- [ ] Implement decision recording.
-- [ ] Implement suggestion browsing and filtering API.
-- [ ] Implement aggregate statistics.
-- [ ] Wire suggestion creation into role invocation flow.
-- [ ] Write unit tests for all components.
-- [ ] Write integration test.
-- [ ] Run `make test-unit` and `make lint`.
-- [ ] Update AGENTS.md with any lessons learned.
+- [x] Design and implement `Suggestion`, `Decision` schemas.
+- [x] Register schemas in schema registry.
+- [x] Implement suggestion creation and lifecycle transition API.
+- [x] Implement deferred suggestion resurfacing logic.
+- [x] Implement decision recording.
+- [x] Implement suggestion browsing and filtering API.
+- [x] Implement aggregate statistics.
+- [x] Wire suggestion creation into role invocation flow.
+- [x] Write unit tests for all components.
+- [x] Write integration test.
+- [x] Run `make test-unit` and `make lint`.
+- [x] Update AGENTS.md with any lessons learned.
 
 ---
 
 ## Work Log
 
 *(append-only)*
+
+20260220-1430 — implementation complete: added `Suggestion` and `Decision` schemas; implemented `SuggestionManager` for lifecycle management, resurfacing, and browsing; integrated suggestion creation into `RoleContext.invoke` so roles can emit suggestions in their JSON response; resurfaced deferred suggestions in `CanonGate` stage reviews; evidence=`src/cine_forge/schemas/suggestion.py`, `src/cine_forge/roles/suggestion.py`, `src/cine_forge/roles/runtime.py`, `src/cine_forge/roles/canon.py`.
+
+20260220-1445 — verification complete: added unit tests for suggestion creation, transitions, querying, and aggregate stats; added integration test for full suggestion-to-decision lifecycle including automated resurfacing; verified all tests pass and lint is clean; evidence=`tests/unit/test_suggestion_system.py`, `tests/integration/test_suggestion_integration.py`.

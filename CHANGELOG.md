@@ -1,5 +1,25 @@
 # Changelog
 
+## [2026-02-20] — Creative suggestion and editorial decision tracking (Story 017)
+
+### Added
+- New suggestion and decision schemas:
+  - `src/cine_forge/schemas/suggestion.py` (`Suggestion`, `Decision`, `SuggestionStatus`)
+- New suggestion management logic:
+  - `src/cine_forge/roles/suggestion.py` (`SuggestionManager` for lifecycle, querying, and stats)
+- Automated suggestion capture:
+  - `RoleContext.invoke` now automatically persists suggestions emitted in role responses as immutable artifacts.
+- Suggestion resurfacing:
+  - `CanonGate` now automatically resurfaces deferred suggestions during scene-stage reviews.
+- Story-017 coverage:
+  - `tests/unit/test_suggestion_system.py`
+  - `tests/integration/test_suggestion_integration.py`
+
+### Changed
+- `RoleResponse` schema now includes optional `suggestions` field.
+- `StageReviewArtifact` now includes `deferred_suggestions` list for auditability.
+- `DriverEngine` schema registry updated with `suggestion` and `decision` types.
+
 ## [2026-02-20] — Style Pack infrastructure and built-in example profiles (Story 016)
 
 ### Added

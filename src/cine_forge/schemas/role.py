@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from enum import StrEnum
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -86,6 +86,7 @@ class RoleResponse(BaseModel):
     override_justification: str | None = None
     included_roles: list[str] = Field(default_factory=list)
     objections: list[str] = Field(default_factory=list)
+    suggestions: list[dict[str, Any]] = Field(default_factory=list)
     cost_data: CostRecord | None = None
 
 
@@ -148,6 +149,7 @@ class StageReviewArtifact(BaseModel):
     guardian_reviews: list[GuardianReview] = Field(default_factory=list, min_length=2)
     director_review: DirectorReview
     disagreements: list[DisagreementRecord] = Field(default_factory=list)
+    deferred_suggestions: list[ArtifactRef] = Field(default_factory=list)
     user_approved: bool | None = None
     readiness: ReviewReadiness
     reviewed_at: datetime = Field(default_factory=lambda: datetime.now(UTC))

@@ -36,6 +36,7 @@ from cine_forge.schemas import (
     ContinuityIndex,
     ContinuityState,
     CostRecord,
+    Decision,
     EntityEdge,
     EntityGraph,
     LocationBible,
@@ -50,6 +51,7 @@ from cine_forge.schemas import (
     SchemaRegistry,
     StageReviewArtifact,
     StylePack,
+    Suggestion,
     Timeline,
     TrackManifest,
 )
@@ -108,6 +110,8 @@ class DriverEngine:
         self.schemas.register("role_response", RoleResponse)
         self.schemas.register("style_pack", StylePack)
         self.schemas.register("stage_review", StageReviewArtifact)
+        self.schemas.register("suggestion", Suggestion)
+        self.schemas.register("decision", Decision)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(
