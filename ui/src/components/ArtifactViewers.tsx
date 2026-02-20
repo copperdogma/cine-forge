@@ -1,4 +1,4 @@
-import { Users, MapPin, Film, Book, Globe, Package, Clock, ChevronRight, ShieldCheck, ShieldAlert, UserCheck } from 'lucide-react'
+import { Users, MapPin, Film, Book, Globe, Package, Clock, ChevronRight, ShieldCheck, ShieldAlert, UserCheck, CheckCircle2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -869,8 +869,8 @@ export function StageReviewViewer({ data, projectId }: { data: Record<string, un
   const stageId = getString(data, 'stage_id')
   const readiness = getString(data, 'readiness')
   const guardianReviews = getArray(data, 'guardian_reviews')
-  const directorReview = getObject(data, 'director_review')
-  const disagreements = getArray(data, 'disagreements')
+  const directorReview = getObject(data, 'director_review') as any
+  const disagreements = getArray(data, 'disagreements') as any[]
   const userApproved = data.user_approved === true
   
   const [feedback, setFeedback] = useState('')

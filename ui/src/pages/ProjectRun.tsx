@@ -20,7 +20,16 @@ import { cn } from '@/lib/utils'
 import { SceneStrip } from '@/components/SceneStrip'
 import { RunEventLog } from '@/components/RunEventLog'
 import type { RunEvent } from '@/components/RunEventLog'
-import { useUploadInput, useStartRun, useRunState, useRunEvents, useRecipes, useScenes, useProjectInputs } from '@/lib/hooks'
+import { 
+  useUploadInput, 
+  useStartRun, 
+  useRunState, 
+  useRunEvents, 
+  useRecipes, 
+  useScenes, 
+  useProjectInputs,
+  useProject
+} from '@/lib/hooks'
 import { toast } from 'sonner'
 
 // Fallback recipes in case API fails
@@ -100,7 +109,7 @@ export default function ProjectRun() {
   const { data: recipesData, isLoading: recipesLoading } = useRecipes()
   const { data: scenesData = [] } = useScenes(projectId)
   const { data: existingInputs } = useProjectInputs(projectId)
-  const { data: project } = useProject(projectId)
+  const { data: projectData } = useProject(projectId)
 
   // Use real recipes from API, fallback to hardcoded list if API fails
   const recipes = recipesData || fallbackRecipes
@@ -147,7 +156,7 @@ export default function ProjectRun() {
       default_model: defaultModel,
       ...(workModel && { work_model: workModel }),
       ...(verifyModel && { verify_model: verifyModel }),
-      human_control_mode: project?.human_control_mode ?? 'autonomous',
+      human_control_mode: projectData?.human_control_mode ?? 'autonomous',
       recipe_id: selectedRecipe,
       accept_config: true,
       ...(startFrom && { start_from: startFrom }),

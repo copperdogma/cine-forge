@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useMemo } from 'react'
-import { useArtifactGroups, useRuns, useArtifact } from '@/lib/hooks'
+import { useArtifactGroups, useRuns } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 
 type InboxItemType = 'stale' | 'review' | 'error' | 'gate_review'

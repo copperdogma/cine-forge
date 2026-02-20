@@ -49,7 +49,9 @@ export function useRunProgressChat(projectId: string | undefined) {
     (s) => (projectId ? s.activeRunId?.[projectId] ?? null : null),
   )
   const { data: runState } = useRunState(activeRunId ?? undefined)
-  const { data: runs } = useRuns(projectId)
+  const { data: runEvents } = useRunEvents(activeRunId ?? undefined)
+  const completedRef = useRef<Set<string>>(new Set())
+  const processedEventIdsRef = useRef<Set<string>>(new Set())
   const queryClient = useQueryClient()
 
   // Track which stages we've already notified as paused

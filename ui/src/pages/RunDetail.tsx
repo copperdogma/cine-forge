@@ -24,6 +24,7 @@ import { ErrorState } from '@/components/StateViews'
 import { cn } from '@/lib/utils'
 import type { StageState } from '@/lib/types'
 import { useRunState, useRunEvents, useRetryFailedStage, useResumeRun } from '@/lib/hooks'
+import { toast } from 'sonner'
 
 function statusBadge(status: string) {
   if (status === 'done' || status === 'skipped_reused') {
