@@ -17,7 +17,10 @@ class _IncrementalDiscovery(BaseModel):
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
-    canonical_script = inputs["canonical_script"]
+    canonical_script = inputs.get("normalize") or inputs.get("canonical_script")
+    if not canonical_script:
+        raise ValueError("entity_discovery_v1 requires canonical_script input")
+    
     script_text = canonical_script["script_text"]
     script_title = canonical_script.get("title", "Untitled")
     

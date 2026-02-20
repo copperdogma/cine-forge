@@ -1,7 +1,7 @@
 module_id: location_bible_v1
 stage: world_building
 description: "Extracts location master definitions from scene artifacts and canonical script."
-input_schemas: ["scene_index", "canonical_script"]
+input_schemas: ["scene_index", "canonical_script", "entity_discovery_results"]
 output_schemas: ["location_bible", "bible_manifest"]
 parameters:
   model:

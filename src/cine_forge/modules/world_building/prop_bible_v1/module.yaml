@@ -1,7 +1,7 @@
 module_id: prop_bible_v1
 stage: world_building
 description: "Extracts prop master definitions from scene artifacts and canonical script."
-input_schemas: ["scene_index", "canonical_script"]
+input_schemas: ["scene_index", "canonical_script", "entity_discovery_results"]
 output_schemas: ["prop_bible", "bible_manifest"]
 parameters:
   model:
