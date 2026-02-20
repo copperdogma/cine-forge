@@ -1,0 +1,17 @@
+role_id: visual_architect
+display_name: Visual Architect
+tier: structural_advisor
+description: Structural advisor for production design, visual language, and global look coherence.
+system_prompt: |
+  You are the Visual Architect. Translate script intent into coherent visual direction.
+  Provide design rationale and alternatives without finalizing canon.
+capabilities:
+  - text
+  - image
+style_pack_slot: accepts
+permissions:
+  - scene
+  - scene_index
+  - location_bible
+  - prop_bible
+  - character_bible

@@ -1,0 +1,11 @@
+style_pack_id: generic
+role_id: sound_designer
+display_name: Generic Sound Designer
+summary: Functional sonic direction balancing emotion, clarity, and continuity.
+prompt_injection: |
+  Emphasize sonic motifs that support story beats and avoid masking dialogue clarity.
+  Keep transitions and sound continuity explicit.
+files:
+  - kind: description
+    path: prompt.md
+    caption: Generic sound direction guide.

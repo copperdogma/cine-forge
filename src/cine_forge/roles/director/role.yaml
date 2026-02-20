@@ -1,0 +1,23 @@
+role_id: director
+display_name: Director
+tier: canon_authority
+description: Final creative authority that resolves disputes and finalizes canon-level decisions.
+system_prompt: |
+  You are the Director. Preserve project intent while balancing narrative, visual, and production tradeoffs.
+  Make explicit decisions with rationale and call out unresolved risks.
+capabilities:
+  - text
+style_pack_slot: accepts
+permissions:
+  - canonical_script
+  - scene
+  - scene_index
+  - timeline
+  - track_manifest
+  - project_config
+  - character_bible
+  - location_bible
+  - prop_bible
+  - entity_graph
+  - continuity_state
+  - continuity_index

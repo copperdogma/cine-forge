@@ -85,10 +85,16 @@ def get_assert(output: str, context: dict) -> dict:
         scores["scene_count"] = 1.0
     elif count_diff <= 2:
         scores["scene_count"] = 0.7
-        reasons.append(f"Count: {len(model_scenes)} vs {len(golden_scenes)} golden (off by {count_diff})")
+        reasons.append(
+            f"Count: {len(model_scenes)} vs {len(golden_scenes)} golden "
+            f"(off by {count_diff})"
+        )
     else:
         scores["scene_count"] = max(0.0, 1.0 - (count_diff / len(golden_scenes)))
-        reasons.append(f"Count: {len(model_scenes)} vs {len(golden_scenes)} golden (off by {count_diff})")
+        reasons.append(
+            f"Count: {len(model_scenes)} vs {len(golden_scenes)} golden "
+            f"(off by {count_diff})"
+        )
 
     # --- 5. Heading matching ---
     matched = 0
@@ -113,7 +119,9 @@ def get_assert(output: str, context: dict) -> dict:
 
     if golden_scenes:
         scores["heading_match"] = matched / len(golden_scenes)
-        scores["heading_quality"] = sum(heading_scores) / len(heading_scores) if heading_scores else 0.0
+        scores["heading_quality"] = (
+            sum(heading_scores) / len(heading_scores) if heading_scores else 0.0
+        )
 
     if matched < len(golden_scenes):
         reasons.append(f"Matched {matched}/{len(golden_scenes)} headings")
@@ -143,7 +151,15 @@ def get_assert(output: str, context: dict) -> dict:
     scores["summary_completeness"] = summaries_present / len(model_scenes) if model_scenes else 0.0
 
     # --- 8. Field completeness ---
-    required_fields = ["scene_number", "heading", "int_ext", "location", "time_of_day", "summary", "characters"]
+    required_fields = [
+        "scene_number",
+        "heading",
+        "int_ext",
+        "location",
+        "time_of_day",
+        "summary",
+        "characters",
+    ]
     field_scores = []
     for ms in model_scenes:
         present = sum(1 for f in required_fields if f in ms and ms[f] is not None)

@@ -55,7 +55,9 @@ def get_assert(output: str, context: dict) -> dict:
     # --- 1. Scene headings present and ALL CAPS ---
     expected_scenes = golden.get("expected_scenes", [])
     scene_heading_pattern = re.compile(r"^\s*(INT\.|EXT\.|INT\./EXT\.)\s+.+", re.IGNORECASE)
-    found_headings = [l.strip() for l in lines if scene_heading_pattern.match(l.strip())]
+    found_headings = [
+        line.strip() for line in lines if scene_heading_pattern.match(line.strip())
+    ]
     uppercase_headings = [h for h in found_headings if h == h.upper()]
 
     if expected_scenes:
@@ -73,7 +75,7 @@ def get_assert(output: str, context: dict) -> dict:
         if matched < len(expected_scenes):
             reasons.append(f"Headings: {matched}/{len(expected_scenes)} matched")
         if uppercase_ratio < 1.0:
-            reasons.append(f"Non-uppercase headings found")
+            reasons.append("Non-uppercase headings found")
     else:
         scores["scene_headings"] = 1.0 if found_headings else 0.0
 
@@ -149,9 +151,13 @@ def get_assert(output: str, context: dict) -> dict:
 
     # Parentheticals in parens
     paren_pattern = re.compile(r"^\s*\([^)]+\)\s*$")
-    parens_found = [l for l in lines if paren_pattern.match(l)]
+    parens_found = [line for line in lines if paren_pattern.match(line)]
     # If source had parentheticals, check they're formatted
-    if "trying to sound calm" in text_lower or "half-smiling" in text_lower or "half smiling" in text_lower:
+    if (
+        "trying to sound calm" in text_lower
+        or "half-smiling" in text_lower
+        or "half smiling" in text_lower
+    ):
         has_parens = len(parens_found) > 0
         structure_score += 1.0 if has_parens else 0.0
         checks += 1

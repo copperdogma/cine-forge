@@ -43,9 +43,12 @@ from cine_forge.schemas import (
     PropBible,
     QAResult,
     RawInput,
+    RoleDefinition,
+    RoleResponse,
     Scene,
     SceneIndex,
     SchemaRegistry,
+    StylePack,
     Timeline,
     TrackManifest,
 )
@@ -100,6 +103,9 @@ class DriverEngine:
         self.schemas.register("continuity_state", ContinuityState)
         self.schemas.register("continuity_index", ContinuityIndex)
         self.schemas.register("qa_result", QAResult)
+        self.schemas.register("role_definition", RoleDefinition)
+        self.schemas.register("role_response", RoleResponse)
+        self.schemas.register("style_pack", StylePack)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(

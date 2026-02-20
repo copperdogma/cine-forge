@@ -50,6 +50,15 @@ from .registry import (
     ValidationResult,
     validate_against_schema,
 )
+from .role import (
+    PerceptionCapability,
+    RoleDefinition,
+    RoleResponse,
+    RoleTier,
+    StylePack,
+    StylePackFileRef,
+    StylePackSlot,
+)
 from .scene import (
     FieldProvenance,
     InferredField,
@@ -100,6 +109,13 @@ __all__ = [
     "RawInput",
     "QAIssue",
     "QAResult",
+    "RoleDefinition",
+    "RoleResponse",
+    "StylePack",
+    "StylePackFileRef",
+    "RoleTier",
+    "PerceptionCapability",
+    "StylePackSlot",
     "ScriptElement",
     "SourceSpan",
     "NarrativeBeat",

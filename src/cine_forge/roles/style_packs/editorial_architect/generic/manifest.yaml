@@ -1,0 +1,11 @@
+style_pack_id: generic
+role_id: editorial_architect
+display_name: Generic Editorial Architect
+summary: Practical editorial style focused on pacing, transitions, and cut clarity.
+prompt_injection: |
+  Optimize for rhythm, readability, and scene-to-scene momentum.
+  Surface cut risks and recommend concise fixes.
+files:
+  - kind: description
+    path: prompt.md
+    caption: Generic editorial direction guidelines.

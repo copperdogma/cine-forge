@@ -82,19 +82,29 @@ def get_assert(output: str, context: dict) -> dict:
     if not golden:
         # Try partial match
         for k in all_golden:
-            if normalize(character_name) in normalize(k) or normalize(k) in normalize(character_name):
+            if (
+                normalize(character_name) in normalize(k)
+                or normalize(k) in normalize(character_name)
+            ):
                 golden = all_golden[k]
                 break
 
     if not golden:
-        return {"pass": False, "score": 0, "reason": f"No golden data for character: {character_name}"}
+        return {
+            "pass": False,
+            "score": 0,
+            "reason": f"No golden data for character: {character_name}",
+        }
 
     # --- 3. Narrative role ---
     model_role = (result.get("narrative_role") or "").lower().strip()
     expected_role = golden["narrative_role"].lower()
     if model_role == expected_role:
         scores["narrative_role"] = 1.0
-    elif model_role in ("protagonist", "supporting") and expected_role in ("protagonist", "supporting"):
+    elif (
+        model_role in ("protagonist", "supporting")
+        and expected_role in ("protagonist", "supporting")
+    ):
         # Close enough — co-protagonist vs supporting is debatable
         scores["narrative_role"] = 0.7
         reasons.append(f"Role: '{model_role}' vs expected '{expected_role}'")

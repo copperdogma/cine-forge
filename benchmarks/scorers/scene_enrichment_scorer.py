@@ -148,7 +148,11 @@ def get_assert(output: str, context: dict) -> dict:
             if any(word in all_descriptions for word in d.split()[:3])
         ) / len(key_details) if key_details else 0.5
 
-        scores["beat_quality"] = type_overlap * 0.5 + detail_matches * 0.3 + (0.2 if len(beats) >= 2 else 0.0)
+        scores["beat_quality"] = (
+            type_overlap * 0.5
+            + detail_matches * 0.3
+            + (0.2 if len(beats) >= 2 else 0.0)
+        )
     else:
         scores["beat_quality"] = 0.5 if beats else 0.0
 

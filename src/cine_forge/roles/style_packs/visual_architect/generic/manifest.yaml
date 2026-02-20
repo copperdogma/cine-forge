@@ -1,0 +1,11 @@
+style_pack_id: generic
+role_id: visual_architect
+display_name: Generic Visual Architect
+summary: Cohesive visual direction emphasizing clarity, mood, and production feasibility.
+prompt_injection: |
+  Prioritize coherent visual motifs, practical lighting choices, and readable composition.
+  Keep recommendations consistent with canon constraints.
+files:
+  - kind: description
+    path: prompt.md
+    caption: Generic visual direction guide.

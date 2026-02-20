@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-02-20] - Role system foundation infrastructure for AI persona runtime (Story 014)
+
+### Added
+- New role-system schemas for hierarchy/runtime/style-pack contracts:
+  - `src/cine_forge/schemas/role.py` (`RoleDefinition`, `RoleResponse`, `StylePack`)
+- New role runtime implementation:
+  - `src/cine_forge/roles/runtime.py` (`RoleCatalog`, `RoleContext`, hierarchy + capability gates, invocation audit logging)
+- Skeleton role definitions for Director, Script Supervisor, Continuity Supervisor, Editorial Architect, Visual Architect, Sound Designer, and Actor Agent under `src/cine_forge/roles/*/role.yaml`.
+- Generic default style packs for style-pack-accepting roles under `src/cine_forge/roles/style_packs/*/generic/`.
+- Story-014 coverage:
+  - `tests/unit/test_role_system.py`
+  - `tests/integration/test_role_system_integration.py`
+
+### Changed
+- Driver schema registry now includes `role_definition`, `role_response`, and `style_pack` (`src/cine_forge/driver/engine.py`).
+- Schema exports updated to include role-system types (`src/cine_forge/schemas/__init__.py`).
+- Role permission semantics aligned to artifact-type scope; model capability checks now validate invocation-requested media types.
+- Story tracking updated with Story 014 marked done and full completion evidence (`docs/stories/story-014-role-system-foundation.md`, `docs/stories.md`).
+
 ## [2026-02-20] - Track system artifact and always-playable backend resolution (Story 013)
 
 ### Added

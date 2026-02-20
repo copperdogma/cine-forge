@@ -112,7 +112,11 @@ def get_assert(output: str, context: dict) -> dict:
     scores["must_find_recall"] = (0.6 * critical_ratio) + (0.4 * overall_ratio)
 
     if found_count < min_must_find:
-        reasons.append(f"Only found {found_count}/{len(must_find)} must-find relationships (min: {min_must_find})")
+        reasons.append(
+            "Only found "
+            f"{found_count}/{len(must_find)} must-find relationships "
+            f"(min: {min_must_find})"
+        )
 
     # 4. Evidence quality
     evidence_scores = []
@@ -133,7 +137,9 @@ def get_assert(output: str, context: dict) -> dict:
             avg_len = sum(len(str(e)) for e in ev) / len(ev)
             specificity = min(1.0, avg_len / 40)  # 40+ chars = full score
             evidence_scores.append(min(1.0, 0.5 + 0.5 * specificity))
-    scores["evidence_quality"] = sum(evidence_scores) / len(evidence_scores) if evidence_scores else 0.0
+    scores["evidence_quality"] = (
+        sum(evidence_scores) / len(evidence_scores) if evidence_scores else 0.0
+    )
 
     # 5. Relationship type accuracy
     # Check that types are meaningful labels, not empty or generic
@@ -150,7 +156,9 @@ def get_assert(output: str, context: dict) -> dict:
             type_scores.append(0.3)
         else:
             type_scores.append(1.0)
-    scores["relationship_type_accuracy"] = sum(type_scores) / len(type_scores) if type_scores else 0.0
+    scores["relationship_type_accuracy"] = (
+        sum(type_scores) / len(type_scores) if type_scores else 0.0
+    )
 
     # 6. Direction accuracy
     valid_dirs = {"symmetric", "source_to_target", "target_to_source"}
@@ -199,7 +207,11 @@ def get_assert(output: str, context: dict) -> dict:
     total = sum(scores.get(k, 0) * w for k, w in weights.items())
 
     detail_parts = [f"{k}={v:.2f}" for k, v in sorted(scores.items())]
-    detail = f"Found {found_count}/{len(must_find)} must-find ({critical_found}/{len(critical)} critical), {edge_count} total edges. " + ", ".join(detail_parts)
+    detail = (
+        f"Found {found_count}/{len(must_find)} must-find "
+        f"({critical_found}/{len(critical)} critical), {edge_count} total edges. "
+        + ", ".join(detail_parts)
+    )
     if reasons:
         detail += " | " + "; ".join(reasons)
 
