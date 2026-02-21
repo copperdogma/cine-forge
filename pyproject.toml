@@ -17,6 +17,7 @@ dependencies = [
   "uvicorn>=0.30.0",
   "python-multipart>=0.0.9",
   "python-docx",
+  "fpdf2>=2.7.0",
 ]
 
 [project.optional-dependencies]
