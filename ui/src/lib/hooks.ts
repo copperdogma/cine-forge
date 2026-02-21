@@ -36,6 +36,7 @@ export interface Scene {
   intExt: 'INT' | 'EXT' | 'INT/EXT'
   timeOfDay: string
   summary: string
+  data?: Record<string, unknown>
 }
 
 // --- Search ---
@@ -615,6 +616,7 @@ function transformArtifactToScene(artifact: ArtifactDetailResponse, entityId: st
     intExt,
     timeOfDay: timeOfDay.toUpperCase(),
     summary,
+    data: data,
   }
 }
 
@@ -661,6 +663,7 @@ export function useScenes(projectId: string | undefined) {
           intExt,
           timeOfDay: timeOfDay.toUpperCase(),
           summary,
+          data: sceneData,
         })
       })
     } else {

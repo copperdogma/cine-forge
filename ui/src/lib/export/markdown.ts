@@ -32,6 +32,28 @@ export function generateSceneMarkdown(scene: Scene): string {
   md += generateMetadata('Time', scene.timeOfDay)
   md += generateMetadata('Scene Number', scene.index)
   md += generateMetadata('Summary', scene.summary)
+
+  const data = scene.data || {}
+  
+  if (data.characters_present) {
+      md += generateList('Characters Present', data.characters_present as string[])
+  }
+  if (data.props_present) {
+      md += generateList('Props Present', data.props_present as string[])
+  }
+  if (data.atmosphere) {
+      md += generateMetadata('Atmosphere', data.atmosphere as string)
+  }
+  if (data.plot_point) {
+      md += generateMetadata('Plot Point', data.plot_point as string)
+  }
+  if (data.visual_details) {
+      md += generateList('Visual Details', data.visual_details as string[])
+  }
+  if (data.audio_details) {
+      md += generateList('Audio Details', data.audio_details as string[])
+  }
+
   return md
 }
 
@@ -56,7 +78,6 @@ export function generateCharacterMarkdown(character: EnrichedEntity): string {
     md += generateList('Inferred Traits', data.inferred_traits as string[])
   }
 
-  // Evidence is usually a list of strings or objects. Handling strings for now.
   if (data.evidence && Array.isArray(data.evidence)) {
      md += `**Evidence:**\n`;
      (data.evidence as Array<string | { quote?: string }>).forEach((ev) => {
@@ -98,6 +119,18 @@ export function generateLocationMarkdown(location: EnrichedEntity): string {
     md += generateList('Inferred Traits', data.inferred_traits as string[])
   }
 
+  if (data.evidence && Array.isArray(data.evidence)) {
+     md += `**Evidence:**\n`;
+     (data.evidence as Array<string | { quote?: string }>).forEach((ev) => {
+         if (typeof ev === 'string') {
+             md += `- ${ev}\n`
+         } else if (ev && typeof ev === 'object' && ev.quote) {
+             md += `- "${ev.quote}"\n`
+         }
+     })
+     md += '\n'
+  }
+
   md += generateMetadata('Scene Count', location.sceneCount)
   
   if (data.scene_presence) {
@@ -121,6 +154,18 @@ export function generatePropMarkdown(prop: EnrichedEntity): string {
 
   if (data.inferred_traits) {
     md += generateList('Inferred Traits', data.inferred_traits as string[])
+  }
+
+  if (data.evidence && Array.isArray(data.evidence)) {
+     md += `**Evidence:**\n`;
+     (data.evidence as Array<string | { quote?: string }>).forEach((ev) => {
+         if (typeof ev === 'string') {
+             md += `- ${ev}\n`
+         } else if (ev && typeof ev === 'object' && ev.quote) {
+             md += `- "${ev.quote}"\n`
+         }
+     })
+     md += '\n'
   }
 
   md += generateMetadata('Scene Count', prop.sceneCount)
