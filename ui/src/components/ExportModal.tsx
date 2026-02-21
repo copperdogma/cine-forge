@@ -1,8 +1,9 @@
+import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { exportMarkdown, getExportUrl, type ExportScope } from '@/lib/api'
 import { toast } from 'sonner'
-import { FileDown, Copy, FileText } from 'lucide-react'
+import { FileDown, Copy, FileText, CheckSquare, Square } from 'lucide-react'
 
 interface ExportModalProps {
   isOpen: boolean
@@ -13,6 +14,8 @@ interface ExportModalProps {
   entityType?: 'scene' | 'character' | 'location' | 'prop'
 }
 
+type ExportComponent = 'script' | 'scenes' | 'characters' | 'locations' | 'props'
+
 export function ExportModal({
   isOpen,
   onClose,
@@ -21,12 +24,28 @@ export function ExportModal({
   entityId,
   entityType
 }: ExportModalProps) {
-  // Determine effective scope based on props (no user selection anymore)
   const scope = defaultScope
+  const [selectedComponents, setSelectedComponents] = useState<ExportComponent[]>([
+    'script', 'scenes', 'characters', 'locations', 'props'
+  ])
+
+  const toggleComponent = (comp: ExportComponent) => {
+    setSelectedComponents(prev => 
+      prev.includes(comp) ? prev.filter(c => c !== comp) : [...prev, comp]
+    )
+  }
+
+  const toggleAll = () => {
+    if (selectedComponents.length === 5) {
+      setSelectedComponents([])
+    } else {
+      setSelectedComponents(['script', 'scenes', 'characters', 'locations', 'props'])
+    }
+  }
 
   const handleCopyMarkdown = async () => {
     try {
-      const content = await exportMarkdown(projectId, scope, entityId, entityType)
+      const content = await exportMarkdown(projectId, scope, entityId, entityType, selectedComponents)
       await navigator.clipboard.writeText(content)
       toast.success('Copied Markdown to clipboard')
       onClose()
@@ -37,8 +56,7 @@ export function ExportModal({
   }
 
   const handleDownloadMarkdown = () => {
-    // Trigger browser download by navigating to the API endpoint
-    window.location.href = getExportUrl(projectId, 'markdown', scope, entityId, entityType)
+    window.location.href = getExportUrl(projectId, 'markdown', scope, entityId, entityType, selectedComponents)
     toast.success('Download started')
     onClose()
   }
@@ -73,15 +91,42 @@ export function ExportModal({
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>
           <DialogDescription>
-            Select an export format.
+            Select content and format.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col gap-3 py-4">
+        {scope === 'everything' && (
+          <div className="space-y-3 py-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Include:</span>
+              <Button variant="ghost" size="sm" onClick={toggleAll} className="h-6 text-xs px-2">
+                {selectedComponents.length === 5 ? 'Check None' : 'Check All'}
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {(['script', 'scenes', 'characters', 'locations', 'props'] as ExportComponent[]).map(comp => (
+                <div 
+                  key={comp} 
+                  className="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-accent/50 border border-transparent hover:border-border transition-colors"
+                  onClick={() => toggleComponent(comp)}
+                >
+                  {selectedComponents.includes(comp) 
+                    ? <CheckSquare className="h-4 w-4 text-primary" /> 
+                    : <Square className="h-4 w-4 text-muted-foreground" />
+                  }
+                  <span className="text-sm capitalize">{comp}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-col gap-3 py-2">
           <Button
             variant="outline"
             className="justify-start h-auto py-3 px-4"
             onClick={handleCopyMarkdown}
+            disabled={scope === 'everything' && selectedComponents.length === 0}
           >
             <Copy className="mr-2 h-4 w-4" />
             <div className="text-left">
@@ -93,6 +138,7 @@ export function ExportModal({
             variant="outline"
             className="justify-start h-auto py-3 px-4"
             onClick={handleDownloadMarkdown}
+            disabled={scope === 'everything' && selectedComponents.length === 0}
           >
             <FileDown className="mr-2 h-4 w-4" />
             <div className="text-left">

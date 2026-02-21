@@ -199,33 +199,63 @@ class MarkdownExporter:
         scenes: List[Dict[str, Any]],
         characters: Dict[str, Dict[str, Any]],
         locations: Dict[str, Dict[str, Any]],
-        props: Dict[str, Dict[str, Any]]
+        props: Dict[str, Dict[str, Any]],
+        script_content: str = "",
+        include: Optional[List[str]] = None
     ) -> str:
+        # Default to everything except script (unless explicit) if include is None
+        # Actually, user wants granularity. If include is passed, respect it.
+        # If None, standard behavior (everything?). Let's say default is ALL except script unless asked?
+        # Requirement: "In the everything section we need checkboxes... defaulting to everything checked."
+        # So "everything" usually implies scenes, chars, etc.
+        # "Script" is separate.
+        
+        if include is None:
+            include = ["scenes", "characters", "locations", "props"]
+
         md = generate_header(project_name, 1)
         md += generate_metadata("Project ID", project_id)
-        md += generate_metadata("Total Scenes", len(scenes))
-        md += generate_metadata("Characters", len(characters))
-        md += generate_metadata("Locations", len(locations))
-        md += generate_metadata("Props", len(props))
+        
+        # Summary counts
+        if "scenes" in include:
+            md += generate_metadata("Total Scenes", len(scenes))
+        if "characters" in include:
+            md += generate_metadata("Characters", len(characters))
+        if "locations" in include:
+            md += generate_metadata("Locations", len(locations))
+        if "props" in include:
+            md += generate_metadata("Props", len(props))
         md += "---\n\n"
 
-        md += generate_header("Scenes", 1)
-        for i, scene in enumerate(scenes):
-            # scene might be wrapped or raw
-            # Standardize index handling
-            idx = scene.get("scene_number") or (i + 1)
-            md += self.generate_scene_markdown(scene, idx) + "---\n\n"
+        # Script
+        if "script" in include and script_content:
+            md += generate_header("Screenplay", 1)
+            md += f"```fountain\n{script_content}\n```\n\n"
+            md += "---\n\n"
 
-        md += generate_header("Characters", 1)
-        for char_id, char_data in characters.items():
-            md += self.generate_entity_markdown(char_data, char_id, "Character") + "---\n\n"
+        # Scenes
+        if "scenes" in include:
+            md += generate_header("Scenes", 1)
+            for i, scene in enumerate(scenes):
+                idx = scene.get("scene_number") or (i + 1)
+                md += self.generate_scene_markdown(scene, idx) + "---\n\n"
 
-        md += generate_header("Locations", 1)
-        for loc_id, loc_data in locations.items():
-            md += self.generate_entity_markdown(loc_data, loc_id, "Location") + "---\n\n"
+        # Characters
+        if "characters" in include:
+            md += generate_header("Characters", 1)
+            for char_id, char_data in characters.items():
+                md += self.generate_entity_markdown(char_data, char_id, "Character") + "---\n\n"
 
-        md += generate_header("Props", 1)
-        for prop_id, prop_data in props.items():
-            md += self.generate_entity_markdown(prop_data, prop_id, "Prop") + "---\n\n"
+        # Locations
+        if "locations" in include:
+            md += generate_header("Locations", 1)
+            for loc_id, loc_data in locations.items():
+                md += self.generate_entity_markdown(loc_data, loc_id, "Location") + "---\n\n"
+
+        # Props
+        if "props" in include:
+            md += generate_header("Props", 1)
+            for prop_id, prop_data in props.items():
+                md += self.generate_entity_markdown(prop_data, prop_id, "Prop") + "---\n\n"
 
         return md

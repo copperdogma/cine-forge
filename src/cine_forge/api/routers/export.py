@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated, Literal, List
 from pathlib import Path
 import tempfile
 import shutil
@@ -72,12 +72,22 @@ def load_all_artifacts(store: ArtifactStore):
 
     return scenes, characters, locations, props
 
+def load_script_content(store: ArtifactStore) -> str:
+    # Try canonical script
+    versions = store.list_versions("canonical_script", "project")
+    if versions:
+        latest = sorted(versions, key=lambda r: r.version)[-1]
+        data = store.load_artifact(latest).data
+        return data.get("content") or data.get("text") or ""
+    return ""
+
 @router.get("/markdown")
 def export_markdown(
     project_id: str,
     scope: Annotated[ExportScope, Query()] = "everything",
     entity_id: str | None = None,
-    entity_type: str | None = None # scene, character, location, prop
+    entity_type: str | None = None, # scene, character, location, prop
+    include: Annotated[List[str] | None, Query()] = None
 ):
     store = get_store(project_id)
     exporter = MarkdownExporter()
@@ -111,13 +121,27 @@ def export_markdown(
     filename = f"{project_id}-export.md"
 
     if scope == "everything":
+        # Resolve include list
+        # If include is provided, use it. If not, default to "scenes, characters, locations, props" (standard everything)
+        # But if user wants "Script", they must ask for it or it must be in default?
+        # User said: "default to everything checked". So if include is missing, we assume ALL including script?
+        # Or does UI send explicit list?
+        # Let's say if include is None, we include artifacts. Script is optional?
+        # Actually, let's make `include` the source of truth if provided.
+        
+        script_content = ""
+        if include and "script" in include:
+            script_content = load_script_content(store)
+        
         md = exporter.generate_project_markdown(
             project_name=project_id, # TODO: Get real display name
             project_id=project_id,
             scenes=scenes,
             characters=characters,
             locations=locations,
-            props=props
+            props=props,
+            script_content=script_content,
+            include=include
         )
     elif scope == "scenes":
         md = exporter.generate_header("Scenes", 1)

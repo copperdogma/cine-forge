@@ -129,6 +129,12 @@ Based on industry standard (reference PDF on file):
 - [x] Update `ExportModal.tsx` to use API endpoints for download/copy
 - [x] Delete legacy `ui/src/lib/export/` directory (cleanup)
 
+### Refinements (Round 2)
+- [ ] **Granular Selection:** For "Project" scope, allow selecting specific components to export (Script, Scenes, Characters, Locations, Props). Default to All.
+- [ ] **Check All/None:** Provide convenience controls for selection.
+- [ ] **Script-Only Export:** Add a dedicated, top-level option or ensure it's easily selectable (e.g., just "Script" checked) for exporting the raw screenplay content.
+- [ ] **Backend Support:** Update API to accept a list of included components (e.g., `?include=script,scenes,characters`).
+
 ## Acceptance Criteria
 
 - [x] **Headless:** User/AI can export any artifact format via CLI without launching the UI.

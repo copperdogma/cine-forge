@@ -427,6 +427,21 @@ export function getArtifact(
   )
 }
 
+export function editArtifact(
+  projectId: string,
+  artifactType: string,
+  entityId: string,
+  payload: ArtifactEditRequest,
+): Promise<ArtifactEditResponse> {
+  return request<ArtifactEditResponse>(
+    `/api/projects/${projectId}/artifacts/${artifactType}/${entityId}/edit`,
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    },
+  )
+}
+
 // --- Export ---
 
 export type ExportScope = 'everything' | 'scenes' | 'characters' | 'locations' | 'props' | 'single'
@@ -438,12 +453,16 @@ export function getExportUrl(
   scope: ExportScope = 'everything',
   entityId?: string,
   entityType?: string,
+  include?: string[],
 ): string {
   const params = new URLSearchParams()
   if (format === 'markdown') {
     params.set('scope', scope)
     if (entityId) params.set('entity_id', entityId)
     if (entityType) params.set('entity_type', entityType)
+    if (include && include.length > 0) {
+        include.forEach(i => params.append('include', i))
+    }
     return `${API_BASE}/api/projects/${projectId}/export/markdown?${params.toString()}`
   } else {
     // PDF
@@ -458,8 +477,9 @@ export async function exportMarkdown(
   scope: ExportScope = 'everything',
   entityId?: string,
   entityType?: string,
+  include?: string[],
 ): Promise<string> {
-  const url = getExportUrl(projectId, 'markdown', scope, entityId, entityType)
+  const url = getExportUrl(projectId, 'markdown', scope, entityId, entityType, include)
   const response = await fetch(url)
   if (!response.ok) {
     throw new ApiRequestError(`Export failed (${response.status})`)
