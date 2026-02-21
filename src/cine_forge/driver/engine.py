@@ -1026,10 +1026,10 @@ class DriverEngine:
         for input_key, artifact_type in stage.store_inputs_all.items():
             entities = self.store.list_entities(artifact_type=artifact_type)
             if not entities:
-                raise ValueError(
-                    f"Stage '{stage_id}' store_inputs_all '{input_key}' requires "
-                    f"artifact type '{artifact_type}', but none exist in the store."
-                )
+                # Permissive: if no entities exist, just return empty list.
+                # This allows "Refine Mode" to work on a fresh run (bootstrapping from nothing).
+                collected[input_key] = []
+                continue
             
             all_data = []
             for ent_id in entities:
