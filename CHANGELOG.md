@@ -4,20 +4,23 @@
 
 ### Added
 - New `entity_discovery_v1` module implementing an incremental AI-first "sliding window" discovery pass.
+- Supports **Refine Mode** in `entity_discovery_v1` — can bootstrap from existing `character_bible`, `location_bible`, and `prop_bible` artifacts to extend or normalize them.
 - `EntityDiscoveryResults` schema for consolidated candidate tracking.
 - Benchmark tasks for Liberty & Church: Golden list generation, prompt comparison, and Haiku discovery validation.
-- Golden entity dataset for 60-page Liberty & Church pilot.
-- Added "Re-run Deep Breakdown" button to chat interface after project completion.
+- Added "Refine World Model" action button to chat interface after project completion.
 
 ### Changed
-- `world_building` recipe now includes `entity_discovery` as a prerequisite stage.
+- `world_building` recipe now includes `entity_discovery` as a prerequisite stage and optionally re-ingests existing bibles.
 - `character_bible_v1`, `location_bible_v1`, and `prop_bible_v1` now prioritize candidates from the discovery pass.
 - `scene_extract_v1` now enforces narrative analysis (beats, tone) during the enrichment pass.
-- Centralized pipeline stage ordering logic to ensure "Entity Discovery" consistently appears as the first stage in "World Building" across all UI views (chat progress cards and full-page run details).
+- Centralized pipeline stage ordering logic to ensure "Entity Discovery" consistently appears as the first stage in "World Building" across all UI views.
+- Standardized `ProjectRun` layout width to `max-w-5xl` for visual consistency.
 
 ### Fixed
 - Fixed sparse scene analysis in long screenplays by ensuring narrative fields trigger AI enrichment.
-- Resolved unit test regression in `scene_extract_v1` via new `skip_enrichment` parameter.
+- Resolved "black screen" crash in `ProjectRun.tsx` caused by race conditions during stage loading.
+- Cleared critical UI lint debt: fixed conditional hooks, declaration order, and forbidden ref access during render.
+- Improved schema validation resilience in the driver pipeline.
 
 ## [2026-02-20-03] — Entity Prev/Next Navigation (Story 057)
 
