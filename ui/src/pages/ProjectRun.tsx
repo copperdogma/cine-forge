@@ -182,7 +182,7 @@ export default function ProjectRun() {
     const stageIds = getOrderedStageIds(recipeId, Object.keys(stages))
 
     const isRunning = Object.values(stages).some((s) => s.status === 'running')
-    const isCompleted = stageIds.length > 0 && stageIds.every((id) => stages[id].status === 'done' || stages[id].status === 'skipped_reused')
+    const isCompleted = stageIds.length > 0 && stageIds.every((id) => stages[id]?.status === 'done' || stages[id]?.status === 'skipped_reused')
     const hasFailed = Object.values(stages).some((s) => s.status === 'failed')
 
     const getBadgeVariant = () => {
@@ -229,7 +229,7 @@ export default function ProjectRun() {
     }
 
     return (
-      <div>
+      <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight mb-1">Pipeline Running</h1>
@@ -255,13 +255,14 @@ export default function ProjectRun() {
 
         <Card>
           <CardContent className="py-4 px-0">
-            {stageEntries.length === 0 && (
+            {stageIds.length === 0 && (
               <div className="px-4 py-8 text-center text-sm text-muted-foreground">
                 {runStateLoading ? 'Loading run state...' : 'No stages found'}
               </div>
             )}
             {stageIds.map((stageId, i) => {
               const stage = stages[stageId]
+              if (!stage) return null
               const status = getStageStatus(stage.status)
               const duration = formatDuration(stage.duration_seconds)
               const cost = formatCost(stage.cost_usd)
@@ -330,7 +331,7 @@ export default function ProjectRun() {
   }
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold tracking-tight mb-1">Pipeline</h1>
       <p className="text-muted-foreground text-sm mb-6">
         Configure and run the CineForge pipeline

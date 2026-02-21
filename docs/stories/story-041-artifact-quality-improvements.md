@@ -201,4 +201,5 @@ Later scenes (from "Int. Abe's Office" onward) have noticeably sparser analysis 
 20260220-1630 — implementation: Created `entity_discovery_v1` module. Updated `world_building` recipe. Wired Bible modules to use discovery results. Fixed sparse scene analysis in `scene_extract_v1`. Verified via unit tests and promptfoo benchmarks.
 20260220-1730 — UI fix: Updated `RunProgressCard` and `chat-messages.ts` to correctly order and label the new discovery stage in the progress UI. Verified via build.
 20260220-1815 — UI fix: Centralized stage ordering in `lib/constants.ts` and applied to `ProjectRun.tsx` to ensure "Entity Discovery" is correctly positioned in the full-page run view. Humanized stage names in full-page view.
-20260220-1830 — completion: Final validation passed. Story marked Done and CHANGELOG updated.
+20260220-1845 — UI fix: Applied `max-w-5xl` constraint to `ProjectRun.tsx` to match other full-panel views and added safety null-checks to prevent runtime crashes during data loading. Verified via build.
+20260220-1900 — completion: Final validation passed. Story marked Done and CHANGELOG updated.
