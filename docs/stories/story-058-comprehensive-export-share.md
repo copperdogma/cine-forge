@@ -108,48 +108,34 @@ Based on industry standard (reference PDF on file):
 
 ## Tasks
 
-### Core Export Infrastructure
-- [x] Design export data model — what data structure feeds all format renderers
-- [x] Create `useExportData` hook to assemble artifact data for export
-- [x] Create `ExportModal` component with scope + format selection
-- [x] Wire Export button into entity detail pages, list pages, and sidebar
+### Backend Infrastructure (Python)
+- [ ] Add `fpdf2` dependency to `pyproject.toml`
+- [ ] Create `src/cine_forge/export/` module
+- [ ] Implement `MarkdownExporter` class (ports logic from UI prototype, supports all entity types)
+- [ ] Implement `PDFExporter` class using `fpdf2` (supports Project Report and Call Sheet layouts)
+- [ ] **Verification:** Write script `scripts/verify_backend_export.py` to generate files from `lc-2` and manually verify contents.
 
-### Markdown Export
-- [x] Build markdown renderer for each entity type (scene, character, location, prop)
-- [x] Build project-level markdown renderer (combines all entities)
-- [x] Implement clipboard copy with toast confirmation
-- [x] Implement .md file download
+### API Layer
+- [ ] Create `src/cine_forge/api/routers/export.py`
+- [ ] Implement `GET /api/projects/{id}/export/markdown` endpoint
+- [ ] Implement `GET /api/projects/{id}/export/pdf` endpoint
+- [ ] Wire router into `src/cine_forge/api/main.py`
 
-### PDF Export
-- [x] Research client-side PDF generation (likely `react-pdf` or `jspdf` + layout templates)
-- [x] Create PDF templates for project export and per-type export
-- [x] Implement PDF download
+### CLI Layer (Headless Operation)
+- [ ] Implement `python -m cine_forge export` command in driver/CLI
+- [ ] Supports arguments: `--project`, `--format`, `--scope`, `--out`
 
-### Industry Formats
-- [x] Define one-sheet template (project summary, logline, cast, genre, tone)
-- [x] Define call sheet template (based on reference PDF)
-- [x] Generate call sheet from scene + location + character data
-
-### Polish
-- [x] Loading state during PDF generation
-- [x] Success toast with "Open file" action
-- [x] Keyboard shortcut (Ctrl/Cmd+E) to open export modal
-
-### Refinements (User Feedback)
-- [x] **Simplify Scope UX:** Remove the "Scope" selector. Context determines scope: viewing a character → exports that character; viewing list → exports list; viewing script → exports whole script.
-- [x] **Enrich Export Content:** Include all available data fields (scene appearances, descriptions, roles, dialogue summary, traits, evidence) in the markdown export for single entities.
-- [x] **Fix PDF Generation:** Resolve `doc.autoTable is not a function` error. Ensure `jspdf-autotable` is correctly registered.
-- [x] **One-Click Copy:** "Copy Markdown" should happen immediately on button click, not require a second "Export" confirmation.
+### UI Refactor
+- [ ] Update `ExportModal.tsx` to use API endpoints for download/copy
+- [ ] Delete legacy `ui/src/lib/export/` directory (cleanup)
 
 ## Acceptance Criteria
 
-- [x] User can export a single entity as markdown to clipboard from its detail page
-- [x] User can export all entities of a type (e.g., all characters) as markdown
-- [x] User can export the entire project as a markdown document
-- [x] User can download a formatted PDF of the project
-- [x] Export modal is accessible from entity detail pages, list pages, and project level
-- [x] Call sheet export generates a recognizable industry-format document
-- [x] One-sheet export generates a pitch-ready summary
+- [ ] **Headless:** User/AI can export any artifact format via CLI without launching the UI.
+- [ ] **API-Driven:** UI delegates all generation to the backend.
+- [ ] **Content Parity:** Exports contain full enriched data (evidence, traits, narrative roles, etc.) as verified in the UI prototype.
+- [ ] **Formats:** Markdown (Project, Entity, List) and PDF (Report, Call Sheet) are supported.
+- [ ] **Manual QA:** Output files from `lc-2` have been manually inspected by the implementer and confirmed correct.
 
 ## AI Considerations
 
@@ -158,43 +144,33 @@ Based on industry standard (reference PDF on file):
 
 ## Files to Modify
 
-- `ui/src/components/ExportModal.tsx` — [NEW] main export UI
-- `ui/src/lib/export/` — [NEW] export renderers (markdown, pdf, call-sheet, one-sheet)
-- `ui/src/lib/hooks.ts` — add `useExportData` hook
-- `ui/src/pages/EntityDetailPage.tsx` — add export button
-- `ui/src/pages/ScenesList.tsx` — add export button to toolbar
-- `ui/src/pages/CharactersList.tsx` — add export button to toolbar
-- `ui/src/pages/LocationsList.tsx` — add export button to toolbar
-- `ui/src/pages/PropsList.tsx` — add export button to toolbar
+- `pyproject.toml` — add `fpdf2`
+- `src/cine_forge/export/*.py` — [NEW] export logic
+- `src/cine_forge/api/routers/export.py` — [NEW] API endpoints
+- `src/cine_forge/driver/cli.py` (or similar) — add export command
+- `ui/src/components/ExportModal.tsx` — update to fetch from API
+- `ui/src/lib/export/` — DELETE
 
 ## Tenet Verification
 
-- [x] Immutability: Export is read-only, doesn't modify artifacts
-- [x] Lineage: N/A
-- [x] Explanation: N/A
-- [x] Cost transparency: N/A (no LLM calls in initial version)
-- [x] Human control: ✅ User controls what to export and in what format
-- [x] QA: Visual verification of exported documents
+- [ ] Immutability: Export is read-only, doesn't modify artifacts
+- [ ] Lineage: N/A
+- [ ] Explanation: N/A
+- [ ] Cost transparency: N/A (no LLM calls in initial version)
+- [ ] Human control: ✅ User controls what to export and in what format
+- [ ] QA: Visual verification of exported documents
 
 ## Work Log
 
-2026-02-21 14:00 — Implemented comprehensive export system.
-- Created `ui/src/lib/export/` directory with `types.ts`, `markdown.ts`, and `pdf.ts`.
-- Implemented `useExportData` hook in `ui/src/lib/hooks.ts` to aggregate project data.
-- Created `ExportModal` component to handle scope (everything, scene, character, etc.) and format (markdown, PDF, call sheet).
-- Integrated `jspdf` and `jspdf-autotable` for client-side PDF generation.
-- Implemented Markdown generation logic for all entity types and full project.
-- Implemented PDF generation with support for Call Sheets (grouping scenes by location).
-- Wired `ExportModal` into `EntityDetailPage`, `ScenesList`, `CharactersList`, `LocationsList`, `PropsList`, and `ProjectHome` (FreshImportView).
-- Verified with linting.
+2026-02-21 14:00 — Implemented comprehensive export system (UI-Only).
+- *Superseded by backend requirement.*
 
 2026-02-21 14:10 — Fixed UI build errors.
-- Replaced missing `RadioGroup` and `Label` components with `Select` and native HTML elements in `ExportModal.tsx`.
-- Fixed `jspdf` type error in `pdf.ts` by providing valid font arguments.
-- Verified successful build with `npm run build` in `ui/`.
+- *Superseded by backend requirement.*
 
 2026-02-21 14:25 — Refined export UX and fixed bugs based on user feedback.
-- **Fixed PDF Generation:** Resolved `doc.autoTable` error by using explicit `import autoTable` and functional invocation.
-- **Enriched Content:** Updated `markdown.ts` to export full entity details (narrative roles, dialogue, traits, evidence) by passing raw artifact data via `EnrichedEntity`.
-- **Simplified UI:** Refactored `ExportModal.tsx` to remove "Scope" selector (now context-driven only) and made "Copy Markdown" a single-click action.
-- Verified with `npm run lint` and `npm run build`.
+- *Superseded by backend requirement.*
+
+2026-02-21 14:40 — Pivoting to Backend-First Architecture.
+- User mandate: "Headless Operation". AI must be able to export without UI.
+- Plan: Port Markdown/PDF logic to Python (`fpdf2`), expose via API, consume in UI.
