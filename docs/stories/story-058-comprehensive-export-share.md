@@ -109,33 +109,33 @@ Based on industry standard (reference PDF on file):
 ## Tasks
 
 ### Backend Infrastructure (Python)
-- [ ] Add `fpdf2` dependency to `pyproject.toml`
-- [ ] Create `src/cine_forge/export/` module
-- [ ] Implement `MarkdownExporter` class (ports logic from UI prototype, supports all entity types)
-- [ ] Implement `PDFExporter` class using `fpdf2` (supports Project Report and Call Sheet layouts)
-- [ ] **Verification:** Write script `scripts/verify_backend_export.py` to generate files from `lc-2` and manually verify contents.
+- [x] Add `fpdf2` dependency to `pyproject.toml`
+- [x] Create `src/cine_forge/export/` module
+- [x] Implement `MarkdownExporter` class (ports logic from UI prototype, supports all entity types)
+- [x] Implement `PDFExporter` class using `fpdf2` (supports Project Report and Call Sheet layouts)
+- [x] **Verification:** Write script `scripts/verify_backend_export.py` to generate files from `lc-2` and manually verify contents.
 
 ### API Layer
-- [ ] Create `src/cine_forge/api/routers/export.py`
-- [ ] Implement `GET /api/projects/{id}/export/markdown` endpoint
-- [ ] Implement `GET /api/projects/{id}/export/pdf` endpoint
-- [ ] Wire router into `src/cine_forge/api/main.py`
+- [x] Create `src/cine_forge/api/routers/export.py`
+- [x] Implement `GET /api/projects/{id}/export/markdown` endpoint
+- [x] Implement `GET /api/projects/{id}/export/pdf` endpoint
+- [x] Wire router into `src/cine_forge/api/main.py` (actually `app.py`)
 
 ### CLI Layer (Headless Operation)
-- [ ] Implement `python -m cine_forge export` command in driver/CLI
-- [ ] Supports arguments: `--project`, `--format`, `--scope`, `--out`
+- [x] Implement `python -m cine_forge export` command in driver/CLI
+- [x] Supports arguments: `--project`, `--format`, `--scope`, `--out`
 
 ### UI Refactor
-- [ ] Update `ExportModal.tsx` to use API endpoints for download/copy
-- [ ] Delete legacy `ui/src/lib/export/` directory (cleanup)
+- [x] Update `ExportModal.tsx` to use API endpoints for download/copy
+- [x] Delete legacy `ui/src/lib/export/` directory (cleanup)
 
 ## Acceptance Criteria
 
-- [ ] **Headless:** User/AI can export any artifact format via CLI without launching the UI.
-- [ ] **API-Driven:** UI delegates all generation to the backend.
-- [ ] **Content Parity:** Exports contain full enriched data (evidence, traits, narrative roles, etc.) as verified in the UI prototype.
-- [ ] **Formats:** Markdown (Project, Entity, List) and PDF (Report, Call Sheet) are supported.
-- [ ] **Manual QA:** Output files from `lc-2` have been manually inspected by the implementer and confirmed correct.
+- [x] **Headless:** User/AI can export any artifact format via CLI without launching the UI.
+- [x] **API-Driven:** UI delegates all generation to the backend.
+- [x] **Content Parity:** Exports contain full enriched data (evidence, traits, narrative roles, etc.) as verified in the UI prototype.
+- [x] **Formats:** Markdown (Project, Entity, List) and PDF (Report, Call Sheet) are supported.
+- [x] **Manual QA:** Output files from `lc-2` have been manually inspected by the implementer and confirmed correct.
 
 ## AI Considerations
 
@@ -153,12 +153,12 @@ Based on industry standard (reference PDF on file):
 
 ## Tenet Verification
 
-- [ ] Immutability: Export is read-only, doesn't modify artifacts
-- [ ] Lineage: N/A
-- [ ] Explanation: N/A
-- [ ] Cost transparency: N/A (no LLM calls in initial version)
-- [ ] Human control: ✅ User controls what to export and in what format
-- [ ] QA: Visual verification of exported documents
+- [x] Immutability: Export is read-only, doesn't modify artifacts
+- [x] Lineage: N/A
+- [x] Explanation: N/A
+- [x] Cost transparency: N/A (no LLM calls in initial version)
+- [x] Human control: ✅ User controls what to export and in what format
+- [x] QA: Visual verification of exported documents
 
 ## Work Log
 
@@ -174,3 +174,13 @@ Based on industry standard (reference PDF on file):
 2026-02-21 14:40 — Pivoting to Backend-First Architecture.
 - User mandate: "Headless Operation". AI must be able to export without UI.
 - Plan: Port Markdown/PDF logic to Python (`fpdf2`), expose via API, consume in UI.
+
+2026-02-21 15:10 — Implemented Backend Export & CLI.
+- Added `fpdf2` dependency.
+- Created `src/cine_forge/export/` with `MarkdownExporter` and `PDFGenerator`.
+- Verified logic with `scripts/verify_backend_export.py` (manual inspection passed).
+- Created `src/cine_forge/api/routers/export.py` with endpoints for MD and PDF.
+- Created `src/cine_forge/cli.py` and `__main__.py` to support `cine_forge run` and `cine_forge export` commands.
+- Updated `ui/src/components/ExportModal.tsx` to use backend endpoints.
+- Deleted legacy client-side export code.
+- Verified CLI export with `python -m cine_forge export ...`.
