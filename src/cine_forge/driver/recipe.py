@@ -159,9 +159,11 @@ def _assert_schema_compatibility(
         # 3. Final validation
         if remaining_required:
             # We only error if there's an explicit mismatch in 'needs' 
-            # (old behavior kept for now but generalized)
-            # Future: enforce that ALL input_schemas are satisfied by either store or needs.
-            pass
+            # or if the store didn't provide everything.
+            raise ValueError(
+                f"Schema mismatch: stage '{stage.id}' requires {required}, "
+                f"but dependencies only provided {required - remaining_required}"
+            )
 
 
 def _resolve_value(value: Any, runtime_params: dict[str, Any]) -> Any:
