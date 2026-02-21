@@ -7,6 +7,7 @@
 - `EntityDiscoveryResults` schema for consolidated candidate tracking.
 - Benchmark tasks for Liberty & Church: Golden list generation, prompt comparison, and Haiku discovery validation.
 - Golden entity dataset for 60-page Liberty & Church pilot.
+- Added "Re-run Deep Breakdown" button to chat interface after project completion.
 
 ### Changed
 - `world_building` recipe now includes `entity_discovery` as a prerequisite stage.
