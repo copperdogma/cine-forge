@@ -427,17 +427,42 @@ export function getArtifact(
   )
 }
 
-export function editArtifact(
+// --- Export ---
+
+export type ExportScope = 'everything' | 'scenes' | 'characters' | 'locations' | 'props' | 'single'
+export type ExportFormat = 'markdown' | 'pdf' | 'call-sheet'
+
+export function getExportUrl(
   projectId: string,
-  artifactType: string,
-  entityId: string,
-  payload: ArtifactEditRequest,
-): Promise<ArtifactEditResponse> {
-  return request<ArtifactEditResponse>(
-    `/api/projects/${projectId}/artifacts/${artifactType}/${entityId}/edit`,
-    {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    },
-  )
+  format: ExportFormat,
+  scope: ExportScope = 'everything',
+  entityId?: string,
+  entityType?: string,
+): string {
+  const params = new URLSearchParams()
+  if (format === 'markdown') {
+    params.set('scope', scope)
+    if (entityId) params.set('entity_id', entityId)
+    if (entityType) params.set('entity_type', entityType)
+    return `${API_BASE}/api/projects/${projectId}/export/markdown?${params.toString()}`
+  } else {
+    // PDF
+    const layout = format === 'call-sheet' ? 'call-sheet' : 'report'
+    params.set('layout', layout)
+    return `${API_BASE}/api/projects/${projectId}/export/pdf?${params.toString()}`
+  }
+}
+
+export async function exportMarkdown(
+  projectId: string,
+  scope: ExportScope = 'everything',
+  entityId?: string,
+  entityType?: string,
+): Promise<string> {
+  const url = getExportUrl(projectId, 'markdown', scope, entityId, entityType)
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new ApiRequestError(`Export failed (${response.status})`)
+  }
+  return response.text()
 }

@@ -54,30 +54,91 @@ class MarkdownExporter:
         return md
 
     def generate_entity_markdown(self, entity_data: Dict[str, Any], entity_id: str, type_label: str) -> str:
-        name = self.format_entity_name(entity_id)
+        name = entity_data.get("name") or self.format_entity_name(entity_id)
         md = generate_header(name, 2)
 
-        description = entity_data.get("description")
-        if description:
+        # Aliases
+        if aliases := entity_data.get("aliases"):
+            md += f"**Aliases:** {', '.join(aliases)}\n\n"
+
+        # Confidence
+        if confidence := entity_data.get("overall_confidence"):
+            md += f"**Confidence:** {int(confidence * 100)}%\n\n"
+
+        # Description
+        if description := entity_data.get("description"):
             md += generate_metadata("Description", description)
 
-        if roles := entity_data.get("narrative_roles"):
-            md += generate_list("Narrative Roles", roles)
+        # Narrative Role / Significance
+        # Characters have 'narrative_role', Locations/Props have 'narrative_significance'
+        if role := entity_data.get("narrative_role"):
+            md += generate_metadata("Narrative Role", role)
         
+        if significance := entity_data.get("narrative_significance"):
+            md += generate_metadata("Narrative Significance", significance)
+
+        # Dialogue Summary (Characters)
         if dialogue := entity_data.get("dialogue_summary"):
             md += generate_metadata("Dialogue Summary", dialogue)
         
+        # Inferred Traits (Characters) - formatted nicely
         if traits := entity_data.get("inferred_traits"):
-            md += generate_list("Inferred Traits", traits)
+            md += "**Inferred Traits:**\n"
+            for t in traits:
+                if isinstance(t, dict):
+                    trait_name = t.get("trait", "Unknown")
+                    value = t.get("value", "")
+                    rationale = t.get("rationale", "")
+                    md += f"- **{trait_name}:** {value}\n"
+                    if rationale:
+                        md += f"  > {rationale}\n"
+                else:
+                    md += f"- {t}\n"
+            md += "\n"
 
-        evidence = entity_data.get("evidence")
-        if evidence and isinstance(evidence, list):
+        # Physical Traits (Locations)
+        if physical := entity_data.get("physical_traits"):
+            md += generate_list("Physical Traits", physical)
+
+        # Explicit Evidence (Characters)
+        if evidence := entity_data.get("explicit_evidence"):
             md += "**Evidence:**\n"
             for ev in evidence:
-                if isinstance(ev, str):
+                if isinstance(ev, dict):
+                    trait = ev.get("trait")
+                    quote = ev.get("quote")
+                    source = ev.get("source_scene")
+                    if trait:
+                        md += f"- *{trait}*\n"
+                    if quote:
+                        md += f"  > \"{quote}\"\n"
+                    if source:
+                        md += f"  (Source: {source})\n"
+                else:
                     md += f"- {ev}\n"
-                elif isinstance(ev, dict) and "quote" in ev:
-                    md += f"- \"{ev['quote']}\"\n"
+            md += "\n"
+
+        # General Evidence (Locations/Props - usually raw strings if present, but strictly they assume explicit_evidence structure in new schema?)
+        # Legacy/Simple 'evidence' field
+        if simple_evidence := entity_data.get("evidence"):
+             if isinstance(simple_evidence, list):
+                md += generate_list("Evidence", simple_evidence)
+             else:
+                md += generate_metadata("Evidence", simple_evidence)
+
+        # Relationships
+        if relationships := entity_data.get("relationships"):
+            md += "**Relationships:**\n"
+            for rel in relationships:
+                if isinstance(rel, dict):
+                    target = rel.get("target_character")
+                    rtype = rel.get("relationship_type")
+                    ev = rel.get("evidence")
+                    md += f"- **{target}** ({rtype})\n"
+                    if ev:
+                        md += f"  > {ev}\n"
+                else:
+                    md += f"- {rel}\n"
             md += "\n"
 
         # Scene stats usually come from index, not just entity payload, but if available:

@@ -41,6 +41,7 @@ from cine_forge.api.models import (
     UploadedInputResponse,
 )
 from cine_forge.api.service import OperatorConsoleService, ServiceError
+from cine_forge.api.routers import export
 
 UPLOAD_FILE_PARAM = File(...)
 
@@ -74,6 +75,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app_version = _parse_version(resolved_workspace)
     app = FastAPI(title="CineForge API", version=app_version)
     app.state.console_service = service
+    app.include_router(export.router, prefix="/api")
 
     app.add_middleware(
         CORSMiddleware,
