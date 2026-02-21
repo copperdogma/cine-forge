@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useExportData } from '@/lib/hooks'
 import { generateProjectMarkdown, generateSceneMarkdown, generateCharacterMarkdown, generateLocationMarkdown, generatePropMarkdown, generateScenesMarkdown, generateCharactersMarkdown, generateLocationsMarkdown, generatePropsMarkdown } from '@/lib/export/markdown'
 import { exportProjectPDF, exportCallSheet } from '@/lib/export/pdf'
@@ -143,31 +142,30 @@ export function ExportModal({
         ) : (
           <div className="space-y-6 py-4">
             <div className="space-y-3">
-              <Label>Scope</Label>
-              <RadioGroup value={scope} onValueChange={(v) => setScope(v as ExportScope)}>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="everything" id="everything" />
-                  <Label htmlFor="everything">Everything (Full Project)</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="scenes" id="scenes" />
-                  <Label htmlFor="scenes">All Scenes</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="characters" id="characters" />
-                  <Label htmlFor="characters">All Characters</Label>
-                </div>
-                {entityId && (
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="single" id="single" />
-                    <Label htmlFor="single">Current {entityType}</Label>
-                  </div>
-                )}
-              </RadioGroup>
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Scope
+              </label>
+              <Select value={scope} onValueChange={(v) => setScope(v as ExportScope)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select scope" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="everything">Everything (Full Project)</SelectItem>
+                  <SelectItem value="scenes">All Scenes</SelectItem>
+                  <SelectItem value="characters">All Characters</SelectItem>
+                  <SelectItem value="locations">All Locations</SelectItem>
+                  <SelectItem value="props">All Props</SelectItem>
+                  {entityId && (
+                    <SelectItem value="single">Current {entityType}</SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-3">
-              <Label>Format</Label>
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Format
+              </label>
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant={format === 'markdown-clipboard' ? 'default' : 'outline'}

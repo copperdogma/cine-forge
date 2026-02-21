@@ -33,9 +33,9 @@ function addHeader(doc: jsPDF, text: string, y: number = 20) {
 
 function addMetadata(doc: jsPDF, label: string, value: string | number | undefined, y: number): number {
   if (!value) return y
-  doc.setFont(undefined, 'bold')
+  doc.setFont('helvetica', 'bold')
   doc.text(`${label}:`, 14, y)
-  doc.setFont(undefined, 'normal')
+  doc.setFont('helvetica', 'normal')
   doc.text(`${value}`, 50, y)
   return y + 7
 }

@@ -181,3 +181,8 @@ Based on industry standard (reference PDF on file):
 - Implemented PDF generation with support for Call Sheets (grouping scenes by location).
 - Wired `ExportModal` into `EntityDetailPage`, `ScenesList`, `CharactersList`, `LocationsList`, `PropsList`, and `ProjectHome` (FreshImportView).
 - Verified with linting.
+
+2026-02-21 14:10 — Fixed UI build errors.
+- Replaced missing `RadioGroup` and `Label` components with `Select` and native HTML elements in `ExportModal.tsx`.
+- Fixed `jspdf` type error in `pdf.ts` by providing valid font arguments.
+- Verified successful build with `npm run build` in `ui/`.
