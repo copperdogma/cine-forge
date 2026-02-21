@@ -11,6 +11,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Verify, Don't Assume**: NEVER assume a library is available or a file has a specific content. Use `read_file` and dependency checks (`package.json`, `pyproject.toml`) to ground your work.
 - **Immutability**: Versioned artifacts are immutable. NEVER mutate an existing version in place; always produce a new version with incremented metadata.
 - **AI-First Engineering**: Prefer roles, prompts, and structured artifacts over rigid hard-coded business rules. Architecture should facilitate AI reasoning.
+- **Headless Operation**: All core application capabilities (e.g., export, analysis, remediation) MUST be performable via CLI scripts or direct backend calls, bypassing the UI. This ensures AI agents can autonomously operate the system.
 - **Definition of Done**: A task is complete ONLY when:
   1. Relevant tests pass (`make test-unit` minimum).
   2. Artifacts are produced and manually inspected for semantic correctness.
