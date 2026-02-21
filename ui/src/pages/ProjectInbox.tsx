@@ -37,6 +37,8 @@ interface InboxItem {
   timestamp: number
 }
 
+const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
+
 
 
 function formatArtifactType(type: string): string {
@@ -257,7 +259,6 @@ export default function ProjectInbox() {
   }, [runs])
 
   // Derive review items from new (v1) bible artifacts that may need human review
-  const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
   const reviewItems = useMemo<InboxItem[]>(() => {
     if (!artifactGroups) return []
     return artifactGroups

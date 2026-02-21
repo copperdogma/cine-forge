@@ -9,6 +9,10 @@ stages:
     needs: []
     store_inputs:
       normalize: canonical_script
+    store_inputs_optional:
+      character_bible: character_bible
+      location_bible: location_bible
+      prop_bible: prop_bible
 
   - id: character_bible
     module: character_bible_v1

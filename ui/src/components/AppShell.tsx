@@ -64,9 +64,12 @@ function CountBadge({ count }: { count: number }) {
 
   useEffect(() => {
     if (count > prevRef.current) {
-      setPulse(true)
-      const t = setTimeout(() => setPulse(false), 600)
-      return () => clearTimeout(t)
+      const t1 = setTimeout(() => setPulse(true), 0)
+      const t2 = setTimeout(() => setPulse(false), 600)
+      return () => {
+        clearTimeout(t1)
+        clearTimeout(t2)
+      }
     }
     prevRef.current = count
   }, [count])

@@ -120,11 +120,15 @@ export default function ProjectRun() {
   useEffect(() => {
     if (uploadedFile || !existingInputs?.length) return
     const latest = existingInputs[existingInputs.length - 1]
-    setUploadedFile({
-      original_name: latest.original_name,
-      stored_path: latest.stored_path,
-      size_bytes: latest.size_bytes,
-    })
+    // Use a small timeout to avoid synchronous setState during render/effect cycle
+    const t = setTimeout(() => {
+      setUploadedFile({
+        original_name: latest.original_name,
+        stored_path: latest.stored_path,
+        size_bytes: latest.size_bytes,
+      })
+    }, 0)
+    return () => clearTimeout(t)
   }, [existingInputs, uploadedFile])
 
   const handleFileDrop = (e: React.DragEvent) => {

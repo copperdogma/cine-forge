@@ -98,7 +98,7 @@ export function getWelcomeMessages(
           actions: [
             { id: 'scenes', label: 'Explore Scenes', variant: 'default', route: 'artifacts' },
             { id: 'inbox', label: 'Review Inbox', variant: 'secondary', route: 'inbox' },
-            { id: 'go_deeper', label: 'Re-run Deep Breakdown', variant: 'outline' },
+            { id: 'go_deeper', label: 'Refine World Model', variant: 'outline' },
           ],
         },
       ]

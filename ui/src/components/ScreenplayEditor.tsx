@@ -86,7 +86,10 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, ScreenplayEdi
     const editorRef = useRef<HTMLDivElement>(null)
     const viewRef = useRef<EditorView | null>(null)
     const onClickRef = useRef(onSceneHeadingClick)
-    onClickRef.current = onSceneHeadingClick
+    
+    useEffect(() => {
+      onClickRef.current = onSceneHeadingClick
+    }, [onSceneHeadingClick])
 
     useImperativeHandle(ref, () => ({
       scrollToLine(lineNumber: number) {

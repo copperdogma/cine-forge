@@ -262,6 +262,7 @@ function ChatMessageItem({
   inputPath: string | undefined
   onRetry?: (text: string) => void
 }) {
+  const navigate = useNavigate()
   const isUser = message.type === 'user_action' || message.type === 'user_message'
   const isActivity = message.type === 'activity'
   const showActions = message.actions && message.actions.length > 0 && !actionTaken
@@ -281,7 +282,6 @@ function ChatMessageItem({
 
   // Activity notes render as compact, subtle inline entries
   if (isActivity) {
-    const navigate = useNavigate()
     return (
       <div className="flex items-center gap-2 py-0.5 px-1">
         <MessageIcon type={message.type} />
@@ -362,26 +362,6 @@ export function ChatPanel() {
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
   const [inputText, setInputText] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
-
-  // Auto-scroll to bottom within the chat scroll area only (not the whole page)
-  useEffect(() => {
-    const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
-    if (viewport) {
-      viewport.scrollTop = viewport.scrollHeight
-    }
-  }, [messages.length, messages[messages.length - 1]?.content])
-
-  // Listen for programmatic "ask" events (from GlossaryTerm, SectionHelp, etc.)
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const question = (e as CustomEvent).detail?.question
-      if (question && !isStreaming) {
-        handleSendMessage(question)
-      }
-    }
-    window.addEventListener('cineforge:ask', handler)
-    return () => window.removeEventListener('cineforge:ask', handler)
-  }) // intentionally no deps — always use latest isStreaming/handleSendMessage
 
   const handleSendMessage = async (overrideText?: string) => {
     const textToSend = overrideText ?? inputText.trim()
@@ -465,6 +445,26 @@ export function ChatPanel() {
       },
     )
   }
+
+  // Auto-scroll to bottom within the chat scroll area only (not the whole page)
+  useEffect(() => {
+    const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
+    if (viewport) {
+      viewport.scrollTop = viewport.scrollHeight
+    }
+  }, [messages.length, messages[messages.length - 1]?.content])
+
+  // Listen for programmatic "ask" events (from GlossaryTerm, SectionHelp, etc.)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const question = (e as CustomEvent).detail?.question
+      if (question && !isStreaming) {
+        handleSendMessage(question)
+      }
+    }
+    window.addEventListener('cineforge:ask', handler)
+    return () => window.removeEventListener('cineforge:ask', handler)
+  }) // intentionally no deps — always use latest isStreaming/handleSendMessage
 
   return (
     <div className="flex flex-col flex-1 min-h-0">

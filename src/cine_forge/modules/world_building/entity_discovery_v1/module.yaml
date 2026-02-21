@@ -1,7 +1,8 @@
 module_id: entity_discovery_v1
 stage: world_building
-description: "Incremental AI-first discovery of characters, locations, and props using a sliding window."
+description: "Incremental AI-first discovery of characters, locations, and props using a sliding window. Supports Refine mode via existing bibles."
 input_schemas: ["canonical_script"]
+optional_input_schemas: ["character_bible", "location_bible", "prop_bible"]
 output_schemas: ["entity_discovery_results"]
 parameters:
   chunk_size:

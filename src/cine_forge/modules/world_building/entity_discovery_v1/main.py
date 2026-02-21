@@ -56,7 +56,19 @@ def run_module(
         taxonomies.append(("props", desc))
 
     for key, description in taxonomies:
+        # Initialize from existing artifacts if available (Refine mode)
         current_list = []
+        bible_input_key = f"{key[:-1]}_bible"  # character_bible, location_bible, prop_bible
+        existing_bible = inputs.get(bible_input_key)
+        
+        if existing_bible:
+            # existing_bible is a list of artifact dicts
+            for item in existing_bible:
+                name = item["data"].get("name") or item["data"].get("canonical_name")
+                if name:
+                    current_list.append(name)
+            print(f"[entity_discovery] Bootstrapped {len(current_list)} items from existing {bible_input_key}")
+
         print(f"[entity_discovery] Starting pass for {key}...")
         
         for i, chunk in enumerate(chunks):
@@ -119,7 +131,7 @@ def _build_discovery_prompt(
 
 TAXONOMY DEFINITION: {description}
 
-CURRENT DISCOVERED LIST:
+EXISTING / USER-VETTED LIST:
 {list_str}
 
 NEW SCRIPT CHUNK:
@@ -128,9 +140,10 @@ NEW SCRIPT CHUNK:
 TASK:
 1. Identify any NEW {entity_type} in this script chunk that are not in the list.
 2. DEDUPLICATION: If you see an alias, nickname, or slight spelling variation of an item 
-   already in the list, do NOT add it as new.
+   already in the list, do NOT add it as new. The "EXISTING" list contains items already 
+   accepted by the user; prioritize their naming conventions.
 3. PRUNING: Only include items that meet the definition above.
-4. Return the complete, updated list of ALL {entity_type} found so far.
+4. Return the complete, updated list of ALL {entity_type} found so far (including the existing ones).
 
 Return valid JSON: {{ "items": ["NAME 1", "NAME 2", ...] }}
 """

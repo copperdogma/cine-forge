@@ -1,6 +1,6 @@
 // TanStack React Query hooks for CineForge API client.
 
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useCallback } from 'react'
 import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 import type {
   ArtifactDetailResponse,
@@ -89,7 +89,7 @@ export function useStickyPreference<T extends string>(
   const { data: project } = useProject(projectId)
   const currentValue = (project?.ui_preferences?.[key] as T) ?? defaultValue
 
-  const setValue = useRef((value: T) => {
+  const setValue = useCallback((value: T) => {
     if (!projectId) return
     // Optimistic update
     queryClient.setQueryData<ProjectSummary>(['projects', projectId], old => {
@@ -106,7 +106,7 @@ export function useStickyPreference<T extends string>(
       // Revert on failure
       queryClient.invalidateQueries({ queryKey: ['projects', projectId] })
     })
-  }).current
+  }, [projectId, key, queryClient])
 
   return [currentValue, setValue]
 }

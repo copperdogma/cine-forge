@@ -171,16 +171,18 @@ export const useChatStore = create<ChatStore>()(
       })
       // Persist to backend — streaming placeholder was never saved, so this
       // is the first write for this message ID
-      const { toolCalls: _tc, ...persistable } = finalized
-      postChatMessage(projectId, persistable).catch(() => {})
+      const { ...persistable } = finalized
+      // Remove runtime-only field toolCalls from persistence if present
+      delete (persistable as any).toolCalls
+      postChatMessage(projectId, persistable as any).catch(() => {})
     },
 
     getMessages: (projectId) => get().messages[projectId] ?? [],
 
     clearMessages: (projectId) =>
       set((state) => {
-        const { [projectId]: _, ...rest } = state.messages
-        const { [projectId]: __, ...loadedRest } = state.loaded
+        const { [projectId]: _discardedMessages, ...rest } = state.messages
+        const { [projectId]: _discardedLoaded, ...loadedRest } = state.loaded
         return { messages: rest, loaded: loadedRest }
       }),
 
