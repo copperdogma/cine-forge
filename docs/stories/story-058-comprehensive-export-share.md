@@ -130,10 +130,21 @@ Based on industry standard (reference PDF on file):
 - [x] Delete legacy `ui/src/lib/export/` directory (cleanup)
 
 ### Refinements (Round 2)
-- [ ] **Granular Selection:** For "Project" scope, allow selecting specific components to export (Script, Scenes, Characters, Locations, Props). Default to All.
-- [ ] **Check All/None:** Provide convenience controls for selection.
-- [ ] **Script-Only Export:** Add a dedicated, top-level option or ensure it's easily selectable (e.g., just "Script" checked) for exporting the raw screenplay content.
-- [ ] **Backend Support:** Update API to accept a list of included components (e.g., `?include=script,scenes,characters`).
+- [x] **Granular Selection:** For "Project" scope, allow selecting specific components to export (Script, Scenes, Characters, Locations, Props). Default to All.
+- [x] **Check All/None:** Provide convenience controls for selection.
+- [x] **Script-Only Export:** Add a dedicated, top-level option or ensure it's easily selectable (e.g., just "Script" checked) for exporting the raw screenplay content.
+- [x] **Backend Support:** Update API to accept a list of included components (e.g., `?include=script,scenes,characters`).
+
+### Screenplay Formats (Round 3)
+- [ ] **Research:** Identify open-source libraries for Fountain/Screenplay formatting (Python/JS) to avoid writing an engine from scratch.
+- [ ] **Fountain Export:** Implement `.fountain` file download (raw content, correct extension).
+- [ ] **Markdown (Fountain):** Ensure Markdown script export complies with Fountain syntax.
+- [ ] **PDF Screenplay:** Implement standard screenplay format PDF (12pt Courier, margins, centered dialogue) using a library or `fpdf2`.
+- [ ] **Docx Screenplay:** Implement standard screenplay format Docx export.
+
+### PDF Export Improvement
+- [ ] **Fix PDF Layout:** The current PDF export is "TERRIBLE". Redesign it to be professional, readable, and handle rich content (not just tables).
+- [ ] **Global Export PDF:** Ensure the "Export Everything" PDF handles mixed content gracefully.
 
 ## Acceptance Criteria
 
@@ -190,3 +201,9 @@ Based on industry standard (reference PDF on file):
 - Updated `ui/src/components/ExportModal.tsx` to use backend endpoints.
 - Deleted legacy client-side export code.
 - Verified CLI export with `python -m cine_forge export ...`.
+
+2026-02-21 15:40 — Completed Round 2 Refinements (Granular Selection).
+- Updated `ExportModal` to support granular component selection (Script, Scenes, Characters, etc.).
+- Updated API (`/api/projects/{id}/export/markdown`) to accept `include` list.
+- Updated `MarkdownExporter` to respect `include` list and support raw script export.
+- Verified via UI build.
