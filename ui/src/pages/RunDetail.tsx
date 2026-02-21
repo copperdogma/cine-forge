@@ -24,6 +24,7 @@ import { ErrorState } from '@/components/StateViews'
 import { cn } from '@/lib/utils'
 import type { StageState } from '@/lib/types'
 import { useRunState, useRunEvents, useRetryFailedStage, useResumeRun } from '@/lib/hooks'
+import { RECIPE_NAMES } from '@/lib/constants'
 import { toast } from 'sonner'
 
 function statusBadge(status: string) {
@@ -276,7 +277,7 @@ export default function RunDetail() {
   const canRetryFailedStage = overallStatus === 'failed' && !!runId && !retryFailedStage.isPending
 
   return (
-    <div>
+    <div className="w-full min-w-0">
       {/* Header with back button */}
       <div className="mb-6">
         <Button
@@ -289,11 +290,17 @@ export default function RunDetail() {
           Back to Runs
         </Button>
 
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight mb-1">{state.run_id}</h1>
-            <p className="text-muted-foreground text-sm capitalize">
-              {recipeName}
+            <h1 className="text-2xl font-bold tracking-tight mb-1">
+              {RECIPE_NAMES[state.recipe_id] || recipeName}
+              {isRunning && <span className="ml-2 text-muted-foreground font-normal">Running</span>}
+              {overallStatus === 'done' && <span className="ml-2 text-muted-foreground font-normal">Complete</span>}
+              {overallStatus === 'failed' && <span className="ml-2 text-muted-foreground font-normal">Failed</span>}
+              {overallStatus === 'paused' && <span className="ml-2 text-muted-foreground font-normal">Paused</span>}
+            </h1>
+            <p className="text-muted-foreground text-sm">
+              {state.run_id}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -339,7 +346,7 @@ export default function RunDetail() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 mb-6">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
@@ -455,7 +462,7 @@ export default function RunDetail() {
           <h2 className="text-sm font-semibold text-muted-foreground mb-3">
             Artifacts Produced ({allArtifacts.length})
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
             {allArtifacts.map((artifact, i) => (
               <Link
                 key={i}

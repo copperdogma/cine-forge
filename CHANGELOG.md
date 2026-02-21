@@ -1,5 +1,26 @@
 # Changelog
 
+## [2026-02-21-01] — Pipeline UI Refinement & Entity Quality Fixes (Story 059, 060)
+
+### Added
+- Standardized headers across all run-related UI views to show bold Recipe Name and muted Status (e.g., **Script Intake** Running).
+- Added stat cards (Total Cost, Duration, Model, Stages) to the active pipeline run progress page for real-time visibility.
+- Enabled horizontal scrolling in the main content area to handle grid overflows gracefully.
+- Added "Back to Runs" button to the Run Detail and Pipeline configuration pages.
+- New unit test `tests/unit/test_character_naming_regression.py` to prevent "The [Entity]" naming drops.
+
+### Changed
+- Refactored `ProjectRuns.tsx` to use human-readable recipe names instead of cryptic run IDs.
+- Removed fixed width constraints (`max-w-5xl`) from run views to allow dynamic resizing when the chat panel is open.
+- Unified character name normalization logic across `entity_discovery_v1` and `character_bible_v1`.
+- Made `store_inputs_all` permissive in DriverEngine to allow runs to proceed even if no existing artifacts of that type are found.
+
+### Fixed
+- Fixed critical bug where "THE MARINER" was dropped from character bibles due to stopword rejection after a normalization failure.
+- Fixed navigation trap where clicking "Start New Run" wouldn't clear the previous run context.
+- Fixed `KeyError: 'data'` in `entity_discovery_v1` when processing unwrapped artifact inputs in Refine Mode.
+- Fixed layout issues where stat cards and artifact grids were cut off when side panels were open.
+
 ## [2026-02-20-04] — Artifact Quality Improvements (Story 041)
 
 ### Added

@@ -188,13 +188,44 @@ function ShellInner() {
       const label = entityId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
       useChatStore.getState().addActivity(
         projectId,
-        `Viewing: ${label}`,
+        `Viewing: ${label} (${atype})`,
         `artifacts/${atype}/${entityId}/${artifactMatch[3]}`,
       )
       return
     }
 
-    // Run detail: /:projectId/runs/:runId
+    // Entity detail: /:projectId/characters/:entityId (etc.)
+    const entityDetailMatch = path.match(new RegExp(`^/${projectId}/(characters|locations|props|scenes)/([^/]+)$`))
+    if (entityDetailMatch) {
+      const [, section, entityId] = entityDetailMatch
+      const sectionLabel = section.charAt(0).toUpperCase() + section.slice(1).replace(/s$/, '')
+      const entityName = entityId.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      useChatStore.getState().addActivity(
+        projectId,
+        `Viewing ${sectionLabel}: ${entityName}`,
+        `${section}/${entityId}`,
+      )
+      return
+    }
+
+    // Entity lists
+    if (path.endsWith('/scenes')) { useChatStore.getState().addActivity(projectId, 'Viewing Scene Index', 'scenes'); return }
+    if (path.endsWith('/characters')) { useChatStore.getState().addActivity(projectId, 'Reviewing Characters', 'characters'); return }
+    if (path.endsWith('/locations')) { useChatStore.getState().addActivity(projectId, 'Reviewing Locations', 'locations'); return }
+    if (path.endsWith('/props')) { useChatStore.getState().addActivity(projectId, 'Reviewing Props', 'props'); return }
+    if (path.endsWith('/runs')) { useChatStore.getState().addActivity(projectId, 'Reviewing Run History', 'runs'); return }
+
+    // Inbox: /:projectId/inbox
+    if (path.endsWith('/inbox')) {
+      useChatStore.getState().addActivity(
+        projectId,
+        `Reviewing Inbox`,
+        `inbox`,
+      )
+      return
+    }
+
+    // Run detail: /:projectId/run/:runId
     const runMatch = path.match(new RegExp(`^/${projectId}/run/([^/]+)$`))
     if (runMatch) {
       useChatStore.getState().addActivity(
@@ -467,11 +498,12 @@ function ShellInner() {
         {/* Content + optional Right Panel */}
         <div className="flex flex-1 min-h-0">
           {/* Page content */}
-          <ScrollArea className="flex-1 min-w-0">
+          <ScrollArea className="flex-1 min-w-0" orientation="both">
             <div className="p-6 flex flex-col min-h-full">
               <Outlet />
             </div>
           </ScrollArea>
+...
 
           {/* Right Panel — Chat + Inspector tabs */}
           {panel.state.open && (

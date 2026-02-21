@@ -599,7 +599,8 @@ def _normalize_character_name(value: Any) -> str:
     # Strip non-alphanumeric except spaces and apostrophes (e.g. MR. SALVATORI -> MR SALVATORI)
     text = re.sub(r"[^A-Z0-9' ]+", "", text)
     
-    # Strip leading "THE " prefix if it's followed by 4 or more letters (e.g. THE MARINER -> MARINER)
+    # Strip leading "THE " prefix if it's followed by 4+ letters
+    # (e.g. THE MARINER -> MARINER)
     if text.startswith("THE "):
         remainder = text[4:].strip()
         if len(remainder) >= 4:

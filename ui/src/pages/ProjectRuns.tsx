@@ -82,23 +82,17 @@ export default function ProjectRuns() {
   const { data: runs, isLoading, error, refetch } = useRuns(projectId)
 
   const header = (
-    <div className="flex items-center justify-between mb-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
-        <p className="text-muted-foreground text-sm">
-          All pipeline runs for this project
-        </p>
-      </div>
-      <Button size="sm" onClick={() => navigate(`/${projectId}/run`)}>
-        <Plus className="h-4 w-4 mr-2" />
-        Start New Run
-      </Button>
+    <div className="mb-6">
+      <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
+      <p className="text-muted-foreground text-sm">
+        All pipeline runs for this project
+      </p>
     </div>
   )
 
   if (isLoading) {
     return (
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full">
         {header}
         <RunListSkeleton />
       </div>
@@ -107,7 +101,7 @@ export default function ProjectRuns() {
 
   if (error) {
     return (
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full">
         {header}
         <ErrorState
           message="Failed to load run history"
@@ -120,7 +114,7 @@ export default function ProjectRuns() {
 
   if (!runs || runs.length === 0) {
     return (
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full">
         <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
         <p className="text-muted-foreground text-sm mb-6">
           All pipeline runs for this project
@@ -139,8 +133,15 @@ export default function ProjectRuns() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="w-full">
       {header}
+
+      <div className="mb-6">
+        <Button size="sm" onClick={() => navigate(`/${projectId}/run`)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Start New Run
+        </Button>
+      </div>
 
       <Card>
         <CardContent className="py-2 px-0">

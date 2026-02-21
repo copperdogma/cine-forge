@@ -1,6 +1,11 @@
 
 import pytest
-from cine_forge.modules.world_building.character_bible_v1.main import _normalize_character_name, _is_plausible_character_name
+
+from cine_forge.modules.world_building.character_bible_v1.main import (
+    _is_plausible_character_name,
+    _normalize_character_name,
+)
+
 
 @pytest.mark.parametrize("input_name, expected", [
     ("THE MARINER", "MARINER"),

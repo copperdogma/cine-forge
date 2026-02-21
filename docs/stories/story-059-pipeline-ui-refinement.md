@@ -20,27 +20,41 @@ Current UI issues identified by user:
 ## Tasks
 
 ### Backend / API
-- [ ] Update `RunSummary` and `RunStateResponse` to include the `recipe_id`.
-- [ ] Ensure `OperatorConsoleService` populates the recipe name/label in run summaries.
+- [x] Update `RunSummary` and `RunStateResponse` to include the `recipe_id`.
+- [x] Ensure `OperatorConsoleService` populates the recipe name/label in run summaries.
 
 ### Frontend — Run History (`ProjectRuns.tsx`)
-- [ ] Update run list items to show the Human-readable Recipe Name (e.g., "Intake" instead of "Ingest", "World Building") instead of the raw Run ID.
-- [ ] Add a prominent "Start New Run" button at the top of the history list.
-- [ ] Show total cost and duration in the list view for completed runs.
+- [x] Update run list items to show the Human-readable Recipe Name (e.g., "Intake" instead of "Ingest", "World Building") instead of the raw Run ID.
+- [x] Add a prominent "Start New Run" button at the top of the history list.
+- [x] Show total cost and duration in the list view for completed runs.
 
 ### Frontend — Run Details (`ProjectRun.tsx`)
-- [ ] **Fix Navigation Bug**: Clicking "Configure New Run" (or similar) must clear the `runId` from the state/URL so the user isn't trapped in the historical view.
-- [ ] **Dynamic Header**: Change "Pipeline Running" to "Run Details" or "Run Complete" based on the `isCompleted` state.
-- [ ] **Action Cleanup**: Remove "Configure New Run" from the bottom of the historical run view.
-- [ ] **Rerun Feature**: Add a "Rerun with these settings" button to completed/failed runs that clones the previous config into a new setup screen.
+- [x] **Fix Navigation Bug**: Clicking "Configure New Run" (or similar) must clear the `runId` from the state/URL so the user isn't trapped in the historical view.
+- [x] **Dynamic Header**: Change "Pipeline Running" to "Run Details" or "Run Complete" based on the `isCompleted` state.
+- [x] **Action Cleanup**: Remove "Configure New Run" from the bottom of the historical run view.
+- [x] **Rerun Feature**: Add a "Rerun with these settings" button to completed/failed runs that clones the previous config into a new setup screen.
+
+### Investigation: Refine Mode Discrepancies
+- [x] **Why did the run report fewer entities?**
+  - Run `run-408ea377` found 5 chars / 10 locs / 19 props.
+  - Previous run had 8 chars / 10 locs / 46 props.
+  - Need to check if `entity_discovery` "pruned" entities or if the "Refine" logic accidentally filtered them out.
+- [x] **Why do UI counts match the OLD run?**
+  - UI shows 8/10/46 (the high-water mark).
+  - Does the UI aggregate *all* entities ever found, or just the latest versions?
+  - `useEntityDetails` hook logic needs review.
+- [x] **Versioning Logic**:
+  - If Run 2 produces `Rose v2`, does it *replace* `Rose v1` in the UI?
+  - What happens if Run 2 *doesn't* produce `Vinnie` at all? Does `Vinnie v1` remain "active"?
+  - Expectation: If we refine the world, we expect the new set to be the *current* set. Orphans should likely be marked "stale" or hidden, or the UI is showing a "union" of all runs.
 
 ## Acceptance Criteria
 
-- [ ] Run History list shows "Intake", "World Building", etc. instead of cryptic IDs.
-- [ ] Historical runs show "Run Details" in the header, not "Pipeline Running".
-- [ ] Clicking "Start New Run" successfully takes the user to the configuration screen even if they were just looking at a specific run.
-- [ ] "Configure New Run" is removed from the bottom of specific run pages.
-- [ ] Verification: UI Smoke Test confirms navigation is no longer "trapped".
+- [x] Run History list shows "Intake", "World Building", etc. instead of cryptic IDs.
+- [x] Historical runs show "Run Details" in the header, not "Pipeline Running".
+- [x] Clicking "Start New Run" successfully takes the user to the configuration screen even if they were just looking at a specific run.
+- [x] "Configure New Run" is removed from the bottom of specific run pages.
+- [x] Verification: UI Smoke Test confirms navigation is no longer "trapped".
 
 ## AI Considerations
 
@@ -49,12 +63,12 @@ Current UI issues identified by user:
 
 ## Tenet Verification
 
-- [ ] Immutability: ✅ Ensures historical runs remain accessible and distinct from new runs.
-- [ ] Lineage: N/A
-- [ ] Explanation: N/A
-- [ ] Cost transparency: ✅ Surfacing total run cost in the history list.
-- [ ] Human control: ✅ Improves clarity of choice when starting new work.
-- [ ] QA: Manual smoke test of navigation flows.
+- [x] Immutability: ✅ Ensures historical runs remain accessible and distinct from new runs.
+- [x] Lineage: N/A
+- [x] Explanation: N/A
+- [x] Cost transparency: ✅ Surfacing total run cost in the history list.
+- [x] Human control: ✅ Improves clarity of choice when starting new work.
+- [x] QA: Manual smoke test of navigation flows.
 
 ## Files to Modify
 - `ui/src/pages/ProjectRun.tsx`
@@ -67,3 +81,5 @@ Current UI issues identified by user:
 
 20260220-2200 — setup: Scaffolded story based on user feedback. Captured navigation bug and humanization requirements.
 20260220-2230 — completion: Implemented recipe name mapping in `list_runs` API and frontend `constants.ts`. Updated `ProjectRuns.tsx` with human-readable labels and "Start New Run" button. Fixed dynamic headers and navigation trap in `ProjectRun.tsx`. Verified via build and tsc.
+20260220-2300 — bugfix: Identified `KeyError: 'data'` in `entity_discovery_v1` during Refine Mode. Root cause: `store_inputs_all` returns unwrapped artifact data, but module code expected wrapped artifact objects. Fixing module logic and updating unit tests.
+20260221-1400 — enhancement: Resolved UI layout issues where run details were cut off. Standardized headers across all run-related views to use the "Bold Recipe + Muted State" format. Enabled horizontal scrolling in main content area as a safety measure. Verified via local dev run and tsc.

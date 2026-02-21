@@ -1,5 +1,5 @@
-import pytest
 from cine_forge.modules.world_building.entity_discovery_v1.main import run_module
+
 
 def test_entity_discovery_refine_mode_bootstraps():
     """Verify that discovery bootstraps from existing bibles."""
@@ -21,8 +21,9 @@ def test_entity_discovery_refine_mode_bootstraps():
         "enable_locations": False
     }
     
-    import cine_forge.modules.world_building.entity_discovery_v1.main as discovery_main
     from unittest.mock import MagicMock
+
+    import cine_forge.modules.world_building.entity_discovery_v1.main as discovery_main
     
     original_call = discovery_main.call_llm
     mock_call = MagicMock()

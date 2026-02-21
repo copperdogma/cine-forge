@@ -68,7 +68,10 @@ def run_module(
                 name = item.get("name") or item.get("canonical_name")
                 if name:
                     current_list.append(name)
-            print(f"[entity_discovery] Bootstrapped {len(current_list)} items from existing {bible_input_key}")
+            print(
+                f"[entity_discovery] Bootstrapped {len(current_list)} items from "
+                f"existing {bible_input_key}"
+            )
 
         print(f"[entity_discovery] Starting pass for {key}...")
         
@@ -85,9 +88,12 @@ def run_module(
             _update_cost(total_cost, cost)
             current_list = payload.items
             
-            # Normalize character names to ensure consistency with parser (e.g. THE MARINER -> MARINER)
+            # Normalize character names to ensure consistency with parser
+            # (e.g. THE MARINER -> MARINER)
             if key == "characters":
-                current_list = list(dict.fromkeys([_normalize_character_name(n) for n in current_list]))
+                current_list = list(
+                    dict.fromkeys([_normalize_character_name(n) for n in current_list])
+                )
             
             print(f"  Chunk {i+1}/{len(chunks)}: {len(current_list)} items found so far")
             
@@ -149,7 +155,8 @@ TASK:
    already in the list, do NOT add it as new. The "EXISTING" list contains items already 
    accepted by the user; prioritize their naming conventions.
 3. PRUNING: Only include items that meet the definition above.
-4. Return the complete, updated list of ALL {entity_type} found so far (including the existing ones).
+4. Return the complete, updated list of ALL {entity_type} found so far
+   (including the existing ones).
 
 Return valid JSON: {{ "items": ["NAME 1", "NAME 2", ...] }}
 """
@@ -168,7 +175,8 @@ def _normalize_character_name(value: Any) -> str:
     # Strip non-alphanumeric except spaces and apostrophes (e.g. MR. SALVATORI -> MR SALVATORI)
     text = re.sub(r"[^A-Z0-9' ]+", "", text)
     
-    # Strip leading "THE " prefix if it's followed by 4 or more letters (e.g. THE MARINER -> MARINER)
+    # Strip leading "THE " prefix if it's followed by 4+ letters
+    # (e.g. THE MARINER -> MARINER)
     if text.startswith("THE "):
         remainder = text[4:].strip()
         if len(remainder) >= 4:

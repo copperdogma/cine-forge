@@ -10,6 +10,10 @@ import {
   Circle,
   XCircle,
   FileText,
+  DollarSign,
+  Clock,
+  Cpu,
+  Layers,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -255,6 +259,15 @@ export default function ProjectRun() {
       return null
     }
 
+    const completedStages = Object.values(stages).filter(s => s.status === 'done' || s.status === 'skipped_reused').length
+    const totalStages = stageIds.length
+    const totalCost = Object.values(stages).reduce((acc, s) => acc + (s.cost_usd || 0), 0)
+    const duration = runStateData?.state.finished_at && runStateData?.state.started_at
+      ? runStateData.state.finished_at - runStateData.state.started_at
+      : runStateData?.state.started_at
+        ? (Date.now() / 1000) - runStateData.state.started_at
+        : 0
+
     const getStageStatus = (status: string) => {
       if (status === 'done' || status === 'skipped_reused') return 'done'
       if (status === 'running') return 'running'
@@ -264,12 +277,11 @@ export default function ProjectRun() {
     }
 
     const formatDuration = (seconds: number) => {
-      if (!seconds || seconds <= 0) return null
-      const rounded = Math.round(seconds)
-      if (rounded < 60) return `${rounded}s`
-      const mins = Math.floor(rounded / 60)
-      const secs = rounded % 60
-      return `${mins}m ${secs}s`
+      if (!seconds || seconds <= 0) return '0s'
+      if (seconds < 60) return `${seconds.toFixed(1)}s`
+      const minutes = Math.floor(seconds / 60)
+      const remainingSeconds = Math.floor(seconds % 60)
+      return `${minutes}m ${remainingSeconds}s`
     }
 
     const formatCost = (cost?: number) => {
@@ -277,16 +289,21 @@ export default function ProjectRun() {
       return `$${cost.toFixed(4)}`
     }
 
-    const getPageTitle = () => {
+    const renderHeaderTitle = () => {
       const recipeName = RECIPE_NAMES[recipeId] || recipeId.replace('_', ' ')
-      if (hasFailed) return `${recipeName} Run Failed`
-      if (isCompleted) return `${recipeName} Run Complete`
-      if (isRunning) return `${recipeName} Running`
-      return `${recipeName} Run Details`
+      return (
+        <>
+          {recipeName}
+          {hasFailed && <span className="ml-2 text-muted-foreground font-normal">Failed</span>}
+          {isCompleted && <span className="ml-2 text-muted-foreground font-normal">Complete</span>}
+          {isRunning && <span className="ml-2 text-muted-foreground font-normal">Running</span>}
+          {!hasFailed && !isCompleted && !isRunning && <span className="ml-2 text-muted-foreground font-normal">Details</span>}
+        </>
+      )
     }
 
     return (
-      <div className="space-y-6">
+      <div className="w-full space-y-6">
         <button
           onClick={() => navigate(`/${projectId}/runs`)}
           className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
@@ -295,14 +312,14 @@ export default function ProjectRun() {
           Back to Runs
         </button>
 
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight mb-1">{getPageTitle()}</h1>
+            <h1 className="text-2xl font-bold tracking-tight mb-1">{renderHeaderTitle()}</h1>
             <p className="text-muted-foreground text-sm">
               {runStateData?.run_id || runId}
             </p>
           </div>
-          <Badge variant={getBadgeVariant()} className="text-xs">
+          <Badge variant={getBadgeVariant()} className="text-xs shrink-0 w-fit">
             {getBadgeIcon()}
             <span aria-live="polite" aria-atomic="true">
               {getBadgeLabel()}
@@ -317,6 +334,57 @@ export default function ProjectRun() {
             </CardContent>
           </Card>
         )}
+
+        {/* Summary cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                <DollarSign className="h-3.5 w-3.5" />
+                Total Cost
+              </div>
+              <div className="text-xl font-bold">
+                ${totalCost.toFixed(2)}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                <Clock className="h-3.5 w-3.5" />
+                Duration
+              </div>
+              <div className="text-xl font-bold">
+                {formatDuration(duration)}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                <Cpu className="h-3.5 w-3.5" />
+                Model
+              </div>
+              <div className="text-sm font-medium truncate" title={runStateData?.state.runtime_params.default_model as string}>
+                {(runStateData?.state.runtime_params.default_model as string || 'Unknown').replace('claude-', '')}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                <Layers className="h-3.5 w-3.5" />
+                Stages
+              </div>
+              <div className="text-xl font-bold">
+                {completedStages}/{totalStages}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <Card>
           <CardContent className="py-4 px-0">
@@ -396,7 +464,7 @@ export default function ProjectRun() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <h1 className="text-2xl font-bold tracking-tight mb-1">Pipeline</h1>
       <p className="text-muted-foreground text-sm mb-6">
         Configure and run the CineForge pipeline
