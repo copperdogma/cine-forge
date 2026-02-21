@@ -595,9 +595,16 @@ def _mock_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible:
 def _normalize_character_name(value: Any) -> str:
     text = str(value or "").strip().upper()
     text = re.sub(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT’D|OFF|ON RADIO)\)\s*$", "", text)
-    text = re.sub(r"^[^A-Z0-9]+|[^A-Z0-9']+$", "", text)
-    if re.match(r"^THE[A-Z]{4,}$", text):
-        text = text[3:]
+    
+    # Strip non-alphanumeric except spaces and apostrophes (e.g. MR. SALVATORI -> MR SALVATORI)
+    text = re.sub(r"[^A-Z0-9' ]+", "", text)
+    
+    # Strip leading "THE " prefix if it's followed by 4 or more letters (e.g. THE MARINER -> MARINER)
+    if text.startswith("THE "):
+        remainder = text[4:].strip()
+        if len(remainder) >= 4:
+            text = remainder
+    
     text = re.sub(r"\s+", " ", text).strip()
     return text
 

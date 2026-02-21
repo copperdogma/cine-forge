@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -83,6 +84,11 @@ def run_module(
             
             _update_cost(total_cost, cost)
             current_list = payload.items
+            
+            # Normalize character names to ensure consistency with parser (e.g. THE MARINER -> MARINER)
+            if key == "characters":
+                current_list = list(dict.fromkeys([_normalize_character_name(n) for n in current_list]))
+            
             print(f"  Chunk {i+1}/{len(chunks)}: {len(current_list)} items found so far")
             
         results[key] = current_list
@@ -153,3 +159,20 @@ def _update_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None:
     total["input_tokens"] += call_cost.get("input_tokens", 0)
     total["output_tokens"] += call_cost.get("output_tokens", 0)
     total["estimated_cost_usd"] += call_cost.get("estimated_cost_usd", 0.0)
+
+
+def _normalize_character_name(value: Any) -> str:
+    text = str(value or "").strip().upper()
+    text = re.sub(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT’D|OFF|ON RADIO)\)\s*$", "", text)
+    
+    # Strip non-alphanumeric except spaces and apostrophes (e.g. MR. SALVATORI -> MR SALVATORI)
+    text = re.sub(r"[^A-Z0-9' ]+", "", text)
+    
+    # Strip leading "THE " prefix if it's followed by 4 or more letters (e.g. THE MARINER -> MARINER)
+    if text.startswith("THE "):
+        remainder = text[4:].strip()
+        if len(remainder) >= 4:
+            text = remainder
+    
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
