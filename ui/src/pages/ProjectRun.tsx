@@ -30,8 +30,9 @@ import {
   useProjectInputs,
   useProject
 } from '@/lib/hooks'
+import { useChatStore } from '@/lib/chat-store'
 import { toast } from 'sonner'
-import { getOrderedStageIds } from '@/lib/constants'
+import { getOrderedStageIds, RECIPE_NAMES } from '@/lib/constants'
 import { humanizeStageName } from '@/lib/chat-messages'
 
 // Fallback recipes in case API fails
@@ -111,7 +112,9 @@ export default function ProjectRun() {
   const { data: projectData } = useProject(projectId)
 
   // Use real recipes from API, fallback to hardcoded list if API fails
-  const recipes = recipesData || fallbackRecipes
+  const recipes = (recipesData || fallbackRecipes).filter(r => 
+    ['mvp_ingest', 'world_building', 'narrative_analysis'].includes(r.recipe_id)
+  )
 
   // Auto-populate from existing project inputs (screenplay already uploaded during project creation)
   useEffect(() => {
@@ -179,6 +182,39 @@ export default function ProjectRun() {
 
     startRunMutation.mutate(payload, {
       onSuccess: (data) => {
+        const store = useChatStore.getState()
+        
+        // 1. Record the user's action
+        store.addMessage(projectId, {
+          id: `action_${Date.now()}`,
+          type: 'user_action',
+          content: `Started ${RECIPE_NAMES[selectedRecipe] || selectedRecipe} run`,
+          timestamp: Date.now(),
+        })
+
+        // 2. Add the progress card placeholder
+        store.setActiveRun(projectId, data.run_id)
+        store.addMessage(projectId, {
+          id: `run_started_${data.run_id}`,
+          type: 'ai_status',
+          content: 'Breaking down your screenplay now...',
+          timestamp: Date.now(),
+          actions: [
+            { id: 'view_run_details', label: 'View Run Details', variant: 'outline', route: `run/${data.run_id}` },
+          ],
+        })
+        
+        // 3. Add the live progress card
+        store.addMessage(projectId, {
+          id: `run_progress_${data.run_id}`,
+          type: 'ai_progress',
+          content: data.run_id,
+          timestamp: Date.now() + 1,
+        })
+
+        // 4. Activity log
+        store.addActivity(projectId, `Started pipeline: ${selectedRecipe}`, `run/${data.run_id}`)
+
         toast.success(`Started run ${data.run_id}`)
         navigate(`/${projectId}/run/${data.run_id}`)
       },
@@ -242,14 +278,23 @@ export default function ProjectRun() {
     }
 
     const getPageTitle = () => {
-      if (hasFailed) return 'Pipeline Run Failed'
-      if (isCompleted) return 'Pipeline Run Complete'
-      if (isRunning) return 'Pipeline Running'
-      return 'Pipeline Run Details'
+      const recipeName = RECIPE_NAMES[recipeId] || recipeId.replace('_', ' ')
+      if (hasFailed) return `${recipeName} Run Failed`
+      if (isCompleted) return `${recipeName} Run Complete`
+      if (isRunning) return `${recipeName} Running`
+      return `${recipeName} Run Details`
     }
 
     return (
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="space-y-6">
+        <button
+          onClick={() => navigate(`/${projectId}/runs`)}
+          className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
+        >
+          <ChevronRight className="h-4 w-4 rotate-180 mr-1" />
+          Back to Runs
+        </button>
+
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight mb-1">{getPageTitle()}</h1>
@@ -351,7 +396,7 @@ export default function ProjectRun() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight mb-1">Pipeline</h1>
       <p className="text-muted-foreground text-sm mb-6">
         Configure and run the CineForge pipeline
