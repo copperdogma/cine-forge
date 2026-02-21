@@ -9,18 +9,10 @@ def test_entity_discovery_refine_mode_bootstraps():
             "title": "Test"
         },
         "character_bible": [
-            {
-                "artifact_type": "character_bible",
-                "entity_id": "abe",
-                "data": {"name": "ABE"}
-            }
+            {"name": "ABE"}
         ],
         "prop_bible": [
-            {
-                "artifact_type": "prop_bible",
-                "entity_id": "coin",
-                "data": {"canonical_name": "GOLD COIN"}
-            }
+            {"canonical_name": "GOLD COIN"}
         ]
     }
     

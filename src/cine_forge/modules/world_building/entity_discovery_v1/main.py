@@ -62,9 +62,9 @@ def run_module(
         existing_bible = inputs.get(bible_input_key)
         
         if existing_bible:
-            # existing_bible is a list of artifact dicts
+            # existing_bible is a list of artifact data dicts (from store_inputs_all)
             for item in existing_bible:
-                name = item["data"].get("name") or item["data"].get("canonical_name")
+                name = item.get("name") or item.get("canonical_name")
                 if name:
                     current_list.append(name)
             print(f"[entity_discovery] Bootstrapped {len(current_list)} items from existing {bible_input_key}")
