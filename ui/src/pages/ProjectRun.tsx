@@ -31,6 +31,8 @@ import {
   useProject
 } from '@/lib/hooks'
 import { toast } from 'sonner'
+import { getOrderedStageIds } from '@/lib/constants'
+import { humanizeStageName } from '@/lib/chat-messages'
 
 // Fallback recipes in case API fails
 const fallbackRecipes = [
@@ -176,10 +178,12 @@ export default function ProjectRun() {
   // If we have a runId in the URL, show progress
   if (runId || view === 'progress') {
     const stages = runStateData?.state.stages || {}
-    const stageEntries = Object.entries(stages)
-    const isRunning = stageEntries.some(([, s]) => s.status === 'running')
-    const isCompleted = stageEntries.length > 0 && stageEntries.every(([, s]) => s.status === 'done' || s.status === 'skipped_reused')
-    const hasFailed = stageEntries.some(([, s]) => s.status === 'failed')
+    const recipeId = runStateData?.state.recipe_id || 'mvp_ingest'
+    const stageIds = getOrderedStageIds(recipeId, Object.keys(stages))
+
+    const isRunning = Object.values(stages).some((s) => s.status === 'running')
+    const isCompleted = stageIds.length > 0 && stageIds.every((id) => stages[id].status === 'done' || stages[id].status === 'skipped_reused')
+    const hasFailed = Object.values(stages).some((s) => s.status === 'failed')
 
     const getBadgeVariant = () => {
       if (hasFailed) return 'destructive'
@@ -256,13 +260,14 @@ export default function ProjectRun() {
                 {runStateLoading ? 'Loading run state...' : 'No stages found'}
               </div>
             )}
-            {stageEntries.map(([stageName, stage], i) => {
+            {stageIds.map((stageId, i) => {
+              const stage = stages[stageId]
               const status = getStageStatus(stage.status)
               const duration = formatDuration(stage.duration_seconds)
               const cost = formatCost(stage.cost_usd)
 
               return (
-                <div key={stageName}>
+                <div key={stageId}>
                   <div className="flex items-center gap-3 px-4 py-2.5">
                     {status === 'done' && (
                       <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
@@ -283,14 +288,14 @@ export default function ProjectRun() {
                         status === 'failed' && 'text-destructive',
                       )}
                     >
-                      {stageName}
+                      {humanizeStageName(stageId)}
                     </span>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       {cost && <span>{cost}</span>}
                       {duration && <span>{duration}</span>}
                     </div>
                   </div>
-                  {i < stageEntries.length - 1 && <Separator />}
+                  {i < stageIds.length - 1 && <Separator />}
                 </div>
               )
             })}

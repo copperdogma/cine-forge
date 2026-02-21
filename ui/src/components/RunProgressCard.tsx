@@ -3,36 +3,7 @@ import { useRunState } from '@/lib/hooks'
 import { STAGE_DESCRIPTIONS, humanizeStageName } from '@/lib/chat-messages'
 import type { StageState } from '@/lib/types'
 import { cn } from '@/lib/utils'
-
-/** Canonical stage order per recipe. Unknown stages go at the end. */
-const RECIPE_STAGE_ORDER: Record<string, string[]> = {
-  mvp_ingest: ['ingest', 'normalize', 'extract_scenes', 'project_config'],
-  world_building: ['entity_discovery', 'character_bible', 'location_bible', 'prop_bible'],
-}
-
-/** Human-readable names for artifact types produced by stages. */
-const ARTIFACT_NAMES: Record<string, [string, string]> = {
-  scene: ['scene', 'scenes'],
-  canonical_script: ['script', 'scripts'],
-  character_bible: ['character', 'characters'],
-  location_bible: ['location', 'locations'],
-  prop_bible: ['prop', 'props'],
-  scene_breakdown: ['scene breakdown', 'scene breakdowns'],
-  entity_graph: ['story graph', 'story graphs'],
-  world_overview: ['world overview', 'world overviews'],
-  entity_discovery_results: ['entity discovery results', 'entity discovery results'],
-}
-
-/** Skip internal artifact types the user doesn't care about. */
-const SKIP_TYPES = new Set(['raw_input', 'project_config', 'scene_index', 'entity_discovery_results'])
-
-function getOrderedStageIds(recipeId: string, stageKeys: string[]): string[] {
-  const knownOrder = RECIPE_STAGE_ORDER[recipeId]
-  if (!knownOrder) return stageKeys
-  const ordered = knownOrder.filter(id => stageKeys.includes(id))
-  const extras = stageKeys.filter(id => !knownOrder.includes(id))
-  return [...ordered, ...extras]
-}
+import { ARTIFACT_NAMES, SKIP_TYPES, getOrderedStageIds } from '@/lib/constants'
 
 /** Summarize artifact counts from a completed stage's refs. */
 function stageArtifactSummary(stage: StageState): string | null {
