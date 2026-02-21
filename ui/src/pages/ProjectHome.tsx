@@ -15,12 +15,14 @@ import {
   ExternalLink,
   Calendar,
   Pencil,
+  Share,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { ExportModal } from '@/components/ExportModal'
 import {
   Tooltip,
   TooltipContent,
@@ -204,6 +206,7 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const latestInput = inputs?.[inputs.length - 1]
   const { data: content, isLoading } = useProjectInputContent(projectId, latestInput?.filename)
   const editorRef = useRef<ScreenplayEditorHandle>(null)
+  const [isExportOpen, setIsExportOpen] = useState(false)
 
   // Handle ?scene= query param — scroll to that scene heading after editor mounts
   useEffect(() => {
@@ -251,6 +254,10 @@ function FreshImportView({ projectId }: { projectId: string }) {
             </p>
           )}
         </div>
+        <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+          <Share className="mr-2 h-4 w-4" />
+          Export
+        </Button>
       </div>
 
       {/* Screenplay content — fills remaining space */}
@@ -282,6 +289,13 @@ function FreshImportView({ projectId }: { projectId: string }) {
           <p className="text-sm">No screenplay content found.</p>
         </div>
       )}
+
+      <ExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        projectId={projectId}
+        defaultScope="everything"
+      />
     </div>
   )
 }

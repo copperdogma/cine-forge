@@ -1,10 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Users, AlertTriangle } from 'lucide-react'
+import { Users, AlertTriangle, Share } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { ListSkeleton, EmptyState, ErrorState } from '@/components/StateViews'
 import { EntityListControls } from '@/components/EntityListControls'
+import { ExportModal } from '@/components/ExportModal'
 import { type SortMode, type ViewDensity, type SortDirection } from '@/lib/types'
 import { useEntityDetails, useStickyPreference } from '@/lib/hooks'
 import { cn, formatEntityName } from '@/lib/utils'
@@ -12,6 +14,7 @@ import { cn, formatEntityName } from '@/lib/utils'
 export default function CharactersList() {
   const { projectId } = useParams<{ projectId: string }>()
   const navigate = useNavigate()
+  const [isExportOpen, setIsExportOpen] = useState(false)
   
   const [sortMode, setSortMode] = useStickyPreference<SortMode>(projectId, 'characters.sort', 'script-order')
   const [viewDensity, setViewDensity] = useStickyPreference<ViewDensity>(projectId, 'characters.density', 'medium')
@@ -69,17 +72,23 @@ export default function CharactersList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <Users className="h-6 w-6 text-amber-400" />
-          <h1 className="text-2xl font-semibold">Characters</h1>
-          <Badge variant="outline" className="ml-2">
-            {data.length}
-          </Badge>
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <Users className="h-6 w-6 text-amber-400" />
+            <h1 className="text-2xl font-semibold">Characters</h1>
+            <Badge variant="outline" className="ml-2">
+              {data.length}
+            </Badge>
+          </div>
+          <p className="text-muted-foreground">
+            All characters discovered in your screenplay
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          All characters discovered in your screenplay
-        </p>
+        <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+          <Share className="mr-2 h-4 w-4" />
+          Export
+        </Button>
       </div>
 
       <EntityListControls
@@ -240,6 +249,13 @@ export default function CharactersList() {
           ))}
         </div>
       )}
+
+      <ExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        projectId={projectId!}
+        defaultScope="characters"
+      />
     </div>
   )
 }

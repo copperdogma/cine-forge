@@ -1,10 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { MapPin, AlertTriangle } from 'lucide-react'
+import { MapPin, AlertTriangle, Share } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { ListSkeleton, EmptyState, ErrorState } from '@/components/StateViews'
 import { EntityListControls } from '@/components/EntityListControls'
+import { ExportModal } from '@/components/ExportModal'
 import { type SortMode, type ViewDensity, type SortDirection } from '@/lib/types'
 import { useEntityDetails, useStickyPreference } from '@/lib/hooks'
 import { cn, formatEntityName } from '@/lib/utils'
@@ -12,6 +14,7 @@ import { cn, formatEntityName } from '@/lib/utils'
 export default function LocationsList() {
   const { projectId } = useParams<{ projectId: string }>()
   const navigate = useNavigate()
+  const [isExportOpen, setIsExportOpen] = useState(false)
   const [sort, setSort] = useStickyPreference<SortMode>(projectId, 'locations.sort', 'script-order')
   const [density, setDensity] = useStickyPreference<ViewDensity>(projectId, 'locations.density', 'medium')
   const [direction, setDirection] = useStickyPreference<SortDirection>(projectId, 'locations.direction', 'asc')
@@ -68,17 +71,23 @@ export default function LocationsList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <MapPin className="h-6 w-6 text-rose-400" />
-          <h1 className="text-2xl font-semibold">Locations</h1>
-          <Badge variant="outline" className="ml-2">
-            {data.length}
-          </Badge>
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <MapPin className="h-6 w-6 text-rose-400" />
+            <h1 className="text-2xl font-semibold">Locations</h1>
+            <Badge variant="outline" className="ml-2">
+              {data.length}
+            </Badge>
+          </div>
+          <p className="text-muted-foreground">
+            All locations discovered in your screenplay
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          All locations discovered in your screenplay
-        </p>
+        <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+          <Share className="mr-2 h-4 w-4" />
+          Export
+        </Button>
       </div>
 
       <EntityListControls
@@ -233,6 +242,13 @@ export default function LocationsList() {
           ))}
         </div>
       )}
+
+      <ExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        projectId={projectId!}
+        defaultScope="locations"
+      />
     </div>
   )
 }

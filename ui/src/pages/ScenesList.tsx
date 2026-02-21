@@ -1,10 +1,12 @@
-import { useMemo } from "react";
-import { Clapperboard } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Clapperboard, Share } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState, ListSkeleton } from "@/components/StateViews";
 import { EntityListControls } from "@/components/EntityListControls";
+import { ExportModal } from '@/components/ExportModal'
 import { type SortMode, type ViewDensity, type SortDirection } from "@/lib/types";
 import { useScenes, useStickyPreference } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
@@ -12,6 +14,7 @@ import { cn } from "@/lib/utils";
 export default function ScenesList() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
+  const [isExportOpen, setIsExportOpen] = useState(false);
   const { data: scenes, isLoading } = useScenes(projectId!);
   const [sort, setSort] = useStickyPreference<SortMode>(projectId, 'scenes.sort', 'script-order');
   const [density, setDensity] = useStickyPreference<ViewDensity>(projectId, 'scenes.density', 'medium');
@@ -73,17 +76,23 @@ export default function ScenesList() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <Clapperboard className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold">Scenes</h1>
-          <Badge variant="secondary" className="ml-2">
-            {scenes.length}
-          </Badge>
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <Clapperboard className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold">Scenes</h1>
+            <Badge variant="secondary" className="ml-2">
+              {scenes.length}
+            </Badge>
+          </div>
+          <p className="text-muted-foreground">
+            All scenes extracted from your screenplay
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          All scenes extracted from your screenplay
-        </p>
+        <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+          <Share className="mr-2 h-4 w-4" />
+          Export
+        </Button>
       </div>
 
       {/* Controls */}
@@ -220,6 +229,13 @@ export default function ScenesList() {
           ))}
         </div>
       )}
+
+      <ExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        projectId={projectId!}
+        defaultScope="scenes"
+      />
     </div>
   );
 }

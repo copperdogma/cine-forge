@@ -15,12 +15,14 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Share,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ExportModal } from '@/components/ExportModal'
 import { cn, formatEntityName } from '@/lib/utils'
 import {
   ProfileViewer,
@@ -343,6 +345,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
   const { projectId, entityId } = useParams()
   const navigate = useNavigate()
   const [showRawJson, setShowRawJson] = useState(false)
+  const [isExportOpen, setIsExportOpen] = useState(false)
 
   const config = sectionConfig[section]
   const Icon = config?.icon || FileText
@@ -568,6 +571,10 @@ export default function EntityDetailPage({ section }: { section: string }) {
             )}
           </div>
         </div>
+        <Button variant="outline" size="sm" onClick={() => setIsExportOpen(true)}>
+          <Share className="mr-2 h-4 w-4" />
+          Export
+        </Button>
       </div>
 
       {/* Scene-specific: Jump to Script button + Entity roster */}
@@ -643,6 +650,15 @@ export default function EntityDetailPage({ section }: { section: string }) {
           </CardContent>
         </Card>
       )}
+
+      <ExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        projectId={projectId!}
+        defaultScope="single"
+        entityId={entityId}
+        entityType={section === 'scenes' ? 'scene' : section === 'characters' ? 'character' : section === 'locations' ? 'location' : 'prop'}
+      />
     </div>
   )
 }

@@ -1,10 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Wrench, AlertTriangle } from 'lucide-react'
+import { Wrench, AlertTriangle, Share } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { ListSkeleton, EmptyState, ErrorState } from '@/components/StateViews'
 import { EntityListControls } from '@/components/EntityListControls'
+import { ExportModal } from '@/components/ExportModal'
 import { type SortMode, type ViewDensity, type SortDirection } from '@/lib/types'
 import { useEntityDetails, useStickyPreference } from '@/lib/hooks'
 import { cn, formatEntityName } from '@/lib/utils'
@@ -12,6 +14,7 @@ import { cn, formatEntityName } from '@/lib/utils'
 export default function PropsList() {
   const { projectId } = useParams<{ projectId: string }>()
   const navigate = useNavigate()
+  const [isExportOpen, setIsExportOpen] = useState(false)
   const [sort, setSort] = useStickyPreference<SortMode>(projectId, 'props.sort', 'script-order')
   const [density, setDensity] = useStickyPreference<ViewDensity>(projectId, 'props.density', 'medium')
   const [direction, setDirection] = useStickyPreference<SortDirection>(projectId, 'props.direction', 'asc')
@@ -68,17 +71,23 @@ export default function PropsList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <Wrench className="h-6 w-6 text-orange-400" />
-          <h1 className="text-2xl font-semibold">Props</h1>
-          <Badge variant="outline" className="ml-2">
-            {data.length}
-          </Badge>
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <Wrench className="h-6 w-6 text-orange-400" />
+            <h1 className="text-2xl font-semibold">Props</h1>
+            <Badge variant="outline" className="ml-2">
+              {data.length}
+            </Badge>
+          </div>
+          <p className="text-muted-foreground">
+            All props discovered in your screenplay
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          All props discovered in your screenplay
-        </p>
+        <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+          <Share className="mr-2 h-4 w-4" />
+          Export
+        </Button>
       </div>
 
       <EntityListControls
@@ -229,6 +238,13 @@ export default function PropsList() {
           ))}
         </div>
       )}
+
+      <ExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        projectId={projectId!}
+        defaultScope="props"
+      />
     </div>
   )
 }
