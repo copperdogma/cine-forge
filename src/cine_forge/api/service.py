@@ -611,6 +611,7 @@ class OperatorConsoleService:
                 {
                     "run_id": state.get("run_id", run_dir.name),
                     "status": status,
+                    "recipe_id": state.get("recipe_id", "mvp_ingest"),
                     "started_at": state.get("started_at"),
                     "finished_at": state.get("finished_at"),
                 }

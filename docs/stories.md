@@ -81,6 +81,7 @@ NOTES from Cam:
 | 056 | Entity Design Studies (Reference Image Generation Loop) | 6 — Shot Planning & Viz | High | To Do | [story-056](stories/story-056-entity-design-study-reference-images.md) |
 | 057 | Entity Prev/Next Navigation | 2.5 — UI | High | Done | [story-057](stories/story-057-entity-prev-next-navigation.md) |
 | 058 | Comprehensive Export & Share | 2.5 — UI | High | To Do | [story-058](stories/story-058-comprehensive-export-share.md) |
+| 059 | Pipeline UI Refinement | 2.5 — UI | High | Done | [story-059](stories/story-059-pipeline-ui-refinement.md) |
 
 ## Phase Summary
 

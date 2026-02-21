@@ -25,6 +25,7 @@ export type RecentProjectSummary = ProjectSummary & {
 export type RunSummary = {
   run_id: string
   status: string
+  recipe_id: string
   started_at?: number
   finished_at?: number
 }

@@ -9,6 +9,13 @@ export const RECIPE_STAGE_ORDER: Record<string, string[]> = {
   narrative_analysis: ['entity_graph', 'continuity_tracking'],
 }
 
+/** Human-readable names for recipes. */
+export const RECIPE_NAMES: Record<string, string> = {
+  mvp_ingest: 'Script Intake',
+  world_building: 'World Building',
+  narrative_analysis: 'Narrative Logic',
+}
+
 /** Human-readable names for artifact types produced by stages. */
 export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   scene: ['scene', 'scenes'],

@@ -55,6 +55,7 @@ class RunSummary(BaseModel):
 
     run_id: str
     status: str
+    recipe_id: str = "mvp_ingest"
     started_at: float | None = None
     finished_at: float | None = None
 

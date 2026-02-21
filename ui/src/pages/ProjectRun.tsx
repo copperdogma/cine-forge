@@ -81,8 +81,6 @@ function transformBackendEvents(events?: Array<Record<string, unknown>>): RunEve
   })
 }
 
-type RunView = 'config' | 'progress'
-
 type UploadedInputResponse = {
   original_name: string
   stored_path: string
@@ -92,7 +90,6 @@ type UploadedInputResponse = {
 export default function ProjectRun() {
   const { projectId, runId } = useParams()
   const navigate = useNavigate()
-  const [view, setView] = useState<RunView>(runId ? 'progress' : 'config')
   const [selectedRecipe, setSelectedRecipe] = useState('mvp_ingest')
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [dragOver, setDragOver] = useState(false)
@@ -130,6 +127,18 @@ export default function ProjectRun() {
     }, 0)
     return () => clearTimeout(t)
   }, [existingInputs, uploadedFile])
+
+  // Populate config state from existing run details if we're viewing a run
+  useEffect(() => {
+    if (runId && runStateData?.state) {
+      const state = runStateData.state
+      setSelectedRecipe(state.recipe_id)
+      const params = state.runtime_params || {}
+      if (params.default_model) setDefaultModel(params.default_model as string)
+      if (params.work_model) setWorkModel(params.work_model as string)
+      if (params.verify_model) setVerifyModel(params.verify_model as string)
+    }
+  }, [runId, runStateData])
 
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -180,7 +189,7 @@ export default function ProjectRun() {
   }
 
   // If we have a runId in the URL, show progress
-  if (runId || view === 'progress') {
+  if (runId) {
     const stages = runStateData?.state.stages || {}
     const recipeId = runStateData?.state.recipe_id || 'mvp_ingest'
     const stageIds = getOrderedStageIds(recipeId, Object.keys(stages))
@@ -232,11 +241,18 @@ export default function ProjectRun() {
       return `$${cost.toFixed(4)}`
     }
 
+    const getPageTitle = () => {
+      if (hasFailed) return 'Pipeline Run Failed'
+      if (isCompleted) return 'Pipeline Run Complete'
+      if (isRunning) return 'Pipeline Running'
+      return 'Pipeline Run Details'
+    }
+
     return (
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight mb-1">Pipeline Running</h1>
+            <h1 className="text-2xl font-bold tracking-tight mb-1">{getPageTitle()}</h1>
             <p className="text-muted-foreground text-sm">
               {runStateData?.run_id || runId}
             </p>
@@ -326,8 +342,8 @@ export default function ProjectRun() {
         </div>
 
         <div className="mt-4">
-          <Button variant="outline" size="sm" onClick={() => setView('config')}>
-            Configure New Run
+          <Button variant="outline" size="sm" onClick={() => navigate(`/${projectId}/run`)}>
+            Clone settings to new run
           </Button>
         </div>
       </div>

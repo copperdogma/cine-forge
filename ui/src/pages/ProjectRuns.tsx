@@ -5,13 +5,16 @@ import {
   Clock,
   Loader2,
   History,
+  Plus,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useRuns } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
+import { RECIPE_NAMES } from '@/lib/constants'
 
 function statusIcon(status: string) {
   switch (status) {
@@ -78,13 +81,25 @@ export default function ProjectRuns() {
   const navigate = useNavigate()
   const { data: runs, isLoading, error, refetch } = useRuns(projectId)
 
-  if (isLoading) {
-    return (
+  const header = (
+    <div className="flex items-center justify-between mb-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
-        <p className="text-muted-foreground text-sm mb-6">
+        <p className="text-muted-foreground text-sm">
           All pipeline runs for this project
         </p>
+      </div>
+      <Button size="sm" onClick={() => navigate(`/${projectId}/run`)}>
+        <Plus className="h-4 w-4 mr-2" />
+        Start New Run
+      </Button>
+    </div>
+  )
+
+  if (isLoading) {
+    return (
+      <div className="max-w-5xl mx-auto">
+        {header}
         <RunListSkeleton />
       </div>
     )
@@ -92,11 +107,8 @@ export default function ProjectRuns() {
 
   if (error) {
     return (
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          All pipeline runs for this project
-        </p>
+      <div className="max-w-5xl mx-auto">
+        {header}
         <ErrorState
           message="Failed to load run history"
           hint={error.message}
@@ -108,7 +120,7 @@ export default function ProjectRuns() {
 
   if (!runs || runs.length === 0) {
     return (
-      <div>
+      <div className="max-w-5xl mx-auto">
         <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
         <p className="text-muted-foreground text-sm mb-6">
           All pipeline runs for this project
@@ -127,11 +139,8 @@ export default function ProjectRuns() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
-      <p className="text-muted-foreground text-sm mb-6">
-        All pipeline runs for this project
-      </p>
+    <div className="max-w-5xl mx-auto">
+      {header}
 
       <Card>
         <CardContent className="py-2 px-0">
@@ -144,18 +153,18 @@ export default function ProjectRuns() {
                 {statusIcon(run.status)}
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">{run.run_id}</span>
+                    <span className="text-sm font-semibold">
+                      {RECIPE_NAMES[run.recipe_id] || 'Unknown Run'}
+                    </span>
                     {statusBadge(run.status)}
                   </div>
                   <div className="flex items-center gap-3 mt-0.5">
+                    <span className="text-[10px] font-mono text-muted-foreground/60 uppercase truncate max-w-[120px]">
+                      {run.run_id}
+                    </span>
                     {run.started_at && (
                       <span className="text-xs text-muted-foreground">
                         Started {timeAgo(run.started_at * 1000)}
-                      </span>
-                    )}
-                    {run.finished_at && (
-                      <span className="text-xs text-muted-foreground">
-                        Finished {timeAgo(run.finished_at * 1000)}
                       </span>
                     )}
                   </div>
