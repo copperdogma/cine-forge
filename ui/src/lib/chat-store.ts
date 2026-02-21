@@ -85,6 +85,10 @@ export const useChatStore = create<ChatStore>()(
     },
 
     addActivity: (projectId, content, route) => {
+      const state = get()
+      const existing = state.messages[projectId] ?? []
+      const lastMsg = existing[existing.length - 1]
+
       const message: ChatMessage = {
         id: `activity_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
         type: 'activity',
@@ -92,8 +96,20 @@ export const useChatStore = create<ChatStore>()(
         timestamp: Date.now(),
         route,
       }
-      // Use the same addMessage path for persistence
-      get().addMessage(projectId, message)
+
+      if (lastMsg?.type === 'activity') {
+        // Replace last activity message instead of appending to avoid navigation spam
+        set((state) => {
+          const updated = [...(state.messages[projectId] ?? [])]
+          updated[updated.length - 1] = message
+          return { messages: { ...state.messages, [projectId]: updated } }
+        })
+        // Note: We don't explicitly persist deletions to the backend JSONL yet, 
+        // but new additions are persisted. Replacing in-memory keeps the UI clean.
+        postChatMessage(projectId, message).catch(() => {})
+      } else {
+        get().addMessage(projectId, message)
+      }
     },
 
     updateMessageType: (projectId, messageId, newType) =>
