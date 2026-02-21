@@ -359,6 +359,7 @@ export interface EnrichedEntity {
   sceneCount: number
   firstSceneNumber: number | null
   isLoaded: boolean
+  data?: Record<string, unknown>
 }
 
 const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -445,6 +446,7 @@ export function useEntityDetails(
           sceneIndexData,
         ),
         isLoaded: !!detail,
+        data: data || undefined,
       }
     })
   }, [entities, detailQueries, sceneIndexData])

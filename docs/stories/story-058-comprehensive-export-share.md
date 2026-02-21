@@ -135,6 +135,12 @@ Based on industry standard (reference PDF on file):
 - [x] Success toast with "Open file" action
 - [x] Keyboard shortcut (Ctrl/Cmd+E) to open export modal
 
+### Refinements (User Feedback)
+- [x] **Simplify Scope UX:** Remove the "Scope" selector. Context determines scope: viewing a character → exports that character; viewing list → exports list; viewing script → exports whole script.
+- [x] **Enrich Export Content:** Include all available data fields (scene appearances, descriptions, roles, dialogue summary, traits, evidence) in the markdown export for single entities.
+- [x] **Fix PDF Generation:** Resolve `doc.autoTable is not a function` error. Ensure `jspdf-autotable` is correctly registered.
+- [x] **One-Click Copy:** "Copy Markdown" should happen immediately on button click, not require a second "Export" confirmation.
+
 ## Acceptance Criteria
 
 - [x] User can export a single entity as markdown to clipboard from its detail page
@@ -186,3 +192,9 @@ Based on industry standard (reference PDF on file):
 - Replaced missing `RadioGroup` and `Label` components with `Select` and native HTML elements in `ExportModal.tsx`.
 - Fixed `jspdf` type error in `pdf.ts` by providing valid font arguments.
 - Verified successful build with `npm run build` in `ui/`.
+
+2026-02-21 14:25 — Refined export UX and fixed bugs based on user feedback.
+- **Fixed PDF Generation:** Resolved `doc.autoTable` error by using explicit `import autoTable` and functional invocation.
+- **Enriched Content:** Updated `markdown.ts` to export full entity details (narrative roles, dialogue, traits, evidence) by passing raw artifact data via `EnrichedEntity`.
+- **Simplified UI:** Refactored `ExportModal.tsx` to remove "Scope" selector (now context-driven only) and made "Copy Markdown" a single-click action.
+- Verified with `npm run lint` and `npm run build`.

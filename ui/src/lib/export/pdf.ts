@@ -1,26 +1,8 @@
 import { jsPDF } from 'jspdf'
-import 'jspdf-autotable'
+import autoTable from 'jspdf-autotable'
 import type { EnrichedEntity, Scene } from '../hooks'
 import type { ProjectSummary } from '../types'
 import { formatEntityName } from '../utils'
-
-// Types for autoTable
-interface UserOptions {
-  startY?: number
-  head?: string[][]
-  body?: (string | number)[][]
-  theme?: 'striped' | 'grid' | 'plain'
-  styles?: Record<string, unknown>
-  headStyles?: Record<string, unknown>
-  columnStyles?: Record<string, unknown>
-}
-
-declare module 'jspdf' {
-  interface jsPDF {
-    autoTable: (options: UserOptions) => jsPDF
-    lastAutoTable: { finalY: number }
-  }
-}
 
 // Helpers
 
@@ -73,7 +55,7 @@ function generateCallSheetPDF(doc: jsPDF, data: CallSheetData) {
     scenesByLocation.get(loc)!.push(scene)
   })
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     head: [['Scene', 'Set', 'Desc', 'Cast', 'Pages']],
     body: data.scenes.map(scene => [
@@ -112,7 +94,7 @@ export function exportProjectPDF(
   
   // Scenes
   y = addHeader(doc, 'Scenes', 20)
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     head: [['#', 'Slugline', 'Time', 'Summary']],
     body: scenes.map(s => [
@@ -126,7 +108,7 @@ export function exportProjectPDF(
   // Characters
   doc.addPage()
   y = addHeader(doc, 'Characters', 20)
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     head: [['Name', 'Scenes', 'First Scene', 'Description']],
     body: characters.map(c => [
@@ -140,7 +122,7 @@ export function exportProjectPDF(
   // Locations
   doc.addPage()
   y = addHeader(doc, 'Locations', 20)
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     head: [['Name', 'Scenes', 'Description']],
     body: locations.map(l => [
@@ -153,7 +135,7 @@ export function exportProjectPDF(
   // Props
   doc.addPage()
   y = addHeader(doc, 'Props', 20)
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     head: [['Name', 'Scenes', 'Description']],
     body: props.map(p => [

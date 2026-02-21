@@ -13,6 +13,16 @@ function generateMetadata(label: string, value: string | number | null | undefin
   return `**${label}:** ${value}\n\n`
 }
 
+function generateList(label: string, items: string[] | undefined): string {
+  if (!items || items.length === 0) return ''
+  let md = `**${label}:**\n`
+  for (const item of items) {
+    md += `- ${item}\n`
+  }
+  md += '\n'
+  return md
+}
+
 // Entity Renderers
 
 export function generateSceneMarkdown(scene: Scene): string {
@@ -27,31 +37,98 @@ export function generateSceneMarkdown(scene: Scene): string {
 
 export function generateCharacterMarkdown(character: EnrichedEntity): string {
   let md = generateHeader(formatEntityName(character.entity_id!), 2)
+  
+  const data = character.data || {}
+
   if (character.description) {
     md += generateMetadata('Description', character.description)
   }
+  
+  if (data.narrative_roles) {
+    md += generateList('Narrative Roles', data.narrative_roles as string[])
+  }
+
+  if (data.dialogue_summary) {
+    md += generateMetadata('Dialogue Summary', data.dialogue_summary as string)
+  }
+
+  if (data.inferred_traits) {
+    md += generateList('Inferred Traits', data.inferred_traits as string[])
+  }
+
+  // Evidence is usually a list of strings or objects. Handling strings for now.
+  if (data.evidence && Array.isArray(data.evidence)) {
+     md += `**Evidence:**\n`;
+     (data.evidence as Array<string | { quote?: string }>).forEach((ev) => {
+         if (typeof ev === 'string') {
+             md += `- ${ev}\n`
+         } else if (ev && typeof ev === 'object' && ev.quote) {
+             md += `- "${ev.quote}"\n`
+         }
+     })
+     md += '\n'
+  }
+
   md += generateMetadata('Scene Count', character.sceneCount)
   if (character.firstSceneNumber) {
     md += generateMetadata('First Scene', character.firstSceneNumber)
   }
+
+  if (data.scene_presence) {
+      md += generateList('Scene Appearances', data.scene_presence as string[])
+  }
+
   return md
 }
 
 export function generateLocationMarkdown(location: EnrichedEntity): string {
   let md = generateHeader(formatEntityName(location.entity_id!), 2)
+  
+  const data = location.data || {}
+
   if (location.description) {
     md += generateMetadata('Description', location.description)
   }
+  
+  if (data.narrative_roles) {
+    md += generateList('Narrative Roles', data.narrative_roles as string[])
+  }
+
+  if (data.inferred_traits) {
+    md += generateList('Inferred Traits', data.inferred_traits as string[])
+  }
+
   md += generateMetadata('Scene Count', location.sceneCount)
+  
+  if (data.scene_presence) {
+      md += generateList('Scene Appearances', data.scene_presence as string[])
+  }
+
   return md
 }
 
 export function generatePropMarkdown(prop: EnrichedEntity): string {
   let md = generateHeader(formatEntityName(prop.entity_id!), 2)
+  const data = prop.data || {}
+
   if (prop.description) {
     md += generateMetadata('Description', prop.description)
   }
+  
+  if (data.narrative_roles) {
+    md += generateList('Narrative Roles', data.narrative_roles as string[])
+  }
+
+  if (data.inferred_traits) {
+    md += generateList('Inferred Traits', data.inferred_traits as string[])
+  }
+
   md += generateMetadata('Scene Count', prop.sceneCount)
+  
+  if (data.scene_presence) {
+      md += generateList('Scene Appearances', data.scene_presence as string[])
+  }
+
   return md
 }
 

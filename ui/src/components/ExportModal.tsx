@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useExportData } from '@/lib/hooks'
 import { generateProjectMarkdown, generateSceneMarkdown, generateCharacterMarkdown, generateLocationMarkdown, generatePropMarkdown, generateScenesMarkdown, generateCharactersMarkdown, generateLocationsMarkdown, generatePropsMarkdown } from '@/lib/export/markdown'
 import { exportProjectPDF, exportCallSheet } from '@/lib/export/pdf'
@@ -9,7 +7,6 @@ import { toast } from 'sonner'
 import { Loader2, FileDown, Copy, FileText } from 'lucide-react'
 
 type ExportScope = 'everything' | 'scenes' | 'characters' | 'locations' | 'props' | 'single'
-type ExportFormat = 'markdown-clipboard' | 'markdown-file' | 'pdf' | 'one-sheet' | 'call-sheet'
 
 interface ExportModalProps {
   isOpen: boolean
@@ -28,110 +25,108 @@ export function ExportModal({
   entityId,
   entityType
 }: ExportModalProps) {
-  const [scope, setScope] = useState<ExportScope>(defaultScope)
-  const [format, setFormat] = useState<ExportFormat>('markdown-clipboard')
   const { data, isLoading } = useExportData(projectId)
 
-  const handleExport = async () => {
+  // Determine effective scope based on props (no user selection anymore)
+  const scope = defaultScope
+
+  const getMarkdownContent = () => {
+    if (!data) return ''
+    switch (scope) {
+      case 'everything':
+        return generateProjectMarkdown(data.summary, data.scenes, data.characters, data.locations, data.props)
+      case 'scenes':
+        return generateScenesMarkdown(data.scenes)
+      case 'characters':
+        return generateCharactersMarkdown(data.characters)
+      case 'locations':
+        return generateLocationsMarkdown(data.locations)
+      case 'props':
+        return generatePropsMarkdown(data.props)
+      case 'single':
+        if (entityType === 'scene' && entityId) {
+          const scene = data.scenes.find(s => s.entityId === entityId)
+          if (scene) return generateSceneMarkdown(scene)
+        } else if (entityType === 'character' && entityId) {
+          const char = data.characters.find(c => c.entity_id === entityId)
+          if (char) return generateCharacterMarkdown(char)
+        } else if (entityType === 'location' && entityId) {
+          const loc = data.locations.find(l => l.entity_id === entityId)
+          if (loc) return generateLocationMarkdown(loc)
+        } else if (entityType === 'prop' && entityId) {
+          const prop = data.props.find(p => p.entity_id === entityId)
+          if (prop) return generatePropMarkdown(prop)
+        }
+        return ''
+      default:
+        return ''
+    }
+  }
+
+  const getFilename = (ext: string) => {
+    const base = scope === 'single' && entityId ? entityId : scope
+    return `${base}-${projectId}.${ext}`
+  }
+
+  const handleCopyMarkdown = async () => {
+    const content = getMarkdownContent()
+    if (!content) {
+        toast.error('No content to export')
+        return
+    }
+    await navigator.clipboard.writeText(content)
+    toast.success('Copied Markdown to clipboard')
+    onClose()
+  }
+
+  const handleDownloadMarkdown = () => {
+    const content = getMarkdownContent()
+    if (!content) {
+        toast.error('No content to export')
+        return
+    }
+    const blob = new Blob([content], { type: 'text/markdown' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = getFilename('md')
+    a.click()
+    URL.revokeObjectURL(url)
+    toast.success('Download started')
+    onClose()
+  }
+
+  const handleDownloadPDF = () => {
     if (!data) return
+    exportProjectPDF(data.summary, data.scenes, data.characters, data.locations, data.props)
+    onClose()
+  }
 
-    let content = ''
-    let filename = `export-${projectId}.md`
+  const handleDownloadCallSheet = () => {
+    if (!data) return
+    exportCallSheet(data.summary, data.scenes, data.characters, data.locations)
+    onClose()
+  }
 
-    // Markdown Generation
-    if (format === 'markdown-clipboard' || format === 'markdown-file') {
-      switch (scope) {
-        case 'everything':
-          content = generateProjectMarkdown(data.summary, data.scenes, data.characters, data.locations, data.props)
-          break
-        case 'scenes':
-          content = generateScenesMarkdown(data.scenes)
-          filename = `scenes-${projectId}.md`
-          break
-        case 'characters':
-          content = generateCharactersMarkdown(data.characters)
-          filename = `characters-${projectId}.md`
-          break
-        case 'locations':
-          content = generateLocationsMarkdown(data.locations)
-          filename = `locations-${projectId}.md`
-          break
-        case 'props':
-          content = generatePropsMarkdown(data.props)
-          filename = `props-${projectId}.md`
-          break
-        case 'single':
-          if (entityType === 'scene' && entityId) {
-            const scene = data.scenes.find(s => s.entityId === entityId)
-            if (scene) content = generateSceneMarkdown(scene)
-          } else if (entityType === 'character' && entityId) {
-            const char = data.characters.find(c => c.entity_id === entityId)
-            if (char) content = generateCharacterMarkdown(char)
-          } else if (entityType === 'location' && entityId) {
-            const loc = data.locations.find(l => l.entity_id === entityId)
-            if (loc) content = generateLocationMarkdown(loc)
-          } else if (entityType === 'prop' && entityId) {
-            const prop = data.props.find(p => p.entity_id === entityId)
-            if (prop) content = generatePropMarkdown(prop)
-          }
-          break
+  const getTitle = () => {
+      switch(scope) {
+          case 'everything': return 'Export Project'
+          case 'scenes': return 'Export Scenes'
+          case 'characters': return 'Export Characters'
+          case 'locations': return 'Export Locations'
+          case 'props': return 'Export Props'
+          case 'single': return 'Export Entity'
+          default: return 'Export'
       }
-
-      if (format === 'markdown-clipboard') {
-        await navigator.clipboard.writeText(content)
-        toast.success('Copied to clipboard')
-      } else {
-        const blob = new Blob([content], { type: 'text/markdown' })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = filename
-        a.click()
-        URL.revokeObjectURL(url)
-        toast.success('Download started')
-      }
-      onClose()
-      return
-    }
-
-    // PDF Generation
-    if (format === 'pdf') {
-      exportProjectPDF(data.summary, data.scenes, data.characters, data.locations, data.props)
-      onClose()
-      return
-    }
-
-    // Call Sheet
-    if (format === 'call-sheet') {
-      exportCallSheet(data.summary, data.scenes, data.characters, data.locations)
-      onClose()
-      return
-    }
-    
-    // One Sheet (Placeholder for now, just does Markdown summary)
-    if (format === 'one-sheet') {
-        // reuse project markdown but maybe filtered?
-        content = generateProjectMarkdown(data.summary, [], [], [], []) // Just summary?
-        // Actually, let's just dump the project summary for now as MVP
-         const blob = new Blob([content], { type: 'text/markdown' })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `one-sheet-${projectId}.md`
-        a.click()
-        URL.revokeObjectURL(url)
-        toast.success('One-sheet download started')
-        onClose()
-    }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>Export Project Data</DialogTitle>
+          <DialogTitle>{getTitle()}</DialogTitle>
           <DialogDescription>
-            Choose what to export and the format.
+            Select an export format.
           </DialogDescription>
         </DialogHeader>
 
@@ -140,85 +135,60 @@ export function ExportModal({
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : (
-          <div className="space-y-6 py-4">
-            <div className="space-y-3">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Scope
-              </label>
-              <Select value={scope} onValueChange={(v) => setScope(v as ExportScope)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select scope" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="everything">Everything (Full Project)</SelectItem>
-                  <SelectItem value="scenes">All Scenes</SelectItem>
-                  <SelectItem value="characters">All Characters</SelectItem>
-                  <SelectItem value="locations">All Locations</SelectItem>
-                  <SelectItem value="props">All Props</SelectItem>
-                  {entityId && (
-                    <SelectItem value="single">Current {entityType}</SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Format
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant={format === 'markdown-clipboard' ? 'default' : 'outline'}
-                  className="justify-start h-auto py-3 px-4"
-                  onClick={() => setFormat('markdown-clipboard')}
-                >
-                  <Copy className="mr-2 h-4 w-4" />
-                  <div className="text-left">
-                    <div className="font-medium">Copy Markdown</div>
-                    <div className="text-xs opacity-70">To clipboard</div>
-                  </div>
-                </Button>
-                <Button
-                  variant={format === 'markdown-file' ? 'default' : 'outline'}
-                  className="justify-start h-auto py-3 px-4"
-                  onClick={() => setFormat('markdown-file')}
-                >
-                  <FileDown className="mr-2 h-4 w-4" />
-                  <div className="text-left">
-                    <div className="font-medium">Download MD</div>
-                    <div className="text-xs opacity-70">Text file</div>
-                  </div>
-                </Button>
-                <Button
-                  variant={format === 'pdf' ? 'default' : 'outline'}
-                  className="justify-start h-auto py-3 px-4"
-                  onClick={() => setFormat('pdf')}
-                >
-                  <FileText className="mr-2 h-4 w-4" />
-                  <div className="text-left">
-                    <div className="font-medium">PDF Report</div>
-                    <div className="text-xs opacity-70">Formatted doc</div>
-                  </div>
-                </Button>
-                <Button
-                  variant={format === 'call-sheet' ? 'default' : 'outline'}
-                  className="justify-start h-auto py-3 px-4"
-                  onClick={() => setFormat('call-sheet')}
-                >
-                  <FileText className="mr-2 h-4 w-4" />
-                  <div className="text-left">
-                    <div className="font-medium">Call Sheet</div>
-                    <div className="text-xs opacity-70">Industry format</div>
-                  </div>
-                </Button>
+          <div className="flex flex-col gap-3 py-4">
+            <Button
+              variant="outline"
+              className="justify-start h-auto py-3 px-4"
+              onClick={handleCopyMarkdown}
+            >
+              <Copy className="mr-2 h-4 w-4" />
+              <div className="text-left">
+                <div className="font-medium">Copy Markdown</div>
+                <div className="text-xs opacity-70">To clipboard</div>
               </div>
-            </div>
+            </Button>
+            <Button
+              variant="outline"
+              className="justify-start h-auto py-3 px-4"
+              onClick={handleDownloadMarkdown}
+            >
+              <FileDown className="mr-2 h-4 w-4" />
+              <div className="text-left">
+                <div className="font-medium">Download Markdown</div>
+                <div className="text-xs opacity-70">.md file</div>
+              </div>
+            </Button>
+            {scope === 'everything' && (
+                <>
+                <Button
+                variant="outline"
+                className="justify-start h-auto py-3 px-4"
+                onClick={handleDownloadPDF}
+                >
+                <FileText className="mr-2 h-4 w-4" />
+                <div className="text-left">
+                    <div className="font-medium">Download PDF Report</div>
+                    <div className="text-xs opacity-70">Formatted document</div>
+                </div>
+                </Button>
+                <Button
+                variant="outline"
+                className="justify-start h-auto py-3 px-4"
+                onClick={handleDownloadCallSheet}
+                >
+                <FileText className="mr-2 h-4 w-4" />
+                <div className="text-left">
+                    <div className="font-medium">Download Call Sheet</div>
+                    <div className="text-xs opacity-70">Grouped by location</div>
+                </div>
+                </Button>
+                </>
+            )}
           </div>
         )}
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleExport} disabled={isLoading}>Export</Button>
+          <Button variant="ghost" onClick={onClose}>Cancel</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
