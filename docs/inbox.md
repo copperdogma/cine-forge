@@ -24,9 +24,17 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### Data & Identity
 
+- Why does "Finding scene boundaries and structure..." tale SO long? If the pipeline artifacfts don't already give us the answer from their logs, we need to improve the logs. If they do, what's causing it? How could we speed it up? SHOULD we speed it up or would that just compromise quality? Should we consider a promptfoo eval to find a better way?
+
 - **Human-readable project slugs**: Currently project IDs are raw hashes (e.g., `ed0e25e86b3cb84...`). These are ugly in URLs, breadcrumbs, and the sidebar. Proposed: Generate slugs from the project's display name ("The Mariner" → `the-mariner`), with numeric suffixes for collisions (`the-mariner-2`). Store both `project_id` (hash, internal) and `slug` (human-readable, for URLs). UI routes use the slug (`/:slug/run` instead of `/:projectId/run`). Backend resolves slug → project_id on each request. Slug should be editable; changing the project name updates the slug with confirmation. Scope: Backend change (service layer + API) + UI routing update. Do when hooking the console to real API. *(Source: 011e operator-console research)*
 
 ### Workflow
+
+- **Refine vs. Regenerate modes for Deep Breakdown**: 
+  - **Regenerate (Current)**: Run discovery and bible extraction from scratch using only the script as input. Useful for major structural changes.
+  - **Refine (Proposed)**: Pass the `latest_version` of an entity artifact (and its lineage) back to the AI alongside script changes. 
+  - **Goal**: Allow AI to update a character or location profile while preserving user edits or existing context. Leverages CineForge's immutability (creates `vNext`) to ensure no data is ever actually lost, just evolved. 
+  - **UI**: Need a version browser/history viewer so users can easily diff and restore if a re-run produces unwanted changes.
 
 - **Story-to-screenplay conversion**: For non-screenplay inputs (short stories, novels, treatments), send to a strong model with "make this into a screenplay" and take the output. Good for commercials and short-form. Not primary workflow but worth having as a convenience path. *(Source: Cam, 011b review)*
 
