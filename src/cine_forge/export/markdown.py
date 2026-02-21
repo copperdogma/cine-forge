@@ -40,16 +40,60 @@ class MarkdownExporter:
 
         if characters := scene_data.get("characters_present"):
             md += generate_list("Characters Present", characters)
+        
+        # Props might be in 'props_present' or inferred elsewhere, check standard keys
         if props := scene_data.get("props_present"):
             md += generate_list("Props Present", props)
-        if atmosphere := scene_data.get("atmosphere"):
-            md += generate_metadata("Atmosphere", atmosphere)
-        if plot_point := scene_data.get("plot_point"):
-            md += generate_metadata("Plot Point", plot_point)
+
+        # Tone & Mood
+        if tone := scene_data.get("tone_mood") or scene_data.get("atmosphere"):
+            md += generate_metadata("Tone & Mood", tone)
+        
+        # Tone Shifts
+        if tone_shifts := scene_data.get("tone_shifts"):
+            md += generate_list("Tone Shifts", tone_shifts)
+
+        # Narrative Beats
+        # Prefer 'narrative_beats' (list of dicts), fallback to 'plot_point' (string)
+        if beats := scene_data.get("narrative_beats"):
+            md += "**Narrative Beats:**\n"
+            for beat in beats:
+                if isinstance(beat, dict):
+                    btype = beat.get("beat_type", "Beat").replace("_", " ").title()
+                    desc = beat.get("description", "")
+                    md += f"- **{btype}:** {desc}\n"
+                else:
+                    md += f"- {beat}\n"
+            md += "\n"
+        elif plot := scene_data.get("plot_point"):
+            md += generate_metadata("Plot Point", plot)
+
+        # Visual/Audio Details
         if visual_details := scene_data.get("visual_details"):
             md += generate_list("Visual Details", visual_details)
         if audio_details := scene_data.get("audio_details"):
             md += generate_list("Audio Details", audio_details)
+
+        # Script Elements (The actual script content)
+        if elements := scene_data.get("elements"):
+            md += "**Script Content:**\n\n"
+            for elem in elements:
+                etype = elem.get("element_type", "action")
+                content = elem.get("content", "")
+                
+                if etype == "scene_heading":
+                    md += f"**{content.upper()}**\n\n"
+                elif etype == "character":
+                    md += f"**{content.upper()}**\n" # No center in MD, just bold
+                elif etype == "dialogue":
+                    md += f"> {content}\n\n" # Blockquote for dialogue
+                elif etype == "parenthetical":
+                    md += f"> *{content}*\n" # Italic blockquote
+                elif etype == "transition":
+                    md += f"*{content.upper()}*\n\n"
+                else: # action, general
+                    md += f"{content}\n\n"
+            md += "---\n\n"
 
         return md
 
