@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import logging
 import re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from typing import Any
 
@@ -14,6 +16,8 @@ from cine_forge.schemas import (
     QAResult,
 )
 
+logger = logging.getLogger(__name__)
+
 
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
@@ -23,7 +27,7 @@ def run_module(
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     if not isinstance(runtime_params, dict):
         runtime_params = {}
-    
+
     # Tiered Model Strategy (Subsumption)
     work_model = (
         params.get("work_model")
@@ -51,6 +55,11 @@ def run_module(
         or "claude-opus-4-6"
     )
     skip_qa = bool(params.get("skip_qa", False))
+    concurrency = int(
+        params.get("concurrency")
+        or runtime_params.get("concurrency")
+        or 5
+    )
 
     # discovery pass for props since they aren't in scene_index
     if discovery_results and discovery_results.get("props"):
@@ -77,7 +86,6 @@ def run_module(
         model=work_model,
     )
 
-    artifacts = []
     models_seen: set[str] = set()
     if work_model != "mock":
         models_seen.add(work_model)
@@ -91,68 +99,138 @@ def run_module(
     if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
         models_seen.add(str(adjudication_cost["model"]))
 
-    # 2. Extract for each candidate
-    for prop_name in props:
-        slug = _slugify(prop_name)
-        
-        # Pass 1: Work
-        definition, cost = _extract_prop_definition(
-            prop_name=prop_name,
-            canonical_script=canonical_script,
-            model=work_model,
-            scene_index=scene_index,
-        )
-        _update_total_cost(total_cost, cost)
-        if cost.get("model") and cost["model"] != "code":
-            models_seen.add(cost["model"])
+    # Pre-compute annotation counts (props list is finalised before parallel extraction)
+    total_input_count = len(props) + len(adjudication_rejections)
+    total_approved_count = len(props)
 
-        if not skip_qa and work_model != "mock":
-            # Pass 2: Verify
-            qa_result, qa_cost = _run_prop_qa(
+    # 2. Extract for each prop in parallel
+    print(f"[prop_bible] Extracting {len(props)} props (concurrency={concurrency}).")
+    artifacts: list[dict[str, Any]] = []
+    with ThreadPoolExecutor(max_workers=concurrency) as executor:
+        futures = [
+            executor.submit(
+                _process_prop,
                 prop_name=prop_name,
-                definition=definition,
-                script_text=canonical_script["script_text"],
-                model=verify_model,
+                canonical_script=canonical_script,
+                scene_index=scene_index,
+                total_input_count=total_input_count,
+                total_approved_count=total_approved_count,
+                adjudication_rejections=adjudication_rejections,
+                adjudication_decisions=adjudication_decisions,
+                work_model=work_model,
+                verify_model=verify_model,
+                escalate_model=escalate_model,
+                skip_qa=skip_qa,
             )
-            _update_total_cost(total_cost, qa_cost)
-            if qa_cost.get("model") and qa_cost["model"] != "code":
-                models_seen.add(qa_cost["model"])
+            for prop_name in props
+        ]
+        for prop_name, future in zip(props, futures, strict=True):
+            try:
+                entity_artifacts, entity_cost = future.result()
+                artifacts.extend(entity_artifacts)
+                _update_total_cost(total_cost, entity_cost)
+                m = entity_cost.get("model", "code")
+                if m and m != "code":
+                    models_seen.update(m.split("+"))
+            except Exception as exc:
+                logger.warning("[prop_bible] Failed to extract '%s': %s", prop_name, exc)
 
-            if not qa_result.passed:
-                # Pass 3: Escalate
-                definition, esc_cost = _extract_prop_definition(
-                    prop_name=prop_name,
-                    canonical_script=canonical_script,
-                    model=escalate_model,
-                    feedback=qa_result.summary,
-                    scene_index=scene_index,
-                )
-                _update_total_cost(total_cost, esc_cost)
-                if esc_cost.get("model") and esc_cost["model"] != "code":
-                    models_seen.add(esc_cost["model"])
-        
-        # 3. Build manifest and artifact bundle
-        version = 1
-        master_filename = f"master_v{version}.json"
-        
-        manifest_data = {
-            "entity_type": "prop",
-            "entity_id": slug,
-            "display_name": prop_name,
-            "files": [
-                {
-                    "filename": master_filename,
-                    "purpose": "master_definition",
-                    "version": version,
-                    "provenance": "ai_extracted",
-                    "created_at": datetime.now(UTC).isoformat(),
-                }
-            ],
-            "version": version,
-            "created_at": datetime.now(UTC).isoformat(),
-        }
+    # Stable output order
+    artifacts.sort(key=lambda a: a["entity_id"])
 
-        artifacts.append({
+    model_label = "+".join(sorted(models_seen)) if models_seen else "code"
+    total_cost["model"] = model_label
+
+    return {
+        "artifacts": artifacts,
+        "cost": total_cost,
+    }
+
+
+def _process_prop(
+    prop_name: str,
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    total_input_count: int,
+    total_approved_count: int,
+    adjudication_rejections: list[dict[str, Any]],
+    adjudication_decisions: list[dict[str, Any]],
+    work_model: str,
+    verify_model: str,
+    escalate_model: str,
+    skip_qa: bool,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Extract bible for a single prop; returns (artifacts, cost)."""
+    slug = _slugify(prop_name)
+    entity_cost: dict[str, Any] = {"input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
+    models_in_entity: set[str] = set()
+
+    # Pass 1: Work
+    definition, cost = _extract_prop_definition(
+        prop_name=prop_name,
+        canonical_script=canonical_script,
+        model=work_model,
+        scene_index=scene_index,
+    )
+    _update_total_cost(entity_cost, cost)
+    if cost.get("model") and cost["model"] != "code":
+        models_in_entity.add(cost["model"])
+
+    if not skip_qa and work_model != "mock":
+        # Pass 2: Verify
+        qa_result, qa_cost = _run_prop_qa(
+            prop_name=prop_name,
+            definition=definition,
+            script_text=canonical_script["script_text"],
+            model=verify_model,
+        )
+        _update_total_cost(entity_cost, qa_cost)
+        if qa_cost.get("model") and qa_cost["model"] != "code":
+            models_in_entity.add(qa_cost["model"])
+
+        if not qa_result.passed:
+            # Pass 3: Escalate
+            definition, esc_cost = _extract_prop_definition(
+                prop_name=prop_name,
+                canonical_script=canonical_script,
+                model=escalate_model,
+                feedback=qa_result.summary,
+                scene_index=scene_index,
+            )
+            _update_total_cost(entity_cost, esc_cost)
+            if esc_cost.get("model") and esc_cost["model"] != "code":
+                models_in_entity.add(esc_cost["model"])
+
+    entity_cost["model"] = "+".join(sorted(models_in_entity)) if models_in_entity else "code"
+
+    # Build artifacts
+    version = 1
+    master_filename = f"master_v{version}.json"
+    manifest_data = {
+        "entity_type": "prop",
+        "entity_id": slug,
+        "display_name": prop_name,
+        "files": [
+            {
+                "filename": master_filename,
+                "purpose": "master_definition",
+                "version": version,
+                "provenance": "ai_extracted",
+                "created_at": datetime.now(UTC).isoformat(),
+            }
+        ],
+        "version": version,
+        "created_at": datetime.now(UTC).isoformat(),
+    }
+    annotation = _adjudication_annotation(
+        input_count=total_input_count,
+        approved_count=total_approved_count,
+        rejected=adjudication_rejections,
+        decisions=adjudication_decisions,
+    )
+
+    return [
+        {
             "artifact_type": "prop_bible",
             "entity_id": slug,
             "data": definition.model_dump(mode="json"),
@@ -161,16 +239,10 @@ def run_module(
                 "rationale": "AI-identified significant object from canonical script.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
-                "annotations": _adjudication_annotation(
-                    input_count=len(props) + len(adjudication_rejections),
-                    approved_count=len(props),
-                    rejected=adjudication_rejections,
-                    decisions=adjudication_decisions,
-                ),
-            }
-        })
-
-        artifacts.append({
+                "annotations": annotation,
+            },
+        },
+        {
             "artifact_type": "bible_manifest",
             "entity_id": f"prop_{slug}",
             "data": manifest_data,
@@ -179,25 +251,11 @@ def run_module(
                 "rationale": "Consolidate prop traits and narrative significance.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
-                "annotations": _adjudication_annotation(
-                    input_count=len(props) + len(adjudication_rejections),
-                    approved_count=len(props),
-                    rejected=adjudication_rejections,
-                    decisions=adjudication_decisions,
-                ),
+                "annotations": annotation,
             },
-            "bible_files": {
-                master_filename: definition.model_dump_json(indent=2)
-            }
-        })
-
-    model_label = "+".join(sorted(list(models_seen))) if models_seen else "code"
-    total_cost["model"] = model_label
-
-    return {
-        "artifacts": artifacts,
-        "cost": total_cost,
-    }
+            "bible_files": {master_filename: definition.model_dump_json(indent=2)},
+        },
+    ], entity_cost
 
 
 def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None:
@@ -219,7 +277,7 @@ def _extract_inputs(
             scene_index = payload
         if isinstance(payload, dict) and "props" in payload and "characters" in payload:
             discovery_results = payload
-    
+
     if not canonical_script or not scene_index:
         raise ValueError("prop_bible_v1 requires canonical_script and scene_index inputs")
     return canonical_script, scene_index, discovery_results

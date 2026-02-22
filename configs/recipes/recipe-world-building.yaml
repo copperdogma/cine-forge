@@ -18,6 +18,7 @@ stages:
     module: character_bible_v1
     params:
       skip_qa: true
+      concurrency: 5
     needs: [entity_discovery]
     store_inputs:
       normalize: canonical_script
@@ -27,6 +28,7 @@ stages:
     module: location_bible_v1
     params:
       skip_qa: true
+      concurrency: 5
     needs: [entity_discovery]
     store_inputs:
       normalize: canonical_script
@@ -36,6 +38,7 @@ stages:
     module: prop_bible_v1
     params:
       skip_qa: true
+      concurrency: 5
     needs: [entity_discovery]
     store_inputs:
       normalize: canonical_script

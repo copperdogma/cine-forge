@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import logging
 import re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from typing import Any
 
@@ -13,6 +15,8 @@ from cine_forge.schemas import (
     EntityAdjudicationDecision,
     QAResult,
 )
+
+logger = logging.getLogger(__name__)
 
 CHARACTER_STOPWORDS = {
     "A",
@@ -82,7 +86,7 @@ def run_module(
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     if not isinstance(runtime_params, dict):
         runtime_params = {}
-    
+
     # Tiered Model Strategy (Subsumption)
     work_model = (
         params.get("work_model")
@@ -110,7 +114,12 @@ def run_module(
         or "claude-opus-4-6"
     )
     skip_qa = bool(params.get("skip_qa", False))
-    
+    concurrency = int(
+        params.get("concurrency")
+        or runtime_params.get("concurrency")
+        or 5
+    )
+
     # Higher default for bibles to avoid noise pollution
     min_appearances = int(params.get("min_scene_appearances", 3))
 
@@ -118,7 +127,6 @@ def run_module(
     if discovery_results and discovery_results.get("characters"):
         approved_names = {n.upper() for n in discovery_results["characters"]}
         print(f"[character_bible] Using {len(approved_names)} characters from discovery results.")
-        # Filter ranked list to only include discovered names
         all_chars = _aggregate_characters(scene_index)
         ranked = _rank_characters(all_chars, canonical_script, scene_index)
         candidates = [c for c in ranked if c["name"].upper() in approved_names]
@@ -127,7 +135,6 @@ def run_module(
         ranked = _rank_characters(characters, canonical_script, scene_index)
 
         # Filter by minimum appearances OR presence of dialogue
-        # Ghost characters usually have 0 dialogue
         candidates = [
             c
             for c in ranked
@@ -146,7 +153,6 @@ def run_module(
         model=work_model,
     )
 
-    artifacts = []
     models_seen: set[str] = set()
     total_cost = {
         "input_tokens": 0,
@@ -157,72 +163,139 @@ def run_module(
     if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
         models_seen.add(str(adjudication_cost["model"]))
 
-    # 2. Extract for each candidate
-    for entry in candidates:
-        char_name = entry["name"]
-        slug = _slugify(char_name)
-        
-        # Pass 1: Work
-        definition, cost = _extract_character_definition(
-            char_name=char_name,
-            entry=entry,
-            canonical_script=canonical_script,
-            scene_index=scene_index,
-            model=work_model,
-        )
-        _update_total_cost(total_cost, cost)
-        if cost.get("model") and cost["model"] != "code":
-            models_seen.add(cost["model"])
-
-        qa_result: QAResult | None = None
-        if not skip_qa and work_model != "mock":
-            # Pass 2: Verify
-            qa_result, qa_cost = _run_character_qa(
-                char_name=char_name,
-                definition=definition,
-                script_text=canonical_script["script_text"],
-                model=verify_model,
+    # 2. Extract for each candidate in parallel
+    print(f"[character_bible] Extracting {len(candidates)} characters (concurrency={concurrency}).")
+    artifacts: list[dict[str, Any]] = []
+    with ThreadPoolExecutor(max_workers=concurrency) as executor:
+        futures = [
+            executor.submit(
+                _process_character,
+                entry=entry,
+                canonical_script=canonical_script,
+                scene_index=scene_index,
+                ranked=ranked,
+                candidates=candidates,
+                adjudication_rejections=adjudication_rejections,
+                adjudication_decisions=adjudication_decisions,
+                work_model=work_model,
+                verify_model=verify_model,
+                escalate_model=escalate_model,
+                skip_qa=skip_qa,
             )
-            _update_total_cost(total_cost, qa_cost)
-            if qa_cost.get("model") and qa_cost["model"] != "code":
-                models_seen.add(qa_cost["model"])
-
-            if not qa_result.passed:
-                # Pass 3: Escalate
-                definition, esc_cost = _extract_character_definition(
-                    char_name=char_name,
-                    entry=entry,
-                    canonical_script=canonical_script,
-                    scene_index=scene_index,
-                    model=escalate_model,
-                    feedback=qa_result.summary,
+            for entry in candidates
+        ]
+        for entry, future in zip(candidates, futures, strict=True):
+            try:
+                entity_artifacts, entity_cost = future.result()
+                artifacts.extend(entity_artifacts)
+                _update_total_cost(total_cost, entity_cost)
+                m = entity_cost.get("model", "code")
+                if m and m != "code":
+                    models_seen.update(m.split("+"))
+            except Exception as exc:
+                logger.warning(
+                    "[character_bible] Failed to extract '%s': %s", entry["name"], exc
                 )
-                _update_total_cost(total_cost, esc_cost)
-                if esc_cost.get("model") and esc_cost["model"] != "code":
-                    models_seen.add(esc_cost["model"])
-        
-        # 3. Build manifest and artifact bundle
-        version = 1  # Module currently only produces v1 for new bibles
-        master_filename = f"master_v{version}.json"
-        
-        manifest_data = {
-            "entity_type": "character",
-            "entity_id": slug,
-            "display_name": char_name,
-            "files": [
-                {
-                    "filename": master_filename,
-                    "purpose": "master_definition",
-                    "version": version,
-                    "provenance": "ai_extracted",
-                    "created_at": datetime.now(UTC).isoformat(),
-                }
-            ],
-            "version": version,
-            "created_at": datetime.now(UTC).isoformat(),
-        }
 
-        artifacts.append({
+    # Stable output order
+    artifacts.sort(key=lambda a: a["entity_id"])
+
+    model_label = "+".join(sorted(models_seen)) if models_seen else "code"
+    total_cost["model"] = model_label
+
+    return {
+        "artifacts": artifacts,
+        "cost": total_cost,
+    }
+
+
+def _process_character(
+    entry: dict[str, Any],
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    ranked: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+    adjudication_rejections: list[dict[str, Any]],
+    adjudication_decisions: list[dict[str, Any]],
+    work_model: str,
+    verify_model: str,
+    escalate_model: str,
+    skip_qa: bool,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Extract bible for a single character; returns (artifacts, cost)."""
+    char_name = entry["name"]
+    slug = _slugify(char_name)
+    entity_cost: dict[str, Any] = {"input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
+    models_in_entity: set[str] = set()
+
+    # Pass 1: Work
+    definition, cost = _extract_character_definition(
+        char_name=char_name,
+        entry=entry,
+        canonical_script=canonical_script,
+        scene_index=scene_index,
+        model=work_model,
+    )
+    _update_total_cost(entity_cost, cost)
+    if cost.get("model") and cost["model"] != "code":
+        models_in_entity.add(cost["model"])
+
+    if not skip_qa and work_model != "mock":
+        # Pass 2: Verify
+        qa_result, qa_cost = _run_character_qa(
+            char_name=char_name,
+            definition=definition,
+            script_text=canonical_script["script_text"],
+            model=verify_model,
+        )
+        _update_total_cost(entity_cost, qa_cost)
+        if qa_cost.get("model") and qa_cost["model"] != "code":
+            models_in_entity.add(qa_cost["model"])
+
+        if not qa_result.passed:
+            # Pass 3: Escalate
+            definition, esc_cost = _extract_character_definition(
+                char_name=char_name,
+                entry=entry,
+                canonical_script=canonical_script,
+                scene_index=scene_index,
+                model=escalate_model,
+                feedback=qa_result.summary,
+            )
+            _update_total_cost(entity_cost, esc_cost)
+            if esc_cost.get("model") and esc_cost["model"] != "code":
+                models_in_entity.add(esc_cost["model"])
+
+    entity_cost["model"] = "+".join(sorted(models_in_entity)) if models_in_entity else "code"
+
+    # Build artifacts
+    version = 1
+    master_filename = f"master_v{version}.json"
+    manifest_data = {
+        "entity_type": "character",
+        "entity_id": slug,
+        "display_name": char_name,
+        "files": [
+            {
+                "filename": master_filename,
+                "purpose": "master_definition",
+                "version": version,
+                "provenance": "ai_extracted",
+                "created_at": datetime.now(UTC).isoformat(),
+            }
+        ],
+        "version": version,
+        "created_at": datetime.now(UTC).isoformat(),
+    }
+    annotation = _adjudication_annotation(
+        input_count=len(ranked),
+        approved_count=len(candidates),
+        rejected=adjudication_rejections,
+        decisions=adjudication_decisions,
+    )
+
+    return [
+        {
             "artifact_type": "character_bible",
             "entity_id": slug,
             "data": definition.model_dump(mode="json"),
@@ -231,16 +304,10 @@ def run_module(
                 "rationale": "Extracted from canonical script and scene co-occurrence data.",
                 "confidence": definition.overall_confidence,
                 "source": "ai",
-                "annotations": _adjudication_annotation(
-                    input_count=len(ranked),
-                    approved_count=len(candidates),
-                    rejected=adjudication_rejections,
-                    decisions=adjudication_decisions,
-                ),
-            }
-        })
-
-        artifacts.append({
+                "annotations": annotation,
+            },
+        },
+        {
             "artifact_type": "bible_manifest",
             "entity_id": f"character_{slug}",
             "data": manifest_data,
@@ -251,25 +318,11 @@ def run_module(
                 ),
                 "confidence": definition.overall_confidence,
                 "source": "ai",
-                "annotations": _adjudication_annotation(
-                    input_count=len(ranked),
-                    approved_count=len(candidates),
-                    rejected=adjudication_rejections,
-                    decisions=adjudication_decisions,
-                ),
+                "annotations": annotation,
             },
-            "bible_files": {
-                master_filename: definition.model_dump_json(indent=2)
-            }
-        })
-
-    model_label = "+".join(sorted(list(models_seen))) if models_seen else "code"
-    total_cost["model"] = model_label
-
-    return {
-        "artifacts": artifacts,
-        "cost": total_cost,
-    }
+            "bible_files": {master_filename: definition.model_dump_json(indent=2)},
+        },
+    ], entity_cost
 
 
 def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None:
@@ -291,7 +344,7 @@ def _extract_inputs(
             scene_index = payload
         if isinstance(payload, dict) and "props" in payload and "characters" in payload:
             discovery_results = payload
-    
+
     if not canonical_script or not scene_index:
         raise ValueError("character_bible_v1 requires canonical_script and scene_index inputs")
     return canonical_script, scene_index, discovery_results
@@ -594,18 +647,17 @@ def _mock_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible:
 
 def _normalize_character_name(value: Any) -> str:
     text = str(value or "").strip().upper()
-    text = re.sub(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT’D|OFF|ON RADIO)\)\s*$", "", text)
-    
+    text = re.sub(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT'D|OFF|ON RADIO)\)\s*$", "", text)
+
     # Strip non-alphanumeric except spaces and apostrophes (e.g. MR. SALVATORI -> MR SALVATORI)
     text = re.sub(r"[^A-Z0-9' ]+", "", text)
-    
+
     # Strip leading "THE " prefix if it's followed by 4+ letters
-    # (e.g. THE MARINER -> MARINER)
     if text.startswith("THE "):
         remainder = text[4:].strip()
         if len(remainder) >= 4:
             text = remainder
-    
+
     text = re.sub(r"\s+", " ", text).strip()
     return text
 

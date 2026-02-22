@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-02-22-08] — Parallel bible extraction via ThreadPoolExecutor (Story 065)
+
+### Changed
+- `character_bible_v1`, `location_bible_v1`, `prop_bible_v1`: entity extraction loop now runs via `ThreadPoolExecutor` (default concurrency 5). Per-entity failures are caught and logged without crashing the module. Cost aggregated thread-safely in the main thread after all futures resolve.
+- `recipe-world-building.yaml`: added `concurrency: 5` param to all three bible stages.
+- `location_bible_v1`: fixed stale `claude-sonnet-4-5` default model → `claude-sonnet-4-6`.
+
 ## [2026-02-22-07] — Fix escalate model defaults; close Story 039
 
 ### Fixed
