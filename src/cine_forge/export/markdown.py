@@ -212,6 +212,10 @@ class MarkdownExporter:
         if include is None:
             include = ["scenes", "characters", "locations", "props"]
 
+        # If only exporting the script, return it raw (Fountain format is Markdown compatible)
+        if include == ["script"]:
+            return script_content
+
         md = generate_header(project_name, 1)
         md += generate_metadata("Project ID", project_id)
         
