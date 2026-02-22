@@ -226,9 +226,9 @@ All evals: 13 providers (4 OpenAI, 4 Anthropic, 5 Google), dual scoring (Python 
 **To re-run for a new model:** add provider block to each `tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → compare against existing results → update table above.
 
 ### Ideas Backlog
-- `docs/ideas.md` captures features, patterns, and design concepts that are good but not in scope for current work.
-- When a feature is deferred during story work, move it to `docs/ideas.md` rather than losing it.
-- When a conversation surfaces a good idea that's out of scope, add it to `docs/ideas.md`.
+- `docs/inbox.md` captures features, patterns, and design concepts that are good but not in scope for current work.
+- When a feature is deferred during story work, move it to `docs/inbox.md` rather than losing it.
+- When a conversation surfaces a good idea that's out of scope, add it to `docs/inbox.md`.
 
 ### UI Development Workflow
 

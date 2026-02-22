@@ -37,7 +37,7 @@ Everything the system produces is a browsable, inspectable artifact with version
 ## Primary Workflow
 
 ### MVP intake: screenplay only
-The primary workflow is importing a finished screenplay. Story-to-screenplay conversion is out of scope for MVP (captured in `docs/ideas.md`).
+The primary workflow is importing a finished screenplay. Story-to-screenplay conversion is out of scope for MVP (captured in `docs/inbox.md`).
 
 ### Intake flow
 Drag-and-drop script file → AI parses and extracts → review draft → confirm. Under 60 seconds of user attention for the happy path.
@@ -289,12 +289,12 @@ Allow annotations and comments attached to specific elements within an artifact 
 - Desktop-first, keyboard-friendly (⌘B, ⌘I, ⌘K, ⌘0-3)
 
 ### Out of scope for MVP
-- Story-to-screenplay conversion (see `docs/ideas.md`)
-- Ghost-text inline suggestions (see `docs/ideas.md`)
+- Story-to-screenplay conversion (see `docs/inbox.md`)
+- Ghost-text inline suggestions (see `docs/inbox.md`)
 - Collaborative review / multi-user
 - Authentication
 - Mobile-optimized layout (should work but not optimized)
-- Full entity graph visualization (see `docs/ideas.md`)
+- Full entity graph visualization (see `docs/inbox.md`)
 - Timeline/track editing (Stories 012-013)
 
 ---

@@ -368,7 +368,7 @@ The system tracks inheritance (script → scene → shot style cascading). The u
 - **Unified command palette** — merging GlobalSearch, CommandPalette, and KeyboardShortcutsHelp into a single `/`-triggered Spotlight-style interface. See **Story 042**.
 - Real-time SSE/WebSocket streaming (polling is fine for now).
 - Screenplay content parsing for title extraction (can use filename heuristics first).
-- Story-to-screenplay conversion (separate story in ideas.md).
+- Story-to-screenplay conversion (separate story in inbox.md).
 - Multi-project workflows or project templates.
 - Mobile-specific optimizations.
 

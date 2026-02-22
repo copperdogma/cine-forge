@@ -119,9 +119,9 @@ Synthesize research decisions into a concrete UI plan. Design artifacts live in 
 - Rich role-chat experiences (@agent creative sessions — Story 019).
 - Full timeline editing UI (Stories 012–013 build on this foundation).
 - Shot planning, storyboard, and render controls.
-- Entity graph visualization (deferred, see `docs/ideas.md`).
-- Story-to-screenplay conversion (deferred, see `docs/ideas.md`).
-- Ghost-text inline suggestions (deferred, see `docs/ideas.md`).
+- Entity graph visualization (deferred, see `docs/inbox.md`).
+- Story-to-screenplay conversion (deferred, see `docs/inbox.md`).
+- Ghost-text inline suggestions (deferred, see `docs/inbox.md`).
 
 ---
 
