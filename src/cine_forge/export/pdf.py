@@ -53,20 +53,22 @@ class PDFGenerator:
         
         # --- Title Page ---
         pdf.ln(60)
-        pdf.set_font("helvetica", "B", 32)
-        pdf.cell(
-            0, 20, self.sanitize(project_name), 
+        # Use multi_cell for title to allow wrapping if it's very long
+        pdf.set_font("helvetica", "B", 28)
+        pdf.multi_cell(
+            0, 15, self.sanitize(project_name), 
             align="C", new_x="LMARGIN", new_y="NEXT"
         )
+        pdf.ln(5)
         pdf.set_font("helvetica", "", 16)
         pdf.cell(
             0, 10, "Project Analysis Report", 
             align="C", new_x="LMARGIN", new_y="NEXT"
         )
-        pdf.ln(10)
+        pdf.ln(5)
         pdf.set_font("helvetica", "I", 12)
         pdf.cell(
-            0, 10, f"ID: {project_id}", 
+            0, 10, f"Project ID: {project_id}", 
             align="C", new_x="LMARGIN", new_y="NEXT"
         )
         
