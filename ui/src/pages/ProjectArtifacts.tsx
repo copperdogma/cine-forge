@@ -1,11 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  FileText,
-  Users,
-  MapPin,
-  Globe,
-  Clapperboard,
-  MessageSquare,
   AlertTriangle,
   RefreshCw,
   Package,
@@ -24,28 +18,9 @@ import {
 import { cn } from '@/lib/utils'
 import { useArtifactGroups } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
+import { PageHeader } from '@/components/PageHeader'
+import { getArtifactMeta } from '@/lib/artifact-meta'
 import { toast } from 'sonner'
-
-// Artifact type display config — keys must match backend artifact_type values
-const artifactMeta: Record<string, { icon: typeof FileText; label: string; color: string }> = {
-  raw_input: { icon: FileText, label: 'Screenplay', color: 'text-blue-400' },
-  canonical_script: { icon: FileText, label: 'Canonical Script', color: 'text-blue-300' },
-  project_config: { icon: Package, label: 'Project Config', color: 'text-slate-400' },
-  entity_graph: { icon: Globe, label: 'Entity Graph', color: 'text-emerald-400' },
-  character_bible: { icon: Users, label: 'Character Bible', color: 'text-amber-400' },
-  location_bible: { icon: MapPin, label: 'Location Bible', color: 'text-rose-400' },
-  prop_bible: { icon: Package, label: 'Prop Bible', color: 'text-orange-400' },
-  bible_manifest: { icon: FileText, label: 'Bible Manifest', color: 'text-teal-400' },
-  scene: { icon: Clapperboard, label: 'Scene', color: 'text-violet-400' },
-  scene_index: { icon: Clapperboard, label: 'Scene Index', color: 'text-violet-300' },
-  continuity_index: { icon: Globe, label: 'Continuity Index', color: 'text-cyan-400' },
-  continuity_state: { icon: Globe, label: 'Continuity State', color: 'text-cyan-300' },
-  dialogue_analysis: { icon: MessageSquare, label: 'Dialogue Analysis', color: 'text-orange-400' },
-}
-
-function getArtifactMeta(type: string) {
-  return artifactMeta[type] ?? { icon: FileText, label: type, color: 'text-muted-foreground' }
-}
 
 type ArtifactGroupSummary = {
   artifact_type: string
@@ -195,14 +170,9 @@ export default function ProjectArtifacts() {
     navigate(`/${projectId}/artifacts/${item.artifact_type}/${item.entity_id ?? 'project'}/${item.latest_version}`)
   }
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Artifacts</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          Browse all artifacts produced by the pipeline
-        </p>
+  function renderContent() {
+    if (isLoading) {
+      return (
         <div className="space-y-6">
           <div>
             <Skeleton className="h-5 w-48 mb-2" />
@@ -220,77 +190,56 @@ export default function ProjectArtifacts() {
             </div>
           </div>
         </div>
-      </div>
-    )
-  }
+      )
+    }
 
-  // Error state
-  if (error) {
-    return (
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Artifacts</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          Browse all artifacts produced by the pipeline
-        </p>
+    if (error) {
+      return (
         <ErrorState
           message={error instanceof Error ? error.message : 'Failed to load artifacts'}
           onRetry={refetch}
         />
-      </div>
-    )
-  }
+      )
+    }
 
-  // Empty state
-  if (!groups || groups.length === 0) {
-    return (
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Artifacts</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          Browse all artifacts produced by the pipeline
-        </p>
+    if (!groups || groups.length === 0) {
+      return (
         <EmptyState
           icon={Package}
           title="No artifacts yet"
           description="Run the pipeline to produce artifacts"
         />
-      </div>
+      )
+    }
+
+    // Group by artifact_type for display
+    const grouped = new Map<string, ArtifactGroupSummary[]>()
+    for (const g of groups) {
+      const list = grouped.get(g.artifact_type) ?? []
+      list.push(g)
+      grouped.set(g.artifact_type, list)
+    }
+
+    // Sort type groups: important types first, then alphabetical
+    const typeOrder: Record<string, number> = {
+      raw_input: 0,
+      canonical_script: 1,
+      project_config: 2,
+      entity_graph: 3,
+      scene: 4,
+      scene_index: 5,
+      character_bible: 10,
+      location_bible: 11,
+      prop_bible: 12,
+      bible_manifest: 13,
+      continuity_index: 20,
+      continuity_state: 21,
+    }
+    const sortedEntries = Array.from(grouped.entries()).sort(
+      ([a], [b]) => (typeOrder[a] ?? 99) - (typeOrder[b] ?? 99)
     )
-  }
 
-  // Group by artifact_type for display
-  const grouped = new Map<string, ArtifactGroupSummary[]>()
-  for (const g of groups) {
-    const list = grouped.get(g.artifact_type) ?? []
-    list.push(g)
-    grouped.set(g.artifact_type, list)
-  }
-
-  // Sort type groups: important types first, then alphabetical
-  const typeOrder: Record<string, number> = {
-    raw_input: 0,
-    canonical_script: 1,
-    project_config: 2,
-    entity_graph: 3,
-    scene: 4,
-    scene_index: 5,
-    character_bible: 10,
-    location_bible: 11,
-    prop_bible: 12,
-    bible_manifest: 13,
-    continuity_index: 20,
-    continuity_state: 21,
-  }
-  const sortedEntries = Array.from(grouped.entries()).sort(
-    ([a], [b]) => (typeOrder[a] ?? 99) - (typeOrder[b] ?? 99)
-  )
-
-  return (
-    <div>
-      <h1 className="text-2xl font-bold tracking-tight mb-1">Artifacts</h1>
-      <p className="text-muted-foreground text-sm mb-6">
-        Browse all artifacts produced by the pipeline
-      </p>
-
+    return (
       <div className="space-y-6">
         {sortedEntries.map(([type, items]) => {
           const meta = getArtifactMeta(type)
@@ -332,6 +281,13 @@ export default function ProjectArtifacts() {
           )
         })}
       </div>
+    )
+  }
+
+  return (
+    <div>
+      <PageHeader title="Artifacts" subtitle="Browse all artifacts produced by the pipeline" />
+      {renderContent()}
     </div>
   )
 }

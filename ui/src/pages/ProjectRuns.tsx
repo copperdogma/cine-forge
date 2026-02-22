@@ -1,13 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import {
-  CheckCircle2,
-  XCircle,
-  Clock,
-  Loader2,
-  History,
-  Plus,
-} from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { History, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -15,40 +7,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useRuns } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
 import { RECIPE_NAMES } from '@/lib/constants'
-
-function statusIcon(status: string) {
-  switch (status) {
-    case 'done':
-    case 'skipped_reused':
-      return <CheckCircle2 className="h-4 w-4 text-primary" />
-    case 'failed':
-      return <XCircle className="h-4 w-4 text-destructive" />
-    case 'running':
-      return <Loader2 className="h-4 w-4 text-primary animate-spin" />
-    default:
-      return <Clock className="h-4 w-4 text-muted-foreground" />
-  }
-}
-
-function statusBadge(status: string) {
-  const variant = status === 'failed' ? 'destructive' as const : 'secondary' as const
-  return (
-    <Badge variant={variant} className="text-xs capitalize">
-      {status}
-    </Badge>
-  )
-}
-
-function timeAgo(ms: number): string {
-  const seconds = Math.floor((Date.now() - ms) / 1000)
-  if (seconds < 60) return `${seconds}s ago`
-  const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
-  const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
-  const days = Math.floor(hours / 24)
-  return `${days}d ago`
-}
+import { timeAgo } from '@/lib/format'
+import { StatusIcon, StatusBadge } from '@/components/StatusBadge'
+import { PageHeader } from '@/components/PageHeader'
 
 function RunListSkeleton() {
   return (
@@ -81,19 +42,10 @@ export default function ProjectRuns() {
   const navigate = useNavigate()
   const { data: runs, isLoading, error, refetch } = useRuns(projectId)
 
-  const header = (
-    <div className="mb-6">
-      <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
-      <p className="text-muted-foreground text-sm">
-        All pipeline runs for this project
-      </p>
-    </div>
-  )
-
   if (isLoading) {
     return (
       <div className="w-full">
-        {header}
+        <PageHeader title="Run History" subtitle="All pipeline runs for this project" />
         <RunListSkeleton />
       </div>
     )
@@ -102,7 +54,7 @@ export default function ProjectRuns() {
   if (error) {
     return (
       <div className="w-full">
-        {header}
+        <PageHeader title="Run History" subtitle="All pipeline runs for this project" />
         <ErrorState
           message="Failed to load run history"
           hint={error.message}
@@ -115,10 +67,7 @@ export default function ProjectRuns() {
   if (!runs || runs.length === 0) {
     return (
       <div className="w-full">
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Run History</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          All pipeline runs for this project
-        </p>
+        <PageHeader title="Run History" subtitle="All pipeline runs for this project" />
         <EmptyState
           icon={History}
           title="No runs yet"
@@ -134,7 +83,7 @@ export default function ProjectRuns() {
 
   return (
     <div className="w-full">
-      {header}
+      <PageHeader title="Run History" subtitle="All pipeline runs for this project" />
 
       <div className="mb-6">
         <Button size="sm" onClick={() => navigate(`/${projectId}/run`)}>
@@ -151,13 +100,13 @@ export default function ProjectRuns() {
                 className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-accent/50 transition-colors"
                 onClick={() => navigate(`/${projectId}/run/${run.run_id}`)}
               >
-                {statusIcon(run.status)}
+                <StatusIcon status={run.status} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold">
                       {RECIPE_NAMES[run.recipe_id] || 'Unknown Run'}
                     </span>
-                    {statusBadge(run.status)}
+                    <StatusBadge status={run.status} />
                   </div>
                   <div className="flex items-center gap-3 mt-0.5">
                     <span className="text-[10px] font-mono text-muted-foreground/60 uppercase truncate max-w-[120px]">

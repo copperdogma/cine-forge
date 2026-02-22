@@ -42,6 +42,8 @@ import {
 } from '@/lib/hooks'
 import { updateProjectSettings } from '@/lib/api'
 import { cn } from '@/lib/utils'
+import { timeAgo, formatDuration } from '@/lib/format'
+import { getStatusConfig } from '@/components/StatusBadge'
 import { useChatStore } from '@/lib/chat-store'
 import { useRunState } from '@/lib/hooks'
 import { getStageStartMessage } from '@/lib/chat-messages'
@@ -144,56 +146,6 @@ function EditableTitle({
       <Pencil className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
     </h1>
   )
-}
-
-// --- Shared helpers ---
-
-function getStatusConfig(status: string) {
-  switch (status) {
-    case 'done':
-    case 'skipped_reused':
-      return {
-        icon: CheckCircle2,
-        label: status === 'done' ? 'Done' : 'Reused',
-        className: 'bg-green-500/20 text-green-400 border-green-500/30',
-      }
-    case 'failed':
-      return {
-        icon: AlertTriangle,
-        label: 'Failed',
-        className: 'bg-red-500/20 text-red-400 border-red-500/30',
-      }
-    case 'running':
-      return {
-        icon: Clock,
-        label: 'Running',
-        className: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      }
-    default:
-      return {
-        icon: Clock,
-        label: 'Pending',
-        className: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
-      }
-  }
-}
-
-function timeAgo(timestamp: number): string {
-  const seconds = Math.floor(Date.now() / 1000 - timestamp)
-  if (seconds < 60) return `${seconds}s ago`
-  const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
-  const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
-  const days = Math.floor(hours / 24)
-  return `${days}d ago`
-}
-
-function formatDuration(seconds: number): string {
-  if (seconds < 60) return `${seconds}s`
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = seconds % 60
-  return `${minutes}m ${remainingSeconds}s`
 }
 
 // --- Fresh Import View: Screenplay displayed in CodeMirror ---
@@ -465,7 +417,7 @@ export function AnalyzedView({ projectId }: { projectId: string }) {
                       {run.started_at && (
                         <span className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {timeAgo(run.started_at)}
+                          {timeAgo(run.started_at * 1000)}
                         </span>
                       )}
                       {duration && (

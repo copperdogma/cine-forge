@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
-  CheckCircle2,
-  XCircle,
   Clock,
   Loader2,
   DollarSign,
@@ -12,9 +10,7 @@ import {
   Package,
   AlertCircle,
   Play,
-  PauseCircle,
 } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -26,70 +22,8 @@ import type { StageState } from '@/lib/types'
 import { useRunState, useRunEvents, useRetryFailedStage, useResumeRun } from '@/lib/hooks'
 import { RECIPE_NAMES } from '@/lib/constants'
 import { toast } from 'sonner'
-
-function statusBadge(status: string) {
-  if (status === 'done' || status === 'skipped_reused') {
-    return (
-      <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
-        <CheckCircle2 className="h-3 w-3 mr-1" />
-        {status === 'done' ? 'Done' : 'Reused'}
-      </Badge>
-    )
-  }
-  if (status === 'failed') {
-    return (
-      <Badge variant="destructive" className="text-xs">
-        <XCircle className="h-3 w-3 mr-1" />
-        Failed
-      </Badge>
-    )
-  }
-  if (status === 'running') {
-    return (
-      <Badge variant="secondary" className="text-xs">
-        <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-        Running
-      </Badge>
-    )
-  }
-  if (status === 'paused') {
-    return (
-      <Badge variant="secondary" className="text-xs bg-amber-400/10 text-amber-400 border-amber-400/20">
-        <PauseCircle className="h-3 w-3 mr-1" />
-        Paused
-      </Badge>
-    )
-  }
-  return (
-    <Badge variant="secondary" className="text-xs">
-      <Clock className="h-3 w-3 mr-1" />
-      {status}
-    </Badge>
-  )
-}
-
-function stageStatusIcon(status: string) {
-  switch (status) {
-    case 'done':
-    case 'skipped_reused':
-      return <CheckCircle2 className="h-4 w-4 text-primary" />
-    case 'failed':
-      return <XCircle className="h-4 w-4 text-destructive" />
-    case 'running':
-      return <Loader2 className="h-4 w-4 text-primary animate-spin" />
-    case 'paused':
-      return <PauseCircle className="h-4 w-4 text-amber-400" />
-    default:
-      return <Clock className="h-4 w-4 text-muted-foreground/40" />
-  }
-}
-
-function formatDuration(seconds: number): string {
-  if (seconds < 60) return `${seconds.toFixed(1)}s`
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = Math.floor(seconds % 60)
-  return `${minutes}m ${remainingSeconds}s`
-}
+import { formatDuration } from '@/lib/format'
+import { StatusBadge, StatusIcon } from '@/components/StatusBadge'
 
 // Derive overall status from stage states
 function getOverallStatus(stages: Record<string, StageState>): string {
@@ -340,7 +274,7 @@ export default function RunDetail() {
                 Retry Failed Stage
               </Button>
             )}
-            {statusBadge(overallStatus)}
+            <StatusBadge status={overallStatus} />
           </div>
         </div>
       </div>
@@ -405,7 +339,7 @@ export default function RunDetail() {
           {stageEntries.map(([stageName, stage], i) => (
             <div key={stageName}>
               <div className="flex items-center gap-3 px-4 py-3">
-                {stageStatusIcon(stage.status)}
+                <StatusIcon status={stage.status} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span

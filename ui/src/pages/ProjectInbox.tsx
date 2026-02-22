@@ -20,6 +20,8 @@ import {
 import { useMemo } from 'react'
 import { useArtifactGroups, useRuns } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
+import { timeAgo } from '@/lib/format'
+import { PageHeader } from '@/components/PageHeader'
 
 type InboxItemType = 'stale' | 'review' | 'error' | 'gate_review'
 
@@ -209,16 +211,6 @@ function itemAction(
   }
 }
 
-function timeAgo(ms: number): string {
-  const seconds = Math.floor((Date.now() - ms) / 1000)
-  if (seconds < 60) return `${seconds}s ago`
-  const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
-  const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
-  const days = Math.floor(hours / 24)
-  return `${days}d ago`
-}
 
 export default function ProjectInbox() {
   const { projectId } = useParams<{ projectId: string }>()
@@ -311,14 +303,10 @@ export default function ProjectInbox() {
   const reviewCount = reviewItems.length
   const gateReviewCount = gateReviewItems.length
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Inbox</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          Items that need your attention
-        </p>
+  return (
+    <div>
+      <PageHeader title="Inbox" subtitle="Items that need your attention" />
+      {isLoading ? (
         <Card>
           <CardContent className="py-12 text-center space-y-3">
             <Skeleton className="h-4 w-48 mx-auto" />
@@ -326,99 +314,80 @@ export default function ProjectInbox() {
             <Skeleton className="h-4 w-32 mx-auto" />
           </CardContent>
         </Card>
-      </div>
-    )
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Inbox</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          Items that need your attention
-        </p>
+      ) : error ? (
         <ErrorState
           title="Failed to load inbox"
           message={error instanceof Error ? error.message : 'An unknown error occurred'}
           onRetry={refetch}
         />
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <h1 className="text-2xl font-bold tracking-tight mb-1">Inbox</h1>
-      <p className="text-muted-foreground text-sm mb-6">
-        Items that need your attention
-      </p>
-
-      {/* Summary badges */}
-      <div className="flex items-center gap-2 mb-4">
-        {staleCount > 0 && (
-          <Badge variant="outline" className="text-xs text-amber-400 border-amber-400/30 gap-1">
-            <AlertTriangle className="h-3 w-3" />
-            {staleCount} stale
-          </Badge>
-        )}
-        {errorCount > 0 && (
-          <Badge variant="destructive" className="text-xs gap-1">
-            <XCircle className="h-3 w-3" />
-            {errorCount} error{errorCount > 1 ? 's' : ''}
-          </Badge>
-        )}
-        {reviewCount > 0 && (
-          <Badge variant="secondary" className="text-xs gap-1">
-            <Eye className="h-3 w-3" />
-            {reviewCount} to review
-          </Badge>
-        )}
-        {gateReviewCount > 0 && (
-          <Badge variant="secondary" className="text-xs gap-1 bg-primary/10 text-primary border-primary/20">
-            <Lock className="h-3 w-3" />
-            {gateReviewCount} stage{gateReviewCount > 1 ? 's' : ''} paused
-          </Badge>
-        )}
-      </div>
-
-      {allItems.length === 0 ? (
-        <Card>
-          <CardContent className="py-12 text-center">
-            <CheckCircle2 className="h-8 w-8 text-primary mx-auto mb-3" />
-            <p className="text-sm font-medium">All clear</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              No items need attention right now.
-            </p>
-          </CardContent>
-        </Card>
       ) : (
-        <Card>
-          <CardContent className="py-2 px-0">
-            {allItems.map((item, i) => (
-              <div key={item.id}>
-                <div className="flex items-start gap-3 px-4 py-3">
-                  <div className="mt-0.5">{itemIcon(item.type)}</div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">{item.title}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {item.description}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {timeAgo(item.timestamp)}
-                    </p>
-                  </div>
-                  <div className="shrink-0 mt-0.5">
-                    {itemAction(item, projectId, navigate)}
-                  </div>
-                </div>
-                {i < allItems.length - 1 && <Separator />}
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
+        <>
+          {/* Summary badges */}
+          <div className="flex items-center gap-2 mb-4">
+            {staleCount > 0 && (
+              <Badge variant="outline" className="text-xs text-amber-400 border-amber-400/30 gap-1">
+                <AlertTriangle className="h-3 w-3" />
+                {staleCount} stale
+              </Badge>
+            )}
+            {errorCount > 0 && (
+              <Badge variant="destructive" className="text-xs gap-1">
+                <XCircle className="h-3 w-3" />
+                {errorCount} error{errorCount > 1 ? 's' : ''}
+              </Badge>
+            )}
+            {reviewCount > 0 && (
+              <Badge variant="secondary" className="text-xs gap-1">
+                <Eye className="h-3 w-3" />
+                {reviewCount} to review
+              </Badge>
+            )}
+            {gateReviewCount > 0 && (
+              <Badge variant="secondary" className="text-xs gap-1 bg-primary/10 text-primary border-primary/20">
+                <Lock className="h-3 w-3" />
+                {gateReviewCount} stage{gateReviewCount > 1 ? 's' : ''} paused
+              </Badge>
+            )}
+          </div>
 
+          {allItems.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <CheckCircle2 className="h-8 w-8 text-primary mx-auto mb-3" />
+                <p className="text-sm font-medium">All clear</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  No items need attention right now.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="py-2 px-0">
+                {allItems.map((item, i) => (
+                  <div key={item.id}>
+                    <div className="flex items-start gap-3 px-4 py-3">
+                      <div className="mt-0.5">{itemIcon(item.type)}</div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium">{item.title}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {item.description}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {timeAgo(item.timestamp)}
+                        </p>
+                      </div>
+                      <div className="shrink-0 mt-0.5">
+                        {itemAction(item, projectId, navigate)}
+                      </div>
+                    </div>
+                    {i < allItems.length - 1 && <Separator />}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+        </>
+      )}
     </div>
   )
 }

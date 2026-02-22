@@ -1,0 +1,11 @@
+{
+  "threshold": 5,
+  "reporters": ["console"],
+  "ignore": [
+    "node_modules/**",
+    "dist/**",
+    "src/components/ui/**"
+  ],
+  "absolute": true,
+  "gitignore": true
+}

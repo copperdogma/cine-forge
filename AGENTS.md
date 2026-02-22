@@ -270,6 +270,44 @@ When building or substantially redesigning a UI, follow this process:
 - **Resource-oriented URLs**: Project/Run/Artifact identity belongs in the URL path, not search params or localStorage. Makes the UI stateless, shareable, and multi-tab friendly.
 - **v0.dev for exploration**: When unsure what a component should look like, generate variations in v0, copy the code into the codebase, and adapt to real data. Code transfers directly since v0 uses the same React + shadcn/ui + Tailwind stack.
 
+#### 5. Mandatory Reuse Directives
+
+Before writing **any** new UI code, you MUST follow this checklist:
+
+1. **Read the UI Component Registry below** — check if a shared component or utility already handles your use case.
+2. **Grep `ui/src/components/` and `ui/src/lib/`** for existing patterns before creating new abstractions.
+3. **If a similar component exists, extend it** — do NOT create a parallel one.
+
+| Rule | Detail |
+|------|--------|
+| **MUST** use `ui/src/lib/format.ts` | Never define `timeAgo` or `formatDuration` inline |
+| **MUST** use `ui/src/lib/artifact-meta.ts` | Never duplicate `artifactMeta` config |
+| **MUST** use `ui/src/components/HealthBadge.tsx` | Never inline health badge rendering |
+| **MUST** use `ui/src/components/StatusBadge.tsx` | Never inline status badge/icon rendering |
+| **MUST** use `ui/src/components/PageHeader.tsx` | Never duplicate page headers across state branches |
+| **MUST** use `EntityListPage` pattern | For any new entity list views, extend the config map |
+| **MUST NOT** define utility functions inline in page files | Extract to `ui/src/lib/` |
+| **MUST NOT** copy-paste JSX blocks across pages | Extract a shared component instead |
+
+Run `pnpm --dir ui run lint:duplication` after UI changes to catch regressions. Threshold: 5%.
+
+#### UI Component Registry
+
+Shared components and utilities — the **single source of truth** for each concern. Check here before building anything new.
+
+| Component / Utility | Path | Purpose |
+|---|---|---|
+| `timeAgo()`, `formatDuration()` | `ui/src/lib/format.ts` | Time display helpers (ms input for timeAgo, seconds input for formatDuration) |
+| `artifactMeta`, `getArtifactMeta()` | `ui/src/lib/artifact-meta.ts` | Artifact type display metadata (icon, label, color) |
+| `HealthBadge` | `ui/src/components/HealthBadge.tsx` | Artifact health status badge (valid/stale/needs_review) |
+| `StatusBadge`, `StatusIcon`, `getStatusConfig` | `ui/src/components/StatusBadge.tsx` | Pipeline run/stage status rendering |
+| `PageHeader` | `ui/src/components/PageHeader.tsx` | Page title + subtitle (render once, above state branching) |
+| `EntityListPage` | `ui/src/pages/EntityListPage.tsx` | Parameterized entity list (characters/locations/props/scenes) |
+| `EntityDetailPage` | `ui/src/pages/EntityDetailPage.tsx` | Parameterized entity detail view |
+| `EntityListControls` | `ui/src/components/EntityListControls.tsx` | Sort/density/direction controls |
+| `EmptyState`, `ErrorState`, `ListSkeleton` | `ui/src/components/StateViews.tsx` | Shared loading/error/empty states |
+| `ExportModal` | `ui/src/components/ExportModal.tsx` | Export dialog |
+
 ### Repo Map
 - `src/cine_forge/driver/`: Orchestration runtime.
 - `src/cine_forge/modules/`: Pipeline modules by stage.
@@ -343,6 +381,7 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-13 — Cast-quality filters: Remove pronouns and derivative noise before ranking characters.
 - 2026-02-14 — Cross-recipe artifact reuse via `store_inputs`: Downstream recipes declare `store_inputs: {input_key: artifact_type}` to resolve inputs from the artifact store instead of re-executing upstream stages. Validated against registered schemas, rejects stale/unhealthy artifacts, and included in stage fingerprints for cache correctness (`src/cine_forge/driver/recipe.py`, `src/cine_forge/driver/engine.py`, `configs/recipes/recipe-world-building.yaml`).
 
+- 2026-02-22 — Config-driven parameterized pages with mandatory reuse directives: Replacing 4 near-identical list pages with a single `EntityListPage` parameterized by config map eliminated ~650 duplicated lines. Prevention requires explicit file-path directives in AGENTS.md (agents don't know where abstractions live unless told) plus `jscpd` automated detection. See `AGENTS.md > UI Development Workflow > Mandatory Reuse Directives`.
 - 2026-02-15 — Dual evaluation catches what code can't: Python scorers measure structural quality (JSON validity, field coverage, trait matching) but miss semantic issues. LLM rubric judges catch shallow reasoning, over-segmentation, and missed subtext. Always use both. Example: GPT-4.1 Mini scored 0.915 on Python scorer but 0.62 on LLM judge for the same character extraction — the judge caught that it found all the right fields but missed the character's emotional arc entirely.
 - 2026-02-15 — Cross-provider judging reduces bias: When evaluating model outputs, use a judge from a different provider than the model being tested. Claude Opus 4.6 as default judge works well for evaluating both OpenAI and Anthropic models.
 
@@ -361,6 +400,7 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-21 — slow `npx` execution: `npx afterwriting` may take up to 60-90s on first execution as it fetches the package. Set conservative timeouts in `subprocess.run` to avoid premature failures.
 - 2026-02-15 — promptfoo `---` separator trap: Three dashes in prompt files are interpreted as a prompt separator, splitting one prompt into two. The second fragment may lack required instructions (e.g., missing "return JSON"), causing confusing failures. Use `==========` or similar instead.
 - 2026-02-19 — `tsc --noEmit` ≠ `tsc -b`: The root `tsconfig.json` has `"files": []` with no linting rules. `tsc --noEmit` doesn't follow `references`, so it skips strict checks like `noUnusedLocals` from `tsconfig.app.json`. `tsc -b` follows references and matches what `npm run build` does in production. **Always use `tsc -b` for validation, never `tsc --noEmit`.**
+- 2026-02-22 — AI agents duplicate UI code silently: When building similar pages, agents copy-paste rather than abstracting. Every new page or component must check the UI Component Registry in `AGENTS.md > UI Development Workflow` first. Run `pnpm --dir ui run lint:duplication` to catch regressions. See Story 066 for the full audit.
 - 2026-02-15 — Build Pass ≠ Working UI: `tsc --noEmit` and `npm run build` only prove static types and bundling. They cannot catch runtime crashes from data mismatches (e.g., backend sends `'done'` but UI switch only handles `'completed'` — both are `string`, so TypeScript is silent). **After any UI change that touches data flow, open the app in a browser with the real backend and click through every affected page before declaring done.** A green build is necessary but not sufficient.
 
 ### Lessons Learned

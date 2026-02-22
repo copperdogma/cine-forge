@@ -1,16 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import {
-  FileText,
-  Users,
-  MapPin,
-  Globe,
-  Clapperboard,
-  MessageSquare,
   ArrowLeft,
   Clock,
   GitBranch,
-  AlertTriangle,
   Package,
   Code,
   Edit,
@@ -19,7 +12,6 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -36,53 +28,10 @@ import {
   DefaultViewer,
 } from '@/components/ArtifactViewers'
 import { ProvenanceBadge } from '@/components/ProvenanceBadge'
+import { HealthBadge } from '@/components/HealthBadge'
+import { getArtifactMeta } from '@/lib/artifact-meta'
 import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
-
-// Artifact type display config — keys must match backend artifact_type values
-const artifactMeta: Record<string, { icon: typeof FileText; label: string; color: string }> = {
-  raw_input: { icon: FileText, label: 'Screenplay', color: 'text-blue-400' },
-  canonical_script: { icon: FileText, label: 'Canonical Script', color: 'text-blue-300' },
-  project_config: { icon: Package, label: 'Project Config', color: 'text-slate-400' },
-  entity_graph: { icon: Globe, label: 'Entity Graph', color: 'text-emerald-400' },
-  character_bible: { icon: Users, label: 'Character Bible', color: 'text-amber-400' },
-  location_bible: { icon: MapPin, label: 'Location Bible', color: 'text-rose-400' },
-  prop_bible: { icon: Package, label: 'Prop Bible', color: 'text-orange-400' },
-  bible_manifest: { icon: FileText, label: 'Bible Manifest', color: 'text-teal-400' },
-  scene: { icon: Clapperboard, label: 'Scene', color: 'text-violet-400' },
-  scene_index: { icon: Clapperboard, label: 'Scene Index', color: 'text-violet-300' },
-  continuity_index: { icon: Globe, label: 'Continuity Index', color: 'text-cyan-400' },
-  continuity_state: { icon: Globe, label: 'Continuity State', color: 'text-cyan-300' },
-  dialogue_analysis: { icon: MessageSquare, label: 'Dialogue Analysis', color: 'text-orange-400' },
-}
-
-function getArtifactMeta(type: string) {
-  return artifactMeta[type] ?? { icon: FileText, label: type, color: 'text-muted-foreground' }
-}
-
-function healthBadge(health: string | null) {
-  if (!health) return null
-  if (health === 'valid' || health === 'healthy') {
-    return (
-      <Badge variant="outline" className="text-xs text-green-400 border-green-400/30">
-        {health}
-      </Badge>
-    )
-  }
-  if (health === 'stale') {
-    return (
-      <Badge variant="outline" className="text-xs text-amber-400 border-amber-400/30 gap-1">
-        <AlertTriangle className="h-3 w-3" />
-        Stale
-      </Badge>
-    )
-  }
-  return (
-    <Badge variant="destructive" className="text-xs">
-      {health}
-    </Badge>
-  )
-}
 
 function formatTimestamp(timestamp?: string | number) {
   if (!timestamp) return 'Unknown'
@@ -372,7 +321,7 @@ export default function ArtifactDetail() {
               <h1 className="text-2xl font-bold tracking-tight truncate">
                 {displayName ?? entityId ?? meta.label}
               </h1>
-              {healthBadge(health)}
+              <HealthBadge health={health} />
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>{meta.label}</span>
@@ -430,7 +379,7 @@ export default function ArtifactDetail() {
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-medium">v{v.version}</span>
-                        {healthBadge(v.health)}
+                        <HealthBadge health={v.health} />
                       </div>
                       {v.created_at && (
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">

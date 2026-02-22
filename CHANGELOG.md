@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-02-22-02] — UI Component Deduplication & Template Consolidation (Story 066)
+
+### Changed
+- Replaced 4 near-identical entity list pages (`CharactersList`, `LocationsList`, `PropsList`, `ScenesList`) with a single parameterized `EntityListPage` component (~350 lines replacing ~1006 lines).
+- Consolidated `healthBadge` (9+ inline copies → `HealthBadge.tsx`), `artifactMeta` (2 copies → `artifact-meta.ts`), `timeAgo` (3 copies → `format.ts`), `formatDuration` (2 copies → `format.ts`), status badge/icon (3 copies → `StatusBadge.tsx`), page headers (4+ copies → `PageHeader.tsx`).
+- Added AGENTS.md "UI Component Registry" (10 entries) and "Mandatory Reuse Directives" (8 rules with file paths) to prevent AI agent code duplication.
+
+### Fixed
+- `timeAgo()` seconds-vs-milliseconds mismatch in `ProjectHome.tsx` — standardized on millisecond input.
+- `null`-null handling in script-order sort inconsistent across 4 list pages — unified in `EntityListPage`.
+- `paused` run status only styled in `RunDetail` — now handled in shared `StatusBadge` for all pages.
+
+### Added
+- `jscpd` copy-paste detection with 5% threshold, runnable via `pnpm --dir ui run lint:duplication`.
+
 ## [2026-02-22-01] — Screenplay Format Round-Trip & High-Fidelity Rendering (Story 064)
 
 ### Added

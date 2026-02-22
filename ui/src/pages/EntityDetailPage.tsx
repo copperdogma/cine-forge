@@ -7,7 +7,6 @@ import {
   Clapperboard,
   FileText,
   GitBranch,
-  AlertTriangle,
   Code,
   Globe,
   ArrowRight,
@@ -39,6 +38,7 @@ import {
   type ResolvedLink,
 } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
+import { HealthBadge } from '@/components/HealthBadge'
 
 // --- Config ---
 
@@ -85,30 +85,6 @@ const sectionConfig: Record<string, {
 }
 
 // --- Helpers ---
-
-function healthBadge(health: string | null) {
-  if (!health) return null
-  if (health === 'valid' || health === 'healthy') {
-    return (
-      <Badge variant="outline" className="text-xs text-green-400 border-green-400/30">
-        {health}
-      </Badge>
-    )
-  }
-  if (health === 'stale') {
-    return (
-      <Badge variant="outline" className="text-xs text-amber-400 border-amber-400/30 gap-1">
-        <AlertTriangle className="h-3 w-3" />
-        Stale
-      </Badge>
-    )
-  }
-  return (
-    <Badge variant="destructive" className="text-xs">
-      {health}
-    </Badge>
-  )
-}
 
 /** Renders a name as a link if resolvable, plain text otherwise */
 function EntityLink({
@@ -538,7 +514,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h1 className="text-2xl font-bold tracking-tight truncate">{displayName}</h1>
-            {healthBadge(group.health)}
+            <HealthBadge health={group.health} />
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
             <span>{config.label}</span>

@@ -12,10 +12,7 @@ import RunDetail from '@/pages/RunDetail'
 import ProjectArtifacts from '@/pages/ProjectArtifacts'
 import ArtifactDetail from '@/pages/ArtifactDetail'
 import ProjectInbox from '@/pages/ProjectInbox'
-import ScenesList from '@/pages/ScenesList'
-import CharactersList from '@/pages/CharactersList'
-import LocationsList from '@/pages/LocationsList'
-import PropsList from '@/pages/PropsList'
+import EntityListPage from '@/pages/EntityListPage'
 import EntityDetailPage from '@/pages/EntityDetailPage'
 import ThemeShowcase from '@/pages/ThemeShowcase'
 
@@ -45,13 +42,13 @@ export default function App() {
                 <Route index element={<ProjectHome />} />
 
                 {/* Entity-first navigation */}
-                <Route path="scenes" element={<ScenesList />} />
+                <Route path="scenes" element={<EntityListPage section="scenes" />} />
                 <Route path="scenes/:entityId" element={<EntityDetailPage section="scenes" />} />
-                <Route path="characters" element={<CharactersList />} />
+                <Route path="characters" element={<EntityListPage section="characters" />} />
                 <Route path="characters/:entityId" element={<EntityDetailPage section="characters" />} />
-                <Route path="locations" element={<LocationsList />} />
+                <Route path="locations" element={<EntityListPage section="locations" />} />
                 <Route path="locations/:entityId" element={<EntityDetailPage section="locations" />} />
-                <Route path="props" element={<PropsList />} />
+                <Route path="props" element={<EntityListPage section="props" />} />
                 <Route path="props/:entityId" element={<EntityDetailPage section="props" />} />
 
                 {/* Inbox */}
