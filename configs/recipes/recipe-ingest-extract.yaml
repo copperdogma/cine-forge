@@ -5,13 +5,13 @@ stages:
   - id: ingest
     module: story_ingest_v1
     params:
-      input_file: samples/sample-screenplay.fountain
+      input_file: ${input_file}
     needs: []
   - id: normalize
     module: script_normalize_v1
     params:
-      model: mock
-      qa_model: mock
+      model: ${model}
+      qa_model: ${qa_model}
       max_retries: 1
       skip_qa: false
     needs:
@@ -19,8 +19,8 @@ stages:
   - id: extract
     module: scene_extract_v1
     params:
-      model: mock
-      qa_model: mock
+      model: ${model}
+      qa_model: ${qa_model}
       max_retries: 1
       skip_qa: false
     needs:

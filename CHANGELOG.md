@@ -1,5 +1,22 @@
 # Changelog
 
+## [2026-02-21-03] — Ingestion Pipeline Parallelization & Performance Optimization (Story 061)
+
+### Added
+- Parallel processing in `scene_extract_v1` using `ThreadPoolExecutor` for concurrent per-scene enrichment and QA.
+- Parallel processing in `script_normalize_v1` for concurrent scene-level normalization fixes during "smart chunk-skip".
+- Internal timing logs to `scene_extract_v1` and `project_config_v1` for bottleneck observability.
+- `skip_qa` option to `project_config_v1` to allow bypassing sequential verification for faster ingestion.
+
+### Changed
+- Refactored ingestion modules to utilize multi-threading (default 10 workers), significantly reducing wait times for long scripts.
+- Truncated script content in `project_config_v1` detection prompt to the first 500 lines to keep TTFT low and reduce token processing overhead.
+- Updated `recipe-ingest-extract.yaml` to use `${model}` placeholders for improved runtime flexibility.
+
+### Fixed
+- Resolved the "lc-3 bottleneck" where long scripts took up to 25 minutes to ingest; reduced expected duration to ~3 minutes for similar inputs.
+- Eliminated sequential LLM call stalls in the extraction and normalization stages.
+
 ## [2026-02-21-02] — Comprehensive Export & Share (Story 058)
 
 ### Added

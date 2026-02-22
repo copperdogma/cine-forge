@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import logging
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field
@@ -20,6 +23,8 @@ from cine_forge.schemas import (
     SourceSpan,
 )
 from cine_forge.schemas.qa import QAResult
+
+logger = logging.getLogger(__name__)
 
 SCENE_HEADING_RE = re.compile(
     r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
@@ -271,6 +276,176 @@ class _SceneParserAdapter:
 _EnrichmentEnvelope.model_rebuild()
 
 
+def _process_scene_chunk(
+    chunk: _SceneChunk,
+    parse_ctx: _ParseContext,
+    work_model: str,
+    escalate_model: str,
+    qa_model: str,
+    max_retries: int,
+    skip_qa: bool,
+    skip_enrichment: bool,
+    parser_coverage_threshold: float,
+    total_chunks: int,
+) -> dict[str, Any]:
+    scene_start = time.time()
+    feedback = ""
+    scene_health = ArtifactHealth.VALID
+    qa_result: QAResult | None = None
+    scene_costs: list[dict[str, Any]] = []
+    disagreement: list[str] = []
+    extraction_prompt = "deterministic extraction only"
+    boundary_validation: _BoundaryValidation | None = None
+
+    logger.info(f"Processing scene {chunk.scene_number}/{total_chunks}...")
+
+    base_scene: dict[str, Any] = {}
+    for attempt in range(max_retries + 1):
+        # Escalate on later attempts
+        active_model = work_model if attempt == 0 else escalate_model
+
+        try:
+            base_scene = _extract_scene_deterministic(
+                chunk=chunk,
+                parser_backend=parse_ctx.parser_backend,
+                parser_confident=parse_ctx.coverage >= parser_coverage_threshold,
+            )
+            unresolved_fields = _identify_unresolved_fields(
+                base_scene=base_scene, chunk=chunk, skip_enrichment=skip_enrichment
+            )
+
+            if chunk.boundary_uncertain:
+                logger.info(f"  Scene {chunk.scene_number}: Validating boundary...")
+                boundary_validation, boundary_cost = _validate_boundary_if_uncertain(
+                    source_text=chunk.raw_text,
+                    scene_number=chunk.scene_number,
+                    model=active_model,
+                )
+                scene_costs.append(boundary_cost)
+                if boundary_validation and not boundary_validation.is_sensible:
+                    scene_health = ArtifactHealth.NEEDS_REVIEW
+
+            if unresolved_fields:
+                logger.info(
+                    f"  Scene {chunk.scene_number}: Enriching fields {unresolved_fields} "
+                    f"(attempt {attempt})..."
+                )
+                enriched, enrichment_cost, extraction_prompt = _enrich_scene(
+                    scene=base_scene,
+                    source_text=chunk.raw_text,
+                    model=active_model,
+                    feedback=feedback,
+                    unresolved_fields=unresolved_fields,
+                )
+                scene_costs.append(enrichment_cost)
+                base_scene, disagreement = _apply_enrichment(
+                    scene=base_scene,
+                    enrichment=enriched,
+                    unresolved_fields=unresolved_fields,
+                )
+                if disagreement:
+                    scene_health = ArtifactHealth.NEEDS_REVIEW
+            else:
+                extraction_prompt = "deterministic extraction only (no unresolved fields)"
+        except Exception as exc:
+            if attempt >= max_retries:
+                raise
+            feedback = f"Prior attempt failed with error: {exc}. Retrying with escalation."
+            continue
+
+        if skip_qa or not unresolved_fields:
+            # Skip QA when explicitly disabled or when all fields were
+            # resolved deterministically (no AI enrichment needed)
+            qa_result = None
+            break
+
+        logger.info(f"  Scene {chunk.scene_number}: Running QA pass...")
+        qa_result, qa_cost = _run_scene_qa(
+            scene_source=chunk.raw_text,
+            extraction_prompt=extraction_prompt,
+            scene=base_scene,
+            model=qa_model,
+        )
+        scene_costs.append(qa_cost)
+        qa_errors = [issue for issue in qa_result.issues if issue.severity == "error"]
+        if not qa_errors:
+            if not disagreement and (not boundary_validation or boundary_validation.is_sensible):
+                scene_health = ArtifactHealth.VALID
+            break
+        scene_health = ArtifactHealth.NEEDS_REVIEW
+        if attempt >= max_retries:
+            break
+        feedback = "\n".join(f"- {issue.description}" for issue in qa_errors)
+
+    scene_end = time.time()
+    logger.info(f"Scene {chunk.scene_number} done in {scene_end - scene_start:.2f}s")
+
+    scene_payload = Scene.model_validate(base_scene).model_dump(mode="json")
+    scene_id = scene_payload["scene_id"]
+    annotations: dict[str, Any] = {
+        "scene_number": scene_payload["scene_number"],
+        "source_span": scene_payload["source_span"],
+        "parser_backend": parse_ctx.parser_backend,
+        "disagreements": disagreement,
+        "boundary_uncertain": chunk.boundary_uncertain,
+        "boundary_reason": chunk.boundary_reason,
+        "ai_enrichment_used": bool(
+            [item for item in scene_payload["provenance"] if item["method"] == "ai"]
+        ),
+    }
+    if boundary_validation:
+        annotations["boundary_validation"] = boundary_validation.model_dump(mode="json")
+    if qa_result:
+        annotations["qa_result"] = qa_result.model_dump(mode="json")
+        qa_passed = 1 if qa_result.passed else 0
+        qa_needs_review = 1 if not qa_result.passed else 0
+    else:
+        qa_passed = 1
+        qa_needs_review = 0
+
+    if scene_health == ArtifactHealth.NEEDS_REVIEW:
+        qa_needs_review = 1
+
+    artifact = {
+        "artifact_type": "scene",
+        "entity_id": scene_id,
+        "data": scene_payload,
+        "metadata": {
+            "intent": "Represent one screenplay scene as structured data for downstream modules",
+            "rationale": (
+                "Enable depth-first per-scene workflows and deterministic span traceability"
+            ),
+            "alternatives_considered": ["single monolithic scene list artifact"],
+            "confidence": scene_payload["confidence"],
+            "source": "hybrid",
+            "schema_version": "1.0.0",
+            "health": scene_health.value,
+            "annotations": annotations,
+        },
+    }
+
+    index_entry = SceneIndexEntry.model_validate(
+        {
+            "scene_id": scene_id,
+            "scene_number": scene_payload["scene_number"],
+            "heading": scene_payload["heading"],
+            "location": scene_payload["location"],
+            "time_of_day": scene_payload["time_of_day"],
+            "characters_present": scene_payload["characters_present"],
+            "source_span": scene_payload["source_span"],
+            "tone_mood": scene_payload["tone_mood"],
+        }
+    )
+
+    return {
+        "artifact": artifact,
+        "index_entry": index_entry,
+        "costs": scene_costs,
+        "qa_passed": qa_passed,
+        "qa_needs_review": qa_needs_review,
+    }
+
+
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
@@ -306,149 +481,40 @@ def run_module(
     qa_needs_review = 0
     all_costs: list[dict[str, Any]] = []
 
-    for chunk in chunks:
-        feedback = ""
-        scene_health = ArtifactHealth.VALID
-        qa_result: QAResult | None = None
-        scene_costs: list[dict[str, Any]] = []
-        disagreement: list[str] = []
-        extraction_prompt = "deterministic extraction only"
-        boundary_validation: _BoundaryValidation | None = None
+    max_workers = int(params.get("max_workers", 10))
+    start_extraction = time.time()
 
-        for attempt in range(max_retries + 1):
-            # Escalate on later attempts
-            active_model = work_model if attempt == 0 else escalate_model
-
-            try:
-                base_scene = _extract_scene_deterministic(
-                    chunk=chunk,
-                    parser_backend=parse_ctx.parser_backend,
-                    parser_confident=parse_ctx.coverage >= parser_coverage_threshold,
-                )
-                unresolved_fields = _identify_unresolved_fields(
-                    base_scene=base_scene, chunk=chunk, skip_enrichment=skip_enrichment
-                )
-
-                if chunk.boundary_uncertain:
-                    boundary_validation, boundary_cost = _validate_boundary_if_uncertain(
-                        source_text=chunk.raw_text,
-                        scene_number=chunk.scene_number,
-                        model=active_model,
-                    )
-                    scene_costs.append(boundary_cost)
-                    if boundary_validation and not boundary_validation.is_sensible:
-                        scene_health = ArtifactHealth.NEEDS_REVIEW
-
-                if unresolved_fields:
-                    enriched, enrichment_cost, extraction_prompt = _enrich_scene(
-                        scene=base_scene,
-                        source_text=chunk.raw_text,
-                        model=active_model,
-                        feedback=feedback,
-                        unresolved_fields=unresolved_fields,
-                    )
-                    scene_costs.append(enrichment_cost)
-                    base_scene, disagreement = _apply_enrichment(
-                        scene=base_scene,
-                        enrichment=enriched,
-                        unresolved_fields=unresolved_fields,
-                    )
-                    if disagreement:
-                        scene_health = ArtifactHealth.NEEDS_REVIEW
-                else:
-                    extraction_prompt = "deterministic extraction only (no unresolved fields)"
-            except Exception as exc:
-                if attempt >= max_retries:
-                    raise
-                feedback = f"Prior attempt failed with error: {exc}. Retrying with escalation."
-                continue
-
-            if skip_qa or not unresolved_fields:
-                # Skip QA when explicitly disabled or when all fields were
-                # resolved deterministically (no AI enrichment needed)
-                qa_result = None
-                break
-
-            qa_result, qa_cost = _run_scene_qa(
-                scene_source=chunk.raw_text,
-                extraction_prompt=extraction_prompt,
-                scene=base_scene,
-                model=qa_model,
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [
+            executor.submit(
+                _process_scene_chunk,
+                chunk=chunk,
+                parse_ctx=parse_ctx,
+                work_model=work_model,
+                escalate_model=escalate_model,
+                qa_model=qa_model,
+                max_retries=max_retries,
+                skip_qa=skip_qa,
+                skip_enrichment=skip_enrichment,
+                parser_coverage_threshold=parser_coverage_threshold,
+                total_chunks=len(chunks),
             )
-            scene_costs.append(qa_cost)
-            qa_errors = [issue for issue in qa_result.issues if issue.severity == "error"]
-            if not qa_errors:
-                if not disagreement and (
-                    not boundary_validation or boundary_validation.is_sensible
-                ):
-                    scene_health = ArtifactHealth.VALID
-                break
-            scene_health = ArtifactHealth.NEEDS_REVIEW
-            if attempt >= max_retries:
-                break
-            feedback = "\n".join(f"- {issue.description}" for issue in qa_errors)
+            for chunk in chunks
+        ]
 
-        scene_payload = Scene.model_validate(base_scene).model_dump(mode="json")
-        scene_id = scene_payload["scene_id"]
-        annotations: dict[str, Any] = {
-            "scene_number": scene_payload["scene_number"],
-            "source_span": scene_payload["source_span"],
-            "parser_backend": parse_ctx.parser_backend,
-            "disagreements": disagreement,
-            "boundary_uncertain": chunk.boundary_uncertain,
-            "boundary_reason": chunk.boundary_reason,
-            "ai_enrichment_used": bool(
-                [item for item in scene_payload["provenance"] if item["method"] == "ai"]
-            ),
-        }
-        if boundary_validation:
-            annotations["boundary_validation"] = boundary_validation.model_dump(mode="json")
-        if qa_result:
-            annotations["qa_result"] = qa_result.model_dump(mode="json")
-            if qa_result.passed:
-                qa_passed += 1
-            else:
-                qa_needs_review += 1
-                scene_health = ArtifactHealth.NEEDS_REVIEW
+        for future in futures:
+            result = future.result()
+            scene_artifacts.append(result["artifact"])
+            scene_index_entries.append(result["index_entry"])
+            all_costs.extend(result["costs"])
+            qa_passed += result["qa_passed"]
+            qa_needs_review += result["qa_needs_review"]
 
-        scene_artifacts.append(
-            {
-                "artifact_type": "scene",
-                "entity_id": scene_id,
-                "data": scene_payload,
-                "metadata": {
-                    "intent": (
-                        "Represent one screenplay scene as structured data "
-                        "for downstream modules"
-                    ),
-                    "rationale": (
-                        "Enable depth-first per-scene workflows and deterministic "
-                        "span traceability"
-                    ),
-                    "alternatives_considered": ["single monolithic scene list artifact"],
-                    "confidence": scene_payload["confidence"],
-                    "source": "hybrid",
-                    "schema_version": "1.0.0",
-                    "health": scene_health.value,
-                    "annotations": annotations,
-                },
-            }
-        )
-        scene_index_entries.append(
-            SceneIndexEntry.model_validate(
-                {
-                    "scene_id": scene_id,
-                    "scene_number": scene_payload["scene_number"],
-                    "heading": scene_payload["heading"],
-                    "location": scene_payload["location"],
-                    "time_of_day": scene_payload["time_of_day"],
-                    "characters_present": scene_payload["characters_present"],
-                    "source_span": scene_payload["source_span"],
-                    "tone_mood": scene_payload["tone_mood"],
-                }
-            )
-        )
-        all_costs.extend(scene_costs)
+    extraction_duration = time.time() - start_extraction
+    logger.info(
+        f"Scene extraction complete: {len(chunks)} scenes in {extraction_duration:.2f}s "
+        f"({extraction_duration / len(chunks):.2f}s/scene)"
+    )
 
     if skip_qa:
         qa_passed = len(scene_artifacts)

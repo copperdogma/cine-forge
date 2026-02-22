@@ -83,6 +83,8 @@ NOTES from Cam:
 | 058 | Comprehensive Export & Share | 2.5 — UI | High | Done | [story-058](stories/story-058-comprehensive-export-share.md) |
 | 059 | Pipeline UI Refinement | 2.5 — UI | High | Done | [story-059](stories/story-059-pipeline-ui-refinement.md) |
 | 060 | Entity Quality Regression | Cross-Cutting | High | Done | [story-060](stories/story-060-entity-quality-regression.md) |
+| 061 | Optimize Scene Extraction | Cross-Cutting | High | Done | [story-061](stories/story-061-optimize-scene-extraction.md) |
+| 062 | 3-Stage Ingestion: Intake, Breakdown, Analysis | Cross-Cutting | High | Pending | [story-062](stories/story-062-refactor-ingestion-three-stage.md) |
 
 ## Phase Summary
 

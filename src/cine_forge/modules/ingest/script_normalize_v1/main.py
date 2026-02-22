@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -378,10 +379,6 @@ def _normalize_smart_chunks(
         # Too few scenes to do smart chunking — fall through to full LLM
         return None
 
-    output_scenes: list[str] = []
-    costs: list[dict[str, Any]] = []
-    scenes_fixed = 0
-
     chunk_system = (
         "You are a professional script supervisor normalizing creative writing "
         "into standard Fountain screenplay format.\n"
@@ -396,11 +393,11 @@ def _normalize_smart_chunks(
         "Return only the corrected scene text. Preserve author voice."
     )
 
-    for scene in scenes:
+    def process_scene(scene: str) -> dict[str, Any]:
         normalized_scene = normalize_fountain_text(scene)
         lint = lint_fountain_text(normalized_scene)
         if lint.valid:
-            output_scenes.append(normalized_scene)
+            return {"text": normalized_scene, "cost": None, "fixed": False}
         else:
             # This scene needs LLM help
             prompt = f"{chunk_system}\n\nScene to fix:\n{scene}"
@@ -412,12 +409,28 @@ def _normalize_smart_chunks(
                     fail_on_truncation=True,
                 )
                 assert isinstance(fixed_scene, str)
-                output_scenes.append(normalize_fountain_text(fixed_scene))
-                costs.append(cost)
-                scenes_fixed += 1
+                return {
+                    "text": normalize_fountain_text(fixed_scene),
+                    "cost": cost,
+                    "fixed": True,
+                }
             except Exception:  # noqa: BLE001
                 # LLM failed for this scene — use code-normalized version
-                output_scenes.append(normalized_scene)
+                return {"text": normalized_scene, "cost": None, "fixed": False}
+
+    output_scenes: list[str] = []
+    costs: list[dict[str, Any]] = []
+    scenes_fixed = 0
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        results = list(executor.map(process_scene, scenes))
+
+    for res in results:
+        output_scenes.append(res["text"])
+        if res["cost"]:
+            costs.append(res["cost"])
+        if res["fixed"]:
+            scenes_fixed += 1
 
     return "\n\n".join(output_scenes), costs, scenes_fixed
 

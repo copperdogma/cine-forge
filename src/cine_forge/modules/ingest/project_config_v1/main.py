@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+import logging
 import math
 import re
+import time
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -15,6 +17,8 @@ from pydantic import BaseModel, Field
 from cine_forge.ai import qa_check
 from cine_forge.ai.llm import call_llm
 from cine_forge.schemas import ArtifactHealth, ProjectConfig, QAResult
+
+logger = logging.getLogger(__name__)
 
 CHARACTER_STOPWORDS = {
     "A",
@@ -96,19 +100,33 @@ def run_module(
     config_file = runtime_params.get("config_file") or params.get("config_file")
     accept_config = bool(runtime_params.get("accept_config") or params.get("accept_config", False))
     autonomous = bool(runtime_params.get("autonomous", False))
+    skip_qa = bool(params.get("skip_qa", False))
 
+    logger.info("Detecting project values...")
+    start_detect = time.time()
     detected, detection_cost, detection_prompt = _detect_project_values(
         canonical_script=canonical_script,
         scene_index=scene_index,
         model=model,
     )
-    qa_result, qa_cost = _run_detection_qa(
-        canonical_script=canonical_script,
-        scene_index=scene_index,
-        detected=detected,
-        model=qa_model,
-        detection_prompt=detection_prompt,
-    )
+    detect_duration = time.time() - start_detect
+    logger.info(f"Project detection done in {detect_duration:.2f}s")
+
+    if not skip_qa:
+        logger.info("Running project config QA...")
+        start_qa = time.time()
+        qa_result, qa_cost = _run_detection_qa(
+            canonical_script=canonical_script,
+            scene_index=scene_index,
+            detected=detected,
+            model=qa_model,
+            detection_prompt=detection_prompt,
+        )
+        qa_duration = time.time() - start_qa
+        logger.info(f"Project QA done in {qa_duration:.2f}s")
+    else:
+        qa_result = QAResult(passed=True, confidence=1.0, issues=[], summary="QA skipped")
+        qa_cost = _empty_cost(qa_model)
 
     draft = _build_draft_config(
         detected=detected,
@@ -127,7 +145,6 @@ def run_module(
     draft["confirmed_at"] = datetime.now(UTC).isoformat() if confirmed else None
 
     draft_path = _write_draft_file(draft)
-    _print_draft(draft=draft, draft_path=draft_path)
 
     health = ArtifactHealth.VALID if confirmed else ArtifactHealth.NEEDS_REVIEW
     if not qa_result.passed:
@@ -413,6 +430,13 @@ def _load_user_config(config_path: Path) -> dict[str, Any]:
 
 def _build_detection_prompt(canonical_script: dict[str, Any], scene_index: dict[str, Any]) -> str:
     script_text = canonical_script.get("script_text", "")
+    # Truncate script to first 500 lines - usually enough for project-level metadata
+    # while keeping TTFT and processing time low.
+    lines = script_text.splitlines()
+    truncated_script = "\n".join(lines[:500])
+    if len(lines) > 500:
+        truncated_script += f"\n\n[... {len(lines) - 500} lines truncated ...]"
+
     condensed_scene_index = {
         "total_scenes": scene_index.get("total_scenes"),
         "unique_locations": scene_index.get("unique_locations", []),
@@ -431,8 +455,8 @@ def _build_detection_prompt(canonical_script: dict[str, Any], scene_index: dict[
         f"Canonical script title: {canonical_script.get('title', 'Untitled')}\n"
         f"Canonical script line_count: {canonical_script.get('line_count', 0)}\n"
         f"Scene index summary: {json.dumps(condensed_scene_index, ensure_ascii=True)}\n\n"
-        "Script excerpt (full canonical text follows):\n"
-        f"{script_text}"
+        "Script excerpt (first 500 lines):\n"
+        f"{truncated_script}"
     )
 
 
@@ -544,13 +568,6 @@ def _write_draft_file(draft: dict[str, Any]) -> Path:
     draft_path = output_dir / "draft_config.yaml"
     draft_path.write_text(yaml.safe_dump(draft, sort_keys=False), encoding="utf-8")
     return draft_path
-
-
-def _print_draft(draft: dict[str, Any], draft_path: Path) -> None:
-    text = yaml.safe_dump(draft, sort_keys=False)
-    print("=== Draft Project Config ===")
-    print(text)
-    print(f"Draft file: {draft_path}")
 
 
 def _normalize_str_list(value: Any) -> list[str]:
