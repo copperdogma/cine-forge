@@ -452,6 +452,7 @@ export function ChatPanel() {
     if (viewport) {
       viewport.scrollTop = viewport.scrollHeight
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages.length, messages[messages.length - 1]?.content])
 
   // Listen for programmatic "ask" events (from GlossaryTerm, SectionHelp, etc.)

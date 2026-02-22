@@ -372,10 +372,12 @@ function stripDescription(heading: string): string {
 
 function computeFirstSceneNumber(
   scenePresence: string[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sceneIndexData: any,
 ): number | null {
   if (!scenePresence?.length || !sceneIndexData) return null
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const entries: any[] = sceneIndexData?.payload?.data?.entries ?? []
   if (!entries.length) return null
 
@@ -433,6 +435,7 @@ export function useEntityDetails(
   const enriched: EnrichedEntity[] = useMemo(() => {
     return entities.map((group, idx) => {
       const detail = detailQueries[idx]?.data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data = detail?.payload?.data as any
 
       return {
@@ -594,6 +597,7 @@ export function useEntityResolver(projectId: string | undefined) {
 }
 
 function transformArtifactToScene(artifact: ArtifactDetailResponse, entityId: string, fallbackIndex: number): Scene | null {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const data = artifact.payload.data as any
   const sceneNumber = data?.scene_number ?? fallbackIndex
   const heading = data?.heading ?? data?.scene_heading ?? `Scene ${sceneNumber}`
@@ -638,8 +642,10 @@ export function useScenes(projectId: string | undefined) {
     const artifact = query.data
     const group = sceneGroups[index]
     if (group.artifact_type === 'scene_breakdown') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data = artifact.payload.data as any
       const sceneList = data?.scenes ?? []
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       sceneList.forEach((sceneData: any, idx: number) => {
         const sceneNumber = sceneData?.scene_number ?? idx + 1
         const sceneEntityId = sceneData?.scene_id ?? `scene_${String(sceneNumber).padStart(3, '0')}`

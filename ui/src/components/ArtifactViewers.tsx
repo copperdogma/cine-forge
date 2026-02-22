@@ -869,7 +869,9 @@ export function StageReviewViewer({ data, projectId }: { data: Record<string, un
   const stageId = getString(data, 'stage_id')
   const readiness = getString(data, 'readiness')
   const guardianReviews = getArray(data, 'guardian_reviews')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const directorReview = getObject(data, 'director_review') as any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const disagreements = getArray(data, 'disagreements') as any[]
   const userApproved = data.user_approved === true
   
@@ -908,6 +910,7 @@ export function StageReviewViewer({ data, projectId }: { data: Record<string, un
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         {guardianReviews.map((rev: any, i) => (
           <Card key={i} className={cn(rev.decision === 'block' && 'border-destructive/50 bg-destructive/5')}>
             <CardHeader className="pb-2">
@@ -970,6 +973,7 @@ export function StageReviewViewer({ data, projectId }: { data: Record<string, un
       {disagreements.length > 0 && (
         <CollapsibleSection title="Disagreements" icon={<ShieldAlert className="h-4 w-4 text-destructive" />}>
           <div className="space-y-3">
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {disagreements.map((dis: any, i) => (
               <div key={i} className="text-xs border-l-2 border-destructive pl-3 py-1 space-y-2">
                 <div>

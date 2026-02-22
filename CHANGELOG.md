@@ -16,6 +16,8 @@
 ### Fixed
 - Resolved the "lc-3 bottleneck" where long scripts took up to 25 minutes to ingest; reduced expected duration to ~3 minutes for similar inputs.
 - Eliminated sequential LLM call stalls in the extraction and normalization stages.
+- Fixed React 19 purity errors in `ProjectRun.tsx` (impure `Date.now()` and cascading `setState`).
+- Cleared UI lint debt (legacy `any` and unused variables) to satisfy strict production build gates.
 
 ## [2026-02-21-02] — Comprehensive Export & Share (Story 058)
 

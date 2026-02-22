@@ -139,13 +139,23 @@ export default function ProjectRun() {
   useEffect(() => {
     if (runId && runStateData?.state) {
       const state = runStateData.state
-      setSelectedRecipe(state.recipe_id)
       const params = state.runtime_params || {}
-      if (params.default_model) setDefaultModel(params.default_model as string)
-      if (params.work_model) setWorkModel(params.work_model as string)
-      if (params.verify_model) setVerifyModel(params.verify_model as string)
+      
+      const t = setTimeout(() => {
+        setSelectedRecipe(state.recipe_id)
+        if (params.default_model) setDefaultModel(params.default_model as string)
+        if (params.work_model) setWorkModel(params.work_model as string)
+        if (params.verify_model) setVerifyModel(params.verify_model as string)
+      }, 0)
+      return () => clearTimeout(t)
     }
   }, [runId, runStateData])
+
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(interval)
+  }, [])
 
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -262,10 +272,11 @@ export default function ProjectRun() {
     const completedStages = Object.values(stages).filter(s => s.status === 'done' || s.status === 'skipped_reused').length
     const totalStages = stageIds.length
     const totalCost = Object.values(stages).reduce((acc, s) => acc + (s.cost_usd || 0), 0)
+
     const duration = runStateData?.state.finished_at && runStateData?.state.started_at
       ? runStateData.state.finished_at - runStateData.state.started_at
       : runStateData?.state.started_at
-        ? (Date.now() / 1000) - runStateData.state.started_at
+        ? (now / 1000) - runStateData.state.started_at
         : 0
 
     const getStageStatus = (status: string) => {

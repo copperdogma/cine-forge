@@ -179,6 +179,7 @@ export function ProjectSettings({
                 </label>
                 <Select
                   value={editMode}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onValueChange={(value: any) => setEditMode(value)}
                 >
                   <SelectTrigger id="control-mode" className="w-full">

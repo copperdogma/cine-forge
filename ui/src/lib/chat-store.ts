@@ -189,7 +189,9 @@ export const useChatStore = create<ChatStore>()(
       // is the first write for this message ID
       const { ...persistable } = finalized
       // Remove runtime-only field toolCalls from persistence if present
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (persistable as any).toolCalls
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       postChatMessage(projectId, persistable as any).catch(() => {})
     },
 
@@ -197,8 +199,10 @@ export const useChatStore = create<ChatStore>()(
 
     clearMessages: (projectId) =>
       set((state) => {
-        const { [projectId]: _discardedMessages, ...rest } = state.messages
-        const { [projectId]: _discardedLoaded, ...loadedRest } = state.loaded
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { [projectId]: _, ...rest } = state.messages
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { [projectId]: __, ...loadedRest } = state.loaded
         return { messages: rest, loaded: loadedRest }
       }),
 

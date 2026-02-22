@@ -44,8 +44,6 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### Workflow
 
-- When the user first creates a project, we should immediately (as quickly as we can, even before they click Upload if we can) grab the first 2 pages of the script to identify the title. We'd fall back to the filename, but ideally we'd pull the title from the script itself. This one's a good test as it's filename is L&C but the tile is actually "LIBERTY AND CHURCH (ALTERNATE TITLE: OVERJOY)" in the script.
-
 - **Refine vs. Regenerate modes for Deep Breakdown**: 
   - **Regenerate (Current)**: Run discovery and bible extraction from scratch using only the script as input. Useful for major structural changes.
   - **Refine (Proposed)**: Pass the `latest_version` of an entity artifact (and its lineage) back to the AI alongside script changes. 
