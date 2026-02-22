@@ -13,10 +13,6 @@ class ScreenplayPDF(FPDF):
         self.line_height = 1/6
 
     def header(self):
-        # Page numbers in top right (starting from page 2 of the script, 
-        # which is page 3 of the PDF if title page is page 1)
-        # Actually standard: Title page is unnumbered. Page 1 of script is unnumbered.
-        # Page 2 of script is "2."
         if self.page_no() > 2:
             self.set_y(0.5)
             self.set_x(-1.5)
@@ -27,29 +23,28 @@ class ScreenplayPDF(FPDF):
     def footer(self):
         pass
 
-    def render_title_page(self, title: str, subtitle: str = "", author: str = "AI Generated"):
+    def render_title_page(self, title_lines: List[str]):
+        """Render title page using only lines provided from the script."""
+        if not title_lines:
+            return
         self.add_page()
-        self.set_font("Courier", "B", 12)
-        
-        # Center title vertically (approx 1/3 down)
-        self.set_y(3.5)
-        self.multi_cell(0, self.line_height, title.upper(), align="C")
-        
-        if subtitle:
-            self.ln(self.line_height)
-            self.set_font("Courier", "", 12)
-            self.multi_cell(0, self.line_height, subtitle, align="C")
-            
-        self.set_y(5.0)
         self.set_font("Courier", "", 12)
-        self.multi_cell(0, self.line_height, "Written by", align="C")
-        self.ln(self.line_height)
-        self.multi_cell(0, self.line_height, author, align="C")
         
-        # Contact info at bottom left (placeholder)
-        self.set_y(-1.5)
-        self.set_x(1.5)
-        # self.multi_cell(0, self.line_height, "CineForge\nAI Production Pipeline", align="L")
+        # Vertical start (industry standard is approx 1/3 down)
+        self.set_y(3.5)
+        
+        for i, line in enumerate(title_lines):
+            if not line.strip():
+                self.ln(self.line_height)
+                continue
+                
+            # Bold the first line (usually the title)
+            if i == 0:
+                self.set_font("Courier", "B", 12)
+                self.multi_cell(0, self.line_height, line.strip().upper(), align="C", new_x="LMARGIN", new_y="NEXT")
+                self.set_font("Courier", "", 12)
+            else:
+                self.multi_cell(0, self.line_height, line.strip(), align="C", new_x="LMARGIN", new_y="NEXT")
 
 class ScreenplayRenderer:
     def sanitize(self, text: str | Any) -> str:
@@ -77,8 +72,8 @@ class ScreenplayRenderer:
         
         for line in lines:
             if not script_started:
-                # Check if this line starts the script
                 upper_line = line.strip().upper()
+                # If we hit a script start marker, switch to teaser mode
                 if any(m in upper_line for m in markers):
                     script_started = True
                     teaser_lines.append(line)
@@ -95,17 +90,11 @@ class ScreenplayRenderer:
         title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
         
         # 1. Title Page
-        title = project_title
-        subtitle = ""
         if title_lines:
-            # Simple heuristic: first non-empty is title, rest is subtitle
-            clean_title_lines = [l.strip() for l in title_lines if l.strip()]
-            if clean_title_lines:
-                title = clean_title_lines[0]
-                if len(clean_title_lines) > 1:
-                    subtitle = "\n".join(clean_title_lines[1:])
-        
-        pdf.render_title_page(title, subtitle)
+            pdf.render_title_page(title_lines)
+        else:
+            # Fallback if no preamble but we have a title
+            pdf.render_title_page([project_title])
         
         # 2. Script Start
         pdf.add_page()
@@ -170,32 +159,24 @@ class ScreenplayRenderer:
         title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
 
         # 1. Title Page
-        # Vertical centering in Word is hard without sections, let's just use indents/spacing
-        p = doc.add_paragraph()
-        p.paragraph_format.space_before = Inches(2.5)
-        run = p.add_run(project_title.upper())
-        run.bold = True
-        run.font.name = 'Courier'
-        run.font.size = Pt(12)
-        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if not title_lines:
+            title_lines = [project_title]
+
+        first_text_p = True
+        for i, line in enumerate(title_lines):
+            p = doc.add_paragraph()
+            if first_text_p and line.strip():
+                p.paragraph_format.space_before = Inches(2.5)
+                first_text_p = False
+            
+            run = p.add_run(line.strip().upper() if i == 0 else line.strip())
+            if i == 0:
+                run.bold = True
+            run.font.name = 'Courier'
+            run.font.size = Pt(12)
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.paragraph_format.space_after = Pt(0)
         
-        if title_lines:
-            clean_subtitle = "\n".join([l.strip() for l in title_lines if l.strip() and l.strip().upper() != project_title.upper()])
-            if clean_subtitle:
-                p2 = doc.add_paragraph()
-                p2.add_run(clean_subtitle)
-                p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        p3 = doc.add_paragraph()
-        p3.paragraph_format.space_before = Inches(1.0)
-        p3.add_run("Written by")
-        p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        p4 = doc.add_paragraph()
-        p4.add_run("AI Generated")
-        p4.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Force Page Break
         doc.add_page_break()
 
         # 2. Script Start
