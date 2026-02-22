@@ -13,15 +13,43 @@ class ScreenplayPDF(FPDF):
         self.line_height = 1/6
 
     def header(self):
-        if self.page_no() > 1:
+        # Page numbers in top right (starting from page 2 of the script, 
+        # which is page 3 of the PDF if title page is page 1)
+        # Actually standard: Title page is unnumbered. Page 1 of script is unnumbered.
+        # Page 2 of script is "2."
+        if self.page_no() > 2:
             self.set_y(0.5)
             self.set_x(-1.5)
             self.set_font("Courier", "", 12)
-            self.cell(0, 0, f"{self.page_no()}.", align="R")
+            self.cell(0, 0, f"{self.page_no() - 1}.", align="R")
             self.set_y(1.0)
 
     def footer(self):
         pass
+
+    def render_title_page(self, title: str, subtitle: str = "", author: str = "AI Generated"):
+        self.add_page()
+        self.set_font("Courier", "B", 12)
+        
+        # Center title vertically (approx 1/3 down)
+        self.set_y(3.5)
+        self.multi_cell(0, self.line_height, title.upper(), align="C")
+        
+        if subtitle:
+            self.ln(self.line_height)
+            self.set_font("Courier", "", 12)
+            self.multi_cell(0, self.line_height, subtitle, align="C")
+            
+        self.set_y(5.0)
+        self.set_font("Courier", "", 12)
+        self.multi_cell(0, self.line_height, "Written by", align="C")
+        self.ln(self.line_height)
+        self.multi_cell(0, self.line_height, author, align="C")
+        
+        # Contact info at bottom left (placeholder)
+        self.set_y(-1.5)
+        self.set_x(1.5)
+        # self.multi_cell(0, self.line_height, "CineForge\nAI Production Pipeline", align="L")
 
 class ScreenplayRenderer:
     def sanitize(self, text: str | Any) -> str:
@@ -38,20 +66,56 @@ class ScreenplayRenderer:
             s = s.replace(k, v)
         return s.encode("latin-1", "replace").decode("latin-1")
 
-    def render_pdf(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = ""):
+    def _split_pre_scene(self, text: str) -> tuple[List[str], List[str]]:
+        """Split pre-scene text into title-page material and teaser/start material."""
+        lines = text.splitlines()
+        title_lines = []
+        teaser_lines = []
+        
+        script_started = False
+        markers = ["TEASER", "ACT ONE", "FADE IN", "EXT.", "INT."]
+        
+        for line in lines:
+            if not script_started:
+                # Check if this line starts the script
+                upper_line = line.strip().upper()
+                if any(m in upper_line for m in markers):
+                    script_started = True
+                    teaser_lines.append(line)
+                else:
+                    title_lines.append(line)
+            else:
+                teaser_lines.append(line)
+                
+        return title_lines, teaser_lines
+
+    def render_pdf(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = "", project_title: str = "Untitled"):
         pdf = ScreenplayPDF()
+        
+        title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
+        
+        # 1. Title Page
+        title = project_title
+        subtitle = ""
+        if title_lines:
+            # Simple heuristic: first non-empty is title, rest is subtitle
+            clean_title_lines = [l.strip() for l in title_lines if l.strip()]
+            if clean_title_lines:
+                title = clean_title_lines[0]
+                if len(clean_title_lines) > 1:
+                    subtitle = "\n".join(clean_title_lines[1:])
+        
+        pdf.render_title_page(title, subtitle)
+        
+        # 2. Script Start
         pdf.add_page()
         
-        # Render pre-scene content (Title, Teaser, etc.)
-        if pre_scene_text:
+        if teaser_lines:
             pdf.set_font("Courier", "", 12)
-            lines = pre_scene_text.splitlines()
-            for line in lines:
+            for line in teaser_lines:
                 if not line.strip():
                     pdf.ln(pdf.line_height)
                     continue
-                # Simple heuristic: if uppercase and short, maybe it's a sub-header or title
-                # For now, just render as action text (full width)
                 pdf.multi_cell(0, pdf.line_height, self.sanitize(line), align="L", new_x="LMARGIN", new_y="NEXT")
             pdf.ln(pdf.line_height)
 
@@ -95,7 +159,7 @@ class ScreenplayRenderer:
                     
         pdf.output(output_path)
 
-    def render_docx(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = ""):
+    def render_docx(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = "", project_title: str = "Untitled"):
         doc = Document()
         section = doc.sections[0]
         section.left_margin = Inches(1.5)
@@ -103,20 +167,45 @@ class ScreenplayRenderer:
         section.top_margin = Inches(1.0)
         section.bottom_margin = Inches(1.0)
 
-        style = doc.styles['Normal']
-        font = style.font
-        font.name = 'Courier'
-        font.size = Pt(12)
+        title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
 
-        # Render pre-scene content
-        if pre_scene_text:
-            lines = pre_scene_text.splitlines()
-            for line in lines:
+        # 1. Title Page
+        # Vertical centering in Word is hard without sections, let's just use indents/spacing
+        p = doc.add_paragraph()
+        p.paragraph_format.space_before = Inches(2.5)
+        run = p.add_run(project_title.upper())
+        run.bold = True
+        run.font.name = 'Courier'
+        run.font.size = Pt(12)
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        if title_lines:
+            clean_subtitle = "\n".join([l.strip() for l in title_lines if l.strip() and l.strip().upper() != project_title.upper()])
+            if clean_subtitle:
+                p2 = doc.add_paragraph()
+                p2.add_run(clean_subtitle)
+                p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        p3 = doc.add_paragraph()
+        p3.paragraph_format.space_before = Inches(1.0)
+        p3.add_run("Written by")
+        p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        p4 = doc.add_paragraph()
+        p4.add_run("AI Generated")
+        p4.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Force Page Break
+        doc.add_page_break()
+
+        # 2. Script Start
+        if teaser_lines:
+            for line in teaser_lines:
                 p = doc.add_paragraph()
                 if line.strip():
                     p.add_run(self.sanitize(line))
                 p.paragraph_format.space_after = Pt(0)
-            doc.add_paragraph() # Extra space after pre-scene content
+            doc.add_paragraph()
 
         for scene in scenes:
             elements = scene.get("elements", [])

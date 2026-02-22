@@ -76,7 +76,6 @@ def load_script_content(store: ArtifactStore) -> str:
     if versions:
         latest = sorted(versions, key=lambda r: r.version)[-1]
         data = store.load_artifact(latest).data
-        # Fix: added script_text
         return data.get("script_text") or data.get("content") or data.get("text") or ""
     return ""
 
@@ -91,6 +90,14 @@ def load_pre_scene_text(store: ArtifactStore, first_scene_start_line: int) -> st
             return "\n".join(lines[:first_scene_start_line-1])
     return ""
 
+def load_project_title(store: ArtifactStore, project_id: str) -> str:
+    versions = store.list_versions("project_config", "project")
+    if versions:
+        latest = sorted(versions, key=lambda r: r.version)[-1]
+        data = store.load_artifact(latest).data
+        return data.get("title") or project_id
+    return project_id
+
 @router.get("/markdown")
 def export_markdown(
     project_id: str,
@@ -101,6 +108,7 @@ def export_markdown(
 ):
     store = get_store(project_id)
     exporter = MarkdownExporter()
+    project_title = load_project_title(store, project_id)
     
     if scope == "single":
         if not entity_id or not entity_type:
@@ -132,7 +140,7 @@ def export_markdown(
         script_content = load_script_content(store)
         
         md = exporter.generate_project_markdown(
-            project_name=project_id,
+            project_name=project_title,
             project_id=project_id,
             scenes=scenes,
             characters=characters,
@@ -186,6 +194,7 @@ def export_pdf(
 ):
     store = get_store(project_id)
     scenes, characters, locations, props = load_all_artifacts(store)
+    project_title = load_project_title(store, project_id)
     
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         output_path = tmp.name
@@ -193,22 +202,21 @@ def export_pdf(
     try:
         if layout == "call-sheet":
             pdf_gen = PDFGenerator()
-            pdf_gen.generate_call_sheet(project_name=project_id, scenes=scenes, output_path=output_path)
+            pdf_gen.generate_call_sheet(project_name=project_title, scenes=scenes, output_path=output_path)
             filename = f"{project_id}-call-sheet.pdf"
         elif layout == "screenplay":
             renderer = ScreenplayRenderer()
-            # Extract pre-scene content
             pre_scene_text = ""
             if scenes:
                 first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
                 pre_scene_text = load_pre_scene_text(store, first_scene_line)
             
-            renderer.render_pdf(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text)
+            renderer.render_pdf(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text, project_title=project_title)
             filename = f"{project_id}-screenplay.pdf"
         else:
             pdf_gen = PDFGenerator()
             pdf_gen.generate_project_pdf(
-                project_name=project_id, project_id=project_id,
+                project_name=project_title, project_id=project_id,
                 scenes=scenes, characters=characters, locations=locations, props=props,
                 output_path=output_path
             )
@@ -228,19 +236,19 @@ def export_pdf(
 def export_docx(project_id: str):
     store = get_store(project_id)
     scenes, _, _, _ = load_all_artifacts(store)
+    project_title = load_project_title(store, project_id)
     
     with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
         output_path = tmp.name
 
     try:
         renderer = ScreenplayRenderer()
-        # Extract pre-scene content
         pre_scene_text = ""
         if scenes:
             first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
             pre_scene_text = load_pre_scene_text(store, first_scene_line)
             
-        renderer.render_docx(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text)
+        renderer.render_docx(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text, project_title=project_title)
         filename = f"{project_id}-screenplay.docx"
             
         return FileResponse(
