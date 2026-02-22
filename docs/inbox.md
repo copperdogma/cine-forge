@@ -6,23 +6,7 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### UI / Interaction
 
-- Add scene dividers in the script view so people can see where they're split. Maybe the scene extractor messed up and this will make it obvious. The line might also give us a good place to put an icon to let them jump to the scene at some point.
-
-- Hotlink the screenplay to the artifacts: scenes, characters, locations, props, etc. It should be easy to jump between the two.
-
-- Back button issue: I can't remember where (bad bug report, I know;) but I clicked back and it took me back to a list view instead of wherever I was. I thnk the back buttons are hardcoded, but sometimes I'm going from, say, a character view and then clicking into the scene view from that character, then want to go back which should be the character because that's where I came from. Actually I think that MAY have been where this was happening, but it needs to be fixed everywhere.
-
 - Generate WAY better formatted callsheets like these ones from StudioBinder and Gill (my sister): '/Users/cam/Documents/Projects/cine-forge/input/Sample Call Sheets'
-
-- If the last item in the chat was a link to whatever the user clicked on, that's supposed to only show the most RECENT like, i.e.: there should only ever be ONE of those showing. If they click on somethign else it replaces the current one, so we shoudl only ever see one of those in a row in the chat history, but for this run [https://www.youtube.com/watch?v=zKX0zlJk840] I see this which should never happen:
-    Reviewing Run History
-    Viewing run: run-990d70d0
-    Reviewing Run History
-    Viewing run: run-990d70d0
-    Reviewing Run History
-    Viewing run: run-990d70d0
-
-- inbox items are never marked as read/complete
 
 - Steal Google new image gen AI: https://x.com/kimmonismus/status/2024773017432441133?s=12&t=uFZE-MuhgWdh1YErEZzLtQ
 		- But also eval all others out there. Find SOTA and figure out what ours should look like.
@@ -41,12 +25,6 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### Workflow
 
-- **Refine vs. Regenerate modes for Deep Breakdown**: 
-  - **Regenerate (Current)**: Run discovery and bible extraction from scratch using only the script as input. Useful for major structural changes.
-  - **Refine (Proposed)**: Pass the `latest_version` of an entity artifact (and its lineage) back to the AI alongside script changes. 
-  - **Goal**: Allow AI to update a character or location profile while preserving user edits or existing context. Leverages CineForge's immutability (creates `vNext`) to ensure no data is ever actually lost, just evolved. 
-  - **UI**: Need a version browser/history viewer so users can easily diff and restore if a re-run produces unwanted changes.
-
 - **Story-to-screenplay conversion**: For non-screenplay inputs (short stories, novels, treatments), send to a strong model with "make this into a screenplay" and take the output. Good for commercials and short-form. Not primary workflow but worth having as a convenience path. *(Source: Cam, 011b review)*
 
 - Google's Lyira3: https://deepmind.google/models/lyria/ We could use this for background tracks, but it ALSO will video to go with them. Likely they wouldn't work when placed within a film due to style differences, but many video gen models now have the ability to use a another video as timing/music/motion reference. So for instance we could tell Lyria3 to make an emotional montage with a man and a woman doing x,y,z with a song and the people's actions should sync with the music. Then feed that into a genAI along with reference images of OUR characters and say "use the motion/timing reference and music and replace the man and the woman with our chars." That could be amazing.
@@ -54,6 +32,11 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ## Triaged
 
+- 2026-02-22 — Chat nav message duplication bug → created story-067
+- 2026-02-22 — Back button hardcoded navigation → created story-068
+- 2026-02-22 — Inbox items never marked read/complete → created story-069
+- 2026-02-22 — Scene dividers in script view + hotlink screenplay to artifacts → created story-070
+- 2026-02-22 — Refine vs. Regenerate modes for Deep Breakdown → created story-071
 - 2026-02-21 — Finding scene boundaries and structure slow → created story-061
 - 2026-02-21 — Smart project name inference on file pick → already implemented
 - 2026-02-21 — Human-readable project slugs → already implemented

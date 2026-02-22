@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-02-22-04] — Triage session: 5 new stories from inbox
+
+### Added
+- Stories 067–071: Chat nav dedup, back button history, inbox read state, script scene dividers & hotlinks, refine vs. regenerate pipeline modes.
+- Triage skill prioritization step: evaluate inbox, recommend top items with rationale, flag defer candidates before walking through items individually.
+
+### Changed
+- Moved 5 triaged items from inbox Untriaged to Triaged section with story references.
+
 ## [2026-02-22-03] — Scout 001: Adopt Storybook skill improvements
 
 ### Changed
