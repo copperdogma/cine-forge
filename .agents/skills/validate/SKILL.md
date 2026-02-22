@@ -18,18 +18,17 @@ Assess whether a story's implementation meets its requirements.
 
 2. **Read the story** — Load `docs/stories/story-{NNN}-*.md`. Note all acceptance criteria and tasks.
 
-3. **Choose the check profile based on scope**:
-   - **Backend-only changes** (default in CineForge): run
-     - `make test-unit PYTHON=.venv/bin/python`
-     - `.venv/bin/python -m ruff check src/ tests/`
-     - Story-targeted pytest(s) when applicable (especially integration boundaries)
-   - **UI changes** (`ui/` touched): run
-     - `pnpm --dir ui run lint`
-     - `cd ui && npx tsc -b` (preferred typecheck for this repo)
-     - `pnpm --dir ui run build` when available
-     - UI tests only if the project defines them
-   - **Full-stack changes**: run both backend and UI profiles.
-   - If a command is unavailable (missing script/tool), report it explicitly instead of silently skipping.
+3. **Run the full check suite**:
+   - **Mandatory for all code changes** (regardless of perceived scope):
+     - **Backend**:
+       - `make test-unit PYTHON=.venv/bin/python`
+       - `.venv/bin/python -m ruff check src/ tests/`
+       - Story-targeted pytest(s) when applicable.
+     - **UI**:
+       - `pnpm --dir ui run lint`
+       - `cd ui && npx tsc -b`
+   - **Rationale**: Strict linting (e.g., React 19 purity) and type-checking can flag issues that aren't immediately obvious in the IDE. Running these locally is the only way to ensure a green deployment gate.
+   - If a command is unavailable (missing script/tool), report it explicitly.
 
 4. **Review acceptance criteria** — For each criterion:
    - **Met** — Evidence that it works (test output, code reference)
@@ -71,5 +70,6 @@ Assess whether a story's implementation meets its requirements.
 - Always report unmet criteria clearly
 - Always include evidence for "Met" ratings
 - If grade is below B, list specific remediation steps
+- **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` for code changes, even if you think only the backend was touched.
 - Prefer project-native checks over generic templates
 - Use `tsc -b` (not `tsc --noEmit`) for UI type checks in this repo

@@ -21,9 +21,9 @@ Close a completed story after validation.
    - [ ] All acceptance criteria met (with evidence)
    - [ ] Work log is current
    - [ ] Dependencies addressed
-   - [ ] Required checks passed for changed scope:
+   - [ ] Required checks passed for all code changes:
      - Backend: `make test-unit PYTHON=.venv/bin/python` + `.venv/bin/python -m ruff check src/ tests/`
-     - UI (if touched): `pnpm --dir ui run lint` + build/typecheck script if defined
+     - UI: `pnpm --dir ui run lint` + `cd ui && npx tsc -b`
    - [ ] Tenet verification checkbox checked
    - [ ] Doc update checkbox checked
 

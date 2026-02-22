@@ -36,9 +36,9 @@ Execute a development story end-to-end.
    - Run relevant tests
    - Mark task complete with brief evidence
 
-7. **Verify** — Run full checks:
-   - Backend minimum: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`
-   - UI checks if `ui/` changed: `pnpm --dir ui run lint` plus build/typecheck script if defined
+7. **Verify** — Run full checks for all code changes:
+   - Backend: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`
+   - UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`
    - Review each acceptance criterion — is it met?
 
 8. **Update docs** — Search all docs in the codebase and update any related to what we touched.
