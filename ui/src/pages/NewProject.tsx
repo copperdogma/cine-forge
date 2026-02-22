@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useCreateProject } from '@/lib/hooks'
-import { uploadProjectInput, previewSlug } from '@/lib/api'
+import { uploadProjectInput, quickScan } from '@/lib/api'
 
 function slugify(text: string): string {
   return text
@@ -34,15 +34,13 @@ export default function NewProject() {
   const generateSlugFromContent = useCallback(async (file: File) => {
     setIsNaming(true)
     try {
-      // Read first 2000 chars of the file for LLM analysis
-      const text = await file.text()
-      const snippet = text.slice(0, 2000)
-      const result = await previewSlug(snippet, file.name)
+      // Use backend-powered quick scan for accurate title extraction (supports PDF/DOCX)
+      const result = await quickScan(file)
       setProjectName(result.display_name)
       setSlug(result.slug)
       setNameSource('ai')
     } catch {
-      // LLM failed — fall back to filename-based naming
+      // LLM/Backend failed — fall back to filename-based naming
       const fallbackName = cleanFilename(file.name)
       setProjectName(fallbackName)
       setSlug(slugify(fallbackName))

@@ -85,6 +85,7 @@ NOTES from Cam:
 | 060 | Entity Quality Regression | Cross-Cutting | High | Done | [story-060](stories/story-060-entity-quality-regression.md) |
 | 061 | Optimize Scene Extraction | Cross-Cutting | High | Done | [story-061](stories/story-061-optimize-scene-extraction.md) |
 | 062 | 3-Stage Ingestion: Intake, Breakdown, Analysis | Cross-Cutting | High | Pending | [story-062](stories/story-062-refactor-ingestion-three-stage.md) |
+| 063 | Automatic Project Title Extraction from Script | 1 — MVP Pipeline | High | Done | [story-063](stories/story-063-automatic-project-title-extraction.md) |
 
 ## Phase Summary
 

@@ -1,6 +1,22 @@
 # Changelog
 
-## [2026-02-21-03] — Ingestion Pipeline Parallelization & Performance Optimization (Story 061)
+## [2026-02-21-04] — Automatic Project Title Extraction from Script (Story 063)
+
+### Added
+- Backend endpoint `POST /api/projects/quick-scan` for format-aware text extraction (PDF, DOCX, Fountain) from file snippets.
+- `quick_scan` method in `OperatorConsoleService` to immediately identify project titles before full upload.
+- Improved LLM title extraction prompt using `claude-sonnet-4-6` for higher precision on complex script headers.
+
+### Changed
+- Updated `NewProject` UI to trigger `quick-scan` immediately upon file selection, providing instant AI-detected project names.
+- Upgraded default title extraction model from Haiku to Sonnet 4.6 to handle "Alternate Title" scenarios and complex formatting.
+
+### Fixed
+- Resolved issue where projects would default to sanitized filenames (e.g., "L C") instead of their creative titles (e.g., "Liberty and Church").
+- Fixed binary snippet extraction for PDFs and DOCX files in the project creation flow.
+
+## [2026-02-21-03]
+ — Ingestion Pipeline Parallelization & Performance Optimization (Story 061)
 
 ### Added
 - Parallel processing in `scene_extract_v1` using `ThreadPoolExecutor` for concurrent per-scene enrichment and QA.

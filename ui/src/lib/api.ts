@@ -95,6 +95,38 @@ export function previewSlug(
   })
 }
 
+export async function quickScan(file: File): Promise<SlugPreviewResponse> {
+  const form = new FormData()
+  // Only send the first 1MB for quick-scan
+  const blob = file.slice(0, 1024 * 1024)
+  form.append('file', blob, file.name)
+  
+  let response: Response
+  try {
+    response = await fetch(`${API_BASE}/api/projects/quick-scan`, {
+      method: 'POST',
+      body: form,
+    })
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new ApiRequestError(`Cannot reach API at ${API_BASE}. Start the backend.`)
+    }
+    throw error
+  }
+  
+  if (!response.ok) {
+    let payload: ApiError | null = null
+    try {
+      payload = (await response.json()) as ApiError
+    } catch {
+      payload = null
+    }
+    const message = payload?.message ?? `Quick scan failed (${response.status})`
+    throw new ApiRequestError(message, payload?.hint ?? undefined)
+  }
+  return (await response.json()) as SlugPreviewResponse
+}
+
 export function createProject(slug: string, displayName: string): Promise<ProjectSummary> {
   return request<ProjectSummary>('/api/projects/new', {
     method: 'POST',

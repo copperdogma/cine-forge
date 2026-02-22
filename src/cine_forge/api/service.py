@@ -76,25 +76,58 @@ class OperatorConsoleService:
                 return candidate
         return f"{slug}-{uuid.uuid4().hex[:6]}"
 
+    def quick_scan(self, filename: str, content: bytes) -> dict[str, Any]:
+        """Extract a title and slug from a raw file content (even if binary)."""
+        # 1. Use ingestion logic to extract text from the first part of the file
+        # We save to a temporary file to use the existing diagnostic reader
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix=Path(filename).suffix, delete=False) as tmp:
+            tmp.write(content)
+            tmp_path = Path(tmp.name)
+        
+        try:
+            # We only read the first part of the file if it's huge, but for quick-scan 
+            # the content passed here should already be reasonably sized (e.g. 1MB).
+            # read_source_text_with_diagnostics handles PDF/DOCX/Fountain
+            text, _diag = read_source_text_with_diagnostics(tmp_path)
+            
+            # Use the first 8000 characters for the LLM
+            snippet = text[:8000]
+            return self.generate_slug(snippet, filename)
+        except Exception as exc:
+            log.warning("Quick scan failed: %s", exc)
+            # Fallback to filename-based generation
+            title = self._clean_display_name(Path("x"), [filename])
+            slug = self.slugify(title)
+            slug = self.ensure_unique_slug(slug)
+            return {"slug": slug, "display_name": title, "alternatives": []}
+        finally:
+            if tmp_path.exists():
+                tmp_path.unlink()
+
     def generate_slug(
         self, content_snippet: str, original_filename: str,
     ) -> dict[str, Any]:
         """Use a fast LLM to extract a title and slug from screenplay content."""
         prompt = (
-            "You are a screenplay title extractor. Given the first part of a "
-            "screenplay or script document, extract:\n"
-            "1. The most likely title of the work\n"
-            "2. One alternative title/name (if available)\n\n"
+            "You are a screenplay title extractor. Given the first few pages of a "
+            "screenplay or script document, identify the canonical title.\n\n"
+            "Guidelines:\n"
+            "- Look for a title page (usually centered, large text at the start)\n"
+            "- Look for headers or 'PILOT' or 'EPISODE' tags\n"
+            "- If an 'ALTERNATE TITLE' is provided, include it in the main title "
+            "or as an alternative\n"
+            "- Be precise. Do not guess if it's just random names.\n\n"
             "Respond with JSON only:\n"
             '{"title": "The Main Title", "alt_title": "Alternative Name or null"}\n\n'
             f"Original filename: {original_filename}\n\n"
-            f"--- Document content (first ~2000 chars) ---\n{content_snippet[:2000]}"
+            f"--- Document content (start of script) ---\n{content_snippet}"
         )
         try:
             from cine_forge.ai.llm import call_llm
             result, _meta = call_llm(
                 prompt=prompt,
-                model="claude-haiku-4-5-20251001",
+                model="claude-sonnet-4-6", # Upgraded to Sonnet for better precision on "good tests"
                 max_retries=1,
                 max_tokens=256,
                 temperature=0.0,

@@ -134,6 +134,22 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         result = service.generate_slug(request.content_snippet, request.original_filename)
         return SlugPreviewResponse.model_validate(result)
 
+    @app.post("/api/projects/quick-scan", response_model=SlugPreviewResponse)
+    async def quick_scan(
+        file: UploadFile = UPLOAD_FILE_PARAM,
+    ) -> SlugPreviewResponse:
+        """Extract title and slug from an uploaded script snippet."""
+        if not file.filename:
+            raise ServiceError(
+                code="missing_filename",
+                message="Uploaded file must include a filename.",
+                status_code=422,
+            )
+        # Read a reasonable chunk for quick-scan (e.g. up to 1MB)
+        content = await file.read(1024 * 1024)
+        result = service.quick_scan(file.filename, content)
+        return SlugPreviewResponse.model_validate(result)
+
     @app.post("/api/projects/new", response_model=ProjectSummary)
     async def new_project(request: ProjectCreateRequest) -> ProjectSummary:
         if request.project_path:
