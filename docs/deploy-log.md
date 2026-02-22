@@ -22,3 +22,5 @@ Entries:
 2026-02-22T01:04:00Z | 181 | success | partial | Story 058 complete; backend-driven export system live; PDF/DOCX/Fountain support; CLI export enabled; v2026.02.21-02
 2026-02-22T02:19:47Z | 117 | success | unknown | Story 061 performance optimizations
 2026-02-21T19:35:11Z | 99 | success | true | Automatic Project Title Extraction (Story 063)
+2026-02-22T01:02:04 | 105 | success | partial | Story 064 high-fidelity rendering
+2026-02-22T10:54:00 | 135 | success | partial | Story 066 UI deduplication + lockfile sync fix; v2026.02.22-02; API+browser UI smoke passed

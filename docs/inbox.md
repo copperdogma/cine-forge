@@ -22,8 +22,6 @@ Triaged together via `/triage` skill in AI agent sessions.
     Reviewing Run History
     Viewing run: run-990d70d0
 
-- We need a deep pass in how we do templating. I'm constantly asking the AI to fix something that works on one page but is broken on some almost-identical page. wtf are we doing here? Is every single page custom coded? We need much smarter use of templates and components.
-
 - inbox items are never marked as read/complete
 
 - Steal Google new image gen AI: https://x.com/kimmonismus/status/2024773017432441133?s=12&t=uFZE-MuhgWdh1YErEZzLtQ

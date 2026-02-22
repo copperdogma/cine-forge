@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-02-22-03] — Scout 001: Adopt Storybook skill improvements
+
+### Changed
+- Restructured `/build-story` into 3 explicit phases (Explore → Plan → Implement) with mandatory human gate before implementation and runtime smoke test as hard guardrail.
+- Added `## Plan` section to story template for auditable plan artifacts that persist across sessions.
+
+### Added
+- `/decompose-spec` skill — systematic pipeline from spec.md → feature map → coverage matrix → stories.
+- `/webapp-testing` skill — Playwright-based web testing toolkit with `with_server.py` helper for server lifecycle.
+- Scout expedition system (`docs/scout.md` index + `docs/scout/scout-001-storybook-repo.md`).
+- Gemini CLI wrappers for new skills.
+
 ## [2026-02-22-02] — UI Component Deduplication & Template Consolidation (Story 066)
 
 ### Changed

@@ -53,6 +53,11 @@ Before writing complex code, ask: **"Can an LLM call solve this?"**
 
 {Design notes, open questions, references}
 
+## Plan
+
+{Written by build-story Phase 2 — per-task file changes, impact analysis, approval blockers,
+definition of done}
+
 ## Work Log
 
 {Entries added during implementation — YYYYMMDD-HHMM — action: result, evidence, next step}
