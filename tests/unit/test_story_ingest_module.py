@@ -62,148 +62,63 @@ def test_extract_pdf_text_prefers_layout_mode(
 ) -> None:
     source = tmp_path / "layout.pdf"
     source.write_bytes(b"%PDF-1.4 mock")
-    monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None
-    )
 
     class _FakePage:
-        def __init__(self) -> None:
-            self.calls: list[str | None] = []
-
-        def extract_text(self, extraction_mode: str | None = None) -> str:
-            self.calls.append(extraction_mode)
-            if extraction_mode == "layout":
+        def extract_text(self, layout: bool = False) -> str:
+            if layout:
                 return "INT. ROOM - NIGHT\nMARA\nHello there."
             return "INT.ROOM-NIGHT"
 
-    page = _FakePage()
+    class _FakePDF:
+        def __init__(self) -> None:
+            self.pages = [_FakePage()]
 
-    class _FakeReader:
-        def __init__(self, _path: str) -> None:
-            self.pages = [page]
+        def __enter__(self) -> _FakePDF:
+            return self
 
-    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
+        def __exit__(self, *args: object) -> None:
+            pass
+
+    class _FakePlumber:
+        def open(self, _path: str | Path) -> _FakePDF:
+            return _FakePDF()
+
+    monkeypatch.setattr("pdfplumber.open", _FakePlumber().open)
 
     extracted = _extract_pdf_text(source)
     assert extracted.startswith("INT. ROOM - NIGHT")
-    assert page.calls[0] == "layout"
 
 
 @pytest.mark.unit
-def test_extract_pdf_text_falls_back_when_layout_unsupported(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
-    source = tmp_path / "fallback.pdf"
-    source.write_bytes(b"%PDF-1.4 mock")
-    monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", lambda _: None
-    )
-
-    class _FakePage:
-        def __init__(self) -> None:
-            self.calls: list[str | None] = []
-
-        def extract_text(self, extraction_mode: str | None = None) -> str:
-            self.calls.append(extraction_mode)
-            if extraction_mode is not None:
-                raise TypeError("layout mode unsupported")
-            return "INT. ROOM - NIGHT\nMARA\nFallback extraction."
-
-    page = _FakePage()
-
-    class _FakeReader:
-        def __init__(self, _path: str) -> None:
-            self.pages = [page]
-
-    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
-
-    extracted = _extract_pdf_text(source)
-    assert "Fallback extraction." in extracted
-    assert page.calls == ["layout", None]
-
-
-@pytest.mark.unit
-def test_extract_pdf_text_prefers_pdftotext_layout(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
-    source = tmp_path / "pdftotext.pdf"
-    source.write_bytes(b"%PDF-1.4 mock")
-
-    monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which",
-        lambda _: "/usr/local/bin/pdftotext",
-    )
-
-    class _Result:
-        returncode = 0
-        stdout = (
-            "INT. ROOM - NIGHT\n"
-            "MARA\n"
-            "Hello from pdftotext with enough spacing to pass semantic checks.\n"
-            "Another readable sentence with multiple words preserved.\n"
-        )
-
-    monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main.subprocess.run",
-        lambda *args, **kwargs: _Result(),
-    )
-
-    extracted = _extract_pdf_text(source)
-    assert "Hello from pdftotext" in extracted
-
-
-@pytest.mark.unit
-def test_extract_pdf_text_falls_back_when_pdftotext_fails(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
-    source = tmp_path / "pdftotext-fallback.pdf"
-    source.write_bytes(b"%PDF-1.4 mock")
-
-    monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main.shutil.which",
-        lambda _: "/usr/local/bin/pdftotext",
-    )
-
-    class _Result:
-        returncode = 1
-        stdout = ""
-
-    monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main.subprocess.run",
-        lambda *args, **kwargs: _Result(),
-    )
-
-    class _FakePage:
-        def extract_text(self, extraction_mode: str | None = None) -> str:
-            if extraction_mode == "layout":
-                return "INT. ROOM - NIGHT\nMARA\nFallback from pypdf."
-            return ""
-
-    class _FakeReader:
-        def __init__(self, _path: str) -> None:
-            self.pages = [_FakePage()]
-
-    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
-
-    extracted = _extract_pdf_text(source)
-    assert "Fallback from pypdf." in extracted
-
-
-@pytest.mark.unit
-def test_extract_pdf_text_uses_ocr_when_text_extractors_are_sparse(
+def test_extract_pdf_text_uses_ocr_when_pdfplumber_is_sparse(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     source = tmp_path / "ocr-source.pdf"
     source.write_bytes(b"%PDF-1.4 mock")
 
     def _fake_which(name: str) -> str | None:
-        if name == "pdftotext":
-            return "/usr/local/bin/pdftotext"
         if name == "ocrmypdf":
             return "/usr/local/bin/ocrmypdf"
         return None
 
     monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.shutil.which", _fake_which)
+
+    class _FakePage:
+        def extract_text(self, layout: bool = False) -> str:
+            del layout
+            return "y"  # Too sparse
+
+    class _FakePDF:
+        def __init__(self) -> None:
+            self.pages = [_FakePage()]
+
+        def __enter__(self) -> _FakePDF:
+            return self
+
+        def __exit__(self, *args: object) -> None:
+            pass
+
+    monkeypatch.setattr("pdfplumber.open", lambda _: _FakePDF())
 
     calls: list[list[str]] = []
 
@@ -216,18 +131,6 @@ def test_extract_pdf_text_uses_ocr_when_text_extractors_are_sparse(
         del capture_output, text, check
         calls.append(args)
         exe = Path(args[0]).name
-        if exe == "pdftotext":
-            target = args[2]
-            if target.endswith("ocr_output.pdf"):
-                return _Result(
-                    0,
-                    (
-                        "INT. ROOM - NIGHT\nMARA\n"
-                        "OCR recovered screenplay dialogue with enough readable spacing.\n"
-                        "Additional words keep extraction above the meaningfulness threshold.\n"
-                    ),
-                )
-            return _Result(0, "x")
         if exe == "ocrmypdf":
             out_pdf = Path(args[-1])
             out_pdf.write_bytes(b"%PDF-1.4 ocr")
@@ -236,16 +139,27 @@ def test_extract_pdf_text_uses_ocr_when_text_extractors_are_sparse(
 
     monkeypatch.setattr("cine_forge.modules.ingest.story_ingest_v1.main.subprocess.run", _fake_run)
 
-    class _FakePage:
-        def extract_text(self, extraction_mode: str | None = None) -> str:
-            del extraction_mode
-            return "y"
+    # Use a side-effect to mock the second pdfplumber call after OCR
+    original_open = _FakePDF
+    call_count = 0
 
-    class _FakeReader:
-        def __init__(self, _path: str) -> None:
-            self.pages = [_FakePage()]
+    def _mock_open(_path: str | Path) -> _FakePDF:
+        nonlocal call_count
+        call_count += 1
+        if call_count > 1:
+            # Second call (after OCR) returns meaningful text
+            p = _FakePage()
+            p.extract_text = lambda layout=False: (
+                "INT. ROOM - NIGHT\nMARA\n"
+                "OCR recovered screenplay dialogue with enough readable spacing.\n"
+                "Additional words keep extraction above the meaningfulness threshold.\n"
+            )
+            pdf = original_open()
+            pdf.pages = [p]
+            return pdf
+        return original_open()
 
-    monkeypatch.setattr("pypdf.PdfReader", _FakeReader)
+    monkeypatch.setattr("pdfplumber.open", _mock_open)
 
     extracted = _extract_pdf_text(source)
     assert "OCR recovered screenplay dialogue" in extracted
@@ -260,12 +174,8 @@ def test_read_source_text_pdf_reports_extractor_path_diagnostics(
     source.write_bytes(b"%PDF-1.4 mock")
 
     monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_pdftotext",
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_pdfplumber",
         lambda _: "x",
-    )
-    monkeypatch.setattr(
-        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_pypdf",
-        lambda _: "y",
     )
     monkeypatch.setattr(
         "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_ocr",
@@ -282,9 +192,8 @@ def test_read_source_text_pdf_reports_extractor_path_diagnostics(
 
     _content, diagnostics = read_source_text_with_diagnostics(source)
     assert diagnostics["pdf_extractor_selected"] == "ocrmypdf"
-    assert diagnostics["pdf_extractors_attempted"] == ["pdftotext", "pypdf", "ocrmypdf"]
-    assert diagnostics["pdf_extractor_output_lengths"]["pdftotext"] == 1
-    assert diagnostics["pdf_extractor_output_lengths"]["pypdf"] == 1
+    assert diagnostics["pdf_extractors_attempted"] == ["pdfplumber", "ocrmypdf"]
+    assert diagnostics["pdf_extractor_output_lengths"]["pdfplumber"] == 1
     assert diagnostics["pdf_extractor_output_lengths"]["ocrmypdf"] > 20
 
 

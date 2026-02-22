@@ -1030,6 +1030,7 @@ class OperatorConsoleService:
         worker = threading.Thread(
             target=self._run_pipeline,
             kwargs={
+                "project_id": project_id,
                 "project_path": project_path,
                 "recipe_path": recipe_path,
                 "run_id": new_run_id,
@@ -1236,6 +1237,7 @@ class OperatorConsoleService:
         worker = threading.Thread(
             target=self._run_pipeline,
             kwargs={
+                "project_id": project_id,
                 "project_path": project_path,
                 "recipe_path": recipe_path,
                 "run_id": run_id,
@@ -1344,6 +1346,7 @@ class OperatorConsoleService:
         worker = threading.Thread(
             target=self._run_pipeline,
             kwargs={
+                "project_id": project_id,
                 "project_path": project_path,
                 "recipe_path": recipe_path,
                 "run_id": new_run_id,
@@ -1402,6 +1405,7 @@ class OperatorConsoleService:
 
     def _run_pipeline(
         self,
+        project_id: str,
         project_path: Path,
         recipe_path: Path,
         run_id: str,
@@ -1432,9 +1436,78 @@ class OperatorConsoleService:
                 error_path.write_text(str(exc), encoding="utf-8")
             except Exception:  # noqa: BLE001
                 pass
+
+            # Detect specific errors (like low credits) and notify user in chat
+            self._handle_run_failure_chat_notification(project_id, run_id, exc)
         finally:
             with self._run_lock:
                 self._run_threads.pop(run_id, None)
+
+    def _handle_run_failure_chat_notification(
+        self, project_id: str, run_id: str, exc: Exception
+    ) -> None:
+        """Detect specific errors (like low credits) and notify user in chat."""
+        # 1. Start with the terminal exception message
+        msg = str(exc).lower()
+
+        # 2. Also scan run_state.json for stage-level errors (they might have more detail)
+        try:
+            state_path = self.workspace_root / "output" / "runs" / run_id / "run_state.json"
+            if state_path.exists():
+                state_data = json.loads(state_path.read_text(encoding="utf-8"))
+                for stage in state_data.get("stages", {}).values():
+                    for attempt in stage.get("attempts", []):
+                        if attempt.get("error"):
+                            msg += " " + str(attempt["error"]).lower()
+        except Exception:  # noqa: BLE001
+            pass
+
+        friendly_message = ""
+
+        # Anthropic: "Your credit balance is too low"
+        # OpenAI: "insufficient_quota" or "exceeded your current quota"
+        # Generic: "billing", "credit", "quota", "balance"
+        if any(
+            token in msg
+            for token in (
+                "credit balance",
+                "insufficient_quota",
+                "insufficient quota",
+                "exceeded your current quota",
+                "billing",
+                "credits",
+                "top up",
+                "balance is too low",
+            )
+        ):
+            friendly_message = (
+                "⚠️ **AI Credit Balance Empty**\n\n"
+                "The pipeline run failed because your AI provider credit balance is too low. "
+                "Please top up your credits at "
+                "[Anthropic](https://console.anthropic.com/settings/billing) "
+                "or [OpenAI](https://platform.openai.com/account/billing) to continue."
+            )
+        elif any(
+            token in msg
+            for token in ("rate limit", "429", "overloaded", "capacity", "too many requests")
+        ):
+            friendly_message = (
+                "⚠️ **Rate Limit Exceeded**\n\n"
+                "The AI provider is currently rate-limiting requests or is overloaded. "
+                "Please wait a moment and try again."
+            )
+
+        if friendly_message:
+            chat_msg = {
+                "id": f"error_{run_id}_{uuid.uuid4().hex[:4]}",
+                "type": "ai_response",
+                "content": friendly_message,
+                "timestamp": time.time(),
+            }
+            try:
+                self.append_chat_message(project_id, chat_msg)
+            except Exception:
+                log.exception("Failed to append error message to chat")
 
     def read_run_state(self, run_id: str) -> dict[str, Any]:
         state_path = self.workspace_root / "output" / "runs" / run_id / "run_state.json"

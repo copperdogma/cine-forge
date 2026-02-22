@@ -86,6 +86,8 @@ NOTES from Cam:
 | 061 | Optimize Scene Extraction | Cross-Cutting | High | Done | [story-061](stories/story-061-optimize-scene-extraction.md) |
 | 062 | 3-Stage Ingestion: Intake, Breakdown, Analysis | Cross-Cutting | High | Pending | [story-062](stories/story-062-refactor-ingestion-three-stage.md) |
 | 063 | Automatic Project Title Extraction from Script | 1 — MVP Pipeline | High | Done | [story-063](stories/story-063-automatic-project-title-extraction.md) |
+| 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Cross-Cutting | Medium | Done | [story-064](stories/story-064-screenplay-format-round-trip.md) |
+| 065 | Parallel Bible Extraction: Performance Optimization for Entity-Heavy Scripts | Cross-Cutting | High | Pending | [story-065](stories/story-065-parallel-bible-extraction.md) |
 
 ## Phase Summary
 

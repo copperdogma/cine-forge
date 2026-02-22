@@ -351,6 +351,18 @@ export function useSceneIndex(projectId: string | undefined) {
   )
 }
 
+export function useCanonicalScript(projectId: string | undefined) {
+  const { data: groups } = useArtifactGroups(projectId)
+  const group = groups?.find(g => g.artifact_type === 'canonical_script')
+
+  return useArtifact(
+    projectId,
+    'canonical_script',
+    group?.entity_id ?? 'project',
+    group?.latest_version,
+  )
+}
+
 export interface EnrichedEntity {
   entity_id: string | null
   artifact_type: string

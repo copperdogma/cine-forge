@@ -17,43 +17,216 @@ class FountainLintResult:
 
 
 def normalize_fountain_text(text: str) -> str:
-    """Normalize line endings, heading/cue casing, and screenplay spacing."""
+    """Normalize line endings, heading/cue casing, and screenplay spacing.
+    
+    Strictly enforces:
+    - Metadata at top
+    - 1 blank line before scene headings
+    - 1 blank line before character cues
+    - 0 blank lines within a dialogue block (char -> paren -> dialogue)
+    - 1 blank line after dialogue block
+    """
     normalized = text.replace("\r\n", "\n").replace("\r", "\n")
     raw_lines = [line.rstrip() for line in normalized.split("\n")]
 
-    # Strip markdown blockquote prefixes that LLMs sometimes add to dialogue
+    # 1. Strip markdown artifacts
     raw_lines = [
         line.lstrip("> ").lstrip(">") if line.lstrip().startswith(">") else line
         for line in raw_lines
     ]
-    # Strip markdown escape sequences (\- \! \\)
     raw_lines = [
         line.replace("\\-", "-").replace("\\!", "!") for line in raw_lines
     ]
 
-    processed: list[str] = []
-    previous_blank = True
-    for idx, line in enumerate(raw_lines):
+    # 2. Clean/Heal metadata block
+    processed_lines = clean_fountain_metadata(raw_lines)
+
+    # 3. Identify and tag elements
+    elements: list[tuple[str, str]] = []
+    in_metadata = True
+    
+    for idx, line in enumerate(processed_lines):
+        # Metadata check must happen BEFORE stripping to catch indentation
+        if in_metadata:
+            # Metadata is 'Key: Value' or an indented line following a key
+            # Or loose text at the very top that isn't a screenplay element
+            is_key_value = re.match(r"^[A-Za-z][A-Za-z ]{1,20}:\s*", line.lstrip())
+            is_indented = line.startswith("    ")
+            
+            if is_key_value or is_indented:
+                elements.append(("metadata", line.rstrip()))
+                continue
+            elif not line.strip():
+                # End of metadata block on first blank line
+                in_metadata = False
+                continue
+            else:
+                # If we are at the very top and it's not a screenplay element,
+                # keep it in metadata.
+                stripped_tmp = line.strip()
+                if not (
+                    _is_scene_heading(stripped_tmp) 
+                    or _looks_like_character_candidate(stripped_tmp, processed_lines, idx)
+                ):
+                    elements.append(("metadata", line.rstrip()))
+                    continue
+                in_metadata = False
+                
         stripped = line.strip()
         if not stripped:
-            if not previous_blank:
-                processed.append("")
-            previous_blank = True
             continue
-
-        line_out = stripped
+                
+        # Body elements
         if _is_scene_heading(stripped):
-            line_out = stripped.upper()
-            if processed and processed[-1] != "":
-                processed.append("")
-        elif _looks_like_character_candidate(stripped, raw_lines, idx):
-            line_out = stripped.upper()
-            if processed and processed[-1] != "":
-                processed.append("")
-        processed.append(line_out)
-        previous_blank = False
+            elements.append(("heading", stripped.upper()))
+        elif _looks_like_character_cue(stripped) or _looks_like_character_candidate(
+            stripped, processed_lines, idx
+        ):
+            elements.append(("character", stripped.upper()))
+        elif stripped.startswith("(") and stripped.endswith(")"):
+            # Check if this is a valid parenthetical (preceded by char or paren)
+            prev_type = elements[-1][0] if elements else None
+            if prev_type in ("character", "parenthetical", "dialogue"):
+                elements.append(("parenthetical", stripped))
+            else:
+                elements.append(("action", stripped))
+        elif _is_valid_transition(stripped) or _is_valid_transition(stripped.rstrip(".")):
+            elements.append(("transition", stripped.upper()))
+        else:
+            # Check if this is dialogue (preceded by char or paren)
+            prev_type = elements[-1][0] if elements else None
+            if prev_type in ("character", "parenthetical", "dialogue"):
+                elements.append(("dialogue", stripped))
+            else:
+                elements.append(("action", stripped))
 
-    return "\n".join(processed).strip() + ("\n" if processed else "")
+    # 4. Reconstruct with correct spacing
+    final_lines: list[str] = []
+    for i, (etype, content) in enumerate(elements):
+        if etype == "metadata":
+            final_lines.append(content)
+            continue
+            
+        # Add spacing before body elements
+        if i > 0:
+            prev_type = elements[i-1][0]
+            
+            # Rule: No blank lines within a dialogue block
+            # (Character -> Parenthetical -> Dialogue -> Parenthetical -> ...)
+            is_dialogue_flow = (
+                prev_type in ("character", "parenthetical", "dialogue")
+                and etype in ("parenthetical", "dialogue")
+            )
+            
+            # Rule: No blank lines between metadata lines
+            is_metadata_flow = (
+                prev_type == "metadata" and etype == "metadata"
+            )
+            
+            if etype != "metadata" and prev_type == "metadata":
+                # 1 blank line after the entire metadata block
+                final_lines.append("")
+            elif not is_dialogue_flow and not is_metadata_flow:
+                final_lines.append("")
+                
+        final_lines.append(content)
+
+    return "\n".join(final_lines).strip() + ("\n" if final_lines else "")
+
+
+def clean_fountain_metadata(lines: list[str]) -> list[str]:
+    """Capture all non-screenplay text at the start of the file as metadata.
+    
+    Continues until the first definitive screenplay element (Heading, Character, 
+    or common start-of-script marker like TEASER/FADE IN) is encountered.
+    """
+    if not lines:
+        return []
+        
+    metadata_map: dict[str, list[str]] = {}
+    # Strict whitelist of standard Fountain keys supported by renderers
+    standard_keys = {
+        "Title", "Author", "Authors", "Source", "Credit", "Draft date", 
+        "Contact", "Notes"
+    }
+    
+    # definitive body markers (usually on their own line)
+    body_markers = {"TEASER", "FADE IN", "ACT ONE"}
+    
+    collected_metadata_lines: list[str] = []
+    body_start_idx = 0
+    
+    # 1. Identify definitive script body start
+    for idx, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped:
+            continue
+            
+        upper = stripped.upper().rstrip(":")
+        # It's a body element if it's a heading, a character cue, or a standalone marker
+        is_body = (
+            _is_scene_heading(stripped) 
+            or _looks_like_character_candidate(stripped, lines, idx)
+            or upper in body_markers
+        )
+        
+        if is_body:
+            body_start_idx = idx
+            break
+        else:
+            collected_metadata_lines.append(line)
+            body_start_idx = idx + 1
+            
+    if not collected_metadata_lines:
+        return lines
+        
+    # 2. Parse collected lines into keys
+    current_key: str | None = None
+    for line in collected_metadata_lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+            
+        # Match 'Key: Value'. Only accept standard keys to avoid misidentifying titles.
+        match = re.match(r"^([A-Za-z ]{1,25}):\s*(.*)", stripped)
+        if match and match.group(1).strip().title() in standard_keys:
+            key = match.group(1).strip().title()
+            value = match.group(2).strip()
+            if key not in metadata_map:
+                metadata_map[key] = []
+            if value:
+                metadata_map[key].append(value)
+            current_key = key
+        else:
+            # Not a standard Key: Value line. 
+            # If we are at the top, it's the Title.
+            if not metadata_map and not current_key:
+                metadata_map["Title"] = [stripped]
+                current_key = "Title"
+            elif current_key:
+                metadata_map[current_key].append(stripped)
+            else:
+                metadata_map["Title"] = [stripped]
+                current_key = "Title"
+
+    # 3. Reconstruct block
+    output_lines: list[str] = []
+    
+    # Output standard keys in order
+    order = ["Title", "Author", "Authors", "Source", "Credit", "Draft date", "Contact", "Notes"]
+    for k in order:
+        if k in metadata_map:
+            vals = metadata_map[k]
+            if len(vals) == 1:
+                output_lines.append(f"{k}: {vals[0]}")
+            else:
+                # Put first value on same line as key, subsequent lines indented
+                output_lines.append(f"{k}: {vals[0]}")
+                for v in vals[1:]:
+                    output_lines.append(f"    {v}")
+                    
+    # Return contiguous metadata + 1 blank line + rest of script
+    return output_lines + [""] + lines[body_start_idx:]
 
 
 def lint_fountain_text(text: str) -> FountainLintResult:
@@ -108,12 +281,13 @@ def _is_scene_heading(line: str) -> bool:
 
 
 def _looks_like_character_cue(line: str) -> bool:
-    if len(line) > 35 or len(line.split()) > 4:
+    if len(line) > 35 or len(line.split()) > 5:
         return False
     # Parentheticals are NOT character cues
     if line.startswith("("):
         return False
-    if not re.match(r"^[A-Za-z0-9 .'\-()]+$", line):
+    # Support smart quotes, standard extensions, commas, slashes, ampersands
+    if not re.match(r"^[A-Za-z0-9 .'\-()’,/&]+$", line):
         return False
     letters = [char for char in line if char.isalpha()]
     if not letters:
@@ -128,13 +302,14 @@ def _looks_like_character_cue(line: str) -> bool:
 
 def _looks_like_character_candidate(line: str, lines: list[str], index: int) -> bool:
     stripped = line.strip()
-    if not stripped or len(stripped) > 35 or len(stripped.split()) > 4:
+    if not stripped or len(stripped) > 35 or len(stripped.split()) > 5:
         return False
     if stripped.startswith("("):
         return False
     if _is_scene_heading(stripped):
         return False
-    if not re.match(r"^[A-Za-z0-9 .'\-()]+$", stripped):
+    # Support smart quotes, commas, etc.
+    if not re.match(r"^[A-Za-z0-9 .'\-()’,/&]+$", stripped):
         return False
     if index + 1 >= len(lines):
         return False

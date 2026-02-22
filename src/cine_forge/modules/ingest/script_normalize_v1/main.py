@@ -44,6 +44,7 @@ class _MetadataEnvelope(BaseModel):
     assumptions: list[Assumption] = Field(default_factory=list)
     overall_confidence: float = Field(ge=0.0, le=1.0)
     rationale: str
+    title: str | None = None
 
 
 class _ScriptPatch(BaseModel):
@@ -75,6 +76,7 @@ def run_module(
     classification = raw_input["classification"]
     source_format = "fdx" if fdx_conversion.is_fdx else classification["detected_format"]
     source_confidence = 1.0 if fdx_conversion.is_fdx else float(classification["confidence"])
+    file_format = raw_input.get("source_info", {}).get("file_format", "")
 
     export_formats = _normalize_export_formats(params.get("export_formats", []))
     cost_ceiling_usd = float(params.get("cost_ceiling_usd", 2.0))
@@ -89,6 +91,7 @@ def run_module(
         quality_score=quality_score,
         source_format=source_format,
         source_confidence=source_confidence,
+        file_format=file_format,
     )
 
     # --- Tier 1: Code-only passthrough (zero LLM calls) ---
@@ -305,6 +308,7 @@ def _classify_tier(
     quality_score: float,
     source_format: str,
     source_confidence: float,
+    file_format: str = "",
 ) -> int:
     """Classify input into processing tier.
 
@@ -327,6 +331,12 @@ def _classify_tier(
         and quality_score < 0.6
     ):
         return 3
+
+    # PDF files almost always benefit from Tier 2 to clean up extraction
+    # artifacts (page headers/footers) and reconstruct title pages properly.
+    if file_format == "pdf":
+        return 2
+
     if screenplay_path and parser_check.parseable and quality_score >= 0.6:
         return 1
     if screenplay_path or source_format in ("screenplay", "fountain", "fdx"):
@@ -382,25 +392,40 @@ def _normalize_smart_chunks(
     chunk_system = (
         "You are a professional script supervisor normalizing creative writing "
         "into standard Fountain screenplay format.\n"
-        "Fix ONLY structural/formatting issues in this scene excerpt:\n"
+        "Fix ONLY structural/formatting issues in this script excerpt:\n"
+        "- Title Page: If this is the start of the script, you MUST reconstruct any "
+        "detected title/author info into standard Fountain metadata (e.g. 'Title: ...').\n"
         "- Scene headings: INT./EXT. on their own line, ALL CAPS\n"
         "- Character cues: ALL CAPS on their own line, preceded by blank line\n"
         "- Dialogue: plain text on lines immediately after character cue\n"
         "- Parentheticals: (lowercase in parens) on their own line\n"
         "- Action: plain text paragraphs separated by blank lines\n"
+        "- NO artifacts: Remove page headers/footers (e.g. 'Script Name / 1') if present.\n"
         "- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n"
         "- Do NOT escape special characters (no \\- or \\!)\n"
-        "Return only the corrected scene text. Preserve author voice."
+        "Return only the corrected screenplay text. Preserve author voice."
     )
 
-    def process_scene(scene: str) -> dict[str, Any]:
+    def process_scene(idx: int, scene: str) -> dict[str, Any]:
         normalized_scene = normalize_fountain_text(scene)
         lint = lint_fountain_text(normalized_scene)
-        if lint.valid:
+        
+        # Always use LLM for the first chunk (index 0) to ensure title page 
+        # reconstruction and cleanup of periodic PDF headers/footers.
+        is_first_chunk = idx == 0
+        
+        if lint.valid and not is_first_chunk:
             return {"text": normalized_scene, "cost": None, "fixed": False}
         else:
-            # This scene needs LLM help
-            prompt = f"{chunk_system}\n\nScene to fix:\n{scene}"
+            # This scene needs LLM help (or is the title chunk)
+            if model == "mock":
+                return {
+                    "text": _mock_screenplay(scene, "screenplay", "smart_chunk_skip"),
+                    "cost": _empty_cost(model),
+                    "fixed": True,
+                }
+
+            prompt = f"{chunk_system}\n\nChunk to fix:\n{scene}"
             try:
                 fixed_scene, cost = call_llm(
                     prompt=prompt,
@@ -414,8 +439,13 @@ def _normalize_smart_chunks(
                     "cost": cost,
                     "fixed": True,
                 }
-            except Exception:  # noqa: BLE001
-                # LLM failed for this scene — use code-normalized version
+            except Exception as exc:  # noqa: BLE001
+                # If it's a terminal error (like credits), don't swallow it.
+                from cine_forge.ai.llm import LLMCallError
+                if isinstance(exc, LLMCallError):
+                    raise
+                
+                # LLM failed for this scene (transient or other) — use code-normalized version
                 return {"text": normalized_scene, "cost": None, "fixed": False}
 
     output_scenes: list[str] = []
@@ -423,7 +453,9 @@ def _normalize_smart_chunks(
     scenes_fixed = 0
 
     with ThreadPoolExecutor(max_workers=10) as executor:
-        results = list(executor.map(process_scene, scenes))
+        # Use enumerate to pass index to process_scene
+        futures = [executor.submit(process_scene, i, s) for i, s in enumerate(scenes)]
+        results = [f.result() for f in futures]
 
     for res in results:
         output_scenes.append(res["text"])
@@ -455,9 +487,16 @@ def _build_output(
     """Build the standard module output dict."""
     _require_non_empty_script_text(script_text)
 
+    # Use title from normalization metadata if available, else guess
+    title = (
+        normalization_meta.get("title")
+        or fdx_conversion.title
+        or _guess_title(raw_input)
+    )
+
     canonical_payload = CanonicalScript.model_validate(
         {
-            "title": _guess_title(raw_input),
+            "title": title,
             "script_text": script_text,
             "line_count": _line_count(script_text),
             "scene_count": _scene_count(script_text),
@@ -799,14 +838,23 @@ def _build_normalization_prompt(
         f"Selected strategy: {target_strategy} ({long_doc_strategy}).\n"
         f"Task: {strategy_text}.\n\n"
         "Fountain format rules:\n"
+        "- Title Page: MANDATORY. If the source content starts with text that looks like "
+        "a title, author, or contact info (even if not explicitly labeled), you MUST "
+        "convert it into standard Fountain title page syntax at the VERY TOP of your output. "
+        "Example:\n"
+        "Title: THE MARINER\n"
+        "Author: John Doe\n"
+        "Draft date: 2026-02-21\n\n"
         "- Scene headings: INT./EXT. on their own line, ALL CAPS\n"
         "- Character cues: ALL CAPS on their own line, preceded by blank line\n"
         "- Dialogue: plain text on lines immediately after character cue\n"
         "- Parentheticals: (lowercase in parens) on their own line\n"
         "- Action: plain text paragraphs separated by blank lines\n"
+        "- NO page headers/footers: Remove artifacts like 'The Mariner / 1' if they appear "
+        "periodically in the source text.\n"
         "- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n"
         "- Do NOT escape special characters (no \\- or \\!)\n\n"
-        "Return only the screenplay text. "
+        "Return only the screenplay text (including reconstructed title page). "
         "Preserve author voice and avoid unnecessary inventions."
         f"{feedback_block}\n\n"
         "Source content:\n"
@@ -831,6 +879,7 @@ def _build_metadata_prompt(
 
     return (
         "Analyze screenplay normalization work and return strict JSON matching schema.\n"
+        "Identify the canonical screenplay title if present.\n"
         f"Source format: {source_format}\n"
         f"Strategy: {target_strategy}\n\n"
         "Original input (truncated if long):\n"
@@ -987,7 +1036,7 @@ def _parse_patch_text(raw_patch_text: str) -> list[SearchReplacePatch]:
 
 
 def _mock_screenplay(content: str, source_format: str, strategy: str) -> str:
-    if source_format == "screenplay" and strategy == "passthrough_cleanup":
+    if source_format == "screenplay" and strategy in ("passthrough_cleanup", "smart_chunk_skip"):
         return content
     source_lines = [line.strip() for line in content.splitlines() if line.strip()]
     summary = source_lines[0] if source_lines else "A story unfolds."

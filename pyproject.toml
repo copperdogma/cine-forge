@@ -11,7 +11,7 @@ requires-python = ">=3.11"
 dependencies = [
   "pydantic>=2.0.0",
   "PyYAML>=6.0.0",
-  "pypdf",
+  "pdfplumber",
   "fountain-tools",
   "fastapi>=0.115.0",
   "uvicorn>=0.30.0",
@@ -41,6 +41,7 @@ markers = [
   "unit: fast tests for isolated units",
   "integration: tests spanning multiple components",
   "smoke: lightweight end-to-end checks",
+  "round_trip: screenplay format round-trip fidelity tests",
 ]
 
 [tool.ruff]

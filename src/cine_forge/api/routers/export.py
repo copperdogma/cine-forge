@@ -4,6 +4,7 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse, Response
+from starlette.background import BackgroundTask
 
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.export.markdown import MarkdownExporter
@@ -196,7 +197,8 @@ def export_fountain(project_id: str):
 @router.get("/pdf")
 def export_pdf(
     project_id: str,
-    layout: Annotated[Literal["report", "call-sheet", "screenplay"], Query()] = "report"
+    layout: Annotated[Literal["report", "call-sheet", "screenplay"], Query()] = "report",
+    include: Annotated[list[str] | None, Query()] = None
 ):
     store = get_store(project_id)
     scenes, characters, locations, props = load_all_artifacts(store)
@@ -218,17 +220,28 @@ def export_pdf(
             filename = f"{project_id}-call-sheet.pdf"
         elif layout == "screenplay":
             renderer = ScreenplayRenderer()
-            pre_scene_text = ""
-            if scenes:
-                first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
-                pre_scene_text = load_pre_scene_text(store, first_scene_line)
             
-            renderer.render_pdf(
-                scenes=scenes, 
-                output_path=output_path, 
-                pre_scene_text=pre_scene_text, 
-                project_title=project_title
+            # If exporting the full script, use the canonical script text directly
+            # for 100% fidelity (no reconstruction loss).
+            only_script = (
+                include and "script" in include 
+                and not (include and "scenes" in include and len(include) > 1)
             )
+            if only_script:
+                script_text = load_script_content(store)
+                renderer.render_script_pdf(script_text, output_path)
+            else:
+                pre_scene_text = ""
+                if scenes:
+                    first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
+                    pre_scene_text = load_pre_scene_text(store, first_scene_line)
+                
+                renderer.render_pdf(
+                    scenes=scenes, 
+                    output_path=output_path, 
+                    pre_scene_text=pre_scene_text, 
+                    project_title=project_title
+                )
             filename = f"{project_id}-screenplay.pdf"
         else:
             pdf_gen.generate_project_pdf(
@@ -242,14 +255,17 @@ def export_pdf(
             output_path, 
             filename=filename, 
             media_type="application/pdf",
-            background=lambda: Path(output_path).unlink(missing_ok=True)
+            background=BackgroundTask(Path(output_path).unlink, missing_ok=True)
         )
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)
         raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}") from e
 
 @router.get("/docx")
-def export_docx(project_id: str):
+def export_docx(
+    project_id: str,
+    include: Annotated[list[str] | None, Query()] = None
+):
     store = get_store(project_id)
     scenes, _, _, _ = load_all_artifacts(store)
     project_title = load_project_title(store, project_id)
@@ -276,7 +292,7 @@ def export_docx(project_id: str):
             output_path, 
             filename=filename, 
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            background=lambda: Path(output_path).unlink(missing_ok=True)
+            background=BackgroundTask(Path(output_path).unlink, missing_ok=True)
         )
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)

@@ -323,23 +323,13 @@ def _extract_pdf_text_with_diagnostics(input_path: Path) -> tuple[str, dict[str,
     attempted: list[str] = []
     lengths: dict[str, int] = {}
 
-    attempted.append("pdftotext")
-    pdftotext_text = _extract_pdf_text_via_pdftotext(input_path)
-    lengths["pdftotext"] = len(pdftotext_text)
-    if _is_meaningful_pdf_text(pdftotext_text):
-        return pdftotext_text, {
+    attempted.append("pdfplumber")
+    text = _extract_pdf_text_via_pdfplumber(input_path)
+    lengths["pdfplumber"] = len(text)
+    if _is_meaningful_pdf_text(text):
+        return text, {
             "pdf_extractors_attempted": attempted,
-            "pdf_extractor_selected": "pdftotext",
-            "pdf_extractor_output_lengths": lengths,
-        }
-
-    attempted.append("pypdf")
-    pypdf_text = _extract_pdf_text_via_pypdf(input_path)
-    lengths["pypdf"] = len(pypdf_text)
-    if _is_meaningful_pdf_text(pypdf_text):
-        return pypdf_text, {
-            "pdf_extractors_attempted": attempted,
-            "pdf_extractor_selected": "pypdf",
+            "pdf_extractor_selected": "pdfplumber",
             "pdf_extractor_output_lengths": lengths,
         }
 
@@ -354,52 +344,31 @@ def _extract_pdf_text_with_diagnostics(input_path: Path) -> tuple[str, dict[str,
         }
 
     # Return best available text even if sparse so downstream can still classify/report.
-    fallback_text = pypdf_text or pdftotext_text or ocr_text
-    return fallback_text, {
+    return text or ocr_text, {
         "pdf_extractors_attempted": attempted,
         "pdf_extractor_selected": "fallback_sparse",
         "pdf_extractor_output_lengths": lengths,
     }
 
 
-def _extract_pdf_text_via_pdftotext(input_path: Path) -> str:
-    pdftotext_bin = shutil.which("pdftotext")
-    if pdftotext_bin:
-        try:
-            result = subprocess.run(
-                [pdftotext_bin, "-layout", str(input_path), "-"],
-                capture_output=True,
-                text=True,
-                check=False,
-            )
-            if result.returncode == 0 and result.stdout.strip():
-                return result.stdout.replace("\f", "\n")
-        except Exception:
-            return ""
-    return ""
-
-
-def _extract_pdf_text_via_pypdf(input_path: Path) -> str:
+def _extract_pdf_text_via_pdfplumber(input_path: Path) -> str:
     try:
-        from pypdf import PdfReader
+        import pdfplumber
     except ModuleNotFoundError as exc:
         raise RuntimeError(
-            "PDF input requires optional dependency 'pypdf'. Install project dependencies first."
+            "PDF input requires optional dependency 'pdfplumber'. "
+            "Install project dependencies first."
         ) from exc
 
-    reader = PdfReader(str(input_path))
     pages: list[str] = []
-    for page in reader.pages:
-        # Prefer layout-aware extraction to preserve inter-word spacing and line structure.
-        # Older pypdf versions may not support extraction_mode, so fall back safely.
-        try:
-            page_text = page.extract_text(extraction_mode="layout") or ""
-        except TypeError:
-            page_text = page.extract_text() or ""
-
-        if not page_text.strip():
-            page_text = page.extract_text() or ""
-        pages.append(page_text)
+    try:
+        with pdfplumber.open(input_path) as pdf:
+            for page in pdf.pages:
+                # layout=True preserves the visual structure of the page (columns/alignment)
+                text = page.extract_text(layout=True) or ""
+                pages.append(text)
+    except Exception:
+        return ""
     return "\n".join(pages)
 
 
@@ -411,7 +380,7 @@ def _extract_pdf_text_via_ocr(input_path: Path) -> str:
     with tempfile.TemporaryDirectory(prefix="cineforge-ocr-") as tmpdir:
         ocr_output = Path(tmpdir) / "ocr_output.pdf"
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # noqa: S603
                 [
                     ocrmypdf_bin,
                     "--skip-text",
@@ -425,7 +394,7 @@ def _extract_pdf_text_via_ocr(input_path: Path) -> str:
             )
             if result.returncode != 0 or not ocr_output.exists():
                 return ""
-            return _extract_pdf_text_via_pdftotext(ocr_output)
+            return _extract_pdf_text_via_pdfplumber(ocr_output)
         except Exception:
             return ""
 

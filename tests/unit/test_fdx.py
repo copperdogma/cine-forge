@@ -35,7 +35,7 @@ def test_export_screenplay_text_fdx_returns_xml() -> None:
 
 
 @pytest.mark.unit
-def test_export_screenplay_text_pdf_uses_screenplain_when_available(
+def test_export_screenplay_text_pdf_uses_afterwriting_when_available(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     def fake_run(
@@ -46,18 +46,19 @@ def test_export_screenplay_text_pdf_uses_screenplain_when_available(
         timeout: int,
     ):
         del capture_output, text, check, timeout
-        output_path = command[4]
+        # npx --yes afterwriting --source <in> --pdf <out> --overwrite
+        output_path = command[6]
         with open(output_path, "wb") as handle:
             handle.write(b"%PDF-1.4 mock")
         return SimpleNamespace(returncode=0, stdout="", stderr="")
 
-    monkeypatch.setattr("cine_forge.ai.fdx.shutil.which", lambda _: "/usr/local/bin/screenplain")
+    monkeypatch.setattr("cine_forge.ai.fdx.shutil.which", lambda _: "/usr/local/bin/npx")
     monkeypatch.setattr("cine_forge.ai.fdx.subprocess.run", fake_run)
 
     screenplay = "INT. LAB - NIGHT\n\nMARA\nWe begin."
     result = export_screenplay_text(screenplay, "pdf")
     assert result.success is True
-    assert result.backend == "screenplain-cli"
+    assert result.backend == "afterwriting-npx"
     assert result.content is not None
     assert result.content.startswith(b"%PDF")
 
@@ -76,11 +77,11 @@ def test_export_screenplay_text_pdf_reports_failure_with_command_context(
         del capture_output, text, check, timeout
         return SimpleNamespace(returncode=2, stdout="", stderr="usage error")
 
-    monkeypatch.setattr("cine_forge.ai.fdx.shutil.which", lambda _: "/usr/local/bin/screenplain")
+    monkeypatch.setattr("cine_forge.ai.fdx.shutil.which", lambda _: "/usr/local/bin/npx")
     monkeypatch.setattr("cine_forge.ai.fdx.subprocess.run", fake_run)
 
     result = export_screenplay_text("INT. LAB - NIGHT\n\nMARA\nWe begin.", "pdf")
     assert result.success is False
-    assert result.backend == "screenplain-cli"
+    assert result.backend == "afterwriting-npx"
     assert result.issues
-    assert "screenplain" in result.issues[0]
+    assert "afterwriting" in result.issues[0]

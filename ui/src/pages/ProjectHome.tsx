@@ -37,6 +37,7 @@ import {
   useScenes,
   useProjectInputs,
   useProjectInputContent,
+  useCanonicalScript,
   useProjectState,
 } from '@/lib/hooks'
 import { updateProjectSettings } from '@/lib/api'
@@ -203,10 +204,18 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const { data: project } = useProject(projectId)
   const { data: inputs } = useProjectInputs(projectId)
   const { data: scenes } = useScenes(projectId)
+  const { data: canonicalScript, isLoading: canonicalLoading } = useCanonicalScript(projectId)
   const latestInput = inputs?.[inputs.length - 1]
-  const { data: content, isLoading } = useProjectInputContent(projectId, latestInput?.filename)
+  const { data: rawContent, isLoading: rawLoading } = useProjectInputContent(projectId, latestInput?.filename)
   const editorRef = useRef<ScreenplayEditorHandle>(null)
   const [isExportOpen, setIsExportOpen] = useState(false)
+
+  // Favor normalized script over raw input
+  const scriptData = canonicalScript?.payload?.data as { script_text?: string } | undefined
+  const content = scriptData?.script_text ?? rawContent
+  const isLoading = canonicalLoading || rawLoading
+
+  const isNormalized = !!scriptData?.script_text
 
   // Handle ?scene= query param — scroll to that scene heading after editor mounts
   useEffect(() => {
@@ -243,11 +252,22 @@ function FreshImportView({ projectId }: { projectId: string }) {
       <div className="flex items-center gap-3 shrink-0">
         <FileText className="h-6 w-6 text-primary shrink-0" />
         <div className="min-w-0 flex-1">
-          <EditableTitle
-            projectId={projectId}
-            displayName={project?.display_name ?? 'Your Screenplay'}
-            className="text-2xl"
-          />
+          <div className="flex items-center gap-2">
+            <EditableTitle
+              projectId={projectId}
+              displayName={project?.display_name ?? 'Your Screenplay'}
+              className="text-2xl"
+            />
+            {isNormalized ? (
+              <Badge variant="secondary" className="bg-green-500/10 text-green-400 border-green-500/20">
+                Canonical
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-muted-foreground">
+                Raw Import
+              </Badge>
+            )}
+          </div>
           {latestInput && (
             <p className="text-sm text-muted-foreground">
               {latestInput.original_name} — {(latestInput.size_bytes / 1024).toFixed(1)} KB
@@ -532,6 +552,26 @@ export function AnalyzedView({ projectId }: { projectId: string }) {
 function ProcessingView({ projectId }: { projectId: string }) {
   const activeRunId = useChatStore(s => s.activeRunId?.[projectId] ?? null)
   const { data: runState } = useRunState(activeRunId ?? undefined)
+  const queryClient = useQueryClient()
+
+  // Invalidate artifacts and chat when a stage finishes/fails, or when the run itself finishes
+  const prevFinishedCount = useRef(0)
+  const prevRunFinished = useRef(false)
+  const syncMessages = useChatStore(s => s.syncMessages)
+
+  useEffect(() => {
+    if (!runState || !projectId) return
+    const stages = Object.values(runState.state.stages)
+    const finishedCount = stages.filter(s => s.status === 'done' || s.status === 'failed').length
+    const isRunFinished = !!runState.state.finished_at
+
+    if (finishedCount > prevFinishedCount.current || (isRunFinished && !prevRunFinished.current)) {
+      queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
+      syncMessages(projectId)
+      prevFinishedCount.current = finishedCount
+      prevRunFinished.current = isRunFinished
+    }
+  }, [runState, projectId, queryClient, syncMessages])
 
   // Find the currently running stage to show its description
   let statusText = 'Processing your screenplay...'

@@ -1,55 +1,12 @@
+import re
+from pathlib import Path
 from typing import Any
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement, ns
 from docx.shared import Inches, Pt
-from fpdf import FPDF
 
-
-class ScreenplayPDF(FPDF):
-    def __init__(self):
-        super().__init__(orientation="P", unit="in", format="Letter")
-        self.set_margins(left=1.5, top=1.0, right=1.0)
-        self.set_auto_page_break(auto=True, margin=1.0)
-        self.set_font("Courier", size=12)
-        self.line_height = 1/6
-
-    def header(self):
-        # Page numbers in top right (starting from script page 2 = PDF page 3)
-        if self.page_no() > 2:
-            self.set_y(0.5)
-            self.set_x(-1.5)
-            self.set_font("Courier", "", 12)
-            self.cell(0, 0, f"{self.page_no() - 1}.", align="R")
-            self.set_y(1.0)
-
-    def footer(self):
-        pass
-
-    def render_title_page(self, title_lines: list[str]):
-        if not title_lines:
-            return
-        self.add_page()
-        self.set_font("Courier", "", 12)
-        self.set_y(3.5) # Start 1/3 down
-        
-        for i, line in enumerate(title_lines):
-            if not line.strip():
-                self.ln(self.line_height)
-                continue
-            if i == 0:
-                self.set_font("Courier", "B", 12)
-                self.multi_cell(
-                    0, self.line_height, line.strip().upper(), 
-                    align="C", new_x="LMARGIN", new_y="NEXT"
-                )
-                self.set_font("Courier", "", 12)
-            else:
-                self.multi_cell(
-                    0, self.line_height, line.strip(), 
-                    align="C", new_x="LMARGIN", new_y="NEXT"
-                )
 
 class ScreenplayRenderer:
     def sanitize(self, text: str | Any) -> str:
@@ -89,81 +46,70 @@ class ScreenplayRenderer:
         self, scenes: list[dict[str, Any]], output_path: str, 
         pre_scene_text: str = "", project_title: str = "Untitled"
     ):
-        pdf = ScreenplayPDF()
+        """Render a screenplay PDF using 'afterwriting' by converting scenes to Fountain first."""
+        fountain_text = self._scenes_to_fountain(scenes, pre_scene_text, project_title)
+        self.render_script_pdf(fountain_text, output_path)
+
+    def render_script_pdf(self, fountain_text: str, output_path: str):
+        """Render raw Fountain text directly to PDF using 'afterwriting'."""
+        from cine_forge.ai.fdx import export_screenplay_text
+        from cine_forge.ai.fountain_validate import normalize_fountain_text
+        
+        # Ensure strict spacing and metadata cleaning before export
+        cleaned_text = normalize_fountain_text(fountain_text)
+        
+        result = export_screenplay_text(cleaned_text, "pdf")
+        if result.success and result.content:
+            Path(output_path).write_bytes(result.content)
+        else:
+            raise RuntimeError(f"afterwriting PDF export failed: {result.issues}")
+
+    def _scenes_to_fountain(
+        self,
+        scenes: list[dict[str, Any]],
+        pre_scene_text: str = "",
+        project_title: str = "Untitled",
+    ) -> str:
+        """Convert a list of scene objects and metadata to a Fountain-formatted string."""
+        fountain_lines = []
         title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
         
-        if title_lines:
-            pdf.render_title_page(title_lines)
+        # afterwriting metadata headers
+        if not title_lines:
+            fountain_lines.append(f"Title: {project_title}")
         else:
-            pdf.render_title_page([project_title])
+            fountain_lines.extend(title_lines)
         
-        pdf.add_page()
+        fountain_lines.append("") # Blank line after metadata
+        
         if teaser_lines:
-            pdf.set_font("Courier", "", 12)
-            for line in teaser_lines:
-                if not line.strip():
-                    pdf.ln(pdf.line_height)
-                    continue
-                pdf.multi_cell(
-                    0, pdf.line_height, self.sanitize(line), 
-                    align="L", new_x="LMARGIN", new_y="NEXT"
-                )
-            pdf.ln(pdf.line_height)
+            fountain_lines.extend(teaser_lines)
+            fountain_lines.append("")
 
         for scene in scenes:
             for elem in scene.get("elements", []):
                 etype = elem.get("element_type", "action")
-                content = self.sanitize(elem.get("content", ""))
+                content = (elem.get("content") or "").strip()
+                if not content:
+                    continue
+                    
                 if etype == "scene_heading":
-                    pdf.ln(pdf.line_height)
-                    pdf.set_font("Courier", "B", 12)
-                    pdf.set_x(1.5)
-                    pdf.multi_cell(
-                        0, pdf.line_height, content.upper(), 
-                        align="L", new_x="LMARGIN", new_y="NEXT"
-                    )
-                    pdf.ln(pdf.line_height)
+                    fountain_lines.append(f"\n{content.upper()}\n")
                 elif etype == "character":
-                    pdf.ln(pdf.line_height)
-                    pdf.set_font("Courier", "", 12)
-                    pdf.set_x(3.5)
-                    pdf.multi_cell(
-                        2.0, pdf.line_height, content.upper(), 
-                        align="L", new_x="LMARGIN", new_y="NEXT"
-                    )
+                    fountain_lines.append(f"\n{content.upper()}")
                 elif etype == "parenthetical":
-                    pdf.set_font("Courier", "", 12)
-                    pdf.set_x(3.0)
-                    pdf.multi_cell(
-                        2.0, pdf.line_height, f"({content})", 
-                        align="L", new_x="LMARGIN", new_y="NEXT"
-                    )
+                    if content.startswith("(") and content.endswith(")"):
+                        fountain_lines.append(content)
+                    else:
+                        fountain_lines.append(f"({content})")
                 elif etype == "dialogue":
-                    pdf.set_font("Courier", "", 12)
-                    pdf.set_x(2.5)
-                    pdf.multi_cell(
-                        3.5, pdf.line_height, content, 
-                        align="L", new_x="LMARGIN", new_y="NEXT"
-                    )
-                    pdf.ln(pdf.line_height)
+                    fountain_lines.append(content)
                 elif etype == "transition":
-                    pdf.ln(pdf.line_height)
-                    pdf.set_font("Courier", "", 12)
-                    pdf.set_x(5.5)
-                    pdf.multi_cell(
-                        2.0, pdf.line_height, content.upper(), 
-                        align="L", new_x="LMARGIN", new_y="NEXT"
-                    )
-                    pdf.ln(pdf.line_height)
+                    fountain_lines.append(f"\n{content.upper()}\n")
                 else: # action
-                    pdf.set_font("Courier", "", 12)
-                    pdf.set_x(1.5)
-                    pdf.multi_cell(
-                        6.0, pdf.line_height, content, 
-                        align="L", new_x="LMARGIN", new_y="NEXT"
-                    )
-                    pdf.ln(pdf.line_height)
-        pdf.output(output_path)
+                    fountain_lines.append(f"\n{content}\n")
+        
+        return "\n".join(fountain_lines)
 
     def _add_page_number(self, run):
         fldChar1 = OxmlElement('w:fldChar')
@@ -183,6 +129,8 @@ class ScreenplayRenderer:
         self, scenes: list[dict[str, Any]], output_path: str, 
         pre_scene_text: str = "", project_title: str = "Untitled"
     ):
+        from cine_forge.ai.fountain_validate import normalize_fountain_text
+        
         doc = Document()
         
         # Set Global Style
@@ -211,11 +159,13 @@ class ScreenplayRenderer:
         self._add_page_number(run_header)
         run_header.add_text(".")
 
-        title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
+        # Normalize pre_scene_text to ensure clean metadata blocks
+        normalized_pre = normalize_fountain_text(pre_scene_text)
+        title_lines, teaser_lines = self._split_pre_scene(normalized_pre)
 
         # 1. Title Page
         if not title_lines:
-            title_lines = [project_title]
+            title_lines = [f"Title: {project_title}"]
 
         # Push down approx 1/3
         for _ in range(15):
@@ -223,8 +173,20 @@ class ScreenplayRenderer:
             p.paragraph_format.space_after = Pt(0)
 
         for i, line in enumerate(title_lines):
+            stripped_line = line.strip()
+            # Strip Fountain metadata tags: 'Key: Value' -> 'Value'
+            pattern = (
+                r"^(?:Title|Author|Authors|Source|Credit|Draft date|Contact|Notes|"
+                r"Alternate Title|Episode):\s*(.*)"
+            )
+            match = re.match(pattern, stripped_line, re.IGNORECASE)
+            display_text = match.group(1).strip() if match else stripped_line
+            
+            if not display_text:
+                continue
+
             p = doc.add_paragraph()
-            run = p.add_run(line.strip().upper() if i == 0 else line.strip())
+            run = p.add_run(display_text.upper() if i == 0 else display_text)
             run.font.name = 'Courier'
             if i == 0:
                 run.bold = True

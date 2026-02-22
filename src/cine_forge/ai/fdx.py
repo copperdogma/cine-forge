@@ -59,7 +59,7 @@ def detect_and_convert_fdx(content: str) -> FDXConversionResult:
             issues=[],
         )
 
-    lines: list[str] = []
+    paragraph_results: list[tuple[str, str]] = []
     title: str | None = None
     for paragraph in _iter_elements_by_name(root, "Paragraph"):
         paragraph_type = (paragraph.attrib.get("Type") or "Action").strip()
@@ -71,9 +71,9 @@ def detect_and_convert_fdx(content: str) -> FDXConversionResult:
             continue
         mapped = _map_paragraph(paragraph_type, paragraph_text)
         if mapped:
-            lines.append(mapped)
+            paragraph_results.append((paragraph_type.lower(), mapped))
 
-    if not lines:
+    if not paragraph_results:
         return FDXConversionResult(
             is_fdx=True,
             fountain_text="",
@@ -81,9 +81,24 @@ def detect_and_convert_fdx(content: str) -> FDXConversionResult:
             issues=["FDX input contained no supported Paragraph content"],
         )
 
+    lines: list[str] = []
+    for i, (ptype, text) in enumerate(paragraph_results):
+        if i > 0:
+            prev_type = paragraph_results[i - 1][0]
+            # Fountain spacing rules: no blank line between character/parenthetical and dialogue.
+            if prev_type == "character" and ptype in {"dialogue", "parenthetical"}:
+                lines.append(text)
+            elif prev_type == "parenthetical" and ptype == "dialogue":
+                lines.append(text)
+            else:
+                lines.append("")
+                lines.append(text)
+        else:
+            lines.append(text)
+
     return FDXConversionResult(
         is_fdx=True,
-        fountain_text="\n\n".join(lines).strip(),
+        fountain_text="\n".join(lines).strip(),
         title=title,
         issues=[],
     )
@@ -105,7 +120,7 @@ def export_screenplay_text(
             issues=[],
         )
     if normalized_format == "pdf":
-        return _export_pdf_via_screenplain(screenplay_text)
+        return _export_pdf_via_afterwriting(screenplay_text)
     return ScreenplayExportResult(
         export_format=normalized_format,
         success=False,
@@ -118,7 +133,10 @@ def export_screenplay_text(
 def _map_paragraph(paragraph_type: str, text: str) -> str:
     paragraph_key = paragraph_type.strip().lower()
     if paragraph_key in {"scene heading", "heading"}:
-        return text.upper()
+        upper = text.upper()
+        if not upper.startswith(("INT.", "EXT.", "INT/EXT.", "I/E.", "EST.")):
+            return f".{upper}"
+        return upper
     if paragraph_key in {"character"}:
         return text.upper()
     if paragraph_key in {"parenthetical"}:
@@ -150,25 +168,53 @@ def _local_name(tag: str) -> str:
 
 
 def _fountain_to_fdx_xml(screenplay_text: str) -> str:
+    """Convert Fountain-like screenplay text back to Final Draft XML."""
     lines = screenplay_text.splitlines()
     paragraphs: list[str] = []
-    for line in lines:
+    for i, line in enumerate(lines):
         stripped = line.strip()
         if not stripped:
             continue
+
+        upper = stripped.upper()
         paragraph_type = "Action"
-        if stripped.upper().startswith(("INT.", "EXT.", "INT/EXT.", "EST.")):
+        text = stripped
+
+        # 1. Scene Headings (explicit or forced with .)
+        if upper.startswith(("INT.", "EXT.", "INT/EXT.", "I/E.", "EST.")):
             paragraph_type = "Scene Heading"
-        elif stripped.endswith(":") and stripped == stripped.upper():
+        elif upper.startswith(".") and not upper.startswith(".."):
+            paragraph_type = "Scene Heading"
+            text = stripped[1:].strip()
+        # 2. Transitions (uppercase + ending in TO:)
+        elif upper.endswith("TO:") and upper == stripped:
             paragraph_type = "Transition"
-        elif _looks_like_character_cue(stripped):
-            paragraph_type = "Character"
-        elif stripped.startswith("(") and stripped.endswith(")"):
-            paragraph_type = "Parenthetical"
-        paragraph_text = _xml_escape(stripped)
+        # 3. Characters/Parentheticals (uppercase or parens, followed by content)
+        elif (
+            upper == stripped and
+            len(stripped) < 40 and
+            any(char.isalpha() for char in stripped) and
+            i + 1 < len(lines) and lines[i+1].strip()
+        ):
+            if stripped.startswith("(") and stripped.endswith(")"):
+                paragraph_type = "Parenthetical"
+            else:
+                paragraph_type = "Character"
+        # 4. Dialogue (follows character or parenthetical)
+        elif (
+            i > 0 and
+            any(
+                p.find('Type="Character"') != -1 or p.find('Type="Parenthetical"') != -1
+                for p in [paragraphs[-1]] if paragraphs
+            )
+        ):
+            paragraph_type = "Dialogue"
+
+        paragraph_text = _xml_escape(text)
         paragraphs.append(
             f'    <Paragraph Type="{paragraph_type}"><Text>{paragraph_text}</Text></Paragraph>'
         )
+
     body = "\n".join(paragraphs)
     return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -196,70 +242,81 @@ def _xml_escape(text: str) -> str:
     )
 
 
-def _export_pdf_via_screenplain(screenplay_text: str) -> ScreenplayExportResult:
-    cli_path = shutil.which("screenplain")
-    if not cli_path:
+def _export_pdf_via_afterwriting(screenplay_text: str) -> ScreenplayExportResult:
+    """Export Fountain-like screenplay text to PDF using 'afterwriting' via npx."""
+    npx_path = shutil.which("npx")
+    if not npx_path:
         return ScreenplayExportResult(
             export_format="pdf",
             success=False,
-            backend="screenplain-not-installed",
+            backend="npx-not-installed",
             content=None,
-            issues=["PDF export requires 'screenplain' CLI on PATH."],
+            issues=["PDF export requires 'npx' (Node.js) on PATH."],
         )
 
-    with tempfile.TemporaryDirectory(prefix="cine-forge-screenplain-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="cine-forge-afterwriting-") as tmp:
         input_path = Path(tmp) / "script.fountain"
         output_path = Path(tmp) / "script.pdf"
         input_path.write_text(screenplay_text, encoding="utf-8")
 
-        command_variants: list[list[str]] = [
-            [cli_path, "--format", "pdf", "--output", str(output_path), str(input_path)],
-            [cli_path, str(input_path), "--format", "pdf", "--output", str(output_path)],
-            [cli_path, "--pdf", str(input_path), str(output_path)],
+        # afterwriting CLI usage: --source <file> --pdf <output> --overwrite
+        command = [
+            npx_path,
+            "--yes",  # Automatically install/fetch if not in cache
+            "afterwriting",
+            "--source",
+            str(input_path),
+            "--pdf",
+            str(output_path),
+            "--overwrite",
         ]
-        errors: list[str] = []
-        for command in command_variants:
-            try:
-                completed = subprocess.run(  # noqa: S603
-                    command,
-                    capture_output=True,
-                    text=True,
-                    check=False,
-                    timeout=20,
-                )
-            except subprocess.TimeoutExpired:
-                errors.append(f"{' '.join(command)} => timed out")
-                continue
-            except OSError as exc:
-                errors.append(f"{' '.join(command)} => {exc}")
-                continue
-            if (
-                completed.returncode == 0
-                and output_path.exists()
-                and _looks_like_pdf(output_path.read_bytes())
-            ):
-                return ScreenplayExportResult(
-                    export_format="pdf",
-                    success=True,
-                    backend="screenplain-cli",
-                    content=output_path.read_bytes(),
-                    issues=[],
-                )
-            stderr = completed.stderr.strip() if completed.stderr else ""
-            stdout = completed.stdout.strip() if completed.stdout else ""
-            error = stderr or stdout or f"exit {completed.returncode}"
-            errors.append(f"{' '.join(command)} => {error[:220]}")
+        try:
+            completed = subprocess.run(  # noqa: S603
+                command,
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=90,  # afterwriting can be slow on first run
+            )
+        except subprocess.TimeoutExpired:
+            return ScreenplayExportResult(
+                export_format="pdf",
+                success=False,
+                backend="afterwriting-npx",
+                content=None,
+                issues=["afterwriting PDF export timed out after 90s"],
+            )
+        except OSError as exc:
+            return ScreenplayExportResult(
+                export_format="pdf",
+                success=False,
+                backend="afterwriting-npx",
+                content=None,
+                issues=[f"afterwriting execution failed: {exc}"],
+            )
 
+        if (
+            completed.returncode == 0
+            and output_path.exists()
+            and _looks_like_pdf(output_path.read_bytes())
+        ):
+            return ScreenplayExportResult(
+                export_format="pdf",
+                success=True,
+                backend="afterwriting-npx",
+                content=output_path.read_bytes(),
+                issues=[],
+            )
+
+        stderr = completed.stderr.strip() if completed.stderr else ""
+        stdout = completed.stdout.strip() if completed.stdout else ""
+        error = stderr or stdout or f"exit {completed.returncode}"
         return ScreenplayExportResult(
             export_format="pdf",
             success=False,
-            backend="screenplain-cli",
+            backend="afterwriting-npx",
             content=None,
-            issues=[
-                f"screenplain PDF export failed: {errors[0]}"
-                if errors
-                else "screenplain failed"
-            ],
+            issues=[f"afterwriting failed: {error[:220]}"],
         )
 
 

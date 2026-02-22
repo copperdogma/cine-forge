@@ -1,6 +1,25 @@
 # Changelog
 
-## [2026-02-21-04] — Automatic Project Title Extraction from Script (Story 063)
+## [2026-02-22-01] — Screenplay Format Round-Trip & High-Fidelity Rendering (Story 064)
+
+### Added
+- **Round-Trip Fidelity Suite**: Automated `pytest -m round_trip` tests for Fountain↔PDF and FDX↔Fountain↔FDX with golden master masters.
+- **afterwriting Integration**: Switched to `afterwriting` as the primary PDF renderer for industry-standard screenplay formatting (Courier 12pt, WGA margins, CONT'D markers).
+- **pdfplumber Extraction**: Implemented `pdfplumber` for high-fidelity text extraction from screenplay PDFs, preserving whitespace and column structure.
+- **Low-Credit Chat Alerts**: Automatic project chat notifications when pipeline runs fail due to AI provider quota or billing issues.
+
+### Changed
+- **Automatic Promotion**: UI now favors the high-fidelity `canonical_script` version over raw input upon stage completion.
+- **Metadata Healer**: Screenplay normalization now automatically heals title page blocks, mapping custom keys like "Alternate Title" to the professional cover page.
+- **Enhanced Centering**: Broadened character cue detection to support smart quotes and extensions, ensuring correct centering for complex names.
+
+### Fixed
+- **L&C Formatting**: Resolved multiple issues where L&C PDF exports had missing cover pages or uncentered dialogue.
+- **ASGI TypeError**: Fixed technical crash in export background cleanup task.
+- **Word Metadata Tags**: Updated .docx export to strip Fountain metadata tags for a professional title page.
+
+## [2026-02-21-04]
+ — Automatic Project Title Extraction from Script (Story 063)
 
 ### Added
 - Backend endpoint `POST /api/projects/quick-scan` for format-aware text extraction (PDF, DOCX, Fountain) from file snippets.

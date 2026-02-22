@@ -2,7 +2,7 @@
 // Store is the in-memory view for rendering. Write-through on addMessage.
 
 import { create } from 'zustand'
-import { postChatMessage } from './api'
+import { postChatMessage, getChatMessages } from './api'
 import type { ChatAction, ChatMessage, ChatMessageType, ToolCallStatus } from './types'
 
 /**
@@ -48,6 +48,8 @@ interface ChatStore {
   isLoaded: (projectId: string) => boolean
   setActiveRun: (projectId: string, runId: string) => void
   clearActiveRun: (projectId: string) => void
+  /** Refresh messages from backend for the given project. */
+  syncMessages: (projectId: string) => Promise<void>
 }
 
 export const useChatStore = create<ChatStore>()(
@@ -55,6 +57,15 @@ export const useChatStore = create<ChatStore>()(
     messages: {},
     loaded: {},
     activeRunId: {},
+
+    syncMessages: async (projectId) => {
+      try {
+        const messages = await getChatMessages(projectId)
+        get().loadMessages(projectId, messages)
+      } catch (error) {
+        console.error('Failed to sync chat messages:', error)
+      }
+    },
 
     loadMessages: (projectId, messages) =>
       set((state) => ({

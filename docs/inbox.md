@@ -6,12 +6,11 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### UI / Interaction
 
-- What do you think about making a round trip test, where we take a script in screenplay format (like @/Users/cam/Documents/Projects/cine-forge/input/The\ Mariner.pdf ), do our intake on it (converting it to text, then to our fountain format, then back out to an industry standard PDF again and make sure it matches the original? I've always found round trips a good test of conversion systems. Don't do it yet, just discuss.
-  - I've grabbed three "pefect" movie samples out there in three different formats each: '/Users/cam/Documents/Projects/cine-forge/input/Perfect Script Samples' to use for round-tripping
-  - We'd need to make sure we can round trip between markdown (but that's basically fountain) and PDF as well, but we could generate those and ensure everything can round trip back and forth, between formats, etc and have a golden master to compare to at every step to see where something went wrong.
-  - We'd want whatever we produce that can convert between formats to be usable by UI, so don't build any of it usable only in the UI.
-  - We'd need to use these upgraded converter both on intake and on export.
-  - First order of business is likely searching to see if anyone else has already built this that we can use.
+- Add scene dividers in the script view so people can see where they're split. Maybe the scene extractor messed up and this will make it obvious. The line might also give us a good place to put an icon to let them jump to the scene at some point.
+
+- Hotlink the screenplay to the artifacts: scenes, characters, locations, props, etc. It should be easy to jump between the two.
+
+- Back button issue: I can't remember where (bad bug report, I know;) but I clicked back and it took me back to a list view instead of wherever I was. I thnk the back buttons are hardcoded, but sometimes I'm going from, say, a character view and then clicking into the scene view from that character, then want to go back which should be the character because that's where I came from. Actually I think that MAY have been where this was happening, but it needs to be fixed everywhere.
 
 - Generate WAY better formatted callsheets like these ones from StudioBinder and Gill (my sister): '/Users/cam/Documents/Projects/cine-forge/input/Sample Call Sheets'
 
