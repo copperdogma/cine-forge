@@ -6,6 +6,8 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### UI / Interaction
 
+- Generate WAY better formatted callsheets like these ones from StudioBinder: /Users/cam/Documents/Projects/cine-forge/input/Sample Studiobinder Call Sheets
+
 - If the last item in the chat was a link to whatever the user clicked on, that's supposed to only show the most RECENT like, i.e.: there should only ever be ONE of those showing. If they click on somethign else it replaces the current one, so we shoudl only ever see one of those in a row in the chat history, but for this run [https://www.youtube.com/watch?v=zKX0zlJk840] I see this which should never happen:
     Reviewing Run History
     Viewing run: run-990d70d0
