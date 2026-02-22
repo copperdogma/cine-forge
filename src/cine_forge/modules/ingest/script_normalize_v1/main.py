@@ -138,7 +138,7 @@ def run_module(
     verify_model = (
         params.get("verify_model") or params.get("qa_model") or "claude-haiku-4-5-20251001"
     )
-    escalate_model = params.get("escalate_model") or "claude-sonnet-4-6"
+    escalate_model = params.get("escalate_model") or "claude-opus-4-6"
     qa_model = verify_model
     max_retries = int(params.get("max_retries", 2))
     skip_qa = bool(params.get("skip_qa", False))

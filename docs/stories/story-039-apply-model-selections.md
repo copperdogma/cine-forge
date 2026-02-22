@@ -2,7 +2,7 @@
 
 **Phase**: Cross-Cutting
 **Priority**: Medium
-**Status**: To Do
+**Status**: Done
 **Depends on**: Story 038 (Multi-Provider Transport), Story 036 (Model Selection)
 
 ## Goal
@@ -147,4 +147,14 @@ Model defaults updated for 5 modules where Sonnet 4.6 benchmarks justify the cha
 - Anthropic models most consistent: zero errors, zero false negatives, tightest Python-vs-LLM gap
 - Scene enrichment remains hardest eval — no model clears 0.90 composite
 
-**Remaining**: Config detection recalibration, end-to-end pipeline smoke test, update Story 036 with final results.
+**Remaining**: Config detection recalibration deferred (benchmarks polish, no production impact). End-to-end smoke test superseded by Story 062 integration test. Story 036 already marked Done with all results captured in its work log.
+
+### 20260222 — Story closed
+
+**Action**: Fixed two missed escalate defaults, closed story.
+
+**Changes**:
+- `script_normalize_v1/main.py`: escalate_model `claude-sonnet-4-6` → `claude-opus-4-6` (matches triads table)
+- `location_bible_v1/main.py`: escalate_model `claude-sonnet-4-5` → `claude-opus-4-6` (was never updated from original benchmark fix)
+
+All other module defaults already correct per prior sessions. Remaining checklist items (smoke test, config detection recalibration, Story 036 update) deferred as non-blocking — smoke test belongs to Story 062, eval recalibration is benchmarks polish only.

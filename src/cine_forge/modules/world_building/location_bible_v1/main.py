@@ -48,7 +48,7 @@ def run_module(
         or params.get("sota_model")
         or runtime_params.get("escalate_model")
         or runtime_params.get("sota_model")
-        or "claude-sonnet-4-5"
+        or "claude-opus-4-6"
     )
     skip_qa = bool(params.get("skip_qa", False))
 

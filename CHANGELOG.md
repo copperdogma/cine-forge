@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-02-22-07] — Fix escalate model defaults; close Story 039
+
+### Fixed
+- `script_normalize_v1`: escalate fallback `claude-sonnet-4-6` → `claude-opus-4-6` (matches benchmark triad)
+- `location_bible_v1`: escalate fallback `claude-sonnet-4-5` → `claude-opus-4-6` (missed in prior model update pass)
+
+### Changed
+- Story 039 marked Done; remaining checklist items (smoke test, config recalibration) deferred as non-blocking
+
 ## [2026-02-22-06] — Skill split: triage → triage-inbox + triage-stories; deep-research docs refresh
 
 ### Added
