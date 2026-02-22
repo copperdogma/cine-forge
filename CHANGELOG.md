@@ -1,5 +1,26 @@
 # Changelog
 
+## [2026-02-21-02] — Comprehensive Export & Share (Story 058)
+
+### Added
+- New backend export module `src/cine_forge/export/` with `MarkdownExporter`, `PDFGenerator`, and `ScreenplayRenderer`.
+- Support for industry-standard screenplay formats: PDF, DOCX, and Fountain.
+- Professional Project Analysis Report PDF with record-based layouts and enriched metadata.
+- Unified CLI command `python -m cine_forge export` for headless operation.
+- New API endpoints for component-aware artifact exports.
+- Granular export selection UI in `ExportModal.tsx` with component checkboxes and "Check All/None" helpers.
+
+### Changed
+- Refactored `ExportModal` into a tabbed interface separating Screenplay and Project Data workflows.
+- Migrated all export logic from frontend to backend to support AI headless operation.
+- Standardized Courier 12pt and industry-standard margins/indents for screenplay exports.
+
+### Fixed
+- Resolved `doc.autoTable` and horizontal space errors in PDF generation.
+- Fixed title page formatting to strictly follow script preamble and separate it from content.
+- Fixed clipping of long project titles on PDF cover pages.
+- Fixed missing script content in Fountain and Markdown exports.
+
 ## [2026-02-21-01] — Pipeline UI Refinement & Entity Quality Fixes (Story 059, 060)
 
 ### Added
