@@ -1,10 +1,10 @@
 ---
-name: triage
+name: triage-inbox
 description: Process inbox items into stories, research spikes, ADRs, or spec updates
 user-invocable: true
 ---
 
-# /triage
+# /triage-inbox
 
 Go through accumulated inbox items together with the user.
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-02-22-06] — Skill split: triage → triage-inbox + triage-stories; deep-research docs refresh
+
+### Added
+- `/triage-stories` skill: evaluates story backlog and recommends what to work on next
+
+### Changed
+- Renamed `/triage` to `/triage-inbox` for clarity alongside the new stories skill
+- Updated deep-research docs: Google provider now configured, new `--provider`/`--mode deep` flags, `status`/`stub`/`check-providers` commands, removed stale streaming patch note
+
 ## [2026-02-22-05] — UI polish bundle: chat dedup, back nav, inbox read state (Stories 067, 068, 069)
 
 ### Fixed

@@ -72,23 +72,28 @@ Track model performance observations in `/memory/subagent-log.md` to refine the 
 - **Lint**: `.venv/bin/python -m ruff check src/ tests/`
 
 ### Deep Research
-For multi-model research tasks, use the `deep-research` CLI tool.
+For multi-model research tasks, use the `deep-research` CLI tool (v0.3.3+).
 - Installed at `/Users/cam/miniconda3/bin/deep-research`
-- Available providers: OpenAI (gpt-5.2), Anthropic (claude-opus-4-6). Google and xAI keys not configured.
+- Available providers: OpenAI (gpt-5.2-pro), Anthropic (claude-opus-4-6), Google (gemini-3.1-pro-preview). xAI key not configured.
 - Outputs go under `docs/research/<topic>/`.
 - Workflow:
   1. `deep-research init "<topic>" --dir docs/research/` — creates folder with template files
   2. Edit `research-prompt.md` — write the research prompt (keep frontmatter)
   3. `deep-research run` — sends to all available providers in parallel
-  4. `deep-research format` — renames placeholder files based on content
-  5. `deep-research final [model]` — synthesizes all reports into final report (default: opus)
-  6. `deep-research prepare-final` — assembles for manual pasting if API fails
+  4. `deep-research run --provider openai --provider google` — limit to specific providers
+  5. `deep-research run --mode deep` — use deep-research APIs (OpenAI Responses API + Google Interactions API); providers without deep support fall back to standard mode
+  6. `deep-research format` — renames placeholder files based on content, cleans up unused slots
+  7. `deep-research final [model]` — synthesizes all reports into final report (aliases: opus, sonnet, chatgpt, gemini, grok; default: best available)
+  8. `deep-research prepare-final` — assembles for manual pasting if API fails
+- Utility commands:
+  - `deep-research status` — show current state of the research project
+  - `deep-research stub [provider...]` — create blank report stubs for manual paste-in (e.g. `stub xai` for providers without API keys)
+  - `deep-research check-providers` — check for newer SOTA models and update config
 - Pitfalls:
   - **NEVER `cd` into a research dir then delete it** — kills CWD and breaks all subsequent shell commands. Always use absolute paths.
   - `deep-research run` expects to be run from within the project directory (where `research-prompt.md` lives).
   - If a report file already exists (even an error file), `run` will prompt to overwrite — delete old files first.
-  - `--agents N` flag controls how many manual paste slots are created.
-- Fix applied: Patched `call_anthropic()` in `/Users/cam/miniconda3/lib/python3.11/site-packages/deep_research/providers.py` to use `client.messages.stream()` instead of `client.messages.create()` (fixes "Streaming is required for operations that may take longer than 10 minutes" error). This fix may be lost on pip upgrade.
+  - `--agents N` flag on `init` controls how many blank agent placeholder files are created.
 
 ### Model Benchmarking (promptfoo)
 
