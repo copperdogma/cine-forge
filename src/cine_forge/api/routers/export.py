@@ -1,6 +1,7 @@
 from typing import Annotated, Literal, List, Optional
 from pathlib import Path
 import tempfile
+import shutil
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse, Response
@@ -75,7 +76,19 @@ def load_script_content(store: ArtifactStore) -> str:
     if versions:
         latest = sorted(versions, key=lambda r: r.version)[-1]
         data = store.load_artifact(latest).data
-        return data.get("content") or data.get("text") or ""
+        # Fix: added script_text
+        return data.get("script_text") or data.get("content") or data.get("text") or ""
+    return ""
+
+def load_pre_scene_text(store: ArtifactStore, first_scene_start_line: int) -> str:
+    versions = store.list_versions("canonical_script", "project")
+    if versions:
+        latest = sorted(versions, key=lambda r: r.version)[-1]
+        data = store.load_artifact(latest).data
+        full_text = data.get("script_text") or ""
+        lines = full_text.splitlines()
+        if first_scene_start_line > 1:
+            return "\n".join(lines[:first_scene_start_line-1])
     return ""
 
 @router.get("/markdown")
@@ -116,9 +129,7 @@ def export_markdown(
     filename = f"{project_id}-export.md"
 
     if scope == "everything":
-        script_content = ""
-        if include and "script" in include:
-            script_content = load_script_content(store)
+        script_content = load_script_content(store)
         
         md = exporter.generate_project_markdown(
             project_name=project_id,
@@ -186,7 +197,13 @@ def export_pdf(
             filename = f"{project_id}-call-sheet.pdf"
         elif layout == "screenplay":
             renderer = ScreenplayRenderer()
-            renderer.render_pdf(scenes=scenes, output_path=output_path)
+            # Extract pre-scene content
+            pre_scene_text = ""
+            if scenes:
+                first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
+                pre_scene_text = load_pre_scene_text(store, first_scene_line)
+            
+            renderer.render_pdf(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text)
             filename = f"{project_id}-screenplay.pdf"
         else:
             pdf_gen = PDFGenerator()
@@ -217,7 +234,13 @@ def export_docx(project_id: str):
 
     try:
         renderer = ScreenplayRenderer()
-        renderer.render_docx(scenes=scenes, output_path=output_path)
+        # Extract pre-scene content
+        pre_scene_text = ""
+        if scenes:
+            first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
+            pre_scene_text = load_pre_scene_text(store, first_scene_line)
+            
+        renderer.render_docx(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text)
         filename = f"{project_id}-screenplay.docx"
             
         return FileResponse(
