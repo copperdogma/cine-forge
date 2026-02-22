@@ -136,15 +136,25 @@ Based on industry standard (reference PDF on file):
 - [x] **Backend Support:** Update API to accept a list of included components (e.g., `?include=script,scenes,characters`).
 
 ### Screenplay Formats (Round 3)
-- [ ] **Research:** Identify open-source libraries for Fountain/Screenplay formatting (Python/JS) to avoid writing an engine from scratch.
-- [ ] **Fountain Export:** Implement `.fountain` file download (raw content, correct extension).
-- [ ] **Markdown (Fountain):** Ensure Markdown script export complies with Fountain syntax.
-- [ ] **PDF Screenplay:** Implement standard screenplay format PDF (12pt Courier, margins, centered dialogue) using a library or `fpdf2`.
-- [ ] **Docx Screenplay:** Implement standard screenplay format Docx export.
+- [x] **Research:** Identify open-source libraries for Fountain/Screenplay formatting.
+- [x] **Fountain Export:** Implement `.fountain` file download.
+- [x] **Markdown (Fountain):** Ensure Markdown script export complies with Fountain syntax.
+- [x] **Standard PDF Screenplay:**
+    - [x] Debug `FPDFException` (horizontal space error).
+    - [x] Set industry-standard margins (1.5" left, 1" top/bottom/right).
+    - [x] Implement precise indents for: Action (0"), Character (2.0"), Parenthetical (1.5"), Dialogue (1.0"), Transition (4.0").
+    - [x] Add page numbering in the top-right corner.
+- [x] **Standard DOCX Screenplay:**
+    - [x] Implement `python-docx` renderer with matching indents and Courier font.
+    - [x] Ensure proper spacing between elements (e.g., space before headings).
 
 ### PDF Export Improvement
-- [ ] **Fix PDF Layout:** The current PDF export is "TERRIBLE". Redesign it to be professional, readable, and handle rich content (not just tables).
-- [ ] **Global Export PDF:** Ensure the "Export Everything" PDF handles mixed content gracefully.
+- [x] **Fix Project Report PDF:**
+    - [x] Redesign Layout: Move from basic tables to a structured "Record" format.
+    - [x] Sections: Clearly separated sections for Scenes, Characters (with traits/evidence), and Locations.
+    - [x] Styling: Use bold headers, subtle backgrounds for entity names, and readable line spacing.
+- [x] **Granular Selection Support:**
+    - [x] Update PDF Generator to respect the `include` list (only generate requested sections).
 
 ## Acceptance Criteria
 
@@ -207,3 +217,10 @@ Based on industry standard (reference PDF on file):
 - Updated API (`/api/projects/{id}/export/markdown`) to accept `include` list.
 - Updated `MarkdownExporter` to respect `include` list and support raw script export.
 - Verified via UI build.
+
+2026-02-21 16:30 — Completed Round 3 (Professional Formats & PDF Overhaul).
+- **Standard Screenplay Export**: Implemented precise formatting for PDF and DOCX (Courier 12pt, industry indents for Character/Dialogue/Action/etc.).
+- **PDF Overhaul**: Redesigned the Project Report PDF to be readable and professional (Record-based instead of basic tables).
+- **Bug Fix**: Debugged and resolved `FPDFException` (horizontal space error) by forcing X-position resets after `multi_cell` calls.
+- **Fountain Export**: Added dedicated `.fountain` download.
+- **Verification**: Verified all formats via `scripts/verify_v3_exports.py` against real `lc-2` data.

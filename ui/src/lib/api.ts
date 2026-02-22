@@ -445,7 +445,7 @@ export function editArtifact(
 // --- Export ---
 
 export type ExportScope = 'everything' | 'scenes' | 'characters' | 'locations' | 'props' | 'single'
-export type ExportFormat = 'markdown' | 'pdf' | 'call-sheet'
+export type ExportFormat = 'markdown' | 'pdf' | 'call-sheet' | 'fountain' | 'docx'
 
 export function getExportUrl(
   projectId: string,
@@ -464,10 +464,24 @@ export function getExportUrl(
         include.forEach(i => params.append('include', i))
     }
     return `${API_BASE}/api/projects/${projectId}/export/markdown?${params.toString()}`
+  } else if (format === 'fountain') {
+    return `${API_BASE}/api/projects/${projectId}/export/fountain`
+  } else if (format === 'docx') {
+    return `${API_BASE}/api/projects/${projectId}/export/docx`
   } else {
     // PDF
-    const layout = format === 'call-sheet' ? 'call-sheet' : 'report'
-    params.set('layout', layout)
+    const layout = format === 'call-sheet' ? 'call-sheet' : (format === 'pdf' && scope === 'single' && entityType === 'scene') || (format === 'pdf' && include?.length === 1 && include[0] === 'script') ? 'screenplay' : 'report'
+    
+    // Actually, let's make layout more explicit if needed, but for now:
+    // If we're exporting ONLY script as PDF, use screenplay layout.
+    let effectiveLayout = layout
+    if (format === 'pdf') {
+        if (include && include.length === 1 && include[0] === 'script') {
+            effectiveLayout = 'screenplay'
+        }
+    }
+    
+    params.set('layout', effectiveLayout)
     return `${API_BASE}/api/projects/${projectId}/export/pdf?${params.toString()}`
   }
 }

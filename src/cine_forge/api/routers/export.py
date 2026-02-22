@@ -1,7 +1,6 @@
-from typing import Annotated, Literal, List
+from typing import Annotated, Literal, List, Optional
 from pathlib import Path
 import tempfile
-import shutil
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse, Response
@@ -9,15 +8,14 @@ from fastapi.responses import FileResponse, Response
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
+from cine_forge.export.screenplay import ScreenplayRenderer
 
 router = APIRouter(prefix="/projects/{project_id}/export", tags=["export"])
 
 ExportScope = Literal["everything", "scenes", "characters", "locations", "props", "single"]
-ExportFormat = Literal["markdown", "pdf", "call-sheet"]
+ExportFormat = Literal["markdown", "pdf", "call-sheet", "fountain", "docx"]
 
 def get_store(project_id: str) -> ArtifactStore:
-    # TODO: This should ideally come from a dependency injection or service
-    # For now, we assume standard project structure
     project_dir = Path(f"output/{project_id}")
     if not project_dir.exists():
         raise HTTPException(status_code=404, detail="Project not found")
@@ -73,7 +71,6 @@ def load_all_artifacts(store: ArtifactStore):
     return scenes, characters, locations, props
 
 def load_script_content(store: ArtifactStore) -> str:
-    # Try canonical script
     versions = store.list_versions("canonical_script", "project")
     if versions:
         latest = sorted(versions, key=lambda r: r.version)[-1]
@@ -92,7 +89,6 @@ def export_markdown(
     store = get_store(project_id)
     exporter = MarkdownExporter()
     
-    # Simple single entity case
     if scope == "single":
         if not entity_id or not entity_type:
             raise HTTPException(status_code=400, detail="entity_id and entity_type required for single scope")
@@ -114,27 +110,18 @@ def export_markdown(
             "Content-Disposition": f"attachment; filename={entity_id}.md"
         })
 
-    # Collection cases
     scenes, characters, locations, props = load_all_artifacts(store)
     
     md = ""
     filename = f"{project_id}-export.md"
 
     if scope == "everything":
-        # Resolve include list
-        # If include is provided, use it. If not, default to "scenes, characters, locations, props" (standard everything)
-        # But if user wants "Script", they must ask for it or it must be in default?
-        # User said: "default to everything checked". So if include is missing, we assume ALL including script?
-        # Or does UI send explicit list?
-        # Let's say if include is None, we include artifacts. Script is optional?
-        # Actually, let's make `include` the source of truth if provided.
-        
         script_content = ""
         if include and "script" in include:
             script_content = load_script_content(store)
         
         md = exporter.generate_project_markdown(
-            project_name=project_id, # TODO: Get real display name
+            project_name=project_id,
             project_id=project_id,
             scenes=scenes,
             characters=characters,
@@ -168,36 +155,44 @@ def export_markdown(
         "Content-Disposition": f"attachment; filename={filename}"
     })
 
+@router.get("/fountain")
+def export_fountain(project_id: str):
+    store = get_store(project_id)
+    content = load_script_content(store)
+    if not content:
+        raise HTTPException(status_code=404, detail="Script not found")
+    
+    return Response(
+        content=content, 
+        media_type="text/plain", 
+        headers={"Content-Disposition": f"attachment; filename={project_id}.fountain"}
+    )
+
 @router.get("/pdf")
 def export_pdf(
     project_id: str,
-    layout: Annotated[Literal["report", "call-sheet"], Query()] = "report"
+    layout: Annotated[Literal["report", "call-sheet", "screenplay"], Query()] = "report"
 ):
     store = get_store(project_id)
     scenes, characters, locations, props = load_all_artifacts(store)
     
-    # Temp file for PDF
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         output_path = tmp.name
 
-    pdf_gen = PDFGenerator()
-    
     try:
         if layout == "call-sheet":
-            pdf_gen.generate_call_sheet(
-                project_name=project_id,
-                scenes=scenes,
-                output_path=output_path
-            )
+            pdf_gen = PDFGenerator()
+            pdf_gen.generate_call_sheet(project_name=project_id, scenes=scenes, output_path=output_path)
             filename = f"{project_id}-call-sheet.pdf"
+        elif layout == "screenplay":
+            renderer = ScreenplayRenderer()
+            renderer.render_pdf(scenes=scenes, output_path=output_path)
+            filename = f"{project_id}-screenplay.pdf"
         else:
+            pdf_gen = PDFGenerator()
             pdf_gen.generate_project_pdf(
-                project_name=project_id,
-                project_id=project_id,
-                scenes=scenes,
-                characters=characters,
-                locations=locations,
-                props=props,
+                project_name=project_id, project_id=project_id,
+                scenes=scenes, characters=characters, locations=locations, props=props,
                 output_path=output_path
             )
             filename = f"{project_id}-report.pdf"
@@ -211,3 +206,26 @@ def export_pdf(
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)
         raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}")
+
+@router.get("/docx")
+def export_docx(project_id: str):
+    store = get_store(project_id)
+    scenes, _, _, _ = load_all_artifacts(store)
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
+        output_path = tmp.name
+
+    try:
+        renderer = ScreenplayRenderer()
+        renderer.render_docx(scenes=scenes, output_path=output_path)
+        filename = f"{project_id}-screenplay.docx"
+            
+        return FileResponse(
+            output_path, 
+            filename=filename, 
+            media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            background=lambda: Path(output_path).unlink(missing_ok=True)
+        )
+    except Exception as e:
+        Path(output_path).unlink(missing_ok=True)
+        raise HTTPException(status_code=500, detail=f"Docx generation failed: {str(e)}")
