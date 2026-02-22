@@ -13,6 +13,7 @@ class ScreenplayPDF(FPDF):
         self.line_height = 1/6
 
     def header(self):
+        # Page numbers in top right (starting from script page 2 = PDF page 3)
         if self.page_no() > 2:
             self.set_y(0.5)
             self.set_x(-1.5)
@@ -24,21 +25,16 @@ class ScreenplayPDF(FPDF):
         pass
 
     def render_title_page(self, title_lines: List[str]):
-        """Render title page using only lines provided from the script."""
         if not title_lines:
             return
         self.add_page()
         self.set_font("Courier", "", 12)
-        
-        # Vertical start (industry standard is approx 1/3 down)
-        self.set_y(3.5)
+        self.set_y(3.5) # Start 1/3 down
         
         for i, line in enumerate(title_lines):
             if not line.strip():
                 self.ln(self.line_height)
                 continue
-                
-            # Bold the first line (usually the title)
             if i == 0:
                 self.set_font("Courier", "B", 12)
                 self.multi_cell(0, self.line_height, line.strip().upper(), align="C", new_x="LMARGIN", new_y="NEXT")
@@ -62,18 +58,15 @@ class ScreenplayRenderer:
         return s.encode("latin-1", "replace").decode("latin-1")
 
     def _split_pre_scene(self, text: str) -> tuple[List[str], List[str]]:
-        """Split pre-scene text into title-page material and teaser/start material."""
         lines = text.splitlines()
         title_lines = []
         teaser_lines = []
-        
         script_started = False
         markers = ["TEASER", "ACT ONE", "FADE IN", "EXT.", "INT."]
         
         for line in lines:
             if not script_started:
                 upper_line = line.strip().upper()
-                # If we hit a script start marker, switch to teaser mode
                 if any(m in upper_line for m in markers):
                     script_started = True
                     teaser_lines.append(line)
@@ -81,24 +74,18 @@ class ScreenplayRenderer:
                     title_lines.append(line)
             else:
                 teaser_lines.append(line)
-                
         return title_lines, teaser_lines
 
     def render_pdf(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = "", project_title: str = "Untitled"):
         pdf = ScreenplayPDF()
-        
         title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
         
-        # 1. Title Page
         if title_lines:
             pdf.render_title_page(title_lines)
         else:
-            # Fallback if no preamble but we have a title
             pdf.render_title_page([project_title])
         
-        # 2. Script Start
         pdf.add_page()
-        
         if teaser_lines:
             pdf.set_font("Courier", "", 12)
             for line in teaser_lines:
@@ -109,11 +96,9 @@ class ScreenplayRenderer:
             pdf.ln(pdf.line_height)
 
         for scene in scenes:
-            elements = scene.get("elements", [])
-            for elem in elements:
+            for elem in scene.get("elements", []):
                 etype = elem.get("element_type", "action")
                 content = self.sanitize(elem.get("content", ""))
-                
                 if etype == "scene_heading":
                     pdf.ln(pdf.line_height)
                     pdf.set_font("Courier", "B", 12)
@@ -140,16 +125,22 @@ class ScreenplayRenderer:
                     pdf.set_x(5.5)
                     pdf.multi_cell(2.0, pdf.line_height, content.upper(), align="L", new_x="LMARGIN", new_y="NEXT")
                     pdf.ln(pdf.line_height)
-                else: # action, general
+                else: # action
                     pdf.set_font("Courier", "", 12)
                     pdf.set_x(1.5)
                     pdf.multi_cell(6.0, pdf.line_height, content, align="L", new_x="LMARGIN", new_y="NEXT")
                     pdf.ln(pdf.line_height)
-                    
         pdf.output(output_path)
 
     def render_docx(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = "", project_title: str = "Untitled"):
         doc = Document()
+        
+        # Set Global Style
+        style = doc.styles['Normal']
+        font = style.font
+        font.name = 'Courier'
+        font.size = Pt(12)
+        
         section = doc.sections[0]
         section.left_margin = Inches(1.5)
         section.right_margin = Inches(1.0)
@@ -162,18 +153,18 @@ class ScreenplayRenderer:
         if not title_lines:
             title_lines = [project_title]
 
-        first_text_p = True
+        # Push down approx 1/3
+        for _ in range(15):
+            p = doc.add_paragraph()
+            p.paragraph_format.space_after = Pt(0)
+
         for i, line in enumerate(title_lines):
             p = doc.add_paragraph()
-            if first_text_p and line.strip():
-                p.paragraph_format.space_before = Inches(2.5)
-                first_text_p = False
-            
             run = p.add_run(line.strip().upper() if i == 0 else line.strip())
+            # Force Courier on run level to be absolutely sure
+            run.font.name = 'Courier'
             if i == 0:
                 run.bold = True
-            run.font.name = 'Courier'
-            run.font.size = Pt(12)
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             p.paragraph_format.space_after = Pt(0)
         
@@ -184,43 +175,47 @@ class ScreenplayRenderer:
             for line in teaser_lines:
                 p = doc.add_paragraph()
                 if line.strip():
-                    p.add_run(self.sanitize(line))
+                    run = p.add_run(self.sanitize(line))
+                    run.font.name = 'Courier'
                 p.paragraph_format.space_after = Pt(0)
             doc.add_paragraph()
 
         for scene in scenes:
-            elements = scene.get("elements", [])
-            for elem in elements:
+            for elem in scene.get("elements", []):
                 etype = elem.get("element_type", "action")
                 content = self.sanitize(elem.get("content", ""))
-                
                 p = doc.add_paragraph()
-                
                 if etype == "scene_heading":
-                    p.add_run(content.upper()).bold = True
+                    run = p.add_run(content.upper())
+                    run.bold = True
+                    run.font.name = 'Courier'
                     p.paragraph_format.space_before = Pt(12)
                     p.paragraph_format.space_after = Pt(12)
                 elif etype == "character":
-                    p.add_run(content.upper())
+                    run = p.add_run(content.upper())
+                    run.font.name = 'Courier'
                     p.paragraph_format.left_indent = Inches(2.0)
                     p.paragraph_format.space_before = Pt(12)
                     p.paragraph_format.space_after = Pt(0)
                 elif etype == "parenthetical":
-                    p.add_run(f"({content})")
+                    run = p.add_run(f"({content})")
+                    run.font.name = 'Courier'
                     p.paragraph_format.left_indent = Inches(1.5)
                     p.paragraph_format.space_after = Pt(0)
                 elif etype == "dialogue":
-                    p.add_run(content)
+                    run = p.add_run(content)
+                    run.font.name = 'Courier'
                     p.paragraph_format.left_indent = Inches(1.0)
                     p.paragraph_format.right_indent = Inches(1.5)
                     p.paragraph_format.space_after = Pt(12)
                 elif etype == "transition":
-                    p.add_run(content.upper())
+                    run = p.add_run(content.upper())
+                    run.font.name = 'Courier'
                     p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
                     p.paragraph_format.space_before = Pt(12)
                     p.paragraph_format.space_after = Pt(12)
                 else: # action
-                    p.add_run(content)
+                    run = p.add_run(content)
+                    run.font.name = 'Courier'
                     p.paragraph_format.space_after = Pt(12)
-                    
         doc.save(output_path)
