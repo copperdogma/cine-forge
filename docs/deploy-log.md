@@ -19,3 +19,4 @@ Entries:
 2026-02-20T22:04:24Z | 102 | success | partial | feat: Story 057 (Entity Navigation) + ruff fix; v2026.02.20-03; frontend rebuilt, pip reinstalled
 20260221-0130 | 150 | success | partial | Story 041 completion; entity_discovery module live; UI width + crash fixes; v2026.02.20-04; API/UI smoke checks passed
 2026-02-21T14:00:52Z | 126 | success | true | Pipeline UI and Quality Fixes
+2026-02-22T01:04:00Z | 181 | success | partial | Story 058 complete; backend-driven export system live; PDF/DOCX/Fountain support; CLI export enabled; v2026.02.21-02

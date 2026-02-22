@@ -16,7 +16,7 @@ Deploy CineForge to production on Fly.io.
 
 ## Expected Duration
 
-~1.5 minutes total (preflight ~15s, deploy ~45s, smoke tests ~30s).  
+~2 minutes total (preflight ~15s, deploy ~75s, smoke tests ~30s).  
 Tell the user this estimate before starting. If actual duration deviates by more than 20%, explain why.
 
 ## Duration Recalibration (required)
