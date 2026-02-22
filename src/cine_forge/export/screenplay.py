@@ -3,6 +3,7 @@ from fpdf import FPDF
 from docx import Document
 from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import OxmlElement, ns
 
 class ScreenplayPDF(FPDF):
     def __init__(self):
@@ -132,6 +133,20 @@ class ScreenplayRenderer:
                     pdf.ln(pdf.line_height)
         pdf.output(output_path)
 
+    def _add_page_number(self, run):
+        fldChar1 = OxmlElement('w:fldChar')
+        fldChar1.set(ns.qn('w:fldCharType'), 'begin')
+        run._r.append(fldChar1)
+
+        instrText = OxmlElement('w:instrText')
+        instrText.set(ns.qn('xml:space'), 'preserve')
+        instrText.text = "PAGE"
+        run._r.append(instrText)
+
+        fldChar2 = OxmlElement('w:fldChar')
+        fldChar2.set(ns.qn('w:fldCharType'), 'end')
+        run._r.append(fldChar2)
+
     def render_docx(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = "", project_title: str = "Untitled"):
         doc = Document()
         
@@ -146,6 +161,20 @@ class ScreenplayRenderer:
         section.right_margin = Inches(1.0)
         section.top_margin = Inches(1.0)
         section.bottom_margin = Inches(1.0)
+        section.header_distance = Inches(0.5)
+
+        # Enable different header for the first page (title page)
+        section.different_first_page_header_footer = True
+        
+        # Add page numbers to header (except first page)
+        header = section.header
+        p_header = header.paragraphs[0]
+        p_header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+        run_header = p_header.add_run()
+        run_header.font.name = 'Courier'
+        run_header.font.size = Pt(12)
+        self._add_page_number(run_header)
+        run_header.add_text(".")
 
         title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
 
@@ -161,7 +190,6 @@ class ScreenplayRenderer:
         for i, line in enumerate(title_lines):
             p = doc.add_paragraph()
             run = p.add_run(line.strip().upper() if i == 0 else line.strip())
-            # Force Courier on run level to be absolutely sure
             run.font.name = 'Courier'
             if i == 0:
                 run.bold = True
