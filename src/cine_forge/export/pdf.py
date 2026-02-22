@@ -1,11 +1,16 @@
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from fpdf import FPDF
+
 
 class PDFExporter(FPDF):
     def header(self):
         if self.page_no() > 1:
             self.set_font("helvetica", "I", 8)
-            self.cell(0, 10, "CineForge Project Report", align="R", new_x="LMARGIN", new_y="NEXT")
+            self.cell(
+                0, 10, "CineForge Project Report", 
+                align="R", new_x="LMARGIN", new_y="NEXT"
+            )
 
     def footer(self):
         self.set_y(-15)
@@ -36,10 +41,10 @@ class PDFGenerator:
         self,
         project_name: str,
         project_id: str,
-        scenes: List[Dict[str, Any]],
-        characters: Dict[str, Dict[str, Any]],
-        locations: Dict[str, Dict[str, Any]],
-        props: Dict[str, Dict[str, Any]],
+        scenes: list[dict[str, Any]],
+        characters: dict[str, dict[str, Any]],
+        locations: dict[str, dict[str, Any]],
+        props: dict[str, dict[str, Any]],
         output_path: str
     ):
         pdf = PDFExporter()
@@ -49,12 +54,21 @@ class PDFGenerator:
         # --- Title Page ---
         pdf.ln(60)
         pdf.set_font("helvetica", "B", 32)
-        pdf.cell(0, 20, self.sanitize(project_name), align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(
+            0, 20, self.sanitize(project_name), 
+            align="C", new_x="LMARGIN", new_y="NEXT"
+        )
         pdf.set_font("helvetica", "", 16)
-        pdf.cell(0, 10, "Project Analysis Report", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(
+            0, 10, "Project Analysis Report", 
+            align="C", new_x="LMARGIN", new_y="NEXT"
+        )
         pdf.ln(10)
         pdf.set_font("helvetica", "I", 12)
-        pdf.cell(0, 10, f"ID: {project_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(
+            0, 10, f"ID: {project_id}", 
+            align="C", new_x="LMARGIN", new_y="NEXT"
+        )
         
         pdf.add_page()
 
@@ -69,7 +83,12 @@ class PDFGenerator:
             heading = scene.get("heading") or "Unknown"
             time = scene.get("time_of_day") or ""
             summary = (scene.get("summary") or "")[:80] + "..."
-            scene_rows.append([self.sanitize(idx), self.sanitize(heading), self.sanitize(time), self.sanitize(summary)])
+            scene_rows.append([
+                self.sanitize(idx), 
+                self.sanitize(heading), 
+                self.sanitize(time), 
+                self.sanitize(summary)
+            ])
 
         with pdf.table(col_widths=(10, 60, 30, 90)) as table:
             for row in scene_rows:
@@ -93,19 +112,30 @@ class PDFGenerator:
                 pdf.set_font("helvetica", "B", 10)
                 pdf.cell(30, 7, "Role:")
                 pdf.set_font("helvetica", "", 10)
-                pdf.cell(0, 7, self.sanitize(char_data.get("narrative_role") or "Unknown"), new_x="LMARGIN", new_y="NEXT")
+                pdf.cell(
+                    0, 7, 
+                    self.sanitize(char_data.get("narrative_role") or "Unknown"), 
+                    new_x="LMARGIN", new_y="NEXT"
+                )
                 
                 if aliases := char_data.get("aliases"):
                     pdf.set_font("helvetica", "B", 10)
                     pdf.cell(30, 7, "Aliases:")
                     pdf.set_font("helvetica", "", 10)
-                    pdf.cell(0, 7, self.sanitize(", ".join(aliases)), new_x="LMARGIN", new_y="NEXT")
+                    pdf.cell(
+                        0, 7, self.sanitize(", ".join(aliases)), 
+                        new_x="LMARGIN", new_y="NEXT"
+                    )
 
                 pdf.ln(2)
                 pdf.set_font("helvetica", "B", 10)
                 pdf.cell(0, 7, "Description:", new_x="LMARGIN", new_y="NEXT")
                 pdf.set_font("helvetica", "", 10)
-                pdf.multi_cell(0, 5, self.sanitize(char_data.get("description") or "No description available."), new_x="LMARGIN", new_y="NEXT")
+                desc = char_data.get("description") or "No description available."
+                pdf.multi_cell(
+                    0, 5, self.sanitize(desc), 
+                    new_x="LMARGIN", new_y="NEXT"
+                )
                 
                 # Traits
                 if traits := char_data.get("inferred_traits"):
@@ -136,7 +166,11 @@ class PDFGenerator:
                 pdf.set_font("helvetica", "B", 10)
                 pdf.cell(0, 7, "Significance:", new_x="LMARGIN", new_y="NEXT")
                 pdf.set_font("helvetica", "", 10)
-                pdf.multi_cell(0, 5, self.sanitize(loc_data.get("narrative_significance") or "No detail available."), new_x="LMARGIN", new_y="NEXT")
+                sig = loc_data.get("narrative_significance") or "No detail available."
+                pdf.multi_cell(
+                    0, 5, self.sanitize(sig), 
+                    new_x="LMARGIN", new_y="NEXT"
+                )
                 
                 if physical := loc_data.get("physical_traits"):
                     pdf.ln(2)
@@ -153,7 +187,7 @@ class PDFGenerator:
     def generate_call_sheet(
         self,
         project_name: str,
-        scenes: List[Dict[str, Any]],
+        scenes: list[dict[str, Any]],
         output_path: str
     ):
         pdf = PDFExporter()
@@ -175,9 +209,15 @@ class PDFGenerator:
             idx = str(scene.get("scene_number") or (i + 1))
             heading = scene.get("heading") or "Unknown"
             summary = (scene.get("summary") or "")[:50]
-            cast = ", ".join((scene.get("characters_present") or []))[:30]
+            cast = ", ".join(scene.get("characters_present") or [])[:30]
             pages = "1/8"
-            rows.append([self.sanitize(idx), self.sanitize(heading), self.sanitize(summary), self.sanitize(cast), pages])
+            rows.append([
+                self.sanitize(idx), 
+                self.sanitize(heading), 
+                self.sanitize(summary), 
+                self.sanitize(cast), 
+                pages
+            ])
 
         with pdf.table(col_widths=(15, 60, 60, 40, 15)) as table:
             for row in rows:

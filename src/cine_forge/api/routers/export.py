@@ -1,7 +1,6 @@
-from typing import Annotated, Literal, List, Optional
-from pathlib import Path
 import tempfile
-import shutil
+from pathlib import Path
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse, Response
@@ -17,6 +16,8 @@ ExportScope = Literal["everything", "scenes", "characters", "locations", "props"
 ExportFormat = Literal["markdown", "pdf", "call-sheet", "fountain", "docx"]
 
 def get_store(project_id: str) -> ArtifactStore:
+    # TODO: This should ideally come from a dependency injection or service
+    # For now, we assume standard project structure
     project_dir = Path(f"output/{project_id}")
     if not project_dir.exists():
         raise HTTPException(status_code=404, detail="Project not found")
@@ -104,15 +105,19 @@ def export_markdown(
     scope: Annotated[ExportScope, Query()] = "everything",
     entity_id: str | None = None,
     entity_type: str | None = None, # scene, character, location, prop
-    include: Annotated[List[str] | None, Query()] = None
+    include: Annotated[list[str] | None, Query()] = None
 ):
     store = get_store(project_id)
     exporter = MarkdownExporter()
     project_title = load_project_title(store, project_id)
     
+    # Simple single entity case
     if scope == "single":
         if not entity_id or not entity_type:
-            raise HTTPException(status_code=400, detail="entity_id and entity_type required for single scope")
+            raise HTTPException(
+                status_code=400, 
+                detail="entity_id and entity_type required for single scope"
+            )
         
         artifact_type = "scene" if entity_type == "scene" else f"{entity_type}_bible"
         versions = store.list_versions(artifact_type, entity_id)
@@ -131,6 +136,7 @@ def export_markdown(
             "Content-Disposition": f"attachment; filename={entity_id}.md"
         })
 
+    # Collection cases
     scenes, characters, locations, props = load_all_artifacts(store)
     
     md = ""
@@ -161,8 +167,8 @@ def export_markdown(
         filename = f"{project_id}-characters.md"
     elif scope == "locations":
         md = exporter.generate_header("Locations", 1)
-        for lid, l in locations.items():
-            md += exporter.generate_entity_markdown(l, lid, "Location") + "---\n\n"
+        for lid, loc in locations.items():
+            md += exporter.generate_entity_markdown(loc, lid, "Location") + "---\n\n"
         filename = f"{project_id}-locations.md"
     elif scope == "props":
         md = exporter.generate_header("Props", 1)
@@ -196,13 +202,19 @@ def export_pdf(
     scenes, characters, locations, props = load_all_artifacts(store)
     project_title = load_project_title(store, project_id)
     
+    # Temp file for PDF
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         output_path = tmp.name
 
+    pdf_gen = PDFGenerator()
+    
     try:
         if layout == "call-sheet":
-            pdf_gen = PDFGenerator()
-            pdf_gen.generate_call_sheet(project_name=project_title, scenes=scenes, output_path=output_path)
+            pdf_gen.generate_call_sheet(
+                project_name=project_title, 
+                scenes=scenes, 
+                output_path=output_path
+            )
             filename = f"{project_id}-call-sheet.pdf"
         elif layout == "screenplay":
             renderer = ScreenplayRenderer()
@@ -211,10 +223,14 @@ def export_pdf(
                 first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
                 pre_scene_text = load_pre_scene_text(store, first_scene_line)
             
-            renderer.render_pdf(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text, project_title=project_title)
+            renderer.render_pdf(
+                scenes=scenes, 
+                output_path=output_path, 
+                pre_scene_text=pre_scene_text, 
+                project_title=project_title
+            )
             filename = f"{project_id}-screenplay.pdf"
         else:
-            pdf_gen = PDFGenerator()
             pdf_gen.generate_project_pdf(
                 project_name=project_title, project_id=project_id,
                 scenes=scenes, characters=characters, locations=locations, props=props,
@@ -230,7 +246,7 @@ def export_pdf(
         )
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)
-        raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}") from e
 
 @router.get("/docx")
 def export_docx(project_id: str):
@@ -248,7 +264,12 @@ def export_docx(project_id: str):
             first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
             pre_scene_text = load_pre_scene_text(store, first_scene_line)
             
-        renderer.render_docx(scenes=scenes, output_path=output_path, pre_scene_text=pre_scene_text, project_title=project_title)
+        renderer.render_docx(
+            scenes=scenes, 
+            output_path=output_path, 
+            pre_scene_text=pre_scene_text, 
+            project_title=project_title
+        )
         filename = f"{project_id}-screenplay.docx"
             
         return FileResponse(
@@ -259,4 +280,4 @@ def export_docx(project_id: str):
         )
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)
-        raise HTTPException(status_code=500, detail=f"Docx generation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Docx generation failed: {str(e)}") from e

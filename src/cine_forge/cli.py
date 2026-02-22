@@ -1,16 +1,18 @@
 import argparse
+import json
 import sys
 import uuid
-import yaml
-import json
 from pathlib import Path
 from typing import Any
 
-from cine_forge.driver.engine import DriverEngine
+import yaml
+
+from cine_forge.api.routers.export import load_all_artifacts
 from cine_forge.artifacts.store import ArtifactStore
+from cine_forge.driver.engine import DriverEngine
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
-from cine_forge.api.routers.export import load_all_artifacts
+
 
 def _parse_param_overrides(raw_params: list[str]) -> dict[str, Any]:
     parsed: dict[str, Any] = {}
@@ -140,16 +142,28 @@ def main():
     run_parser.add_argument("--accept-config", action="store_true", help="Auto-confirm config.")
     run_parser.add_argument("--config-file", help="Path to config draft.")
     run_parser.add_argument("--autonomous", action="store_true", help="Autonomous mode.")
-    run_parser.add_argument("--param", action="append", default=[], help="Runtime parameter override.")
+    run_parser.add_argument(
+        "--param", action="append", default=[], 
+        help="Runtime parameter override."
+    )
     run_parser.add_argument("--params-file", help="Params file.")
     run_parser.set_defaults(func=handle_run)
 
     # Export Command
     export_parser = subparsers.add_parser("export", help="Export project artifacts")
     export_parser.add_argument("--project", required=True, help="Project ID")
-    export_parser.add_argument("--format", required=True, choices=["markdown", "pdf"], help="Export format")
-    export_parser.add_argument("--scope", default="everything", help="Export scope (default: everything)")
-    export_parser.add_argument("--layout", default="report", choices=["report", "call-sheet"], help="PDF layout (default: report)")
+    export_parser.add_argument(
+        "--format", required=True, choices=["markdown", "pdf"], 
+        help="Export format"
+    )
+    export_parser.add_argument(
+        "--scope", default="everything", 
+        help="Export scope (default: everything)"
+    )
+    export_parser.add_argument(
+        "--layout", default="report", choices=["report", "call-sheet"], 
+        help="PDF layout (default: report)"
+    )
     export_parser.add_argument("--out", required=True, help="Output file path")
     export_parser.set_defaults(func=handle_export)
 

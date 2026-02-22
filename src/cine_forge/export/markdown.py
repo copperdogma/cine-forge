@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 
 def generate_header(title: str, level: int = 1) -> str:
     return f"{'#' * level} {title}\n\n"
@@ -8,7 +9,7 @@ def generate_metadata(label: str, value: Any) -> str:
         return ""
     return f"**{label}:** {value}\n\n"
 
-def generate_list(label: str, items: Optional[List[str]]) -> str:
+def generate_list(label: str, items: list[str] | None) -> str:
     if not items:
         return ""
     md = f"**{label}:**\n"
@@ -24,8 +25,12 @@ class MarkdownExporter:
         # Simple title case conversion: "the_mariner" -> "The Mariner"
         return entity_id.replace("_", " ").title()
 
-    def generate_scene_markdown(self, scene_data: Dict[str, Any], index: int) -> str:
-        heading = scene_data.get("heading") or scene_data.get("scene_heading") or f"Scene {index}"
+    def generate_scene_markdown(self, scene_data: dict[str, Any], index: int) -> str:
+        heading = (
+            scene_data.get("heading") or 
+            scene_data.get("scene_heading") or 
+            f"Scene {index}"
+        )
         location = scene_data.get("location") or scene_data.get("scene_location")
         int_ext = scene_data.get("int_ext") or scene_data.get("interior_exterior")
         time_of_day = scene_data.get("time_of_day") or scene_data.get("time")
@@ -97,7 +102,9 @@ class MarkdownExporter:
 
         return md
 
-    def generate_entity_markdown(self, entity_data: Dict[str, Any], entity_id: str, type_label: str) -> str:
+    def generate_entity_markdown(
+        self, entity_data: dict[str, Any], entity_id: str, type_label: str
+    ) -> str:
         name = entity_data.get("name") or self.format_entity_name(entity_id)
         md = generate_header(name, 2)
 
@@ -162,8 +169,7 @@ class MarkdownExporter:
                     md += f"- {ev}\n"
             md += "\n"
 
-        # General Evidence (Locations/Props - usually raw strings if present, but strictly they assume explicit_evidence structure in new schema?)
-        # Legacy/Simple 'evidence' field
+        # General Evidence (Locations/Props)
         if simple_evidence := entity_data.get("evidence"):
              if isinstance(simple_evidence, list):
                 md += generate_list("Evidence", simple_evidence)
@@ -196,20 +202,13 @@ class MarkdownExporter:
         self,
         project_name: str,
         project_id: str,
-        scenes: List[Dict[str, Any]],
-        characters: Dict[str, Dict[str, Any]],
-        locations: Dict[str, Dict[str, Any]],
-        props: Dict[str, Dict[str, Any]],
+        scenes: list[dict[str, Any]],
+        characters: dict[str, dict[str, Any]],
+        locations: dict[str, dict[str, Any]],
+        props: dict[str, dict[str, Any]],
         script_content: str = "",
-        include: Optional[List[str]] = None
+        include: list[str] | None = None
     ) -> str:
-        # Default to everything except script (unless explicit) if include is None
-        # Actually, user wants granularity. If include is passed, respect it.
-        # If None, standard behavior (everything?). Let's say default is ALL except script unless asked?
-        # Requirement: "In the everything section we need checkboxes... defaulting to everything checked."
-        # So "everything" usually implies scenes, chars, etc.
-        # "Script" is separate.
-        
         if include is None:
             include = ["scenes", "characters", "locations", "props"]
 

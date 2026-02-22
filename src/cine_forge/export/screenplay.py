@@ -1,9 +1,11 @@
-from typing import Any, Dict, List, Optional
-from fpdf import FPDF
+from typing import Any
+
 from docx import Document
-from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement, ns
+from docx.shared import Inches, Pt
+from fpdf import FPDF
+
 
 class ScreenplayPDF(FPDF):
     def __init__(self):
@@ -25,7 +27,7 @@ class ScreenplayPDF(FPDF):
     def footer(self):
         pass
 
-    def render_title_page(self, title_lines: List[str]):
+    def render_title_page(self, title_lines: list[str]):
         if not title_lines:
             return
         self.add_page()
@@ -38,10 +40,16 @@ class ScreenplayPDF(FPDF):
                 continue
             if i == 0:
                 self.set_font("Courier", "B", 12)
-                self.multi_cell(0, self.line_height, line.strip().upper(), align="C", new_x="LMARGIN", new_y="NEXT")
+                self.multi_cell(
+                    0, self.line_height, line.strip().upper(), 
+                    align="C", new_x="LMARGIN", new_y="NEXT"
+                )
                 self.set_font("Courier", "", 12)
             else:
-                self.multi_cell(0, self.line_height, line.strip(), align="C", new_x="LMARGIN", new_y="NEXT")
+                self.multi_cell(
+                    0, self.line_height, line.strip(), 
+                    align="C", new_x="LMARGIN", new_y="NEXT"
+                )
 
 class ScreenplayRenderer:
     def sanitize(self, text: str | Any) -> str:
@@ -58,7 +66,7 @@ class ScreenplayRenderer:
             s = s.replace(k, v)
         return s.encode("latin-1", "replace").decode("latin-1")
 
-    def _split_pre_scene(self, text: str) -> tuple[List[str], List[str]]:
+    def _split_pre_scene(self, text: str) -> tuple[list[str], list[str]]:
         lines = text.splitlines()
         title_lines = []
         teaser_lines = []
@@ -77,7 +85,10 @@ class ScreenplayRenderer:
                 teaser_lines.append(line)
         return title_lines, teaser_lines
 
-    def render_pdf(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = "", project_title: str = "Untitled"):
+    def render_pdf(
+        self, scenes: list[dict[str, Any]], output_path: str, 
+        pre_scene_text: str = "", project_title: str = "Untitled"
+    ):
         pdf = ScreenplayPDF()
         title_lines, teaser_lines = self._split_pre_scene(pre_scene_text)
         
@@ -93,7 +104,10 @@ class ScreenplayRenderer:
                 if not line.strip():
                     pdf.ln(pdf.line_height)
                     continue
-                pdf.multi_cell(0, pdf.line_height, self.sanitize(line), align="L", new_x="LMARGIN", new_y="NEXT")
+                pdf.multi_cell(
+                    0, pdf.line_height, self.sanitize(line), 
+                    align="L", new_x="LMARGIN", new_y="NEXT"
+                )
             pdf.ln(pdf.line_height)
 
         for scene in scenes:
@@ -104,32 +118,50 @@ class ScreenplayRenderer:
                     pdf.ln(pdf.line_height)
                     pdf.set_font("Courier", "B", 12)
                     pdf.set_x(1.5)
-                    pdf.multi_cell(0, pdf.line_height, content.upper(), align="L", new_x="LMARGIN", new_y="NEXT")
+                    pdf.multi_cell(
+                        0, pdf.line_height, content.upper(), 
+                        align="L", new_x="LMARGIN", new_y="NEXT"
+                    )
                     pdf.ln(pdf.line_height)
                 elif etype == "character":
                     pdf.ln(pdf.line_height)
                     pdf.set_font("Courier", "", 12)
                     pdf.set_x(3.5)
-                    pdf.multi_cell(2.0, pdf.line_height, content.upper(), align="L", new_x="LMARGIN", new_y="NEXT")
+                    pdf.multi_cell(
+                        2.0, pdf.line_height, content.upper(), 
+                        align="L", new_x="LMARGIN", new_y="NEXT"
+                    )
                 elif etype == "parenthetical":
                     pdf.set_font("Courier", "", 12)
                     pdf.set_x(3.0)
-                    pdf.multi_cell(2.0, pdf.line_height, f"({content})", align="L", new_x="LMARGIN", new_y="NEXT")
+                    pdf.multi_cell(
+                        2.0, pdf.line_height, f"({content})", 
+                        align="L", new_x="LMARGIN", new_y="NEXT"
+                    )
                 elif etype == "dialogue":
                     pdf.set_font("Courier", "", 12)
                     pdf.set_x(2.5)
-                    pdf.multi_cell(3.5, pdf.line_height, content, align="L", new_x="LMARGIN", new_y="NEXT")
+                    pdf.multi_cell(
+                        3.5, pdf.line_height, content, 
+                        align="L", new_x="LMARGIN", new_y="NEXT"
+                    )
                     pdf.ln(pdf.line_height)
                 elif etype == "transition":
                     pdf.ln(pdf.line_height)
                     pdf.set_font("Courier", "", 12)
                     pdf.set_x(5.5)
-                    pdf.multi_cell(2.0, pdf.line_height, content.upper(), align="L", new_x="LMARGIN", new_y="NEXT")
+                    pdf.multi_cell(
+                        2.0, pdf.line_height, content.upper(), 
+                        align="L", new_x="LMARGIN", new_y="NEXT"
+                    )
                     pdf.ln(pdf.line_height)
                 else: # action
                     pdf.set_font("Courier", "", 12)
                     pdf.set_x(1.5)
-                    pdf.multi_cell(6.0, pdf.line_height, content, align="L", new_x="LMARGIN", new_y="NEXT")
+                    pdf.multi_cell(
+                        6.0, pdf.line_height, content, 
+                        align="L", new_x="LMARGIN", new_y="NEXT"
+                    )
                     pdf.ln(pdf.line_height)
         pdf.output(output_path)
 
@@ -147,7 +179,10 @@ class ScreenplayRenderer:
         fldChar2.set(ns.qn('w:fldCharType'), 'end')
         run._r.append(fldChar2)
 
-    def render_docx(self, scenes: List[Dict[str, Any]], output_path: str, pre_scene_text: str = "", project_title: str = "Untitled"):
+    def render_docx(
+        self, scenes: list[dict[str, Any]], output_path: str, 
+        pre_scene_text: str = "", project_title: str = "Untitled"
+    ):
         doc = Document()
         
         # Set Global Style
