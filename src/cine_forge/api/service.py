@@ -907,11 +907,41 @@ class OperatorConsoleService:
         return messages
 
     def append_chat_message(self, project_id: str, message: dict[str, Any]) -> dict[str, Any]:
-        """Append a chat message to the project's chat.jsonl (idempotent by message ID)."""
+        """Append a chat message to the project's chat.jsonl (idempotent by message ID).
+
+        Activity-typed messages use upsert semantics: if a line with the same ID
+        already exists it is replaced in-place so at most one activity entry
+        appears in the JSONL at any time (story 067).
+        """
         path = self._chat_path(project_id)
         msg_id = message.get("id", "")
+        msg_type = message.get("type", "")
 
-        # Idempotency check — scan for existing ID
+        # Activity messages: upsert (replace existing line with same ID)
+        if msg_type == "activity" and msg_id and path.exists():
+            lines = path.read_text(encoding="utf-8").splitlines()
+            replaced = False
+            new_line = json.dumps(message, separators=(",", ":"))
+            updated_lines: list[str] = []
+            for raw in lines:
+                stripped = raw.strip()
+                if not stripped:
+                    continue
+                try:
+                    existing = json.loads(stripped)
+                    if existing.get("id") == msg_id:
+                        updated_lines.append(new_line)
+                        replaced = True
+                        continue
+                except json.JSONDecodeError:
+                    pass
+                updated_lines.append(stripped)
+            if replaced:
+                path.write_text("\n".join(updated_lines) + "\n", encoding="utf-8")
+                return message
+            # No existing line found — fall through to append below
+
+        # Idempotency check — scan for existing ID (non-activity messages)
         if path.exists() and msg_id:
             for line in path.read_text(encoding="utf-8").splitlines():
                 line = line.strip()

@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { useHistoryBack } from '@/lib/use-history-back'
 import { useState } from 'react'
 import {
   ArrowLeft,
@@ -67,6 +68,7 @@ function ContentSkeleton() {
 export default function ArtifactDetail() {
   const { projectId, artifactType, entityId, version } = useParams()
   const navigate = useNavigate()
+  const goBack = useHistoryBack(`/${projectId}/artifacts`)
   const [showRawJson, setShowRawJson] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
   const [editedJson, setEditedJson] = useState('')
@@ -137,10 +139,10 @@ export default function ArtifactDetail() {
             variant="ghost"
             size="sm"
             className="gap-1.5"
-            onClick={() => navigate(`/${projectId}/artifacts`)}
+            onClick={goBack}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to artifacts
+            Back
           </Button>
         </div>
         <ErrorState
@@ -160,10 +162,10 @@ export default function ArtifactDetail() {
             variant="ghost"
             size="sm"
             className="gap-1.5"
-            onClick={() => navigate(`/${projectId}/artifacts`)}
+            onClick={goBack}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to artifacts
+            Back
           </Button>
         </div>
         <ErrorState message="Artifact not found" />
@@ -305,10 +307,10 @@ export default function ArtifactDetail() {
             variant="ghost"
             size="sm"
             className="gap-1.5 text-muted-foreground hover:text-foreground"
-            onClick={() => navigate(`/${projectId}/artifacts`)}
+            onClick={goBack}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to artifacts
+            Back
           </Button>
         </div>
 

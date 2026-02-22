@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-02-22-05] — UI polish bundle: chat dedup, back nav, inbox read state (Stories 067, 068, 069)
+
+### Fixed
+- Chat navigation messages no longer duplicate on reload — stable activity IDs + backend upsert + client-side dedup safety net (Story 067)
+- Back buttons now use browser history (`navigate(-1)`) instead of hardcoded routes, with fallback for direct-link opens (Story 068)
+
+### Added
+- Gmail-style read/unread inbox model with filter toggle (Unread/Read/All), per-item read indicators, and "Mark All Read" (Story 069)
+- Shared `inbox-utils.ts` with stable ID builders and `useHistoryBack` hook for cross-component reuse
+
+### Changed
+- Inbox nav badge now shows unread count only, persisted in project `ui_preferences`
+- Back button labels changed from "Back to {X}" to generic "Back" (destination is unknowable with history-based nav)
+
 ## [2026-02-22-04] — Triage session: 5 new stories from inbox
 
 ### Added

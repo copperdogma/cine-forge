@@ -1,7 +1,7 @@
 # Story 067 — chat-duplicate-nav-dedup
 
 **Priority**: High
-**Status**: Pending
+**Status**: Done
 **Spec Refs**: None
 **Depends On**: 011e (UX Golden Path), 051 (Chat UX Polish)
 
@@ -11,11 +11,11 @@ Navigation context messages ("Viewing run: X", "Reviewing Run History", etc.) ac
 
 ## Acceptance Criteria
 
-- [ ] Clicking through Runs, Run Detail, Characters, Scenes, etc. in sequence produces exactly one activity message visible at the bottom of the chat at all times — never a stack of duplicates.
-- [ ] After a hard page reload, the chat history contains at most one trailing activity message per navigation session (no JSONL-replayed duplicates).
-- [ ] Non-activity messages (AI responses, user messages, pipeline status) are never affected — they remain untouched by the deduplication logic.
-- [ ] Rapid navigation (clicking 3-4 pages in quick succession) does not leave orphan activity entries — the final visible state shows only the last destination.
-- [ ] The fix is purely in-memory and backend-persistence logic; no visible UI or UX change is introduced.
+- [x] Clicking through Runs, Run Detail, Characters, Scenes, etc. in sequence produces exactly one activity message visible at the bottom of the chat at all times — never a stack of duplicates.
+- [x] After a hard page reload, the chat history contains at most one trailing activity message per navigation session (no JSONL-replayed duplicates).
+- [x] Non-activity messages (AI responses, user messages, pipeline status) are never affected — they remain untouched by the deduplication logic.
+- [x] Rapid navigation (clicking 3-4 pages in quick succession) does not leave orphan activity entries — the final visible state shows only the last destination.
+- [x] The fix is purely in-memory and backend-persistence logic; no visible UI or UX change is introduced.
 
 ## Out of Scope
 
@@ -42,22 +42,24 @@ Recommendation: **Option C**. Implement a backend upsert for `activity` type mes
 
 ## Tasks
 
-- [ ] In `ui/src/lib/chat-store.ts` — `addActivity`: change the generated message ID from `activity_${Date.now()}_${random}` to a stable per-project key `activity_nav_${projectId}`. This ensures the backend idempotency guard fires correctly after the upsert is added.
-- [ ] In `src/cine_forge/api/service.py` — `append_chat_message`: add upsert logic for `activity`-typed messages. When the incoming message type is `activity`, scan the JSONL for any line with the same ID and replace it in place (rewrite the file), or scan for any existing `activity` message at the tail and overwrite. Fall back to normal append for all other types.
-- [ ] Verify end-to-end: start the backend, open the UI, navigate to Runs, a Run Detail, back to Characters — confirm only one activity message appears and survives a page reload.
-- [ ] Run required checks for touched scope:
-  - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
-  - [ ] Backend unit tests: `.venv/bin/python -m pytest -m unit`
-  - [ ] UI lint: `pnpm --dir ui run lint`
-  - [ ] UI build/typecheck: `pnpm --dir ui run build` (or tsc -b equivalent)
-- [ ] Search docs and update any related story or AGENTS.md if a new pitfall pattern emerges
-- [ ] Verify adherence to Central Tenets (0-5):
-  - [ ] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved? (Activity messages are ephemeral UI context — no user-authored data at risk.)
-  - [ ] **T1 — AI-Coded:** Is the code AI-friendly? Would another AI session understand it?
-  - [ ] **T2 — Architect for 100x:** Did we over-engineer something AI will handle better soon?
-  - [ ] **T3 — Fewer Files:** Are files appropriately sized? Types centralized?
-  - [ ] **T4 — Verbose Artifacts:** Is the work log verbose enough for handoff?
-  - [ ] **T5 — Ideal vs Today:** Can this be simplified toward the ideal?
+- [x] In `ui/src/lib/chat-store.ts` — `addActivity`: change the generated message ID from `activity_${Date.now()}_${random}` to a stable per-project key `activity_nav_${projectId}`. This ensures the backend idempotency guard fires correctly after the upsert is added.
+- [x] In `src/cine_forge/api/service.py` — `append_chat_message`: add upsert logic for `activity`-typed messages. When the incoming message type is `activity`, scan the JSONL for any line with the same ID and replace it in place (rewrite the file), or scan for any existing `activity` message at the tail and overwrite. Fall back to normal append for all other types.
+- [x] In `ui/src/lib/chat-store.ts` — `migrateMessages`: add client-side dedup safety net — keep only the last activity message on cold load.
+- [x] Verify end-to-end: start the backend, open the UI, navigate to Scenes → Characters → Locations → Props → Inbox — confirm only one activity message appears and survives a hard page reload.
+- [x] Run required checks for touched scope:
+  - [x] Backend lint: `.venv/bin/python -m ruff check src/ tests/` — All checks passed
+  - [x] Backend unit tests: `.venv/bin/python -m pytest -m unit` — All 252 passed
+  - [x] UI lint: `pnpm --dir ui run lint` — 0 errors (7 pre-existing warnings)
+  - [x] UI typecheck: `cd ui && npx tsc -b` — Clean
+  - [x] UI build: `pnpm --dir ui run build` — Built in 2.02s
+- [x] Search docs and update any related story or AGENTS.md if a new pitfall pattern emerges — Added ChatMessagePayload missing `route` field to docs/inbox.md
+- [x] Verify adherence to Central Tenets (0-5):
+  - [x] **T0 — Data Safety:** Activity messages are ephemeral UI context — no user-authored data at risk. JSONL rewrite is strictly scoped to `type == "activity"`.
+  - [x] **T1 — AI-Coded:** Upsert branch clearly commented with story reference. migrateMessages dedup documented.
+  - [x] **T2 — Architect for 100x:** Minimal change — stable ID + targeted upsert. No over-engineering.
+  - [x] **T3 — Fewer Files:** Zero new files. Changes in 2 existing files only.
+  - [x] **T4 — Verbose Artifacts:** Work log captures all evidence.
+  - [x] **T5 — Ideal vs Today:** This is the ideal fix — backend upsert ensures JSONL correctness, client dedup provides safety net.
 
 ## Files to Modify
 
@@ -74,11 +76,76 @@ Recommendation: **Option C**. Implement a backend upsert for `activity` type mes
 
 **Alternative simpler fix if backend upsert is too invasive**: Add a `migrateMessages` deduplication pass in `chat-store.ts:loadMessages` that drops all but the last `activity` message in the loaded array. This is a client-side-only fix, requires zero backend change, and stops the visual duplication immediately. The JSONL will still accumulate activity lines over time (minor disk waste), but the UI will always be correct. This is a viable fallback if the backend upsert is deferred.
 
+## Bundle
+
+Stories 067, 068, and 069 form a **UI polish bundle** and should be implemented together in one session. They are independent of each other (no inter-dependencies) but share the same scope (UI state management and navigation). Completing all three clears the pending UI backlog before Phase 5 creative work begins.
+
 ## Plan
 
-{Written by build-story Phase 2 — per-task file changes, impact analysis, approval blockers,
-definition of done}
+**Approach: Option C (pragmatic backend upsert + stable ID) with client-side safety net.**
+
+### Task 1: Stable activity ID (frontend)
+
+**File:** `ui/src/lib/chat-store.ts`
+**Change:** In `addActivity` (line 104), replace:
+```ts
+id: `activity_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
+```
+with:
+```ts
+id: `activity_nav_${projectId}`
+```
+This makes all navigation activity messages for a project share one stable ID, so the backend idempotency/upsert can locate and replace the previous one.
+
+### Task 2: Backend upsert for activity messages
+
+**File:** `src/cine_forge/api/service.py`
+**Change:** In `append_chat_message` (lines 909-930), add an upsert branch before the normal append:
+- When `message.get("type") == "activity"` and `msg_id` is set:
+  - Read all JSONL lines
+  - If a line with the same ID exists, replace it with the new message and rewrite the file
+  - If no match, append normally (fall through to existing logic)
+- All non-activity messages use the existing idempotency-and-append path unchanged
+
+### Task 3: Client-side dedup safety net (belt-and-suspenders)
+
+**File:** `ui/src/lib/chat-store.ts`
+**Change:** In `migrateMessages` (lines 13-19), add a final pass after the existing `ai_status` migration:
+- Walk the message array and keep only the last `activity`-typed message, dropping earlier ones
+- This handles any pre-existing JSONL files that already contain duplicate activity lines
+
+### Impact Analysis
+
+- **No new API endpoints** — reuses existing POST `/api/projects/{project_id}/chat`
+- **No schema changes** — `ChatMessagePayload` model unchanged
+- **No risk to non-activity messages** — upsert branch is strictly `type == "activity"`; all other types follow the existing append path
+- **No backend tests exist** for chat persistence (confirmed via grep) — verified manually via smoke test per acceptance criteria
+- **Pre-existing issue noted**: `ChatMessagePayload` model (models.py:205) is missing the `route` field, so activity message routes are stripped on backend persistence. Out of scope for this story.
+
+### Approval Blockers
+
+None — no new dependencies, no schema changes, no public API changes. Pure behavioral fix.
+
+### Definition of Done
+
+- Navigate through 4+ pages → only one activity message visible in chat
+- Hard reload → no duplicates replayed from JSONL
+- Non-activity messages (AI responses, user messages, pipeline status) unaffected
+- Rapid navigation (3-4 pages quickly) → only last destination shown
+- Backend lint + unit tests pass
+- UI lint + typecheck pass
 
 ## Work Log
 
-{Entries added during implementation — YYYYMMDD-HHMM — action: result, evidence, next step}
+20260222-1210 — Exploration: Traced full call graph. 14 callers of addActivity across AppShell.tsx, ChatPanel.tsx, ProjectRun.tsx. Confirmed root cause: unique timestamp-based IDs bypass backend idempotency. migrateMessages only handles ai_status, not activity dedup. ChatMessagePayload model missing `route` field (pre-existing, logged to inbox.md). No existing tests for chat persistence.
+
+20260222-1215 — Implementation: Applied Option C (stable ID + backend upsert + client dedup safety net).
+- chat-store.ts: Changed addActivity ID to `activity_nav_${projectId}` (stable per-project).
+- chat-store.ts: Added migrateMessages dedup pass — keeps only last activity message on cold load. Used manual reverse loop instead of `findLastIndex` (ES2023 not in tsconfig lib target).
+- service.py: Added upsert branch in append_chat_message — when type=="activity" and ID matches existing JSONL line, replace in-place and rewrite file. Non-activity messages use existing append path unchanged.
+
+20260222-1220 — Static verification: ruff clean, 252 unit tests pass, UI lint 0 errors, tsc -b clean, vite build success (2.02s).
+
+20260222-1225 — Runtime smoke test: Started backend (port 8155) + UI dev server (port 5199). Opened Liberty and Church project. Navigated Scenes → Characters → Locations → Props → Inbox in quick succession. Chat panel showed exactly one activity message ("Reviewing Inbox") throughout. Hard reload (Cmd+Shift+R) — still one activity message, no JSONL-replayed duplicates. Console errors: only Chrome extension noise, zero app errors. All 5 acceptance criteria met.
+
+20260222-1400 — Story marked Done. All acceptance criteria verified, all checks pass (252 unit tests, ruff clean, lint 0 errors, tsc -b clean, build 1.82s, duplication 2.78%). Part of UI polish bundle (067/068/069).

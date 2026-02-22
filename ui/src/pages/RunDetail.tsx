@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useHistoryBack } from '@/lib/use-history-back'
 import {
   Clock,
   Loader2,
@@ -116,6 +117,7 @@ function mapApiEventsToRunEvents(apiEvents: Array<Record<string, unknown>>): Run
 export default function RunDetail() {
   const { projectId, runId } = useParams()
   const navigate = useNavigate()
+  const goBack = useHistoryBack(`/${projectId}/runs`)
 
   const { data: runStateResponse, isLoading, error, refetch } = useRunState(runId)
   const { data: eventsResponse, isLoading: eventsLoading } = useRunEvents(runId)
@@ -148,10 +150,10 @@ export default function RunDetail() {
           variant="ghost"
           size="sm"
           className="mb-4"
-          onClick={() => navigate(`/${projectId}/runs`)}
+          onClick={goBack}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Runs
+          Back
         </Button>
         <ErrorState
           message="Failed to load run details"
@@ -218,10 +220,10 @@ export default function RunDetail() {
           variant="ghost"
           size="sm"
           className="mb-3 -ml-2"
-          onClick={() => navigate(`/${projectId}/runs`)}
+          onClick={goBack}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Runs
+          Back
         </Button>
 
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">

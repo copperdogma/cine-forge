@@ -39,6 +39,13 @@ import { useProject, useChatLoader, useArtifactGroups, useRuns } from '@/lib/hoo
 import { useChatStore } from '@/lib/chat-store'
 import { useRunProgressChat } from '@/lib/use-run-progress'
 import { cn } from '@/lib/utils'
+import {
+  staleItemId,
+  errorItemId,
+  reviewItemId,
+  parseReadIds,
+  READ_INBOX_KEY,
+} from '@/lib/inbox-utils'
 
 /** Artifact type → nav route mapping for count badges. */
 const NAV_ARTIFACT_TYPES: Record<string, string[]> = {
@@ -164,15 +171,22 @@ function ShellInner() {
       }
     }
     // Inbox: match ProjectInbox logic — stale artifacts + failed runs + v1 bibles needing review
+    // Badge shows unread count only, using shared ID builders (story 069)
     const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
-    const staleCount = artifactGroups?.filter(g => g.health === 'stale').length ?? 0
-    const errorCount = runs?.filter(r => r.status === 'failed').length ?? 0
+    const readSet = new Set(parseReadIds(project?.ui_preferences?.[READ_INBOX_KEY]))
+    const staleCount = artifactGroups?.filter(g =>
+      g.health === 'stale' && !readSet.has(staleItemId(g.artifact_type, g.entity_id))
+    ).length ?? 0
+    const errorCount = runs?.filter(r =>
+      r.status === 'failed' && !readSet.has(errorItemId(r.run_id))
+    ).length ?? 0
     const reviewCount = artifactGroups?.filter(g =>
-      BIBLE_TYPES.includes(g.artifact_type) && g.latest_version === 1 && g.health !== 'stale'
+      BIBLE_TYPES.includes(g.artifact_type) && g.latest_version === 1 && g.health !== 'stale' &&
+      !readSet.has(reviewItemId(g.artifact_type, g.entity_id, g.latest_version))
     ).length ?? 0
     counts['inbox'] = staleCount + errorCount + reviewCount
     return counts
-  }, [artifactGroups, runs])
+  }, [artifactGroups, runs, project?.ui_preferences])
 
   // Emit activity notes on meaningful navigation (artifact detail, run detail)
   const prevPath = useRef(location.pathname)

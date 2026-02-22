@@ -89,9 +89,9 @@ NOTES from Cam:
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Cross-Cutting | Medium | Done | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 065 | Parallel Bible Extraction: Performance Optimization for Entity-Heavy Scripts | Cross-Cutting | High | Pending | [story-065](stories/story-065-parallel-bible-extraction.md) |
 | 066 | UI Component Deduplication & Template Consolidation | 2.5 — UI | High | Done | [story-066](stories/story-066-ui-component-deduplication.md) |
-| 067 | Chat Navigation Message Deduplication | 2.5 — UI | High | Pending | [story-067](stories/story-067-chat-duplicate-nav-dedup.md) |
-| 068 | History-Aware Back Button Navigation | 2.5 — UI | High | Pending | [story-068](stories/story-068-back-button-history-navigation.md) |
-| 069 | Inbox Item Read/Complete State | 2.5 — UI | High | Pending | [story-069](stories/story-069-inbox-read-state.md) |
+| 067 | Chat Navigation Message Deduplication | 2.5 — UI | High | Done | [story-067](stories/story-067-chat-duplicate-nav-dedup.md) |
+| 068 | History-Aware Back Button Navigation | 2.5 — UI | High | Done | [story-068](stories/story-068-back-button-history-navigation.md) |
+| 069 | Inbox Item Read/Complete State | 2.5 — UI | High | Done | [story-069](stories/story-069-inbox-read-state.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | 2.5 — UI | Medium | Pending | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 071 | Refine vs. Regenerate Pipeline Modes | Cross-Cutting | Medium | Pending | [story-071](stories/story-071-refine-vs-regenerate-pipeline.md) |
 

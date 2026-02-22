@@ -6,6 +6,8 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### UI / Interaction
 
+- **ChatMessagePayload missing `route` field**: The backend Pydantic model `ChatMessagePayload` (models.py:205) doesn't include `route`, so activity message routes are silently stripped on persistence. Activity messages sent from the frontend include `route` (used for navigation context), but `model_dump(exclude_none=True)` drops it before JSONL storage. On cold load, activity messages lose their route association. Low severity — activity messages are ephemeral UI context — but should be fixed for completeness.
+
 - Generate WAY better formatted callsheets like these ones from StudioBinder and Gill (my sister): '/Users/cam/Documents/Projects/cine-forge/input/Sample Call Sheets'
 
 - Steal Google new image gen AI: https://x.com/kimmonismus/status/2024773017432441133?s=12&t=uFZE-MuhgWdh1YErEZzLtQ

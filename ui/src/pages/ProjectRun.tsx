@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useHistoryBack } from '@/lib/use-history-back'
 import {
   Play,
   Upload,
@@ -95,6 +96,7 @@ type UploadedInputResponse = {
 export default function ProjectRun() {
   const { projectId, runId } = useParams()
   const navigate = useNavigate()
+  const goBack = useHistoryBack(`/${projectId}/runs`)
   const [selectedRecipe, setSelectedRecipe] = useState('mvp_ingest')
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [dragOver, setDragOver] = useState(false)
@@ -316,11 +318,11 @@ export default function ProjectRun() {
     return (
       <div className="w-full space-y-6">
         <button
-          onClick={() => navigate(`/${projectId}/runs`)}
+          onClick={goBack}
           className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
         >
           <ChevronRight className="h-4 w-4 rotate-180 mr-1" />
-          Back to Runs
+          Back
         </button>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">

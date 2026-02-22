@@ -11,11 +11,23 @@ import type { ChatAction, ChatMessage, ChatMessageType, ToolCallStatus } from '.
  * a past event. Convert them all to ai_status_done (static checkmark).
  */
 function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
-  return messages
+  const migrated = messages
     .filter((m) => m.type !== 'ai_tool_status') // Remove legacy separate tool messages
     .map((m) =>
       m.type === 'ai_status' ? { ...m, type: 'ai_status_done' as const } : m,
     )
+
+  // Deduplicate activity messages: keep only the last one.
+  // Older JSONL files may contain multiple activity lines from before the
+  // stable-ID fix (story 067). Drop all but the final activity entry.
+  let lastActivityIdx = -1
+  for (let i = migrated.length - 1; i >= 0; i--) {
+    if (migrated[i].type === 'activity') { lastActivityIdx = i; break }
+  }
+  if (lastActivityIdx > 0) {
+    return migrated.filter((m, i) => m.type !== 'activity' || i === lastActivityIdx)
+  }
+  return migrated
 }
 
 interface ChatStore {
@@ -101,7 +113,7 @@ export const useChatStore = create<ChatStore>()(
       const lastMsg = existing[existing.length - 1]
 
       const message: ChatMessage = {
-        id: `activity_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+        id: `activity_nav_${projectId}`,
         type: 'activity',
         content,
         timestamp: Date.now(),

@@ -1,4 +1,5 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useHistoryBack } from '@/lib/use-history-back'
 import {
   ArrowLeft,
   Users,
@@ -47,7 +48,6 @@ const sectionConfig: Record<string, {
   icon: typeof FileText
   label: string
   color: string
-  backLabel: string
   backPath: string
 }> = {
   characters: {
@@ -55,7 +55,6 @@ const sectionConfig: Record<string, {
     icon: Users,
     label: 'Character',
     color: 'text-amber-400',
-    backLabel: 'Characters',
     backPath: 'characters',
   },
   locations: {
@@ -63,7 +62,6 @@ const sectionConfig: Record<string, {
     icon: MapPin,
     label: 'Location',
     color: 'text-rose-400',
-    backLabel: 'Locations',
     backPath: 'locations',
   },
   props: {
@@ -71,7 +69,6 @@ const sectionConfig: Record<string, {
     icon: Wrench,
     label: 'Prop',
     color: 'text-orange-400',
-    backLabel: 'Props',
     backPath: 'props',
   },
   scenes: {
@@ -79,7 +76,6 @@ const sectionConfig: Record<string, {
     icon: Clapperboard,
     label: 'Scene',
     color: 'text-violet-400',
-    backLabel: 'Scenes',
     backPath: 'scenes',
   },
 }
@@ -387,7 +383,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
   if (artifactError) {
     return (
       <div>
-        <BackButton section={config.backPath} projectId={projectId} label={config.backLabel} />
+        <BackButton section={config.backPath} projectId={projectId} />
         <ErrorState message={artifactError instanceof Error ? artifactError.message : 'Failed to load'} />
       </div>
     )
@@ -396,7 +392,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
   if (!artifact || !group) {
     return (
       <div>
-        <BackButton section={config.backPath} projectId={projectId} label={config.backLabel} />
+        <BackButton section={config.backPath} projectId={projectId} />
         <EmptyState
           icon={config.icon}
           title={`${config.label} not found`}
@@ -445,7 +441,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Back navigation */}
       <div className="flex items-center justify-between">
-        <BackButton section={config.backPath} projectId={projectId} label={config.backLabel} />
+        <BackButton section={config.backPath} projectId={projectId} />
         
         <div className="flex items-center gap-2">
           {/* Main sequence nav (respects current sort) */}
@@ -639,18 +635,18 @@ export default function EntityDetailPage({ section }: { section: string }) {
   )
 }
 
-function BackButton({ section, projectId, label }: { section: string; projectId: string; label: string }) {
-  const navigate = useNavigate()
+function BackButton({ section, projectId }: { section: string; projectId: string }) {
+  const goBack = useHistoryBack(`/${projectId}/${section}`)
   return (
     <div>
       <Button
         variant="ghost"
         size="sm"
         className="gap-1.5 text-muted-foreground hover:text-foreground"
-        onClick={() => navigate(`/${projectId}/${section}`)}
+        onClick={goBack}
       >
         <ArrowLeft className="h-4 w-4" />
-        Back to {label}
+        Back
       </Button>
     </div>
   )
