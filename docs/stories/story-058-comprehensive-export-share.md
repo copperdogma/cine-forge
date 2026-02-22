@@ -2,7 +2,7 @@
 
 **Phase**: 2.5 — UI
 **Priority**: High
-**Status**: To Do
+**Status**: Done
 **Created**: 2026-02-20
 **Depends on**: Story 043 (Entity-First Navigation — Done)
 **Requested by**: Gill (user testing Liberty & Church screenplay)
@@ -224,3 +224,12 @@ Based on industry standard (reference PDF on file):
 - **Bug Fix**: Debugged and resolved `FPDFException` (horizontal space error) by forcing X-position resets after `multi_cell` calls.
 - **Fountain Export**: Added dedicated `.fountain` download.
 - **Verification**: Verified all formats via `scripts/verify_v3_exports.py` against real `lc-2` data.
+
+2026-02-21 16:45 — Refined Markdown script export.
+- Updated `MarkdownExporter` to return raw content when only the script is requested, removing project headers and code block wrappers.
+- Verified via reproduction script.
+
+2026-02-21 17:00 — Fixed PDF Report Cover Page.
+- Replaced `cell` with `multi_cell` for the project title to allow wrapping for long titles.
+- Adjusted font size from 32pt to 28pt and refined spacing for a more professional layout.
+- Verified with a reproduction script using a long project title.
