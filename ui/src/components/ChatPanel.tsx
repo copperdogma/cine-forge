@@ -446,19 +446,34 @@ export function ChatPanel() {
     )
   }
 
-  // Auto-scroll to bottom on any messages change (new message OR in-place content update),
-  // but ONLY if the user is already near the bottom (within ~120px). This way:
-  //   - During an active run: the chat keeps scrolling as updates stream in
-  //   - When the user scrolls up to review earlier messages: we don't yank them back down
-  // Depends on the `messages` array reference — Zustand replaces the array on every store
-  // mutation (including updateMessageContent), so this fires for all cases.
+  // Auto-scroll to bottom whenever scroll content grows taller, but ONLY if user is already
+  // near the bottom (within ~120px).
+  //
+  // Why ResizeObserver instead of a useEffect on `messages`:
+  //   The RunProgressCard is a single message whose content (run ID) never changes, but its
+  //   rendered height grows as new stage rows appear during a run. A `messages` dependency
+  //   misses those expansions. ResizeObserver fires whenever the content area changes size —
+  //   new messages, in-place content updates, and progress card stage rows all covered.
   useEffect(() => {
     const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
     if (!viewport) return
-    const distFromBottom = viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight
-    if (distFromBottom < 120) {
-      viewport.scrollTop = viewport.scrollHeight
+
+    const scrollIfNearBottom = () => {
+      const distFromBottom = viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight
+      if (distFromBottom < 120) {
+        viewport.scrollTop = viewport.scrollHeight
+      }
     }
+
+    // Also scroll immediately so existing messages are visible on mount
+    scrollIfNearBottom()
+
+    const observer = new ResizeObserver(scrollIfNearBottom)
+    // Observe the inner content div (first child of viewport) so we catch height changes
+    const content = viewport.firstElementChild
+    if (content) observer.observe(content)
+
+    return () => observer.disconnect()
   }, [messages])
 
   // Listen for programmatic "ask" events (from GlossaryTerm, SectionHelp, etc.)
