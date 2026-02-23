@@ -57,11 +57,15 @@ export function useRunProgressChat(projectId: string | undefined) {
   // Track which stages we've already notified as paused
   const pausedRef = useRef<Set<string>>(new Set())
 
+  // Bible extraction progress: track per-type found counts for in-place chat messages
+  const bibleFoundCountsRef = useRef<Record<string, number>>({})
+
   // Reset refs when active run changes
   useEffect(() => {
     completedRef.current = new Set()
     processedEventIdsRef.current = new Set()
     pausedRef.current = new Set()
+    bibleFoundCountsRef.current = {}
   }, [activeRunId])
 
   useEffect(() => {
@@ -160,12 +164,53 @@ export function useRunProgressChat(projectId: string | undefined) {
       }
     }
 
+    // --- Bible extraction live progress (artifact_saved events from world-building pipeline) ---
+    // Each character/location/prop bible artifact emits artifact_saved when saved mid-stage.
+    // We update ONE in-place message per type ("Writing 3 character bibles...") and immediately
+    // invalidate the sidebar artifact count so the badge ticks up as each entity lands.
+    const entityTypeLabel: Record<string, string> = {
+      character_bible: 'character',
+      location_bible: 'location',
+      prop_bible: 'prop',
+    }
+    for (let i = 0; i < backendEvents.length; i += 1) {
+      const evt = backendEvents[i]
+      const evtType = (evt.event as string) ?? ''
+      if (evtType !== 'artifact_saved') continue
+      const artifactType = (evt.artifact_type as string) ?? ''
+      if (!entityTypeLabel[artifactType]) continue
+
+      const entityId = (evt.entity_id as string) ?? ''
+      const dedupeKey = `${activeRunId}:artifact_saved:${artifactType}:${entityId}:${i}`
+      if (processedEventIdsRef.current.has(dedupeKey)) continue
+      processedEventIdsRef.current.add(dedupeKey)
+
+      // Immediately refresh sidebar counts so the badge ticks up as each entity lands
+      queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
+
+      // Increment per-type count and update in-place chat message
+      bibleFoundCountsRef.current[artifactType] = (bibleFoundCountsRef.current[artifactType] ?? 0) + 1
+      const found = bibleFoundCountsRef.current[artifactType]
+      const typeLabel = entityTypeLabel[artifactType]
+      const msgId = `bible_progress_${activeRunId}_${artifactType}`
+      const content = `Writing ${found} ${typeLabel} bible${found !== 1 ? 's' : ''}...`
+      const existingMsg = useChatStore.getState().messages[projectId]?.find(m => m.id === msgId)
+      if (!existingMsg) {
+        store.addMessage(projectId, { id: msgId, type: 'ai_status', content, timestamp: Date.now() })
+      } else {
+        store.updateMessageContent(projectId, msgId, content)
+      }
+    }
+
     // --- Check if run finished ---
     if (runState.state.finished_at && !completedRef.current.has(activeRunId)) {
       completedRef.current.add(activeRunId)
 
-      // Ensure "run started" spinner is resolved (may already be done when card was added)
+      // Resolve all in-flight spinners from this run
       store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
+      for (const t of ['character_bible', 'location_bible', 'prop_bible']) {
+        store.updateMessageType(projectId, `bible_progress_${activeRunId}_${t}`, 'ai_status_done')
+      }
 
       const hasFailed = Object.values(stages).some(
         (s) => s.status === 'failed',

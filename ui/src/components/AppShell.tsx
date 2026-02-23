@@ -64,34 +64,34 @@ const mainNavBase = [
   { to: 'inbox', label: 'Inbox', icon: Inbox },
 ]
 
-/** Animated badge that pulses when count increases. */
+/** Animated badge that pops when count increases — teal flash fading over 1.5s.
+ *  Uses pulseCount as key to force Badge remount on each increment so the
+ *  animation restarts cleanly even on rapid successive count increases. */
 function CountBadge({ count }: { count: number }) {
   const prevRef = useRef(count)
-  const [pulse, setPulse] = useState(false)
+  const [pulseCount, setPulseCount] = useState(0)
 
   useEffect(() => {
     if (count > prevRef.current) {
-      const t1 = setTimeout(() => setPulse(true), 0)
-      const t2 = setTimeout(() => setPulse(false), 600)
-      return () => {
-        clearTimeout(t1)
-        clearTimeout(t2)
-      }
+      // rAF keeps this async (avoids React 19 sync setState-in-effect warning)
+      const raf = requestAnimationFrame(() => setPulseCount(n => n + 1))
+      return () => cancelAnimationFrame(raf)
     }
     prevRef.current = count
   }, [count])
 
-  // Also update ref when not pulsing (handles decreases)
+  // Keep ref current on every change (handles decreases, no animation needed)
   useEffect(() => { prevRef.current = count }, [count])
 
   if (count === 0) return null
 
   return (
     <Badge
+      key={pulseCount}
       variant="secondary"
       className={cn(
-        'ml-auto text-xs px-1.5 py-0 tabular-nums transition-transform duration-300',
-        pulse && 'animate-pulse scale-110',
+        'ml-auto text-xs px-1.5 py-0 tabular-nums',
+        pulseCount > 0 && '[animation:badge-pop_1.5s_ease-out_forwards]',
       )}
     >
       {count}
@@ -160,7 +160,9 @@ function ShellInner() {
   useRunProgressChat(projectId)
 
   // --- Live nav counts ---
-  const { data: artifactGroups } = useArtifactGroups(projectId)
+  // Poll at 1.5s during an active run so entity counts tick up as bibles complete (story-072).
+  const activeRunId = useChatStore(s => projectId ? s.activeRunId?.[projectId] ?? null : null)
+  const { data: artifactGroups } = useArtifactGroups(projectId, activeRunId ? 750 : undefined)
   const { data: runs } = useRuns(projectId)
 
   const navCounts = useMemo(() => {

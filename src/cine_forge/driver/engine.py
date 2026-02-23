@@ -462,6 +462,57 @@ class DriverEngine:
                 )
                 attempt_started = time.time()
                 try:
+                    # Callback for modules to save entity artifacts mid-stage (live sidebar).
+                    # Called per entity as its LLM call completes; saves with lineage + emits event.
+                    def _announce_artifact(artifact_dict: dict[str, Any]) -> None:
+                        output_data = artifact_dict["data"]
+                        a_schema_names = self._schema_names_for_artifact(
+                            artifact=artifact_dict,
+                            output_schemas=module_manifest.output_schemas,
+                        )
+                        for a_schema_name in a_schema_names:
+                            a_validation = self.schemas.validate(
+                                schema_name=a_schema_name, data=output_data
+                            )
+                            if not a_validation.valid:
+                                raise ValueError(
+                                    f"announce_artifact schema validation failed: {a_validation}"
+                                )
+                        a_source_meta = artifact_dict.get("metadata", {})
+                        a_metadata = ArtifactMetadata.model_validate(
+                            {
+                                **a_source_meta,
+                                "lineage": _merge_lineage(
+                                    module_lineage=a_source_meta.get("lineage", []),
+                                    upstream_refs=upstream_refs,
+                                    stage_refs=[],
+                                ),
+                                "producing_module": module_manifest.module_id,
+                            }
+                        )
+                        a_ref = self.store.save_artifact(
+                            artifact_type=artifact_dict["artifact_type"],
+                            entity_id=artifact_dict.get("entity_id"),
+                            data=output_data,
+                            metadata=a_metadata,
+                        )
+                        with state_lock:
+                            stage_state["artifact_refs"].append(a_ref.model_dump())
+                        self._append_event(
+                            events_path,
+                            {
+                                "event": "artifact_saved",
+                                "stage_id": stage_id,
+                                "artifact_type": artifact_dict["artifact_type"],
+                                "entity_id": artifact_dict.get("entity_id"),
+                                "display_name": output_data.get("display_name")
+                                if isinstance(output_data, dict)
+                                else None,
+                            },
+                        )
+                        artifact_dict["pre_saved"] = True
+                        artifact_dict["pre_saved_ref"] = a_ref.model_dump()
+
                     module_result = module_runner(
                         inputs=module_inputs,
                         params=params_for_attempt,
@@ -470,6 +521,7 @@ class DriverEngine:
                             "stage_id": stage_id,
                             "runtime_params": resolved_runtime_params,
                             "project_dir": str(self.project_dir),
+                            "announce_artifact": _announce_artifact,
                         },
                     )
                     with state_lock:
@@ -592,6 +644,14 @@ class DriverEngine:
             persisted_outputs: list[dict[str, Any]] = []
             for artifact in outputs:
                 output_data = artifact["data"]
+
+                if artifact.get("pre_saved"):
+                    # Already saved mid-stage by announce_artifact; stage_state["artifact_refs"]
+                    # was already updated. Just recover the ref for persisted_outputs tracking.
+                    artifact_ref = ArtifactRef.model_validate(artifact["pre_saved_ref"])
+                    persisted_outputs.append({"ref": artifact_ref, "data": output_data})
+                    continue
+
                 schema_names = self._schema_names_for_artifact(
                     artifact=artifact,
                     output_schemas=module_manifest.output_schemas,
@@ -652,6 +712,30 @@ class DriverEngine:
                     )
                 with state_lock:
                     stage_state["artifact_refs"].append(artifact_ref.model_dump())
+                # For entity_discovery_results, include candidate counts so the
+                # frontend can show "Found X characters, Y locations, Z props" in chat.
+                extra_event_fields: dict[str, Any] = {}
+                if artifact["artifact_type"] == "entity_discovery_results" and isinstance(
+                    output_data, dict
+                ):
+                    extra_event_fields = {
+                        "character_count": len(output_data.get("characters", [])),
+                        "location_count": len(output_data.get("locations", [])),
+                        "prop_count": len(output_data.get("props", [])),
+                    }
+                self._append_event(
+                    events_path,
+                    {
+                        "event": "artifact_saved",
+                        "stage_id": stage_id,
+                        "artifact_type": artifact["artifact_type"],
+                        "entity_id": artifact.get("entity_id"),
+                        "display_name": output_data.get("display_name")
+                        if isinstance(output_data, dict)
+                        else None,
+                        **extra_event_fields,
+                    },
+                )
                 persisted_outputs.append(
                     {
                         "ref": artifact_ref,

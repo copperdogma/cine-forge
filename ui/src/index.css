@@ -134,3 +134,25 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Badge pop animation — fires when sidebar entity count increases during a run.
+   Flashes teal (brand primary) then fades back to secondary over 1.5s. */
+@keyframes badge-pop {
+  0% {
+    transform: scale(1.45);
+    background-color: oklch(0.68 0.12 175);
+    color: oklch(0.98 0 0);
+    box-shadow: 0 0 0 3px oklch(0.68 0.12 175 / 0.4);
+  }
+  35% {
+    transform: scale(1.1);
+    background-color: oklch(0.68 0.12 175 / 0.7);
+    color: oklch(0.98 0 0);
+  }
+  100% {
+    transform: scale(1);
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+    box-shadow: none;
+  }
+}

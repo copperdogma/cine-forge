@@ -3,6 +3,8 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ## Untriaged
 
+- Tweak: When the chat window gets added to and the user is scrolled to the bottom, auto-scroll to the bottom of the chat window. If they're not at the bottom, don't scroll.
+
 - BUG: When you use the slash search command it goes to the raw artifact, not the char/location/pro detail as it should. For example in this local script: http://localhost:5174/the-mariner-28, searching /MARINER brings you to http://localhost:5174/the-mariner-28/artifacts/character_bible/mariner/1 instead of http://localhost:5174/the-mariner-28/characters/mariner . I think the raw artifacts should always be secondary in the search. That's almost never what anyone wants.
 
 ### UI / Interaction

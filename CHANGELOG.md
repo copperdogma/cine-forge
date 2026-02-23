@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-02-22-11] — Live entity discovery feedback during world-building runs (Story 072)
+
+### Added
+- `engine.py`: `announce_artifact` callback in context — modules call it per entity mid-stage to save with full lineage and emit an `artifact_saved` event with `entity_id`, `display_name`, and (for `entity_discovery_results`) candidate counts; `pre_saved` flag prevents double-save in the post-module loop
+- `artifact_saved` event type emitted for all saved artifacts (mid-stage via announce and post-module via normal path)
+- `use-run-progress.ts`: handles `artifact_saved` events for bible types — updates one in-place chat message per type ("Writing 3 character bibles…") as each entity lands, immediately invalidates sidebar artifact counts
+- `index.css`: `@keyframes badge-pop` — teal brand-color flash at 1.45× scale, fades back to secondary over 1.5s with glow ring
+- `ChatPanel.tsx`: smart auto-scroll — only scrolls to bottom if user is within 120px of bottom; preserves scroll position when user has scrolled up to review earlier messages
+
+### Changed
+- `character_bible_v1`, `location_bible_v1`, `prop_bible_v1`: switched from `zip(candidates, futures)` to `as_completed()` — entities announced to sidebar and chat as each LLM call completes rather than in a batch at stage end
+- `hooks.ts`: `useArtifactGroups` accepts optional `refetchInterval` param
+- `AppShell.tsx`: polls `useArtifactGroups` at 750ms during active run (no interval when idle); `CountBadge` uses `pulseCount` integer key to force Badge remount and restart `badge-pop` animation on each count increment
+- `use-run-progress.ts`: bible progress spinners (`ai_status`) resolved to `ai_status_done` checkmarks when run completes
+
 ## [2026-02-22-10] — Post-smoke-test UI/UX fixes: insight ordering, display names, stage order
 
 ### Fixed

@@ -94,7 +94,7 @@ NOTES from Cam:
 | 069 | Inbox Item Read/Complete State | 2.5 — UI | High | Done | [story-069](stories/story-069-inbox-read-state.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | 2.5 — UI | Medium | Pending | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 071 | Refine vs. Regenerate Pipeline Modes | Cross-Cutting | Medium | Pending | [story-071](stories/story-071-refine-vs-regenerate-pipeline.md) |
-| 072 | Live Entity Discovery Feedback | 2.5 — UI | Medium | Pending | [story-072](stories/story-072-live-entity-discovery-feedback.md) |
+| 072 | Live Entity Discovery Feedback | 2.5 — UI | Medium | Done | [story-072](stories/story-072-live-entity-discovery-feedback.md) |
 | 073 | Add `after:` ordering-only stage dependency to recipe DSL | Engine | Medium | Pending | [story-073](stories/story-073-add-after-ordering-dependency.md) |
 | 074 | Artifact graph staleness: regression tests + sibling fix | Engine | Medium | Pending | [story-074](stories/story-074-artifact-graph-staleness-regression-tests.md) |
 

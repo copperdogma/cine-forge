@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime
 from typing import Any
 
@@ -103,11 +103,13 @@ def run_module(
     total_input_count = len(props) + len(adjudication_rejections)
     total_approved_count = len(props)
 
-    # 2. Extract for each prop in parallel
+    # 2. Extract for each prop in parallel; announce each entity as it completes
+    # so the engine can save mid-stage and the sidebar count ticks up live (story-072).
     print(f"[prop_bible] Extracting {len(props)} props (concurrency={concurrency}).")
+    announce = context.get("announce_artifact")
     artifacts: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
-        futures = [
+        future_to_prop = {
             executor.submit(
                 _process_prop,
                 prop_name=prop_name,
@@ -121,12 +123,17 @@ def run_module(
                 verify_model=verify_model,
                 escalate_model=escalate_model,
                 skip_qa=skip_qa,
-            )
+            ): prop_name
             for prop_name in props
-        ]
-        for prop_name, future in zip(props, futures, strict=True):
+        }
+        for future in as_completed(future_to_prop):
+            prop_name = future_to_prop[future]
             try:
                 entity_artifacts, entity_cost = future.result()
+                if announce:
+                    for a in entity_artifacts:
+                        if a.get("artifact_type") == "prop_bible":
+                            announce(a)
                 artifacts.extend(entity_artifacts)
                 _update_total_cost(total_cost, entity_cost)
                 m = entity_cost.get("model", "code")

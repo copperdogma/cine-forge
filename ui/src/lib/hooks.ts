@@ -256,11 +256,12 @@ export function useRunEvents(runId: string | undefined) {
 
 // --- Artifacts ---
 
-export function useArtifactGroups(projectId: string | undefined) {
+export function useArtifactGroups(projectId: string | undefined, refetchInterval?: number) {
   return useQuery<ArtifactGroupSummary[]>({
     queryKey: ['projects', projectId, 'artifacts'],
     queryFn: () => api.listArtifactGroups(projectId!),
     enabled: !!projectId,
+    refetchInterval,  // 1500 during active runs (passed by AppShell); undefined = no interval
   })
 }
 

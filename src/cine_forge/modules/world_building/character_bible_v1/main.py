@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime
 from typing import Any
 
@@ -163,11 +163,13 @@ def run_module(
     if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
         models_seen.add(str(adjudication_cost["model"]))
 
-    # 2. Extract for each candidate in parallel
+    # 2. Extract for each candidate in parallel; announce each entity as it completes
+    # so the engine can save mid-stage and the sidebar count ticks up live (story-072).
     print(f"[character_bible] Extracting {len(candidates)} characters (concurrency={concurrency}).")
+    announce = context.get("announce_artifact")
     artifacts: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
-        futures = [
+        future_to_entry = {
             executor.submit(
                 _process_character,
                 entry=entry,
@@ -181,12 +183,17 @@ def run_module(
                 verify_model=verify_model,
                 escalate_model=escalate_model,
                 skip_qa=skip_qa,
-            )
+            ): entry
             for entry in candidates
-        ]
-        for entry, future in zip(candidates, futures, strict=True):
+        }
+        for future in as_completed(future_to_entry):
+            entry = future_to_entry[future]
             try:
                 entity_artifacts, entity_cost = future.result()
+                if announce:
+                    for a in entity_artifacts:
+                        if a.get("artifact_type") == "character_bible":
+                            announce(a)
                 artifacts.extend(entity_artifacts)
                 _update_total_cost(total_cost, entity_cost)
                 m = entity_cost.get("model", "code")
