@@ -322,3 +322,25 @@ useEffect(() => {
 
   **Checks passed:** 266 unit tests, ruff clean, UI lint 0 errors, tsc -b clean, prod build clean.
   **Runtime smoke:** App loads at v2026.02.22-10, no app errors in console (HMR artifact on hot-reload, gone on full navigation).
+
+- 2026-02-22 — post-implementation polish (live testing feedback)
+
+  **Issues found in live testing:**
+  1. Badge animation was too subtle (`animate-pulse scale-110` — barely visible opacity fade).
+  2. Entities appeared all at once in sidebar ("Characters (8)") rather than one-by-one — polling limitation.
+  3. Individual "Found: X (location)" chat messages were spammy; replaced with in-place "Writing X character bibles..." updating messages.
+  4. Bible progress spinners kept spinning after run completed.
+  5. Auto-scroll didn't fire for system message updates (only for new messages or last-message content changes).
+  6. Auto-scroll didn't fire when RunProgressCard expanded (stage rows added inside a single message).
+
+  **Changes made:**
+  - `index.css`: Added `@keyframes badge-pop` — teal flash at 1.45× scale with glow ring, fades to secondary over 1.5s.
+  - `AppShell.tsx`: `CountBadge` rewired with `pulseCount` integer key (forces Badge DOM remount per increment → animation always restarts cleanly). Polling changed 1500ms → 750ms.
+  - `use-run-progress.ts`: Replaced debounced entity-name spam approach with `bibleFoundCountsRef` tracking per-type counts, emitting/updating a single in-place "Writing X character bibles..." message per type. Added bible spinner resolution on run completion.
+  - `ChatPanel.tsx` (3 iterations):
+    1. Changed dep from `[messages.length, lastMsg.content]` to `[messages]` — catches in-place updates.
+    2. Added `ResizeObserver` on viewport content — catches RunProgressCard height growth.
+    3. Final: intent-based approach — scroll listener sets `shouldAutoScrollRef` (true when within 120px of bottom), ResizeObserver reads flag without re-measuring. Fixes the "large content jump looks like user scroll" false-negative.
+
+  **Checks passed:** 266 unit tests, ruff clean, UI lint 0 errors, tsc -b clean.
+  **Commits:** b10d08b (main implementation), d8c7334 (messages dep fix), 7ba656d (ResizeObserver), 65c4d9e (intent-based scroll).
