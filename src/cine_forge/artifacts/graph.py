@@ -77,6 +77,17 @@ class DependencyGraph:
             if previous_key not in nodes:
                 return []
 
+            # Build latest-version lookup for each (artifact_type, entity_id) pair.
+            # Used below to stop BFS at superseded intermediate nodes and prevent
+            # sibling cross-contamination: if idx:v2 is the intermediate and idx:v3
+            # already exists, the downstream was rebuilt from idx:v3 — BFS stops at v2.
+            latest_version: dict[tuple[str, str | None], int] = {}
+            for node in nodes.values():
+                ref = ArtifactRef.model_validate(node["ref"])
+                ek = (ref.artifact_type, ref.entity_id)
+                if ref.version > latest_version.get(ek, 0):
+                    latest_version[ek] = ref.version
+
             stale_refs: list[ArtifactRef] = []
             new_key = new_ref.key()
             queue = deque(nodes[previous_key]["downstream"])
@@ -88,6 +99,13 @@ class DependencyGraph:
                 seen.add(node_key)
                 nodes[node_key]["health"] = ArtifactHealth.STALE.value
                 stale_refs.append(ArtifactRef.model_validate(nodes[node_key]["ref"]))
+                # If a newer version of this node exists, its downstream was already
+                # rebuilt from fresh data — mark stale here but stop BFS propagation
+                # to prevent contaminating sibling artifacts via shared intermediates.
+                ref = ArtifactRef.model_validate(nodes[node_key]["ref"])
+                ek = (ref.artifact_type, ref.entity_id)
+                if ref.version < latest_version.get(ek, ref.version):
+                    continue
                 queue.extend(nodes[node_key]["downstream"])
 
             self._write_graph(graph)

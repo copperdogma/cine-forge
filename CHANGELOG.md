@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-02-23-01] — Artifact graph staleness: regression tests + sibling cross-contamination fix (Story 074)
+
+### Fixed
+- `DependencyGraph.propagate_stale_for_new_version`: sibling artifacts produced in parallel no longer marked stale via a shared intermediate node. Before BFS, builds a `latest_version` lookup per `(artifact_type, entity_id)`; when BFS reaches a node whose entity has a newer version in the graph, marks the node stale but stops BFS propagation there (downstream was already rebuilt from the newer version)
+
+### Added
+- `test_new_version_not_marked_stale`: regression test for Bug 1 (self-staleness) — newly-saved artifact must not appear in `get_stale()`
+- `test_sibling_not_marked_stale_via_shared_intermediate`: regression test for Bug 2 (sibling cross-contamination) — sibling artifact remains VALID after a co-sibling's propagation crosses a shared intermediate
+
 ## [2026-02-22-12] — Add `after:` ordering-only stage dependency to recipe DSL (Story 073)
 
 ### Added

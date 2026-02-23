@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from cine_forge.artifacts import ArtifactStore
-from cine_forge.schemas import ArtifactMetadata
+from cine_forge.artifacts import ArtifactStore, DependencyGraph
+from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
 
 
 def _metadata(*, lineage: list = None) -> ArtifactMetadata:
@@ -95,3 +95,64 @@ def test_dependency_tracking_and_staleness_propagation(tmp_path: Path) -> None:
 
     assert upstream and upstream[0].version == 1
     assert any(ref.artifact_type == "scene" and ref.entity_id == "scene_1" for ref in stale_refs)
+
+
+# ---------------------------------------------------------------------------
+# DependencyGraph staleness propagation regression tests
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.unit
+def test_new_version_not_marked_stale(tmp_path: Path) -> None:
+    """Regression for Bug 1: saving A:v2 must not mark A:v2 itself as stale."""
+    graph = DependencyGraph(project_dir=tmp_path)
+    ref_v1 = ArtifactRef(artifact_type="scene", entity_id="a", version=1, path="s/v1.json")
+    ref_v2 = ArtifactRef(artifact_type="scene", entity_id="a", version=2, path="s/v2.json")
+
+    graph.register_artifact(ref_v1, [])
+    graph.register_artifact(ref_v2, [ref_v1])
+    graph.propagate_stale_for_new_version(ref_v2)
+
+    assert graph.get_health(ref_v2) == ArtifactHealth.VALID
+    assert ref_v2 not in graph.get_stale()
+
+
+@pytest.mark.unit
+def test_sibling_not_marked_stale_via_shared_intermediate(tmp_path: Path) -> None:
+    """Sibling artifacts must not be marked stale through a shared intermediate.
+
+    Reproduces the world-building recipe scenario where 13 scenes are enriched
+    in parallel, each listing scene_index:v2 in its lineage. When scene_001:v3's
+    propagation runs, it must not contaminate scene_002:v3 via scene_index:v2.
+
+    Graph (→ = downstream edge):
+        scene_index:v1 → scene:001:v2, scene:002:v2
+        scene:001:v2   → scene_index:v2
+        scene:002:v2   → scene_index:v2
+        scene_index:v2 → scene:001:v3, scene:002:v3
+        scene:001:v3   → scene_index:v3
+        scene:002:v3   → scene_index:v3
+    """
+    graph = DependencyGraph(project_dir=tmp_path)
+
+    idx_v1 = ArtifactRef(artifact_type="scene_index", entity_id=None, version=1, path="idx/v1.json")
+    s001_v2 = ArtifactRef(artifact_type="scene", entity_id="001", version=2, path="s001/v2.json")
+    s002_v2 = ArtifactRef(artifact_type="scene", entity_id="002", version=2, path="s002/v2.json")
+    idx_v2 = ArtifactRef(artifact_type="scene_index", entity_id=None, version=2, path="idx/v2.json")
+    s001_v3 = ArtifactRef(artifact_type="scene", entity_id="001", version=3, path="s001/v3.json")
+    s002_v3 = ArtifactRef(artifact_type="scene", entity_id="002", version=3, path="s002/v3.json")
+    idx_v3 = ArtifactRef(artifact_type="scene_index", entity_id=None, version=3, path="idx/v3.json")
+
+    graph.register_artifact(idx_v1, [])
+    graph.register_artifact(s001_v2, [idx_v1])
+    graph.register_artifact(s002_v2, [idx_v1])
+    graph.register_artifact(idx_v2, [s001_v2, s002_v2])
+    graph.register_artifact(s001_v3, [idx_v2])
+    graph.register_artifact(s002_v3, [idx_v2])
+    graph.register_artifact(idx_v3, [s001_v3, s002_v3])  # rebuilt index — key for the fix
+
+    # Simulate: scene_001:v3 is saved first and propagation runs.
+    # Without the fix, scene_002:v3 is incorrectly marked stale via scene_index:v2.
+    graph.propagate_stale_for_new_version(s001_v3)
+
+    assert graph.get_health(s002_v3) == ArtifactHealth.VALID
