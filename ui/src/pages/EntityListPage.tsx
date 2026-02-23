@@ -4,7 +4,7 @@
  * Follows the same config-driven pattern as EntityDetailPage.
  */
 import { useMemo, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Users, MapPin, Wrench, Clapperboard, Share } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -14,7 +14,7 @@ import { EntityListControls } from '@/components/EntityListControls'
 import { ExportModal } from '@/components/ExportModal'
 import { HealthBadge } from '@/components/HealthBadge'
 import { type SortMode, type ViewDensity, type SortDirection } from '@/lib/types'
-import { useEntityDetails, useScenes, useStickyPreference } from '@/lib/hooks'
+import { useEntityDetails, useEntityGraph, useScenes, useStickyPreference } from '@/lib/hooks'
 import { cn, formatEntityName } from '@/lib/utils'
 import type { ExportScope } from '@/lib/api'
 
@@ -166,11 +166,30 @@ interface BibleEntity {
   firstSceneNumber: number | null
 }
 
+function OwnerPills({ owners, projectId }: { owners: string[]; projectId: string }) {
+  if (owners.length === 0) return null
+  return (
+    <>
+      {owners.map(charId => (
+        <Link
+          key={charId}
+          to={`/${projectId}/characters/${charId}`}
+          onClick={e => e.stopPropagation()}
+          className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-0.5 text-xs font-medium hover:bg-accent/50 transition-colors shrink-0"
+        >
+          <Users className="h-3 w-3 text-amber-400 shrink-0" />
+          {formatEntityName(charId)}
+        </Link>
+      ))}
+    </>
+  )
+}
+
 function BibleCompactRow({
-  item, icon: Icon, color, section, projectId, navigate,
+  item, icon: Icon, color, section, projectId, navigate, owners,
 }: {
   item: BibleEntity; icon: typeof Users; color: string; section: string
-  projectId: string; navigate: (path: string) => void
+  projectId: string; navigate: (path: string) => void; owners: string[]
 }) {
   return (
     <div
@@ -181,6 +200,7 @@ function BibleCompactRow({
       <span className="font-medium flex-1 truncate">
         {formatEntityName(item.entity_id)}
       </span>
+      <OwnerPills owners={owners} projectId={projectId} />
       {item.sceneCount != null && item.sceneCount > 0 && (
         <span className="text-xs text-muted-foreground">
           {item.sceneCount} {item.sceneCount === 1 ? 'scene' : 'scenes'}
@@ -195,10 +215,10 @@ function BibleCompactRow({
 }
 
 function BibleMediumCard({
-  item, icon: Icon, color, section, projectId, navigate,
+  item, icon: Icon, color, section, projectId, navigate, owners,
 }: {
   item: BibleEntity; icon: typeof Users; color: string; section: string
-  projectId: string; navigate: (path: string) => void
+  projectId: string; navigate: (path: string) => void; owners: string[]
 }) {
   return (
     <Card
@@ -218,6 +238,7 @@ function BibleMediumCard({
               </p>
             )}
             <div className="flex items-center gap-2 flex-wrap">
+              <OwnerPills owners={owners} projectId={projectId} />
               {item.sceneCount != null && item.sceneCount > 0 && (
                 <Badge variant="secondary" className="text-xs">
                   {item.sceneCount} {item.sceneCount === 1 ? 'scene' : 'scenes'}
@@ -236,10 +257,10 @@ function BibleMediumCard({
 }
 
 function BibleLargeCard({
-  item, icon: Icon, color, section, projectId, navigate,
+  item, icon: Icon, color, section, projectId, navigate, owners,
 }: {
   item: BibleEntity; icon: typeof Users; color: string; section: string
-  projectId: string; navigate: (path: string) => void
+  projectId: string; navigate: (path: string) => void; owners: string[]
 }) {
   return (
     <Card
@@ -259,6 +280,7 @@ function BibleLargeCard({
               </p>
             )}
             <div className="flex items-center gap-2 flex-wrap mb-3">
+              <OwnerPills owners={owners} projectId={projectId} />
               {item.sceneCount != null && item.sceneCount > 0 && (
                 <Badge variant="secondary" className="text-xs">
                   {item.sceneCount} {item.sceneCount === 1 ? 'scene' : 'scenes'}
@@ -385,6 +407,25 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
   const bibleResult = useEntityDetails(isBible ? projectId! : '', isBible ? config.artifactType as BibleArtifactType : 'character_bible')
   const scenesResult = useScenes(isBible ? '' : projectId!)
 
+  // Prop ownership map — only loaded for the props section
+  const { data: graphArtifact } = useEntityGraph(section === 'props' ? projectId : undefined)
+  const propOwners = useMemo<Record<string, string[]>>(() => {
+    if (section !== 'props' || !graphArtifact) return {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const edges = ((graphArtifact as any)?.payload?.data?.edges as Array<Record<string, unknown>> | undefined) ?? []
+    const map: Record<string, string[]> = {}
+    for (const edge of edges) {
+      if (edge.relationship_type === 'signature_prop_of') {
+        const propId = edge.source_id as string
+        const charId = edge.target_id as string
+        if (propId && charId) {
+          ;(map[propId] ??= []).push(charId)
+        }
+      }
+    }
+    return map
+  }, [graphArtifact, section])
+
   const data = isBible ? bibleResult.data : scenesResult.data
   const isLoading = isBible ? bibleResult.isLoading : scenesResult.isLoading
   const error = isBible ? bibleResult.error : null
@@ -439,6 +480,7 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
               section={section}
               projectId={projectId!}
               navigate={navigate}
+              owners={propOwners[item.entity_id] ?? []}
             />
           ))}
         </div>

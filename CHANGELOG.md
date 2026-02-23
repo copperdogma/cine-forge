@@ -1,5 +1,38 @@
 # Changelog
 
+## [2026-02-23-04] — Entity detail UX polish: scroll-to-top, cross-ref ordering, prop ownership (Story 078)
+
+### Added
+- Owner link-pills on the Props list page — all three density variants (compact/medium/large) show linked character chips for signature props; click navigates to character without triggering prop navigation
+- "Owned by" row in the prop detail Profile card — linked character chip(s) appear at the bottom of the profile for any prop with `signature_prop_of` edges
+- Scene Appearances now sorted by script order on entity detail pages — uses scene index heading→scene_number map, unknown headings go to end
+
+### Changed
+- Entity navigation scrolls to top of page on every route change — targets the Radix `<ScrollArea>` viewport via `[data-radix-scroll-area-viewport]` query in `AppShell.tsx`
+- Characters, Locations, and Props panels in `CrossReferencesGrid` sorted by scene co-occurrence count descending (most connected co-stars appear first); ties broken alphabetically
+- Props panel in `CrossReferencesGrid` splits signature props (amber ★, sorted first) from co-occurrence props (no star, sorted below); both halves sorted by scene count
+- `RawEdge` in `CrossReferencesGrid` now carries `sceneRefs: string[]` — dedup merges refs from duplicate edges for accurate count
+- `EntityLink` component gains optional `suffix` slot for decorative elements rendered after the label
+
+### Removed
+- "Scene Presence" collapsible section from `ProfileViewer` — duplicated the Scene Appearances panel in the cross-reference grid but with unlinked plain-text chips; `Film` icon and `scenePresence` variable cleaned up
+
+## [2026-02-23-03] — Entity cross-linking: prop edges, scene_presence, associated_characters (Story 045)
+
+### Added
+- `characters_present_ids` field on `Scene` and `SceneIndexEntry` — slugified entity IDs alongside display-name `characters_present`, used by entity_graph for accurate co-occurrence edges
+- `associated_characters` field on `PropBible` — AI-extracted slugified character IDs representing signature ownership (e.g. Mariner's oar, Rose's purse)
+- `_find_scene_presence()` in `prop_bible_v1` — deterministic scan of canonical_script line spans to populate `scene_presence` reliably instead of relying on AI
+- `_generate_signature_edges()` in `entity_graph_v1` — emits `signature_prop_of` edges (conf=0.95) from `associated_characters`
+- Prop co-occurrence edges in `entity_graph_v1` — prop↔character and prop↔location edges (conf=0.9) from `scene_presence`
+- Props subsection on scene detail pages — inferred from prop bibles' `scene_presence` via UI-side filter
+- Unresolved entity links now render with `opacity-50` and tooltip instead of appearing identical to resolved links
+
+### Fixed
+- `entity_graph_v1` prop_list prompt bug: was always empty string due to wrong `prop.get("files", [])` key
+- `entity_graph_v1` co-occurrence ID mismatch: `char.lower()` → `_slugify(char)` for consistent entity IDs
+- `scene_analysis_v1` was not emitting `characters_present_ids` in its enriched scene output, causing the field to be empty after the AI enrichment pass
+
 ## [2026-02-23-02] — Streaming artifact yield: live per-entity progress in sidebar (Story 052)
 
 ### Added

@@ -235,6 +235,14 @@ function ShellInner() {
     return counts
   }, [artifactGroups, runs, project?.ui_preferences])
 
+  // Scroll main content to top on every route change
+  const mainScrollRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    mainScrollRef.current
+      ?.querySelector<HTMLElement>('[data-radix-scroll-area-viewport]')
+      ?.scrollTo({ top: 0 })
+  }, [location.pathname])
+
   // Emit activity notes on meaningful navigation (artifact detail, run detail)
   const prevPath = useRef(location.pathname)
   useEffect(() => {
@@ -547,12 +555,13 @@ function ShellInner() {
         {/* Content + optional Right Panel */}
         <div className="flex flex-1 min-h-0">
           {/* Page content */}
-          <ScrollArea className="flex-1 min-w-0" orientation="both">
+          <div ref={mainScrollRef} className="flex-1 min-w-0 overflow-hidden">
+          <ScrollArea className="h-full w-full" orientation="both">
             <div className="p-6 flex flex-col min-h-full">
               <Outlet />
             </div>
           </ScrollArea>
-...
+          </div>
 
           {/* Right Panel — Chat + Inspector tabs */}
           {panel.state.open && (

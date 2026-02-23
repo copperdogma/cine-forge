@@ -67,7 +67,7 @@ NOTES from Cam:
 | 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Done | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 043 | Entity-First Navigation | 2.5 — UI | High | Done | [story-043](stories/story-043-entity-first-navigation.md) |
 | 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Draft | [story-044](stories/story-044-mobile-friendly-ui.md) |
-| 045 | Entity Cross-Linking | 2.5 — UI | Medium | Draft | [story-045](stories/story-045-entity-cross-linking.md) |
+| 045 | Entity Cross-Linking | 2.5 — UI | Medium | Done | [story-045](stories/story-045-entity-cross-linking.md) |
 | 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Draft | [story-046](stories/story-046-theme-system.md) |
 | 047 | Benchmark Sonnet 4.6 Across All Evals | Cross-Cutting | High | Done | [story-047](stories/story-047-sonnet-46-benchmarks.md) |
 | 048 | PDF Input Preview Decode Fix | 2.5 — UI/API | High | Done | [story-048](stories/story-048-pdf-input-preview-decode.md) |
@@ -97,6 +97,10 @@ NOTES from Cam:
 | 072 | Live Entity Discovery Feedback | 2.5 — UI | Medium | Done | [story-072](stories/story-072-live-entity-discovery-feedback.md) |
 | 073 | Add `after:` ordering-only stage dependency to recipe DSL | Engine | Medium | Done | [story-073](stories/story-073-add-after-ordering-dependency.md) |
 | 074 | Artifact graph staleness: regression tests + sibling fix | Engine | Medium | Done | [story-074](stories/story-074-artifact-graph-staleness-regression-tests.md) |
+| 075 | Entity Detail Page Polish | 2.5 — UI | High | Done | [story-075](stories/story-075-entity-detail-page-polish.md) |
+| 076 | Entity Detail: Cross-Reference Layout & Narrative Role Polish | 2.5 — UI | High | Done | [story-076](stories/story-076-entity-detail-cross-ref-layout.md) |
+| 077 | Character Coverage & Prominence Tiers | World Building / UI | Medium | Pending | [story-077](stories/story-077-character-coverage-and-prominence-tiers.md) |
+| 078 | Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata | 2.5 — UI | Medium | Done | [story-078](stories/story-078-entity-detail-enhancements.md) |
 
 ## Phase Summary
 

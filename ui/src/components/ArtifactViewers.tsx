@@ -1,4 +1,4 @@
-import { Users, MapPin, Film, Book, Globe, Package, Clock, ChevronRight, ShieldCheck, ShieldAlert, UserCheck, CheckCircle2 } from 'lucide-react'
+import { Users, MapPin, Book, Globe, Package, Clock, ChevronRight, ShieldCheck, ShieldAlert, UserCheck, CheckCircle2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -300,7 +300,6 @@ export function ProfileViewer({
 }) {
   const name = getString(data, 'name')
   const description = getString(data, 'description')
-  const scenePresence = getArray(data, 'scene_presence')
   const confidence = getNumber(data, 'overall_confidence')
 
   // Character-specific fields
@@ -325,6 +324,9 @@ export function ProfileViewer({
         </div>
         <div className="flex-1 min-w-0">
           {name && <h3 className="text-lg font-semibold mb-1">{name}</h3>}
+          {profileType === 'character' && narrativeRole && (
+            <Badge className="capitalize mb-1">{narrativeRole}</Badge>
+          )}
           {aliases.length > 0 && (
             <p className="text-xs text-muted-foreground">
               aka {aliases.map((a) => String(a)).join(', ')}
@@ -344,16 +346,6 @@ export function ProfileViewer({
           <Separator />
           <CollapsibleSection title="Description">
             <p className="text-sm leading-relaxed">{description}</p>
-          </CollapsibleSection>
-        </>
-      )}
-
-      {/* Character-specific: Narrative role */}
-      {profileType === 'character' && narrativeRole && (
-        <>
-          <Separator />
-          <CollapsibleSection title="Narrative Role" helpQuestion="What does this character's narrative role mean for the story?">
-            <Badge className="capitalize">{narrativeRole}</Badge>
           </CollapsibleSection>
         </>
       )}
@@ -422,24 +414,6 @@ export function ProfileViewer({
         </>
       )}
 
-      {/* Scene presence */}
-      {scenePresence.length > 0 && (
-        <>
-          <Separator />
-          <CollapsibleSection
-            title={`Scene Presence (${scenePresence.length})`}
-            icon={<Film className="h-4 w-4 text-muted-foreground" />}
-          >
-            <div className="space-y-1">
-              {scenePresence.map((scene, i) => (
-                <div key={i} className="rounded-md border border-border px-2.5 py-1.5 text-xs font-mono truncate max-w-full">
-                  {String(scene)}
-                </div>
-              ))}
-            </div>
-          </CollapsibleSection>
-        </>
-      )}
 
       {/* Character-specific: Evidence samples */}
       {profileType === 'character' && explicitEvidence.length > 0 && (
