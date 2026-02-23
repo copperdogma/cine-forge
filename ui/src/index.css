@@ -135,6 +135,14 @@ body {
   }
 }
 
+/* Nav row glow — fires when a new entity lands in a sidebar category during a run.
+   Soft teal wash across the whole row, fades to transparent over 3s.
+   Resets on each new entity (span key forces animation restart). */
+@keyframes nav-row-glow {
+  0%   { background-color: oklch(0.68 0.12 175 / 0.18); }
+  100% { background-color: oklch(0.68 0.12 175 / 0); }
+}
+
 /* Badge pop animation — fires when sidebar entity count increases during a run.
    Flashes teal (brand primary) then fades back to secondary over 1.5s. */
 @keyframes badge-pop {

@@ -1510,3 +1510,138 @@ def test_driver_parallel_all_independent_stages(tmp_path: Path) -> None:
     # All 3 should be in a single wave
     assert len(waves) == 1
     assert set(waves[0]) == {"x", "y", "z"}
+
+
+# ---------------------------------------------------------------------------
+# announce_artifact (streaming yield) tests — Story 052
+# ---------------------------------------------------------------------------
+
+
+def _write_announcing_module(workspace_root: Path) -> None:
+    """Module that calls announce_artifact for one entity and returns both in batch."""
+    module_dir = workspace_root / "src" / "cine_forge" / "modules" / "test" / "announcing_v1"
+    module_dir.mkdir(parents=True, exist_ok=True)
+    (module_dir / "module.yaml").write_text(
+        "\n".join(
+            [
+                "module_id: test.announcing_v1",
+                "stage: test",
+                "description: test announcing",
+                "input_schemas:",
+                "  - dict",
+                "output_schemas:",
+                "  - dict",
+                "parameters: {}",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (module_dir / "main.py").write_text(
+        "\n".join(
+            [
+                "def run_module(inputs, params, context):",
+                "    announce = context.get('announce_artifact')",
+                "    announced = {",
+                "        'artifact_type': 'echo',",
+                "        'entity_id': 'announced',",
+                "        'data': {'source': 'announced'},",
+                "        'metadata': {",
+                "            'lineage': [],",
+                "            'intent': 'test announce',",
+                "            'rationale': 'test',",
+                "            'alternatives_considered': [],",
+                "            'confidence': 1.0,",
+                "            'source': 'human',",
+                "        },",
+                "    }",
+                "    if announce:",
+                "        announce(announced)",
+                "    batched = {",
+                "        'artifact_type': 'echo',",
+                "        'entity_id': 'batched',",
+                "        'data': {'source': 'batched'},",
+                "        'metadata': {",
+                "            'lineage': [],",
+                "            'intent': 'test batch',",
+                "            'rationale': 'test',",
+                "            'alternatives_considered': [],",
+                "            'confidence': 1.0,",
+                "            'source': 'human',",
+                "        },",
+                "    }",
+                "    return {",
+                "        'artifacts': [announced, batched],",
+                "        'cost': {",
+                "            'model': 'code',",
+                "            'input_tokens': 0,",
+                "            'output_tokens': 0,",
+                "            'estimated_cost_usd': 0.0,",
+                "        },",
+                "    }",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+
+def _write_announcing_recipe(workspace_root: Path) -> Path:
+    recipe_dir = workspace_root / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "recipe-announcing.yaml"
+    recipe_path.write_text(
+        "\n".join(
+            [
+                "recipe_id: test-announcing",
+                "description: test",
+                "stages:",
+                "  - id: announce",
+                "    module: test.announcing_v1",
+                "    params: {}",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return recipe_path
+
+
+@pytest.mark.unit
+def test_announce_artifact_persists_mid_stage(tmp_path: Path) -> None:
+    """announce_artifact saves immediately; batch loop skips pre_saved artifacts."""
+    _write_announcing_module(tmp_path)
+    recipe_path = _write_announcing_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+    state = engine.run(recipe_path=recipe_path, run_id="announce-1")
+
+    assert state["stages"]["announce"]["status"] == "done"
+
+    # Both artifacts should appear in stage artifact_refs
+    refs = state["stages"]["announce"]["artifact_refs"]
+    assert len(refs) == 2
+    entity_ids = {r["entity_id"] for r in refs}
+    assert entity_ids == {"announced", "batched"}
+
+    # Each entity stored exactly once — no duplication from double-persist
+    announced_versions = engine.store.list_versions("echo", "announced")
+    batched_versions = engine.store.list_versions("echo", "batched")
+    assert len(announced_versions) == 1
+    assert len(batched_versions) == 1
+
+    # Data is correct for both
+    assert engine.store.load_artifact(announced_versions[0]).data == {"source": "announced"}
+    assert engine.store.load_artifact(batched_versions[0]).data == {"source": "batched"}
+
+
+@pytest.mark.unit
+def test_announce_artifact_batch_fallback_still_works(tmp_path: Path) -> None:
+    """Modules that ignore announce_artifact (del context) still persist via batch loop."""
+    _write_echo_module(tmp_path)
+    recipe_path = _write_recipe(tmp_path)
+    engine = DriverEngine(workspace_root=tmp_path)
+    state = engine.run(recipe_path=recipe_path, run_id="batch-only")
+
+    assert state["stages"]["a"]["status"] == "done"
+    assert state["stages"]["b"]["status"] == "done"
+
+    # Artifacts produced by batch path land correctly
+    assert len(engine.store.list_versions("project_config", "project")) == 1
+    assert len(engine.store.list_versions("echo", "project")) == 1

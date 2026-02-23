@@ -1,10 +1,62 @@
 # Story 071 — Refine vs. Regenerate Pipeline Modes
 
 **Priority**: Medium
-**Status**: Pending
+**Status**: Deferred
 **Phase**: Cross-Cutting
 **Spec Refs**: spec.md §2.1 (Immutability), §2.2 (Versioning)
 **Depends On**: None (builds on existing `ArtifactStore`, `store_inputs_all`, and `world_building` recipe infrastructure)
+
+## Why Deferred
+
+The "preserve user edits across regeneration" problem is harder than it first appears, and the approach described in this story (pass prior artifact as LLM context) doesn't actually solve it well. The core issue: user edits fall into two fundamentally different categories, and a single refine prompt cannot handle both correctly.
+
+### The Two-Category Problem
+
+**Category 1 — Error corrections**: The user fixes something the LLM got wrong that the script already supports. Example: the LLM wrote "Mariner is a boy"; the user corrected it to "Mariner is a man" because that's what the script says. On a fresh regeneration with better context or a better model, the LLM should get this right on its own. These edits are anchored in the script.
+
+**Category 2 — Creative additions**: The user adds or changes something that isn't in the script — their own authorial intent. Example: "Mariner goes by Billy." No amount of script re-extraction will reproduce this. It must be explicitly preserved forever.
+
+The problem is that the system cannot reliably tell these categories apart. They look identical in the version history.
+
+### Why Diff Re-Application Fails
+
+An obvious approach is to collect the user's edits as diffs (vN → vN+1) and re-apply them after regeneration. This collapses when the new artifact has different content with no matching anchor.
+
+Example:
+- v1: `"Mariner is a boy"`
+- User edits to v2: `"Mariner is a man"` (diff: `boy → man`)
+- Regeneration produces v3: `"Mariner, aka Billy, is about 32 and built like a pro-wrestler."`
+- The `boy → man` diff has nothing to anchor to in v3. There is no deterministic correct answer.
+
+### Why the Refine Prompt Approach Is Underpowered
+
+Passing the prior artifact to the LLM and saying "preserve user edits" runs into **anchoring**: the model tends to preserve stale prior content simply because it was in the artifact, even when the script contradicts it or the content was an LLM hallucination in the first place. There is no reliable way to tell the LLM "the user deliberately wrote this line" vs. "the LLM wrote this line and the user just never touched it."
+
+### The Right Architecture (Future Story)
+
+The correct solution is a first-class `user_canon` artifact: a curated list of declarative facts the user explicitly "owns," independent of any particular artifact version.
+
+- When a user edits a bible, the system extracts the semantic intent of that edit and proposes adding it to their canon. Example edit: `"boy" → "man"` → proposed canon fact: `"Mariner is an adult man."`
+- The user reviews and approves canon facts (so they distinguish corrections from keeper creative choices).
+- On every generation — regenerate or refine — the prompt includes a hard-constraint section: `[USER CANON — DO NOT CONTRADICT]` with the approved facts.
+- This works regardless of how different the new artifact looks, because the constraint is semantic and declarative, not textual and positional.
+
+This requires a bible editor UI (not yet built) and the `user_canon` artifact type. Both are future stories.
+
+### Mitigation: Honest UX + Version History Browser
+
+Until the full canon system exists, the honest approach is to tell users plainly:
+
+> **Regenerating will replace your current bibles.** Your edits are preserved in version history and you can browse them at any time, but they will not be automatically re-applied to the new extraction.
+
+This is acceptable because:
+1. CineForge's immutability guarantee means no edits are ever deleted — they live in the version history.
+2. Entity associations (cross-links) are re-extracted from the script fresh, so they will be correct in the new artifact.
+3. Users who made significant creative edits can browse the diff between old and new versions and manually re-apply what matters to them.
+
+The **version history browser** (diff endpoint + UI panel) described in the Tasks section below is still worth building — it's the primary mitigation for edit loss, and it makes the version system visible and useful. That portion of this story remains valid and is split out as Story 075.
+
+---
 
 ## Goal
 

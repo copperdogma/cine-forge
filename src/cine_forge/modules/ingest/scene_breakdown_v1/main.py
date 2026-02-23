@@ -150,7 +150,7 @@ class _BoundaryValidation(BaseModel):
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
-    del context
+    announce = context.get("announce_artifact")
     canonical = _extract_canonical_script(inputs)
     script_text = canonical["script_text"]
 
@@ -192,6 +192,8 @@ def run_module(
         for future in as_completed(futures):
             result = future.result()
             scene_artifacts.append(result["artifact"])
+            if announce:
+                announce(result["artifact"])
             scene_index_entries.append(result["index_entry"])
             all_costs.extend(result["costs"])
 

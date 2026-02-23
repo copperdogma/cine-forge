@@ -74,7 +74,7 @@ NOTES from Cam:
 | 049 | Import Normalization Format Suite | 1 — MVP Pipeline | High | Done | [story-049](stories/story-049-import-normalization-format-suite.md) |
 | 050 | Provider Resilience: Retries, Fallbacks, and Stage Resume | Cross-Cutting | High | Done | [story-050](stories/story-050-provider-resilience-retry-fallback.md) |
 | 051 | Chat UX Polish: Ordering, Naming, and Progress Card | 2.5 — UI | High | Done | [story-051](stories/story-051-chat-ux-polish.md) |
-| 052 | Streaming Artifact Yield: Live Per-Entity Progress | Cross-Cutting | Medium | Draft | [story-052](stories/story-052-streaming-artifact-yield.md) |
+| 052 | Streaming Artifact Yield: Live Per-Entity Progress | Cross-Cutting | Medium | Done | [story-052](stories/story-052-streaming-artifact-yield.md) |
 | 053 | Cross-CLI Skills/Prompts Unification | Cross-Cutting | High | Done | [story-053](stories/story-053-cross-cli-skills-unification.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | Cross-Cutting | High | Done | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | Cross-Cutting | High | Done | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
@@ -93,7 +93,7 @@ NOTES from Cam:
 | 068 | History-Aware Back Button Navigation | 2.5 — UI | High | Done | [story-068](stories/story-068-back-button-history-navigation.md) |
 | 069 | Inbox Item Read/Complete State | 2.5 — UI | High | Done | [story-069](stories/story-069-inbox-read-state.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | 2.5 — UI | Medium | Pending | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
-| 071 | Refine vs. Regenerate Pipeline Modes | Cross-Cutting | Medium | Pending | [story-071](stories/story-071-refine-vs-regenerate-pipeline.md) |
+| 071 | Refine vs. Regenerate Pipeline Modes | Cross-Cutting | Medium | Deferred | [story-071](stories/story-071-refine-vs-regenerate-pipeline.md) |
 | 072 | Live Entity Discovery Feedback | 2.5 — UI | Medium | Done | [story-072](stories/story-072-live-entity-discovery-feedback.md) |
 | 073 | Add `after:` ordering-only stage dependency to recipe DSL | Engine | Medium | Done | [story-073](stories/story-073-add-after-ordering-dependency.md) |
 | 074 | Artifact graph staleness: regression tests + sibling fix | Engine | Medium | Done | [story-074](stories/story-074-artifact-graph-staleness-regression-tests.md) |

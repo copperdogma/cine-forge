@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-02-23-02] — Streaming artifact yield: live per-entity progress in sidebar (Story 052)
+
+### Added
+- `scene_breakdown_v1` now calls `announce_artifact` per scene as each completes, so sidebar "Scenes" count ticks up one at a time instead of jumping at stage completion.
+- Sidebar nav category rows light up with a soft teal glow when a new entity lands, fading over 3 seconds. Rapid additions each reset the animation for a cascading effect across categories.
+- Two new engine unit tests: `test_announce_artifact_persists_mid_stage` (verifies mid-stage announce with no duplication) and `test_announce_artifact_batch_fallback_still_works` (confirms batch-path backwards compat).
+
+### Changed
+- `scene_breakdown_v1/main.py`: replaced `del context` with `announce = context.get("announce_artifact")`.
+- `AppShell.tsx`: extracted main nav rows into `NavItem` component with row-level glow animation.
+
 ## [2026-02-23-01] — Artifact graph staleness: regression tests + sibling cross-contamination fix (Story 074)
 
 ### Fixed

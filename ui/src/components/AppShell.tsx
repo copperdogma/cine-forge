@@ -99,6 +99,51 @@ function CountBadge({ count }: { count: number }) {
   )
 }
 
+/** Nav row with whole-row glow when count increases — soft teal fade over 3s.
+ *  Uses an absolutely-positioned span with key={glowKey} to restart the animation
+ *  on every increment without remounting the NavLink itself. */
+function NavItem({ item, count }: { item: (typeof mainNavBase)[number]; count: number }) {
+  const prevRef = useRef(count)
+  const [glowKey, setGlowKey] = useState(0)
+
+  useEffect(() => {
+    if (count > prevRef.current) {
+      const raf = requestAnimationFrame(() => setGlowKey(n => n + 1))
+      return () => cancelAnimationFrame(raf)
+    }
+    prevRef.current = count
+  }, [count])
+
+  // Keep ref current on every change (handles decreases, no animation needed)
+  useEffect(() => { prevRef.current = count }, [count])
+
+  return (
+    <NavLink
+      to={item.to}
+      end={item.end}
+      className={({ isActive }) =>
+        cn(
+          'relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors overflow-hidden',
+          isActive
+            ? 'bg-accent text-accent-foreground'
+            : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+        )
+      }
+    >
+      {glowKey > 0 && (
+        <span
+          key={glowKey}
+          aria-hidden
+          className="absolute inset-0 [animation:nav-row-glow_3s_ease-out_forwards] pointer-events-none"
+        />
+      )}
+      <item.icon className="h-4 w-4 shrink-0" />
+      <span className="truncate">{item.label}</span>
+      <CountBadge count={count} />
+    </NavLink>
+  )
+}
+
 const advancedNavItems = [
   { to: 'runs', label: 'Runs', icon: History },
   { to: 'artifacts', label: 'Artifacts', icon: Package },
@@ -354,23 +399,11 @@ function ShellInner() {
           <nav aria-label="Project navigation" className="flex flex-col gap-0.5 px-2">
             {/* Main entity navigation */}
             {mainNavBase.map(item => (
-              <NavLink
+              <NavItem
                 key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  cn(
-                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                    isActive
-                      ? 'bg-accent text-accent-foreground'
-                      : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-                  )
-                }
-              >
-                <item.icon className="h-4 w-4 shrink-0" />
-                <span className="truncate">{item.label}</span>
-                <CountBadge count={navCounts[item.to] ?? 0} />
-              </NavLink>
+                item={item}
+                count={navCounts[item.to] ?? 0}
+              />
             ))}
 
             {/* Advanced section */}
