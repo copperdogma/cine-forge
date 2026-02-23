@@ -32,10 +32,44 @@ This keeps instruction files small and stable while preserving concrete fix proc
 - Verify browser MCP server entry exists and is enabled
 - Restart Cursor/agent session after config changes
 
-### Claude Code
-- Configure MCP server in Claude Code MCP settings/config
-- Restart session after enabling/changing MCP servers
-- Verify by executing one minimal browser probe (navigate + screenshot + console check)
+### Claude Code (claude-in-chrome extension)
+
+Claude Code uses the **claude-in-chrome** Chrome extension for browser automation, accessed via `mcp__claude-in-chrome__*` tools. This is distinct from Playwright MCP.
+
+**Setup:**
+- Install the Claude browser extension from https://claude.ai/chrome
+- Must be logged into claude.ai with the same account as Claude Code
+- Restart Chrome after first installation
+- The extension creates a "tab group" that Claude Code operates within
+
+**Verifying it works:**
+1. Call `tabs_context_mcp` — should return tab list (this works even when screenshot is broken)
+2. Call `tabs_create_mcp` to create a fresh tab
+3. Call `navigate` to load a URL
+4. Call `computer` with `action: screenshot` — if this succeeds, the extension is healthy
+
+**Critical rule: always use a fresh MCP tab for screenshots**
+- `tabs_context_mcp` and `navigate` use the extension's background page and work on any tab
+- `computer` (screenshot, click, etc.) requires a tab the extension actively controls
+- Pre-existing tabs, tabs opened before the session, or detached tabs will fail
+- **Fix:** always call `tabs_create_mcp` → `navigate` → `screenshot` rather than reusing existing tabs
+
+**Known failure modes:**
+
+| Error | Cause | Fix |
+|---|---|---|
+| `Browser extension is not connected` | Extension lost connection or tab is in wrong state | Create fresh tab with `tabs_create_mcp`, navigate, retry |
+| `Detached while handling command` | Tab content was unloaded or detached from extension | Create fresh tab with `tabs_create_mcp`, navigate, retry |
+| `Cannot access contents of the page. Extension manifest must request permission...` | Tab was opened before the current session / not in extension's tab group | Create fresh tab with `tabs_create_mcp`, navigate, retry |
+| `No other browsers available to switch to` | `switch_browser` found no other Chrome window with the extension | Ignore — this is a browser-switching utility, not the fix for the above errors |
+
+**Console errors from extension itself:**
+- `TypeError: Failed to fetch` in `content_script.js` is the extension polling claude.ai — not an app error, safe to ignore
+
+**Minimal probe:**
+```
+tabs_create_mcp → navigate(url) → computer(screenshot) → read_console_messages(pattern="error")
+```
 
 ### Gemini CLI
 - MCP config path: `.gemini/settings.json` (project) or `~/.gemini/settings.json` (global)
