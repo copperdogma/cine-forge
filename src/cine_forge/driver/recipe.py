@@ -21,6 +21,9 @@ class RecipeStage(BaseModel):
     params: dict[str, Any] = Field(default_factory=dict)
     needs: list[str] = Field(default_factory=list)
     needs_all: list[str] = Field(default_factory=list)
+    # Ordering-only dependency: stage waits for all `after` stages to complete but does NOT
+    # consume their outputs and is NOT subject to schema compatibility checks.
+    after: list[str] = Field(default_factory=list)
     store_inputs: dict[str, str] = Field(default_factory=dict)
     store_inputs_optional: dict[str, str] = Field(default_factory=dict)
     store_inputs_all: dict[str, str] = Field(default_factory=dict)
@@ -74,7 +77,7 @@ def validate_recipe(
     for stage in recipe.stages:
         if stage.module not in module_registry:
             raise ValueError(f"Recipe references unknown module '{stage.module}'")
-        for dependency in stage.needs + stage.needs_all:
+        for dependency in stage.needs + stage.needs_all + stage.after:
             if dependency not in stage_ids:
                 raise ValueError(f"Stage '{stage.id}' references missing dependency '{dependency}'")
         needs_all_set = set(stage.needs) | set(stage.needs_all)
@@ -109,7 +112,9 @@ def resolve_execution_order(recipe: Recipe) -> list[str]:
     incoming_counts: dict[str, int] = {}
     children: dict[str, list[str]] = defaultdict(list)
     for stage in recipe.stages:
-        dependencies = stage.needs + stage.needs_all
+        # Include `after` in the topological sort so ordering constraints are respected.
+        # `after` stages produce no data inputs — they only control execution order.
+        dependencies = stage.needs + stage.needs_all + stage.after
         incoming_counts[stage.id] = len(dependencies)
         for upstream in dependencies:
             children[upstream].append(stage.id)
@@ -139,6 +144,7 @@ def _assert_schema_compatibility(
     stages_by_id = {stage.id: stage for stage in recipe.stages}
     for stage in recipe.stages:
         consumer = module_registry[stage.module]
+        # `after` is intentionally excluded — it is ordering-only and carries no schema contract.
         for upstream_id in stage.needs + stage.needs_all:
             producer_module = module_registry[stages_by_id[upstream_id].module]
             produced = producer_module.output_schemas

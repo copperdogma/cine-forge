@@ -1051,7 +1051,8 @@ class DriverEngine:
         collected: dict[str, Any] = {}
         lineage: list[ArtifactRef] = []
 
-        # Resolve in-recipe stage dependencies
+        # Resolve in-recipe stage dependencies.
+        # stage.after is intentionally excluded — ordering only, no data is piped.
         for dependency in stage.needs:
             outputs = stage_outputs.get(dependency, [])
             if not outputs:
@@ -1329,6 +1330,7 @@ class DriverEngine:
             "stage_module": stage.module,
             "stage_params": stage.params,
             "stage_needs": stage.needs,
+            "stage_after": stage.after,
             "stage_store_inputs": stage.store_inputs,
             "stage_store_inputs_optional": stage.store_inputs_optional,
             "stage_store_inputs_all": stage.store_inputs_all,
@@ -1362,7 +1364,9 @@ class DriverEngine:
             wave: list[str] = []
             for sid in remaining:
                 stage = stage_by_id[sid]
-                deps = set(stage.needs) | set(stage.needs_all)
+                # `after` is ordering-only (no data piped), but the stage must still wait
+                # for all `after` dependencies to complete before it can run.
+                deps = set(stage.needs) | set(stage.needs_all) | set(stage.after)
                 if deps <= completed:
                     wave.append(sid)
             if not wave:

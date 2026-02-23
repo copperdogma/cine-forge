@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-02-22-12] — Add `after:` ordering-only stage dependency to recipe DSL (Story 073)
+
+### Added
+- `RecipeStage.after: list[str]` — ordering-only dependency field; stage waits for all `after` stages to complete but receives no data from them and is not subject to schema compatibility checks
+- `after` included in topological sort (`resolve_execution_order`) and wave eligibility (`_compute_execution_waves`) so execution order is correctly enforced
+- `after` included in stage fingerprint for correct cache invalidation
+- 4 unit tests covering: ordering enforced, schema check skipped, no overlap with `store_inputs`, coexistence with `needs`
+
+### Changed
+- `recipe-world-building.yaml`: `entity_discovery` now uses `after: [analyze_scenes]` (was `needs: []` workaround) — expresses ordering intent correctly without false schema mismatch
+
 ## [2026-02-22-11] — Live entity discovery feedback during world-building runs (Story 072)
 
 ### Added
