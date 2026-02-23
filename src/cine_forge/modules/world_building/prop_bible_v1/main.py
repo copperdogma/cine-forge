@@ -210,6 +210,11 @@ def _process_prop(
 
     entity_cost["model"] = "+".join(sorted(models_in_entity)) if models_in_entity else "code"
 
+    # Overwrite scene_presence with deterministic scene-span scan (authoritative over AI guess).
+    # Keep associated_characters from the AI extraction — that's the signature relationship.
+    scene_ids = _find_scene_presence(prop_name, canonical_script, scene_index)
+    definition = definition.model_copy(update={"scene_presence": scene_ids})
+
     # Build artifacts
     version = 1
     master_filename = f"master_v{version}.json"
@@ -513,10 +518,34 @@ def _build_extraction_prompt(
     return f"""You are a prop analyst. Extract a master definition for prop: {prop_name}.
 
     Return JSON matching PropBible schema.
+
+    IMPORTANT — `associated_characters` field:
+    Set this to a list of slugified character IDs (lowercase, underscores, e.g. "the_mariner")
+    for characters who *primarily own or wield* this prop across the story — signature props
+    only. A character who briefly touches the prop in one scene does NOT qualify. Leave empty
+    if no character has a persistent, continuity-critical relationship with this prop.
+    Do NOT include scene IDs here; `scene_presence` will be populated separately.
     {feedback_block}
     Relevant Script Scenes (mentioning {prop_name}):
     {relevant_text}
     """
+
+
+def _find_scene_presence(
+    prop_name: str, canonical_script: dict[str, Any], scene_index: dict[str, Any]
+) -> list[str]:
+    """Return scene IDs where prop_name appears anywhere in the scene's script span."""
+    lines = canonical_script.get("script_text", "").splitlines()
+    prop_upper = prop_name.upper()
+    found: list[str] = []
+    for entry in scene_index.get("entries", []):
+        span = entry.get("source_span", {})
+        start = span.get("start_line", 1) - 1
+        end = span.get("end_line", 0)
+        scene_lines = lines[start:end]
+        if any(prop_upper in line.upper() for line in scene_lines):
+            found.append(entry["scene_id"])
+    return found
 
 
 def _mock_extract(prop_name: str) -> PropBible:

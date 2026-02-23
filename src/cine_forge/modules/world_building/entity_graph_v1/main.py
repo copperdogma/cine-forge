@@ -59,15 +59,22 @@ def run_module(
     # Tiered Model Strategy
     work_model = params.get("work_model") or params.get("model") or "claude-haiku-4-5-20251001"
 
+    # Build resolver to canonicalize AI-written character IDs → character_bible entity_ids
+    char_resolver = _build_char_resolver(character_bibles)
+
     edges: list[EntityEdge] = []
 
     # 2. Generate Co-occurrence Edges (Deterministic)
-    edges.extend(_generate_co_occurrence_edges(scene_index))
+    # Scene-derived IDs are already canonical slugs — no resolver needed here.
+    edges.extend(_generate_co_occurrence_edges(scene_index, prop_bibles))
 
-    # 3. Merge Relationship Stubs from Bibles
-    edges.extend(_merge_bible_stubs(character_bibles, location_bibles, prop_bibles))
+    # 3. Signature prop edges (AI-extracted ownership relationships)
+    edges.extend(_generate_signature_edges(prop_bibles, char_resolver))
 
-    # 4. AI Extraction Pass
+    # 4. Merge Relationship Stubs from Bibles
+    edges.extend(_merge_bible_stubs(character_bibles, location_bibles, prop_bibles, char_resolver))
+
+    # 5. AI Extraction Pass
     total_cost = {
         "model": work_model,
         "input_tokens": 0,
@@ -81,10 +88,10 @@ def run_module(
         edges.extend(new_edges)
         total_cost = cost
     
-    # 5. Deduplicate and Resolve Conflicts
+    # 6. Deduplicate and Resolve Conflicts
     final_edges = _deduplicate_edges(edges)
 
-    # 6. Build final graph artifact
+    # 7. Build final graph artifact
     entity_counts = {
         "character": len(character_bibles),
         "location": len(location_bibles),
@@ -119,21 +126,32 @@ def run_module(
     }
 
 
-def _generate_co_occurrence_edges(scene_index: dict[str, Any]) -> list[EntityEdge]:
+def _generate_co_occurrence_edges(
+    scene_index: dict[str, Any],
+    prop_bibles: list[dict[str, Any]] | None = None,
+) -> list[EntityEdge]:
     """Create edges between entities that share scenes."""
     edges: list[EntityEdge] = []
-    # Simplified co-occurrence: characters in scenes
+
+    # Build a lookup from scene_id → scene entry for prop co-occurrence use below
+    scene_lookup: dict[str, dict[str, Any]] = {
+        e["scene_id"]: e for e in scene_index.get("entries", [])
+    }
+
     for entry in scene_index.get("entries", []):
         scene_id = entry["scene_id"]
         location = entry.get("location")
-        characters = entry.get("characters_present", [])
-        
+        # Prefer pre-slugified IDs; fall back to slugifying display names
+        char_ids = entry.get("characters_present_ids") or [
+            _slugify(c) for c in entry.get("characters_present", [])
+        ]
+
         # Character <-> Location
         if location:
-            for char in characters:
+            for char_id in char_ids:
                 edges.append(EntityEdge(
                     source_type="character",
-                    source_id=char.lower(),
+                    source_id=char_id,
                     target_type="location",
                     target_id=_slugify(location),
                     relationship_type="presence",
@@ -142,46 +160,114 @@ def _generate_co_occurrence_edges(scene_index: dict[str, Any]) -> list[EntityEdg
                     scene_refs=[scene_id],
                     confidence=1.0,
                 ))
-        
+
         # Character <-> Character co-occurrence
-        for i, char_a in enumerate(characters):
-            for char_b in characters[i+1:]:
+        for i, char_a in enumerate(char_ids):
+            for char_b in char_ids[i+1:]:
                 edges.append(EntityEdge(
                     source_type="character",
-                    source_id=char_a.lower(),
+                    source_id=char_a,
                     target_type="character",
-                    target_id=char_b.lower(),
+                    target_id=char_b,
                     relationship_type="co-occurrence",
                     direction="symmetric",
                     evidence=[f"Share scene {scene_id}"],
                     scene_refs=[scene_id],
                     confidence=1.0,
                 ))
+
+    # Prop co-occurrence edges derived from prop bible scene_presence
+    for prop in (prop_bibles or []):
+        prop_id = prop.get("prop_id", "")
+        if not prop_id:
+            continue
+        for scene_id in prop.get("scene_presence", []):
+            entry = scene_lookup.get(scene_id)
+            if not entry:
+                continue
+            location = entry.get("location")
+            char_ids = entry.get("characters_present_ids") or [
+                _slugify(c) for c in entry.get("characters_present", [])
+            ]
+            for char_id in char_ids:
+                edges.append(EntityEdge(
+                    source_type="prop",
+                    source_id=prop_id,
+                    target_type="character",
+                    target_id=char_id,
+                    relationship_type="co-occurrence",
+                    direction="symmetric",
+                    evidence=[f"Prop present in scene {scene_id} with character"],
+                    scene_refs=[scene_id],
+                    confidence=0.9,
+                ))
+            if location:
+                edges.append(EntityEdge(
+                    source_type="prop",
+                    source_id=prop_id,
+                    target_type="location",
+                    target_id=_slugify(location),
+                    relationship_type="co-occurrence",
+                    direction="symmetric",
+                    evidence=[f"Prop present in scene {scene_id} at location"],
+                    scene_refs=[scene_id],
+                    confidence=0.9,
+                ))
+
+    return edges
+
+
+def _generate_signature_edges(
+    prop_bibles: list[dict[str, Any]],
+    char_resolver: dict[str, str] | None = None,
+) -> list[EntityEdge]:
+    """Emit signature_prop_of edges from AI-extracted associated_characters."""
+    edges: list[EntityEdge] = []
+    for prop in prop_bibles:
+        prop_id = prop.get("prop_id", "")
+        if not prop_id:
+            continue
+        for raw_char_id in prop.get("associated_characters", []):
+            # Resolve AI-written ID (e.g. "the_mariner") to canonical ID (e.g. "mariner")
+            char_id = (char_resolver or {}).get(raw_char_id, raw_char_id)
+            edges.append(EntityEdge(
+                source_type="prop",
+                source_id=prop_id,
+                target_type="character",
+                target_id=char_id,
+                relationship_type="signature_prop_of",
+                direction="source_to_target",
+                evidence=[f"'{prop.get('name', prop_id)}' is a signature prop of this character"],
+                confidence=0.95,
+            ))
     return edges
 
 
 def _merge_bible_stubs(
-    characters: list[dict[str, Any]], 
-    locations: list[dict[str, Any]], 
-    props: list[dict[str, Any]]
+    characters: list[dict[str, Any]],
+    locations: list[dict[str, Any]],
+    props: list[dict[str, Any]],
+    char_resolver: dict[str, str] | None = None,
 ) -> list[EntityEdge]:
     """Extract edges from relationship stubs defined in bibles."""
     edges: list[EntityEdge] = []
-    
+
     for char in characters:
         source_id = char["character_id"]
         for stub in char.get("relationships", []):
+            raw_target = _slugify(stub["target_character"])
+            target_id = (char_resolver or {}).get(raw_target, raw_target)
             edges.append(EntityEdge(
                 source_type="character",
                 source_id=source_id,
                 target_type="character",
-                target_id=_slugify(stub["target_character"]),
+                target_id=target_id,
                 relationship_type=stub["relationship_type"],
                 direction="source_to_target",
                 evidence=[stub["evidence"]],
                 confidence=stub["confidence"],
             ))
-    
+
     return edges
 
 
@@ -197,7 +283,7 @@ def _extract_new_relationships(
     # 1. Build a summary of what we know
     char_list = ", ".join([c["name"] for c in characters])
     loc_list = ", ".join([loc["name"] for loc in locations])
-    prop_list = ", ".join([p["name"] for prop in props for p in prop.get("files", [])])
+    prop_list = ", ".join([p["name"] for p in props])
 
     prompt = (
         "You are a narrative architect. Review the following entities from a story "
@@ -247,3 +333,42 @@ def _deduplicate_edges(edges: list[EntityEdge]) -> list[EntityEdge]:
 def _slugify(name: str) -> str:
     import re
     return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+
+
+_ARTICLE_PREFIXES = ("the_", "a_", "an_")
+
+
+def _build_char_resolver(
+    character_bibles: list[dict[str, Any]],
+) -> dict[str, str]:
+    """Build a mapping from any plausible name slug → canonical character_id.
+
+    The AI often writes ``the_mariner`` in associated_characters when the
+    canonical character_bible entity_id is ``mariner`` (slugified from the
+    dialogue cue ``MARINER``).  This resolver catches that mismatch by
+    indexing every character under:
+      - its canonical ``character_id``
+      - ``_slugify(name)``
+      - article-stripped variants (``the_mariner`` → ``mariner``)
+    """
+    mapping: dict[str, str] = {}
+    for char in character_bibles:
+        cid = char.get("character_id", "")
+        if not cid:
+            continue
+        # canonical ID maps to itself
+        mapping[cid] = cid
+        # slugified display name → canonical ID
+        name_slug = _slugify(char.get("name", ""))
+        if name_slug:
+            mapping[name_slug] = cid
+        # article-stripped variants of both the canonical ID and name slug
+        for slug in (cid, name_slug):
+            for prefix in _ARTICLE_PREFIXES:
+                if slug.startswith(prefix):
+                    mapping[slug[len(prefix):]] = cid
+            # also add the article-prefixed form pointing to canonical
+            # so "the_mariner" → cid when cid == "mariner"
+            for prefix in _ARTICLE_PREFIXES:
+                mapping[prefix + slug] = cid
+    return mapping

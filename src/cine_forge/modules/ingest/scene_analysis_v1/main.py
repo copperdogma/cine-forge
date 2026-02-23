@@ -18,7 +18,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 from cine_forge.ai import call_llm, qa_check
-from cine_forge.modules.ingest.scene_breakdown_v1.main import _extract_elements
+from cine_forge.modules.ingest.scene_breakdown_v1.main import _extract_elements, _slugify
 from cine_forge.schemas import (
     ArtifactHealth,
     FieldProvenance,
@@ -554,6 +554,7 @@ def _build_enriched_scene(
         "time_of_day": time_of_day,
         "int_ext": int_ext,
         "characters_present": characters,
+        "characters_present_ids": sorted(_slugify(c) for c in characters),
         "elements": [
             e.model_dump(mode="json") if hasattr(e, "model_dump") else e
             for e in (elements or [])

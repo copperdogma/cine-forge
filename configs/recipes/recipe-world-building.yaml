@@ -1,5 +1,5 @@
 recipe_id: world_building
-description: "Tier 2 world building: scene analysis + entity bibles from pre-ingested artifacts."
+description: "Tier 2 world building: scene analysis, entity bibles, and entity relationship graph."
 project: {}
 stages:
   - id: analyze_scenes
@@ -53,3 +53,9 @@ stages:
     store_inputs:
       normalize: canonical_script
       enriched_scene_index: scene_index
+
+  - id: entity_graph
+    module: entity_graph_v1
+    needs_all: [character_bible, location_bible, prop_bible]
+    store_inputs:
+      breakdown_scenes: scene_index

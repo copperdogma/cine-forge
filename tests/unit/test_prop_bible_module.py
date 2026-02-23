@@ -4,7 +4,10 @@ from typing import Any
 
 import pytest
 
-from cine_forge.modules.world_building.prop_bible_v1.main import run_module
+from cine_forge.modules.world_building.prop_bible_v1.main import (
+    _find_scene_presence,
+    run_module,
+)
 from cine_forge.schemas import EntityAdjudicationDecision
 
 
@@ -83,3 +86,80 @@ def test_prop_bible_module_rejects_non_prop_candidate(
     assert "prop_hero_sword" in ids
     assert "secret_map" not in ids
     assert "prop_secret_map" not in ids
+
+
+@pytest.mark.unit
+def test_find_scene_presence_matches_span() -> None:
+    """_find_scene_presence returns scene IDs where prop name appears in the scene span."""
+    canonical_script = {
+        "script_text": (
+            "INT. OFFICE - DAY\n"           # line 1 (scene_001 span: 1-3)
+            "John sits at his desk.\n"       # line 2
+            "He picks up the BANDOLIER.\n"  # line 3 — prop mention
+            "EXT. STREET - NIGHT\n"         # line 4 (scene_002 span: 4-6)
+            "Mary walks alone.\n"            # line 5
+            "No props here.\n"               # line 6
+        )
+    }
+    scene_index = {
+        "entries": [
+            {
+                "scene_id": "scene_001",
+                "source_span": {"start_line": 1, "end_line": 3},
+            },
+            {
+                "scene_id": "scene_002",
+                "source_span": {"start_line": 4, "end_line": 6},
+            },
+        ]
+    }
+    result = _find_scene_presence("Bandolier", canonical_script, scene_index)
+    assert result == ["scene_001"]
+    assert "scene_002" not in result
+
+
+@pytest.mark.unit
+def test_find_scene_presence_no_match() -> None:
+    """Returns empty list when prop name doesn't appear in any scene span."""
+    canonical_script = {"script_text": "INT. OFFICE - DAY\nNothing here.\n"}
+    scene_index = {
+        "entries": [
+            {"scene_id": "scene_001", "source_span": {"start_line": 1, "end_line": 2}}
+        ]
+    }
+    assert _find_scene_presence("Flare Gun", canonical_script, scene_index) == []
+
+
+@pytest.mark.unit
+def test_mock_extract_scene_presence_overwritten_to_empty() -> None:
+    """Mock extraction returns scene_001 but _find_scene_presence overrides it.
+    With a script that doesn't mention the prop, scene_presence should be [].
+    """
+    canonical_script = {
+        "script_text": "INT. OFFICE - DAY\nNothing here.\n",
+    }
+    scene_index = {
+        "entries": [
+            {
+                "scene_id": "scene_001",
+                "location": "OFFICE",
+                "characters_present": [],
+                "source_span": {"start_line": 1, "end_line": 2},
+            }
+        ],
+        "unique_locations": ["OFFICE"],
+    }
+    inputs = {
+        "canonical_script": canonical_script,
+        "enriched_scene_index": scene_index,
+    }
+    result = run_module(inputs=inputs, params={"model": "mock"}, context={})
+    prop_bibles = [a for a in result["artifacts"] if a["artifact_type"] == "prop_bible"]
+    for bible in prop_bibles:
+        # Mock script doesn't mention "Hero Sword" or "Secret Map" literally,
+        # so overwrite should produce [].
+        assert bible["data"]["scene_presence"] == [], (
+            f"Expected empty scene_presence for {bible['entity_id']} "
+            f"but got {bible['data']['scene_presence']}"
+        )
+

@@ -344,6 +344,7 @@ def _process_scene_chunk(
             "location": scene_payload["location"],
             "time_of_day": scene_payload["time_of_day"],
             "characters_present": scene_payload["characters_present"],
+            "characters_present_ids": scene_payload["characters_present_ids"],
             "source_span": scene_payload["source_span"],
             "tone_mood": scene_payload["tone_mood"],
         }
@@ -524,6 +525,7 @@ def _extract_scene_deterministic(
         "time_of_day": parsed_heading["time_of_day"],
         "int_ext": parsed_heading["int_ext"],
         "characters_present": sorted(characters),
+        "characters_present_ids": sorted(_slugify(c) for c in characters),
         "elements": [element.model_dump(mode="json") for element in elements],
         "narrative_beats": [],
         "tone_mood": DEFAULT_TONE,
@@ -758,6 +760,11 @@ def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:
         "output_tokens": total_output,
         "estimated_cost_usd": total_usd,
     }
+
+
+def _slugify(name: str) -> str:
+    """Convert a display name to a slugified entity ID (lowercase, underscores)."""
+    return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
 
 
 def _empty_cost(model: str) -> dict[str, Any]:

@@ -332,3 +332,44 @@ def test_run_module_includes_provenance(monkeypatch: pytest.MonkeyPatch) -> None
     field_names = {p["field_name"] for p in scene["data"]["provenance"]}
     assert "heading" in field_names
     assert "characters_present" in field_names
+
+
+@pytest.mark.unit
+def test_run_module_populates_characters_present_ids(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Scene artifacts and scene_index entries must include characters_present_ids (slugified).
+    'THE MARINER' → 'the_mariner', 'ROSE' → 'rose', etc.
+    """
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main.validate_fountain_structure",
+        lambda _: type("R", (), {"parseable": True, "coverage": 0.8, "parser_backend": "test"})(),
+    )
+    result = run_module(
+        inputs=_canonical_input(),
+        params={"work_model": "mock"},
+        context={},
+    )
+    scene_artifacts = [a for a in result["artifacts"] if a["artifact_type"] == "scene"]
+    assert scene_artifacts, "Expected at least one scene artifact"
+
+    for scene in scene_artifacts:
+        data = scene["data"]
+        assert "characters_present_ids" in data, (
+            f"Scene {scene['entity_id']} missing characters_present_ids"
+        )
+        # For every display name there should be a corresponding slugified ID
+        for name in data["characters_present"]:
+            expected_id = name.lower().replace(" ", "_")
+            # Slugified form: non-alnum → underscore
+            import re
+            expected_id = re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+            assert expected_id in data["characters_present_ids"], (
+                f"Expected '{expected_id}' in characters_present_ids for name '{name}'"
+            )
+
+    # Also check the scene_index artifact
+    index_artifact = next(
+        (a for a in result["artifacts"] if a["artifact_type"] == "scene_index"), None
+    )
+    if index_artifact:
+        for entry in index_artifact["data"].get("entries", []):
+            assert "characters_present_ids" in entry

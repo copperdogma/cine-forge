@@ -74,6 +74,7 @@ class Scene(BaseModel):
     time_of_day: str
     int_ext: Literal["INT", "EXT", "INT/EXT"]
     characters_present: list[str] = Field(default_factory=list)
+    characters_present_ids: list[str] = Field(default_factory=list)
     elements: list[ScriptElement] = Field(default_factory=list)
     narrative_beats: list[NarrativeBeat] = Field(default_factory=list)
     tone_mood: str
@@ -93,6 +94,7 @@ class SceneIndexEntry(BaseModel):
     location: str
     time_of_day: str
     characters_present: list[str] = Field(default_factory=list)
+    characters_present_ids: list[str] = Field(default_factory=list)
     source_span: SourceSpan
     tone_mood: str
 

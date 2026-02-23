@@ -243,6 +243,9 @@ def _process_character(
         scene_index=scene_index,
         model=work_model,
     )
+    # Override AI-generated character_id with canonical slug so the data field
+    # always matches the artifact entity_id (AI often writes "mariner_001" etc.)
+    definition = definition.model_copy(update={"character_id": slug})
     _update_total_cost(entity_cost, cost)
     if cost.get("model") and cost["model"] != "code":
         models_in_entity.add(cost["model"])

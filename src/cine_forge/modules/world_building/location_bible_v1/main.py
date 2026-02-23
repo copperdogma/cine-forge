@@ -179,6 +179,9 @@ def _process_location(
         scene_index=scene_index,
         model=work_model,
     )
+    # Override AI-generated location_id with canonical slug so the data field
+    # always matches the artifact entity_id (AI often writes "loc_xxx" etc.)
+    definition = definition.model_copy(update={"location_id": slug})
     _update_total_cost(entity_cost, cost)
     if cost.get("model") and cost["model"] != "code":
         models_in_entity.add(cost["model"])

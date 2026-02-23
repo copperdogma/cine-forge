@@ -102,6 +102,14 @@ class PropBible(BaseModel):
     name: str
     description: str
     scene_presence: list[str] = Field(default_factory=list)
+    associated_characters: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Slugified entity IDs of characters who primarily own or wield this prop "
+            "(signature relationship). Distinct from scene_presence — only characters "
+            "with a persistent, continuity-critical association."
+        ),
+    )
     narrative_significance: str
     overall_confidence: float = Field(ge=0.0, le=1.0)
 
