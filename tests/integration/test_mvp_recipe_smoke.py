@@ -80,14 +80,14 @@ def test_mvp_recipe_smoke_mocked_end_to_end(monkeypatch: pytest.MonkeyPatch) -> 
 
     assert state["stages"]["ingest"]["status"] == "done"
     assert state["stages"]["normalize"]["status"] == "done"
-    assert state["stages"]["extract_scenes"]["status"] == "done"
+    assert state["stages"]["breakdown_scenes"]["status"] == "done"
     assert state["stages"]["project_config"]["status"] == "done"
 
     ingest_ref = ArtifactRef.model_validate(state["stages"]["ingest"]["artifact_refs"][0])
     canonical_ref = ArtifactRef.model_validate(state["stages"]["normalize"]["artifact_refs"][0])
     extract_refs = [
         ArtifactRef.model_validate(item)
-        for item in state["stages"]["extract_scenes"]["artifact_refs"]
+        for item in state["stages"]["breakdown_scenes"]["artifact_refs"]
     ]
     scene_refs = [ref for ref in extract_refs if ref.artifact_type == "scene"]
     scene_index_ref = next(ref for ref in extract_refs if ref.artifact_type == "scene_index")
@@ -180,7 +180,7 @@ def test_mvp_recipe_smoke_reused_caching(monkeypatch: pytest.MonkeyPatch) -> Non
             "accept_config": True,
         },
     )
-    for stage_id in ["ingest", "normalize", "extract_scenes", "project_config"]:
+    for stage_id in ["ingest", "normalize", "breakdown_scenes", "project_config"]:
         assert state_second["stages"][stage_id]["status"] == "skipped_reused"
 
 
@@ -278,7 +278,7 @@ def test_mvp_recipe_stale_propagation(monkeypatch: pytest.MonkeyPatch) -> None:
     store.graph._write_graph(graph_data)
 
     # 3. Second run — stages depending on canonical_script should re-run
-    # extract_scenes depends on normalize (which produces canonical_script)
+    # breakdown_scenes depends on normalize (which produces canonical_script)
     state_second = engine.run(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-mvp-ingest.yaml",
         run_id=run_id_second,
@@ -295,7 +295,7 @@ def test_mvp_recipe_stale_propagation(monkeypatch: pytest.MonkeyPatch) -> None:
     assert state_second["stages"]["ingest"]["status"] == "skipped_reused"
     # normalize should re-run because it was marked stale
     assert state_second["stages"]["normalize"]["status"] == "done"
-    # extract_scenes should re-run because its input (canonical_script) was marked stale
-    assert state_second["stages"]["extract_scenes"]["status"] == "done"
+    # breakdown_scenes should re-run because its input (canonical_script) was marked stale
+    assert state_second["stages"]["breakdown_scenes"]["status"] == "done"
     # project_config should re-run because its inputs were re-produced
     assert state_second["stages"]["project_config"]["status"] == "done"

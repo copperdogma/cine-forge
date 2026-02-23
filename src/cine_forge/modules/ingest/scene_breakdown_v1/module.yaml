@@ -1,0 +1,29 @@
+module_id: scene_breakdown_v1
+stage: ingest
+description: >
+  Structural scene extraction from canonical screenplay text.
+  Deterministic splitting, heading parsing, element classification, and
+  character collection. No LLM enrichment or narrative analysis — that
+  belongs in scene_analysis_v1 (Tier 2). Produces scene artifacts with
+  narrative_beats=[], tone_mood="neutral", tone_shifts=[].
+input_schemas:
+  - canonical_script
+output_schemas:
+  - scene
+  - scene_index
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-haiku-4-5-20251001"
+    description: "Model used only for boundary validation on uncertain scene splits."
+  parser_coverage_threshold:
+    type: number
+    required: false
+    default: 0.25
+    description: "Minimum parser coverage to consider parser extraction high-confidence."
+  max_workers:
+    type: integer
+    required: false
+    default: 10
+    description: "Thread pool parallelism for scene chunk processing."

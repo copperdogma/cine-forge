@@ -84,7 +84,7 @@ NOTES from Cam:
 | 059 | Pipeline UI Refinement | 2.5 — UI | High | Done | [story-059](stories/story-059-pipeline-ui-refinement.md) |
 | 060 | Entity Quality Regression | Cross-Cutting | High | Done | [story-060](stories/story-060-entity-quality-regression.md) |
 | 061 | Optimize Scene Extraction | Cross-Cutting | High | Done | [story-061](stories/story-061-optimize-scene-extraction.md) |
-| 062 | 3-Stage Ingestion: Intake, Breakdown, Analysis | Cross-Cutting | High | Pending | [story-062](stories/story-062-refactor-ingestion-three-stage.md) |
+| 062 | 3-Stage Ingestion: Intake, Breakdown, Analysis | Cross-Cutting | High | Done | [story-062](stories/story-062-refactor-ingestion-three-stage.md) |
 | 063 | Automatic Project Title Extraction from Script | 1 — MVP Pipeline | High | Done | [story-063](stories/story-063-automatic-project-title-extraction.md) |
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Cross-Cutting | Medium | Done | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 065 | Parallel Bible Extraction: Performance Optimization for Entity-Heavy Scripts | Cross-Cutting | High | Done | [story-065](stories/story-065-parallel-bible-extraction.md) |
@@ -94,6 +94,9 @@ NOTES from Cam:
 | 069 | Inbox Item Read/Complete State | 2.5 — UI | High | Done | [story-069](stories/story-069-inbox-read-state.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | 2.5 — UI | Medium | Pending | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 071 | Refine vs. Regenerate Pipeline Modes | Cross-Cutting | Medium | Pending | [story-071](stories/story-071-refine-vs-regenerate-pipeline.md) |
+| 072 | Live Entity Discovery Feedback | 2.5 — UI | Medium | Pending | [story-072](stories/story-072-live-entity-discovery-feedback.md) |
+| 073 | Add `after:` ordering-only stage dependency to recipe DSL | Engine | Medium | Pending | [story-073](stories/story-073-add-after-ordering-dependency.md) |
+| 074 | Artifact graph staleness: regression tests + sibling fix | Engine | Medium | Pending | [story-074](stories/story-074-artifact-graph-staleness-regression-tests.md) |
 
 ## Phase Summary
 

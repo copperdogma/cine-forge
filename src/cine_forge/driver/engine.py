@@ -69,7 +69,11 @@ _DEFAULT_STAGE_FALLBACK_MODELS: dict[str, list[str]] = {
         "gpt-4.1",
         "gemini-3-flash-preview",
     ],
-    "extract_scenes": [
+    "breakdown_scenes": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-4-6",
+    ],
+    "analyze_scenes": [
         "claude-sonnet-4-6",
         "claude-opus-4-6",
         "gpt-5.2",

@@ -1,5 +1,5 @@
 recipe_id: mvp_ingest
-description: "Full MVP ingestion pipeline: raw input -> canonical script -> scenes -> project config."
+description: "Tier 1 ingestion: raw input -> canonical script -> scene breakdown -> project config. Fast, mostly deterministic. Deep analysis lives in the world_building recipe (Tier 2)."
 project: {}
 stages:
   - id: ingest
@@ -14,11 +14,10 @@ stages:
       skip_qa: false
     needs:
       - ingest
-  - id: extract_scenes
-    module: scene_extract_v1
+  - id: breakdown_scenes
+    module: scene_breakdown_v1
     params:
-      max_retries: 2
-      skip_qa: false
+      parser_coverage_threshold: 0.25
     needs:
       - normalize
   - id: project_config
@@ -27,4 +26,4 @@ stages:
       accept_config: ${accept_config}
     needs:
       - normalize
-      - extract_scenes
+      - breakdown_scenes

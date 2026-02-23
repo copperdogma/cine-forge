@@ -122,7 +122,9 @@ Story Input
    ↓
 Script Normalization
    ↓
-Scene Extraction
+Scene Breakdown (Tier 1 — structural, fast)
+   ↓
+Scene Analysis (Tier 2 — narrative, LLM-heavy, user-triggered)
    ↓
 Bibles & Entity Graph
    ↓
@@ -204,9 +206,29 @@ The confirmed project configuration becomes a canonical artifact that every role
 
 ⸻
 
-5. Scene Extraction (Required)
+5. Scene Breakdown & Analysis (Required)
 
-5.1 Scene Definition
+5.1 Two-Tier Architecture
+
+Scene processing is split into two tiers:
+
+**Tier 1 — Scene Breakdown** (structural, fast, mostly deterministic):
+	•	Splits canonical script into individual scene artifacts
+	•	Parses headings (INT/EXT, location, time of day)
+	•	Classifies elements (dialogue, action, transitions)
+	•	Collects character names from dialogue cues and action mentions
+	•	Produces `scene` artifacts with `narrative_beats=[]`, `tone_mood="neutral"`
+	•	Produces `scene_index` with `discovery_tier: "structural"` annotation
+	•	Runs in seconds, giving users a browsable scene index immediately
+
+**Tier 2 — Scene Analysis** (narrative, LLM-heavy, user-triggered):
+	•	Enriches scenes with narrative beats, tone/mood, and tone shifts
+	•	Uses Macro-Analysis: processes 5-10 scenes per LLM call for arc consistency
+	•	Gap-fills structural unknowns (UNKNOWN location, UNSPECIFIED time)
+	•	Produces updated `scene` artifact versions and enriched `scene_index`
+	•	Updates `discovery_tier` to `"llm_enriched"`
+
+5.2 Scene Definition
 
 A scene is the atomic narrative unit and must be extracted even if already explicit.
 
@@ -215,13 +237,15 @@ Each scene includes:
 	•	inferred or explicit location
 	•	time of day
 	•	characters present
-	•	narrative beats
-	•	tone and mood
+	•	narrative beats (empty after Breakdown, populated after Analysis)
+	•	tone and mood (neutral after Breakdown, enriched after Analysis)
 	•	confidence markers
+	•	field provenance (method: rule/parser/ai)
 
-5.2 Creative Inference
+5.3 Creative Inference
 	•	When scenes are inferred (e.g., prose), inference must be labeled.
 	•	Confidence scores are mandatory.
+	•	`discovery_tier` annotation tracks completeness: "structural" → "llm_enriched" → "llm_verified".
 
 ⸻
 

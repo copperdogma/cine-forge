@@ -3,6 +3,7 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ## Untriaged
 
+- BUG: When you use the slash search command it goes to the raw artifact, not the char/location/pro detail as it should. For example in this local script: http://localhost:5174/the-mariner-28, searching /MARINER brings you to http://localhost:5174/the-mariner-28/artifacts/character_bible/mariner/1 instead of http://localhost:5174/the-mariner-28/characters/mariner . I think the raw artifacts should always be secondary in the search. That's almost never what anyone wants.
 
 ### UI / Interaction
 
@@ -26,6 +27,8 @@ Triaged together via `/triage` skill in AI agent sessions.
 ### Data & Identity
 
 ### Workflow
+
+- **Audit `skip_enrichment` / `perform_deep_analysis` ghost param**: `scene_extract_v1` has an undeclared `skip_enrichment` param (used in code but missing from `module.yaml`). Story 062 originally planned a `perform_deep_analysis` toggle on `ProjectConfig` but dropped it — the 3-stage split makes Analysis optional by architecture (separate recipe stage), no config flag needed. Grep for `skip_enrichment` and `perform_deep_analysis` across the codebase and purge any references that survived. The old `skip_enrichment` disappears naturally when `scene_extract_v1` is deprecated. *(Source: Story 062 planning, 2026-02-22)*
 
 - **Tighten entity_discovery character/prop taxonomy prompts**: Character taxonomy currently reads "speaking roles or silent roles with plot impact" — allows generic noise like WAITER, GUARD, CROWD. Prop taxonomy already excludes "costumes or set dressing" but could be stricter. Add explicit exclusions: unnamed background characters, crowd members, generic service roles. Small prompt edit in `entity_discovery_v1/main.py` lines 49-57. *(Deferred from Story 065 — noise reduction scope)*
 

@@ -214,10 +214,10 @@ export function useRunProgressChat(projectId: string | undefined) {
           ],
         })
 
-        // Trigger AI commentary — proactive insight about what was produced.
-        // Next-step CTA is added AFTER the insight finishes so the flow is:
-        // completion summary → AI insight → call-to-action.
-        requestPostRunInsight(projectId, recipeId, summary, activeRunId)
+        // Insight placeholder goes first so it streams in above the CTA.
+        // CTA goes last so the button stays at the bottom while insight fills in above it.
+        requestPostRunInsight(projectId, recipeId, summary)
+        addNextStepCta(projectId, recipeId, activeRunId)
       }
 
       // Invalidate project data so UI reflects new state
@@ -234,17 +234,32 @@ export function useRunProgressChat(projectId: string | undefined) {
   }, [runState, runEvents, activeRunId, projectId, queryClient])
 }
 
+/** Add the golden-path next-step CTA immediately on run completion. */
+function addNextStepCta(projectId: string, recipeId: string, runId: string) {
+  if (recipeId === 'mvp_ingest') {
+    useChatStore.getState().addMessage(projectId, {
+      id: `progress_${runId}_next_steps`,
+      type: 'ai_suggestion',
+      content: 'Next up: a deep breakdown — detailed character profiles, location guides, and a map of every relationship in your story.',
+      timestamp: Date.now(),
+      actions: [
+        { id: 'go_deeper', label: 'Deep Breakdown', variant: 'default' },
+        { id: 'review', label: 'Browse Results', variant: 'outline', route: 'artifacts' },
+      ],
+      needsAction: true,
+    })
+  }
+}
+
 /**
  * Fire-and-forget AI insight after a run completes.
  * Adds a streaming AI message to the chat with creative commentary
  * about the artifacts that were just produced.
- * After the insight finishes, adds the next-step CTA (for mvp_ingest only).
  */
 function requestPostRunInsight(
   projectId: string,
   recipeId: string,
   artifactSummary: string,
-  runId: string,
 ) {
   const store = useChatStore.getState()
   const aiMsgId = `ai_insight_${Date.now()}`
@@ -260,28 +275,17 @@ function requestPostRunInsight(
 
   let fullContent = ''
 
-  /** Add the golden-path CTA after the insight stream (analyze → summary → next step). */
-  function addNextStepsCta() {
-    if (recipeId === 'mvp_ingest') {
-      useChatStore.getState().addMessage(projectId, {
-        id: `progress_${runId}_next_steps`,
-        type: 'ai_suggestion',
-        content: 'Next up: a deep breakdown — detailed character profiles, location guides, and a map of every relationship in your story.',
-        timestamp: Date.now(),
-        actions: [
-          { id: 'go_deeper', label: 'Deep Breakdown', variant: 'default' },
-          { id: 'review', label: 'Browse Results', variant: 'outline', route: 'artifacts' },
-        ],
-        needsAction: true,
-      })
-    }
-  }
+  const recipeDisplayName =
+    recipeId === 'mvp_ingest' ? 'Script Breakdown'
+    : recipeId === 'world_building' ? 'Deep Breakdown'
+    : recipeId
 
   streamAutoInsight(
     projectId,
     'run_completed',
     {
       recipe_id: recipeId,
+      recipe_display_name: recipeDisplayName,
       artifact_summary: artifactSummary || 'various artifacts',
     },
     (chunk) => {
@@ -293,12 +297,10 @@ function requestPostRunInsight(
       // internally to read artifacts but we don't show those indicators
     },
     () => {
-      // Done — finalize the streaming message, then show next-step CTA
       useChatStore.getState().finalizeStreamingMessage(projectId, aiMsgId)
-      addNextStepsCta()
     },
     () => {
-      // Error — finalize with fallback, then still show next-step CTA
+      // Error — finalize with fallback content
       if (!fullContent) {
         useChatStore.getState().updateMessageContent(
           projectId, aiMsgId,
@@ -306,7 +308,6 @@ function requestPostRunInsight(
         )
       }
       useChatStore.getState().finalizeStreamingMessage(projectId, aiMsgId)
-      addNextStepsCta()
     },
   )
 }

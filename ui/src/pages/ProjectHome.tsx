@@ -506,10 +506,12 @@ function ProcessingView({ projectId }: { projectId: string }) {
   const { data: runState } = useRunState(activeRunId ?? undefined)
   const queryClient = useQueryClient()
 
-  // Invalidate artifacts and chat when a stage finishes/fails, or when the run itself finishes
+  // Invalidate artifacts when a stage finishes/fails, or when the run itself finishes.
+  // NOTE: do NOT call syncMessages here — it overwrites in-memory state from the backend,
+  // which races with the in-flight insight stream and drops the streaming message before
+  // it can be finalized and persisted. use-run-progress.ts manages all run messages directly.
   const prevFinishedCount = useRef(0)
   const prevRunFinished = useRef(false)
-  const syncMessages = useChatStore(s => s.syncMessages)
 
   useEffect(() => {
     if (!runState || !projectId) return
@@ -519,11 +521,10 @@ function ProcessingView({ projectId }: { projectId: string }) {
 
     if (finishedCount > prevFinishedCount.current || (isRunFinished && !prevRunFinished.current)) {
       queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
-      syncMessages(projectId)
       prevFinishedCount.current = finishedCount
       prevRunFinished.current = isRunFinished
     }
-  }, [runState, projectId, queryClient, syncMessages])
+  }, [runState, projectId, queryClient])
 
   // Find the currently running stage to show its description
   let statusText = 'Processing your screenplay...'

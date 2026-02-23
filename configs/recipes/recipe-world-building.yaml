@@ -1,7 +1,17 @@
 recipe_id: world_building
-description: "World building pipeline: entity bibles from pre-ingested artifacts."
+description: "Tier 2 world building: scene analysis + entity bibles from pre-ingested artifacts."
 project: {}
 stages:
+  - id: analyze_scenes
+    module: scene_analysis_v1
+    params:
+      skip_qa: true
+      batch_size: 5
+    needs: []
+    store_inputs:
+      normalize: canonical_script
+      breakdown_scenes: scene_index
+
   - id: entity_discovery
     module: entity_discovery_v1
     params:
@@ -19,27 +29,27 @@ stages:
     params:
       skip_qa: true
       concurrency: 5
-    needs: [entity_discovery]
+    needs: [entity_discovery, analyze_scenes]
     store_inputs:
       normalize: canonical_script
-      extract_scenes: scene_index
+      enriched_scene_index: scene_index
 
   - id: location_bible
     module: location_bible_v1
     params:
       skip_qa: true
       concurrency: 5
-    needs: [entity_discovery]
+    needs: [entity_discovery, analyze_scenes]
     store_inputs:
       normalize: canonical_script
-      extract_scenes: scene_index
+      enriched_scene_index: scene_index
 
   - id: prop_bible
     module: prop_bible_v1
     params:
       skip_qa: true
       concurrency: 5
-    needs: [entity_discovery]
+    needs: [entity_discovery, analyze_scenes]
     store_inputs:
       normalize: canonical_script
-      extract_scenes: scene_index
+      enriched_scene_index: scene_index

@@ -78,8 +78,9 @@ class DependencyGraph:
                 return []
 
             stale_refs: list[ArtifactRef] = []
+            new_key = new_ref.key()
             queue = deque(nodes[previous_key]["downstream"])
-            seen: set[str] = set()
+            seen: set[str] = {new_key}  # never mark the new version itself as stale
             while queue:
                 node_key = queue.popleft()
                 if node_key in seen or node_key not in nodes:

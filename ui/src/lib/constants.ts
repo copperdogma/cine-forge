@@ -4,8 +4,8 @@
  * sequential display of pipeline progress.
  */
 export const RECIPE_STAGE_ORDER: Record<string, string[]> = {
-  mvp_ingest: ['ingest', 'normalize', 'extract_scenes', 'project_config'],
-  world_building: ['entity_discovery', 'character_bible', 'location_bible', 'prop_bible'],
+  mvp_ingest: ['ingest', 'normalize', 'breakdown_scenes', 'project_config'],
+  world_building: ['entity_discovery', 'analyze_scenes', 'character_bible', 'location_bible', 'prop_bible'],
   narrative_analysis: ['entity_graph', 'continuity_tracking'],
 }
 

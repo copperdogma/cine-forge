@@ -1,5 +1,5 @@
 recipe_id: recipe-ingest-extract-config
-description: Ingest + normalize + scene extraction + project config recipe.
+description: Ingest + normalize + scene breakdown + project config recipe.
 project: {}
 stages:
   - id: ingest
@@ -16,13 +16,10 @@ stages:
       skip_qa: false
     needs:
       - ingest
-  - id: extract
-    module: scene_extract_v1
+  - id: breakdown_scenes
+    module: scene_breakdown_v1
     params:
-      model: mock
-      qa_model: mock
-      max_retries: 1
-      skip_qa: false
+      work_model: mock
     needs:
       - normalize
   - id: config
@@ -33,4 +30,4 @@ stages:
       accept_config: true
     needs:
       - normalize
-      - extract
+      - breakdown_scenes

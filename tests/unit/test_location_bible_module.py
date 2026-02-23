@@ -14,7 +14,7 @@ def mock_inputs() -> dict[str, Any]:
         "normalize": {
             "script_text": "INT. STUDIO - DAY\nARIA is here.",
         },
-        "extract_scenes": {
+        "breakdown_scenes": {
             "unique_locations": ["STUDIO"],
             "entries": [
                 {

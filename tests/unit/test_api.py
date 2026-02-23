@@ -320,7 +320,7 @@ def test_service_retry_failed_stage_bootstraps_new_run_from_failed_stage(
         "stages": {
             "ingest": {"status": "done", "artifact_refs": [raw_ref.model_dump(mode="json")]},
             "normalize": {"status": "failed"},
-            "extract_scenes": {"status": "pending"},
+            "breakdown_scenes": {"status": "pending"},
         },
     }
     (run_dir / "run_state.json").write_text(json.dumps(run_state), encoding="utf-8")
@@ -360,7 +360,7 @@ def test_service_retry_failed_stage_bootstraps_new_run_from_failed_stage(
     assert worker_kwargs["runtime_params"]["__resume_artifact_refs_by_stage"] == {
         "ingest": [raw_ref.model_dump(mode="json")],
         "normalize": [],
-        "extract_scenes": [],
+        "breakdown_scenes": [],
     }
     assert worker_kwargs["recipe_path"] == recipe_path
     assert worker_kwargs["project_path"] == project_path
@@ -414,7 +414,7 @@ def test_service_retry_failed_stage_steps_back_to_ingest_for_empty_raw_input(
         "stages": {
             "ingest": {"status": "done", "artifact_refs": [raw_ref.model_dump(mode="json")]},
             "normalize": {"status": "failed"},
-            "extract_scenes": {"status": "pending"},
+            "breakdown_scenes": {"status": "pending"},
         },
     }
     (run_dir / "run_state.json").write_text(json.dumps(run_state), encoding="utf-8")

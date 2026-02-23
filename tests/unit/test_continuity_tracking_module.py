@@ -10,7 +10,7 @@ from cine_forge.modules.world_building.continuity_tracking_v1.main import run_mo
 @pytest.fixture
 def mock_inputs() -> dict[str, Any]:
     return {
-        "extract_scenes": {
+        "breakdown_scenes": {
             "entries": [
                 {
                     "scene_id": "scene_001",

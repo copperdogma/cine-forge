@@ -962,12 +962,14 @@ def stream_chat_response(
 
 INSIGHT_PROMPTS: dict[str, str] = {
     "run_completed": (
-        "A pipeline run just completed ({recipe_id} recipe). "
+        "A pipeline run just completed ({recipe_display_name}). "
         "It produced: {artifact_summary}. "
         "Use your tools to look at what was produced. "
         "Give a brief (2-4 sentence) creative observation about the project "
         "based on what you find — mention specific characters, themes, or story "
         "elements. Then suggest what the user should look at first or do next. "
+        "Use user-facing names for pipeline steps: 'Script Breakdown' and 'Deep Breakdown' — "
+        "never 'mvp_ingest', 'world_building', or 'recipe'. "
         "Be specific and enthusiastic, not generic."
     ),
     "welcome": (
@@ -989,5 +991,5 @@ def build_insight_prompt(trigger: str, context: dict[str, Any]) -> str:
     try:
         return template.format(**context)
     except KeyError:
-        defaults = {k: f"({k})" for k in ["recipe_id", "artifact_summary"]}
+        defaults = {k: f"({k})" for k in ["recipe_id", "recipe_display_name", "artifact_summary"]}
         return template.format_map({**context, **defaults})

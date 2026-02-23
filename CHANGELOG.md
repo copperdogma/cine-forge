@@ -1,5 +1,34 @@
 # Changelog
 
+## [2026-02-22-10] — Post-smoke-test UI/UX fixes: insight ordering, display names, stage order
+
+### Fixed
+- `ProjectHome.tsx`: removed `syncMessages()` from stage-completion effect — it was overwriting in-memory state from the backend, racing with the in-flight insight stream and silently dropping streaming AI insight messages before they could be persisted
+- `use-run-progress.ts`: insight placeholder now added before the "Next Steps" CTA so the insight streams in above the action button rather than below it (no more button jumping up the screen)
+- `ui/src/lib/constants.ts`: `entity_discovery` now appears before `analyze_scenes` in the `world_building` stage display order — matches actual execution order (code-based discovery always finishes before LLM scene analysis)
+
+### Changed
+- `use-run-progress.ts` + `src/cine_forge/ai/chat.py`: AI insight prompt now uses user-facing recipe names ("Script Breakdown", "Deep Breakdown") instead of raw recipe IDs ("mvp_ingest", "world_building") — prompt includes instruction to never leak technical names
+
+## [2026-02-22-09] — Refactor ingestion into 3-stage pipeline; fix graph staleness (Story 062)
+
+### Added
+- `scene_breakdown_v1` module: deterministic structural scene parsing (scene headings, elements, cast lists) — Tier 1 ingest, no LLM
+- `scene_analysis_v1` module: LLM narrative enrichment (beats, tone, subtext, inferences) — Tier 2 world-building
+- `tests/unit/test_scene_breakdown_module.py`, `tests/unit/test_scene_analysis_module.py`
+- Story 072 (Pending): live entity discovery feedback as world-building runs
+
+### Changed
+- `recipe-mvp-ingest.yaml`: `extract_scenes` stage → `breakdown_scenes` (scene_breakdown_v1)
+- `recipe-world-building.yaml`: added `analyze_scenes` stage (scene_analysis_v1); fixed `entity_discovery` schema dependency; bible stages now wait for `analyze_scenes`
+- UI stage labels and order updated for `breakdown_scenes` / `analyze_scenes`
+
+### Fixed
+- `artifacts/graph.py`: `propagate_stale_for_new_version` no longer marks the newly-created artifact as stale (self-staleness via BFS through shared lineage ancestors)
+
+### Removed
+- `scene_extract_v1` module (monolithic scene extraction+enrichment — replaced by two-stage split)
+
 ## [2026-02-22-08] — Parallel bible extraction via ThreadPoolExecutor (Story 065)
 
 ### Changed

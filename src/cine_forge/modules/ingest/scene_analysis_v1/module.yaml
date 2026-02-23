@@ -1,0 +1,45 @@
+module_id: scene_analysis_v1
+stage: ingest
+description: >
+  Tier 2 narrative analysis: enriches structurally-extracted scenes with
+  narrative beats, tone/mood, and subtext. Uses Macro-Analysis to process
+  5-10 scenes per LLM call for better arc consistency. Also gap-fills
+  structural unknowns (UNKNOWN location, UNSPECIFIED time_of_day).
+  Produces updated scene artifact versions and an enriched scene_index.
+input_schemas:
+  - scene_index
+  - canonical_script
+output_schemas:
+  - scene
+  - scene_index
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Primary model for narrative analysis."
+  escalate_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Fallback model on retry."
+  qa_model:
+    type: string
+    required: false
+    default: "claude-haiku-4-5-20251001"
+    description: "Model for QA verification passes."
+  max_retries:
+    type: integer
+    required: false
+    default: 1
+    description: "Max retries per batch on failure."
+  skip_qa:
+    type: boolean
+    required: false
+    default: false
+    description: "Skip QA verification to reduce cost."
+  batch_size:
+    type: integer
+    required: false
+    default: 5
+    description: "Number of scenes per Macro-Analysis LLM call."

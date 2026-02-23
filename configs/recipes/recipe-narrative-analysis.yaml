@@ -9,7 +9,7 @@ stages:
     needs: []
     # These resolve from store since world_building is an upstream recipe
     store_inputs:
-      extract_scenes: scene_index
+      breakdown_scenes: scene_index
     store_inputs_all:
       character_bible: character_bible
       location_bible: location_bible
@@ -22,7 +22,7 @@ stages:
     needs: []
     store_inputs:
       normalize: canonical_script
-      extract_scenes: scene_index
+      breakdown_scenes: scene_index
     store_inputs_all:
       character_bible: character_bible
       location_bible: location_bible

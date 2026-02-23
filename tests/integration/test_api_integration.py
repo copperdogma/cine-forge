@@ -21,7 +21,7 @@ def _await_run_done(client: TestClient, run_id: str, timeout_seconds: float = 60
         stages = payload["state"]["stages"]
         
         # We need to know which stages are expected for this recipe
-        # For mvp_ingest it's: ingest, normalize, extract_scenes, project_config
+        # For mvp_ingest it's: ingest, normalize, breakdown_scenes, project_config
         # But let's just check overall run status or that no stages are running/pending
         statuses = {s["status"] for s in stages.values()}
         

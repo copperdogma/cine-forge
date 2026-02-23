@@ -133,9 +133,13 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Classifying your document type — screenplay, treatment, or prose...',
     done: 'Document classified.',
   },
-  extract_scenes: {
-    start: 'Finding scene boundaries and structure...',
-    done: 'Scenes identified.',
+  breakdown_scenes: {
+    start: 'Breaking down scene boundaries and structure...',
+    done: 'Scene breakdown complete.',
+  },
+  analyze_scenes: {
+    start: 'Analyzing narrative beats, tone, and subtext across scenes...',
+    done: 'Scene analysis complete.',
   },
   entity_discovery: {
     start: 'Discovering characters, locations, and props across your script...',
