@@ -357,6 +357,9 @@ export function ChatPanel() {
   const addMessage = useChatStore(s => s.addMessage)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  // True while the user is at (or near) the bottom of the chat. Used by the ResizeObserver
+  // to decide whether to snap to bottom when content grows. Updated by the scroll listener.
+  const shouldAutoScrollRef = useRef(true)
   const startRun = useStartRun()
   const { data: inputs } = useProjectInputs(projectId)
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
@@ -446,35 +449,44 @@ export function ChatPanel() {
     )
   }
 
-  // Auto-scroll to bottom whenever scroll content grows taller, but ONLY if user is already
-  // near the bottom (within ~120px).
+  // Auto-scroll strategy: track user intent via a scroll listener, then snap to bottom
+  // whenever content grows (ResizeObserver) if the user was at the bottom.
   //
-  // Why ResizeObserver instead of a useEffect on `messages`:
-  //   The RunProgressCard is a single message whose content (run ID) never changes, but its
-  //   rendered height grows as new stage rows appear during a run. A `messages` dependency
-  //   misses those expansions. ResizeObserver fires whenever the content area changes size —
-  //   new messages, in-place content updates, and progress card stage rows all covered.
+  // Why not measure distFromBottom inside the ResizeObserver callback?
+  //   When the RunProgressCard adds several stage rows at once, the content can grow
+  //   200–300px in a single paint. By the time the observer fires, distFromBottom is
+  //   already large, so the old "< 120px" check wrongly treats it as a user-scroll-up.
+  //
+  // The intent-ref approach: the scroll listener continuously tracks whether the user is
+  // near the bottom (<120px). The ResizeObserver just reads that flag — it never re-measures
+  // distance itself, so it's immune to large content jumps.
   useEffect(() => {
     const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
     if (!viewport) return
 
-    const scrollIfNearBottom = () => {
+    const onScroll = () => {
       const distFromBottom = viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight
-      if (distFromBottom < 120) {
-        viewport.scrollTop = viewport.scrollHeight
-      }
+      shouldAutoScrollRef.current = distFromBottom < 120
     }
 
-    // Also scroll immediately so existing messages are visible on mount
-    scrollIfNearBottom()
+    const snapToBottom = () => {
+      if (!shouldAutoScrollRef.current) return
+      viewport.scrollTop = viewport.scrollHeight
+    }
 
-    const observer = new ResizeObserver(scrollIfNearBottom)
-    // Observe the inner content div (first child of viewport) so we catch height changes
+    // Snap immediately (e.g. on initial load while already at bottom)
+    snapToBottom()
+
+    const observer = new ResizeObserver(snapToBottom)
     const content = viewport.firstElementChild
     if (content) observer.observe(content)
 
-    return () => observer.disconnect()
-  }, [messages])
+    viewport.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      observer.disconnect()
+      viewport.removeEventListener('scroll', onScroll)
+    }
+  }, [])
 
   // Listen for programmatic "ask" events (from GlossaryTerm, SectionHelp, etc.)
   useEffect(() => {
