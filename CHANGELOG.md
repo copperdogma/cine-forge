@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-02-23-05] — Chat & nav bug fixes: slash-search routing, entity context chip (Story 079)
+
+### Added
+- Entity context chip above chat input — shows icon + entity name when viewing a character, location, prop, or scene detail page; updates on navigation, clears on list pages; clicking navigates back to the entity
+- `entityContext` state in `chat-store` (`setEntityContext` / `clearEntityContext` actions) — pure UI state, not persisted
+
+### Fixed
+- Slash-search (CommandPalette `/` trigger) now navigates to entity detail pages (`/characters/:id`, `/locations/:id`, `/props/:id`, `/scenes/:id`) instead of raw artifact URLs
+- `addActivity` idempotency bug — activity message was silently skipped when a newer message (e.g. AI response) had landed after the last navigation; fixed by finding the stable ID anywhere in the list instead of only checking the last message
+- `ChatMessagePayload` backend model now includes `route` field so activity message routes persist to JSONL storage on cold load
+
 ## [2026-02-23-04] — Entity detail UX polish: scroll-to-top, cross-ref ordering, prop ownership (Story 078)
 
 ### Added

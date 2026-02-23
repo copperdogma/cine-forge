@@ -3,16 +3,10 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ## Untriaged
 
-- Bug: Whenever you click on an entity it's supposed to put a refernce to it in the chat (replaced if you click a different one). We did a lot of work on that system. It no longer happens when you click on an entity.
-
-- Tweak: When the chat window gets added to and the user is scrolled to the bottom, auto-scroll to the bottom of the chat window. If they're not at the bottom, don't scroll.
-
-- BUG: When you use the slash search command it goes to the raw artifact, not the char/location/pro detail as it should. For example in this local script: http://localhost:5174/the-mariner-28, searching /MARINER brings you to http://localhost:5174/the-mariner-28/artifacts/character_bible/mariner/1 instead of http://localhost:5174/the-mariner-28/characters/mariner . I think the raw artifacts should always be secondary in the search. That's almost never what anyone wants.
-
-
 ### UI / Interaction
 
-- **ChatMessagePayload missing `route` field**: The backend Pydantic model `ChatMessagePayload` (models.py:205) doesn't include `route`, so activity message routes are silently stripped on persistence. Activity messages sent from the frontend include `route` (used for navigation context), but `model_dump(exclude_none=True)` drops it before JSONL storage. On cold load, activity messages lose their route association. Low severity — activity messages are ephemeral UI context — but should be fixed for completeness.
+- Stale: Why is this entity listed as stale? http://localhost:5174/the-mariner-40/locations/13th_floor Also I think when you hover over Stale it should tell you what that means. It currently looks like there's something wrong, but there's no info as to what, what that means for the user, or how they can do anythnig about it.
+  - Related, the rest of them are listed as "valid". Are those are two states? Valid and stale? And valid in what way? Validated by what? Is that the right word for this?
 
 - Generate WAY better formatted callsheets like these ones from StudioBinder and Gill (my sister): '/Users/cam/Documents/Projects/cine-forge/input/Sample Call Sheets'
 
@@ -33,8 +27,6 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### Workflow
 
-- **Audit `skip_enrichment` / `perform_deep_analysis` ghost param**: `scene_extract_v1` has an undeclared `skip_enrichment` param (used in code but missing from `module.yaml`). Story 062 originally planned a `perform_deep_analysis` toggle on `ProjectConfig` but dropped it — the 3-stage split makes Analysis optional by architecture (separate recipe stage), no config flag needed. Grep for `skip_enrichment` and `perform_deep_analysis` across the codebase and purge any references that survived. The old `skip_enrichment` disappears naturally when `scene_extract_v1` is deprecated. *(Source: Story 062 planning, 2026-02-22)*
-
 - **Tighten entity_discovery character/prop taxonomy prompts**: Character taxonomy currently reads "speaking roles or silent roles with plot impact" — allows generic noise like WAITER, GUARD, CROWD. Prop taxonomy already excludes "costumes or set dressing" but could be stricter. Add explicit exclusions: unnamed background characters, crowd members, generic service roles. Small prompt edit in `entity_discovery_v1/main.py` lines 49-57. *(Deferred from Story 065 — noise reduction scope)*
 
 - **Story-to-screenplay conversion**: For non-screenplay inputs (short stories, novels, treatments), send to a strong model with "make this into a screenplay" and take the output. Good for commercials and short-form. Not primary workflow but worth having as a convenience path. *(Source: Cam, 011b review)*
@@ -44,6 +36,7 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ## Triaged
 
+- 2026-02-23 — Entity click → chat reference regression + slash-search routing + chat auto-scroll + ChatMessagePayload route field + ghost param audit → created story-079
 - 2026-02-22 — Chat nav message duplication bug → created story-067
 - 2026-02-22 — Back button hardcoded navigation → created story-068
 - 2026-02-22 — Inbox items never marked read/complete → created story-069

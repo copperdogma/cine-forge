@@ -29,3 +29,4 @@ Entries:
 20260222-2005 | 90 | success | partial | Story 062 3-stage ingestion + UI fixes; v2026.02.22-10; src/ layer rebuilt (new modules), frontend rebuilt; API+browser UI smoke passed
 20260223-1033 | 113 | success | partial | Story 074 graph staleness fix + tests; v2026.02.23-01; src/ layer rebuilt, frontend rebuilt; API smoke passed; browser UI passed (fresh MCP tab required — detached tab fix)
 20260223-1222 | 83 | success | partial | Story 052 streaming yield + nav row glow; v2026.02.23-02; src/ layer rebuilt, frontend rebuilt (new CSS/JS); API smoke passed; browser unavailable (HTTP fallback)
+20260223-2115 | 86 | success | partial | Stories 045+075-078 entity detail polish + graph edges; v2026.02.23-04; src/ layer rebuilt, frontend rebuilt; API smoke passed; browser UI smoke passed (no app errors)

@@ -30,11 +30,21 @@ function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
   return migrated
 }
 
+export interface EntityContext {
+  name: string
+  section: string
+  entityId: string
+}
+
 interface ChatStore {
   messages: Record<string, ChatMessage[]>
   /** Tracks which projects have been loaded from the backend. */
   loaded: Record<string, boolean>
   activeRunId: Record<string, string | null>
+  /** Currently-viewed entity, shown as a context chip above the chat input. */
+  entityContext: Record<string, EntityContext | null>
+  setEntityContext: (projectId: string, ctx: EntityContext) => void
+  clearEntityContext: (projectId: string) => void
 
   /** Bulk-load messages from backend (replaces any in-memory state for the project). */
   loadMessages: (projectId: string, messages: ChatMessage[]) => void
@@ -69,6 +79,7 @@ export const useChatStore = create<ChatStore>()(
     messages: {},
     loaded: {},
     activeRunId: {},
+    entityContext: {},
 
     syncMessages: async (projectId) => {
       try {
@@ -110,25 +121,26 @@ export const useChatStore = create<ChatStore>()(
     addActivity: (projectId, content, route) => {
       const state = get()
       const existing = state.messages[projectId] ?? []
-      const lastMsg = existing[existing.length - 1]
+      const stableId = `activity_nav_${projectId}`
 
       const message: ChatMessage = {
-        id: `activity_nav_${projectId}`,
+        id: stableId,
         type: 'activity',
         content,
         timestamp: Date.now(),
         route,
       }
 
-      if (lastMsg?.type === 'activity') {
-        // Replace last activity message instead of appending to avoid navigation spam
+      // Find the existing activity message anywhere in the list (not just when it's last).
+      // The addMessage idempotency guard blocks updates when the stable ID already exists
+      // but isn't the last message (e.g. after an AI response lands post-navigation).
+      const existingIdx = existing.findIndex(m => m.id === stableId)
+      if (existingIdx !== -1) {
         set((state) => {
           const updated = [...(state.messages[projectId] ?? [])]
-          updated[updated.length - 1] = message
+          updated[existingIdx] = message
           return { messages: { ...state.messages, [projectId]: updated } }
         })
-        // Note: We don't explicitly persist deletions to the backend JSONL yet, 
-        // but new additions are persisted. Replacing in-memory keeps the UI clean.
         postChatMessage(projectId, message).catch(() => {})
       } else {
         get().addMessage(projectId, message)
@@ -242,5 +254,11 @@ export const useChatStore = create<ChatStore>()(
       set((state) => ({
         activeRunId: { ...state.activeRunId, [projectId]: null },
       })),
+
+    setEntityContext: (projectId, ctx) =>
+      set((state) => ({ entityContext: { ...state.entityContext, [projectId]: ctx } })),
+
+    clearEntityContext: (projectId) =>
+      set((state) => ({ entityContext: { ...state.entityContext, [projectId]: null } })),
   }),
 )

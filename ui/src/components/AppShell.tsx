@@ -264,18 +264,17 @@ function ShellInner() {
     }
 
     // Entity detail: /:projectId/characters/:entityId (etc.)
+    // Sets the context chip above the chat input rather than posting a timeline message.
     const entityDetailMatch = path.match(new RegExp(`^/${projectId}/(characters|locations|props|scenes)/([^/]+)$`))
     if (entityDetailMatch) {
       const [, section, entityId] = entityDetailMatch
-      const sectionLabel = section.charAt(0).toUpperCase() + section.slice(1).replace(/s$/, '')
       const entityName = entityId.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-      useChatStore.getState().addActivity(
-        projectId,
-        `Viewing ${sectionLabel}: ${entityName}`,
-        `${section}/${entityId}`,
-      )
+      useChatStore.getState().setEntityContext(projectId, { name: entityName, section, entityId })
       return
     }
+
+    // Leaving an entity detail page — clear the context chip
+    useChatStore.getState().clearEntityContext(projectId)
 
     // Entity lists
     if (path.endsWith('/scenes')) { useChatStore.getState().addActivity(projectId, 'Viewing Scene Index', 'scenes'); return }

@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
-import { Activity, Sparkles, CheckCircle2, Loader2, MessageSquare, Send, User, Wrench } from 'lucide-react'
+import { Activity, Clapperboard, MapPin, Package, Sparkles, CheckCircle2, Loader2, MessageSquare, Send, User, Users, Wrench } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -351,10 +351,19 @@ function ChatMessageItem({
   )
 }
 
+const SECTION_ICONS: Record<string, React.ElementType> = {
+  characters: Users,
+  locations: MapPin,
+  props: Package,
+  scenes: Clapperboard,
+}
+
 export function ChatPanel() {
   const { projectId } = useParams()
+  const navigate = useNavigate()
   const messages = useChatStore(s => s.messages[projectId ?? ''] ?? EMPTY_MESSAGES)
   const addMessage = useChatStore(s => s.addMessage)
+  const entityContext = useChatStore(s => s.entityContext[projectId ?? ''] ?? null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   // True while the user is at (or near) the bottom of the chat. Used by the ResizeObserver
@@ -536,6 +545,20 @@ export function ChatPanel() {
 
       {/* Chat input */}
       <div className="border-t border-border p-3 shrink-0">
+        {entityContext && (() => {
+          const CtxIcon = SECTION_ICONS[entityContext.section] ?? Sparkles
+          return (
+            <div className="mb-2 flex items-center gap-1.5 px-0.5">
+              <CtxIcon className="h-3 w-3 text-muted-foreground/50 shrink-0" />
+              <span
+                className="text-xs text-muted-foreground/60 hover:text-muted-foreground cursor-pointer truncate transition-colors"
+                onClick={() => navigate(`/${projectId}/${entityContext.section}/${entityContext.entityId}`)}
+              >
+                {entityContext.name}
+              </span>
+            </div>
+          )
+        })()}
         <div className="flex gap-2">
           <input
             ref={inputRef}

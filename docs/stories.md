@@ -101,6 +101,7 @@ NOTES from Cam:
 | 076 | Entity Detail: Cross-Reference Layout & Narrative Role Polish | 2.5 — UI | High | Done | [story-076](stories/story-076-entity-detail-cross-ref-layout.md) |
 | 077 | Character Coverage & Prominence Tiers | World Building / UI | Medium | Pending | [story-077](stories/story-077-character-coverage-and-prominence-tiers.md) |
 | 078 | Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata | 2.5 — UI | Medium | Done | [story-078](stories/story-078-entity-detail-enhancements.md) |
+| 079 | Chat & Nav Bugs + Polish Bundle | 2.5 — UI | Medium | Done | [story-079](stories/story-079-chat-nav-bugs-and-polish.md) |
 
 ## Phase Summary
 
