@@ -446,10 +446,12 @@ export function ChatPanel() {
     )
   }
 
-  // Auto-scroll to bottom when new messages arrive or last message's content changes,
+  // Auto-scroll to bottom on any messages change (new message OR in-place content update),
   // but ONLY if the user is already near the bottom (within ~120px). This way:
   //   - During an active run: the chat keeps scrolling as updates stream in
   //   - When the user scrolls up to review earlier messages: we don't yank them back down
+  // Depends on the `messages` array reference — Zustand replaces the array on every store
+  // mutation (including updateMessageContent), so this fires for all cases.
   useEffect(() => {
     const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
     if (!viewport) return
@@ -457,8 +459,7 @@ export function ChatPanel() {
     if (distFromBottom < 120) {
       viewport.scrollTop = viewport.scrollHeight
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages.length, messages[messages.length - 1]?.content])
+  }, [messages])
 
   // Listen for programmatic "ask" events (from GlossaryTerm, SectionHelp, etc.)
   useEffect(() => {
