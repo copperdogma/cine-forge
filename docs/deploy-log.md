@@ -32,3 +32,4 @@ Entries:
 20260223-2115 | 86 | success | partial | Stories 045+075-078 entity detail polish + graph edges; v2026.02.23-04; src/ layer rebuilt, frontend rebuilt; API smoke passed; browser UI smoke passed (no app errors)
 20260223-2335 | 102 | success | partial | Story 079 chat/nav polish bundle; v2026.02.23-05; src/ layer rebuilt, frontend rebuilt; API smoke passed; browser UI smoke passed (no app errors)
 20260224-0237 | 80 | success | partial | Story 070 scene dividers + entity hotlinks + hover states; v2026.02.23-06; CHANGELOG+frontend rebuilt; API smoke passed; browser unavailable (HTTP fallback)
+20260224-0400 | 106 | success | partial | Story 077 character prominence tiers + minor extraction; v2026.02.23-07; src/ rebuilt (new schema+extraction), frontend rebuilt (new component+badges); API smoke passed; browser disconnected (HTTP fallback, console no app errors)
