@@ -1,9 +1,10 @@
 """Structural scene extraction from canonical screenplay text.
 
 Tier 1 — The Skeleton: deterministic splitting, heading parsing, element
-classification, and character collection.  No LLM enrichment or narrative
-analysis.  Produces scene artifacts with narrative_beats=[], tone_mood="neutral",
-tone_shifts=[].
+classification, and character/prop collection.  Uses a lightweight LLM call
+(Haiku-class) per scene to extract character and prop mentions from action lines,
+replacing the former regex-based approach.  Produces scene artifacts with
+narrative_beats=[], tone_mood="neutral", tone_shifts=[].
 
 Scene analysis (beats, tone, subtext) lives in scene_analysis_v1 (Tier 2).
 """
@@ -134,6 +135,19 @@ class _ParseContext:
         self.parseable = parseable
         self.coverage = coverage
         self.parser_backend = parser_backend
+
+
+class _ActionLineEntities(BaseModel):
+    """LLM response: characters and props extracted from action/description lines."""
+
+    characters: list[str] = Field(
+        default_factory=list,
+        description="Character names found in action/description lines",
+    )
+    props: list[str] = Field(
+        default_factory=list,
+        description="Narratively significant props characters interact with",
+    )
 
 
 class _BoundaryValidation(BaseModel):
@@ -302,6 +316,41 @@ def _process_scene_chunk(
         if boundary_validation and not boundary_validation.is_sensible:
             scene_health = ArtifactHealth.NEEDS_REVIEW
 
+    # --- LLM action-line entity extraction ---
+    # Pass full scene text rather than just action-classified elements.
+    # The structural element classifier can misclassify action text as dialogue
+    # when the Fountain source lacks blank-line separators. The LLM easily
+    # distinguishes action from dialogue regardless of structural classification.
+    scene_text_lines = [
+        el["content"]
+        for el in base_scene.get("elements", [])
+        if el.get("element_type") in {"action", "dialogue"}
+    ]
+    heading = base_scene.get("heading", "")
+    llm_entities, entity_cost = _extract_action_line_entities(
+        heading=heading, action_lines=scene_text_lines, model=work_model,
+    )
+    scene_costs.append(entity_cost)
+
+    # Merge LLM characters with dialogue-cue characters
+    dialogue_characters = set(base_scene.get("characters_present", []))
+    llm_characters = set(llm_entities.characters)
+    all_characters = sorted(dialogue_characters | llm_characters)
+    base_scene["characters_present"] = all_characters
+    base_scene["characters_present_ids"] = sorted(_slugify(c) for c in all_characters)
+    base_scene["props_mentioned"] = sorted(llm_entities.props)
+
+    # Update provenance if LLM contributed characters
+    ai_used = bool(llm_characters - dialogue_characters)
+    if ai_used:
+        for prov in base_scene.get("provenance", []):
+            if prov.get("field_name") == "characters_present":
+                prov["method"] = "ai"
+                prov["evidence"] = (
+                    "Union of dialogue cues (structural) and "
+                    "LLM action-line extraction"
+                )
+
     scene_end = time.time()
     logger.info(f"Scene {chunk.scene_number} done in {scene_end - scene_start:.2f}s")
 
@@ -314,8 +363,8 @@ def _process_scene_chunk(
         "parser_backend": parse_ctx.parser_backend,
         "boundary_uncertain": chunk.boundary_uncertain,
         "boundary_reason": chunk.boundary_reason,
-        "ai_enrichment_used": False,
-        "discovery_tier": "structural",
+        "ai_enrichment_used": ai_used,
+        "discovery_tier": "structural+ai" if ai_used else "structural",
     }
     if boundary_validation:
         annotations["boundary_validation"] = boundary_validation.model_dump(mode="json")
@@ -326,7 +375,7 @@ def _process_scene_chunk(
         "data": scene_payload,
         "metadata": {
             "intent": "Represent one screenplay scene as structured data for downstream modules",
-            "rationale": "Deterministic structural extraction — no AI enrichment",
+            "rationale": "Structural extraction with LLM action-line entity extraction",
             "alternatives_considered": ["single monolithic scene list artifact"],
             "confidence": scene_payload["confidence"],
             "source": "code",
@@ -345,6 +394,7 @@ def _process_scene_chunk(
             "time_of_day": scene_payload["time_of_day"],
             "characters_present": scene_payload["characters_present"],
             "characters_present_ids": scene_payload["characters_present_ids"],
+            "props_mentioned": scene_payload["props_mentioned"],
             "source_span": scene_payload["source_span"],
             "tone_mood": scene_payload["tone_mood"],
         }
@@ -512,7 +562,7 @@ def _extract_scene_deterministic(
         FieldProvenance(
             field_name="characters_present",
             method="rule",
-            evidence="Collected from character cues and action-line name mentions",
+            evidence="Collected from dialogue character cues",
             confidence=0.84 if characters else 0.35,
         ),
     ]
@@ -526,6 +576,7 @@ def _extract_scene_deterministic(
         "int_ext": parsed_heading["int_ext"],
         "characters_present": sorted(characters),
         "characters_present_ids": sorted(_slugify(c) for c in characters),
+        "props_mentioned": [],
         "elements": [element.model_dump(mode="json") for element in elements],
         "narrative_beats": [],
         "tone_mood": DEFAULT_TONE,
@@ -629,20 +680,8 @@ def _extract_elements(lines: list[str]) -> tuple[list[ScriptElement], set[str]]:
             prev_type = "dialogue"
         else:
             elements.append(ScriptElement(element_type="action", content=stripped))
-            characters.update(_extract_character_mentions(stripped))
             prev_type = "action"
     return elements, characters
-
-
-def _extract_character_mentions(action_text: str) -> set[str]:
-    upper_matches = re.findall(
-        r"\b([A-Z][A-Z0-9']{2,}(?:\s+[A-Z][A-Z0-9']{2,}){0,2})(?=,|\s*\()",
-        action_text,
-    )
-    normalized = {
-        _normalize_character_name(match) for match in upper_matches if len(match) <= 28
-    }
-    return {name for name in normalized if _is_plausible_character_name(name)}
 
 
 def _normalize_character_name(value: str) -> str:
@@ -719,6 +758,75 @@ def _validate_boundary_if_uncertain(
         fail_on_truncation=True,
     )
     assert isinstance(payload, _BoundaryValidation)
+    return payload, cost
+
+
+def _extract_action_line_entities(
+    heading: str, action_lines: list[str], model: str
+) -> tuple[_ActionLineEntities, dict[str, Any]]:
+    """Extract characters and props from action/description lines via LLM."""
+    if model == "mock":
+        return _ActionLineEntities(), _empty_cost(model)
+
+    if not action_lines:
+        return _ActionLineEntities(), _empty_cost(model)
+
+    action_block = "\n".join(action_lines)
+    prompt = (
+        "You are a screenplay analyst. Given text from one scene (a mix of "
+        "action lines and dialogue), extract CHARACTER NAMES and PROPS that "
+        "appear in the action/description text. Ignore spoken dialogue.\n\n"
+        "CHARACTERS — named individuals mentioned in action/description:\n"
+        "- ALL-CAPS names: 'DETECTIVE JONES ducks behind the car' → "
+        "DETECTIVE JONES\n"
+        "- IMPORTANT — preserve numbered characters exactly as written:\n"
+        "  'GUARD 1 fires a warning shot' → GUARD 1\n"
+        "  'SOLDIERS 2 & 3 flank the door' → SOLDIER 2, SOLDIER 3\n"
+        "  Each numbered character is a SEPARATE individual. Never collapse "
+        "them into a single generic name.\n"
+        "- Title-case or descriptive intros: 'Young Sarah (8) tugs her "
+        "mother's sleeve' → YOUNG SARAH\n"
+        "- Parenthetical intros: 'A stranger (VINCE) steps out' → VINCE\n\n"
+        "DO NOT extract as characters:\n"
+        "- Sound effects: SLAM, BANG, CRASH, DING, BOOM, BLAM, POP\n"
+        "- Transitions: FADE TO, CUT TO, SMASH CUT\n"
+        "- Emphasis words: CLEAN, LUXURIOUS, DIMLY LIT\n"
+        "- Camera directions: CLOSE ON, WIDE SHOT\n"
+        "- Generic unnamed groups: 'the guards', 'two men'\n"
+        "- Words from spoken dialogue lines\n\n"
+        "PROPS — ONLY objects a character actively wields, fires, grabs, "
+        "swings, or carries as a tool, weapon, or MacGuffin in the scene's "
+        "ACTION. The character must physically interact with it.\n\n"
+        "DO NOT extract as props:\n"
+        "- Costume/wardrobe worn by characters (clothing, armor, hats, "
+        "jewelry, accessories)\n"
+        "- Furniture, fixtures, and room decor (tables, shelves, rugs, "
+        "paintings, doors)\n"
+        "- Food, drink, and consumables sitting on surfaces\n"
+        "- Body features (scars, tattoos, facial hair)\n"
+        "- Buildings, vehicles, and structures\n"
+        "- Incidental objects no character interacts with\n\n"
+        "Return names in UPPER CASE.\n\n"
+        f"Scene heading: {heading}\n\n"
+        f"Scene text:\n{action_block}\n"
+    )
+    payload, cost = call_llm(
+        prompt=prompt,
+        model=model,
+        response_schema=_ActionLineEntities,
+        max_tokens=400,
+        fail_on_truncation=True,
+    )
+    assert isinstance(payload, _ActionLineEntities)
+
+    # Normalize: uppercase and strip all names
+    payload.characters = sorted(
+        {name.strip().upper() for name in payload.characters if name.strip()}
+    )
+    payload.props = sorted(
+        {name.strip().upper() for name in payload.props if name.strip()}
+    )
+
     return payload, cost
 
 

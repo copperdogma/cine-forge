@@ -1,5 +1,23 @@
 # Changelog
 
+## [2026-02-24-01] — LLM-powered action line entity extraction (Story 080)
+
+### Added
+- LLM call (Haiku-class) per scene extracts characters and props from action/description lines, replacing brittle regex
+- `_ActionLineEntities` Pydantic model and `_extract_action_line_entities()` function with mock path for deterministic tests
+- `props_mentioned` field on `Scene` and `SceneIndexEntry` schemas
+- Golden reference fixture (`tests/fixtures/golden/the_mariner_scene_entities.json`) — 12 hand-verified characters, 6 props
+- Golden References table in AGENTS.md documenting all test fixtures
+- 6 regression tests: mock path, empty input, props field, LLM+dialogue union, provenance update, index aggregation
+
+### Changed
+- Scene breakdown unions LLM-extracted characters with structural dialogue-cue characters (additive, no regression)
+- Provenance annotation reflects `method="ai"` and `discovery_tier="structural+ai"` when LLM contributes new characters
+- Passes both action and dialogue elements to LLM to handle Fountain element misclassification
+
+### Removed
+- `_extract_character_mentions` regex function — replaced entirely by LLM extraction
+
 ## [2026-02-23-07] — Character coverage and prominence tiers (Story 077)
 
 ### Added

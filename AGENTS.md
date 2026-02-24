@@ -321,6 +321,22 @@ Shared components and utilities — the **single source of truth** for each conc
 - `src/cine_forge/api/`: Backend API for the UI.
 - `ui/`: Production React frontend (shadcn/ui + React 19 + Zustand).
 
+### Golden References (Test Fixtures)
+
+Hand-curated ground truth for regression testing. These are the source of truth — if the code disagrees with the golden file, the code is wrong.
+
+| File | Purpose | Source Script |
+|---|---|---|
+| `tests/fixtures/golden/the_mariner_scene_entities.json` | Per-scene character + prop extraction from action lines | The Mariner |
+| `benchmarks/golden/the-mariner-characters.json` | Character bible extraction (promptfoo eval) | The Mariner |
+| `benchmarks/golden/the-mariner-locations.json` | Location bible extraction (promptfoo eval) | The Mariner |
+| `benchmarks/golden/the-mariner-props.json` | Prop bible extraction (promptfoo eval) | The Mariner |
+| `benchmarks/golden/the-mariner-relationships.json` | Relationship discovery (promptfoo eval) | The Mariner |
+| `benchmarks/golden/the-mariner-scenes.json` | Scene boundaries & headings (promptfoo eval) | The Mariner |
+| `benchmarks/golden/the-mariner-config.json` | Project config detection (promptfoo eval) | The Mariner |
+
+When adding a new screenplay for testing, create a corresponding golden reference following the same structure. Validate golden files by having a human read the screenplay and cross-check every entry.
+
 ### Worktree Strategy
 
 The user runs multiple Claude Code sessions in parallel. To prevent git conflicts between sessions, we use **git worktrees** — each session works in its own directory on its own branch.

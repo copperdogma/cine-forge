@@ -5,6 +5,8 @@ from typing import Any
 import pytest
 
 from cine_forge.modules.ingest.scene_breakdown_v1.main import (
+    _ActionLineEntities,
+    _extract_action_line_entities,
     _extract_elements,
     _is_plausible_character_name,
     _normalize_character_name,
@@ -373,3 +375,183 @@ def test_run_module_populates_characters_present_ids(monkeypatch: pytest.MonkeyP
     if index_artifact:
         for entry in index_artifact["data"].get("entries", []):
             assert "characters_present_ids" in entry
+
+
+# ---------------------------------------------------------------------------
+# Action-line entity extraction (LLM-powered, Story 080)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.unit
+def test_extract_action_line_entities_mock_returns_empty() -> None:
+    """Mock model returns empty entities — deterministic, no LLM call."""
+    entities, cost = _extract_action_line_entities(
+        heading="INT. ROOM - NIGHT",
+        action_lines=["THUG 1 raises his GUN.", "Rose ducks behind the desk."],
+        model="mock",
+    )
+    assert entities.characters == []
+    assert entities.props == []
+    assert cost["model"] == "mock"
+    assert cost["estimated_cost_usd"] == 0.0
+
+
+@pytest.mark.unit
+def test_extract_action_line_entities_empty_action_lines() -> None:
+    """No action lines → empty entities without any LLM call."""
+    entities, cost = _extract_action_line_entities(
+        heading="INT. ROOM - NIGHT",
+        action_lines=[],
+        model="some-real-model",
+    )
+    assert entities.characters == []
+    assert entities.props == []
+
+
+@pytest.mark.unit
+def test_run_module_props_mentioned_field_present(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Scene artifacts and index entries include props_mentioned field."""
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main.validate_fountain_structure",
+        lambda _: type("R", (), {"parseable": True, "coverage": 0.8, "parser_backend": "test"})(),
+    )
+    result = run_module(
+        inputs=_canonical_input(),
+        params={"work_model": "mock"},
+        context={},
+    )
+    for a in result["artifacts"]:
+        if a["artifact_type"] == "scene":
+            assert "props_mentioned" in a["data"], (
+                f"Scene {a['entity_id']} missing props_mentioned"
+            )
+            assert isinstance(a["data"]["props_mentioned"], list)
+
+    index = next(a for a in result["artifacts"] if a["artifact_type"] == "scene_index")
+    for entry in index["data"]["entries"]:
+        assert "props_mentioned" in entry
+
+
+@pytest.mark.unit
+def test_run_module_llm_characters_merged_with_dialogue_cues(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """When LLM returns action-line characters, they are unioned with dialogue cues."""
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main.validate_fountain_structure",
+        lambda _: type("R", (), {"parseable": True, "coverage": 0.8, "parser_backend": "test"})(),
+    )
+
+    # Monkeypatch LLM extraction to return action-line characters + props
+    def mock_llm_extractor(heading: str, action_lines: list[str], model: str):
+        if "OFFICE" in heading:
+            return _ActionLineEntities(
+                characters=["THUG 1", "BODYGUARD"],
+                props=["GUN"],
+            ), {"model": "mock", "input_tokens": 0, "output_tokens": 0,
+                "estimated_cost_usd": 0.0, "latency_seconds": 0.0, "request_id": None}
+        return _ActionLineEntities(), {
+            "model": "mock", "input_tokens": 0, "output_tokens": 0,
+            "estimated_cost_usd": 0.0, "latency_seconds": 0.0, "request_id": None,
+        }
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main._extract_action_line_entities",
+        mock_llm_extractor,
+    )
+
+    result = run_module(
+        inputs=_canonical_input(),
+        params={"work_model": "mock", "max_workers": 1},
+        context={},
+    )
+
+    office_scene = next(
+        a for a in result["artifacts"]
+        if a["artifact_type"] == "scene" and "OFFICE" in a["data"]["heading"].upper()
+    )
+
+    # Dialogue-cue characters preserved
+    assert "MARA" in office_scene["data"]["characters_present"]
+    assert "JACK" in office_scene["data"]["characters_present"]
+    # LLM action-line characters merged in
+    assert "THUG 1" in office_scene["data"]["characters_present"]
+    assert "BODYGUARD" in office_scene["data"]["characters_present"]
+    # Props populated
+    assert "GUN" in office_scene["data"]["props_mentioned"]
+    # IDs include all characters
+    assert "thug_1" in office_scene["data"]["characters_present_ids"]
+    assert "bodyguard" in office_scene["data"]["characters_present_ids"]
+
+    # Provenance updated to reflect AI method
+    char_prov = next(
+        p for p in office_scene["data"]["provenance"]
+        if p["field_name"] == "characters_present"
+    )
+    assert char_prov["method"] == "ai"
+
+    # Scene annotation reflects AI use
+    assert office_scene["metadata"]["annotations"]["ai_enrichment_used"] is True
+    assert "ai" in office_scene["metadata"]["annotations"]["discovery_tier"]
+
+
+@pytest.mark.unit
+def test_run_module_dialogue_only_characters_preserved_with_mock(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """With mock model (empty LLM response), dialogue-cue characters still found."""
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main.validate_fountain_structure",
+        lambda _: type("R", (), {"parseable": True, "coverage": 0.8, "parser_backend": "test"})(),
+    )
+    result = run_module(
+        inputs=_canonical_input(),
+        params={"work_model": "mock", "max_workers": 1},
+        context={},
+    )
+    all_characters: set[str] = set()
+    for a in result["artifacts"]:
+        if a["artifact_type"] == "scene":
+            all_characters.update(a["data"]["characters_present"])
+
+    # Dialogue-cue characters are still found
+    assert "MARA" in all_characters
+    assert "JACK" in all_characters
+    assert "ROSE" in all_characters
+
+
+@pytest.mark.unit
+def test_run_module_index_aggregates_llm_characters(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Scene index unique_characters includes LLM-discovered characters."""
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main.validate_fountain_structure",
+        lambda _: type("R", (), {"parseable": True, "coverage": 0.8, "parser_backend": "test"})(),
+    )
+
+    def mock_llm_extractor(heading: str, action_lines: list[str], model: str):
+        if "PARKING" in heading:
+            return _ActionLineEntities(characters=["YOUNG MARINER"]), {
+                "model": "mock", "input_tokens": 0, "output_tokens": 0,
+                "estimated_cost_usd": 0.0, "latency_seconds": 0.0, "request_id": None,
+            }
+        return _ActionLineEntities(), {
+            "model": "mock", "input_tokens": 0, "output_tokens": 0,
+            "estimated_cost_usd": 0.0, "latency_seconds": 0.0, "request_id": None,
+        }
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main._extract_action_line_entities",
+        mock_llm_extractor,
+    )
+
+    result = run_module(
+        inputs=_canonical_input(),
+        params={"work_model": "mock", "max_workers": 1},
+        context={},
+    )
+    index = next(a for a in result["artifacts"] if a["artifact_type"] == "scene_index")
+    unique = index["data"]["unique_characters"]
+    assert "YOUNG MARINER" in unique
+    assert "ROSE" in unique  # dialogue cue character still present

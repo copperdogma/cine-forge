@@ -1,0 +1,192 @@
+{
+  "_description": "Golden reference: per-scene entity extraction for The Mariner screenplay. Hand-curated by human + Opus 4.6 review of every action line. Used to validate scene_breakdown_v1 action-line entity extraction.",
+  "_version": "1.0.0",
+  "_created": "2026-02-23",
+  "_source_script": "input/2023 Round 1 Screenwriting Challenge - The Mariner - No ID.md",
+  "_notes": [
+    "characters_in_action: characters introduced or mentioned in action/description lines (the target of LLM extraction)",
+    "characters_in_dialogue: characters appearing as dialogue cues (found by structural parser, included for union)",
+    "props: narratively significant objects characters interact with as tools/weapons/MacGuffins — NOT costume/wardrobe, set dressing, or incidentals",
+    "YOUNG MARINER, THUG 1, and THUG 3 never speak — they are invisible to dialogue-cue-only extraction",
+    "Scene numbering follows INT./EXT. headings as detected by the scene breakdown parser"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "heading": "EXT. CITY CENTRE - NIGHT",
+      "source_lines": [8, 14],
+      "characters_in_action": [],
+      "characters_in_dialogue": [],
+      "props": [],
+      "notes": "Establishing shot. No named entities. Generic 'homeless' and 'vigilantes' are not characters."
+    },
+    {
+      "scene_number": 2,
+      "heading": "EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT",
+      "source_lines": [16, 18],
+      "characters_in_action": [],
+      "characters_in_dialogue": [],
+      "props": [],
+      "notes": "Building exterior description. SUVs are set dressing."
+    },
+    {
+      "scene_number": 3,
+      "heading": "EXT. RUDDY & GREENE BUILDING - REAR - NIGHT",
+      "source_lines": [20, 36],
+      "characters_in_action": ["THE MARINER"],
+      "characters_in_dialogue": ["ROSE", "MARINER"],
+      "props": [],
+      "notes": "THE MARINER first introduction (ALL CAPS in action). Most action described through sounds (O.S.). Van is a vehicle/set piece, not a hand prop."
+    },
+    {
+      "scene_number": 4,
+      "heading": "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+      "source_lines": [38, 133],
+      "characters_in_action": ["ROSE", "THUG 1", "THUG 2", "THUG 3"],
+      "characters_in_dialogue": ["ROSE", "MARINER", "THUG 2", "THUG"],
+      "props": ["OAR", "GUN"],
+      "notes": "ROSE first visual introduction (line 42). Three THUGS introduced line 98. THUG 1 never speaks. THUG 3 never speaks. Line 110 dialogue cue 'THUG' is likely Thug 2 (muffled through doors). Mariner's costume (SWEATER, BRACERS, TATTOO, BANDOLIER, FISH HOOKS, BOOTS, CAPE, FISHING NET, WEIGHTS) is wardrobe, not props. OAR is the primary weapon. GUN belongs to Thug 1."
+    },
+    {
+      "scene_number": 5,
+      "heading": "INT. 11TH FLOOR - CONTINUOUS",
+      "source_lines": [135, 158],
+      "characters_in_action": [],
+      "characters_in_dialogue": ["ROSE", "MARINER"],
+      "props": [],
+      "notes": "Rose and Mariner referenced by lowercase pronouns/names in action. FILING CABINET is set dressing. Mariner looks at his TATTOO but it's wardrobe, not a prop."
+    },
+    {
+      "scene_number": 6,
+      "heading": "EXT. COASTLINE - DAY - PAST",
+      "source_lines": [147, 156],
+      "characters_in_action": ["YOUNG MARINER", "DAD"],
+      "characters_in_dialogue": ["DAD"],
+      "props": [],
+      "notes": "BEGIN FLASHBACK scene. 'Young Mariner (8)' is title case, not ALL CAPS. 'his dad (30s, fisherman)' is lowercase description. Both are characters the LLM must identify from context. YOUNG MARINER never speaks in the entire screenplay."
+    },
+    {
+      "scene_number": 7,
+      "heading": "INT. STAIRWELL - CONTINUOUS",
+      "source_lines": [160, 170],
+      "characters_in_action": [],
+      "characters_in_dialogue": ["MARINER", "ROSE"],
+      "props": [],
+      "notes": "Action lines use only pronouns ('She', 'he'). No entity extraction from action needed."
+    },
+    {
+      "scene_number": 8,
+      "heading": "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
+      "source_lines": [172, 212],
+      "characters_in_action": ["ROSCO"],
+      "characters_in_dialogue": ["MARINER", "ROSE", "ROSCO"],
+      "props": ["GUN"],
+      "notes": "ROSCO introduced as 'A thug (ROSCO)' — name inside parentheses, unusual pattern. GUN is Rosco's dropped weapon that Rose picks up."
+    },
+    {
+      "scene_number": 9,
+      "heading": "INT. 13TH FLOOR",
+      "source_lines": [214, 279],
+      "characters_in_action": ["VINNIE", "MIKEY", "CARLOS"],
+      "characters_in_dialogue": ["MIKEY", "VINNIE", "MARINER", "ROSE", "CARLOS"],
+      "props": ["OAR", "FLARE GUN"],
+      "notes": "VINNIE, MIKEY, CARLOS introduced together (line 216). FLARE GUN described as 'a fat, bright-orange pistol' (line 256). OAR referred to as 'BLOODY OAR' (line 265). 'BOSUN' carved into the oar is a description of the OAR, not a separate prop. Line 256 has typo 'Mainer' for 'Mariner'."
+    },
+    {
+      "scene_number": 10,
+      "heading": "INT. 15TH FLOOR",
+      "source_lines": [281, 357],
+      "characters_in_action": ["SALVATORI"],
+      "characters_in_dialogue": ["ROSE", "MARINER", "SALVATORI"],
+      "props": ["OAR", "PURSE", "SUBMACHINE GUN", "GUN"],
+      "notes": "SALVATORI first introduction (line 352). 'Two THUGS' (line 350) are unnamed extras, not distinct characters. PURSE is the MacGuffin containing the blockchain password. OAR used to break open door. SUBMACHINE GUN is Salvatori's weapon. GUN fired into bookcase (line 403) and pointed at Rose (line 426). Room furnishings (DESK, RUG, BOOKSHELVES, BOOZE, PAINTINGS, MINTS, TUMBLER, CIGAR) are set dressing."
+    },
+    {
+      "scene_number": 11,
+      "heading": "EXT. BACKYARD - DAY - PAST",
+      "source_lines": [298, 307],
+      "characters_in_action": ["YOUNG MARINER", "DAD"],
+      "characters_in_dialogue": ["DAD"],
+      "props": [],
+      "notes": "BEGIN FLASHBACK. Idealized memory version. 'Young Mariner's dad' in action text. Bench press and weights mentioned but are set dressing in this idyllic version."
+    },
+    {
+      "scene_number": 12,
+      "heading": "EXT. BACKYARD - DAY",
+      "source_lines": [359, 371],
+      "characters_in_action": ["YOUNG MARINER", "DAD"],
+      "characters_in_dialogue": ["DAD"],
+      "props": ["BENCH PRESS"],
+      "notes": "Dark/true version of the backyard flashback. Dad PUNCHES Young Mariner. BENCH PRESS is actively used by Young Mariner (line 371) — qualifies as prop. RUSTY WEIGHTS and DISCARDED BOTTLES are set dressing."
+    },
+    {
+      "scene_number": 13,
+      "heading": "INT. STAIRWELL",
+      "source_lines": [373, 383],
+      "characters_in_action": [],
+      "characters_in_dialogue": ["SALVATORI", "MARINER"],
+      "props": [],
+      "notes": "Back to present. All dialogue, no action-line entities."
+    },
+    {
+      "scene_number": 14,
+      "heading": "EXT. COASTLINE - DAY",
+      "source_lines": [385, 390],
+      "characters_in_action": ["YOUNG MARINER", "DAD"],
+      "characters_in_dialogue": ["DAD"],
+      "props": [],
+      "notes": "Dark/true version of the coastline flashback. Dad is drunk and neglectful. Beer bottles are incidental."
+    },
+    {
+      "scene_number": 15,
+      "heading": "EXT. BACKYARD - DAY",
+      "source_lines": [392, 437],
+      "characters_in_action": [],
+      "characters_in_dialogue": ["SALVATORI", "MARINER", "ROSE"],
+      "props": ["OAR", "GUN"],
+      "notes": "Intercut climax. Dialogue is Salvatori/Mariner/Rose in the present overlaid on flashback scene heading. 'The thugs take Mariner's OAR' (line 401). Salvatori points GUN at Rose (line 426). Action references existing characters by lowercase names only."
+    }
+  ],
+  "summary": {
+    "total_scenes": 15,
+    "unique_characters": [
+      "THE MARINER",
+      "ROSE",
+      "THUG 1",
+      "THUG 2",
+      "THUG 3",
+      "YOUNG MARINER",
+      "DAD",
+      "ROSCO",
+      "VINNIE",
+      "MIKEY",
+      "CARLOS",
+      "SALVATORI"
+    ],
+    "characters_only_in_action": ["THUG 1", "THUG 3", "YOUNG MARINER"],
+    "characters_missed_by_current_regex": [
+      "THUG 1",
+      "THUG 2",
+      "THUG 3",
+      "YOUNG MARINER",
+      "DAD",
+      "ROSCO",
+      "CARLOS",
+      "SALVATORI"
+    ],
+    "characters_caught_by_current_regex": [
+      "THE MARINER",
+      "ROSE",
+      "VINNIE",
+      "MIKEY"
+    ],
+    "unique_props": ["OAR", "GUN", "FLARE GUN", "PURSE", "SUBMACHINE GUN", "BENCH PRESS"],
+    "prop_classification_rules": [
+      "Props are objects characters physically interact with as tools, weapons, or MacGuffins",
+      "Costume/wardrobe (SWEATER, BRACERS, CAPE, etc.) is NOT a prop — separate future story",
+      "Set dressing (DESK, RUG, BOOKSHELVES, etc.) is NOT a prop",
+      "Incidentals (BOTTLE, BUTTON, DOOR) are NOT props",
+      "Descriptive text about a prop (BOSUN carved into OAR) is part of the prop, not a separate entity"
+    ]
+  }
+}
