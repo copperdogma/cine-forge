@@ -25,6 +25,7 @@ from .continuity import (
     StateProperty,
 )
 from .conversation import Conversation, ConversationTurn, DisagreementArtifact
+from .editorial_direction import EditorialDirection, EditorialDirectionIndex
 from .entity_adjudication import (
     EntityAdjudicationBatch,
     EntityAdjudicationDecision,
@@ -101,6 +102,8 @@ __all__ = [
     "Conversation",
     "ConversationTurn",
     "DisagreementArtifact",
+    "EditorialDirection",
+    "EditorialDirectionIndex",
     "EntityTimeline",
     "StateProperty",
     "EntityAdjudicationBatch",

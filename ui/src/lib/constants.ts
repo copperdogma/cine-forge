@@ -7,6 +7,7 @@ export const RECIPE_STAGE_ORDER: Record<string, string[]> = {
   mvp_ingest: ['ingest', 'normalize', 'breakdown_scenes', 'project_config'],
   world_building: ['entity_discovery', 'analyze_scenes', 'character_bible', 'location_bible', 'prop_bible'],
   narrative_analysis: ['entity_graph', 'continuity_tracking'],
+  creative_direction: ['editorial_direction'],
 }
 
 /** Human-readable names for recipes. */
@@ -14,6 +15,7 @@ export const RECIPE_NAMES: Record<string, string> = {
   mvp_ingest: 'Script Intake',
   world_building: 'World Building',
   narrative_analysis: 'Narrative Logic',
+  creative_direction: 'Creative Direction',
 }
 
 /** Human-readable names for artifact types produced by stages. */
@@ -27,6 +29,8 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   entity_graph: ['story graph', 'story graphs'],
   world_overview: ['world overview', 'world overviews'],
   entity_discovery_results: ['entity discovery results', 'entity discovery results'],
+  editorial_direction: ['editorial direction', 'editorial directions'],
+  editorial_direction_index: ['editorial index', 'editorial indexes'],
 }
 
 /** Skip internal artifact types the user doesn't care about. */

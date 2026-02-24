@@ -41,6 +41,8 @@ from cine_forge.schemas import (
     CostRecord,
     Decision,
     DisagreementArtifact,
+    EditorialDirection,
+    EditorialDirectionIndex,
     EntityDiscoveryResults,
     EntityEdge,
     EntityGraph,
@@ -91,6 +93,7 @@ REVIEWABLE_ARTIFACT_TYPES: set[str] = {
     "scene",
     "bible_manifest",
     "entity_graph",
+    "editorial_direction",
     "timeline",
     "track_manifest",
     "project_config",
@@ -134,6 +137,8 @@ class DriverEngine:
         self.schemas.register("decision", Decision)
         self.schemas.register("conversation", Conversation)
         self.schemas.register("disagreement", DisagreementArtifact)
+        self.schemas.register("editorial_direction", EditorialDirection)
+        self.schemas.register("editorial_direction_index", EditorialDirectionIndex)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(

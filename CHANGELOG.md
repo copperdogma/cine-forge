@@ -1,5 +1,21 @@
 # Changelog
 
+## [2026-02-24-03] — Editorial Architect and editorial direction pipeline (Story 020)
+
+### Added
+- `EditorialDirection` and `EditorialDirectionIndex` Pydantic schemas for per-scene editorial analysis
+- `editorial_direction_v1` module under new `creative_direction/` stage directory with 3-scene sliding window analysis, parallel extraction, QA escalation, and streaming progress
+- `recipe-creative-direction.yaml` — Phase 5 creative direction recipe (editorial direction stage)
+- "Creative Direction" recipe option in Pipeline UI, ordered after Narrative Analysis
+- `editorial_direction` added to `REVIEWABLE_ARTIFACT_TYPES` for Director/Script Supervisor canon review
+- UI artifact metadata for editorial direction artifacts (Scissors icon, pink)
+- 9 unit tests covering mock output, scene window construction, full module run, edge cases
+
+### Changed
+- Editorial Architect system prompt expanded from 2 lines to rich persona covering cut-ability prediction, coverage adequacy, pacing, transitions, and montage identification
+- Editorial Architect role permissions updated to include `editorial_direction`
+- Recipe list in Pipeline UI now sorted by logical pipeline execution order
+
 ## [2026-02-24-02] — Scene index as canonical character source, prominence sort (Story 081)
 
 ### Changed

@@ -45,6 +45,7 @@ const fallbackRecipes = [
   { recipe_id: 'mvp_ingest', name: 'MVP Ingest', description: 'Full intake pipeline: ingest, normalize, extract', stage_count: 4 },
   { recipe_id: 'world_building', name: 'World Building', description: 'Synthesis pipeline: world, characters, locations', stage_count: 7 },
   { recipe_id: 'narrative_analysis', name: 'Narrative Analysis', description: 'Analysis pipeline: themes, arcs, structure', stage_count: 5 },
+  { recipe_id: 'creative_direction', name: 'Creative Direction', description: 'Editorial direction: pacing, transitions, coverage priority per scene', stage_count: 1 },
 ]
 
 /** Transform backend pipeline events into RunEvent format for the event log UI. */
@@ -117,10 +118,12 @@ export default function ProjectRun() {
   const { data: existingInputs } = useProjectInputs(projectId)
   const { data: projectData } = useProject(projectId)
 
-  // Use real recipes from API, fallback to hardcoded list if API fails
-  const recipes = (recipesData || fallbackRecipes).filter(r => 
-    ['mvp_ingest', 'world_building', 'narrative_analysis'].includes(r.recipe_id)
-  )
+  // Use real recipes from API, fallback to hardcoded list if API fails.
+  // Ordered by logical pipeline execution sequence.
+  const recipeOrder = ['mvp_ingest', 'world_building', 'narrative_analysis', 'creative_direction']
+  const recipes = (recipesData || fallbackRecipes)
+    .filter(r => recipeOrder.includes(r.recipe_id))
+    .sort((a, b) => recipeOrder.indexOf(a.recipe_id) - recipeOrder.indexOf(b.recipe_id))
 
   // Auto-populate from existing project inputs (screenplay already uploaded during project creation)
   useEffect(() => {

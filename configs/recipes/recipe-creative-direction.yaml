@@ -1,0 +1,17 @@
+recipe_id: creative_direction
+description: >
+  Phase 5 creative direction pass: editorial, visual, sound, and performance
+  direction artifacts. Currently implements editorial direction only.
+project: {}
+stages:
+  - id: editorial_direction
+    module: editorial_direction_v1
+    params:
+      skip_qa: true
+      concurrency: 5
+    needs: []
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+    store_inputs_optional:
+      project_config: project_config

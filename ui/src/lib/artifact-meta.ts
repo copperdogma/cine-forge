@@ -11,6 +11,7 @@ import {
   Clapperboard,
   MessageSquare,
   Package,
+  Scissors,
 } from 'lucide-react'
 
 export const artifactMeta: Record<string, { icon: typeof FileText; label: string; color: string }> = {
@@ -27,6 +28,8 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   continuity_index: { icon: Globe, label: 'Continuity Index', color: 'text-cyan-400' },
   continuity_state: { icon: Globe, label: 'Continuity State', color: 'text-cyan-300' },
   dialogue_analysis: { icon: MessageSquare, label: 'Dialogue Analysis', color: 'text-orange-400' },
+  editorial_direction: { icon: Scissors, label: 'Editorial Direction', color: 'text-pink-400' },
+  editorial_direction_index: { icon: Scissors, label: 'Editorial Index', color: 'text-pink-300' },
 }
 
 export function getArtifactMeta(type: string) {
