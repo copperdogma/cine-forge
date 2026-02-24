@@ -1,7 +1,7 @@
 # Story 081 — Scene Index as Canonical Character Source
 
 **Priority**: High
-**Status**: Pending
+**Status**: Done
 **Spec Refs**: World Building / Entity Discovery, Scene Breakdown
 **Depends On**: 080 (LLM-Powered Action Line Entity Extraction)
 
@@ -256,3 +256,7 @@ Evidence:
   summary with 11 character bibles (note: chat message from previous run, stale).
 - Docs: No doc changes needed — this story only touches backend pipeline plumbing. No API changes,
   no UI changes, no new module.
+
+20260224-0530 — Story marked Done. All acceptance criteria met, all checks green. Bonus:
+prominence sort on characters page updated to group by tier then scene count. Committed 0d53b71,
+pushed to main. CHANGELOG entry [2026-02-24-02].

@@ -103,7 +103,7 @@ NOTES from Cam:
 | 078 | Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata | 2.5 — UI | Medium | Done | [story-078](stories/story-078-entity-detail-enhancements.md) |
 | 079 | Chat & Nav Bugs + Polish Bundle | 2.5 — UI | Medium | Done | [story-079](stories/story-079-chat-nav-bugs-and-polish.md) |
 | 080 | LLM-Powered Action Line Entity Extraction | World Building | High | Done | [story-080](stories/story-080-llm-action-line-entity-extraction.md) |
-| 081 | Scene Index as Canonical Character Source | World Building | High | Pending | [story-081](stories/story-081-scene-index-canonical-characters.md) |
+| 081 | Scene Index as Canonical Character Source | World Building | High | Done | [story-081](stories/story-081-scene-index-canonical-characters.md) |
 
 ## Phase Summary
 
