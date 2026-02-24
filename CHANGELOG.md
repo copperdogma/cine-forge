@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-02-24-02] — Scene index as canonical character source, prominence sort (Story 081)
+
+### Changed
+- Entity discovery consumes `scene_index.unique_characters` as the canonical character list instead of independently re-scanning the canonical script via LLM
+- Prominence sort on characters page now groups by tier (Primary > Secondary > Minor) then by scene count within each tier
+
+### Added
+- `breakdown_scenes: scene_index` wired into entity discovery's `store_inputs` in world-building recipe
+- `character_source` field in entity discovery processing metadata (`"scene_index"` or `"llm"`)
+- 11 entity discovery tests (up from 1): scene-index passthrough, normalization, fallback, refine mode
+
+### Fixed
+- THUG 3 now appears in character bibles (was missing because entity discovery's independent LLM scan couldn't parse "THUGS 2 & 3")
+- Entity discovery cost reduced ~31% (no character-scanning LLM calls when scene_index is available)
+
 ## [2026-02-24-01] — LLM-powered action line entity extraction (Story 080)
 
 ### Added

@@ -19,6 +19,7 @@ stages:
     after: [analyze_scenes]  # wait for enriched scene_index in store; no data dependency
     store_inputs:
       normalize: canonical_script
+      breakdown_scenes: scene_index
     store_inputs_all:
       character_bible: character_bible
       location_bible: location_bible

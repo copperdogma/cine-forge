@@ -79,8 +79,10 @@ const sectionConfig: Record<EntitySection, {
 
 // --- Sort helpers ---
 
+const PROMINENCE_RANK: Record<string, number> = { primary: 0, secondary: 1, minor: 2 }
+
 function sortBibleEntities(
-  items: Array<{ entity_id: string; sceneCount: number; firstSceneNumber: number | null }>,
+  items: Array<{ entity_id: string; sceneCount: number; firstSceneNumber: number | null; data?: Record<string, unknown> }>,
   sortMode: SortMode,
 ): Array<typeof items[number]> {
   const sorted = [...items]
@@ -103,7 +105,12 @@ function sortBibleEntities(
       )
       break
     case 'prominence':
-      sorted.sort((a, b) => (b.sceneCount || 0) - (a.sceneCount || 0))
+      sorted.sort((a, b) => {
+        const tierA = PROMINENCE_RANK[a.data?.prominence as string] ?? 3
+        const tierB = PROMINENCE_RANK[b.data?.prominence as string] ?? 3
+        if (tierA !== tierB) return tierA - tierB
+        return (b.sceneCount || 0) - (a.sceneCount || 0)
+      })
       break
   }
   return sorted
