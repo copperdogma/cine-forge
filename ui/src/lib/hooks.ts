@@ -36,6 +36,8 @@ export interface Scene {
   intExt: 'INT' | 'EXT' | 'INT/EXT'
   timeOfDay: string
   summary: string
+  startLine?: number
+  endLine?: number
   data?: Record<string, unknown>
 }
 
@@ -591,6 +593,14 @@ export function useEntityResolver(projectId: string | undefined) {
             return { path: `/${projectId}/${section}/${g.entity_id}`, label: name }
           }
         }
+        // Fuzzy fallback: entity_id contains the cue text as a substring.
+        // Handles "MARINER" (cue) matching entity_id "the_mariner".
+        for (const g of groups ?? []) {
+          if (g.artifact_type !== artifactType || !g.entity_id) continue
+          if (norm(g.entity_id).includes(normalized)) {
+            return { path: `/${projectId}/${section}/${g.entity_id}`, label: name }
+          }
+        }
         return null
       }
       const sceneId = resolveScene(name)
@@ -633,6 +643,8 @@ function transformArtifactToScene(artifact: ArtifactDetailResponse, entityId: st
     intExt,
     timeOfDay: timeOfDay.toUpperCase(),
     summary,
+    startLine: data?.source_span?.start_line ?? undefined,
+    endLine: data?.source_span?.end_line ?? undefined,
     data: data,
   }
 }
@@ -682,6 +694,8 @@ export function useScenes(projectId: string | undefined) {
           intExt,
           timeOfDay: timeOfDay.toUpperCase(),
           summary,
+          startLine: sceneData?.source_span?.start_line ?? undefined,
+          endLine: sceneData?.source_span?.end_line ?? undefined,
           data: sceneData,
         })
       })

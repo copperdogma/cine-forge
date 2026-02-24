@@ -66,7 +66,7 @@ NOTES from Cam:
 | 041 | Artifact Quality Improvements | Cross-Cutting | Medium | Done | [story-041](stories/story-041-artifact-quality-improvements.md) |
 | 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Done | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 043 | Entity-First Navigation | 2.5 — UI | High | Done | [story-043](stories/story-043-entity-first-navigation.md) |
-| 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Draft | [story-044](stories/story-044-mobile-friendly-ui.md) |
+| 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Pending | [story-044](stories/story-044-mobile-friendly-ui.md) |
 | 045 | Entity Cross-Linking | 2.5 — UI | Medium | Done | [story-045](stories/story-045-entity-cross-linking.md) |
 | 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Draft | [story-046](stories/story-046-theme-system.md) |
 | 047 | Benchmark Sonnet 4.6 Across All Evals | Cross-Cutting | High | Done | [story-047](stories/story-047-sonnet-46-benchmarks.md) |
@@ -78,7 +78,7 @@ NOTES from Cam:
 | 053 | Cross-CLI Skills/Prompts Unification | Cross-Cutting | High | Done | [story-053](stories/story-053-cross-cli-skills-unification.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | Cross-Cutting | High | Done | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | Cross-Cutting | High | Done | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
-| 056 | Entity Design Studies (Reference Image Generation Loop) | 6 — Shot Planning & Viz | High | To Do | [story-056](stories/story-056-entity-design-study-reference-images.md) |
+| 056 | Entity Design Studies (Reference Image Generation Loop) | 6 — Shot Planning & Viz | High | Blocked | [story-056](stories/story-056-entity-design-study-reference-images.md) |
 | 057 | Entity Prev/Next Navigation | 2.5 — UI | High | Done | [story-057](stories/story-057-entity-prev-next-navigation.md) |
 | 058 | Comprehensive Export & Share | 2.5 — UI | High | Done | [story-058](stories/story-058-comprehensive-export-share.md) |
 | 059 | Pipeline UI Refinement | 2.5 — UI | High | Done | [story-059](stories/story-059-pipeline-ui-refinement.md) |
@@ -92,7 +92,7 @@ NOTES from Cam:
 | 067 | Chat Navigation Message Deduplication | 2.5 — UI | High | Done | [story-067](stories/story-067-chat-duplicate-nav-dedup.md) |
 | 068 | History-Aware Back Button Navigation | 2.5 — UI | High | Done | [story-068](stories/story-068-back-button-history-navigation.md) |
 | 069 | Inbox Item Read/Complete State | 2.5 — UI | High | Done | [story-069](stories/story-069-inbox-read-state.md) |
-| 070 | Script View Scene Dividers & Entity Hotlinks | 2.5 — UI | Medium | Pending | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
+| 070 | Script View Scene Dividers & Entity Hotlinks | 2.5 — UI | Medium | Done | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 071 | Refine vs. Regenerate Pipeline Modes | Cross-Cutting | Medium | Deferred | [story-071](stories/story-071-refine-vs-regenerate-pipeline.md) |
 | 072 | Live Entity Discovery Feedback | 2.5 — UI | Medium | Done | [story-072](stories/story-072-live-entity-discovery-feedback.md) |
 | 073 | Add `after:` ordering-only stage dependency to recipe DSL | Engine | Medium | Done | [story-073](stories/story-073-add-after-ordering-dependency.md) |

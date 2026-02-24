@@ -263,7 +263,7 @@ export default function ArtifactDetail() {
     switch (artifactType) {
       case 'raw_input':
       case 'canonical_script':
-        return <ScriptViewer data={data} />
+        return <ScriptViewer data={data} projectId={projectId} />
 
       case 'project_config':
       case 'draft_project_config':

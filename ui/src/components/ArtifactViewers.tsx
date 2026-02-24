@@ -6,7 +6,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
-import { useState, Suspense, lazy } from 'react'
+import { useState, Suspense, lazy, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useScenes, useEntityResolver } from '@/lib/hooks'
+import type { SceneDividerData } from '@/components/ScreenplayEditor'
 import { GlossaryTerm, SectionHelp } from '@/components/GlossaryTerm'
 import { useRespondToReview } from '@/lib/hooks'
 import { toast } from 'sonner'
@@ -77,7 +80,35 @@ function getObject(obj: Record<string, unknown>, key: string): Record<string, un
 }
 
 // ScriptViewer - for raw_input and canonical_script
-export function ScriptViewer({ data }: { data: Record<string, unknown> }) {
+export function ScriptViewer({ data, projectId }: { data: Record<string, unknown>; projectId?: string }) {
+  const navigate = useNavigate()
+  const { data: scenes } = useScenes(projectId)
+  const { resolve } = useEntityResolver(projectId)
+
+  const sceneDividers: SceneDividerData[] = useMemo(
+    () =>
+      (scenes ?? [])
+        .filter(s => s.startLine != null && s.startLine > 0)
+        .map(s => ({
+          entityId: s.entityId,
+          heading: s.heading,
+          sceneNumber: s.index,
+          startLine: s.startLine!,
+        })),
+    [scenes],
+  )
+
+  const handleCharacterNameClick = projectId
+    ? (name: string) => {
+        const resolved = resolve(name, 'character')
+        if (resolved) navigate(resolved.path)
+      }
+    : undefined
+
+  const handleSceneDividerClick = projectId
+    ? (entityId: string) => navigate(`/${projectId}/scenes/${entityId}`)
+    : undefined
+
   // Try to extract script text from different possible field names
   const scriptText =
     getString(data, 'script_text') ?? getString(data, 'content') ?? getString(data, 'text')
@@ -116,7 +147,13 @@ export function ScriptViewer({ data }: { data: Record<string, unknown> }) {
 
       {/* Script text with CodeMirror screenplay editor */}
       <Suspense fallback={<div className="rounded-md border border-border bg-muted p-4 text-sm text-muted-foreground">Loading editor...</div>}>
-        <ScreenplayEditor content={scriptText} readOnly />
+        <ScreenplayEditor
+          content={scriptText}
+          readOnly
+          scenes={sceneDividers}
+          onCharacterNameClick={handleCharacterNameClick}
+          onSceneDividerClick={handleSceneDividerClick}
+        />
       </Suspense>
     </div>
   )

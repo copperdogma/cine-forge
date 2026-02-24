@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-02-23-06] — Script view scene dividers and entity hotlinks (Story 070)
+
+### Added
+- Scene divider bars injected at each scene boundary in the CodeMirror screenplay editor — shows scene number, visually distinct from script text, clickable to navigate to the scene detail page
+- `onSceneDividerClick`, `onCharacterNameClick` callbacks and `scenes` prop on `ScreenplayEditor` — scene dividers implemented as CodeMirror 6 `StateEffect` + `StateField` + `WidgetType` block decorations
+- `ScriptViewer` (artifact detail page) now accepts `projectId` and fetches scene data internally — scene dividers and hotlinks work on both the project home script view and the canonical script artifact detail page
+- `startLine` / `endLine` fields promoted to the UI `Scene` interface from `source_span` in scene artifacts
+- Hover states on scene divider bars (dim amber → bright amber), scene heading lines (amber tint), and character name lines (blue tint) — implemented via `Decoration.line()` stamping stable `.cm-heading-line` / `.cm-character-line` CSS classes, since `HighlightStyle` uses opaque generated class names incompatible with `:has()`
+
+### Fixed
+- Character name lines (ALL-CAPS cue lines) in the screenplay editor are now clickable hotlinks — clicking "ROSE" navigates to `/:projectId/characters/rose`
+- Character names with trailing parentheticals (`ROSE (O.S.)`, `MARINER (V.O.)`) now resolve correctly — parenthetical stripped before entity lookup
+- Fuzzy entity resolver fallback: cue text "MARINER" now matches entity_id "the_mariner" via substring check
+
 ## [2026-02-23-05] — Chat & nav bug fixes: slash-search routing, entity context chip (Story 079)
 
 ### Added

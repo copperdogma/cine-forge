@@ -35,6 +35,7 @@ import {
   useRuns,
   useArtifactGroups,
   useScenes,
+  useEntityResolver,
   useProjectInputs,
   useProjectInputContent,
   useCanonicalScript,
@@ -49,7 +50,7 @@ import { useRunState } from '@/lib/hooks'
 import { getStageStartMessage } from '@/lib/chat-messages'
 import type { ProjectState } from '@/lib/types'
 
-import type { ScreenplayEditorHandle } from '@/components/ScreenplayEditor'
+import type { ScreenplayEditorHandle, SceneDividerData } from '@/components/ScreenplayEditor'
 
 const ScreenplayEditor = lazy(() =>
   import('@/components/ScreenplayEditor').then(m => ({ default: m.ScreenplayEditor })),
@@ -156,6 +157,7 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const { data: project } = useProject(projectId)
   const { data: inputs } = useProjectInputs(projectId)
   const { data: scenes } = useScenes(projectId)
+  const { resolve } = useEntityResolver(projectId)
   const { data: canonicalScript, isLoading: canonicalLoading } = useCanonicalScript(projectId)
   const latestInput = inputs?.[inputs.length - 1]
   const { data: rawContent, isLoading: rawLoading } = useProjectInputContent(projectId, latestInput?.filename)
@@ -168,6 +170,16 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const isLoading = canonicalLoading || rawLoading
 
   const isNormalized = !!scriptData?.script_text
+
+  // Build scene divider data for the editor
+  const sceneDividers: SceneDividerData[] = (scenes ?? [])
+    .filter(s => s.startLine != null && s.startLine > 0)
+    .map(s => ({
+      entityId: s.entityId,
+      heading: s.heading,
+      sceneNumber: s.index,
+      startLine: s.startLine!,
+    }))
 
   // Handle ?scene= query param — scroll to that scene heading after editor mounts
   useEffect(() => {
@@ -183,10 +195,9 @@ function FreshImportView({ projectId }: { projectId: string }) {
     }
   }, [searchParams, setSearchParams, content])
 
-  // When a scene heading is clicked in the editor, navigate to its detail page
+  // When a scene heading line is clicked, navigate to its detail page
   const handleSceneHeadingClick = (heading: string) => {
     if (!scenes) return
-    // Normalize for matching
     const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
     const headingNorm = norm(heading)
     const scene = scenes.find(s => {
@@ -196,6 +207,17 @@ function FreshImportView({ projectId }: { projectId: string }) {
     if (scene) {
       navigate(`/${projectId}/scenes/${scene.entityId}`)
     }
+  }
+
+  // When a character name line is clicked, navigate to that character's detail page
+  const handleCharacterNameClick = (name: string) => {
+    const resolved = resolve(name, 'character')
+    if (resolved) navigate(resolved.path)
+  }
+
+  // When a scene divider bar is clicked, navigate directly by entityId
+  const handleSceneDividerClick = (entityId: string) => {
+    navigate(`/${projectId}/scenes/${entityId}`)
   }
 
   return (
@@ -251,7 +273,10 @@ function FreshImportView({ projectId }: { projectId: string }) {
               ref={editorRef}
               content={content}
               readOnly
+              scenes={sceneDividers}
               onSceneHeadingClick={handleSceneHeadingClick}
+              onCharacterNameClick={handleCharacterNameClick}
+              onSceneDividerClick={handleSceneDividerClick}
             />
           </Suspense>
         </div>
