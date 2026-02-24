@@ -72,6 +72,15 @@ class CharacterBible(BaseModel):
     name: str
     aliases: list[str] = Field(default_factory=list)
     description: str
+    prominence: Literal["primary", "secondary", "minor"] = Field(
+        default="secondary",
+        description=(
+            "Production importance tier. primary = drives the plot (protagonist, "
+            "antagonist, key relationships). secondary = recurring supporting with "
+            "named role and meaningful dialogue. minor = walk-on, one-scene, "
+            "functional (thug, guard, cop)."
+        ),
+    )
     explicit_evidence: list[CharacterEvidence] = Field(default_factory=list)
     inferred_traits: list[InferredTrait] = Field(default_factory=list)
     scene_presence: list[str] = Field(default_factory=list)

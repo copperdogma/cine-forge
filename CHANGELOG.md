@@ -1,5 +1,21 @@
 # Changelog
 
+## [2026-02-23-07] — Character coverage and prominence tiers (Story 077)
+
+### Added
+- `prominence` field on `CharacterBible` schema: `primary`, `secondary`, or `minor` — AI-assigned at extraction time based on SAG-AFTRA-aligned rubric
+- Lightweight extraction path for minor characters (score < 4) — stripped-down prompt, ~80% cheaper per character
+- `ProminenceBadge` UI component (Crown/Star/User icons per tier) on character list cards and detail page header
+- Prominence filter chips (All/Primary/Secondary/Minor) on Characters list view, persisted via sticky preference
+- Adjudication prompt rule to preserve named minor characters (THUG 1, GUARD 2, etc.)
+- Stub candidate entries for discovery-only characters whose names differ from scene_index normalization (e.g. "THUG 1"/"THUG 2" collapsed to "THUG" by scene parser)
+- 7 regression tests for plausibility filter, prominence field, minor character paths, and discovery-only extraction
+
+### Fixed
+- Plausibility filter now accepts alphanumeric tokens — "THUG 1" no longer rejected by regex
+- Removed "THUG" from `CHARACTER_STOPWORDS` — was incorrectly blocking functional character names
+- Discovery-only characters (found by LLM entity discovery but missing from scene_index due to name normalization) no longer silently dropped
+
 ## [2026-02-23-06] — Script view scene dividers and entity hotlinks (Story 070)
 
 ### Added

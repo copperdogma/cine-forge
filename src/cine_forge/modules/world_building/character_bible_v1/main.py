@@ -74,7 +74,6 @@ CHARACTER_STOPWORDS = {
     "WEEDS",
     "OPENING",
     "TITLE",
-    "THUG",
 }
 
 
@@ -129,12 +128,28 @@ def run_module(
         print(f"[character_bible] Using {len(approved_names)} characters from discovery results.")
         all_chars = _aggregate_characters(scene_index)
         ranked = _rank_characters(all_chars, canonical_script, scene_index)
+        # Entity discovery already LLM-curated — keep all approved candidates
+        # regardless of scene count so minor walk-ons get bibles too.
         candidates = [c for c in ranked if c["name"].upper() in approved_names]
+        # Discovery may contain characters the scene parser normalized differently
+        # (e.g. "THUG 1"/"THUG 2" collapsed to "THUG", "YOUNG MARINER" to "MARINER").
+        # Create stub entries so they still get extracted.
+        matched_names = {c["name"].upper() for c in candidates}
+        for name in sorted(approved_names - matched_names):
+            candidates.append({
+                "name": name,
+                "scene_count": 0,
+                "dialogue_count": 0,
+                "score": 0,
+                "scene_presence": [],
+            })
     else:
         characters = _aggregate_characters(scene_index)
         ranked = _rank_characters(characters, canonical_script, scene_index)
 
-        # Filter by minimum appearances OR presence of dialogue
+        # Filter: keep characters with enough appearances OR any dialogue.
+        # min_appearances gates non-speaking characters to avoid noise;
+        # any character with dialogue is worth extracting.
         candidates = [
             c
             for c in ranked
@@ -163,14 +178,23 @@ def run_module(
     if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
         models_seen.add(str(adjudication_cost["model"]))
 
-    # 2. Extract for each candidate in parallel; announce each entity as it completes
-    # so the engine can save mid-stage and the sidebar count ticks up live (story-072).
-    print(f"[character_bible] Extracting {len(candidates)} characters (concurrency={concurrency}).")
+    # 2. Split candidates into full (primary/secondary) vs lightweight (minor) extraction
+    # paths. Characters with score >= 4 (2+ scenes or 1 scene + 2 dialogue) get a deep
+    # extraction; lower-scoring candidates get a stripped-down minor-character extraction
+    # that's ~80% cheaper per character. Both produce valid CharacterBible artifacts.
+    minor_score_threshold = int(params.get("minor_score_threshold", 4))
+    full_candidates = [c for c in candidates if c["score"] >= minor_score_threshold]
+    minor_candidates = [c for c in candidates if c["score"] < minor_score_threshold]
+    print(
+        f"[character_bible] Extracting {len(full_candidates)} full + "
+        f"{len(minor_candidates)} minor characters (concurrency={concurrency})."
+    )
     announce = context.get("announce_artifact")
     artifacts: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
-        future_to_entry = {
-            executor.submit(
+        future_to_entry: dict[Any, dict[str, Any]] = {}
+        for entry in full_candidates:
+            future_to_entry[executor.submit(
                 _process_character,
                 entry=entry,
                 canonical_script=canonical_script,
@@ -183,9 +207,19 @@ def run_module(
                 verify_model=verify_model,
                 escalate_model=escalate_model,
                 skip_qa=skip_qa,
-            ): entry
-            for entry in candidates
-        }
+            )] = entry
+        for entry in minor_candidates:
+            future_to_entry[executor.submit(
+                _process_minor_character,
+                entry=entry,
+                canonical_script=canonical_script,
+                scene_index=scene_index,
+                ranked=ranked,
+                candidates=candidates,
+                adjudication_rejections=adjudication_rejections,
+                adjudication_decisions=adjudication_decisions,
+                model=work_model,
+            )] = entry
         for future in as_completed(future_to_entry):
             entry = future_to_entry[future]
             try:
@@ -335,6 +369,95 @@ def _process_character(
     ], entity_cost
 
 
+def _process_minor_character(
+    entry: dict[str, Any],
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    ranked: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+    adjudication_rejections: list[dict[str, Any]],
+    adjudication_decisions: list[dict[str, Any]],
+    model: str,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Lightweight extraction for minor characters (walk-ons, thugs, guards).
+
+    Produces a valid CharacterBible with minimal fields — skips deep trait
+    extraction, evidence, and relationship analysis to keep cost low.
+    """
+    char_name = entry["name"]
+    slug = _slugify(char_name)
+    entity_cost: dict[str, Any] = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
+
+    definition, cost = _extract_minor_character_definition(
+        char_name=char_name,
+        entry=entry,
+        canonical_script=canonical_script,
+        scene_index=scene_index,
+        model=model,
+    )
+    definition = definition.model_copy(update={"character_id": slug})
+    _update_total_cost(entity_cost, cost)
+    entity_cost["model"] = cost.get("model", "code")
+
+    # Build artifacts — same structure as full extraction
+    version = 1
+    master_filename = f"master_v{version}.json"
+    manifest_data = {
+        "entity_type": "character",
+        "entity_id": slug,
+        "display_name": char_name,
+        "files": [
+            {
+                "filename": master_filename,
+                "purpose": "master_definition",
+                "version": version,
+                "provenance": "ai_extracted",
+                "created_at": datetime.now(UTC).isoformat(),
+            }
+        ],
+        "version": version,
+        "created_at": datetime.now(UTC).isoformat(),
+    }
+    annotation = _adjudication_annotation(
+        input_count=len(ranked),
+        approved_count=len(candidates),
+        rejected=adjudication_rejections,
+        decisions=adjudication_decisions,
+    )
+
+    return [
+        {
+            "artifact_type": "character_bible",
+            "entity_id": slug,
+            "data": definition.model_dump(mode="json"),
+            "metadata": {
+                "intent": f"Establish minor character definition for '{char_name}'",
+                "rationale": "Lightweight extraction for minor/walk-on character.",
+                "confidence": definition.overall_confidence,
+                "source": "ai",
+                "annotations": annotation,
+            },
+        },
+        {
+            "artifact_type": "bible_manifest",
+            "entity_id": f"character_{slug}",
+            "data": manifest_data,
+            "metadata": {
+                "intent": f"Establish minor bible for character '{char_name}'",
+                "rationale": "Lightweight extraction for minor/walk-on character.",
+                "confidence": definition.overall_confidence,
+                "source": "ai",
+                "annotations": annotation,
+            },
+            "bible_files": {master_filename: definition.model_dump_json(indent=2)},
+        },
+    ], entity_cost
+
+
 def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None:
     total["input_tokens"] += call_cost.get("input_tokens", 0)
     total["output_tokens"] += call_cost.get("output_tokens", 0)
@@ -425,6 +548,31 @@ def _extract_character_definition(
         }
 
     prompt = _build_extraction_prompt(char_name, entry, canonical_script, scene_index, feedback)
+    definition, cost = call_llm(
+        prompt=prompt,
+        model=model,
+        response_schema=CharacterBible,
+    )
+    return definition, cost
+
+
+def _extract_minor_character_definition(
+    char_name: str,
+    entry: dict[str, Any],
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    model: str,
+) -> tuple[CharacterBible, dict[str, Any]]:
+    """Lightweight extraction for minor characters — cheaper than full extraction."""
+    if model == "mock":
+        return _mock_minor_extract(char_name, entry), {
+            "model": "mock",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    prompt = _build_lightweight_prompt(char_name, entry, canonical_script, scene_index)
     definition, cost = call_llm(
         prompt=prompt,
         model=model,
@@ -627,7 +775,49 @@ def _build_extraction_prompt(
     return f"""You are a character analyst. Extract a master definition for character: {char_name}.
 
     Return JSON matching CharacterBible schema.
+
+    IMPORTANT — assign a "prominence" field based on production importance:
+    - "primary": protagonist, antagonist, or key relationship character who drives the plot
+    - "secondary": recurring supporting character with a named role and meaningful dialogue
+    - "minor": walk-on, one-scene character, functional role (thug, guard, cop, etc.)
     {feedback_block}
+    Character Context:
+    - Name: {char_name}
+    - Scene Count: {entry['scene_count']}
+    - Dialogue Count: {entry['dialogue_count']}
+
+    Relevant Script Scenes (containing {char_name}):
+    {relevant_text}
+    """
+
+
+def _build_lightweight_prompt(
+    char_name: str,
+    entry: dict[str, Any],
+    script: dict[str, Any],
+    index: dict[str, Any],
+) -> str:
+    """Minimal extraction prompt for minor/walk-on characters."""
+    from cine_forge.ai import extract_scenes_for_entity
+
+    relevant_text = extract_scenes_for_entity(
+        script_text=script["script_text"],
+        scene_index=index,
+        entity_type="character",
+        entity_name=char_name,
+    )
+    return f"""You are a character analyst. Extract a brief definition \
+for minor character: {char_name}.
+
+    This is a walk-on or minor character. Return JSON matching CharacterBible schema.
+    Focus only on: name, description, scene_presence, narrative_role, and prominence.
+    For fields you cannot determine, use sensible defaults:
+    - prominence: "minor"
+    - narrative_role: "minor"
+    - dialogue_summary: brief or "No significant dialogue."
+    - explicit_evidence, inferred_traits, relationships: empty lists are fine
+    - overall_confidence: your confidence in the description (0.0-1.0)
+
     Character Context:
     - Name: {char_name}
     - Scene Count: {entry['scene_count']}
@@ -644,6 +834,7 @@ def _mock_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible:
         name=char_name,
         aliases=[],
         description=f"A character named {char_name}.",
+        prominence="secondary",
         explicit_evidence=[],
         inferred_traits=[],
         scene_presence=entry["scene_presence"],
@@ -652,6 +843,24 @@ def _mock_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible:
         narrative_role_confidence=0.8,
         relationships=[],
         overall_confidence=0.9,
+    )
+
+
+def _mock_minor_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible:
+    return CharacterBible(
+        character_id=_slugify(char_name),
+        name=char_name,
+        aliases=[],
+        description=f"A minor character: {char_name}.",
+        prominence="minor",
+        explicit_evidence=[],
+        inferred_traits=[],
+        scene_presence=entry["scene_presence"],
+        dialogue_summary="No significant dialogue.",
+        narrative_role="minor",
+        narrative_role_confidence=0.9,
+        relationships=[],
+        overall_confidence=0.7,
     )
 
 
@@ -680,7 +889,7 @@ def _is_plausible_character_name(name: str) -> bool:
     tokens = name.split()
     if len(tokens) > 3:
         return False
-    if any(not re.match(r"^[A-Z']+$", token) for token in tokens):
+    if any(not re.match(r"^[A-Z0-9']+$", token) for token in tokens):
         return False
     if any(len(token) > 12 for token in tokens):
         return False

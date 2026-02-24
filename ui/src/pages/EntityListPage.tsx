@@ -13,7 +13,8 @@ import { ListSkeleton, EmptyState, ErrorState } from '@/components/StateViews'
 import { EntityListControls } from '@/components/EntityListControls'
 import { ExportModal } from '@/components/ExportModal'
 import { HealthBadge } from '@/components/HealthBadge'
-import { type SortMode, type ViewDensity, type SortDirection } from '@/lib/types'
+import { ProminenceBadge } from '@/components/ProminenceBadge'
+import { type SortMode, type ViewDensity, type SortDirection, type ProminenceFilter } from '@/lib/types'
 import { useEntityDetails, useEntityGraph, useScenes, useStickyPreference } from '@/lib/hooks'
 import { cn, formatEntityName } from '@/lib/utils'
 import type { ExportScope } from '@/lib/api'
@@ -164,6 +165,7 @@ interface BibleEntity {
   description?: string
   sceneCount: number
   firstSceneNumber: number | null
+  data?: Record<string, unknown>
 }
 
 function OwnerPills({ owners, projectId }: { owners: string[]; projectId: string }) {
@@ -200,6 +202,9 @@ function BibleCompactRow({
       <span className="font-medium flex-1 truncate">
         {formatEntityName(item.entity_id)}
       </span>
+      {section === 'characters' && (
+        <ProminenceBadge prominence={item.data?.prominence as string | undefined} />
+      )}
       <OwnerPills owners={owners} projectId={projectId} />
       {item.sceneCount != null && item.sceneCount > 0 && (
         <span className="text-xs text-muted-foreground">
@@ -238,6 +243,9 @@ function BibleMediumCard({
               </p>
             )}
             <div className="flex items-center gap-2 flex-wrap">
+              {section === 'characters' && (
+                <ProminenceBadge prominence={item.data?.prominence as string | undefined} />
+              )}
               <OwnerPills owners={owners} projectId={projectId} />
               {item.sceneCount != null && item.sceneCount > 0 && (
                 <Badge variant="secondary" className="text-xs">
@@ -280,6 +288,9 @@ function BibleLargeCard({
               </p>
             )}
             <div className="flex items-center gap-2 flex-wrap mb-3">
+              {section === 'characters' && (
+                <ProminenceBadge prominence={item.data?.prominence as string | undefined} />
+              )}
               <OwnerPills owners={owners} projectId={projectId} />
               {item.sceneCount != null && item.sceneCount > 0 && (
                 <Badge variant="secondary" className="text-xs">
@@ -401,6 +412,9 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
   const [sortMode, setSortMode] = useStickyPreference<SortMode>(projectId, `${section}.sort`, 'script-order')
   const [density, setDensity] = useStickyPreference<ViewDensity>(projectId, `${section}.density`, 'medium')
   const [direction, setDirection] = useStickyPreference<SortDirection>(projectId, `${section}.direction`, 'asc')
+  const [prominenceFilter, setProminenceFilter] = useStickyPreference<ProminenceFilter>(
+    projectId, `${section}.filter`, 'all',
+  )
 
   // Data hooks — bible entities vs scenes
   const isBible = section !== 'scenes'
@@ -442,8 +456,14 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
     if (direction === 'desc') {
       sorted = [...sorted].reverse()
     }
+    // Apply prominence filter (characters section only)
+    if (section === 'characters' && prominenceFilter !== 'all' && isBible) {
+      sorted = (sorted as BibleEntity[]).filter(
+        e => (e.data as Record<string, unknown> | undefined)?.prominence === prominenceFilter,
+      )
+    }
     return sorted
-  }, [data, sortMode, direction, isBible])
+  }, [data, sortMode, direction, isBible, section, prominenceFilter])
 
   // Guards
   if (isLoading) return <ListSkeleton />
@@ -513,7 +533,9 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
             <Icon className={`h-6 w-6 ${config.color}`} />
             <h1 className="text-2xl font-semibold">{config.label}</h1>
             <Badge variant="outline" className="ml-2">
-              {data.length}
+              {sortedItems.length !== data.length
+                ? `${sortedItems.length} / ${data.length}`
+                : data.length}
             </Badge>
           </div>
           <p className="text-muted-foreground">{config.description}</p>
@@ -532,6 +554,7 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
         onDensityChange={setDensity}
         direction={direction}
         onDirectionChange={setDirection}
+        {...(section === 'characters' ? { filter: prominenceFilter, onFilterChange: setProminenceFilter } : {})}
       />
 
       {/* Items */}

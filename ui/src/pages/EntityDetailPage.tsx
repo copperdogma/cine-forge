@@ -42,6 +42,7 @@ import {
 } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
+import { ProminenceBadge } from '@/components/ProminenceBadge'
 
 // --- Config ---
 
@@ -614,6 +615,9 @@ export default function EntityDetailPage({ section }: { section: string }) {
           <div className="flex items-center gap-2 mb-1">
             <h1 className="text-2xl font-bold tracking-tight truncate">{displayName}</h1>
             <HealthBadge health={group.health} />
+            {section === 'characters' && (
+              <ProminenceBadge prominence={data?.prominence as string | undefined} />
+            )}
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
             <span>{config.label}</span>

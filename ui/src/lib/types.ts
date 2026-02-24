@@ -223,3 +223,4 @@ export type SearchResponse = {
 export type SortMode = 'script-order' | 'alphabetical' | 'prominence'
 export type SortDirection = 'asc' | 'desc'
 export type ViewDensity = 'compact' | 'medium' | 'large'
+export type ProminenceFilter = 'all' | 'primary' | 'secondary' | 'minor'
