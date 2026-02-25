@@ -77,6 +77,10 @@ interface ChatStore {
   removeMessage: (projectId: string, messageId: string) => void
   /** Update the speaker of an existing message (in-memory only — for streaming). */
   updateMessageSpeaker: (projectId: string, messageId: string, speaker: string) => void
+  /** Set page context label on a message (e.g., "Scene 005"). */
+  setMessageContext: (projectId: string, messageId: string, context: string) => void
+  /** Set the actual injected artifact content on a message (for persistence/debugging). */
+  setInjectedContent: (projectId: string, messageId: string, content: string) => void
   /** Finalize a streaming message: remove streaming flag, persist to backend. */
   finalizeStreamingMessage: (projectId: string, messageId: string) => void
   getMessages: (projectId: string) => ChatMessage[]
@@ -111,11 +115,20 @@ export const useChatStore = create<ChatStore>()(
       }
     },
 
-    loadMessages: (projectId, messages) =>
+    loadMessages: (projectId, messages) => {
+      const migrated = migrateMessages(messages)
+      // Restore active role stickiness from the last AI message's speaker
+      const lastAi = [...migrated].reverse().find(
+        m => m.type === 'ai_response' && m.speaker,
+      )
       set((state) => ({
-        messages: { ...state.messages, [projectId]: migrateMessages(messages) },
+        messages: { ...state.messages, [projectId]: migrated },
         loaded: { ...state.loaded, [projectId]: true },
-      })),
+        ...(lastAi?.speaker
+          ? { activeRole: { ...state.activeRole, [projectId]: lastAi.speaker } }
+          : {}),
+      }))
+    },
 
     addMessage: (projectId, message) => {
       set((state) => {
@@ -245,6 +258,28 @@ export const useChatStore = create<ChatStore>()(
         return { messages: { ...state.messages, [projectId]: updated } }
       }),
 
+    setMessageContext: (projectId, messageId, context) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        const idx = msgs.findIndex(m => m.id === messageId)
+        if (idx === -1) return state
+        const updated = [...msgs]
+        updated[idx] = { ...updated[idx], pageContext: context }
+        return { messages: { ...state.messages, [projectId]: updated } }
+      }),
+
+    setInjectedContent: (projectId, messageId, content) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        const idx = msgs.findIndex(m => m.id === messageId)
+        if (idx === -1) return state
+        const updated = [...msgs]
+        updated[idx] = { ...updated[idx], injectedContent: content }
+        return { messages: { ...state.messages, [projectId]: updated } }
+      }),
+
     finalizeStreamingMessage: (projectId, messageId) => {
       const msgs = get().messages[projectId]
       if (!msgs) return
@@ -260,11 +295,10 @@ export const useChatStore = create<ChatStore>()(
         return { messages: { ...state.messages, [projectId]: updated } }
       })
       // Persist to backend — streaming placeholder was never saved, so this
-      // is the first write for this message ID
-      const { ...persistable } = finalized
-      // Remove runtime-only field toolCalls from persistence if present
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      delete (persistable as any).toolCalls
+      // is the first write for this message ID.  Keep toolCalls + pageContext
+      // so the chat log records what tools ran and what context was attached.
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { streaming: _s, ...persistable } = finalized
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       postChatMessage(projectId, persistable as any).catch(() => {})
     },

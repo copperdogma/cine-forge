@@ -256,6 +256,17 @@ export function useRunEvents(runId: string | undefined) {
   })
 }
 
+// --- Characters (for chat @-mention) ---
+
+export function useProjectCharacters(projectId: string | undefined) {
+  return useQuery<import('./types').ChatCharacter[]>({
+    queryKey: ['projects', projectId, 'characters'],
+    queryFn: () => api.listProjectCharacters(projectId!),
+    enabled: !!projectId,
+    staleTime: 60_000, // characters don't change often
+  })
+}
+
 // --- Artifacts ---
 
 export function useArtifactGroups(projectId: string | undefined, refetchInterval?: number) {

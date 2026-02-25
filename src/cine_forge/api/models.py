@@ -213,6 +213,9 @@ class ChatMessagePayload(BaseModel):
     actions: list[dict[str, Any]] | None = None
     needsAction: bool | None = None
     route: str | None = None
+    pageContext: str | None = None
+    toolCalls: list[dict[str, Any]] | None = None
+    injectedContent: str | None = None
 
 
 # --- Search ---

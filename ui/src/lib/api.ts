@@ -239,7 +239,7 @@ export function searchProject(projectId: string, query: string): Promise<SearchR
 // --- Streaming Chat ---
 
 export interface ChatStreamChunk {
-  type: 'text' | 'tool_start' | 'tool_result' | 'actions' | 'role_start' | 'role_done' | 'done' | 'error'
+  type: 'text' | 'tool_start' | 'tool_result' | 'actions' | 'role_start' | 'role_done' | 'context_info' | 'injected_content' | 'done' | 'error'
   content?: string
   name?: string
   id?: string
@@ -269,6 +269,7 @@ export async function streamChatMessage(
   onError: (error: Error) => void,
   pageContext?: string,
   activeRole?: string,
+  signal?: AbortSignal,
 ): Promise<void> {
   try {
     const response = await fetch(`${API_BASE}/api/projects/${projectId}/chat/stream`, {
@@ -280,6 +281,7 @@ export async function streamChatMessage(
         ...(pageContext ? { page_context: pageContext } : {}),
         ...(activeRole ? { active_role: activeRole } : {}),
       }),
+      signal,
     })
 
     if (!response.ok) {
@@ -438,6 +440,12 @@ export function getRunState(runId: string): Promise<RunStateResponse> {
 
 export function getRunEvents(runId: string): Promise<RunEventsResponse> {
   return request<RunEventsResponse>(`/api/runs/${runId}/events`)
+}
+
+// --- Characters (for chat @-mention) ---
+
+export function listProjectCharacters(projectId: string): Promise<import('./types').ChatCharacter[]> {
+  return request<import('./types').ChatCharacter[]>(`/api/projects/${projectId}/characters`)
 }
 
 // --- Artifacts ---

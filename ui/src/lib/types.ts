@@ -193,6 +193,10 @@ export type ChatMessage = {
   toolCalls?: ToolCallStatus[]
   /** Optional route for activity notes (e.g., "artifacts/bible_manifest/character_the_mariner/1") */
   route?: string
+  /** Page context label injected into this message's prompt (e.g., "Scene 005"). */
+  pageContext?: string
+  /** The actual artifact content injected into the system prompt (scene text, bible, etc.). */
+  injectedContent?: string
 }
 
 // --- Search ---
@@ -218,6 +222,15 @@ export type SearchResponse = {
   characters: SearchResultEntity[]
   locations: SearchResultEntity[]
   props: SearchResultEntity[]
+}
+
+// --- Chat Characters ---
+
+export type ChatCharacter = {
+  id: string          // handle without 'character_' prefix
+  entity_id: string   // full entity id e.g. 'character_billy'
+  name: string        // display name e.g. 'Billy'
+  prominence: string  // 'primary' | 'secondary' | 'minor'
 }
 
 // --- List UI State ---

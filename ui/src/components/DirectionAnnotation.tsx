@@ -52,8 +52,8 @@ const DIRECTION_CONFIG: Record<DirectionType, {
   performance: {
     icon: Drama,
     color: 'text-amber-400',
-    roleId: 'actor_agent',
-    roleName: 'Actor Agent',
+    roleId: 'story_editor',
+    roleName: 'Story Editor',
     badgeClass: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
   },
 }

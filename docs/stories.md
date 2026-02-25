@@ -106,7 +106,7 @@ NOTES from Cam:
 | 081 | Scene Index as Canonical Character Source | World Building | High | Done | [story-081](stories/story-081-scene-index-canonical-characters.md) |
 | 082 | Creative Direction UX | 5 — Creative Direction | High | Done | [story-082](stories/story-082-creative-direction-ux.md) |
 | 083 | Group Chat Architecture | 5 — Creative Direction | High | Done | [story-083](stories/story-083-group-chat-architecture.md) |
-| 084 | Character Chat Agents & Story Agent Rename | 5 — Creative Direction | High | Pending | [story-084](stories/story-084-character-chat-agents.md) |
+| 084 | Character Chat Agents & Story Editor Rename | 5 — Creative Direction | High | Done | [story-084](stories/story-084-character-chat-agents.md) |
 
 ## Phase Summary
 

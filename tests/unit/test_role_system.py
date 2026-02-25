@@ -84,10 +84,10 @@ def test_hierarchy_enforcement_and_override_rules() -> None:
     catalog.load_definitions()
 
     assert catalog.can_role_perform("director", "finalize_canon") is True
-    assert catalog.can_role_perform("actor_agent", "finalize_canon") is False
+    assert catalog.can_role_perform("story_editor", "finalize_canon") is False
     assert catalog.can_role_perform("script_supervisor", "block_progression") is True
     assert catalog.can_propose_artifact("visual_architect", "location_bible") is True
-    assert catalog.can_propose_artifact("actor_agent", "timeline") is False
+    assert catalog.can_propose_artifact("story_editor", "timeline") is False
 
     assert catalog.validate_override(
         overriding_role_id="director",

@@ -364,12 +364,46 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     async def run_events(run_id: str) -> RunEventsResponse:
         return RunEventsResponse.model_validate(service.read_run_events(run_id))
 
+    @app.get("/api/projects/{project_id}/characters")
+    async def list_project_characters(project_id: str):
+        """List characters available for @-mention chat.
+
+        Returns characters from bible_manifest artifacts with their handles
+        (entity_id stripped of 'character_' prefix) and display names.
+        """
+        groups = service.list_artifact_groups(project_id)
+        characters = []
+        for g in groups:
+            if (g["artifact_type"] == "bible_manifest"
+                    and (g.get("entity_id") or "").startswith("character_")):
+                entity_id = g["entity_id"]
+                handle = entity_id.replace("character_", "")
+                # Try to get display name from the artifact
+                display_name = handle.replace("_", " ").title()
+                try:
+                    detail = service.read_artifact(
+                        project_id, "bible_manifest", entity_id,
+                        g["latest_version"],
+                    )
+                    payload = detail.get("payload", {})
+                    data = payload.get("data", payload)
+                    display_name = data.get("name", display_name)
+                except Exception:
+                    pass
+                characters.append({
+                    "id": handle,
+                    "entity_id": entity_id,
+                    "name": display_name,
+                    "prominence": "secondary",  # Default; enriched if available
+                })
+        return characters
+
     @app.post("/api/projects/{project_id}/chat/stream")
     async def chat_stream(project_id: str, request: ChatStreamRequest) -> StreamingResponse:
         """Stream AI chat responses using SSE with group chat routing.
 
-        Detects @-mentions in the message to route to specific creative roles.
-        Each role streams its response directly with its own identity.
+        Detects @-mentions in the message to route to specific creative roles
+        and/or project characters. Characters use Haiku model with no tools.
         """
         from cine_forge.ai.chat import (
             compute_project_state,
@@ -400,10 +434,29 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         catalog = RoleCatalog()
         catalog.load_definitions()
 
-        # Resolve which roles should respond
-        target_roles = resolve_target_roles(
+        # Build character handle list from bible_manifest artifacts
+        character_ids = [
+            g["entity_id"].replace("character_", "")
+            for g in groups
+            if g["artifact_type"] == "bible_manifest"
+            and (g.get("entity_id") or "").startswith("character_")
+        ]
+
+        # Resolve which roles/characters should respond
+        targets = resolve_target_roles(
             request.message, request.active_role,
+            character_ids=character_ids,
         )
+
+        # If cap exceeded, return error immediately
+        if targets.error:
+            def error_stream():
+                yield f"data: {json.dumps({'type': 'error', 'content': targets.error})}\n\n"
+            return StreamingResponse(
+                error_stream(),
+                media_type="text/event-stream",
+                headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+            )
 
         # Read style pack selections from project.json
         try:
@@ -433,11 +486,14 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             elif msg_type.startswith("user"):
                 api_messages.append({"role": "user", "content": content})
             elif msg_type in ("ai_response", "ai_welcome", "ai_suggestion"):
-                # Label role responses so the LLM knows who said what
+                # Label role responses so the LLM knows who said what.
+                # Strip any existing [@speaker]: prefixes the model may have
+                # echoed back — prevents stacking ([@char:x]: [@char:x]: ...).
+                clean = re.sub(r'^(\[@[\w:]+\]:\s*)+', '', content).lstrip()
                 if speaker and speaker != "assistant":
-                    labeled = f"[@{speaker}]: {content}"
+                    labeled = f"[@{speaker}]: {clean}"
                 else:
-                    labeled = f"[@assistant]: {content}"
+                    labeled = f"[@assistant]: {clean}"
                 api_messages.append({"role": "assistant", "content": labeled})
             # Skip status/status_done/tool messages — they're UI chrome
 
@@ -458,7 +514,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             try:
                 for chunk in stream_group_chat(
                     messages=cleaned,
-                    target_roles=target_roles,
+                    targets=targets,
                     project_summary=summary,
                     state_info=state_info,
                     service=service,

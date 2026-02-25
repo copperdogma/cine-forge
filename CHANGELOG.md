@@ -1,5 +1,41 @@
 # Changelog
 
+## [2026-02-25-01] — Chat persistence enrichment & character history fix (Story 084)
+
+### Added
+- `pageContext` persisted on user messages in chat.jsonl (records what page the user was viewing)
+- `injectedContent` persisted on user messages (records the actual scene/bible text injected into the AI's system prompt)
+- `toolCalls` persisted on AI messages (no longer stripped before persistence)
+- `injected_content` SSE event type for streaming the actual injected artifact content
+- API payload dump for debugging: `CINEFORGE_DUMP_API=1` writes exact Anthropic API JSON to `/tmp/`
+
+### Fixed
+- Character-thread filtering: each character now only sees its own conversation thread, preventing cross-character history poisoning (e.g., Mariner saying "nothing attached" no longer causes Carlos to copy that pattern)
+- User message upsert in chat.jsonl so `injectedContent` can be added after initial persist
+- Stale Zustand state bug: `injectedContent` re-persist now reads fresh state after store update
+
+### Changed
+- Characters upgraded from Haiku to Sonnet for better system prompt adherence
+- Scene/entity artifact injection for roles (not just characters) via `_inject_page_artifact`
+- User message hint injection when page context has attached content
+
+## [2026-02-24-07] — Character Chat Agents & Story Editor Rename (Story 084)
+
+### Added
+- Character chat agents: `@billy`, `@rose`, etc. open in-character conversations grounded in character bibles and scene context
+- Character system prompt builder: fat prompt with character bible + scene summaries, Haiku model, no tools
+- `GET /api/projects/{pid}/characters` endpoint returning characters from bible_manifest artifacts
+- Sectioned @-mention autocomplete: Shortcuts (`@all-creatives`) → Roles → Characters (dynamic from API)
+- Character visual identity: cream/parchment color, scroll icon, clickable name → character bible page
+- `ResolvedTargets` dataclass for structured role + character routing
+- `MAX_MENTION_TARGETS` cap of 6 (with `@all-creatives` counting as 5)
+
+### Changed
+- Renamed `actor_agent` → `story_editor` across 15 files (role definition, style packs, routing, UI, tests)
+- Story editor prompt rewritten for narrative logic: character motivation coherence, plot logic, thematic consistency, timeline/continuity
+- Story editor tier upgraded from `performance` → `structural_advisor`
+- Character streaming ordered: non-director roles → characters → director
+
 ## [2026-02-24-06] — ADR-001: Shared Entity Extraction → Dossier
 
 ### Added
@@ -15,7 +51,7 @@
 ### Added
 - True group chat: roles respond directly with their own voice, avatar, and visual identity (no intermediary paraphrasing)
 - Assistant as a first-class role in the catalog (`roles/assistant/role.yaml` + generic style pack)
-- `@-mention` routing: `@director`, `@editorial_architect`, `@visual_architect`, `@sound_designer`, `@actor_agent`, `@all-creatives`
+- `@-mention` routing: `@director`, `@editorial_architect`, `@visual_architect`, `@sound_designer`, `@story_editor`, `@all-creatives`
 - Conversation stickiness: messages without @-mention go to the last-addressed role
 - Multi-role sequential streaming with Director-last convergence
 - Anthropic prompt caching (`cache_control` breakpoints on system prompt + transcript prefix)

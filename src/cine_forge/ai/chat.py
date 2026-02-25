@@ -74,7 +74,7 @@ role's expertise, suggest the user @-mention them. For example:
 - Visual framing, shot composition, color palette → suggest @visual_architect
 - Pacing, structure, scene ordering, transitions → suggest @editorial_architect
 - Sound design, music, audio atmosphere → suggest @sound_designer
-- Character voice, motivation, performance → suggest @actor_agent
+- Story arcs, narrative logic, character motivation, plot holes → suggest @story_editor
 - Creative convergence, big-picture decisions → suggest @director
 
 Keep it natural — a short note like "The @visual_architect could give you a detailed \
@@ -222,6 +222,8 @@ def build_role_system_prompt(
     catalog: Any,
     style_pack_selections: dict[str, str] | None = None,
     page_context: str | None = None,
+    service: Any = None,
+    project_id: str | None = None,
 ) -> str:
     """Build the full system prompt for a specific role in the group chat.
 
@@ -258,6 +260,8 @@ def build_role_system_prompt(
     # Append page context if provided
     if page_context:
         prompt += f"\n\n## Current Page Context\n{page_context}"
+        if service and project_id:
+            prompt += _inject_page_artifact(page_context, service, project_id)
 
     return prompt
 
@@ -276,59 +280,427 @@ def build_system_prompt(
 
 
 # ---------------------------------------------------------------------------
+# Character system prompt builder
+# ---------------------------------------------------------------------------
+
+CHARACTER_PROMPT_TEMPLATE = """\
+You are {character_name} from the screenplay "{project_title}".
+
+## Who You Are
+{character_bible_text}
+
+## Your Story
+These are the scenes you appear in:
+{scene_summaries}
+
+## How to Respond
+You ARE this character. Respond in your voice, from your perspective, with your emotional truth.
+- Stay in character. Don't break the fourth wall unless the user explicitly asks you to \
+reflect on your story.
+- Ground your responses in what you've experienced in the screenplay — reference specific \
+scenes and moments.
+- You have feelings about other characters. Express them honestly.
+- If asked about scenes you're not in, you can speculate based on what you know, but \
+acknowledge you weren't there.
+- You can be pushed into meta-awareness: "Why do you think the story needs this scene?" — \
+answer from your perspective about what matters to you.
+- NEVER prefix your response with your own name tag (e.g., "[@char:rose]:"). The chat UI \
+already shows your name — just speak directly.
+- If a scene or artifact is attached below under "Attached Scene" or "Attached Character Bible", \
+you CAN see it. Reference its content in your response.
+"""
+
+
+def _elements_to_text(elements: list[dict[str, Any]]) -> str:
+    """Reconstruct readable screenplay text from scene elements."""
+    lines: list[str] = []
+    for el in elements:
+        content = el.get("content", "")
+        etype = el.get("element_type", "")
+        if etype == "scene_heading":
+            lines.append(content.upper())
+            lines.append("")
+        elif etype == "character":
+            lines.append(f"  {content.upper()}")
+        elif etype == "dialogue":
+            lines.append(f"    {content}")
+        elif etype == "parenthetical":
+            lines.append(f"    ({content})")
+        elif etype == "action":
+            if lines and lines[-1]:
+                lines.append("")
+            lines.append(content)
+        elif etype == "transition":
+            lines.append(f"\n{content.upper()}")
+        else:
+            lines.append(content)
+    return "\n".join(lines)
+
+
+def _inject_page_artifact(
+    page_context: str,
+    service: Any,
+    project_id: str,
+) -> str:
+    """Load the artifact the user is viewing and return prompt text.
+
+    Handles scenes, characters, locations, and other entity types.
+    Returns a prompt section string to append (empty string on failure).
+    """
+    groups = service.list_artifact_groups(project_id)
+    m = re.match(r"User is viewing (\w+)/([\w_]+)", page_context)
+    if not m:
+        return ""
+    section, entity_id = m.group(1), m.group(2)
+
+    # Map UI section → artifact type + formatter
+    # entity_id comes from the URL and already has the type prefix
+    # e.g., "character_mariner", "location_harbor", "scene_005"
+    if section == "scenes":
+        return _load_scene_artifact(entity_id, groups, service, project_id)
+    if section == "characters":
+        # entity_id is already "character_mariner" from the URL
+        eid = entity_id if entity_id.startswith("character_") else f"character_{entity_id}"
+        return _load_bible_artifact(
+            eid, "bible_manifest", groups, service, project_id,
+            label="Character Bible",
+        )
+    if section == "locations":
+        eid = entity_id if entity_id.startswith("location_") else f"location_{entity_id}"
+        return _load_bible_artifact(
+            eid, "bible_manifest", groups, service, project_id,
+            label="Location Bible",
+        )
+    return ""
+
+
+def _load_scene_artifact(
+    scene_eid: str,
+    groups: list[dict[str, Any]],
+    service: Any,
+    project_id: str,
+) -> str:
+    """Load a scene artifact and return formatted prompt text."""
+    try:
+        scene_group = next(
+            (g for g in groups
+             if g["artifact_type"] == "scene"
+             and g.get("entity_id") == scene_eid),
+            None,
+        )
+        if not scene_group:
+            log.warning("Scene injection: no 'scene' group for %s", scene_eid)
+            return ""
+
+        scene_detail = service.read_artifact(
+            project_id, "scene", scene_eid,
+            scene_group["latest_version"],
+        )
+        payload = scene_detail.get("payload", {})
+        data = payload.get("data", payload)
+        heading = data.get("heading", scene_eid)
+        elements = data.get("elements", [])
+
+        if not elements:
+            log.warning("Scene injection: %s has no elements", scene_eid)
+            return ""
+
+        scene_text = _elements_to_text(elements)
+        if not scene_text:
+            return ""
+
+        log.info("Scene injection: %s (%d chars)", scene_eid, len(scene_text))
+        return (
+            f"\n\n## Attached Scene: {heading}\n"
+            f"The user is currently viewing this scene. "
+            f"Its full content is below.\n"
+            f"```\n{scene_text[:3000]}\n```"
+        )
+    except Exception:
+        log.exception("Scene injection failed for %s", scene_eid)
+        return ""
+
+
+def _load_bible_artifact(
+    entity_id: str,
+    artifact_type: str,
+    groups: list[dict[str, Any]],
+    service: Any,
+    project_id: str,
+    label: str = "Bible",
+) -> str:
+    """Load a bible_manifest artifact and return formatted prompt text."""
+    try:
+        group = next(
+            (g for g in groups
+             if g["artifact_type"] == artifact_type
+             and g.get("entity_id") == entity_id),
+            None,
+        )
+        if not group:
+            log.warning("Bible injection: no %s for %s", artifact_type, entity_id)
+            return ""
+
+        detail = service.read_artifact(
+            project_id, artifact_type, entity_id,
+            group["latest_version"],
+        )
+
+        # Bible content lives in bible_files (e.g., bible_files.master_v1.json)
+        # Fall back to payload.data for non-manifest types
+        bible_files = detail.get("bible_files", {})
+        data: dict[str, Any] = {}
+        if bible_files:
+            # Use the first (usually only) file — typically master_v1.json
+            first_file = next(iter(bible_files.values()), {})
+            if isinstance(first_file, dict):
+                data = first_file
+        if not data:
+            payload = detail.get("payload", {})
+            data = payload.get("data", payload)
+
+        # Format key fields from the bible
+        lines: list[str] = []
+        for key in ("name", "description", "narrative_role", "dialogue_summary",
+                     "role_in_story", "arc", "personality_summary",
+                     "physical_description", "atmosphere", "narrative_function"):
+            val = data.get(key)
+            if val and isinstance(val, str):
+                lines.append(f"**{key.replace('_', ' ').title()}**: {val}")
+        for trait in data.get("explicit_evidence", [])[:6]:
+            lines.append(
+                f"- {trait.get('trait', '')}: \"{trait.get('quote', '')}\""
+            )
+
+        if not lines:
+            return ""
+
+        text = "\n".join(lines)
+        log.info("Bible injection: %s/%s (%d chars)", artifact_type, entity_id, len(text))
+        return (
+            f"\n\n## Attached {label}: {data.get('name', entity_id)}\n"
+            f"The user is currently viewing this {label.lower()}.\n"
+            f"{text[:3000]}"
+        )
+    except Exception:
+        log.exception("Bible injection failed for %s/%s", artifact_type, entity_id)
+        return ""
+
+
+def build_character_system_prompt(
+    character_entity_id: str,
+    service: Any,
+    project_id: str,
+    project_title: str,
+    page_context: str | None = None,
+) -> str | None:
+    """Build a fat system prompt for a character agent.
+
+    Loads the character bible and scene index, then composes the prompt.
+    Returns None if the character data can't be loaded.
+    """
+    groups = service.list_artifact_groups(project_id)
+
+    # Load character bible
+    bible_group = next(
+        (g for g in groups
+         if g["artifact_type"] == "bible_manifest"
+         and g.get("entity_id") == character_entity_id),
+        None,
+    )
+    if not bible_group:
+        return None
+
+    try:
+        bible_detail = service.read_artifact(
+            project_id, "bible_manifest", character_entity_id,
+            bible_group["latest_version"],
+        )
+    except Exception:
+        log.warning("Failed to load bible for %s", character_entity_id)
+        return None
+
+    payload = bible_detail.get("payload", {})
+    bible_data = payload.get("data", payload)
+    character_name = bible_data.get("name", character_entity_id.replace("character_", "").title())
+
+    # Build character bible text — key fields for the prompt
+    bible_lines = []
+    if bible_data.get("description"):
+        bible_lines.append(bible_data["description"])
+    if bible_data.get("narrative_role"):
+        bible_lines.append(f"Role in story: {bible_data['narrative_role']}")
+    if bible_data.get("dialogue_summary"):
+        bible_lines.append(f"How you speak: {bible_data['dialogue_summary']}")
+    for trait in bible_data.get("explicit_evidence", [])[:8]:
+        bible_lines.append(f"- {trait.get('trait', '')}: \"{trait.get('quote', '')}\"")
+    for rel in bible_data.get("relationships", [])[:6]:
+        bible_lines.append(
+            f"- Relationship with {rel.get('target_character', '?')}: "
+            f"{rel.get('relationship_type', '')} — {rel.get('evidence', '')}"
+        )
+    character_bible_text = "\n".join(bible_lines) if bible_lines else "No detailed bible available."
+
+    # Load scene index to find scenes this character appears in
+    scene_index_group = next(
+        (g for g in groups
+         if g["artifact_type"] == "scene_index"
+         and g.get("entity_id") in ("project", "__project__", None, "")),
+        None,
+    )
+    scene_lines = []
+    if scene_index_group:
+        try:
+            si_entity = scene_index_group.get("entity_id") or "project"
+            si_detail = service.read_artifact(
+                project_id, "scene_index", si_entity,
+                scene_index_group["latest_version"],
+            )
+            si_payload = si_detail.get("payload", {})
+            si_data = si_payload.get("data", si_payload)
+            # Character handle without prefix for matching
+            char_handle = character_entity_id.replace("character_", "")
+            for entry in si_data.get("entries", []):
+                # Match against characters_present_ids (handles) or characters_present (names)
+                char_ids = entry.get("characters_present_ids", [])
+                char_names = entry.get("characters_present", [])
+                name_match = character_name.upper() in [c.upper() for c in char_names]
+                if char_handle in char_ids or name_match:
+                    heading = entry.get("heading", "Unknown scene")
+                    tone = entry.get("tone_mood", "")
+                    chars = ", ".join(entry.get("characters_present", []))
+                    line = f"- Scene {entry.get('scene_number', '?')}: {heading}"
+                    if tone:
+                        line += f" ({tone})"
+                    if chars:
+                        line += f" — with: {chars}"
+                    scene_lines.append(line)
+        except Exception:
+            log.warning("Failed to load scene index for character prompt")
+
+    scene_summaries = "\n".join(scene_lines) if scene_lines else "No scene data available."
+
+    prompt = CHARACTER_PROMPT_TEMPLATE.format(
+        character_name=character_name,
+        project_title=project_title,
+        character_bible_text=character_bible_text,
+        scene_summaries=scene_summaries,
+    )
+
+    if page_context:
+        prompt += f"\n## Current Page Context\n{page_context}"
+        prompt += _inject_page_artifact(page_context, service, project_id)
+    return prompt
+
+
+# ---------------------------------------------------------------------------
 # @-mention routing
 # ---------------------------------------------------------------------------
 
 # All creative role IDs (non-assistant). Director is always sorted last.
 CREATIVE_ROLES = [
-    "editorial_architect", "visual_architect", "sound_designer", "actor_agent", "director",
+    "editorial_architect", "visual_architect", "sound_designer", "story_editor", "director",
 ]
 ALL_CREATIVE_SET = set(CREATIVE_ROLES)
 
 # Valid role IDs for @-mention routing.
 VALID_ROLE_IDS: set[str] = {"assistant"} | ALL_CREATIVE_SET
 
+# Maximum number of targets (roles + characters) per message.
+MAX_MENTION_TARGETS = 6
+
 _MENTION_RE = re.compile(r"@([\w-]+)")
+
+HAIKU_MODEL = "claude-haiku-4-5-20251001"
+
+
+@dataclass
+class ResolvedTargets:
+    """Result of parsing @-mentions: roles, characters, and optional error."""
+
+    roles: list[str] = field(default_factory=list)
+    characters: list[str] = field(default_factory=list)  # entity IDs like "character_billy"
+    error: str | None = None
 
 
 def resolve_target_roles(
     message: str,
     active_role: str | None = None,
-) -> list[str]:
-    """Parse @-mentions from a user message and return target role IDs.
+    character_ids: list[str] | None = None,
+) -> ResolvedTargets:
+    """Parse @-mentions from a user message and return target roles and characters.
 
     Rules:
     - @all-creatives → all 5 creative roles (director last)
-    - Explicit @-mentions → those roles (director sorted last if present)
+    - @role_id → that role
+    - @character_handle → that character (matched against character_ids)
     - No @-mention → sticky role (active_role), default to assistant
+    - Total targets capped at MAX_MENTION_TARGETS (6)
+    - @all-creatives counts as 5 toward the cap
+
+    character_ids: list of character handles (e.g. ["the_mariner", "rose"])
+                   derived from entity IDs by stripping "character_" prefix.
     """
     mentions = _MENTION_RE.findall(message)
+    char_set = set(character_ids) if character_ids else set()
+
+    roles: list[str] = []
+    characters: list[str] = []
+    all_creatives = False
 
     # Expand @all-creatives
     if "all-creatives" in mentions:
-        return list(CREATIVE_ROLES)  # director is already last
+        all_creatives = True
+        roles = list(CREATIVE_ROLES)  # director already last
 
-    # Filter to valid role IDs
-    targets = [m for m in mentions if m in VALID_ROLE_IDS]
+    if not all_creatives:
+        for m in mentions:
+            if m in VALID_ROLE_IDS:
+                if m not in roles:
+                    roles.append(m)
+            elif m in char_set:
+                entity_id = f"character_{m}"
+                if entity_id not in characters:
+                    characters.append(entity_id)
 
-    if not targets:
-        # Stickiness: route to last-addressed role
-        return [active_role if active_role and active_role in VALID_ROLE_IDS else "assistant"]
+    # If @all-creatives plus additional character mentions
+    if all_creatives:
+        for m in mentions:
+            if m in char_set:
+                entity_id = f"character_{m}"
+                if entity_id not in characters:
+                    characters.append(entity_id)
 
-    # Deduplicate while preserving order, sort director last
-    seen: set[str] = set()
-    deduped: list[str] = []
-    for t in targets:
-        if t not in seen:
-            seen.add(t)
-            deduped.append(t)
+    # Enforce cap: roles + characters <= MAX_MENTION_TARGETS
+    total = len(roles) + len(characters)
+    if total > MAX_MENTION_TARGETS:
+        return ResolvedTargets(
+            error=(
+                f"Too many targets ({total}) — maximum is {MAX_MENTION_TARGETS} "
+                f"per message. @all-creatives counts as {len(CREATIVE_ROLES)}. "
+                f"Try addressing fewer roles or characters."
+            ),
+        )
 
-    # Move director to end if present (convergence: sees all other responses first)
-    if "director" in deduped and len(deduped) > 1:
-        deduped.remove("director")
-        deduped.append("director")
+    # If no targets matched, use stickiness
+    if not roles and not characters:
+        if active_role and active_role.startswith("char:"):
+            # Sticky character session — route to that character
+            char_handle = active_role[5:]
+            if character_ids and char_handle in character_ids:
+                characters = [f"character_{char_handle}"]
+            else:
+                roles = ["assistant"]
+        else:
+            sticky = active_role if active_role and active_role in VALID_ROLE_IDS else "assistant"
+            roles = [sticky]
 
-    return deduped
+    # Move director to end if present with other roles (convergence)
+    if "director" in roles and len(roles) > 1:
+        roles.remove("director")
+        roles.append("director")
+
+    return ResolvedTargets(roles=roles, characters=characters)
 
 
 # ---------------------------------------------------------------------------
@@ -363,7 +735,7 @@ READ_TOOLS: list[dict[str, Any]] = [
                 "artifact_type": {
                     "type": "string",
                     "description": (
-                        "The artifact type (e.g., 'scene_extract',"
+                        "The artifact type (e.g., 'scene',"
                         " 'bible_manifest', 'entity_graph',"
                         " 'project_config', 'normalized_script')."
                     ),
@@ -577,7 +949,7 @@ def execute_tool(
         elif tool_name == "list_scenes":
             groups = service.list_artifact_groups(project_id)
             scene_groups = [
-                g for g in groups if g["artifact_type"] == "scene_extract"
+                g for g in groups if g["artifact_type"] == "scene"
             ]
             if not scene_groups:
                 empty = {"scenes": [], "note": "No scenes extracted yet."}
@@ -587,16 +959,19 @@ def execute_tool(
                 eid = sg.get("entity_id") or "__project__"
                 try:
                     detail = service.read_artifact(
-                        project_id, "scene_extract", eid, sg["latest_version"]
+                        project_id, "scene", eid, sg["latest_version"]
                     )
                     payload = detail.get("payload", {})
                     data = payload.get("data", payload)
                     scenes.append({
                         "entity_id": eid,
+                        "scene_number": data.get("scene_number"),
                         "heading": data.get("heading", ""),
-                        "summary": data.get("summary", ""),
-                        "characters": data.get("characters", []),
                         "location": data.get("location", ""),
+                        "int_ext": data.get("int_ext", ""),
+                        "time_of_day": data.get("time_of_day", ""),
+                        "tone_mood": data.get("tone_mood", ""),
+                        "characters": data.get("characters_present", []),
                     })
                 except Exception:
                     scenes.append({"entity_id": eid, "error": "Could not load"})
@@ -1035,6 +1410,24 @@ def _add_cache_breakpoints(messages: list[dict[str, Any]]) -> list[dict[str, Any
     return result
 
 
+def _dump_api_payload(
+    payload: dict[str, Any], speaker: str, tool_round: int,
+) -> None:
+    """Write the exact Anthropic API payload to /tmp for debugging.
+
+    Activated by setting env var CINEFORGE_DUMP_API=1.
+    Each call writes /tmp/cineforge-api-{speaker}-{round}.json.
+    """
+    import json as _json
+    path = f"/tmp/cineforge-api-{speaker}-{tool_round}.json"
+    try:
+        with open(path, "w") as f:
+            _json.dump(payload, f, indent=2, default=str)
+        log.info("API payload dumped to %s", path)
+    except Exception:
+        log.warning("Failed to dump API payload to %s", path)
+
+
 def _stream_single_role(
     messages: list[dict[str, Any]],
     system_prompt: str,
@@ -1064,7 +1457,7 @@ def _stream_single_role(
 
     pending_actions: list[dict[str, Any]] = []
 
-    for _ in range(max_tool_rounds):
+    for tool_round in range(max_tool_rounds):
         payload = {
             "model": model,
             "system": system_blocks,
@@ -1074,6 +1467,10 @@ def _stream_single_role(
             "stream": True,
             "tools": tools,
         }
+
+        # Dump exact API payload for debugging (opt-in via env var)
+        if os.environ.get("CINEFORGE_DUMP_API"):
+            _dump_api_payload(payload, speaker, tool_round)
 
         text_buffer = ""
         tool_use_blocks: list[dict[str, Any]] = []
@@ -1198,7 +1595,7 @@ def _stream_single_role(
 
 def stream_group_chat(
     messages: list[dict[str, Any]],
-    target_roles: list[str],
+    targets: ResolvedTargets,
     project_summary: dict[str, Any],
     state_info: dict[str, Any],
     service: Any,
@@ -1208,11 +1605,10 @@ def stream_group_chat(
     page_context: str | None = None,
     model: str = CHAT_MODEL,
 ) -> Generator[dict[str, Any], None, None]:
-    """Stream group chat responses from one or more roles.
+    """Stream group chat responses from roles and/or characters.
 
-    For single role: stream directly.
-    For multi-role: stream non-Director roles sequentially (threads are complex
-    with generators), appending each response to the transcript, then Director last.
+    Ordering: non-Director roles → characters → Director (if present).
+    Characters use Haiku model, no tools, fat system prompt.
 
     Yields the same chunk shapes as _stream_single_role, plus:
       {"type": "role_start", "speaker": "...", "display_name": "..."}
@@ -1223,13 +1619,16 @@ def stream_group_chat(
 
     assert isinstance(catalog, RoleCatalog)
 
+    target_roles = targets.roles
+    target_characters = targets.characters
+
     def _tools_for_role(role_id: str) -> list[dict[str, Any]]:
         """Assistant gets all tools; creative roles get read tools only."""
         if role_id == "assistant":
             return ALL_CHAT_TOOLS
         return READ_TOOLS
 
-    def _stream_one(
+    def _stream_one_role(
         role_id: str, msgs: list[dict[str, Any]],
     ) -> Generator[dict[str, Any], None, None]:
         """Stream a single role with role_start/role_done envelope."""
@@ -1239,9 +1638,20 @@ def stream_group_chat(
             "speaker": role_id,
             "display_name": role.display_name,
         }
+        if page_context:
+            yield {"type": "context_info", "content": page_context, "speaker": role_id}
+            # Emit the actual injected artifact content for persistence/debugging
+            injected = _inject_page_artifact(page_context, service, project_id)
+            if injected:
+                yield {
+                    "type": "injected_content",
+                    "content": injected,
+                    "speaker": role_id,
+                }
         system_prompt = build_role_system_prompt(
             role_id, project_summary, state_info, catalog,
             style_pack_selections, page_context,
+            service=service, project_id=project_id,
         )
         tools = _tools_for_role(role_id)
         yield from _stream_single_role(
@@ -1249,39 +1659,178 @@ def stream_group_chat(
         )
         yield {"type": "role_done", "speaker": role_id}
 
-    if len(target_roles) == 1:
+    def _stream_one_character(
+        char_entity_id: str, msgs: list[dict[str, Any]],
+    ) -> Generator[dict[str, Any], None, None]:
+        """Stream a character response — Haiku, trimmed history, fat system prompt.
+
+        Characters get a short transcript window (last 10 messages) to avoid
+        history poisoning — long conversations with repeated patterns can
+        override the system prompt in smaller models.
+        """
+        project_title = project_summary.get("display_name", "Unknown")
+        char_prompt = build_character_system_prompt(
+            char_entity_id, service, project_id, project_title,
+            page_context=page_context,
+        )
+        if not char_prompt:
+            # Character data not available — emit a graceful error
+            speaker = f"char:{char_entity_id.replace('character_', '')}"
+            yield {"type": "role_start", "speaker": speaker, "display_name": char_entity_id}
+            yield {
+                "type": "text",
+                "content": (
+                    "I can't respond right now — my character bible "
+                    "hasn't been created yet. Run the world-building "
+                    "pipeline first to bring me to life."
+                ),
+                "speaker": speaker,
+            }
+            yield {"type": "role_done", "speaker": speaker}
+            return
+
+        char_handle = char_entity_id.replace("character_", "")
+        speaker = f"char:{char_handle}"
+        display_name = char_handle.replace("_", " ").title()
+
+        # Filter transcript to this character's thread only.
+        # The merged message list contains responses from ALL characters.
+        # Including other characters' "nothing attached" responses poisons
+        # this character's context — it copies the pattern instead of
+        # reading the system prompt.  Keep only user messages and this
+        # character's own assistant responses (tagged [@char:name]:).
+        tag = f"[@{speaker}]:"
+        filtered = [
+            m for m in msgs
+            if m["role"] == "user"
+            or (m["role"] == "assistant" and m.get("content", "").startswith(tag))
+        ]
+        # Merge consecutive same-role messages (filtering may create
+        # adjacent user messages when other characters' responses are removed).
+        merged: list[dict[str, Any]] = []
+        for m in filtered:
+            if merged and merged[-1]["role"] == m["role"]:
+                merged[-1] = {**merged[-1], "content": merged[-1]["content"] + "\n" + m["content"]}
+            else:
+                merged.append(m)
+        # Then window to the last N exchanges.
+        _CHAR_HISTORY_WINDOW = 10
+        char_msgs = merged[-_CHAR_HISTORY_WINDOW:] if len(merged) > _CHAR_HISTORY_WINDOW else merged
+        # Ensure the trimmed list starts with a user message
+        while char_msgs and char_msgs[0].get("role") != "user":
+            char_msgs = char_msgs[1:]
+
+        # When a scene/entity is injected, append a system-level hint to
+        # the final user message so the model sees it adjacent to the
+        # question (not buried in a system prompt it may deprioritize
+        # versus strong in-context patterns in the chat history).
+        if page_context and char_msgs and char_msgs[-1]["role"] == "user":
+            hint = (
+                "\n\n[System: A scene has been attached to your system "
+                "prompt under '## Attached Scene'. Read it and reference "
+                "its content in your reply.]"
+            )
+            char_msgs = [*char_msgs]  # shallow copy
+            last = char_msgs[-1]
+            char_msgs[-1] = {**last, "content": last["content"] + hint}
+
+        yield {"type": "role_start", "speaker": speaker, "display_name": display_name}
+        # Emit context info so the user sees what was injected
+        if page_context:
+            yield {"type": "context_info", "content": page_context, "speaker": speaker}
+            # Emit the actual injected artifact content for persistence/debugging
+            injected = _inject_page_artifact(page_context, service, project_id)
+            if injected:
+                yield {
+                    "type": "injected_content",
+                    "content": injected,
+                    "speaker": speaker,
+                }
+        # Characters use Sonnet — Haiku is too easily swayed by chat history patterns
+        yield from _stream_single_role(
+            char_msgs, char_prompt, READ_TOOLS, service, project_id, speaker, CHAT_MODEL,
+        )
+        yield {"type": "role_done", "speaker": speaker}
+
+    # Build the streaming order: non-Director roles → characters → Director
+    non_director_roles = [r for r in target_roles if r != "director"]
+    has_director = "director" in target_roles
+
+    total_targets = len(target_roles) + len(target_characters)
+
+    if total_targets == 1 and not target_characters:
         # Single role — direct streaming, no multi-role overhead
-        yield from _stream_one(target_roles[0], messages)
+        yield from _stream_one_role(target_roles[0], messages)
         yield {"type": "done"}
         return
 
-    # Multi-role: stream each sequentially. For each role after the first,
-    # the transcript includes the previous roles' full responses so they
-    # can build on each other. Director always goes last.
-    #
-    # We collect each role's full text to append to the transcript before
-    # the next role sees it.
+    if total_targets == 1 and target_characters:
+        # Single character
+        yield from _stream_one_character(target_characters[0], messages)
+        yield {"type": "done"}
+        return
+
+    # Multi-target: stream each sequentially, appending responses to transcript
     current_messages = list(messages)
 
-    for role_id in target_roles:
-        role_text = ""
-        for chunk in _stream_one(role_id, current_messages):
-            yield chunk
-            if chunk.get("type") == "text":
-                role_text += chunk.get("content", "")
-
-        # Append this role's response to the transcript so the next role sees it.
-        # Anthropic requires alternating user/assistant messages, so we also
-        # insert a synthetic user turn to bridge to the next role.
-        if role_text:
-            current_messages.append({
-                "role": "assistant",
-                "content": role_text,
-            })
+    def _append_response(text: str) -> None:
+        """Append a completed response to the transcript for the next speaker."""
+        if text:
+            current_messages.append({"role": "assistant", "content": text})
             current_messages.append({
                 "role": "user",
                 "content": "[Group chat continues — next role responding]",
             })
+
+    def _safe_stream(gen_fn, label: str):
+        """Yield from a role/character generator, catching errors so one
+        failure doesn't kill the entire group stream."""
+        try:
+            yield from gen_fn()
+        except Exception as exc:
+            log.exception("Group chat: %s failed", label)
+            yield {
+                "type": "text",
+                "content": f"(Sorry, I encountered an error: {exc})",
+                "speaker": label,
+            }
+
+    # 1. Non-Director roles
+    for role_id in non_director_roles:
+        gen = _safe_stream(
+            lambda rid=role_id: _stream_one_role(rid, current_messages),
+            role_id,
+        )
+        role_text = ""
+        for chunk in gen:
+            yield chunk
+            if chunk.get("type") == "text":
+                role_text += chunk.get("content", "")
+        _append_response(role_text)
+
+    # 2. Characters
+    for char_id in target_characters:
+        gen = _safe_stream(
+            lambda cid=char_id: _stream_one_character(cid, current_messages),
+            f"char:{char_id.replace('character_', '')}",
+        )
+        char_text = ""
+        for chunk in gen:
+            yield chunk
+            if chunk.get("type") == "text":
+                char_text += chunk.get("content", "")
+        _append_response(char_text)
+
+    # 3. Director last (convergence: sees all other responses)
+    if has_director:
+        director_text = ""
+        for chunk in _safe_stream(
+            lambda: _stream_one_role("director", current_messages),
+            "director",
+        ):
+            yield chunk
+            if chunk.get("type") == "text":
+                director_text += chunk.get("content", "")
 
     yield {"type": "done"}
 

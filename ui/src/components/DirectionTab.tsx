@@ -28,7 +28,7 @@ const DIRECTION_ROLES: Array<{
   // Future roles plug in here:
   // { directionType: 'visual', artifactType: 'visual_direction', roleId: 'visual_architect', roleName: 'Visual', icon: Eye, color: 'text-sky-400' },
   // { directionType: 'sound', artifactType: 'sound_direction', roleId: 'sound_designer', roleName: 'Sound', icon: Volume2, color: 'text-emerald-400' },
-  // { directionType: 'performance', artifactType: 'performance_direction', roleId: 'actor_agent', roleName: 'Performance', icon: Drama, color: 'text-amber-400' },
+  // { directionType: 'performance', artifactType: 'performance_direction', roleId: 'story_editor', roleName: 'Story', icon: Drama, color: 'text-amber-400' },
 ]
 
 export function RolePresenceIndicators({

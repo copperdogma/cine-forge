@@ -917,8 +917,9 @@ class OperatorConsoleService:
         msg_id = message.get("id", "")
         msg_type = message.get("type", "")
 
-        # Activity messages: upsert (replace existing line with same ID)
-        if msg_type == "activity" and msg_id and path.exists():
+        # Activity and user messages: upsert (replace existing line with same ID).
+        # User messages need upsert so injectedContent can be added after initial persist.
+        if msg_type in ("activity", "user_message") and msg_id and path.exists():
             lines = path.read_text(encoding="utf-8").splitlines()
             replaced = False
             new_line = json.dumps(message, separators=(",", ":"))

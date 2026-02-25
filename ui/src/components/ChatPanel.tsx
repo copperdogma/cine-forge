@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import {
   Activity, Clapperboard, Drama, Eye, MapPin,
-  Package, Scissors, Send, Sparkles, CheckCircle2, Loader2,
-  MessageSquare, User, Users, Volume2, Wrench,
+  Package, Scissors, Send, Sparkles, Square, CheckCircle2, Loader2,
+  MessageSquare, User, UserRound, Users, Volume2, Wrench,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useChatStore } from '@/lib/chat-store'
-import { useProjectInputs, useStartRun } from '@/lib/hooks'
-import { streamChatMessage } from '@/lib/api'
+import { useProjectInputs, useStartRun, useProjectCharacters } from '@/lib/hooks'
+import { postChatMessage, streamChatMessage } from '@/lib/api'
 import { RunProgressCard } from '@/components/RunProgressCard'
 import type { ChatMessage, ChatAction, ToolCallStatus } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -64,8 +64,8 @@ const ROLE_DISPLAY: Record<string, RoleDisplayConfig> = {
     badgeClass: 'text-emerald-400',
     bgClass: 'bg-emerald-500/8',
   },
-  actor_agent: {
-    name: 'Actor Agent',
+  story_editor: {
+    name: 'Story Editor',
     icon: Drama,
     iconClass: 'text-amber-400',
     badgeClass: 'text-amber-400',
@@ -73,8 +73,22 @@ const ROLE_DISPLAY: Record<string, RoleDisplayConfig> = {
   },
 }
 
-/** Get role display config with a generic fallback for unknown speakers. */
-function getRoleDisplay(speaker: string): RoleDisplayConfig {
+/** Get role display config with character handling and generic fallback. */
+function getRoleDisplay(speaker: string): RoleDisplayConfig & { isCharacter?: boolean; characterId?: string } {
+  // Character speakers use "char:handle" format
+  if (speaker.startsWith('char:')) {
+    const handle = speaker.slice(5)
+    const displayName = handle.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    return {
+      name: displayName,
+      icon: User,
+      iconClass: 'text-amber-200',
+      badgeClass: 'text-amber-200',
+      bgClass: 'bg-amber-100/8',
+      isCharacter: true,
+      characterId: handle,
+    }
+  }
   return ROLE_DISPLAY[speaker] ?? {
     name: speaker.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     icon: MessageSquare,
@@ -87,8 +101,21 @@ function getRoleDisplay(speaker: string): RoleDisplayConfig {
 /** All roles available for @-mention in the role picker. */
 const PICKABLE_ROLES = [
   'assistant', 'director', 'editorial_architect',
-  'visual_architect', 'sound_designer', 'actor_agent',
+  'visual_architect', 'sound_designer', 'story_editor',
 ] as const
+
+/** Shortcuts that expand to special behavior. */
+const MENTION_SHORTCUTS = [
+  { id: 'all-creatives', name: 'All Creatives', description: 'Director + all creative roles' },
+] as const
+
+/** Autocomplete item — a role, character, or shortcut. */
+type MentionItem = {
+  kind: 'shortcut' | 'role' | 'character'
+  id: string
+  name: string
+  description?: string
+}
 
 /** Human-friendly tool name mapping. */
 const TOOL_DISPLAY_NAMES: Record<string, string> = {
@@ -132,7 +159,7 @@ function MessageIcon({ type, speaker }: { type: ChatMessage['type']; speaker?: s
     case 'user_action':
       return <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
     case 'user_message':
-      return <User className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+      return <UserRound className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
     case 'ai_response':
       return <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
     case 'ai_tool_status':
@@ -395,12 +422,39 @@ function ChatMessageItem({
     return (
       <div className={cn('py-1.5')} data-role-speaker={message.speaker}>
         <div className={cn('rounded-lg px-3 py-2', roleConfig.bgClass)}>
-          {/* Role label with icon */}
+          {/* Role/character label with icon + optional context chip */}
           <div className="flex items-center gap-1.5 mb-1">
             <RoleIcon className={cn('h-3 w-3 shrink-0', roleConfig.iconClass)} />
-            <span className={cn('text-[11px] font-medium', roleConfig.badgeClass)}>
-              {roleConfig.name}
-            </span>
+            {'isCharacter' in roleConfig && roleConfig.isCharacter ? (
+              <button
+                type="button"
+                className={cn(
+                  'text-[11px] font-medium cursor-pointer',
+                  'hover:underline underline-offset-2',
+                  roleConfig.badgeClass,
+                )}
+                onClick={() => {
+                  navigate(`/${projectId}/characters/${roleConfig.characterId}`)
+                }}
+              >
+                {roleConfig.name}
+              </button>
+            ) : (
+              <span className={cn('text-[11px] font-medium', roleConfig.badgeClass)}>
+                {roleConfig.name}
+              </span>
+            )}
+            {message.pageContext && (() => {
+              const CtxIcon = SECTION_ICONS[message.pageContext.toLowerCase().split(' ')[0]] ?? Sparkles
+              return (
+                <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted/60">
+                  <CtxIcon className="h-3 w-3 text-muted-foreground/70 shrink-0" />
+                  <span className="text-[11px] text-muted-foreground/80 truncate max-w-[160px]">
+                    {message.pageContext}
+                  </span>
+                </span>
+              )
+            })()}
           </div>
           {/* Thinking indicator */}
           {isThinking && (
@@ -512,9 +566,11 @@ export function ChatPanel() {
   const shouldAutoScrollRef = useRef(true)
   const startRun = useStartRun()
   const { data: inputs } = useProjectInputs(projectId)
+  const { data: characters } = useProjectCharacters(projectId)
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
   const [inputText, setInputText] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
+  const abortRef = useRef<AbortController | null>(null)
 
   // @-mention autocomplete state
   const [mentionQuery, setMentionQuery] = useState<string | null>(null)
@@ -526,7 +582,7 @@ export function ChatPanel() {
   const [stickyRole, setStickyRole] = useState<string | null>(null)
 
   // Custom drag-to-resize: drag handle at top of input, drag up = grow
-  const MIN_INPUT_H = 80
+  const MIN_INPUT_H = 100
   const MAX_INPUT_H = 400
   const [inputHeight, setInputHeight] = useState(MIN_INPUT_H)
   const dragRef = useRef<{ startY: number; startH: number } | null>(null)
@@ -562,14 +618,35 @@ export function ChatPanel() {
     el.style.height = `${Math.min(scrollH, MAX_INPUT_H)}px`
   }
 
-  // Compute mention matches from current query
-  const mentionMatches = mentionQuery !== null
-    ? PICKABLE_ROLES.filter(r => {
-        const display = ROLE_DISPLAY[r]
-        const q = mentionQuery.toLowerCase()
-        return r.toLowerCase().includes(q) || display.name.toLowerCase().includes(q)
-      })
-    : []
+  // Build sectioned mention items: Shortcuts → Roles → Characters
+  const mentionItems: MentionItem[] = useMemo(() => {
+    if (mentionQuery === null) return []
+    const q = mentionQuery.toLowerCase()
+    const items: MentionItem[] = []
+
+    // Shortcuts
+    for (const s of MENTION_SHORTCUTS) {
+      if (s.id.toLowerCase().includes(q) || s.name.toLowerCase().includes(q)) {
+        items.push({ kind: 'shortcut', id: s.id, name: s.name, description: s.description })
+      }
+    }
+    // Roles
+    for (const r of PICKABLE_ROLES) {
+      const display = ROLE_DISPLAY[r]
+      if (r.toLowerCase().includes(q) || display.name.toLowerCase().includes(q)) {
+        items.push({ kind: 'role', id: r, name: display.name })
+      }
+    }
+    // Characters
+    if (characters) {
+      for (const c of characters) {
+        if (c.id.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)) {
+          items.push({ kind: 'character', id: c.id, name: c.name })
+        }
+      }
+    }
+    return items
+  }, [mentionQuery, characters])
 
   // Detect @-mention trigger and update popup position
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -631,20 +708,20 @@ export function ChatPanel() {
   // Handle keyboard navigation in mention popup
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // Mention popup keyboard navigation
-    if (mentionQuery !== null && mentionMatches.length > 0) {
+    if (mentionQuery !== null && mentionItems.length > 0) {
       if (e.key === 'ArrowDown') {
         e.preventDefault()
-        setMentionIndex(i => (i + 1) % mentionMatches.length)
+        setMentionIndex(i => (i + 1) % mentionItems.length)
         return
       }
       if (e.key === 'ArrowUp') {
         e.preventDefault()
-        setMentionIndex(i => (i - 1 + mentionMatches.length) % mentionMatches.length)
+        setMentionIndex(i => (i - 1 + mentionItems.length) % mentionItems.length)
         return
       }
       if (e.key === 'Tab' || e.key === 'Enter') {
         e.preventDefault()
-        insertMention(mentionMatches[mentionIndex])
+        insertMention(mentionItems[mentionIndex].id)
         return
       }
       if (e.key === 'Escape') {
@@ -671,16 +748,38 @@ export function ChatPanel() {
     const now = Date.now()
     const userMsgId = `user_${now}`
 
-    // Add user message
+    // Build page context from current URL (primary) or entity context store (fallback).
+    // Reading directly from the URL avoids any store-timing edge cases after navigation.
+    // Computed before addMessage so it can be persisted on the user message.
+    const urlMatch = window.location.pathname.match(
+      new RegExp(`^/${projectId}/(characters|locations|props|scenes)/([^/]+)$`),
+    )
+    let pageContext: string | undefined
+    if (urlMatch) {
+      const [, section, entityId] = urlMatch
+      const entityName = entityId.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      pageContext = `User is viewing ${section}/${entityId} ("${entityName}")`
+    } else {
+      // Fallback: read from the store (covers edge cases where URL doesn't match)
+      const entityCtx = useChatStore.getState().entityContext[projectId]
+      pageContext = entityCtx
+        ? `User is viewing ${entityCtx.section}/${entityCtx.entityId} ("${entityCtx.name}")`
+        : undefined
+    }
+
+    // Add user message (include pageContext so it persists to chat.jsonl)
     addMessage(projectId, {
       id: userMsgId,
       type: 'user_message',
       content: userText,
       timestamp: now,
+      ...(pageContext ? { pageContext } : {}),
     })
 
     if (!overrideText) setInputText('')
     setIsStreaming(true)
+    const controller = new AbortController()
+    abortRef.current = controller
 
     // Build full chat history for the AI (persistent thread) — include speaker
     const chatHistory = messages.map(m => ({
@@ -688,12 +787,6 @@ export function ChatPanel() {
       content: m.content,
       ...(m.speaker ? { speaker: m.speaker } : {}),
     }))
-
-    // Build page context from entity context (scene/character/etc the user is viewing)
-    const entityCtx = useChatStore.getState().entityContext[projectId]
-    const pageContext = entityCtx
-      ? `User is viewing ${entityCtx.section}/${entityCtx.entityId} ("${entityCtx.name}")`
-      : undefined
 
     // Get active role for stickiness (no @-mention → route to last-addressed role)
     const activeRole = useChatStore.getState().getActiveRole(projectId)
@@ -761,6 +854,24 @@ export function ChatPanel() {
               store.setActiveRole(projectId, chunk.speaker)
             }
           }
+        } else if (chunk.type === 'context_info') {
+          // Store context as metadata on the message for chip rendering
+          // Parse "User is viewing scenes/scene_004 ("Scene 004")" → "Scene 004"
+          const ctxMatch = chunk.content?.match(/User is viewing (\w+)\/([\w_]+)\s*(?:\("([^"]+)"\))?/)
+          const label = ctxMatch
+            ? ctxMatch[2].replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+            : chunk.content ?? ''
+          store.setMessageContext(projectId, currentMsgId, label)
+        } else if (chunk.type === 'injected_content') {
+          // Store the actual artifact content on the USER message that triggered it
+          // (it's context about what the user is viewing, not metadata about the AI response).
+          // Re-persist to backend so chat.jsonl records what was injected.
+          store.setInjectedContent(projectId, userMsgId, chunk.content ?? '')
+          // Read fresh state — `store` is a stale snapshot from before the set() call
+          const updated = useChatStore.getState().messages[projectId]?.find(m => m.id === userMsgId)
+          if (updated) {
+            postChatMessage(projectId, updated).catch(() => {})
+          }
         } else if (chunk.type === 'tool_start') {
           const rawName = chunk.name ?? 'tool'
           store.addToolCall(projectId, currentMsgId, {
@@ -785,7 +896,21 @@ export function ChatPanel() {
         setIsStreaming(false)
       },
       (error) => {
-        // Error — show in the current AI message with retry affordance
+        // Abort is intentional — just finalize quietly
+        if (error.name === 'AbortError' || error.message === 'The user aborted a request.') {
+          const store = useChatStore.getState()
+          if (currentMsgId) {
+            if (currentContent) {
+              store.updateMessageContent(projectId, currentMsgId, currentContent + '\n\n*(stopped)*')
+            } else {
+              store.removeMessage(projectId, currentMsgId)
+            }
+            store.finalizeStreamingMessage(projectId, currentMsgId)
+          }
+          setIsStreaming(false)
+          return
+        }
+        // Real error — show in the current AI message with retry affordance
         const errorContent = currentContent
           ? currentContent + '\n\n(Stream interrupted)'
           : `Sorry, something went wrong. ${error.message}`
@@ -802,7 +927,14 @@ export function ChatPanel() {
       },
       pageContext,
       activeRole,
+      controller.signal,
     )
+  }
+
+  const handleCancelStream = () => {
+    abortRef.current?.abort()
+    abortRef.current = null
+    setIsStreaming(false)
   }
 
   // Auto-scroll strategy: track user intent via a scroll listener, then snap to bottom
@@ -924,40 +1056,52 @@ export function ChatPanel() {
         </div>
       </ScrollArea>
 
-      {/* @-mention autocomplete popup — anchored above the input area */}
-      {mentionQuery !== null && mentionMatches.length > 0 && mentionAnchor && (
+      {/* @-mention autocomplete popup — sectioned: Shortcuts → Roles → Characters */}
+      {mentionQuery !== null && mentionItems.length > 0 && mentionAnchor && (
         <div
-          className="fixed z-50 rounded-lg border border-border bg-popover shadow-lg py-1 min-w-[200px] max-w-[280px]"
+          className="fixed z-50 rounded-lg border border-border bg-popover shadow-lg py-1 min-w-[220px] max-w-[300px] max-h-[320px] overflow-y-auto"
           style={{ bottom: `calc(100vh - ${mentionAnchor.top}px)`, left: mentionAnchor.left }}
         >
-          {mentionMatches.map((roleId, i) => {
-            const config = getRoleDisplay(roleId)
-            const Icon = config.icon
+          {/* Render items with section headers when kind changes */}
+          {mentionItems.map((item, i) => {
+            const prevKind = i > 0 ? mentionItems[i - 1].kind : null
+            const showHeader = item.kind !== prevKind
+            const iconForItem = item.kind === 'shortcut'
+              ? { Icon: Users, cls: 'text-violet-400' }
+              : item.kind === 'character'
+                ? { Icon: User, cls: 'text-amber-200' }
+                : (() => { const c = getRoleDisplay(item.id); return { Icon: c.icon, cls: c.iconClass } })()
             return (
-              <button
-                key={roleId}
-                type="button"
-                className={cn(
-                  'flex items-center gap-2 w-full px-3 py-1.5 text-sm text-left',
-                  'transition-colors cursor-pointer',
-                  i === mentionIndex ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50',
+              <React.Fragment key={`${item.kind}-${item.id}`}>
+                {showHeader && (
+                  <div className="px-3 pt-1.5 pb-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/60">
+                    {item.kind === 'shortcut' ? 'Shortcuts' : item.kind === 'role' ? 'Roles' : 'Characters'}
+                  </div>
                 )}
-                onMouseDown={(e) => {
-                  e.preventDefault() // Don't steal focus from textarea
-                  insertMention(roleId)
-                }}
-                onMouseEnter={() => setMentionIndex(i)}
-              >
-                <Icon className={cn('h-4 w-4 shrink-0', config.iconClass)} />
-                <span className="truncate">{config.name}</span>
-                <span className="text-xs text-muted-foreground ml-auto">@{roleId}</span>
-              </button>
+                <button
+                  type="button"
+                  className={cn(
+                    'flex items-center gap-2 w-full px-3 py-1.5 text-sm text-left',
+                    'transition-colors cursor-pointer',
+                    i === mentionIndex ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50',
+                  )}
+                  onMouseDown={(e) => {
+                    e.preventDefault()
+                    insertMention(item.id)
+                  }}
+                  onMouseEnter={() => setMentionIndex(i)}
+                >
+                  <iconForItem.Icon className={cn('h-4 w-4 shrink-0', iconForItem.cls)} />
+                  <span className="truncate">{item.name}</span>
+                  <span className="text-xs text-muted-foreground ml-auto">@{item.id}</span>
+                </button>
+              </React.Fragment>
             )
           })}
         </div>
       )}
       {/* Chat input — input container with top-edge drag handle */}
-      <div className="shrink-0 relative" style={{ height: inputHeight }}>
+      <div className="shrink-0 relative pb-2" style={{ height: inputHeight }}>
         {/* Top-edge drag handle — matches panel resize pill style */}
         <div
           onPointerDown={onDragStart}
@@ -967,19 +1111,18 @@ export function ChatPanel() {
         </div>
         <div
           className={cn(
-            'relative flex flex-col h-full rounded-xl border border-border bg-background mx-2 mb-2',
-            'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-1 focus-within:ring-offset-background',
-            isStreaming && 'opacity-50',
+            'relative flex flex-col h-full rounded-xl border border-border bg-background mx-2',
+            'focus-within:ring-2 focus-within:ring-primary',
           )}
         >
           {/* Entity context chip — compact top-left pill */}
           {entityContext && (() => {
             const CtxIcon = SECTION_ICONS[entityContext.section] ?? Sparkles
             return (
-              <div className="absolute top-1.5 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted/50">
-                <CtxIcon className="h-2.5 w-2.5 text-muted-foreground/50 shrink-0" />
+              <div className="absolute top-1.5 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted/60">
+                <CtxIcon className="h-3 w-3 text-muted-foreground/70 shrink-0" />
                 <span
-                  className="text-[10px] text-muted-foreground/60 hover:text-muted-foreground cursor-pointer truncate transition-colors max-w-[120px]"
+                  className="text-[11px] text-muted-foreground/80 hover:text-muted-foreground cursor-pointer truncate transition-colors max-w-[160px]"
                   onClick={() => navigate(`/${projectId}/${entityContext.section}/${entityContext.entityId}`)}
                 >
                   {entityContext.name}
@@ -994,8 +1137,7 @@ export function ChatPanel() {
             onKeyDown={handleKeyDown}
             onInput={autoResize}
             rows={1}
-            placeholder={isStreaming ? 'Waiting for response...' : 'Ask about your project... (@ to mention roles)'}
-            disabled={isStreaming}
+            placeholder="Ask about your project... (@ to mention roles or characters)"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -1006,23 +1148,30 @@ export function ChatPanel() {
               'flex-1 min-h-0 bg-transparent text-sm resize-none',
               'overflow-x-hidden overflow-y-auto',
               'focus:outline-none placeholder:text-muted-foreground leading-relaxed',
-              isStreaming && 'cursor-not-allowed',
               entityContext ? 'pl-4 pr-10 pt-7 pb-3' : 'pl-4 pr-10 pt-2 pb-3',
             )}
           />
-          {/* Send button — overlaid bottom-right */}
-          <Button
-            size="icon"
-            onClick={() => handleSendMessage()}
-            disabled={!inputText.trim() || isStreaming}
-            className="absolute bottom-2 right-2 h-7 w-7 rounded-lg z-10"
-          >
-            {isStreaming ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : (
+          {/* Send / Stop button — overlaid bottom-right */}
+          {isStreaming ? (
+            <Button
+              size="icon"
+              variant="destructive"
+              onClick={handleCancelStream}
+              className="absolute bottom-2 right-2 h-7 w-7 rounded-lg z-10"
+              title="Stop response"
+            >
+              <Square className="h-3 w-3 fill-current" />
+            </Button>
+          ) : (
+            <Button
+              size="icon"
+              onClick={() => handleSendMessage()}
+              disabled={!inputText.trim()}
+              className="absolute bottom-2 right-2 h-7 w-7 rounded-lg z-10"
+            >
               <Send className="h-3.5 w-3.5" />
-            )}
-          </Button>
+            </Button>
+          )}
         </div>
       </div>
     </div>
