@@ -243,8 +243,10 @@ function ShellInner() {
       ?.scrollTo({ top: 0 })
   }, [location.pathname])
 
-  // Emit activity notes on meaningful navigation (artifact detail, run detail)
-  const prevPath = useRef(location.pathname)
+  // Emit activity notes on meaningful navigation (artifact detail, run detail).
+  // On initial mount (including refresh), prevPath starts empty so the entity
+  // context/activity note is always set for the current URL.
+  const prevPath = useRef('')
   useEffect(() => {
     if (!projectId || prevPath.current === location.pathname) return
     prevPath.current = location.pathname

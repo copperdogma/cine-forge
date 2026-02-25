@@ -105,7 +105,7 @@ NOTES from Cam:
 | 080 | LLM-Powered Action Line Entity Extraction | World Building | High | Done | [story-080](stories/story-080-llm-action-line-entity-extraction.md) |
 | 081 | Scene Index as Canonical Character Source | World Building | High | Done | [story-081](stories/story-081-scene-index-canonical-characters.md) |
 | 082 | Creative Direction UX | 5 — Creative Direction | High | Done | [story-082](stories/story-082-creative-direction-ux.md) |
-| 083 | Group Chat Architecture | 5 — Creative Direction | High | Pending | [story-083](stories/story-083-group-chat-architecture.md) |
+| 083 | Group Chat Architecture | 5 — Creative Direction | High | Done | [story-083](stories/story-083-group-chat-architecture.md) |
 
 ## Phase Summary
 

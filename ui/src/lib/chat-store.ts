@@ -5,21 +5,28 @@ import { create } from 'zustand'
 import { postChatMessage, getChatMessages } from './api'
 import type { ChatAction, ChatMessage, ChatMessageType, ToolCallStatus } from './types'
 
+/** AI message types that should have an explicit speaker. */
+const AI_MESSAGE_TYPES: ReadonlySet<string> = new Set([
+  'ai_response', 'ai_welcome', 'ai_suggestion',
+])
+
 /**
- * Migrate messages loaded from JSONL: resolve all ai_status spinners.
- * On a cold load there's no live polling, so any ai_status message represents
- * a past event. Convert them all to ai_status_done (static checkmark).
+ * Migrate messages loaded from JSONL: resolve all ai_status spinners,
+ * backfill speaker on AI messages, and deduplicate activity notes.
  */
 function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
   const migrated = messages
     .filter((m) => m.type !== 'ai_tool_status') // Remove legacy separate tool messages
-    .map((m) =>
-      m.type === 'ai_status' ? { ...m, type: 'ai_status_done' as const } : m,
-    )
+    .map((m) => {
+      let msg = m.type === 'ai_status' ? { ...m, type: 'ai_status_done' as const } : m
+      // Backfill speaker on AI messages that predate the group chat architecture
+      if (AI_MESSAGE_TYPES.has(msg.type) && !msg.speaker) {
+        msg = { ...msg, speaker: 'assistant' }
+      }
+      return msg
+    })
 
   // Deduplicate activity messages: keep only the last one.
-  // Older JSONL files may contain multiple activity lines from before the
-  // stable-ID fix (story 067). Drop all but the final activity entry.
   let lastActivityIdx = -1
   for (let i = migrated.length - 1; i >= 0; i--) {
     if (migrated[i].type === 'activity') { lastActivityIdx = i; break }
@@ -43,6 +50,10 @@ interface ChatStore {
   activeRunId: Record<string, string | null>
   /** Currently-viewed entity, shown as a context chip above the chat input. */
   entityContext: Record<string, EntityContext | null>
+  /** Last-addressed role per project (conversation stickiness). */
+  activeRole: Record<string, string>
+  setActiveRole: (projectId: string, roleId: string) => void
+  getActiveRole: (projectId: string) => string
   setEntityContext: (projectId: string, ctx: EntityContext) => void
   clearEntityContext: (projectId: string) => void
 
@@ -62,6 +73,10 @@ interface ChatStore {
   addToolCall: (projectId: string, messageId: string, tool: ToolCallStatus) => void
   /** Mark a tool call as complete on an existing AI message (in-memory only). */
   completeToolCall: (projectId: string, messageId: string, toolId: string) => void
+  /** Remove a message (in-memory only — for discarding empty streaming placeholders). */
+  removeMessage: (projectId: string, messageId: string) => void
+  /** Update the speaker of an existing message (in-memory only — for streaming). */
+  updateMessageSpeaker: (projectId: string, messageId: string, speaker: string) => void
   /** Finalize a streaming message: remove streaming flag, persist to backend. */
   finalizeStreamingMessage: (projectId: string, messageId: string) => void
   getMessages: (projectId: string) => ChatMessage[]
@@ -80,6 +95,12 @@ export const useChatStore = create<ChatStore>()(
     loaded: {},
     activeRunId: {},
     entityContext: {},
+    activeRole: {},
+
+    setActiveRole: (projectId, roleId) =>
+      set((state) => ({ activeRole: { ...state.activeRole, [projectId]: roleId } })),
+
+    getActiveRole: (projectId) => get().activeRole[projectId] ?? 'assistant',
 
     syncMessages: async (projectId) => {
       try {
@@ -203,6 +224,24 @@ export const useChatStore = create<ChatStore>()(
           t.id === toolId ? { ...t, done: true } : t,
         )
         updated[idx] = { ...updated[idx], toolCalls: tools }
+        return { messages: { ...state.messages, [projectId]: updated } }
+      }),
+
+    removeMessage: (projectId, messageId) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        return { messages: { ...state.messages, [projectId]: msgs.filter(m => m.id !== messageId) } }
+      }),
+
+    updateMessageSpeaker: (projectId, messageId, speaker) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        const idx = msgs.findIndex(m => m.id === messageId)
+        if (idx === -1) return state
+        const updated = [...msgs]
+        updated[idx] = { ...updated[idx], speaker }
         return { messages: { ...state.messages, [projectId]: updated } }
       }),
 

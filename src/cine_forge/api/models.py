@@ -209,6 +209,7 @@ class ChatMessagePayload(BaseModel):
     type: str = Field(min_length=1)
     content: str
     timestamp: float
+    speaker: str | None = None
     actions: list[dict[str, Any]] | None = None
     needsAction: bool | None = None
     route: str | None = None
@@ -255,6 +256,7 @@ class ChatStreamRequest(BaseModel):
     message: str = Field(min_length=1)
     chat_history: list[dict[str, Any]] = []
     page_context: str | None = None
+    active_role: str | None = None
 
 
 class InsightRequest(BaseModel):

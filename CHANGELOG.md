@@ -19,8 +19,11 @@
 - Conversation stickiness: messages without @-mention go to the last-addressed role
 - Multi-role sequential streaming with Director-last convergence
 - Anthropic prompt caching (`cache_control` breakpoints on system prompt + transcript prefix)
-- Role picker bar in chat input area with click-to-@mention
-- Per-role visual identity: icons, colors, name labels, left border accents
+- Inline @-mention autocomplete: type `@` anywhere for filtered role dropdown with keyboard nav
+- Per-role tinted message bubbles with icon + name header (full-width, no wasted horizontal space)
+- Sticky role headers: role name pins to top of chat when scrolling through long messages
+- Auto-growing textarea with custom drag-to-resize (drag up = grow, pill-style handle)
+- Send button overlaid inside textarea container (ChatGPT-style)
 - Long transcript compaction via Haiku summarization (above 80k estimated tokens)
 - READ_TOOLS available to all roles (get_artifact, list_scenes, list_characters, etc.)
 
@@ -31,6 +34,12 @@
 - `/chat/stream` endpoint now uses `stream_group_chat()` with RoleCatalog-backed role resolution
 - Chat messages now carry `speaker` field for role attribution
 - Streaming chunks include `role_start`/`role_done` envelope events for multi-role responses
+
+### Fixed
+- Multi-role streaming: synthetic user message between role responses to satisfy Anthropic alternating requirement
+- Textarea no longer triggers Chrome password autofill (`autoComplete="off"`, `data-form-type="other"`)
+- Chat text wraps properly in narrow panel (`w-0 min-w-full` + `break-words`)
+- Entity context preserved on page refresh
 
 ## [2026-02-24-04] — Creative Direction UX (Story 082)
 

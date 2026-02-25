@@ -185,6 +185,8 @@ export type ChatMessage = {
   type: ChatMessageType
   content: string
   timestamp: number
+  /** Role that produced this message (e.g., "assistant", "director", "editorial_architect"). */
+  speaker?: string
   actions?: ChatAction[]
   needsAction?: boolean
   streaming?: boolean

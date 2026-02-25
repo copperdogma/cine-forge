@@ -239,10 +239,14 @@ export function searchProject(projectId: string, query: string): Promise<SearchR
 // --- Streaming Chat ---
 
 export interface ChatStreamChunk {
-  type: 'text' | 'tool_start' | 'tool_result' | 'actions' | 'done' | 'error'
+  type: 'text' | 'tool_start' | 'tool_result' | 'actions' | 'role_start' | 'role_done' | 'done' | 'error'
   content?: string
   name?: string
   id?: string
+  /** Role that produced this chunk (e.g., "director", "editorial_architect"). */
+  speaker?: string
+  /** Human-readable role name (sent with role_start). */
+  display_name?: string
   actions?: Array<{
     id: string
     label: string
@@ -259,11 +263,12 @@ export interface ChatStreamChunk {
 export async function streamChatMessage(
   projectId: string,
   message: string,
-  chatHistory: Array<{ type: string; content: string }>,
+  chatHistory: Array<{ type: string; content: string; speaker?: string }>,
   onChunk: (chunk: ChatStreamChunk) => void,
   onDone: () => void,
   onError: (error: Error) => void,
   pageContext?: string,
+  activeRole?: string,
 ): Promise<void> {
   try {
     const response = await fetch(`${API_BASE}/api/projects/${projectId}/chat/stream`, {
@@ -273,6 +278,7 @@ export async function streamChatMessage(
         message,
         chat_history: chatHistory,
         ...(pageContext ? { page_context: pageContext } : {}),
+        ...(activeRole ? { active_role: activeRole } : {}),
       }),
     })
 
