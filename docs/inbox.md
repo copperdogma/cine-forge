@@ -5,6 +5,8 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### UI / Interaction
 
+- Do we still need the Inspector tab?
+
 - Stale: Why is this entity listed as stale? http://localhost:5174/the-mariner-40/locations/13th_floor Also I think when you hover over Stale it should tell you what that means. It currently looks like there's something wrong, but there's no info as to what, what that means for the user, or how they can do anythnig about it.
   - Related, the rest of them are listed as "valid". Are those are two states? Valid and stale? And valid in what way? Validated by what? Is that the right word for this?
 

@@ -23,6 +23,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ExportModal } from '@/components/ExportModal'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { DirectionTab, RolePresenceIndicators } from '@/components/DirectionTab'
 import { cn, formatEntityName } from '@/lib/utils'
 import {
   ProfileViewer,
@@ -618,6 +620,9 @@ export default function EntityDetailPage({ section }: { section: string }) {
             {section === 'characters' && (
               <ProminenceBadge prominence={data?.prominence as string | undefined} />
             )}
+            {section === 'scenes' && (
+              <RolePresenceIndicators groups={groups} entityId={entityId} />
+            )}
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
             <span>{config.label}</span>
@@ -731,24 +736,41 @@ export default function EntityDetailPage({ section }: { section: string }) {
           {/* 1. Entity Roster — who's in the scene */}
           <SceneEntityRoster sceneData={data} resolve={resolve} propsInScene={propsInScene} />
 
-          {/* 2. Scene details */}
-          <Card>
-            <CardHeader className="pb-3 flex flex-row items-center justify-between">
-              <h2 className="text-sm font-semibold">{profileLabel}</h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowRawJson(!showRawJson)}
-                className="gap-1.5"
-              >
-                <Code className="h-3.5 w-3.5" />
-                {showRawJson ? 'View Formatted' : 'View Raw JSON'}
-              </Button>
-            </CardHeader>
-            <CardContent>
-              {renderContent()}
-            </CardContent>
-          </Card>
+          {/* 2. Tabbed content: Overview + Direction */}
+          <Tabs defaultValue="overview">
+            <TabsList variant="line">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="direction">Direction</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview">
+              <Card>
+                <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                  <h2 className="text-sm font-semibold">{profileLabel}</h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowRawJson(!showRawJson)}
+                    className="gap-1.5"
+                  >
+                    <Code className="h-3.5 w-3.5" />
+                    {showRawJson ? 'View Formatted' : 'View Raw JSON'}
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {renderContent()}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="direction">
+              <DirectionTab
+                projectId={projectId!}
+                entityId={entityId}
+                sceneHeading={displayName}
+              />
+            </TabsContent>
+          </Tabs>
         </>
       )}
 

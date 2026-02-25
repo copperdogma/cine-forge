@@ -312,6 +312,8 @@ Shared components and utilities — the **single source of truth** for each conc
 | `EntityListControls` | `ui/src/components/EntityListControls.tsx` | Sort/density/direction controls |
 | `EmptyState`, `ErrorState`, `ListSkeleton` | `ui/src/components/StateViews.tsx` | Shared loading/error/empty states |
 | `ExportModal` | `ui/src/components/ExportModal.tsx` | Export dialog |
+| `DirectionAnnotation` | `ui/src/components/DirectionAnnotation.tsx` | Word/Docs-style comment for creative direction (parameterized by DirectionType) |
+| `DirectionTab`, `RolePresenceIndicators` | `ui/src/components/DirectionTab.tsx` | Scene direction tab content + role avatar badges |
 
 ### Repo Map
 - `src/cine_forge/driver/`: Orchestration runtime.

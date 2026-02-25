@@ -263,6 +263,7 @@ export async function streamChatMessage(
   onChunk: (chunk: ChatStreamChunk) => void,
   onDone: () => void,
   onError: (error: Error) => void,
+  pageContext?: string,
 ): Promise<void> {
   try {
     const response = await fetch(`${API_BASE}/api/projects/${projectId}/chat/stream`, {
@@ -271,6 +272,7 @@ export async function streamChatMessage(
       body: JSON.stringify({
         message,
         chat_history: chatHistory,
+        ...(pageContext ? { page_context: pageContext } : {}),
       }),
     })
 

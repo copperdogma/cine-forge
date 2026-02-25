@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-02-24-04] — Creative Direction UX (Story 082)
+
+### Added
+- Direction tab on scene detail pages with Overview/Direction tab layout
+- `DirectionAnnotation` component — Word/Google Docs comment-style UI for creative direction, parameterized by direction type (editorial/visual/sound/performance)
+- `DirectionTab` component with generate-via-chat buttons, direction artifact cards, empty state with @role teaching nudges
+- `RolePresenceIndicators` — role avatar badges on scene headers showing which roles have direction
+- "Get Editorial Direction" button sends `@editorial_architect` chat message (maintains full chat history)
+- "Review with Director" convergence chat shell for cross-role direction review
+- `page_context` now sent from frontend to backend chat API (was defined but unused)
+- Scene context injected into AI system prompt so roles know which scene the user is viewing
+
 ## [2026-02-24-03] — Editorial Architect and editorial direction pipeline (Story 020)
 
 ### Added

@@ -410,6 +410,12 @@ export function ChatPanel() {
       content: m.content,
     }))
 
+    // Build page context from entity context (scene/character/etc the user is viewing)
+    const entityCtx = useChatStore.getState().entityContext[projectId]
+    const pageContext = entityCtx
+      ? `User is viewing ${entityCtx.section}/${entityCtx.entityId} ("${entityCtx.name}")`
+      : undefined
+
     let fullContent = ''
 
     await streamChatMessage(
@@ -455,6 +461,7 @@ export function ChatPanel() {
         setIsStreaming(false)
         toast.error(`Chat error: ${error.message}`)
       },
+      pageContext,
     )
   }
 

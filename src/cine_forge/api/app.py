@@ -397,6 +397,10 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
         system_prompt = build_system_prompt(summary, state_info)
 
+        # Append page context if provided (e.g., which scene the user is viewing)
+        if request.page_context:
+            system_prompt += f"\n\n## Current Page Context\n{request.page_context}"
+
         # Build messages array — full conversation thread
         # Activity notes are mapped to user role with [Activity] prefix
         # so the AI sees them as context it doesn't need to respond to.
