@@ -1,5 +1,37 @@
 # Changelog
 
+## [2026-02-24-06] — ADR-001: Shared Entity Extraction → Dossier
+
+### Added
+- ADR-001 research, decision, and full specification for shared entity extraction library ("Dossier")
+- Multi-model deep research (OpenAI, Google, Anthropic, xAI) with synthesis
+- "Critical Pushback Required" mandate in AGENTS.md
+
+### Changed
+- ADR-001 status: PENDING → DECIDED (standalone library, new repo at github.com/copperdogma/dossier)
+
+## [2026-02-24-05] — Group Chat Architecture (Story 083)
+
+### Added
+- True group chat: roles respond directly with their own voice, avatar, and visual identity (no intermediary paraphrasing)
+- Assistant as a first-class role in the catalog (`roles/assistant/role.yaml` + generic style pack)
+- `@-mention` routing: `@director`, `@editorial_architect`, `@visual_architect`, `@sound_designer`, `@actor_agent`, `@all-creatives`
+- Conversation stickiness: messages without @-mention go to the last-addressed role
+- Multi-role sequential streaming with Director-last convergence
+- Anthropic prompt caching (`cache_control` breakpoints on system prompt + transcript prefix)
+- Role picker bar in chat input area with click-to-@mention
+- Per-role visual identity: icons, colors, name labels, left border accents
+- Long transcript compaction via Haiku summarization (above 80k estimated tokens)
+- READ_TOOLS available to all roles (get_artifact, list_scenes, list_characters, etc.)
+
+### Removed
+- `talk_to_role` tool-call pattern (nested LLM calls, paraphrased responses)
+
+### Changed
+- `/chat/stream` endpoint now uses `stream_group_chat()` with RoleCatalog-backed role resolution
+- Chat messages now carry `speaker` field for role attribution
+- Streaming chunks include `role_start`/`role_done` envelope events for multi-role responses
+
 ## [2026-02-24-04] — Creative Direction UX (Story 082)
 
 ### Added

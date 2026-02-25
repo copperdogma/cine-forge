@@ -1,29 +1,66 @@
-# Entity Provenance Engine — Specification
+# Dossier — Specification
 
-**Status:** Draft
-**ADR:** 001-shared-entity-extraction
+**Status:** Draft (reviewed)
+**ADR:** 001-shared-dossierion
 **Last updated:** 2026-02-24
 
 ## 1. Vision
 
 A standalone Python library (with CLI wrapper) that extracts **people, biographical profiles, and relationships** from arbitrary text, with **full provenance** — every extracted fact traces back to specific source passages with direct quotes.
 
-The library is domain-agnostic. Consuming projects provide chunking strategies and domain-specific configuration. The library owns the extraction pipeline, identity resolution, and the output graph format.
+The library is a **pure computation layer**: text in, entity graph out. It has no opinions about how the text was obtained (OCR, PDF parsing, clipboard paste) or how the output is consumed (UI, database, game engine). Consuming projects handle their own intake and output.
 
-### 1.1 Consuming Projects
+### 1.1 Architectural Boundary
+
+```
+┌─────────────────────────────────────────────────┐
+│  dossier (pip install)                            │
+│  Pure Python library. No pipeline dependencies.  │
+│  Takes text → returns entity graph.              │
+└───────────┬──────────────────┬──────────────────┘
+            │                  │
+   ┌────────▼────────┐  ┌─────▼──────────────┐
+   │  CineForge       │  │  Codex Forge        │
+   │  imports library  │  │  wraps library in   │
+   │  directly in its  │  │  pipeline modules,  │
+   │  world-building   │  │  chains with intake │
+   │  pipeline         │  │  (OCR → text →      │
+   │                   │  │  entity graph →     │
+   │                   │  │  export)            │
+   └───────────────────┘  └─────────────────────┘
+            │                       │
+            └───────┐   ┌───────────┘
+                    ▼   ▼
+              ┌──────────────┐
+              │  Storybook    │
+              │  calls CLI or │
+              │  wraps in its │
+              │  own pipeline │
+              └──────────────┘
+```
+
+- **CineForge** imports the library directly (Python) in its world-building pipeline
+- **Codex Forge** wraps the library in pipeline modules, chaining it with intake (OCR, image extraction, table rescue → clean text → entity extraction → export)
+- **Storybook** calls the CLI or imports if it adds a Python backend
+- The library does NOT depend on any consuming project. Consuming projects depend on it.
+
+### 1.2 Consuming Projects
 
 | Project | Domain | Input Text | Entity Scale | Key Requirement |
 |---|---|---|---|---|
 | **CineForge** | Film/screenplays | 90–120 pages, structured (Fountain) | 5–50 characters | Rich character bibles with trait evidence |
-| **Storybook** | Personal history | Transcripts, genealogy books, diaries (10–300pp) | 10–500 people | Identity resolution across documents, temporal facts |
-| **Codex Forge** | Interactive fiction | Gamebook sections (200–400 sections) | 20–100 NPCs | Stats extraction, section-level provenance |
+| **Storybook** | Personal history | Transcripts, genealogy books, diaries (10–300pp) | 10–500 people | Identity resolution, temporal facts, eras |
+| **Codex Forge** | Media processing | Any text extracted by its intake pipeline | Varies | Modular integration, section-level provenance |
 
-### 1.2 Design Principles
+### 1.3 Design Principles
 
 - **Provenance is the product.** An extracted fact without a source reference is noise.
 - **Level of Detail is configurable.** The same engine handles a 90-page screenplay and a 300-page genealogy book by adjusting extraction depth, not by being a different system.
 - **Domain logic stays in consuming projects.** The library extracts people, attributes, relationships, and references. It does not know what a "screenplay" or "gamebook" is.
 - **Cost scales with the text, not with the entity count.** Processing is per-chunk. A book with 5 characters and a book with 500 characters cost roughly the same to extract if they're the same page count.
+- **AI-first: design for the ideal, backfill for limitations.** Imagine a perfect model that reads the full text and outputs a complete entity graph in one shot. That's the north star. Every pipeline stage (chunking, coreference, tiered models, verification) exists only to compensate for current model limitations. Each stage must justify itself against "just ask the LLM." As models improve, stages should become removable. Keep evals that test beyond current SOTA so we know when to simplify.
+- **Eval first, pipeline second.** Build golden references and scoring before building the pipeline. Test the dumbest possible approach (single-shot, full-text, one prompt) first. Measure the gap. Build only enough pipeline to close the gap.
+- **Entity type is a parameter, not hardcoded.** V1 extracts people/characters. The architecture (LoD layers, fact categories, mention types, identity resolution) works for any entity type. Future versions add locations, organizations, etc. by changing extraction prompts and schemas, not by changing the pipeline.
 
 ---
 
@@ -47,8 +84,8 @@ Every entity accumulates knowledge at three distinct layers. This is the **Level
 │          LAYER 2: STRUCTURED FACTS           │
 │  Identity:  name="Harry Potter",             │
 │             aliases=["The Boy Who Lived"]     │
-│  Traits:    brave (refs: ch1p3, ch4p12,      │
-│             ch7p45)                           │
+│  Traits:    brave (era: Hogwarts years,      │
+│             refs: ch1p3, ch4p12, ch7p45)     │
 │  Events:    "defeats Quirrell" (ref: ch17p2) │
 │  Relations: son_of(James), friend(Ron)       │
 │   → Each fact has evidence references         │
@@ -70,9 +107,11 @@ Every entity accumulates knowledge at three distinct layers. This is the **Level
 
 **Layer 1 (Mentions)** is the complete, unprocessed record — every time a person appears, is referenced, is discussed. This grows linearly with text length. It's stored but not necessarily all surfaced to the consumer.
 
-**Layer 2 (Structured Facts)** is the organized, deduplicated knowledge — traits, events, relationships, each with pointers to the Layer 1 mentions that support them. This grows sublinearly because facts are deduplicated ("Harry is brave" appears once with N evidence references, not N times).
+**Layer 2 (Structured Facts)** is the organized, deduplicated knowledge — traits, events, relationships, each with pointers to the Layer 1 mentions that support them. This grows sublinearly because facts are deduplicated ("Harry is brave" appears once with N evidence references, not N times). Cross-chunk implications that no single chunk could reveal (e.g., a promise in chapter 1 fulfilled in chapter 10) are discovered at this layer during synthesis across all Layer 1 mentions for an entity.
 
 **Layer 3 (Summary)** is the synthesized profile — a natural-language bio plus structured identity card. This is approximately fixed-size per entity regardless of text length. It references Layer 2 facts, not raw text.
+
+**Key architectural property:** Data flows upward only. Layer 1 is complete after the extraction pass. Layer 2 synthesizes from Layer 1 — it may discover cross-chunk implications, but it does NOT write back to Layer 1. Layer 1 is raw ground truth; Layer 2 is interpretation.
 
 ### 2.2 Mention Types
 
@@ -87,13 +126,15 @@ Not all mentions of a person carry the same weight or serve the same purpose. Th
 | **witnessed** | Person is present but passive | "Harry watched from the doorway" | Low — establishes presence |
 | **referenced** | Indirect/contextual reference | "the Chosen One's wand lay on the table" | Low — establishes relevance |
 
-The **extraction depth** setting controls which mention types are collected:
+The **extraction depth** setting controls which mention types are collected. Named presets cover the 80% case; the underlying mention type list is directly configurable for power users:
 
 | Depth | Mention Types Collected | Use Case |
 |---|---|---|
 | `shallow` | self_action, self_speech, described | Quick character identification. Screenplays. |
 | `standard` | Above + discussed, witnessed | Character bibles. Most use cases. |
 | `exhaustive` | All types including referenced | Genealogy, academic analysis, completionism. |
+
+Depth levels are additive: a `standard` run builds on a prior `shallow` run without re-extracting what's already captured.
 
 ### 2.3 Fact Categories
 
@@ -107,7 +148,7 @@ Layer 2 facts are organized into categories. This addresses the "who vs. what" d
 - Core personality traits
 - One-line summary
 
-Identity facts are relatively **stable** — they don't grow much with text length. A 7-book series about Harry Potter has roughly the same identity profile as book 1 alone (with more evidence backing it).
+Identity facts are relatively **stable** — they don't grow much with text length. However, identity facts may be **era-scoped** (see 2.4) to handle character evolution. "Harry is timid" (era: pre-Hogwarts) and "Harry is brave" (era: Hogwarts years) are not contradictions — they're a progression.
 
 **Chronicle** ("What have they done?")
 - Events participated in, with temporal ordering where available
@@ -124,7 +165,32 @@ Chronicle facts **grow with text length** but can be summarized hierarchically. 
 
 Context facts grow **fastest** and are the lowest signal-to-noise. Most consumers only want these at `exhaustive` depth.
 
-### 2.4 Entity Resolution
+### 2.4 Eras (Temporal Scoping)
+
+People change over time. A genealogy subject may have been "a farmer in the 1920s" and "a shopkeeper in the 1950s." A fictional character may evolve from timid to brave across a story arc. Without temporal scoping, these would appear as conflicting facts.
+
+**Eras** are optional temporal labels on identity and chronicle facts:
+
+```json
+{
+  "key": "trait",
+  "value": "timid and bullied",
+  "era": { "label": "pre-Hogwarts", "evidence_ids": ["ev_002", "ev_008"] },
+  "confidence": 0.88
+}
+```
+
+Era labels are extracted from the text, not imposed by the pipeline. They represent the **character's timeline**, not the narrative timeline. A flashback in chapter 20 showing Harry's childhood produces an era-tagged fact for "early childhood" even though the source chunk is chapter 20.
+
+Era types:
+- **Named periods**: "childhood", "college years", "pre-Hogwarts", "married life"
+- **Date ranges**: "1920-1940", "before 1980"
+- **Relative**: "before marriage", "after the war"
+- **Unscoped**: When a fact applies across the entire known timeline (e.g., "born in Surrey")
+
+Eras are first-class extracted facts with their own evidence — the era label itself requires provenance.
+
+### 2.5 Entity Resolution
 
 The same person may be mentioned differently across chunks:
 - "Harry", "Harry Potter", "Potter", "the boy", "the Chosen One", "my son"
@@ -132,7 +198,7 @@ The same person may be mentioned differently across chunks:
 
 The engine resolves these into canonical entities through:
 
-1. **Within-chunk coreference** — spaCy/Coreferee rewrites pronouns and short references to the most specific name in that chunk, before extraction.
+1. **Within-chunk coreference** — Rewrites pronouns and short references to the most specific name in that chunk, before extraction. Research shows 38-45% noise reduction (LINK-KG, CORE-KG benchmarks).
 2. **Cross-chunk resolution** — After extraction, mentions are grouped into canonical entities using:
    - Token blocking (shared name tokens → same candidate group)
    - Embedding similarity within blocks
@@ -179,6 +245,8 @@ JSONL         │     + overlap at boundaries          │     JSON property gra
               └─────────────────────────────────────┘
 ```
 
+**Every stage is designed to be removable.** If a SOTA model can handle the full text in one pass and produce 98%+ accuracy, stages 1-2 become unnecessary and stages 3-6 collapse into a single call. The eval harness measures which stages actually earn their keep.
+
 ### 3.2 Stage Details
 
 #### Stage 1: Chunk
@@ -210,29 +278,33 @@ JSONL         │     + overlap at boundaries          │     JSON property gra
 
 **Overlap:** Configurable 0-20%. Overlapping text is tagged so downstream stages can deduplicate mentions that appear in the overlap zone.
 
+**Note on necessity:** Current 1M+ token context windows can hold a 300-page book. Chunking remains valuable for extraction quality (LLMs attend better to focused text) and cost management (tiered models on smaller inputs), but the eval harness will determine whether chunking actually improves results for a given input size and model.
+
 #### Stage 2: Resolve References (Per-Chunk)
 
 **Purpose:** Rewrite within-chunk coreference so the extraction stage sees unambiguous text.
 
-**Method:** spaCy + Coreferee (fast, sufficient for most cases) or Maverick (higher quality, slower).
+**Method:** spaCy + Coreferee (fast, sufficient for most cases) or Maverick (higher quality, slower). This is a **removable stage** — modern LLMs handle pronouns well. The eval harness will determine if this stage earns its cost.
 
 **Example:**
 - Input: `"He grabbed his wand. The boy stepped forward."`
 - Output: `"Harry grabbed Harry's wand. Harry stepped forward."`
 - Metadata: coreference chains preserved for provenance
 
-**Why before extraction:** LINK-KG benchmark shows 45% node deduplication improvement; CORE-KG shows 38% noise reduction. The LLM extracts facts about "Harry" consistently rather than about "he" and "the boy" separately.
+**Why before extraction (when used):** LINK-KG benchmark shows 45% node deduplication improvement; CORE-KG shows 38% noise reduction. The LLM extracts facts about "Harry" consistently rather than about "he" and "the boy" separately.
 
 #### Stage 3: Extract (Per-Chunk, Parallel)
 
 **Purpose:** Extract entity mentions, attributes, and relationships from each chunk.
 
-**Method:** Instructor + Pydantic schemas, with model tiering:
+**Method:** Instructor + Pydantic schemas, with configurable model tiering:
 - **Tier 1** (cheap/fast: Haiku, GPT-4o-mini): Initial extraction pass
 - **Tier 2** (mid: Sonnet, GPT-4o): Verification and complex disambiguation
 - **Tier 3** (premium: Opus, o3): Escalation for low-confidence or contradictory results
 
-**Entity roster injection:** After the first N chunks, the engine injects a growing entity roster into the extraction prompt so the LLM uses consistent names and recognizes returning characters. When the roster exceeds a size threshold, only the most relevant entities (by embedding similarity to the current chunk) are injected.
+Specific model assignments are determined by promptfoo evals against golden references, not assumed. The tier system is a cost optimization — if a Tier 1 model scores 95%+ on the eval, no cascade is needed.
+
+**Entity roster injection (optional optimization):** After the first N chunks, the engine can inject a growing entity roster into the extraction prompt to encourage consistent naming. This is purely an optimization for the merge step — extraction works without it. When the roster exceeds a size threshold, only the most relevant entities (by embedding similarity to the current chunk) are injected.
 
 **Per-chunk extraction output:**
 ```json
@@ -251,6 +323,7 @@ JSONL         │     + overlap at boundaries          │     JSON property gra
           "category": "identity",
           "key": "trait",
           "value": "brave",
+          "era": null,
           "confidence": 0.85,
           "quote": "grabbed his wand and stepped forward into the darkness alone"
         }
@@ -271,6 +344,8 @@ JSONL         │     + overlap at boundaries          │     JSON property gra
 3. **LLM judge:** For ambiguous pairs, a Tier 2 model decides if two mentions are the same person given their attributes and context.
 4. **Graph-assisted merge:** If two candidate entities share a relationship target (both are "friend of Ron"), boost merge confidence.
 
+The pipeline naturally handles late discovery: extract everything per-chunk without worrying about consistency, then merge globally. This is forward-only — no back-and-forth passes needed.
+
 **Output:** Canonical entity list with alias mappings:
 ```json
 {
@@ -289,6 +364,7 @@ JSONL         │     + overlap at boundaries          │     JSON property gra
 - A separate LLM (Tier 2) receives the extracted fact + the source quote + surrounding context
 - Judges: Does the quote actually support this fact? (yes/partial/no)
 - Flags contradictions (e.g., two mentions claim different parents for the same person)
+- Considers era-scoped facts: "timid" (pre-Hogwarts) and "brave" (Hogwarts) are NOT contradictions
 - Only runs on: low-confidence extractions, high-stakes facts (relationships, death events), and a random sample for quality monitoring
 
 **Confidence scoring formula:**
@@ -301,7 +377,7 @@ confidence = (
 )
 ```
 
-This is externally derived, not LLM self-reported. LLM self-confidence is unreliable (research consensus).
+This is externally derived, not LLM self-reported. LLM self-confidence is unreliable (research consensus). This stage is **removable** — if extraction precision is 98%+ on the eval, verification is waste.
 
 #### Stage 6: Summarize (Optional)
 
@@ -309,7 +385,7 @@ This is externally derived, not LLM self-reported. LLM self-confidence is unreli
 
 **Method:** A Tier 2 model receives the Layer 2 structured facts for an entity and generates:
 - One-line identity summary
-- Short bio (2-5 sentences)
+- Short bio (2-5 sentences), era-aware (covers character evolution if eras are present)
 - Structured identity card (name, aliases, key relationships, key traits)
 
 **This stage is optional** because some consumers (Codex Forge) don't need bios, and some (CineForge) may want to generate their own domain-specific summaries from the structured facts.
@@ -323,6 +399,12 @@ This is externally derived, not LLM self-reported. LLM self-confidence is unreli
 | Tier 3 | Opus 4.6, o3, Gemini Ultra | Escalation for low-confidence, contradiction resolution | Expensive, rare |
 
 The cascade: Tier 1 handles ~80% of work. Tier 2 handles verification and hard disambiguation (~15%). Tier 3 is escalation-only (~5%). Estimated cost for 300 pages: $3-10.
+
+**Actual model assignments are determined by promptfoo evals**, not assumed. The eval harness tests all available models at each tier and picks the best quality/cost ratio. This table is a starting hypothesis.
+
+### 3.4 Prompt Caching
+
+The system prompt + Pydantic schema definition is identical across all chunks within a run. This makes Anthropic's prompt caching (and OpenAI's equivalent) directly applicable — cache the static prefix, only pay for the per-chunk text. This could cut Tier 1 extraction costs by 50-80%. The extraction prompt structure should be designed cache-friendly: static system prompt + schema first, variable chunk text last.
 
 ---
 
@@ -338,14 +420,14 @@ The cascade: Tier 1 handles ~80% of work. Tier 2 handles verification and hard d
 
 **Option B: Raw text file** (the engine chunks it)
 ```bash
-entity-extract run --input book.txt --chunker chapter --depth standard
+dossier run --input book.txt --chunker chapter --depth standard
 ```
 
 **Configuration (YAML profile):**
 ```yaml
 extraction:
   depth: standard              # shallow | standard | exhaustive
-  mention_types:               # override which types to collect
+  mention_types:               # override preset (power users)
     - self_action
     - self_speech
     - described
@@ -370,6 +452,9 @@ identity_resolution:
 summarize: true                # Generate Layer 3 bios
 verify: true                   # Run verification pass
 verify_sample_rate: 0.1        # Verify 10% of standard-confidence facts
+
+temporal:
+  extract_eras: true           # Extract era labels for identity facts
 ```
 
 ### 4.2 Output
@@ -400,7 +485,7 @@ verify_sample_rate: 0.1        # Verify 10% of standard-confidence facts
       "aliases": ["Harry", "the boy who lived"],
       "summary": {
         "one_line": "A brave young wizard, orphaned as an infant, who discovers his magical heritage at age eleven.",
-        "bio": "Harry Potter is a wizard who grew up with his non-magical aunt and uncle...",
+        "bio": "Harry Potter grew up as a timid, bullied child in the Dursley household, unaware of his magical heritage. Upon entering Hogwarts, he found confidence, loyal friendships, and a destiny he never sought...",
         "identity_card": {
           "occupation": "Student / Wizard",
           "key_traits": ["brave", "loyal", "impulsive"],
@@ -412,14 +497,23 @@ verify_sample_rate: 0.1        # Verify 10% of standard-confidence facts
           {
             "key": "full_name",
             "value": "Harry James Potter",
+            "era": null,
             "confidence": 0.97,
             "evidence_ids": ["ev_001", "ev_034"]
           },
           {
             "key": "trait",
-            "value": "brave",
-            "confidence": 0.92,
-            "evidence_ids": ["ev_002", "ev_015", "ev_089"]
+            "value": "timid, bullied by family",
+            "era": { "label": "pre-Hogwarts", "evidence_ids": ["ev_002"] },
+            "confidence": 0.91,
+            "evidence_ids": ["ev_002", "ev_008"]
+          },
+          {
+            "key": "trait",
+            "value": "brave, confident",
+            "era": { "label": "Hogwarts years", "evidence_ids": ["ev_015"] },
+            "confidence": 0.94,
+            "evidence_ids": ["ev_015", "ev_089", "ev_134"]
           }
         ],
         "chronicle": [
@@ -523,12 +617,16 @@ The `depth` setting is the primary control for managing scale vs. cost:
 - `standard`: Add discussed and witnessed. Verify low-confidence facts. Generate summaries. Good for character bibles and genealogy.
 - `exhaustive`: Collect everything including indirect references. Full verification. Good for academic analysis or completionist extraction.
 
+Depth levels are **additive**: running `standard` after a prior `shallow` run only extracts the additional mention types, not everything from scratch.
+
 A 300-page genealogy at `standard` depth: $3-10, 5-15 minutes.
 All 7 HP books at `exhaustive` depth: $30-80, 1-3 hours. This is a deliberate choice the user makes.
 
 ### 5.4 Entity Roster Scaling
 
-When the entity roster exceeds ~100 entities, injecting all of them into every chunk's extraction prompt becomes impractical (token budget). Strategy:
+When the entity roster exceeds ~100 entities, injecting all of them into every chunk's extraction prompt becomes impractical (token budget). The entity roster is an **optional optimization**, not a requirement. Without it, the pipeline extracts mentions per-chunk with whatever names appear, then Stage 4 (Identify) merges them globally.
+
+When roster injection is enabled, the selection strategy:
 
 1. **Top-N by prominence:** Always inject the top 20 entities (by mention count so far)
 2. **Chunk-relevant entities:** Embed the current chunk and inject entities whose prior mentions are semantically similar (top 30 by cosine similarity)
@@ -550,12 +648,12 @@ chunking:
 extraction:
   depth: standard
   mention_types: [self_action, self_speech, described, discussed]
-  # Screenplay-specific: weight dialogue heavily
   fact_categories: [identity, chronicle]
+temporal:
+  extract_eras: false     # Screenplays are typically single-timeline
 identity_resolution:
-  # Characters have consistent names in screenplays
   similarity_threshold: 0.90
-  use_llm_judge: false    # Rarely needed
+  use_llm_judge: false    # Characters have consistent names in screenplays
 summarize: true
 verify: true
 verify_sample_rate: 0.05  # Low — screenplays are explicit
@@ -571,14 +669,13 @@ extraction:
   depth: standard
   mention_types: [self_action, self_speech, described, discussed, witnessed]
   fact_categories: [identity, chronicle, context]
-  # Genealogy-specific: prioritize relationships and temporal facts
   relationship_priority: high
-  temporal_extraction: true
+temporal:
+  extract_eras: true      # Life stages, date ranges, generational periods
 identity_resolution:
   similarity_threshold: 0.78  # Lower — more aliases in genealogy
   use_llm_judge: true
   graph_assisted: true        # Critical for "which John Smith?"
-  # Genealogy-specific blocking keys
   blocking_keys: [surname, generation, geography]
 summarize: true
 verify: true
@@ -594,12 +691,13 @@ extraction:
   depth: shallow
   mention_types: [self_action, described]
   fact_categories: [identity]
-  # Gamebook-specific: extract combat stats as attributes
   custom_attributes:
     - key: skill
       type: integer
     - key: stamina
       type: integer
+temporal:
+  extract_eras: false
 identity_resolution:
   similarity_threshold: 0.95  # Enemies have explicit names
   use_llm_judge: false
@@ -614,7 +712,7 @@ verify: false                 # Code-first extraction handles QA
 ### 7.1 Python Library
 
 ```python
-from entity_provenance import Engine, Profile
+from dossier import Engine, Profile
 
 engine = Engine(profile=Profile.from_yaml("screenplay.yaml"))
 
@@ -627,39 +725,40 @@ result = engine.extract(chunks=[
 # From raw text
 result = engine.extract_file("book.txt")
 
-# Incremental
-existing = engine.load_graph("previous_run.json")
-result = engine.extract(chunks=new_chunks, existing_graph=existing)
+# Incremental (add deeper extraction to existing results)
+existing = engine.load_graph("shallow_run.json")
+result = engine.extract(chunks=chunks, existing_graph=existing)
 
 # Access results
 for entity in result.entities:
     print(entity.canonical_name, entity.summary.one_line)
     for fact in entity.facts.identity:
-        print(f"  {fact.key}: {fact.value} (confidence={fact.confidence})")
+        era = f" ({fact.era.label})" if fact.era else ""
+        print(f"  {fact.key}: {fact.value}{era} (confidence={fact.confidence})")
 ```
 
 ### 7.2 CLI
 
 ```bash
 # Basic extraction
-entity-extract run --input chunks.jsonl --profile screenplay.yaml --output graph.json
+dossier run --input chunks.jsonl --profile screenplay.yaml --output graph.json
 
 # From raw text with built-in chunking
-entity-extract run --input book.txt --chunker chapter --depth standard --output graph.json
+dossier run --input book.txt --chunker chapter --depth standard --output graph.json
 
-# Incremental (add new document to existing graph)
-entity-extract run --input new_doc.jsonl --existing graph.json --output graph_updated.json
+# Incremental (deeper extraction on existing results)
+dossier run --input chunks.jsonl --existing graph.json --output graph_updated.json
 
 # Just identify (skip extraction, resolve existing mentions)
-entity-extract resolve --input mentions.jsonl --output entities.json
+dossier resolve --input mentions.jsonl --output entities.json
 
 # Just summarize (generate Layer 3 from existing Layer 2)
-entity-extract summarize --input graph.json --output graph_with_summaries.json
+dossier summarize --input graph.json --output graph_with_summaries.json
 
 # Inspect
-entity-extract inspect graph.json                    # Overview stats
-entity-extract inspect graph.json --entity "Harry"   # Single entity detail
-entity-extract inspect graph.json --evidence ev_001  # Single evidence entry
+dossier inspect graph.json                    # Overview stats
+dossier inspect graph.json --entity "Harry"   # Single entity detail
+dossier inspect graph.json --evidence ev_001  # Single evidence entry
 ```
 
 ---
@@ -668,33 +767,77 @@ entity-extract inspect graph.json --evidence ev_001  # Single evidence entry
 
 ### 8.1 Resolved
 
-(None yet — this is a draft spec.)
+1. **Should this be built inside Codex Forge?** No. Standalone library. Codex Forge wraps it in pipeline modules. CineForge imports it directly. The library has no pipeline dependencies. (Resolved: architecture discussion, 2026-02-24)
+
+2. **Should extraction be per-sentence?** No. Chunk-level (scene/chapter) gives the LLM enough context to connect implicit relationships within a chunk. Cross-chunk implications are discovered at Layer 2 synthesis. Sentence-level extraction would lose context and produce worse results. (Resolved: design review, 2026-02-24)
+
+3. **Does data need to flow back from Layer 2 to Layer 1?** No. Layer 1 is raw ground truth (mentions). Layer 2 synthesizes from Layer 1 and may discover cross-chunk implications, but these are Layer 2 facts with evidence pointers to Layer 1 mentions. No write-back needed. (Resolved: design review, 2026-02-24)
+
+4. **Should we research LLM citation formats?** No. Our provenance is structural data (chunk IDs, character offsets, direct quotes) consumed by code. Different problem from rendering footnotes in markdown. (Resolved: design review, 2026-02-24)
+
+5. **Back-and-forth passes for late entity discovery?** Not needed. The pipeline is forward-only: per-chunk extraction discovers mentions independently, then Stage 4 (Identify) merges them globally. If chunk 1 finds "Harry" and chunk 50 finds "The Boy Who Lived," they merge at Stage 4. (Resolved: design review, 2026-02-24)
+
+6. **Multi-document scope?** V1 supports multi-volume single narrative (e.g., all HP books as one extraction run with multiple input files). Cross-document entity merging (diary + genealogy book + census record about the same family) is v2. This may become the core of Storybook's people/relationship storage. (Resolved: design review, 2026-02-24)
 
 ### 8.2 Active Questions
 
-1. **Project name.** Working title: "Entity Provenance Engine" / `entity-provenance`. Open to better names.
+1. ~~**Project name.**~~ Resolved: **Dossier** / `dossier`. (2026-02-24)
 
 2. **Should Layer 1 mentions be stored in the main output or a separate file?** For a screenplay (200 mentions), inline is fine. For HP-scale (200K mentions), a separate `mentions.jsonl` sidecar makes more sense. Probably: inline up to a threshold, sidecar above it.
 
-3. **How to handle temporal facts at the genealogy scale.** "Born 1952", "married before 1980", "died sometime after his brother." Need a temporal representation that handles both precise and fuzzy dates. ISO 8601 intervals? Custom schema?
+3. **Temporal representation details.** Eras are conceptually defined (section 2.4) but the exact representation of fuzzy dates, relative ordering, and temporal validation (parents born before children) needs detailed schema design. How to handle novels with non-linear narratives and unreliable narrators.
 
 4. **Incremental processing conflict resolution.** When new text contradicts existing facts (book 2 reveals something that reframes book 1), what happens? Options: flag for review, keep both with provenance, auto-resolve by recency.
 
-5. **Multi-document entity merging.** A person appears in both a diary and a genealogy book. The engine needs to merge them. How confident do we need to be? What's the UX for "we think these are the same person but aren't sure"?
+5. **Prompt caching implementation.** Anthropic and OpenAI both support prompt caching. The system prompt + schema should be designed cache-friendly (static prefix, variable chunk text last). Exact implementation depends on provider SDK features at build time.
 
-6. **Prompt caching strategy.** Instructor calls are per-chunk. Can we cache the system prompt + schema definition across chunks to reduce cost? Provider-dependent.
-
-7. **Testing strategy.** Golden references for: screenplay extraction (CineForge's existing fixtures), genealogy extraction (need to create), gamebook extraction (Codex Forge's existing fixtures). How to evaluate identity resolution quality? Probably: precision/recall against hand-labeled entity clusters.
+6. **Testing strategy.** Golden references needed for: screenplay extraction (CineForge has existing fixtures), short story (need to create), genealogy chapter (need to create). Dual scoring: Python scorer for structural quality + LLM rubric for semantic quality. Identity resolution quality measured by precision/recall against hand-labeled entity clusters.
 
 ---
 
 ## 9. Non-Goals (v1)
 
-- **Non-person entities.** V1 extracts people/characters only. Locations, objects, organizations are future work (though the architecture should not preclude them).
+- **Non-person entities.** V1 extracts people/characters only. Locations, objects, organizations are future work. The architecture supports them — entity type is a parameter, not hardcoded — but v1 scope is people.
+- **Cross-document entity merging.** V1 handles multi-volume single narratives (one extraction run, multiple input files). Merging entities across independently-processed documents (a diary AND a genealogy book) is v2.
+- **Media intake.** V1 takes text as input. Converting PDFs, images, or audio to text is the consuming project's responsibility (e.g., Codex Forge's OCR pipeline).
 - **Real-time / streaming extraction.** V1 is batch-oriented.
 - **Multi-language support.** V1 is English-only.
 - **Embedding/vector store integration.** V1 outputs JSON. Consumers handle their own vector indexing.
 - **UI.** V1 is library + CLI only. Visualization is the consumer's responsibility.
+
+---
+
+## 10. Implementation Sequence
+
+Following the "eval first, pipeline second" principle:
+
+### Phase 0: Golden References & Eval Harness
+1. Create golden references: short screenplay, short story, genealogy chapter (hand-curated, expert-validated)
+2. Set up promptfoo eval harness with dual scoring (Python structural + LLM semantic)
+3. **Baseline test**: single-shot full-text extraction with SOTA model. No pipeline. Measure the gap against golden references.
+4. This baseline determines how much pipeline we actually need.
+
+### Phase 1: Core Extraction
+5. Implement the extraction schemas (Pydantic: Mention, Entity, Relationship, Evidence, Era)
+6. Implement per-chunk extraction with Instructor
+7. Implement Stage 4 (Identify) — entity resolution with token blocking + embedding similarity
+8. Output JSON property graph
+9. Eval against golden references. Compare to baseline.
+
+### Phase 2: Quality & Scale
+10. Add coreference preprocessing (Stage 2) — eval whether it improves results
+11. Add verification pass (Stage 5) — eval whether it improves results
+12. Add model tiering/cascade — eval whether cheaper models maintain quality
+13. Add summarization (Stage 6)
+14. Add era extraction
+15. Test at genealogy scale (300 pages)
+
+### Phase 3: Polish & Distribution
+16. CLI wrapper
+17. Prompt caching optimization
+18. Incremental extraction support
+19. Configuration profiles for each consuming project
+20. Package and publish (`pip install dossier`)
 
 ---
 
@@ -710,3 +853,12 @@ See `research/final-synthesis.md` for the full multi-model research synthesis. K
 - Property graph with separate evidence store is the optimal output format
 - Token blocking + embedding ANN makes identity resolution tractable at 500+ entities
 - Instructor is the universally recommended extraction building block
+
+## Appendix B: Design Discussion Log
+
+This spec was developed through an iterative design discussion (2026-02-24). Key debates and resolutions:
+
+- **Codex Forge as foundation vs. standalone library:** Investigated Codex Forge architecture in depth. Found that while its recipe/DAG system is sound, its driver hard-codes per-module CLI wiring (550-line `build_command()`), modules lack a standardized Python interface, and the artifact store is run-scoped without cross-run resolution. Decision: standalone library that Codex Forge can wrap in pipeline modules.
+- **Sentence-level vs. chunk-level extraction:** Sentence-level loses within-chunk context and doesn't help with cross-chunk implications. Chunk-level is strictly better.
+- **AI-first design principle:** Every pipeline stage must justify itself against "just ask the LLM." Build the eval harness first, test the dumbest approach, build only enough complexity to close the gap. Stages are designed to be removable as models improve.
+- **Eras for temporal identity:** Identity facts can be era-scoped to handle character evolution and life-stage changes without creating false contradictions.

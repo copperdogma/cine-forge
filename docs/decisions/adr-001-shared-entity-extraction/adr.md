@@ -1,6 +1,6 @@
 # ADR-001: Shared Entity Extraction Library
 
-**Status:** PENDING — Needs deep research
+**Status:** DECIDED — Build standalone library ("Dossier")
 
 ## Context
 
@@ -50,15 +50,29 @@ Each project implements its own extraction using the same architectural blueprin
 
 ## Research Needed
 
-- [ ] Comprehensive survey of existing open-source tools for LLM-driven entity extraction with provenance
-- [ ] Academic research on state-of-the-art approaches to evidence-grounded entity and relationship extraction
-- [ ] Best practices for identity resolution across document chunks at scale
-- [ ] Architectural patterns for chunked text processing pipelines that scale to 300+ page documents
-- [ ] Evaluation of existing extraction frameworks (LangChain, LlamaIndex, instructor, etc.) for this use case
+- [x] Comprehensive survey of existing open-source tools for LLM-driven entity extraction with provenance
+- [x] Academic research on state-of-the-art approaches to evidence-grounded entity and relationship extraction
+- [x] Best practices for identity resolution across document chunks at scale
+- [x] Architectural patterns for chunked text processing pipelines that scale to 300+ page documents
+- [x] Evaluation of existing extraction frameworks (LangChain, LlamaIndex, instructor, etc.) for this use case
+
+All research complete — see `research/final-synthesis.md` for the multi-model synthesis.
 
 ## Decision
 
-TBD — pending research.
+**Option C: Build a Python Library** — named **Dossier** (`pip install dossier`).
+
+Standalone Python library with CLI wrapper. No existing open-source tool delivers the full pipeline (entity extraction + provenance + identity resolution + relationship extraction + confidence scoring) — all 5 research reports agreed. Instructor + Pydantic is the recommended extraction core.
+
+Key decisions:
+- **Standalone library**, not built inside Codex Forge. Codex Forge wraps it in pipeline modules; CineForge imports it directly.
+- **Three-layer Level of Detail model**: Mentions (raw spans) → Structured Facts (deduplicated, evidence-backed) → Summaries (bios, identity cards).
+- **AI-first**: every pipeline stage must justify itself against "just ask the LLM." Eval first, pipeline second.
+- **Forward-only pipeline**: data flows upward only. No write-back from Layer 2 to Layer 1.
+
+Full specification: `spec.md` in this directory.
+
+**Repository:** https://github.com/copperdogma/dossier — bootstrapped from this ADR and spec.
 
 ## Legacy Context
 
