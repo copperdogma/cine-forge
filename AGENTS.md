@@ -12,6 +12,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Verify, Don't Assume**: NEVER assume a library is available or a file has a specific content. Use `read_file` and dependency checks (`package.json`, `pyproject.toml`) to ground your work.
 - **Immutability**: Versioned artifacts are immutable. NEVER mutate an existing version in place; always produce a new version with incremented metadata.
 - **AI-First Engineering**: Prefer roles, prompts, and structured artifacts over rigid hard-coded business rules. Architecture should facilitate AI reasoning.
+- **Baseline = Best Model Only**: Never conclude "AI can't do this" from a cheap model's failure. Always test SOTA first. If the best available model succeeds in one call, there is nothing to build — cheaper models are a cost optimization question, not a capability question. This is the single most expensive mistake in eval-first development.
 - **Headless Operation**: All core application capabilities (e.g., export, analysis, remediation) MUST be performable via CLI scripts or direct backend calls, bypassing the UI. This ensures AI agents can autonomously operate the system.
 - **Definition of Done**: A task is complete ONLY when:
   1. Relevant tests pass (`make test-unit` minimum).
@@ -235,6 +236,31 @@ All evals: 13 providers (4 OpenAI, 4 Anthropic, 5 Google), dual scoring (Python 
 - `docs/inbox.md` captures features, patterns, and design concepts that are good but not in scope for current work.
 - When a feature is deferred during story work, move it to `docs/inbox.md` rather than losing it.
 - When a conversation surfaces a good idea that's out of scope, add it to `docs/inbox.md`.
+
+### Story Conventions
+
+**Story statuses:** Draft → Pending → In Progress → Done (or Deferred/Blocked)
+
+- **Draft**: Scoped — has a Goal and rough notes, but lacks detailed Acceptance Criteria and Tasks. Created early when an idea crystallizes but isn't ready to build. MUST be promoted to Pending before `/build-story` can execute it.
+- **Pending**: Fully detailed — has complete ACs, Tasks, and enough context to build. Ready for implementation.
+- **In Progress**: Actively being worked on.
+- **Done**: All ACs met, checks pass, work log updated.
+
+Use Draft status liberally for future stories. It prevents premature execution of half-baked stories while still capturing the intent.
+
+### Runbook Conventions
+
+Runbooks live in `docs/runbooks/`. Create a runbook when a process has 3+ steps, will be repeated across sessions, and has gotchas that cost time if undocumented.
+
+**Structure:**
+1. **Context** — When and why to use this runbook
+2. **Prerequisites** — What must be true before starting
+3. **Steps** — Each tagged `[script]` (deterministic, run a command) or `[judgment]` (requires agent reasoning)
+4. **Boundaries** — Always do / Ask first / Never do
+5. **Troubleshooting** — Common failures and fixes
+6. **Lessons learned** — Append-only, dated
+
+**Skill↔runbook rule:** Every runbook should have a corresponding skill. Every skill with 3+ procedural steps should have a runbook. Apply this going forward — don't retroactively create runbooks for existing skills.
 
 ### UI Development Workflow
 

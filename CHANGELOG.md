@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-02-26-03] — Scout dossier: adopt ideal-first methodology skills
+
+### Added
+- 9 new skills from dossier: `/setup-ideal`, `/setup-golden`, `/setup-evals`, `/setup-spec`, `/setup-stories`, `/setup-env-ai`, `/setup-env-dev`, `/retrofit-ideal`, `/reflect`
+- `docs/prompts/ideal-app.md` — reusable generator prompt for Ideal App documents
+- "Baseline = Best Model Only" principle in AGENTS.md
+- Story Conventions section in AGENTS.md (Draft → Pending → In Progress → Done)
+- Runbook Conventions section in AGENTS.md (`[script]`/`[judgment]` tagging, skill↔runbook rule)
+- Scout expedition 002 — dossier infrastructure (22 findings, 15 adopted)
+
+### Changed
+- Story template default status from `Pending` to `Draft`
+
 ## [2026-02-26-02] — Remove dead Inspector tab from right panel
 
 ### Removed

@@ -1,7 +1,7 @@
 # Story NNN — TITLE
 
 **Priority**: PRIORITY
-**Status**: Pending
+**Status**: Draft
 **Spec Refs**: {spec refs}
 **Depends On**: {depends on}
 
