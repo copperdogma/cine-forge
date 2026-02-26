@@ -1,97 +1,117 @@
-# Story 023: Actor Agents and Performance Direction
+# Story 023: Performance Direction Artifacts
 
-**Status**: To Do
+**Status**: Draft
 **Created**: 2026-02-13
-**Spec Refs**: 10 (Performance System), 12.4 (Performance Direction), 10.2 (Governance — actor agents cannot modify canon)
-**Depends On**: Story 014 (role system foundation), Story 015 (Director — reviews performance direction), Story 008 (character bibles), Story 010 (entity graph — relationship dynamics), Story 011 (continuity tracking — emotional/physical state entering scenes)
+**Rewritten**: 2026-02-25 — Original scope largely superseded by Story 084.
+**Spec Refs**: 12.4 (Performance Direction)
+**Depends On**: Story 008 (character bibles), Story 005 (scene extraction), Story 010 (entity graph — relationship dynamics), Story 011 (continuity tracking — emotional/physical state)
 
 ---
 
-## Goal
+## What Changed
 
-Implement **Actor Agents** — one AI per character — that embody character psychology and produce **performance direction artifacts**. Each Actor Agent analyzes scenes from inside their character's role, suggesting motivation, subtext, dialogue alternatives, and behavioral consistency.
+Story 084 (Character Chat Agents) delivered the core of what this story originally proposed:
 
-Actor Agents are the lowest tier in the role hierarchy. They suggest but cannot modify canon. Accepted insights may update character bibles.
+- **Dynamic per-character agents**: `@billy` chats with Billy in character, grounded in bible + scene context.
+- **Character-specific system prompts**: built from bible entry + scene summaries, updated when bible changes.
+- **Actor Agent → Story Editor rename**: the "acting coach" role was replaced with a narrative logic specialist.
+- **Governance**: characters can't modify canon — they chat, they don't write artifacts.
 
----
-
-## Acceptance Criteria
-
-### Actor Agent System
-- [ ] One Actor Agent instantiated per significant character (from character bible).
-- [ ] Each Actor Agent:
-  - [ ] Has a system prompt embodying their specific character's psychology, history, and personality.
-  - [ ] Tier: performance.
-  - [ ] Style pack slot (accepts acting methodology packs — e.g., "Daniel Day-Lewis").
-  - [ ] Capability: `text`.
-  - [ ] Cannot modify canon directly (spec 10.2).
-  - [ ] Generates suggestions that, if accepted, may update character bibles.
-
-### Performance Direction Artifacts (Spec 12.4)
-- [ ] Per-scene, per-character direction including:
-  - [ ] **Emotional state entering**: where the character is psychologically at scene start.
-  - [ ] **Arc through the scene**: how emotional state changes (or doesn't).
-  - [ ] **Motivation**: what the character wants in this scene.
-  - [ ] **Subtext**: what they're not saying, what's beneath the surface.
-  - [ ] **Physical notes**: posture, energy level, gestures, habits.
-  - [ ] **Key beats**: moments of change, realization, decision.
-  - [ ] **Relationship dynamics**: how this character relates to others in the scene (using entity graph).
-  - [ ] **Dialogue delivery notes**: tone, pace, emphasis for specific lines.
-- [ ] Reviewed by Director and Script Supervisor.
-- [ ] All direction artifacts immutable, versioned, with audit metadata.
-
-### Actor Agent Instantiation
-- [ ] Automatic: when character bibles are created (Story 008), Actor Agents are instantiated for primary and supporting characters.
-- [ ] Agent prompt is constructed from character bible content + entity graph relationships + style pack.
-- [ ] Agent prompt updates when character bible is updated (new version).
-
-### Performance Direction Module
-- [ ] Module directory: `src/cine_forge/modules/creative_direction/performance_direction_v1/`
-- [ ] Reads scene artifacts, character bibles, entity graph, and continuity states (for emotional/physical state entering each scene).
-- [ ] Invokes each Actor Agent for scenes where their character appears.
-- [ ] Outputs one performance direction artifact per character per scene.
-
-### Schema
-- [ ] `PerformanceDirection` Pydantic schema with all fields from spec 12.4.
-- [ ] Schema registered in schema registry.
-
-### Testing
-- [ ] Unit tests for Actor Agent instantiation from character bibles.
-- [ ] Unit tests for performance direction generation (mocked AI).
-- [ ] Unit tests for governance (cannot modify canon, suggestions only).
-- [ ] Integration test: character bibles + scenes → performance direction artifacts.
-- [ ] Schema validation on all outputs.
+What 084 did NOT deliver: **structured PerformanceDirection artifacts** (per-scene, per-character emotional state, subtext, physical notes, dialogue delivery as formal schema'd output).
 
 ---
 
-## Design Notes
+## What Remains
 
-### One Agent Per Character
-Each character gets their own Agent instance with a unique system prompt built from their bible. This means character-specific reasoning — the Agent for a villain thinks differently than the Agent for a hero. The style pack adds methodology (method acting vs. classical technique) on top of character-specific psychology.
+The only unbuilt piece is the PerformanceDirection artifact — a structured, per-scene, per-character document containing:
 
-### Suggestion Flow
-Actor Agents can't change anything directly. When an Agent notices something (e.g., "my character wouldn't say this line"), it generates a suggestion via Story 017. If the Director or human accepts the suggestion, it produces a new artifact version. This keeps the Actor Agent useful without giving it authority to break consistency.
+- Emotional state entering the scene
+- Arc through the scene (how emotional state changes)
+- Motivation (what the character wants)
+- Subtext (what they're not saying)
+- Physical notes (posture, energy, gestures)
+- Key beats (moments of change, realization)
+- Relationship dynamics (how they relate to others present)
+- Dialogue delivery notes (tone, pace, emphasis)
+
+---
+
+## This Story Must Prove Its Worth
+
+**The open question: what actually consumes performance direction artifacts?**
+
+### Claimed downstream consumers
+
+1. **Story 024 — Direction Convergence**: The Director reviews "all four direction types" (editorial, visual, sound, performance) for consistency before shot planning. Performance direction is one of the four inputs. **But**: does convergence actually need a formal artifact, or could the Director just chat with the character to get performance context on demand?
+
+2. **Story 025 — Shot Planning**: Coverage strategy includes "performance notes" that inform framing and blocking decisions. A character's emotional state affects whether you shoot a close-up or a wide. **But**: the shot planner could pull this from the character bible + scene context directly, the same way the character chat agents already do.
+
+3. **Storyboards / Render (Stories 026–028)**: Character emotional state and physical notes would inform facial expressions, body language in generated imagery. **But**: this is far downstream and may be better handled by the render prompt itself pulling from bibles.
+
+### The case against
+
+- **Cost**: N characters × M scenes = N×M LLM calls to produce artifacts that may never be read by a human or meaningfully consumed by downstream stages.
+- **Redundancy**: Character bibles already contain traits, arc, relationships, dialogue style. Scene context already captures who's present and what happens. The performance direction artifact is largely a re-derivation of data that already exists.
+- **The chat alternative**: Users can already `@billy` to ask "what are you feeling in Scene 8?" and get a richer, more contextual answer than any pre-computed artifact. The conversational approach is more flexible and costs nothing until invoked.
+- **Direction convergence can adapt**: Story 024 could require only 3 direction types (editorial, visual, sound) and pull character context on demand from bibles + chat. This is arguably more natural than batch-computing performance notes.
+
+### The case for
+
+- **Structured data for automation**: If shot planning or render adapters need machine-readable emotional state per character per scene, a formal schema is better than free-text chat output.
+- **Completeness of the direction layer**: The spec envisions four parallel creative directions. Dropping one creates an asymmetry.
+- **Proactive insight**: Batch performance analysis might surface things the user wouldn't think to ask — "Billy's emotional state entering Scene 12 contradicts what happened in Scene 9."
+
+### Verdict
+
+**Defer until a real consumer proves the need.** If Story 024 (convergence) or Story 025 (shot planning) discovers it genuinely needs structured per-character-per-scene emotional data that can't be pulled from existing artifacts, this story gets promoted. Until then, character chat agents (Story 084) cover the interactive use case, and character bibles cover the data use case.
+
+If promoted, the implementation is straightforward: reuse `build_character_system_prompt()` from 084, add a structured output schema, run batch extraction per character per scene (same pattern as editorial direction in Story 020).
+
+---
+
+## If We Build It
+
+### Scope (reduced)
+
+The actor agent instantiation, governance, and suggestion flow from the original story are all delivered by 084. What's left:
+
+1. `PerformanceDirection` Pydantic schema (spec 12.4 fields)
+2. `performance_direction_v1` module (batch extraction using character system prompts + structured output)
+3. Wire into creative direction recipe
+4. UI rendering in DirectionTab (reuse `DirectionAnnotation` component — already parameterized)
+5. Tests
+
+Estimated effort: Small-medium. The pattern is proven (copy editorial direction module structure).
+
+### Schema (draft)
+
+```python
+class PerformanceDirection(BaseModel):
+    scene_id: str
+    character_id: str
+    emotional_state_entering: str
+    arc_through_scene: str
+    motivation: str
+    subtext: str
+    physical_notes: str
+    key_beats: list[str]
+    relationship_dynamics: list[dict]  # character_id, dynamic description
+    dialogue_delivery: list[dict]  # line reference, tone, pace, emphasis
+    confidence: float
+```
 
 ---
 
 ## Tasks
 
-- [ ] Implement Actor Agent instantiation logic (from character bibles).
-- [ ] Implement per-character system prompt construction.
-- [ ] Design and implement `PerformanceDirection` schema.
-- [ ] Register schema in schema registry.
-- [ ] Create `performance_direction_v1` module.
-- [ ] Implement performance direction generation per character per scene.
-- [ ] Implement governance constraints (suggestions only, no canon modification).
-- [ ] Implement bible-based prompt updates.
-- [ ] Wire into creative direction recipe.
-- [ ] Write unit tests.
-- [ ] Write integration test.
-- [ ] Run `make test-unit` and `make lint`.
-- [ ] Update AGENTS.md with any lessons learned.
+- [ ] Decide: does Story 024 or 025 actually need this? (answer during those stories)
+- [ ] If yes: implement schema, module, recipe integration, UI tab, tests
+- [ ] If no: close this story as "Won't Do — covered by character chat agents (084)"
 
 ---
 
 ## Work Log
 
 *(append-only)*
+
+20260225 — Story rewritten. Original scope (actor agent instantiation, per-character system prompts, governance) delivered by Story 084. Remaining scope narrowed to PerformanceDirection artifacts only. Status changed to Draft pending proof of need from downstream consumers (024, 025). Key question: does formal structured performance data add value over existing character bibles + interactive character chat?

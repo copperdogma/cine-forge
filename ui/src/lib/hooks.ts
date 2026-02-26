@@ -269,6 +269,16 @@ export function useProjectCharacters(projectId: string | undefined) {
 
 // --- Artifacts ---
 
+export function usePipelineGraph(projectId: string | undefined, activeRunId?: string | null) {
+  return useQuery<import('./types').PipelineGraphResponse>({
+    queryKey: ['projects', projectId, 'pipeline-graph'],
+    queryFn: () => api.getPipelineGraph(projectId!),
+    enabled: !!projectId,
+    refetchInterval: activeRunId ? 2000 : 30000,
+    refetchIntervalInBackground: false,
+  })
+}
+
 export function useArtifactGroups(projectId: string | undefined, refetchInterval?: number) {
   return useQuery<ArtifactGroupSummary[]>({
     queryKey: ['projects', projectId, 'artifacts'],

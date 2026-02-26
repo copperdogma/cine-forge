@@ -79,6 +79,18 @@ role's expertise, suggest the user @-mention them. For example:
 
 Keep it natural — a short note like "The @visual_architect could give you a detailed \
 breakdown of the framing here" is better than a rigid redirect.
+
+## Pipeline Navigation
+When the user asks "what should I do next?", "what's my project status?", or similar:
+1. Call `read_pipeline_graph` to get current pipeline state.
+2. Recommend the highest-priority available action. Prefer finishing a partially complete \
+phase over starting a new one.
+3. If multiple actions are available, briefly list them ranked by impact.
+4. For blocked nodes, explain which upstream step is missing and how to run it.
+
+When proposing a run (`propose_run`), always check the pipeline graph first. If the recipe \
+requires upstream artifacts that are missing or stale, warn the user before proposing. Never \
+propose a run that will fail due to missing prerequisites without explaining what's needed.
 """
 
 
@@ -215,6 +227,30 @@ def _build_project_context(
     )
 
 
+INTERACTION_MODE_PROMPTS: dict[str, str] = {
+    "guided": """\
+
+## Interaction Style: Guided Mode
+The user is in Guided mode. Adjust your communication accordingly:
+- Provide detailed, step-by-step explanations for every action and suggestion.
+- Proactively explain what pipeline stages do and why they matter.
+- When recommending an action, explain the reasoning and expected outcome.
+- Use encouraging, educational tone — assume the user is learning the workflow.
+- After completing an action, summarize what happened and suggest the natural next step.
+""",
+    "expert": """\
+
+## Interaction Style: Expert Mode
+The user is in Expert mode. Adjust your communication accordingly:
+- Be terse and action-oriented. Skip explanations of familiar concepts.
+- Lead with the actionable recommendation, not the reasoning.
+- Only explain if something is unusual, unexpected, or error-related.
+- Use shorthand: recipe names, artifact types, stage IDs without elaboration.
+- Assume the user knows the pipeline. Don't suggest obvious next steps.
+""",
+}
+
+
 def build_role_system_prompt(
     role_id: str,
     project_summary: dict[str, Any],
@@ -227,8 +263,8 @@ def build_role_system_prompt(
 ) -> str:
     """Build the full system prompt for a specific role in the group chat.
 
-    Combines: role base prompt + style pack + project context + group chat instructions.
-    The assistant role also gets write-tool instructions.
+    Combines: role base prompt + style pack + project context + group chat instructions
+    + interaction mode layer. The assistant role also gets write-tool instructions.
     """
     from cine_forge.roles.runtime import RoleCatalog
 
@@ -256,6 +292,12 @@ def build_role_system_prompt(
     # Assistant gets extra write-tool instructions
     if role_id == "assistant":
         prompt += ASSISTANT_EXTRA
+
+    # Inject interaction mode instructions (guided/expert — balanced is default, no extra)
+    interaction_mode = project_summary.get("interaction_mode", "balanced")
+    mode_prompt = INTERACTION_MODE_PROMPTS.get(interaction_mode)
+    if mode_prompt:
+        prompt += mode_prompt
 
     # Append page context if provided
     if page_context:
@@ -780,6 +822,22 @@ READ_TOOLS: list[dict[str, Any]] = [
             "required": [],
         },
     },
+    {
+        "name": "read_pipeline_graph",
+        "description": (
+            "Get the pipeline capability graph showing what's been done, what's "
+            "available next, and what's blocked. Use this when the user asks "
+            "'what should I do next?', 'what's my project status?', or when you "
+            "need to understand which pipeline stages have been completed. "
+            "Returns phases (Script, World, Direction, Shots, Storyboards, "
+            "Production) with per-node status."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+        },
+    },
 ]
 
 # Write tools — only available to the assistant role.
@@ -857,6 +915,7 @@ class ToolResult:
     """Result from executing a chat tool."""
     content: str  # Text result sent to the AI
     actions: list[dict[str, Any]] = field(default_factory=list)  # Action buttons for frontend
+    preflight_data: dict[str, Any] | None = None  # Structured preflight summary for UI card
 
 
 def _compute_artifact_diff(
@@ -999,6 +1058,10 @@ def execute_tool(
                 })
             return ToolResult(content=json.dumps({"characters": characters}, indent=2))
 
+        elif tool_name == "read_pipeline_graph":
+            graph = service.get_pipeline_graph(project_id)
+            return ToolResult(content=_format_pipeline_graph(graph))
+
         # ---- Write tools (proposals with confirmation) ----
 
         elif tool_name == "propose_artifact_edit":
@@ -1013,6 +1076,84 @@ def execute_tool(
     except Exception as e:
         log.exception("Tool execution failed: %s", tool_name)
         return ToolResult(content=json.dumps({"error": str(e)}))
+
+
+def _format_pipeline_graph(graph: dict[str, Any]) -> str:
+    """Format the pipeline graph as structured natural language for LLM readability."""
+    from cine_forge.pipeline.graph import check_prerequisites, get_available_actions
+
+    lines: list[str] = []
+
+    status_icons = {
+        "completed": "\u2705",
+        "partial": "\U0001f535",
+        "available": "\u26aa",
+        "blocked": "\U0001f512",
+        "not_started": "\U0001f512",
+    }
+    node_icons = {
+        "completed": "\u2713",
+        "stale": "~",
+        "in_progress": "\u25b6",
+        "available": "\u25cb",
+        "blocked": "\u2717",
+        "not_implemented": "\u2014",
+    }
+
+    for phase in graph["phases"]:
+        icon = status_icons.get(phase["status"], "?")
+        badge = ""
+        if phase["completed_count"] > 0:
+            badge = f" ({phase['completed_count']}/{phase['implemented_count']})"
+        lines.append(f"{icon} {phase['label']} \u2014 {phase['status']}{badge}")
+
+        phase_nodes = [n for n in graph["nodes"] if n["phase_id"] == phase["id"]]
+        for node in phase_nodes:
+            ni = node_icons.get(node["status"], "?")
+            count = f" ({node['artifact_count']})" if node["artifact_count"] > 0 else ""
+            impl = " [coming soon]" if not node["implemented"] else ""
+            lines.append(f"  {ni} {node['label']}{count}{impl}")
+
+    # Prioritized available actions.
+    actions = get_available_actions(graph)
+    if actions:
+        lines.append("")
+        lines.append("Recommended next actions (in priority order):")
+        for i, action in enumerate(actions, 1):
+            lines.append(f"  {i}. {action['label']} \u2014 {action['reason']}")
+
+    # Blocked nodes with explanations.
+    blocked = [
+        n for n in graph["nodes"]
+        if n["status"] == "blocked" and n["implemented"]
+    ]
+    if blocked:
+        lines.append("")
+        lines.append("Blocked (waiting on upstream):")
+        for node in blocked:
+            prereqs = check_prerequisites(node["id"], graph)
+            if prereqs["unmet"]:
+                dep_names = ", ".join(u["label"] for u in prereqs["unmet"])
+                lines.append(f"  \U0001f512 {node['label']} \u2014 needs: {dep_names}")
+            else:
+                lines.append(f"  \U0001f512 {node['label']}")
+
+    # Stale nodes with explanations.
+    stale = [
+        n for n in graph["nodes"]
+        if n["status"] == "stale" and n["implemented"]
+    ]
+    if stale:
+        lines.append("")
+        lines.append("Stale (upstream changed, needs rerun):")
+        for node in stale:
+            reason = node.get("stale_reason", "upstream was updated")
+            lines.append(
+                f"  ~ {node['label']} ({node['artifact_count']} artifacts)"
+                f" \u2014 {reason}"
+            )
+
+    return "\n".join(lines)
 
 
 def _execute_propose_artifact_edit(
@@ -1106,6 +1247,80 @@ def _execute_propose_artifact_edit(
     return ToolResult(content=json.dumps(result, indent=2), actions=actions)
 
 
+def _check_recipe_preflight(
+    recipe_id: str,
+    service: Any,
+    project_id: str,
+) -> dict[str, Any]:
+    """Check pipeline prerequisites for a recipe.
+
+    Returns:
+        {
+            "tier": "ready" | "warn_stale" | "block_missing",
+            "message": str,
+            "missing": [{"label": str, "status": str}],
+            "stale": [{"label": str}],
+        }
+    """
+    try:
+        graph = service.get_pipeline_graph(project_id)
+    except Exception:
+        # Non-critical — proceed without preflight if graph fails.
+        return {"tier": "ready", "message": "", "missing": [], "stale": []}
+
+    node_lookup = {n["id"]: n for n in graph["nodes"]}
+
+    # Map recipe_id to the pipeline nodes it requires as upstream.
+    # mvp_ingest is the starting recipe — needs no upstream.
+    recipe_prereqs: dict[str, list[str]] = {
+        "mvp_ingest": [],
+        "ingest_only": [],
+        "ingest_normalize": [],
+        "ingest_extract": [],
+        "ingest_extract_config": [],
+        "world_building": ["normalization", "scene_extraction"],
+        "creative_direction": ["scene_extraction", "characters"],
+        "narrative_analysis": ["characters", "locations", "props"],
+        "timeline": ["scene_extraction"],
+        "track_system": ["scene_extraction"],
+    }
+
+    required_nodes = recipe_prereqs.get(recipe_id, [])
+    if not required_nodes:
+        return {"tier": "ready", "message": "", "missing": [], "stale": []}
+
+    missing = []
+    stale = []
+
+    for nid in required_nodes:
+        node = node_lookup.get(nid)
+        if not node:
+            continue
+        if node["status"] in ("blocked", "available"):
+            missing.append({"label": node["label"], "status": node["status"]})
+        elif node["status"] == "stale":
+            stale.append({"label": node["label"]})
+
+    if missing:
+        names = ", ".join(m["label"] for m in missing)
+        return {
+            "tier": "block_missing",
+            "message": f"Missing prerequisites: {names}. Run these stages first.",
+            "missing": missing,
+            "stale": stale,
+        }
+    elif stale:
+        names = ", ".join(s["label"] for s in stale)
+        return {
+            "tier": "warn_stale",
+            "message": f"Upstream stages are stale: {names}. Results may be outdated.",
+            "missing": missing,
+            "stale": stale,
+        }
+    else:
+        return {"tier": "ready", "message": "", "missing": [], "stale": []}
+
+
 def _execute_propose_run(
     tool_input: dict[str, Any],
     service: Any,
@@ -1132,6 +1347,24 @@ def _execute_propose_run(
         }))
 
     latest_input = inputs[-1]
+
+    # Preflight check: verify pipeline prerequisites.
+    preflight = _check_recipe_preflight(recipe_id, service, project_id)
+
+    if preflight["tier"] == "block_missing":
+        missing_names = ", ".join(m["label"] for m in preflight["missing"])
+        return ToolResult(content=json.dumps({
+            "status": "prerequisites_missing",
+            "recipe": recipe_id,
+            "recipe_name": recipe.get("name", recipe_id),
+            "message": preflight["message"],
+            "missing_stages": [m["label"] for m in preflight["missing"]],
+            "hint": (
+                f"The {recipe.get('name', recipe_id)} recipe needs these "
+                f"completed first: {missing_names}. "
+                "Suggest running the upstream recipe to the user."
+            ),
+        }, indent=2))
 
     # Build action buttons
     run_payload = {
@@ -1160,7 +1393,7 @@ def _execute_propose_run(
         },
     ]
 
-    result = {
+    result: dict[str, Any] = {
         "status": "proposal_ready",
         "recipe": recipe_id,
         "recipe_name": recipe.get("name", recipe_id),
@@ -1168,7 +1401,33 @@ def _execute_propose_run(
         "stage_count": recipe.get("stage_count", 0),
         "input_file": latest_input.get("original_name", latest_input["filename"]),
     }
-    return ToolResult(content=json.dumps(result, indent=2), actions=actions)
+
+    # Add warning for stale upstream.
+    if preflight["tier"] == "warn_stale":
+        result["warning"] = preflight["message"]
+
+    # Build structured preflight data for the frontend card.
+    preflight_card_data = {
+        "recipe_id": recipe_id,
+        "recipe_name": recipe.get("name", recipe_id),
+        "description": recipe.get("description", ""),
+        "stage_count": recipe.get("stage_count", 0),
+        "stages": recipe.get("stages", []),
+        "input_file": latest_input.get("original_name", latest_input["filename"]),
+        "tier": preflight["tier"],
+        "warnings": [],
+    }
+    if preflight["tier"] == "warn_stale":
+        preflight_card_data["warnings"] = [
+            {"type": "stale", "label": s["label"]}
+            for s in preflight.get("stale", [])
+        ]
+
+    return ToolResult(
+        content=json.dumps(result, indent=2),
+        actions=actions,
+        preflight_data=preflight_card_data,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1553,6 +1812,7 @@ def _stream_single_role(
 
             tool_results: list[dict[str, Any]] = []
             pending_actions = []
+            pending_preflight = None
             for tb in tool_use_blocks:
                 result = execute_tool(
                     tb["name"], tb["input"], service, project_id
@@ -1576,6 +1836,8 @@ def _stream_single_role(
                 })
                 if result.actions:
                     pending_actions.extend(result.actions)
+                if result.preflight_data:
+                    pending_preflight = result.preflight_data
             current_messages.append({"role": "user", "content": tool_results})
 
             text_buffer = ""
@@ -1585,12 +1847,26 @@ def _stream_single_role(
 
         # No tool calls — this role is done
         if pending_actions:
-            yield {"type": "actions", "actions": pending_actions, "speaker": speaker}
+            chunk: dict[str, Any] = {
+                "type": "actions",
+                "actions": pending_actions,
+                "speaker": speaker,
+            }
+            if pending_preflight:
+                chunk["preflight_data"] = pending_preflight
+            yield chunk
         return
 
     # Exhausted tool rounds
     if pending_actions:
-        yield {"type": "actions", "actions": pending_actions, "speaker": speaker}
+        exhaust_chunk: dict[str, Any] = {
+            "type": "actions",
+            "actions": pending_actions,
+            "speaker": speaker,
+        }
+        if pending_preflight:
+            exhaust_chunk["preflight_data"] = pending_preflight
+        yield exhaust_chunk
 
 
 def stream_group_chat(
@@ -1883,9 +2159,11 @@ INSIGHT_PROMPTS: dict[str, str] = {
         "A pipeline run just completed ({recipe_display_name}). "
         "It produced: {artifact_summary}. "
         "Use your tools to look at what was produced. "
+        "Also call `read_pipeline_graph` to see what's now unlocked in the pipeline. "
         "Give a brief (2-4 sentence) creative observation about the project "
         "based on what you find — mention specific characters, themes, or story "
-        "elements. Then suggest what the user should look at first or do next. "
+        "elements. Then recommend the most impactful next step based on the "
+        "pipeline graph (what's newly available, what's still blocked). "
         "Use user-facing names for pipeline steps: 'Script Breakdown' and 'Deep Breakdown' — "
         "never 'mvp_ingest', 'world_building', or 'recipe'. "
         "Be specific and enthusiastic, not generic."

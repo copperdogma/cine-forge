@@ -3,7 +3,7 @@
 
 import { create } from 'zustand'
 import { postChatMessage, getChatMessages } from './api'
-import type { ChatAction, ChatMessage, ChatMessageType, ToolCallStatus } from './types'
+import type { ChatAction, ChatMessage, ChatMessageType, PreflightData, ToolCallStatus } from './types'
 
 /** AI message types that should have an explicit speaker. */
 const AI_MESSAGE_TYPES: ReadonlySet<string> = new Set([
@@ -68,7 +68,7 @@ interface ChatStore {
   /** Update the content of an existing message (in-memory only — for streaming). */
   updateMessageContent: (projectId: string, messageId: string, content: string) => void
   /** Attach actions to an existing message (in-memory only — for proposal buttons). */
-  attachActions: (projectId: string, messageId: string, actions: ChatAction[]) => void
+  attachActions: (projectId: string, messageId: string, actions: ChatAction[], preflightData?: PreflightData) => void
   /** Add a tool call to an existing AI message (in-memory only — for inline tool indicators). */
   addToolCall: (projectId: string, messageId: string, tool: ToolCallStatus) => void
   /** Mark a tool call as complete on an existing AI message (in-memory only). */
@@ -203,14 +203,19 @@ export const useChatStore = create<ChatStore>()(
         return { messages: { ...state.messages, [projectId]: updated } }
       }),
 
-    attachActions: (projectId, messageId, actions) =>
+    attachActions: (projectId, messageId, actions, preflightData) =>
       set((state) => {
         const msgs = state.messages[projectId]
         if (!msgs) return state
         const idx = msgs.findIndex(m => m.id === messageId)
         if (idx === -1) return state
         const updated = [...msgs]
-        updated[idx] = { ...updated[idx], actions, needsAction: true }
+        updated[idx] = {
+          ...updated[idx],
+          actions,
+          needsAction: true,
+          ...(preflightData ? { preflightData } : {}),
+        }
         return { messages: { ...state.messages, [projectId]: updated } }
       }),
 

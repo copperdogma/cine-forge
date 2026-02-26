@@ -41,6 +41,7 @@ class ProjectSummary(BaseModel):
     input_files: list[str] = []
     ui_preferences: dict[str, Any] = Field(default_factory=dict)
     human_control_mode: str = "autonomous"
+    interaction_mode: str = "balanced"
 
 
 class RecentProjectSummary(ProjectSummary):
@@ -198,6 +199,7 @@ class ProjectSettingsUpdate(BaseModel):
 
     display_name: str | None = None
     human_control_mode: Literal["autonomous", "checkpoint", "advisory"] | None = None
+    interaction_mode: Literal["guided", "balanced", "expert"] | None = None
     style_packs: dict[str, str] | None = None
     ui_preferences: dict[str, Any] | None = None
 

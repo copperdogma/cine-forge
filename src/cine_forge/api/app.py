@@ -184,6 +184,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
                     project_id,
                     display_name=request.display_name,
                     human_control_mode=request.human_control_mode,
+                    interaction_mode=request.interaction_mode,
                     style_packs=request.style_packs,
                     ui_preferences=request.ui_preferences,
                 )
@@ -237,6 +238,10 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     @app.get("/api/projects/{project_id}/search", response_model=SearchResponse)
     async def search_project(project_id: str, q: str = "") -> SearchResponse:
         return SearchResponse.model_validate(service.search_entities(project_id, q))
+
+    @app.get("/api/projects/{project_id}/pipeline-graph")
+    async def get_pipeline_graph(project_id: str) -> dict:
+        return service.get_pipeline_graph(project_id)
 
     @app.get("/api/projects/{project_id}/chat")
     async def list_chat_messages(project_id: str) -> list[dict]:

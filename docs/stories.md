@@ -45,7 +45,7 @@ NOTES from Cam:
 | 020 | Editorial Architect and Editorial Direction | 5 — Creative Direction | Medium | Done | [story-020](stories/story-020-editorial-architect.md) |
 | 021 | Visual Architect and Visual Direction | 5 — Creative Direction | Medium | To Do | [story-021](stories/story-021-visual-architect.md) |
 | 022 | Sound Designer and Sound Direction | 5 — Creative Direction | Medium | To Do | [story-022](stories/story-022-sound-designer.md) |
-| 023 | Actor Agents and Performance Direction | 5 — Creative Direction | Medium | To Do | [story-023](stories/story-023-actor-agents.md) |
+| 023 | Performance Direction Artifacts | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
 | 024 | Direction Convergence and Review | 5 — Creative Direction | Medium | To Do | [story-024](stories/story-024-direction-convergence.md) |
 | 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | To Do | [story-025](stories/story-025-shot-planning.md) |
 | 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | To Do | [story-026](stories/story-026-storyboard-generation.md) |
@@ -66,7 +66,7 @@ NOTES from Cam:
 | 041 | Artifact Quality Improvements | Cross-Cutting | Medium | Done | [story-041](stories/story-041-artifact-quality-improvements.md) |
 | 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Done | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 043 | Entity-First Navigation | 2.5 — UI | High | Done | [story-043](stories/story-043-entity-first-navigation.md) |
-| 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Pending | [story-044](stories/story-044-mobile-friendly-ui.md) |
+| 044 | Mobile-Friendly UI | 2.5 — UI | Medium | To Do | [story-044](stories/story-044-mobile-friendly-ui.md) |
 | 045 | Entity Cross-Linking | 2.5 — UI | Medium | Done | [story-045](stories/story-045-entity-cross-linking.md) |
 | 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Draft | [story-046](stories/story-046-theme-system.md) |
 | 047 | Benchmark Sonnet 4.6 Across All Evals | Cross-Cutting | High | Done | [story-047](stories/story-047-sonnet-46-benchmarks.md) |
@@ -107,6 +107,12 @@ NOTES from Cam:
 | 082 | Creative Direction UX | 5 — Creative Direction | High | Done | [story-082](stories/story-082-creative-direction-ux.md) |
 | 083 | Group Chat Architecture | 5 — Creative Direction | High | Done | [story-083](stories/story-083-group-chat-architecture.md) |
 | 084 | Character Chat Agents & Story Editor Rename | 5 — Creative Direction | High | Done | [story-084](stories/story-084-character-chat-agents.md) |
+| 085 | Pipeline Capability Graph & Navigation Bar | Cross-Cutting | High | Done | [story-085](stories/story-085-pipeline-capability-graph.md) |
+| 086 | AI Navigation Intelligence | Cross-Cutting | High | Done | [story-086](stories/story-086-ai-navigation-intelligence.md) |
+| 087 | Pre-flight Summary Cards | Cross-Cutting | Medium | Done | [story-087](stories/story-087-preflight-summary-cards.md) |
+| 088 | Staleness UX | Cross-Cutting | Medium | Done | [story-088](stories/story-088-staleness-ux.md) |
+| 089 | Interaction Mode Selection | Cross-Cutting | Low | Done | [story-089](stories/story-089-interaction-mode-selection.md) |
+| 090 | Persona-Adaptive Workspaces | Cross-Cutting | Low | Pending | [story-090](stories/story-090-persona-adaptive-workspaces.md) |
 
 ## Phase Summary
 

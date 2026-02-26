@@ -150,6 +150,7 @@ export function updateProjectSettings(
   settings: {
     display_name?: string
     human_control_mode?: 'autonomous' | 'checkpoint' | 'advisory'
+    interaction_mode?: 'guided' | 'balanced' | 'expert'
     ui_preferences?: Record<string, string>
   },
 ): Promise<ProjectSummary> {
@@ -230,6 +231,12 @@ export function postChatMessage(projectId: string, message: ChatMessage): Promis
   })
 }
 
+// --- Pipeline Graph ---
+
+export function getPipelineGraph(projectId: string): Promise<import('./types').PipelineGraphResponse> {
+  return request<import('./types').PipelineGraphResponse>(`/api/projects/${projectId}/pipeline-graph`)
+}
+
 // --- Search ---
 
 export function searchProject(projectId: string, query: string): Promise<SearchResponse> {
@@ -258,6 +265,8 @@ export interface ChatStreamChunk {
       payload: Record<string, unknown>
     }
   }>
+  /** Structured preflight data for run proposals. */
+  preflight_data?: import('./types').PreflightData
 }
 
 export async function streamChatMessage(

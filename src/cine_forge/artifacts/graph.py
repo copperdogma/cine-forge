@@ -98,6 +98,7 @@ class DependencyGraph:
                     continue
                 seen.add(node_key)
                 nodes[node_key]["health"] = ArtifactHealth.STALE.value
+                nodes[node_key]["stale_cause"] = new_ref.key()
                 stale_refs.append(ArtifactRef.model_validate(nodes[node_key]["ref"]))
                 # If a newer version of this node exists, its downstream was already
                 # rebuilt from fresh data — mark stale here but stop BFS propagation
@@ -134,6 +135,24 @@ class DependencyGraph:
             graph = self._read_graph()
         return [
             ArtifactRef.model_validate(node["ref"])
+            for node in graph["nodes"].values()
+            if node["health"] == ArtifactHealth.STALE.value
+        ]
+
+    def get_stale_with_causes(self) -> list[tuple[ArtifactRef, str | None]]:
+        """Return stale artifacts with the cause key that triggered staleness.
+
+        Returns list of (stale_ref, cause_key) tuples where cause_key is the
+        artifact ref key (e.g., "canonical_script:__project__:v3") of the
+        upstream artifact whose new version triggered the staleness cascade.
+        """
+        with self._lock:
+            graph = self._read_graph()
+        return [
+            (
+                ArtifactRef.model_validate(node["ref"]),
+                node.get("stale_cause"),
+            )
             for node in graph["nodes"].values()
             if node["health"] == ArtifactHealth.STALE.value
         ]

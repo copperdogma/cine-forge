@@ -6,6 +6,8 @@ export type ApiError = {
   hint?: string | null
 }
 
+export type InteractionMode = 'guided' | 'balanced' | 'expert'
+
 export type ProjectSummary = {
   project_id: string
   display_name: string
@@ -15,6 +17,7 @@ export type ProjectSummary = {
   input_files: string[]
   ui_preferences: Record<string, string>
   human_control_mode: 'autonomous' | 'checkpoint' | 'advisory'
+  interaction_mode: InteractionMode
 }
 
 export type RecentProjectSummary = ProjectSummary & {
@@ -180,6 +183,22 @@ export type ToolCallStatus = {
   done: boolean
 }
 
+export type PreflightWarning = {
+  type: 'stale' | 'missing'
+  label: string
+}
+
+export type PreflightData = {
+  recipe_id: string
+  recipe_name: string
+  description: string
+  stage_count: number
+  stages: string[]
+  input_file: string
+  tier: 'ready' | 'warn_stale' | 'block_missing'
+  warnings: PreflightWarning[]
+}
+
 export type ChatMessage = {
   id: string
   type: ChatMessageType
@@ -197,6 +216,8 @@ export type ChatMessage = {
   pageContext?: string
   /** The actual artifact content injected into the system prompt (scene text, bible, etc.). */
   injectedContent?: string
+  /** Structured preflight data for run proposals. */
+  preflightData?: PreflightData
 }
 
 // --- Search ---
@@ -231,6 +252,41 @@ export type ChatCharacter = {
   entity_id: string   // full entity id e.g. 'character_billy'
   name: string        // display name e.g. 'Billy'
   prominence: string  // 'primary' | 'secondary' | 'minor'
+}
+
+// --- Pipeline Graph ---
+
+export type PipelineNodeStatus = 'completed' | 'stale' | 'in_progress' | 'available' | 'blocked' | 'not_implemented'
+export type PipelinePhaseStatus = 'completed' | 'partial' | 'available' | 'blocked' | 'not_started'
+
+export type PipelineGraphNode = {
+  id: string
+  label: string
+  phase_id: string
+  status: PipelineNodeStatus
+  artifact_count: number
+  dependencies: string[]
+  nav_route: string | null
+  implemented: boolean
+  stale_reason?: string
+  fix_recipe?: string
+}
+
+export type PipelineGraphPhase = {
+  id: string
+  label: string
+  icon: string
+  status: PipelinePhaseStatus
+  nav_route: string | null
+  completed_count: number
+  implemented_count: number
+  total_count: number
+}
+
+export type PipelineGraphResponse = {
+  phases: PipelineGraphPhase[]
+  nodes: PipelineGraphNode[]
+  edges: Array<{ from: string; to: string }>
 }
 
 // --- List UI State ---

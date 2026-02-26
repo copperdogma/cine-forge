@@ -164,6 +164,7 @@ class OperatorConsoleService:
         slug: str,
         display_name: str,
         human_control_mode: str | None = None,
+        interaction_mode: str | None = None,
         style_packs: dict[str, str] | None = None,
         ui_preferences: dict[str, Any] | None = None,
     ) -> None:
@@ -186,6 +187,8 @@ class OperatorConsoleService:
         existing["display_name"] = display_name
         if human_control_mode is not None:
             existing["human_control_mode"] = human_control_mode
+        if interaction_mode is not None:
+            existing["interaction_mode"] = interaction_mode
         if style_packs is not None:
             existing["style_packs"] = style_packs
 
@@ -214,6 +217,7 @@ class OperatorConsoleService:
         project_id: str,
         display_name: str | None = None,
         human_control_mode: str | None = None,
+        interaction_mode: str | None = None,
         style_packs: dict[str, str] | None = None,
         ui_preferences: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
@@ -231,8 +235,12 @@ class OperatorConsoleService:
             pj.get("slug", project_id),
             display_name if display_name is not None else pj.get("display_name", project_id),
             human_control_mode=(
-                human_control_mode if human_control_mode is not None 
+                human_control_mode if human_control_mode is not None
                 else pj.get("human_control_mode")
+            ),
+            interaction_mode=(
+                interaction_mode if interaction_mode is not None
+                else pj.get("interaction_mode")
             ),
             style_packs=style_packs if style_packs is not None else pj.get("style_packs"),
             ui_preferences=ui_preferences,
@@ -414,6 +422,7 @@ class OperatorConsoleService:
         display_name = (pj or {}).get("display_name") or self._clean_display_name(path, input_files)
         ui_preferences = (pj or {}).get("ui_preferences", {})
         human_control_mode = (pj or {}).get("human_control_mode", "autonomous")
+        interaction_mode = (pj or {}).get("interaction_mode", "balanced")
         return {
             "project_id": project_id,
             "display_name": display_name,
@@ -423,6 +432,7 @@ class OperatorConsoleService:
             "input_files": input_files,
             "ui_preferences": ui_preferences,
             "human_control_mode": human_control_mode,
+            "interaction_mode": interaction_mode,
         }
 
     @staticmethod
@@ -466,6 +476,31 @@ class OperatorConsoleService:
                 "stored_path": str(entry),
             })
         return inputs
+
+    def get_pipeline_graph(self, project_id: str) -> dict[str, Any]:
+        """Return the pipeline capability graph with dynamic status."""
+        from cine_forge.pipeline.graph import compute_pipeline_graph
+
+        project_path = self.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+
+        # Check for active runs to mark in-progress stages.
+        active_stages: set[str] | None = None
+        try:
+            runs = self.list_runs(project_id)
+            for run in runs:
+                if run.get("state") == "running":
+                    # Collect stage IDs that are currently running.
+                    stages = run.get("stages", {})
+                    active_stages = {
+                        sid for sid, sdata in stages.items()
+                        if isinstance(sdata, dict) and sdata.get("status") == "running"
+                    }
+                    break
+        except Exception:
+            pass  # Non-critical: proceed without active stage detection.
+
+        return compute_pipeline_graph(store, active_run_stages=active_stages)
 
     def read_project_input(self, project_id: str, filename: str) -> str:
         """Read a project input file as text. Guards against path traversal."""

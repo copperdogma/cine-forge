@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import ReactMarkdown from 'react-markdown'
 import {
   Activity, Clapperboard, Drama, Eye, MapPin,
@@ -9,11 +10,13 @@ import {
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useChatStore } from '@/lib/chat-store'
-import { useProjectInputs, useStartRun, useProjectCharacters } from '@/lib/hooks'
-import { postChatMessage, streamChatMessage } from '@/lib/api'
+import { useProject, useProjectInputs, useStartRun, useProjectCharacters } from '@/lib/hooks'
+import { postChatMessage, streamChatMessage, updateProjectSettings } from '@/lib/api'
+import { PreflightCard } from '@/components/PreflightCard'
 import { RunProgressCard } from '@/components/RunProgressCard'
-import type { ChatMessage, ChatAction, ToolCallStatus } from '@/lib/types'
+import type { ChatMessage, ChatAction, InteractionMode, ProjectSummary, ToolCallStatus } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
 // ---------------------------------------------------------------------------
@@ -479,6 +482,9 @@ function ChatMessageItem({
           ) : isStreaming && !isThinking ? (
             <span className="inline-block w-1.5 h-4 bg-primary/70 animate-pulse align-text-bottom" />
           ) : null}
+          {showActions && message.preflightData && (
+            <PreflightCard data={message.preflightData} />
+          )}
           {showActions && (
             <div className="flex flex-wrap gap-2 mt-2">
               {message.actions!.map(action => (
@@ -551,6 +557,58 @@ const SECTION_ICONS: Record<string, React.ElementType> = {
   locations: MapPin,
   props: Package,
   scenes: Clapperboard,
+}
+
+// ---------------------------------------------------------------------------
+// Interaction Mode Selector — small segmented control in chat header
+// ---------------------------------------------------------------------------
+
+const MODE_OPTIONS: { value: InteractionMode; label: string; tip: string }[] = [
+  { value: 'guided', label: 'Guided', tip: 'Verbose, step-by-step explanations' },
+  { value: 'balanced', label: 'Balanced', tip: 'Clear and concise (default)' },
+  { value: 'expert', label: 'Expert', tip: 'Terse, action-oriented' },
+]
+
+function InteractionModeSelector({ projectId }: { projectId: string }) {
+  const queryClient = useQueryClient()
+  const { data: project } = useProject(projectId)
+  const current: InteractionMode = project?.interaction_mode ?? 'balanced'
+
+  const setMode = useCallback((mode: InteractionMode) => {
+    if (mode === current) return
+    // Optimistic update
+    queryClient.setQueryData<ProjectSummary>(['projects', projectId], old => {
+      if (!old) return old
+      return { ...old, interaction_mode: mode }
+    })
+    // Persist
+    updateProjectSettings(projectId, { interaction_mode: mode }).catch(() => {
+      queryClient.invalidateQueries({ queryKey: ['projects', projectId] })
+    })
+  }, [projectId, current, queryClient])
+
+  return (
+    <div className="flex items-center rounded-md bg-muted/50 p-0.5">
+      {MODE_OPTIONS.map(opt => (
+        <Tooltip key={opt.value}>
+          <TooltipTrigger asChild>
+            <button
+              onClick={() => setMode(opt.value)}
+              className={cn(
+                'px-2 py-0.5 text-[11px] font-medium rounded-sm transition-colors cursor-pointer',
+                opt.value === current
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground',
+              )}
+            >
+              {opt.label}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" className="text-xs">{opt.tip}</TooltipContent>
+        </Tooltip>
+      ))}
+    </div>
+  )
 }
 
 export function ChatPanel() {
@@ -885,7 +943,7 @@ export function ChatPanel() {
             store.completeToolCall(projectId, currentMsgId, chunk.id)
           }
         } else if (chunk.type === 'actions' && chunk.actions) {
-          store.attachActions(projectId, currentMsgId, chunk.actions)
+          store.attachActions(projectId, currentMsgId, chunk.actions, chunk.preflight_data)
         }
       },
       () => {
@@ -1007,6 +1065,12 @@ export function ChatPanel() {
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
+      {/* Interaction mode selector bar */}
+      {projectId && (
+        <div className="flex items-center justify-end px-3 py-1.5 border-b border-border/30">
+          <InteractionModeSelector projectId={projectId} />
+        </div>
+      )}
       <ScrollArea className="flex-1 min-h-0 relative" ref={scrollRef}>
         {/* Sticky role header — shows when scrolling through a long role message */}
         {stickyRole && (() => {

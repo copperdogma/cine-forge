@@ -1,5 +1,27 @@
 # Changelog
 
+## [2026-02-26-01] — Pipeline capability graph, AI navigation, preflight cards, staleness UX, interaction mode (Stories 085–089)
+
+### Added
+- Pipeline capability graph: 19 nodes across 6 phases (Script/World/Direction/Shots/Storyboards/Production) with dynamic status from artifact store (`src/cine_forge/pipeline/graph.py`)
+- Pipeline bar: persistent horizontal bar in app shell showing project progress with phase segments, tooltips, completion badges, and click-to-navigate (`ui/src/components/PipelineBar.tsx`)
+- AI `read_pipeline_graph` tool: chat AI can read full pipeline state and recommend next steps
+- AI navigation intelligence: system prompt guidance for pipeline-aware responses, tiered preflight checks (green/yellow/red) before proposing runs, prerequisite validation
+- Preflight summary cards: visual cards in chat showing recipe readiness, input health, and warnings before expensive runs (`ui/src/components/PreflightCard.tsx`)
+- Staleness tracing: `trace_staleness()` walks dependency graph to explain WHY artifacts are stale, shown in pipeline bar tooltips and AI chat output
+- "Fix with rerun" button on stale pipeline nodes — dispatches chat message to rerun the appropriate recipe
+- Interaction mode selector (guided/balanced/expert): adjusts AI verbosity and system prompt framing, stored in project.json
+- `GET /api/projects/{pid}/pipeline-graph` endpoint
+- `interaction_mode` field in project settings API
+- ADR-002 (Goal-Oriented Project Navigation): decided, with deep research from 4 AI providers
+- Story 090 (Persona-Adaptive Workspaces) created for ADR-002 Layer 4
+
+### Changed
+- AI system prompt includes pipeline navigation guidance and post-run graph refresh instructions
+- Staleness propagation records `stale_cause` for upstream traceability
+- Story 023 rewritten to reflect Story 084 superseding actor agent scope
+- AGENTS.md repo map updated with `src/cine_forge/pipeline/` package
+
 ## [2026-02-25-01] — Chat persistence enrichment & character history fix (Story 084)
 
 ### Added

@@ -321,6 +321,7 @@ Shared components and utilities — the **single source of truth** for each conc
 - `src/cine_forge/modules/`: Pipeline modules by stage.
 - `src/cine_forge/schemas/`: Pydantic artifact schemas.
 - `src/cine_forge/artifacts/`: Storage, versioning, and dependency graph.
+- `src/cine_forge/pipeline/`: Pipeline capability graph (static definition + dynamic status).
 - `src/cine_forge/api/`: Backend API for the UI.
 - `ui/`: Production React frontend (shadcn/ui + React 19 + Zustand).
 

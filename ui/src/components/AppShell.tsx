@@ -32,10 +32,11 @@ import { RightPanelProvider, useRightPanel, useInspector } from '@/lib/right-pan
 import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
+import { PipelineBar } from '@/components/PipelineBar'
 import { ChangelogDialog } from '@/components/ChangelogDialog'
 import { useShortcuts } from '@/lib/shortcuts'
 import { fetchHealth } from '@/lib/api'
-import { useProject, useChatLoader, useArtifactGroups, useRuns } from '@/lib/hooks'
+import { useProject, useChatLoader, useArtifactGroups, useRuns, usePipelineGraph } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import { useRunProgressChat } from '@/lib/use-run-progress'
 import { cn } from '@/lib/utils'
@@ -209,6 +210,7 @@ function ShellInner() {
   const activeRunId = useChatStore(s => projectId ? s.activeRunId?.[projectId] ?? null : null)
   const { data: artifactGroups } = useArtifactGroups(projectId, activeRunId ? 750 : undefined)
   const { data: runs } = useRuns(projectId)
+  const { data: pipelineGraph } = usePipelineGraph(projectId, activeRunId)
 
   const navCounts = useMemo(() => {
     const counts: Record<string, number> = {}
@@ -552,6 +554,15 @@ function ShellInner() {
             </TooltipContent>
           </Tooltip>
         </header>
+
+        {/* Pipeline Bar */}
+        {projectId && pipelineGraph && (
+          <PipelineBar
+            phases={pipelineGraph.phases}
+            nodes={pipelineGraph.nodes}
+            projectId={projectId}
+          />
+        )}
 
         {/* Content + optional Right Panel */}
         <div className="flex flex-1 min-h-0">
