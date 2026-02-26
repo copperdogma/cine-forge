@@ -12,7 +12,6 @@ import {
   MapPin,
   Package,
   PanelLeftOpen,
-  PanelRightOpen,
   Play,
   Plus,
   Search,
@@ -40,7 +39,6 @@ import { useNotificationDemo } from "@/lib/notifications"
 
 interface CommandPaletteProps {
   onToggleSidebar?: () => void
-  onToggleInspector?: () => void
 }
 
 /**
@@ -52,7 +50,6 @@ interface CommandPaletteProps {
  */
 export function CommandPalette({
   onToggleSidebar,
-  onToggleInspector,
 }: CommandPaletteProps) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
@@ -207,17 +204,6 @@ export function CommandPalette({
               <span className="text-sm">Toggle Sidebar</span>
               <kbd className="ml-auto text-[10px] font-mono text-muted-foreground bg-muted/50 rounded px-1">
                 ⌘B
-              </kbd>
-            </CommandItem>
-          )}
-          {onToggleInspector && (
-            <CommandItem
-              onSelect={() => runCommand(() => onToggleInspector())}
-            >
-              <PanelRightOpen className="h-4 w-4 mr-2" />
-              <span className="text-sm">Toggle Inspector</span>
-              <kbd className="ml-auto text-[10px] font-mono text-muted-foreground bg-muted/50 rounded px-1">
-                ⌘I
               </kbd>
             </CommandItem>
           )}

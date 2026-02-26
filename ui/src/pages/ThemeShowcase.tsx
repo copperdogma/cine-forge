@@ -344,9 +344,9 @@ export default function ThemeShowcase() {
                 ))}
               </div>
             </div>
-            {/* Inspector */}
+            {/* Chat panel placeholder */}
             <div className="w-64 border-l border-border p-3 space-y-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Inspector</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Chat</p>
               <div className="space-y-2">
                 <div className="rounded-md bg-muted/50 h-4 w-3/4" />
                 <div className="rounded-md bg-muted/50 h-4 w-1/2" />

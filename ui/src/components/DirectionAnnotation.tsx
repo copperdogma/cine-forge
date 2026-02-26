@@ -91,7 +91,6 @@ export function DirectionAnnotation({
 
   const handleChatAbout = (topic: string) => {
     if (!panel.state.open) panel.openChat()
-    panel.setTab('chat')
     const sceneCtx = sceneHeading ? ` for scene "${sceneHeading}"` : ''
     askChatQuestion(
       `@${config.roleId} I'd like to discuss your ${directionType} direction${sceneCtx}: ${topic}`,

@@ -18,7 +18,6 @@ import {
   Settings,
   X,
   MessageSquare,
-  Info,
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -28,7 +27,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
-import { RightPanelProvider, useRightPanel, useInspector } from '@/lib/right-panel'
+import { RightPanelProvider, useRightPanel } from '@/lib/right-panel'
 import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
@@ -188,7 +187,6 @@ function ShellInner() {
       window.removeEventListener('mouseup', handleMouseUp)
     }
   }, [])
-  const inspector = useInspector()
   const { data: project } = useProject(projectId)
 
   const displayName = project?.display_name ?? projectId?.slice(0, 12) ?? 'Project'
@@ -378,7 +376,6 @@ function ShellInner() {
     <div className="fixed inset-0 flex overflow-hidden">
       <CommandPalette
         onToggleSidebar={() => setNavOpen(v => !v)}
-        onToggleInspector={() => panel.toggle()}
       />
       {/* Keyboard-triggered settings dialog */}
       <ProjectSettings
@@ -577,7 +574,7 @@ function ShellInner() {
 
           {/* Right Panel — Chat + Inspector tabs */}
           {panel.state.open && (
-            <aside role="complementary" aria-label="Chat and inspector panel" style={{ width: panelWidth }} className="border-l border-border bg-card shrink-0 flex flex-col min-h-0 relative">
+            <aside role="complementary" aria-label="Chat panel" style={{ width: panelWidth }} className="border-l border-border bg-card shrink-0 flex flex-col min-h-0 relative">
               {/* Drag handle */}
               <div
                 onMouseDown={handleDragStart}
@@ -585,39 +582,19 @@ function ShellInner() {
               >
                 <div className="h-8 w-1 rounded-full bg-border group-hover:bg-primary/50 transition-colors" />
               </div>
-              {/* Tab bar */}
-              <div className="flex items-center border-b border-border shrink-0">
-                <button
-                  onClick={() => panel.setTab('chat')}
-                  className={cn(
-                    'flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium transition-colors cursor-pointer',
-                    panel.state.activeTab === 'chat'
-                      ? 'text-foreground border-b-2 border-primary'
-                      : 'text-muted-foreground hover:text-foreground',
-                  )}
-                >
+              {/* Header */}
+              <div className="flex items-center border-b border-border shrink-0 px-4 py-2.5">
+                <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
                   <MessageSquare className="h-3.5 w-3.5" />
                   Chat
-                </button>
-                <button
-                  onClick={() => panel.setTab('inspector')}
-                  className={cn(
-                    'flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium transition-colors cursor-pointer',
-                    panel.state.activeTab === 'inspector'
-                      ? 'text-foreground border-b-2 border-primary'
-                      : 'text-muted-foreground hover:text-foreground',
-                  )}
-                >
-                  <Info className="h-3.5 w-3.5" />
-                  Inspector
-                </button>
+                </div>
                 <div className="flex-1" />
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6 mr-2 cursor-pointer"
+                      className="h-6 w-6 cursor-pointer"
                       onClick={() => panel.close()}
                     >
                       <X className="h-3.5 w-3.5" />
@@ -627,20 +604,7 @@ function ShellInner() {
                 </Tooltip>
               </div>
 
-              {/* Tab content */}
-              {panel.state.activeTab === 'chat' ? (
-                <ChatPanel />
-              ) : (
-                <ScrollArea className="flex-1">
-                  <div className="p-4">
-                    {inspector.state.content ?? (
-                      <p className="text-xs text-muted-foreground">
-                        Select an item to inspect its details.
-                      </p>
-                    )}
-                  </div>
-                </ScrollArea>
-              )}
+              <ChatPanel />
             </aside>
           )}
         </div>

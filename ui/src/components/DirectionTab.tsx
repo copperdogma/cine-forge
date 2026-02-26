@@ -86,14 +86,12 @@ export function DirectionTab({
 
   const handleGenerate = (roleId: string, roleName: string) => {
     if (!panel.state.open) panel.openChat()
-    panel.setTab('chat')
     const sceneCtx = sceneHeading ? ` for scene "${sceneHeading}"` : ' for this scene'
     askChatQuestion(`@${roleId} Analyze this scene and provide ${roleName.toLowerCase()} direction${sceneCtx}.`)
   }
 
   const handleConverge = () => {
     if (!panel.state.open) panel.openChat()
-    panel.setTab('chat')
     askChatQuestion(
       `@director Review all creative direction for this scene and identify any conflicts or opportunities for convergence.`,
     )

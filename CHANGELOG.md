@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-02-26-02] — Remove dead Inspector tab from right panel
+
+### Removed
+- Inspector tab and all supporting code — never had any functionality (nothing called `openInspector`)
+- `ui/src/lib/inspector.tsx` (orphaned context provider, never mounted)
+- Inspector tab bar, `setTab()`, `ActiveTab` type, `useInspector()` wrapper from right panel context
+- "Toggle Inspector" command from command palette
+
+### Changed
+- Right panel is now a single-purpose Chat panel with a simple header (no tabs)
+- `⌘I` shortcut relabeled from "Toggle inspector" to "Toggle right panel"
+- Theme showcase layout skeleton updated ("Inspector" → "Chat")
+
 ## [2026-02-26-01] — Pipeline capability graph, AI navigation, preflight cards, staleness UX, interaction mode (Stories 085–089)
 
 ### Added

@@ -35,7 +35,6 @@ export function GlossaryTerm({
   const handleClick = () => {
     // Open chat panel if closed
     if (!panel.state.open) panel.openChat()
-    panel.setTab('chat')
     // Send a contextual question
     const q = context
       ? `What does "${term}" mean ${context}?`
@@ -84,7 +83,6 @@ export function SectionHelp({
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation() // Don't toggle the collapsible
     if (!panel.state.open) panel.openChat()
-    panel.setTab('chat')
     askChatQuestion(question)
   }
 

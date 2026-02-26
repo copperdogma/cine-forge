@@ -212,7 +212,7 @@ export const GLOBAL_SHORTCUTS: ShortcutDefinition[] = [
   {
     key: 'i',
     meta: true,
-    label: 'Toggle inspector',
+    label: 'Toggle right panel',
     category: 'UI Controls',
   },
 ];
