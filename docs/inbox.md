@@ -5,7 +5,15 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ### UI / Interaction
 
-- Do we still need the Inspector tab?
+- 20260226: **Narrative-aware timeline export**: When exporting to NLE formats (OpenTimelineIO, Final Cut XML, AAF, EDL), embed CineForge's narrative structure as timeline markers, color-coded regions, and clip notes. Scene boundaries, beat changes, character entrances, emotional tone shifts — metadata that no other AI video tool has because they don't understand story structure. Makes the editor's job dramatically easier. Formats: single video, scene folder, and NLE interchange formats.
+
+- 20260226: **Video preview/assembly view**: Simple video player with a scene strip below it — drag to reorder scenes, click to play from any point, basic trim handles. NOT a full NLE, just enough to preview flow and make coarse adjustments before export. Think iMovie simplified timeline, not Premiere.
+
+- 20260226: **Scene Workspace (View 2)**: Per-scene production control center. Shows the scene's inputs (characters, location, props, direction, storyboard) as tiles with red/yellow/green readiness indicators. Red = raw text only (AI guesses everything), yellow = bibles but no reference images (inconsistent visuals), green = fully specified. "Make all green" button runs missing pipeline stages. Click any element to drill into its detail page. This is the filmmaker's primary workspace — NOT an NLE, but a generation control surface. See ADR-002 design discussion (2026-02-26 session).
+
+- 20260226: **Two-view architecture**: CineForge has two primary views — (1) Story Explorer (existing: script/scenes/characters/locations/props nav) for narrative exploration and (2) Scene Workspace (new) for production readiness and generation. Both operate on the same artifact data. A third "view" is export (video file, scene folder, NLE interchange formats). No built-in NLE — users export to their editor of choice.
+
+- 20260218 ai: [Google Gemini: Lyria 3 music generation](https://x.com/geminiapp/status/2024152863967240529) (@GeminiApp) - Turn ideas/photos/videos into 30-sec custom soundtracks with lyrics. Might be useful for music/soundtrack generation ^az86u1
 
 - Stale: Why is this entity listed as stale? http://localhost:5174/the-mariner-40/locations/13th_floor Also I think when you hover over Stale it should tell you what that means. It currently looks like there's something wrong, but there's no info as to what, what that means for the user, or how they can do anythnig about it.
   - Related, the rest of them are listed as "valid". Are those are two states? Valid and stale? And valid in what way? Validated by what? Is that the right word for this?
