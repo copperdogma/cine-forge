@@ -2,6 +2,15 @@
 
 This file is the project-wide source of truth for agent behavior and engineering principles. It serves as both a core directive and a living memory for AI agents working on this codebase.
 
+> **The Ideal (`docs/ideal.md`) is the most important document in this project.**
+> It defines what CineForge should be with zero limitations. Every architectural
+> decision should move toward the Ideal. Every compromise in the spec (`docs/spec.md`)
+> carries a detection mechanism for when it's no longer needed. When in doubt about
+> a design choice, ask: "Does this move us toward the Ideal?"
+>
+> The Ideal's primary test: **Is it easy, fun, and engaging?** If using CineForge
+> feels like work, something is wrong.
+
 ## Core Agent Mandates
 
 - **GREENFIELD PROJECT — NO BACKWARDS COMPATIBILITY**: This app is under active development with zero real users, zero valuable user data, and zero old processes or file formats to preserve. Do NOT waste time on backwards compatibility shims, migration paths, deprecation warnings, old format support, or "gentle" transitions. When something needs to change, **change it directly**. Delete the old code. Update all call sites. If a schema changes, change it — don't version it. If an API changes, change it — don't keep the old endpoint. The only cost is a `git revert` away.

@@ -2,6 +2,16 @@ CineForge Project Specification
 
 AI-Driven Film Reasoning, Pre-Production, and Generation Pipeline
 
+> **This spec is a set of compromises against the Ideal (`docs/ideal.md`).**
+> Every section that exists because of a limitation is annotated with its limitation
+> type and detection mechanism. AI compromises have deletion evals — when they pass,
+> the compromise is deleted. World compromises have evolution paths — they transform
+> toward the Ideal over time. This document should shrink and simplify over time.
+> That is the goal.
+>
+> Sections not annotated are **Ideal requirements** — they describe what the system
+> should do regardless of implementation and are mirrored in `docs/ideal.md`.
+
 ⸻
 
 1. Purpose & Scope
@@ -90,6 +100,12 @@ The user or Director may also manually decide which stale artifacts to revise wi
 	•	Budget caps may be configured per-project or per-run to prevent runaway costs.
 	•	Cost data is recorded in run artifacts for auditability.
 
+> **⚙️ Compromise C1 — Cost Transparency** [Ecosystem/Infrastructure]
+> **The Ideal:** AI inference is free. No cost tracking needed.
+> **The Limitation:** AI inference has non-trivial, variable monetary costs across providers.
+> **Detection:** Monitor inference pricing trends. When cost per 1M tokens drops below $0.001 across all providers used.
+> **When It Resolves:** Delete cost tracking per call, budget cap system, and cost-quality tiering UI. Keep aggregate cost reporting for business purposes only.
+
 2.8 Quality Validation (QA)
 ... (existing content) ...
 artifact's audit metadata.
@@ -113,6 +129,19 @@ The strategy supports namespaces (e.g., text.work, video.work) to allow speciali
 
 Resilient Work Pattern:
 Modules should attempt work with the 'work' slot, validate with 'verify', and automatically retry using the 'escalate' slot if validation fails.
+
+> **⚙️ Compromise C2 — QA Validation Passes** [AI Capability]
+> **The Ideal:** AI output is reliably correct. No separate verification step needed.
+> **The Limitation:** AI outputs are unreliable — hallucinations, structural errors, missed requirements.
+> **Detection:** Run eval: submit 10 diverse extraction tasks to SOTA model. If all pass structural + semantic validation on first attempt without QA, this compromise can be simplified.
+> **When It Resolves:** Delete dedicated QA pass stages, verify model tier slot, and QA-specific schemas. Keep structural validation as a lightweight assertion (not a separate AI call).
+
+> **⚙️ Compromise C3 — Tiered Model Strategy** [AI Capability + Ecosystem]
+> **The Ideal:** One model does everything perfectly.
+> **The Limitation:** No single model is reliably capable across all tasks at acceptable cost. Different tasks need different models.
+> **Detection:** When a single model achieves top-tier quality on all 9 eval tasks (character/location/prop extraction, scene extraction, normalization, enrichment, QA, config detection, relationship discovery) at acceptable latency.
+> **When It Resolves:** Delete model selection infrastructure (work/verify/escalate slots, subsumption hierarchy, namespace routing, escalation logic). Replace with single model config.
+> **Compromise-Level Preferences:** Model selection UI, per-stage model override, cost profiles.
 
 ⸻
 
@@ -227,6 +256,13 @@ Scene processing is split into two tiers:
 	•	Gap-fills structural unknowns (UNKNOWN location, UNSPECIFIED time)
 	•	Produces updated `scene` artifact versions and enriched `scene_index`
 	•	Updates `discovery_tier` to `"llm_enriched"`
+
+> **⚙️ Compromise C4 — Two-Tier Scene Architecture** [AI Capability]
+> **The Ideal:** Scene analysis is instant and complete in a single pass — structural parsing, narrative beats, tone, and gap-filling all happen together.
+> **The Limitation:** Full LLM-based scene analysis is slow (~30s+) and expensive. Users need a browsable scene index immediately.
+> **Detection:** Run eval: submit full screenplay to SOTA model requesting complete scene analysis (structure + narrative + tone). If results are high-quality AND return in <5 seconds, the two-tier split is unnecessary.
+> **When It Resolves:** Merge scene_breakdown_v1 and scene_analysis_v1 into a single module. Delete Tier 1 placeholder values (`narrative_beats=[]`, `tone_mood="neutral"`), discovery_tier annotations, and the separate "Analyze Scenes" user action. Scene extraction becomes one step.
+> **Compromise-Level Preferences:** "Analyze Scenes" button, discovery tier indicator in UI, macro-analysis batch size.
 
 5.2 Scene Definition
 
@@ -396,6 +432,12 @@ Roles must declare perception capability:
 	•	audio+video
 
 Roles must not pretend to evaluate media they cannot truly understand.
+
+> **⚙️ Compromise C5 — Capability Gating** [AI Capability]
+> **The Ideal:** All AI is universally multimodal — every role can perceive and reason about text, images, video, and audio natively.
+> **The Limitation:** Current models have fragmented multimodal support. Some are text-only, some handle images, few handle video+audio reliably.
+> **Detection:** When the SOTA model reliably processes text + image + video + audio in a single call with high-quality reasoning across all modalities.
+> **When It Resolves:** Delete perception capability declarations from role schemas, delete modality routing logic in runtime.py. All roles become universally capable.
 
 8.3 Style Packs
 
@@ -780,6 +822,13 @@ The Render Adapter is a stateless module, not a creative role. It has no opinion
 	•	Errors bubble up to the pipeline; the adapter does not negotiate or make creative decisions.
 	•	It cannot change creative intent.
 
+> **⚙️ Compromise C6 — Render Adapter Engine Packs** [Ecosystem/Infrastructure]
+> **The Ideal:** One universal video generation API accepts rich film artifacts and produces high-quality, consistent video.
+> **The Limitation:** AI video generation models have wildly different APIs, prompt formats, supported inputs (keyframes, audio, reference images), duration limits, and quality characteristics. No standard exists.
+> **Detection:** Monitor for: (1) a dominant video generation API standard, or (2) a single model that handles all input types with a clean, stable API.
+> **When It Resolves:** Delete engine pack system (per-model tuning profiles, retry strategies). Simplify Render Adapter to a single-target client. Delete model-specific prompt synthesis step.
+> **Compromise-Level Preferences:** Engine pack selection UI, per-model capability display, model comparison view.
+
 ⸻
 
 18. User Asset Injection (Required)
@@ -814,6 +863,12 @@ AI may propose relaxing locks but may not override without approval.
 	•	Periodically summarized into artifacts.
 	•	Resettable.
 	•	Raw transcripts are always retained even when working memory is summarized or reset.
+
+> **⚙️ Compromise C7 — Working Memory Distinction** [AI Capability]
+> **The Ideal:** AI has unlimited, persistent memory. No distinction between "working" and "canonical" memory — all prior context is always available.
+> **The Limitation:** AI context windows are finite (128K-200K tokens) and expensive. Long conversations must be summarized or truncated.
+> **Detection:** When context windows exceed 10M tokens at negligible cost, OR when AI models natively support persistent cross-session memory.
+> **When It Resolves:** Delete working memory management (summarization triggers, compaction logic, Director/Script Supervisor memory limits). All conversations are fully retained in context. Delete the "Chats are accelerators" principle — chats become truth alongside artifacts.
 
 19.3 Rule
 
@@ -864,6 +919,68 @@ This system is:
 
 AI generation is optional.
 Understanding, structure, and auditability are not.
+
+⸻
+
+## Compromise Index
+
+All compromises in this spec, ordered by architectural significance (which, if resolved, eliminates the most downstream complexity).
+
+| # | Compromise | Spec Ref | Limitation Type | Detection Summary |
+|---|-----------|----------|-----------------|-------------------|
+| C1 | Cost transparency & budget management | 2.7 | Ecosystem | Inference cost → ~$0 |
+| C2 | Dedicated QA validation passes | 2.8 | AI capability | SOTA output reliably correct on first attempt |
+| C3 | Tiered model strategy (work/verify/escalate) | 2.9 | AI capability + Ecosystem | Single model handles all tasks at top quality |
+| C4 | Two-tier scene architecture | 5.1 | AI capability | Full scene analysis in <5s single pass |
+| C5 | Role capability gating (modality) | 8.2 | AI capability | Universal multimodal AI |
+| C6 | Render adapter engine packs | 17.1–17.2 | Ecosystem | Universal video generation API standard |
+| C7 | Working memory distinction | 19.2 | AI capability | Context windows >10M tokens at negligible cost |
+
+**Additional compromise elements** within otherwise-ideal sections (not separately indexed, but noted):
+
+| Section | Compromise Element | Type | Notes |
+|---------|-------------------|------|-------|
+| 2.3 | Layer 2 change propagation as separate on-demand step | AI capability | With instant/free AI, Layer 1+2 merge — all invalidation becomes semantic |
+| 4.2 | Script normalization as a distinct pipeline stage | AI capability | With perfect multiformat reasoning, normalization becomes invisible |
+| 4.4 | Manual project config fields (aspect ratio, production mode) | AI capability | With fully context-aware AI, more fields become auto-inferrable |
+| 5.3 | Discovery tier annotations | AI capability | With single-pass analysis, tier tracking is unnecessary |
+| 8.4 | Async style pack creation flow | AI capability + Ecosystem | With capable synchronous AI, becomes a single call |
+| 9.1–9.2 | Role consolidation (Editorial/Visual Architect) | AI capability | With negligible per-role cost, roles could be more specialized |
+| 19.3 | "Chats are accelerators" distinction | AI capability | With persistent memory, chats become truth alongside artifacts |
+
+⸻
+
+## Untriaged Ideas
+
+Raw ideas from `docs/inbox.md` and design sessions that relate to the spec but haven't been
+incorporated into a compromise or confirmed as an Ideal requirement. Work through these as
+the spec evolves. Don't delete — incorporate or explicitly discard with rationale.
+
+### From docs/inbox.md (2026-02-26)
+
+- **Voice specification for characters**: Users should be able to specify character voices — tone, accent, age, reference clips. Feeds into video/audio generation. Needs a spec section under Section 10 (Performance System) or Section 12 (Creative Direction).
+
+- **Scene-level vs shot-level video generation**: Kling 3.0 generates multi-shot sequences (up to 6 cuts per generation). The atomic unit for video gen is shifting from "shot" toward "scene." Scene Workspace should be scene-first with shot detail as drill-down. Affects Section 13 (Shot Planning) and Section 17 (Render Adapter).
+
+- **Prompt transparency / direct prompt editing**: For any AI-generated output, show the exact prompt and let users edit/re-submit. Captured in Ideal R12 but needs a spec section defining how prompts are stored and versioned as artifacts.
+
+- **"AI-filled" / skip-ahead state with visible marking**: When users generate without completing upstream, AI fills gaps. Each AI-guessed element needs visible labeling and quality degradation indicators. Captured in Ideal R11 but needs spec detail on the "AI-inferred" artifact state beyond the current valid/stale/needs_revision taxonomy.
+
+- **AI preference learning from user choices**: Record every AI suggestion + user's final choice as training data for better future suggestions. Captured in Ideal R13 but needs a spec section on the preference data model and how it feeds back into role behavior.
+
+- **Ghost-text inline suggestions** (GitHub Copilot pattern): Faded AI suggestions inline with user content. Tab to accept, keep typing to dismiss. Good for script editing, bible enrichment, config tuning.
+
+- **Onboarding flow**: "I'm a [Screenwriter/Director/Producer/Explorer]" single question, skippable, defaults to Explorer. Configures default workspace, pipeline bar emphasis, AI verbosity. Partially covered by Story 090.
+
+- **Explorer demo project**: Pre-populated tutorial project (Notion pattern) so new users can explore capabilities immediately without uploading their own content.
+
+- **Per-feature AI autonomy levels**: Auto/assisted/manual per pipeline action — more granular than the three operating modes in Section 2.5. Partially covered by Story 090.
+
+- **Quality estimates in preflight**: "★★★☆☆ estimated quality" based on what upstream is complete vs. missing. Extends the tiered response system from ADR-002.
+
+- **Narrative-aware timeline export**: When exporting to NLE formats, embed scene boundaries, beat changes, character entrances, emotional tone shifts as markers, color-coded regions, and clip notes. Captured in Ideal R9 but needs spec detail under Section 7 (Timeline).
+
+- **Video preview/assembly view**: Simple player with scene strip — drag to reorder, click to play, basic trim. NOT a full NLE. Captured in Ideal R10.
 
 ⸻
 

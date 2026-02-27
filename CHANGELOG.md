@@ -1,5 +1,21 @@
 # Changelog
 
+## [2026-02-26-04] — Ideal-first retrofit: ideal.md, spec annotations, gap analysis, ADR-003
+
+### Added
+- `docs/ideal.md` — The Ideal document (16 requirements, 11 vision preferences, the north star for all design decisions)
+- `docs/retrofit-gaps.md` — Gap analysis: missing evals, golden refs, untraceable stories, under-covered requirements, Dossier integration plan
+- `docs/setup-checklist.md` — Prioritized retrofit checklist (P0–P3)
+- `docs/decisions/adr-003-film-elements/` — ADR for creative element grouping between screenplay and film
+- Ideal reference block at top of AGENTS.md ("Is it easy, fun, and engaging?")
+- Prompt Transparency AC added to Story 028 (Render Adapter) per Ideal R12
+- Dependency `Blocks: 025` added to Story 092 (Continuity AI)
+
+### Changed
+- `docs/spec.md` annotated with 7 compromise blocks (C1–C7), compromise index, untriaged ideas section
+- Story 090 (Persona-Adaptive Workspaces) cancelled — superseded by two-view architecture + interaction mode
+- Extraction-related checklist items struck through (Dossier will handle)
+
 ## [2026-02-26-03] — Scout dossier: adopt ideal-first methodology skills
 
 ### Added

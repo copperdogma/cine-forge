@@ -1,7 +1,7 @@
 # Story 090 — Persona-Adaptive Workspaces
 
 **Priority**: Low
-**Status**: Pending
+**Status**: Cancelled — Superseded by the two-view architecture (Story Explorer + Scene Workspace) combined with interaction mode (Story 089). The four personas (Screenwriter, Director, Producer, Explorer) each find their home in one or both views. See ADR-003 for the element grouping that replaces the direction architecture.
 **Phase**: Cross-Cutting
 **ADR**: ADR-002 (Goal-Oriented Project Navigation) — Layer 4
 **Depends On**: Story 089 (interaction mode selection), Story 085 (pipeline capability graph)

@@ -112,7 +112,7 @@ NOTES from Cam:
 | 087 | Pre-flight Summary Cards | Cross-Cutting | Medium | Done | [story-087](stories/story-087-preflight-summary-cards.md) |
 | 088 | Staleness UX | Cross-Cutting | Medium | Done | [story-088](stories/story-088-staleness-ux.md) |
 | 089 | Interaction Mode Selection | Cross-Cutting | Low | Done | [story-089](stories/story-089-interaction-mode-selection.md) |
-| 090 | Persona-Adaptive Workspaces | Cross-Cutting | Low | Pending | [story-090](stories/story-090-persona-adaptive-workspaces.md) |
+| ~~090~~ | ~~Persona-Adaptive Workspaces~~ | ~~Cross-Cutting~~ | ~~Low~~ | Cancelled | ~~[story-090](stories/story-090-persona-adaptive-workspaces.md)~~ — Superseded by two-view architecture (Story Explorer + Scene Workspace) + interaction mode (Story 089). See ADR-003. |
 | 092 | Continuity AI Detection & Gap Analysis | World Building | Medium | Pending | [story-092](stories/story-092-continuity-ai-detection.md) |
 
 ## Phase Summary

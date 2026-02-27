@@ -51,6 +51,12 @@ Implement the **Render Adapter** — a stateless module (not a role) that transl
 - [ ] Cannot change creative intent.
 - [ ] Retry strategy per engine pack (transient failures, rate limits).
 
+### Prompt Transparency (Ideal R12)
+- [ ] The synthesized generation prompt is stored as a first-class artifact alongside the generated video.
+- [ ] Users can view the exact prompt that produced any generated output.
+- [ ] Users can edit the prompt and re-submit directly to regenerate with modifications.
+- [ ] Prompt versions are tracked — editing a prompt and re-generating creates a new version of both the prompt and the output.
+
 ### Output
 - [ ] Generated video segments stored as artifacts with full metadata.
 - [ ] Placed on generated video track in timeline (Story 013).

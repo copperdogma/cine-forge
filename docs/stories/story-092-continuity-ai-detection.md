@@ -4,6 +4,7 @@
 **Status**: Pending
 **Spec Refs**: 6 (Bibles, Entity Graph, Continuity)
 **Depends On**: 011 (Continuity Tracking — schemas + skeleton)
+**Blocks**: 025 (Shot Planning — shots consume continuity states)
 
 ## Goal
 
