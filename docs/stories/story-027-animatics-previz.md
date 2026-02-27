@@ -46,7 +46,7 @@ Generate **animatics** (low-detail video with accurate timing and camera motion)
 ### Module Manifests
 - [ ] Module: `src/cine_forge/modules/visualization/animatic_v1/`
 - [ ] Module: `src/cine_forge/modules/visualization/keyframe_v1/`
-- [ ] Reads shot plan, storyboards (if available), sound direction.
+- [ ] Reads shot plan, storyboards (if available), Sound & Music concern group artifacts.
 - [ ] Outputs animatic video segments and/or keyframe images.
 
 ### Schema

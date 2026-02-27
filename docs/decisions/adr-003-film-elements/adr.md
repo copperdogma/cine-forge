@@ -1,6 +1,6 @@
 # ADR-003: Film Elements — The Creative Gap Between Screenplay and Film
 
-**Status:** PENDING — Needs deep research
+**Status:** DECIDED — Option E (Three-Layer Director's Vision Model)
 
 ## Context
 
@@ -110,7 +110,122 @@ Elements organized by what the user is trying to accomplish creatively.
 
 ## Decision
 
-TBD — pending research.
+**Option E — Three-Layer "Director's Vision" Model.** An intent-first interface layered over creative concern groups, with scope as the underlying data model.
+
+All four research reports (Google, OpenAI, Claude, Grok) unanimously rejected Option A (role-organized) and converged on Option D (creative concern) as the strongest grouping. Three of four independently proposed the same enhancement: layer an emotional/mood-first intent interface on top of concern groups, with scope as the implementation substrate. This became Option E. See `research/film-elements/final-synthesis.md` for the full analysis and `decisions-log.md` for all 14 comment decisions.
+
+### The Architecture
+
+**Layer 1 — The Mood Board (Intent Layer).** The primary interaction surface for all users. Mood/tone selectors (tense, warm, chaotic, dreamy). Reference input (films, directors, aesthetic subcultures). Style presets / "vibe" packages. Natural language ("make this scene darker and tenser"). Changes here auto-propagate to all five concern groups.
+
+**Layer 2 — The Creative Concerns (Detail Layer).** Five groups containing tightly coupled elements:
+- **Look & Feel:** Lighting, color, camera composition, set design, costume, visual motifs, aspect ratio
+- **Sound & Music:** Ambient/room tone, SFX, music, Foley, silence (deliberate), mixing, audio motifs
+- **Rhythm & Flow** (labeled "Pace & Energy" for non-filmmakers): Pacing, camera movement dynamics, editing transitions, coverage pattern, scene function
+- **Character & Performance:** Emotional intensity, vocal delivery, physical performance, blocking, motivation
+- **Story World:** Character/location/prop design baselines, continuity tracking, behavioral consistency, narrative rhythm
+
+**Layer 3 — The Scope Substrate (Implementation Layer).** Not user-facing navigation. Project-wide settings are global constraints. Per-scene settings override project-wide. Per-shot settings are granular control signals. Expert users can access scope directly; beginners never see it.
+
+### Key Design Decisions
+
+1. **87 elements total** across five domains (pre-production 27, per-scene 19, per-shot 14, post-production 14, cross-cutting 13). All exist in the system, none required from the user.
+
+2. **Progressive disclosure.** The AI considers all 87 elements when generating; the user only touches what they care about. Depth is always optional, never required.
+
+3. **Prompts are read-only compiled artifacts.** Viewable for transparency (R12), NOT directly editable. The prompt is a projection of upstream artifacts. Changes go upstream (via chat or direct edit), prompt recompiles automatically. "The prompt is a window, not a door."
+
+4. **Two lanes: Story and Film.** Story lane (extraction/understanding) is cheap, always runs on import. Film lane (creative interpretation/generation) is expensive, runs on demand when the user enters the Scene Workspace or hits generate.
+
+5. **Per-element "let AI fill this" buttons.** Every generatable artifact has an explicit generation action. Users can: let AI generate, generate-then-tweak, skip AI and specify manually, or leave empty (AI improvises at render, red readiness).
+
+6. **Project = Story.** The project is a technical container (API config, cost budgets, format preferences) around the script. All creative artifacts are story-derived. Script revision triggers entity reconciliation via R15 change propagation.
+
+7. **Script bible artifact.** Logline, synopsis, act structure, themes, narrative arc. First artifact derived from the script, sits between script and entity extraction.
+
+8. **Continuity as automatic infrastructure.** Always-on, story-lane. Tracks costume/injury/prop/location state across scenes without user intervention. Override available for deliberate creative breaks.
+
+9. **Templates beat parameters.** Curated starting points (mood presets, style references, "vibe" packages) outperform blank parameter spaces for both beginners and experts.
+
+10. **"Chat about this" interaction.** User highlights any part of any artifact → drops into chat with the appropriate AI role pre-tagged. New interaction pattern.
+
+11. **AI artifact editing.** Roles can propose AND execute artifact edits with user permission (per autonomy settings). "Give the Mariner a moustache" → AI updates character bible → change propagation fires → prompt recompiles.
+
+12. **Neglected elements handled through existing architecture.** Silence via role emphasis (sound roles actively recommend silence). Blocking via storyboard pipeline (deep blocking in storyboard prompts → visual inputs to video gen). Visual motifs via global style/mood settings.
+
+13. **"Models improve" as design principle.** Current compromises are tagged as temporary with detection mechanisms. Architecture designed so model improvements automatically reduce complexity and improve quality. Don't over-engineer solutions for today's limitations.
+
+14. **Prompt compilation handles model upgrades.** Because prompts are compiled from upstream artifacts, the compilation layer can be updated for new models without touching user-facing artifacts. Creative intent is preserved upstream; downstream prompt format adapts.
+
+15. **Real-world assets as first-class inputs.** Upload photos/videos as reference images. AI enhancement of minimal inputs (headshot → full reference set). Location lookup from web. Mood-board input for design synthesis.
+
+16. **Round-trip decomposition (Ideal).** The ultimate validation: take an existing film → decompose into CineForge artifacts → modify any element → re-render. Added to ideal.md as a vision requirement.
+
+### Readiness Indicators
+
+Red/yellow/green at the creative concern group level per scene:
+- **Red:** No user input. AI guesses everything using project defaults.
+- **Yellow:** Some guidance (mood propagated, or partial specification). AI fills gaps.
+- **Green:** User reviewed and approved all key elements for this group.
+
+Summary dashboard: for each scene, five concern-group indicators showing exactly where attention is needed.
+
+### Propagation Checklist
+
+Tracking everything updated (or needing update) as a result of this ADR.
+
+#### Ideal
+- [x] R17 added — real-world assets as first-class inputs
+- [x] Round-trip decomposition added as vision preference
+- [x] Inbox items added — film decomposition/remix, AI asset enhancement, location lookup, mood-board synthesis
+
+#### Spec
+- [x] Rewrite §12 (Creative Direction Artifacts) — four direction types → five concern groups + Intent/Mood layer
+- [x] Add section: Script Bible — §4.5
+- [x] Add section: Two-Lane Architecture — §4.6
+- [x] Add section: Prompt Compilation Model — §12.8
+- [x] Update §4.4 (Project Configuration) — project = story (technical container around the script)
+- [x] Update §9 (Combined Roles) — roles contribute to concern groups, not produce standalone direction artifacts
+- [x] Update §13 (Shot Planning) — consumes concern group artifacts, not converged direction set
+- [x] Expand §18 (User Asset Injection) — flesh out for R17 (origin-agnostic asset system)
+- [x] Resolve untriaged item "Prompt transparency / direct prompt editing" — now decided (read-only, Decision #4)
+- [x] Update Compromise Index — role consolidation note at §9.1-9.2 needs context update
+
+#### Stories — Cancel
+- [x] Cancel Story 024 (Direction Convergence) — eliminated by ADR-003
+
+#### Stories — Reshape
+- [x] Story 021 (Visual Architect) — visual direction → "Look & Feel" concern group
+- [x] Story 022 (Sound Designer) — sound direction → "Sound & Music" concern group
+- [x] Story 023 (Performance Direction) — resolve "prove your worth"; performance lives in Character & Performance concern group, Actor Agents contribute, Story 084 may already cover
+- [x] Story 025 (Shot Planning) — remove dependency on 024, consumes concern group artifacts
+- [x] Story 028 (Render Adapter) — prompt construction ACs: direction refs → concern group refs
+
+#### Stories — Check for Impact
+- [x] Story 026 (Storyboard Generation) — minor rewording for concern group refs
+- [x] Story 027 (Animatics/Previz) — similar to 026
+- [x] Story 029 (User Asset Injection) — R17 expansion added
+- [x] Story 030 (Generated Output QA) — dependency refs updated
+- [x] Story 056 (Entity Design / Reference Images) — dependency note updated (inputs TO Look & Feel)
+- [x] Story 082 (Creative Direction UX) — ADR-003 impact note added to work log (Done story, code updates deferred)
+- [x] Story 085 (Pipeline Capability Graph) — ADR-003 impact note added to work log (Done story, graph.py updates deferred)
+
+#### Stories — New (skeletons, no implementation detail)
+- [x] Story 093: Script bible artifact — schema + extraction from script, first story-lane artifact after ingestion
+- [x] Story 094: Concern group artifact schemas — the data model replacing four direction types
+- [x] Story 095: Intent/Mood layer — style presets, mood selectors, reference input, auto-propagation to concern groups
+- [x] Story 096: "Chat about this" interaction — highlight artifact text → chat with pre-tagged role
+- [x] Story 097: AI artifact editing — roles edit artifacts with user permission (per autonomy settings)
+- [x] Story 098: Real-asset upload pipeline — R17: upload, manage, slot into reference systems
+- [x] Story 099: Scene Workspace — R11 Layer 2 interface with five concern tabs per scene
+- [x] Story 100: Motif tracking — annotations at any scope (character, location, world-level)
+
+#### Stories Index
+- [x] Update `docs/stories.md` to reflect all cancellations, reshapes, and new stories
+
+#### Evals
+- No existing evals invalidated (eval catalog tests extraction, not direction)
+- Future evals: script bible extraction quality, concern group completeness (when stories are built)
 
 ## Legacy Context
 

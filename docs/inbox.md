@@ -3,6 +3,18 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 ## Untriaged
 
+- nano banana 2 templates would be useful for global style transfers: https://x.com/geminiapp/status/2027081255804870985?s=12&t=uFZE-MuhgWdh1YErEZzLtQ
+
+### ADR-003 Deferred Ideas
+
+- 20260227: **Film decomposition / remix**: Take any existing film, decompose it into CineForge artifacts (screenplay, character bibles, visual references, sound design, direction), modify any element, re-render. E.g., take Pulp Fiction, recast a character, change the ending. The round-trip decomposition test (decompose → re-render → compare) is an Ideal vision preference; the remix feature itself is far-future. *(Source: ADR-003, Decision #8)*
+
+- 20260227: **AI enhancement of minimal inputs**: Headshot → full character reference set (multiple angles, expressions, lighting). Phone video of location → clean reference stills from multiple angles. "Take whatever we can get and back-create proper artifacts from it." Leverages image gen models with uploaded asset as conditioning. *(Source: ADR-003, Decision #9)*
+
+- 20260227: **Location lookup from web**: Given a location name ("Sydney Opera House"), fetch public images from the web to use as reference. Use real building facades and create fictional interiors. Needs web search/image API integration. *(Source: ADR-003, Decision #9)*
+
+- 20260227: **Mood-board synthesis input**: Feed in multiple inspiration images (hairstyles, environments, objects, textures) as reference material for AI to synthesize into character/location/prop designs. "This hairstyle + this jacket + this vibe → character design." Natural extension of reference image system. *(Source: ADR-003, Decision #9)*
+
 ### UI / Interaction
 
 - 20260226: **Narrative-aware timeline export**: When exporting to NLE formats (OpenTimelineIO, Final Cut XML, AAF, EDL), embed CineForge's narrative structure as timeline markers, color-coded regions, and clip notes. Scene boundaries, beat changes, character entrances, emotional tone shifts — metadata that no other AI video tool has because they don't understand story structure. Makes the editor's job dramatically easier. Formats: single video, scene folder, and NLE interchange formats.

@@ -42,8 +42,8 @@ Retrofitting Ideal-first methodology onto existing project. Generated 2026-02-26
 
 ### P1 — Fill critical gaps
 
-- [ ] Create golden reference for creative direction artifacts (R8) — editorial/visual/sound for 3 scenes
-- [ ] Create promptfoo eval for creative direction generation (editorial direction first)
+- [ ] Create golden reference for concern group artifacts (R8, ADR-003) — Look & Feel, Sound & Music, Rhythm & Flow for 3 scenes
+- [ ] Create promptfoo eval for concern group generation (Rhythm & Flow / editorial direction first)
 - [ ] ~~Create promptfoo eval for scene_breakdown entity extraction~~ — **Dossier will handle extraction** (see `docs/retrofit-gaps.md` §6)
 - [ ] ~~Add Gemini providers to `scene-extraction.yaml`~~ — **Dossier will handle extraction**
 - [ ] ~~Create simplification eval: "zero-QA extraction"~~ — **Dossier will handle extraction**

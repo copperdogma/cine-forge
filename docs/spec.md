@@ -212,6 +212,8 @@ Completion criteria per stage are role-defined: Canon Guardians must sign off (o
 
 4.4 Project Configuration (Auto-Initialized)
 
+> **ADR-003 decision.** The project IS the story. The project is a technical container (API config, cost budgets, format preferences) around the script. All creative artifacts (characters, locations, props, scenes, direction, design) are story-derived. The UI shows them at top level because the story IS the top level. Script revision triggers entity reconciliation via R15 change propagation: AI categorizes entities as unchanged (stay valid), minor changes (targeted bible update, preserve accumulated design work like reference images/voice/costume), removed (flagged, never auto-deleted), or added (fresh extraction). The system never auto-destroys accumulated creative work.
+
 Story ingestion automatically extracts project-level parameters from the input. These are presented to the user as a draft project configuration that may be confirmed or modified before the pipeline proceeds.
 
 Auto-detected parameters include:
@@ -232,6 +234,33 @@ User-specified parameters (not auto-detected):
 	•	Budget / cost cap preferences
 
 The confirmed project configuration becomes a canonical artifact that every role consults. All roles should read and respect project-level parameters when making creative decisions.
+
+4.5 Script Bible (Story-Lane, Always Runs)
+
+> **ADR-003 decision.** The script bible is the first artifact derived from the script, sitting between ingestion and entity extraction.
+
+After the script is ingested and normalized, the system automatically extracts a script bible:
+
+	•	Logline: one-sentence summary
+	•	Synopsis: 1-3 paragraph summary
+	•	Act structure: identified acts and turning points
+	•	Themes: major thematic concerns
+	•	Narrative arc: overall story shape (setup → confrontation → resolution)
+	•	Genre/tone confirmation: validated against auto-detected project configuration
+
+The script bible is a story-lane artifact — cheap to produce, always generated on import. It provides the high-level story context that all downstream roles and concern groups reference.
+
+4.6 Two-Lane Architecture
+
+> **ADR-003 decision.** The pipeline has two lanes with different cost/trigger characteristics.
+
+**Story Lane (always runs on import):** Extraction and understanding — script → script bible → scene extraction → entity extraction → bibles → continuity → entity graph. These are cheap LLM operations that produce the foundational understanding of the story. Always runs automatically because the output is always useful and the cost is low.
+
+**Film Lane (runs on demand):** Creative interpretation and generation — intent/mood → concern groups (look, sound, rhythm, character, world) → shot planning → storyboards → animatics → video generation. These are expensive operations (multi-model, image/video generation). Runs only when the user enters the Scene Workspace or explicitly requests generation. Missing upstream artifacts are generated or flagged at that point.
+
+The two lanes share the same artifact store and dependency graph. Story-lane artifacts are inputs to film-lane operations.
+
+**Per-element generation actions (ADR-003).** Every generatable artifact has an explicit "let AI fill this" action. Users can: let AI generate (default intent for film-lane), generate-then-tweak, skip AI and specify manually, or leave empty (AI improvises at render time, red readiness). Generation also doubles as teaching — even users who plan to specify everything manually benefit from seeing what AI produces, as it shows what the element IS and what good looks like.
 
 ⸻
 
@@ -552,7 +581,11 @@ All three are recorded. All three produce new artifact versions, never in-place 
 
 9. Combined Roles (Intentional Consolidation)
 
+> **ADR-003 note.** Roles still exist as creative personas with distinct expertise, but they contribute to concern groups (§12) rather than producing standalone direction artifacts. A role may contribute to multiple concern groups. The organizational principle for the user is the concern group; the role is the creative voice behind it.
+
 9.1 Editorial Architect
+
+Primary contributor to: **Rhythm & Flow** concern group (§12.4)
 
 Combines:
 	•	Editor
@@ -566,6 +599,8 @@ Responsibilities:
 	•	transition suggestions
 
 9.2 Visual Architect
+
+Primary contributor to: **Look & Feel** concern group (§12.2)
 
 Combines:
 	•	production design
@@ -615,80 +650,117 @@ Responsibilities:
 
 ⸻
 
-12. Creative Direction Artifacts (Required)
+12. Creative Direction — Concern Groups (Required)
 
-The pipeline stages "Editorial / Narrative Oversight" and "Visual / Performance / Sound Design" produce structured direction artifacts that are consumed by Shot Planning and all downstream stages. These are the richest AI reasoning outputs in the system — where roles translate raw story material into creative vision.
+> **ADR-003 decision.** Creative direction is organized by **creative concern** (what the user is trying to accomplish), not by professional role (who traditionally does it). Five concern groups, layered under an Intent/Mood entry point, with scope as the implementation substrate. See `docs/decisions/adr-003-film-elements/adr.md` for full rationale.
 
-All direction artifacts are immutable, versioned, and carry standard audit metadata.
+All concern group artifacts are immutable, versioned, and carry standard audit metadata. Roles contribute to multiple concern groups — they are not 1:1 mapped. The Intent/Mood layer provides cross-group coherence; there is no separate convergence step.
 
-12.1 Editorial Direction (per scene or per act)
+**~87 creative elements** exist between screenplay and finished film. All exist in the system; none are required from the user. Progressive disclosure: the AI considers all of them when generating; the user only touches what they care about.
 
-Produced by: Editorial Architect
-Reviewed by: Director, Script Supervisor
+12.1 Intent / Mood Layer (project-wide and per-scene overrides)
 
-	•	Scene function: what role this scene plays in the larger narrative arc (inciting incident, escalation, climax, resolution, transition, etc.)
-	•	Pacing intent: fast/slow, building/releasing tension, breathing room
-	•	Transition strategy: how to enter and exit this scene (hard cut, dissolve, match cut, sound bridge, smash cut, etc.) and why
-	•	Coverage priority: what the editor will need to assemble this scene (e.g., "prioritize close-ups for emotional beats in the first half; wide two-shot for the confrontation")
-	•	Montage / parallel editing candidates: if applicable
-	•	Act-level notes: when scoped to an act, includes pacing arc, turning points, and rhythm across scenes
+The primary interaction surface for all users, especially beginners. Changes here auto-propagate suggested defaults to all five concern groups.
 
-12.2 Visual Direction (per scene)
+	•	Mood/tone selectors: emotional descriptors (tense, warm, chaotic, dreamy, epic, intimate, raw, unsettling)
+	•	Reference input: films, directors, aesthetic subcultures ("like Blade Runner," "cottagecore," "documentary feel")
+	•	Style presets / "vibe" packages: named starting points (e.g., "Neo-Noir," "Summer Indie," "Corporate Thriller") that set coherent defaults across all five concern groups simultaneously
+	•	Natural language: "make this scene darker and tenser" is parsed and routed to the appropriate concern groups
+	•	Templates beat parameters: curated starting points outperform blank parameter spaces for both beginners and experts
 
-Produced by: Visual Architect
-Reviewed by: Director
+12.2 Look & Feel (per scene, project-wide defaults)
+
+Everything that shapes what the audience sees. Primary contributor: Visual Architect role.
 
 	•	Lighting concept: key light direction, quality (hard/soft), motivated vs. stylized, practical sources
 	•	Color palette: dominant colors, temperature (warm/cool), saturation level, contrast
 	•	Composition philosophy: symmetry, negative space, depth of field intention, framing style
 	•	Camera personality: static/controlled vs. handheld/chaotic, observational vs. intimate
-	•	Reference imagery: visual references (from style pack, user-injected, or AI-suggested)
-	•	Costume and production design notes: what characters and the environment should look like in this scene, referencing bible states
-	•	Visual motifs: recurring visual elements that connect to larger themes
+	•	Reference imagery: visual references from style pack, user-injected (R17), or AI-suggested
+	•	Costume and production design notes: what characters and environment look like, referencing bible states
+	•	Visual motifs: recurring visual elements connecting to larger themes (annotations at any scope: character, location, world-level)
+	•	Aspect ratio and format: if scene-specific override of project-wide setting
 
-12.3 Sound Direction (per scene)
+12.3 Sound & Music (per scene, project-wide defaults)
 
-Produced by: Sound Designer
-Reviewed by: Director
+Everything that shapes what the audience hears. Primary contributor: Sound Designer role. Sound design begins before shot planning — it's a creative input, not an afterthought.
 
-	•	Ambient environment: what the audience should "hear" as the baseline (city noise, wind, silence, machinery hum)
+	•	Ambient environment: baseline soundscape (city noise, wind, silence, machinery hum)
 	•	Emotional soundscape: how sound supports the scene's emotional arc
-	•	Silence placement: intentional absence of sound and where it falls
+	•	Silence placement: intentional absence of sound and where it falls. Silence is a first-class element — the Sound Designer should actively recommend it. (Compromise: current AI video gen models tend to fill all moments; engine packs handle model-specific workarounds.)
 	•	Offscreen audio cues: sounds from outside the frame that expand the world or foreshadow
-	•	Sound-driven transitions: audio bridges, stingers, or motifs that connect to adjacent scenes
-	•	Music intent: score direction (if applicable) — tension, release, theme, absence of score
-	•	Diegetic vs. non-diegetic notes: what sounds exist in the story world vs. for the audience only
+	•	Sound-driven transitions: audio bridges, stingers, or motifs connecting to adjacent scenes
+	•	Music intent: score direction — tension, release, theme, absence of score
+	•	Diegetic vs. non-diegetic: what sounds exist in the story world vs. for the audience only
+	•	Audio motifs / leitmotifs: recurring sound elements with thematic meaning
 
-12.4 Performance Direction (per scene, per character)
+12.4 Rhythm & Flow (per scene or per act)
 
-Produced by: Actor Agent (for their character)
-Reviewed by: Director, Script Supervisor
+Everything that shapes how the film moves. Labeled "Pace & Energy" in the UI for non-filmmakers. Primary contributor: Editorial Architect role.
 
-	•	Emotional state entering the scene: where the character is psychologically at the start
-	•	Arc through the scene: how their emotional state changes (or doesn't)
-	•	Motivation: what the character wants in this scene
-	•	Subtext: what they're not saying, what's beneath the surface
+	•	Scene function: role in narrative arc (inciting incident, escalation, climax, resolution, transition)
+	•	Pacing intent: fast/slow, building/releasing tension, breathing room
+	•	Transition strategy: how to enter and exit the scene (hard cut, dissolve, match cut, sound bridge) and why
+	•	Coverage priority: what the editor needs (e.g., "close-ups for emotional beats; wide two-shot for confrontation")
+	•	Camera movement dynamics: speed, energy, type of movement (distinct from composition in Look & Feel)
+	•	Montage / parallel editing candidates: if applicable
+	•	Act-level notes: pacing arc, turning points, rhythm across scenes
+
+12.5 Character & Performance (per scene, per character)
+
+Everything about how characters inhabit the scene. Contributors: Actor Agents (per character), reviewed by Director.
+
+Note: Story 023 defers formal PerformanceDirection artifacts pending proof of need from downstream consumers. Character bibles + interactive character chat (Story 084) may cover this concern group adequately. If structured artifacts are needed:
+
+	•	Emotional state entering the scene
+	•	Arc through the scene (how emotional state changes)
+	•	Motivation: what the character wants
+	•	Subtext: what they're not saying
 	•	Physical notes: posture, energy level, gestures, habits
 	•	Key beats: moments of change, realization, decision
-	•	Relationship dynamics: how this character relates to others in the scene (using entity graph)
-	•	Dialogue delivery notes: tone, pace, emphasis for specific lines (if applicable)
+	•	Relationship dynamics: how this character relates to others present (using entity graph)
+	•	Dialogue delivery notes: tone, pace, emphasis for specific lines
+	•	Blocking notes: character positions and movement (acknowledged unknown per ADR-003 — storyboard-as-input is the primary hypothesis)
 
-12.5 Direction Convergence
+12.6 Story World (project-wide, per-entity)
 
-Before shot planning begins for a scene, all four direction artifacts must exist. The Director reviews the set for internal consistency:
-	•	Does the editorial intent align with the visual approach?
-	•	Does the sound design support or conflict with the pacing plan?
-	•	Do the performance notes fit the visual framing?
+The persistent world — everything that must remain coherent across the entire project. This is CineForge's primary differentiator; no current AI tool adequately addresses cross-scene continuity.
 
-Conflicts are resolved through the standard disagreement protocol (8.6). The converged direction set becomes the input to shot planning.
+	•	Character visual design baselines (from character bibles)
+	•	Location design baselines (from location bibles)
+	•	Prop design baselines (from prop bibles)
+	•	Continuity tracking: costume state, injury state, prop state, location state across scenes (automatic infrastructure, always-on — see §6.4). Override available for deliberate creative breaks (e.g., dream sequences, surreal transitions) — the user shouldn't think about continuity unless they want to intentionally break it.
+	•	Character behavioral consistency
+	•	Narrative rhythm across acts
+	•	Visual motif tracking (annotations at any scope)
+	•	Audio motif tracking
+
+12.7 Readiness Indicators
+
+Red/yellow/green per concern group per scene:
+	•	Red: no user input. AI guesses everything using project-wide defaults.
+	•	Yellow: some guidance (mood propagated, or partial specification). AI fills gaps.
+	•	Green: user reviewed and approved all key elements for this group.
+
+Summary dashboard: for each scene, five concern-group indicators showing exactly where attention is needed.
+
+12.8 Prompt Compilation Model
+
+Prompts sent to generation models are **read-only compiled artifacts** — viewable for transparency (R12) but NOT directly editable. The prompt is a projection of upstream concern group artifacts, like compiled assembly output. Changes go upstream (via chat or direct artifact edit), and the prompt recompiles automatically.
+
+	•	"The prompt is a window, not a door."
+	•	Users can view the exact prompt that produced any generated output.
+	•	"Chat about this" affordance: highlight any part of the displayed prompt → chat with the appropriate AI role.
+	•	Prompt versions are tracked — upstream changes trigger recompilation and new versions.
+	•	Model upgrade resilience: because prompts are compiled, the compilation layer can adapt to new models without touching user-facing artifacts. Creative intent is preserved upstream; downstream format adapts.
 
 ⸻
 
 13. Shot Planning (Required)
 
-Note: Shot planning consumes the creative direction artifacts from Section 12. Every shot references the editorial, visual, sound, and performance direction that informed it.
+Note: Shot planning consumes concern group artifacts from Section 12. Every shot references the Look & Feel, Sound & Music, Rhythm & Flow, and (if available) Character & Performance artifacts that informed it. There is no separate convergence step — the Intent/Mood layer provides cross-group coherence.
 
-Shot planning is where all upstream creative decisions converge into concrete, shot-by-shot instructions. It translates "what happens in this scene" into "what the audience sees and hears." The output mirrors a real-world shot list but is richer — every shot also records the reasoning behind each choice and references to the upstream artifacts that informed it.
+Shot planning is where all upstream creative decisions come together into concrete, shot-by-shot instructions. It translates "what happens in this scene" into "what the audience sees and hears." The output mirrors a real-world shot list but is richer — every shot also records the reasoning behind each choice and references to the upstream artifacts that informed it.
 
 13.1 Scene Coverage Strategy (one per scene)
 
@@ -833,17 +905,23 @@ The Render Adapter is a stateless module, not a creative role. It has no opinion
 
 18. User Asset Injection (Required)
 
-Users may inject artifacts at any stage:
-	•	actor photos
-	•	location photos
+> **ADR-003 / R17.** Real-world asset support is a core design principle, not just a feature. CineForge works for partial workflows — a filmmaker using CineForge only for previz, or only for sound design, or only for storyboards while shooting a real film with real actors and locations. The system must be origin-agnostic: uploaded and AI-generated assets are treated identically throughout the pipeline.
+
+Users may inject assets at any stage:
+	•	actor photos / headshots
+	•	location photos / scout footage
 	•	prop references
-	•	dialogue audio
+	•	dialogue audio / voice recordings
+	•	style references / mood board images
+	•	any other creative material with user-specified purpose
 
 Injected assets may be:
-	•	soft-locked
-	•	hard-locked
+	•	soft-locked (AI should respect but may propose alternatives)
+	•	hard-locked (AI must use exactly, cannot change without explicit unlock)
 
 AI may propose relaxing locks but may not override without approval.
+
+Injected assets slot into the same reference image / audio / document paths as AI-generated assets. No part of the pipeline should distinguish between uploaded and AI-generated assets.
 
 ⸻
 
@@ -945,7 +1023,7 @@ All compromises in this spec, ordered by architectural significance (which, if r
 | 4.4 | Manual project config fields (aspect ratio, production mode) | AI capability | With fully context-aware AI, more fields become auto-inferrable |
 | 5.3 | Discovery tier annotations | AI capability | With single-pass analysis, tier tracking is unnecessary |
 | 8.4 | Async style pack creation flow | AI capability + Ecosystem | With capable synchronous AI, becomes a single call |
-| 9.1–9.2 | Role consolidation (Editorial/Visual Architect) | AI capability | With negligible per-role cost, roles could be more specialized |
+| 9.1–9.2 | Role consolidation (Editorial/Visual Architect) | AI capability | With negligible per-role cost, roles could be more specialized. Note: ADR-003 changes the role→output relationship — roles now contribute to concern groups rather than owning direction types. Consolidation question shifts from "fewer roles" to "roles are advisory voices, concern groups are the output" |
 | 19.3 | "Chats are accelerators" distinction | AI capability | With persistent memory, chats become truth alongside artifacts |
 
 ⸻
@@ -962,7 +1040,7 @@ the spec evolves. Don't delete — incorporate or explicitly discard with ration
 
 - **Scene-level vs shot-level video generation**: Kling 3.0 generates multi-shot sequences (up to 6 cuts per generation). The atomic unit for video gen is shifting from "shot" toward "scene." Scene Workspace should be scene-first with shot detail as drill-down. Affects Section 13 (Shot Planning) and Section 17 (Render Adapter).
 
-- **Prompt transparency / direct prompt editing**: For any AI-generated output, show the exact prompt and let users edit/re-submit. Captured in Ideal R12 but needs a spec section defining how prompts are stored and versioned as artifacts.
+- ~~**Prompt transparency / direct prompt editing**~~: **Resolved by ADR-003 Decision #4.** Prompts are read-only compiled artifacts — viewable but not editable. Changes go upstream. See §12.8 (Prompt Compilation Model).
 
 - **"AI-filled" / skip-ahead state with visible marking**: When users generate without completing upstream, AI fills gaps. Each AI-guessed element needs visible labeling and quality degradation indicators. Captured in Ideal R11 but needs spec detail on the "AI-inferred" artifact state beyond the current valid/stale/needs_revision taxonomy.
 

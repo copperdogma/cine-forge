@@ -1,9 +1,78 @@
 # Project Stories — cine-forge
 
-## Recommended Order (next up)
+## Recommended Build Order (updated 2026-02-27, post-ADR-003)
 
-Guiding priorities: **get a working pipeline fast** (MVP: script in → structured scenes + project config out), then layer on world-building, temporal structure, roles, and creative tooling. Build the foundation right — immutable artifacts, dependency tracking, audit metadata, modular architecture — so everything after Phase 1 slots in cleanly.
+Phases 0–4 are Done. The pipeline runs script-to-entities with roles, chat, and a production UI. ADR-003 redesigned creative direction around five concern groups. The path forward: **land the concern group data model, build the Scene Workspace, then push toward generation.**
 
+### Group 1 — ADR-003 Foundation (no blockers, start now)
+
+| Story | Why |
+|---|---|
+| **093** Script Bible | First story-lane artifact after ingestion. Cheap, high-value — every downstream role references it. Promotes to Pending first. |
+| **094** Concern Group Schemas | **Keystone.** Unblocks 095, 099, 100, and the entire concern group architecture. Must land before any creative direction work. |
+
+These two are the critical path. Build them first, in this order (093 is independent; 094 is independent but unblocks more).
+
+### Group 2 — Creative Direction Core (after 094)
+
+| Story | Why |
+|---|---|
+| **095** Intent/Mood Layer | The primary interaction surface for all users. Depends on 094. This is what makes CineForge feel like a creative conversation instead of a form. |
+| **021** Look & Feel | First visual concern group. Ready now (no undone deps). Can parallel with 095. |
+| **022** Sound & Music | First audio concern group. Ready now. Can parallel with 021 and 095. |
+
+021 and 022 are technically ready today, but building them *after* 094 lands means they can use the real concern group schemas instead of inventing their own. Start 095 as soon as 094 merges; 021/022 can overlap.
+
+### Group 3 — Scene Workspace + Interaction (after 095)
+
+| Story | Why |
+|---|---|
+| **099** Scene Workspace | The per-scene production surface — five concern tabs, readiness indicators, "let AI fill this." This is ADR-003's centerpiece UI. Depends on 094 + 095. |
+| **096** "Chat About This" | Ready now. Generalizes the highlight-to-chat pattern from Story 082 to all artifacts. Natural companion to 099. |
+| **100** Motif Tracking | Depends on 094. Motif annotations feed into Look & Feel and Sound & Music. Can parallel with 099. |
+
+099 is the highest-impact UI story in the backlog. It's where filmmakers actually do their work.
+
+### Group 4 — Upstream Infrastructure (ready now, build when needed)
+
+| Story | Why |
+|---|---|
+| **092** Continuity AI Detection | Ready now. Strengthens the story-lane foundation that concern groups build on. |
+| **031** Change Propagation (Semantic) | Ready now. R15 Layer 2 — makes upstream edits flow intelligently downstream. Becomes critical once concern groups generate artifacts that depend on each other. |
+| **029** User Asset Injection | Ready now. Unblocks 056 (design studies) and 098 (R17 upload pipeline). |
+| **097** AI Artifact Editing | Ready now. Roles proposing and executing edits is core to the read-only prompt model. |
+
+These are independently valuable and have no undone deps. Slot them in alongside Groups 2–3 based on capacity.
+
+### Group 5 — Shot Planning + Visualization (after 021, 022)
+
+| Story | Why |
+|---|---|
+| **025** Shot Planning | Consumes concern group artifacts. Depends on 021 + 022. The bridge between creative direction and generation. |
+| **023** Character & Performance | Draft — resolve whether formal artifacts are needed (may close as "Won't Do" if character bibles + chat suffice). Inform this during 025. |
+| **056** Entity Design Studies | Depends on 029. Reference image generation loop — visual identity for characters/locations/props. |
+| **026** Storyboard Generation | Depends on 025. Optional but high-value for previz workflows. |
+| **027** Animatics & Previz | Depends on 025 + 026. |
+
+### Group 6 — Generation (after Group 5)
+
+| Story | Why |
+|---|---|
+| **098** Real-World Asset Upload | Depends on 029. R17 upload pipeline — origin-agnostic asset system. |
+| **028** Render Adapter | Depends on 025, 027, 022, 098. The prompt compiler — concern groups → model-ready generation prompts. Last major pipeline stage before video output. |
+| **030** Generated Output QA | Depends on 028, 021, 022, 032. Quality gate on generated video. Deepest node in the dependency graph. |
+
+### Group 7 — Polish & Infrastructure (ready now, lower priority)
+
+| Story | Why |
+|---|---|
+| **032** Cost Tracking | Ready now. Budget caps and cost dashboards. Build when generation gets expensive. |
+| **033** Memory Model | Ready now. Canonical/working/transcript memory tiers. Build when long conversations lose context. |
+| **034** Style Pack Creator | Ready now. In-app style pack authoring. Nice-to-have, not blocking. |
+| **044** Mobile-Friendly UI | Ready now. Responsive layout. Build when users need mobile access. |
+| **046** Theme System | Ready now (Draft). Light/dark/auto + palettes. Build when visual polish matters. |
+
+---
 
 This index tracks stories in `/docs/stories/` for the cine-forge pipeline.
 
@@ -43,10 +112,10 @@ NOTES from Cam:
 | 018 | Inter-Role Communication Protocol | 4 — Role System | Medium | Done | [story-018](stories/story-018-inter-role-communication.md) |
 | 019 | Human Control Modes and Creative Sessions | 4 — Role System | High | Done | [story-019](stories/story-019-human-interaction.md) |
 | 020 | Editorial Architect and Editorial Direction | 5 — Creative Direction | Medium | Done | [story-020](stories/story-020-editorial-architect.md) |
-| 021 | Visual Architect and Visual Direction | 5 — Creative Direction | Medium | To Do | [story-021](stories/story-021-visual-architect.md) |
-| 022 | Sound Designer and Sound Direction | 5 — Creative Direction | Medium | To Do | [story-022](stories/story-022-sound-designer.md) |
-| 023 | Performance Direction Artifacts | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
-| 024 | Direction Convergence and Review | 5 — Creative Direction | Medium | To Do | [story-024](stories/story-024-direction-convergence.md) |
+| 021 | Look & Feel — Visual Direction | 5 — Creative Direction | Medium | To Do | [story-021](stories/story-021-visual-architect.md) |
+| 022 | Sound & Music — Sound Direction | 5 — Creative Direction | Medium | To Do | [story-022](stories/story-022-sound-designer.md) |
+| 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
+| ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
 | 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | To Do | [story-025](stories/story-025-shot-planning.md) |
 | 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | To Do | [story-026](stories/story-026-storyboard-generation.md) |
 | 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | To Do | [story-027](stories/story-027-animatics-previz.md) |
@@ -114,6 +183,14 @@ NOTES from Cam:
 | 089 | Interaction Mode Selection | Cross-Cutting | Low | Done | [story-089](stories/story-089-interaction-mode-selection.md) |
 | ~~090~~ | ~~Persona-Adaptive Workspaces~~ | ~~Cross-Cutting~~ | ~~Low~~ | Cancelled | ~~[story-090](stories/story-090-persona-adaptive-workspaces.md)~~ — Superseded by two-view architecture (Story Explorer + Scene Workspace) + interaction mode (Story 089). See ADR-003. |
 | 092 | Continuity AI Detection & Gap Analysis | World Building | Medium | Pending | [story-092](stories/story-092-continuity-ai-detection.md) |
+| 093 | Script Bible Artifact | 5 — Creative Direction | High | Draft | [story-093](stories/story-093-script-bible.md) |
+| 094 | Concern Group Artifact Schemas | 5 — Creative Direction | High | Draft | [story-094](stories/story-094-concern-group-schemas.md) |
+| 095 | Intent / Mood Layer | 5 — Creative Direction | High | Draft | [story-095](stories/story-095-intent-mood-layer.md) |
+| 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Draft | [story-096](stories/story-096-chat-about-this.md) |
+| 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
+| 098 | Real-World Asset Upload Pipeline | 7 — Generation | Medium | Draft | [story-098](stories/story-098-real-asset-upload.md) |
+| 099 | Scene Workspace | 5 — Creative Direction | High | Draft | [story-099](stories/story-099-scene-workspace.md) |
+| 100 | Motif Tracking System | 5 — Creative Direction | Medium | Draft | [story-100](stories/story-100-motif-tracking.md) |
 
 ## Phase Summary
 
@@ -123,9 +200,9 @@ NOTES from Cam:
 - **Phase 2.5 — UI** (011b–011c): Production-quality Operator Console and resource-oriented routing. Research-driven design (AI tooling, app landscape, persona workflows), then build. Replaces stopgap 007b console. Foundation for Phase 3+ UI surfaces.
 - **Phase 3 — Timeline** (012–013): Timeline data artifact with scene/story ordering, stacked tracks, always-playable rule.
 - **Phase 4 — Role System** (014–019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, human interaction (control modes, creative sessions with @agent, direct artifact editing).
-- **Phase 5 — Creative Direction** (020–024): Each creative role produces structured direction artifacts (editorial, visual, sound, performance). Direction convergence review before shot planning.
+- **Phase 5 — Creative Direction** (020–023, 093–097, 099–100): Three-layer director's vision model (ADR-003): Intent/Mood layer sets global tone, five concern groups (Look & Feel, Sound & Music, Rhythm & Flow, Character & Performance, Story World) organize ~87 creative elements, prompts are read-only compiled artifacts. Scene Workspace is the per-scene production surface. Script bible, motif tracking, "chat about this," and AI artifact editing support the creative conversation.
 - **Phase 6 — Shot Planning & Visualization** (025–027): Coverage strategy, individual shot definitions, export compatibility, optional storyboards/animatics/keyframes/previz.
-- **Phase 7 — Generation** (028–030): Render adapter (two-part prompt + engine packs), user asset injection (soft/hard locks), generated output QA with media perception.
+- **Phase 7 — Generation** (028–030, 098): Render adapter (concern group → compiled prompt + engine packs), user asset injection (soft/hard locks, R17 real-world asset pipeline), generated output QA with media perception.
 - **Phase 8 — Cross-Cutting Polish** (031–034): AI-powered semantic impact assessment, cost dashboards and budget caps, memory model (canonical/working/transcript), in-app style pack creator via deep research APIs.
 
 ## Spec Coverage Map
@@ -154,16 +231,21 @@ Quick reference showing which spec sections each phase addresses:
 | 8.5 Suggestion System | 4 (017) |
 | 8.6 Inter-Role Communication | 4 (018) |
 | 8.7 Human Interaction Model | 4 (019) |
-| 9 Editorial Architect, 12.1 Editorial Direction | 5 (020) |
-| 9 Visual Architect, 12.2 Visual Direction | 5 (021) |
-| 11 Sound Design, 12.3 Sound Direction | 5 (022) |
-| 10 Actor Agents, 12.4 Performance Direction | 5 (023) |
-| 12.5 Direction Convergence | 5 (024) |
+| 4.5 Script Bible | 5 (093) |
+| 4.6 Two-Lane Architecture | 5 (093, 094) |
+| 9 Editorial Architect, 12.4 Rhythm & Flow | 5 (020) |
+| 9 Visual Architect, 12.2 Look & Feel | 5 (021) |
+| 11 Sound Design, 12.3 Sound & Music | 5 (022) |
+| 10 Actor Agents, 12.5 Character & Performance | 5 (023) |
+| 12.1 Intent / Mood Layer | 5 (095) |
+| 12.6 Story World | 5 (100) |
+| 12.7 Readiness Indicators | 5 (099) |
+| 12.8 Prompt Compilation Model | 5 (094, 028) |
 | 13 Shot Planning | 6 (025) |
 | 14 Storyboards | 6 (026) |
 | 15 Animatics, 16 Keyframes | 6 (027) |
 | 17 Render Adapter | 7 (028) |
-| 18 User Asset Injection | 7 (029) |
+| 18 User Asset Injection (R17) | 7 (029, 098) |
 | 19 Memory Model | 8 (033) |
 | 20 Metadata & Auditing | 0 (002, baked in) |
 | 21 Operating Modes | 4 (019) |

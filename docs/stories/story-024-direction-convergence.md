@@ -1,8 +1,9 @@
 # Story 024: Direction Convergence and Review
 
-**Status**: To Do
+**Status**: Cancelled — Eliminated by ADR-003. The Intent/Mood layer handles cross-group coherence; a separate convergence step is unnecessary when elements are organized by creative concern rather than by role.
 **Created**: 2026-02-13
-**Spec Refs**: 12.5 (Direction Convergence), 8.6 (Disagreement Protocol), 8.1 (Director — review authority)
+**Cancelled**: 2026-02-27
+**Spec Refs**: 12.5 (Direction Convergence) — section being rewritten per ADR-003
 **Depends On**: Story 020 (editorial direction), Story 021 (visual direction), Story 022 (sound direction), Story 023 (performance direction), Story 015 (Director)
 
 ---

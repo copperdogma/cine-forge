@@ -1,5 +1,32 @@
 # Changelog
 
+## [2026-02-27-01] — ADR-003 decided: Three-Layer Director's Vision Model
+
+### Added
+- ADR-003 decided (Option E) — Intent/Mood layer → 5 concern groups → scope substrate
+- `decisions-log.md` — 14 comment decisions from synthesis review
+- Deep research: 4 provider reports (OpenAI, Anthropic, Google, xAI) + final synthesis
+- R17 in ideal.md — real-world assets as first-class inputs
+- Round-trip decomposition vision preference in ideal.md
+- 4 inbox items under "ADR-003 Deferred Ideas" (film decomposition, AI enhancement, location lookup, mood-board synthesis)
+- 8 new story skeletons: 093 (Script Bible), 094 (Concern Group Schemas), 095 (Intent/Mood Layer), 096 (Chat About This), 097 (AI Artifact Editing), 098 (Real-World Asset Upload), 099 (Scene Workspace), 100 (Motif Tracking)
+- Recommended build order in stories.md (7 groups, dependency-aware)
+
+### Changed
+- spec.md §12 completely rewritten: 4 direction types → 5 concern groups + Intent/Mood + Readiness Indicators + Prompt Compilation Model
+- spec.md §4.5 (Script Bible), §4.6 (Two-Lane Architecture) added
+- spec.md §4.4, §9, §13, §18 updated for ADR-003 terminology and R17
+- Stories 021 (Look & Feel), 022 (Sound & Music), 023 (Character & Performance) reshaped for concern group model
+- Story 025 (Shot Planning) dependency changed from Story 024 → concern group stories
+- Story 028 (Render Adapter) updated for concern group inputs, R17 dependency
+- Stories 026, 027, 029, 030, 056 updated for concern group terminology
+- Stories 082, 085 (Done) — ADR-003 impact notes added to work logs
+- setup-checklist.md, retrofit-gaps.md updated for concern group terminology
+- Untriaged "Prompt transparency / direct editing" resolved by ADR-003 Decision #4
+
+### Removed
+- Story 024 (Direction Convergence) cancelled — Intent/Mood layer handles cross-group coherence
+
 ## [2026-02-26-04] — Ideal-first retrofit: ideal.md, spec annotations, gap analysis, ADR-003
 
 ### Added

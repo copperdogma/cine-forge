@@ -3,7 +3,7 @@
 **Status**: To Do
 **Created**: 2026-02-13
 **Spec Refs**: 17 (Render Adapter Layer), 17.1 (Two-Part Prompt Architecture), 17.2 (Engine Packs), 17.3 (Error Handling), 7.2 (Tracks — generated video track)
-**Depends On**: Story 025 (shot planning — shot definitions), Story 027 (keyframes — optional generation constraints), Story 022 (sound direction — audio intent), Story 013 (track system — video track)
+**Depends On**: Story 025 (shot planning — shot definitions), Story 027 (keyframes — optional generation constraints), Story 022 (Sound & Music — audio intent), Story 013 (track system — video track), Story 098 (real-world asset upload — R17 origin-agnostic inputs)
 
 ---
 
@@ -30,16 +30,17 @@ Implement the **Render Adapter** — a stateless module (not a role) that transl
 - [ ] At least two engine packs for initial release (targeting most capable models available).
 - [ ] Engine pack format designed for easy addition of new models.
 
-### Prompt Construction
-- [ ] Prompt built from:
+### Prompt Construction (ADR-003 concern groups)
+- [ ] Prompt compiled from upstream concern group artifacts:
   - [ ] Shot definition (framing, camera, content, blocking).
-  - [ ] Visual direction (lighting, color, composition).
-  - [ ] Sound direction (ambient, emotional soundscape).
-  - [ ] Performance direction (character emotional states, physical notes).
+  - [ ] **Look & Feel** (lighting, color, composition, camera personality, costume, set design, visual motifs).
+  - [ ] **Sound & Music** (ambient, emotional soundscape, silence, music intent, audio motifs).
+  - [ ] **Character & Performance** (character emotional states, physical notes, blocking — from concern group artifacts or character bibles if formal artifacts don't exist).
+  - [ ] **Rhythm & Flow** (pacing, transition intent, coverage approach — from editorial direction).
   - [ ] Character bible state snapshots (current appearance).
   - [ ] Location bible state snapshots (current appearance).
   - [ ] Keyframes (if locked, as generation constraints).
-  - [ ] User-injected assets (reference images, audio).
+  - [ ] User-injected assets / real-world assets (reference images, audio — R17).
 - [ ] Prompt quality verified before submission (completeness check).
 
 ### Error Handling (Spec 17.3)
@@ -51,11 +52,12 @@ Implement the **Render Adapter** — a stateless module (not a role) that transl
 - [ ] Cannot change creative intent.
 - [ ] Retry strategy per engine pack (transient failures, rate limits).
 
-### Prompt Transparency (Ideal R12)
+### Prompt Transparency (Ideal R12, ADR-003 Decision #4)
 - [ ] The synthesized generation prompt is stored as a first-class artifact alongside the generated video.
-- [ ] Users can view the exact prompt that produced any generated output.
-- [ ] Users can edit the prompt and re-submit directly to regenerate with modifications.
-- [ ] Prompt versions are tracked — editing a prompt and re-generating creates a new version of both the prompt and the output.
+- [ ] Users can view the exact prompt that produced any generated output (read-only — "the prompt is a window, not a door").
+- [ ] Prompts are NOT directly editable. Changes go upstream (via chat or direct artifact edit), and the prompt recompiles automatically from upstream artifacts.
+- [ ] "Chat about this" affordance: user can highlight any part of the displayed prompt and drop it into chat with the appropriate AI role pre-tagged for discussion.
+- [ ] Prompt versions are tracked — upstream changes that trigger prompt recompilation create a new version of both the prompt and the output.
 
 ### Output
 - [ ] Generated video segments stored as artifacts with full metadata.
@@ -66,7 +68,7 @@ Implement the **Render Adapter** — a stateless module (not a role) that transl
 ### Module Manifest
 - [ ] Module directory: `src/cine_forge/modules/generation/render_adapter_v1/`
 - [ ] Not a role — no system prompt, no hierarchy position, no style pack.
-- [ ] Reads shot plans, direction artifacts, bibles, keyframes.
+- [ ] Reads shot plans, concern group artifacts, bibles, keyframes.
 - [ ] Outputs generated video artifacts.
 
 ### Testing

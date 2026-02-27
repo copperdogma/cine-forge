@@ -39,6 +39,7 @@ Qualities that persist regardless of implementation — these are part of the Id
 - **Taste belongs to the user** — The system amplifies creative vision, never overrides it. Style is a human choice expressed through conversation, references, and example
 - **Accessible by default** — Works regardless of film knowledge, budget, or technical sophistication. A teenager with a story and a veteran director both find what they need
 - **Voice-first as the ultimate expression** — The final form of CineForge is a voice conversation. Watch your film take shape, pause, speak, adjust, watch the change. "Make John speak earlier." "Darker lighting." "John, try that with more vulnerability." This is the north star for the interaction model — every intermediate interface is a step toward this
+- **Round-trip decomposition** — The ultimate validation of the artifact model: take any existing film, decompose it into CineForge artifacts (screenplay, character bibles, visual references, sound design, direction), modify any element, and re-render coherently. If the round-trip works, the artifact model is complete. The aspirational expression: take Pulp Fiction, decompose it, recast a character, change the ending, re-render — and get a coherent film back
 
 ---
 
@@ -163,6 +164,15 @@ Requirements are capabilities the system must have regardless of implementation.
 - When an upstream artifact changes, all downstream artifacts that depend on it are evaluated
 - Assessment distinguishes cosmetic changes (still valid) from fundamental changes (needs revision) with specific reasons
 - Quality bar: Changing Billy's name spelling → only name references need updating, everything else confirmed still valid. Changing Billy's core motivation → all performance direction, dialogue alternatives, and relationship dynamics for his scenes are flagged for revision, each with a specific reason ("Billy's motivation in Scene 14 was 'prove himself to father' — this no longer applies given the new backstory").
+
+### Real-World Integration
+
+**R17. The system must accept real-world production assets as first-class inputs at any point in the workflow.**
+- Uploaded assets (photos, videos, audio, documents) are treated identically to AI-generated artifacts — they slot into the same reference image, audio, and document systems
+- CineForge works for partial workflows: a filmmaker using CineForge only for previz while shooting a real film, or only for sound design, or only for storyboards
+- Real actors' headshots become character reference images. Real location photos become location references. Real audio recordings become sound references
+- The system doesn't care whether an asset was generated or uploaded — both are valid inputs at every level
+- Quality bar: A filmmaker uploads 3 headshots of their lead actor and 5 location photos from a scout. CineForge uses these as reference images for storyboard generation, animatics, and video previz — the generated output features recognizable versions of the real actor in the real locations. No "AI-only" assumption anywhere in the pipeline.
 
 ### Together
 

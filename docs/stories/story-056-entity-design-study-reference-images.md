@@ -2,8 +2,9 @@
 
 **Priority**: High
 **Status**: To Do
-**Spec Refs**: 6.3 (Bible Artifact Structure), 12.2 (Visual Direction — reference imagery), 14 (Storyboards), 17 (Render Adapter inputs), 18 (User Asset Injection), 20 (Metadata and Auditing)
-**Depends On**: Story 008 (character bibles), Story 009 (location/prop bibles), Story 011f (chat UI), Story 021 (visual direction), Story 029 (user asset injection)
+**Spec Refs**: 6.3 (Bible Artifact Structure), 12.2 (Look & Feel — reference imagery, per ADR-003), 14 (Storyboards), 17 (Render Adapter inputs), 18 (User Asset Injection / R17), 20 (Metadata and Auditing)
+**Depends On**: Story 008 (character bibles), Story 009 (location/prop bibles), Story 011f (chat UI), Story 029 (user asset injection)
+**Note**: Previously depended on Story 021 (visual direction). Per ADR-003, design studies are inputs TO the Look & Feel concern group, not outputs OF visual direction. Story 021 may consume design study outputs rather than the reverse.
 
 ## Goal
 

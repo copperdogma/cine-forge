@@ -39,7 +39,7 @@ Storyboards are optional. The pipeline can skip this stage entirely and go strai
 - [ ] Storyboard images generated via AI image generation API.
 - [ ] Generation prompt constructed from:
   - [ ] Shot definition (framing, camera, content).
-  - [ ] Visual direction (lighting, color palette, composition).
+  - [ ] Look & Feel concern group (lighting, color palette, composition, camera personality, visual motifs).
   - [ ] Character descriptions from bibles.
   - [ ] Location descriptions from bibles.
   - [ ] Continuity states for character/location appearance.
@@ -53,7 +53,7 @@ Storyboards are optional. The pipeline can skip this stage entirely and go strai
 
 ### Module Manifest
 - [ ] Module directory: `src/cine_forge/modules/visualization/storyboard_v1/`
-- [ ] Reads shot plan, visual direction, character/location bibles, continuity states.
+- [ ] Reads shot plan, Look & Feel concern group artifacts, character/location bibles, continuity states.
 - [ ] Outputs storyboard image artifacts + storyboard index.
 
 ### Testing

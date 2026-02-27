@@ -2,14 +2,18 @@
 
 **Status**: To Do
 **Created**: 2026-02-13
-**Spec Refs**: 18 (User Asset Injection), 6.3 (Bible Artifact Structure — reference images), 2.1 (Immutability)
+**Updated**: 2026-02-27 — ADR-003 elevates real-world assets to core design principle (R17).
+**Spec Refs**: 18 (User Asset Injection — being expanded per ADR-003/R17), 6.3 (Bible Artifact Structure — reference images), 2.1 (Immutability)
 **Depends On**: Story 008 (character bibles — asset attachment points), Story 009 (location/prop bibles), Story 014 (role system — lock negotiation), Story 017 (suggestion/decision tracking — lock negotiation via suggestions)
+**Ideal Refs**: R17 (real-world assets as first-class inputs)
 
 ---
 
 ## Goal
 
-Allow users to inject their own assets at any stage of the pipeline: actor photos, location photos, prop references, dialogue audio, style references, and any other creative material. Injected assets become part of the bible/artifact system and inform all downstream processing.
+Allow users to inject their own real-world assets at any stage of the pipeline: actor photos, location photos, prop references, dialogue audio, style references, and any other creative material. Injected assets become part of the bible/artifact system and inform all downstream processing.
+
+**ADR-003 / R17 context:** Real-world asset support is a core design principle, not just a feature. CineForge works for partial workflows — someone using CineForge only for previz while shooting a real film, or only for sound design, or only for storyboards. The system must be origin-agnostic: uploaded and AI-generated assets are treated identically throughout the pipeline.
 
 ---
 
@@ -18,10 +22,10 @@ Allow users to inject their own assets at any stage of the pipeline: actor photo
 ### Asset Injection
 - [ ] Users can inject assets at any pipeline stage:
   - [ ] **Actor photos**: attached to character bibles, used for visual consistency in storyboards/generation.
-  - [ ] **Location photos**: attached to location bibles, used for visual direction and generation.
+  - [ ] **Location photos**: attached to location bibles, used for Look & Feel concern group and generation.
   - [ ] **Prop references**: attached to prop bibles.
   - [ ] **Dialogue audio**: attached to scenes, used for timing and audio track.
-  - [ ] **Style references**: visual references for style packs or visual direction.
+  - [ ] **Style references**: visual references for style packs or Look & Feel concern group.
   - [ ] **Any other file**: flexible injection with user-specified purpose.
 - [ ] Injected assets stored within the relevant bible folder or artifact directory.
 - [ ] Manifest updated to track injected files with `user_injected` provenance.
@@ -45,12 +49,14 @@ Allow users to inject their own assets at any stage of the pipeline: actor photo
 
 ### Downstream Integration
 - [ ] Injected character photos used as reference in:
-  - [ ] Visual direction (character appearance consistency).
+  - [ ] Look & Feel concern group (character appearance consistency).
   - [ ] Storyboard generation (character likeness).
   - [ ] Video generation (character reference images).
-- [ ] Injected location photos used in visual direction and generation.
-- [ ] Injected audio used in timeline tracks and render adapter.
+- [ ] Injected location photos used in Look & Feel and generation.
+- [ ] Injected audio used in Sound & Music concern group, timeline tracks, and render adapter.
+- [ ] Injected style references usable to seed concern group generation (e.g., upload mood board → used as Look & Feel reference).
 - [ ] Lock status respected by all downstream modules.
+- [ ] **Origin-agnostic**: no part of the pipeline should distinguish between uploaded and AI-generated assets. Both follow the same reference image / audio / document paths.
 
 ### Schema
 - [ ] `InjectedAsset` Pydantic schema:
@@ -97,7 +103,7 @@ Soft locks are the default for injected assets. They tell the AI "I prefer this,
 - [ ] Implement lock system (soft/hard lock, unlock).
 - [ ] Implement lock negotiation via suggestion system.
 - [ ] Implement asset validation (format, dimensions, duration).
-- [ ] Implement downstream integration hooks (visual direction, storyboard, generation).
+- [ ] Implement downstream integration hooks (Look & Feel concern group, storyboard, generation).
 - [ ] Wire asset injection into Operator Console API.
 - [ ] Write unit tests.
 - [ ] Write integration test.

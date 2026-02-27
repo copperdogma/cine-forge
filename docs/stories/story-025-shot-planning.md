@@ -2,14 +2,18 @@
 
 **Status**: To Do
 **Created**: 2026-02-13
+**Reshaped**: 2026-02-27 — ADR-003 eliminates convergence step. Shot planning consumes concern group artifacts directly.
 **Spec Refs**: 13 (Shot Planning — full section), 13.1 (Coverage Strategy), 13.2 (Individual Shot Definition), 13.3 (Coverage Patterns), 13.4 (Export Compatibility)
-**Depends On**: Story 024 (direction convergence — converged direction set), Story 013 (track system — shots track), Story 012 (timeline — shot subdivision slots), Story 011 (continuity — asset state snapshots)
+**Depends On**: Story 021 (Look & Feel), Story 022 (Sound & Music), Story 020 (editorial direction / Rhythm & Flow), Story 013 (track system — shots track), Story 012 (timeline — shot subdivision slots), Story 011 (continuity — asset state snapshots)
+**Ideal Refs**: R7 (iterative refinement), R8 (production artifacts), R11 (production readiness)
 
 ---
 
 ## Goal
 
-Implement **shot planning** — where all upstream creative decisions converge into concrete, shot-by-shot instructions. Shot planning translates "what happens in this scene" into "what the audience sees and hears." The output mirrors a real-world shot list but is richer — every shot records the reasoning behind each choice and references to upstream artifacts.
+Implement **shot planning** — where all upstream creative decisions come together into concrete, shot-by-shot instructions. Shot planning translates "what happens in this scene" into "what the audience sees and hears." The output mirrors a real-world shot list but is richer — every shot records the reasoning behind each choice and references to upstream artifacts.
+
+**ADR-003 note:** Shot planning previously depended on Story 024 (direction convergence) which produced a single converged direction set. ADR-003 eliminates convergence — shot planning now consumes concern group artifacts directly (Look & Feel, Sound & Music, Rhythm & Flow / editorial direction, and optionally Character & Performance). The Intent/Mood layer provides cross-group coherence.
 
 ---
 
@@ -18,10 +22,10 @@ Implement **shot planning** — where all upstream creative decisions converge i
 ### Scene Coverage Strategy (Spec 13.1)
 - [ ] One coverage strategy per scene, produced before individual shots:
   - [ ] **Coverage approach**: what types of shots are needed and why.
-  - [ ] **Editorial intent**: from editorial direction (how this scene should cut together).
-  - [ ] **Visual intent**: from visual direction (lighting, color, mood, composition).
-  - [ ] **Sound intent**: from sound direction (ambient, silence, offscreen cues).
-  - [ ] **Performance notes**: from performance direction (emotional beats, subtext).
+  - [ ] **Rhythm & Flow intent**: from editorial direction / Rhythm & Flow concern group (how this scene should cut together, pacing, transitions).
+  - [ ] **Look & Feel intent**: from Look & Feel concern group (lighting, color, mood, composition, camera personality).
+  - [ ] **Sound & Music intent**: from Sound & Music concern group (ambient, silence, offscreen cues, music).
+  - [ ] **Character & Performance notes**: from character bibles + Character & Performance concern group if available (emotional beats, subtext, blocking). See Story 023 — formal artifacts may not exist; shot planner may pull from bibles directly.
   - [ ] **Coverage adequacy check**: does planned coverage give the editor enough angles?
 
 ### Individual Shot Definition (Spec 13.2)
@@ -43,7 +47,7 @@ Implement **shot planning** — where all upstream creative decisions converge i
     - [ ] Edit intent: why this shot exists from an editing perspective.
   - **Continuity and References**:
     - [ ] Asset state snapshots consumed (not masters — per spec 6.4).
-    - [ ] References to upstream artifacts (scene, bibles, direction artifacts).
+    - [ ] References to upstream artifacts (scene, bibles, concern group artifacts).
   - **Audit**:
     - [ ] Standard CineForge metadata (intent, rationale, alternatives considered, confidence, source).
 
@@ -59,7 +63,7 @@ Implement **shot planning** — where all upstream creative decisions converge i
 
 ### Shot Plan Module
 - [ ] Module directory: `src/cine_forge/modules/shot_planning/shot_plan_v1/`
-- [ ] Reads converged direction set, scene artifacts, continuity states.
+- [ ] Reads concern group artifacts (Look & Feel, Sound & Music, Rhythm & Flow, Character & Performance if available), scene artifacts, continuity states.
 - [ ] Produces coverage strategy + individual shot definitions per scene.
 - [ ] Integrates shots into timeline (Story 012) shot subdivision and places them on the shots track (Story 013).
 
@@ -74,7 +78,7 @@ Implement **shot planning** — where all upstream creative decisions converge i
 - [ ] Unit tests for individual shot definition (all field categories).
 - [ ] Unit tests for coverage adequacy checking.
 - [ ] Unit tests for export formatting.
-- [ ] Integration test: converged direction → shot planning → shot plan artifacts.
+- [ ] Integration test: concern group artifacts → shot planning → shot plan artifacts.
 - [ ] Schema validation on all outputs.
 
 ---
@@ -82,7 +86,7 @@ Implement **shot planning** — where all upstream creative decisions converge i
 ## Design Notes
 
 ### Shot Planning Is the Culmination
-This is where everything comes together. Every upstream artifact (scene extraction, bibles, continuity states, editorial/visual/sound/performance direction) feeds into shot planning. The shot plan is the most information-dense artifact in the system.
+This is where everything comes together. Every upstream artifact (scene extraction, bibles, continuity states, concern group artifacts from Look & Feel, Sound & Music, Rhythm & Flow, Character & Performance) feeds into shot planning. The shot plan is the most information-dense artifact in the system.
 
 ### Asset State Snapshots, Not Masters
 Shots consume continuity state snapshots (Story 011), not master definitions. If a character has changed costume by scene 15, the shot plan for scene 15 references the state snapshot showing the new costume, not the master definition showing the original costume.
@@ -114,3 +118,5 @@ Coverage patterns are not formulaic. The Editorial Architect's coverage priority
 ## Work Log
 
 *(append-only)*
+
+20260227 — Story reshaped per ADR-003. Dependency on Story 024 (convergence) removed — shot planning now consumes concern group artifacts directly (Look & Feel, Sound & Music, Rhythm & Flow, Character & Performance). Dependencies updated to Stories 020, 021, 022. Coverage strategy and design notes updated to reference concern groups.
