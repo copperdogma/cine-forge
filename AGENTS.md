@@ -10,6 +10,12 @@ This file is the project-wide source of truth for agent behavior and engineering
 >
 > The Ideal's primary test: **Is it easy, fun, and engaging?** If using CineForge
 > feels like work, something is wrong.
+>
+> **Preferences exist at two levels.** Vision-level preferences (in `docs/ideal.md`)
+> persist across all implementations — they survive even when every compromise is
+> eliminated. Compromise-level preferences (on individual compromises in `docs/spec.md`)
+> are legitimate investments but die when their compromise is eliminated. Know which
+> level you're working at.
 
 ## Core Agent Mandates
 

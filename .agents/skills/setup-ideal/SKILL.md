@@ -141,6 +141,16 @@ Follow the template in `docs/prompts/ideal-app.md`, sections 1-2 only
 Section 1. Do NOT write Compromises, Decomposition, or Human Review Points
 yet — those come from `/setup-spec` after evals.
 
+**Vision-level preferences** are qualities that persist regardless of
+implementation — they survive even when every compromise is eliminated.
+"The interaction should feel like collaborating with talented people" is a
+vision-level preference. Contrast with **compromise-level preferences** (added
+later by `/setup-spec`), which attach to specific compromises and die when the
+compromise is eliminated. "Engine pack selection UI" is a compromise-level
+preference tied to a render adapter compromise — if a single model handled all
+video gen, that UI would be deleted. During `/setup-ideal`, only capture
+vision-level preferences. Compromise-level preferences emerge during spec work.
+
 ## Document Structure for spec.md (initial)
 
 Just a flat list under a heading:

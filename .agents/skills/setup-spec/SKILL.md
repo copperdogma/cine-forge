@@ -10,6 +10,13 @@ Build the full project spec. This is NOT a creative exercise — it's an
 engineering response to measured limitations. Every section of this spec
 exists because an eval or analysis proved the Ideal can't be achieved directly.
 
+Each compromise may carry **compromise-level preferences** — UX decisions,
+config options, and tuning parameters that exist only because the compromise
+exists. These are legitimate engineering investments (the product needs to
+ship), but they are explicitly tied to their compromise and die when it is
+eliminated. They are the counterpart to **vision-level preferences** in
+`docs/ideal.md`, which persist across all implementations.
+
 ## What This Skill Produces
 
 1. **`docs/spec.md`** — Organized spec with confirmed compromises, each carrying

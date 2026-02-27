@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-02-27-02] — Document two-tier preference model across project
+
+### Added
+- Two-tier preference explanation in ideal.md header (vision-level vs compromise-level)
+- Counterpart explanation in spec.md header
+- Preference-level awareness in AGENTS.md Ideal reference block
+- Compromise-level preferences tagged on C1 (Cost Transparency) and C7 (Working Memory)
+- Vision-level vs compromise-level contrast in setup-ideal skill
+- Compromise-level preference intro in setup-spec skill
+
 ## [2026-02-27-01] — ADR-003 decided: Three-Layer Director's Vision Model
 
 ### Added

@@ -5,6 +5,18 @@
 > this Ideal. Every compromise in `docs/spec.md` carries a detection mechanism for
 > when it's no longer needed. The Ideal is the Requirements. The Spec is the
 > Compromises. The Spec shrinks over time. This document rarely changes.
+>
+> **Preferences exist at two levels:**
+> - **Vision-level preferences** (below) attach to the Ideal. They persist across
+>   all implementations and survive even when every compromise is eliminated.
+>   "The interaction should feel like collaborating with talented people" is a
+>   vision-level preference.
+> - **Compromise-level preferences** live in `docs/spec.md`, attached to specific
+>   compromises. They are legitimate engineering investments — the product needs
+>   to ship and be usable — but they die when their compromise is eliminated or
+>   transformed. "Engine pack selection UI" is a compromise-level preference tied
+>   to the render adapter compromise; if a single model handled all video gen,
+>   that UI would be deleted.
 
 ## 1. The Ideal
 

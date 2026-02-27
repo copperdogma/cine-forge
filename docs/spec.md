@@ -11,6 +11,13 @@ AI-Driven Film Reasoning, Pre-Production, and Generation Pipeline
 >
 > Sections not annotated are **Ideal requirements** — they describe what the system
 > should do regardless of implementation and are mirrored in `docs/ideal.md`.
+>
+> **Compromise-level preferences** on individual compromises (UX decisions, config
+> options, tuning parameters) are legitimate engineering investments — the product
+> needs to ship and be usable. But they are explicitly tied to their compromise and
+> die when it is eliminated or transformed. They are the counterpart to
+> **vision-level preferences** in `docs/ideal.md`, which persist across all
+> implementations regardless of what compromises exist.
 
 ⸻
 
@@ -105,6 +112,7 @@ The user or Director may also manually decide which stale artifacts to revise wi
 > **The Limitation:** AI inference has non-trivial, variable monetary costs across providers.
 > **Detection:** Monitor inference pricing trends. When cost per 1M tokens drops below $0.001 across all providers used.
 > **When It Resolves:** Delete cost tracking per call, budget cap system, and cost-quality tiering UI. Keep aggregate cost reporting for business purposes only.
+> **Compromise-Level Preferences:** Cost-per-call display, budget cap thresholds, cost-quality tier selector.
 
 2.8 Quality Validation (QA)
 ... (existing content) ...
@@ -947,6 +955,7 @@ Injected assets slot into the same reference image / audio / document paths as A
 > **The Limitation:** AI context windows are finite (128K-200K tokens) and expensive. Long conversations must be summarized or truncated.
 > **Detection:** When context windows exceed 10M tokens at negligible cost, OR when AI models natively support persistent cross-session memory.
 > **When It Resolves:** Delete working memory management (summarization triggers, compaction logic, Director/Script Supervisor memory limits). All conversations are fully retained in context. Delete the "Chats are accelerators" principle — chats become truth alongside artifacts.
+> **Compromise-Level Preferences:** Conversation summarization controls, memory budget indicator, "context limit approaching" warning.
 
 19.3 Rule
 
