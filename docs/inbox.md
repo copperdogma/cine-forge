@@ -5,6 +5,8 @@ Triaged together via `/triage` skill in AI agent sessions.
 
 - nano banana 2 templates would be useful for global style transfers: https://x.com/geminiapp/status/2027081255804870985?s=12&t=uFZE-MuhgWdh1YErEZzLtQ
 
+- Runway Character Rendered App: https://x.com/runwayml/status/2027411005509161375?s=20
+
 ### ADR-003 Deferred Ideas
 
 - 20260227: **Film decomposition / remix**: Take any existing film, decompose it into CineForge artifacts (screenplay, character bibles, visual references, sound design, direction), modify any element, re-render. E.g., take Pulp Fiction, recast a character, change the ending. The round-trip decomposition test (decompose → re-render → compare) is an Ideal vision preference; the remix feature itself is far-future. *(Source: ADR-003, Decision #8)*
