@@ -16,14 +16,16 @@ def test_timeline_recipe_builds_project_timeline_from_store_inputs(tmp_path: Pat
     engine = DriverEngine(workspace_root=workspace_root, project_dir=project_dir)
 
     ingest_state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-ingest-extract.yaml",
+        recipe_path=(
+            workspace_root / "tests" / "fixtures" / "recipes" / "recipe-ingest-extract.yaml"
+        ),
         run_id="integration-timeline-upstream",
         force=True,
         runtime_params={
             "input_file": str(workspace_root / "samples" / "sample-screenplay.fountain")
         },
     )
-    assert ingest_state["stages"]["extract"]["status"] == "done"
+    assert ingest_state["stages"]["breakdown_scenes"]["status"] == "done"
 
     timeline_state = engine.run(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-timeline.yaml",

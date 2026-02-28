@@ -1,0 +1,22 @@
+module_id: script_bible_v1
+stage: ingest
+description: >
+  Extract a high-level script bible from the canonical screenplay text.
+  Story-lane artifact — cheap, always generated on import. Produces
+  logline, synopsis, act structure, themes, narrative arc, genre/tone.
+  Single LLM call (Sonnet-class).
+input_schemas:
+  - canonical_script
+output_schemas:
+  - script_bible
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Model for script bible extraction."
+  max_tokens:
+    type: integer
+    required: false
+    default: 4096
+    description: "Max output tokens for the extraction call."

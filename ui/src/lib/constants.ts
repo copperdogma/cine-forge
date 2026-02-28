@@ -1,15 +1,3 @@
-/**
- * Canonical stage order per recipe. Unknown stages go at the end.
- * Used by RunProgressCard and ProjectRun pages to ensure consistent
- * sequential display of pipeline progress.
- */
-export const RECIPE_STAGE_ORDER: Record<string, string[]> = {
-  mvp_ingest: ['ingest', 'normalize', 'breakdown_scenes', 'project_config'],
-  world_building: ['entity_discovery', 'analyze_scenes', 'character_bible', 'location_bible', 'prop_bible'],
-  narrative_analysis: ['entity_graph', 'continuity_tracking'],
-  creative_direction: ['editorial_direction'],
-}
-
 /** Human-readable names for recipes. */
 export const RECIPE_NAMES: Record<string, string> = {
   mvp_ingest: 'Script Intake',
@@ -26,6 +14,7 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   location_bible: ['location', 'locations'],
   prop_bible: ['prop', 'props'],
   scene_breakdown: ['scene breakdown', 'scene breakdowns'],
+  script_bible: ['script bible', 'script bibles'],
   entity_graph: ['story graph', 'story graphs'],
   world_overview: ['world overview', 'world overviews'],
   entity_discovery_results: ['entity discovery results', 'entity discovery results'],
@@ -36,11 +25,14 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
 /** Skip internal artifact types the user doesn't care about. */
 export const SKIP_TYPES = new Set(['raw_input', 'project_config', 'scene_index', 'entity_discovery_results'])
 
-/** Shared utility to sort stage IDs based on the canonical recipe order. */
-export function getOrderedStageIds(recipeId: string, stageKeys: string[]): string[] {
-  const knownOrder = RECIPE_STAGE_ORDER[recipeId]
-  if (!knownOrder) return stageKeys
-  const ordered = knownOrder.filter(id => stageKeys.includes(id))
-  const extras = stageKeys.filter(id => !knownOrder.includes(id))
+/**
+ * Return stage IDs in display order. Uses the explicit stage_order from
+ * the run state (set by the backend from the recipe's declared order).
+ * Falls back to stageKeys as-is if no order provided.
+ */
+export function getOrderedStageIds(stageKeys: string[], stageOrder?: string[]): string[] {
+  if (!stageOrder || stageOrder.length === 0) return stageKeys
+  const ordered = stageOrder.filter(id => stageKeys.includes(id))
+  const extras = stageKeys.filter(id => !stageOrder.includes(id))
   return [...ordered, ...extras]
 }

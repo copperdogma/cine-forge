@@ -387,6 +387,18 @@ export function useCanonicalScript(projectId: string | undefined) {
   )
 }
 
+export function useScriptBible(projectId: string | undefined) {
+  const { data: groups } = useArtifactGroups(projectId)
+  const group = groups?.find(g => g.artifact_type === 'script_bible')
+
+  return useArtifact(
+    projectId,
+    'script_bible',
+    group?.entity_id ?? 'project',
+    group?.latest_version,
+  )
+}
+
 export interface EnrichedEntity {
   entity_id: string | null
   artifact_type: string

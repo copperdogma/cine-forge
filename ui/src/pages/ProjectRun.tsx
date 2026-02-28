@@ -247,7 +247,7 @@ export default function ProjectRun() {
   if (runId) {
     const stages = runStateData?.state.stages || {}
     const recipeId = runStateData?.state.recipe_id || 'mvp_ingest'
-    const stageIds = getOrderedStageIds(recipeId, Object.keys(stages))
+    const stageIds = getOrderedStageIds(Object.keys(stages), runStateData?.state.stage_order)
 
     const isRunning = Object.values(stages).some((s) => s.status === 'running')
     const isCompleted = stageIds.length > 0 && stageIds.every((id) => stages[id]?.status === 'done' || stages[id]?.status === 'skipped_reused')

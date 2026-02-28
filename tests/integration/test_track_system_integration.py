@@ -15,14 +15,16 @@ def test_track_system_recipe_builds_manifest_and_stale_propagates(tmp_path: Path
     engine = DriverEngine(workspace_root=workspace_root, project_dir=tmp_path / "project")
 
     ingest_state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-ingest-extract.yaml",
+        recipe_path=(
+            workspace_root / "tests" / "fixtures" / "recipes" / "recipe-ingest-extract.yaml"
+        ),
         run_id="integration-track-upstream",
         force=True,
         runtime_params={
             "input_file": str(workspace_root / "samples" / "sample-screenplay.fountain")
         },
     )
-    assert ingest_state["stages"]["extract"]["status"] == "done"
+    assert ingest_state["stages"]["breakdown_scenes"]["status"] == "done"
 
     timeline_state = engine.run(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-timeline.yaml",

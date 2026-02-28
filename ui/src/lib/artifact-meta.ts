@@ -4,6 +4,7 @@
  * This is the ONLY place artifactMeta should be defined.
  */
 import {
+  BookOpen,
   FileText,
   Users,
   MapPin,
@@ -17,6 +18,7 @@ import {
 export const artifactMeta: Record<string, { icon: typeof FileText; label: string; color: string }> = {
   raw_input: { icon: FileText, label: 'Screenplay', color: 'text-blue-400' },
   canonical_script: { icon: FileText, label: 'Canonical Script', color: 'text-blue-300' },
+  script_bible: { icon: BookOpen, label: 'Script Bible', color: 'text-indigo-400' },
   project_config: { icon: Package, label: 'Project Config', color: 'text-slate-400' },
   entity_graph: { icon: Globe, label: 'Entity Graph', color: 'text-emerald-400' },
   character_bible: { icon: Users, label: 'Character Bible', color: 'text-amber-400' },

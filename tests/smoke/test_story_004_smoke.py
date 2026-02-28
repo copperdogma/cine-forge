@@ -14,7 +14,9 @@ def test_story_004_ingest_normalize_smoke() -> None:
     engine = DriverEngine(workspace_root=workspace_root)
 
     state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-ingest-normalize.yaml",
+        recipe_path=(
+            workspace_root / "tests" / "fixtures" / "recipes" / "recipe-ingest-normalize.yaml"
+        ),
         run_id="smoke-story-004-normalize",
         force=True,
         runtime_params={"input_file": str(workspace_root / "samples" / "sample-prose.txt")},

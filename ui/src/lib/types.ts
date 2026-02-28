@@ -79,6 +79,7 @@ export type RunStateResponse = {
     started_at?: number
     finished_at?: number
     stages: Record<string, StageState>
+    stage_order?: string[]
     runtime_params: Record<string, unknown>
     total_cost_usd: number
   }

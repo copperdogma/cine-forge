@@ -15,7 +15,7 @@ from cine_forge.schemas import ArtifactRef
 def test_story_ingest_recipe_persists_raw_input_and_versions() -> None:
     workspace_root = Path(__file__).resolve().parents[2]
     engine = DriverEngine(workspace_root=workspace_root)
-    recipe_path = workspace_root / "configs" / "recipes" / "recipe-ingest-only.yaml"
+    recipe_path = workspace_root / "tests" / "fixtures" / "recipes" / "recipe-ingest-only.yaml"
 
     screenplay_file = workspace_root / "samples" / "sample-screenplay.fountain"
     prose_file = workspace_root / "samples" / "sample-prose.txt"
@@ -86,7 +86,7 @@ def test_story_ingest_supports_all_fixture_formats(
     engine = DriverEngine(workspace_root=workspace_root)
     run_id = f"integration-story-ingest-format-{expected_file_format}"
     state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-ingest-only.yaml",
+        recipe_path=workspace_root / "tests" / "fixtures" / "recipes" / "recipe-ingest-only.yaml",
         run_id=run_id,
         force=True,
         runtime_params={"input_file": str(fixture_path)},
@@ -132,7 +132,9 @@ def test_ingest_normalize_handles_all_supported_formats_semantically(
     engine = DriverEngine(workspace_root=workspace_root)
     run_id = f"integration-ingest-normalize-{expected_file_format}"
     state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-ingest-normalize.yaml",
+        recipe_path=(
+            workspace_root / "tests" / "fixtures" / "recipes" / "recipe-ingest-normalize.yaml"
+        ),
         run_id=run_id,
         force=True,
         runtime_params={"input_file": str(fixture_path)},

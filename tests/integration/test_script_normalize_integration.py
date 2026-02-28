@@ -17,7 +17,9 @@ def test_ingest_and_normalize_recipe_persists_canonical_script() -> None:
     workspace_root = Path(__file__).resolve().parents[2]
     engine = DriverEngine(workspace_root=workspace_root)
     state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-ingest-normalize.yaml",
+        recipe_path=(
+            workspace_root / "tests" / "fixtures" / "recipes" / "recipe-ingest-normalize.yaml"
+        ),
         run_id="integration-script-normalize",
         force=True,
         runtime_params={

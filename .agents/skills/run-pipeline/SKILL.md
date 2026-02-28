@@ -38,7 +38,7 @@ PYTHONPATH=src .venv/bin/python -m cine_forge.driver --recipe <recipe-path> --ru
 
 | Recipe | Required params | Notes |
 |--------|----------------|-------|
-| `recipe-ingest-extract.yaml` | `input_file`, `model`, `qa_model` | `input_file` = absolute path to script |
+| `recipe-mvp-ingest.yaml` | `input_file`, `accept_config` | `input_file` = absolute path to script |
 | `recipe-world-building.yaml` | *(none)* | Models hardcoded in recipe yaml |
 | `recipe-narrative-analysis.yaml` | `utility_model` | Used for entity_graph and continuity stages |
 
@@ -66,12 +66,11 @@ engine = DriverEngine(
 )
 
 state = engine.run(
-    recipe_path=Path("configs/recipes/recipe-ingest-extract.yaml"),
+    recipe_path=Path("configs/recipes/recipe-mvp-ingest.yaml"),
     run_id="smoke-045-ingest",
     runtime_params={
         "input_file": "/abs/path/to/script.md",
-        "model": "claude-haiku-4-5-20251001",
-        "qa_model": "claude-haiku-4-5-20251001",
+        "accept_config": "true",
     },
 )
 
@@ -84,7 +83,7 @@ Run multi-recipe pipelines sequentially against the same `project_dir` — downs
 
 ```python
 # 1. Ingest
-engine.run(recipe_path=Path("configs/recipes/recipe-ingest-extract.yaml"), run_id="smoke-ingest", runtime_params={...})
+engine.run(recipe_path=Path("configs/recipes/recipe-mvp-ingest.yaml"), run_id="smoke-ingest", runtime_params={...})
 
 # 2. World-building (reads ingest artifacts from project_dir automatically)
 engine.run(recipe_path=Path("configs/recipes/recipe-world-building.yaml"), run_id="smoke-worldbuild", runtime_params={})

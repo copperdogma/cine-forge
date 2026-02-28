@@ -263,7 +263,7 @@ def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
     assert "nodes" in graph
     assert "edges" in graph
     assert len(graph["phases"]) == 6
-    assert len(graph["nodes"]) == 19
+    assert len(graph["nodes"]) == 20
 
     # script_import should be available (no deps).
     si = next(n for n in graph["nodes"] if n["id"] == "script_import")
@@ -284,7 +284,7 @@ def test_compute_pipeline_graph_with_artifacts(tmp_path: Path) -> None:
     store = ArtifactStore(project_dir=project_dir)
 
     # Simulate completed script phase.
-    for atype in ["raw_input", "canonical_script", "scene_index", "project_config"]:
+    for atype in ["raw_input", "canonical_script", "script_bible", "scene_index", "project_config"]:
         store.save_artifact(
             artifact_type=atype,
             entity_id="project",

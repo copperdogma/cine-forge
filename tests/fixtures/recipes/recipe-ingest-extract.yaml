@@ -1,5 +1,5 @@
 recipe_id: recipe-ingest-extract
-description: Ingest + normalize + scene breakdown recipe.
+description: "Test fixture: ingest + normalize + scene breakdown."
 project: {}
 stages:
   - id: ingest
@@ -10,8 +10,8 @@ stages:
   - id: normalize
     module: script_normalize_v1
     params:
-      model: ${model}
-      qa_model: ${qa_model}
+      model: mock
+      qa_model: mock
       max_retries: 1
       skip_qa: false
     needs:
@@ -19,6 +19,6 @@ stages:
   - id: breakdown_scenes
     module: scene_breakdown_v1
     params:
-      work_model: ${model}
+      work_model: mock
     needs:
       - normalize

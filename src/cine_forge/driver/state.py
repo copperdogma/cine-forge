@@ -48,6 +48,7 @@ class RunState(BaseModel):
     stages: dict[str, StageRunState]
     runtime_params: dict[str, Any] = Field(default_factory=dict)
     total_cost_usd: float = Field(ge=0.0)
+    stage_order: list[str] = Field(default_factory=list)
     instrumented: bool
     finished_at: float | None = None
 

@@ -137,6 +137,10 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Breaking down scene boundaries and structure...',
     done: 'Scene breakdown complete.',
   },
+  script_bible: {
+    start: 'Analyzing story structure, themes, and narrative arc...',
+    done: 'Script bible complete.',
+  },
   analyze_scenes: {
     start: 'Analyzing narrative beats, tone, and subtext across scenes...',
     done: 'Scene analysis complete.',

@@ -3,6 +3,9 @@ import { useEffect, useRef, useState, Suspense, lazy } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import {
+  BookOpen,
+  ChevronDown,
+  ChevronUp,
   Film,
   FileText,
   AlertTriangle,
@@ -39,6 +42,7 @@ import {
   useProjectInputs,
   useProjectInputContent,
   useCanonicalScript,
+  useScriptBible,
   useProjectState,
 } from '@/lib/hooks'
 import { updateProjectSettings } from '@/lib/api'
@@ -149,6 +153,128 @@ function EditableTitle({
   )
 }
 
+// --- Script Bible Panel (expandable) ---
+
+interface ScriptBibleData {
+  logline?: string
+  synopsis?: string
+  genre?: string
+  tone?: string
+  narrative_arc?: string
+  protagonist_journey?: string
+  central_conflict?: string
+  setting_overview?: string
+  act_structure?: { act_number: number; title: string; summary: string; turning_points: string[] }[]
+  themes?: { theme: string; description: string; evidence: string[] }[]
+}
+
+function ScriptBiblePanel({
+  bible,
+  expanded,
+  onToggle,
+}: {
+  bible: ScriptBibleData
+  expanded: boolean
+  onToggle: () => void
+}) {
+  return (
+    <div className="rounded-lg border border-border/60 bg-card/50">
+      <button
+        onClick={onToggle}
+        className="flex items-center gap-2 w-full px-3 py-2 text-left text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <BookOpen className="h-3.5 w-3.5 shrink-0 text-indigo-400" />
+        <span className="font-medium">Script Bible</span>
+        {expanded ? <ChevronUp className="h-3.5 w-3.5 ml-auto" /> : <ChevronDown className="h-3.5 w-3.5 ml-auto" />}
+      </button>
+      {expanded && (
+        <div className="border-t border-border/40 max-h-[50vh] overflow-y-auto">
+          <div className="px-4 pb-4 space-y-4 text-sm pt-4 max-w-3xl">
+            {bible.tone && (
+              <p className="text-muted-foreground italic">{bible.tone}</p>
+            )}
+            {bible.themes && bible.themes.length > 0 && (
+              <TooltipProvider delayDuration={200}>
+                <div className="flex flex-wrap gap-2">
+                  {bible.themes.map(t => (
+                    <Tooltip key={t.theme}>
+                      <TooltipTrigger asChild>
+                        <Badge variant="outline" className="text-indigo-300 border-indigo-500/20 cursor-default">
+                          {t.theme}
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="max-w-xs text-xs">
+                        {t.description}
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
+              </TooltipProvider>
+            )}
+            {bible.synopsis && (
+              <>
+                <Separator className="opacity-30" />
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Synopsis</h4>
+                  <p className="text-foreground/90 whitespace-pre-line leading-relaxed">{bible.synopsis}</p>
+                </div>
+              </>
+            )}
+            <Separator className="opacity-30" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {bible.central_conflict && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Central Conflict</h4>
+                  <p className="text-foreground/90 leading-relaxed">{bible.central_conflict}</p>
+                </div>
+              )}
+              {bible.protagonist_journey && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Protagonist Journey</h4>
+                  <p className="text-foreground/90 leading-relaxed">{bible.protagonist_journey}</p>
+                </div>
+              )}
+              {bible.narrative_arc && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Narrative Arc</h4>
+                  <p className="text-foreground/90 leading-relaxed">{bible.narrative_arc}</p>
+                </div>
+              )}
+              {bible.setting_overview && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Setting</h4>
+                  <p className="text-foreground/90 leading-relaxed">{bible.setting_overview}</p>
+                </div>
+              )}
+            </div>
+            <Separator className="opacity-30" />
+            {bible.act_structure && bible.act_structure.length > 0 && (
+              <div>
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Act Structure</h4>
+                <div className="space-y-3">
+                  {bible.act_structure.map(act => (
+                    <div key={act.act_number} className="rounded-md border border-border/40 p-3">
+                      <div className="font-medium text-foreground/90">
+                        Act {act.act_number}: {act.title}
+                      </div>
+                      <p className="text-muted-foreground text-sm mt-1 leading-relaxed">{act.summary}</p>
+                      {act.turning_points.length > 0 && (
+                        <ul className="mt-1.5 text-sm text-muted-foreground list-disc list-inside space-y-0.5">
+                          {act.turning_points.map((tp, i) => <li key={i}>{tp}</li>)}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // --- Fresh Import View: Screenplay displayed in CodeMirror ---
 
 function FreshImportView({ projectId }: { projectId: string }) {
@@ -159,10 +285,26 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const { data: scenes } = useScenes(projectId)
   const { resolve } = useEntityResolver(projectId)
   const { data: canonicalScript, isLoading: canonicalLoading } = useCanonicalScript(projectId)
+  const { data: scriptBibleArtifact } = useScriptBible(projectId)
   const latestInput = inputs?.[inputs.length - 1]
   const { data: rawContent, isLoading: rawLoading } = useProjectInputContent(projectId, latestInput?.filename)
   const editorRef = useRef<ScreenplayEditorHandle>(null)
   const [isExportOpen, setIsExportOpen] = useState(false)
+  const [bibleExpanded, setBibleExpanded] = useState(false)
+
+  // Extract script bible data
+  const bible = scriptBibleArtifact?.payload?.data as {
+    logline?: string
+    synopsis?: string
+    genre?: string
+    tone?: string
+    narrative_arc?: string
+    protagonist_journey?: string
+    central_conflict?: string
+    setting_overview?: string
+    act_structure?: { act_number: number; title: string; summary: string; turning_points: string[] }[]
+    themes?: { theme: string; description: string; evidence: string[] }[]
+  } | undefined
 
   // Favor normalized script over raw input
   const scriptData = canonicalScript?.payload?.data as { script_text?: string } | undefined
@@ -223,35 +365,47 @@ function FreshImportView({ projectId }: { projectId: string }) {
   return (
     <div className="flex flex-col flex-1 min-h-0 gap-4">
       {/* Header */}
-      <div className="flex items-center gap-3 shrink-0">
-        <FileText className="h-6 w-6 text-primary shrink-0" />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <EditableTitle
-              projectId={projectId}
-              displayName={project?.display_name ?? 'Your Screenplay'}
-              className="text-2xl"
-            />
-            {isNormalized ? (
-              <Badge variant="secondary" className="bg-green-500/10 text-green-400 border-green-500/20">
-                Canonical
-              </Badge>
-            ) : (
-              <Badge variant="outline" className="text-muted-foreground">
-                Raw Import
-              </Badge>
-            )}
+      <div className="shrink-0 space-y-2">
+        <div className="flex items-center gap-3">
+          <FileText className="h-6 w-6 text-primary shrink-0" />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <EditableTitle
+                projectId={projectId}
+                displayName={project?.display_name ?? 'Your Screenplay'}
+                className="text-2xl"
+              />
+              {isNormalized ? (
+                <Badge variant="secondary" className="bg-green-500/10 text-green-400 border-green-500/20">
+                  Canonical
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="text-muted-foreground">
+                  Raw Import
+                </Badge>
+              )}
+              {bible?.genre && (
+                <Badge variant="outline" className="text-indigo-400 border-indigo-500/30">
+                  {bible.genre}
+                </Badge>
+              )}
+            </div>
+            {bible?.logline ? (
+              <p className="text-sm text-muted-foreground italic">{bible.logline}</p>
+            ) : latestInput ? (
+              <p className="text-sm text-muted-foreground">
+                {latestInput.original_name} — {(latestInput.size_bytes / 1024).toFixed(1)} KB
+              </p>
+            ) : null}
           </div>
-          {latestInput && (
-            <p className="text-sm text-muted-foreground">
-              {latestInput.original_name} — {(latestInput.size_bytes / 1024).toFixed(1)} KB
-            </p>
-          )}
+          <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+            <Share className="mr-2 h-4 w-4" />
+            Export
+          </Button>
         </div>
-        <Button variant="outline" onClick={() => setIsExportOpen(true)}>
-          <Share className="mr-2 h-4 w-4" />
-          Export
-        </Button>
+        {bible && (
+          <ScriptBiblePanel bible={bible} expanded={bibleExpanded} onToggle={() => setBibleExpanded(e => !e)} />
+        )}
       </div>
 
       {/* Screenplay content — fills remaining space */}

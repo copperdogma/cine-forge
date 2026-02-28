@@ -56,6 +56,7 @@ from cine_forge.schemas import (
     Scene,
     SceneIndex,
     SchemaRegistry,
+    ScriptBible,
     StageReviewArtifact,
     StylePack,
     Suggestion,
@@ -139,6 +140,7 @@ class DriverEngine:
         self.schemas.register("disagreement", DisagreementArtifact)
         self.schemas.register("editorial_direction", EditorialDirection)
         self.schemas.register("editorial_direction_index", EditorialDirectionIndex)
+        self.schemas.register("script_bible", ScriptBible)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 
     def run(
@@ -213,6 +215,7 @@ class DriverEngine:
                 for stage in recipe.stages
             },
             "runtime_params": resolved_runtime_params,
+            "stage_order": [stage.id for stage in recipe.stages],
             "total_cost_usd": 0.0,
             "instrumented": instrument,
         }

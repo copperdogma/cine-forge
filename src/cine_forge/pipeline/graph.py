@@ -102,6 +102,14 @@ PIPELINE_NODES: list[PipelineNode] = [
         dependencies=["script_import"],
     ),
     PipelineNode(
+        id="script_bible",
+        label="Script Bible",
+        phase_id="script",
+        artifact_types=["script_bible"],
+        dependencies=["normalization"],
+        nav_route="/",
+    ),
+    PipelineNode(
         id="scene_extraction",
         label="Scene Extraction",
         phase_id="script",
@@ -255,7 +263,10 @@ PIPELINE_PHASES: list[PipelinePhase] = [
         id="script",
         label="Script",
         icon="FileText",
-        node_ids=["script_import", "normalization", "scene_extraction", "project_config"],
+        node_ids=[
+            "script_import", "normalization", "script_bible",
+            "scene_extraction", "project_config",
+        ],
         nav_route="/",
     ),
     PipelinePhase(
@@ -303,6 +314,7 @@ _PHASE_MAP: dict[str, PipelinePhase] = {p.id: p for p in PIPELINE_PHASES}
 NODE_FIX_RECIPES: dict[str, str] = {
     "script_import": "mvp_ingest",
     "normalization": "mvp_ingest",
+    "script_bible": "mvp_ingest",
     "scene_extraction": "mvp_ingest",
     "project_config": "mvp_ingest",
     "entity_discovery": "world_building",

@@ -1,5 +1,25 @@
 # Changelog
 
+## [2026-02-27-03] — Script bible artifact (Story 093)
+
+### Added
+- Script bible schema (`ScriptBible`, `ActStructure`, `ThematicElement`) in `src/cine_forge/schemas/script_bible.py`
+- `script_bible_v1` pipeline module — single Sonnet LLM call from canonical script
+- `script_bible` stage in `recipe-mvp-ingest.yaml` (parallel with `breakdown_scenes`)
+- Pipeline graph node for script bible in the `script` phase
+- ScriptBiblePanel on the Script page — expandable panel with tone, theme badges (with tooltips), synopsis, conflict/journey/arc/setting grid, act structure
+- `useScriptBible` hook and artifact metadata
+- `stage_order` field on `RunState` — recipe YAML is now the single source of truth for stage display order
+- 7 unit tests for the script bible module
+
+### Changed
+- Deleted hardcoded `RECIPE_STAGE_ORDER` from UI constants — frontend reads order from backend API
+- Moved 4 legacy partial-ingest recipes from `configs/recipes/` to `tests/fixtures/recipes/`
+- Fixed stale `stages["extract"]` assertions in timeline/track integration tests
+
+### Fixed
+- `json.dump(..., sort_keys=True)` in `_write_run_state` was destroying stage insertion order — resolved by explicit `stage_order` array
+
 ## [2026-02-27-02] — Document two-tier preference model across project
 
 ### Added

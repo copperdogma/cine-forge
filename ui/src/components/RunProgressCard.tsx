@@ -63,8 +63,7 @@ export function RunProgressCard({ runId }: { runId: string }) {
   }
 
   const stages = runState.state.stages
-  const recipeId = runState.state.recipe_id
-  const stageIds = getOrderedStageIds(recipeId, Object.keys(stages))
+  const stageIds = getOrderedStageIds(Object.keys(stages), runState.state.stage_order)
 
   return (
     <div className="space-y-0.5 py-1">
