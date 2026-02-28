@@ -1,5 +1,52 @@
 # Changelog
 
+## [2026-02-28-02] — Intent / Mood UX improvements (Story 095)
+
+### Added
+- Deep breakdown gate: Intent & Mood page requires character/location bibles before showing the full form, with explanation of why and "Run Deep Breakdown" button
+- `TaskProgressCard` component for compact multi-item progress in chat timeline
+- `task_progress` message type for grouped operation progress (heading + per-item status)
+- Chat activity messages for all long-running operations (deep breakdown, propagation)
+- Propagation progress: per-concern-group spinner→checkmark transitions in chat
+- Status banner during propagation matching ProcessingView style
+- Explanatory text below Save & Propagate buttons describing what propagation does
+- User Feedback Contract directive in AGENTS.md for durable long-running operation UX
+
+### Changed
+- "Suggest a Vibe" upgraded from deterministic keyword matching to LLM call (Haiku) with structured output — correctly matches mood/preset to script context
+- Save & Propagate button shows descriptive loading state: "Generating suggestions for all concern groups..."
+- Reference film input made full-width (was constrained to small inline box)
+- Suggest endpoint now returns reference films from matched preset
+- ProcessingView is now recipe-aware: shows "Running Deep Breakdown..." or "Running Creative Direction..." instead of generic "Processing your screenplay..."
+- 5 concern group pipeline nodes (`look_and_feel`, `sound_and_music`, `character_and_performance`, `story_world`, `rhythm_and_flow`) changed to `implemented=True` — Direction dropdown now shows completion status instead of "Coming soon"
+- `rhythm_and_flow` node accepts both `rhythm_and_flow_index` and `rhythm_and_flow` artifact types
+
+## [2026-02-28-01] — Intent / Mood warm invitation UX (Story 095)
+
+### Added
+- Warm invitation card on Intent & Mood page: shows script context (title, genre, tone, themes, logline) when no intent is set but script bible exists
+- "Suggest a Vibe" button: deterministic mood suggestion from script analysis (mood word extraction + best preset match by keyword overlap)
+- `GET /api/projects/{id}/script-context` endpoint returning `ScriptContextResponse`
+- `POST /api/projects/{id}/intent-mood/suggest` endpoint returning `IntentMoodSuggestion`
+- 7 new unit tests for suggest flow (401 total)
+
+## [2026-02-27-05] — Intent / Mood Layer (Story 095)
+
+### Added
+- Style preset catalog: 6 built-in "vibe" presets (Neo-Noir, Summer Indie, Documentary Realism, Gothic Horror, Ethereal Drama, Action Thriller) as YAML in `configs/style_presets/` with `StylePreset` model in `src/cine_forge/presets/`
+- Propagation service (`src/cine_forge/services/intent_mood.py`): Director-driven AI translation of mood intent into per-concern-group suggested defaults
+- 4 new API endpoints: GET/POST `/api/projects/{id}/intent-mood`, POST `/api/projects/{id}/intent-mood/propagate`, GET `/api/projects/{id}/style-presets`
+- Pipeline module `intent_mood_v1` in `src/cine_forge/modules/creative_direction/intent_mood_v1/` with mock mode and structured LLM output
+- Intent & Mood UI page (`ui/src/pages/IntentMoodPage.tsx`): preset picker, mood chip selector, reference film tags, NL textarea, save/propagate, propagation preview cards
+- Scene-level intent panel (`SceneIntentPanel` in `DirectionTab.tsx`): shows inherited project mood with "Customize for this scene" button
+- "Intent" nav item in sidebar between Script and Scenes
+- 17 unit tests in `tests/unit/test_intent_mood.py`
+
+### Changed
+- Pipeline graph: `intent_mood` node flipped to `implemented=True` with `nav_route="/intent"`
+- `recipe-creative-direction.yaml`: added `intent_mood` stage before `rhythm_and_flow`
+- `NODE_FIX_RECIPES` now maps `intent_mood` → `creative_direction`
+
 ## [2026-02-27-04] — Concern group artifact schemas (Story 094)
 
 ### Added

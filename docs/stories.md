@@ -185,7 +185,7 @@ NOTES from Cam:
 | 092 | Continuity AI Detection & Gap Analysis | World Building | Medium | Pending | [story-092](stories/story-092-continuity-ai-detection.md) |
 | 093 | Script Bible Artifact | 5 — Creative Direction | High | Done | [story-093](stories/story-093-script-bible.md) |
 | 094 | Concern Group Artifact Schemas | 5 — Creative Direction | High | Done | [story-094](stories/story-094-concern-group-schemas.md) |
-| 095 | Intent / Mood Layer | 5 — Creative Direction | High | Draft | [story-095](stories/story-095-intent-mood-layer.md) |
+| 095 | Intent / Mood Layer | 5 — Creative Direction | High | Done | [story-095](stories/story-095-intent-mood-layer.md) |
 | 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Draft | [story-096](stories/story-096-chat-about-this.md) |
 | 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
 | 098 | Real-World Asset Upload Pipeline | 7 — Generation | Medium | Draft | [story-098](stories/story-098-real-asset-upload.md) |

@@ -119,7 +119,7 @@ def test_empty_store_dependent_node_blocked(tmp_path: Path) -> None:
 @pytest.mark.unit
 def test_unimplemented_node_status(tmp_path: Path) -> None:
     store = ArtifactStore(project_dir=tmp_path / "project")
-    node = _NODE_MAP["look_and_feel"]
+    node = _NODE_MAP["shot_planning"]
     assert not node.implemented
     status, count = compute_node_status(node, store, {})
     assert status == NodeStatus.NOT_IMPLEMENTED
@@ -273,9 +273,9 @@ def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
     norm = next(n for n in graph["nodes"] if n["id"] == "normalization")
     assert norm["status"] == "blocked"
 
-    # Look & Feel should be not_implemented.
+    # Look & Feel is implemented but blocked (deps not met in empty store).
     lf = next(n for n in graph["nodes"] if n["id"] == "look_and_feel")
-    assert lf["status"] == "not_implemented"
+    assert lf["status"] == "blocked"
 
 
 @pytest.mark.unit

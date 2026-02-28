@@ -16,6 +16,7 @@ import { useProject, useProjectInputs, useStartRun, useProjectCharacters } from 
 import { postChatMessage, streamChatMessage, updateProjectSettings } from '@/lib/api'
 import { PreflightCard } from '@/components/PreflightCard'
 import { RunProgressCard } from '@/components/RunProgressCard'
+import { TaskProgressCard } from '@/components/TaskProgressCard'
 import type { ChatMessage, ChatAction, InteractionMode, ProjectSummary, ToolCallStatus } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
@@ -169,6 +170,7 @@ function MessageIcon({ type, speaker }: { type: ChatMessage['type']; speaker?: s
     case 'ai_tool_done':
       return <Wrench className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
     case 'ai_progress':
+    case 'task_progress':
       return null
     case 'activity':
       return <Activity className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0 mt-0.5" />
@@ -389,6 +391,15 @@ function ChatMessageItem({
     return (
       <div className="py-1">
         <RunProgressCard runId={message.content} />
+      </div>
+    )
+  }
+
+  // Task progress card — compact multi-item progress (propagation, exports, etc.)
+  if (message.type === 'task_progress') {
+    return (
+      <div className="py-1">
+        <TaskProgressCard content={message.content} />
       </div>
     )
   }

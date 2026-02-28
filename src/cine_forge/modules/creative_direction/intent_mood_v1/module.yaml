@@ -1,0 +1,23 @@
+module_id: intent_mood_v1
+stage: intent_mood
+description: >
+  Analyzes the script from a Director's perspective to produce a single project-level
+  IntentMood artifact. Detects overall mood descriptors (emotional tags), cinematic
+  reference films, and a natural-language intent summary. This artifact propagates
+  suggested defaults to all five other concern groups.
+input_schemas:
+  - scene_index
+  - canonical_script
+output_schemas:
+  - intent_mood
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Model used for Director-perspective mood analysis."
+  concurrency:
+    type: integer
+    required: false
+    default: 1
+    description: "Not used — module produces a single project-level artifact."

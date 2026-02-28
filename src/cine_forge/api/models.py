@@ -269,3 +269,90 @@ class InsightRequest(BaseModel):
 
     trigger: str = Field(min_length=1)
     context: dict[str, Any] = {}
+
+
+# --- Intent / Mood ---
+
+
+class IntentMoodInput(BaseModel):
+    """Request payload for saving intent/mood."""
+
+    mood_descriptors: list[str] = []
+    reference_films: list[str] = []
+    style_preset_id: str | None = None
+    natural_language_intent: str | None = None
+    scope: str = "project"
+    scene_id: str | None = None
+
+
+class IntentMoodResponse(BaseModel):
+    """Saved intent/mood artifact data."""
+
+    scope: str
+    scene_id: str | None = None
+    mood_descriptors: list[str] = []
+    reference_films: list[str] = []
+    style_preset_id: str | None = None
+    natural_language_intent: str | None = None
+    user_approved: bool = False
+    version: int = 1
+
+
+class PropagateRequest(BaseModel):
+    """Request payload for triggering mood propagation."""
+
+    scope: str = "project"
+    scene_id: str | None = None
+    model: str | None = None
+
+
+class PropagatedGroupResponse(BaseModel):
+    """A single concern group's propagated suggestions."""
+
+    fields: dict[str, Any]
+    rationale: str
+
+
+class PropagationResponse(BaseModel):
+    """Full propagation result — suggested defaults per concern group."""
+
+    look_and_feel: PropagatedGroupResponse | None = None
+    sound_and_music: PropagatedGroupResponse | None = None
+    rhythm_and_flow: PropagatedGroupResponse | None = None
+    character_and_performance: PropagatedGroupResponse | None = None
+    story_world: PropagatedGroupResponse | None = None
+    overall_rationale: str = ""
+    confidence: float = 0.0
+    artifacts_created: list[str] = []
+
+
+class ScriptContextResponse(BaseModel):
+    """Script bible context surfaced on the Intent page."""
+
+    title: str
+    logline: str
+    genre: str
+    tone: str
+    themes: list[str] = []
+
+
+class IntentMoodSuggestion(BaseModel):
+    """AI-suggested IntentMood from script analysis (unsaved)."""
+
+    mood_descriptors: list[str]
+    reference_films: list[str] = []
+    style_preset_id: str | None = None
+    natural_language_intent: str | None = None
+    rationale: str = ""
+
+
+class StylePresetResponse(BaseModel):
+    """Style preset summary for the UI."""
+
+    preset_id: str
+    display_name: str
+    description: str
+    mood_descriptors: list[str]
+    reference_films: list[str]
+    thumbnail_emoji: str
+    concern_group_ids: list[str] = []

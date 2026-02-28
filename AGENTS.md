@@ -356,6 +356,60 @@ Shared components and utilities — the **single source of truth** for each conc
 | `ExportModal` | `ui/src/components/ExportModal.tsx` | Export dialog |
 | `DirectionAnnotation` | `ui/src/components/DirectionAnnotation.tsx` | Word/Docs-style comment for creative direction (parameterized by DirectionType) |
 | `DirectionTab`, `RolePresenceIndicators` | `ui/src/components/DirectionTab.tsx` | Scene direction tab content + role avatar badges |
+| `TaskProgressCard` | `ui/src/components/TaskProgressCard.tsx` | Compact multi-item progress card for chat (propagation, exports, etc.) |
+| `RunProgressCard` | `ui/src/components/RunProgressCard.tsx` | Pipeline run stage progress card for chat |
+
+#### 6. User Feedback Contract for Long-Running Operations
+
+Every operation that takes more than ~1 second MUST provide two forms of feedback:
+
+1. **Status banner** on the page where the action was triggered (or the page the user navigates to). Use the recipe-aware pattern in `ProcessingView` (`ui/src/pages/ProjectHome.tsx`) — set default text based on `recipe_id`, then override with per-stage messages as stages start running.
+
+2. **Chat timeline entries** showing what's happening and what completed. This is the permanent record the user can scroll back to. Follow this pattern:
+   - **On start**: Add one `ai_status` message (spinner icon) per sub-task/item being processed. If there are N items, add N messages — not one summary. Example: propagation adds 5 group messages ("Generating Look & Feel...", "Generating Sound & Music...", etc.).
+   - **On completion of each item**: Flip its message type from `ai_status` to `ai_status_done` (green checkmark) and update content to reflect the result. Use `useChatStore.getState().updateMessageType()` and `updateMessageContent()`.
+   - **On error**: Flip remaining spinners to done and add an error message.
+
+**Implementation reference** — existing patterns to follow:
+| Operation | Status banner | Chat messages | Code |
+|---|---|---|---|
+| Pipeline run | `ProcessingView` in ProjectHome.tsx | `RunProgressCard` + per-stage status | `ui/src/lib/use-run-progress.ts` |
+| Bible extraction | (part of run) | Per-type live counters | `use-run-progress.ts` lines 167-203 |
+| Propagation | Button loading text | Per-group spinners → checkmarks | `IntentMoodPage.tsx` propagateMutation |
+| Deep Breakdown gate | (navigates to home) | Activity message on start | `IntentMoodPage.tsx` gate onClick |
+
+**Key APIs:**
+```typescript
+import type { TaskProgressData } from '@/components/TaskProgressCard'
+
+const store = useChatStore.getState()
+
+// --- Multi-item operations (preferred for 2+ items) ---
+// Use a single task_progress message with a heading + item list.
+// See TaskProgressCard for the data shape.
+const progressId = `my_operation_${projectId}`
+const data: TaskProgressData = {
+  heading: 'Propagating creative intent',   // explains what triggered this
+  items: [
+    { label: 'Look & Feel', status: 'running' },
+    { label: 'Sound & Music', status: 'running' },
+  ],
+}
+store.addMessage(projectId, { id: progressId, type: 'task_progress', content: JSON.stringify(data), timestamp: Date.now() })
+// On completion — update items to done:
+data.items = data.items.map(i => ({ ...i, status: 'done' as const, detail: 'draft created' }))
+store.updateMessageContent(projectId, progressId, JSON.stringify(data))
+
+// --- Single-item operations ---
+store.addMessage(projectId, { id: 'unique_id', type: 'ai_status', content: 'Doing X...', timestamp: Date.now() })
+store.updateMessageContent(projectId, 'unique_id', 'X complete — result summary')
+store.updateMessageType(projectId, 'unique_id', 'ai_status_done')
+
+// --- Simple one-shot activity note ---
+store.addActivity(projectId, 'Description of what happened', 'route')
+```
+
+**The rule**: If the user clicks a button and something takes time, they must see (a) what's happening *right now* and (b) a permanent record that it happened. No silent background work. No spinners-only. No "it just worked" without evidence.
 
 ### Repo Map
 - `src/cine_forge/driver/`: Orchestration runtime.
@@ -468,6 +522,7 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-19 — `tsc --noEmit` ≠ `tsc -b`: The root `tsconfig.json` has `"files": []` with no linting rules. `tsc --noEmit` doesn't follow `references`, so it skips strict checks like `noUnusedLocals` from `tsconfig.app.json`. `tsc -b` follows references and matches what `npm run build` does in production. **Always use `tsc -b` for validation, never `tsc --noEmit`.**
 - 2026-02-22 — AI agents duplicate UI code silently: When building similar pages, agents copy-paste rather than abstracting. Every new page or component must check the UI Component Registry in `AGENTS.md > UI Development Workflow` first. Run `pnpm --dir ui run lint:duplication` to catch regressions. See Story 066 for the full audit.
 - 2026-02-15 — Build Pass ≠ Working UI: `tsc --noEmit` and `npm run build` only prove static types and bundling. They cannot catch runtime crashes from data mismatches (e.g., backend sends `'done'` but UI switch only handles `'completed'` — both are `string`, so TypeScript is silent). **After any UI change that touches data flow, open the app in a browser with the real backend and click through every affected page before declaring done.** A green build is necessary but not sufficient.
+- 2026-02-28 — Silent long-running operations: Any button that triggers work taking >1s MUST provide both a status banner on-page and per-item chat timeline entries (spinners → checkmarks). Users cannot tell if something is working, stuck, or failed without this feedback. See `AGENTS.md > UI Development Workflow > User Feedback Contract` for the mandatory pattern. This applies to ALL async operations — pipeline runs, propagation, AI calls, exports, etc.
 
 ### Lessons Learned
 - 2026-02-12 — Build the pipeline spine before AI modules: Land immutable store and graph first.

@@ -1,16 +1,26 @@
 recipe_id: creative_direction
 description: >
-  Phase 5 creative direction pass: concern group artifacts (rhythm & flow,
-  look & feel, sound & music, character & performance, story world).
-  Currently implements rhythm & flow (editorial direction) only.
+  Phase 5 creative direction pass: intent & mood (project-level creative vision)
+  followed by concern group artifacts (rhythm & flow, look & feel, sound & music,
+  character & performance, story world).
 project: {}
 stages:
+  - id: intent_mood
+    module: intent_mood_v1
+    params:
+      concurrency: 1
+    needs: []
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+    store_inputs_optional:
+      script_bible: script_bible
   - id: rhythm_and_flow
     module: editorial_direction_v1
     params:
       skip_qa: true
       concurrency: 5
-    needs: []
+    needs: [intent_mood]
     store_inputs:
       normalize: canonical_script
       enriched_scene_index: scene_index

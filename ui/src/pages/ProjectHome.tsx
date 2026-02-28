@@ -709,6 +709,15 @@ function ProcessingView({ projectId }: { projectId: string }) {
   let statusText = 'Processing your screenplay...'
   let detailText = 'Extracting scenes, characters, and locations.'
   if (runState) {
+    const recipeId = runState.state.recipe_id
+    // Set recipe-appropriate defaults before checking for a running stage
+    if (recipeId === 'world_building') {
+      statusText = 'Running Deep Breakdown...'
+      detailText = 'Building character bibles, location bibles, and entity relationships.'
+    } else if (recipeId === 'creative_direction') {
+      statusText = 'Running Creative Direction...'
+      detailText = 'Generating editorial and visual direction for your project.'
+    }
     const stages = runState.state.stages
     const runningStage = Object.entries(stages).find(([, s]) => s.status === 'running')
     if (runningStage) {

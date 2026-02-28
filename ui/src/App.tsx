@@ -14,6 +14,7 @@ import ArtifactDetail from '@/pages/ArtifactDetail'
 import ProjectInbox from '@/pages/ProjectInbox'
 import EntityListPage from '@/pages/EntityListPage'
 import EntityDetailPage from '@/pages/EntityDetailPage'
+import IntentMoodPage from '@/pages/IntentMoodPage'
 import ThemeShowcase from '@/pages/ThemeShowcase'
 
 const queryClient = new QueryClient({
@@ -40,6 +41,9 @@ export default function App() {
               {/* Project-scoped routes (wrapped in AppShell) */}
               <Route path="/:projectId" element={<AppShell />}>
                 <Route index element={<ProjectHome />} />
+
+                {/* Intent & Mood */}
+                <Route path="intent" element={<IntentMoodPage />} />
 
                 {/* Entity-first navigation */}
                 <Route path="scenes" element={<EntityListPage section="scenes" />} />

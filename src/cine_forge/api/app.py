@@ -24,10 +24,16 @@ from cine_forge.api.models import (
     ErrorPayload,
     InputFileSummary,
     InsightRequest,
+    IntentMoodInput,
+    IntentMoodResponse,
+    IntentMoodSuggestion,
     ProjectCreateRequest,
     ProjectPathRequest,
     ProjectSettingsUpdate,
     ProjectSummary,
+    PropagatedGroupResponse,
+    PropagateRequest,
+    PropagationResponse,
     RecentProjectSummary,
     RecipeSummary,
     RunEventsResponse,
@@ -35,9 +41,11 @@ from cine_forge.api.models import (
     RunStartResponse,
     RunStateResponse,
     RunSummary,
+    ScriptContextResponse,
     SearchResponse,
     SlugPreviewRequest,
     SlugPreviewResponse,
+    StylePresetResponse,
     UploadedInputResponse,
 )
 from cine_forge.api.routers import export
@@ -308,6 +316,357 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             service.edit_artifact(
                 project_id, artifact_type, entity_id, request.data, request.rationale
             )
+        )
+
+    # ------------------------------------------------------------------
+    # Intent / Mood endpoints (Story 095)
+    # ------------------------------------------------------------------
+
+    @app.get(
+        "/api/projects/{project_id}/style-presets",
+        response_model=list[StylePresetResponse],
+    )
+    async def list_style_presets(project_id: str) -> list[StylePresetResponse]:
+        """List all available style presets (vibe packages)."""
+        from cine_forge.presets import list_presets
+
+        # Validate project exists
+        service.require_project_path(project_id)
+        return [
+            StylePresetResponse(
+                preset_id=p.preset_id,
+                display_name=p.display_name,
+                description=p.description,
+                mood_descriptors=p.mood_descriptors,
+                reference_films=p.reference_films,
+                thumbnail_emoji=p.thumbnail_emoji,
+                concern_group_ids=list(p.concern_group_hints.keys()),
+            )
+            for p in list_presets()
+        ]
+
+    @app.get("/api/projects/{project_id}/intent-mood")
+    async def get_intent_mood(
+        project_id: str,
+        scene_id: str | None = None,
+    ) -> IntentMoodResponse | None:
+        """Get current intent/mood for project or scene."""
+        from cine_forge.artifacts import ArtifactStore
+
+        project_path = service.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+        entity = scene_id or "project"
+        refs = store.list_versions(artifact_type="intent_mood", entity_id=entity)
+        if not refs:
+            return None
+        latest = refs[-1]
+        artifact = store.load_artifact(latest)
+        d = artifact.data
+        version = latest.version
+        return IntentMoodResponse(
+            scope=d.get("scope", "project"),
+            scene_id=d.get("scene_id"),
+            mood_descriptors=d.get("mood_descriptors", []),
+            reference_films=d.get("reference_films", []),
+            style_preset_id=d.get("style_preset_id"),
+            natural_language_intent=d.get("natural_language_intent"),
+            user_approved=d.get("user_approved", False),
+            version=version,
+        )
+
+    @app.post("/api/projects/{project_id}/intent-mood")
+    async def save_intent_mood(
+        project_id: str,
+        request: IntentMoodInput,
+    ) -> IntentMoodResponse:
+        """Save (create or update) intent/mood for project or scene."""
+        from cine_forge.artifacts import ArtifactStore
+        from cine_forge.schemas import ArtifactMetadata
+
+        project_path = service.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+
+        entity = request.scene_id or "project"
+        data = {
+            "scope": request.scope,
+            "scene_id": request.scene_id,
+            "mood_descriptors": request.mood_descriptors,
+            "reference_films": request.reference_films,
+            "style_preset_id": request.style_preset_id,
+            "natural_language_intent": request.natural_language_intent,
+            "user_approved": False,
+        }
+
+        # Check for existing versions to set lineage
+        refs = store.list_versions(artifact_type="intent_mood", entity_id=entity)
+        lineage = [refs[-1]] if refs else []
+
+        metadata = ArtifactMetadata(
+            lineage=lineage,
+            intent="Set creative intent and mood",
+            rationale="User-authored intent/mood for propagation to concern groups",
+            confidence=1.0,
+            source="human",
+            producing_module="operator_console.intent_mood",
+        )
+
+        ref = store.save_artifact(
+            artifact_type="intent_mood",
+            entity_id=entity,
+            data=data,
+            metadata=metadata,
+        )
+
+        return IntentMoodResponse(
+            **data,
+            version=ref.version,
+        )
+
+    @app.post("/api/projects/{project_id}/intent-mood/propagate")
+    async def propagate_mood(
+        project_id: str,
+        request: PropagateRequest,
+    ) -> PropagationResponse:
+        """Propagate intent/mood to all concern groups via Director AI."""
+        from cine_forge.artifacts import ArtifactStore
+        from cine_forge.presets import load_preset
+        from cine_forge.schemas import ArtifactMetadata
+        from cine_forge.schemas.concern_groups import IntentMood
+        from cine_forge.services.intent_mood import propagate_intent
+
+        project_path = service.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+
+        # Load current intent/mood
+        entity = request.scene_id or "project"
+        refs = store.list_versions(artifact_type="intent_mood", entity_id=entity)
+        if not refs:
+            raise ServiceError(
+                code="no_intent_mood",
+                message="No intent/mood set. Save intent/mood before propagating.",
+                status_code=400,
+            )
+        artifact = store.load_artifact(refs[-1])
+        intent = IntentMood.model_validate(artifact.data)
+
+        # Load preset if specified
+        preset = None
+        if intent.style_preset_id:
+            preset = load_preset(intent.style_preset_id)
+
+        # Load script context (script bible or scene text)
+        script_context = None
+        bible_refs = store.list_versions(
+            artifact_type="script_bible", entity_id="project"
+        )
+        if bible_refs:
+            bible_artifact = store.load_artifact(bible_refs[-1])
+            script_context = bible_artifact.data.get("summary", "")
+
+        # Run propagation
+        model = request.model or "claude-sonnet-4-6"
+        result, _cost = propagate_intent(
+            intent=intent,
+            script_context=script_context,
+            scene_id=request.scene_id,
+            preset=preset,
+            model=model,
+        )
+
+        # Save propagated drafts as concern group artifacts
+        artifacts_created: list[str] = []
+        concern_groups = {
+            "look_and_feel": result.look_and_feel,
+            "sound_and_music": result.sound_and_music,
+            "rhythm_and_flow": result.rhythm_and_flow,
+            "character_and_performance": result.character_and_performance,
+            "story_world": result.story_world,
+        }
+
+        for group_id, group_data in concern_groups.items():
+            if group_data is None:
+                continue
+
+            # Build artifact data from propagated fields
+            artifact_data = dict(group_data.fields)
+            artifact_data["user_approved"] = False
+
+            # Set scope fields
+            if request.scene_id:
+                artifact_data["scope"] = "scene"
+                artifact_data["scene_id"] = request.scene_id
+            else:
+                artifact_data["scope"] = "project"
+
+            # Determine entity_id — project-wide groups use "project"
+            artifact_entity = request.scene_id or "project"
+
+            # Check for existing versions
+            existing = store.list_versions(
+                artifact_type=group_id, entity_id=artifact_entity
+            )
+            lineage = [existing[-1]] if existing else []
+
+            metadata = ArtifactMetadata(
+                lineage=lineage,
+                intent="Propagated from intent/mood layer",
+                rationale=group_data.rationale,
+                confidence=result.confidence,
+                source="ai",
+                producing_module="intent_mood.propagation",
+            )
+
+            store.save_artifact(
+                artifact_type=group_id,
+                entity_id=artifact_entity,
+                data=artifact_data,
+                metadata=metadata,
+            )
+            artifacts_created.append(group_id)
+
+        # Build response
+        resp_groups: dict[str, PropagatedGroupResponse | None] = {}
+        for gid in [
+            "look_and_feel",
+            "sound_and_music",
+            "rhythm_and_flow",
+            "character_and_performance",
+            "story_world",
+        ]:
+            src = concern_groups.get(gid)
+            resp_groups[gid] = (
+                PropagatedGroupResponse(fields=src.fields, rationale=src.rationale)
+                if src
+                else None
+            )
+
+        return PropagationResponse(
+            **resp_groups,
+            overall_rationale=result.overall_rationale,
+            confidence=result.confidence,
+            artifacts_created=artifacts_created,
+        )
+
+    @app.get("/api/projects/{project_id}/script-context")
+    async def get_script_context(
+        project_id: str,
+    ) -> ScriptContextResponse | None:
+        """Get script bible context for the Intent page."""
+        from cine_forge.artifacts import ArtifactStore
+
+        project_path = service.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+        refs = store.list_versions(
+            artifact_type="script_bible", entity_id="project"
+        )
+        if not refs:
+            return None
+        artifact = store.load_artifact(refs[-1])
+        d = artifact.data
+        # Extract theme names from ThematicElement objects
+        raw_themes = d.get("themes", [])
+        theme_names = []
+        for t in raw_themes:
+            if isinstance(t, dict):
+                theme_names.append(t.get("theme", str(t)))
+            else:
+                theme_names.append(str(t))
+        return ScriptContextResponse(
+            title=d.get("title", "Untitled"),
+            logline=d.get("logline", ""),
+            genre=d.get("genre", ""),
+            tone=d.get("tone", ""),
+            themes=theme_names[:8],
+        )
+
+    @app.post("/api/projects/{project_id}/intent-mood/suggest")
+    async def suggest_intent_mood(
+        project_id: str,
+    ) -> IntentMoodSuggestion:
+        """Suggest an IntentMood from script bible analysis via LLM."""
+        from cine_forge.ai.llm import call_llm
+        from cine_forge.artifacts import ArtifactStore
+        from cine_forge.presets import list_presets
+
+        project_path = service.require_project_path(project_id)
+        store = ArtifactStore(project_dir=project_path)
+        refs = store.list_versions(
+            artifact_type="script_bible", entity_id="project"
+        )
+        if not refs:
+            raise ServiceError(
+                code="no_script_bible",
+                message="No script bible found. Run ingest first.",
+                status_code=400,
+            )
+        artifact = store.load_artifact(refs[-1])
+        d = artifact.data
+
+        # Build preset summary for the prompt
+        presets = list_presets()
+        preset_lines = []
+        for p in presets:
+            preset_lines.append(
+                f"- {p.preset_id}: {p.display_name} — "
+                f"{p.description} "
+                f"Moods: {', '.join(p.mood_descriptors)}. "
+                f"Films: {', '.join(p.reference_films)}."
+            )
+        preset_catalog = "\n".join(preset_lines)
+
+        # Extract theme names for context
+        raw_themes = d.get("themes", [])
+        theme_names = []
+        for t in raw_themes:
+            if isinstance(t, dict):
+                theme_names.append(t.get("theme", str(t)))
+            else:
+                theme_names.append(str(t))
+
+        prompt = f"""\
+You are a creative film director. Given a script's metadata, suggest \
+the best creative mood and style for this project.
+
+SCRIPT CONTEXT:
+- Title: {d.get("title", "Untitled")}
+- Genre: {d.get("genre", "Unknown")}
+- Tone: {d.get("tone", "Unknown")}
+- Themes: {', '.join(theme_names[:5]) or 'None specified'}
+- Logline: {d.get("logline", "")}
+
+AVAILABLE STYLE PRESETS:
+{preset_catalog}
+
+INSTRUCTIONS:
+1. Pick the single best-matching preset from the list above. Use its \
+exact preset_id.
+2. Choose 4-8 mood descriptors — evocative single words that capture \
+the film's feeling. Include some from the matched preset but also add \
+words specific to this script.
+3. Suggest 3-5 reference films that match this script's tone and genre. \
+You may use films from the preset or suggest others that fit better.
+4. Write a brief natural language description of the creative direction \
+(1-2 sentences).
+5. Write a brief rationale explaining why you chose this preset and \
+these mood words (1-2 sentences).
+
+Return valid JSON matching the schema."""
+
+        result, _meta = call_llm(
+            prompt=prompt,
+            model="claude-haiku-4-5-20251001",
+            response_schema=IntentMoodSuggestion,
+            max_tokens=1024,
+            temperature=0.7,
+        )
+        if isinstance(result, IntentMoodSuggestion):
+            return result
+        # Fallback: if structured output failed, return a basic suggestion
+        return IntentMoodSuggestion(
+            mood_descriptors=[
+                w.strip() for w in d.get("tone", "").split()[:5]
+            ],
+            rationale="Could not generate AI suggestion.",
         )
 
     @app.post("/api/projects/{project_id}/reviews/{scene_id}/{stage_id}/respond")

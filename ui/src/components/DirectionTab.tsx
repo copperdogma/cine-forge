@@ -5,13 +5,17 @@
  * with generate buttons and convergence actions.
  * ADR-003: concern groups replace role-based direction types.
  */
-import { Scissors, Sparkles, Users as UsersIcon } from 'lucide-react'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Compass, Scissors, Sparkles, Users as UsersIcon } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { DirectionAnnotation, type ConcernGroupType } from './DirectionAnnotation'
 import { useRightPanel } from '@/lib/right-panel'
 import { askChatQuestion } from '@/lib/glossary'
 import { useArtifactGroups, useArtifact } from '@/lib/hooks'
+import { getIntentMood } from '@/lib/api'
 import type { ArtifactGroupSummary } from '@/lib/types'
 
 // --- Concern group definitions ---
@@ -101,6 +105,9 @@ export function DirectionTab({
 
   return (
     <div className="space-y-4">
+      {/* Scene intent panel */}
+      <SceneIntentPanel projectId={projectId} entityId={entityId} />
+
       {/* Action bar */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2 flex-wrap">
@@ -182,6 +189,96 @@ function ConcernGroupCard({
       data={data}
       sceneHeading={sceneHeading}
     />
+  )
+}
+
+// --- Scene intent panel ---
+
+function SceneIntentPanel({
+  projectId,
+  entityId,
+}: {
+  projectId: string
+  entityId: string
+}) {
+  const [showCustomize, setShowCustomize] = useState(false)
+
+  // Load project-level intent
+  const { data: projectIntent } = useQuery({
+    queryKey: ['intent-mood', projectId],
+    queryFn: () => getIntentMood(projectId),
+    enabled: !!projectId,
+  })
+
+  // Load scene-level override (if any)
+  const { data: sceneIntent } = useQuery({
+    queryKey: ['intent-mood', projectId, entityId],
+    queryFn: () => getIntentMood(projectId, entityId),
+    enabled: !!projectId && !!entityId,
+  })
+
+  const intent = sceneIntent ?? projectIntent
+  const isOverride = !!sceneIntent
+  const hasMood = intent && (intent.mood_descriptors.length > 0 || intent.style_preset_id || intent.natural_language_intent)
+
+  if (!hasMood && !showCustomize) return null
+
+  return (
+    <div className="rounded-lg border border-border bg-card/50 p-3 space-y-2">
+      <div className="flex items-center gap-2">
+        <Compass className="h-4 w-4 text-purple-400" />
+        <span className="text-sm font-medium">Intent & Mood</span>
+        {isOverride ? (
+          <Badge variant="secondary" className="text-[10px]">Scene override</Badge>
+        ) : hasMood ? (
+          <Badge variant="outline" className="text-[10px]">Inherited from project</Badge>
+        ) : null}
+        <div className="flex-1" />
+        {!isOverride && hasMood && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-6 text-xs"
+            onClick={() => setShowCustomize(true)}
+          >
+            Customize for this scene
+          </Button>
+        )}
+        {isOverride && (
+          <a
+            href={`/${projectId}/intent`}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Edit project intent
+          </a>
+        )}
+      </div>
+
+      {hasMood && (
+        <div className="flex flex-wrap gap-1.5">
+          {intent!.mood_descriptors.map(tag => (
+            <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
+          ))}
+          {intent!.natural_language_intent && (
+            <p className="text-xs text-muted-foreground italic w-full mt-1">
+              &ldquo;{intent!.natural_language_intent}&rdquo;
+            </p>
+          )}
+        </div>
+      )}
+
+      {showCustomize && !isOverride && (
+        <p className="text-xs text-muted-foreground">
+          Scene-level overrides will be available in a future update. For now,{' '}
+          <a
+            href={`/${projectId}/intent`}
+            className="text-primary underline underline-offset-2"
+          >
+            edit intent at the project level
+          </a>.
+        </p>
+      )}
+    </div>
   )
 }
 

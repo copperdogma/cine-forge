@@ -5,6 +5,7 @@ import {
   Package,
   Inbox,
   FileText,
+  Compass,
   Clapperboard,
   Users,
   MapPin,
@@ -57,6 +58,7 @@ const NAV_ARTIFACT_TYPES: Record<string, string[]> = {
 
 const mainNavBase = [
   { to: '', label: 'Script', icon: FileText, end: true },
+  { to: 'intent', label: 'Intent', icon: Compass },
   { to: 'scenes', label: 'Scenes', icon: Clapperboard },
   { to: 'characters', label: 'Characters', icon: Users },
   { to: 'locations', label: 'Locations', icon: MapPin },
@@ -356,6 +358,7 @@ function ShellInner() {
       ]
     }
 
+    if (path.includes('/intent')) return [{ label: 'Intent & Mood' }]
     if (path.includes('/scenes')) return [{ label: 'Scenes' }]
     if (path.includes('/characters')) return [{ label: 'Characters' }]
     if (path.includes('/locations')) return [{ label: 'Locations' }]
