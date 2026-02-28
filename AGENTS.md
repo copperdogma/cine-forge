@@ -34,6 +34,7 @@ This file is the project-wide source of truth for agent behavior and engineering
   2. Artifacts are produced and manually inspected for semantic correctness.
   3. Schema validation passes.
   4. The active story's work log is updated with evidence and next actions.
+  5. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. Silently accepting mismatches as noise is a hard stop.
 
 ## General Agent Engineering Principles
 
@@ -45,6 +46,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Lineage Tracking**: Every transformation must record its upstream sources. Data without provenance is noise.
 - **Context Traceability**: Every run must persist its full execution context (e.g., `runtime_params`, recipe fingerprints) in its core artifacts (`run_state.json`). Never leave the operator guessing which model or flag produced an outcome.
 - **Project-Scoped Preferences**: Store user preferences and settings in `project.json`, not `localStorage`. `localStorage` is ephemeral — it doesn't survive browser clears, doesn't sync across machines, and isn't visible to the backend. Only use `localStorage` for truly throwaway UI state (e.g., collapsed panel memory within a single session). Anything the user would miss if it vanished belongs in project settings.
+- **AI-as-Tester**: AI agents have a blind spot — they default to writing deterministic test scripts even when the problem requires judgment and observation. When verifying AI behavior (role persona quality, creative direction coherence, tone consistency), the correct approach is to *have a conversation personally* with the AI component, not just validate JSON structure. Use the subagent pattern: spawn a subagent to conduct a focused multi-turn probe of the AI behavior, then report findings back to the orchestrator. Structural tests (Pydantic schema, field coverage) are necessary but not sufficient — they miss shallow reasoning, wrong tone, and missing creative insight. This complements promptfoo evals, not replaces them.
 
 ## Project Context (CineForge)
 

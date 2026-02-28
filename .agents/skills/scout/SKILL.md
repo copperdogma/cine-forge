@@ -17,7 +17,18 @@ Research external sources for patterns, ideas, and approaches worth adopting. Pr
   - File path to research paper or docs
 - **scope** (optional): Time range, branch, specific area to focus on
 
-## Phase 0 — Bootstrap
+## Phase 0 — Resolve Sources & Bootstrap
+
+### Resolve ambiguous source references
+
+Before doing anything else, read `docs/scout.md` and the scout doc for each previous expedition to build a source registry. Users often give shorthand names ("dossier", "storybook") instead of full paths or URLs. When the input doesn't look like a path, URL, or file:
+
+1. **Search scout history** for previous expeditions matching the name — check source paths, repo names, and topic slugs.
+2. **If found:** Use the same source path/URL from the previous expedition. This is a **re-scout** — automatically scope it to changes since the last scout date. Do not ask the user to confirm the path or the "since" date unless something looks wrong (e.g., the directory no longer exists).
+3. **If multiple matches:** List them and ask the user which one.
+4. **If not found:** Ask the user for the full path or URL.
+
+### Bootstrap the expedition
 
 Run the start script to set up everything automatically:
 
@@ -34,9 +45,7 @@ This handles all setup in one call:
 
 ## Phase 1 — Research
 
-1. **Check history:** Read `docs/scout.md` for previous expeditions against this source.
-   - If found: suggest "Last scouted on YYYY-MM-DD — only check changes since then?" Wait for user confirmation or override.
-   - If not found: scout the full source (no arbitrary time window).
+1. **Check history** (already done in Phase 0). If this is a re-scout, the scope is automatically "changes since YYYY-MM-DD" from the last expedition date.
 
 2. **Explore the source** based on type:
    - **Local repo:** `git log --oneline --stat`, read changed files, AGENTS.md, key docs

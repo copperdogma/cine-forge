@@ -41,6 +41,12 @@ Assess whether a story's implementation meets its requirements.
    - Are error cases handled?
    - Are integration tests covering the boundaries?
 
+5b. **Eval mismatch investigation** (if the story touched an AI module or eval):
+   - Run relevant promptfoo evals or acceptance tests
+   - For every significant mismatch, classify as: **model-wrong** (model produced bad output), **golden-wrong** (golden reference is incorrect), or **ambiguous** (needs further investigation)
+   - Record classification with evidence in the validation report
+   - Grade cannot exceed B if mismatches remain unclassified
+
 6. **Produce report:**
 
 ```

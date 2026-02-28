@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-02-28-04] — Scout 003: cross-project pattern adoption
+
+### Added
+- `/improve-skill` retrospective skill for post-interaction skill improvement
+- AI-as-Tester principle in AGENTS.md — qualitative AI behavior testing via subagent probes
+- Eval mismatch investigation mandate (Definition of Done #5, `/validate`, `/build-story`, `/mark-story-done`)
+- ADR template: Integration Checklist and "Settled — DO NOT suggest alternatives" marker
+- Scout 003 expedition doc and index entry
+- Draft stories 102-106: multi-turn evals, AGENTS.md extraction, tiered metrics, parallel extraction, chunk cache
+
+### Changed
+- `/triage-inbox`: "fold into existing story" + "what if we don't do this?" + delete-not-archive policy
+- `/scout`: automatic source resolution from scout history for re-scouts
+- `docs/inbox.md`: removed Triaged archive section (inbox is now a queue)
+
 ## [2026-02-28-03] — Look & Feel visual direction (Story 021)
 
 ### Added

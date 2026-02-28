@@ -1,5 +1,5 @@
 Ideas, links, and resources captured for triage. Newest first.
-Triaged together via `/triage` skill in AI agent sessions.
+Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is a queue, not an archive.
 
 ## Untriaged
 
@@ -76,14 +76,3 @@ Triaged together via `/triage` skill in AI agent sessions.
 - Google's Lyira3: https://deepmind.google/models/lyria/ We could use this for background tracks, but it ALSO will video to go with them. Likely they wouldn't work when placed within a film due to style differences, but many video gen models now have the ability to use a another video as timing/music/motion reference. So for instance we could tell Lyria3 to make an emotional montage with a man and a woman doing x,y,z with a song and the people's actions should sync with the music. Then feed that into a genAI along with reference images of OUR characters and say "use the motion/timing reference and music and replace the man and the woman with our chars." That could be amazing.
 
 
-## Triaged
-
-- 2026-02-23 — Entity click → chat reference regression + slash-search routing + chat auto-scroll + ChatMessagePayload route field + ghost param audit → created story-079
-- 2026-02-22 — Chat nav message duplication bug → created story-067
-- 2026-02-22 — Back button hardcoded navigation → created story-068
-- 2026-02-22 — Inbox items never marked read/complete → created story-069
-- 2026-02-22 — Scene dividers in script view + hotlink screenplay to artifacts → created story-070
-- 2026-02-22 — Refine vs. Regenerate modes for Deep Breakdown → created story-071
-- 2026-02-21 — Finding scene boundaries and structure slow → created story-061
-- 2026-02-21 — Smart project name inference on file pick → already implemented
-- 2026-02-21 — Human-readable project slugs → already implemented

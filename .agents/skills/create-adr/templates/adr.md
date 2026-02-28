@@ -31,6 +31,19 @@
 
 TBD — pending research.
 
+{When recording decisions, mark key settled decisions with:}
+{**Settled — DO NOT suggest alternatives.** This prevents AI agents from relitigating closed questions in future sessions.}
+
+## Integration Checklist
+
+Before marking this ADR as ACCEPTED, complete all applicable items:
+
+- [ ] `docs/spec.md` updated with relevant changes
+- [ ] Stories created or updated to implement the decision
+- [ ] `AGENTS.md` updated if the decision affects agent behavior
+- [ ] Other ADRs cross-referenced if dependencies exist
+- [ ] `docs/stories.md` index updated with new stories
+
 ## Legacy Context
 
 {What the legacy app did (if applicable) and what we learned from it. "None" if greenfield.}

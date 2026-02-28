@@ -193,6 +193,11 @@ NOTES from Cam:
 | 099 | Scene Workspace | 5 — Creative Direction | High | Pending | [story-099](stories/story-099-scene-workspace.md) |
 | 100 | Motif Tracking System | 5 — Creative Direction | Medium | Draft | [story-100](stories/story-100-motif-tracking.md) |
 | 101 | Centralized Long-Running Action System | 2.5 — UI | High | Pending | [story-101](stories/story-101-long-running-action-system.md) |
+| 102 | Promptfoo Multi-Turn Conversational Evals | Cross-Cutting | Medium | Draft | [story-102](stories/story-102-promptfoo-multi-turn-evals.md) |
+| 103 | AGENTS.md Runbook Extraction (300-Line Cap) | Cross-Cutting | Medium | Draft | [story-103](stories/story-103-agents-md-runbook-extraction.md) |
+| 104 | Tiered Quality Metrics for Eval Scoring | Cross-Cutting | High | Draft | [story-104](stories/story-104-tiered-quality-metrics.md) |
+| 105 | Parallel Chunk Extraction via ThreadPoolExecutor | Cross-Cutting | High | Draft | [story-105](stories/story-105-parallel-extraction.md) |
+| 106 | Disk-Backed Chunk-Level Extraction Cache | Cross-Cutting | Medium | Draft | [story-106](stories/story-106-chunk-level-extraction-cache.md) |
 
 ## Phase Summary
 

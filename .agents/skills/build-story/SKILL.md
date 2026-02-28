@@ -65,7 +65,12 @@ Execute a development story end-to-end.
    - `pnpm --dir ui run build` (catches errors typecheck misses)
    - Review each acceptance criterion — is it met?
 
-10b. **Runtime smoke test** — Verify the app actually works end-to-end:
+10b. **Eval mismatch investigation** (if the story touched an AI module or eval):
+   - Run relevant promptfoo evals or acceptance tests
+   - For every significant mismatch, classify as: **model-wrong**, **golden-wrong**, or **ambiguous** with evidence
+   - Do not proceed to Done if mismatches remain unclassified
+
+10c. **Runtime smoke test** — Verify the app actually works end-to-end:
    - Start dev servers — confirm they start with no error output in logs
    - If backend changed: hit the health endpoint — confirm 200 with valid JSON
    - If any frontend files changed: Chrome MCP screenshot — page loads, no blank screen, no JS console errors
@@ -100,7 +105,8 @@ Entries should be verbose. Capture decisions, failures, solutions, and learnings
 - Never write implementation code before the human gate (step 8) — exploration and planning are read-only
 - Never skip acceptance criteria verification
 - Never mark Done if any check fails
-- Never mark Done if the runtime smoke test (10b) was skipped — static checks passing ≠ app works
+- Never mark Done if the runtime smoke test (10c) was skipped — static checks passing ≠ app works
+- Never mark Done if eval mismatches remain unclassified (10b) — silently accepting noise is a hard stop
 - Never commit without running the required checks for changed scope
 - Always update the work log, even for partial progress
 - If blocked, record the blocker and stop — don't guess
