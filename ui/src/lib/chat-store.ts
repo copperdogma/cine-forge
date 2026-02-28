@@ -14,11 +14,37 @@ const AI_MESSAGE_TYPES: ReadonlySet<string> = new Set([
  * Migrate messages loaded from JSONL: resolve all ai_status spinners,
  * backfill speaker on AI messages, and deduplicate activity notes.
  */
+/** Resolve stale task_progress items: running → done on reload. */
+function resolveTaskProgress(msg: ChatMessage): ChatMessage {
+  if (msg.type !== 'task_progress') return msg
+  try {
+    const data = JSON.parse(msg.content)
+    if (!Array.isArray(data?.items)) return msg
+    const hasStale = data.items.some(
+      (i: { status: string }) => i.status === 'running' || i.status === 'pending',
+    )
+    if (!hasStale) return msg
+    const resolved = {
+      ...data,
+      items: data.items.map((i: { status: string }) =>
+        i.status === 'running' || i.status === 'pending'
+          ? { ...i, status: 'done' }
+          : i,
+      ),
+    }
+    return { ...msg, content: JSON.stringify(resolved) }
+  } catch {
+    return msg
+  }
+}
+
 function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
   const migrated = messages
     .filter((m) => m.type !== 'ai_tool_status') // Remove legacy separate tool messages
     .map((m) => {
       let msg = m.type === 'ai_status' ? { ...m, type: 'ai_status_done' as const } : m
+      // Resolve stale task_progress spinners from previous sessions
+      msg = resolveTaskProgress(msg)
       // Backfill speaker on AI messages that predate the group chat architecture
       if (AI_MESSAGE_TYPES.has(msg.type) && !msg.speaker) {
         msg = { ...msg, speaker: 'assistant' }

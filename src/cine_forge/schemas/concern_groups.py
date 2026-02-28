@@ -136,6 +136,39 @@ class LookAndFeel(BaseModel):
     user_approved: bool = Field(default=False)
 
 
+class LookAndFeelIndex(BaseModel):
+    """Aggregate index of all per-scene Look & Feel direction for a project.
+
+    Summarises the overall visual language, key motifs, and colour/lighting
+    consistency across the screenplay.
+    """
+
+    total_scenes: int = Field(ge=0)
+    scenes_with_direction: int = Field(ge=0)
+    overall_visual_language: str = Field(
+        description="High-level visual identity description for the entire film"
+    )
+    dominant_color_palette: str = Field(
+        description="Project-wide colour tendencies — temperature, saturation, contrast arc"
+    )
+    lighting_arc: str = Field(
+        description="How lighting evolves across the narrative arc"
+    )
+    key_visual_motifs: list[str] = Field(
+        default_factory=list,
+        description="Recurring visual elements that carry thematic weight",
+    )
+    scenes_with_special_visual_needs: list[str] = Field(
+        default_factory=list,
+        description="Scenes requiring distinctive treatment (dream sequences, flashbacks, etc.)",
+    )
+    visual_consistency_concerns: list[str] = Field(
+        default_factory=list,
+        description="Potential continuity or style coherence issues across scenes",
+    )
+    confidence: float = Field(ge=0.0, le=1.0)
+
+
 # ---------------------------------------------------------------------------
 # §12.3 — Sound & Music
 # ---------------------------------------------------------------------------

@@ -1,0 +1,38 @@
+module_id: look_and_feel_v1
+stage: look_and_feel
+description: >
+  Produces per-scene Look & Feel artifacts: lighting, colour palette, composition,
+  camera personality, costume/production design notes, and visual motifs. The Visual
+  Architect analyses each scene in context of its neighbours (3-scene sliding window)
+  and references character/location bibles and Intent/Mood settings.
+input_schemas:
+  - scene_index
+  - canonical_script
+output_schemas:
+  - look_and_feel
+  - look_and_feel_index
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Primary model for visual analysis."
+  escalate_model:
+    type: string
+    required: false
+    default: "claude-opus-4-6"
+    description: "Escalation model for QA failures."
+  verify_model:
+    type: string
+    required: false
+    default: "claude-haiku-4-5-20251001"
+    description: "Lightweight model for QA verification."
+  skip_qa:
+    type: boolean
+    required: false
+    default: false
+  concurrency:
+    type: integer
+    required: false
+    default: 5
+    description: "Max parallel scene analyses."

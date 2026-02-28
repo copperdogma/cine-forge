@@ -198,7 +198,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         id="look_and_feel",
         label="Look & Feel",
         phase_id="direction",
-        artifact_types=["look_and_feel"],
+        artifact_types=["look_and_feel_index", "look_and_feel"],
         dependencies=["scene_extraction", "characters", "locations"],
         implemented=True,
     ),
@@ -352,6 +352,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "continuity": "world_building",
     "intent_mood": "creative_direction",
     "rhythm_and_flow": "creative_direction",
+    "look_and_feel": "creative_direction",
 }
 
 

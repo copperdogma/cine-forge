@@ -18,7 +18,7 @@ These two are the critical path. Build them first, in this order (093 is indepen
 | Story | Why |
 |---|---|
 | **095** Intent/Mood Layer | The primary interaction surface for all users. Depends on 094. This is what makes CineForge feel like a creative conversation instead of a form. |
-| **021** Look & Feel | First visual concern group. Ready now (no undone deps). Can parallel with 095. |
+| **021** Look & Feel ✅ | Done. First visual concern group — per-scene parallel analysis, Visual Architect persona, DirectionTab integration. |
 | **022** Sound & Music | First audio concern group. Ready now. Can parallel with 021 and 095. |
 
 021 and 022 are technically ready today, but building them *after* 094 lands means they can use the real concern group schemas instead of inventing their own. Start 095 as soon as 094 merges; 021/022 can overlap.
@@ -27,6 +27,7 @@ These two are the critical path. Build them first, in this order (093 is indepen
 
 | Story | Why |
 |---|---|
+| **101** Long-Running Action System | UI infrastructure: centralized hook + banner + chat for all async operations. Fixes broken feedback on direction generation, propagation, and pipeline runs. Should land *before* 099 — Scene Workspace will trigger many long-running actions and needs this foundation. |
 | **099** Scene Workspace | The per-scene production surface — five concern tabs, readiness indicators, "let AI fill this." This is ADR-003's centerpiece UI. Depends on 094 + 095. |
 | **096** "Chat About This" | Ready now. Generalizes the highlight-to-chat pattern from Story 082 to all artifacts. Natural companion to 099. |
 | **100** Motif Tracking | Depends on 094. Motif annotations feed into Look & Feel and Sound & Music. Can parallel with 099. |
@@ -112,7 +113,7 @@ NOTES from Cam:
 | 018 | Inter-Role Communication Protocol | 4 — Role System | Medium | Done | [story-018](stories/story-018-inter-role-communication.md) |
 | 019 | Human Control Modes and Creative Sessions | 4 — Role System | High | Done | [story-019](stories/story-019-human-interaction.md) |
 | 020 | Editorial Architect and Editorial Direction | 5 — Creative Direction | Medium | Done | [story-020](stories/story-020-editorial-architect.md) |
-| 021 | Look & Feel — Visual Direction | 5 — Creative Direction | Medium | To Do | [story-021](stories/story-021-visual-architect.md) |
+| 021 | Look & Feel — Visual Direction | 5 — Creative Direction | Medium | Done | [story-021](stories/story-021-visual-architect.md) |
 | 022 | Sound & Music — Sound Direction | 5 — Creative Direction | Medium | To Do | [story-022](stories/story-022-sound-designer.md) |
 | 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
 | ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
@@ -189,8 +190,9 @@ NOTES from Cam:
 | 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Draft | [story-096](stories/story-096-chat-about-this.md) |
 | 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
 | 098 | Real-World Asset Upload Pipeline | 7 — Generation | Medium | Draft | [story-098](stories/story-098-real-asset-upload.md) |
-| 099 | Scene Workspace | 5 — Creative Direction | High | Draft | [story-099](stories/story-099-scene-workspace.md) |
+| 099 | Scene Workspace | 5 — Creative Direction | High | Pending | [story-099](stories/story-099-scene-workspace.md) |
 | 100 | Motif Tracking System | 5 — Creative Direction | Medium | Draft | [story-100](stories/story-100-motif-tracking.md) |
+| 101 | Centralized Long-Running Action System | 2.5 — UI | High | Pending | [story-101](stories/story-101-long-running-action-system.md) |
 
 ## Phase Summary
 

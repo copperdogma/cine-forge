@@ -38,6 +38,7 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   rhythm_and_flow: { icon: Scissors, label: 'Rhythm & Flow', color: 'text-pink-400' },
   rhythm_and_flow_index: { icon: Scissors, label: 'Rhythm & Flow Index', color: 'text-pink-300' },
   look_and_feel: { icon: Eye, label: 'Look & Feel', color: 'text-sky-400' },
+  look_and_feel_index: { icon: Eye, label: 'Look & Feel Index', color: 'text-sky-300' },
   sound_and_music: { icon: Volume2, label: 'Sound & Music', color: 'text-emerald-400' },
   character_and_performance: { icon: Drama, label: 'Character & Performance', color: 'text-amber-400' },
   story_world: { icon: Globe, label: 'Story World', color: 'text-teal-400' },

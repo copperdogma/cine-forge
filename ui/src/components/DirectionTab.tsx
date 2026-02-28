@@ -7,14 +7,15 @@
  */
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Compass, Scissors, Sparkles, Users as UsersIcon } from 'lucide-react'
+import { Compass, Eye, Loader2, Scissors, Sparkles, Users as UsersIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { DirectionAnnotation, type ConcernGroupType } from './DirectionAnnotation'
 import { useRightPanel } from '@/lib/right-panel'
 import { askChatQuestion } from '@/lib/glossary'
-import { useArtifactGroups, useArtifact } from '@/lib/hooks'
+import { useArtifactGroups, useArtifact, useStartRun, useProjectInputs } from '@/lib/hooks'
+import { useChatStore } from '@/lib/chat-store'
 import { getIntentMood } from '@/lib/api'
 import type { ArtifactGroupSummary } from '@/lib/types'
 
@@ -29,8 +30,7 @@ const CONCERN_GROUPS: Array<{
   color: string
 }> = [
   { concernGroup: 'rhythm_and_flow', artifactType: 'rhythm_and_flow', roleId: 'editorial_architect', roleName: 'Rhythm & Flow', icon: Scissors, color: 'text-pink-400' },
-  // Future concern groups plug in here as their modules land:
-  // { concernGroup: 'look_and_feel', artifactType: 'look_and_feel', roleId: 'visual_architect', roleName: 'Look & Feel', icon: Eye, color: 'text-sky-400' },
+  { concernGroup: 'look_and_feel', artifactType: 'look_and_feel', roleId: 'visual_architect', roleName: 'Look & Feel', icon: Eye, color: 'text-sky-400' },
   // { concernGroup: 'sound_and_music', artifactType: 'sound_and_music', roleId: 'sound_designer', roleName: 'Sound & Music', icon: Volume2, color: 'text-emerald-400' },
   // { concernGroup: 'character_and_performance', artifactType: 'character_and_performance', roleId: 'story_editor', roleName: 'Character', icon: Drama, color: 'text-amber-400' },
 ]
@@ -82,16 +82,50 @@ export function DirectionTab({
 }) {
   const panel = useRightPanel()
   const { data: groups } = useArtifactGroups(projectId)
+  const { data: inputs } = useProjectInputs(projectId)
+  const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
+  const startRun = useStartRun()
 
-  // Find rhythm & flow direction group for this scene
-  const rhythmGroup = groups?.find(
-    g => g.artifact_type === 'rhythm_and_flow' && g.entity_id === entityId,
-  )
+  // Track whether a run is active for this project (disables buttons globally)
+  const activeRunId = useChatStore(s => s.activeRunId?.[projectId] ?? null)
 
-  const handleGenerate = (roleId: string, roleName: string) => {
-    if (!panel.state.open) panel.openChat()
-    const sceneCtx = sceneHeading ? ` for scene "${sceneHeading}"` : ' for this scene'
-    askChatQuestion(`@${roleId} Analyze this scene and provide ${roleName.toLowerCase()} direction${sceneCtx}.`)
+  // Resolve which concern groups have existing artifacts for this scene
+  const resolvedGroups = CONCERN_GROUPS.map(cg => ({
+    ...cg,
+    existing: groups?.find(
+      g => g.artifact_type === cg.artifactType && g.entity_id === entityId,
+    ),
+  }))
+
+  const hasAnyDirection = resolvedGroups.some(cg => cg.existing)
+
+  const handleGenerate = async (concernGroup: string, roleName: string, isRegenerate: boolean) => {
+    if (!latestInputPath) return
+    const store = useChatStore.getState()
+
+    try {
+      const { run_id } = await startRun.mutateAsync({
+        project_id: projectId,
+        input_file: latestInputPath,
+        default_model: 'claude-sonnet-4-6',
+        recipe_id: 'creative_direction',
+        start_from: concernGroup,
+        accept_config: true,
+        skip_qa: true,
+        force: isRegenerate,
+      })
+      // Activate run tracking — useRunProgressChat (in AppShell) picks this up
+      // and handles all chat messages, ProcessingView banner, and completion.
+      store.setActiveRun(projectId, run_id)
+    } catch (err) {
+      // Only add a manual chat message on failure (success is handled by useRunProgressChat)
+      store.addMessage(projectId, {
+        id: `direction_gen_error_${concernGroup}`,
+        type: 'ai_status_done',
+        content: `Failed to start ${roleName} direction: ${err instanceof Error ? err.message : 'unknown error'}`,
+        timestamp: 0,
+      })
+    }
   }
 
   const handleConverge = () => {
@@ -101,26 +135,35 @@ export function DirectionTab({
     )
   }
 
-  const hasAnyDirection = !!rhythmGroup
-
   return (
     <div className="space-y-4">
       {/* Scene intent panel */}
       <SceneIntentPanel projectId={projectId} entityId={entityId} />
 
-      {/* Action bar */}
+      {/* Action bar — generate buttons for each concern group */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2 flex-wrap">
-          <Button
-            variant={rhythmGroup ? 'outline' : 'default'}
-            size="sm"
-            className="gap-1.5"
-            onClick={() => handleGenerate('editorial_architect', 'Rhythm & Flow')}
-          >
-            <Scissors className="h-3.5 w-3.5" />
-            {rhythmGroup ? 'Regenerate Rhythm & Flow' : 'Get Rhythm & Flow Direction'}
-          </Button>
-          {/* Future: look_and_feel, sound_and_music, character_and_performance buttons */}
+          {resolvedGroups.map(cg => {
+            const Icon = cg.icon
+            const isRunning = !!activeRunId || startRun.isPending
+            return (
+              <Button
+                key={cg.concernGroup}
+                variant={cg.existing ? 'outline' : 'default'}
+                size="sm"
+                className="gap-1.5"
+                disabled={isRunning || !latestInputPath}
+                onClick={() => handleGenerate(cg.concernGroup, cg.roleName, !!cg.existing)}
+              >
+                {isRunning ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Icon className="h-3.5 w-3.5" />
+                )}
+                {cg.existing ? `Regenerate ${cg.roleName}` : `Get ${cg.roleName} Direction`}
+              </Button>
+            )
+          })}
         </div>
 
         {hasAnyDirection && (
@@ -136,16 +179,23 @@ export function DirectionTab({
         )}
       </div>
 
-      {/* Direction annotations */}
-      {rhythmGroup ? (
-        <ConcernGroupCard
-          projectId={projectId}
-          entityId={entityId}
-          artifactType="rhythm_and_flow"
-          concernGroup="rhythm_and_flow"
-          version={rhythmGroup.latest_version}
-          sceneHeading={sceneHeading}
-        />
+      {/* Direction annotations — one card per concern group with artifacts */}
+      {hasAnyDirection ? (
+        <div className="space-y-4">
+          {resolvedGroups
+            .filter(cg => cg.existing)
+            .map(cg => (
+              <ConcernGroupCard
+                key={cg.concernGroup}
+                projectId={projectId}
+                entityId={entityId}
+                artifactType={cg.artifactType}
+                concernGroup={cg.concernGroup}
+                version={cg.existing!.latest_version}
+                sceneHeading={sceneHeading}
+              />
+            ))}
+        </div>
       ) : (
         <DirectionEmptyState />
       )}
@@ -291,11 +341,7 @@ function DirectionEmptyState() {
       <div>
         <p className="text-sm font-medium text-foreground/80">No direction yet</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Click &quot;Get Rhythm &amp; Flow Direction&quot; above, or type{' '}
-          <span className="inline-flex items-center rounded-md bg-secondary px-1.5 py-0 text-[10px] font-mono">
-            @editorial_architect
-          </span>{' '}
-          in chat to get editing advice for this scene.
+          Click a direction button above, or @ mention a role in chat to get creative direction for this scene.
         </p>
       </div>
     </div>

@@ -48,6 +48,7 @@ from cine_forge.schemas import (
     IntentMood,
     LocationBible,
     LookAndFeel,
+    LookAndFeelIndex,
     ProjectConfig,
     PropBible,
     QAResult,
@@ -101,6 +102,7 @@ REVIEWABLE_ARTIFACT_TYPES: set[str] = {
     "bible_manifest",
     "entity_graph",
     "rhythm_and_flow",
+    "look_and_feel",
     "timeline",
     "track_manifest",
     "project_config",
@@ -146,6 +148,7 @@ class DriverEngine:
         self.schemas.register("disagreement", DisagreementArtifact)
         self.schemas.register("intent_mood", IntentMood)
         self.schemas.register("look_and_feel", LookAndFeel)
+        self.schemas.register("look_and_feel_index", LookAndFeelIndex)
         self.schemas.register("sound_and_music", SoundAndMusic)
         self.schemas.register("rhythm_and_flow", RhythmAndFlow)
         self.schemas.register("rhythm_and_flow_index", RhythmAndFlowIndex)
@@ -256,9 +259,12 @@ class DriverEngine:
         )
 
         # --- Wave-based execution: parallel stages within each wave ---
+        # Stages sliced off by start_from are implicitly satisfied — they either
+        # ran in a prior invocation or their outputs were preloaded from the store.
+        skipped_stages = set(execution_order) - set(ordered_stages)
         waves = self._compute_execution_waves(
             ordered_stages, stage_by_id,
-            already_satisfied=set(stage_outputs.keys()),
+            already_satisfied=set(stage_outputs.keys()) | skipped_stages,
         )
         # Lock protects shared mutable state accessed by parallel stage threads:
         # run_state["total_cost_usd"], _write_run_state, _append_event, _update_stage_cache

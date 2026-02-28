@@ -625,6 +625,7 @@ function InteractionModeSelector({ projectId }: { projectId: string }) {
 export function ChatPanel() {
   const { projectId } = useParams()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const messages = useChatStore(s => s.messages[projectId ?? ''] ?? EMPTY_MESSAGES)
   const addMessage = useChatStore(s => s.addMessage)
   const entityContext = useChatStore(s => s.entityContext[projectId ?? ''] ?? null)
@@ -962,6 +963,8 @@ export function ChatPanel() {
         if (currentMsgId) {
           useChatStore.getState().finalizeStreamingMessage(projectId, currentMsgId)
         }
+        // Refresh artifact data — the AI may have generated new artifacts
+        queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
         setIsStreaming(false)
       },
       (error) => {

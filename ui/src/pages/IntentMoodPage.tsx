@@ -146,20 +146,34 @@ export default function IntentMoodPage() {
     onSuccess: ({ data, msgId }) => {
       setPropagation(data)
       queryClient.invalidateQueries({ queryKey: ['artifact-groups', projectId] })
-      const groups = data.artifacts_created.length
-      toast.success(`Propagated to ${groups} concern groups`)
+      const created = data.artifacts_created
+      toast.success(`Propagated to ${created.length} concern groups`)
       // Update the card — flip all items to done
       const store = useChatStore.getState()
       const items = Object.entries(CONCERN_GROUP_META).map(([groupId, meta]) => ({
         label: meta.label,
         status: 'done' as const,
-        detail: data.artifacts_created.includes(groupId) ? 'draft created' : 'skipped',
+        detail: created.includes(groupId) ? 'draft created' : 'skipped',
       }))
       store.updateMessageContent(
         projectId!,
         msgId,
         JSON.stringify({ heading: 'Propagating creative intent', items }),
       )
+      // Post a summary message after the progress card
+      const groupNames = created
+        .map(id => CONCERN_GROUP_META[id]?.label ?? id)
+        .join(', ')
+      const summary = created.length > 0
+        ? `Creative intent propagated to **${created.length} concern groups**: ${groupNames}. Review the suggestions below, or visit each scene's Direction tab to see how the mood shapes its visual and audio direction.`
+        : 'Propagation complete — no concern group drafts were created. Try adjusting the mood or adding reference films.'
+      store.addMessage(projectId!, {
+        id: `propagate_summary_${Date.now()}`,
+        type: 'ai_status_done',
+        content: summary,
+        timestamp: Date.now(),
+        speaker: 'director',
+      })
     },
     onError: (err: Error) => toast.error(err.message),
   })

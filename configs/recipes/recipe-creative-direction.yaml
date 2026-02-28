@@ -20,9 +20,24 @@ stages:
     params:
       skip_qa: true
       concurrency: 5
-    needs: [intent_mood]
+    needs: []
+    after: [intent_mood]
     store_inputs:
       normalize: canonical_script
       enriched_scene_index: scene_index
     store_inputs_optional:
       project_config: project_config
+  - id: look_and_feel
+    module: look_and_feel_v1
+    params:
+      skip_qa: true
+      concurrency: 5
+    needs: []
+    after: [intent_mood]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+    store_inputs_optional:
+      intent_mood: intent_mood
+      character_bibles: character_bible
+      location_bibles: location_bible

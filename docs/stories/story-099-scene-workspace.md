@@ -1,6 +1,6 @@
 # Story 099: Scene Workspace
 
-**Status**: Draft
+**Status**: Pending
 **Created**: 2026-02-27
 **Source**: ADR-003, Ideal R11
 **Spec Refs**: 12.7 (Readiness Indicators)

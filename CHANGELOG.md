@@ -1,5 +1,29 @@
 # Changelog
 
+## [2026-02-28-03] — Look & Feel visual direction (Story 021)
+
+### Added
+- `look_and_feel_v1` pipeline module: per-scene parallel analysis with 3-scene sliding window, bible + Intent/Mood context injection, QA loop with escalation, mock support
+- `LookAndFeelIndex` schema for project-level visual identity aggregate
+- Visual Architect role enhanced with rich persona (lighting philosophy, colour theory, camera language, composition, costume/production design)
+- `look_and_feel` stage in creative direction recipe with `store_inputs_optional` for intent_mood, character_bible, location_bible
+- Look & Feel entry activated in DirectionTab with "Get Look & Feel Direction" / "Regenerate Look & Feel" buttons
+- `look_and_feel_index` registered in artifact-meta.ts (Eye icon, sky-400)
+- 14 unit tests for Look & Feel module
+
+### Fixed
+- DirectionTab run tracking: buttons now stay disabled for full pipeline run duration via `setActiveRun()` wiring to global `useRunProgressChat` system
+- Button cursor-pointer added to global shadcn/ui button styles
+- Recipe `needs` vs `after` fix: creative direction stages use `after: [intent_mood]` instead of `needs: [intent_mood]` to avoid schema compatibility failures
+- Engine `start_from` wave scheduling: skipped stages now added to `already_satisfied` set so `after` dependencies resolve correctly
+- Chat store migration: `resolveTaskProgress()` flips stale running/pending task_progress items to done on page reload
+- DirectionTab generalized: dynamically loops over all concern groups instead of hardcoding Rhythm & Flow only
+
+### Changed
+- `look_and_feel` added to `REVIEWABLE_ARTIFACT_TYPES` in engine.py
+- `look_and_feel_index` added to pipeline graph artifact_types with nav_route
+- `look_and_feel` added to `NODE_FIX_RECIPES` in graph.py
+
 ## [2026-02-28-02] — Intent / Mood UX improvements (Story 095)
 
 ### Added
