@@ -1,34 +1,34 @@
 /**
  * DirectionTab — Tab content for scene creative direction.
  *
- * Shows direction annotations from all creative roles for a given scene,
+ * Shows direction annotations from all concern groups for a given scene,
  * with generate buttons and convergence actions.
+ * ADR-003: concern groups replace role-based direction types.
  */
 import { Scissors, Sparkles, Users as UsersIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
-import { DirectionAnnotation, type DirectionType } from './DirectionAnnotation'
+import { DirectionAnnotation, type ConcernGroupType } from './DirectionAnnotation'
 import { useRightPanel } from '@/lib/right-panel'
 import { askChatQuestion } from '@/lib/glossary'
 import { useArtifactGroups, useArtifact } from '@/lib/hooks'
 import type { ArtifactGroupSummary } from '@/lib/types'
 
-// --- Role presence indicator ---
+// --- Concern group definitions ---
 
-const DIRECTION_ROLES: Array<{
-  directionType: DirectionType
+const CONCERN_GROUPS: Array<{
+  concernGroup: ConcernGroupType
   artifactType: string
   roleId: string
   roleName: string
   icon: typeof Scissors
   color: string
 }> = [
-  { directionType: 'editorial', artifactType: 'editorial_direction', roleId: 'editorial_architect', roleName: 'Editorial', icon: Scissors, color: 'text-pink-400' },
-  // Future roles plug in here:
-  // { directionType: 'visual', artifactType: 'visual_direction', roleId: 'visual_architect', roleName: 'Visual', icon: Eye, color: 'text-sky-400' },
-  // { directionType: 'sound', artifactType: 'sound_direction', roleId: 'sound_designer', roleName: 'Sound', icon: Volume2, color: 'text-emerald-400' },
-  // { directionType: 'performance', artifactType: 'performance_direction', roleId: 'story_editor', roleName: 'Story', icon: Drama, color: 'text-amber-400' },
+  { concernGroup: 'rhythm_and_flow', artifactType: 'rhythm_and_flow', roleId: 'editorial_architect', roleName: 'Rhythm & Flow', icon: Scissors, color: 'text-pink-400' },
+  // Future concern groups plug in here as their modules land:
+  // { concernGroup: 'look_and_feel', artifactType: 'look_and_feel', roleId: 'visual_architect', roleName: 'Look & Feel', icon: Eye, color: 'text-sky-400' },
+  // { concernGroup: 'sound_and_music', artifactType: 'sound_and_music', roleId: 'sound_designer', roleName: 'Sound & Music', icon: Volume2, color: 'text-emerald-400' },
+  // { concernGroup: 'character_and_performance', artifactType: 'character_and_performance', roleId: 'story_editor', roleName: 'Character', icon: Drama, color: 'text-amber-400' },
 ]
 
 export function RolePresenceIndicators({
@@ -40,24 +40,24 @@ export function RolePresenceIndicators({
 }) {
   if (!groups) return null
 
-  const present = DIRECTION_ROLES.filter(role =>
-    groups.some(g => g.artifact_type === role.artifactType && g.entity_id === entityId),
+  const present = CONCERN_GROUPS.filter(cg =>
+    groups.some(g => g.artifact_type === cg.artifactType && g.entity_id === entityId),
   )
 
   if (present.length === 0) return null
 
   return (
     <div className="flex items-center gap-1">
-      {present.map(role => {
-        const Icon = role.icon
+      {present.map(cg => {
+        const Icon = cg.icon
         return (
-          <Tooltip key={role.roleId}>
+          <Tooltip key={cg.concernGroup}>
             <TooltipTrigger asChild>
-              <div className={`rounded-md border border-border p-1 ${role.color}`}>
+              <div className={`rounded-md border border-border p-1 ${cg.color}`}>
                 <Icon className="h-3 w-3" />
               </div>
             </TooltipTrigger>
-            <TooltipContent>{role.roleName} direction available</TooltipContent>
+            <TooltipContent>{cg.roleName} direction available</TooltipContent>
           </Tooltip>
         )
       })}
@@ -79,9 +79,9 @@ export function DirectionTab({
   const panel = useRightPanel()
   const { data: groups } = useArtifactGroups(projectId)
 
-  // Find editorial direction group for this scene
-  const editorialGroup = groups?.find(
-    g => g.artifact_type === 'editorial_direction' && g.entity_id === entityId,
+  // Find rhythm & flow direction group for this scene
+  const rhythmGroup = groups?.find(
+    g => g.artifact_type === 'rhythm_and_flow' && g.entity_id === entityId,
   )
 
   const handleGenerate = (roleId: string, roleName: string) => {
@@ -97,7 +97,7 @@ export function DirectionTab({
     )
   }
 
-  const hasAnyDirection = !!editorialGroup
+  const hasAnyDirection = !!rhythmGroup
 
   return (
     <div className="space-y-4">
@@ -105,15 +105,15 @@ export function DirectionTab({
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2 flex-wrap">
           <Button
-            variant={editorialGroup ? 'outline' : 'default'}
+            variant={rhythmGroup ? 'outline' : 'default'}
             size="sm"
             className="gap-1.5"
-            onClick={() => handleGenerate('editorial_architect', 'Editorial')}
+            onClick={() => handleGenerate('editorial_architect', 'Rhythm & Flow')}
           >
             <Scissors className="h-3.5 w-3.5" />
-            {editorialGroup ? 'Regenerate Editorial' : 'Get Editorial Direction'}
+            {rhythmGroup ? 'Regenerate Rhythm & Flow' : 'Get Rhythm & Flow Direction'}
           </Button>
-          {/* Future: visual, sound, performance generate buttons */}
+          {/* Future: look_and_feel, sound_and_music, character_and_performance buttons */}
         </div>
 
         {hasAnyDirection && (
@@ -130,11 +130,13 @@ export function DirectionTab({
       </div>
 
       {/* Direction annotations */}
-      {editorialGroup ? (
-        <EditorialDirectionCard
+      {rhythmGroup ? (
+        <ConcernGroupCard
           projectId={projectId}
           entityId={entityId}
-          version={editorialGroup.latest_version}
+          artifactType="rhythm_and_flow"
+          concernGroup="rhythm_and_flow"
+          version={rhythmGroup.latest_version}
           sceneHeading={sceneHeading}
         />
       ) : (
@@ -144,20 +146,24 @@ export function DirectionTab({
   )
 }
 
-// --- Editorial direction card (fetches and renders) ---
+// --- Generic concern group card (fetches and renders) ---
 
-function EditorialDirectionCard({
+function ConcernGroupCard({
   projectId,
   entityId,
+  artifactType,
+  concernGroup,
   version,
   sceneHeading,
 }: {
   projectId: string
   entityId: string
+  artifactType: string
+  concernGroup: ConcernGroupType
   version: number
   sceneHeading?: string
 }) {
-  const { data: artifact, isLoading } = useArtifact(projectId, 'editorial_direction', entityId, version)
+  const { data: artifact, isLoading } = useArtifact(projectId, artifactType, entityId, version)
 
   if (isLoading) {
     return (
@@ -172,7 +178,7 @@ function EditorialDirectionCard({
 
   return (
     <DirectionAnnotation
-      directionType="editorial"
+      concernGroup={concernGroup}
       data={data}
       sceneHeading={sceneHeading}
     />
@@ -188,10 +194,10 @@ function DirectionEmptyState() {
       <div>
         <p className="text-sm font-medium text-foreground/80">No direction yet</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Click &quot;Get Editorial Direction&quot; above, or type{' '}
-          <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-mono">
+          Click &quot;Get Rhythm &amp; Flow Direction&quot; above, or type{' '}
+          <span className="inline-flex items-center rounded-md bg-secondary px-1.5 py-0 text-[10px] font-mono">
             @editorial_architect
-          </Badge>{' '}
+          </span>{' '}
           in chat to get editing advice for this scene.
         </p>
       </div>

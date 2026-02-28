@@ -1,4 +1,4 @@
-"""Unit tests for the editorial_direction_v1 module."""
+"""Unit tests for the editorial_direction_v1 module (now produces RhythmAndFlow)."""
 
 from __future__ import annotations
 
@@ -11,9 +11,9 @@ from cine_forge.modules.creative_direction.editorial_direction_v1.main import (
     _mock_direction,
     run_module,
 )
-from cine_forge.schemas.editorial_direction import (
-    EditorialDirection,
-    EditorialDirectionIndex,
+from cine_forge.schemas.concern_groups import (
+    RhythmAndFlow,
+    RhythmAndFlowIndex,
 )
 
 
@@ -90,12 +90,11 @@ def _canonical_payload() -> dict[str, Any]:
 
 @pytest.mark.unit
 def test_mock_direction_produces_valid_schema() -> None:
-    """Mock direction output validates against the EditorialDirection schema."""
-    direction = _mock_direction("scene_001", 1, "INT. STUDIO - DAY")
-    assert isinstance(direction, EditorialDirection)
+    """Mock direction output validates against the RhythmAndFlow schema."""
+    direction = _mock_direction("scene_001")
+    assert isinstance(direction, RhythmAndFlow)
     assert direction.scene_id == "scene_001"
-    assert direction.scene_number == 1
-    assert 0.0 <= direction.confidence <= 1.0
+    assert direction.scope == "scene"
     assert direction.transition_in
     assert direction.transition_out
     assert direction.coverage_priority
@@ -151,7 +150,7 @@ def test_run_module_mock_mode() -> None:
         "enriched_scene_index": _scene_index_payload(),
     }
     params = {"work_model": "mock", "skip_qa": True}
-    context = {"runtime_params": {}, "run_id": "test-001", "stage_id": "editorial_direction"}
+    context = {"runtime_params": {}, "run_id": "test-001", "stage_id": "rhythm_and_flow"}
 
     result = run_module(inputs, params, context)
 
@@ -163,22 +162,22 @@ def test_run_module_mock_mode() -> None:
     assert len(artifacts) == 4
 
     # Verify per-scene artifacts
-    scene_artifacts = [a for a in artifacts if a["artifact_type"] == "editorial_direction"]
+    scene_artifacts = [a for a in artifacts if a["artifact_type"] == "rhythm_and_flow"]
     assert len(scene_artifacts) == 3
 
     for a in scene_artifacts:
         data = a["data"]
         # Validate against schema
-        direction = EditorialDirection.model_validate(data)
+        direction = RhythmAndFlow.model_validate(data)
+        assert direction.scene_id is not None
         assert direction.scene_id.startswith("scene_")
-        assert direction.confidence > 0
         assert a["metadata"]["source"] == "ai"
 
     # Verify index artifact
-    index_artifacts = [a for a in artifacts if a["artifact_type"] == "editorial_direction_index"]
+    index_artifacts = [a for a in artifacts if a["artifact_type"] == "rhythm_and_flow_index"]
     assert len(index_artifacts) == 1
     index_data = index_artifacts[0]["data"]
-    index = EditorialDirectionIndex.model_validate(index_data)
+    index = RhythmAndFlowIndex.model_validate(index_data)
     assert index.total_scenes == 3
     assert index.scenes_with_direction == 3
 
@@ -217,38 +216,21 @@ def test_run_module_empty_scenes() -> None:
     artifacts = result["artifacts"]
     # Only the index artifact (0 scene directions)
     assert len(artifacts) == 1
-    assert artifacts[0]["artifact_type"] == "editorial_direction_index"
-    index = EditorialDirectionIndex.model_validate(artifacts[0]["data"])
+    assert artifacts[0]["artifact_type"] == "rhythm_and_flow_index"
+    index = RhythmAndFlowIndex.model_validate(artifacts[0]["data"])
     assert index.total_scenes == 0
     assert index.scenes_with_direction == 0
 
 
 @pytest.mark.unit
-def test_editorial_direction_schema_validation() -> None:
-    """Schema rejects invalid data."""
-    # Missing required fields
-    with pytest.raises(ValueError):
-        EditorialDirection(
-            scene_id="scene_001",
-            scene_number=1,
-            # Missing heading, scene_function, etc.
-        )
-
-    # Invalid confidence range
-    with pytest.raises(ValueError):
-        EditorialDirection(
-            scene_id="scene_001",
-            scene_number=1,
-            heading="INT. STUDIO - DAY",
-            scene_function="escalation",
-            pacing_intent="fast",
-            transition_in="hard cut",
-            transition_in_rationale="reason",
-            transition_out="dissolve",
-            transition_out_rationale="reason",
-            coverage_priority="masters and close-ups",
-            confidence=1.5,  # Out of range
-        )
+def test_rhythm_and_flow_all_fields_optional() -> None:
+    """RhythmAndFlow supports progressive disclosure — all fields optional."""
+    # Minimal: just scope
+    minimal = RhythmAndFlow()
+    assert minimal.scope == "scene"
+    assert minimal.scene_function is None
+    assert minimal.pacing_intent is None
+    assert minimal.montage_candidates == []
 
 
 @pytest.mark.unit
@@ -270,4 +252,4 @@ def test_announce_artifact_called() -> None:
     # Should announce each scene direction (not the index)
     assert len(announced) == 3
     for a in announced:
-        assert a["artifact_type"] == "editorial_direction"
+        assert a["artifact_type"] == "rhythm_and_flow"

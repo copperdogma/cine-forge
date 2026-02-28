@@ -119,7 +119,7 @@ def test_empty_store_dependent_node_blocked(tmp_path: Path) -> None:
 @pytest.mark.unit
 def test_unimplemented_node_status(tmp_path: Path) -> None:
     store = ArtifactStore(project_dir=tmp_path / "project")
-    node = _NODE_MAP["visual_direction"]
+    node = _NODE_MAP["look_and_feel"]
     assert not node.implemented
     status, count = compute_node_status(node, store, {})
     assert status == NodeStatus.NOT_IMPLEMENTED
@@ -263,7 +263,7 @@ def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
     assert "nodes" in graph
     assert "edges" in graph
     assert len(graph["phases"]) == 6
-    assert len(graph["nodes"]) == 20
+    assert len(graph["nodes"]) == 23
 
     # script_import should be available (no deps).
     si = next(n for n in graph["nodes"] if n["id"] == "script_import")
@@ -273,9 +273,9 @@ def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
     norm = next(n for n in graph["nodes"] if n["id"] == "normalization")
     assert norm["status"] == "blocked"
 
-    # Visual direction should be not_implemented.
-    vd = next(n for n in graph["nodes"] if n["id"] == "visual_direction")
-    assert vd["status"] == "not_implemented"
+    # Look & Feel should be not_implemented.
+    lf = next(n for n in graph["nodes"] if n["id"] == "look_and_feel")
+    assert lf["status"] == "not_implemented"
 
 
 @pytest.mark.unit
@@ -469,14 +469,14 @@ def test_check_prerequisites_unknown_node(tmp_path: Path) -> None:
 
 @pytest.mark.unit
 def test_check_prerequisites_unimplemented_dep(tmp_path: Path) -> None:
-    """shot_planning depends on visual_direction which is not implemented."""
+    """shot_planning depends on look_and_feel which is not implemented."""
     store = ArtifactStore(project_dir=tmp_path / "project")
     graph = compute_pipeline_graph(store)
     prereqs = check_prerequisites("shot_planning", graph)
 
     assert prereqs["is_ready"] is False
     unmet_ids = [u["id"] for u in prereqs["unmet"]]
-    assert "visual_direction" in unmet_ids
+    assert "look_and_feel" in unmet_ids
 
 
 # ---------------------------------------------------------------------------

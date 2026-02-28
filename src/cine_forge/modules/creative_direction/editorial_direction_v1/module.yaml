@@ -9,8 +9,8 @@ input_schemas:
   - scene_index
   - canonical_script
 output_schemas:
-  - editorial_direction
-  - editorial_direction_index
+  - rhythm_and_flow
+  - rhythm_and_flow_index
 parameters:
   work_model:
     type: string

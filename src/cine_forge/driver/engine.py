@@ -34,6 +34,7 @@ from cine_forge.schemas import (
     ArtifactRef,
     BibleManifest,
     CanonicalScript,
+    CharacterAndPerformance,
     CharacterBible,
     ContinuityIndex,
     ContinuityState,
@@ -41,23 +42,28 @@ from cine_forge.schemas import (
     CostRecord,
     Decision,
     DisagreementArtifact,
-    EditorialDirection,
-    EditorialDirectionIndex,
     EntityDiscoveryResults,
     EntityEdge,
     EntityGraph,
+    IntentMood,
     LocationBible,
+    LookAndFeel,
     ProjectConfig,
     PropBible,
     QAResult,
     RawInput,
+    RhythmAndFlow,
+    RhythmAndFlowIndex,
     RoleDefinition,
     RoleResponse,
     Scene,
+    SceneCharacterPerformance,
     SceneIndex,
     SchemaRegistry,
     ScriptBible,
+    SoundAndMusic,
     StageReviewArtifact,
+    StoryWorld,
     StylePack,
     Suggestion,
     Timeline,
@@ -94,7 +100,7 @@ REVIEWABLE_ARTIFACT_TYPES: set[str] = {
     "scene",
     "bible_manifest",
     "entity_graph",
-    "editorial_direction",
+    "rhythm_and_flow",
     "timeline",
     "track_manifest",
     "project_config",
@@ -138,8 +144,14 @@ class DriverEngine:
         self.schemas.register("decision", Decision)
         self.schemas.register("conversation", Conversation)
         self.schemas.register("disagreement", DisagreementArtifact)
-        self.schemas.register("editorial_direction", EditorialDirection)
-        self.schemas.register("editorial_direction_index", EditorialDirectionIndex)
+        self.schemas.register("intent_mood", IntentMood)
+        self.schemas.register("look_and_feel", LookAndFeel)
+        self.schemas.register("sound_and_music", SoundAndMusic)
+        self.schemas.register("rhythm_and_flow", RhythmAndFlow)
+        self.schemas.register("rhythm_and_flow_index", RhythmAndFlowIndex)
+        self.schemas.register("character_and_performance", CharacterAndPerformance)
+        self.schemas.register("scene_character_performance", SceneCharacterPerformance)
+        self.schemas.register("story_world", StoryWorld)
         self.schemas.register("script_bible", ScriptBible)
         self._stage_cache_path = self.project_dir / "stage_cache.json"
 

@@ -18,8 +18,13 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   entity_graph: ['story graph', 'story graphs'],
   world_overview: ['world overview', 'world overviews'],
   entity_discovery_results: ['entity discovery results', 'entity discovery results'],
-  editorial_direction: ['editorial direction', 'editorial directions'],
-  editorial_direction_index: ['editorial index', 'editorial indexes'],
+  intent_mood: ['intent & mood', 'intent & mood'],
+  rhythm_and_flow: ['rhythm & flow', 'rhythm & flow'],
+  rhythm_and_flow_index: ['rhythm & flow index', 'rhythm & flow indexes'],
+  look_and_feel: ['look & feel', 'look & feel'],
+  sound_and_music: ['sound & music', 'sound & music'],
+  character_and_performance: ['character & performance', 'character & performance'],
+  story_world: ['story world', 'story world'],
 }
 
 /** Skip internal artifact types the user doesn't care about. */

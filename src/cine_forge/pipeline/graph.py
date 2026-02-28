@@ -178,28 +178,52 @@ PIPELINE_NODES: list[PipelineNode] = [
         dependencies=["characters", "locations", "props", "scene_extraction"],
     ),
 
-    # --- Direction phase ---
+    # --- Direction phase (concern groups, ADR-003) ---
     PipelineNode(
-        id="editorial_direction",
-        label="Editorial Direction",
+        id="intent_mood",
+        label="Intent & Mood",
         phase_id="direction",
-        artifact_types=["editorial_direction_index"],
+        artifact_types=["intent_mood"],
+        dependencies=["scene_extraction"],
+        implemented=False,
+    ),
+    PipelineNode(
+        id="rhythm_and_flow",
+        label="Rhythm & Flow",
+        phase_id="direction",
+        artifact_types=["rhythm_and_flow_index"],
         dependencies=["scene_extraction", "characters"],
     ),
     PipelineNode(
-        id="visual_direction",
-        label="Visual Direction",
+        id="look_and_feel",
+        label="Look & Feel",
         phase_id="direction",
-        artifact_types=["visual_direction_index"],
+        artifact_types=["look_and_feel"],
         dependencies=["scene_extraction", "characters", "locations"],
         implemented=False,
     ),
     PipelineNode(
-        id="sound_direction",
-        label="Sound Direction",
+        id="sound_and_music",
+        label="Sound & Music",
         phase_id="direction",
-        artifact_types=["sound_direction_index"],
+        artifact_types=["sound_and_music"],
         dependencies=["scene_extraction"],
+        implemented=False,
+    ),
+    PipelineNode(
+        id="character_and_performance",
+        label="Character & Performance",
+        phase_id="direction",
+        artifact_types=["character_and_performance"],
+        dependencies=["scene_extraction", "characters"],
+        implemented=False,
+    ),
+    PipelineNode(
+        id="story_world",
+        label="Story World",
+        phase_id="direction",
+        artifact_types=["story_world"],
+        dependencies=["characters", "locations", "props"],
         implemented=False,
     ),
 
@@ -209,7 +233,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         label="Shot Planning",
         phase_id="shots",
         artifact_types=["shot_plan"],
-        dependencies=["editorial_direction", "visual_direction", "sound_direction"],
+        dependencies=["rhythm_and_flow", "look_and_feel", "sound_and_music"],
         implemented=False,
     ),
     PipelineNode(
@@ -283,7 +307,10 @@ PIPELINE_PHASES: list[PipelinePhase] = [
         id="direction",
         label="Direction",
         icon="Compass",
-        node_ids=["editorial_direction", "visual_direction", "sound_direction"],
+        node_ids=[
+            "intent_mood", "rhythm_and_flow", "look_and_feel",
+            "sound_and_music", "character_and_performance", "story_world",
+        ],
         nav_route="/scenes",
     ),
     PipelinePhase(
@@ -323,7 +350,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "props": "world_building",
     "entity_graph": "world_building",
     "continuity": "world_building",
-    "editorial_direction": "creative_direction",
+    "rhythm_and_flow": "creative_direction",
 }
 
 

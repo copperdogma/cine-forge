@@ -1,10 +1,11 @@
 recipe_id: creative_direction
 description: >
-  Phase 5 creative direction pass: editorial, visual, sound, and performance
-  direction artifacts. Currently implements editorial direction only.
+  Phase 5 creative direction pass: concern group artifacts (rhythm & flow,
+  look & feel, sound & music, character & performance, story world).
+  Currently implements rhythm & flow (editorial direction) only.
 project: {}
 stages:
-  - id: editorial_direction
+  - id: rhythm_and_flow
     module: editorial_direction_v1
     params:
       skip_qa: true

@@ -1,13 +1,14 @@
 /**
  * DirectionAnnotation — Word/Google Docs style comment thread for creative direction.
  *
- * Renders a role's direction as an annotation card with:
- * - Role avatar/name and direction type badge
- * - Structured direction fields (pacing, transitions, coverage, etc.)
+ * Renders a concern group's direction as an annotation card with:
+ * - Role avatar/name and concern group badge
+ * - Structured direction fields
  * - Confidence indicator
  * - "Chat about this" button that opens chat with @role context
  *
- * Reusable for all direction types: editorial, visual, sound, performance.
+ * Supports all concern groups: rhythm_and_flow, look_and_feel, sound_and_music,
+ * character_and_performance (ADR-003).
  */
 import { Scissors, Eye, Volume2, Drama, MessageSquare } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
@@ -17,90 +18,87 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip
 import { useRightPanel } from '@/lib/right-panel'
 import { askChatQuestion } from '@/lib/glossary'
 
-// --- Direction type config ---
+// --- Concern group config ---
 
-export type DirectionType = 'editorial' | 'visual' | 'sound' | 'performance'
+export type ConcernGroupType = 'rhythm_and_flow' | 'look_and_feel' | 'sound_and_music' | 'character_and_performance'
 
-const DIRECTION_CONFIG: Record<DirectionType, {
+const CONCERN_GROUP_CONFIG: Record<ConcernGroupType, {
   icon: typeof Scissors
   color: string
   roleId: string
   roleName: string
+  label: string
   badgeClass: string
 }> = {
-  editorial: {
+  rhythm_and_flow: {
     icon: Scissors,
     color: 'text-pink-400',
     roleId: 'editorial_architect',
     roleName: 'Editorial Architect',
+    label: 'Rhythm & Flow',
     badgeClass: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
   },
-  visual: {
+  look_and_feel: {
     icon: Eye,
     color: 'text-sky-400',
     roleId: 'visual_architect',
     roleName: 'Visual Architect',
+    label: 'Look & Feel',
     badgeClass: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
   },
-  sound: {
+  sound_and_music: {
     icon: Volume2,
     color: 'text-emerald-400',
     roleId: 'sound_designer',
     roleName: 'Sound Designer',
+    label: 'Sound & Music',
     badgeClass: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
   },
-  performance: {
+  character_and_performance: {
     icon: Drama,
     color: 'text-amber-400',
     roleId: 'story_editor',
     roleName: 'Story Editor',
+    label: 'Character & Performance',
     badgeClass: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
   },
-}
-
-// --- Editorial direction fields ---
-
-interface EditorialDirectionData {
-  scene_function?: string
-  pacing_intent?: string
-  transition_in?: string
-  transition_in_rationale?: string
-  transition_out?: string
-  transition_out_rationale?: string
-  coverage_priority?: string
-  montage_candidates?: string[]
-  parallel_editing_notes?: string | null
-  act_level_notes?: string | null
-  confidence?: number
 }
 
 // --- Component ---
 
 export function DirectionAnnotation({
-  directionType,
+  concernGroup,
   data,
   sceneHeading,
 }: {
-  directionType: DirectionType
-  data: EditorialDirectionData
+  concernGroup: ConcernGroupType
+  data: Record<string, unknown>
   sceneHeading?: string
 }) {
   const panel = useRightPanel()
-  const config = DIRECTION_CONFIG[directionType]
+  const config = CONCERN_GROUP_CONFIG[concernGroup]
   const Icon = config.icon
 
   const handleChatAbout = (topic: string) => {
     if (!panel.state.open) panel.openChat()
     const sceneCtx = sceneHeading ? ` for scene "${sceneHeading}"` : ''
     askChatQuestion(
-      `@${config.roleId} I'd like to discuss your ${directionType} direction${sceneCtx}: ${topic}`,
+      `@${config.roleId} I'd like to discuss your ${config.label.toLowerCase()} direction${sceneCtx}: ${topic}`,
     )
   }
 
-  const confidencePct = data.confidence != null ? Math.round(data.confidence * 100) : null
+  const confidencePct = typeof data.confidence === 'number' ? Math.round(data.confidence * 100) : null
+
+  // Build field list from data — render non-null string/list fields
+  const fields = Object.entries(data).filter(([key, value]) => {
+    if (['scope', 'scene_id', 'act_number', 'user_approved', 'confidence', 'character_id'].includes(key)) return false
+    if (value === null || value === undefined || value === '') return false
+    if (Array.isArray(value) && value.length === 0) return false
+    return true
+  })
 
   return (
-    <Card className="border-l-2" style={{ borderLeftColor: `var(--color-${directionType === 'editorial' ? 'pink' : directionType === 'visual' ? 'sky' : directionType === 'sound' ? 'emerald' : 'amber'}-500, hsl(var(--border)))` }}>
+    <Card className="border-l-2" style={{ borderLeftColor: `var(--color-${concernGroup === 'rhythm_and_flow' ? 'pink' : concernGroup === 'look_and_feel' ? 'sky' : concernGroup === 'sound_and_music' ? 'emerald' : 'amber'}-500, hsl(var(--border)))` }}>
       <CardContent className="pt-4 space-y-3">
         {/* Header: role + type badge + confidence */}
         <div className="flex items-center justify-between">
@@ -110,7 +108,7 @@ export function DirectionAnnotation({
             </div>
             <span className="text-sm font-medium">{config.roleName}</span>
             <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${config.badgeClass}`}>
-              {directionType}
+              {config.label}
             </Badge>
           </div>
           {confidencePct != null && (
@@ -127,47 +125,47 @@ export function DirectionAnnotation({
 
         {/* Direction fields */}
         <div className="space-y-2.5 text-sm">
-          {data.scene_function && (
-            <DirectionField label="Scene Function" value={data.scene_function} onChat={handleChatAbout} />
-          )}
-          {data.pacing_intent && (
-            <DirectionField label="Pacing" value={data.pacing_intent} onChat={handleChatAbout} />
-          )}
-          {data.coverage_priority && (
-            <DirectionField label="Coverage Priority" value={data.coverage_priority} onChat={handleChatAbout} />
-          )}
-          {data.transition_in && (
-            <TransitionField
-              direction="in"
-              type={data.transition_in}
-              rationale={data.transition_in_rationale}
-              onChat={handleChatAbout}
-            />
-          )}
-          {data.transition_out && (
-            <TransitionField
-              direction="out"
-              type={data.transition_out}
-              rationale={data.transition_out_rationale}
-              onChat={handleChatAbout}
-            />
-          )}
-          {data.montage_candidates && data.montage_candidates.length > 0 && (
-            <div>
-              <span className="text-xs text-muted-foreground">Montage Candidates</span>
-              <div className="flex flex-wrap gap-1 mt-1">
-                {data.montage_candidates.map((m, i) => (
-                  <Badge key={i} variant="secondary" className="text-xs">{m}</Badge>
-                ))}
-              </div>
-            </div>
-          )}
-          {data.parallel_editing_notes && (
-            <DirectionField label="Parallel Editing" value={data.parallel_editing_notes} onChat={handleChatAbout} />
-          )}
-          {data.act_level_notes && (
-            <DirectionField label="Act Notes" value={data.act_level_notes} onChat={handleChatAbout} />
-          )}
+          {fields.map(([key, value]) => {
+            const label = formatFieldLabel(key)
+            if (Array.isArray(value)) {
+              if (value.length === 0) return null
+              // Check if array contains objects (motifs) vs strings
+              if (typeof value[0] === 'object') {
+                return (
+                  <div key={key}>
+                    <span className="text-xs text-muted-foreground">{label}</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {value.map((item, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs">
+                          {typeof item === 'object' && item !== null
+                            ? (item as Record<string, unknown>).motif_name as string || JSON.stringify(item)
+                            : String(item)}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )
+              }
+              return (
+                <div key={key}>
+                  <span className="text-xs text-muted-foreground">{label}</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {value.map((v, i) => (
+                      <Badge key={i} variant="secondary" className="text-xs">{String(v)}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+            return (
+              <DirectionField
+                key={key}
+                label={label}
+                value={String(value)}
+                onChat={handleChatAbout}
+              />
+            )
+          })}
         </div>
 
         {/* Chat action */}
@@ -176,7 +174,7 @@ export function DirectionAnnotation({
             variant="ghost"
             size="sm"
             className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => handleChatAbout(data.scene_function ?? 'this direction')}
+            onClick={() => handleChatAbout(config.label.toLowerCase())}
           >
             <MessageSquare className="h-3 w-3" />
             Chat about this
@@ -187,7 +185,13 @@ export function DirectionAnnotation({
   )
 }
 
-// --- Sub-components ---
+// --- Helpers ---
+
+function formatFieldLabel(key: string): string {
+  return key
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase())
+}
 
 function DirectionField({
   label,
@@ -210,37 +214,6 @@ function DirectionField({
         </button>
       </div>
       <p className="text-foreground/90 leading-relaxed">{value}</p>
-    </div>
-  )
-}
-
-function TransitionField({
-  direction,
-  type,
-  rationale,
-  onChat,
-}: {
-  direction: 'in' | 'out'
-  type: string
-  rationale?: string
-  onChat: (topic: string) => void
-}) {
-  const label = direction === 'in' ? 'Transition In' : 'Transition Out'
-  return (
-    <div className="group/field">
-      <div className="flex items-baseline justify-between gap-2">
-        <span className="text-xs text-muted-foreground shrink-0">{label}</span>
-        <button
-          onClick={() => onChat(`the ${label.toLowerCase()}: "${type}"`)}
-          className="opacity-0 group-hover/field:opacity-100 transition-opacity text-[10px] text-muted-foreground hover:text-foreground cursor-pointer"
-        >
-          discuss
-        </button>
-      </div>
-      <p className="text-foreground/90">
-        <Badge variant="outline" className="text-xs mr-2 align-middle">{type}</Badge>
-        {rationale && <span className="text-muted-foreground">{rationale}</span>}
-      </p>
     </div>
   )
 }

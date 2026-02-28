@@ -1,5 +1,23 @@
 # Changelog
 
+## [2026-02-27-04] — Concern group artifact schemas (Story 094)
+
+### Added
+- 6 concern group schemas in `src/cine_forge/schemas/concern_groups.py`: IntentMood, LookAndFeel, SoundAndMusic, RhythmAndFlow, CharacterAndPerformance, StoryWorld (plus shared MotifAnnotation and container types)
+- Readiness computation in `src/cine_forge/schemas/readiness.py`: RED/YELLOW/GREEN per concern group per scene with per-group yellow thresholds
+- 6 concern group nodes in pipeline graph (intent_mood, rhythm_and_flow, look_and_feel, sound_and_music, character_and_performance, story_world)
+- 7 artifact metadata entries in UI (artifact-meta.ts, constants.ts)
+- 24 unit tests across test_concern_group_schemas.py and test_readiness.py
+
+### Changed
+- Migrated EditorialDirection → RhythmAndFlow (schema, module output, recipe, role YAMLs)
+- DirectionAnnotation.tsx now uses generic concern group renderer instead of hardcoded EditorialDirection fields
+- DirectionTab.tsx button labels: "Get Rhythm & Flow Direction" (was "Get Editorial Direction")
+- Pipeline direction phase expanded from 3 nodes to 6 concern group nodes
+
+### Removed
+- `src/cine_forge/schemas/editorial_direction.py` — replaced by RhythmAndFlow in concern_groups.py
+
 ## [2026-02-27-03] — Script bible artifact (Story 093)
 
 ### Added

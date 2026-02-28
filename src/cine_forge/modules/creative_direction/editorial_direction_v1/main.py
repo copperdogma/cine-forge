@@ -1,8 +1,11 @@
-"""Editorial direction module — per-scene editorial analysis (Spec 12.1).
+"""Rhythm & Flow module — per-scene editorial analysis (Spec §12.4).
 
-Produces one EditorialDirection artifact per scene and one EditorialDirectionIndex
+Produces one RhythmAndFlow artifact per scene and one RhythmAndFlowIndex
 for the project. Analyzes scenes using a 3-scene sliding window (prev/current/next)
 so the Editorial Architect can reason about transitions between adjacent scenes.
+
+NOTE: Module directory is still editorial_direction_v1 for git history continuity.
+Schema migration: EditorialDirection → RhythmAndFlow per ADR-003 / Story 094.
 """
 
 from __future__ import annotations
@@ -12,9 +15,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 from cine_forge.ai.llm import call_llm
-from cine_forge.schemas.editorial_direction import (
-    EditorialDirection,
-    EditorialDirectionIndex,
+from cine_forge.schemas.concern_groups import (
+    RhythmAndFlow,
+    RhythmAndFlowIndex,
 )
 
 logger = logging.getLogger(__name__)
@@ -40,7 +43,7 @@ narrative continuity.
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
-    """Execute editorial direction analysis across all scenes."""
+    """Execute rhythm & flow analysis across all scenes."""
     canonical_script, scene_index = _extract_inputs(inputs)
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     if not isinstance(runtime_params, dict):
@@ -74,7 +77,7 @@ def run_module(
     script_text = canonical_script.get("script_text", "")
     script_lines = script_text.splitlines()
 
-    print(f"[editorial_direction] Analyzing {len(entries)} scenes (concurrency={concurrency}).")
+    print(f"[rhythm_and_flow] Analyzing {len(entries)} scenes (concurrency={concurrency}).")
 
     announce = context.get("announce_artifact")
     models_seen: set[str] = set()
@@ -115,7 +118,7 @@ def run_module(
                     models_seen.update(m.split("+"))
             except Exception as exc:
                 logger.warning(
-                    "[editorial_direction] Failed scene '%s': %s",
+                    "[rhythm_and_flow] Failed scene '%s': %s",
                     entry.get("scene_id", f"idx_{idx}"),
                     exc,
                 )
@@ -139,7 +142,7 @@ def run_module(
     total_cost["model"] = model_label
 
     print(
-        f"[editorial_direction] Complete: {len(artifacts) - 1} scene directions + 1 index. "
+        f"[rhythm_and_flow] Complete: {len(artifacts) - 1} scene directions + 1 index. "
         f"Cost: ${total_cost['estimated_cost_usd']:.4f}"
     )
 
@@ -190,16 +193,14 @@ def _analyze_scene(
     verify_model: str,
     escalate_model: str,
     skip_qa: bool,
-) -> tuple[EditorialDirection, dict[str, Any]]:
-    """Analyze a single scene and return the editorial direction."""
+) -> tuple[RhythmAndFlow, dict[str, Any]]:
+    """Analyze a single scene and return the rhythm & flow direction."""
     scene_id = entry.get("scene_id", "unknown")
-    scene_number = entry.get("scene_number", 0)
-    heading = entry.get("heading", "")
     cost: dict[str, Any] = {"input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
     models_used: set[str] = set()
 
     if work_model == "mock":
-        return _mock_direction(scene_id, scene_number, heading), {
+        return _mock_direction(scene_id), {
             "model": "mock", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0,
         }
 
@@ -207,7 +208,7 @@ def _analyze_scene(
     direction, call_cost = call_llm(
         prompt=prompt,
         model=work_model,
-        response_schema=EditorialDirection,
+        response_schema=RhythmAndFlow,
     )
     _update_cost(cost, call_cost)
     if call_cost.get("model"):
@@ -216,8 +217,7 @@ def _analyze_scene(
     # Override AI-generated IDs with canonical values
     direction = direction.model_copy(update={
         "scene_id": scene_id,
-        "scene_number": scene_number,
-        "heading": heading,
+        "scope": "scene",
     })
 
     if not skip_qa and work_model != "mock":
@@ -225,7 +225,7 @@ def _analyze_scene(
 
         qa_result, qa_cost = qa_check(
             original_input=window["current_text"] or "",
-            prompt_used="Editorial direction analysis",
+            prompt_used="Rhythm & flow analysis",
             output_produced=direction.model_dump_json(),
             model=verify_model,
             criteria=["accuracy", "completeness", "editorial_reasoning"],
@@ -240,12 +240,11 @@ def _analyze_scene(
             direction, esc_cost = call_llm(
                 prompt=escalate_prompt,
                 model=escalate_model,
-                response_schema=EditorialDirection,
+                response_schema=RhythmAndFlow,
             )
             direction = direction.model_copy(update={
                 "scene_id": scene_id,
-                "scene_number": scene_number,
-                "heading": heading,
+                "scope": "scene",
             })
             _update_cost(cost, esc_cost)
             if esc_cost.get("model"):
@@ -286,7 +285,7 @@ NEXT SCENE ({window['next_heading']}):
 
     return f"""{_EDITORIAL_ARCHITECT_PERSONA}
 
-Analyze the following scene and produce editorial direction.
+Analyze the following scene and produce rhythm & flow direction.
 
 IMPORTANT: Consider the adjacent scenes when determining transition strategy.
 The transition OUT of the previous scene is the transition IN to this scene.
@@ -302,10 +301,9 @@ SCENE METADATA:
 CURRENT SCENE ({heading}):
 {window['current_text']}
 {next_section}
-Return JSON matching the EditorialDirection schema with these fields:
+Return JSON matching the RhythmAndFlow schema with these fields:
 - scene_id: "{scene_id}"
-- scene_number: {scene_number}
-- heading: "{heading}"
+- scope: "scene"
 - scene_function: what role this scene plays in the narrative arc
 - pacing_intent: internal pace description (fast/slow, tension building/releasing)
 - transition_in: how to enter this scene (hard cut, dissolve, match cut, sound bridge, etc.)
@@ -313,10 +311,10 @@ Return JSON matching the EditorialDirection schema with these fields:
 - transition_out: how to exit this scene
 - transition_out_rationale: why this exit transition serves the story
 - coverage_priority: what shot types the editor needs and why
+- camera_movement_dynamics: speed, energy, type of movement for the scene
 - montage_candidates: list of montage opportunities (empty list if none)
 - parallel_editing_notes: cross-cutting opportunities (null if none)
 - act_level_notes: broader structural notes (null if none)
-- confidence: your confidence in this analysis (0.0-1.0)
 """
 
 
@@ -330,9 +328,9 @@ def _build_index(
     directions: list[dict[str, Any]],
     work_model: str,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Build the project-level editorial direction index."""
+    """Build the project-level rhythm & flow index."""
     if work_model == "mock":
-        index = EditorialDirectionIndex(
+        index = RhythmAndFlowIndex(
             total_scenes=len(entries),
             scenes_with_direction=len(directions),
             overall_pacing_arc="Mock: Rising action through act 2, climax at act 3.",
@@ -350,7 +348,7 @@ def _build_index(
     scene_summaries = []
     for d in sorted(directions, key=lambda x: x.get("scene_number", 0)):
         scene_summaries.append(
-            f"Scene {d.get('scene_number', '?')} ({d.get('heading', '?')}): "
+            f"Scene ({d.get('heading', '?')}): "
             f"function={d.get('scene_function', '?')}, "
             f"pacing={d.get('pacing_intent', '?')}, "
             f"transition_in={d.get('transition_in', '?')}, "
@@ -360,14 +358,14 @@ def _build_index(
 
     prompt = f"""{_EDITORIAL_ARCHITECT_PERSONA}
 
-You have completed per-scene editorial direction for {len(directions)} scenes.
-Now produce a project-level editorial direction index that summarizes the overall
-editorial architecture of the film.
+You have completed per-scene rhythm & flow direction for {len(directions)} scenes.
+Now produce a project-level index that summarizes the overall editorial architecture
+of the film.
 
 PER-SCENE DIRECTION SUMMARIES:
 {summary_text}
 
-Return JSON matching the EditorialDirectionIndex schema:
+Return JSON matching the RhythmAndFlowIndex schema:
 - total_scenes: {len(entries)}
 - scenes_with_direction: {len(directions)}
 - overall_pacing_arc: high-level pacing arc description across the full screenplay
@@ -381,7 +379,7 @@ Return JSON matching the EditorialDirectionIndex schema:
     index, cost = call_llm(
         prompt=prompt,
         model=work_model,
-        response_schema=EditorialDirectionIndex,
+        response_schema=RhythmAndFlowIndex,
     )
     # Override counts with actual values
     index = index.model_copy(update={
@@ -392,15 +390,15 @@ Return JSON matching the EditorialDirectionIndex schema:
 
 
 def _build_index_artifact(
-    index: EditorialDirectionIndex, directions: list[dict[str, Any]]
+    index: RhythmAndFlowIndex, directions: list[dict[str, Any]]
 ) -> dict[str, Any]:
     return {
-        "artifact_type": "editorial_direction_index",
+        "artifact_type": "rhythm_and_flow_index",
         "entity_id": "project",
         "data": index.model_dump(mode="json"),
-        "schema_name": "editorial_direction_index",
+        "schema_name": "rhythm_and_flow_index",
         "metadata": {
-            "intent": "Summarize editorial direction across all scenes",
+            "intent": "Summarize rhythm & flow direction across all scenes",
             "rationale": f"Aggregate analysis of {index.scenes_with_direction} scene directions.",
             "confidence": index.confidence,
             "source": "ai",
@@ -417,20 +415,20 @@ def _build_index_artifact(
 # ---------------------------------------------------------------------------
 
 
-def _build_artifact(entry: dict[str, Any], direction: EditorialDirection) -> dict[str, Any]:
+def _build_artifact(entry: dict[str, Any], direction: RhythmAndFlow) -> dict[str, Any]:
     scene_id = entry.get("scene_id", "unknown")
     return {
-        "artifact_type": "editorial_direction",
+        "artifact_type": "rhythm_and_flow",
         "entity_id": scene_id,
         "data": direction.model_dump(mode="json"),
-        "schema_name": "editorial_direction",
+        "schema_name": "rhythm_and_flow",
         "metadata": {
-            "intent": f"Editorial direction for {entry.get('heading', scene_id)}",
+            "intent": f"Rhythm & flow direction for {entry.get('heading', scene_id)}",
             "rationale": (
                 "Per-scene editorial analysis: scene function, pacing, "
                 "transitions, and coverage priority."
             ),
-            "confidence": direction.confidence,
+            "confidence": 0.85,
             "source": "ai",
             "annotations": {
                 "scene_function": direction.scene_function,
@@ -446,11 +444,10 @@ def _build_artifact(entry: dict[str, Any], direction: EditorialDirection) -> dic
 # ---------------------------------------------------------------------------
 
 
-def _mock_direction(scene_id: str, scene_number: int, heading: str) -> EditorialDirection:
-    return EditorialDirection(
+def _mock_direction(scene_id: str) -> RhythmAndFlow:
+    return RhythmAndFlow(
+        scope="scene",
         scene_id=scene_id,
-        scene_number=scene_number,
-        heading=heading,
         scene_function="escalation",
         pacing_intent="Building tension through dialogue exchanges.",
         transition_in="hard cut",
@@ -458,10 +455,10 @@ def _mock_direction(scene_id: str, scene_number: int, heading: str) -> Editorial
         transition_out="sound bridge",
         transition_out_rationale="Audio carries emotion into the next scene.",
         coverage_priority="Master wide shot for geography, close-ups for emotional beats.",
+        camera_movement_dynamics="Slow, controlled tracking — lets tension build through dialogue.",
         montage_candidates=[],
         parallel_editing_notes=None,
         act_level_notes=None,
-        confidence=0.85,
     )
 
 

@@ -17,6 +17,17 @@ from .canonical_script import (
     Invention,
     NormalizationMetadata,
 )
+from .concern_groups import (
+    CharacterAndPerformance,
+    IntentMood,
+    LookAndFeel,
+    MotifAnnotation,
+    RhythmAndFlow,
+    RhythmAndFlowIndex,
+    SceneCharacterPerformance,
+    SoundAndMusic,
+    StoryWorld,
+)
 from .continuity import (
     ContinuityEvent,
     ContinuityIndex,
@@ -25,7 +36,6 @@ from .continuity import (
     StateProperty,
 )
 from .conversation import Conversation, ConversationTurn, DisagreementArtifact
-from .editorial_direction import EditorialDirection, EditorialDirectionIndex
 from .entity_adjudication import (
     EntityAdjudicationBatch,
     EntityAdjudicationDecision,
@@ -47,6 +57,7 @@ from .models import (
     SourceFileInfo,
 )
 from .qa import QAIssue, QAResult
+from .readiness import ReadinessState, SceneReadiness, compute_scene_readiness
 from .registry import (
     SchemaRegistry,
     ValidationErrorDetail,
@@ -90,12 +101,16 @@ __all__ = [
     "ArtifactRef",
     "BibleFileEntry",
     "BibleManifest",
+    "CharacterAndPerformance",
     "CharacterBible",
     "CharacterEvidence",
     "CharacterRelationshipStub",
     "EntityDiscoveryResults",
     "InferredTrait",
+    "IntentMood",
     "LocationBible",
+    "LookAndFeel",
+    "MotifAnnotation",
     "PropBible",
     "ContinuityEvent",
     "ContinuityIndex",
@@ -103,8 +118,8 @@ __all__ = [
     "Conversation",
     "ConversationTurn",
     "DisagreementArtifact",
-    "EditorialDirection",
-    "EditorialDirectionIndex",
+    "RhythmAndFlow",
+    "RhythmAndFlowIndex",
     "EntityTimeline",
     "StateProperty",
     "EntityAdjudicationBatch",
@@ -124,6 +139,9 @@ __all__ = [
     "ModelStrategy",
     "ProjectConfig",
     "RawInput",
+    "ReadinessState",
+    "SceneReadiness",
+    "compute_scene_readiness",
     "QAIssue",
     "QAResult",
     "DirectorReview",
@@ -139,8 +157,11 @@ __all__ = [
     "RoleTier",
     "PerceptionCapability",
     "StylePackSlot",
+    "SceneCharacterPerformance",
     "ScriptElement",
     "SourceSpan",
+    "SoundAndMusic",
+    "StoryWorld",
     "NarrativeBeat",
     "InferredField",
     "FieldProvenance",
