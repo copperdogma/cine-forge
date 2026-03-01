@@ -35,6 +35,7 @@ This file is the project-wide source of truth for agent behavior and engineering
   3. Schema validation passes.
   4. The active story's work log is updated with evidence and next actions.
   5. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. Silently accepting mismatches as noise is a hard stop.
+  6. If you ran an eval (promptfoo, pytest acceptance, or any scored test): update `docs/evals/registry.yaml` with the new score, `git_sha`, and date. Stale scores are worse than no scores.
 
 ## General Agent Engineering Principles
 
@@ -229,25 +230,17 @@ When a new AI-powered module lands:
 5. Create promptfoo config in `benchmarks/tasks/` (providers × test cases × assertions)
 6. Run eval, analyze, pick models, update defaults in `src/cine_forge/schemas/models.py`
 
-#### Eval Catalog (Feb 2026)
+#### Eval Registry
 
-Quick reference for every promptfoo eval. Re-run these when new models drop.
+All eval scores, targets, and improvement attempts are tracked in **`docs/evals/registry.yaml`** — the single source of truth. Do not hardcode eval scores in this file.
 
-| Eval | Config | Summary | Tests | Top Model |
-|------|--------|---------|-------|-----------|
-| Character Extraction | `tasks/character-extraction.yaml` | Structured character bible: traits, arc, relationships, evidence | 3 (Mariner, Rose, Dad) | **Sonnet 4.6 (0.942)** |
-| Location Extraction | `tasks/location-extraction.yaml` | Structured location bible: physical detail, narrative function, scene refs | 3 (Ruddy & Greene, 15th Floor, Coastline) | Opus 4.6 (0.898) |
-| Prop Extraction | `tasks/prop-extraction.yaml` | Structured prop bible: description, symbolism, plot function | 3 (Oar, Purse, Flare Gun) | Opus 4.6 (0.880) |
-| Relationship Discovery | `tasks/relationship-discovery.yaml` | Narrative relationships: family, adversary, ownership edges | 1 (all entities) | 7-way tie (0.995) |
-| Config Detection | `tasks/config-detection.yaml` | Auto-detect project metadata: title, genre, tone, format, duration, cast | 1 (full screenplay) | Haiku 4.5 (0.886) |
-| Scene Extraction | `tasks/scene-extraction.yaml` | Scene boundaries, headings, characters, summaries | 1 (full screenplay) | **Sonnet 4.6 (0.815)** |
-| Normalization | `tasks/normalization.yaml` | Prose/broken Fountain → valid Fountain screenplay | 2 (prose, broken fountain) | **Sonnet 4.6 (0.955)** |
-| Scene Enrichment | `tasks/scene-enrichment.yaml` | Scene-level metadata: beats, tone, characters, location | 2 (elevator, flashback) | **Sonnet 4.6 (0.890)** |
-| QA Pass | `tasks/qa-pass.yaml` | QA gate: detect good/bad extractions (seeded pairs) | 2 (good scene, bad scene) | **Sonnet 4.6 (0.998)** |
+- **View current scores**: Read `docs/evals/registry.yaml`
+- **Check compromise gates**: `.venv/bin/python scripts/check-compromises.py`
+- **Discover available models**: `.venv/bin/python scripts/discover-models.py --summary`
+- **Improve an eval**: `/improve-eval`
+- **Re-run for a new model**: Add provider block to `benchmarks/tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → update `docs/evals/registry.yaml` with new scores
 
-All evals: 13 providers (4 OpenAI, 4 Anthropic, 5 Google), dual scoring (Python + LLM rubric), judge = Opus 4.6. Last updated: 2026-02-18 (full 13-provider matrix on all 9 evals).
-
-**To re-run for a new model:** add provider block to each `tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → compare against existing results → update table above.
+All evals use dual scoring (Python structural scorer + LLM rubric), judge = Opus 4.6. Benchmark configs live in `benchmarks/tasks/`.
 
 ### Ideas Backlog
 - `docs/inbox.md` captures features, patterns, and design concepts that are good but not in scope for current work.
@@ -424,6 +417,9 @@ The hook automatically:
 - `src/cine_forge/pipeline/`: Pipeline capability graph (static definition + dynamic status).
 - `src/cine_forge/api/`: Backend API for the UI.
 - `ui/`: Production React frontend (shadcn/ui + React 19 + Zustand).
+- `docs/evals/`: Eval registry, attempt stories, and improvement tracking. See `docs/evals/README.md`.
+- `scripts/discover-models.py`: Query provider APIs for available models (used by `/improve-eval`).
+- `scripts/check-compromises.py`: Check compromise eval gates against registry data (C2–C7).
 
 ### Golden References (Test Fixtures)
 

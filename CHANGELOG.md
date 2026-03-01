@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-03-01-02] — Eval registry system for autonomous improvement tracking
+
+### Added
+- Central eval registry (`docs/evals/registry.yaml`) — 10 quality evals + 5 compromise evals with scores, targets, and attempt tracking
+- Model discovery script (`scripts/discover-models.py`) — queries OpenAI, Anthropic, Google APIs with tier classification (SOTA/mid/cheap/reasoning/legacy)
+- Compromise gate checker (`scripts/check-compromises.py`) — evaluates C2–C7 spec compromises against current registry data
+- `/improve-eval` skill — autonomous 5-phase eval improvement workflow with attempt stories
+- `/discover-models` skill — surface available models and flag untested ones
+- `/setup-eval-registry` skill — bootstrap the eval system in any project (cross-project portable)
+- Attempt story template with Definition of Done checklist
+
+### Changed
+- AGENTS.md: replaced hardcoded Eval Catalog table with pointer to registry, added Definition of Done #6 (registry updates), added repo map entries
+- `/build-story`, `/validate`, `/mark-story-done`, `/create-story` skills all now mandate eval registry updates when evals are run
+
 ## [2026-03-01-01] — Continuity AI Detection & Gap Analysis (Story 092)
 
 ### Added

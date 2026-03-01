@@ -25,6 +25,7 @@ Close a completed story after validation.
      - Backend: `make test-unit PYTHON=.venv/bin/python` + `.venv/bin/python -m ruff check src/ tests/`
      - UI: `pnpm --dir ui run lint` + `cd ui && npx tsc -b`
    - [ ] If story touched an AI module or eval: all significant eval mismatches classified (model-wrong / golden-wrong / ambiguous) with evidence
+   - [ ] If any eval was run: `docs/evals/registry.yaml` updated with new scores, `git_sha`, and date
    - [ ] Tenet verification checkbox checked
    - [ ] Doc update checkbox checked
 

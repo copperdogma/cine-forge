@@ -1,0 +1,574 @@
+# CineForge Eval Registry
+# Central source of truth for all evals, their scores, and improvement attempts.
+# Updated by AI agents whenever evals are run. See README.md for the protocol.
+#
+# Types:
+#   quality     — "How good is our output?" Continuous improvement target.
+#   compromise  — "Can we eliminate this compromise?" Binary pass/fail gate.
+#
+# retry_when conditions:
+#   new-worker-model     — A smarter orchestrating AI might succeed where the previous one couldn't
+#   new-subject-model    — A better pipeline model might pass without code changes
+#   cheaper-subject-model — Works on expensive model, need cost parity at lower tier
+#   new-approach         — Current approaches exhausted, needs fresh thinking
+#   golden-fix           — Golden reference may be wrong or incomplete
+#   architecture-change  — Upstream pipeline needs to change first
+#   dependency-available — Waiting on a library/tool/API that doesn't exist yet
+
+evals:
+
+  # ── Quality Evals (promptfoo) ─────────────────────────────────────────────
+
+  - id: character-extraction
+    name: Character Extraction
+    type: quality
+    description: >
+      Structured character bible from screenplay — traits, arc,
+      relationships, evidence grounding. Tests depth of character
+      understanding beyond surface-level extraction.
+    pipeline_stage: extract
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/character-extraction.yaml --no-cache -j 3"
+    config: benchmarks/tasks/character-extraction.yaml
+    scorer: benchmarks/scorers/character_extraction_scorer.py
+    golden: benchmarks/golden/the-mariner-characters.json
+    test_cases: 3  # THE MARINER, ROSE, DAD
+
+    target:
+      metric: overall
+      value: 0.95
+      constraints:
+        cost_usd_max: null
+        duration_seconds_max: null
+
+    scores:
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.942
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/character-extraction-sonnet46.json
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.933
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/character-extraction-run3.json
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.899
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.826
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+
+    attempts: []
+
+  - id: location-extraction
+    name: Location Extraction
+    type: quality
+    description: >
+      Structured location bible — physical detail, narrative function,
+      scene references. Tests spatial reasoning and thematic interpretation.
+    pipeline_stage: extract
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/location-extraction.yaml --no-cache -j 3"
+    config: benchmarks/tasks/location-extraction.yaml
+    scorer: benchmarks/scorers/bible_extraction_scorer.py
+    golden: benchmarks/golden/the-mariner-locations.json
+    test_cases: 3  # RUDDY & GREENE BUILDING, 15TH FLOOR, COASTLINE
+
+    target:
+      metric: overall
+      value: 0.95
+      constraints: {}
+
+    scores:
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.898
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/location-extraction-run2.json
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.895
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.893
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.870
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/location-extraction-sonnet46.json
+
+    attempts: []
+
+  - id: prop-extraction
+    name: Prop Extraction
+    type: quality
+    description: >
+      Structured prop bible — physical description, symbolism, plot function,
+      scene appearances. Tests object-level narrative understanding.
+    pipeline_stage: extract
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/prop-extraction.yaml --no-cache -j 3"
+    config: benchmarks/tasks/prop-extraction.yaml
+    scorer: benchmarks/scorers/bible_extraction_scorer.py
+    golden: benchmarks/golden/the-mariner-props.json
+    test_cases: 3  # OAR, PURSE, FLARE GUN
+
+    target:
+      metric: overall
+      value: 0.95
+      constraints: {}
+
+    scores:
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.880
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/prop-extraction-run2.json
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.841
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/prop-extraction-sonnet46.json
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.820
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.712
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+
+    attempts: []
+
+  - id: relationship-discovery
+    name: Relationship Discovery
+    type: quality
+    description: >
+      Narrative relationships between all entity types — family, adversary,
+      ownership edges. Tests cross-entity reasoning over full screenplay.
+    pipeline_stage: extract
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/relationship-discovery.yaml --no-cache -j 3"
+    config: benchmarks/tasks/relationship-discovery.yaml
+    scorer: benchmarks/scorers/relationship_scorer.py
+    golden: benchmarks/golden/the-mariner-relationships.json
+    test_cases: 1  # all entities
+
+    target:
+      metric: overall
+      value: 0.99
+      constraints: {}
+
+    scores:
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.995
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/relationship-discovery-run1.json
+        note: "7-way tie at 0.995"
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.995
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.995
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.985
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+
+    attempts: []
+
+  - id: config-detection
+    name: Config Detection
+    type: quality
+    description: >
+      Auto-detect project metadata from screenplay: title, genre, tone,
+      format, duration, cast size. Notably, cheap models outperform SOTA here.
+    pipeline_stage: extract
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/config-detection.yaml --no-cache -j 3"
+    config: benchmarks/tasks/config-detection.yaml
+    scorer: benchmarks/scorers/config_detection_scorer.py
+    golden: benchmarks/golden/the-mariner-config.json
+    test_cases: 1
+
+    target:
+      metric: overall
+      value: 0.92
+      constraints: {}
+
+    scores:
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.886
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/config-detection-run1.json
+      - model: "Gemini 2.5 Flash Lite"
+        metrics:
+          overall: 0.881
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "GPT-4.1 Nano"
+        metrics:
+          overall: 0.781
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.752
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/config-detection-sonnet46.json
+        note: "SOTA models underperform cheap models on this eval"
+
+    attempts: []
+
+  - id: scene-extraction
+    name: Scene Extraction
+    type: quality
+    description: >
+      Scene boundaries, headings, characters, summaries from full screenplay.
+      Tests structural parsing combined with narrative understanding.
+      Gemini providers excluded (parse issues at time of testing).
+    pipeline_stage: extract
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/scene-extraction.yaml --no-cache -j 3"
+    config: benchmarks/tasks/scene-extraction.yaml
+    scorer: benchmarks/scorers/scene_extraction_scorer.py
+    golden: benchmarks/golden/the-mariner-scenes.json
+    test_cases: 1
+
+    target:
+      metric: overall
+      value: 0.90
+      constraints: {}
+
+    scores:
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.815
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/scene-extraction-sonnet46.json
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.803
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/scene-extraction-run1.json
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.797
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.762
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+
+    attempts: []
+
+  - id: normalization
+    name: Normalization
+    type: quality
+    description: >
+      Convert prose narrative or broken Fountain to valid Fountain screenplay
+      format. Tests format understanding and faithful content preservation.
+      Gemini providers had parse errors during initial run.
+    pipeline_stage: normalize
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/normalization.yaml --no-cache -j 3"
+    config: benchmarks/tasks/normalization.yaml
+    scorer: benchmarks/scorers/normalization_scorer.py
+    golden: benchmarks/golden/normalize-signal-golden.json
+    test_cases: 2  # prose, broken fountain
+
+    target:
+      metric: overall
+      value: 0.97
+      constraints: {}
+
+    scores:
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.955
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/normalization-2026-02-18.json
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.955
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "GPT-4.1"
+        metrics:
+          overall: 0.946
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.910
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        note: "Opus underperforms Sonnet here — over-edits content"
+
+    attempts: []
+
+  - id: scene-enrichment
+    name: Scene Enrichment
+    type: quality
+    description: >
+      Scene-level metadata enrichment — dramatic beats, tone shifts,
+      character presence, location mapping. Tests nuanced scene analysis.
+    pipeline_stage: enrich
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/scene-enrichment.yaml --no-cache -j 3"
+    config: benchmarks/tasks/scene-enrichment.yaml
+    scorer: benchmarks/scorers/scene_enrichment_scorer.py
+    golden: benchmarks/golden/enrich-scenes-golden.json
+    test_cases: 2  # elevator scene, flashback scene
+
+    target:
+      metric: overall
+      value: 0.93
+      constraints: {}
+
+    scores:
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.890
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/scene-enrichment-2026-02-18.json
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.812
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.799
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.784
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+
+    attempts: []
+
+  - id: qa-pass
+    name: QA Pass
+    type: quality
+    description: >
+      QA gate — model judges whether an extraction is good or bad.
+      Tests calibrated judgment (accept good work, reject bad work).
+      Most models perform well; near-ceiling for mid-tier+.
+    pipeline_stage: qa
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml --no-cache -j 3"
+    config: benchmarks/tasks/qa-pass.yaml
+    scorer: benchmarks/scorers/qa_pass_scorer.py
+    golden: benchmarks/golden/qa-pass-golden.json
+    test_cases: 2  # good extraction, bad extraction
+
+    target:
+      metric: overall
+      value: 1.0
+      constraints:
+        note: "QA should be near-perfect — false positives waste pipeline budget"
+
+    scores:
+      - model: "GPT-4.1 Mini"
+        metrics:
+          overall: 1.000
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/qa-pass-2026-02-18.json
+      - model: "GPT-5.2"
+        metrics:
+          overall: 1.000
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.998
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.995
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+
+    attempts: []
+
+  - id: continuity-extraction
+    name: Continuity Extraction
+    type: quality
+    description: >
+      Entity state tracking and continuity change detection between scenes.
+      Tests temporal reasoning — what changed, what persisted, what's new.
+      Newest eval (Story 092). Best-performing overall.
+    pipeline_stage: extract
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/continuity-extraction.yaml --no-cache -j 3"
+    config: benchmarks/tasks/continuity-extraction.yaml
+    scorer: benchmarks/scorers/continuity_extraction_scorer.py
+    golden: benchmarks/golden/continuity-extraction-golden.json
+    test_cases: 2  # dock day, dock night
+
+    target:
+      metric: overall
+      value: 0.98
+      constraints: {}
+
+    scores:
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.978
+        measured: 2026-03-01
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/continuity-extraction-2026-03-01.json
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.951
+        measured: 2026-03-01
+        git_sha: "324ebf4"
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.948
+        measured: 2026-03-01
+        git_sha: "324ebf4"
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.943
+        measured: 2026-03-01
+        git_sha: "324ebf4"
+
+    attempts: []
+
+  # ── Compromise Evals ──────────────────────────────────────────────────────
+  # Populated by /bootstrap-compromise-evals from docs/spec.md.
+  # Each tests whether a spec compromise can be eliminated.
+
+  - id: compromise-C2-qa-validation
+    name: "Compromise C2: Dedicated QA Passes"
+    type: compromise
+    compromise_id: "C2"
+    description: >
+      Can we eliminate dedicated QA validation passes? Gate: 10 diverse
+      extraction tasks to SOTA, all pass structural + semantic on first
+      attempt without QA retry loop.
+    detection_mechanism: >
+      Run 10 diverse extraction tasks through SOTA model. All must pass
+      both structural (Python scorer) and semantic (LLM rubric) quality
+      gates on the first attempt, without any QA-triggered retry.
+    ideal_link: "docs/ideal.md"
+    spec_link: "docs/spec.md#2.8"
+    runner: custom  # needs a dedicated test harness
+    command: null  # not yet implemented
+    scores: []
+    attempts: []
+
+  - id: compromise-C3-tiered-models
+    name: "Compromise C3: Tiered Model Strategy"
+    type: compromise
+    compromise_id: "C3"
+    description: >
+      Can we use a single model for everything? Gate: one model achieves
+      top-tier quality on ALL eval tasks at acceptable latency and cost.
+      This is the meta-eval — it checks if any single model tops every
+      individual eval's target.
+    detection_mechanism: >
+      Single model achieves top-tier quality on all eval tasks:
+      character, location, prop, scene extraction, normalization,
+      enrichment, QA, config detection, relationship discovery,
+      and continuity extraction. Check by scanning registry scores.
+    ideal_link: "docs/ideal.md"
+    spec_link: "docs/spec.md#2.9"
+    runner: registry-scan  # can be computed from existing eval scores
+    command: null  # scan registry.yaml programmatically
+    scores: []
+    attempts: []
+
+  - id: compromise-C4-two-tier-scenes
+    name: "Compromise C4: Two-Tier Scene Architecture"
+    type: compromise
+    compromise_id: "C4"
+    description: >
+      Can we do full scene analysis in one pass? Gate: SOTA model returns
+      complete scene analysis (boundaries + enrichment + entity tracking)
+      with high quality AND under 5 seconds.
+    detection_mechanism: >
+      Full screenplay to SOTA requesting complete scene analysis —
+      high quality (≥0.90 on scene extraction + enrichment combined)
+      AND returns in <5 seconds per scene.
+    ideal_link: "docs/ideal.md"
+    spec_link: "docs/spec.md#5.1"
+    runner: custom
+    command: null
+    scores: []
+    attempts: []
+
+  - id: compromise-C5-role-modality
+    name: "Compromise C5: Role Capability Gating (Modality)"
+    type: compromise
+    compromise_id: "C5"
+    description: >
+      Can roles process all modalities? Gate: SOTA model reliably handles
+      text + image + video + audio in a single call.
+    detection_mechanism: >
+      SOTA model reliably processes text + image + video + audio in a
+      single call with coherent cross-modal reasoning.
+    ideal_link: "docs/ideal.md"
+    spec_link: "docs/spec.md#8.2"
+    runner: custom
+    command: null
+    scores: []
+    attempts: []
+
+  - id: compromise-C7-working-memory
+    name: "Compromise C7: Working Memory Distinction"
+    type: compromise
+    compromise_id: "C7"
+    description: >
+      Can we eliminate the working memory abstraction? Gate: context windows
+      exceed 10M tokens at negligible cost, OR native persistent cross-session
+      memory becomes available.
+    detection_mechanism: >
+      Context windows exceed 10M tokens at negligible cost, OR
+      native persistent cross-session memory in SOTA models.
+    ideal_link: "docs/ideal.md"
+    spec_link: "docs/spec.md#19.2"
+    runner: capability-check  # check model specs, not run code
+    command: null
+    scores: []
+    attempts: []

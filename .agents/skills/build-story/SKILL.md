@@ -77,6 +77,7 @@ Execute a development story end-to-end.
    - Run relevant promptfoo evals or acceptance tests
    - For every significant mismatch, classify as: **model-wrong**, **golden-wrong**, or **ambiguous** with evidence
    - Do not proceed to Done if mismatches remain unclassified
+   - **Update `docs/evals/registry.yaml`** with new scores, `git_sha`, and date for every eval you ran. Stale registry scores are worse than no scores — they cause future agents to waste time on already-solved problems or miss regressions.
 
 11c. **Runtime smoke test** — Verify the app actually works end-to-end:
    - Start dev servers — confirm they start with no error output in logs

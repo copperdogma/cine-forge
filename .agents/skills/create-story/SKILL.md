@@ -62,6 +62,7 @@ Create a new story in `docs/stories/` with consistent format.
   - Does it only optimize a compromise without closing a gap? → Flag as low-value.
   - A story that references a spec compromise is not automatically aligned — it must move toward the Ideal, not entrench the compromise further.
   - If the story implements a new AI compromise: note whether a detection eval exists or should be created.
+  - If the story adds or modifies an AI-powered capability: check `docs/evals/registry.yaml` for an existing eval. If none exists, note in the story that an eval entry should be created during implementation.
 
 ## Guardrails
 
