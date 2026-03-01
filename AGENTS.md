@@ -335,8 +335,11 @@ Before writing **any** new UI code, you MUST follow this checklist:
 | **MUST** use `ui/src/components/StatusBadge.tsx` | Never inline status badge/icon rendering |
 | **MUST** use `ui/src/components/PageHeader.tsx` | Never duplicate page headers across state branches |
 | **MUST** use `EntityListPage` pattern | For any new entity list views, extend the config map |
+| **MUST** use `ui/src/lib/use-long-running-action.ts` | Never manually orchestrate chat messages + button state for long-running operations |
+| **MUST** use `ui/src/components/OperationBanner.tsx` | Never build inline status banners for operations — the global banner handles all operations |
 | **MUST NOT** define utility functions inline in page files | Extract to `ui/src/lib/` |
 | **MUST NOT** copy-paste JSX blocks across pages | Extract a shared component instead |
+| **MUST NOT** manually create `ai_status` messages for long-running operations | Use `useLongRunningAction` — it handles chat, banner, and button state automatically |
 
 Run `pnpm --dir ui run lint:duplication` after UI changes to catch regressions. Threshold: 5%.
 
@@ -360,58 +363,58 @@ Shared components and utilities — the **single source of truth** for each conc
 | `DirectionTab`, `RolePresenceIndicators` | `ui/src/components/DirectionTab.tsx` | Scene direction tab content + role avatar badges |
 | `TaskProgressCard` | `ui/src/components/TaskProgressCard.tsx` | Compact multi-item progress card for chat (propagation, exports, etc.) |
 | `RunProgressCard` | `ui/src/components/RunProgressCard.tsx` | Pipeline run stage progress card for chat |
+| `OperationBanner` | `ui/src/components/OperationBanner.tsx` | Global status banner for all active operations (pipeline runs + direct API calls). Rendered in AppShell. |
+| `useLongRunningAction` | `ui/src/lib/use-long-running-action.ts` | Hook for long-running direct API calls — manages button state, operation store, and chat messages automatically |
+| `useOperationStore` | `ui/src/lib/operation-store.ts` | Zustand store tracking active operations per project (used by OperationBanner and useLongRunningAction) |
 
 #### 6. User Feedback Contract for Long-Running Operations
 
-Every operation that takes more than ~1 second MUST provide two forms of feedback:
+Every operation that takes more than ~1 second MUST provide three forms of feedback:
 
-1. **Status banner** on the page where the action was triggered (or the page the user navigates to). Use the recipe-aware pattern in `ProcessingView` (`ui/src/pages/ProjectHome.tsx`) — set default text based on `recipe_id`, then override with per-stage messages as stages start running.
+1. **Button disabled + spinner** while the operation runs
+2. **Status banner** at top of page (global `OperationBanner` in AppShell handles this automatically)
+3. **Chat timeline entries** showing what's happening and what completed (permanent record)
 
-2. **Chat timeline entries** showing what's happening and what completed. This is the permanent record the user can scroll back to. Follow this pattern:
-   - **On start**: Add one `ai_status` message (spinner icon) per sub-task/item being processed. If there are N items, add N messages — not one summary. Example: propagation adds 5 group messages ("Generating Look & Feel...", "Generating Sound & Music...", etc.).
-   - **On completion of each item**: Flip its message type from `ai_status` to `ai_status_done` (green checkmark) and update content to reflect the result. Use `useChatStore.getState().updateMessageType()` and `updateMessageContent()`.
-   - **On error**: Flip remaining spinners to done and add an error message.
+**How to implement**: Use `useLongRunningAction` from `ui/src/lib/use-long-running-action.ts`. It handles all three automatically.
 
-**Implementation reference** — existing patterns to follow:
-| Operation | Status banner | Chat messages | Code |
-|---|---|---|---|
-| Pipeline run | `ProcessingView` in ProjectHome.tsx | `RunProgressCard` + per-stage status | `ui/src/lib/use-run-progress.ts` |
-| Bible extraction | (part of run) | Per-type live counters | `use-run-progress.ts` lines 167-203 |
-| Propagation | Button loading text | Per-group spinners → checkmarks | `IntentMoodPage.tsx` propagateMutation |
-| Deep Breakdown gate | (navigates to home) | Activity message on start | `IntentMoodPage.tsx` gate onClick |
-
-**Key APIs:**
 ```typescript
-import type { TaskProgressData } from '@/components/TaskProgressCard'
+import { useLongRunningAction } from '@/lib/use-long-running-action'
 
-const store = useChatStore.getState()
+// Multi-item operation (e.g., propagation across concern groups)
+const { isRunning, start } = useLongRunningAction({
+  projectId,
+  label: 'Propagating creative intent',
+  items: groups.map(g => ({ label: g.label })),  // optional: for multi-item progress
+  action: () => api.propagate(projectId, payload),
+  onSuccess: (result, meta) => {
+    // meta.chatMessageId lets you customize the chat message
+    queryClient.invalidateQueries({ queryKey: ['directions'] })
+  },
+})
 
-// --- Multi-item operations (preferred for 2+ items) ---
-// Use a single task_progress message with a heading + item list.
-// See TaskProgressCard for the data shape.
-const progressId = `my_operation_${projectId}`
-const data: TaskProgressData = {
-  heading: 'Propagating creative intent',   // explains what triggered this
-  items: [
-    { label: 'Look & Feel', status: 'running' },
-    { label: 'Sound & Music', status: 'running' },
-  ],
-}
-store.addMessage(projectId, { id: progressId, type: 'task_progress', content: JSON.stringify(data), timestamp: Date.now() })
-// On completion — update items to done:
-data.items = data.items.map(i => ({ ...i, status: 'done' as const, detail: 'draft created' }))
-store.updateMessageContent(projectId, progressId, JSON.stringify(data))
-
-// --- Single-item operations ---
-store.addMessage(projectId, { id: 'unique_id', type: 'ai_status', content: 'Doing X...', timestamp: Date.now() })
-store.updateMessageContent(projectId, 'unique_id', 'X complete — result summary')
-store.updateMessageType(projectId, 'unique_id', 'ai_status_done')
-
-// --- Simple one-shot activity note ---
-store.addActivity(projectId, 'Description of what happened', 'route')
+// In JSX:
+<Button onClick={start} disabled={isRunning}>
+  {isRunning ? 'Propagating...' : 'Save & Propagate'}
+</Button>
 ```
 
-**The rule**: If the user clicks a button and something takes time, they must see (a) what's happening *right now* and (b) a permanent record that it happened. No silent background work. No spinners-only. No "it just worked" without evidence.
+The hook automatically:
+- Registers the operation in the global store (drives `OperationBanner`)
+- Creates a `task_progress` chat message (multi-item) or `ai_status` message (single-item)
+- Updates chat messages to done/failed on completion
+- Auto-removes the operation from the store after a brief "done" flash
+
+**For pipeline runs**: These are handled by `useRunProgressChat` + `setActiveRun()` (not the hook). The `OperationBanner` reads `activeRunId` from the chat store to display run progress.
+
+**Implementation reference:**
+| Operation | Mechanism | Code |
+|---|---|---|
+| Pipeline run | `setActiveRun()` → `useRunProgressChat` → `OperationBanner` | `ui/src/lib/use-run-progress.ts` |
+| Propagation | `useLongRunningAction` → `OperationBanner` + chat | `ui/src/pages/IntentMoodPage.tsx` |
+| Direction gen | `setActiveRun()` (triggers pipeline run tracking) | `ui/src/components/DirectionTab.tsx` |
+| Export | Instant (clipboard/download) — no hook needed | `ui/src/components/ExportModal.tsx` |
+
+**The rule**: If the user clicks a button and something takes time, they must see (a) what's happening *right now* and (b) a permanent record that it happened. No silent background work. No spinners-only. No "it just worked" without evidence. Use `useLongRunningAction` — it's simpler than rolling your own.
 
 ### Repo Map
 - `src/cine_forge/driver/`: Orchestration runtime.

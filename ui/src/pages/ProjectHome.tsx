@@ -49,9 +49,6 @@ import { updateProjectSettings } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { timeAgo, formatDuration } from '@/lib/format'
 import { getStatusConfig } from '@/components/StatusBadge'
-import { useChatStore } from '@/lib/chat-store'
-import { useRunState } from '@/lib/hooks'
-import { getStageStartMessage } from '@/lib/chat-messages'
 import type { ProjectState } from '@/lib/types'
 
 import type { ScreenplayEditorHandle, SceneDividerData } from '@/components/ScreenplayEditor'
@@ -678,68 +675,6 @@ export function AnalyzedView({ projectId }: { projectId: string }) {
   )
 }
 
-// --- Processing View: Screenplay with processing banner ---
-
-function ProcessingView({ projectId }: { projectId: string }) {
-  const activeRunId = useChatStore(s => s.activeRunId?.[projectId] ?? null)
-  const { data: runState } = useRunState(activeRunId ?? undefined)
-  const queryClient = useQueryClient()
-
-  // Invalidate artifacts when a stage finishes/fails, or when the run itself finishes.
-  // NOTE: do NOT call syncMessages here — it overwrites in-memory state from the backend,
-  // which races with the in-flight insight stream and drops the streaming message before
-  // it can be finalized and persisted. use-run-progress.ts manages all run messages directly.
-  const prevFinishedCount = useRef(0)
-  const prevRunFinished = useRef(false)
-
-  useEffect(() => {
-    if (!runState || !projectId) return
-    const stages = Object.values(runState.state.stages)
-    const finishedCount = stages.filter(s => s.status === 'done' || s.status === 'failed').length
-    const isRunFinished = !!runState.state.finished_at
-
-    if (finishedCount > prevFinishedCount.current || (isRunFinished && !prevRunFinished.current)) {
-      queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
-      prevFinishedCount.current = finishedCount
-      prevRunFinished.current = isRunFinished
-    }
-  }, [runState, projectId, queryClient])
-
-  // Find the currently running stage to show its description
-  let statusText = 'Processing your screenplay...'
-  let detailText = 'Extracting scenes, characters, and locations.'
-  if (runState) {
-    const recipeId = runState.state.recipe_id
-    // Set recipe-appropriate defaults before checking for a running stage
-    if (recipeId === 'world_building') {
-      statusText = 'Running Deep Breakdown...'
-      detailText = 'Building character bibles, location bibles, and entity relationships.'
-    } else if (recipeId === 'creative_direction') {
-      statusText = 'Running Creative Direction...'
-      detailText = 'Generating editorial and visual direction for your project.'
-    }
-    const stages = runState.state.stages
-    const runningStage = Object.entries(stages).find(([, s]) => s.status === 'running')
-    if (runningStage) {
-      statusText = getStageStartMessage(runningStage[0])
-      detailText = ''
-    }
-  }
-
-  return (
-    <div className="flex flex-col flex-1 min-h-0 gap-4">
-      <div className="flex items-center gap-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-3 shrink-0">
-        <Loader2 className="h-5 w-5 text-blue-400 animate-spin shrink-0" />
-        <div>
-          <p className="text-sm font-medium text-blue-400">{statusText}</p>
-          {detailText && <p className="text-xs text-muted-foreground">{detailText}</p>}
-        </div>
-      </div>
-      <FreshImportView projectId={projectId} />
-    </div>
-  )
-}
-
 // --- Empty View: No inputs uploaded ---
 
 function EmptyView() {
@@ -782,10 +717,10 @@ function HomeContent({ projectId, projectState }: { projectId: string; projectSt
     case 'empty':
       return <EmptyView />
     case 'processing':
-      return <ProcessingView projectId={projectId} />
     case 'fresh_import':
     case 'analyzed':
     case 'complete':
+      // OperationBanner (in AppShell) handles run status display globally.
       return <FreshImportView projectId={projectId} />
     default:
       return <EmptyView />

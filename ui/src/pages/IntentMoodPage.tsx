@@ -12,6 +12,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { PageHeader } from '@/components/PageHeader'
 import { toast } from 'sonner'
 import { useChatStore } from '@/lib/chat-store'
+import { useLongRunningAction } from '@/lib/use-long-running-action'
 import { useArtifactGroups, useProjectInputs, useStartRun } from '@/lib/hooks'
 import {
   getStylePresets,
@@ -124,31 +125,17 @@ export default function IntentMoodPage() {
     onError: (err: Error) => toast.error(err.message),
   })
 
-  const propagateMutation = useMutation({
-    mutationFn: async () => {
-      // Add a single task progress card with all groups spinning
-      const store = useChatStore.getState()
-      const msgId = `propagate_progress_${Date.now()}`
-      const items = Object.values(CONCERN_GROUP_META).map(meta => ({
-        label: meta.label,
-        status: 'running' as const,
-      }))
-      store.addMessage(projectId!, {
-        id: msgId,
-        type: 'task_progress',
-        content: JSON.stringify({ heading: 'Propagating creative intent', items }),
-        timestamp: Date.now(),
-      })
-      // Thread msgId through the return so onSuccess/onError get it
-      const data = await propagateMood(projectId!)
-      return { data, msgId }
-    },
-    onSuccess: ({ data, msgId }) => {
+  const propagateAction = useLongRunningAction({
+    projectId: projectId!,
+    label: 'Propagating creative intent',
+    items: Object.values(CONCERN_GROUP_META).map(meta => ({ label: meta.label })),
+    action: () => propagateMood(projectId!),
+    onSuccess: (data, { chatMessageId }) => {
       setPropagation(data)
       queryClient.invalidateQueries({ queryKey: ['artifact-groups', projectId] })
       const created = data.artifacts_created
       toast.success(`Propagated to ${created.length} concern groups`)
-      // Update the card — flip all items to done
+      // Override default "all done" with per-group detail
       const store = useChatStore.getState()
       const items = Object.entries(CONCERN_GROUP_META).map(([groupId, meta]) => ({
         label: meta.label,
@@ -157,10 +144,10 @@ export default function IntentMoodPage() {
       }))
       store.updateMessageContent(
         projectId!,
-        msgId,
+        chatMessageId,
         JSON.stringify({ heading: 'Propagating creative intent', items }),
       )
-      // Post a summary message after the progress card
+      // Post summary
       const groupNames = created
         .map(id => CONCERN_GROUP_META[id]?.label ?? id)
         .join(', ')
@@ -175,7 +162,7 @@ export default function IntentMoodPage() {
         speaker: 'director',
       })
     },
-    onError: (err: Error) => toast.error(err.message),
+    onError: (err) => toast.error(err.message),
   })
 
   // --- Handlers ---
@@ -211,8 +198,8 @@ export default function IntentMoodPage() {
 
   const handleSaveAndPropagate = useCallback(async () => {
     await saveMutation.mutateAsync()
-    propagateMutation.mutate()
-  }, [saveMutation, propagateMutation])
+    propagateAction.start()
+  }, [saveMutation, propagateAction])
 
   const hasChanges = (() => {
     if (!currentIntent) return moodTags.length > 0 || refFilms.length > 0 || nlIntent.length > 0 || selectedPreset !== null
@@ -307,17 +294,6 @@ export default function IntentMoodPage() {
         title="Intent & Mood"
         subtitle="Set the creative vision for your project. Pick a vibe, describe the feeling, and let AI propagate it across all concern groups."
       />
-
-      {/* Propagation status banner */}
-      {propagateMutation.isPending && (
-        <div className="flex items-center gap-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
-          <Loader2 className="h-5 w-5 text-blue-400 animate-spin shrink-0" />
-          <div>
-            <p className="text-sm font-medium text-blue-400">Propagating creative intent...</p>
-            <p className="text-xs text-muted-foreground">Generating suggestions for Look & Feel, Sound & Music, Rhythm & Flow, Character & Performance, and Story World.</p>
-          </div>
-        </div>
-      )}
 
       {/* Warm invitation — script context + suggest */}
       {!currentIntent && scriptContext && (
@@ -522,14 +498,14 @@ export default function IntentMoodPage() {
           </Button>
           <Button
             onClick={handleSaveAndPropagate}
-            disabled={propagateMutation.isPending || saveMutation.isPending}
+            disabled={propagateAction.isRunning || saveMutation.isPending}
           >
-            {propagateMutation.isPending ? (
+            {propagateAction.isRunning ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
             ) : (
               <Sparkles className="h-4 w-4 mr-2" />
             )}
-            {propagateMutation.isPending
+            {propagateAction.isRunning
               ? 'Generating suggestions for all concern groups...'
               : 'Save & Propagate'}
           </Button>

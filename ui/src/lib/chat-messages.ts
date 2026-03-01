@@ -165,6 +165,27 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Running quality checks on produced artifacts...',
     done: 'Quality checks passed.',
   },
+  // --- Creative direction concern group stages ---
+  intent_mood: {
+    start: 'Working on Intent & Mood...',
+    done: 'Intent & Mood complete.',
+  },
+  rhythm_and_flow: {
+    start: 'Working on Rhythm & Flow...',
+    done: 'Rhythm & Flow direction complete.',
+  },
+  look_and_feel: {
+    start: 'Working on Look & Feel...',
+    done: 'Look & Feel direction complete.',
+  },
+  sound_and_music: {
+    start: 'Working on Sound & Music...',
+    done: 'Sound & Music direction complete.',
+  },
+  character_and_performance: {
+    start: 'Working on Character & Performance...',
+    done: 'Character & Performance direction complete.',
+  },
 }
 
 export function humanizeStageName(name: string): string {

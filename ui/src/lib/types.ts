@@ -54,6 +54,7 @@ export type RunStartPayload = {
   run_id?: string
   force?: boolean
   start_from?: string
+  end_at?: string
   config_file?: string
   config_overrides?: Record<string, unknown>
 }
