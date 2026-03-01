@@ -435,7 +435,7 @@ Hand-curated ground truth for regression testing. These are the source of truth 
 | `benchmarks/golden/the-mariner-scenes.json` | Scene boundaries & headings (promptfoo eval) | The Mariner |
 | `benchmarks/golden/the-mariner-config.json` | Project config detection (promptfoo eval) | The Mariner |
 
-When adding a new screenplay for testing, create a corresponding golden reference following the same structure. Validate golden files by having a human read the screenplay and cross-check every entry.
+When adding a new screenplay for testing, create a corresponding golden reference following the same structure. Validate golden files by having a human read the screenplay and cross-check every entry. See `docs/runbooks/golden-build.md` for the full build methodology, common failure patterns, and audit process.
 
 ### Worktree Strategy
 

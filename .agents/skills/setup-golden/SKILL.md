@@ -134,13 +134,13 @@ Check off Phase 3 items in `docs/setup-checklist.md`.
 ## Operational Playbook
 
 See `docs/runbooks/golden-build.md` for the detailed build methodology, including:
-- Phase-by-phase build process (shells → facts → evidence → validation → semantic review)
-- Common failure patterns and how to fix them (truncated quotes, wrong-scene evidence, etc.)
-- Scale characteristics and time estimates
-- Tooling checklist and final sign-off checklist
+- Phase-by-phase build process (identify → draft with SOTA → structural review → semantic review → fix → dual eval baseline)
+- Common failure patterns and how to fix them (missing aliases, shallow descriptions, phantom entries, wrong relationship types, convention inconsistencies)
+- Eval-driven golden improvement protocol (ties into `/verify-eval`)
+- Periodic golden audit process and enforcement across lifecycle skills
 
 **Key insight**: Structural validation catches ~20% of issues. Full semantic review
-(checking every fact→evidence mapping, not a sample) catches the other ~80%.
+(checking every entry, not a sample) catches the other ~80%.
 Never skip the semantic review pass.
 
 ## Guardrails

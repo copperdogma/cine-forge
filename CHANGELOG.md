@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-03-01-06] — Golden build runbook (Story 109)
+
+### Added
+- `docs/runbooks/golden-build.md`: full golden reference build & maintenance runbook — 6 build phases, 5 common failure patterns, eval-driven improvement protocol, periodic audit process, enforcement cross-references to all lifecycle skills, troubleshooting table
+
+### Changed
+- `/setup-golden` "Operational Playbook" section: updated bullet descriptions to match actual CineForge runbook content (was Dossier-specific)
+- AGENTS.md Golden References section: added link to `docs/runbooks/golden-build.md`
+
 ## [2026-03-01-05] — Scout 005: eval-first approach gate + /verify-eval skill
 
 ### Added
