@@ -31,6 +31,10 @@ If this is the first attempt, write "First attempt on this eval."}
 **Result:** {succeeded | failed | inconclusive}
 **Score before:** {0.XXX}
 **Score after:** {0.XXX}
+**Latency before:** {NNNNms per call}
+**Latency after:** {NNNNms per call}
+**Cost before:** {$X.XXX per call}
+**Cost after:** {$X.XXX per call}
 
 **What worked:** {For successes — what specifically made the difference.}
 
@@ -55,3 +59,6 @@ golden-fix, architecture-change, dependency-available}
 - [ ] If approach succeeded: verified improvement holds across multiple runs
 - [ ] If approach failed: classified the failure and set retry_when conditions
 - [ ] Did NOT silently accept score regressions
+- [ ] Recorded latency_ms and cost_usd before/after in this file
+- [ ] Updated registry.yaml scores with latency_ms and cost_usd (run: python scripts/extract-eval-metrics.py --result-file <path>)
+- [ ] If optimizing for speed/cost: verified quality didn't regress below target

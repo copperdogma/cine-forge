@@ -1,12 +1,15 @@
 ---
 name: improve-eval
-description: Autonomously pick an eval and attempt to improve its score
+description: Autonomously pick an eval and attempt to improve its score, latency, or cost
 user-invocable: true
 ---
 
 # /improve-eval [eval-id] [--autonomous]
 
-Pick an eval from the registry, study past attempts, and try to improve its score.
+Pick an eval from the registry, study past attempts, and try to improve its score, latency, or cost.
+
+**Improvement types:** Quality (better scores), speed (lower latency), cost (cheaper per call),
+or any combination. "Same quality at 10x faster" is a valid and valuable improvement.
 
 **Default behavior:** Propose which eval to work on and the approach, wait for user approval.
 **Autonomous mode:** If the user says something like "you choose and just do it", pick the best
@@ -56,9 +59,20 @@ are now met:
 - `new-worker-model`: Is the current worker model newer/better than the attempt's `worker_model`?
 - `new-subject-model`: Are there new models available (from Phase 0) that weren't tested before?
 - `cheaper-subject-model`: Have pricing conditions changed?
+- `faster-subject-model`: Are there new fast models that might meet quality targets?
 
-### Priority 2: Biggest gap to target
+### Priority 2: Biggest quality gap to target
 For quality evals: `target.value - best_score` = gap. Rank by largest gap.
+
+### Priority 2b: Latency/cost violations
+Scores where `latency_ms > target.latency_ms_max` or `cost_usd > target.cost_usd_max` are
+violations even if the quality target is met. A model that passes quality but takes 50s when
+the target is 30s is NOT production-ready. Flag these as candidates for speed optimization.
+
+### Speed/cost context for ALL candidates
+When presenting candidates, always show latency and cost alongside quality:
+`"Sonnet 4.6: 0.942 quality, 47s/call, ~$0.054/call (target: 0.95 quality, <30s, <$0.10)"`
+This surfaces the full tradeoff — a 0.89 quality model at 4s may beat a 0.94 model at 47s.
 
 ### Priority 3: Stale scores
 Evals with git_sha far from HEAD might already be better (or worse) from code changes.
@@ -125,6 +139,11 @@ cp docs/evals/attempt-template.md docs/evals/attempts/{NNN}-{eval-id}-{short-tit
    - **Golden reference:** Is the golden reference wrong or incomplete? (Sometimes the eval is the problem)
    - **Scorer calibration:** Is the scorer penalizing correct-but-different answers?
    - **Model selection:** Would a different model score better at acceptable cost?
+   - **Speed optimization:** Would a faster model achieve target quality? Check the full
+     latency/quality tradeoff across all scored models. A cheap/fast model near target
+     is often better than a SOTA model above target.
+   - **Cost optimization:** Would a cheaper model achieve target quality? Cross-reference
+     cost_usd across the scored models for this eval.
    - **Architecture:** Can the task be decomposed differently?
 
 4. **Human gate.** Present the plan to the user and wait for approval.
@@ -145,7 +164,13 @@ cp docs/evals/attempt-template.md docs/evals/attempts/{NNN}-{eval-id}-{short-tit
 cd benchmarks && source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1 && promptfoo eval -c tasks/{eval}.yaml --no-cache -j 3
 ```
 
-3. **Record the score** in the work log immediately.
+3. **Extract metrics** from the result file:
+
+```bash
+.venv/bin/python scripts/extract-eval-metrics.py --result-file benchmarks/results/{result-file}.json
+```
+
+This shows quality, latency_ms, and cost_usd per model. Record ALL three in the work log.
 
 4. **If the score improved:** Verify it holds. Run again to check consistency.
 
@@ -161,18 +186,22 @@ Regardless of success or failure:
    - Fill in the Work Log with everything tried and every score measured
    - Write the Conclusion section
    - Set the result (succeeded/failed/inconclusive)
-   - Fill in score_before and score_after
+   - Fill in score_before/score_after AND latency_before/latency_after AND cost_before/cost_after
    - If failed: set retry_when conditions and "What NOT to retry"
    - Complete the Definition of Done checklist
 
 2. **Update the registry.** Edit `docs/evals/registry.yaml`:
 
-   a. **Update scores** — Add or update score entries with new measurements:
+   a. **Update scores** — Add or update score entries with new measurements.
+   Run `python scripts/extract-eval-metrics.py --result-file <path>` to get latency/cost:
    ```yaml
    scores:
      - model: "Sonnet 4.6"
        metrics:
          overall: 0.XXX  # new score
+       latency_ms: NNNNN       # avg per-call latency (from extract script)
+       cost_usd: 0.XXXX        # avg per-call cost (from extract script)
+       cost_estimated: true     # only if cost was computed from tokens
        measured: YYYY-MM-DD
        git_sha: "{current HEAD}"
        result_file: benchmarks/results/{result-file}.json
@@ -191,6 +220,8 @@ Regardless of success or failure:
        subject_model: "{model being evaluated}"
        score_before: 0.XXX
        score_after: 0.XXX
+       latency_before: NNNNN
+       latency_after: NNNNN
        retry_when:
          - condition: new-worker-model
            note: "Why this condition"
@@ -199,7 +230,7 @@ Regardless of success or failure:
 3. **Report results** to the user with a clear summary:
    - What eval was targeted
    - What was tried
-   - What the score change was
+   - What the score, latency, and cost changes were
    - What the next steps are (if any)
 
 ## Boundaries
@@ -207,6 +238,8 @@ Regardless of success or failure:
 ### Always do
 - Read ALL past attempts before starting
 - Run evals with `--no-cache`
+- Extract and record latency_ms and cost_usd alongside quality scores
+  (run: `python scripts/extract-eval-metrics.py --result-file <path>`)
 - Record the attempt even if it fails
 - Update registry.yaml even if nothing improved (scores might have changed)
 - Note both the worker model AND subject model in the attempt record

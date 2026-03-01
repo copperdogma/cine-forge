@@ -6,10 +6,16 @@
 #   quality     — "How good is our output?" Continuous improvement target.
 #   compromise  — "Can we eliminate this compromise?" Binary pass/fail gate.
 #
+# Score fields:
+#   latency_ms      — avg per-call latency from promptfoo result file (REQUIRED)
+#   cost_usd        — avg per-call cost in USD (REQUIRED if model has pricing)
+#   cost_estimated  — present+true when cost was computed from tokens, not promptfoo
+#
 # retry_when conditions:
 #   new-worker-model     — A smarter orchestrating AI might succeed where the previous one couldn't
 #   new-subject-model    — A better pipeline model might pass without code changes
 #   cheaper-subject-model — Works on expensive model, need cost parity at lower tier
+#   faster-subject-model — Works on slow model, need latency parity at faster tier
 #   new-approach         — Current approaches exhausted, needs fresh thinking
 #   golden-fix           — Golden reference may be wrong or incomplete
 #   architecture-change  — Upstream pipeline needs to change first
@@ -37,31 +43,39 @@ evals:
     target:
       metric: overall
       value: 0.95
-      constraints:
-        cost_usd_max: null
-        duration_seconds_max: null
+      latency_ms_max: 30000
+      cost_usd_max: 0.10
 
     scores:
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.942
+        latency_ms: 47185
+        cost_usd: 0.0536
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/character-extraction-sonnet46.json
       - model: "Opus 4.6"
         metrics:
           overall: 0.933
+        latency_ms: 49070
+        cost_usd: 0.0982
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/character-extraction-run3.json
       - model: "Gemini 3 Pro"
         metrics:
           overall: 0.899
+        latency_ms: 31764
+        cost_usd: 0.0497
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "GPT-5.2"
         metrics:
           overall: 0.826
+        latency_ms: 25929
+        cost_usd: 0.0316
         measured: 2026-02-18
         git_sha: "324ebf4"
 
@@ -84,28 +98,38 @@ evals:
     target:
       metric: overall
       value: 0.95
-      constraints: {}
+      latency_ms_max: 30000
+      cost_usd_max: 0.05
 
     scores:
       - model: "Opus 4.6"
         metrics:
           overall: 0.898
+        latency_ms: 12895
+        cost_usd: 0.0409
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/location-extraction-run2.json
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.895
+        latency_ms: 13194
+        cost_usd: 0.0240
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Gemini 2.5 Pro"
         metrics:
           overall: 0.893
+        latency_ms: 17547
+        cost_usd: 0.0255
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.870
+        latency_ms: 15393
+        cost_usd: 0.0254
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/location-extraction-sonnet46.json
@@ -129,29 +153,39 @@ evals:
     target:
       metric: overall
       value: 0.95
-      constraints: {}
+      latency_ms_max: 15000
+      cost_usd_max: 0.05
 
     scores:
       - model: "Opus 4.6"
         metrics:
           overall: 0.880
+        latency_ms: 34351
+        cost_usd: 0.0354
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/prop-extraction-run2.json
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.841
+        latency_ms: 10412
+        cost_usd: 0.0216
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/prop-extraction-sonnet46.json
       - model: "Gemini 2.5 Pro"
         metrics:
           overall: 0.820
+        latency_ms: 12734
+        cost_usd: 0.0182
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "GPT-5.2"
         metrics:
           overall: 0.712
+        latency_ms: 4785
+        cost_usd: 0.0117
         measured: 2026-02-18
         git_sha: "324ebf4"
 
@@ -174,12 +208,15 @@ evals:
     target:
       metric: overall
       value: 0.99
-      constraints: {}
+      latency_ms_max: 60000
+      cost_usd_max: 0.10
 
     scores:
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.995
+        latency_ms: 26396
+        cost_usd: 0.0492
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/relationship-discovery-run1.json
@@ -187,16 +224,22 @@ evals:
       - model: "Opus 4.6"
         metrics:
           overall: 0.995
+        latency_ms: 31709
+        cost_usd: 0.0842
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Gemini 2.5 Pro"
         metrics:
           overall: 0.995
+        latency_ms: 42660
+        cost_usd: 0.0610
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "GPT-5.2"
         metrics:
           overall: 0.985
+        latency_ms: 30788
+        cost_usd: 0.0357
         measured: 2026-02-18
         git_sha: "324ebf4"
 
@@ -219,28 +262,38 @@ evals:
     target:
       metric: overall
       value: 0.92
-      constraints: {}
+      latency_ms_max: 15000
+      cost_usd_max: 0.02
 
     scores:
       - model: "Haiku 4.5"
         metrics:
           overall: 0.886
+        latency_ms: 10142
+        cost_usd: 0.0103
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/config-detection-run1.json
       - model: "Gemini 2.5 Flash Lite"
         metrics:
           overall: 0.881
+        latency_ms: 4276
+        cost_usd: 0.0009
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "GPT-4.1 Nano"
         metrics:
           overall: 0.781
+        latency_ms: 5678
+        cost_usd: 0.0007
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.752
+        latency_ms: 23692
+        cost_usd: 0.0327
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/config-detection-sonnet46.json
@@ -266,29 +319,39 @@ evals:
     target:
       metric: overall
       value: 0.90
-      constraints: {}
+      latency_ms_max: 60000
+      cost_usd_max: 0.10
 
     scores:
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.815
+        latency_ms: 38562
+        cost_usd: 0.0533
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/scene-extraction-sonnet46.json
       - model: "GPT-5.2"
         metrics:
           overall: 0.803
+        latency_ms: 19812
+        cost_usd: 0.0295
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/scene-extraction-run1.json
       - model: "Opus 4.6"
         metrics:
           overall: 0.797
+        latency_ms: 40202
+        cost_usd: 0.0882
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.762
+        latency_ms: 38660
+        cost_usd: 0.0560
         measured: 2026-02-18
         git_sha: "324ebf4"
 
@@ -312,28 +375,38 @@ evals:
     target:
       metric: overall
       value: 0.97
-      constraints: {}
+      latency_ms_max: 10000
+      cost_usd_max: 0.02
 
     scores:
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.955
+        latency_ms: 4646
+        cost_usd: 0.0093
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/normalization-2026-02-18.json
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.955
+        latency_ms: 5456
+        cost_usd: 0.0094
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "GPT-4.1"
         metrics:
           overall: 0.946
+        latency_ms: 5212
+        cost_usd: 0.0043
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Opus 4.6"
         metrics:
           overall: 0.910
+        latency_ms: 5800
+        cost_usd: 0.0155
         measured: 2026-02-18
         git_sha: "324ebf4"
         note: "Opus underperforms Sonnet here — over-edits content"
@@ -357,28 +430,38 @@ evals:
     target:
       metric: overall
       value: 0.93
-      constraints: {}
+      latency_ms_max: 15000
+      cost_usd_max: 0.05
 
     scores:
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.890
+        latency_ms: 10662
+        cost_usd: 0.0106
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/scene-enrichment-2026-02-18.json
       - model: "Opus 4.6"
         metrics:
           overall: 0.812
+        latency_ms: 12282
+        cost_usd: 0.0194
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "GPT-5.2"
         metrics:
           overall: 0.799
+        latency_ms: 8327
+        cost_usd: 0.0086
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.784
+        latency_ms: 8637
+        cost_usd: 0.0095
         measured: 2026-02-18
         git_sha: "324ebf4"
 
@@ -402,29 +485,39 @@ evals:
     target:
       metric: overall
       value: 1.0
-      constraints:
-        note: "QA should be near-perfect — false positives waste pipeline budget"
+      latency_ms_max: 10000
+      cost_usd_max: 0.02
+      note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 1.000
+        latency_ms: 4926
+        cost_usd: 0.0009
         measured: 2026-02-18
         git_sha: "324ebf4"
         result_file: benchmarks/results/qa-pass-2026-02-18.json
       - model: "GPT-5.2"
         metrics:
           overall: 1.000
+        latency_ms: 6076
+        cost_usd: 0.0065
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.998
+        latency_ms: 10006
+        cost_usd: 0.0116
+        cost_estimated: true
         measured: 2026-02-18
         git_sha: "324ebf4"
       - model: "Opus 4.6"
         metrics:
           overall: 0.995
+        latency_ms: 9775
+        cost_usd: 0.0182
         measured: 2026-02-18
         git_sha: "324ebf4"
 
@@ -448,28 +541,38 @@ evals:
     target:
       metric: overall
       value: 0.98
-      constraints: {}
+      latency_ms_max: 30000
+      cost_usd_max: 0.05
 
     scores:
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.978
+        latency_ms: 28568
+        cost_usd: 0.0404
+        cost_estimated: true
         measured: 2026-03-01
         git_sha: "324ebf4"
         result_file: benchmarks/results/continuity-extraction-2026-03-01.json
       - model: "GPT-5.2"
         metrics:
           overall: 0.951
+        latency_ms: 19398
+        cost_usd: 0.0264
         measured: 2026-03-01
         git_sha: "324ebf4"
       - model: "Haiku 4.5"
         metrics:
           overall: 0.948
+        latency_ms: 9350
+        cost_usd: 0.0098
         measured: 2026-03-01
         git_sha: "324ebf4"
       - model: "Opus 4.6"
         metrics:
           overall: 0.943
+        latency_ms: 22596
+        cost_usd: 0.0550
         measured: 2026-03-01
         git_sha: "324ebf4"
 

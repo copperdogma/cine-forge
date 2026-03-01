@@ -93,8 +93,9 @@ scores:
       overall: 0.942        # headline score
       major_chars: 0.98      # sub-scores if available
       minor_chars: 0.91
-    cost_usd: 0.12           # optional: per-run cost
-    duration_seconds: 45     # optional: wall-clock time
+    latency_ms: 47185        # REQUIRED: avg per-call latency from result file
+    cost_usd: 0.054          # REQUIRED: avg per-call cost (null only for free-tier)
+    cost_estimated: true     # present when cost computed from tokens, not promptfoo
 ```
 
 The `target` on the eval specifies what "good enough" means, including optional constraints:
@@ -104,8 +105,45 @@ target:
   metric: overall
   value: 0.95
   constraints:
-    cost_usd_max: 0.50       # improvement that costs $5/run isn't improvement
-    duration_seconds_max: 120
+    latency_ms_max: 30000    # per-call max — model must respond within this
+    cost_usd_max: 0.10       # per-call max — null means no hard gate
 ```
 
-The AI evaluating whether an attempt "succeeded" uses all of this context — score, cost, time, constraints — to make a holistic judgment.
+The AI evaluating whether an attempt "succeeded" uses all of this context — score, latency, cost, and constraints — to make a holistic judgment that includes speed and cost tradeoffs, not just peak quality.
+
+## Speed and Cost
+
+Speed and cost are first-class optimization targets, not afterthoughts.
+
+### Why they matter
+Even small quality improvements that double latency are often wrong choices.
+A 22-scene screenplay with 8 pipeline stages at 30s/call = 70 minutes.
+The Ideal says "under 5 minutes" for the full iterative loop. Speed matters.
+
+### How to populate
+After running a promptfoo eval, extract metrics from the result file:
+
+```
+python scripts/extract-eval-metrics.py --result-file benchmarks/results/foo.json
+```
+
+Or update all registry entries at once:
+
+```
+python scripts/extract-eval-metrics.py --update-registry
+```
+
+### Anthropic cost estimation
+Promptfoo does not compute cost for `claude-sonnet-4-6` (model IDs without date
+suffixes). The extraction script detects this and computes estimated cost from
+token counts and pricing data. Entries with estimated cost have `cost_estimated: true`.
+
+### Latency target semantics
+`latency_ms_max` in the target block is a per-call maximum. If the eval has
+3 test cases, each call should be under this limit — not the total run time.
+
+### The latency/quality/cost tradeoff
+The registry now contains the full tradeoff surface for each eval. Before picking
+a model for a pipeline stage, check all scores to find the cheapest/fastest model
+that still meets the quality target. A model at 0.89 quality in 4 seconds is often
+more valuable than 0.94 quality in 50 seconds.

@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-03-01-03] — Speed and cost as first-class eval metrics
+
+### Added
+- `scripts/extract-eval-metrics.py` — extracts per-model latency_ms and cost_usd from promptfoo result files, with `--update-registry` mode for backfilling registry.yaml
+- Latency and cost targets on all 10 quality evals (`latency_ms_max`, `cost_usd_max`)
+- Anthropic cost estimation from token counts when promptfoo reports $0 (Sonnet 4.6 via API without date suffix)
+- C4 compromise gate now evaluates real latency data (was stub returning "not measured")
+
+### Changed
+- `docs/evals/registry.yaml`: backfilled `latency_ms`, `cost_usd`, and `cost_estimated` on all 40 score entries
+- `docs/evals/README.md`: promoted speed/cost from "optional" to required; new "Speed and Cost" section
+- `docs/evals/attempt-template.md`: added latency/cost before/after fields and Definition of Done checklist items
+- `.agents/skills/improve-eval/SKILL.md`: speed/cost awareness in all 5 phases (candidate selection, planning, execution, recording)
+- `scripts/check-compromises.py`: data-driven C4 check with per-model quality + latency tradeoff reporting
+
 ## [2026-03-01-02] — Eval registry system for autonomous improvement tracking
 
 ### Added

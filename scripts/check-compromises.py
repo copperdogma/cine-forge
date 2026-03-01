@@ -173,47 +173,79 @@ def check_c2(registry: dict) -> dict:
 
 
 def check_c4(registry: dict) -> dict:
-    """Check C4 based on scene extraction + enrichment scores."""
+    """Check C4 based on scene extraction + enrichment scores AND latency."""
+    QUALITY_GATE = 0.90
+    LATENCY_GATE_MS = 5000
+
     scene_ext = next((e for e in registry["evals"] if e["id"] == "scene-extraction"), None)
     scene_enr = next((e for e in registry["evals"] if e["id"] == "scene-enrichment"), None)
 
-    ext_best = 0.0
-    enr_best = 0.0
-    ext_model = None
-    enr_model = None
+    # Build per-model score + latency maps
+    ext_scores = {}  # model -> {score, latency_ms}
+    enr_scores = {}
 
-    if scene_ext:
-        for s in scene_ext.get("scores", []):
-            overall = s.get("metrics", {}).get("overall", 0)
-            if overall > ext_best:
-                ext_best = overall
-                ext_model = s["model"]
+    for ev, store in [(scene_ext, ext_scores), (scene_enr, enr_scores)]:
+        if not ev:
+            continue
+        for s in ev.get("scores", []):
+            model = s["model"]
+            overall = s.get("metrics", {}).get("overall")
+            latency = s.get("latency_ms")
+            if overall is not None:
+                store[model] = {"score": overall, "latency_ms": latency}
 
-    if scene_enr:
-        for s in scene_enr.get("scores", []):
-            overall = s.get("metrics", {}).get("overall", 0)
-            if overall > enr_best:
-                enr_best = overall
-                enr_model = s["model"]
+    # Find models in both evals
+    candidates = []
+    for model in set(ext_scores) & set(enr_scores):
+        ext = ext_scores[model]
+        enr = enr_scores[model]
+        combined_quality = (ext["score"] + enr["score"]) / 2
+        ext_lat = ext["latency_ms"] if ext["latency_ms"] is not None else float("inf")
+        enr_lat = enr["latency_ms"] if enr["latency_ms"] is not None else float("inf")
+        max_latency = max(ext_lat, enr_lat)
+        quality_met = combined_quality >= QUALITY_GATE
+        latency_met = max_latency <= LATENCY_GATE_MS
+        candidates.append({
+            "model": model,
+            "combined_quality": round(combined_quality, 3),
+            "extraction_latency_ms": ext_lat if ext_lat != float("inf") else None,
+            "enrichment_latency_ms": enr_lat if enr_lat != float("inf") else None,
+            "max_latency_ms": max_latency if max_latency != float("inf") else None,
+            "quality_met": quality_met,
+            "latency_met": latency_met,
+            "passed": quality_met and latency_met,
+        })
 
-    combined = (ext_best + enr_best) / 2 if ext_best and enr_best else 0
+    candidates.sort(key=lambda c: (-c["combined_quality"], c.get("max_latency_ms") or float("inf")))
+    passed = any(c["passed"] for c in candidates)
+    best = candidates[0] if candidates else None
+
+    if best and best.get("max_latency_ms") is not None:
+        quality_status = "MET" if best["quality_met"] else f"need ≥{QUALITY_GATE}"
+        latency_status = "MET" if best["latency_met"] else f"need ≤{LATENCY_GATE_MS}ms"
+        slowdown = best["max_latency_ms"] / LATENCY_GATE_MS
+        note = (
+            f"Best: {best['model']} — quality={best['combined_quality']:.3f} ({quality_status}), "
+            f"latency={best['max_latency_ms']}ms ({latency_status}). "
+            f"{'Passed!' if best['passed'] else f'{slowdown:.1f}x too slow.'}"
+        )
+    elif best:
+        note = (
+            f"Best: {best['model']} — quality={best['combined_quality']:.3f}. "
+            f"Latency data missing for this model."
+        )
+    else:
+        note = "No models found in both scene-extraction and scene-enrichment evals."
 
     return {
         "compromise_id": "C4",
         "name": "Two-Tier Scene Architecture",
-        "gate": "Combined scene analysis quality ≥0.90 AND <5s per scene",
-        "passed": False,  # We don't have latency data
-        "status": "partial-data",
-        "scene_extraction_best": {"score": ext_best, "model": ext_model},
-        "scene_enrichment_best": {"score": enr_best, "model": enr_model},
-        "combined_quality": combined,
-        "note": (
-            f"Quality check: extraction={ext_best:.3f} ({ext_model}), "
-            f"enrichment={enr_best:.3f} ({enr_model}), combined={combined:.3f}. "
-            f"Gate requires ≥0.90 combined AND <5s latency. "
-            f"{'Quality met!' if combined >= 0.90 else f'Quality gap: {0.90 - combined:.3f}'} "
-            f"Latency not measured — needs a dedicated timing harness."
-        ),
+        "gate": f"Combined quality ≥{QUALITY_GATE} AND latency ≤{LATENCY_GATE_MS}ms per scene",
+        "passed": passed,
+        "status": "data-available" if candidates else "no-data",
+        "candidates": candidates[:5],
+        "best_candidate": best,
+        "note": note,
     }
 
 
