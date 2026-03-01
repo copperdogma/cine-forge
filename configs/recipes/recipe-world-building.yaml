@@ -60,3 +60,10 @@ stages:
     needs_all: [character_bible, location_bible, prop_bible]
     store_inputs:
       breakdown_scenes: scene_index
+
+  - id: continuity_tracking
+    module: continuity_tracking_v1
+    needs_all: [character_bible, location_bible, prop_bible]
+    store_inputs:
+      normalize: canonical_script
+      breakdown_scenes: scene_index

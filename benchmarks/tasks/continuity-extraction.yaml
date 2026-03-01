@@ -1,0 +1,229 @@
+# Continuity Extraction Benchmark
+# Evaluates models on extracting entity state and detecting continuity
+# changes between scenes — the core task of Story 092's continuity module.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/continuity-extraction.yaml --no-cache -j 3
+# View:  promptfoo view
+
+description: "Continuity extraction — entity state tracking and change detection"
+
+# Use Opus as judge
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/continuity-extraction.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-nano
+    label: "GPT-4.1 Nano"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: google:gemini-2.5-flash-lite
+    label: "Gemini 2.5 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- Mid tier ---
+  - id: openai:gpt-4.1
+    label: "GPT-4.1"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-5-20250929
+    label: "Claude Sonnet 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: anthropic:messages:claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash
+    label: "Gemini 2.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-flash-preview
+    label: "Gemini 3 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- SOTA tier ---
+  - id: openai:gpt-5.2
+    label: "GPT-5.2"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-pro
+    label: "Gemini 2.5 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-pro-preview
+    label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+tests:
+  # Test 1: Dock Day — Scene 2 (Billy arrives, meets Jane)
+  # Tests: first appearance tracking, costume carry-forward, multi-character + prop extraction
+  - vars:
+      scene_text: file://../input/continuity-scene-dock-day.txt
+      scene_heading: "EXT. HARBOR DOCK - DAY"
+      scene_number: "2"
+      scene_id: "scene_002"
+      golden_path: golden/continuity-extraction-golden.json
+      scene_key: dock_day
+      entities_block: |
+        ### Character: BILLY (key: character:billy)
+        Previous state:
+          - costume: faded flannel shirt and worn jeans
+          - emotional_state: tense, jaw tight
+        Extract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)
+
+        ### Character: JANE (key: character:jane)
+        Previous state:
+          (First appearance — no previous state)
+        Extract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)
+
+        ### Location: HARBOR DOCK (key: location:harbor_dock)
+        Previous state:
+          (First appearance — no previous state)
+        Extract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)
+
+        ### Prop: OAR (key: prop:oar)
+        Previous state:
+          (First appearance — no previous state)
+        Extract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)
+
+        ### Prop: ENVELOPE (key: prop:envelope)
+        Previous state:
+          (First appearance — no previous state)
+        Extract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)
+    assert:
+      - type: python
+        value: file://../scorers/continuity_extraction_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the continuity extraction for a harbor dock daytime scene.
+
+          BILLY arrives at a dock wearing a leather jacket (changed from flannel
+          shirt in previous scene). He carries his father's weathered oak OAR.
+          He meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's
+          tone is flat and resigned.
+
+          Critical evaluation criteria:
+          1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?
+          2. Does it correctly extract Billy's costume as leather jacket?
+          3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?
+          4. Does it note Jane's rain jacket and the sealed envelope?
+          5. Does it capture Billy's flat/resigned emotional state?
+          6. Are change events supported by actual scene text quotes as evidence?
+          7. Are confidence scores reasonable (high for explicit text, lower for inferred)?
+
+          Score strictly: good continuity extraction catches state changes with
+          evidence, not just current state descriptions.
+
+  # Test 2: Dock Night — Scene 3 (Billy alone, damaged, aftermath)
+  # Tests: change detection (multiple), injury tracking, prop damage, weather change
+  - vars:
+      scene_text: file://../input/continuity-scene-dock-night.txt
+      scene_heading: "EXT. HARBOR DOCK - NIGHT"
+      scene_number: "3"
+      scene_id: "scene_003"
+      golden_path: golden/continuity-extraction-golden.json
+      scene_key: dock_night
+      entities_block: |
+        ### Character: BILLY (key: character:billy)
+        Previous state:
+          - costume: leather jacket zipped against the wind
+          - emotional_state: flat, resigned
+          - props_carried: oar
+        Extract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)
+
+        ### Location: HARBOR DOCK (key: location:harbor_dock)
+        Previous state:
+          - time_of_day: day
+          - weather: windy
+          - lighting: daylight
+        Extract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)
+
+        ### Prop: OAR (key: prop:oar)
+        Previous state:
+          - condition: intact, weathered oak with rope-wrapped grip
+          - position: set against a piling
+          - ownership: Billy
+        Extract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)
+
+        ### Prop: ENVELOPE (key: prop:envelope)
+        Previous state:
+          - condition: sealed
+          - ownership: Jane → Billy (handed over)
+        Extract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)
+    assert:
+      - type: python
+        value: file://../scorers/continuity_extraction_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the continuity extraction for a harbor dock NIGHT scene — the
+          aftermath of something violent that happened between scenes.
+
+          Key continuity changes from previous scene (day → night):
+          1. Billy's leather jacket is now TORN at the left sleeve
+          2. Billy has dried blood on his knuckles (new injury)
+          3. Billy's emotional state shifted from flat to hollow/defeated
+          4. Billy is soaked through (new physical state)
+          5. The OAR is now BROKEN in two pieces (was intact)
+          6. The ENVELOPE is open with contents scattered (was sealed)
+          7. JANE is gone (was present)
+          8. Weather changed from windy to heavy rain
+          9. Time changed from day to night
+
+          Critical evaluation criteria:
+          1. Does it detect the jacket damage change event with evidence?
+          2. Does it detect the physical injury (blood on knuckles)?
+          3. Does it detect the oar being broken?
+          4. Does it detect the envelope being opened/scattered?
+          5. Does it note the time/weather changes for the location?
+          6. Are all change events backed by actual quotes from the scene?
+          7. Does it correctly reference previous values?
+
+          This is the harder test case. Score strictly: a strong model catches
+          at least 5 of the 9 changes with accurate evidence quotes.

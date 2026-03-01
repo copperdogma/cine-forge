@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-03-01-01] — Continuity AI Detection & Gap Analysis (Story 092)
+
+### Added
+- LLM-powered continuity extraction: per-scene entity state tracking (costume, injuries, emotional state, lighting, weather, props) with evidence quotes from script text
+- Change event detection with previous/new values, reasons, and explicit vs inferred classification
+- Gap detection for missing or low-confidence entity states across scenes
+- Continuity extraction promptfoo eval (2 test cases, 13 providers, dual scoring)
+- `continuity_tracking` stage wired into world-building recipe
+- 14 unit tests + integration test with real model
+
+### Fixed
+- `NODE_FIX_RECIPES` mapping: continuity and entity_graph now correctly point to `narrative_analysis`
+- Pydantic `from __future__ import annotations` breaking model resolution at runtime
+- Engine `_preload_upstream_reuse` not traversing `needs_all` dependencies for `start_from` resumption
+- Stale bible progress spinner messages persisting in chat after stage completion
+
+### Changed
+- Continuity module default model: `claude-haiku-4-5-20251001` (eval-validated, 13x cheaper than Sonnet with comparable quality)
+
 ## [2026-02-28-08] — Scout 004: Ideal alignment gates across story lifecycle
 
 ### Changed

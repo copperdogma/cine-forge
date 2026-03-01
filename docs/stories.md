@@ -183,7 +183,7 @@ NOTES from Cam:
 | 088 | Staleness UX | Cross-Cutting | Medium | Done | [story-088](stories/story-088-staleness-ux.md) |
 | 089 | Interaction Mode Selection | Cross-Cutting | Low | Done | [story-089](stories/story-089-interaction-mode-selection.md) |
 | ~~090~~ | ~~Persona-Adaptive Workspaces~~ | ~~Cross-Cutting~~ | ~~Low~~ | Cancelled | ~~[story-090](stories/story-090-persona-adaptive-workspaces.md)~~ — Superseded by two-view architecture (Story Explorer + Scene Workspace) + interaction mode (Story 089). See ADR-003. |
-| 092 | Continuity AI Detection & Gap Analysis | World Building | Medium | Pending | [story-092](stories/story-092-continuity-ai-detection.md) |
+| 092 | Continuity AI Detection & Gap Analysis | World Building | Medium | Done | [story-092](stories/story-092-continuity-ai-detection.md) |
 | 093 | Script Bible Artifact | 5 — Creative Direction | High | Done | [story-093](stories/story-093-script-bible.md) |
 | 094 | Concern Group Artifact Schemas | 5 — Creative Direction | High | Done | [story-094](stories/story-094-concern-group-schemas.md) |
 | 095 | Intent / Mood Layer | 5 — Creative Direction | High | Done | [story-095](stories/story-095-intent-mood-layer.md) |
@@ -198,6 +198,8 @@ NOTES from Cam:
 | 104 | Tiered Quality Metrics for Eval Scoring | Cross-Cutting | High | Draft | [story-104](stories/story-104-tiered-quality-metrics.md) |
 | 105 | Parallel Chunk Extraction via ThreadPoolExecutor | Cross-Cutting | High | Draft | [story-105](stories/story-105-parallel-extraction.md) |
 | 106 | Disk-Backed Chunk-Level Extraction Cache | Cross-Cutting | Medium | Draft | [story-106](stories/story-106-chunk-level-extraction-cache.md) |
+| 107 | Value-Optimized Model Selection Across All Modules | Cross-Cutting | High | Pending | [story-107](stories/story-107-value-optimized-model-selection.md) |
+| 108 | Continuity UI Page | 2.5 — UI | High | Draft | [story-108](stories/story-108-continuity-ui-page.md) |
 
 ## Phase Summary
 

@@ -1,0 +1,206 @@
+{
+  "dock_day": {
+    "expected_entities": [
+      "character:billy",
+      "character:jane",
+      "location:harbor_dock",
+      "prop:oar",
+      "prop:envelope"
+    ],
+    "expected_properties": {
+      "character:billy": [
+        {
+          "key": "costume",
+          "value_patterns": ["leather jacket", "zipped"],
+          "required": true
+        },
+        {
+          "key": "emotional_state",
+          "value_patterns": ["flat", "resigned", "tired", "disaffected"],
+          "required": true
+        },
+        {
+          "key": "props_carried",
+          "value_patterns": ["oar"],
+          "required": false
+        }
+      ],
+      "character:jane": [
+        {
+          "key": "costume",
+          "value_patterns": ["rain jacket"],
+          "required": true
+        },
+        {
+          "key": "props_carried",
+          "value_patterns": ["envelope"],
+          "required": false
+        }
+      ],
+      "location:harbor_dock": [
+        {
+          "key": "time_of_day",
+          "value_patterns": ["day", "daytime", "daylight"],
+          "required": true
+        },
+        {
+          "key": "weather",
+          "value_patterns": ["wind", "windy"],
+          "required": false
+        }
+      ],
+      "prop:oar": [
+        {
+          "key": "condition",
+          "value_patterns": ["intact", "weathered", "old", "oak"],
+          "required": true
+        },
+        {
+          "key": "position",
+          "value_patterns": ["piling", "walking stick", "hand", "against"],
+          "required": false
+        }
+      ],
+      "prop:envelope": [
+        {
+          "key": "condition",
+          "value_patterns": ["sealed"],
+          "required": true
+        },
+        {
+          "key": "ownership",
+          "value_patterns": ["jane", "billy"],
+          "required": false
+        }
+      ]
+    },
+    "expected_changes": {
+      "character:billy": [
+        {
+          "property_key": "costume",
+          "previous_patterns": ["flannel", "shirt", "jeans"],
+          "new_patterns": ["leather jacket"]
+        }
+      ]
+    },
+    "key_evidence": [
+      "leather jacket zipped against the wind",
+      "I'm always late",
+      "weathered oak with a rope-wrapped grip",
+      "sealed ENVELOPE"
+    ],
+    "expected_confidence_range": [0.6, 1.0]
+  },
+  "dock_night": {
+    "expected_entities": [
+      "character:billy",
+      "location:harbor_dock",
+      "prop:oar",
+      "prop:envelope"
+    ],
+    "expected_properties": {
+      "character:billy": [
+        {
+          "key": "costume",
+          "value_patterns": ["torn", "leather jacket", "sleeve"],
+          "required": true
+        },
+        {
+          "key": "physical_condition",
+          "value_patterns": ["blood", "knuckles", "injured", "soaked"],
+          "required": true
+        },
+        {
+          "key": "emotional_state",
+          "value_patterns": ["hollow", "defeated", "numb", "despondent", "empty"],
+          "required": true
+        }
+      ],
+      "location:harbor_dock": [
+        {
+          "key": "time_of_day",
+          "value_patterns": ["night"],
+          "required": true
+        },
+        {
+          "key": "weather",
+          "value_patterns": ["rain", "storm"],
+          "required": true
+        },
+        {
+          "key": "lighting",
+          "value_patterns": ["dark", "night"],
+          "required": false
+        }
+      ],
+      "prop:oar": [
+        {
+          "key": "condition",
+          "value_patterns": ["broken", "two pieces", "destroyed", "snapped"],
+          "required": true
+        }
+      ],
+      "prop:envelope": [
+        {
+          "key": "condition",
+          "value_patterns": ["open", "scattered", "contents"],
+          "required": true
+        }
+      ]
+    },
+    "expected_changes": {
+      "character:billy": [
+        {
+          "property_key": "costume",
+          "previous_patterns": ["leather jacket", "zipped"],
+          "new_patterns": ["torn", "sleeve"]
+        },
+        {
+          "property_key": "physical_condition",
+          "previous_patterns": [],
+          "new_patterns": ["blood", "knuckles", "injured"]
+        },
+        {
+          "property_key": "emotional_state",
+          "previous_patterns": ["flat"],
+          "new_patterns": ["hollow", "defeated", "empty", "numb"]
+        }
+      ],
+      "location:harbor_dock": [
+        {
+          "property_key": "time_of_day",
+          "previous_patterns": ["day"],
+          "new_patterns": ["night"]
+        },
+        {
+          "property_key": "weather",
+          "previous_patterns": ["wind", "windy"],
+          "new_patterns": ["rain", "storm"]
+        }
+      ],
+      "prop:oar": [
+        {
+          "property_key": "condition",
+          "previous_patterns": ["intact", "weathered"],
+          "new_patterns": ["broken", "two pieces", "destroyed"]
+        }
+      ],
+      "prop:envelope": [
+        {
+          "property_key": "condition",
+          "previous_patterns": ["sealed"],
+          "new_patterns": ["open", "scattered"]
+        }
+      ]
+    },
+    "key_evidence": [
+      "torn at the left sleeve",
+      "dried blood visible on his knuckles",
+      "broken in two pieces",
+      "Rain hammers the dock",
+      "expression hollow",
+      "contents scattered in puddles"
+    ],
+    "expected_confidence_range": [0.7, 1.0]
+  }
+}

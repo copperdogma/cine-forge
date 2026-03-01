@@ -189,6 +189,13 @@ export function useRunProgressChat(projectId: string | undefined) {
     // Each character/location/prop bible artifact emits artifact_saved when saved mid-stage.
     // We update ONE in-place message per type ("Writing 3 character bibles...") and immediately
     // invalidate the sidebar artifact count so the badge ticks up as each entity lands.
+    // Once the stage completes, the RunProgressCard shows the final count with a checkmark,
+    // so we resolve the spinner immediately rather than waiting for the entire run to finish.
+    const bibleStageMap: Record<string, string> = {
+      character_bible: 'character_bible',
+      location_bible: 'location_bible',
+      prop_bible: 'prop_bible',
+    }
     const entityTypeLabel: Record<string, string> = {
       character_bible: 'character',
       location_bible: 'location',
@@ -223,14 +230,26 @@ export function useRunProgressChat(projectId: string | undefined) {
       }
     }
 
+    // Remove bible progress messages once their stage completes — the RunProgressCard
+    // already shows the final count with a checkmark, so these become redundant noise.
+    for (const [artifactType, stageId] of Object.entries(bibleStageMap)) {
+      const stageState = stages[stageId]
+      if (!stageState) continue
+      const msgId = `bible_progress_${activeRunId}_${artifactType}`
+      if (stageState.status === 'done' || stageState.status === 'skipped_reused') {
+        store.removeMessage(projectId, msgId)
+      }
+    }
+
     // --- Check if run finished ---
     if (runState.state.finished_at && !completedRef.current.has(activeRunId)) {
       completedRef.current.add(activeRunId)
 
-      // Resolve all in-flight spinners from this run
+      // Resolve any remaining in-flight spinners from this run
       store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
+      // Bible progress messages are removed per-stage above, but clean up any stragglers
       for (const t of ['character_bible', 'location_bible', 'prop_bible']) {
-        store.updateMessageType(projectId, `bible_progress_${activeRunId}_${t}`, 'ai_status_done')
+        store.removeMessage(projectId, `bible_progress_${activeRunId}_${t}`)
       }
 
       const hasFailed = Object.values(stages).some(

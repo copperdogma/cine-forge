@@ -1280,7 +1280,7 @@ class DriverEngine:
         queue = deque(ordered_stages)
         while queue:
             stage_id = queue.popleft()
-            for upstream in stage_map[stage_id].needs:
+            for upstream in (*stage_map[stage_id].needs, *stage_map[stage_id].needs_all):
                 if upstream not in needed and upstream not in ordered_stages:
                     needed.add(upstream)
                     queue.append(upstream)

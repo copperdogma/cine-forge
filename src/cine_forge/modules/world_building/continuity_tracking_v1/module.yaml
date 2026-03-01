@@ -7,7 +7,7 @@ parameters:
   model:
     type: string
     required: false
-    default: "gpt-4o"
+    default: "claude-haiku-4-5-20251001"
   work_model:
     type: string
     required: false
