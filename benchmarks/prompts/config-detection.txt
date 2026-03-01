@@ -16,9 +16,9 @@ Detect the following 10 project configuration fields. For each field, provide:
 Return a JSON object with these fields:
 
 1. title (string): The title of the screenplay/film
-2. format (string): The format type (e.g., "feature film", "short film", "pilot", "limited series")
-3. genre (array of strings): Primary genres (e.g., ["action", "crime", "drama"])
-4. tone (array of strings): Tonal qualities (e.g., ["dark", "gritty", "suspenseful"])
+2. format (string): The format type. Use one of: "feature film", "short film", "pilot", "limited series". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.
+3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.
+4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.
 5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)
 6. primary_characters (array of strings): Main characters (protagonists/antagonists)
 7. supporting_characters (array of strings): Supporting and minor characters

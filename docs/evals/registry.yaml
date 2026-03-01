@@ -250,7 +250,10 @@ evals:
     type: quality
     description: >
       Auto-detect project metadata from screenplay: title, genre, tone,
-      format, duration, cast size. Notably, cheap models outperform SOTA here.
+      format, duration, cast size. Gemini 3 Flash is the production winner
+      after golden fix + prompt improvement — all targets met at 13s, $0.009.
+      Note: golden was corrected during attempt 001 (format=short film, not
+      feature film; duration=[8,35]; supporting chars fixed).
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/config-detection.yaml --no-cache -j 3"
@@ -266,40 +269,80 @@ evals:
       cost_usd_max: 0.02
 
     scores:
-      - model: "Haiku 4.5"
+      - model: "Gemini 3 Flash"
         metrics:
-          overall: 0.886
-        latency_ms: 10142
-        cost_usd: 0.0103
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/config-detection-run1.json
-      - model: "Gemini 2.5 Flash Lite"
+          overall: 0.953
+        latency_ms: 12970
+        cost_usd: 0.0089
+        measured: 2026-03-01
+        git_sha: "f58cc06"
+        result_file: benchmarks/results/config-detection-golden-fix2.json
+        note: "3-run avg: 0.945. ALL targets met (quality/latency/cost). Winner after golden fix."
+      - model: "Sonnet 4.5"
         metrics:
-          overall: 0.881
-        latency_ms: 4276
-        cost_usd: 0.0009
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "GPT-4.1 Nano"
+          overall: 0.956
+        latency_ms: 26860
+        cost_usd: 0.0341
+        measured: 2026-03-01
+        git_sha: "f58cc06"
+        result_file: benchmarks/results/config-detection-golden-fix2.json
+        note: "Quality leader but exceeds latency target (27s > 15s)"
+      - model: "Gemini 3 Pro"
         metrics:
-          overall: 0.781
-        latency_ms: 5678
-        cost_usd: 0.0007
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "Sonnet 4.6"
+          overall: 0.945
+        latency_ms: 34706
+        cost_usd: 0.0403
+        measured: 2026-03-01
+        git_sha: "f58cc06"
+        result_file: benchmarks/results/config-detection-golden-fix2.json
+      - model: "Opus 4.6"
         metrics:
-          overall: 0.752
-        latency_ms: 23692
-        cost_usd: 0.0327
-        cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/config-detection-sonnet46.json
-        note: "SOTA models underperform cheap models on this eval"
+          overall: 0.930
+        latency_ms: 30928
+        cost_usd: 0.0616
+        measured: 2026-03-01
+        git_sha: "f58cc06"
+        result_file: benchmarks/results/config-detection-golden-fix2.json
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.857
+        latency_ms: 15867
+        cost_usd: 0.0107
+        measured: 2026-03-01
+        git_sha: "f58cc06"
+        result_file: benchmarks/results/config-detection-golden-fix2.json
+      - model: "GPT-4.1 Mini"
+        metrics:
+          overall: 0.725
+        latency_ms: 14692
+        cost_usd: 0.0034
+        measured: 2026-03-01
+        git_sha: "f58cc06"
+        result_file: benchmarks/results/config-detection-golden-fix2.json
+        note: "Format wrong (feature film). High Python but low LLM."
+      - model: "GPT-4.1"
+        metrics:
+          overall: 0.635
+        latency_ms: 10317
+        cost_usd: 0.0175
+        measured: 2026-03-01
+        git_sha: "f58cc06"
+        result_file: benchmarks/results/config-detection-golden-fix2.json
+        note: "Was 0.965 under incorrect golden. Fails format+duration with corrected golden."
 
-    attempts: []
+    attempts:
+      - id: "001"
+        story: attempts/001-config-detection-speed-prompt.md
+        date: 2026-03-01
+        status: succeeded
+        approach: "Golden fix (format/duration/chars/tone) + prompt engineering + LLM rubric alignment"
+        worker_model: "Opus 4.6"
+        worker_model_date: 2026-03-01
+        subject_model: "Gemini 3 Flash"
+        score_before: 0.886
+        score_after: 0.953
+        latency_before: 10142
+        latency_after: 12970
 
   - id: scene-extraction
     name: Scene Extraction

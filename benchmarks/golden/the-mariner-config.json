@@ -8,11 +8,11 @@
       "importance": "critical"
     },
     "format": {
-      "expected_values": ["feature", "feature film", "screenplay", "short", "short film", "pilot"],
+      "expected_values": ["short", "short film", "screenplay"],
       "match_type": "any_keyword",
-      "note": "The 436-line Fountain file is ~10-15 formatted pages. Both 'feature film' and 'short film' are defensible answers. Accept any screenplay-related format.",
+      "note": "Complete short film: FADE IN to CUT TO BLACK, ~10-15 formatted pages, single-night single-location story with full narrative arc. Not a feature film excerpt.",
       "min_confidence": 0.6,
-      "importance": "secondary"
+      "importance": "important"
     },
     "genre": {
       "expected_keywords": ["action", "crime", "thriller", "drama"],
@@ -22,18 +22,19 @@
       "importance": "important"
     },
     "tone": {
-      "expected_keywords": ["dark", "gritty", "violent", "intense", "noir"],
-      "must_include_at_least": 1,
+      "expected_keywords": ["dark", "gritty", "violent", "intense", "noir", "bleak", "brutal", "suspenseful", "fast-paced", "dystopian"],
+      "must_include_at_least": 3,
       "match_type": "keyword_overlap",
+      "note": "Screenplay has clear dark/gritty/violent tone plus dystopian setting, fast pacing, and suspense. Raising minimum to 3 since all models should identify multiple tonal qualities.",
       "min_confidence": 0.7,
       "importance": "important"
     },
     "estimated_duration_minutes": {
-      "expected_range": [8, 130],
+      "expected_range": [8, 35],
       "match_type": "numeric_range",
-      "note": "Wide range: 8-20 min if treating as short film (10-15 pages), 85-130 min if extrapolating to feature. Both are reasonable interpretations.",
-      "min_confidence": 0.3,
-      "importance": "secondary"
+      "note": "Complete short film at ~10-15 formatted pages = ~10-15 min screen time. Up to 30-35 min if action sequences play long. Models estimating 90+ min are treating this as a feature excerpt, which is wrong.",
+      "min_confidence": 0.5,
+      "importance": "important"
     },
     "primary_characters": {
       "must_include": ["MARINER", "ROSE"],
@@ -42,9 +43,10 @@
       "importance": "critical"
     },
     "supporting_characters": {
-      "should_include_any": ["DAD", "SALVATORI", "VINNIE", "CONSIGLIERE", "GIRL"],
-      "min_count": 2,
+      "should_include_any": ["DAD", "SALVATORI", "VINNIE", "MIKEY", "CARLOS", "ROSCO"],
+      "min_count": 3,
       "match_type": "list_overlap",
+      "note": "Removed CONSIGLIERE and GIRL (don't exist in screenplay). Added MIKEY, CARLOS, ROSCO (all have dialogue). Raised min to 3 since there are 6 clear supporting characters.",
       "min_confidence": 0.6,
       "importance": "secondary"
     },

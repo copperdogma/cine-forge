@@ -1,5 +1,21 @@
 # Changelog
 
+## [2026-03-01-04] — Config detection golden fix and eval improvement
+
+### Fixed
+- `benchmarks/golden/the-mariner-config.json`: corrected 4 wrong fields discovered via manual screenplay audit — format (short film, not feature), duration ([8,35] not [8,130]), supporting characters (removed non-existent CONSIGLIERE/GIRL, added MIKEY/CARLOS/ROSCO), tone keywords (expanded from 5→10, raised min match to 3)
+- `benchmarks/tasks/config-detection.yaml` LLM rubric: aligned with corrected golden (was asking "Did it identify as a feature film?" — penalizing correct answers)
+
+### Changed
+- `benchmarks/scorers/config_detection_scorer.py`: added `audience_accuracy` dimension (was unscored), rebalanced 10-dimension weights
+- `benchmarks/prompts/config-detection.txt`: expanded tone/genre/format guidance for all models
+- `benchmarks/tasks/config-detection.yaml`: added GPT-5 Mini and GPT-5 Nano providers
+- `docs/evals/registry.yaml`: replaced all config-detection scores with corrected golden measurements; winner changed from GPT-4.1 (0.965, invalid) to Gemini 3 Flash (0.953, verified 3-run avg 0.945)
+
+### Added
+- `docs/evals/attempts/001-config-detection-speed-prompt.md`: first eval improvement attempt story
+- 7 result files from eval runs (initial, golden-fix, verification runs)
+
 ## [2026-03-01-03] — Speed and cost as first-class eval metrics
 
 ### Added

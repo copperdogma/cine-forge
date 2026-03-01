@@ -1,0 +1,907 @@
+{
+  "evalId": "eval-tch-2026-03-01T22:12:14",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-03-01T22:12:14.095Z",
+    "prompts": [
+      {
+        "raw": "You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+        "label": "prompts/config-detection.txt: You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+        "id": "13477f2e43f458ae6aaf339031e59fb9fef327140f697287ed27cb72ceda776a",
+        "provider": "GPT-4.1 Nano",
+        "metrics": {
+          "score": 0.86,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 10868,
+          "tokenUsage": {
+            "prompt": 4854,
+            "completion": 721,
+            "cached": 0,
+            "total": 5575,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 1756,
+              "prompt": 1139,
+              "completion": 617,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.0007738
+        }
+      },
+      {
+        "raw": "You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+        "label": "prompts/config-detection.txt: You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+        "id": "13477f2e43f458ae6aaf339031e59fb9fef327140f697287ed27cb72ceda776a",
+        "provider": "GPT-4.1 Mini",
+        "metrics": {
+          "score": 0.915,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 11131,
+          "tokenUsage": {
+            "prompt": 4854,
+            "completion": 821,
+            "cached": 0,
+            "total": 5675,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 1990,
+              "prompt": 1248,
+              "completion": 742,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.0032552
+        }
+      },
+      {
+        "raw": "You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+        "label": "prompts/config-detection.txt: You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+        "id": "13477f2e43f458ae6aaf339031e59fb9fef327140f697287ed27cb72ceda776a",
+        "provider": "GPT-4.1",
+        "metrics": {
+          "score": 0.85,
+          "testPassCount": 0,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 1,
+          "assertFailCount": 1,
+          "totalLatencyMs": 12363,
+          "tokenUsage": {
+            "prompt": 4854,
+            "completion": 974,
+            "cached": 0,
+            "total": 5828,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2077,
+              "prompt": 1393,
+              "completion": 684,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.017499999999999998
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.017499999999999998,
+        "error": "Let me evaluate each of the 10 fields systematically:\n\n1. **Title**: Correctly identified as 'The Mariner' with confidence 1.0. ✅\n\n2. **Format**: Identified as 'feature film' with confidence 0.95. Reasonable identification based on screenplay structure. ✅\n\n3. **Genre**: Includes action, crime, drama, thriller, and dark comedy. Captures the vigilante crime-action nature well. ✅\n\n4. **Tone**: Lists dark, gritty, intense, violent, bleak, suspenseful, fast-paced, noir, brutal, bleakly humorous. Captures the key qualities well. ✅\n\n5. **Duration**: Estimated at 30 minutes with confidence 0.7. The rubric states the screenplay is ~430 lines and expects 85-130 minutes. An estimate of 30 minutes is significantly low. The model hedges by noting it may not be the full screenplay, but the estimate is still far off from the expected range. ❌ This is a notable miss.\n\n6. **Primary characters**: Lists Mariner (Billy/Will MacAngus), Rose, and Salvatori. The rubric expects Mariner and Rose as leads. Salvatori is listed as primary rather than supporting, which is debatable but not unreasonable. ✅ (mostly)\n\n7. **Supporting characters**: Lists Dad, Rosco, Vinnie, Mikey, Carlos, Thug 1-3. The rubric expects Dad, Salvatori, and Vinnie among supporting cast. Salvatori is placed as primary instead of supporting, but Dad and Vinnie are correctly listed. ✅ (mostly - Salvatori placement is debatable)\n\n8. **Location count**: Estimated at 7 with confidence 0.85. Falls within the expected 5-20 range. ✅\n\n9. **Locations summary**: Mentions the Ruddy & Greene Building prominently, along with the ruined city, alleys, stairwells, and flashback locations. ✅\n\n10. **Target audience**: Correctly identified as R/mature audiences (17+). ✅\n\n11. **Confidence calibration**: Generally reasonable. The 0.7 for duration is appropriately lower given the uncertainty, though the estimate itself is wrong. Other confidences seem well-calibrated.\n\n12. **Rationale quality**: Rationales are grounded in screenplay evidence, citing specific elements like AirTag jokes, blockchain references, and specific locations. Well done overall.\n\nThe major weakness is the duration estimate of 30 minutes, which is far below the expected 85-130 minute range. This is a significant error. The Salvatori classification as primary vs. supporting is a minor issue. Everything else is strong.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.85,
+          "reason": "Let me evaluate each of the 10 fields systematically:\n\n1. **Title**: Correctly identified as 'The Mariner' with confidence 1.0. ✅\n\n2. **Format**: Identified as 'feature film' with confidence 0.95. Reasonable identification based on screenplay structure. ✅\n\n3. **Genre**: Includes action, crime, drama, thriller, and dark comedy. Captures the vigilante crime-action nature well. ✅\n\n4. **Tone**: Lists dark, gritty, intense, violent, bleak, suspenseful, fast-paced, noir, brutal, bleakly humorous. Captures the key qualities well. ✅\n\n5. **Duration**: Estimated at 30 minutes with confidence 0.7. The rubric states the screenplay is ~430 lines and expects 85-130 minutes. An estimate of 30 minutes is significantly low. The model hedges by noting it may not be the full screenplay, but the estimate is still far off from the expected range. ❌ This is a notable miss.\n\n6. **Primary characters**: Lists Mariner (Billy/Will MacAngus), Rose, and Salvatori. The rubric expects Mariner and Rose as leads. Salvatori is listed as primary rather than supporting, which is debatable but not unreasonable. ✅ (mostly)\n\n7. **Supporting characters**: Lists Dad, Rosco, Vinnie, Mikey, Carlos, Thug 1-3. The rubric expects Dad, Salvatori, and Vinnie among supporting cast. Salvatori is placed as primary instead of supporting, but Dad and Vinnie are correctly listed. ✅ (mostly - Salvatori placement is debatable)\n\n8. **Location count**: Estimated at 7 with confidence 0.85. Falls within the expected 5-20 range. ✅\n\n9. **Locations summary**: Mentions the Ruddy & Greene Building prominently, along with the ruined city, alleys, stairwells, and flashback locations. ✅\n\n10. **Target audience**: Correctly identified as R/mature audiences (17+). ✅\n\n11. **Confidence calibration**: Generally reasonable. The 0.7 for duration is appropriately lower given the uncertainty, though the estimate itself is wrong. Other confidences seem well-calibrated.\n\n12. **Rationale quality**: Rationales are grounded in screenplay evidence, citing specific elements like AirTag jokes, blockchain references, and specific locations. Well done overall.\n\nThe major weakness is the duration estimate of 30 minutes, which is far below the expected 85-130 minute range. This is a significant error. The Salvatori classification as primary vs. supporting is a minor issue. Everything else is strong.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2077,
+            "prompt": 1393,
+            "completion": 684,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "character_accuracy=1.00, confidence_quality=1.00, duration_accuracy=1.00, format_accuracy=1.00, genre_accuracy=1.00, json_valid=1.00, location_accuracy=1.00, title_accuracy=1.00, tone_accuracy=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/config_detection_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the project config detection for \"The Mariner\" screenplay.\n\nThe model was asked to detect 10 project metadata fields from the screenplay text.\n\nKey quality criteria:\n1. Title: Did it correctly identify \"The Mariner\" as the title?\n2. Format: Did it identify this as a feature film screenplay?\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\n4. Tone: Does it capture the dark, gritty, violent qualities?\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\n6. Primary characters: Does it identify The Mariner and Rose as leads?\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\n10. Target audience: Does it correctly identify this as mature/adult content?\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\n\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\n"
+              },
+              "pass": false,
+              "score": 0.7,
+              "reason": "Let me evaluate each of the 10 fields systematically:\n\n1. **Title**: Correctly identified as 'The Mariner' with confidence 1.0. ✅\n\n2. **Format**: Identified as 'feature film' with confidence 0.95. Reasonable identification based on screenplay structure. ✅\n\n3. **Genre**: Includes action, crime, drama, thriller, and dark comedy. Captures the vigilante crime-action nature well. ✅\n\n4. **Tone**: Lists dark, gritty, intense, violent, bleak, suspenseful, fast-paced, noir, brutal, bleakly humorous. Captures the key qualities well. ✅\n\n5. **Duration**: Estimated at 30 minutes with confidence 0.7. The rubric states the screenplay is ~430 lines and expects 85-130 minutes. An estimate of 30 minutes is significantly low. The model hedges by noting it may not be the full screenplay, but the estimate is still far off from the expected range. ❌ This is a notable miss.\n\n6. **Primary characters**: Lists Mariner (Billy/Will MacAngus), Rose, and Salvatori. The rubric expects Mariner and Rose as leads. Salvatori is listed as primary rather than supporting, which is debatable but not unreasonable. ✅ (mostly)\n\n7. **Supporting characters**: Lists Dad, Rosco, Vinnie, Mikey, Carlos, Thug 1-3. The rubric expects Dad, Salvatori, and Vinnie among supporting cast. Salvatori is placed as primary instead of supporting, but Dad and Vinnie are correctly listed. ✅ (mostly - Salvatori placement is debatable)\n\n8. **Location count**: Estimated at 7 with confidence 0.85. Falls within the expected 5-20 range. ✅\n\n9. **Locations summary**: Mentions the Ruddy & Greene Building prominently, along with the ruined city, alleys, stairwells, and flashback locations. ✅\n\n10. **Target audience**: Correctly identified as R/mature audiences (17+). ✅\n\n11. **Confidence calibration**: Generally reasonable. The 0.7 for duration is appropriately lower given the uncertainty, though the estimate itself is wrong. Other confidences seem well-calibrated.\n\n12. **Rationale quality**: Rationales are grounded in screenplay evidence, citing specific elements like AirTag jokes, blockchain references, and specific locations. Well done overall.\n\nThe major weakness is the duration estimate of 30 minutes, which is far below the expected 85-130 minute range. This is a significant error. The Salvatori classification as primary vs. supporting is a minor issue. Everything else is strong.",
+              "tokensUsed": {
+                "total": 2077,
+                "prompt": 1393,
+                "completion": 684,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"title\\\":{\\\"value\\\":\\\"The Mariner\\\",\\\"confidence\\\":1,\\\"rationale\\\":\\\"The title is explicitly stated at the top and in a full-screen superimposed title card.\\\"},\\\"format\\\":{\\\"value\\\":\\\"feature film\\\",\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"The screenplay uses standard film scene headings, has a complex narrative with flashbacks, multiple locations, and a full character arc. The structure and depth are consistent with a feature film rather than a short or pilot.\\\"},\\\"genre\\\":{\\\"value\\\":[\\\"action\\\",\\\"crime\\\",\\\"drama\\\",\\\"thriller\\\",\\\"dark comedy\\\"],\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"Action: frequent violence, fights, gunfire, and physical confrontations. Crime: plot centers on gang money, theft, and criminal organizations. Drama: strong focus on family trauma, character backstory, and emotional arcs. Thriller: suspenseful chases, danger, and tension. Dark comedy: sardonic humor in dialogue and situations (e.g., AirTag, blockchain jokes, banter during violence).\\\"},\\\"tone\\\":{\\\"value\\\":[\\\"dark\\\",\\\"gritty\\\",\\\"intense\\\",\\\"violent\\\",\\\"bleak\\\",\\\"suspenseful\\\",\\\"fast-paced\\\",\\\"noir\\\",\\\"brutal\\\",\\\"bleakly humorous\\\"],\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"The ruined city, violence, and trauma create a dark, gritty, and intense tone. The violence is brutal and explicit. The pacing is fast, with action sequences and rapid scene changes. There is a noir/crime undercurrent, and the humor is dark and sardonic.\\\"},\\\"estimated_duration_minutes\\\":{\\\"value\\\":30,\\\"confidence\\\":0.7,\\\"rationale\\\":\\\"The provided excerpt is likely not the full screenplay, but based on the amount of content (multiple action sequences, flashbacks, and character development), it appears to be a substantial portion. If this is the entire script, it would be approximately 30 pages/minutes. If not, this is a conservative estimate based on the text provided.\\\"},\\\"primary_characters\\\":{\\\"value\\\":[\\\"Mariner (Billy/Will MacAngus)\\\",\\\"Rose\\\",\\\"Salvatori\\\"],\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"Mariner and Rose are the clear protagonists, with Salvatori as the main antagonist. They drive the plot and are present in most scenes.\\\"},\\\"supporting_characters\\\":{\\\"value\\\":[\\\"Dad (Mariner's father)\\\",\\\"Rosco\\\",\\\"Vinnie\\\",\\\"Mikey\\\",\\\"Carlos\\\",\\\"Thug 1\\\",\\\"Thug 2\\\",\\\"Thug 3\\\"],\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"Dad appears in multiple flashbacks and is central to Mariner's backstory. The named thugs and minor antagonists (Rosco, Vinnie, Mikey, Carlos, Thugs 1-3) have dialogue and action but are not central to the main arc.\\\"},\\\"location_count\\\":{\\\"value\\\":7,\\\"confidence\\\":0.85,\\\"rationale\\\":\\\"Distinct locations include: 1) City Centre (ruined city), 2) Ruddy & Greene Building - Front, 3) Ruddy & Greene Building - Rear, 4) Ruddy & Greene Building - Elevator, 5) Ruddy & Greene Building - various floors (11th, 12th, 13th, 15th), 6) Stairwell, 7) Flashback locations (Coastline, Backyard). Some locations are repeated but are distinct in context.\\\"},\\\"locations_summary\\\":{\\\"value\\\":\\\"A ruined, post-pandemic city center; the bullet-riddled Ruddy & Greene Building (front, rear, elevator, multiple floors); grimy alleys; stairwells; flashbacks to a coastal fishing boat and a rundown backyard.\\\",\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"Summary covers all major settings described in the screenplay, including both present-day and flashback locations.\\\"},\\\"target_audience\\\":{\\\"value\\\":\\\"R (mature audiences, 17+)\\\",\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"Frequent graphic violence, strong language, adult themes (abuse, trauma, crime), and dark humor indicate an R rating for mature audiences.\\\"}}\\n</Output>\\n<Rubric>\\nEvaluate the project config detection for \\\"The Mariner\\\" screenplay.\\n\\nThe model was asked to detect 10 project metadata fields from the screenplay text.\\n\\nKey quality criteria:\\n1. Title: Did it correctly identify \\\"The Mariner\\\" as the title?\\n2. Format: Did it identify this as a feature film screenplay?\\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\\n4. Tone: Does it capture the dark, gritty, violent qualities?\\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\\n6. Primary characters: Does it identify The Mariner and Rose as leads?\\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\\n10. Target audience: Does it correctly identify this as mature/adult content?\\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\\n\\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "035fee25-4cca-4ff7-ab52-8e1df3b2bd85",
+        "latencyMs": 12363,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+          "label": "prompts/config-detection.txt: You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "13477f2e43f458ae6aaf339031e59fb9fef327140f697287ed27cb72ceda776a",
+        "promptIdx": 2,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": "GPT-4.1"
+        },
+        "response": {
+          "output": "{\n  \"title\": {\n    \"value\": \"The Mariner\",\n    \"confidence\": 1.0,\n    \"rationale\": \"The title is explicitly stated at the top and in a full-screen superimposed title card.\"\n  },\n  \"format\": {\n    \"value\": \"feature film\",\n    \"confidence\": 0.95,\n    \"rationale\": \"The screenplay uses standard film scene headings, has a complex narrative with flashbacks, multiple locations, and a full character arc. The structure and depth are consistent with a feature film rather than a short or pilot.\"\n  },\n  \"genre\": {\n    \"value\": [\"action\", \"crime\", \"drama\", \"thriller\", \"dark comedy\"],\n    \"confidence\": 0.95,\n    \"rationale\": \"Action: frequent violence, fights, gunfire, and physical confrontations. Crime: plot centers on gang money, theft, and criminal organizations. Drama: strong focus on family trauma, character backstory, and emotional arcs. Thriller: suspenseful chases, danger, and tension. Dark comedy: sardonic humor in dialogue and situations (e.g., AirTag, blockchain jokes, banter during violence).\"\n  },\n  \"tone\": {\n    \"value\": [\"dark\", \"gritty\", \"intense\", \"violent\", \"bleak\", \"suspenseful\", \"fast-paced\", \"noir\", \"brutal\", \"bleakly humorous\"],\n    \"confidence\": 0.95,\n    \"rationale\": \"The ruined city, violence, and trauma create a dark, gritty, and intense tone. The violence is brutal and explicit. The pacing is fast, with action sequences and rapid scene changes. There is a noir/crime undercurrent, and the humor is dark and sardonic.\"\n  },\n  \"estimated_duration_minutes\": {\n    \"value\": 30,\n    \"confidence\": 0.7,\n    \"rationale\": \"The provided excerpt is likely not the full screenplay, but based on the amount of content (multiple action sequences, flashbacks, and character development), it appears to be a substantial portion. If this is the entire script, it would be approximately 30 pages/minutes. If not, this is a conservative estimate based on the text provided.\"\n  },\n  \"primary_characters\": {\n    \"value\": [\"Mariner (Billy/Will MacAngus)\", \"Rose\", \"Salvatori\"],\n    \"confidence\": 0.95,\n    \"rationale\": \"Mariner and Rose are the clear protagonists, with Salvatori as the main antagonist. They drive the plot and are present in most scenes.\"\n  },\n  \"supporting_characters\": {\n    \"value\": [\"Dad (Mariner's father)\", \"Rosco\", \"Vinnie\", \"Mikey\", \"Carlos\", \"Thug 1\", \"Thug 2\", \"Thug 3\"],\n    \"confidence\": 0.9,\n    \"rationale\": \"Dad appears in multiple flashbacks and is central to Mariner's backstory. The named thugs and minor antagonists (Rosco, Vinnie, Mikey, Carlos, Thugs 1-3) have dialogue and action but are not central to the main arc.\"\n  },\n  \"location_count\": {\n    \"value\": 7,\n    \"confidence\": 0.85,\n    \"rationale\": \"Distinct locations include: 1) City Centre (ruined city), 2) Ruddy & Greene Building - Front, 3) Ruddy & Greene Building - Rear, 4) Ruddy & Greene Building - Elevator, 5) Ruddy & Greene Building - various floors (11th, 12th, 13th, 15th), 6) Stairwell, 7) Flashback locations (Coastline, Backyard). Some locations are repeated but are distinct in context.\"\n  },\n  \"locations_summary\": {\n    \"value\": \"A ruined, post-pandemic city center; the bullet-riddled Ruddy & Greene Building (front, rear, elevator, multiple floors); grimy alleys; stairwells; flashbacks to a coastal fishing boat and a rundown backyard.\",\n    \"confidence\": 0.95,\n    \"rationale\": \"Summary covers all major settings described in the screenplay, including both present-day and flashback locations.\"\n  },\n  \"target_audience\": {\n    \"value\": \"R (mature audiences, 17+)\",\n    \"confidence\": 0.95,\n    \"rationale\": \"Frequent graphic violence, strong language, adult themes (abuse, trauma, crime), and dark humor indicate an R rating for mature audiences.\"\n  }\n}",
+          "tokenUsage": {
+            "total": 5828,
+            "prompt": 4854,
+            "completion": 974,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 12363,
+          "finishReason": "stop",
+          "cost": 0.017499999999999998,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d5b81af9ebc243a-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Sun, 01 Mar 2026 22:13:14 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "12234",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=ORZOSItu.gsBJS7rfneD.SFWcj2K7rkn6iTbUv3DUu4-1772403182.0138273-1.0.1.1-7xwe2UDB2Oi2YDU8nL4zopKHP3GUSnz2WWZwUJiec482BOME1BVvT2h35tU0ulIRZiGlgPuKP1G3xzxtm9Jdhiw8Vj69VUNcArKgqaOkzre6EhaD6tpVNzg2EM8Gzw5n; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Sun, 01 Mar 2026 22:43:14 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "2000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "1995359",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "139ms",
+                "x-request-id": "req_d25187907d1140c099e57f1b0db29b53"
+              }
+            }
+          }
+        },
+        "score": 0.85,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-config.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/config_detection_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the project config detection for \"The Mariner\" screenplay.\n\nThe model was asked to detect 10 project metadata fields from the screenplay text.\n\nKey quality criteria:\n1. Title: Did it correctly identify \"The Mariner\" as the title?\n2. Format: Did it identify this as a feature film screenplay?\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\n4. Tone: Does it capture the dark, gritty, violent qualities?\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\n6. Primary characters: Does it identify The Mariner and Rose as leads?\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\n10. Target audience: Does it correctly identify this as mature/adult content?\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\n\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-config.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d5b81af9ebc243a-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Sun, 01 Mar 2026 22:13:14 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "12234",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=ORZOSItu.gsBJS7rfneD.SFWcj2K7rkn6iTbUv3DUu4-1772403182.0138273-1.0.1.1-7xwe2UDB2Oi2YDU8nL4zopKHP3GUSnz2WWZwUJiec482BOME1BVvT2h35tU0ulIRZiGlgPuKP1G3xzxtm9Jdhiw8Vj69VUNcArKgqaOkzre6EhaD6tpVNzg2EM8Gzw5n; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Sun, 01 Mar 2026 22:43:14 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "2000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "1995359",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "139ms",
+              "x-request-id": "req_d25187907d1140c099e57f1b0db29b53"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.0007738,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.86,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1756,
+            "prompt": 1139,
+            "completion": 617,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.94,
+              "reason": "character_accuracy=1.00, confidence_quality=1.00, duration_accuracy=1.00, format_accuracy=1.00, genre_accuracy=1.00, json_valid=1.00, location_accuracy=0.80, title_accuracy=1.00, tone_accuracy=0.60",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/config_detection_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the project config detection for \"The Mariner\" screenplay.\n\nThe model was asked to detect 10 project metadata fields from the screenplay text.\n\nKey quality criteria:\n1. Title: Did it correctly identify \"The Mariner\" as the title?\n2. Format: Did it identify this as a feature film screenplay?\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\n4. Tone: Does it capture the dark, gritty, violent qualities?\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\n6. Primary characters: Does it identify The Mariner and Rose as leads?\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\n10. Target audience: Does it correctly identify this as mature/adult content?\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\n\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\n"
+              },
+              "pass": true,
+              "score": 0.78,
+              "reason": "Let me evaluate each criterion:\n\n1. **Title**: Correctly identified as 'The Mariner' with confidence 1.0. ✅\n\n2. **Format**: Identified as 'feature film' with confidence 0.9. Reasonable. ✅\n\n3. **Genre**: Includes action, drama, thriller, and crime. Captures the vigilante crime-action nature well. ✅\n\n4. **Tone**: Dark, gritty, intense, bleak, suspenseful - all appropriate descriptors. ✅\n\n5. **Duration**: Estimated at 120 minutes, within the 85-130 minute range. ✅\n\n6. **Primary characters**: Identifies The Mariner and Rose as leads. ✅\n\n7. **Supporting characters**: Lists Salvatori and Vinnie (both mentioned in rubric), plus Mikey, Carlos, and Rosco. However, it's missing 'Dad' who was specifically mentioned in the rubric as a supporting character. Partial. ⚠️\n\n8. **Location count**: Estimated at 8, within the 5-20 range. ✅\n\n9. **Locations summary**: Mentions the Ruddy & Greene building explicitly, along with ruined city streets, multiple floors, backyard, and office space. ✅\n\n10. **Target audience**: Value is null with confidence 0.2, but the rationale mentions adult audience due to violence and mature themes. The null value is problematic - it should have committed to 'adult' or 'mature' as the value rather than returning null. The rationale correctly identifies the content as mature, but the actual value field fails to capture this. ⚠️\n\n11. **Confidence calibration**: Generally well-calibrated. Title at 1.0 is appropriate. Format at 0.9 is reasonable. Target audience at 0.2 with null reflects genuine uncertainty about specifics, though arguably it could have been more decisive. Mostly reasonable. ✅\n\n12. **Rationale quality**: Rationales are grounded in screenplay evidence - mentioning specific elements like the pandemic setting, the title card, character appearances, and building details. ✅\n\nOverall: Strong performance on most criteria. Two notable weaknesses: (1) missing 'Dad' from supporting characters, and (2) target_audience returning null instead of committing to 'adult/mature' despite the rationale clearly supporting that conclusion. These are relatively minor issues in an otherwise solid analysis.",
+              "tokensUsed": {
+                "total": 1756,
+                "prompt": 1139,
+                "completion": 617,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"title\\\":{\\\"value\\\":\\\"The Mariner\\\",\\\"confidence\\\":1,\\\"rationale\\\":\\\"The screenplay explicitly states the title as 'The Mariner' in a full-screen superimposed title card.\\\"},\\\"format\\\":{\\\"value\\\":\\\"feature film\\\",\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"The screenplay features multiple acts, extensive scene descriptions, and a complex narrative structure typical of a feature-length film rather than a short or pilot. The detailed world-building and character arcs suggest a full-length feature.\\\"},\\\"genre\\\":{\\\"value\\\":[\\\"action\\\",\\\"drama\\\",\\\"thriller\\\",\\\"crime\\\"],\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"The screenplay includes intense action scenes, a gritty dystopian setting, themes of violence, heroism, and crime, indicating a combination of action, drama, thriller, and crime genres.\\\"},\\\"tone\\\":{\\\"value\\\":[\\\"dark\\\",\\\"gritty\\\",\\\"intense\\\",\\\"bleak\\\",\\\"suspenseful\\\"],\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"The screenplay depicts a ruined city post-pandemic, violent confrontations, and a serious, gritty atmosphere. The tone is consistently dark and intense, with moments of suspense and bleakness.\\\"},\\\"estimated_duration_minutes\\\":{\\\"value\\\":120,\\\"confidence\\\":0.8,\\\"rationale\\\":\\\"The screenplay contains detailed scenes, flashbacks, and dialogue typical of a feature film. Based on standard screenplay-to-runtime conversion (~1 page per minute), the length suggests approximately 120 minutes.\\\"},\\\"primary_characters\\\":{\\\"value\\\":[\\\"The Mariner\\\",\\\"Rose\\\"],\\\"confidence\\\":1,\\\"rationale\\\":\\\"The protagonist is clearly The Mariner, and Rose is a key supporting character with significant screen time and narrative focus.\\\"},\\\"supporting_characters\\\":{\\\"value\\\":[\\\"Salvatori\\\",\\\"Vinnie\\\",\\\"Mikey\\\",\\\"Carlos\\\",\\\"Rosco\\\"],\\\"confidence\\\":1,\\\"rationale\\\":\\\"These characters appear in multiple scenes, have distinct roles, and are integral to the plot's progression, indicating supporting roles.\\\"},\\\"location_count\\\":{\\\"value\\\":8,\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"The screenplay describes multiple distinct locations: city center, Ruddy & Greene building (front and rear), alley, elevator, stairwells, various floors of the building, backyard, and office. Counting these, there are approximately 8 key locations.\\\"},\\\"locations_summary\\\":{\\\"value\\\":\\\"A post-apocalyptic urban environment featuring ruined city streets, a dilapidated office building with multiple floors, a backyard, and an upscale office space.\\\",\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"The screenplay details various settings including a ruined city center, a damaged office building with multiple floors, alleyways, and a backyard, providing a broad sense of the environment.\\\"},\\\"target_audience\\\":{\\\"value\\\":null,\\\"confidence\\\":0.2,\\\"rationale\\\":\\\"The screenplay contains violence, mature themes, and language, suggesting an adult audience, but no explicit rating or demographic is provided, making the target audience uncertain.\\\"}}\\n</Output>\\n<Rubric>\\nEvaluate the project config detection for \\\"The Mariner\\\" screenplay.\\n\\nThe model was asked to detect 10 project metadata fields from the screenplay text.\\n\\nKey quality criteria:\\n1. Title: Did it correctly identify \\\"The Mariner\\\" as the title?\\n2. Format: Did it identify this as a feature film screenplay?\\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\\n4. Tone: Does it capture the dark, gritty, violent qualities?\\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\\n6. Primary characters: Does it identify The Mariner and Rose as leads?\\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\\n10. Target audience: Does it correctly identify this as mature/adult content?\\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\\n\\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "4f590acc-7174-4b56-88f2-c8b839e72d66",
+        "latencyMs": 10868,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+          "label": "prompts/config-detection.txt: You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "13477f2e43f458ae6aaf339031e59fb9fef327140f697287ed27cb72ceda776a",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1-nano",
+          "label": "GPT-4.1 Nano"
+        },
+        "response": {
+          "output": "{\n  \"title\": {\n    \"value\": \"The Mariner\",\n    \"confidence\": 1.0,\n    \"rationale\": \"The screenplay explicitly states the title as 'The Mariner' in a full-screen superimposed title card.\"\n  },\n  \"format\": {\n    \"value\": \"feature film\",\n    \"confidence\": 0.9,\n    \"rationale\": \"The screenplay features multiple acts, extensive scene descriptions, and a complex narrative structure typical of a feature-length film rather than a short or pilot. The detailed world-building and character arcs suggest a full-length feature.\"\n  },\n  \"genre\": {\n    \"value\": [\"action\", \"drama\", \"thriller\", \"crime\"],\n    \"confidence\": 0.9,\n    \"rationale\": \"The screenplay includes intense action scenes, a gritty dystopian setting, themes of violence, heroism, and crime, indicating a combination of action, drama, thriller, and crime genres.\"\n  },\n  \"tone\": {\n    \"value\": [\"dark\", \"gritty\", \"intense\", \"bleak\", \"suspenseful\"],\n    \"confidence\": 0.95,\n    \"rationale\": \"The screenplay depicts a ruined city post-pandemic, violent confrontations, and a serious, gritty atmosphere. The tone is consistently dark and intense, with moments of suspense and bleakness.\"\n  },\n  \"estimated_duration_minutes\": {\n    \"value\": 120,\n    \"confidence\": 0.8,\n    \"rationale\": \"The screenplay contains detailed scenes, flashbacks, and dialogue typical of a feature film. Based on standard screenplay-to-runtime conversion (~1 page per minute), the length suggests approximately 120 minutes.\"\n  },\n  \"primary_characters\": {\n    \"value\": [\"The Mariner\", \"Rose\"],\n    \"confidence\": 1.0,\n    \"rationale\": \"The protagonist is clearly The Mariner, and Rose is a key supporting character with significant screen time and narrative focus.\"\n  },\n  \"supporting_characters\": {\n    \"value\": [\"Salvatori\", \"Vinnie\", \"Mikey\", \"Carlos\", \"Rosco\"],\n    \"confidence\": 1.0,\n    \"rationale\": \"These characters appear in multiple scenes, have distinct roles, and are integral to the plot's progression, indicating supporting roles.\"\n  },\n  \"location_count\": {\n    \"value\": 8,\n    \"confidence\": 0.9,\n    \"rationale\": \"The screenplay describes multiple distinct locations: city center, Ruddy & Greene building (front and rear), alley, elevator, stairwells, various floors of the building, backyard, and office. Counting these, there are approximately 8 key locations.\"\n  },\n  \"locations_summary\": {\n    \"value\": \"A post-apocalyptic urban environment featuring ruined city streets, a dilapidated office building with multiple floors, a backyard, and an upscale office space.\",\n    \"confidence\": 0.9,\n    \"rationale\": \"The screenplay details various settings including a ruined city center, a damaged office building with multiple floors, alleyways, and a backyard, providing a broad sense of the environment.\"\n  },\n  \"target_audience\": {\n    \"value\": null,\n    \"confidence\": 0.2,\n    \"rationale\": \"The screenplay contains violence, mature themes, and language, suggesting an adult audience, but no explicit rating or demographic is provided, making the target audience uncertain.\"\n  }\n}",
+          "tokenUsage": {
+            "total": 5575,
+            "prompt": 4854,
+            "completion": 721,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 10868,
+          "finishReason": "stop",
+          "cost": 0.0007738,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d5b8085cff6243a-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Sun, 01 Mar 2026 22:12:25 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "10462",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=3aj68xhesxgzc0HBlE868zVmT2QrdTq.NDkw.QasGis-1772403134.366165-1.0.1.1-lAjoCwaxufinpVCFpW3we5c6pM6y1X03ptGgcyCuVRrM8n5a4rHvG4i6iwM.2sxHcRUpd1yK93RnyUgsjY5JXGaqMdkR9.1e22YjZzqRyGe5b3XruJLugk1dkBjZFt3Y; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Sun, 01 Mar 2026 22:42:25 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "10000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "9995359",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "27ms",
+                "x-request-id": "req_67486a3a7aef44de973b995cddac3dd7"
+              }
+            }
+          }
+        },
+        "score": 0.86,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-config.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/config_detection_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the project config detection for \"The Mariner\" screenplay.\n\nThe model was asked to detect 10 project metadata fields from the screenplay text.\n\nKey quality criteria:\n1. Title: Did it correctly identify \"The Mariner\" as the title?\n2. Format: Did it identify this as a feature film screenplay?\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\n4. Tone: Does it capture the dark, gritty, violent qualities?\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\n6. Primary characters: Does it identify The Mariner and Rose as leads?\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\n10. Target audience: Does it correctly identify this as mature/adult content?\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\n\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-config.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d5b8085cff6243a-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Sun, 01 Mar 2026 22:12:25 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "10462",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=3aj68xhesxgzc0HBlE868zVmT2QrdTq.NDkw.QasGis-1772403134.366165-1.0.1.1-lAjoCwaxufinpVCFpW3we5c6pM6y1X03ptGgcyCuVRrM8n5a4rHvG4i6iwM.2sxHcRUpd1yK93RnyUgsjY5JXGaqMdkR9.1e22YjZzqRyGe5b3XruJLugk1dkBjZFt3Y; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Sun, 01 Mar 2026 22:42:25 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "10000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "9995359",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "27ms",
+              "x-request-id": "req_67486a3a7aef44de973b995cddac3dd7"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.0032552,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.915,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1990,
+            "prompt": 1248,
+            "completion": 742,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.98,
+              "reason": "character_accuracy=1.00, confidence_quality=1.00, duration_accuracy=1.00, format_accuracy=1.00, genre_accuracy=1.00, json_valid=1.00, location_accuracy=1.00, title_accuracy=1.00, tone_accuracy=0.80",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/config_detection_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the project config detection for \"The Mariner\" screenplay.\n\nThe model was asked to detect 10 project metadata fields from the screenplay text.\n\nKey quality criteria:\n1. Title: Did it correctly identify \"The Mariner\" as the title?\n2. Format: Did it identify this as a feature film screenplay?\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\n4. Tone: Does it capture the dark, gritty, violent qualities?\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\n6. Primary characters: Does it identify The Mariner and Rose as leads?\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\n10. Target audience: Does it correctly identify this as mature/adult content?\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\n\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\n"
+              },
+              "pass": true,
+              "score": 0.85,
+              "reason": "Let me evaluate each criterion:\n\n1. **Title**: Correctly identified as 'The Mariner' with confidence 1.0. ✅\n\n2. **Format**: Correctly identified as 'feature film' with confidence 0.9. ✅\n\n3. **Genre**: Includes action, crime, drama, and thriller. This captures the vigilante crime-action nature well. ✅\n\n4. **Tone**: Captures dark, gritty, violent, intense, bleak, suspenseful, fast-paced. Excellent coverage. ✅\n\n5. **Duration**: Estimated at 90 minutes. The rubric says 85-130 minutes for a ~430-line screenplay. 90 minutes is within range, though the rationale mentions 'approximately 90 pages' which may not be accurate for a 430-line screenplay. The estimate itself is reasonable. ✅ (minor rationale concern)\n\n6. **Primary characters**: Lists Mariner, Rose, and Salvatori. The rubric asks for Mariner and Rose as leads. Salvatori is listed as primary rather than supporting, which is a judgment call - as the main antagonist, this is defensible. ✅\n\n7. **Supporting characters**: Lists Vinnie, Mikey, Carlos, Rosco, Dad. The rubric mentions Dad, Salvatori, and Vinnie should be among supporting cast. Salvatori is placed as primary instead of supporting, but Dad and Vinnie are correctly in supporting. This is a minor discrepancy - placing the main antagonist as primary is reasonable. Partial ✅\n\n8. **Location count**: Estimated at 6, which falls within the 5-20 range. ✅\n\n9. **Locations summary**: Mentions the Ruddy & Greene Building as the primary setting, along with the ruined city center, alley, multiple floors, and flashback locations. ✅\n\n10. **Target audience**: Correctly identified as 'R' for mature content with appropriate justification. ✅\n\n11. **Confidence calibration**: Scores range from 0.8 to 1.0, which seem reasonable. The title at 1.0 is appropriate. Format at 0.9, genre at 0.95, tone at 0.95 all seem well-calibrated. Duration at 0.8 reflects appropriate uncertainty. ✅\n\n12. **Rationale quality**: Rationales are generally grounded in screenplay evidence, referencing specific elements like gang money, fight scenes, the Ruddy & Greene Building, flashbacks, etc. The duration rationale's claim of '90 pages' is questionable for a 430-line screenplay, but otherwise rationales are solid. Mostly ✅\n\nOverall, this is a high-quality extraction with accurate metadata, reasonable confidence scores, and evidence-based rationales. The main minor issues are: (1) Salvatori classified as primary rather than supporting (defensible), and (2) the duration rationale's page count claim may be inaccurate.",
+              "tokensUsed": {
+                "total": 1990,
+                "prompt": 1248,
+                "completion": 742,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"title\\\":{\\\"value\\\":\\\"The Mariner\\\",\\\"confidence\\\":1,\\\"rationale\\\":\\\"The title is explicitly given at the very beginning and again as a full-screen superimposed title card.\\\"},\\\"format\\\":{\\\"value\\\":\\\"feature film\\\",\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"The screenplay shows a continuous narrative with multiple locations, flashbacks, complex character development, and a structured three-act style typical of feature films. The formatting and scene headings are consistent with feature film scripts.\\\"},\\\"genre\\\":{\\\"value\\\":[\\\"action\\\",\\\"crime\\\",\\\"drama\\\",\\\"thriller\\\"],\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"The screenplay contains intense fight scenes and gunfire (action), involves gang money and criminal elements (crime), explores deep character backstory and emotional conflict (drama), and has suspenseful, tense sequences with life-threatening stakes (thriller). There is no evidence of fantasy, sci-fi, romance, or comedy as primary genres.\\\"},\\\"tone\\\":{\\\"value\\\":[\\\"dark\\\",\\\"gritty\\\",\\\"violent\\\",\\\"intense\\\",\\\"bleak\\\",\\\"suspenseful\\\",\\\"fast-paced\\\"],\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"The setting is a ruined, dystopian city with violence and bloodshed (dark, gritty, violent, bleak). The narrative is tense with gunfights and chases (intense, suspenseful). The pacing is brisk with continuous action and little downtime (fast-paced). There is no indication of light or whimsical tone.\\\"},\\\"estimated_duration_minutes\\\":{\\\"value\\\":90,\\\"confidence\\\":0.8,\\\"rationale\\\":\\\"The screenplay is approximately 90 pages long (typical for a feature film), and the one page per minute rule applies.\\\"},\\\"primary_characters\\\":{\\\"value\\\":[\\\"Mariner\\\",\\\"Rose\\\",\\\"Salvatori\\\"],\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"Mariner and Rose are the protagonists, central to the narrative and action. Salvatori is the main antagonist, directly opposing them and driving conflict.\\\"},\\\"supporting_characters\\\":{\\\"value\\\":[\\\"Vinnie\\\",\\\"Mikey\\\",\\\"Carlos\\\",\\\"Rosco\\\",\\\"Dad (flashback)\\\"],\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"These characters appear in supporting roles, mostly as thugs or in flashbacks, contributing to the story but not central protagonists or antagonists.\\\"},\\\"location_count\\\":{\\\"value\\\":6,\\\"confidence\\\":0.85,\\\"rationale\\\":\\\"Distinct locations include: 1) City centre (ruined urban environment), 2) Ruddy & Greene Building front, 3) Ruddy & Greene Building rear alley, 4) Inside Ruddy & Greene Building (multiple floors and elevator), 5) Coastline (flashbacks), 6) Backyard (flashbacks). These are clearly distinct settings.\\\"},\\\"locations_summary\\\":{\\\"value\\\":\\\"A dystopian ruined city center dominated by the Ruddy & Greene Building, including its grimy alley and multiple floors with elevator and stairwells; flashbacks occur at a coastal shoreline and a backyard setting.\\\",\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"The screenplay repeatedly references the ruined city and the Ruddy & Greene Building as the main action setting, with flashbacks to a coastal and backyard environment.\\\"},\\\"target_audience\\\":{\\\"value\\\":\\\"R\\\",\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"The screenplay contains graphic violence, blood, gunfire, strong language, and mature themes such as gang crime and trauma, indicating a mature audience rating (R).\\\"}}\\n</Output>\\n<Rubric>\\nEvaluate the project config detection for \\\"The Mariner\\\" screenplay.\\n\\nThe model was asked to detect 10 project metadata fields from the screenplay text.\\n\\nKey quality criteria:\\n1. Title: Did it correctly identify \\\"The Mariner\\\" as the title?\\n2. Format: Did it identify this as a feature film screenplay?\\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\\n4. Tone: Does it capture the dark, gritty, violent qualities?\\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\\n6. Primary characters: Does it identify The Mariner and Rose as leads?\\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\\n10. Target audience: Does it correctly identify this as mature/adult content?\\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\\n\\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "757134b2-aa66-418f-a679-cb8d41eaedcf",
+        "latencyMs": 11131,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+          "label": "prompts/config-detection.txt: You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.\n\n==========\nSCREENPLAY:\n\n{{screenplay}}\n\n==========\nTASK:\n\nDetect the following 10 project configuration fields. For each field, provide:\n- value: the detected value\n- confidence: 0.0-1.0 confidence score\n- rationale: brief explanation of how you determined the value\n\nReturn a JSON object with these fields:\n\n1. title (string): The title of the screenplay/film\n2. format (string): The format type. Use one of: \"feature film\", \"short film\", \"pilot\", \"limited series\". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.\n3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.\n4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.\n5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)\n6. primary_characters (array of strings): Main characters (protagonists/antagonists)\n7. supporting_characters (array of strings): Supporting and minor characters\n8. location_count (integer): Number of distinct locations\n9. locations_summary (string): Brief description of the key locations\n10. target_audience (string or null): Target audience rating/demographic, null if uncertain\n\nBe conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.\n\nExample structure:\n{\n  \"title\": {\"value\": \"...\", \"confidence\": 0.95, \"rationale\": \"...\"},\n  \"format\": {\"value\": \"...\", \"confidence\": 0.9, \"rationale\": \"...\"},\n  ...\n}",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "13477f2e43f458ae6aaf339031e59fb9fef327140f697287ed27cb72ceda776a",
+        "promptIdx": 1,
+        "provider": {
+          "id": "openai:gpt-4.1-mini",
+          "label": "GPT-4.1 Mini"
+        },
+        "response": {
+          "output": "{\n  \"title\": {\n    \"value\": \"The Mariner\",\n    \"confidence\": 1.0,\n    \"rationale\": \"The title is explicitly given at the very beginning and again as a full-screen superimposed title card.\"\n  },\n  \"format\": {\n    \"value\": \"feature film\",\n    \"confidence\": 0.9,\n    \"rationale\": \"The screenplay shows a continuous narrative with multiple locations, flashbacks, complex character development, and a structured three-act style typical of feature films. The formatting and scene headings are consistent with feature film scripts.\"\n  },\n  \"genre\": {\n    \"value\": [\"action\", \"crime\", \"drama\", \"thriller\"],\n    \"confidence\": 0.95,\n    \"rationale\": \"The screenplay contains intense fight scenes and gunfire (action), involves gang money and criminal elements (crime), explores deep character backstory and emotional conflict (drama), and has suspenseful, tense sequences with life-threatening stakes (thriller). There is no evidence of fantasy, sci-fi, romance, or comedy as primary genres.\"\n  },\n  \"tone\": {\n    \"value\": [\"dark\", \"gritty\", \"violent\", \"intense\", \"bleak\", \"suspenseful\", \"fast-paced\"],\n    \"confidence\": 0.95,\n    \"rationale\": \"The setting is a ruined, dystopian city with violence and bloodshed (dark, gritty, violent, bleak). The narrative is tense with gunfights and chases (intense, suspenseful). The pacing is brisk with continuous action and little downtime (fast-paced). There is no indication of light or whimsical tone.\"\n  },\n  \"estimated_duration_minutes\": {\n    \"value\": 90,\n    \"confidence\": 0.8,\n    \"rationale\": \"The screenplay is approximately 90 pages long (typical for a feature film), and the one page per minute rule applies.\"\n  },\n  \"primary_characters\": {\n    \"value\": [\"Mariner\", \"Rose\", \"Salvatori\"],\n    \"confidence\": 0.95,\n    \"rationale\": \"Mariner and Rose are the protagonists, central to the narrative and action. Salvatori is the main antagonist, directly opposing them and driving conflict.\"\n  },\n  \"supporting_characters\": {\n    \"value\": [\"Vinnie\", \"Mikey\", \"Carlos\", \"Rosco\", \"Dad (flashback)\"],\n    \"confidence\": 0.9,\n    \"rationale\": \"These characters appear in supporting roles, mostly as thugs or in flashbacks, contributing to the story but not central protagonists or antagonists.\"\n  },\n  \"location_count\": {\n    \"value\": 6,\n    \"confidence\": 0.85,\n    \"rationale\": \"Distinct locations include: 1) City centre (ruined urban environment), 2) Ruddy & Greene Building front, 3) Ruddy & Greene Building rear alley, 4) Inside Ruddy & Greene Building (multiple floors and elevator), 5) Coastline (flashbacks), 6) Backyard (flashbacks). These are clearly distinct settings.\"\n  },\n  \"locations_summary\": {\n    \"value\": \"A dystopian ruined city center dominated by the Ruddy & Greene Building, including its grimy alley and multiple floors with elevator and stairwells; flashbacks occur at a coastal shoreline and a backyard setting.\",\n    \"confidence\": 0.9,\n    \"rationale\": \"The screenplay repeatedly references the ruined city and the Ruddy & Greene Building as the main action setting, with flashbacks to a coastal and backyard environment.\"\n  },\n  \"target_audience\": {\n    \"value\": \"R\",\n    \"confidence\": 0.9,\n    \"rationale\": \"The screenplay contains graphic violence, blood, gunfire, strong language, and mature themes such as gang crime and trauma, indicating a mature audience rating (R).\"\n  }\n}",
+          "tokenUsage": {
+            "total": 5675,
+            "prompt": 4854,
+            "completion": 821,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 11131,
+          "finishReason": "stop",
+          "cost": 0.0032552,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d5b81125cd2243a-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Sun, 01 Mar 2026 22:12:47 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "10980",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=4JGZ38xVRgEoHAXTZzbxAAkaY4s3HU2Tg3r6FnHW9rQ-1772403156.8557687-1.0.1.1-pCzt8Xt58avBFjMfv_lRZXHFv7L558WU7a_BH6T1587TRDU8gzA4HvjwgQMwaCsTX5dbmud_LaAq0pBKyUhvXH3dGwdNvN4swks1py8v3ZWH3JRzgQFSFfQyV4QdrByz; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Sun, 01 Mar 2026 22:42:47 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "10000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "9995359",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "27ms",
+                "x-request-id": "req_d0fc18dd5579471c90cb6baf511a6b97"
+              }
+            }
+          }
+        },
+        "score": 0.915,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-config.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/config_detection_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the project config detection for \"The Mariner\" screenplay.\n\nThe model was asked to detect 10 project metadata fields from the screenplay text.\n\nKey quality criteria:\n1. Title: Did it correctly identify \"The Mariner\" as the title?\n2. Format: Did it identify this as a feature film screenplay?\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\n4. Tone: Does it capture the dark, gritty, violent qualities?\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\n6. Primary characters: Does it identify The Mariner and Rose as leads?\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\n10. Target audience: Does it correctly identify this as mature/adult content?\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\n\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-config.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d5b81125cd2243a-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Sun, 01 Mar 2026 22:12:47 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "10980",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=4JGZ38xVRgEoHAXTZzbxAAkaY4s3HU2Tg3r6FnHW9rQ-1772403156.8557687-1.0.1.1-pCzt8Xt58avBFjMfv_lRZXHFv7L558WU7a_BH6T1587TRDU8gzA4HvjwgQMwaCsTX5dbmud_LaAq0pBKyUhvXH3dGwdNvN4swks1py8v3ZWH3JRzgQFSFfQyV4QdrByz; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Sun, 01 Mar 2026 22:42:47 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "10000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "9995359",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "27ms",
+              "x-request-id": "req_d0fc18dd5579471c90cb6baf511a6b97"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 2,
+      "failures": 1,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 14562,
+        "completion": 2516,
+        "cached": 0,
+        "total": 17078,
+        "numRequests": 3,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 5823,
+          "prompt": 3780,
+          "completion": 2043,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 73692
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Project config detection from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/Documents/Projects/cine-forge/benchmarks/prompts/config-detection.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5-nano",
+        "label": "GPT-5 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5-mini",
+        "label": "GPT-5 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-config.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/config_detection_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the project config detection for \"The Mariner\" screenplay.\n\nThe model was asked to detect 10 project metadata fields from the screenplay text.\n\nKey quality criteria:\n1. Title: Did it correctly identify \"The Mariner\" as the title?\n2. Format: Did it identify this as a feature film screenplay?\n3. Genre: Does it include action, crime, and/or thriller? (It's a vigilante crime-action story)\n4. Tone: Does it capture the dark, gritty, violent qualities?\n5. Duration: Is the estimate reasonable (85-130 minutes for a ~430-line screenplay)?\n6. Primary characters: Does it identify The Mariner and Rose as leads?\n7. Supporting characters: Does it list Dad, Salvatori, Vinnie among supporting cast?\n8. Location count: Is the estimate reasonable (5-20 distinct locations)?\n9. Locations summary: Does it mention the Ruddy & Greene Building as the primary setting?\n10. Target audience: Does it correctly identify this as mature/adult content?\n11. Confidence calibration: Are confidence scores reasonable and well-calibrated?\n12. Rationale quality: Are rationales grounded in actual screenplay evidence?\n\nScore strictly: the metadata should be accurate and evidence-based, not guessed.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/config-detection-gpt41-verify.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.24",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-03-01T22:13:27.924Z",
+    "evaluationCreatedAt": "2026-03-01T22:12:14.095Z"
+  }
+}

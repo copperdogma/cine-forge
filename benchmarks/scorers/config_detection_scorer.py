@@ -3,14 +3,15 @@ Project config detection scorer.
 Evaluates accuracy of auto-detected project metadata against golden reference.
 
 Scoring dimensions:
-- json_valid (0.10): Valid JSON output with all 10 fields
-- title_accuracy (0.15): Correct title identification
-- format_accuracy (0.10): Correct format detection
-- genre_accuracy (0.15): Genre keyword overlap
-- tone_accuracy (0.10): Tone keyword overlap
-- duration_accuracy (0.10): Duration within expected range
-- character_accuracy (0.15): Primary/supporting character identification
-- location_accuracy (0.10): Location count and summary
+- json_valid (0.08): Valid JSON output with all 10 fields
+- title_accuracy (0.12): Correct title identification
+- format_accuracy (0.10): Correct format detection (short film, not feature)
+- genre_accuracy (0.13): Genre keyword overlap
+- tone_accuracy (0.10): Tone keyword overlap (expanded vocabulary)
+- duration_accuracy (0.10): Duration within expected range (8-35 min)
+- character_accuracy (0.13): Primary/supporting character identification
+- location_accuracy (0.09): Location count and summary
+- audience_accuracy (0.10): Target audience identification
 - confidence_quality (0.05): Confidence scores are calibrated
 """
 
@@ -168,6 +169,24 @@ def get_assert(output: str, context: dict) -> dict:
 
     scores["location_accuracy"] = 0.4 * loc_count_score + 0.6 * summ_score
 
+    # Target audience accuracy
+    audience_golden = fields.get("target_audience", {})
+    audience_val, _ = get_field_value("target_audience")
+    audience_keywords = audience_golden.get("expected_keywords", [])
+    if audience_val is None or str(audience_val).lower() in ("null", "none", ""):
+        if audience_golden.get("allow_null", False):
+            scores["audience_accuracy"] = 0.5  # Partial credit for null when allowed
+        else:
+            scores["audience_accuracy"] = 0.0
+    elif audience_keywords:
+        audience_text = str(audience_val).lower()
+        if any(kw.lower() in audience_text for kw in audience_keywords):
+            scores["audience_accuracy"] = 1.0
+        else:
+            scores["audience_accuracy"] = 0.3
+    else:
+        scores["audience_accuracy"] = 1.0  # No keywords to check
+
     # Confidence quality — check that confidence scores exist and are reasonable
     conf_scores = []
     for field_name in ["title", "format", "genre", "tone", "estimated_duration_minutes",
@@ -186,14 +205,15 @@ def get_assert(output: str, context: dict) -> dict:
 
     # Weighted composite
     weights = {
-        "json_valid": 0.10,
-        "title_accuracy": 0.15,
+        "json_valid": 0.08,
+        "title_accuracy": 0.12,
         "format_accuracy": 0.10,
-        "genre_accuracy": 0.15,
+        "genre_accuracy": 0.13,
         "tone_accuracy": 0.10,
         "duration_accuracy": 0.10,
-        "character_accuracy": 0.15,
-        "location_accuracy": 0.10,
+        "character_accuracy": 0.13,
+        "location_accuracy": 0.09,
+        "audience_accuracy": 0.10,
         "confidence_quality": 0.05,
     }
 
