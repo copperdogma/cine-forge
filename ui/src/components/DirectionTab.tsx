@@ -7,7 +7,7 @@
  */
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Compass, Eye, Loader2, Scissors, Sparkles, Users as UsersIcon } from 'lucide-react'
+import { Compass, Eye, Loader2, Scissors, Sparkles, Users as UsersIcon, Volume2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
@@ -31,7 +31,7 @@ const CONCERN_GROUPS: Array<{
 }> = [
   { concernGroup: 'rhythm_and_flow', artifactType: 'rhythm_and_flow', roleId: 'editorial_architect', roleName: 'Rhythm & Flow', icon: Scissors, color: 'text-pink-400' },
   { concernGroup: 'look_and_feel', artifactType: 'look_and_feel', roleId: 'visual_architect', roleName: 'Look & Feel', icon: Eye, color: 'text-sky-400' },
-  // { concernGroup: 'sound_and_music', artifactType: 'sound_and_music', roleId: 'sound_designer', roleName: 'Sound & Music', icon: Volume2, color: 'text-emerald-400' },
+  { concernGroup: 'sound_and_music', artifactType: 'sound_and_music', roleId: 'sound_designer', roleName: 'Sound & Music', icon: Volume2, color: 'text-emerald-400' },
   // { concernGroup: 'character_and_performance', artifactType: 'character_and_performance', roleId: 'story_editor', roleName: 'Character', icon: Drama, color: 'text-amber-400' },
 ]
 
@@ -89,6 +89,14 @@ export function DirectionTab({
   // Track whether a run is active for this project (disables buttons globally)
   const activeRunId = useChatStore(s => s.activeRunId?.[projectId] ?? null)
 
+  // Track which concern group triggered the current run (for spinner placement).
+  // "Adjusting state during rendering" pattern — React re-renders immediately before paint.
+  const [generatingGroup, setGeneratingGroup] = useState<string | null>(null)
+  const runActive = !!activeRunId || startRun.isPending
+  if (!runActive && generatingGroup !== null) {
+    setGeneratingGroup(null)
+  }
+
   // Resolve which concern groups have existing artifacts for this scene
   const resolvedGroups = CONCERN_GROUPS.map(cg => ({
     ...cg,
@@ -102,6 +110,7 @@ export function DirectionTab({
   const handleGenerate = async (concernGroup: string, roleName: string, isRegenerate: boolean) => {
     if (!latestInputPath) return
     const store = useChatStore.getState()
+    setGeneratingGroup(concernGroup)
 
     try {
       const { run_id } = await startRun.mutateAsync({
@@ -110,6 +119,7 @@ export function DirectionTab({
         default_model: 'claude-sonnet-4-6',
         recipe_id: 'creative_direction',
         start_from: concernGroup,
+        end_at: concernGroup,
         accept_config: true,
         skip_qa: true,
         force: isRegenerate,
@@ -145,17 +155,17 @@ export function DirectionTab({
         <div className="flex items-center gap-2 flex-wrap">
           {resolvedGroups.map(cg => {
             const Icon = cg.icon
-            const isRunning = !!activeRunId || startRun.isPending
+            const isThisGenerating = runActive && generatingGroup === cg.concernGroup
             return (
               <Button
                 key={cg.concernGroup}
                 variant={cg.existing ? 'outline' : 'default'}
                 size="sm"
                 className="gap-1.5"
-                disabled={isRunning || !latestInputPath}
+                disabled={runActive || !latestInputPath}
                 onClick={() => handleGenerate(cg.concernGroup, cg.roleName, !!cg.existing)}
               >
-                {isRunning ? (
+                {isThisGenerating ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
                   <Icon className="h-3.5 w-3.5" />

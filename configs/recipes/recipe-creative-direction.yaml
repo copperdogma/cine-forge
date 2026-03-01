@@ -41,3 +41,15 @@ stages:
       intent_mood: intent_mood
       character_bibles: character_bible
       location_bibles: location_bible
+  - id: sound_and_music
+    module: sound_and_music_v1
+    params:
+      skip_qa: true
+      concurrency: 5
+    needs: []
+    after: [intent_mood]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+    store_inputs_optional:
+      intent_mood: intent_mood

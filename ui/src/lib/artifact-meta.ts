@@ -40,6 +40,7 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   look_and_feel: { icon: Eye, label: 'Look & Feel', color: 'text-sky-400' },
   look_and_feel_index: { icon: Eye, label: 'Look & Feel Index', color: 'text-sky-300' },
   sound_and_music: { icon: Volume2, label: 'Sound & Music', color: 'text-emerald-400' },
+  sound_and_music_index: { icon: Volume2, label: 'Sound & Music Index', color: 'text-emerald-300' },
   character_and_performance: { icon: Drama, label: 'Character & Performance', color: 'text-amber-400' },
   story_world: { icon: Globe, label: 'Story World', color: 'text-teal-400' },
 }

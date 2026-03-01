@@ -1,0 +1,40 @@
+module_id: sound_and_music_v1
+stage: sound_and_music
+description: >
+  Produces per-scene Sound & Music artifacts: ambient environment, emotional
+  soundscape, silence placement, offscreen audio cues, sound transitions,
+  music intent, diegetic/non-diegetic notes, and audio motifs. The Sound
+  Designer analyses each scene in context of its neighbours (3-scene sliding
+  window) for audio continuity and transition design. Silence is actively
+  recommended as a first-class creative element (ADR-003 Decision #3).
+input_schemas:
+  - scene_index
+  - canonical_script
+output_schemas:
+  - sound_and_music
+  - sound_and_music_index
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Primary model for sound analysis."
+  escalate_model:
+    type: string
+    required: false
+    default: "claude-opus-4-6"
+    description: "Escalation model for QA failures."
+  verify_model:
+    type: string
+    required: false
+    default: "claude-haiku-4-5-20251001"
+    description: "Lightweight model for QA verification."
+  skip_qa:
+    type: boolean
+    required: false
+    default: false
+  concurrency:
+    type: integer
+    required: false
+    default: 5
+    description: "Max parallel scene analyses."

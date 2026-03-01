@@ -101,6 +101,7 @@ class RunStartRequest(BaseModel):
     run_id: str | None = None
     force: bool = False
     start_from: str | None = None
+    end_at: str | None = None
     skip_qa: bool = False
     retry_failed_stage_for_run_id: str | None = None
 

@@ -1310,6 +1310,7 @@ class OperatorConsoleService:
                 "force": bool(request.get("force", False)),
                 "runtime_params": runtime_params,
                 "start_from": request.get("start_from"),
+                "end_at": request.get("end_at"),
             },
             daemon=True,
         )
@@ -1478,6 +1479,7 @@ class OperatorConsoleService:
         force: bool,
         runtime_params: dict[str, Any],
         start_from: str | None = None,
+        end_at: str | None = None,
     ) -> None:
         try:
             engine = DriverEngine(
@@ -1490,6 +1492,7 @@ class OperatorConsoleService:
                 force=force,
                 runtime_params=runtime_params,
                 start_from=start_from,
+                end_at=end_at,
             )
             with self._run_lock:
                 self._run_errors.pop(run_id, None)

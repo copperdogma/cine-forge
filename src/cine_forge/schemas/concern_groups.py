@@ -218,6 +218,39 @@ class SoundAndMusic(BaseModel):
     user_approved: bool = Field(default=False)
 
 
+class SoundAndMusicIndex(BaseModel):
+    """Aggregate index of all per-scene Sound & Music direction for a project.
+
+    Summarises the overall sonic language, key audio motifs, and score/soundscape
+    consistency across the screenplay.
+    """
+
+    total_scenes: int = Field(ge=0)
+    scenes_with_direction: int = Field(ge=0)
+    overall_sonic_language: str = Field(
+        description="High-level audio identity description for the entire film"
+    )
+    dominant_soundscape: str = Field(
+        description="Project-wide ambient/atmospheric tendencies — environment, tone, density"
+    )
+    score_arc: str = Field(
+        description="How score/music evolves across the narrative arc"
+    )
+    key_audio_motifs: list[str] = Field(
+        default_factory=list,
+        description="Recurring sound elements that carry thematic weight",
+    )
+    scenes_with_intentional_silence: list[str] = Field(
+        default_factory=list,
+        description="Scenes where silence is deliberately specified as a creative choice",
+    )
+    sonic_consistency_concerns: list[str] = Field(
+        default_factory=list,
+        description="Potential audio continuity or style coherence issues across scenes",
+    )
+    confidence: float = Field(ge=0.0, le=1.0)
+
+
 # ---------------------------------------------------------------------------
 # §12.4 — Rhythm & Flow (replaces EditorialDirection)
 # ---------------------------------------------------------------------------

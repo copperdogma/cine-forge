@@ -206,7 +206,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         id="sound_and_music",
         label="Sound & Music",
         phase_id="direction",
-        artifact_types=["sound_and_music"],
+        artifact_types=["sound_and_music", "sound_and_music_index"],
         dependencies=["scene_extraction"],
         implemented=True,
     ),
@@ -353,6 +353,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "intent_mood": "creative_direction",
     "rhythm_and_flow": "creative_direction",
     "look_and_feel": "creative_direction",
+    "sound_and_music": "creative_direction",
 }
 
 

@@ -27,6 +27,7 @@ from .concern_groups import (
     RhythmAndFlowIndex,
     SceneCharacterPerformance,
     SoundAndMusic,
+    SoundAndMusicIndex,
     StoryWorld,
 )
 from .continuity import (
@@ -163,6 +164,7 @@ __all__ = [
     "ScriptElement",
     "SourceSpan",
     "SoundAndMusic",
+    "SoundAndMusicIndex",
     "StoryWorld",
     "NarrativeBeat",
     "InferredField",

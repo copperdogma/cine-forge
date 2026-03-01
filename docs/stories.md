@@ -19,7 +19,7 @@ These two are the critical path. Build them first, in this order (093 is indepen
 |---|---|
 | **095** Intent/Mood Layer | The primary interaction surface for all users. Depends on 094. This is what makes CineForge feel like a creative conversation instead of a form. |
 | **021** Look & Feel ✅ | Done. First visual concern group — per-scene parallel analysis, Visual Architect persona, DirectionTab integration. |
-| **022** Sound & Music | First audio concern group. Ready now. Can parallel with 021 and 095. |
+| **022** Sound & Music ✅ | Done. First audio concern group — per-scene parallel analysis, Sound Designer persona, silence mandate (ADR-003 Decision #3). |
 
 021 and 022 are technically ready today, but building them *after* 094 lands means they can use the real concern group schemas instead of inventing their own. Start 095 as soon as 094 merges; 021/022 can overlap.
 
@@ -114,7 +114,7 @@ NOTES from Cam:
 | 019 | Human Control Modes and Creative Sessions | 4 — Role System | High | Done | [story-019](stories/story-019-human-interaction.md) |
 | 020 | Editorial Architect and Editorial Direction | 5 — Creative Direction | Medium | Done | [story-020](stories/story-020-editorial-architect.md) |
 | 021 | Look & Feel — Visual Direction | 5 — Creative Direction | Medium | Done | [story-021](stories/story-021-visual-architect.md) |
-| 022 | Sound & Music — Sound Direction | 5 — Creative Direction | Medium | To Do | [story-022](stories/story-022-sound-designer.md) |
+| 022 | Sound & Music — Sound Direction | 5 — Creative Direction | Medium | Done | [story-022](stories/story-022-sound-designer.md) |
 | 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
 | ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
 | 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | To Do | [story-025](stories/story-025-shot-planning.md) |
@@ -192,7 +192,7 @@ NOTES from Cam:
 | 098 | Real-World Asset Upload Pipeline | 7 — Generation | Medium | Draft | [story-098](stories/story-098-real-asset-upload.md) |
 | 099 | Scene Workspace | 5 — Creative Direction | High | Pending | [story-099](stories/story-099-scene-workspace.md) |
 | 100 | Motif Tracking System | 5 — Creative Direction | Medium | Draft | [story-100](stories/story-100-motif-tracking.md) |
-| 101 | Centralized Long-Running Action System | 2.5 — UI | High | Pending | [story-101](stories/story-101-long-running-action-system.md) |
+| 101 | Centralized Long-Running Action System | 2.5 — UI | High | Done | [story-101](stories/story-101-long-running-action-system.md) |
 | 102 | Promptfoo Multi-Turn Conversational Evals | Cross-Cutting | Medium | Draft | [story-102](stories/story-102-promptfoo-multi-turn-evals.md) |
 | 103 | AGENTS.md Runbook Extraction (300-Line Cap) | Cross-Cutting | Medium | Draft | [story-103](stories/story-103-agents-md-runbook-extraction.md) |
 | 104 | Tiered Quality Metrics for Eval Scoring | Cross-Cutting | High | Draft | [story-104](stories/story-104-tiered-quality-metrics.md) |
