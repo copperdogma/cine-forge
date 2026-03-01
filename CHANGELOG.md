@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-02-28-08] — Scout 004: Ideal alignment gates across story lifecycle
+
+### Changed
+- `/build-story`: Draft STOP gate, read ideal.md before spec, new Ideal Alignment Gate (step 4), model selection pitfall
+- `/create-story`: ideal_refs + status inputs, Story Statuses section, Ideal alignment pushback in Conventions
+- `/validate`: Ideal alignment check step + report template section
+- `/mark-story-done`: Draft guard guardrail
+- `/triage-stories`: Read Ideal step, Ideal alignment + Simplification leverage scoring dimensions
+- AGENTS.md: "Stale model selection" pitfall added to Known Pitfalls
+
 ## [2026-02-28-07] — Per-scene progress tracking for concern group runs
 
 ### Added

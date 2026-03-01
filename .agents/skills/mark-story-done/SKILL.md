@@ -67,3 +67,4 @@ If not complete, stop and list blockers.
 - Ask for confirmation when unresolved items remain
 - Do not duplicate CHANGELOG.md entries — always check before writing
 - Never mark Done without running the full check suite
+- Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first

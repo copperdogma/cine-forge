@@ -47,7 +47,9 @@ Assess whether a story's implementation meets its requirements.
    - Record classification with evidence in the validation report
    - Grade cannot exceed B if mismatches remain unclassified
 
-6. **Produce report:**
+6. **Check Ideal alignment** — Read the relevant section of `docs/ideal.md`. Does the implementation move toward the Ideal or entrench a compromise? If entrenching: is the compromise justified and does a detection eval exist?
+
+7. **Produce report:**
 
 ```
 ## Validation Report — Story {NNN}
@@ -63,6 +65,10 @@ Assess whether a story's implementation meets its requirements.
 
 ### Acceptance Criteria
 - [criterion]: Met/Partial/Unmet — evidence
+
+### Ideal Alignment
+- Moves toward Ideal: yes/no/partial
+- New compromises introduced: [list, with detection eval status]
 
 ### Grade: A/B/C/D/F
 

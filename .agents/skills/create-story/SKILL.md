@@ -13,8 +13,10 @@ Create a new story in `docs/stories/` with consistent format.
 - `title`: human-readable story title
 - `slug`: kebab-case slug (derived from title if not provided)
 - `priority`: High / Medium / Low (default: Medium)
-- `spec_refs`: relevant spec.md sections
+- `ideal_refs`: ideal.md requirements this delivers (e.g., Reqs #1, #3)
+- `spec_refs`: relevant spec.md sections or compromise numbers
 - `depends_on`: story IDs this depends on (if any)
+- `status`: Pending (fully detailed, ready to build) or Draft (skeleton with goal + notes, NOT ready to build)
 
 ## Steps
 
@@ -37,6 +39,13 @@ Create a new story in `docs/stories/` with consistent format.
 
 4. **Verify** — Confirm the file exists, numbering is consistent, and the stories.md row is correct.
 
+## Story Statuses
+
+- **Draft**: Skeleton with goal + notes but placeholder ACs and tasks. NOT ready to build. Accumulates research and design ideas over time. Promoted to Pending when ready.
+- **Pending**: Fully detailed ACs, tasks, files to modify. Ready for `/build-story`.
+- **In Progress**: Being built.
+- **Done**: Validated complete.
+
 ## Conventions
 
 - Acceptance criteria must be testable and concrete
@@ -46,6 +55,13 @@ Create a new story in `docs/stories/` with consistent format.
 - Always include the tenet verification checklist with individual checkboxes per tenet
 - "Files to Modify" is gold for AI agents — fill it in when known
 - Stories are living documents — the AI reads them repeatedly during implementation
+- Every story should trace back to an Ideal requirement or spec compromise (via `Ideal Refs` / `Spec Refs`). Untraceable stories are potential scope creep.
+- **Ideal alignment check** — Before writing the story file, verify alignment:
+  - Does this story close an Ideal gap? → Good, proceed.
+  - Does it move AWAY from the Ideal? → Push back. Explain why and suggest alternatives.
+  - Does it only optimize a compromise without closing a gap? → Flag as low-value.
+  - A story that references a spec compromise is not automatically aligned — it must move toward the Ideal, not entrench the compromise further.
+  - If the story implements a new AI compromise: note whether a detection eval exists or should be created.
 
 ## Guardrails
 
