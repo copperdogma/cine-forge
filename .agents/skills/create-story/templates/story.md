@@ -19,13 +19,13 @@
 
 - {Explicitly list what this story does NOT do}
 
-## AI Considerations
+## Approach Evaluation
 
-Before writing complex code, ask: **"Can an LLM call solve this?"**
-- What parts of this story are reasoning/language/understanding problems? → LLM call
-- What parts are orchestration/storage/UI? → Code
-- Have you checked current SOTA capabilities? Your training data may be stale.
-- See AGENTS.md "AI-First Problem Solving" for full guidance.
+{List candidate approaches — do NOT pre-decide. build-story's eval-first gate selects the winner with evidence.}
+- **AI-only**: {Could an LLM call handle this? What would it cost per run?}
+- **Hybrid**: {Cheap detection + AI judgment? Where's the split?}
+- **Pure code**: {Only if this is strictly orchestration/plumbing with no reasoning.}
+- **Eval**: {What test distinguishes the approaches? Does it exist yet?}
 
 ## Tasks
 

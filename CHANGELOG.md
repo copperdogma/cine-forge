@@ -1,5 +1,21 @@
 # Changelog
 
+## [2026-03-01-05] — Scout 005: eval-first approach gate + /verify-eval skill
+
+### Added
+- `/verify-eval` skill: 5-phase structured mismatch investigation (enumerate → classify → fix golden → re-run → report verified scores)
+- Story 109 (Draft): Golden Build Runbook — documenting golden fixture process + enforcement cross-references
+- AGENTS.md: "LLM resolution degrades from synthetic to real data" pitfall, "eval-first for implementation decisions" lesson
+
+### Changed
+- `/build-story` step 7: "AI-first check" → "Eval-first approach gate" — requires baseline measurement, candidate enumeration, and eval-driven approach selection
+- `/build-story` step 11b: added verified-scores guardrail (raw scores no longer determine ACs)
+- `/create-story`: "AI Considerations" → "Approach Evaluation" in conventions + story template; added /verify-eval task convention for eval-touching stories; added system-order insertion guidance
+- `/mark-story-done`: checklist requires `/verify-eval` report in work log; added guardrail for eval report
+- `/validate` step 5b: references `/verify-eval` for structured investigation protocol
+- `/triage-stories`: added `## Arguments` section for single-story evaluation mode
+- Story 107, 108: updated to use "Approach Evaluation" section; Story 107 gained /verify-eval task
+
 ## [2026-03-01-04] — Config detection golden fix and eval improvement
 
 ### Fixed

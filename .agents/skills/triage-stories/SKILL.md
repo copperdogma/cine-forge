@@ -4,9 +4,13 @@ description: Evaluate the story backlog and recommend what to work on next
 user-invocable: true
 ---
 
-# /triage-stories
+# /triage-stories [story-number]
 
 Evaluate the story backlog and recommend the best next stories to work on.
+
+## Arguments
+
+- `[story-number]` — (optional) If provided, evaluate that specific story's readiness instead of doing a full backlog scan. Assess its dependencies, blockers, and whether it's ready to build.
 
 ## Steps
 
@@ -51,4 +55,4 @@ Evaluate the story backlog and recommend the best next stories to work on.
 - Always read the actual story files, not just the index titles
 - If the backlog is empty or everything is blocked, say so clearly
 - Do not recommend stories that depend on unfinished work unless the dependency is trivially close to done
-- If the user passes a story ID as an argument, evaluate that specific story's readiness instead of doing a full scan
+- If the user passes a story ID as an argument (see Arguments above), evaluate that specific story's readiness instead of doing a full scan

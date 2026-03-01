@@ -31,9 +31,10 @@ The Ideal (R3) demands perfect continuity — the UI should make it trivially ea
 - Comparing continuity across script versions (requires versioning infrastructure)
 - "World" landing page (this story only adds the continuity sub-page; other World pages like entity graph visualization are separate stories)
 
-## AI Considerations
+## Approach Evaluation
 
-This is a pure UI story — no LLM calls needed. All data comes from existing `continuity_state` and `continuity_index` artifacts via the artifact API.
+- **Pure code**: This is a UI story — no LLM calls needed. All data comes from existing `continuity_state` and `continuity_index` artifacts via the artifact API.
+- **Eval**: N/A — no AI behavior to evaluate.
 
 The main design question is **information density**: continuity data is rich (18 entities × 13 scenes × multiple properties each). The UI must avoid overwhelming the user while still surfacing problems (gaps, low confidence) prominently.
 

@@ -43,12 +43,13 @@ Execute a development story end-to-end.
 
 ## Phase 2 — Plan (produces a written artifact)
 
-7. **AI-first check** — For each significant piece of work, ask:
-   - Is this a reasoning/language/understanding problem? → **Try an LLM call first** (structured output validated against project schemas)
-   - Is this orchestration/storage/UI? → Write code
-   - Have you checked current SOTA? Your training data may be stale — web search if unsure what models can do today
-   - If selecting a model: never pick from training data — query the provider's API or docs for current models and pricing. Cost differences can be 10-20x.
-   - See AGENTS.md "AI-First Problem Solving" for full guidance
+7. **Eval-first approach gate** — Before planning implementation, establish how you'll measure success and which approaches to compare:
+   - **What eval?** Identify or create a test that measures whether this task succeeds. Even a minimal fixture + assertion counts. If no eval exists for this area, create one before choosing an approach.
+   - **What's the baseline?** Run the eval against current code. Document the number.
+   - **What are the candidate approaches?** For any task involving reasoning, language, or understanding: enumerate at least AI-only, hybrid (deterministic detection + AI judgment), and pure code. The story's "Approach Evaluation" section is input — if it pre-decided an approach without eval evidence, challenge it.
+   - **Test the simplest first.** Often that's a single LLM call. Run it against the eval. If it works, don't build code for a problem AI already solves.
+   - For pure orchestration/storage/plumbing/UI: code is obviously simpler — no comparison needed.
+   - **Model selection requires live data**: Never pick models from training data. Query the provider API and check current pricing. Cost differences can be 10-20x.
 
 8. **Write the implementation plan** — Add a `## Plan` section to the story file with:
    - For each task: which files change, what changes, in what order
@@ -75,7 +76,8 @@ Execute a development story end-to-end.
 
 11b. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
-   - For every significant mismatch, classify as: **model-wrong**, **golden-wrong**, or **ambiguous** with evidence
+   - Prompt the user to run `/verify-eval`. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** before the story can close. Do not attempt the full investigation inline — it overwhelms context.
+   - **Re-assess acceptance criteria against verified scores.** Golden fixes from `/verify-eval` change the real scores. What looked like a passing story on raw scores may fail on verified scores (or vice versa). Only verified scores determine whether acceptance criteria are met.
    - Do not proceed to Done if mismatches remain unclassified
    - **Update `docs/evals/registry.yaml`** with new scores, `git_sha`, and date for every eval you ran. Stale registry scores are worse than no scores — they cause future agents to waste time on already-solved problems or miss regressions.
 

@@ -24,7 +24,7 @@ Close a completed story after validation.
    - [ ] Required checks passed for all code changes:
      - Backend: `make test-unit PYTHON=.venv/bin/python` + `.venv/bin/python -m ruff check src/ tests/`
      - UI: `pnpm --dir ui run lint` + `cd ui && npx tsc -b`
-   - [ ] If story touched an AI module or eval: all significant eval mismatches classified (model-wrong / golden-wrong / ambiguous) with evidence
+   - [ ] If evals were run: `/verify-eval` report exists in work log with every mismatch classified as model-wrong / golden-wrong / ambiguous. Golden-wrong findings must be fixed and evals re-run before closing.
    - [ ] If any eval was run: `docs/evals/registry.yaml` updated with new scores, `git_sha`, and date
    - [ ] Tenet verification checkbox checked
    - [ ] Doc update checkbox checked
@@ -68,4 +68,5 @@ If not complete, stop and list blockers.
 - Ask for confirmation when unresolved items remain
 - Do not duplicate CHANGELOG.md entries — always check before writing
 - Never mark Done without running the full check suite
+- Never mark Done if evals were run without a `/verify-eval` report (or equivalent classification) in the work log
 - Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first

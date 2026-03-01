@@ -32,10 +32,11 @@ Create a new story in `docs/stories/` with consistent format.
    - Title (replace the slug with the human-readable title)
    - Goal, acceptance criteria, out of scope, tasks, files to modify
    - Spec refs and dependencies
-   - AI considerations for this specific story
+   - Approach evaluation: candidate approaches (AI-only, hybrid, code) and what eval distinguishes them
 
 3. **Update story index** — Add a row to the table in `docs/stories.md`:
    `| NNN | Title | Priority | Pending | [link](stories/story-NNN-slug.md) |`
+   Insert the row in System order (not at the bottom). IDs may be out of numeric order — that is expected and correct.
 
 4. **Verify** — Confirm the file exists, numbering is consistent, and the stories.md row is correct.
 
@@ -51,7 +52,8 @@ Create a new story in `docs/stories/` with consistent format.
 - Acceptance criteria must be testable and concrete
 - Explicitly call out what is in/out of scope
 - Tasks should be implementation-oriented and ordered
-- Always include the AI Considerations section — force the "LLM call vs code" question
+- Always include the Approach Evaluation section — list candidate approaches (AI-only, hybrid, code) without pre-deciding. The story should identify what eval would distinguish approaches, not pick a winner. Approach selection happens during build-story's eval-first gate with measured evidence.
+- If the story will involve running evals (extraction/pipeline behavior, golden comparison), add a task: "Run `/verify-eval` after eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores — raw scores do not determine story success."
 - Always include the tenet verification checklist with individual checkboxes per tenet
 - "Files to Modify" is gold for AI agents — fill it in when known
 - Stories are living documents — the AI reads them repeatedly during implementation

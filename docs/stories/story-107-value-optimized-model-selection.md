@@ -63,13 +63,14 @@ Note: `intent_mood_v1` and `look_and_feel_v1` share the same pattern as `editori
 - Cost tracking UI changes
 - New providers beyond the existing 13 (4 OpenAI, 4 Anthropic, 5 Google)
 
-## AI Considerations
+## Approach Evaluation
 
-- **Re-running evals is mechanical** — the evals and scorers already exist. The new work is computing cost per call from token counts and comparing value.
+- **Re-running evals is mechanical** — the evals and scorers already exist. The new work is computing cost per call from token counts and comparing value. Pure code.
 - **Script bible eval** is straightforward: structured output against a golden reference, same pattern as character/location/prop evals.
 - **Entity discovery eval**: compare discovered entity lists against golden character/location/prop lists from The Mariner.
-- **Creative direction evals** are the hardest — output is subjective prose. Options: (a) LLM-rubric-only eval (no Python structural scorer), (b) rubric + field-presence checker, (c) defer and document why.
+- **Creative direction evals** are the hardest — output is subjective prose. Candidate approaches: (a) LLM-rubric-only eval (no Python structural scorer), (b) rubric + field-presence checker, (c) defer and document why.
 - The value analysis script pattern from `benchmarks/scripts/analyze-continuity.js` can be generalized.
+- **Eval**: Existing promptfoo evals + new script_bible/entity_discovery evals distinguish model quality. Value analysis distinguishes cost-effectiveness.
 
 ## Tasks
 
@@ -90,6 +91,7 @@ Note: `intent_mood_v1` and `look_and_feel_v1` share the same pattern as `editori
 - [ ] Assess creative direction eval feasibility
 - [ ] Update module.yaml defaults for any module where best-value differs from current default
 - [ ] Update AGENTS.md eval catalog with value analysis column
+- [ ] Run `/verify-eval` after each eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores.
 - [ ] Run full pipeline smoke test to verify updated defaults produce valid output
 
 ## Notes

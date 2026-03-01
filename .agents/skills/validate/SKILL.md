@@ -43,10 +43,9 @@ Assess whether a story's implementation meets its requirements.
 
 5b. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
-   - For every significant mismatch, classify as: **model-wrong** (model produced bad output), **golden-wrong** (golden reference is incorrect), or **ambiguous** (needs further investigation)
-   - Record classification with evidence in the validation report
-   - **Update `docs/evals/registry.yaml`** with new scores, `git_sha`, and date for every eval you ran
-   - Grade cannot exceed B if mismatches remain unclassified
+   - Run `/verify-eval` for the structured investigation protocol. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence.
+   - Unclassified mismatches are a finding (priority: high) — grade cannot exceed B
+   - **Update `docs/evals/registry.yaml`** with verified scores, `git_sha`, and date for every eval you ran
 
 6. **Check Ideal alignment** — Read the relevant section of `docs/ideal.md`. Does the implementation move toward the Ideal or entrench a compromise? If entrenching: is the compromise justified and does a detection eval exist?
 
