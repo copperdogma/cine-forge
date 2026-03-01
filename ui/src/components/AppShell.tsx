@@ -33,6 +33,7 @@ import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
 import { PipelineBar } from '@/components/PipelineBar'
+import { OperationBanner } from '@/components/OperationBanner'
 import { ChangelogDialog } from '@/components/ChangelogDialog'
 import { useShortcuts } from '@/lib/shortcuts'
 import { fetchHealth } from '@/lib/api'
@@ -210,6 +211,16 @@ function ShellInner() {
   const activeRunId = useChatStore(s => projectId ? s.activeRunId?.[projectId] ?? null : null)
   const { data: artifactGroups } = useArtifactGroups(projectId, activeRunId ? 750 : undefined)
   const { data: runs } = useRuns(projectId)
+
+  // Restore activeRunId on page refresh: if there's a running run but no activeRunId,
+  // set it so the banner and progress tracking resume.
+  useEffect(() => {
+    if (!projectId || !runs || activeRunId) return
+    const runningRun = runs.find(r => r.status === 'running')
+    if (runningRun) {
+      useChatStore.getState().setActiveRun(projectId, runningRun.run_id)
+    }
+  }, [projectId, runs, activeRunId])
   const { data: pipelineGraph } = usePipelineGraph(projectId, activeRunId)
 
   const navCounts = useMemo(() => {
@@ -563,6 +574,9 @@ function ShellInner() {
             projectId={projectId}
           />
         )}
+
+        {/* Operation banner — visible from any page when work is running */}
+        {projectId && <OperationBanner projectId={projectId} />}
 
         {/* Content + optional Right Panel */}
         <div className="flex flex-1 min-h-0">

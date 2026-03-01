@@ -1,9 +1,25 @@
 import { CheckCircle2, Loader2, Circle, AlertCircle, SkipForward, PauseCircle } from 'lucide-react'
-import { useRunState } from '@/lib/hooks'
+import { useRunState, useArtifactGroups } from '@/lib/hooks'
 import { STAGE_DESCRIPTIONS, humanizeStageName } from '@/lib/chat-messages'
 import type { StageState } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { ARTIFACT_NAMES, SKIP_TYPES, getOrderedStageIds } from '@/lib/constants'
+import {
+  ARTIFACT_NAMES, SKIP_TYPES, getOrderedStageIds,
+  CONCERN_GROUP_META, countSceneProgress, countTotalScenes,
+} from '@/lib/constants'
+
+/** Parse the content prop: new format is JSON with runId + projectId, old format is plain runId string. */
+function parseContent(content: string): { runId: string; projectId: string | null } {
+  try {
+    const parsed = JSON.parse(content)
+    if (parsed && typeof parsed.runId === 'string') {
+      return { runId: parsed.runId, projectId: parsed.projectId ?? null }
+    }
+  } catch {
+    // plain string (backwards compat)
+  }
+  return { runId: content, projectId: null }
+}
 
 /** Summarize artifact counts from a completed stage's refs. */
 function stageArtifactSummary(stage: StageState): string | null {
@@ -50,8 +66,11 @@ function stageLabel(stageId: string, status: string): string {
   return humanizeStageName(stageId)
 }
 
-export function RunProgressCard({ runId }: { runId: string }) {
+export function RunProgressCard({ content }: { content: string }) {
+  const { runId, projectId } = parseContent(content)
   const { data: runState } = useRunState(runId)
+  const { data: artifactGroups } = useArtifactGroups(projectId ?? undefined)
+  const totalScenes = countTotalScenes(artifactGroups)
 
   if (!runState) {
     return (
@@ -63,7 +82,12 @@ export function RunProgressCard({ runId }: { runId: string }) {
   }
 
   const stages = runState.state.stages
-  const stageIds = getOrderedStageIds(Object.keys(stages), runState.state.stage_order)
+  // Use stage_order as authoritative list — it reflects start_from/end_at slicing.
+  // Only show stages that are in the execution range, not all recipe stages.
+  const stageOrder = runState.state.stage_order as string[] | undefined
+  const stageIds = stageOrder && stageOrder.length > 0
+    ? stageOrder.filter(id => id in stages)
+    : getOrderedStageIds(Object.keys(stages), stageOrder)
 
   return (
     <div className="space-y-0.5 py-1">
@@ -75,6 +99,13 @@ export function RunProgressCard({ runId }: { runId: string }) {
         const isFailed = status === 'failed'
         const isPending = !isDone && !isRunning && !isFailed
         const summary = isDone ? stageArtifactSummary(stage) : null
+
+        // Per-scene progress for running concern group stages
+        const isConcernGroup = stageId in CONCERN_GROUP_META
+        const scenesDone = isConcernGroup ? countSceneProgress(stage, stageId) : 0
+        const sceneProgress = isRunning && isConcernGroup && totalScenes > 0
+          ? ` (${scenesDone}/${totalScenes} scenes)`
+          : ''
 
         return (
           <div
@@ -88,7 +119,7 @@ export function RunProgressCard({ runId }: { runId: string }) {
             )}
           >
             <StageIcon status={status} />
-            <span>{stageLabel(stageId, status)}</span>
+            <span>{stageLabel(stageId, status)}{sceneProgress}</span>
             {summary && (
               <span className="text-xs text-muted-foreground/50">— {summary}</span>
             )}

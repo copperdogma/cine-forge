@@ -1,5 +1,50 @@
 # Changelog
 
+## [2026-02-28-07] — Per-scene progress tracking for concern group runs
+
+### Added
+- Real-time `(X/Y scenes)` progress in banner, RunProgressCard, and chat intro during concern group runs
+- `countSceneProgress()` and `countTotalScenes()` helper functions in constants.ts
+- Banner restores on page refresh by detecting in-progress runs from backend
+
+### Fixed
+- Progress stuck at 0/13: `run_state.json` now written incrementally when `announce_artifact` saves each scene (was only written at stage completion)
+- RunProgressCard receives `projectId` via JSON-encoded content for artifact group queries
+
+### Changed
+- RunProgressCard prop renamed from `runId` to `content` (JSON format with backwards-compat fallback)
+- Chat intro for concern group runs includes scene count: "Analyzing your 13 scenes..." instead of "Analyzing your scenes..."
+
+## [2026-02-28-06] — Sound & Music direction (Story 022)
+
+### Added
+- `sound_and_music_v1` pipeline module: per-scene parallel analysis with 3-scene sliding window, silence mandate (ADR-003 Decision #3), QA loop with escalation, mock support
+- `SoundAndMusicIndex` schema for project-level sonic identity aggregate (overall_sonic_language, dominant_soundscape, score_arc, scenes_with_intentional_silence)
+- Sound Designer role enhanced with rich persona (ambient design, emotional soundscape, silence as tool, music philosophy, transitions, motifs, offscreen audio, diegetic vs non-diegetic)
+- `sound_and_music` stage in creative direction recipe with `after: [intent_mood]` + `store_inputs_optional` for intent_mood
+- Sound & Music entry activated in DirectionTab with "Get Sound & Music Direction" / "Regenerate Sound & Music" buttons
+- `sound_and_music_index` registered in artifact-meta.ts (Volume2 icon, emerald-300)
+- 13 unit tests for Sound & Music module including silence mandate enforcement
+
+## [2026-02-28-05] — Centralized long-running action system (Story 101)
+
+### Added
+- `useLongRunningAction` hook — single entry point for all async operations, manages button state + operation store + chat messages automatically
+- `OperationBanner` component — global status banner in AppShell for all active operations (pipeline runs + direct API calls)
+- `operation-store.ts` — Zustand store tracking per-project active operations
+- `CONCERN_GROUP_META` mapping and `detectConcernGroupRun()` helper in constants.ts for role-attributed chat messages
+- `end_at` parameter for pipeline runs — enables single-stage execution (e.g., regenerate only Rhythm & Flow)
+- Stage descriptions for all 5 creative direction concern group stages in chat-messages.ts
+- Role-attributed intro and completion messages for concern group runs (Editorial Architect, Visual Architect, Sound Designer, Story Editor)
+
+### Changed
+- `OperationBanner` replaces `ProcessingView` — works from any page, not just ProjectHome
+- Banner hides stage count for single-stage runs ("Working on Rhythm & Flow..." instead of "(0/1 stages)")
+- Concern group run completion messages now role-attributed with "Browse in Scene 1" button instead of generic "Browse Results"
+- `stage_order` in engine.py reflects only executed stages (not full recipe), fixing progress card display
+- IntentMoodPage propagation refactored from ~50 lines manual orchestration to ~15 lines via hook
+- AGENTS.md updated: User Feedback Contract references hook, Component Registry expanded, MUST use directives added
+
 ## [2026-02-28-04] — Scout 003: cross-project pattern adoption
 
 ### Added

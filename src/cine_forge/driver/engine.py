@@ -63,6 +63,7 @@ from cine_forge.schemas import (
     SchemaRegistry,
     ScriptBible,
     SoundAndMusic,
+    SoundAndMusicIndex,
     StageReviewArtifact,
     StoryWorld,
     StylePack,
@@ -103,6 +104,7 @@ REVIEWABLE_ARTIFACT_TYPES: set[str] = {
     "entity_graph",
     "rhythm_and_flow",
     "look_and_feel",
+    "sound_and_music",
     "timeline",
     "track_manifest",
     "project_config",
@@ -150,6 +152,7 @@ class DriverEngine:
         self.schemas.register("look_and_feel", LookAndFeel)
         self.schemas.register("look_and_feel_index", LookAndFeelIndex)
         self.schemas.register("sound_and_music", SoundAndMusic)
+        self.schemas.register("sound_and_music_index", SoundAndMusicIndex)
         self.schemas.register("rhythm_and_flow", RhythmAndFlow)
         self.schemas.register("rhythm_and_flow_index", RhythmAndFlowIndex)
         self.schemas.register("character_and_performance", CharacterAndPerformance)
@@ -164,6 +167,7 @@ class DriverEngine:
         run_id: str | None = None,
         dry_run: bool = False,
         start_from: str | None = None,
+        end_at: str | None = None,
         force: bool = False,
         instrument: bool = False,
         runtime_params: dict[str, Any] | None = None,
@@ -230,21 +234,32 @@ class DriverEngine:
                 for stage in recipe.stages
             },
             "runtime_params": resolved_runtime_params,
-            "stage_order": [stage.id for stage in recipe.stages],
             "total_cost_usd": 0.0,
             "instrumented": instrument,
         }
-        self._write_run_state(state_path, run_state)
 
         if dry_run:
+            run_state["stage_order"] = [stage.id for stage in recipe.stages]
+            self._write_run_state(state_path, run_state)
             self._append_event(events_path, {"event": "dry_run_validated", "run_id": run_id})
             print(f"[{run_id}] Recipe validated (dry-run).")
             return run_state
 
-        if start_from and start_from not in run_state["stages"]:
+        # Validate start_from/end_at against full recipe before slicing.
+        all_stage_ids = {stage.id for stage in recipe.stages}
+        if start_from and start_from not in all_stage_ids:
             raise ValueError(f"Unknown --start-from stage: {start_from}")
+        if end_at and end_at not in all_stage_ids:
+            raise ValueError(f"Unknown --end-at stage: {end_at}")
 
-        ordered_stages = self._slice_from_stage(execution_order, start_from=start_from)
+        ordered_stages = self._slice_stage_range(
+            execution_order, start_from=start_from, end_at=end_at,
+        )
+
+        # stage_order reflects only the stages that will execute.
+        # The UI uses this to determine which stages to display.
+        run_state["stage_order"] = ordered_stages
+        self._write_run_state(state_path, run_state)
         stage_by_id = {stage.id: stage for stage in recipe.stages}
         stage_outputs = self._preload_upstream_reuse(
             recipe=recipe,
@@ -524,6 +539,7 @@ class DriverEngine:
                         )
                         with state_lock:
                             stage_state["artifact_refs"].append(a_ref.model_dump())
+                            self._write_run_state(state_path, run_state)
                         self._append_event(
                             events_path,
                             {
@@ -1413,6 +1429,17 @@ class DriverEngine:
             return order
         start_idx = order.index(start_from)
         return order[start_idx:]
+
+    @staticmethod
+    def _slice_stage_range(
+        order: list[str],
+        start_from: str | None = None,
+        end_at: str | None = None,
+    ) -> list[str]:
+        """Slice execution order to [start_from, end_at] (inclusive)."""
+        start_idx = order.index(start_from) if start_from else 0
+        end_idx = order.index(end_at) + 1 if end_at else len(order)
+        return order[start_idx:end_idx]
 
     @staticmethod
     def _schema_names_for_artifact(

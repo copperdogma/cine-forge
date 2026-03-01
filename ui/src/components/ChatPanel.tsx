@@ -390,7 +390,7 @@ function ChatMessageItem({
   if (message.type === 'ai_progress') {
     return (
       <div className="py-1">
-        <RunProgressCard runId={message.content} />
+        <RunProgressCard content={message.content} />
       </div>
     )
   }

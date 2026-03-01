@@ -6,8 +6,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
 import { streamAutoInsight } from './api'
 import { humanizeStageName } from './chat-messages'
+import { detectConcernGroupRun, countTotalScenes } from './constants'
 import { useRunState, useRunEvents } from './hooks'
-import type { StageState } from './types'
+import type { StageState, ArtifactGroupSummary } from './types'
 
 /** Build a human-readable summary of what was produced (e.g. "13 scenes and a standardized script"). */
 function summarizeArtifacts(stages: Record<string, StageState>): string {
@@ -80,10 +81,30 @@ export function useRunProgressChat(projectId: string | undefined) {
     if (!existingMessages.some(m => m.id === progressMsgId)) {
       // Resolve the "run started" spinner — the progress card replaces it
       store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
+
+      // For single-concern-group runs, add a role-attributed intro message
+      // so the user sees who's working and what they're about to do.
+      const stageOrder = (runState.state.stage_order as string[] | undefined) ?? Object.keys(stages)
+      const cg = detectConcernGroupRun(runState.state.recipe_id, stageOrder)
+      if (cg) {
+        const cachedGroups = queryClient.getQueryData<ArtifactGroupSummary[]>(
+          ['projects', projectId, 'artifacts'],
+        )
+        const totalScenes = countTotalScenes(cachedGroups)
+        const scenePart = totalScenes > 0 ? `your ${totalScenes} scenes` : 'your scenes'
+        store.addMessage(projectId, {
+          id: `concern_intro_${activeRunId}`,
+          type: 'ai_suggestion',
+          content: `Analyzing ${scenePart} and writing ${cg.label} direction for each one.`,
+          timestamp: Date.now(),
+          speaker: cg.roleId,
+        })
+      }
+
       store.addMessage(projectId, {
         id: progressMsgId,
         type: 'ai_progress',
-        content: activeRunId, // RunProgressCard reads this as the run ID
+        content: JSON.stringify({ runId: activeRunId, projectId }),
         timestamp: Date.now(),
       })
     }
@@ -234,35 +255,77 @@ export function useRunProgressChat(projectId: string | undefined) {
       } else {
         const summary = summarizeArtifacts(stages)
         const recipeId = runState.state.recipe_id
+        const completionStageOrder = (runState.state.stage_order as string[] | undefined) ?? Object.keys(stages)
+        const cgComplete = detectConcernGroupRun(recipeId, completionStageOrder)
 
-        // Completion summary with navigation links (secondary — not the golden path)
-        store.addMessage(projectId, {
-          id: `progress_${activeRunId}_complete`,
-          type: 'ai_suggestion',
-          content: summary
-            ? `Breakdown complete! I found ${summary} in your screenplay.`
-            : 'Breakdown complete!',
-          timestamp: Date.now(),
-          actions: [
-            {
-              id: 'view_results',
-              label: 'Browse Results',
-              variant: 'outline',
-              route: 'artifacts',
-            },
-            {
-              id: 'view_run_detail',
-              label: 'Run Details',
-              variant: 'outline',
-              route: `runs/${activeRunId}`,
-            },
-          ],
-        })
+        if (cgComplete) {
+          // --- Concern group run completion: role-attributed friendly message ---
+          // Count per-scene artifacts (exclude index/project-level artifacts)
+          const cgStage = stages[completionStageOrder[0]]
+          const sceneRefs = cgStage?.artifact_refs.filter(
+            (r) => r.artifact_type === completionStageOrder[0]
+              && String(r.entity_id ?? '').startsWith('scene_'),
+          ) ?? []
+          const sceneCount = sceneRefs.length
+          const firstSceneId = sceneRefs
+            .map((r) => String(r.entity_id))
+            .sort()[0] ?? 'scene_001'
 
-        // Insight placeholder goes first so it streams in above the CTA.
-        // CTA goes last so the button stays at the bottom while insight fills in above it.
-        requestPostRunInsight(projectId, recipeId, summary)
-        addNextStepCta(projectId, recipeId, activeRunId)
+          store.addMessage(projectId, {
+            id: `progress_${activeRunId}_complete`,
+            type: 'ai_suggestion',
+            content: sceneCount > 0
+              ? `I've analyzed ${sceneCount === 1 ? '1 scene' : `all ${sceneCount} scenes`} and added ${cgComplete.label} direction to each Direction tab.`
+              : `${cgComplete.label} direction is ready.`,
+            timestamp: Date.now(),
+            speaker: cgComplete.roleId,
+            actions: [
+              {
+                id: 'browse_scene',
+                label: 'Browse in Scene 1',
+                variant: 'default',
+                route: `scenes/${firstSceneId}`,
+              },
+              {
+                id: 'view_run_detail',
+                label: 'Run Details',
+                variant: 'outline',
+                route: `runs/${activeRunId}`,
+              },
+            ],
+          })
+          // Skip requestPostRunInsight and addNextStepCta —
+          // the role intro + completion messages are sufficient context.
+        } else {
+          // --- Generic (non-concern-group) run completion ---
+          store.addMessage(projectId, {
+            id: `progress_${activeRunId}_complete`,
+            type: 'ai_suggestion',
+            content: summary
+              ? `Breakdown complete! I found ${summary} in your screenplay.`
+              : 'Breakdown complete!',
+            timestamp: Date.now(),
+            actions: [
+              {
+                id: 'view_results',
+                label: 'Browse Results',
+                variant: 'outline',
+                route: 'artifacts',
+              },
+              {
+                id: 'view_run_detail',
+                label: 'Run Details',
+                variant: 'outline',
+                route: `runs/${activeRunId}`,
+              },
+            ],
+          })
+
+          // Insight placeholder goes first so it streams in above the CTA.
+          // CTA goes last so the button stays at the bottom while insight fills in above it.
+          requestPostRunInsight(projectId, recipeId, summary)
+          addNextStepCta(projectId, recipeId, activeRunId)
+        }
       }
 
       // Invalidate project data so UI reflects new state
