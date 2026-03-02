@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-01-08] — Scout 006: golden fixture automation skills from Storybook
+
+### Added
+- `/golden-create` skill: create golden references from input data with validator run
+- `/golden-verify` skill: orchestrated adversarial verification with parallel Opus subagents
+- `/golden-verify-reset` skill: reset verification status for re-checking after schema changes
+- Scout 006 expedition doc
+
+### Changed
+- `/setup-golden` skill: replaced process-description version with bootstrapping version that generates workspace files (validator, verification protocol, checklist, inbox)
+- `docs/runbooks/golden-build.md`: replaced with Storybook's portable golden fixtures pattern (tier system, inbox workflow, skill cross-references)
+
 ## [2026-03-01-07] — Golden audit: complete references table + register missing eval scores
 
 ### Fixed

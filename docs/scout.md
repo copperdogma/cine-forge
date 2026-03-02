@@ -9,3 +9,4 @@ Scouting log for external sources researched for ideas to adopt. See `/scout` sk
 | 003 | [Storybook & Dossier delta](docs/scout/scout-003-storybook-and-dossier.md) | 2026-02-28 | Changes since last scouts | 11 | 6 | 5 | Complete |
 | 004 | [Storybook & Dossier delta](docs/scout/scout-004-storybook-and-dossier-delta.md) | 2026-02-28 | Changes since Scout 003 | 11 | 11 | 0 | Complete |
 | 005 | [Storybook & Dossier delta 2](docs/scout/scout-005-storybook-and-dossier-delta-2.md) | 2026-03-01 | Changes since Scout 004 | 11 | 10 | 1 | Complete |
+| 006 | [Storybook golden automation](docs/scout/scout-006-storybook-golden-automation.md) | 2026-03-01 | Commit a568667 — golden fixture skills + validator | 7 | 5 | 0 | Complete |
