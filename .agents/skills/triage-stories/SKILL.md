@@ -15,15 +15,17 @@ Evaluate the story backlog and recommend the best next stories to work on.
 ## Steps
 
 1. **Read project state** — Load `docs/stories.md` (the full story index). Identify all stories by status:
-   - **Ready** = Pending or To Do with no unresolved blockers
-   - **In Progress** = currently being worked on
-   - **Draft** = needs fleshing out before it's workable
-   - **Blocked** = has unresolved dependencies
-   - **Done** = completed (scan recent completions for context on momentum)
+   - **Draft** — scoped but needs detailed ACs and tasks before building; `/build-story` handles the flesh-out phase
+   - **Pending** — fully detailed, ready to build
+   - **In Progress** — currently being worked on
+   - **Done** — complete, validated
+   - **Blocked** — waiting on dependency or decision
+
+   **Both Draft and Pending** stories with met dependencies are candidates for recommendation. Do not treat Draft as a disqualifier — priority and Ideal alignment matter more than completeness of the story file. `/build-story` will flesh out ACs and tasks before touching code regardless of starting status.
 
 2. **Read the Ideal** — Load `docs/ideal.md` to ground scoring in what the system should become. Stories that close Ideal gaps rank higher than stories that only optimize compromises.
 
-3. **Read candidate stories** — For every Ready story, read the actual story file to understand its goal, acceptance criteria, dependencies, and scope. Don't just go by titles.
+3. **Read candidate stories** — For every candidate story (Draft or Pending) with met dependencies, read the actual story file to understand its goal, notes, dependencies, and scope. Don't just go by titles.
 
 4. **Score and rank** — Evaluate each candidate story on these dimensions:
    - **Dependency readiness**: Are all upstream stories Done? Does this unblock downstream stories?
@@ -37,9 +39,9 @@ Evaluate the story backlog and recommend the best next stories to work on.
 
 5. **Present recommendations** — Show the user a ranked top 3–5 with:
    - Story ID and title
+   - Draft or Pending label
    - 2–3 sentence rationale covering the strongest scoring dimensions
-   - Any caveats (e.g., "this is ready but large — consider splitting first")
-   - If a Draft story is clearly more important than any Ready story, call it out and suggest fleshing it out first
+   - Any caveats (e.g., "this is large — consider splitting first")
 
 6. **Flag concerns** — Surface any issues noticed during the scan:
    - Stories marked Pending that are actually blocked (missing dependency not recorded)

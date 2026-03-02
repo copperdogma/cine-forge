@@ -4,7 +4,7 @@
 **Scouted:** 2026-03-02
 **Scope:** Changes since Scout 006 (2026-03-01)
 **Previous:** Scout 006 (2026-03-01)
-**Status:** Partial (items 1–3 done; 4–6 pending)
+**Status:** Complete
 
 ## Findings
 
@@ -59,9 +59,9 @@
 - [x] 1. `golden-verify` tooling check — added tooling check note before subagent launch instructions
 - [x] 2. `golden-create` inbox cleanup step — added step 6 (inbox move), old step 6 renumbered to 7
 - [x] 3. `setup-golden` coverage matrix template — added JSON template + verification_status values inline
-- [ ] 4. Accessibility checklist — `.agents/skills/create-story/SKILL.md` + templates/story.md
-- [ ] 5. Context window mgmt — reference for Story 011f (no code change)
-- [ ] 6. LLM circuit breaker — create story
+- [x] 4. Accessibility checklist — added to `templates/story.md` tasks section + `create-story/SKILL.md` convention note
+- [x] 5. Context window mgmt — reference added to Story 033 (Memory Model) Design Notes section
+- [x] 6. LLM circuit breaker — Story 113 created (Draft, Medium priority)
 - [ ] 7. Dossier golden reports — skip
 
 All skills synced (34 total).

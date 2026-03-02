@@ -79,6 +79,16 @@ This means:
 ### Storage Considerations
 Transcripts will accumulate significantly over a project's lifetime. For MVP, file-based storage is fine. For larger projects, consider indexing with SQLite or similar for search performance.
 
+### Context Window Summarization Reference
+Storybook Story 006 (commit f42fb55) implements a clean `trimHistoryIfNeeded()` pattern for AI conversations:
+- Threshold: 100k chars (char-based, not token-based — avoids tokenizer dependency)
+- When exceeded: summarize oldest 50% via a single LLM call (Haiku — cheap, fast)
+- Summary is a factual digest, not interpretive — "just facts, people, events, dates, locations"
+- Full history preserved in DB; only the active LLM context is trimmed
+- User never sees the summary; AI continuity is maintained
+
+This is directly applicable to CineForge's working memory summarization task above. Reference: `/Users/cam/Documents/Projects/Storybook/storybook/src/lib/summarize-context.ts`
+
 ---
 
 ## Tasks

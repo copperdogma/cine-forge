@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-02-08] — Scout 008: progress events, circuit breaker, triage-stories Draft support
+
+### Added
+- Story 113: Per-Provider LLM Circuit Breaker (Draft) — CLOSED→OPEN→HALF_OPEN state machine for transient provider failures; reference impl in Dossier Story 027
+- Story 114: Driver Progress Events (Draft) — structured `ProgressEvent` callbacks from engine to UI; unlocks per-stage OperationBanner and chat timeline updates; reference impl in Dossier Story 028
+- Scout 008 expedition doc — new findings from Storybook/Dossier commits since Scout 007
+
+### Changed
+- `triage-stories` skill: Draft stories are now first-class candidates alongside Pending; `/build-story` handles flesh-out regardless of starting status
+- Scout 007 marked Complete — pending items 4–6 finished (accessibility checklist reverted per user, context window ref added to Story 033, circuit breaker story created)
+- Story 033 (Memory Model): added context window summarization reference from Storybook Story 006
+
 ## [2026-03-02-07] — Continuity UI Page: entity state timelines and gap visualization (Story 108)
 
 ### Added
