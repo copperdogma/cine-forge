@@ -254,7 +254,7 @@ function ConcernGroupCard({
 
 // --- Scene intent panel ---
 
-function SceneIntentPanel({
+export function SceneIntentPanel({
   projectId,
   entityId,
 }: {

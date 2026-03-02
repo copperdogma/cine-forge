@@ -15,6 +15,7 @@ import ProjectInbox from '@/pages/ProjectInbox'
 import EntityListPage from '@/pages/EntityListPage'
 import EntityDetailPage from '@/pages/EntityDetailPage'
 import IntentMoodPage from '@/pages/IntentMoodPage'
+import SceneWorkspacePage from '@/pages/SceneWorkspacePage'
 import ThemeShowcase from '@/pages/ThemeShowcase'
 
 const queryClient = new QueryClient({
@@ -47,7 +48,7 @@ export default function App() {
 
                 {/* Entity-first navigation */}
                 <Route path="scenes" element={<EntityListPage section="scenes" />} />
-                <Route path="scenes/:entityId" element={<EntityDetailPage section="scenes" />} />
+                <Route path="scenes/:entityId" element={<SceneWorkspacePage />} />
                 <Route path="characters" element={<EntityListPage section="characters" />} />
                 <Route path="characters/:entityId" element={<EntityDetailPage section="characters" />} />
                 <Route path="locations" element={<EntityListPage section="locations" />} />

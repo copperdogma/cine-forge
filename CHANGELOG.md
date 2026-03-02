@@ -1,5 +1,25 @@
 # Changelog
 
+## [2026-03-02-02] — Scene Workspace (Story 099)
+
+### Added
+- Scene Workspace page (`/scenes/:entityId`) — per-scene production control surface replacing the generic EntityDetailPage for scenes
+- Five concern group tabs (Look & Feel, Sound & Music, Rhythm & Flow, Performance, Story World) with red/yellow readiness dots in each trigger
+- Per-group "Let AI fill this" / "Regenerate" buttons wired to the `creative_direction` recipe
+- Scene entity roster: clickable character, location, and prop links pulled from scene artifact data
+- Overview tab with `SceneViewer` text summary (best available preview representation)
+- Intent & Mood panel (`SceneIntentPanel`) showing project-level intent with scene-override badge
+- Prev/next scene keyboard navigation (← → arrow keys)
+- Empty states per concern group use each group's own colored icon
+
+### Changed
+- `scenes/:entityId` route now renders `SceneWorkspacePage` instead of `EntityDetailPage`
+- `SceneIntentPanel` exported from `DirectionTab.tsx` for reuse
+- AppShell ScrollArea inner wrapper gets `min-w-full` to prevent content-width collapse at wide viewports
+
+### Fixed
+- Layout width inconsistency: concern group tabs rendered narrower than Overview tab at wide viewports. Root cause: `mx-auto` in a flex-col context sizes to `max-content` of visible children; `SceneViewer` content pushed width wider than empty states. Fixed by adding `w-full` to page container root div.
+
 ## [2026-03-02-01] — Eval verification: scorer fixes, golden repairs, model swap
 
 ### Fixed

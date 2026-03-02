@@ -583,7 +583,7 @@ function ShellInner() {
           {/* Page content */}
           <div ref={mainScrollRef} className="flex-1 min-w-0 overflow-hidden">
           <ScrollArea className="h-full w-full" orientation="both">
-            <div className="p-6 flex flex-col min-h-full">
+            <div className="p-6 flex flex-col min-h-full min-w-full">
               <Outlet />
             </div>
           </ScrollArea>

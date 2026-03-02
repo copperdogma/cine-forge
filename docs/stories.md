@@ -27,12 +27,12 @@ These two are the critical path. Build them first, in this order (093 is indepen
 
 | Story | Why |
 |---|---|
-| **101** Long-Running Action System | UI infrastructure: centralized hook + banner + chat for all async operations. Fixes broken feedback on direction generation, propagation, and pipeline runs. Should land *before* 099 — Scene Workspace will trigger many long-running actions and needs this foundation. |
-| **099** Scene Workspace | The per-scene production surface — five concern tabs, readiness indicators, "let AI fill this." This is ADR-003's centerpiece UI. Depends on 094 + 095. |
+| **101** Long-Running Action System | ✅ Done |
+| **099** Scene Workspace | ✅ Done — SceneWorkspacePage with 5 concern group tabs, readiness bar, entity roster, generate buttons |
 | **096** "Chat About This" | Ready now. Generalizes the highlight-to-chat pattern from Story 082 to all artifacts. Natural companion to 099. |
-| **100** Motif Tracking | Depends on 094. Motif annotations feed into Look & Feel and Sound & Music. Can parallel with 099. |
+| **100** Motif Tracking | Depends on 094. Motif annotations feed into Look & Feel and Sound & Music. |
 
-099 is the highest-impact UI story in the backlog. It's where filmmakers actually do their work.
+099 shipped. Next frontier: "Chat About This" (096) — now that Scene Workspace exists, users need a way to discuss what they see in each concern group tab.
 
 ### Group 4 — Upstream Infrastructure (ready now, build when needed)
 
@@ -190,7 +190,7 @@ NOTES from Cam:
 | 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Draft | [story-096](stories/story-096-chat-about-this.md) |
 | 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
 | 098 | Real-World Asset Upload Pipeline | 7 — Generation | Medium | Draft | [story-098](stories/story-098-real-asset-upload.md) |
-| 099 | Scene Workspace | 5 — Creative Direction | High | Pending | [story-099](stories/story-099-scene-workspace.md) |
+| 099 | Scene Workspace | 5 — Creative Direction | High | Done | [story-099](stories/story-099-scene-workspace.md) |
 | 100 | Motif Tracking System | 5 — Creative Direction | Medium | Draft | [story-100](stories/story-100-motif-tracking.md) |
 | 101 | Centralized Long-Running Action System | 2.5 — UI | High | Done | [story-101](stories/story-101-long-running-action-system.md) |
 | 102 | Promptfoo Multi-Turn Conversational Evals | Cross-Cutting | Medium | Draft | [story-102](stories/story-102-promptfoo-multi-turn-evals.md) |
