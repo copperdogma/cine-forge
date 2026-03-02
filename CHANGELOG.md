@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-03-02-04] — "View in Script" scrolls to correct scene + bookmarkable hash links (Story 111)
+
+### Fixed
+- "View in Script" on scene pages now reliably scrolls the script viewer to the correct scene heading. Previously a race condition caused the scroll to silently fail on fresh navigation (URL param cleared before CodeMirror had loaded content).
+
+### Changed
+- Navigation mechanism switched from `?scene=` query param to URL hash (`#heading`). "View in Script" links are now bookmarkable/shareable permalinks — the script loads and scrolls to the target scene on any reload or direct link visit.
+- `scrollToHeading` in `ScreenplayEditor` returns `boolean` to signal success, enabling retry-with-backoff logic (200/400/800ms) for late-mounting editors.
+
 ## [2026-03-02-03] — Fuzzy search + scene shorthand in command palette (Story 110)
 
 ### Added

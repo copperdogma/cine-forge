@@ -727,7 +727,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
             variant="outline"
             size="sm"
             className="gap-1.5"
-            onClick={() => navigate(`/${projectId}?scene=${encodeURIComponent(displayName)}`)}
+            onClick={() => navigate(`/${projectId}#${encodeURIComponent(displayName)}`)}
           >
             <FileText className="h-3.5 w-3.5" />
             View in Script

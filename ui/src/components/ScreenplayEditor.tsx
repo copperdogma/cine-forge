@@ -255,8 +255,8 @@ const lineClassField = StateField.define<DecorationSet>({
 export interface ScreenplayEditorHandle {
   /** Scroll to a 1-indexed line number */
   scrollToLine: (line: number) => void
-  /** Find the first line matching a scene heading pattern and scroll to it */
-  scrollToHeading: (heading: string) => void
+  /** Find the first line matching a scene heading pattern and scroll to it. Returns true if found and scrolled. */
+  scrollToHeading: (heading: string) => boolean
 }
 
 export interface ScreenplayEditorProps {
@@ -298,9 +298,9 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, ScreenplayEdi
           effects: EditorView.scrollIntoView(pos, { y: 'start', yMargin: 50 }),
         })
       },
-      scrollToHeading(heading: string) {
+      scrollToHeading(heading: string): boolean {
         const view = viewRef.current
-        if (!view) return
+        if (!view) return false
         const norm = heading.toLowerCase().replace(/[^a-z0-9]/g, '')
         for (let i = 1; i <= view.state.doc.lines; i++) {
           const lineText = view.state.doc.line(i).text
@@ -311,10 +311,11 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, ScreenplayEdi
               view.dispatch({
                 effects: EditorView.scrollIntoView(pos, { y: 'start', yMargin: 50 }),
               })
-              return
+              return true
             }
           }
         }
+        return false
       },
     }))
 

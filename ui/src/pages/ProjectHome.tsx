@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, Suspense, lazy } from 'react'
 // Chat loading moved to useChatLoader in AppShell — runs on every page.
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   BookOpen,
@@ -276,7 +276,8 @@ function ScriptBiblePanel({
 
 function FreshImportView({ projectId }: { projectId: string }) {
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { hash } = useLocation()
+  const scrolledToHashRef = useRef<string | null>(null)
   const { data: project } = useProject(projectId)
   const { data: inputs } = useProjectInputs(projectId)
   const { data: scenes } = useScenes(projectId)
@@ -320,19 +321,32 @@ function FreshImportView({ projectId }: { projectId: string }) {
       startLine: s.startLine!,
     }))
 
-  // Handle ?scene= query param — scroll to that scene heading after editor mounts
+  // Scroll to scene heading when the URL hash targets one (e.g. #INT.%20CABIN).
+  // Retries with backoff until CodeMirror has loaded content.
+  // Tracks which hash was last scrolled so re-fetches don't re-jump after the user scrolls away.
   useEffect(() => {
-    const sceneParam = searchParams.get('scene')
-    if (sceneParam && editorRef.current) {
-      // Small delay to let CodeMirror finish rendering
-      const timer = setTimeout(() => {
-        editorRef.current?.scrollToHeading(sceneParam)
-      }, 200)
-      // Clear the param so it doesn't re-scroll on re-renders
-      setSearchParams({}, { replace: true })
-      return () => clearTimeout(timer)
+    if (!hash || !content) return
+    if (hash === scrolledToHashRef.current) return
+
+    const heading = decodeURIComponent(hash.slice(1))
+    const delays = [200, 400, 800]
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    const tryScroll = (attempt: number) => {
+      const scrolled = editorRef.current?.scrollToHeading(heading) ?? false
+      if (scrolled) {
+        scrolledToHashRef.current = hash
+        return
+      }
+      const nextDelay = delays[attempt + 1]
+      if (nextDelay !== undefined) {
+        timers.push(setTimeout(() => tryScroll(attempt + 1), nextDelay))
+      }
     }
-  }, [searchParams, setSearchParams, content])
+
+    timers.push(setTimeout(() => tryScroll(0), delays[0]))
+    return () => timers.forEach(clearTimeout)
+  }, [hash, content])
 
   // When a scene heading line is clicked, navigate to its detail page
   const handleSceneHeadingClick = (heading: string) => {

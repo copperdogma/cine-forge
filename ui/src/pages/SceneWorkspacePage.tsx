@@ -507,7 +507,7 @@ export default function SceneWorkspacePage() {
           variant="outline"
           size="sm"
           className="gap-1.5 shrink-0"
-          onClick={() => navigate(`/${projectId}?scene=${encodeURIComponent(displayName)}`)}
+          onClick={() => navigate(`/${projectId}#${encodeURIComponent(displayName)}`)}
         >
           <FileText className="h-3.5 w-3.5" />
           View in Script

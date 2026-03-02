@@ -202,7 +202,7 @@ NOTES from Cam:
 | 108 | Continuity UI Page | 2.5 — UI | High | Draft | [story-108](stories/story-108-continuity-ui-page.md) |
 | 109 | Golden Build Runbook | Cross-Cutting | Medium | Done | [story-109](stories/story-109-golden-build-runbook.md) |
 | 110 | Improve Search: Fuzzy Matching + Scene Shorthand | 2.5 — UI | Medium | Done | [story-110](stories/story-110-search-scenes-fuzzy.md) |
-| 111 | Fix "View In Script" Scroll-to-Scene | 2.5 — UI | Medium | Pending | [story-111](stories/story-111-scene-script-jump.md) |
+| 111 | Fix "View In Script" Scroll-to-Scene | 2.5 — UI | Medium | Done | [story-111](stories/story-111-scene-script-jump.md) |
 
 ## Phase Summary
 
