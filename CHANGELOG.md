@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-01-09] — Bootstrap golden workspace via /setup-golden
+
+### Added
+- `benchmarks/golden/README.md`: comprehensive format spec covering all 10 golden types, schemas, enums, conventions
+- `benchmarks/golden/validate-golden.py`: self-contained structural validator (schema config at top, no project imports) — validates all 10 golden files with cross-reference checking
+- `benchmarks/golden/_verify-golden-outputs.md`: adversarial verification protocol with per-type checklists for all 10 golden types
+- `benchmarks/golden/_verification-checklist.md`: tracking table with all 10 goldens as PENDING
+- `benchmarks/golden/_coverage-matrix.json`: dimension coverage tracking with gap analysis
+- `benchmarks/golden/_inbox/README.md`: inbox drop-zone docs for new golden inputs
+
 ## [2026-03-01-08] — Scout 006: golden fixture automation skills from Storybook
 
 ### Added

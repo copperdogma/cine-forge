@@ -1,0 +1,188 @@
+{
+  "version": "1.0",
+  "generated": "2026-03-01",
+  "fixtures": [
+    {
+      "id": "SC-001",
+      "title": "The Mariner — Character Extraction",
+      "golden_file": "the-mariner-characters.json",
+      "eval": "character-extraction",
+      "category": "screenplay-full",
+      "dimensions": {
+        "inputFormat": "fountain",
+        "sourceScript": "the-mariner",
+        "entityScope": "character",
+        "extractionDepth": ["traits", "relationships", "evidence", "facts", "scenes"],
+        "testCasePattern": "per-entity"
+      }
+    },
+    {
+      "id": "SC-002",
+      "title": "The Mariner — Scene Extraction",
+      "golden_file": "the-mariner-scenes.json",
+      "eval": "scene-extraction",
+      "category": "screenplay-full",
+      "dimensions": {
+        "inputFormat": "fountain",
+        "sourceScript": "the-mariner",
+        "entityScope": "scene",
+        "extractionDepth": ["boundaries", "metadata", "characters", "summary"],
+        "testCasePattern": "whole-file"
+      }
+    },
+    {
+      "id": "SC-003",
+      "title": "The Mariner — Location Extraction",
+      "golden_file": "the-mariner-locations.json",
+      "eval": "location-extraction",
+      "category": "screenplay-full",
+      "dimensions": {
+        "inputFormat": "fountain",
+        "sourceScript": "the-mariner",
+        "entityScope": "location",
+        "extractionDepth": ["traits", "facts", "scenes", "significance"],
+        "testCasePattern": "per-entity"
+      }
+    },
+    {
+      "id": "SC-004",
+      "title": "The Mariner — Prop Extraction",
+      "golden_file": "the-mariner-props.json",
+      "eval": "prop-extraction",
+      "category": "screenplay-full",
+      "dimensions": {
+        "inputFormat": "fountain",
+        "sourceScript": "the-mariner",
+        "entityScope": "prop",
+        "extractionDepth": ["traits", "facts", "scenes", "significance"],
+        "testCasePattern": "per-entity"
+      }
+    },
+    {
+      "id": "SC-005",
+      "title": "The Mariner — Relationship Discovery",
+      "golden_file": "the-mariner-relationships.json",
+      "eval": "relationship-discovery",
+      "category": "screenplay-full",
+      "dimensions": {
+        "inputFormat": "fountain",
+        "sourceScript": "the-mariner",
+        "entityScope": "cross-entity",
+        "extractionDepth": ["edges", "evidence", "confidence", "direction"],
+        "testCasePattern": "whole-file"
+      }
+    },
+    {
+      "id": "SC-006",
+      "title": "The Mariner — Config Detection",
+      "golden_file": "the-mariner-config.json",
+      "eval": "config-detection",
+      "category": "screenplay-full",
+      "dimensions": {
+        "inputFormat": "fountain",
+        "sourceScript": "the-mariner",
+        "entityScope": "project-metadata",
+        "extractionDepth": ["fields", "confidence", "ranges"],
+        "testCasePattern": "whole-file"
+      }
+    },
+    {
+      "id": "SE-001",
+      "title": "The Mariner — Scene Enrichment",
+      "golden_file": "enrich-scenes-golden.json",
+      "eval": "scene-enrichment",
+      "category": "scene-excerpt",
+      "dimensions": {
+        "inputFormat": "fountain-excerpt",
+        "sourceScript": "the-mariner",
+        "entityScope": "scene",
+        "extractionDepth": ["beats", "tone", "characters", "details"],
+        "testCasePattern": "per-scene-key"
+      }
+    },
+    {
+      "id": "SE-002",
+      "title": "The Dock — Continuity Extraction",
+      "golden_file": "continuity-extraction-golden.json",
+      "eval": "continuity-extraction",
+      "category": "scene-excerpt",
+      "dimensions": {
+        "inputFormat": "fountain-excerpt",
+        "sourceScript": "the-dock",
+        "entityScope": "continuity",
+        "extractionDepth": ["entities", "properties", "changes", "evidence"],
+        "testCasePattern": "per-scene-key"
+      }
+    },
+    {
+      "id": "SG-001",
+      "title": "Signal in the Rain — Normalization",
+      "golden_file": "normalize-signal-golden.json",
+      "eval": "normalization",
+      "category": "signal-processing",
+      "dimensions": {
+        "inputFormat": "raw-text",
+        "sourceScript": "signal-in-the-rain",
+        "entityScope": "structural",
+        "extractionDepth": ["scenes", "characters", "dialogue", "formatting"],
+        "testCasePattern": "whole-file"
+      }
+    },
+    {
+      "id": "QA-001",
+      "title": "QA Pass — Good/Bad Scene Judgment",
+      "golden_file": "qa-pass-golden.json",
+      "eval": "qa-pass",
+      "category": "quality-assurance",
+      "dimensions": {
+        "inputFormat": "structured-json",
+        "sourceScript": "the-mariner",
+        "entityScope": "qa-judgment",
+        "extractionDepth": ["pass-fail", "issue-detection", "severity", "summary"],
+        "testCasePattern": "per-test-key"
+      }
+    }
+  ],
+  "dimensionCoverage": {
+    "inputFormat": {
+      "fountain": ["SC-001", "SC-002", "SC-003", "SC-004", "SC-005", "SC-006"],
+      "fountain-excerpt": ["SE-001", "SE-002"],
+      "raw-text": ["SG-001"],
+      "structured-json": ["QA-001"]
+    },
+    "sourceScript": {
+      "the-mariner": ["SC-001", "SC-002", "SC-003", "SC-004", "SC-005", "SC-006", "SE-001", "QA-001"],
+      "the-dock": ["SE-002"],
+      "signal-in-the-rain": ["SG-001"]
+    },
+    "entityScope": {
+      "character": ["SC-001"],
+      "scene": ["SC-002", "SE-001"],
+      "location": ["SC-003"],
+      "prop": ["SC-004"],
+      "cross-entity": ["SC-005"],
+      "project-metadata": ["SC-006"],
+      "continuity": ["SE-002"],
+      "structural": ["SG-001"],
+      "qa-judgment": ["QA-001"]
+    },
+    "category": {
+      "screenplay-full": ["SC-001", "SC-002", "SC-003", "SC-004", "SC-005", "SC-006"],
+      "scene-excerpt": ["SE-001", "SE-002"],
+      "signal-processing": ["SG-001"],
+      "quality-assurance": ["QA-001"]
+    },
+    "testCasePattern": {
+      "per-entity": ["SC-001", "SC-003", "SC-004"],
+      "whole-file": ["SC-002", "SC-005", "SC-006", "SG-001"],
+      "per-scene-key": ["SE-001", "SE-002"],
+      "per-test-key": ["QA-001"]
+    }
+  },
+  "gaps": [
+    "No second screenplay for full-extraction evals (characters, scenes, locations, props, relationships, config)",
+    "No multi-screenplay continuity extraction test",
+    "No edge-case screenplay (e.g., non-standard formatting, extreme length)",
+    "Only one normalization input source"
+  ]
+}
