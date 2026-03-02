@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate, useParams, useLocation, Link } from 'react-router-dom'
 import {
+  Activity,
   Film,
   History,
   Package,
@@ -152,6 +153,10 @@ const advancedNavItems = [
   { to: 'artifacts', label: 'Artifacts', icon: Package },
 ]
 
+const worldNavItems = [
+  { to: 'world/continuity', label: 'Continuity', icon: Activity },
+]
+
 function ShellInner() {
   const { projectId } = useParams()
   const navigate = useNavigate()
@@ -159,6 +164,7 @@ function ShellInner() {
   const [navOpen, setNavOpen] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [advancedOpen, setAdvancedOpen] = useState(false)
+  const [worldOpen, setWorldOpen] = useState(false)
   const [changelogOpen, setChangelogOpen] = useState(false)
   const panel = useRightPanel()
   const [panelWidth, setPanelWidth] = useState(380)
@@ -370,6 +376,7 @@ function ShellInner() {
     }
 
     if (path.includes('/intent')) return [{ label: 'Intent & Mood' }]
+    if (path.includes('/world/continuity')) return [{ label: 'World' }, { label: 'Continuity' }]
     if (path.includes('/scenes')) return [{ label: 'Scenes' }]
     if (path.includes('/characters')) return [{ label: 'Characters' }]
     if (path.includes('/locations')) return [{ label: 'Locations' }]
@@ -385,6 +392,8 @@ function ShellInner() {
 
   // Auto-open advanced section if we're on a runs/artifacts page
   const isOnAdvancedPage = location.pathname.includes('/runs') || location.pathname.includes('/artifacts')
+  // Auto-open world section if we're on a world/* page
+  const isOnWorldPage = location.pathname.includes('/world')
 
   return (
     <div className="fixed inset-0 flex overflow-hidden">
@@ -427,6 +436,39 @@ function ShellInner() {
                 count={navCounts[item.to] ?? 0}
               />
             ))}
+
+            {/* World section */}
+            <Separator className="my-2" />
+            <Collapsible open={worldOpen || isOnWorldPage} onOpenChange={setWorldOpen}>
+              <CollapsibleTrigger className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors w-full cursor-pointer">
+                <ChevronDown className={cn(
+                  'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
+                  !(worldOpen || isOnWorldPage) && '-rotate-90',
+                )} />
+                <span className="truncate text-xs uppercase tracking-wider">World</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="flex flex-col gap-0.5 mt-0.5">
+                  {worldNavItems.map(item => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={({ isActive }) =>
+                        cn(
+                          'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ml-2',
+                          isActive
+                            ? 'bg-accent text-accent-foreground'
+                            : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                        )
+                      }
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{item.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
 
             {/* Advanced section */}
             <Separator className="my-2" />

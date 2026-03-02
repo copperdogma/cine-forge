@@ -4,6 +4,7 @@
  * This is the ONLY place artifactMeta should be defined.
  */
 import {
+  Activity,
   BookOpen,
   Compass,
   Eye,
@@ -31,8 +32,8 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   bible_manifest: { icon: FileText, label: 'Bible Manifest', color: 'text-teal-400' },
   scene: { icon: Clapperboard, label: 'Scene', color: 'text-violet-400' },
   scene_index: { icon: Clapperboard, label: 'Scene Index', color: 'text-violet-300' },
-  continuity_index: { icon: Globe, label: 'Continuity Index', color: 'text-cyan-400' },
-  continuity_state: { icon: Globe, label: 'Continuity State', color: 'text-cyan-300' },
+  continuity_index: { icon: Activity, label: 'Continuity Index', color: 'text-cyan-400' },
+  continuity_state: { icon: Activity, label: 'Continuity State', color: 'text-cyan-300' },
   dialogue_analysis: { icon: MessageSquare, label: 'Dialogue Analysis', color: 'text-orange-400' },
   intent_mood: { icon: Compass, label: 'Intent & Mood', color: 'text-purple-400' },
   rhythm_and_flow: { icon: Scissors, label: 'Rhythm & Flow', color: 'text-pink-400' },

@@ -16,6 +16,7 @@ import EntityListPage from '@/pages/EntityListPage'
 import EntityDetailPage from '@/pages/EntityDetailPage'
 import IntentMoodPage from '@/pages/IntentMoodPage'
 import SceneWorkspacePage from '@/pages/SceneWorkspacePage'
+import ContinuityPage from '@/pages/ContinuityPage'
 import ThemeShowcase from '@/pages/ThemeShowcase'
 
 const queryClient = new QueryClient({
@@ -55,6 +56,9 @@ export default function App() {
                 <Route path="locations/:entityId" element={<EntityDetailPage section="locations" />} />
                 <Route path="props" element={<EntityListPage section="props" />} />
                 <Route path="props/:entityId" element={<EntityDetailPage section="props" />} />
+
+                {/* World */}
+                <Route path="world/continuity" element={<ContinuityPage />} />
 
                 {/* Inbox */}
                 <Route path="inbox" element={<ProjectInbox />} />

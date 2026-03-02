@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-03-02-07] — Continuity UI Page: entity state timelines and gap visualization (Story 108)
+
+### Added
+- New route `/:projectId/world/continuity` — Continuity page showing overall score, gap count, and entity count
+- Entity accordion list sorted by type (characters → locations → props), each expandable into a per-scene timeline
+- `EntityTimelineView` component: loads `continuity_state` artifacts in parallel, renders scene cards with property grids, diff-style change events with evidence quotes, and amber gap warnings
+- "World" collapsible section in sidebar nav with Continuity sub-item; auto-opens when on `/world/*`
+- Empty state: prompts to run World Building when no continuity data exists
+
+### Changed
+- `artifact-meta.ts`: continuity artifact icons updated from Globe to Activity
+- Gap subtitle now shows condition-specific message instead of generic "low confidence or contradictory state" — distinguishes no-properties, low-confidence, and property-conflict cases
+- Confidence badge tooltip clarifies it measures extraction quality, not continuity integrity
+- Change events distinguish "first mention" (sky badge) from real state changes (strikethrough → new value)
+
 ## [2026-03-02-06] — Scout 007: golden skill refinements (Storybook delta)
 
 ### Changed

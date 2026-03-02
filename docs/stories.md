@@ -199,10 +199,11 @@ NOTES from Cam:
 | 105 | Parallel Chunk Extraction via ThreadPoolExecutor | Cross-Cutting | High | Draft | [story-105](stories/story-105-parallel-extraction.md) |
 | 106 | Disk-Backed Chunk-Level Extraction Cache | Cross-Cutting | Medium | Draft | [story-106](stories/story-106-chunk-level-extraction-cache.md) |
 | 107 | Value-Optimized Model Selection Across All Modules | Cross-Cutting | High | Done | [story-107](stories/story-107-value-optimized-model-selection.md) |
-| 108 | Continuity UI Page | 2.5 — UI | High | Draft | [story-108](stories/story-108-continuity-ui-page.md) |
+| 108 | Continuity UI Page | 2.5 — UI | High | Done | [story-108](stories/story-108-continuity-ui-page.md) |
 | 109 | Golden Build Runbook | Cross-Cutting | Medium | Done | [story-109](stories/story-109-golden-build-runbook.md) |
 | 110 | Improve Search: Fuzzy Matching + Scene Shorthand | 2.5 — UI | Medium | Done | [story-110](stories/story-110-search-scenes-fuzzy.md) |
 | 111 | Fix "View In Script" Scroll-to-Scene | 2.5 — UI | Medium | Done | [story-111](stories/story-111-scene-script-jump.md) |
+| 112 | Continuity Tracking: First Principles Redesign | World Building | Medium | Draft | [story-112](stories/story-112-continuity-redesign-first-principles.md) |
 
 ## Phase Summary
 
