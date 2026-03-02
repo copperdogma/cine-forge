@@ -91,6 +91,9 @@ This is where everything comes together. Every upstream artifact (scene extracti
 ### Asset State Snapshots, Not Masters
 Shots consume continuity state snapshots (Story 011), not master definitions. If a character has changed costume by scene 15, the shot plan for scene 15 references the state snapshot showing the new costume, not the master definition showing the original costume.
 
+### Scene-Level vs Shot-Level Generation
+*(from inbox triage 2026-03-02)* Kling 3.0 can generate multi-shot sequences (up to 6 camera cuts per generation). The atomic unit for video gen is moving from "shot" toward "scene." Shot planning should be scene-first with shot-level detail as a drill-down. Consider: generate whole scene vs. shot-by-shot vs. whole scene with per-shot regeneration. Shot planning produces shot-level data, but the generation path (Story 028) may consume it at scene granularity.
+
 ### Coverage as Creative Decision
 Coverage patterns are not formulaic. The Editorial Architect's coverage priority drives which patterns are used. A dialogue-heavy emotional scene might get tight singles and close-ups. An action scene might get wide masters and handheld. The shot planner must respect the creative direction, not apply generic templates.
 

@@ -36,6 +36,22 @@ ADR-002 defined the two-view architecture: Story Explorer (existing) + Scene Wor
 
 ---
 
+## Design Notes (from inbox triage 2026-03-02)
+
+### AI-Filled / Skip-Ahead State
+When a user hits "generate" without completing all upstream steps, AI fills gaps from whatever exists. This creates a state beyond completed/not_started: **"AI-inferred."** Every AI-guessed element should be visibly labeled in the readiness indicators. Example: you have a script and bibles but no reference images — AI generates video but characters look different every scene because there's no visual anchor. Each element in the Scene Workspace should show this state. Ties into the preflight tiered response system (Story 087). Needs design: how to represent quality degradation, what the "AI guessed this" indicator looks like, whether users can retroactively upgrade (generate reference images, then re-render).
+
+### ADR-002 Outstanding Items (relevant to this story)
+- **Placeholder generation with visible marking**: For yellow-tier scenarios (AI has some data but not enough), generated placeholders should be visibly marked as "AI-inferred" vs "user-specified."
+- **Quality estimates in preflight**: "★★★☆☆ estimated quality" per concern group before generation. Ties into readiness indicators.
+- **Onboarding flow**: "I'm a [Screenwriter/Director/Producer/Explorer]" single question, skippable, defaults to Explorer. Not directly Scene Workspace but affects what's shown first. *(May warrant its own story.)*
+- **Explorer demo project**: Pre-populated tutorial project (Notion pattern). *(May warrant its own story.)*
+
+### Scene-First, Not Shot-First
+Kling 3.0 can generate multi-shot sequences (up to 6 camera cuts per generation). The atomic unit for video gen is moving from "shot" toward "scene." Scene Workspace should be scene-first with shot detail as a drill-down, not shot-first. User preference: generate whole scene vs. shot-by-shot vs. whole scene with per-shot regeneration.
+
+---
+
 ## Work Log
 
 *(append-only)*

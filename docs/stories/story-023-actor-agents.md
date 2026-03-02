@@ -64,6 +64,13 @@ This story gets **closed as Won't Do** if:
 
 ---
 
+## Design Notes (from inbox triage 2026-03-02)
+
+### Voice Specification for Characters
+Not in the spec yet. Users should be able to specify character voices for dialogue — tone, accent, age, reference clips. This feeds into video/audio generation (Story 028, Sound & Music concern group). If this story is promoted to Pending, voice specification should be included as a performance dimension alongside emotional state, physical notes, etc.
+
+---
+
 ## Tasks
 
 - [ ] Decide: does Story 025 actually need this? (answer during that story's implementation)
