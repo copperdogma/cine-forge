@@ -49,7 +49,7 @@
     },
     {
       "scene_number": 6,
-      "heading": "EXT. COASTLINE - DAY (FLASHBACK)",
+      "heading": "BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST",
       "int_ext": "EXT",
       "location": "COASTLINE",
       "time_of_day": "DAY",
@@ -62,7 +62,7 @@
       "int_ext": "INT",
       "location": "STAIRWELL",
       "time_of_day": "NIGHT",
-      "summary": "Rose wants to go up to retrieve her purse containing a blockchain password worth $20 million. Mariner wants to leave. Rose reveals she stole gang money.",
+      "summary": "Rose wants to go back up for her purse, which contains a blockchain password to her life savings. Mariner wants to leave and offers to buy a new purse. Rose pleads and heads upstairs; Mariner follows reluctantly.",
       "characters": ["THE MARINER", "ROSE"]
     },
     {
@@ -71,7 +71,7 @@
       "int_ext": "INT",
       "location": "12TH FLOOR STAIRWELL",
       "time_of_day": "NIGHT",
-      "summary": "Rosco ambushes them at the stairwell door. Mariner subdues him. Rose forces Rosco to explain blockchain at gunpoint. Rosco reveals the stolen amount is $20 million before Mariner knocks him out.",
+      "summary": "Rosco ambushes them at the stairwell door. Mariner subdues him. Rose forces Rosco to explain blockchain at gunpoint. Rosco reveals the stolen amount is $20 million before Mariner knocks him out. Rose admits she stole gang money.",
       "characters": ["THE MARINER", "ROSE", "ROSCO"]
     },
     {
@@ -89,12 +89,12 @@
       "int_ext": "INT",
       "location": "15TH FLOOR",
       "time_of_day": "NIGHT",
-      "summary": "Clean, luxurious floor (Salvatori's office). Mariner forces open a locked door. Rose retrieves her purse. She questions Mariner about their father. Rose reveals their dad didn't die — he abandoned the family and lives in Chimney Bay. Mariner is devastated.",
-      "characters": ["THE MARINER", "ROSE"]
+      "summary": "Clean, luxurious floor (Salvatori's office). Mariner forces open a locked door. Rose retrieves her purse. She questions Mariner about their father. Rose reveals their dad didn't die — he abandoned the family and lives in Chimney Bay. Mariner is devastated. Salvatori arrives with thugs and a submachine gun.",
+      "characters": ["THE MARINER", "ROSE", "SALVATORI"]
     },
     {
       "scene_number": 11,
-      "heading": "EXT. BACKYARD - DAY (FLASHBACK)",
+      "heading": "BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST",
       "int_ext": "EXT",
       "location": "BACKYARD",
       "time_of_day": "DAY",
@@ -103,7 +103,7 @@
     },
     {
       "scene_number": 12,
-      "heading": "EXT. BACKYARD - DAY (FLASHBACK - DARK)",
+      "heading": "EXT. BACKYARD - DAY - (FLASHBACK)",
       "int_ext": "EXT",
       "location": "BACKYARD",
       "time_of_day": "DAY",
@@ -116,12 +116,12 @@
       "int_ext": "INT",
       "location": "STAIRWELL",
       "time_of_day": "NIGHT",
-      "summary": "Salvatori confronts Mariner and Rose with thugs and a submachine gun. Mariner, shattered by the revelations about his father, kneels in defeat. He says he's nobody.",
+      "summary": "Back to the present. Salvatori asks Mariner who he is. Mariner, shattered by the revelations about his father, quietly says he's nobody. Salvatori taunts him about being a hero.",
       "characters": ["THE MARINER", "ROSE", "SALVATORI"]
     },
     {
       "scene_number": 14,
-      "heading": "EXT. COASTLINE - DAY (FLASHBACK - DARK)",
+      "heading": "EXT. COASTLINE - DAY - (FLASHBACK)",
       "int_ext": "EXT",
       "location": "COASTLINE",
       "time_of_day": "DAY",
@@ -130,11 +130,11 @@
     },
     {
       "scene_number": 15,
-      "heading": "EXT. BACKYARD - DAY (FLASHBACK) / INT. STAIRWELL (PRESENT)",
-      "int_ext": "INT",
-      "location": "STAIRWELL",
-      "time_of_day": "NIGHT",
-      "summary": "Salvatori demands the password at gunpoint. Rose delivers a speech redefining Mariner as a true hero — not because of his father's teachings, but despite them. Mariner clenches his fists, renewed. Cut to black.",
+      "heading": "EXT. BACKYARD - DAY - (FLASHBACK)",
+      "int_ext": "EXT",
+      "location": "BACKYARD",
+      "time_of_day": "DAY",
+      "summary": "Intercut flashback/present. Thugs force Mariner to his knees. Salvatori demands the password at gunpoint. Rose delivers a speech redefining Mariner as a true hero — not because of his father's teachings, but despite them. Mariner clenches his fists, renewed. Cut to black.",
       "characters": ["THE MARINER", "ROSE", "SALVATORI"]
     }
   ]

@@ -1,4 +1,30 @@
 {
+  "CITY CENTRE": {
+    "location_id": "city-centre",
+    "name": "CITY CENTRE",
+    "aliases": ["city center", "ruined city"],
+    "physical_traits": [
+      "fires burning from barrels and destroyed buildings",
+      "homeless people huddled for warmth",
+      "fallen skyscraper filling intersection with rubble",
+      "gunshots and screams heard in background",
+      "sirens far in the distance"
+    ],
+    "must_mention_scenes": [
+      "EXT. CITY CENTRE - NIGHT"
+    ],
+    "key_facts": [
+      "Opening establishing shot of the screenplay",
+      "Dystopian result of pandemic and economic collapse",
+      "Commercial real estate collapse of 2025 turned urban centres into no-go zones",
+      "Vigilantes arise to do what police could not"
+    ],
+    "narrative_significance_must_mention": [
+      "world-building",
+      "dystopian",
+      "setting"
+    ]
+  },
   "RUDDY & GREENE BUILDING": {
     "location_id": "ruddy-and-greene-building",
     "name": "RUDDY & GREENE BUILDING",
@@ -7,7 +33,7 @@
       "classic 15-story sandstone building",
       "riddled with bullet holes and graffiti",
       "once beautiful, now decayed",
-      "multiple floors used by Salvatori's gang"
+      "rows of high-end European SUVs parked outside"
     ],
     "must_mention_scenes": [
       "EXT. RUDDY & GREENE BUILDING - FRONT",
@@ -17,7 +43,7 @@
     "key_facts": [
       "Main setting for the entire screenplay",
       "Houses Salvatori's criminal operation across multiple floors",
-      "Mariner enters from the rear after fighting at the front",
+      "Mariner enters from the rear via a fish delivery van",
       "Rose was held here before Mariner's rescue",
       "15 stories tall"
     ],
@@ -30,7 +56,7 @@
   "15TH FLOOR": {
     "location_id": "15th-floor",
     "name": "15TH FLOOR",
-    "aliases": ["Salvatori's office", "penthouse office"],
+    "aliases": ["Salvatori's office"],
     "physical_traits": [
       "clean and luxurious",
       "dimly lit like an old nightclub",
@@ -81,6 +107,34 @@
       "flashback",
       "dual presentation",
       "memory",
+      "father"
+    ]
+  },
+  "BACKYARD": {
+    "location_id": "backyard",
+    "name": "EXT. BACKYARD - DAY - PAST",
+    "aliases": ["yard", "backyard flashback"],
+    "physical_traits": [
+      "idyllic version: trim house with homemade pie in the window",
+      "idyllic version: warm sun dappling through trees",
+      "dark version: overgrown with weeds",
+      "dark version: discarded bottles and rusty weights",
+      "dark version: bench press repaired with peeling duct-tape"
+    ],
+    "must_mention_scenes": [
+      "EXT. BACKYARD - DAY"
+    ],
+    "key_facts": [
+      "Appears only in flashbacks",
+      "Shown in two contrasting versions: idealized and dark",
+      "Idealized: Dad patiently teaches young Mariner weightlifting",
+      "Dark: Dad punches young Mariner, berates him for weakness",
+      "Origin of Mariner's physical strength and fighting ethos"
+    ],
+    "narrative_significance_must_mention": [
+      "flashback",
+      "dual presentation",
+      "abuse",
       "father"
     ]
   }

@@ -74,6 +74,30 @@
       "importance": "important"
     },
     {
+      "relationship_id": "rose-salvatori-adversary",
+      "source_type": "character",
+      "source_id": "rose",
+      "target_type": "character",
+      "target_id": "salvatori",
+      "relationship_type_keywords": ["adversary", "antagonist", "enemy", "victim", "theft"],
+      "direction": "symmetric",
+      "must_mention_evidence": ["stole", "password", "gang", "gunpoint"],
+      "min_confidence": 0.8,
+      "importance": "critical"
+    },
+    {
+      "relationship_id": "dad-rose-parent",
+      "source_type": "character",
+      "source_id": "dad",
+      "target_type": "character",
+      "target_id": "rose",
+      "relationship_type_keywords": ["parent", "father", "daughter", "family"],
+      "direction": "source_to_target",
+      "must_mention_evidence": ["father", "Chimney Bay", "abandoned"],
+      "min_confidence": 0.6,
+      "importance": "secondary"
+    },
+    {
       "relationship_id": "rose-vinnie-ex",
       "source_type": "character",
       "source_id": "rose",
@@ -86,7 +110,7 @@
       "importance": "secondary"
     }
   ],
-  "min_must_find": 4,
+  "min_must_find": 5,
   "max_total_edges": 15,
   "false_positive_examples": [
     "Any relationship between entities that never interact in the screenplay",

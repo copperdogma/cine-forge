@@ -136,10 +136,9 @@ tests:
       - type: llm-rubric
         value: |
           This QA evaluation was given a BAD scene extraction with multiple errors:
-          - Wrong building name (Office Building vs Ruddy & Greene)
-          - Wrong time of day (DAY vs NIGHT)
+          - Wrong building name (Office Building vs Ruddy & Green)
+          - Time of day fabricated (claims DAY, but scene heading has none)
           - Wrong character name (Billy instead of Mariner)
-          - Missing thug characters
           - Fabricated content (grocery discussion never happens)
 
           The QA model should have:

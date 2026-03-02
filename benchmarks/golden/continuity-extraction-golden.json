@@ -59,6 +59,11 @@
           "key": "position",
           "value_patterns": ["piling", "walking stick", "hand", "against"],
           "required": false
+        },
+        {
+          "key": "ownership",
+          "value_patterns": ["billy", "father"],
+          "required": false
         }
       ],
       "prop:envelope": [
@@ -80,6 +85,11 @@
           "property_key": "costume",
           "previous_patterns": ["flannel", "shirt", "jeans"],
           "new_patterns": ["leather jacket"]
+        },
+        {
+          "property_key": "emotional_state",
+          "previous_patterns": ["tense"],
+          "new_patterns": ["flat", "resigned"]
         }
       ]
     },
@@ -138,6 +148,11 @@
           "key": "condition",
           "value_patterns": ["broken", "two pieces", "destroyed", "snapped"],
           "required": true
+        },
+        {
+          "key": "position",
+          "value_patterns": ["feet", "ground", "dock", "floor"],
+          "required": false
         }
       ],
       "prop:envelope": [
@@ -158,11 +173,11 @@
         {
           "property_key": "physical_condition",
           "previous_patterns": [],
-          "new_patterns": ["blood", "knuckles", "injured"]
+          "new_patterns": ["blood", "knuckles", "injured", "soaked"]
         },
         {
           "property_key": "emotional_state",
-          "previous_patterns": ["flat"],
+          "previous_patterns": ["flat", "resigned"],
           "new_patterns": ["hollow", "defeated", "empty", "numb"]
         }
       ],
@@ -183,6 +198,11 @@
           "property_key": "condition",
           "previous_patterns": ["intact", "weathered"],
           "new_patterns": ["broken", "two pieces", "destroyed"]
+        },
+        {
+          "property_key": "position",
+          "previous_patterns": ["piling", "against"],
+          "new_patterns": ["feet", "ground", "dock"]
         }
       ],
       "prop:envelope": [

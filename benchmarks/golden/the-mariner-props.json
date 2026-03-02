@@ -12,7 +12,9 @@
     "must_mention_scenes": [
       "EXT. RUDDY & GREENE BUILDING",
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
-      "INT. 13TH FLOOR"
+      "INT. 13TH FLOOR",
+      "INT. 15TH FLOOR",
+      "INT. STAIRWELL"
     ],
     "key_facts": [
       "Primary melee weapon used by the Mariner",
@@ -31,13 +33,13 @@
   "PURSE": {
     "prop_id": "roses-purse",
     "name": "Rose's Purse",
-    "aliases": ["the purse", "Rose's bag"],
+    "aliases": ["the purse", "her purse"],
     "physical_traits": [
-      "ordinary-looking purse",
       "chip hidden in lining",
       "contains blockchain password"
     ],
     "must_mention_scenes": [
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR",
       "INT. STAIRWELL",
       "INT. 15TH FLOOR"
     ],
@@ -59,11 +61,10 @@
   "FLARE GUN": {
     "prop_id": "flare-gun",
     "name": "Flare Gun",
-    "aliases": ["bright-orange pistol", "flare pistol"],
+    "aliases": ["bright-orange pistol", "fat bright-orange pistol"],
     "physical_traits": [
       "fat bright-orange pistol",
-      "fires blinding red flares",
-      "maritime emergency equipment"
+      "fires blinding red flares"
     ],
     "must_mention_scenes": [
       "INT. 13TH FLOOR"

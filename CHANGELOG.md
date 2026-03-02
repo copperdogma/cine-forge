@@ -1,5 +1,21 @@
 # Changelog
 
+## [2026-03-01-10] — Adversarial verification of all 10 golden fixtures
+
+### Fixed
+- `the-mariner-characters.json`: added missing SALVATORI (antagonist) and VINNIE (Rose's ex) entries, added "Mr. Salvatori" alias
+- `the-mariner-scenes.json`: fixed 5 flashback headings to match screenplay text, corrected scene 7/8 summary attribution, added SALVATORI to scene 10, fixed scene 13/15 details
+- `the-mariner-locations.json`: added missing CITY CENTRE and BACKYARD locations, fixed phantom key_fact/alias/physical_trait entries
+- `the-mariner-props.json`: removed phantom aliases ("Rose's bag", "flare pistol") and traits ("ordinary-looking purse", "maritime emergency equipment"), added missing scenes for oar/purse
+- `the-mariner-relationships.json`: added missing Rose-Salvatori adversary and Dad-Rose parent relationships, bumped min_must_find from 4 to 5
+- `normalize-signal-golden.json`: fixed invalid regex `**` → `\*\*` in forbidden_patterns (was silently skipped by scorer)
+- `qa-pass-golden.json`: fixed "Greene" → "Green" typo to match input scene text, removed phantom "missing thugs" issue
+- `continuity-extraction-golden.json`: added missing oar ownership/position properties, emotional_state change, and incomplete previous/new patterns
+- `qa-pass.yaml`: aligned LLM rubric with corrected golden (building name, time_of_day wording, removed phantom issue)
+
+### Changed
+- `_verification-checklist.md`: all 10 fixtures now CLEAN with detailed pass notes
+
 ## [2026-03-01-09] — Bootstrap golden workspace via /setup-golden
 
 ### Added

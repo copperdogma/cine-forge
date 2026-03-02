@@ -114,5 +114,64 @@
       "His 'hero' speech is self-aggrandizing in the dark version",
       "He is a fisherman"
     ]
+  },
+  "SALVATORI": {
+    "character_id": "salvatori",
+    "name": "SALVATORI",
+    "aliases": ["Mr. Salvatori"],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "menacing",
+      "theatrical",
+      "controlling",
+      "violent"
+    ],
+    "must_have_relationships": [
+      {"target": "ROSE", "type": "adversary"},
+      {"target": "THE MARINER", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. 15TH FLOOR"
+    ],
+    "must_have_evidence": [
+      "white silk suit",
+      "submachine gun",
+      "Russian accent",
+      "golden tooth"
+    ],
+    "key_facts": [
+      "He is a crime boss who controls the Ruddy & Greene building",
+      "He is dressed entirely in white with red-tinted glasses",
+      "Rose stole $20 million from his gang",
+      "He demands the password from Rose at gunpoint",
+      "He has a white moustache, hoop earring, and gold rings"
+    ]
+  },
+  "VINNIE": {
+    "character_id": "vinnie",
+    "name": "VINNIE",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "crude",
+      "aggressive"
+    ],
+    "must_have_relationships": [
+      {"target": "ROSE", "type": "romantic_ex"}
+    ],
+    "must_mention_scenes": [
+      "INT. 13TH FLOOR"
+    ],
+    "must_have_evidence": [
+      "booty call",
+      "flare"
+    ],
+    "key_facts": [
+      "He is Rose's ex-boyfriend",
+      "He works for Salvatori's gang",
+      "He convinced Rose to rob the gang",
+      "He is hit by Mariner's flare gun in the chest",
+      "He patrols the 13th floor with Mikey and Carlos"
+    ]
   }
 }
