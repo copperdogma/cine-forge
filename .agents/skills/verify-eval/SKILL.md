@@ -100,13 +100,39 @@ For EVERY mismatch, read the source text and determine:
 
 If any golden-wrong findings:
 
-1. **Apply fixes** to the golden JSON files in `benchmarks/golden/` or `tests/fixtures/golden/`.
+1. **Apply fixes** to the golden JSON files.
 2. **Validate structure**: Run unit tests that validate golden fixture integrity.
-3. **Run unit tests**: `.venv/bin/python -m pytest -m unit` — verify golden fixture tests still pass.
-4. **Re-run the original eval** to get verified scores.
+3. **Run unit tests** — verify golden fixture tests still pass.
+4. **Re-run the eval** to get verified scores. Follow the cost discipline below.
 5. **Document the delta**: raw score -> verified score.
 
 If no golden-wrong findings, skip to Phase 5.
+
+### Cost Discipline for Re-runs
+
+Eval runs cost real money — mostly from the judge/grader model. Minimize waste:
+
+1. **Use cached model outputs when only the scorer or golden changed.** If you fixed a
+   scoring script or golden reference but didn't change the prompt or providers, the
+   model outputs are identical. Run WITH cache (omit `--no-cache`) so subject model
+   calls are free. Only the judge assertions re-run.
+
+2. **Drop the LLM judge during iteration.** While tuning scorers or golden references,
+   comment out or skip LLM-rubric/LLM-judge assertions. The deterministic scorer
+   catches structural issues instantly and costs nothing. Add the judge back for the
+   ONE final verification run.
+
+3. **Filter to relevant providers when debugging a specific model.** If investigating
+   why one model fails, don't re-run all providers. Use provider filters to test just
+   the ones you need.
+
+4. **Reserve `--no-cache` for prompt changes or final verification.** The only time you
+   need fresh model outputs is when the prompt template changed, or for the single
+   final run that produces the verified scores for the registry.
+
+**Rule of thumb**: A verification session should require at most **one** full
+uncached run (the final one). All intermediate iterations should use caching and/or
+skip the judge.
 
 ## Phase 5: Report
 

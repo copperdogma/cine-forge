@@ -49,51 +49,64 @@ evals:
     scores:
       - model: "Sonnet 4.6"
         metrics:
-          overall: 0.942
-        latency_ms: 47185
+          overall: 0.952
+        latency_ms: 50913
         cost_usd: 0.0536
         cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/character-extraction-sonnet46.json
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/character-extraction-post-golden-verify.json
+        note: "Up from 0.942 — golden fix removed phantom penalties"
       - model: "Opus 4.6"
         metrics:
-          overall: 0.933
-        latency_ms: 49070
-        cost_usd: 0.0982
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/character-extraction-run3.json
+          overall: 0.930
+        latency_ms: 50208
+        cost_usd: 0.0991
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/character-extraction-post-golden-verify.json
       - model: "Gemini 3 Pro"
         metrics:
-          overall: 0.899
-        latency_ms: 31764
+          overall: 0.907
+        latency_ms: 42333
         cost_usd: 0.0497
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/character-extraction-post-golden-verify.json
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.887
+        latency_ms: 39359
+        cost_usd: 0.0476
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/character-extraction-post-golden-verify.json
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.881
+        latency_ms: 20237
+        cost_usd: 0.0140
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/character-extraction-post-golden-verify.json
+        note: "Best cost-quality ratio in mid-tier"
       - model: "GPT-5.2"
         metrics:
-          overall: 0.826
-        latency_ms: 25929
-        cost_usd: 0.0316
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "Gemini 3 Pro"
-        metrics:
-          overall: 0.910
-        latency_ms: 31878
-        cost_usd: 0.0497
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/character-extraction-run2.json
+          overall: 0.854
+        latency_ms: 18740
+        cost_usd: 0.0300
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/character-extraction-post-golden-verify.json
+        note: "Up from 0.826 — was penalized for correct answers"
       - model: "Gemini 3 Flash"
         metrics:
-          overall: 0.800
-        latency_ms: 14370
-        cost_usd: 0.0096
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/character-extraction-run2.json
+          overall: 0.805
+        latency_ms: 13369
+        cost_usd: 0.0094
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/character-extraction-post-golden-verify.json
 
     attempts: []
 
@@ -120,35 +133,55 @@ evals:
     scores:
       - model: "Opus 4.6"
         metrics:
-          overall: 0.898
-        latency_ms: 12895
-        cost_usd: 0.0409
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/location-extraction-run2.json
-      - model: "Sonnet 4.5"
-        metrics:
-          overall: 0.895
-        latency_ms: 13194
-        cost_usd: 0.0240
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "Gemini 2.5 Pro"
-        metrics:
-          overall: 0.893
-        latency_ms: 17547
-        cost_usd: 0.0255
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+          overall: 0.942
+        latency_ms: 13445
+        cost_usd: 0.0411
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/location-extraction-verify-eval.json
+        note: "Verified: scorer stem-match fix + golden fact/alias/narrative rephrasing"
       - model: "Sonnet 4.6"
         metrics:
-          overall: 0.870
-        latency_ms: 15393
-        cost_usd: 0.0254
+          overall: 0.922
+        latency_ms: 13842
+        cost_usd: 0.0252
         cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/location-extraction-sonnet46.json
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/location-extraction-verify-eval.json
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.911
+        latency_ms: 8302
+        cost_usd: 0.0163
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/location-extraction-verify-eval.json
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.908
+        latency_ms: 14069
+        cost_usd: 0.0242
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/location-extraction-verify-eval.json
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.895
+        latency_ms: 15329
+        cost_usd: 0.0235
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/location-extraction-verify-eval.json
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.873
+        latency_ms: 8676
+        cost_usd: 0.0066
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/location-extraction-verify-eval.json
+        note: "Fast + cheap, competitive quality"
 
     attempts: []
 
@@ -173,37 +206,56 @@ evals:
       cost_usd_max: 0.05
 
     scores:
-      - model: "Opus 4.6"
-        metrics:
-          overall: 0.880
-        latency_ms: 34351
-        cost_usd: 0.0354
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/prop-extraction-run2.json
       - model: "Sonnet 4.6"
         metrics:
-          overall: 0.841
-        latency_ms: 10412
-        cost_usd: 0.0216
+          overall: 0.916
+        latency_ms: 10762
+        cost_usd: 0.0219
         cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/prop-extraction-sonnet46.json
-      - model: "Gemini 2.5 Pro"
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/prop-extraction-verify-eval.json
+        note: "Verified: scorer entity-type fix + alias normalization + golden fact rephrasing"
+      - model: "Opus 4.6"
         metrics:
-          overall: 0.820
-        latency_ms: 12734
-        cost_usd: 0.0182
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "GPT-5.2"
+          overall: 0.912
+        latency_ms: 10358
+        cost_usd: 0.0351
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/prop-extraction-verify-eval.json
+      - model: "Sonnet 4.5"
         metrics:
-          overall: 0.712
-        latency_ms: 4785
-        cost_usd: 0.0117
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+          overall: 0.889
+        latency_ms: 9844
+        cost_usd: 0.0206
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/prop-extraction-verify-eval.json
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.830
+        latency_ms: 4412
+        cost_usd: 0.0068
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/prop-extraction-verify-eval.json
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.827
+        latency_ms: 20100
+        cost_usd: 0.0302
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/prop-extraction-verify-eval.json
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 0.827
+        latency_ms: 7425
+        cost_usd: 0.0059
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/prop-extraction-verify-eval.json
 
     attempts: []
 
@@ -228,46 +280,64 @@ evals:
       cost_usd_max: 0.10
 
     scores:
-      - model: "Sonnet 4.5"
-        metrics:
-          overall: 0.995
-        latency_ms: 26396
-        cost_usd: 0.0492
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/relationship-discovery-run1.json
-        note: "7-way tie at 0.995"
-      - model: "Opus 4.6"
-        metrics:
-          overall: 0.995
-        latency_ms: 31709
-        cost_usd: 0.0842
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "Gemini 2.5 Pro"
-        metrics:
-          overall: 0.995
-        latency_ms: 42660
-        cost_usd: 0.0610
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "GPT-5.2"
-        metrics:
-          overall: 0.985
-        latency_ms: 30788
-        cost_usd: 0.0357
-        measured: 2026-02-18
-        git_sha: "324ebf4"
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.995
-        latency_ms: 38001
-        cost_usd: 0.0000
+        latency_ms: 40189
+        cost_usd: 0.0492
         cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/relationship-discovery-sonnet46.json
-        note: "Cost $0 likely from free-tier testing"
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.995
+        latency_ms: 22983
+        cost_usd: 0.0153
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+        note: "Tied for best at 6x cheaper than Opus"
+      - model: "GPT-4.1"
+        metrics:
+          overall: 0.990
+        latency_ms: 17504
+        cost_usd: 0.0259
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.989
+        latency_ms: 32088
+        cost_usd: 0.0558
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.989
+        latency_ms: 26597
+        cost_usd: 0.0821
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.989
+        latency_ms: 41989
+        cost_usd: 0.0648
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.979
+        latency_ms: 19706
+        cost_usd: 0.0338
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
 
     attempts: []
 
@@ -392,37 +462,59 @@ evals:
       cost_usd_max: 0.10
 
     scores:
-      - model: "Sonnet 4.6"
-        metrics:
-          overall: 0.815
-        latency_ms: 38562
-        cost_usd: 0.0533
-        cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/scene-extraction-sonnet46.json
       - model: "GPT-5.2"
         metrics:
-          overall: 0.803
-        latency_ms: 19812
-        cost_usd: 0.0295
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/scene-extraction-run1.json
+          overall: 0.925
+        latency_ms: 20143
+        cost_usd: 0.0343
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/scene-extraction-post-golden-verify.json
+        note: "Up from 0.803 — biggest winner from golden fix (+0.122). Now meets target."
       - model: "Opus 4.6"
         metrics:
-          overall: 0.797
-        latency_ms: 40202
-        cost_usd: 0.0882
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+          overall: 0.854
+        latency_ms: 37407
+        cost_usd: 0.0875
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/scene-extraction-post-golden-verify.json
+        note: "Up from 0.797 (+0.057)"
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.808
+        latency_ms: 35527
+        cost_usd: 0.0533
+        cost_estimated: true
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/scene-extraction-post-golden-verify.json
+      - model: "GPT-4.1 Mini"
+        metrics:
+          overall: 0.751
+        latency_ms: 28645
+        cost_usd: 0.0051
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/scene-extraction-post-golden-verify.json
+        note: "Budget option — cheap but decent"
+      - model: "GPT-4.1"
+        metrics:
+          overall: 0.733
+        latency_ms: 24023
+        cost_usd: 0.0242
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/scene-extraction-post-golden-verify.json
       - model: "Sonnet 4.5"
         metrics:
-          overall: 0.762
-        latency_ms: 38660
-        cost_usd: 0.0560
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+          overall: 0.631
+        latency_ms: 39700
+        cost_usd: 0.0564
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/scene-extraction-post-golden-verify.json
+        note: "Down from 0.762 (-0.131) — was rewarded for fabricated scene details"
 
     attempts: []
 
@@ -448,54 +540,67 @@ evals:
       cost_usd_max: 0.02
 
     scores:
-      - model: "Sonnet 4.6"
-        metrics:
-          overall: 0.955
-        latency_ms: 4646
-        cost_usd: 0.0093
-        cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/normalization-2026-02-18.json
-      - model: "Sonnet 4.5"
-        metrics:
-          overall: 0.955
-        latency_ms: 5456
-        cost_usd: 0.0094
-        measured: 2026-02-18
-        git_sha: "324ebf4"
       - model: "GPT-4.1"
         metrics:
-          overall: 0.946
-        latency_ms: 5212
-        cost_usd: 0.0043
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+          overall: 0.961
+        latency_ms: 3250
+        cost_usd: 0.0044
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/normalization-verify-eval-v2.json
+        note: "Best cost-quality-latency balance. Verified: golden scene keywords simplified."
       - model: "Opus 4.6"
         metrics:
-          overall: 0.910
-        latency_ms: 5800
+          overall: 0.955
+        latency_ms: 5465
         cost_usd: 0.0155
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        note: "Opus underperforms Sonnet here — over-edits content"
-      - model: "Gemini 3 Flash"
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/normalization-verify-eval-v2.json
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.955
+        latency_ms: 29716
+        cost_usd: 0.0428
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/normalization-verify-eval-v2.json
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.954
+        latency_ms: 2349
+        cost_usd: 0.0030
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/normalization-verify-eval-v2.json
+        note: "Fastest + cheapest in top tier. Outstanding value."
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.950
+        latency_ms: 5536
+        cost_usd: 0.0095
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/normalization-verify-eval-v2.json
+      - model: "GPT-4.1 Mini"
         metrics:
           overall: 0.945
-        latency_ms: 29914
-        cost_usd: 0.0168
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/normalization-gemini-2026-02-18.json
-        note: "Close to Sonnet quality but 6x latency"
-      - model: "Gemini 3 Pro"
+        latency_ms: 7902
+        cost_usd: 0.0009
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/normalization-verify-eval-v2.json
+        note: "Near-SOTA quality at $0.001 — strong budget option"
+      - model: "Sonnet 4.6"
         metrics:
-          overall: 0.920
-        latency_ms: 54903
-        cost_usd: 0.0443
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/normalization-gemini-2026-02-18.json
+          overall: 0.938
+        latency_ms: 4491
+        cost_usd: 0.0092
+        cost_estimated: true
+        measured: 2026-03-02
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/normalization-post-golden-verify.json
+        note: "Opus still underperforms Sonnet — over-edits content"
 
     attempts: []
 
@@ -595,58 +700,62 @@ evals:
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 1.000
-        latency_ms: 4926
-        cost_usd: 0.0009
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/qa-pass-2026-02-18.json
+        latency_ms: 4181
+        cost_usd: 0.0008
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        note: "Production winner — perfect score, cheapest, fast"
       - model: "GPT-5.2"
         metrics:
           overall: 1.000
-        latency_ms: 6076
-        cost_usd: 0.0065
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "Sonnet 4.6"
+        latency_ms: 5049
+        cost_usd: 0.0068
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/qa-pass-post-golden-verify.json
+      - model: "Gemini 2.5 Flash"
         metrics:
-          overall: 0.998
-        latency_ms: 10006
-        cost_usd: 0.0116
-        cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "Opus 4.6"
-        metrics:
-          overall: 0.995
-        latency_ms: 9775
-        cost_usd: 0.0182
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+          overall: 1.000
+        latency_ms: 8521
+        cost_usd: 0.0054
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/qa-pass-post-golden-verify.json
       - model: "Gemini 3 Flash"
         metrics:
           overall: 1.000
-        latency_ms: 11767
+        latency_ms: 11953
         cost_usd: 0.0064
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/qa-pass-gemini-2026-02-18.json
-        note: "Perfect score — matches GPT-4.1 Mini at slightly higher cost"
-      - model: "Gemini 2.5 Pro"
-        metrics:
-          overall: 0.995
-        latency_ms: 11253
-        cost_usd: 0.0133
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/qa-pass-gemini-2026-02-18.json
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/qa-pass-post-golden-verify.json
       - model: "Gemini 3 Pro"
         metrics:
-          overall: 0.975
-        latency_ms: 21578
+          overall: 1.000
+        latency_ms: 46503
         cost_usd: 0.0184
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/qa-pass-gemini-2026-02-18.json
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        note: "Up from 0.975 — golden fix corrected phantom issue penalty"
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.995
+        latency_ms: 9528
+        cost_usd: 0.0116
+        cost_estimated: true
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/qa-pass-post-golden-verify.json
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.995
+        latency_ms: 9458
+        cost_usd: 0.0176
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/qa-pass-post-golden-verify.json
 
     attempts: []
 
@@ -674,34 +783,64 @@ evals:
     scores:
       - model: "Sonnet 4.6"
         metrics:
-          overall: 0.978
-        latency_ms: 28568
+          overall: 0.982
+        latency_ms: 31835
         cost_usd: 0.0404
         cost_estimated: true
         measured: 2026-03-01
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/continuity-extraction-2026-03-01.json
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
+        note: "Up from 0.978 — meets target"
+      - model: "GPT-4.1"
+        metrics:
+          overall: 0.959
+        latency_ms: 20022
+        cost_usd: 0.0176
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
+        note: "New entry — strong mid-tier option"
       - model: "GPT-5.2"
         metrics:
-          overall: 0.951
-        latency_ms: 19398
-        cost_usd: 0.0264
+          overall: 0.952
+        latency_ms: 15486
+        cost_usd: 0.0247
         measured: 2026-03-01
-        git_sha: "324ebf4"
-      - model: "Haiku 4.5"
-        metrics:
-          overall: 0.948
-        latency_ms: 9350
-        cost_usd: 0.0098
-        measured: 2026-03-01
-        git_sha: "324ebf4"
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
       - model: "Opus 4.6"
         metrics:
-          overall: 0.943
-        latency_ms: 22596
-        cost_usd: 0.0550
+          overall: 0.949
+        latency_ms: 23120
+        cost_usd: 0.0554
         measured: 2026-03-01
-        git_sha: "324ebf4"
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.932
+        latency_ms: 16545
+        cost_usd: 0.0254
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.922
+        latency_ms: 12832
+        cost_usd: 0.0083
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.885
+        latency_ms: 8842
+        cost_usd: 0.0095
+        measured: 2026-03-01
+        git_sha: "8c9e0a1"
+        result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
+        note: "Down from 0.948 — was rewarded for incomplete patterns"
 
     attempts: []
 

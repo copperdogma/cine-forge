@@ -116,17 +116,17 @@ def get_assert(output: str, context: dict) -> dict:
 
     # --- 3. Field completeness ---
     # Detect entity type from golden keys
-    if "physical_traits" in golden:
+    if "prop_id" in golden:
+        # Prop (check before physical_traits — props also have physical_traits)
+        required_fields = [
+            "prop_id", "name", "description", "scene_presence",
+            "narrative_significance", "overall_confidence",
+        ]
+    elif "physical_traits" in golden:
         # Location
         required_fields = [
             "location_id", "name", "description", "physical_traits",
             "scene_presence", "narrative_significance", "overall_confidence",
-        ]
-    elif "narrative_significance_must_mention" in golden or "prop_id" in golden:
-        # Prop
-        required_fields = [
-            "prop_id", "name", "description", "scene_presence",
-            "narrative_significance", "overall_confidence",
         ]
     else:
         # Character (fallback)
@@ -153,7 +153,7 @@ def get_assert(output: str, context: dict) -> dict:
     # Check aliases
     if golden_aliases:
         model_text = all_model_names + " " + (result.get("description") or "").upper()
-        found = sum(1 for a in golden_aliases if a in normalize(model_text))
+        found = sum(1 for a in golden_aliases if normalize(a) in normalize(model_text))
         alias_score = found / len(golden_aliases)
         scores["name_identification"] = (name_score + alias_score) / 2
         if found < len(golden_aliases):
@@ -196,14 +196,27 @@ def get_assert(output: str, context: dict) -> dict:
         scores["scene_coverage"] = 1.0
 
     # --- 7. Key fact recall ---
+    # Use stem matching (first 5 chars) for facts, same as physical_coverage.
+    # Filter stop words to avoid inflating the denominator with trivial matches.
+    STOP_WORDS = {
+        "the", "and", "for", "was", "are", "has", "had", "his", "her",
+        "its", "that", "this", "with", "from", "into", "also", "been",
+        "were", "these", "those", "their", "them", "they", "via", "who",
+    }
     golden_facts = golden.get("key_facts", [])
     if golden_facts:
         full_output = json.dumps(result).lower()
         found = 0
         for fact in golden_facts:
-            terms = re.findall(r'\b\w{3,}\b', fact.lower())
-            matches = sum(1 for t in terms if t in full_output)
-            if terms and matches >= len(terms) * 0.5:
+            terms = [
+                t for t in re.findall(r'\b\w{3,}\b', fact.lower())
+                if t not in STOP_WORDS
+            ]
+            if not terms:
+                found += 1
+                continue
+            matches = sum(1 for t in terms if stem_match(full_output, t))
+            if matches >= len(terms) * 0.5:
                 found += 1
         scores["fact_recall"] = found / len(golden_facts)
         if found < len(golden_facts):

@@ -1,5 +1,25 @@
 # Changelog
 
+## [2026-03-02-01] — Eval verification: scorer fixes, golden repairs, model swap
+
+### Fixed
+- `bible_extraction_scorer.py`: entity-type detection now checks `prop_id` before `physical_traits` (props were misclassified as locations, penalizing field_completeness)
+- `bible_extraction_scorer.py`: alias comparison now normalizes golden aliases (hyphens broke matching)
+- `bible_extraction_scorer.py`: `fact_recall` now uses stem matching (consistent with `physical_coverage`) and filters stop words — "flashback" vs "flashbacks" no longer fails
+- `the-mariner-locations.json`: rewrote key_facts, aliases, and narrative terms for all 4 locations — replaced literary vocabulary ("vertical journey", "Dad", "cast") with natural-language phrasing models actually produce
+- `the-mariner-props.json`: rephrased 3 FLARE GUN facts for flexible keyword matching
+- `normalize-signal-golden.json`: simplified expected_scenes to keyword-only (location names without INT./EXT. prefix)
+
+### Changed
+- `script_normalize_v1`: default work_model from Sonnet 4.6 to Haiku 4.5 — eval shows higher quality (0.954 vs 0.938) at 67% lower cost
+- `verify-eval` skill: added Cost Discipline section (use cache for scorer-only changes, drop LLM judge during iteration)
+- `registry.yaml`: updated normalization, prop-extraction, and location-extraction with verified scores
+
+### Eval Deltas (raw → verified)
+- Normalization: 0.955 → 0.961 (GPT-4.1)
+- Prop Extraction: 0.904 → 0.916 (Sonnet 4.6)
+- Location Extraction: 0.898 → 0.942 (Opus 4.6)
+
 ## [2026-03-01-10] — Adversarial verification of all 10 golden fixtures
 
 ### Fixed
