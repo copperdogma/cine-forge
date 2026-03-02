@@ -297,6 +297,11 @@ export function CommandPalette({
                   >
                     <Clapperboard className="h-4 w-4 mr-2" />
                     <div className="flex-1 flex items-center gap-2 min-w-0">
+                      {scene.scene_number > 0 && (
+                        <span className="text-xs text-muted-foreground shrink-0 tabular-nums">
+                          #{scene.scene_number}
+                        </span>
+                      )}
                       <span className="text-sm truncate">{scene.heading}</span>
                       <Badge
                         variant="outline"

@@ -3,10 +3,6 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 ## Untriaged
 
-- Search should include scenes, too. If I type "sc2" it would be a great way to jump to scene 2 (assuming sc2 matches "scene 2" the best of course;) Speaking of which, we should improve the search. Currently if I type "marinner" it returns zero results. That's clearly "Mariner" but missspelled. And typing "ym" doesn't return anything but it could return "Young Mariner", etc. Ideally do this with a library.
-
-- If you open a scene and click View In script it just takes you to to the top of the script. It shuld jump down to that scene in the script.
-
 - nano banana 2 templates would be useful for global style transfers: https://x.com/geminiapp/status/2027081255804870985?s=12&t=uFZE-MuhgWdh1YErEZzLtQ
 
 - Runway Character Rendered App: https://x.com/runwayml/status/2027411005509161375?s=20

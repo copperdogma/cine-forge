@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-02-03] — Fuzzy search + scene shorthand in command palette (Story 110)
+
+### Added
+- Fuzzy/typo-tolerant search: "marinner" now finds "Mariner" (rapidfuzz, threshold 75)
+- Initials matching: "ym" finds "Young Mariner", "dj" finds "Detective Jones"
+- Scene shorthand: "sc2" / "sc 2" jumps directly to Scene 2; bare "sc" lists all scenes
+- Scene number (`#N`) shown in search result rows for instant confirmation
+
+### Fixed
+- Scene search was silently returning zero results in all real projects — `search_entities` was looking in `__project__/` but the pipeline saves `scene_index` with `entity_id="project"`. Now tries `"project"` first with `None` fallback.
+
 ## [2026-03-02-02] — Scene Workspace (Story 099)
 
 ### Added

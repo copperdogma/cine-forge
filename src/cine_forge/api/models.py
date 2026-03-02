@@ -228,6 +228,7 @@ class SearchResultScene(BaseModel):
     """Scene match in search results."""
 
     scene_id: str
+    scene_number: int = 0
     heading: str
     location: str
     time_of_day: str

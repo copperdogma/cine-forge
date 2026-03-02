@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from rapidfuzz import fuzz as _rfuzz
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
@@ -23,6 +24,44 @@ from cine_forge.roles.runtime import RoleCatalog, RoleContext
 from cine_forge.schemas import ArtifactMetadata, ArtifactRef
 
 log = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Search helpers — fuzzy matching for search_entities
+# ---------------------------------------------------------------------------
+
+def _parse_scene_number(query: str) -> int | None:
+    """Parse 'sc2', 'sc 2', 'sc-2', 'scene2', 'scene 2' → scene number or None."""
+    m = re.match(r'^sc(?:ene)?\s*[-]?\s*(\d+)$', query.strip().lower())
+    return int(m.group(1)) if m else None
+
+
+def _is_scene_all(query: str) -> bool:
+    """Return True if the query is a bare scene prefix ('sc' or 'scene') — return all scenes."""
+    return query.strip().lower() in ("sc", "scene")
+
+
+def _fuzzy_match(query: str, text: str) -> bool:
+    """True if query matches text via exact substring, initials, or fuzzy ratio.
+
+    Three strategies applied in order:
+    - Exact substring: 'mariner' in 'The Mariner' (always checked, fast path)
+    - Initials: 'ym' → 'Young Mariner' (2–5 all-alpha chars, first letter of each word)
+    - Fuzzy ratio: 'marinner' → 'mariner' (queries ≥ 4 chars, threshold 75/100)
+    """
+    q = query.lower()
+    t = text.lower()
+    if q in t:
+        return True
+    if 2 <= len(q) <= 5 and q.isalpha():
+        words = [w for w in t.split() if w]
+        if q == "".join(w[0] for w in words):
+            return True
+    if len(q) >= 4:
+        score = max(_rfuzz.ratio(q, t), _rfuzz.partial_ratio(q, t))
+        if score >= 75:
+            return True
+    return False
 
 
 class ServiceError(Exception):
@@ -1124,8 +1163,14 @@ class OperatorConsoleService:
         locations: list[dict[str, Any]] = []
         props: list[dict[str, Any]] = []
 
-        # Search scene_index artifact for scene headings/locations
-        scene_index_refs = store.list_versions(artifact_type="scene_index", entity_id=None)
+        scene_num = _parse_scene_number(q)
+        all_scenes = _is_scene_all(q)
+
+        # Search scene_index artifact for scene headings/locations.
+        # Production pipeline saves scene_index with entity_id="project"; tests may use None.
+        scene_index_refs = store.list_versions(artifact_type="scene_index", entity_id="project")
+        if not scene_index_refs:
+            scene_index_refs = store.list_versions(artifact_type="scene_index", entity_id=None)
         if scene_index_refs:
             latest = scene_index_refs[-1]
             try:
@@ -1136,11 +1181,20 @@ class OperatorConsoleService:
                     heading = entry.get("heading", "")
                     loc = entry.get("location", "")
                     tod = entry.get("time_of_day", "")
-                    if q in heading.lower() or q in loc.lower() or q in tod.lower():
+                    snum = entry.get("scene_number", 0)
+                    matches = (
+                        all_scenes
+                        or (scene_num is not None and snum == scene_num)
+                        or _fuzzy_match(q, heading)
+                        or _fuzzy_match(q, loc)
+                        or _fuzzy_match(q, tod)
+                    )
+                    if matches:
                         first_word = heading.split(" ")[0].rstrip(".") if heading else ""
                         int_ext = first_word if first_word in ("INT", "EXT", "INT/EXT") else ""
                         scenes.append({
                             "scene_id": entry.get("scene_id", ""),
+                            "scene_number": snum,
                             "heading": heading,
                             "location": loc,
                             "time_of_day": tod,
@@ -1173,19 +1227,19 @@ class OperatorConsoleService:
                     searchable = (
                         display_name.lower(), manifest_entity_id.lower(), entity_id.lower(),
                     )
-                    if any(q in s for s in searchable):
-                        entry = {
+                    if any(_fuzzy_match(q, s) for s in searchable):
+                        result_entry = {
                             "entity_id": manifest_entity_id,
                             "display_name": display_name,
                             "entity_type": entity_type,
                             "artifact_type": artifact_type,
                         }
                         if entity_type == "character":
-                            characters.append(entry)
+                            characters.append(result_entry)
                         elif entity_type == "location":
-                            locations.append(entry)
+                            locations.append(result_entry)
                         elif entity_type == "prop":
-                            props.append(entry)
+                            props.append(result_entry)
                 except Exception:
                     log.warning(
                         "Failed to load bible manifest %s for search",

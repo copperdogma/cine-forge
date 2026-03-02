@@ -579,6 +579,112 @@ def test_search_returns_scenes_and_entities(tmp_path: Path) -> None:
     assert payload4["characters"] == []
 
 
+def test_search_fuzzy_and_shorthand(tmp_path: Path) -> None:
+    """Test fuzzy matching, initials, and scene number shorthand in search."""
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "fuzzy-search-test", "Fuzzy Search Test")
+    project_path = tmp_path / "output" / "fuzzy-search-test"
+
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="seed",
+        rationale="test fixture",
+        confidence=1.0,
+        source="human",
+        producing_module="test.fixture",
+    )
+
+    # Seed scene_index with scene_number populated
+    store.save_artifact(
+        artifact_type="scene_index",
+        entity_id=None,
+        data={
+            "entries": [
+                {
+                    "scene_id": "scene-001",
+                    "scene_number": 1,
+                    "heading": "INT. WAREHOUSE - NIGHT",
+                    "location": "Warehouse",
+                    "time_of_day": "NIGHT",
+                },
+                {
+                    "scene_id": "scene-002",
+                    "scene_number": 2,
+                    "heading": "EXT. ROOFTOP - DAY",
+                    "location": "Rooftop",
+                    "time_of_day": "DAY",
+                },
+                {
+                    "scene_id": "scene-003",
+                    "scene_number": 3,
+                    "heading": "INT. ALLEY - NIGHT",
+                    "location": "Alley",
+                    "time_of_day": "NIGHT",
+                },
+            ]
+        },
+        metadata=metadata,
+    )
+
+    store.save_bible_entry(
+        entity_type="character",
+        entity_id="young-mariner",
+        display_name="Young Mariner",
+        files=[],
+        data_files={},
+        metadata=metadata,
+    )
+
+    store.save_bible_entry(
+        entity_type="location",
+        entity_id="warehouse",
+        display_name="The Warehouse",
+        files=[],
+        data_files={},
+        metadata=metadata,
+    )
+
+    # --- Typo tolerance ---
+    # "warehuse" → "Warehouse" (typo, one char swapped)
+    resp = client.get(f"/api/projects/{project_id}/search?q=warehuse")
+    assert resp.status_code == 200
+    payload = resp.json()
+    scene_ids = [s["scene_id"] for s in payload["scenes"]]
+    location_names = [loc["display_name"] for loc in payload["locations"]]
+    assert "scene-001" in scene_ids, "typo 'warehuse' should match scene with location Warehouse"
+    assert "The Warehouse" in location_names, "typo 'warehuse' should match The Warehouse location"
+
+    # --- Initials matching ---
+    # "ym" → "Young Mariner"
+    resp2 = client.get(f"/api/projects/{project_id}/search?q=ym")
+    assert resp2.status_code == 200
+    payload2 = resp2.json()
+    char_names = [c["display_name"] for c in payload2["characters"]]
+    assert "Young Mariner" in char_names, "initials 'ym' should match Young Mariner"
+
+    # --- Scene number shorthand ---
+    # "sc2" → scene 2 only
+    resp3 = client.get(f"/api/projects/{project_id}/search?q=sc2")
+    assert resp3.status_code == 200
+    payload3 = resp3.json()
+    sc_ids = [s["scene_id"] for s in payload3["scenes"]]
+    assert sc_ids == ["scene-002"], f"'sc2' should return only scene-002, got {sc_ids}"
+
+    # "sc 2" (with space) → same
+    resp3b = client.get(f"/api/projects/{project_id}/search?q=sc+2")
+    payload3b = resp3b.json()
+    assert [s["scene_id"] for s in payload3b["scenes"]] == ["scene-002"]
+
+    # --- "sc" alone → all scenes ---
+    resp4 = client.get(f"/api/projects/{project_id}/search?q=sc")
+    assert resp4.status_code == 200
+    payload4 = resp4.json()
+    all_ids = {s["scene_id"] for s in payload4["scenes"]}
+    assert all_ids == {"scene-001", "scene-002", "scene-003"}, (
+        f"'sc' should return all 3 scenes, got {all_ids}"
+    )
+
+
 def test_search_requires_open_project(tmp_path: Path) -> None:
     """Test that searching a non-opened project returns 404."""
     client = _make_client(tmp_path)

@@ -226,6 +226,7 @@ export type ChatMessage = {
 
 export type SearchResultScene = {
   scene_id: string
+  scene_number: number
   heading: string
   location: string
   time_of_day: string
