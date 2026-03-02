@@ -63,10 +63,10 @@ export function useRecipes() {
 
 // --- Projects ---
 
-export function useRecentProjects() {
+export function useRecentProjects(limit?: number) {
   return useQuery<RecentProjectSummary[]>({
-    queryKey: ['projects', 'recent'],
-    queryFn: api.listRecentProjects,
+    queryKey: ['projects', 'recent', limit ?? 'all'],
+    queryFn: () => api.listRecentProjects(limit),
   })
 }
 

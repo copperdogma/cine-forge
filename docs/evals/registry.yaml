@@ -844,6 +844,213 @@ evals:
 
     attempts: []
 
+  - id: entity-discovery
+    name: Entity Discovery
+    type: quality
+    description: >
+      Recall-focused discovery of all named entities (characters, locations, props)
+      from a full screenplay in a single pass. Missing an entity is worse than
+      a false positive — this is a completeness task. Weighted: character recall (0.45),
+      location recall (0.25), prop recall (0.15), JSON validity (0.10), optional
+      coverage (0.05).
+    pipeline_stage: world_building
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/entity-discovery.yaml --no-cache -j 3"
+    config: benchmarks/tasks/entity-discovery.yaml
+    scorer: benchmarks/scorers/entity_discovery_scorer.py
+    golden: benchmarks/golden/the-mariner-entity-discovery.json
+    test_cases: 1  # full screenplay single-pass
+
+    target:
+      metric: overall
+      value: 0.93
+      latency_ms_max: 30000
+      cost_usd_max: 0.02
+
+    scores:
+      - model: "GPT-4.1"
+        metrics:
+          overall: 0.940
+        latency_ms: 4600
+        cost_usd: 0.01313
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+        note: "Quality leader: Python 1.000, Rubric 0.880"
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.935
+        latency_ms: 5900
+        cost_usd: 0.02046
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.920
+        latency_ms: 4800
+        cost_usd: 0.00669
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.920
+        latency_ms: 7500
+        cost_usd: 0.10704
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 0.920
+        latency_ms: 15500
+        cost_usd: 0.00104
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+        note: "Value runner-up: 0.920 quality at $0.001/call"
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.920
+        latency_ms: 20000
+        cost_usd: 0.00112
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+      - model: "GPT-4.1 Nano"
+        metrics:
+          overall: 0.910
+        latency_ms: 5200
+        cost_usd: 0.00061
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+      - model: "Gemini 2.5 Flash Lite"
+        metrics:
+          overall: 0.905
+        latency_ms: 2000
+        cost_usd: 0.00053
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+        note: "Value winner: 0.905 quality at $0.00053, 2.0s. Value score=1698. Production default."
+      - model: "GPT-4.1 Mini"
+        metrics:
+          overall: 0.787
+        latency_ms: 7600
+        cost_usd: 0.00239
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+        note: "Failed — rubric 0.700 (below 0.75 pass threshold). Misses some entities."
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: null
+        latency_ms: null
+        cost_usd: null
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/entity-discovery-run1.json
+        note: "API error (503 high demand) — score not measured."
+
+    attempts: []
+
+  - id: script-bible
+    name: Script Bible
+    type: quality
+    description: >
+      Full script bible extraction from a complete screenplay — logline, synopsis,
+      act structure, themes, protagonist journey, genre, tone, setting. Evaluated
+      on field completeness, screenplay specificity (no generic analysis), and
+      thematic grounding. Once-per-project, always generated on screenplay import.
+    pipeline_stage: ingest
+    runner: promptfoo
+    command: "cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3"
+    config: benchmarks/tasks/script-bible.yaml
+    scorer: benchmarks/scorers/script_bible_scorer.py
+    golden: benchmarks/golden/the-mariner-script-bible.json
+    test_cases: 1  # full screenplay
+
+    target:
+      metric: overall
+      value: 0.90
+      latency_ms_max: 30000
+      cost_usd_max: 0.01
+
+    scores:
+      - model: "Opus 4.6"
+        metrics:
+          overall: 0.907
+        latency_ms: 74600
+        cost_usd: 0.32437
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+        note: "Quality leader but $0.32/call and 74.6s — unacceptable for ingest default"
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 0.902
+        latency_ms: 18800
+        cost_usd: 0.00165
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+        note: "Value runner-up: 0.902 quality at $0.002/call, 18.8s"
+      - model: "GPT-4.1 Mini"
+        metrics:
+          overall: 0.890
+        latency_ms: 21100
+        cost_usd: 0.00417
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+      - model: "Gemini 2.5 Flash Lite"
+        metrics:
+          overall: 0.885
+        latency_ms: 7800
+        cost_usd: 0.00089
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+        note: "Value winner: 0.885 quality at $0.00089, 7.8s. Value score=1000. Production default."
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.875
+        latency_ms: 28300
+        cost_usd: 0.01482
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.875
+        latency_ms: 49200
+        cost_usd: 0.02226
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.863
+        latency_ms: 73500
+        cost_usd: 0.06610
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+        note: "Worst passing model: 73.5s and $0.066 — Gemini Flash Lite beats it on all axes"
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.810
+        latency_ms: 23800
+        cost_usd: 0.00206
+        measured: 2026-03-02
+        git_sha: "0aaf2fc"
+        result_file: benchmarks/results/script-bible-run1.json
+        note: "Failed — rubric 0.650. Structural ok but thematic grounding weak."
+
+    attempts: []
+
   # ── Compromise Evals ──────────────────────────────────────────────────────
   # Populated by /bootstrap-compromise-evals from docs/spec.md.
   # Each tests whether a spec compromise can be eliminated.

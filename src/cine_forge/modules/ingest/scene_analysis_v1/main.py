@@ -84,7 +84,7 @@ def run_module(
     escalate_model = params.get("escalate_model") or work_model
     qa_model = (
         params.get("qa_model") or params.get("verify_model")
-        or "claude-haiku-4-5-20251001"
+        or "gpt-4.1-mini"
     )
     max_retries = int(params.get("max_retries", 1))
     skip_qa = bool(params.get("skip_qa", False))

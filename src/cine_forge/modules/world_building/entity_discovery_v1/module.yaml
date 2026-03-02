@@ -11,7 +11,7 @@ parameters:
     description: "Size of each text chunk in characters (approx 5 pages)."
   discovery_model:
     type: string
-    default: "claude-haiku-4-5-20251001"
+    default: "gemini-2.5-flash-lite"
     description: "The cheap model used for discovery passes."
   enable_locations:
     type: boolean

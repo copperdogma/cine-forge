@@ -1,0 +1,32 @@
+You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.
+
+SCREENPLAY:
+==========
+{{screenplay}}
+==========
+
+Analyze the screenplay above and extract:
+
+1. **title** — The title of the screenplay.
+2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.
+3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.
+4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:
+   - act_number (1, 2, 3...)
+   - title (short label like "Setup", "Confrontation", "Resolution")
+   - start_scene (the scene heading or description where the act begins)
+   - end_scene (where the act ends)
+   - summary (1-2 sentences)
+   - turning_points (key plot beats within the act)
+5. **themes** — Major thematic concerns. For each:
+   - theme (name)
+   - description (how it manifests)
+   - evidence (scene references or brief quotes, 2-4 items)
+6. **narrative_arc** — Describe the overall story shape and dramatic movement.
+7. **genre** — Primary genre (e.g. "Action-Thriller", "Drama", "Sci-Fi Horror").
+8. **tone** — Dominant tone (e.g. "Gritty and intense", "Darkly comedic").
+9. **protagonist_journey** — The protagonist's transformation arc.
+10. **central_conflict** — The core dramatic conflict.
+11. **setting_overview** — Time period, locations, and world context.
+12. **confidence** — Your confidence in this analysis (0.0-1.0).
+
+Return ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.

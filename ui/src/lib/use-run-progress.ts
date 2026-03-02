@@ -242,7 +242,13 @@ export function useRunProgressChat(projectId: string | undefined) {
     }
 
     // --- Check if run finished ---
-    if (runState.state.finished_at && !completedRef.current.has(activeRunId)) {
+    // Guard against re-firing on remount: check both the in-memory ref (within session)
+    // and whether a completion/insight message for this run already exists in the store
+    // (persisted across mounts).
+    const completionAlreadyPersisted = store.getMessages(projectId).some(
+      (m) => m.id === `progress_${activeRunId}_complete` || m.id === `progress_${activeRunId}_failed`,
+    )
+    if (runState.state.finished_at && !completedRef.current.has(activeRunId) && !completionAlreadyPersisted) {
       completedRef.current.add(activeRunId)
 
       // Resolve any remaining in-flight spinners from this run
@@ -252,8 +258,10 @@ export function useRunProgressChat(projectId: string | undefined) {
         store.removeMessage(projectId, `bible_progress_${activeRunId}_${t}`)
       }
 
+      // A stage left 'pending' on a finished run means an unhandled exception
+      // (e.g. missing upstream output) aborted the wave before stage_state was updated.
       const hasFailed = Object.values(stages).some(
-        (s) => s.status === 'failed',
+        (s) => s.status === 'failed' || s.status === 'pending',
       )
 
       if (hasFailed) {

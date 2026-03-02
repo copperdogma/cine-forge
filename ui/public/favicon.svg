@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark background -->
+  <rect width="32" height="32" rx="7" fill="#111111"/>
+  <!-- Film icon (lucide Film, adapted): brand green #26B094 on dark bg -->
+  <!-- Scaled from 24-unit lucide space to fit inside 32px with 3px margin -->
+  <g transform="translate(4, 4) scale(1)">
+    <rect x="1" y="1" width="22" height="22" rx="2.5" fill="none" stroke="#26B094" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="5.5" x2="5.5" y1="1" y2="23" stroke="#26B094" stroke-width="2" stroke-linecap="round"/>
+    <line x1="18.5" x2="18.5" y1="1" y2="23" stroke="#26B094" stroke-width="2" stroke-linecap="round"/>
+    <line x1="1" x2="23" y1="12" y2="12" stroke="#26B094" stroke-width="2" stroke-linecap="round"/>
+    <line x1="1" x2="5.5" y1="6" y2="6" stroke="#26B094" stroke-width="2" stroke-linecap="round"/>
+    <line x1="1" x2="5.5" y1="18" y2="18" stroke="#26B094" stroke-width="2" stroke-linecap="round"/>
+    <line x1="18.5" x2="23" y1="6" y2="6" stroke="#26B094" stroke-width="2" stroke-linecap="round"/>
+    <line x1="18.5" x2="23" y1="18" y2="18" stroke="#26B094" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

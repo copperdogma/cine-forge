@@ -10,12 +10,12 @@ parameters:
   model:
     type: string
     required: false
-    default: "gpt-4o"
+    default: "gemini-3-flash-preview"
     description: "LLM model for auto-detection."
   qa_model:
     type: string
     required: false
-    default: "gpt-4o-mini"
+    default: "gpt-4.1-mini"
     description: "LLM model for config QA review."
   accept_config:
     type: boolean

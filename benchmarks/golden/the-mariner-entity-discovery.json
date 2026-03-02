@@ -1,0 +1,37 @@
+{
+  "characters": {
+    "required": ["THE MARINER", "ROSE", "SALVATORI", "VINNIE", "DAD"],
+    "acceptable_aliases": {
+      "THE MARINER": ["MARINER", "BILLY", "WILL"],
+      "ROSE": ["ROSEY", "ROSIE"],
+      "SALVATORI": ["MR. SALVATORI"],
+      "VINNIE": [],
+      "DAD": ["FATHER"]
+    },
+    "optional": ["MIKEY", "CARLOS", "GIRL IN CAGE", "CON", "SECURITY GUARD"]
+  },
+  "locations": {
+    "required": ["RUDDY & GREENE BUILDING", "15TH FLOOR"],
+    "acceptable_aliases": {
+      "RUDDY & GREENE BUILDING": ["RUDDY AND GREENE", "THE BUILDING"],
+      "15TH FLOOR": ["FIFTEENTH FLOOR"]
+    },
+    "optional": ["11TH FLOOR", "13TH FLOOR", "COASTLINE", "STAIRWELL", "ELEVATOR", "DOCK", "BACKYARD"]
+  },
+  "props": {
+    "required": ["OAR"],
+    "acceptable_aliases": {
+      "OAR": ["PADDLES", "PADDLE"],
+      "FLARE GUN": ["FLARE", "FLARE PISTOL"],
+      "PURSE": ["HANDBAG", "BAG"]
+    },
+    "optional": ["FLARE GUN", "PURSE", "AIRTAG", "NET CAPE", "BRACERS"]
+  },
+  "_notes": [
+    "Precision/recall evaluation: reward finding required entities, penalize hallucination",
+    "Case-insensitive matching with alias resolution",
+    "Characters: THE MARINER, ROSE, SALVATORI, VINNIE, DAD are must-finds",
+    "Locations: Building and 15th floor are most prominent — enough to count as passing",
+    "Props: OAR is the most prominent — must find at least one prop"
+  ]
+}

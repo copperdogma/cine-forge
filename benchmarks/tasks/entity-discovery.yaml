@@ -1,0 +1,107 @@
+# Entity Discovery Benchmark
+# Evaluates models on precision/recall of character, location, and prop discovery.
+# Entity discovery is a RECALL task — finding everything matters more than precision.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/entity-discovery.yaml --no-cache -j 3
+# View:  promptfoo view
+
+description: "Entity discovery from screenplay — The Mariner"
+
+# Use Opus as judge — strongest reasoning, cross-provider for OpenAI/Gemini models
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/entity-discovery.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-nano
+    label: "GPT-4.1 Nano"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash-lite
+    label: "Gemini 2.5 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- Mid tier ---
+  - id: openai:gpt-4.1
+    label: "GPT-4.1"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash
+    label: "Gemini 2.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-flash-preview
+    label: "Gemini 3 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- SOTA tier ---
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-3-pro-preview
+    label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+tests:
+  - vars:
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-entity-discovery.json
+    assert:
+      - type: python
+        value: file://../scorers/entity_discovery_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate this entity discovery output for the screenplay "The Mariner."
+
+          This is a RECALL task — finding everything matters more than precision.
+          False positives (extra entities) are acceptable. False negatives (missed entities) are failures.
+
+          Key quality criteria:
+          1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS, GIRL IN CAGE.
+          2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, dock, coastline.
+          3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.
+          4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?
+          5. Does the model err on the side of inclusion rather than omission?
+          6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?
+
+          Score 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.

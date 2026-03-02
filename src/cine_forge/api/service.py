@@ -616,7 +616,8 @@ class OperatorConsoleService:
             for r in roles.values()
         ]
 
-    def list_recent_projects(self) -> list[dict[str, Any]]:
+    def _discover_project_candidates(self) -> dict[str, Path]:
+        """Discover all valid project directories (cheap — no project_summary calls)."""
         candidates: dict[str, Path] = {}
 
         # 1. Already-registered projects
@@ -661,8 +662,28 @@ class OperatorConsoleService:
                 candidates[slug] = child
                 self._project_registry[slug] = child
 
+        return candidates
+
+    def count_recent_projects(self) -> int:
+        """Return the total number of discoverable projects without loading summaries."""
+        return len(self._discover_project_candidates())
+
+    def list_recent_projects(self, limit: int | None = None) -> list[dict[str, Any]]:
+        candidates = self._discover_project_candidates()
+
+        # Sort candidates by mtime cheaply before calling project_summary (which is expensive).
+        def _candidate_mtime(entry: tuple[str, Path]) -> float:
+            try:
+                return entry[1].stat().st_mtime
+            except OSError:
+                return 0.0
+
+        sorted_candidates = sorted(candidates.items(), key=_candidate_mtime, reverse=True)
+        if limit is not None:
+            sorted_candidates = sorted_candidates[:limit]
+
         projects: list[dict[str, Any]] = []
-        for slug, project_path in candidates.items():
+        for slug, project_path in sorted_candidates:
             with self._run_lock:
                 self._project_registry[slug] = project_path
             summary = self.project_summary(slug)
@@ -673,13 +694,7 @@ class OperatorConsoleService:
                 summary["last_modified"] = None
             projects.append(summary)
 
-        def _mtime(item: dict[str, Any]) -> float:
-            try:
-                return Path(item["project_path"]).stat().st_mtime
-            except FileNotFoundError:
-                return 0.0
-
-        projects.sort(key=_mtime, reverse=True)
+        projects.sort(key=lambda p: p.get("last_modified") or 0.0, reverse=True)
         return projects
 
     def list_runs(self, project_id: str) -> list[dict[str, Any]]:

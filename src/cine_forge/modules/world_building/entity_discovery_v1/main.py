@@ -26,7 +26,7 @@ def run_module(
     script_title = canonical_script.get("title", "Untitled")
 
     chunk_size = params.get("chunk_size", 12000)
-    model = params.get("discovery_model", "claude-haiku-4-5-20251001")
+    model = params.get("discovery_model", "gemini-2.5-flash-lite")
 
     # Divide into chunks
     chunks = [script_text[i:i+chunk_size] for i in range(0, len(script_text), chunk_size)]

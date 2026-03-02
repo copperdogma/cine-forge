@@ -66,11 +66,28 @@ def run_module(
 
     # 1. Aggregate and Filter
     if discovery_results and discovery_results.get("locations"):
-        approved_locations = {n.upper() for n in discovery_results["locations"]}
+        # Normalize discovery locations: strip INT./EXT. prefix and time-of-day suffix
+        # so "EXT. CITY CENTRE - NIGHT" → "CITY CENTRE" matches "City Centre" from scene_index.
+        _time_suffixes = (
+            "DAY", "NIGHT", "MORNING", "EVENING", "DUSK",
+            "DAWN", "CONTINUOUS", "LATER", "MOMENTS LATER",
+        )
+        _time_pat = "|".join(_time_suffixes)
+
+        def _norm(s: str) -> str:
+            s = re.sub(r"^(INT\.|EXT\.)\s*", "", s.upper())
+            s = re.sub(rf"\s*-\s*({_time_pat}).*$", "", s)
+            return s.strip()
+
+        approved_locations = {_norm(n) for n in discovery_results["locations"]}
         print(f"[location_bible] Using {len(approved_locations)} locations from discovery results.")
         all_locs = _aggregate_locations(scene_index)
         ranked = _rank_locations(all_locs, scene_index)
-        candidates = [loc for loc in ranked if loc["name"].upper() in approved_locations]
+        candidates = [loc for loc in ranked if _norm(loc["name"]) in approved_locations]
+        if not candidates:
+            # Normalization still didn't match (unusual format) — fall back to all locations
+            print("[location_bible] No approved matches; falling back to all scene_index locations.")  # noqa: E501
+            candidates = ranked
     else:
         locations = _aggregate_locations(scene_index)
         ranked = _rank_locations(locations, scene_index)

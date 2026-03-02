@@ -8,6 +8,7 @@ import os
 import re
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -50,6 +51,8 @@ from cine_forge.api.models import (
 )
 from cine_forge.api.routers import export
 from cine_forge.api.service import OperatorConsoleService, ServiceError
+
+load_dotenv()
 
 UPLOAD_FILE_PARAM = File(...)
 
@@ -130,11 +133,15 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     async def list_roles() -> list[dict]:
         return service.list_roles()
 
+    @app.get("/api/projects/count")
+    async def count_projects() -> dict[str, int]:
+        return {"total": service.count_recent_projects()}
+
     @app.get("/api/projects/recent", response_model=list[RecentProjectSummary])
-    async def list_recent_projects() -> list[RecentProjectSummary]:
+    async def list_recent_projects(limit: int | None = None) -> list[RecentProjectSummary]:
         return [
             RecentProjectSummary.model_validate(item)
-            for item in service.list_recent_projects()
+            for item in service.list_recent_projects(limit=limit)
         ]
 
     @app.post("/api/projects/preview-slug", response_model=SlugPreviewResponse)

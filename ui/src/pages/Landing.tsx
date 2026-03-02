@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Film, Plus, FolderOpen, Clock, Package, Play, AlertCircle, RefreshCw, ChevronDown } from 'lucide-react'
+import { Film, Plus, FolderOpen, Clock, Package, Play, AlertCircle, RefreshCw, ChevronDown, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog'
 import { ChangelogDialog } from '@/components/ChangelogDialog'
 import { Input } from '@/components/ui/input'
-import { fetchHealth } from '@/lib/api'
+import { fetchHealth, countProjects } from '@/lib/api'
 import { useRecentProjects, useOpenProject } from '@/lib/hooks'
 
 const INITIAL_SHOW = 5
@@ -39,12 +39,28 @@ function timeAgo(epochSeconds: number): string {
 
 export default function Landing() {
   const navigate = useNavigate()
-  const { data: projects, isLoading, error, refetch } = useRecentProjects()
+  const [showAll, setShowAll] = useState(false)
+  const {
+    data: initialProjects,
+    isLoading,
+    error,
+    refetch,
+  } = useRecentProjects(INITIAL_SHOW)
+  const {
+    data: allProjects,
+    isFetching: isFetchingAll,
+  } = useRecentProjects(showAll ? undefined : INITIAL_SHOW)
   const openProject = useOpenProject()
   const [showOpenDialog, setShowOpenDialog] = useState(false)
   const [projectPath, setProjectPath] = useState('')
-  const [showAll, setShowAll] = useState(false)
   const [changelogOpen, setChangelogOpen] = useState(false)
+
+  const projects = showAll ? (allProjects ?? initialProjects) : initialProjects
+  const { data: countData } = useQuery({
+    queryKey: ['projects', 'count'],
+    queryFn: countProjects,
+    staleTime: 30 * 1000,
+  })
   const { data: healthData } = useQuery({
     queryKey: ['health'],
     queryFn: fetchHealth,
@@ -73,9 +89,9 @@ export default function Landing() {
     }
   }
 
-  const totalCount = projects?.length ?? 0
-  const visibleProjects = showAll ? projects : projects?.slice(0, INITIAL_SHOW)
-  const hiddenCount = totalCount - (visibleProjects?.length ?? 0)
+  const totalCount = countData?.total ?? 0
+  const hasMore = !showAll && totalCount > INITIAL_SHOW
+  const hiddenCount = totalCount - INITIAL_SHOW
 
   return (
     <div className="flex min-h-screen items-start justify-center p-8 pt-[12vh]">
@@ -176,9 +192,9 @@ export default function Landing() {
           )}
 
           {/* Success State — Project List */}
-          {!isLoading && !error && visibleProjects && visibleProjects.length > 0 && (
+          {!isLoading && !error && projects && projects.length > 0 && (
             <div className="space-y-2">
-              {visibleProjects.map(project => (
+              {projects.map(project => (
                 <Card
                   key={project.project_id}
                   className="cursor-pointer transition-colors hover:bg-accent/50"
@@ -214,17 +230,24 @@ export default function Landing() {
               ))}
 
               {/* Show more / Show less */}
-              {totalCount > INITIAL_SHOW && (
+              {(hasMore || showAll) && (
                 <Button
                   variant="ghost"
                   size="sm"
                   className="w-full text-muted-foreground"
+                  disabled={isFetchingAll}
                   onClick={() => setShowAll(prev => !prev)}
                 >
-                  <ChevronDown className={`h-4 w-4 mr-2 transition-transform ${showAll ? 'rotate-180' : ''}`} />
-                  {showAll
-                    ? 'Show less'
-                    : `Show ${hiddenCount} more project${hiddenCount === 1 ? '' : 's'}`}
+                  {isFetchingAll ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <ChevronDown className={`h-4 w-4 mr-2 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+                  )}
+                  {isFetchingAll
+                    ? 'Loading…'
+                    : showAll
+                      ? 'Show less'
+                      : `Show ${hiddenCount} more project${hiddenCount === 1 ? '' : 's'}`}
                 </Button>
               )}
             </div>

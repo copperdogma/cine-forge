@@ -136,7 +136,7 @@ def run_module(
     # --- Tier 2: Smart chunk-skip (LLM only for broken scenes) ---
     work_model = params.get("work_model") or params.get("model") or "claude-haiku-4-5-20251001"
     verify_model = (
-        params.get("verify_model") or params.get("qa_model") or "claude-haiku-4-5-20251001"
+        params.get("verify_model") or params.get("qa_model") or "gpt-4.1-mini"
     )
     escalate_model = params.get("escalate_model") or "claude-opus-4-6"
     qa_model = verify_model

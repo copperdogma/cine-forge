@@ -1,0 +1,31 @@
+{
+  "title": "The Mariner",
+  "genre_keywords": ["action", "thriller", "superhero", "vigilante", "crime"],
+  "tone_keywords": ["gritty", "emotional", "dark", "intense"],
+  "must_include_title": "The Mariner",
+  "act_count_min": 2,
+  "act_count_max": 4,
+  "required_fields": [
+    "title", "logline", "synopsis", "act_structure", "themes",
+    "narrative_arc", "genre", "tone", "protagonist_journey",
+    "central_conflict", "setting_overview", "confidence"
+  ],
+  "logline_keywords": ["mariner", "father", "sister", "vigilante", "truth"],
+  "protagonist_keywords": ["mariner", "billy", "will", "vigilante", "fisherman"],
+  "must_include_themes": [
+    {"keywords": ["father", "dad", "family", "legacy"], "description": "father/legacy theme"},
+    {"keywords": ["identity", "hero", "truth", "illusion", "deception"], "description": "identity/truth theme"}
+  ],
+  "must_include_conflict_keywords": ["father", "salvatori", "sister", "gang", "truth", "rose"],
+  "setting_keywords": ["building", "dock", "coastline", "newfoundland", "gang"],
+  "protagonist_journey_keywords": ["father", "hero", "truth", "redefin", "identity", "sister"],
+  "synopsis_min_length": 200,
+  "logline_max_length": 300,
+  "_notes": [
+    "Title MUST be 'The Mariner'",
+    "At least 2 themes required — father/legacy and identity/truth are the core ones",
+    "Central conflict must reference the father revelation or Rose's predicament",
+    "Genre is action-thriller/superhero, not pure drama",
+    "Act structure must be 2-4 acts (3-act is most natural)"
+  ]
+}

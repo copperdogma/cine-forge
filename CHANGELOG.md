@@ -1,5 +1,30 @@
 # Changelog
 
+## [2026-03-02-05] — Value-optimized model selection across all pipeline modules (Story 107)
+
+### Changed
+- Updated defaults for 12 module parameters across 8 modules based on value analysis (quality per dollar), replacing stale `gpt-4o` and `claude-sonnet-4-6` defaults:
+  - `character_bible_v1` → `claude-sonnet-4-6` (quality winner, justified by creative depth requirement)
+  - `location_bible_v1` → `claude-sonnet-4-6` (quality winner; Opus 4.6 not justified at 6× cost)
+  - `prop_bible_v1` → `claude-sonnet-4-6` (Haiku gap too large for visual precision tasks)
+  - `entity_graph_v1` → `gemini-2.5-flash` (7-way tie at 0.995, 3.2× cheaper than Sonnet)
+  - `project_config_v1` → `gemini-3-flash-preview` (quality + cost winner: 0.953, $0.009/call)
+  - `script_normalize_v1` → `claude-haiku-4-5-20251001` (0.954 quality at $0.003, up from 0 quality gpt-4o)
+  - `script_normalize_v1` QA model → `gpt-4.1-mini` (perfect 1.000 at $0.0008/call)
+  - `scene_analysis_v1` QA model → `gpt-4.1-mini` (perfect 1.000 at $0.0008/call)
+  - `script_bible_v1` → `gemini-2.5-flash-lite` (0.885 quality, $0.00089/call, value score 1000)
+  - `entity_discovery_v1` → `gemini-2.5-flash-lite` (0.905 quality, $0.00053/call, value score 1698)
+- Fixed `gemini-2.5-flash-lite` pricing in `llm.py` (was $0.00 — now $0.075/$0.30 per M tokens)
+- Python module fallbacks updated to match `module.yaml` defaults (fallbacks control actual runtime behavior)
+- Removed stale `gemini-2.5-flash` override in `recipe-world-building.yaml`; entity_graph now uses module default
+
+### Added
+- `benchmarks/scripts/analyze-eval.js` — generalized value analysis script (quality ranking + value ranking tables)
+- `script_bible` eval: golden ref, Python scorer (10 dimensions), LLM rubric, task YAML covering 8 providers
+- `entity_discovery` eval: golden ref, Python scorer (precision/recall by category), LLM rubric, 10 providers
+- Creative direction modules documented as smoke-test-only (persona-driven output not suitable for golden-ref evals)
+- AGENTS.md eval catalog updated with value-winner column for all 12 evals
+
 ## [2026-03-02-04] — "View in Script" scrolls to correct scene + bookmarkable hash links (Story 111)
 
 ### Fixed

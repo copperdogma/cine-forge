@@ -1,0 +1,24 @@
+You are a script breakdown artist. Read the following screenplay and discover all named entities.
+
+Your job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.
+
+Discover:
+- **characters**: Every named person who appears or is mentioned (protagonist, antagonist, supporting, minor, flashback)
+- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities)
+- **props**: Every significant named object that appears in the story (weapons, vehicles, personal items, plot-relevant objects)
+
+SCREENPLAY:
+==========
+{{screenplay}}
+==========
+
+Return ONLY valid JSON in this exact format:
+{
+  "characters": ["NAME 1", "NAME 2", ...],
+  "locations": ["LOCATION 1", "LOCATION 2", ...],
+  "props": ["PROP 1", "PROP 2", ...]
+}
+
+Use the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).
+Do NOT include generic items like "gun" or "door" — only named/significant props.
+Do NOT include unnamed "GUARD #1" type extras unless they are recurring.

@@ -242,6 +242,31 @@ All eval scores, targets, and improvement attempts are tracked in **`docs/evals/
 
 All evals use dual scoring (Python structural scorer + LLM rubric), judge = Opus 4.6. Benchmark configs live in `benchmarks/tasks/`.
 
+#### Value-Optimized Module Defaults
+
+Every module default is backed by eval evidence. Selections use **value analysis** (quality per dollar), not just peak quality. Scored in Story 107 (2026-03-02). Full data in `docs/evals/registry.yaml`.
+
+| Module | Param | Default | Quality | Cost/call | Rationale |
+|--------|-------|---------|---------|-----------|-----------|
+| `character_bible_v1` | `model` | `claude-sonnet-4-6` | 0.952 | $0.054 | Quality leader; cheaper tiers fall below 5% quality floor |
+| `location_bible_v1` | `model` | `claude-sonnet-4-6` | 0.922 | $0.025 | Strong mid-tier, much cheaper than Opus (old default) |
+| `prop_bible_v1` | `model` | `claude-sonnet-4-6` | 0.916 | $0.022 | Quality leader on structured prop extraction |
+| `entity_graph_v1` | `model` | `gemini-2.5-flash` | 0.995 | $0.002 | Tied top quality at 31x cheaper than Sonnet 4.6 |
+| `project_config_v1` | `model` | `gemini-3-flash-preview` | 0.953 | $0.001 | Triple winner: quality + cost + latency (13s) |
+| `project_config_v1` | `qa_model` | `gpt-4.1-mini` | 1.000 | $0.001 | Perfect QA score, cheapest model |
+| `script_normalize_v1` | `model` | `claude-haiku-4-5-20251001` | 0.954 | $0.002 | 1% gap vs GPT-4.1, $0.002, 2.3s — best holistic for high-stakes norm |
+| `script_normalize_v1` | `qa_model` | `gpt-4.1-mini` | 1.000 | $0.001 | Perfect QA score |
+| `scene_analysis_v1` | `work_model` | `claude-sonnet-4-6` | 0.890 | $0.011 | Only model above 5% quality floor for scene enrichment |
+| `scene_analysis_v1` | `qa_model` | `gpt-4.1-mini` | 1.000 | $0.001 | Perfect QA score, replaces Haiku 4.5 |
+| `script_bible_v1` | `work_model` | `gemini-2.5-flash-lite` | 0.885 | $0.001 | 7.8s, value=1000; Sonnet 4.6 is *worse* (0.863, 73s, $0.066) |
+| `entity_discovery_v1` | `discovery_model` | `gemini-2.5-flash-lite` | 0.905 | $0.001 | 2.0s, value=1698, 13x cheaper than Haiku 4.5 |
+| `continuity_tracking_v1` | `work_model` | `claude-haiku-4-5-20251001` | 0.948 | $0.010 | Updated Story 092 — 5% gap vs Sonnet at 5x lower cost |
+| `scene_breakdown_v1` | `work_model` | `claude-haiku-4-5-20251001` | — | — | Boundary validation only; no cheap model gap identified |
+
+**Key insight from Story 107**: Gemini models dramatically outperform Claude on full-screenplay tasks (script bible, entity discovery). Claude Sonnet 4.6 was the *worst* performing model on script bible (0.863 combined, 73.5s, $0.066). Gemini 2.5 Flash Lite achieved 0.885 at $0.00089 in 7.8s. Always re-eval when adding a new full-text module — model rankings invert at large context scales.
+
+**Creative direction modules** (`editorial_direction_v1`, `intent_mood_v1`, `look_and_feel_v1`, `sound_and_music_v1`): Evaluated as smoke tests only — structural field-presence scorer + LLM rubric. Golden-reference comparison is not feasible because persona-driven outputs (Kubrick vs Tarantino director) are intentionally different. Detection mechanism for feasibility: when Opus can score its own creative outputs 0.95+ consistently across 3 different screenplays, revisit.
+
 ### Ideas Backlog
 - `docs/inbox.md` captures features, patterns, and design concepts that are good but not in scope for current work.
 - When a feature is deferred during story work, move it to `docs/inbox.md` rather than losing it.
@@ -438,6 +463,8 @@ Hand-curated ground truth for regression testing. These are the source of truth 
 | `benchmarks/golden/enrich-scenes-golden.json` | Scene-level metadata enrichment (promptfoo eval) | The Mariner |
 | `benchmarks/golden/normalize-signal-golden.json` | Prose/broken Fountain normalization (promptfoo eval) | The Mariner |
 | `benchmarks/golden/qa-pass-golden.json` | QA gate calibration — accept good, reject bad (promptfoo eval) | The Mariner |
+| `benchmarks/golden/the-mariner-script-bible.json` | Script bible extraction — required fields, themes, title, act structure (promptfoo eval) | The Mariner |
+| `benchmarks/golden/the-mariner-entity-discovery.json` | Entity discovery — recall-focused: required chars/locs/props with aliases (promptfoo eval) | The Mariner |
 
 When adding a new screenplay for testing, create a corresponding golden reference following the same structure. Validate golden files by having a human read the screenplay and cross-check every entry. See `docs/runbooks/golden-build.md` for the full build methodology, common failure patterns, and audit process.
 

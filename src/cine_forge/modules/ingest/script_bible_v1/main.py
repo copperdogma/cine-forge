@@ -62,7 +62,7 @@ def run_module(
     canonical = _extract_canonical_script(inputs)
     script_text = canonical["script_text"]
 
-    work_model = params.get("work_model") or "claude-sonnet-4-6"
+    work_model = params.get("work_model") or "gemini-2.5-flash-lite"
     max_tokens = int(params.get("max_tokens", 4096))
 
     logger.info("Extracting script bible via %s...", work_model)

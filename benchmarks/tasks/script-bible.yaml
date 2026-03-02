@@ -1,0 +1,92 @@
+# Script Bible Benchmark
+# Evaluates models on producing a comprehensive script bible from a full screenplay.
+# This is a once-per-project, high-value analysis task.
+#
+# Usage: cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3
+# View:  promptfoo view
+
+description: "Script bible extraction from screenplay — The Mariner"
+
+# Use Opus as judge — strongest reasoning, cross-provider for OpenAI/Gemini models
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/script-bible.txt
+
+providers:
+  # --- Cheap tier ---
+  - id: openai:gpt-4.1-mini
+    label: "GPT-4.1 Mini"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: "Claude Haiku 4.5"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash-lite
+    label: "Gemini 2.5 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- Mid tier ---
+  - id: anthropic:messages:claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-2.5-flash
+    label: "Gemini 2.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3-flash-preview
+    label: "Gemini 3 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  # --- SOTA tier ---
+  - id: anthropic:messages:claude-opus-4-6
+    label: "Claude Opus 4.6"
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+  - id: google:gemini-3-pro-preview
+    label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+tests:
+  - vars:
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-script-bible.json
+    assert:
+      - type: python
+        value: file://../scorers/script_bible_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate this script bible for the screenplay "The Mariner."
+
+          Key quality criteria:
+          1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?
+          2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?
+          3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.
+          4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.
+          5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.
+          6. Is the setting grounded in specifics? Expect: contemporary urban Toronto setting, the Ruddy & Greene Building (15th floor final confrontation), fishing-themed vigilante aesthetic.
+          7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.
+          8. Does the analysis avoid generic statements that could apply to any film?
+
+          Score strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.

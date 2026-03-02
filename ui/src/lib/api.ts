@@ -81,8 +81,13 @@ export function listRecipes(): Promise<RecipeSummary[]> {
 
 // --- Projects ---
 
-export function listRecentProjects(): Promise<RecentProjectSummary[]> {
-  return request<RecentProjectSummary[]>('/api/projects/recent')
+export function listRecentProjects(limit?: number): Promise<RecentProjectSummary[]> {
+  const url = limit != null ? `/api/projects/recent?limit=${limit}` : '/api/projects/recent'
+  return request<RecentProjectSummary[]>(url)
+}
+
+export function countProjects(): Promise<{ total: number }> {
+  return request<{ total: number }>('/api/projects/count')
 }
 
 export function previewSlug(

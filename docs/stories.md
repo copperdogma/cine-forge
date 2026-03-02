@@ -198,7 +198,7 @@ NOTES from Cam:
 | 104 | Tiered Quality Metrics for Eval Scoring | Cross-Cutting | High | Draft | [story-104](stories/story-104-tiered-quality-metrics.md) |
 | 105 | Parallel Chunk Extraction via ThreadPoolExecutor | Cross-Cutting | High | Draft | [story-105](stories/story-105-parallel-extraction.md) |
 | 106 | Disk-Backed Chunk-Level Extraction Cache | Cross-Cutting | Medium | Draft | [story-106](stories/story-106-chunk-level-extraction-cache.md) |
-| 107 | Value-Optimized Model Selection Across All Modules | Cross-Cutting | High | Pending | [story-107](stories/story-107-value-optimized-model-selection.md) |
+| 107 | Value-Optimized Model Selection Across All Modules | Cross-Cutting | High | Done | [story-107](stories/story-107-value-optimized-model-selection.md) |
 | 108 | Continuity UI Page | 2.5 — UI | High | Draft | [story-108](stories/story-108-continuity-ui-page.md) |
 | 109 | Golden Build Runbook | Cross-Cutting | Medium | Done | [story-109](stories/story-109-golden-build-runbook.md) |
 | 110 | Improve Search: Fuzzy Matching + Scene Shorthand | 2.5 — UI | Medium | Done | [story-110](stories/story-110-search-scenes-fuzzy.md) |
