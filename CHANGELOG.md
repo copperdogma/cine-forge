@@ -1,5 +1,11 @@
 # Changelog
 
+## [2026-03-01-07] — Golden audit: complete references table + register missing eval scores
+
+### Fixed
+- AGENTS.md Golden References table: added 4 missing golden files (continuity-extraction, enrich-scenes, normalize-signal, qa-pass) — table now covers all 11 golden files on disk
+- Eval registry: registered 10 missing Gemini/Sonnet model scores across 5 evals from unregistered result files (character-extraction, relationship-discovery, normalization, scene-enrichment, qa-pass)
+
 ## [2026-03-01-06] — Golden build runbook (Story 109)
 
 ### Added

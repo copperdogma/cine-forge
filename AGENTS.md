@@ -434,6 +434,10 @@ Hand-curated ground truth for regression testing. These are the source of truth 
 | `benchmarks/golden/the-mariner-relationships.json` | Relationship discovery (promptfoo eval) | The Mariner |
 | `benchmarks/golden/the-mariner-scenes.json` | Scene boundaries & headings (promptfoo eval) | The Mariner |
 | `benchmarks/golden/the-mariner-config.json` | Project config detection (promptfoo eval) | The Mariner |
+| `benchmarks/golden/continuity-extraction-golden.json` | Entity state tracking between scenes (promptfoo eval) | The Mariner |
+| `benchmarks/golden/enrich-scenes-golden.json` | Scene-level metadata enrichment (promptfoo eval) | The Mariner |
+| `benchmarks/golden/normalize-signal-golden.json` | Prose/broken Fountain normalization (promptfoo eval) | The Mariner |
+| `benchmarks/golden/qa-pass-golden.json` | QA gate calibration — accept good, reject bad (promptfoo eval) | The Mariner |
 
 When adding a new screenplay for testing, create a corresponding golden reference following the same structure. Validate golden files by having a human read the screenplay and cross-check every entry. See `docs/runbooks/golden-build.md` for the full build methodology, common failure patterns, and audit process.
 

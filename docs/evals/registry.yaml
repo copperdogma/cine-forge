@@ -78,6 +78,22 @@ evals:
         cost_usd: 0.0316
         measured: 2026-02-18
         git_sha: "324ebf4"
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.910
+        latency_ms: 31878
+        cost_usd: 0.0497
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/character-extraction-run2.json
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 0.800
+        latency_ms: 14370
+        cost_usd: 0.0096
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/character-extraction-run2.json
 
     attempts: []
 
@@ -242,6 +258,16 @@ evals:
         cost_usd: 0.0357
         measured: 2026-02-18
         git_sha: "324ebf4"
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.995
+        latency_ms: 38001
+        cost_usd: 0.0000
+        cost_estimated: true
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/relationship-discovery-sonnet46.json
+        note: "Cost $0 likely from free-tier testing"
 
     attempts: []
 
@@ -453,6 +479,23 @@ evals:
         measured: 2026-02-18
         git_sha: "324ebf4"
         note: "Opus underperforms Sonnet here — over-edits content"
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 0.945
+        latency_ms: 29914
+        cost_usd: 0.0168
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/normalization-gemini-2026-02-18.json
+        note: "Close to Sonnet quality but 6x latency"
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.920
+        latency_ms: 54903
+        cost_usd: 0.0443
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/normalization-gemini-2026-02-18.json
 
     attempts: []
 
@@ -507,6 +550,22 @@ evals:
         cost_usd: 0.0095
         measured: 2026-02-18
         git_sha: "324ebf4"
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 0.755
+        latency_ms: 8020
+        cost_usd: 0.0039
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/scene-enrichment-gemini-2026-02-18.json
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.755
+        latency_ms: 25317
+        cost_usd: 0.0269
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/scene-enrichment-gemini-2026-02-18.json
 
     attempts: []
 
@@ -563,6 +622,31 @@ evals:
         cost_usd: 0.0182
         measured: 2026-02-18
         git_sha: "324ebf4"
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 1.000
+        latency_ms: 11767
+        cost_usd: 0.0064
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/qa-pass-gemini-2026-02-18.json
+        note: "Perfect score — matches GPT-4.1 Mini at slightly higher cost"
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.995
+        latency_ms: 11253
+        cost_usd: 0.0133
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/qa-pass-gemini-2026-02-18.json
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.975
+        latency_ms: 21578
+        cost_usd: 0.0184
+        measured: 2026-02-18
+        git_sha: "324ebf4"
+        result_file: benchmarks/results/qa-pass-gemini-2026-02-18.json
 
     attempts: []
 
