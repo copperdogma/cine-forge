@@ -74,7 +74,31 @@ found. Validation logic below the config is generic: ref consistency, required
 fields, metadata count accuracy, enum compliance, orphan detection.
 Design to run as `.venv/bin/python benchmarks/golden/validate-golden.py [fixture-id]`.
 
-**Tracking files** — Empty checklist table and coverage matrix.
+**Tracking files** — Empty checklist table and coverage matrix. Use this template
+for `_coverage-matrix.json`:
+
+```json
+{
+  "version": "1.0",
+  "generated": "YYYY-MM-DD",
+  "fixtures": [
+    {
+      "id": "fixture-id",
+      "tier": "T1",
+      "input_type": "screenplay",
+      "length_tier": "short",
+      "verification_status": "pending",
+      "last_verified_at": null,
+      "source_file": "fixture-id/fixture-id.json",
+      "golden_file": "fixture-id/expected-output.json",
+      "notes": "Brief description of the fixture."
+    }
+  ]
+}
+```
+
+Standard `verification_status` values: `"pending"` (newly created), `"needs-review"`
+(flagged or reset), `"verified"` (passed adversarial verification).
 
 **_inbox/README.md** — Brief inbox drop-zone docs.
 

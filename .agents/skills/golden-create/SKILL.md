@@ -51,7 +51,12 @@ The golden workspace must exist at `benchmarks/golden/` with at least a
 5. **Validate and track.** Run the validator until it passes clean. Add a PENDING
    entry to the checklist. Update the coverage matrix if it exists.
 
-6. **Report** what was created, entity counts, anything interesting, and that
+6. **Move the inbox item.** If the source came from `benchmarks/golden/_inbox/`,
+   move it to the new fixture directory now that processing is complete. This prevents
+   other agents from re-processing it. If the fixture directory already has a matching
+   source file, delete the inbox copy instead.
+
+7. **Report** what was created, entity counts, anything interesting, and that
    verification is pending.
 
 ## Principles That Matter

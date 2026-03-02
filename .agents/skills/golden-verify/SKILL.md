@@ -42,6 +42,8 @@ If nothing needs work, report done and stop.
 
 Use your judgment on parallelism — one fixture per subagent, all `model: "opus"`.
 
+**Tooling check:** Before launching, identify the project's execution pattern (e.g., `.venv/bin/python`, `npx tsx`) and include it in the subagent instructions so they don't fail silently with the wrong interpreter.
+
 **For new inbox items:**
 > Run `/golden-create` for fixture `{FIXTURE-ID}`.
 

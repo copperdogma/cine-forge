@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-03-02-06] — Scout 007: golden skill refinements (Storybook delta)
+
+### Changed
+- `golden-verify`: added tooling check before subagent launch — agents now identify the project's interpreter pattern and pass it in instructions to prevent silent wrong-interpreter failures
+- `golden-create`: added explicit inbox-move step (step 6) — prevents other agents re-processing the same inbox item after a fixture is created
+- `setup-golden`: added inline `_coverage-matrix.json` template with standard `verification_status` values (`pending`/`needs-review`/`verified`)
+
 ## [2026-03-02-05] — Value-optimized model selection across all pipeline modules (Story 107)
 
 ### Changed
