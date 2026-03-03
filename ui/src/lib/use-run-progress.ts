@@ -50,7 +50,7 @@ export function useRunProgressChat(projectId: string | undefined) {
     (s) => (projectId ? s.activeRunId?.[projectId] ?? null : null),
   )
   const { data: runState } = useRunState(activeRunId ?? undefined)
-  const { data: runEvents } = useRunEvents(activeRunId ?? undefined)
+  const { data: runEvents } = useRunEvents(activeRunId ?? undefined, !!runState?.state?.finished_at)
   const completedRef = useRef<Set<string>>(new Set())
   const processedEventIdsRef = useRef<Set<string>>(new Set())
   const queryClient = useQueryClient()
@@ -236,7 +236,7 @@ export function useRunProgressChat(projectId: string | undefined) {
       const stageState = stages[stageId]
       if (!stageState) continue
       const msgId = `bible_progress_${activeRunId}_${artifactType}`
-      if (stageState.status === 'done' || stageState.status === 'skipped_reused') {
+      if (stageState.status === 'done' || stageState.status === 'skipped_reused' || stageState.status === 'failed') {
         store.removeMessage(projectId, msgId)
       }
     }

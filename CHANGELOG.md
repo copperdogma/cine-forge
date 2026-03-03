@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-02-09] — Fix run-polling stop conditions and bible spinner; Story 114 deferred; Story 115 created
+
+### Fixed
+- `useRunEvents` now stops polling (3s interval) when a run finishes — previously polled forever post-completion, wasting network/CPU
+- Bible artifact spinner messages now clear on stage failure in addition to success/reused — spinner was stuck when a stage errored
+- Removed `structuralSharing: false` from `useRunState` — was forcing component re-renders every 2s even when data was unchanged
+
+### Changed
+- Story 114 (Driver Progress Events) deferred — superseded by Story 116 (to be created by Story 115); full ACs moved to the holistic event system refactor
+- Story 115 (Pipeline Architecture Refactor Plan) added — planning story that outputs Stories 116/117/118 for event system, engine, and service decomposition
+
 ## [2026-03-02-08] — Scout 008: progress events, circuit breaker, triage-stories Draft support
 
 ### Added

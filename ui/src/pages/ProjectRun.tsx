@@ -112,7 +112,7 @@ export default function ProjectRun() {
   const uploadMutation = useUploadInput(projectId || '')
   const startRunMutation = useStartRun()
   const { data: runStateData, isLoading: runStateLoading } = useRunState(runId || '')
-  const { data: runEventsData } = useRunEvents(runId || '')
+  const { data: runEventsData } = useRunEvents(runId || '', !!runStateData?.state?.finished_at)
   const { data: recipesData, isLoading: recipesLoading } = useRecipes()
   const { data: scenesData = [] } = useScenes(projectId)
   const { data: existingInputs } = useProjectInputs(projectId)

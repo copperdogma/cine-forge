@@ -242,16 +242,16 @@ export function useRunState(runId: string | undefined) {
       return data?.state?.finished_at ? false : 2000
     },
     refetchIntervalInBackground: true,
-    structuralSharing: false,
   })
 }
 
-export function useRunEvents(runId: string | undefined) {
+// finished: pass !!runState?.state?.finished_at so polling stops when the run is done.
+export function useRunEvents(runId: string | undefined, finished?: boolean) {
   return useQuery<RunEventsResponse>({
     queryKey: ['runs', runId, 'events'],
     queryFn: () => api.getRunEvents(runId!),
     enabled: !!runId,
-    refetchInterval: 3000,
+    refetchInterval: finished ? false : 3000,
     refetchIntervalInBackground: true,
   })
 }

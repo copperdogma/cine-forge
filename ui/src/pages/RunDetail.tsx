@@ -120,7 +120,7 @@ export default function RunDetail() {
   const goBack = useHistoryBack(`/${projectId}/runs`)
 
   const { data: runStateResponse, isLoading, error, refetch } = useRunState(runId)
-  const { data: eventsResponse, isLoading: eventsLoading } = useRunEvents(runId)
+  const { data: eventsResponse, isLoading: eventsLoading } = useRunEvents(runId, !!runStateResponse?.state?.finished_at)
   const retryFailedStage = useRetryFailedStage()
   const resumeRun = useResumeRun()
 

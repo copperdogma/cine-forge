@@ -205,7 +205,8 @@ NOTES from Cam:
 | 111 | Fix "View In Script" Scroll-to-Scene | 2.5 — UI | Medium | Done | [story-111](stories/story-111-scene-script-jump.md) |
 | 112 | Continuity Tracking: First Principles Redesign | World Building | Medium | Draft | [story-112](stories/story-112-continuity-redesign-first-principles.md) |
 | 113 | Per-Provider LLM Circuit Breaker | Cross-Cutting | Medium | Draft | [story-113](stories/story-113-llm-circuit-breaker.md) |
-| 114 | Driver Progress Events | Cross-Cutting | Medium | Draft | [story-114](stories/story-114-driver-progress-events.md) |
+| 114 | Driver Progress Events | Cross-Cutting | Medium | Deferred | [story-114](stories/story-114-driver-progress-events.md) |
+| 115 | Pipeline Architecture Refactor Plan | Cross-Cutting | Medium | Draft | [story-115](stories/story-115-pipeline-architecture-refactor-plan.md) |
 
 ## Phase Summary
 
