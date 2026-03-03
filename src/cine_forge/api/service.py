@@ -5,8 +5,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-import threading
-import time
 import uuid
 from pathlib import Path
 from typing import Any
@@ -14,8 +12,11 @@ from typing import Any
 import yaml
 from rapidfuzz import fuzz as _rfuzz
 
+from cine_forge.api.artifact_manager import ArtifactManager
+from cine_forge.api.chat_store import ChatStore
+from cine_forge.api.exceptions import ServiceError
+from cine_forge.api.run_orchestrator import RunOrchestrator
 from cine_forge.artifacts import ArtifactStore
-from cine_forge.driver.engine import DriverEngine
 from cine_forge.modules.ingest.story_ingest_v1.main import (
     SUPPORTED_FILE_FORMATS,
     read_source_text_with_diagnostics,
@@ -64,28 +65,27 @@ def _fuzzy_match(query: str, text: str) -> bool:
     return False
 
 
-class ServiceError(Exception):
-    """Service-level error with API-ready details."""
-
-    def __init__(self, code: str, message: str, hint: str | None = None, status_code: int = 400):
-        super().__init__(message)
-        self.code = code
-        self.message = message
-        self.hint = hint
-        self.status_code = status_code
-
-
 class OperatorConsoleService:
     """Coordinates project registration, run execution, and artifact browsing."""
 
     def __init__(self, workspace_root: Path) -> None:
         self.workspace_root = workspace_root.resolve()
         self._project_registry: dict[str, Path] = {}
-        self._run_errors: dict[str, str] = {}
-        self._run_threads: dict[str, threading.Thread] = {}
-        self._run_lock = threading.Lock()
+        self._chat_store = ChatStore()
+        self._orchestrator = RunOrchestrator(
+            workspace_root=self.workspace_root,
+            chat_store=self._chat_store,
+            project_registry=self._project_registry,
+            project_path_resolver=self.require_project_path,
+            project_json_reader=self._read_project_json,
+        )
         self.role_catalog = RoleCatalog()
         self.role_catalog.load_definitions()
+        self._artifact_mgr = ArtifactManager(
+            project_path_resolver=self.require_project_path,
+            role_context_factory=self.get_role_context,
+            role_catalog=self.role_catalog,
+        )
 
     @staticmethod
     def normalize_project_path(project_path: str) -> Path:
@@ -421,6 +421,10 @@ class OperatorConsoleService:
             status_code=404,
         )
 
+    def get_artifact_store(self, project_id: str) -> ArtifactStore:
+        """Return an ArtifactStore rooted at the resolved project path."""
+        return ArtifactStore(project_dir=self.require_project_path(project_id))
+
     def _resolve_project_path(self, project_id: str) -> Path | None:
         candidate = self.workspace_root / "output" / project_id
         if self._is_valid_project_dir(candidate):
@@ -684,7 +688,7 @@ class OperatorConsoleService:
 
         projects: list[dict[str, Any]] = []
         for slug, project_path in sorted_candidates:
-            with self._run_lock:
+            with self._orchestrator.run_lock:
                 self._project_registry[slug] = project_path
             summary = self.project_summary(slug)
             summary["project_path"] = str(project_path)
@@ -698,185 +702,24 @@ class OperatorConsoleService:
         return projects
 
     def list_runs(self, project_id: str) -> list[dict[str, Any]]:
-        project_path = self.require_project_path(project_id)
-        runs_dir = self.workspace_root / "output" / "runs"
-        if not runs_dir.exists():
-            return []
-        runs: list[dict[str, Any]] = []
-        for run_dir in sorted(
-            [path for path in runs_dir.iterdir() if path.is_dir()],
-            key=lambda item: item.stat().st_mtime,
-            reverse=True,
-        ):
-            state_path = run_dir / "run_state.json"
-            if not state_path.exists():
-                continue
-            state = json.loads(state_path.read_text(encoding="utf-8"))
-            if not self._run_belongs_to_project(
-                run_dir=run_dir,
-                project_path=project_path,
-                run_state=state,
-            ):
-                continue
-            statuses = {stage["status"] for stage in state.get("stages", {}).values()}
-            if "failed" in statuses:
-                status = "failed"
-            elif "running" in statuses:
-                status = "running"
-            elif "paused" in statuses:
-                status = "paused"
-            elif statuses and statuses <= {"done", "skipped_reused"}:
-                status = "done"
-            else:
-                status = "pending"
-            runs.append(
-                {
-                    "run_id": state.get("run_id", run_dir.name),
-                    "status": status,
-                    "recipe_id": state.get("recipe_id", "mvp_ingest"),
-                    "started_at": state.get("started_at"),
-                    "finished_at": state.get("finished_at"),
-                }
-            )
-        return runs
+        return self._orchestrator.list_runs(project_id)
 
     def list_artifact_groups(self, project_id: str) -> list[dict[str, Any]]:
-        project_path = self.require_project_path(project_id)
-        artifacts_root = project_path / "artifacts"
-        if not artifacts_root.exists():
-            return []
-        store = ArtifactStore(project_dir=project_path)
-        groups: list[dict[str, Any]] = []
-        for artifact_type_dir in sorted(path for path in artifacts_root.iterdir() if path.is_dir()):
-            artifact_type = artifact_type_dir.name
-            if artifact_type == "bibles":
-                # Special handling for folder-based bibles
-                bibles_iter = (path for path in artifact_type_dir.iterdir() if path.is_dir())
-                for entity_type_dir in sorted(bibles_iter):
-                    # entity_type_dir name is like "character_aria"
-                    entity_id = entity_type_dir.name
-                    # For folder-based bibles, the manifest is the versioned artifact
-                    refs = store.list_versions(artifact_type="bible_manifest", entity_id=entity_id)
-                    if not refs:
-                        continue
-                    latest = refs[-1]
-                    health = store.graph.get_health(latest)
-                    groups.append(
-                        {
-                            "artifact_type": "bible_manifest",
-                            "entity_id": entity_id,
-                            "latest_version": latest.version,
-                            "health": health.value if health else None,
-                        }
-                    )
-                continue
-
-            for entity_dir in sorted(path for path in artifact_type_dir.iterdir() if path.is_dir()):
-                entity_id = None if entity_dir.name == "__project__" else entity_dir.name
-                refs = store.list_versions(artifact_type=artifact_type, entity_id=entity_id)
-                if not refs:
-                    continue
-                latest = refs[-1]
-                health = store.graph.get_health(latest)
-                groups.append(
-                    {
-                        "artifact_type": artifact_type,
-                        "entity_id": entity_id,
-                        "latest_version": latest.version,
-                        "health": health.value if health else None,
-                    }
-                )
-        return groups
+        return self._artifact_mgr.list_artifact_groups(project_id)
 
     def list_artifact_versions(
         self, project_id: str, artifact_type: str, entity_id: str
     ) -> list[dict[str, Any]]:
-        project_path = self.require_project_path(project_id)
-        normalized_entity = None if entity_id == "__project__" else entity_id
-        store = ArtifactStore(project_dir=project_path)
-        refs = store.list_versions(artifact_type=artifact_type, entity_id=normalized_entity)
-        versions: list[dict[str, Any]] = []
-        for ref in refs:
-            artifact = store.load_artifact(ref)
-            health = store.graph.get_health(ref)
-            versions.append(
-                {
-                    "artifact_type": artifact_type,
-                    "entity_id": normalized_entity,
-                    "version": ref.version,
-                    "health": health.value if health else None,
-                    "path": ref.path,
-                    "created_at": artifact.metadata.created_at.isoformat(),
-                    "intent": artifact.metadata.intent,
-                    "producing_module": artifact.metadata.producing_module,
-                }
-            )
-        return versions
+        return self._artifact_mgr.list_artifact_versions(
+            project_id, artifact_type, entity_id
+        )
 
     def read_artifact(
         self, project_id: str, artifact_type: str, entity_id: str, version: int
     ) -> dict[str, Any]:
-        project_path = self.require_project_path(project_id)
-        normalized_entity = None if entity_id == "__project__" else entity_id
-        store = ArtifactStore(project_dir=project_path)
-
-        # Load all versions to find the one with the matching version number
-        # This ensures we get the correct relative path from the store
-        refs = store.list_versions(artifact_type=artifact_type, entity_id=normalized_entity)
-        ref = next((r for r in refs if r.version == version), None)
-
-        if not ref:
-            raise ServiceError(
-                code="artifact_not_found",
-                message=(
-                    "Artifact version not found for "
-                    f"{artifact_type}/{entity_id}/v{version}."
-                ),
-                hint="Check available versions via the artifact versions endpoint.",
-                status_code=404,
-            )
-
-        artifact = store.load_artifact(ref)
-        response = {
-            "artifact_type": artifact_type,
-            "entity_id": normalized_entity,
-            "version": version,
-            "payload": artifact.model_dump(mode="json"),
-        }
-
-        # If it's a bible manifest, load the contents of the files it references
-        if artifact_type == "bible_manifest":
-            bible_files = {}
-            # Ref path is artifacts/bibles/{entity_id}/manifest_vN.json
-            # project_path is already absolute.
-            bible_dir = (project_path / ref.path).parent
-
-            # Manifest data is in artifact.data
-            manifest_data = artifact.data
-
-            # Ensure we have a dict to work with
-            if not isinstance(manifest_data, dict):
-                try:
-                    manifest_data = manifest_data.model_dump()
-                except AttributeError:
-                    manifest_data = {}
-
-            files_list = manifest_data.get("files") or []
-            for file_entry in files_list:
-                filename = file_entry.get("filename")
-                if filename:
-                    file_path = bible_dir / filename
-                    if file_path.exists():
-                        # Try to load as JSON first for rich UI display
-                        try:
-                            bible_files[filename] = json.loads(
-                                file_path.read_text(encoding="utf-8")
-                            )
-                        except json.JSONDecodeError:
-                            bible_files[filename] = file_path.read_text(encoding="utf-8")
-            response["bible_files"] = bible_files
-
-        return response
+        return self._artifact_mgr.read_artifact(
+            project_id, artifact_type, entity_id, version
+        )
 
     def edit_artifact(
         self,
@@ -887,167 +730,19 @@ class OperatorConsoleService:
         rationale: str,
     ) -> dict[str, Any]:
         """Create a new version of an artifact with human-edited data."""
-        from cine_forge.schemas import ArtifactMetadata
-
-        project_path = self.require_project_path(project_id)
-        normalized_entity = None if entity_id == "__project__" else entity_id
-        store = ArtifactStore(project_dir=project_path)
-
-        # Verify the artifact group exists
-        refs = store.list_versions(artifact_type=artifact_type, entity_id=normalized_entity)
-        if not refs:
-            raise ServiceError(
-                code="artifact_not_found",
-                message=f"No existing artifact found for {artifact_type}/{entity_id}.",
-                hint="You can only edit existing artifacts.",
-                status_code=404,
-            )
-
-        # Get the latest version to use as lineage
-        latest_ref = refs[-1]
-
-        # Create metadata for the new version
-        metadata = ArtifactMetadata(
-            lineage=[latest_ref],
-            intent="override",
-            rationale=rationale,
-            confidence=1.0,
-            source="human",
-            producing_module="operator_console.manual_edit",
+        return self._artifact_mgr.edit_artifact(
+            project_id, artifact_type, entity_id, data, rationale
         )
 
-        # Save the new artifact version
-        new_ref = store.save_artifact(
-            artifact_type=artifact_type,
-            entity_id=normalized_entity,
-            data=data,
-            metadata=metadata,
-        )
-
-        # Notify agents in the background
-        threading.Thread(
-            target=self._notify_agents_of_edit,
-            args=(project_id, artifact_type, normalized_entity, new_ref, rationale),
-            daemon=True,
-        ).start()
-
-        return {
-            "artifact_type": artifact_type,
-            "entity_id": normalized_entity,
-            "version": new_ref.version,
-            "path": new_ref.path,
-        }
-
-    def _notify_agents_of_edit(
-        self, project_id: str, artifact_type: str, entity_id: str | None, 
-        new_ref: ArtifactRef, rationale: str
-    ) -> None:
-        """Invoke relevant roles to get commentary on a human edit."""
-        try:
-            role_context = self.get_role_context(project_id)
-            roles = self.role_catalog.list_roles()
-            
-            # Roles to notify: Director + any role with permission for this artifact type
-            to_notify = ["director"]
-            for role_id, role in roles.items():
-                if artifact_type in role.permissions and role_id not in to_notify:
-                    to_notify.append(role_id)
-            
-            for role_id in to_notify:
-                prompt = (
-                    f"A human has authoritatively edited the {artifact_type} artifact "
-                    f"({entity_id or 'project'}).\n"
-                    f"Rationale provided: {rationale}\n"
-                    "Review the change and provide any creative commentary, warnings, or "
-                    "suggestions if this edit creates inconsistencies or opportunities."
-                )
-                # RoleContext.invoke will automatically save any suggestions the role returns
-                role_context.invoke(
-                    role_id=role_id,
-                    prompt=prompt,
-                    inputs={
-                        "artifact_ref": new_ref.model_dump(mode="json"),
-                        "rationale": rationale,
-                    }
-                )
-        except Exception:
-            log.exception("Failed to notify agents of edit")
-
-    # --- Chat persistence (JSONL) ---
-
-    def _chat_path(self, project_id: str) -> Path:
-        project_path = self.require_project_path(project_id)
-        return project_path / "chat.jsonl"
+    # --- Chat persistence (delegates to ChatStore) ---
 
     def list_chat_messages(self, project_id: str) -> list[dict[str, Any]]:
         """Read all chat messages from the project's chat.jsonl file."""
-        path = self._chat_path(project_id)
-        if not path.exists():
-            return []
-        messages: list[dict[str, Any]] = []
-        for line in path.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                messages.append(json.loads(line))
-            except json.JSONDecodeError:
-                log.warning("Skipping malformed chat line in %s", path)
-        return messages
+        return self._chat_store.list_messages(self.require_project_path(project_id))
 
     def append_chat_message(self, project_id: str, message: dict[str, Any]) -> dict[str, Any]:
-        """Append a chat message to the project's chat.jsonl (idempotent by message ID).
-
-        Activity-typed messages use upsert semantics: if a line with the same ID
-        already exists it is replaced in-place so at most one activity entry
-        appears in the JSONL at any time (story 067).
-        """
-        path = self._chat_path(project_id)
-        msg_id = message.get("id", "")
-        msg_type = message.get("type", "")
-
-        # Activity and user messages: upsert (replace existing line with same ID).
-        # User messages need upsert so injectedContent can be added after initial persist.
-        if msg_type in ("activity", "user_message") and msg_id and path.exists():
-            lines = path.read_text(encoding="utf-8").splitlines()
-            replaced = False
-            new_line = json.dumps(message, separators=(",", ":"))
-            updated_lines: list[str] = []
-            for raw in lines:
-                stripped = raw.strip()
-                if not stripped:
-                    continue
-                try:
-                    existing = json.loads(stripped)
-                    if existing.get("id") == msg_id:
-                        updated_lines.append(new_line)
-                        replaced = True
-                        continue
-                except json.JSONDecodeError:
-                    pass
-                updated_lines.append(stripped)
-            if replaced:
-                path.write_text("\n".join(updated_lines) + "\n", encoding="utf-8")
-                return message
-            # No existing line found — fall through to append below
-
-        # Idempotency check — scan for existing ID (non-activity messages)
-        if path.exists() and msg_id:
-            for line in path.read_text(encoding="utf-8").splitlines():
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    existing = json.loads(line)
-                    if existing.get("id") == msg_id:
-                        return existing  # Already persisted
-                except json.JSONDecodeError:
-                    continue
-
-        # Append
-        with path.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(message, separators=(",", ":")) + "\n")
-        return message
+        """Append a chat message (idempotent, thread-safe upsert for activity messages)."""
+        return self._chat_store.append(self.require_project_path(project_id), message)
 
     def respond_to_review(
         self,
@@ -1098,72 +793,7 @@ class OperatorConsoleService:
 
     def resume_run(self, run_id: str) -> str:
         """Resume a paused pipeline run (e.g. after human approval)."""
-        run_dir = self.workspace_root / "output" / "runs" / run_id
-        state_path = run_dir / "run_state.json"
-        if not state_path.exists():
-            raise ServiceError(
-                code="run_state_not_found",
-                message=f"Run state not found: {run_id}",
-                status_code=404,
-            )
-
-        state = json.loads(state_path.read_text(encoding="utf-8"))
-        stages = state.get("stages", {})
-        
-        # Find the paused stage
-        paused_stage_id = next(
-            (sid for sid, s in stages.items() if s.get("status") == "paused"),
-            None
-        )
-        if not paused_stage_id:
-            raise ServiceError(code="not_paused", message="Run is not paused.", status_code=400)
-
-        # Get project info
-        run_meta_path = run_dir / "run_meta.json"
-        if not run_meta_path.exists():
-            run_meta_path = run_dir / "operator_console_run_meta.json"
-        run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
-        project_id = str(run_meta.get("project_id", ""))
-        project_path = Path(run_meta["project_path"])
-        
-        # Load latest project config for mode
-        pj = self._read_project_json(project_path) or {}
-        mode = pj.get("human_control_mode", "autonomous")
-
-        new_run_id = f"{run_id}-resume-{uuid.uuid4().hex[:4]}"
-        resume_run_dir = self.workspace_root / "output" / "runs" / new_run_id
-        resume_run_dir.mkdir(parents=True, exist_ok=True)
-        self._write_run_meta(resume_run_dir, project_id, project_path)
-
-        runtime_params = dict(state.get("runtime_params", {}))
-        runtime_params["human_control_mode"] = mode
-        runtime_params["user_approved"] = True # Mark as approved so CanonGate lets it pass
-        runtime_params["__resume_artifact_refs_by_stage"] = {
-            sid: s.get("artifact_refs", [])
-            for sid, s in stages.items() if isinstance(s, dict)
-        }
-
-        recipe_id = state.get("recipe_id")
-        recipe_filename = f"recipe-{str(recipe_id).replace('_', '-')}.yaml"
-        recipe_path = self.workspace_root / "configs" / "recipes" / recipe_filename
-
-        worker = threading.Thread(
-            target=self._run_pipeline,
-            kwargs={
-                "project_id": project_id,
-                "project_path": project_path,
-                "recipe_path": recipe_path,
-                "run_id": new_run_id,
-                "force": False,
-                "runtime_params": runtime_params,
-                "start_from": paused_stage_id,
-            },
-            daemon=True,
-        )
-        with self._run_lock:
-            self._run_threads[new_run_id] = worker
-        worker.start()
-        return new_run_id
+        return self._orchestrator.resume_run(run_id)
 
     def search_entities(self, project_id: str, query: str) -> dict[str, Any]:
         """Search across scenes, characters, locations, and props for a project."""
@@ -1312,219 +942,10 @@ class OperatorConsoleService:
         return recipes
 
     def start_run(self, project_id: str, request: dict[str, Any]) -> str:
-        project_path = self.require_project_path(project_id)
-        run_id = request.get("run_id") or f"run-{uuid.uuid4().hex[:8]}"
-        
-        recipe_id = request.get("recipe_id") or "mvp_ingest"
-        recipe_filename = f"recipe-{recipe_id.replace('_', '-')}.yaml"
-        recipe_path = self.workspace_root / "configs" / "recipes" / recipe_filename
-        
-        if not recipe_path.exists():
-            raise ServiceError(
-                code="recipe_not_found",
-                message=f"Recipe file not found: {recipe_path}",
-                hint=f"Ensure configs/recipes/{recipe_filename} exists in workspace.",
-                status_code=500,
-            )
-
-        runtime_params: dict[str, Any] = {
-            "input_file": request["input_file"],
-            "default_model": request["default_model"],
-            "model": request["default_model"],
-            # Backward-compat aliases for custom recipes using ${utility_model}/${sota_model}
-            "utility_model": request.get("work_model") or request["default_model"],
-            "sota_model": request.get("escalate_model") or request["default_model"],
-            "human_control_mode": request.get("human_control_mode") or "autonomous",
-            "accept_config": bool(request.get("accept_config", False)),
-            "skip_qa": bool(request.get("skip_qa", False)),
-        }
-        # Only override tier-specific module params if explicitly provided.
-        # Otherwise, modules use their built-in defaults (e.g., Haiku for QA).
-        if request.get("work_model"):
-            runtime_params["work_model"] = request["work_model"]
-        if request.get("verify_model") or request.get("qa_model"):
-            v = request.get("verify_model") or request["qa_model"]
-            runtime_params["verify_model"] = v
-            runtime_params["qa_model"] = v
-        if request.get("escalate_model"):
-            runtime_params["escalate_model"] = request["escalate_model"]
-
-        run_dir = self.workspace_root / "output" / "runs" / run_id
-        run_dir.mkdir(parents=True, exist_ok=True)
-        self._write_run_meta(
-            run_dir=run_dir,
-            project_id=project_id,
-            project_path=project_path,
-        )
-
-        config_file = request.get("config_file")
-        if request.get("config_overrides"):
-            config_file = str(run_dir / "config_overrides.yaml")
-            config_path = Path(config_file)
-            config_path.write_text(
-                json.dumps(request["config_overrides"], indent=2, sort_keys=True),
-                encoding="utf-8",
-            )
-
-        if config_file:
-            runtime_params["config_file"] = str(config_file)
-
-        worker = threading.Thread(
-            target=self._run_pipeline,
-            kwargs={
-                "project_id": project_id,
-                "project_path": project_path,
-                "recipe_path": recipe_path,
-                "run_id": run_id,
-                "force": bool(request.get("force", False)),
-                "runtime_params": runtime_params,
-                "start_from": request.get("start_from"),
-                "end_at": request.get("end_at"),
-            },
-            daemon=True,
-        )
-        with self._run_lock:
-            self._run_threads[run_id] = worker
-        worker.start()
-        return run_id
+        return self._orchestrator.start_run(project_id, request)
 
     def retry_failed_stage(self, run_id: str) -> str:
-        run_dir = self.workspace_root / "output" / "runs" / run_id
-        state_path = run_dir / "run_state.json"
-        if not state_path.exists():
-            raise ServiceError(
-                code="run_state_not_found",
-                message=f"Run state not found for run_id='{run_id}'.",
-                hint="Verify the run id before retrying a failed stage.",
-                status_code=404,
-            )
-
-        state = json.loads(state_path.read_text(encoding="utf-8"))
-        stages = state.get("stages", {})
-        failed_stage_id = next(
-            (stage_id for stage_id, stage in stages.items() if stage.get("status") == "failed"),
-            None,
-        )
-        if not failed_stage_id:
-            raise ServiceError(
-                code="no_failed_stage",
-                message=f"Run '{run_id}' has no failed stage to retry.",
-                hint="Only failed runs can be resumed from a failed stage.",
-                status_code=400,
-            )
-
-        recipe_id = state.get("recipe_id")
-        if not recipe_id or recipe_id == "initializing":
-            raise ServiceError(
-                code="run_recipe_unknown",
-                message=f"Run '{run_id}' does not have a resolvable recipe.",
-                hint="Use a run with a completed run_state recipe_id.",
-                status_code=400,
-            )
-
-        recipe_filename = f"recipe-{str(recipe_id).replace('_', '-')}.yaml"
-        recipe_path = self.workspace_root / "configs" / "recipes" / recipe_filename
-        if not recipe_path.exists():
-            raise ServiceError(
-                code="recipe_not_found",
-                message=f"Recipe file not found for retry: {recipe_path}",
-                hint="Ensure the original run recipe still exists.",
-                status_code=500,
-            )
-
-        run_meta_path = run_dir / "run_meta.json"
-        if not run_meta_path.exists():
-            run_meta_path = run_dir / "operator_console_run_meta.json"
-        if not run_meta_path.exists():
-            raise ServiceError(
-                code="run_meta_not_found",
-                message=f"Run metadata not found for run_id='{run_id}'.",
-                hint="Cannot determine project context for retry.",
-                status_code=500,
-            )
-        run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
-        project_id = str(run_meta.get("project_id") or "")
-        project_path_raw = run_meta.get("project_path")
-        if not project_id or not project_path_raw:
-            raise ServiceError(
-                code="run_meta_invalid",
-                message=f"Run metadata is incomplete for run_id='{run_id}'.",
-                hint="Expected project_id and project_path.",
-                status_code=500,
-            )
-
-        project_path = Path(project_path_raw)
-        # Ensure project can be resolved in the current backend session.
-        self._project_registry[project_id] = project_path
-        store = ArtifactStore(project_dir=project_path)
-
-        effective_start_from = failed_stage_id
-        ingest_stage = stages.get("ingest")
-        if (
-            isinstance(ingest_stage, dict)
-            and ingest_stage.get("status") == "done"
-            and failed_stage_id != "ingest"
-            and not self._has_non_empty_raw_input(ingest_stage, store)
-        ):
-            # Historical runs can contain an "ingest done" artifact with empty content.
-            # Step back to ingest so retry can regenerate raw_input with current extraction logic.
-            effective_start_from = "ingest"
-
-        new_run_id = f"{run_id}-retry-{uuid.uuid4().hex[:4]}"
-        retry_run_dir = self.workspace_root / "output" / "runs" / new_run_id
-        retry_run_dir.mkdir(parents=True, exist_ok=True)
-        self._write_run_meta(
-            run_dir=retry_run_dir,
-            project_id=project_id,
-            project_path=project_path,
-        )
-
-        worker = threading.Thread(
-            target=self._run_pipeline,
-            kwargs={
-                "project_id": project_id,
-                "project_path": project_path,
-                "recipe_path": recipe_path,
-                "run_id": new_run_id,
-                "force": False,
-                "runtime_params": {
-                    **state.get("runtime_params", {}),
-                    "__resume_artifact_refs_by_stage": {
-                        stage_id: stage.get("artifact_refs", [])
-                        for stage_id, stage in stages.items()
-                        if isinstance(stage, dict)
-                    },
-                },
-                "start_from": effective_start_from,
-            },
-            daemon=True,
-        )
-        with self._run_lock:
-            self._run_threads[new_run_id] = worker
-        worker.start()
-        return new_run_id
-
-    @staticmethod
-    def _has_non_empty_raw_input(stage_state: dict[str, Any], store: ArtifactStore) -> bool:
-        refs = stage_state.get("artifact_refs", [])
-        if not isinstance(refs, list):
-            return False
-        for ref_payload in refs:
-            if not isinstance(ref_payload, dict):
-                continue
-            if ref_payload.get("artifact_type") != "raw_input":
-                continue
-            try:
-                ref = ArtifactRef.model_validate(ref_payload)
-                artifact = store.load_artifact(ref)
-            except Exception:  # noqa: BLE001
-                continue
-            raw = artifact.data
-            data = raw if isinstance(raw, dict) else raw.model_dump()
-            content = data.get("content")
-            if isinstance(content, str) and content.strip():
-                return True
-        return False
+        return self._orchestrator.retry_failed_stage(run_id)
 
     def save_project_input(self, project_id: str, filename: str, content: bytes) -> dict[str, Any]:
         project_path = self.require_project_path(project_id)
@@ -1539,203 +960,11 @@ class OperatorConsoleService:
             "size_bytes": len(content),
         }
 
-    def _run_pipeline(
-        self,
-        project_id: str,
-        project_path: Path,
-        recipe_path: Path,
-        run_id: str,
-        force: bool,
-        runtime_params: dict[str, Any],
-        start_from: str | None = None,
-        end_at: str | None = None,
-    ) -> None:
-        try:
-            engine = DriverEngine(
-                workspace_root=self.workspace_root,
-                project_dir=project_path,
-            )
-            engine.run(
-                recipe_path=recipe_path,
-                run_id=run_id,
-                force=force,
-                runtime_params=runtime_params,
-                start_from=start_from,
-                end_at=end_at,
-            )
-            with self._run_lock:
-                self._run_errors.pop(run_id, None)
-        except Exception as exc:  # noqa: BLE001
-            with self._run_lock:
-                self._run_errors[run_id] = str(exc)
-            # Persist error to disk
-            error_path = self.workspace_root / "output" / "runs" / run_id / "background_error.log"
-            try:
-                error_path.write_text(str(exc), encoding="utf-8")
-            except Exception:  # noqa: BLE001
-                pass
-
-            # Detect specific errors (like low credits) and notify user in chat
-            self._handle_run_failure_chat_notification(project_id, run_id, exc)
-        finally:
-            with self._run_lock:
-                self._run_threads.pop(run_id, None)
-
-    def _handle_run_failure_chat_notification(
-        self, project_id: str, run_id: str, exc: Exception
-    ) -> None:
-        """Detect specific errors (like low credits) and notify user in chat."""
-        # 1. Start with the terminal exception message
-        msg = str(exc).lower()
-
-        # 2. Also scan run_state.json for stage-level errors (they might have more detail)
-        try:
-            state_path = self.workspace_root / "output" / "runs" / run_id / "run_state.json"
-            if state_path.exists():
-                state_data = json.loads(state_path.read_text(encoding="utf-8"))
-                for stage in state_data.get("stages", {}).values():
-                    for attempt in stage.get("attempts", []):
-                        if attempt.get("error"):
-                            msg += " " + str(attempt["error"]).lower()
-        except Exception:  # noqa: BLE001
-            pass
-
-        friendly_message = ""
-
-        # Anthropic: "Your credit balance is too low"
-        # OpenAI: "insufficient_quota" or "exceeded your current quota"
-        # Generic: "billing", "credit", "quota", "balance"
-        if any(
-            token in msg
-            for token in (
-                "credit balance",
-                "insufficient_quota",
-                "insufficient quota",
-                "exceeded your current quota",
-                "billing",
-                "credits",
-                "top up",
-                "balance is too low",
-            )
-        ):
-            friendly_message = (
-                "⚠️ **AI Credit Balance Empty**\n\n"
-                "The pipeline run failed because your AI provider credit balance is too low. "
-                "Please top up your credits at "
-                "[Anthropic](https://console.anthropic.com/settings/billing) "
-                "or [OpenAI](https://platform.openai.com/account/billing) to continue."
-            )
-        elif any(
-            token in msg
-            for token in ("rate limit", "429", "overloaded", "capacity", "too many requests")
-        ):
-            friendly_message = (
-                "⚠️ **Rate Limit Exceeded**\n\n"
-                "The AI provider is currently rate-limiting requests or is overloaded. "
-                "Please wait a moment and try again."
-            )
-
-        if friendly_message:
-            chat_msg = {
-                "id": f"error_{run_id}_{uuid.uuid4().hex[:4]}",
-                "type": "ai_response",
-                "content": friendly_message,
-                "timestamp": time.time(),
-            }
-            try:
-                self.append_chat_message(project_id, chat_msg)
-            except Exception:
-                log.exception("Failed to append error message to chat")
-
     def read_run_state(self, run_id: str) -> dict[str, Any]:
-        state_path = self.workspace_root / "output" / "runs" / run_id / "run_state.json"
-        if not state_path.exists():
-            # Check if it failed during early initialization before it could write the file
-            with self._run_lock:
-                background_error = self._run_errors.get(run_id)
-            if background_error:
-                return {
-                    "run_id": run_id,
-                    "state": {
-                        "run_id": run_id,
-                        "recipe_id": "failed_init",
-                        "dry_run": False,
-                        "started_at": time.time(),
-                        "stages": {},
-                        "total_cost_usd": 0.0,
-                        "instrumented": False,
-                    },
-                    "background_error": background_error,
-                }
-
-            raise ServiceError(
-                code="run_state_not_found",
-                message=f"Run state not found for run_id='{run_id}'.",
-                hint="Start a run first or verify run_id.",
-                status_code=404,
-            )
-        state = json.loads(state_path.read_text(encoding="utf-8"))
-
-        # Compute live elapsed duration for running stages
-        now = time.time()
-        for stage_state in state.get("stages", {}).values():
-            if stage_state.get("status") == "running" and "started_at" in stage_state:
-                stage_state["duration_seconds"] = round(now - stage_state["started_at"], 4)
-
-        with self._run_lock:
-            background_error = self._run_errors.get(run_id)
-            is_active = run_id in self._run_threads
-
-        if not background_error:
-            # Check disk for persisted error
-            error_path = self.workspace_root / "output" / "runs" / run_id / "background_error.log"
-            if error_path.exists():
-                background_error = error_path.read_text(encoding="utf-8")
-
-        # Detect orphaned runs (marked running/pending but no thread active)
-        if not is_active and not state.get("finished_at"):
-            # If the backend restarted, the thread map is empty.
-            # We treat any non-finished run as failed/orphaned.
-            any_stuck = False
-            for stage in state.get("stages", {}).values():
-                if stage.get("status") in ("running", "pending"):
-                    stage["status"] = "failed"
-                    any_stuck = True
-            
-            if any_stuck and not background_error:
-                background_error = "Run orphaned (backend restart or crash)"
-
-        return {"run_id": run_id, "state": state, "background_error": background_error}
+        return self._orchestrator.read_run_state(run_id)
 
     def read_run_events(self, run_id: str) -> dict[str, Any]:
-        events_path = self.workspace_root / "output" / "runs" / run_id / "pipeline_events.jsonl"
-        if not events_path.exists():
-            raise ServiceError(
-                code="run_events_not_found",
-                message=f"Run events not found for run_id='{run_id}'.",
-                hint="Start a run first or verify run_id.",
-                status_code=404,
-            )
-        events = [
-            json.loads(line)
-            for line in events_path.read_text(encoding="utf-8").splitlines()
-            if line.strip()
-        ]
-        return {"run_id": run_id, "events": events}
-
-    def _run_belongs_to_project(
-        self,
-        run_dir: Path,
-        project_path: Path,
-        run_state: dict[str, Any],
-    ) -> bool:
-        run_meta_path = run_dir / "run_meta.json"
-        if not run_meta_path.exists():
-            run_meta_path = run_dir / "operator_console_run_meta.json"
-        if not run_meta_path.exists():
-            return False
-        run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
-        return run_meta.get("project_path") == str(project_path)
+        return self._orchestrator.read_run_events(run_id)
 
     @staticmethod
     def _is_valid_project_dir(path: Path) -> bool:
@@ -1748,18 +977,6 @@ class OperatorConsoleService:
             )
         except OSError:
             return False
-
-    @staticmethod
-    def _write_run_meta(run_dir: Path, project_id: str, project_path: Path) -> None:
-        meta_path = run_dir / "run_meta.json"
-        payload = {
-            "project_id": project_id,
-            "project_path": str(project_path),
-        }
-        meta_path.write_text(
-            json.dumps(payload, indent=2, sort_keys=True),
-            encoding="utf-8",
-        )
 
     @staticmethod
     def _sanitize_filename(filename: str) -> str:

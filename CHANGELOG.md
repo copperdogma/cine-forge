@@ -1,5 +1,26 @@
 # Changelog
 
+## [2026-03-02-14] — Service layer decomposition: 3 class extractions, 3 bug fixes (Story 118)
+
+### Changed
+- `service.py` reduced from 1,775 → 992 lines (44% reduction) — thin facade delegates to focused collaborators
+- 5 intent/mood routes in `app.py` consolidated from inline `ArtifactStore` construction to `service.get_artifact_store()`
+- Export router `get_store()` uses `service.require_project_path()` instead of hardcoded `Path(f"output/{project_id}")`
+- `ServiceError` extracted to `src/cine_forge/api/exceptions.py` — shared leaf module, no circular imports
+
+### Added
+- `src/cine_forge/api/chat_store.py` — `ChatStore` class with `threading.Lock` protecting all writes (103 lines)
+- `src/cine_forge/api/run_orchestrator.py` — `RunOrchestrator` class owning run threads, errors, and lock (613 lines)
+- `src/cine_forge/api/artifact_manager.py` — `ArtifactManager` class for browse/read/edit with path traversal guard (290 lines)
+- `src/cine_forge/api/exceptions.py` — shared `ServiceError` exception (14 lines)
+- `src/cine_forge/schemas/runtime_params.py` — `RuntimeParams(BaseModel)` with 16 typed fields replacing stringly-typed dict (49 lines)
+- 15 new unit tests: 7 ChatStore, 6 RuntimeParams, 2 orphan detection
+
+### Fixed
+- Chat race condition: concurrent upserts could drop messages (no lock on read-modify-write path)
+- Orphan detection: `read_run_state` now persists `"failed"` status to disk after detecting stuck runs
+- Export router: hardcoded `Path(f"output/{project_id}")` broke for external projects and non-CWD launches
+
 ## [2026-03-02-13] — Engine decomposition: 4 class extractions (Story 117)
 
 ### Changed

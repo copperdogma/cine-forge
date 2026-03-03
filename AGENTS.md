@@ -96,10 +96,10 @@ These rules prevent the accumulation of god objects and untyped interfaces. They
 | File | Lines | Status | Story |
 |------|-------|--------|-------|
 | `src/cine_forge/ai/chat.py` | 2,191 | Not yet planned | — |
-| `src/cine_forge/api/service.py` | 1,775 | Decomposition planned | Story 118 |
-| `src/cine_forge/driver/engine.py` | 1,560 | Decomposition planned | Story 117 |
-| `src/cine_forge/api/app.py` | 999 | Partially addressed by Story 118 (route consolidation) | Story 118 |
 | `tests/unit/test_driver_engine.py` | 1,648 | Test file — exempt from class size rule | — |
+| `src/cine_forge/driver/engine.py` | 1,159 | Decomposed (Story 117) — 4 class extractions | Story 117 |
+| `src/cine_forge/api/app.py` | 1,032 | Route consolidation done (Story 118) | Story 118 |
+| `src/cine_forge/api/service.py` | 1,002 | Decomposed (Story 118) — 3 class extractions | Story 118 |
 
 ## Operational Guide
 

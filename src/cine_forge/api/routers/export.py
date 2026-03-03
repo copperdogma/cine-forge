@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import tempfile
 from pathlib import Path
-from typing import Annotated, Literal
+from typing import TYPE_CHECKING, Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse, Response
@@ -11,17 +13,27 @@ from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
 from cine_forge.export.screenplay import ScreenplayRenderer
 
+if TYPE_CHECKING:
+    from cine_forge.api.service import OperatorConsoleService
+
 router = APIRouter(prefix="/projects/{project_id}/export", tags=["export"])
 
 ExportScope = Literal["everything", "scenes", "characters", "locations", "props", "single"]
 ExportFormat = Literal["markdown", "pdf", "call-sheet", "fountain", "docx"]
 
+_service: OperatorConsoleService | None = None
+
+
+def set_service(svc: OperatorConsoleService) -> None:
+    """Called by create_app to inject the service instance."""
+    global _service  # noqa: PLW0603
+    _service = svc
+
+
 def get_store(project_id: str) -> ArtifactStore:
-    # TODO: This should ideally come from a dependency injection or service
-    # For now, we assume standard project structure
-    project_dir = Path(f"output/{project_id}")
-    if not project_dir.exists():
-        raise HTTPException(status_code=404, detail="Project not found")
+    if _service is None:
+        raise HTTPException(status_code=500, detail="Export router not initialized")
+    project_dir = _service.require_project_path(project_id)
     return ArtifactStore(project_dir)
 
 def load_all_artifacts(store: ArtifactStore):

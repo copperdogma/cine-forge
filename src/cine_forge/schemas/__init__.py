@@ -82,6 +82,7 @@ from .role import (
     StylePackFileRef,
     StylePackSlot,
 )
+from .runtime_params import RuntimeParams
 from .scene import (
     FieldProvenance,
     InferredField,
@@ -189,4 +190,5 @@ __all__ = [
     "ValidationResult",
     "validate_against_schema",
     "ProgressEvent",
+    "RuntimeParams",
 ]

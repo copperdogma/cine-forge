@@ -14,6 +14,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, StreamingResponse
 
+from cine_forge.api.exceptions import ServiceError
 from cine_forge.api.models import (
     ArtifactDetailResponse,
     ArtifactEditRequest,
@@ -50,7 +51,7 @@ from cine_forge.api.models import (
     UploadedInputResponse,
 )
 from cine_forge.api.routers import export
-from cine_forge.api.service import OperatorConsoleService, ServiceError
+from cine_forge.api.service import OperatorConsoleService
 
 load_dotenv()
 
@@ -86,6 +87,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app_version = _parse_version(resolved_workspace)
     app = FastAPI(title="CineForge API", version=app_version)
     app.state.console_service = service
+    export.set_service(service)
     app.include_router(export.router, prefix="/api")
 
     app.add_middleware(
@@ -358,10 +360,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         scene_id: str | None = None,
     ) -> IntentMoodResponse | None:
         """Get current intent/mood for project or scene."""
-        from cine_forge.artifacts import ArtifactStore
-
-        project_path = service.require_project_path(project_id)
-        store = ArtifactStore(project_dir=project_path)
+        store = service.get_artifact_store(project_id)
         entity = scene_id or "project"
         refs = store.list_versions(artifact_type="intent_mood", entity_id=entity)
         if not refs:
@@ -387,11 +386,9 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         request: IntentMoodInput,
     ) -> IntentMoodResponse:
         """Save (create or update) intent/mood for project or scene."""
-        from cine_forge.artifacts import ArtifactStore
         from cine_forge.schemas import ArtifactMetadata
 
-        project_path = service.require_project_path(project_id)
-        store = ArtifactStore(project_dir=project_path)
+        store = service.get_artifact_store(project_id)
 
         entity = request.scene_id or "project"
         data = {
@@ -435,14 +432,12 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         request: PropagateRequest,
     ) -> PropagationResponse:
         """Propagate intent/mood to all concern groups via Director AI."""
-        from cine_forge.artifacts import ArtifactStore
         from cine_forge.presets import load_preset
         from cine_forge.schemas import ArtifactMetadata
         from cine_forge.schemas.concern_groups import IntentMood
         from cine_forge.services.intent_mood import propagate_intent
 
-        project_path = service.require_project_path(project_id)
-        store = ArtifactStore(project_dir=project_path)
+        store = service.get_artifact_store(project_id)
 
         # Load current intent/mood
         entity = request.scene_id or "project"
@@ -559,10 +554,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         project_id: str,
     ) -> ScriptContextResponse | None:
         """Get script bible context for the Intent page."""
-        from cine_forge.artifacts import ArtifactStore
-
-        project_path = service.require_project_path(project_id)
-        store = ArtifactStore(project_dir=project_path)
+        store = service.get_artifact_store(project_id)
         refs = store.list_versions(
             artifact_type="script_bible", entity_id="project"
         )
@@ -592,11 +584,9 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     ) -> IntentMoodSuggestion:
         """Suggest an IntentMood from script bible analysis via LLM."""
         from cine_forge.ai.llm import call_llm
-        from cine_forge.artifacts import ArtifactStore
         from cine_forge.presets import list_presets
 
-        project_path = service.require_project_path(project_id)
-        store = ArtifactStore(project_dir=project_path)
+        store = service.get_artifact_store(project_id)
         refs = store.list_versions(
             artifact_type="script_bible", entity_id="project"
         )

@@ -7,7 +7,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from cine_forge.api.app import create_app
-from cine_forge.api.service import OperatorConsoleService, ServiceError
+from cine_forge.api.exceptions import ServiceError
+from cine_forge.api.service import OperatorConsoleService
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
 
@@ -345,7 +346,7 @@ def test_service_retry_failed_stage_bootstraps_new_run_from_failed_stage(
         def start(self) -> None:
             captured["started"] = True
 
-    monkeypatch.setattr("cine_forge.api.service.threading.Thread", _FakeThread)
+    monkeypatch.setattr("cine_forge.api.run_orchestrator.threading.Thread", _FakeThread)
 
     new_run_id = service.retry_failed_stage(run_id)
     assert new_run_id.startswith(f"{run_id}-retry-")
@@ -435,7 +436,7 @@ def test_service_retry_failed_stage_steps_back_to_ingest_for_empty_raw_input(
         def start(self) -> None:
             captured["started"] = True
 
-    monkeypatch.setattr("cine_forge.api.service.threading.Thread", _FakeThread)
+    monkeypatch.setattr("cine_forge.api.run_orchestrator.threading.Thread", _FakeThread)
 
     _ = service.retry_failed_stage(run_id)
     worker_kwargs = captured["kwargs"]
