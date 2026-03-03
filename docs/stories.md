@@ -208,7 +208,7 @@ NOTES from Cam:
 | 114 | Driver Progress Events | Cross-Cutting | Medium | Deferred | [story-114](stories/story-114-driver-progress-events.md) |
 | 115 | Pipeline Architecture Refactor Plan | Cross-Cutting | Medium | Done | [story-115](stories/story-115-pipeline-architecture-refactor-plan.md) |
 | 116 | Event System Refactor | Cross-Cutting | Medium | Done | [story-116](stories/story-116-event-system-refactor.md) |
-| 117 | Engine Decomposition | Cross-Cutting | Medium | Pending | [story-117](stories/story-117-engine-decomposition.md) |
+| 117 | Engine Decomposition | Cross-Cutting | Medium | Done | [story-117](stories/story-117-engine-decomposition.md) |
 | 118 | Service Layer Decomposition | Cross-Cutting | Medium | Pending | [story-118](stories/story-118-service-decomposition.md) |
 
 ## Phase Summary

@@ -1,5 +1,21 @@
 # Changelog
 
+## [2026-03-02-13] — Engine decomposition: 4 class extractions (Story 117)
+
+### Changed
+- `engine.py` reduced from 1,543 → 1,159 lines (25% reduction)
+- `_execute_single_stage` reduced from 528 → 214 lines (59% reduction)
+- Signature reduced from 22 → 18 parameters via `RetryConfig` dataclass
+
+### Added
+- `src/cine_forge/driver/schema_registry.py` — `build_schema_registry()` factory (86 lines)
+- `src/cine_forge/driver/retry_policy.py` — `StageRetryPolicy` class + `RetryConfig` + `record_stage_failure()` (255 lines)
+- `src/cine_forge/driver/artifact_persister.py` — `ArtifactPersister` class replacing closure + batch loop (233 lines)
+- `src/cine_forge/driver/canon_gate_runner.py` — `StageCanonGate` class for canon review gating (116 lines)
+- `tests/unit/test_retry_policy.py` — 15 isolation tests
+- `tests/unit/test_artifact_persister.py` — 6 isolation tests
+- 4 additional tests in `tests/unit/test_schema_registry.py`
+
 ## [2026-03-02-12] — Story 117/118 audit corrections, inbox update
 
 ### Changed

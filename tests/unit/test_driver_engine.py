@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from cine_forge.driver.engine import DriverEngine
+from cine_forge.driver.retry_policy import StageRetryPolicy
 from cine_forge.schemas import ArtifactHealth
 
 
@@ -899,7 +900,9 @@ def test_driver_registers_scene_schemas(tmp_path: Path) -> None:
 
 @pytest.mark.unit
 def test_driver_schema_selection_prefers_artifact_type_for_multi_output() -> None:
-    selected = DriverEngine._schema_names_for_artifact(
+    from cine_forge.driver.artifact_persister import ArtifactPersister
+
+    selected = ArtifactPersister._schema_names_for_artifact(
         artifact={"artifact_type": "scene"},
         output_schemas=["scene", "scene_index"],
     )
@@ -1017,8 +1020,8 @@ def test_driver_skips_unhealthy_provider_models_in_attempt_plan(
     engine = DriverEngine(workspace_root=tmp_path)
 
     monkeypatch.setattr(
-        DriverEngine,
-        "_provider_is_healthy",
+        StageRetryPolicy,
+        "provider_is_healthy",
         staticmethod(lambda provider: provider != "anthropic"),
     )
 
