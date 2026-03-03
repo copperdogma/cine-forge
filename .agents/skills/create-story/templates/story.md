@@ -45,9 +45,15 @@
   - [ ] **T4 — Verbose Artifacts:** Is the work log verbose enough for handoff?
   - [ ] **T5 — Ideal vs Today:** Can this be simplified toward the ideal?
 
+## Architectural Fit
+
+- **Owning class/module**: {What existing class or module owns this feature? If none, propose a new focused class — not an existing large one.}
+- **Data contracts**: {What typed interfaces (Pydantic models) define the data contracts for this feature? If new data crosses a layer boundary, a schema must be defined first.}
+- **File sizes**: {Current line count of each file to be modified. Run `make check-size` to check. Flag any file >500 lines per Architecture Rules in AGENTS.md.}
+
 ## Files to Modify
 
-- {path/to/file} — {what changes}
+- {path/to/file} — {what changes} ({current line count})
 
 ## Notes
 

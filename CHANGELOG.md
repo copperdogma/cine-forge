@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-02-10] — Pipeline Architecture Refactor Plan complete (Story 115)
+
+### Added
+- Story 116: Event System Refactor — EventEmitter class, ProgressEvent Pydantic schema, SSE endpoint, 11 call site migration plan
+- Story 117: Engine Decomposition — 4 behavior-preserving extractions (StageRetryPolicy, ArtifactPersister, build_schema_registry, StageCanonGate)
+- Story 118: Service Layer Decomposition — ChatStore, RunOrchestrator, RuntimeParams Pydantic model, 3 bug fixes (chat race, orphan persistence, export router)
+- Architecture Rules section in AGENTS.md — method >100 lines, class >500 lines, inter-layer Pydantic contracts, god object check
+- `make check-size` Makefile target — flags Python/TS files over 400 lines
+- Structural Health Check gate in build-story skill (Phase 2, step 8)
+- Architectural Fit section in story template
+
 ## [2026-03-02-09] — Fix run-polling stop conditions and bible spinner; Story 114 deferred; Story 115 created
 
 ### Fixed

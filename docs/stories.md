@@ -206,7 +206,10 @@ NOTES from Cam:
 | 112 | Continuity Tracking: First Principles Redesign | World Building | Medium | Draft | [story-112](stories/story-112-continuity-redesign-first-principles.md) |
 | 113 | Per-Provider LLM Circuit Breaker | Cross-Cutting | Medium | Draft | [story-113](stories/story-113-llm-circuit-breaker.md) |
 | 114 | Driver Progress Events | Cross-Cutting | Medium | Deferred | [story-114](stories/story-114-driver-progress-events.md) |
-| 115 | Pipeline Architecture Refactor Plan | Cross-Cutting | Medium | Draft | [story-115](stories/story-115-pipeline-architecture-refactor-plan.md) |
+| 115 | Pipeline Architecture Refactor Plan | Cross-Cutting | Medium | Done | [story-115](stories/story-115-pipeline-architecture-refactor-plan.md) |
+| 116 | Event System Refactor | Cross-Cutting | Medium | Pending | [story-116](stories/story-116-event-system-refactor.md) |
+| 117 | Engine Decomposition | Cross-Cutting | Medium | Pending | [story-117](stories/story-117-engine-decomposition.md) |
+| 118 | Service Layer Decomposition | Cross-Cutting | Medium | Pending | [story-118](stories/story-118-service-decomposition.md) |
 
 ## Phase Summary
 

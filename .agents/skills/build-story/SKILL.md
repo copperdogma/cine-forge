@@ -51,37 +51,46 @@ Execute a development story end-to-end.
    - For pure orchestration/storage/plumbing/UI: code is obviously simpler — no comparison needed.
    - **Model selection requires live data**: Never pick models from training data. Query the provider API and check current pricing. Cost differences can be 10-20x.
 
-8. **Write the implementation plan** — Add a `## Plan` section to the story file with:
+8. **Structural Health Check** — Before writing the plan, assess architectural fit:
+   - Run `make check-size` (or `wc -l` on each file in "Files to Modify") — list every file to be touched with its current line count
+   - If any file is >500 lines: note it explicitly in the plan. If the story adds logic to it without a decomposition task first, flag as a plan risk and consider adding an extraction phase
+   - If any method to be modified is >100 lines: first task should be extracting it into a testable unit
+   - For any new data crossing a layer boundary (engine↔service, service↔API, API↔UI): verify a Pydantic model is defined in a schema file before code that uses it — if not, add a schema-first task
+   - For any new event type: verify it has an entry in `src/cine_forge/schemas/events.py` before the emit call site
+   - Record the health check findings in the plan
+
+9. **Write the implementation plan** — Add a `## Plan` section to the story file with:
    - For each task: which files change, what changes, in what order
    - Impact analysis: what tests are affected, what could break
+   - Structural health check findings (from step 8)
    - Any human-approval blockers (new dependencies, schema changes, public API changes)
    - What "done" looks like for each task
 
-9. **Human gate** — Present the plan to the user. Surface any ambiguities or risks. Do not write any implementation code until the user approves. If something in the plan is unclear, ask now — not mid-implementation.
+10. **Human gate** — Present the plan to the user. Surface any ambiguities or risks. Do not write any implementation code until the user approves. If something in the plan is unclear, ask now — not mid-implementation.
 
 ## Phase 3 — Implement
 
-10. **Implement** — Work through tasks in order. For each task:
+11. **Implement** — Work through tasks in order. For each task:
    - Mark task as in progress in the story file
    - Do the work
    - Run relevant project checks after meaningful changes (backend: unit tests + Ruff; UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`)
    - Run relevant tests
    - Mark task complete with brief evidence
 
-11a. **Static verification** — Run the project's full validation suite:
+12a. **Static verification** — Run the project's full validation suite:
    - Backend: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`
    - UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`
    - `pnpm --dir ui run build` (catches errors typecheck misses)
    - Review each acceptance criterion — is it met?
 
-11b. **Eval mismatch investigation** (if the story touched an AI module or eval):
+12b. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
    - Prompt the user to run `/verify-eval`. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** before the story can close. Do not attempt the full investigation inline — it overwhelms context.
    - **Re-assess acceptance criteria against verified scores.** Golden fixes from `/verify-eval` change the real scores. What looked like a passing story on raw scores may fail on verified scores (or vice versa). Only verified scores determine whether acceptance criteria are met.
    - Do not proceed to Done if mismatches remain unclassified
    - **Update `docs/evals/registry.yaml`** with new scores, `git_sha`, and date for every eval you ran. Stale registry scores are worse than no scores — they cause future agents to waste time on already-solved problems or miss regressions.
 
-11c. **Runtime smoke test** — Verify the app actually works end-to-end:
+12c. **Runtime smoke test** — Verify the app actually works end-to-end:
    - Start dev servers — confirm they start with no error output in logs
    - If backend changed: hit the health endpoint — confirm 200 with valid JSON
    - If any frontend files changed: Chrome MCP screenshot — page loads, no blank screen, no JS console errors
@@ -89,9 +98,9 @@ Execute a development story end-to-end.
    - Record evidence in the work log: server startup output, curl response, screenshot description
    - **Do not mark Done if this step was skipped** — static checks passing ≠ app works
 
-12. **Update docs** — Search all docs in the codebase and update any related to what we touched.
+13. **Update docs** — Search all docs in the codebase and update any related to what we touched.
 
-13. **Verify Central Tenets** — Check each tenet checkbox in the story:
+14. **Verify Central Tenets** — Check each tenet checkbox in the story:
    - Tenet 0: Could any user data be lost? Is capture-first preserved?
    - Tenet 1: Is the code AI-friendly? Would another AI session understand it?
    - Tenet 2: Did we over-engineer something AI will handle better soon?
@@ -99,9 +108,9 @@ Execute a development story end-to-end.
    - Tenet 4: Is the work log verbose enough for handoff?
    - Tenet 5: Did we check: can this be simplified toward the ideal?
 
-14. **Update work log** — Add dated entry: what was done, decisions made, evidence, any blockers or follow-ups.
+15. **Update work log** — Add dated entry: what was done, decisions made, evidence, any blockers or follow-ups.
 
-15. **Update status** — If all acceptance criteria met and checks pass, mark story Done. Update `docs/stories.md` index.
+16. **Update status** — If all acceptance criteria met and checks pass, mark story Done. Update `docs/stories.md` index.
 
 ## Work Log Format
 
@@ -113,7 +122,7 @@ Entries should be verbose. Capture decisions, failures, solutions, and learnings
 
 ## Guardrails
 
-- Never write implementation code before the human gate (step 9) — exploration and planning are read-only
+- Never write implementation code before the human gate (step 10) — exploration and planning are read-only
 - Never skip acceptance criteria verification
 - Never mark Done if any check fails
 - Never mark Done if the runtime smoke test (11c) was skipped — static checks passing ≠ app works

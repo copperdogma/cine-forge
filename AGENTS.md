@@ -80,6 +80,27 @@ Use subagents aggressively to parallelize work and protect the main context wind
 ### Running Log
 Track model performance observations in `/memory/subagent-log.md` to refine the table above over time.
 
+## Architecture Rules
+
+These rules prevent the accumulation of god objects and untyped interfaces. They are enforced at plan time (build-story Phase 2) and verified at review time (tenet checklist).
+
+- **Method size**: Methods >100 lines must be decomposed before adding new logic OR carry an explicit `# OVERSIZED: <reason>` comment approved in the story review.
+- **Class size**: Classes >500 lines require a decomposition plan in any story that touches them. List the current line count in "Files to Modify." If you are adding to a file this large, first task must be extraction.
+- **Inter-layer contracts**: Any data crossing a layer boundary (engine↔service, service↔API, API↔frontend types) must be a Pydantic model defined in a schema file before any code uses it. No stringly-typed dicts as inter-layer protocols.
+- **Event schema-first**: Any new event type requires an entry in `src/cine_forge/schemas/events.py` before the call site that emits it.
+- **God object check**: Before adding a method to an existing class, state in the story why this responsibility belongs to that class and not a new focused one.
+- **`make check-size`**: Run before finalizing any implementation plan. Files flagged at >400 lines must be acknowledged in the plan.
+
+### Known large files (as of Story 115 audit, 2026-03-02)
+
+| File | Lines | Status | Story |
+|------|-------|--------|-------|
+| `src/cine_forge/ai/chat.py` | 2,191 | Not yet planned | — |
+| `src/cine_forge/api/service.py` | 1,775 | Decomposition planned | Story 118 |
+| `src/cine_forge/driver/engine.py` | 1,560 | Decomposition planned | Story 117 |
+| `src/cine_forge/api/app.py` | 999 | Partially addressed by Story 118 (route consolidation) | Story 118 |
+| `tests/unit/test_driver_engine.py` | 1,648 | Test file — exempt from class size rule | — |
+
 ## Operational Guide
 
 ### Common Driver Commands

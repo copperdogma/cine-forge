@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTHONPATH ?= src
 
-.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format skills-sync skills-check
+.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format skills-sync skills-check check-size
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest
@@ -32,3 +32,10 @@ skills-sync:
 
 skills-check:
 	./scripts/sync-agent-skills.sh --check
+
+check-size:
+	@echo "Python source files over 400 lines:"
+	@find src -name "*.py" -exec wc -l {} \; | sort -rn | awk '$$1 > 400 {print "  LARGE: " $$1 " lines — " $$2}'
+	@echo ""
+	@echo "TypeScript source files over 400 lines:"
+	@find ui/src -name "*.ts" -o -name "*.tsx" | xargs wc -l 2>/dev/null | sort -rn | awk '$$1 > 400 && $$2 != "total" {print "  LARGE: " $$1 " lines — " $$2}'
