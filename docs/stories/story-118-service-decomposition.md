@@ -15,7 +15,7 @@
 - [ ] `ChatStore.upsert_message()` is idempotent: calling it twice with the same message id produces one entry, not two
 - [ ] Export router `get_store()` uses `service.require_project_path()` instead of hardcoded `Path(f"output/{project_id}")` — external projects and non-CWD launches work correctly
 - [ ] `RunOrchestrator` class extracted to `src/cine_forge/api/run_orchestrator.py` and owns `_run_threads`, `_run_errors`, `_run_lock` — no run state scattered in `OperatorConsoleService`
-- [ ] `RuntimeParams(BaseModel)` defined in `src/cine_forge/schemas/runtime_params.py` with all 15 keys typed; `__resume_artifact_refs_by_stage` is a proper typed field (not a magic string key)
+- [ ] `RuntimeParams(BaseModel)` defined in `src/cine_forge/schemas/runtime_params.py` with all 16 keys typed; `__resume_artifact_refs_by_stage` is a proper typed field (not a magic string key)
 - [ ] Orphan detection (`read_run_state`) writes the mutated state back to `run_state.json` after marking stages as failed — the file no longer permanently shows "running" for orphaned runs
 - [ ] `OperatorConsoleService` is ≤ 800 lines after extraction (thin facade pattern)
 - [ ] All intent/mood routes in `app.py` that currently construct `ArtifactStore` directly are consolidated into service method calls
@@ -40,7 +40,7 @@
 
 - [ ] **Phase 1 — ChatStore extraction + `_chat_lock`** (fixes race condition)
   - [ ] Create `src/cine_forge/api/chat_store.py` with `ChatStore` class
-  - [ ] Move all chat persistence methods from `OperatorConsoleService` into `ChatStore`: `get_chat_messages`, `append_chat_message`, `update_chat_message`
+  - [ ] Move all chat persistence methods from `OperatorConsoleService` into `ChatStore`: `_chat_path` (helper), `list_chat_messages`, `append_chat_message`
   - [ ] Add `self._lock = threading.Lock()` to `ChatStore.__init__`
   - [ ] Wrap the upsert path in `append_chat_message` with `with self._lock:` — read-scan-replace becomes atomic
   - [ ] Instantiate `ChatStore` inside `OperatorConsoleService.__init__` and delegate all chat calls to it
@@ -52,7 +52,7 @@
   - [ ] Smoke test: export from a project whose directory is not under CWD
 
 - [ ] **Phase 3 — `RuntimeParams` Pydantic model**
-  - [ ] Create `src/cine_forge/schemas/runtime_params.py` with `RuntimeParams(BaseModel)` containing all 15 typed fields (see Notes for the complete key inventory)
+  - [ ] Create `src/cine_forge/schemas/runtime_params.py` with `RuntimeParams(BaseModel)` containing all 16 typed fields (see Notes for the complete key inventory — includes alias pairs `model`/`default_model` and `verify_model`/`qa_model`)
   - [ ] `resume_artifact_refs_by_stage: dict[str, list[dict[str, Any]]] = Field(default_factory=dict)` — replaces the `__resume_artifact_refs_by_stage` magic key
   - [ ] Update `start_run` and `resume_run` in `OperatorConsoleService` to construct a `RuntimeParams` instance and pass `.model_dump()` to the engine (backward-compatible handoff for now — engine still receives a dict)
   - [ ] Write `tests/unit/test_runtime_params.py`: required field presence, optional field defaults, round-trip `model_dump()` preserves types
@@ -64,13 +64,13 @@
 - [ ] **Phase 5 — `RunOrchestrator` extraction**
   - [ ] Create `src/cine_forge/api/run_orchestrator.py` with `RunOrchestrator` class
   - [ ] Move `_run_threads: dict`, `_run_errors: dict`, `_run_lock: threading.Lock` into `RunOrchestrator.__init__`
-  - [ ] Move run lifecycle methods into `RunOrchestrator`: `start_run`, `resume_run`, `retry_run`, `cancel_run`, `_execute_run_thread`, `_preload_upstream_reuse`, `resolve_runtime_params`
+  - [ ] Move run lifecycle methods into `RunOrchestrator`: `start_run`, `resume_run`, `retry_failed_stage`, `_run_pipeline` (thread target), `_handle_run_failure_chat_notification`, `read_run_state` (Note: no `cancel_run` exists — add if needed during implementation, otherwise skip)
   - [ ] Instantiate `RunOrchestrator` inside `OperatorConsoleService.__init__` and delegate
   - [ ] `RunOrchestrator` receives the `ArtifactStore` factory and `ChatStore` instance in its constructor — no hidden global state
   - [ ] Confirm all existing run lifecycle tests pass unchanged
 
 - [ ] **Phase 6 — Intent/mood route consolidation**
-  - [ ] For each of the 5 `app.py` routes that construct `ArtifactStore` directly (`GET /intent-mood`, `POST /intent-mood`, `POST /intent-mood/propagate`, `GET /script-context`, `POST /intent-mood/suggest`), extract the artifact I/O logic into a corresponding service method on `OperatorConsoleService`
+  - [ ] For each of the 5 `app.py` routes that construct `ArtifactStore` directly (verify exact routes during explore — expected: `GET /intent-mood`, `POST /intent-mood`, `POST /intent-mood/propagate`, editorial direction read, `POST /intent-mood/suggest`), extract the artifact I/O logic into a corresponding service method on `OperatorConsoleService`
   - [ ] Routes become thin: validate input, call service method, return response
   - [ ] The inline LLM call in `POST /intent-mood/suggest` moves into the service method (still calls `call_llm` directly — no module abstraction needed here)
   - [ ] Confirm intent/mood UI flows work end-to-end after consolidation (browser smoke test)
@@ -86,7 +86,8 @@
   - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
   - [ ] UI (if touched): `pnpm --dir ui run lint` and build/typecheck script if defined
 - [ ] Search all docs and update any related to what we touched
-- [ ] Runtime smoke test (browser): Start dev servers, open the UI in Chrome via browser tools, upload the toy script, trigger a pipeline run, and visually confirm: (a) the run starts and progress updates appear, (b) stage cards tick through started → finished, (c) no JS console errors, (d) the run completes successfully. Then verify chat and export flows still work — these touch the decomposed service classes directly.
+- [ ] **Fresh end-to-end pipeline run (MANDATORY — not deferrable):** Upload the toy script to a NEW project (not an existing one with cached stages), trigger a full pipeline run via the API or UI, and confirm EVERY stage completes successfully. Do not rely on cached/reused stages — the point is to verify the refactored code paths actually execute. Check the run state JSON to confirm all stages show `"done"` with no errors. If any stage fails, investigate and fix before declaring the story complete.
+- [ ] Runtime smoke test (browser): After the fresh run succeeds, open the project in Chrome via browser tools and visually confirm: (a) the run progress updated in real-time, (b) stage cards show finished, (c) no JS console errors, (d) artifact pages (scenes, characters, locations) render correctly with data from the fresh run. Then verify chat and export flows still work — these touch the decomposed service classes directly.
 - [ ] Verify adherence to Central Tenets (0-5):
   - [ ] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved?
   - [ ] **T1 — AI-Coded:** Is the code AI-friendly? Would another AI session understand it?
@@ -152,7 +153,7 @@ All 15 keys that currently flow through the `runtime_params` dict between servic
 | `verify_model` | `str \| None` | No | QA model (alias: `qa_model`) |
 | `qa_model` | `str \| None` | No | QA model (alias: `verify_model`) |
 | `escalate_model` | `str \| None` | No | Escalation model for retries |
-| `human_control_mode` | `str` | Yes | Canon review gating (`"off"`, `"review"`, `"approve"`) |
+| `human_control_mode` | `str` | Yes | Canon review gating (`"autonomous"`, `"checkpoint"`, `"advisory"`) |
 | `accept_config` | `bool` | No | Skip config confirmation stage |
 | `skip_qa` | `bool` | No | Skip QA stages |
 | `config_file` | `str \| None` | No | Path to config overrides YAML |
@@ -172,7 +173,7 @@ For the implementer's orientation — all 11 clusters audited from the current 1
 | D: Run Management | 11 methods, ~450 lines | Phase 5 → `RunOrchestrator` |
 | E: Artifact Browsing | 3 methods, ~135 lines | Phase 7 → `ArtifactBrowser` (deferrable) |
 | F: Artifact Editing | 2 methods, ~95 lines | Phase 7 → `ArtifactEditor` (deferrable) |
-| G: Chat Persistence | 3 methods, ~75 lines | Phase 1 → `ChatStore` |
+| G: Chat Persistence | 2 methods + helper, ~75 lines | Phase 1 → `ChatStore` |
 | H: Review/Approval | 1 method, ~45 lines | Stays in facade (borderline) |
 | I: Search | 1 method + helpers, ~140 lines | Out of scope (deferred) |
 | J: Recipe Management | 1 method, ~40 lines | Out of scope (free function, trivial) |
@@ -185,6 +186,16 @@ The audit identified which clusters currently lack test coverage. New tests in t
 - **Covered by existing tests**: project lifecycle, uploads, artifact browse, run start/polling, retry, search, artifact edit
 - **Not covered (adding tests this story)**: `ChatStore` concurrency, orphan detection persistence, `RuntimeParams` validation
 - **Not covered (deferred)**: `resume_run`, `respond_to_review`, export router paths, intent/mood routes
+
+### Post-Story-116 Audit Corrections (20260302)
+
+The following inaccuracies were found and corrected during a code audit:
+
+- **Chat methods**: Only 2 exist (`list_chat_messages`, `append_chat_message`) + helper `_chat_path`. No `get_chat_messages` or `update_chat_message`. Phase 1 task list corrected.
+- **Run lifecycle methods**: No `cancel_run` exists. No `_execute_run_thread` — thread target is `_run_pipeline` (line 1542). `_handle_run_failure_chat_notification` (line 1584) also needs to move. Phase 5 task list corrected.
+- **`human_control_mode` values**: Actual values are `"autonomous"`, `"checkpoint"`, `"advisory"` (not `"off"`, `"review"`, `"approve"`). RuntimeParams key inventory corrected.
+- **Intent/mood routes**: Exact route list needs verification during explore phase — `GET /script-context` may not be one of the ArtifactStore-constructing routes. Phase 6 task list updated to verify during implementation.
+- **Facade line target**: ~680 lines staying + ~100 lines delegation stubs = ~780 lines. The ≤ 800 target is achievable but tight. If Phase 7 (deferrable) is skipped, E+F clusters (~230 lines) stay in the facade, pushing it to ~910. Consider ≤ 900 as the target if Phase 7 is deferred.
 
 ## Plan
 

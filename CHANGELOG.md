@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-03-02-12] — Story 117/118 audit corrections, inbox update
+
+### Changed
+- Stories 117 and 118: corrected stale line counts, parameter counts, method names, test counts, and enum values against actual post-Story-116 source code
+- Story 118: RuntimeParams field count corrected from 15 to 16 (alias pairs clarified)
+- Added "Surface provider quota/billing errors in chat" to docs/inbox.md
+
 ## [2026-03-02-11] — Event System Refactor complete, project_config truncation fix (Story 116)
 
 ### Added

@@ -17,6 +17,10 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 - 20260227: **Mood-board synthesis input**: Feed in multiple inspiration images (hairstyles, environments, objects, textures) as reference material for AI to synthesize into character/location/prop designs. "This hairstyle + this jacket + this vibe → character design." Natural extension of reference image system. *(Source: ADR-003, Decision #9)*
 
+### Pipeline / Error Handling
+
+- 20260302: **Surface provider quota/billing errors in chat**: When a pipeline stage fails due to a provider error like 429 (quota exceeded) or 402 (billing), the error should appear as a chat message so the user sees it immediately — not buried in run state JSON. The user needs to know "Gemini ran out of credits" without debugging. They can just top up the key and retry. Applies to all transient provider errors that the user can fix (quota, billing, auth expiry).
+
 ### UI / Interaction
 
 - 20260226: **Narrative-aware timeline export**: When exporting to NLE formats (OpenTimelineIO, Final Cut XML, AAF, EDL), embed CineForge's narrative structure as timeline markers, color-coded regions, and clip notes. Scene boundaries, beat changes, character entrances, emotional tone shifts — metadata that no other AI video tool has because they don't understand story structure. Makes the editor's job dramatically easier. Formats: single video, scene folder, and NLE interchange formats.
