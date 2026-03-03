@@ -735,6 +735,50 @@ Return valid JSON matching the schema."""
     async def run_events(run_id: str) -> RunEventsResponse:
         return RunEventsResponse.model_validate(service.read_run_events(run_id))
 
+    @app.get("/api/runs/{run_id}/events/stream")
+    async def run_events_stream(run_id: str) -> StreamingResponse:
+        """SSE stream of pipeline events — tail-follows the JSONL file."""
+        import asyncio
+
+        events_path = (
+            service.workspace_root / "output" / "runs" / run_id / "pipeline_events.jsonl"
+        )
+
+        async def event_generator():  # type: ignore[return]
+            last_offset = 0
+            while True:
+                if events_path.exists():
+                    content = events_path.read_text(encoding="utf-8")
+                    if len(content) > last_offset:
+                        new_data = content[last_offset:]
+                        last_offset = len(content)
+                        for line in new_data.splitlines():
+                            if line.strip():
+                                yield f"data: {line}\n\n"
+                    # Check if run is finished
+                    state_path = events_path.parent / "run_state.json"
+                    if state_path.exists():
+                        state = json.loads(state_path.read_text(encoding="utf-8"))
+                        if state.get("finished_at") is not None:
+                            # Emit any final lines then close
+                            final_content = events_path.read_text(encoding="utf-8")
+                            if len(final_content) > last_offset:
+                                for line in final_content[last_offset:].splitlines():
+                                    if line.strip():
+                                        yield f"data: {line}\n\n"
+                            return
+                await asyncio.sleep(0.5)
+
+        return StreamingResponse(
+            event_generator(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
     @app.get("/api/projects/{project_id}/characters")
     async def list_project_characters(project_id: str):
         """List characters available for @-mention chat.

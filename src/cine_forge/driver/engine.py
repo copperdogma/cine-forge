@@ -18,6 +18,7 @@ from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.discovery import ModuleManifest, discover_modules
+from cine_forge.driver.event_emitter import EventEmitter
 from cine_forge.driver.recipe import (
     Recipe,
     RecipeStage,
@@ -45,10 +46,12 @@ from cine_forge.schemas import (
     EntityDiscoveryResults,
     EntityEdge,
     EntityGraph,
+    EventType,
     IntentMood,
     LocationBible,
     LookAndFeel,
     LookAndFeelIndex,
+    ProgressEvent,
     ProjectConfig,
     PropBible,
     QAResult,
@@ -178,6 +181,7 @@ class DriverEngine:
         run_dir = self.workspace_root / "output" / "runs" / run_id
         run_dir.mkdir(parents=True, exist_ok=True)
         events_path = run_dir / "pipeline_events.jsonl"
+        emitter = EventEmitter(events_path)
         state_path = run_dir / "run_state.json"
         resolved_runtime_params = runtime_params or {}
 
@@ -241,7 +245,7 @@ class DriverEngine:
         if dry_run:
             run_state["stage_order"] = [stage.id for stage in recipe.stages]
             self._write_run_state(state_path, run_state)
-            self._append_event(events_path, {"event": "dry_run_validated", "run_id": run_id})
+            emitter.emit(ProgressEvent(event=EventType.dry_run_validated, run_id=run_id))
             print(f"[{run_id}] Recipe validated (dry-run).")
             return run_state
 
@@ -282,7 +286,7 @@ class DriverEngine:
             already_satisfied=set(stage_outputs.keys()) | skipped_stages,
         )
         # Lock protects shared mutable state accessed by parallel stage threads:
-        # run_state["total_cost_usd"], _write_run_state, _append_event, _update_stage_cache
+        # run_state["total_cost_usd"], _write_run_state, emitter.emit, _update_stage_cache
         state_lock = threading.Lock()
 
         # Initialize role system for gating and creative feedback
@@ -300,6 +304,12 @@ class DriverEngine:
             style_pack_selections=style_packs,
             llm_callable=llm_callable or call_llm,
         )
+
+        emitter.emit(ProgressEvent(
+            event=EventType.pipeline_started,
+            run_id=run_id,
+            stage_ids=ordered_stages,
+        ))
 
         run_paused = False
         for wave in waves:
@@ -324,7 +334,7 @@ class DriverEngine:
                     retry_jitter_ratio=retry_jitter_ratio,
                     default_max_attempts=default_max_attempts,
                     stage_max_attempt_overrides=stage_max_attempt_overrides,
-                    events_path=events_path,
+                    emitter=emitter,
                     state_path=state_path,
                     force=force,
                     state_lock=state_lock,
@@ -360,7 +370,7 @@ class DriverEngine:
                             retry_jitter_ratio=retry_jitter_ratio,
                             default_max_attempts=default_max_attempts,
                             stage_max_attempt_overrides=stage_max_attempt_overrides,
-                            events_path=events_path,
+                            emitter=emitter,
                             state_path=state_path,
                             force=force,
                             state_lock=state_lock,
@@ -383,10 +393,23 @@ class DriverEngine:
                     first_failed_id, first_exc = wave_errors[0]
                     run_state["finished_at"] = time.time()
                     self._write_run_state(state_path, run_state)
+                    emitter.emit(ProgressEvent(
+                        event=EventType.pipeline_finished,
+                        run_id=run_id,
+                        success=False,
+                        total_cost_usd=run_state["total_cost_usd"],
+                        error=str(first_exc),
+                    ))
                     raise first_exc
 
         run_state["finished_at"] = time.time()
         self._write_run_state(state_path, run_state)
+        emitter.emit(ProgressEvent(
+            event=EventType.pipeline_finished,
+            run_id=run_id,
+            success=True,
+            total_cost_usd=run_state["total_cost_usd"],
+        ))
         print(f"[{run_id}] Run complete. Total cost ${run_state['total_cost_usd']:.4f}.")
         return run_state
 
@@ -407,7 +430,7 @@ class DriverEngine:
         retry_jitter_ratio: float,
         default_max_attempts: int,
         stage_max_attempt_overrides: dict[str, int] | None,
-        events_path: Path,
+        emitter: EventEmitter,
         state_path: Path,
         force: bool,
         state_lock: threading.Lock,
@@ -454,10 +477,7 @@ class DriverEngine:
                 stage_state["artifact_refs"] = [
                     output["ref"].model_dump() for output in reused_outputs
                 ]
-                self._append_event(
-                    events_path,
-                    {"event": "stage_skipped_reused", "stage_id": stage_id},
-                )
+                emitter.emit(ProgressEvent(event=EventType.stage_skipped_reused, stage_id=stage_id))
                 self._write_run_state(state_path, run_state)
             print(f"[{run_id}] Stage '{stage_id}' reused from cache.")
             return "skipped"
@@ -469,7 +489,7 @@ class DriverEngine:
             guessed_model = stage.params.get("work_model") or stage.params.get("model")
             if guessed_model:
                 stage_state["model_used"] = str(guessed_model)
-            self._append_event(events_path, {"event": "stage_started", "stage_id": stage_id})
+            emitter.emit(ProgressEvent(event=EventType.stage_started, stage_id=stage_id))
             self._write_run_state(state_path, run_state)
 
         print(f"[{run_id}] Stage '{stage_id}' starting...")
@@ -540,18 +560,15 @@ class DriverEngine:
                         with state_lock:
                             stage_state["artifact_refs"].append(a_ref.model_dump())
                             self._write_run_state(state_path, run_state)
-                        self._append_event(
-                            events_path,
-                            {
-                                "event": "artifact_saved",
-                                "stage_id": stage_id,
-                                "artifact_type": artifact_dict["artifact_type"],
-                                "entity_id": artifact_dict.get("entity_id"),
-                                "display_name": output_data.get("display_name")
-                                if isinstance(output_data, dict)
-                                else None,
-                            },
-                        )
+                        emitter.emit(ProgressEvent(
+                            event=EventType.artifact_saved,
+                            stage_id=stage_id,
+                            artifact_type=artifact_dict["artifact_type"],
+                            entity_id=artifact_dict.get("entity_id"),
+                            display_name=output_data.get("display_name")
+                            if isinstance(output_data, dict)
+                            else None,
+                        ))
                         artifact_dict["pre_saved"] = True
                         artifact_dict["pre_saved_ref"] = a_ref.model_dump()
 
@@ -622,39 +639,25 @@ class DriverEngine:
                             jitter_ratio=retry_jitter_ratio,
                         )
                         with state_lock:
-                            self._append_event(
-                                events_path,
-                                {
-                                    "event": "stage_retrying",
-                                    "stage_id": stage_id,
-                                    "attempt": stage_state["attempt_count"] + 1,
-                                    "reason": error_message,
-                                    "error_code": self._extract_error_code(
-                                        error_message
-                                    ),
-                                    "request_id": self._extract_request_id(
-                                        error_message
-                                    ),
-                                    "retry_delay_seconds": retry_delay_seconds,
-                                },
-                            )
-                            self._append_event(
-                                events_path,
-                                {
-                                    "event": "stage_fallback",
-                                    "stage_id": stage_id,
-                                    "from_model": active_attempt_model,
-                                    "to_model": next_model,
-                                    "reason": error_message,
-                                    "error_code": self._extract_error_code(
-                                        error_message
-                                    ),
-                                    "request_id": self._extract_request_id(
-                                        error_message
-                                    ),
-                                    "skipped_models": skipped_models,
-                                },
-                            )
+                            emitter.emit(ProgressEvent(
+                                event=EventType.stage_retrying,
+                                stage_id=stage_id,
+                                attempt=stage_state["attempt_count"] + 1,
+                                reason=error_message,
+                                error_code=self._extract_error_code(error_message),
+                                request_id=self._extract_request_id(error_message),
+                                retry_delay_seconds=retry_delay_seconds,
+                            ))
+                            emitter.emit(ProgressEvent(
+                                event=EventType.stage_fallback,
+                                stage_id=stage_id,
+                                from_model=active_attempt_model,
+                                to_model=next_model,
+                                reason=error_message,
+                                error_code=self._extract_error_code(error_message),
+                                request_id=self._extract_request_id(error_message),
+                                skipped_models=skipped_models,
+                            ))
                             stage_state["model_used"] = next_model
                             self._write_run_state(state_path, run_state)
                         if retry_delay_seconds > 0:
@@ -765,19 +768,16 @@ class DriverEngine:
                         "location_count": len(output_data.get("locations", [])),
                         "prop_count": len(output_data.get("props", [])),
                     }
-                self._append_event(
-                    events_path,
-                    {
-                        "event": "artifact_saved",
-                        "stage_id": stage_id,
-                        "artifact_type": artifact["artifact_type"],
-                        "entity_id": artifact.get("entity_id"),
-                        "display_name": output_data.get("display_name")
-                        if isinstance(output_data, dict)
-                        else None,
-                        **extra_event_fields,
-                    },
-                )
+                emitter.emit(ProgressEvent(
+                    event=EventType.artifact_saved,
+                    stage_id=stage_id,
+                    artifact_type=artifact["artifact_type"],
+                    entity_id=artifact.get("entity_id"),
+                    display_name=output_data.get("display_name")
+                    if isinstance(output_data, dict)
+                    else None,
+                    **extra_event_fields,
+                ))
                 persisted_outputs.append(
                     {
                         "ref": artifact_ref,
@@ -831,15 +831,12 @@ class DriverEngine:
                     with state_lock:
                         stage_state["status"] = "paused"
                         stage_state["duration_seconds"] = round(time.time() - stage_started, 4)
-                        self._append_event(
-                            events_path,
-                            {
-                                "event": "stage_paused",
-                                "stage_id": stage_id,
-                                "reason": "awaiting_human_approval",
-                                "artifacts": stage_state["artifact_refs"],
-                            },
-                        )
+                        emitter.emit(ProgressEvent(
+                            event=EventType.stage_paused,
+                            stage_id=stage_id,
+                            reason="awaiting_human_approval",
+                            artifacts=stage_state["artifact_refs"],
+                        ))
                         self._write_run_state(state_path, run_state)
                     print(f"[{run_id}] Stage '{stage_id}' paused for human approval.")
                     return "paused"
@@ -861,15 +858,12 @@ class DriverEngine:
                     stage_state["duration_seconds"] = round(
                         time.time() - stage_started, 4
                     )
-                    self._append_event(
-                        events_path,
-                        {
-                            "event": "stage_paused",
-                            "stage_id": stage_id,
-                            "reason": str(pause_reason),
-                            "artifacts": stage_state["artifact_refs"],
-                        },
-                    )
+                    emitter.emit(ProgressEvent(
+                        event=EventType.stage_paused,
+                        stage_id=stage_id,
+                        reason=str(pause_reason),
+                        artifacts=stage_state["artifact_refs"],
+                    ))
                     self._write_run_state(state_path, run_state)
                 print(f"[{run_id}] Stage '{stage_id}' paused: {pause_reason}")
                 return "paused"
@@ -879,15 +873,12 @@ class DriverEngine:
                 stage_state["duration_seconds"] = round(
                     time.time() - stage_started, 4
                 )
-                self._append_event(
-                    events_path,
-                    {
-                        "event": "stage_finished",
-                        "stage_id": stage_id,
-                        "cost_usd": stage_state["cost_usd"],
-                        "artifacts": stage_state["artifact_refs"],
-                    },
-                )
+                emitter.emit(ProgressEvent(
+                    event=EventType.stage_finished,
+                    stage_id=stage_id,
+                    cost_usd=stage_state["cost_usd"],
+                    artifacts=stage_state["artifact_refs"],
+                ))
                 self._write_run_state(state_path, run_state)
 
             print(
@@ -935,21 +926,18 @@ class DriverEngine:
                 stage_state["duration_seconds"] = round(
                     time.time() - stage_started, 4
                 )
-                self._append_event(
-                    events_path,
-                    {
-                        "event": "stage_failed",
-                        "stage_id": stage_id,
-                        "error": failure_message,
-                        "error_class": exc.__class__.__name__,
-                        "error_code": failure_error_code,
-                        "request_id": failure_request_id,
-                        "provider": failure_provider,
-                        "model": failure_model,
-                        "attempt_count": stage_state.get("attempt_count", 0),
-                        "terminal_reason": self._terminal_reason(stage_state),
-                    },
-                )
+                emitter.emit(ProgressEvent(
+                    event=EventType.stage_failed,
+                    stage_id=stage_id,
+                    error=failure_message,
+                    error_class=exc.__class__.__name__,
+                    error_code=failure_error_code,
+                    request_id=failure_request_id,
+                    provider=failure_provider,
+                    model=failure_model,
+                    attempt_count=stage_state.get("attempt_count", 0),
+                    terminal_reason=self._terminal_reason(stage_state),
+                ))
                 self._write_run_state(state_path, run_state)
             print(f"[{run_id}] Stage '{stage_id}' failed: {exc}")
             raise
@@ -1454,11 +1442,6 @@ class DriverEngine:
         if isinstance(artifact_type, str) and artifact_type in output_schemas:
             return [artifact_type]
         return output_schemas
-
-    @staticmethod
-    def _append_event(events_path: Path, payload: dict[str, Any]) -> None:
-        with events_path.open("a", encoding="utf-8") as file:
-            file.write(json.dumps(payload, sort_keys=True) + "\n")
 
     @staticmethod
     def _write_json(path: Path, payload: dict[str, Any]) -> None:

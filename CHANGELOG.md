@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-03-02-11] — Event System Refactor complete, project_config truncation fix (Story 116)
+
+### Added
+- `ProgressEvent` Pydantic model and `EventType` StrEnum in `src/cine_forge/schemas/progress_event.py` — typed, validated event schema with 11 event types
+- `EventEmitter` class in `src/cine_forge/driver/event_emitter.py` — thread-safe JSONL writer with internal `threading.Lock` and optional callback
+- SSE endpoint `GET /api/runs/{run_id}/events/stream` — async generator tail-follows JSONL, polls 0.5s, stops on `finished_at`
+- `useRunEventSSE` hook in `ui/src/lib/use-run-progress.ts` — native `EventSource` invalidates query caches on each message; existing 3s polling remains as fallback
+- 9 unit tests in `tests/unit/test_event_emitter.py` — concurrent write safety (10 threads × 20 events), callback, field exclusion
+- Runtime browser smoke test task added to stories 116, 117, 118
+
+### Changed
+- All 11 `_append_event` call sites in `engine.py` replaced with `emitter.emit(ProgressEvent(...))` — callers no longer manage locks or JSON serialization
+- `_execute_single_stage` param changed from `events_path: Path` to `emitter: EventEmitter`
+- Deleted `_append_event` static method from `DriverEngine`
+- `pipeline_started` and `pipeline_finished` lifecycle events added to engine run loop
+
+### Fixed
+- `project_config_v1` module `max_tokens` bumped from 1800 to 16384 — Gemini's thinking tokens consumed the output budget, causing truncation on every attempt. The eval config already used `maxOutputTokens: 16384` for Gemini providers but the module wasn't updated when Story 107 changed the default model from Haiku to Gemini 3 Flash.
+
 ## [2026-03-02-10] — Pipeline Architecture Refactor Plan complete (Story 115)
 
 ### Added

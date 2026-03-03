@@ -2,11 +2,13 @@
 
 from .discovery import ModuleManifest, discover_modules
 from .engine import DriverEngine
+from .event_emitter import EventEmitter
 from .recipe import Recipe, RecipeStage, load_recipe, resolve_execution_order, validate_recipe
 from .state import RunState, StageRunState, StageStatus
 
 __all__ = [
     "DriverEngine",
+    "EventEmitter",
     "ModuleManifest",
     "Recipe",
     "RecipeStage",

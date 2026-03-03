@@ -235,7 +235,7 @@ def _detect_project_values(
         prompt=prompt,
         model=model,
         response_schema=_DetectedConfigEnvelope,
-        max_tokens=1800,
+        max_tokens=16384,
         fail_on_truncation=True,
     )
     assert isinstance(detected, _DetectedConfigEnvelope)

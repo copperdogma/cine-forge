@@ -88,6 +88,7 @@ This story is pure structural refactoring — no AI reasoning involved, no outpu
   - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
   - [ ] UI (if touched): `pnpm --dir ui run lint` and build/typecheck script if defined
 - [ ] Search all docs and update any related to what we touched
+- [ ] Runtime smoke test (browser): Start dev servers, open the UI in Chrome via browser tools, upload the toy script, trigger a pipeline run, and visually confirm: (a) the run starts and progress updates appear, (b) stage cards tick through started → finished, (c) no JS console errors, (d) the run completes successfully. This verifies the engine decomposition is behavior-preserving end-to-end, not just at the unit test level.
 - [ ] Verify adherence to Central Tenets (0-5):
   - [ ] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved? (Refactor only — no data path changes; verify event emission is identical)
   - [ ] **T1 — AI-Coded:** Is the code AI-friendly? Would another AI session understand it? (Smaller classes with clear interfaces are strictly more AI-navigable)

@@ -10,6 +10,46 @@ import { detectConcernGroupRun, countTotalScenes } from './constants'
 import { useRunState, useRunEvents } from './hooks'
 import type { StageState, ArtifactGroupSummary } from './types'
 
+const API_BASE = import.meta.env.VITE_API_BASE ?? ''
+
+/**
+ * SSE acceleration — opens an EventSource to the run's event stream.
+ * On each message, invalidates TanStack Query caches so the existing
+ * polling hooks re-fetch immediately instead of waiting for the next interval.
+ */
+function useRunEventSSE(runId: string | null, projectId: string | undefined) {
+  const queryClient = useQueryClient()
+  const esRef = useRef<EventSource | null>(null)
+
+  useEffect(() => {
+    if (!runId) return
+
+    const url = `${API_BASE}/api/runs/${runId}/events/stream`
+    const es = new EventSource(url)
+    esRef.current = es
+
+    es.onmessage = () => {
+      // Invalidate both events and state — a new event means state may have changed too
+      queryClient.invalidateQueries({ queryKey: ['runs', runId, 'events'] })
+      queryClient.invalidateQueries({ queryKey: ['runs', runId, 'state'] })
+      if (projectId) {
+        queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
+      }
+    }
+
+    es.onerror = () => {
+      // SSE failed — close and fall back to polling (which runs regardless)
+      es.close()
+      esRef.current = null
+    }
+
+    return () => {
+      es.close()
+      esRef.current = null
+    }
+  }, [runId, projectId, queryClient])
+}
+
 /** Build a human-readable summary of what was produced (e.g. "13 scenes and a standardized script"). */
 function summarizeArtifacts(stages: Record<string, StageState>): string {
   const counts: Record<string, number> = {}
@@ -54,6 +94,9 @@ export function useRunProgressChat(projectId: string | undefined) {
   const completedRef = useRef<Set<string>>(new Set())
   const processedEventIdsRef = useRef<Set<string>>(new Set())
   const queryClient = useQueryClient()
+
+  // SSE acceleration — pushes cache invalidations so polling hooks fire immediately
+  useRunEventSSE(activeRunId, projectId)
 
   // Track which stages we've already notified as paused
   const pausedRef = useRef<Set<string>>(new Set())

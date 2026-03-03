@@ -58,6 +58,7 @@ from .models import (
     RawInput,
     SourceFileInfo,
 )
+from .progress_event import EventType, ProgressEvent
 from .qa import QAIssue, QAResult
 from .readiness import ReadinessState, SceneReadiness, compute_scene_readiness
 from .registry import (
@@ -135,6 +136,7 @@ __all__ = [
     "Assumption",
     "NormalizationMetadata",
     "CanonicalScript",
+    "EventType",
     "EntityEdge",
     "EntityGraph",
     "SourceFileInfo",
@@ -186,4 +188,5 @@ __all__ = [
     "ValidationErrorDetail",
     "ValidationResult",
     "validate_against_schema",
+    "ProgressEvent",
 ]
