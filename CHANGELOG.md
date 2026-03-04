@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-03-03-03] — Anthropic prompt caching in LLM transport layer (Story 123)
+
+### Added
+- `enable_caching: bool = False` parameter on `call_llm()` — when True and provider is Anthropic, wraps user content in a `cache_control: {"type": "ephemeral"}` block
+- `anthropic-beta: prompt-caching-2024-07-31` header added to all Anthropic transport requests (harmless when no cache markers present)
+- Cache token counts (`cache_read_input_tokens`, `cache_creation_input_tokens`) propagated through `_normalize_anthropic_response()` and `_parse_response()` into call metadata; logged at DEBUG level
+
+### Changed
+- `character_bible_v1`, `location_bible_v1`, `prop_bible_v1`, `scene_analysis_v1`, `script_normalize_v1` — main work calls now pass `enable_caching=True`; Gemini-default modules (`script_bible_v1`, `entity_discovery_v1`, `entity_graph_v1`) unchanged
+
+## [2026-03-03-02] — Golden fixture helper infrastructure (Story 122)
+
+### Added
+- `tests/unit/golden_fixture_helpers.py` — `GoldenFixtureSpec` dataclass + `GOLDEN_SPECS` registry + `load_golden()` loader + 6 structural assertion helpers (`assert_metadata_present`, `assert_scene_count`, `assert_no_empty_headings`, `assert_no_duplicate_scene_numbers`, `assert_source_lines_valid`, `assert_characters_are_strings`)
+- `tests/unit/test_golden_fixtures.py` — `TestMarinerSceneEntitiesStructure`: 6 `@pytest.mark.unit` structural tests for `the_mariner_scene_entities.json`
+
+### Changed
+- `docs/runbooks/golden-build.md` — added "Test Coverage" section with 4-step guide for registering new fixtures and an assertion-helper reference table
+
 ## [2026-03-03-01] — Entity Design Study: AI concept art generation loop (Story 056)
 
 ### Added

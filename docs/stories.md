@@ -213,6 +213,8 @@ NOTES from Cam:
 | 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Draft | [story-119](stories/story-119-design-study-prompt-compiler.md) |
 | 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Draft | [story-120](stories/story-120-production-format-setting.md) |
 | 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Draft | [story-121](stories/story-121-design-study-composition-ux.md) |
+| 122 | Golden Fixture Helpers | 0 — Infrastructure | Medium | Done | [story-122](stories/story-122-golden-fixture-helpers.md) |
+| 123 | Anthropic Prompt Caching | 0 — Infrastructure | Medium | Done | [story-123](stories/story-123-anthropic-prompt-caching.md) |
 
 ## Phase Summary
 

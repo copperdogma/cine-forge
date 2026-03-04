@@ -432,6 +432,7 @@ def _normalize_smart_chunks(
                     model=model,
                     max_tokens=max_tokens,
                     fail_on_truncation=True,
+                    enable_caching=True,
                 )
                 assert isinstance(fixed_scene, str)
                 return {
@@ -690,6 +691,7 @@ def _normalize_once(
             model=model,
             max_tokens=max_tokens,
             fail_on_truncation=True,
+            enable_caching=True,
         )
         assert isinstance(patch_text, str)
         patches = _parse_patch_text(patch_text)
@@ -706,6 +708,7 @@ def _normalize_once(
             model=model,
             max_tokens=max_tokens,
             fail_on_truncation=True,
+            enable_caching=True,
         )
         assert isinstance(script_text, str)
         cost_records.append(script_cost)
@@ -772,6 +775,7 @@ def _normalize_chunked(
             model=model,
             max_tokens=max_tokens,
             fail_on_truncation=True,
+            enable_caching=True,
         )
         assert isinstance(chunk_result, str)
         chunk_outputs.append(chunk_result)

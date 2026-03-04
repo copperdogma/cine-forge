@@ -552,6 +552,7 @@ def _extract_character_definition(
         prompt=prompt,
         model=model,
         response_schema=CharacterBible,
+        enable_caching=True,
     )
     return definition, cost
 
@@ -577,6 +578,7 @@ def _extract_minor_character_definition(
         prompt=prompt,
         model=model,
         response_schema=CharacterBible,
+        enable_caching=True,
     )
     return definition, cost
 

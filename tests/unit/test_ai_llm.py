@@ -8,7 +8,9 @@ from pydantic import BaseModel
 from cine_forge.ai.llm import (
     LLMCallError,
     _breaker_state,
+    _build_anthropic_payload,
     _is_circuit_breaker_open,
+    _normalize_anthropic_response,
     _normalize_gemini_response,
     _parse_provider,
     _record_provider_success,
@@ -366,3 +368,84 @@ def test_call_llm_with_prefixed_model_string() -> None:
     assert result == "prefixed"
     # bare_model is used for cost estimation
     assert metadata["model"] == "claude-sonnet-4-6"
+
+
+# --- Prompt Caching ---
+
+
+@pytest.mark.unit
+def test_caching_adds_cache_control_to_anthropic_payload() -> None:
+    """When enable_caching=True, user content is a block with cache_control."""
+    payload = _build_anthropic_payload(
+        model="claude-sonnet-4-6",
+        prompt="Hello world",
+        temperature=0.0,
+        max_tokens=1024,
+        response_schema=None,
+        enable_caching=True,
+    )
+    content = payload["messages"][0]["content"]
+    assert isinstance(content, list)
+    assert len(content) == 1
+    assert content[0]["type"] == "text"
+    assert content[0]["text"] == "Hello world"
+    assert content[0]["cache_control"] == {"type": "ephemeral"}
+
+
+@pytest.mark.unit
+def test_caching_disabled_leaves_content_as_string() -> None:
+    """When enable_caching=False (default), user content stays a plain string."""
+    payload = _build_anthropic_payload(
+        model="claude-sonnet-4-6",
+        prompt="Hello world",
+        temperature=0.0,
+        max_tokens=1024,
+        response_schema=None,
+        enable_caching=False,
+    )
+    content = payload["messages"][0]["content"]
+    assert isinstance(content, str)
+    assert content == "Hello world"
+
+
+@pytest.mark.unit
+def test_caching_not_applied_for_non_anthropic_transport() -> None:
+    """enable_caching=True with a non-Anthropic model calls transport without cache_control."""
+    calls = []
+
+    def fake_transport(payload: dict[str, Any]) -> dict[str, Any]:
+        calls.append(payload)
+        return {
+            "id": "req_1",
+            "choices": [{"message": {"content": "hello"}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+        }
+
+    call_llm(
+        prompt="test",
+        model="gpt-4o-mini",
+        enable_caching=True,  # Ignored for OpenAI transport
+        transport=fake_transport,
+    )
+    assert len(calls) == 1
+    # OpenAI payload uses plain string content
+    assert isinstance(calls[0]["messages"][0]["content"], str)
+
+
+@pytest.mark.unit
+def test_normalize_anthropic_response_passes_through_cache_tokens() -> None:
+    """Cache token counts from Anthropic usage are preserved in normalized response."""
+    raw = {
+        "id": "msg_123",
+        "content": [{"type": "text", "text": "answer"}],
+        "stop_reason": "end_turn",
+        "usage": {
+            "input_tokens": 1000,
+            "output_tokens": 50,
+            "cache_read_input_tokens": 900,
+            "cache_creation_input_tokens": 100,
+        },
+    }
+    normalized = _normalize_anthropic_response(raw)
+    assert normalized["usage"]["cache_read_input_tokens"] == 900
+    assert normalized["usage"]["cache_creation_input_tokens"] == 100

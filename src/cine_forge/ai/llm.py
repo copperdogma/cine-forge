@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import random
 import re
@@ -14,6 +15,8 @@ from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel
+
+logger = logging.getLogger(__name__)
 
 # Input/output pricing in USD per 1M tokens.
 MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
@@ -74,6 +77,7 @@ def call_llm(
     transport: Any | None = None,
     retry_base_delay_seconds: float = 0.5,
     retry_jitter_ratio: float = 0.25,
+    enable_caching: bool = False,
 ) -> tuple[str | BaseModel, dict[str, Any]]:
     """Call an LLM and return text (or parsed schema) with call metadata."""
     if max_retries < 0:
@@ -125,6 +129,7 @@ def call_llm(
                     temperature=active_temp,
                     max_tokens=active_max_tokens,
                     response_schema=response_schema,
+                    enable_caching=enable_caching,
                 )
             elif provider == PROVIDER_GOOGLE and transport is None:
                 payload = _build_gemini_payload(
@@ -262,7 +267,7 @@ def _parse_response(
     output_tokens = int(usage.get("completion_tokens", 0) or 0)
     request_id = raw_response.get("id")
     finish_reason = choices[0].get("finish_reason")
-    metadata = {
+    metadata: dict[str, Any] = {
         "model": model,
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
@@ -271,6 +276,17 @@ def _parse_response(
         "request_id": request_id,
         "finish_reason": finish_reason,
     }
+    cache_read = usage.get("cache_read_input_tokens")
+    cache_write = usage.get("cache_creation_input_tokens")
+    if cache_read is not None or cache_write is not None:
+        metadata["cache_read_input_tokens"] = cache_read or 0
+        metadata["cache_creation_input_tokens"] = cache_write or 0
+        logger.debug(
+            "Anthropic cache: read=%d write=%d model=%s",
+            cache_read or 0,
+            cache_write or 0,
+            model,
+        )
 
     if not response_schema:
         return text, metadata
@@ -364,11 +380,19 @@ def _build_anthropic_payload(
     temperature: float,
     max_tokens: int | None,
     response_schema: type[BaseModel] | None,
+    enable_caching: bool = False,
 ) -> dict[str, Any]:
     """Build an Anthropic Messages API request payload."""
+    if enable_caching:
+        user_content: Any = [
+            {"type": "text", "text": prompt, "cache_control": {"type": "ephemeral"}}
+        ]
+    else:
+        user_content = prompt
+
     payload: dict[str, Any] = {
         "model": model,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [{"role": "user", "content": user_content}],
         "temperature": temperature,
         "max_tokens": max_tokens or 16384,
     }
@@ -396,16 +420,22 @@ def _normalize_anthropic_response(raw: dict[str, Any]) -> dict[str, Any]:
         "max_tokens": "length",
         "stop_sequence": "stop",
     }
+    normalized_usage: dict[str, Any] = {
+        "prompt_tokens": usage.get("input_tokens", 0),
+        "completion_tokens": usage.get("output_tokens", 0),
+    }
+    # Preserve cache token counts if present
+    if "cache_read_input_tokens" in usage:
+        normalized_usage["cache_read_input_tokens"] = usage["cache_read_input_tokens"]
+    if "cache_creation_input_tokens" in usage:
+        normalized_usage["cache_creation_input_tokens"] = usage["cache_creation_input_tokens"]
     return {
         "id": raw.get("id", ""),
         "choices": [{
             "message": {"content": text},
             "finish_reason": finish_reason_map.get(stop_reason, stop_reason),
         }],
-        "usage": {
-            "prompt_tokens": usage.get("input_tokens", 0),
-            "completion_tokens": usage.get("output_tokens", 0),
-        },
+        "usage": normalized_usage,
     }
 
 
@@ -423,6 +453,7 @@ def _anthropic_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
             "x-api-key": api_key,
             "Content-Type": "application/json",
             "anthropic-version": "2023-06-01",
+            "anthropic-beta": "prompt-caching-2024-07-31",
         },
         method="POST",
     )

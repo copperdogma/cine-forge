@@ -356,6 +356,7 @@ def _extract_location_definition(
         prompt=prompt,
         model=model,
         response_schema=LocationBible,
+        enable_caching=True,
     )
     return definition, cost
 

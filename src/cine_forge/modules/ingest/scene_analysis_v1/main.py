@@ -381,6 +381,7 @@ def _analyze_batch(
                 response_schema=_MacroAnalysisEnvelope,
                 max_tokens=4096,
                 fail_on_truncation=True,
+                enable_caching=True,
             )
             assert isinstance(result, _MacroAnalysisEnvelope)
             return result.scenes, cost

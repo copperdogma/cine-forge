@@ -372,6 +372,7 @@ def _extract_prop_definition(
         prompt=prompt,
         model=model,
         response_schema=PropBible,
+        enable_caching=True,
     )
     return definition, cost
 
