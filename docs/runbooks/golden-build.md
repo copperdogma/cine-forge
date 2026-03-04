@@ -186,9 +186,94 @@ Golden quality is enforced at multiple points in the development lifecycle:
   formatting can pass while real-world scale (ambiguous formatting, OCR artifacts,
   non-standard conventions) fails. Prefer real screenplay data for goldens.
 
+## Test Coverage
+
+Golden fixtures in `tests/fixtures/golden/` are protected by a shared helper
+module and a structural integrity test suite.  The system is defined in two
+files:
+
+| File | Purpose |
+|------|---------|
+| `tests/unit/golden_fixture_helpers.py` | Typed registry + loaders + assertion helpers |
+| `tests/unit/test_golden_fixtures.py` | One test class per golden fixture |
+
+### Adding a new fixture
+
+**Step 1 — Create the golden JSON** following the process in sections 1–4 of
+this runbook.  Place the file in `tests/fixtures/golden/<slug>.json`.
+
+**Step 2 — Register in GOLDEN_SPECS.**  Open
+`tests/unit/golden_fixture_helpers.py` and add a new
+:class:`GoldenFixtureSpec` entry to the :data:`GOLDEN_SPECS` tuple:
+
+```python
+GOLDEN_SPECS: tuple[GoldenFixtureSpec, ...] = (
+    GoldenFixtureSpec("the_mariner_scene_entities", scene_count=15),
+    GoldenFixtureSpec("my_new_screenplay_scene_entities", scene_count=23),
+)
+```
+
+The ``slug`` must match the filename stem.  ``scene_count`` is the number of
+entries in the ``scenes`` list — count them manually from the JSON.
+
+**Step 3 — Write the structural test class.**  Open
+`tests/unit/test_golden_fixtures.py` and add a class following the same
+pattern as ``TestMarinerSceneEntitiesStructure``:
+
+```python
+@pytest.mark.unit
+class TestMyNewScreenplaySceneEntitiesStructure:
+    def setup_method(self) -> None:
+        self.spec = next(
+            s for s in GOLDEN_SPECS if s.slug == "my_new_screenplay_scene_entities"
+        )
+        self.data = load_golden(self.spec)
+
+    def test_metadata_present(self) -> None:
+        assert_metadata_present(self.data)
+
+    def test_scene_count(self) -> None:
+        assert_scene_count(self.data, self.spec)
+
+    def test_no_empty_headings(self) -> None:
+        assert_no_empty_headings(self.data)
+
+    def test_no_duplicate_scene_numbers(self) -> None:
+        assert_no_duplicate_scene_numbers(self.data)
+
+    def test_source_lines_valid(self) -> None:
+        assert_source_lines_valid(self.data)
+
+    def test_characters_are_strings(self) -> None:
+        assert_characters_are_strings(self.data)
+```
+
+**Step 4 — Run the suite.**  Verify all tests pass:
+
+```bash
+.venv/bin/python -m pytest tests/unit/test_golden_fixtures.py -v
+```
+
+### What each assertion helper checks
+
+| Helper | Invariant checked |
+|--------|-------------------|
+| `assert_metadata_present` | `_description`, `_version`, `_created`, `_source_script` all present and non-empty |
+| `assert_scene_count` | `len(scenes)` equals `spec.scene_count` |
+| `assert_no_empty_headings` | Every scene has a non-empty `heading` string |
+| `assert_no_duplicate_scene_numbers` | `scene_number` values are unique across all scenes |
+| `assert_source_lines_valid` | Every `source_lines` is `[start, end]` with `end >= start >= 0` |
+| `assert_characters_are_strings` | Every entry in `characters_in_action` and `characters_in_dialogue` is a non-empty string |
+
+These checks catch structural corruption from hand-editing (truncated scenes,
+accidental blank strings, inverted line ranges) without touching the semantic
+content of the fixture.
+
 ## Lessons Learned
 
 - 2026-03-01 — Created initial runbook (Story 109). Adapted from Dossier's
   EntityGraph-specific runbook for CineForge's promptfoo-based eval structure.
 - 2026-03-01 — Replaced with Storybook's portable golden fixtures pattern (Scout 006).
   Added tier system, inbox workflow, skill cross-references, and structural validator.
+- 2026-03-03 — Added Test Coverage section (Story 122). Shared helper module and
+  structural test suite now protect all golden fixtures in ``tests/fixtures/golden/``.
