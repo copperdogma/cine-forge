@@ -51,7 +51,7 @@ These are independently valuable and have no undone deps. Slot them in alongside
 |---|---|
 | **025** Shot Planning | Consumes concern group artifacts. Depends on 021 + 022. The bridge between creative direction and generation. |
 | **023** Character & Performance | Draft — resolve whether formal artifacts are needed (may close as "Won't Do" if character bibles + chat suffice). Inform this during 025. |
-| **056** Entity Design Studies | Depends on 029. Reference image generation loop — visual identity for characters/locations/props. |
+| ~~**056**~~ ~~Entity Design Studies~~ | ~~Done~~ — Imagen 4 generation loop shipped (Story 029 dependency de-scoped). |
 | **026** Storyboard Generation | Depends on 025. Optional but high-value for previz workflows. |
 | **027** Animatics & Previz | Depends on 025 + 026. |
 
@@ -148,7 +148,7 @@ NOTES from Cam:
 | 053 | Cross-CLI Skills/Prompts Unification | Cross-Cutting | High | Done | [story-053](stories/story-053-cross-cli-skills-unification.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | Cross-Cutting | High | Done | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | Cross-Cutting | High | Done | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
-| 056 | Entity Design Studies (Reference Image Generation Loop) | 6 — Shot Planning & Viz | High | Blocked | [story-056](stories/story-056-entity-design-study-reference-images.md) |
+| 056 | Entity Design Studies (Reference Image Generation Loop) | 6 — Shot Planning & Viz | High | Done | [story-056](stories/story-056-entity-design-study-reference-images.md) |
 | 057 | Entity Prev/Next Navigation | 2.5 — UI | High | Done | [story-057](stories/story-057-entity-prev-next-navigation.md) |
 | 058 | Comprehensive Export & Share | 2.5 — UI | High | Done | [story-058](stories/story-058-comprehensive-export-share.md) |
 | 059 | Pipeline UI Refinement | 2.5 — UI | High | Done | [story-059](stories/story-059-pipeline-ui-refinement.md) |
@@ -210,6 +210,9 @@ NOTES from Cam:
 | 116 | Event System Refactor | Cross-Cutting | Medium | Done | [story-116](stories/story-116-event-system-refactor.md) |
 | 117 | Engine Decomposition | Cross-Cutting | Medium | Done | [story-117](stories/story-117-engine-decomposition.md) |
 | 118 | Service Layer Decomposition | Cross-Cutting | Medium | Done | [story-118](stories/story-118-service-decomposition.md) |
+| 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Draft | [story-119](stories/story-119-design-study-prompt-compiler.md) |
+| 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Draft | [story-120](stories/story-120-production-format-setting.md) |
+| 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Draft | [story-121](stories/story-121-design-study-composition-ux.md) |
 
 ## Phase Summary
 

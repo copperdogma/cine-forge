@@ -647,6 +647,114 @@ export function getExportUrl(
   }
 }
 
+// ---------------------------------------------------------------------------
+// Design Study
+// ---------------------------------------------------------------------------
+
+export type ImageDecision =
+  | 'pending'
+  | 'selected_final'
+  | 'favorite'
+  | 'rejected'
+  | 'seed_for_variants'
+
+export type DesignStudyEntityType = 'character' | 'location' | 'prop'
+
+export interface DesignStudyImage {
+  filename: string
+  decision: ImageDecision
+  guidance: string | null
+  prompt_used: string
+  model: string
+  round_number: number
+  created_at: string
+}
+
+export interface DesignStudyRound {
+  round_number: number
+  prompt: string
+  model: string
+  entity_type: DesignStudyEntityType
+  entity_id: string
+  guidance: string | null
+  seed_image_filename: string | null
+  count: number
+  created_at: string
+  images: DesignStudyImage[]
+}
+
+export interface DesignStudyState {
+  entity_id: string
+  entity_type: DesignStudyEntityType
+  rounds: DesignStudyRound[]
+  selected_final_filename: string | null
+  last_updated: string
+}
+
+export interface GenerateDesignStudyParams {
+  entity_type: DesignStudyEntityType
+  count?: 1 | 2 | 4 | 8
+  guidance?: string | null
+  seed_image_filename?: string | null
+  model?: string
+}
+
+export interface DecideDesignStudyParams {
+  filename: string
+  decision: ImageDecision
+  guidance?: string | null
+}
+
+export async function getDesignStudy(
+  projectId: string,
+  entityId: string,
+): Promise<DesignStudyState | null> {
+  try {
+    return await request<DesignStudyState>(
+      `/api/projects/${projectId}/design-study/${entityId}`,
+    )
+  } catch (err) {
+    // 404 means no study yet — return null rather than throwing
+    // Backend returns a message string (not "404"), so match on content or status placeholder
+    if (err instanceof ApiRequestError && (
+      err.message.includes('404') ||
+      err.message.toLowerCase().includes('no design study')
+    )) return null
+    throw err
+  }
+}
+
+export async function generateDesignStudy(
+  projectId: string,
+  entityId: string,
+  params: GenerateDesignStudyParams,
+): Promise<DesignStudyState> {
+  return request<DesignStudyState>(
+    `/api/projects/${projectId}/design-study/${entityId}/generate`,
+    { method: 'POST', body: JSON.stringify(params) },
+  )
+}
+
+export async function decideDesignStudy(
+  projectId: string,
+  entityId: string,
+  params: DecideDesignStudyParams,
+): Promise<{ updated: boolean }> {
+  return request<{ updated: boolean }>(
+    `/api/projects/${projectId}/design-study/${entityId}/decide`,
+    { method: 'POST', body: JSON.stringify(params) },
+  )
+}
+
+/** Returns a URL suitable for use as an <img src> attribute. No fetch needed. */
+export function getDesignStudyImageUrl(
+  projectId: string,
+  entityId: string,
+  filename: string,
+): string {
+  return `${API_BASE}/api/projects/${projectId}/design-study/${entityId}/images/${filename}`
+}
+
 export async function exportMarkdown(
   projectId: string,
   scope: ExportScope = 'everything',

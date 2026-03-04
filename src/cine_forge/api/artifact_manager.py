@@ -170,10 +170,16 @@ class ArtifactManager:
                 except AttributeError:
                     manifest_data = {}
 
+            _BINARY_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp"}
             files_list = manifest_data.get("files") or []
             for file_entry in files_list:
                 filename = file_entry.get("filename")
                 if filename:
+                    # Binary image files are served via the design-study image endpoint,
+                    # not inlined into the JSON response.
+                    from pathlib import PurePosixPath
+                    if PurePosixPath(filename).suffix.lower() in _BINARY_EXTENSIONS:
+                        continue
                     file_path = (bible_dir / filename).resolve()
                     if not file_path.is_relative_to(bible_dir.resolve()):
                         log.warning("Skipping bible file outside directory: %s", filename)

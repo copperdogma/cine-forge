@@ -1,5 +1,34 @@
 # Changelog
 
+## [2026-03-03-01] — Entity Design Study: AI concept art generation loop (Story 056)
+
+### Added
+- Design Study workflow on every character, location, and prop detail page — generate AI concept art via Imagen 4, iterate in rounds with guidance
+- `DesignStudySection` component: direction textarea, 1/2/4/8 image count selector, per-image decision buttons (Select Final, Favorite, Seed for Variants, Reject), guidance textarea for seed/rejected decisions, round history with filter tabs (All/Selected/Favorites/Rejected)
+- Entity card thumbnail: shows `selected_final` image, falls back to most recent `favorite`, then icon placeholder
+- `POST /api/projects/{id}/design-study/{entity_id}/generate` — synthesizes prompt from bible data, calls Imagen 4, persists images
+- `GET /api/projects/{id}/design-study/{entity_id}` — returns full `DesignStudyState` with all rounds
+- `POST /api/projects/{id}/design-study/{entity_id}/decide` — records decision + optional guidance per image
+- `GET /api/projects/{id}/design-study/{entity_id}/images/{filename}` — serves binary image files
+- `src/cine_forge/schemas/design_study.py` — `DesignStudyState`, `DesignStudyRound`, `DesignStudyImage`, `ImageDecision`
+- `src/cine_forge/ai/image.py` — `synthesize_image_prompt()` (bible-field synthesis) and `generate_image()` with provider routing: Imagen 4 (Gemini API) and gpt-image-1 (OpenAI Images API)
+- gpt-image-1 integration: `_generate_image_openai()` with `output_format: jpeg`, entity-type size mapping (portrait/landscape/square), `OPENAI_API_KEY` auth; routes via `_OPENAI_MODELS` frozenset
+- 9 unit tests + 3 integration tests covering the full generate→decide→persist loop
+
+### Changed (UI polish from browser testing)
+- Image cards now display at natural 3:4 aspect ratio crop with `object-top` focus; clicking the image opens full resolution in a new tab ("View full" hover overlay)
+- Decision buttons redesigned: 4-button grid (Final/Fav/Seed/Reject) with icon+label, per-decision active colors (emerald/yellow/blue/red) and hover tints; all decisions are toggles — clicking an active button resets to `pending`
+- "Select" renamed to "Final" with tooltip "Set as visual reference for storyboards and video"
+- Index number badge ("1", "2", …) added to top-right of each image card
+- State badges (Final/Favorite/Seed) overlaid on image when a decision is active, with matching colors
+- "Prompt" toggle renamed to "Details"; model name ("Imagen 4" / "GPT-Image") shown inline right-aligned; expanded view shows full model ID
+- Model selector added to generate controls — "Imagen 4" and "GPT-Image" buttons; wired end-to-end via `model` field on `GenerateRequest` and `GenerateDesignStudyParams`
+- Generate controls no longer wrapped in a nested box — flat layout within the section card
+- `negativePrompt` parameter removed (no longer supported by Imagen 4 API); prompt instruction simplified to "Clean character art, no text"
+
+### Fixed
+- `ArtifactManager.read_artifact()` skips binary file extensions (`.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`) to avoid JSON parse errors on image files in bible folders
+
 ## [2026-03-02-14] — Service layer decomposition: 3 class extractions, 3 bug fixes (Story 118)
 
 ### Changed

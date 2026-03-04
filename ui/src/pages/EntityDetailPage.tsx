@@ -19,6 +19,7 @@ import {
   Star,
 } from 'lucide-react'
 import { useState, useEffect, useMemo } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -45,6 +46,9 @@ import {
 import { ErrorState, EmptyState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
 import { ProminenceBadge } from '@/components/ProminenceBadge'
+import { DesignStudySection } from '@/components/DesignStudySection'
+import { getDesignStudy, getDesignStudyImageUrl } from '@/lib/api'
+import type { DesignStudyEntityType, DesignStudyRound, DesignStudyImage, DesignStudyState } from '@/lib/api'
 
 // --- Config ---
 
@@ -467,6 +471,27 @@ export default function EntityDetailPage({ section }: { section: string }) {
       }))
   }, [propEntities, entityId, projectId])
 
+  // Design study thumbnail — only for char/loc/prop pages; 404 means no study yet (fine)
+  const isEntitySection = section !== 'scenes'
+  // Bible keys are prefixed: "character_mariner", "location_13th_floor", etc.
+  const dsEntityId = `${section.replace(/s$/, '')}_${entityId ?? ''}`
+  const { data: designStudyState } = useQuery<DesignStudyState | null>({
+    queryKey: ['design-study', projectId, dsEntityId],
+    queryFn: () => getDesignStudy(projectId!, dsEntityId!),
+    enabled: isEntitySection && !!projectId && !!entityId,
+    retry: false,
+  })
+  const thumbnailFilename = designStudyState?.selected_final_filename
+    ?? designStudyState?.rounds
+        .flatMap((r: DesignStudyRound) => r.images)
+        .reverse()
+        .find((img: DesignStudyImage) => img.decision === 'favorite')
+        ?.filename
+    ?? null
+  const thumbnailUrl = thumbnailFilename && projectId && dsEntityId
+    ? getDesignStudyImageUrl(projectId, dsEntityId, thumbnailFilename)
+    : null
+
   if (!config || !projectId || !entityId) {
     return <ErrorState message="Invalid entity route" />
   }
@@ -610,9 +635,18 @@ export default function EntityDetailPage({ section }: { section: string }) {
 
       {/* Header */}
       <div className="flex items-start gap-4">
-        <div className="rounded-lg bg-card border border-border p-2.5">
-          <Icon className={cn('h-6 w-6', config.color)} />
-        </div>
+        {thumbnailUrl ? (
+          <img
+            src={thumbnailUrl}
+            alt={`${displayName} design`}
+            className="rounded-lg border border-border object-cover flex-shrink-0"
+            style={{ width: 48, height: 48 }}
+          />
+        ) : (
+          <div className="rounded-lg bg-card border border-border p-2.5">
+            <Icon className={cn('h-6 w-6', config.color)} />
+          </div>
+        )}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h1 className="text-2xl font-bold tracking-tight truncate">{displayName}</h1>
@@ -717,6 +751,17 @@ export default function EntityDetailPage({ section }: { section: string }) {
             sceneIndexData={sceneIndexData}
             resolve={resolve}
           />
+
+          {/* 3. Design Study — AI concept art generation */}
+          <Card>
+            <CardContent className="pt-5">
+              <DesignStudySection
+                projectId={projectId}
+                entityId={dsEntityId}
+                entityType={section.replace(/s$/, '') as DesignStudyEntityType}
+              />
+            </CardContent>
+          </Card>
         </>
       )}
 

@@ -38,6 +38,15 @@ from .continuity import (
     StateProperty,
 )
 from .conversation import Conversation, ConversationTurn, DisagreementArtifact
+from .design_study import (
+    DesignStudyImage,
+    DesignStudyRound,
+    DesignStudyState,
+    ImageDecision,
+)
+from .design_study import (
+    EntityType as DesignStudyEntityType,
+)
 from .entity_adjudication import (
     EntityAdjudicationBatch,
     EntityAdjudicationDecision,
@@ -185,6 +194,11 @@ __all__ = [
     "ActStructure",
     "ScriptBible",
     "ThematicElement",
+    "DesignStudyImage",
+    "DesignStudyRound",
+    "DesignStudyState",
+    "DesignStudyEntityType",
+    "ImageDecision",
     "SchemaRegistry",
     "ValidationErrorDetail",
     "ValidationResult",

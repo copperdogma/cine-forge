@@ -21,6 +21,7 @@ class BibleFileEntry(BaseModel):
         "continuity_state",
         "role_notes",
         "user_injected",
+        "design_study_state",
     ]
     version: int
     provenance: Literal["ai_extracted", "ai_inferred", "user_injected", "system"]
