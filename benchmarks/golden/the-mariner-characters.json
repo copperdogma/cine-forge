@@ -37,7 +37,8 @@
       "He believed his father was dead",
       "His father actually abandoned the family",
       "He romanticized his abusive childhood",
-      "He has a moral code he calls the Mariner's code"
+      "He has a moral code he calls the Mariner's code",
+      "His family name is MacAngus (the delivery van reads McAngus Fish & Brewis)"
     ]
   },
   "ROSE": {
@@ -112,7 +113,8 @@
       "He abandoned the family and lives in Chimney Bay",
       "Mariner believed he was dead",
       "His 'hero' speech is self-aggrandizing in the dark version",
-      "He is a fisherman"
+      "He is a fisherman",
+      "He speaks in a Newfoundland/Maritime dialect (b'y, bosun, 'e, anudder)"
     ]
   },
   "SALVATORI": {
@@ -157,7 +159,8 @@
       "aggressive"
     ],
     "must_have_relationships": [
-      {"target": "ROSE", "type": "romantic_ex"}
+      {"target": "ROSE", "type": "romantic_ex"},
+      {"target": "THE MARINER", "type": "adversary"}
     ],
     "must_mention_scenes": [
       "INT. 13TH FLOOR"

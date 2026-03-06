@@ -8,21 +8,21 @@
       "importance": "critical"
     },
     "format": {
-      "expected_values": ["short", "short film", "screenplay"],
+      "expected_values": ["short", "short film", "short-form"],
       "match_type": "any_keyword",
-      "note": "Complete short film: FADE IN to CUT TO BLACK, ~10-15 formatted pages, single-night single-location story with full narrative arc. Not a feature film excerpt.",
+      "note": "Complete short film: FADE IN to CUT TO BLACK, ~10-15 formatted pages, single-night single-location story with full narrative arc. Not a feature film excerpt. 'screenplay' removed — too broad, matches 'feature screenplay' and gives false credit to models that misidentify this as a feature.",
       "min_confidence": 0.6,
       "importance": "important"
     },
     "genre": {
-      "expected_keywords": ["action", "crime", "thriller", "drama"],
+      "expected_keywords": ["action", "crime", "thriller", "drama", "superhero"],
       "must_include_at_least": 2,
       "match_type": "keyword_overlap",
       "min_confidence": 0.7,
       "importance": "important"
     },
     "tone": {
-      "expected_keywords": ["dark", "gritty", "violent", "intense", "noir", "bleak", "brutal", "suspenseful", "fast-paced", "dystopian"],
+      "expected_keywords": ["dark", "gritty", "violent", "intense", "noir", "bleak", "brutal", "suspenseful", "fast-paced", "dystopian", "darkly comic", "dark humor", "humorous"],
       "must_include_at_least": 3,
       "match_type": "keyword_overlap",
       "note": "Screenplay has clear dark/gritty/violent tone plus dystopian setting, fast pacing, and suspense. Raising minimum to 3 since all models should identify multiple tonal qualities.",

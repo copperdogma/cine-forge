@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-03-06-02] — Model discovery snapshot for eval registry
+
+### Added
+- `docs/evals/models-available.yaml` — provider model discovery snapshot (63 models: OpenAI 42, Anthropic 9, Google 12; discovered 2026-03-04)
+
+## [2026-03-06-01] — Adversarial golden fixture verification — all 10 CLEAN
+
+### Fixed
+- `the-mariner-characters.json` — added MacAngus family name to MARINER key_facts; added Newfoundland/Maritime dialect note to DAD key_facts; added VINNIE→MARINER adversary relationship requirement
+- `the-mariner-locations.json` — removed phantom "shore" alias from COASTLINE; added "mismatched paintings of different periods" to 15TH FLOOR physical_traits
+- `the-mariner-props.json` — removed phantom BOSUN alias from OAR; removed phantom exterior scene ref from OAR must_mention_scenes; cleared PURSE physical_traits (no physical description in script); added AIRTAG prop (tracking device hidden in Rose's purse); fixed FLARE GUN key_fact wording
+- `the-mariner-relationships.json` — fixed 6 prop IDs and evidence strings; added mariner-flare-gun-weapon edge; added mariner-airtag-tracking edge; improved false_positive_examples with specific screenplay-grounded examples; bumped min_must_find 5→6
+- `the-mariner-config.json` — narrowed format.expected_values (removed "screenplay" — too broad); added "superhero" to genre keywords; added dark comedy tones
+- `normalize-signal-golden.json` — fixed expected_scenes[3] heading; removed phantom `\!` forbidden_pattern (would penalize valid Fountain force-action lines)
+- `enrich-scenes-golden.json` — corrected flashback tone "bittersweet"→"joyful"; fixed key_details phrasing to remove spoiler inference
+
+### Changed
+- `benchmarks/golden/_verification-checklist.md` — all 10 fixtures now CLEAN; updated pass notes to fix-summary format
+
 ## [2026-03-03-03] — Anthropic prompt caching in LLM transport layer (Story 123)
 
 ### Added

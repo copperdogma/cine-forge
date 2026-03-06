@@ -2,7 +2,7 @@
   "OAR": {
     "prop_id": "oar-bosun",
     "name": "Wooden Oar",
-    "aliases": ["BOSUN", "the oar", "stout wooden oar"],
+    "aliases": ["the oar", "stout wooden oar"],
     "physical_traits": [
       "stout wooden oar",
       "edged with metal",
@@ -10,7 +10,6 @@
       "dripping with blood"
     ],
     "must_mention_scenes": [
-      "EXT. RUDDY & GREENE BUILDING",
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
       "INT. 13TH FLOOR",
       "INT. 15TH FLOOR",
@@ -34,10 +33,7 @@
     "prop_id": "roses-purse",
     "name": "Rose's Purse",
     "aliases": ["the purse", "her purse"],
-    "physical_traits": [
-      "chip hidden in lining",
-      "contains blockchain password"
-    ],
+    "physical_traits": [],
     "must_mention_scenes": [
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
       "INT. STAIRWELL",
@@ -58,6 +54,27 @@
       "plot driver"
     ]
   },
+  "AIRTAG": {
+    "prop_id": "airtag",
+    "name": "AirTag",
+    "aliases": ["the AirTag", "tracking device"],
+    "physical_traits": [],
+    "must_mention_scenes": [
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR"
+    ],
+    "key_facts": [
+      "Secretly stashed by Mariner in Rose's purse the previous Thanksgiving",
+      "How Mariner tracked Rose to the Ruddy & Greene Building",
+      "Rose is furious when she learns about it",
+      "Rose turns it back on Mariner: 'Who got you involved, Mr. Fucking AirTag?'",
+      "Reveals Mariner's habit of surveilling his sister without consent"
+    ],
+    "narrative_significance_must_mention": [
+      "tracking",
+      "sister",
+      "surveillance"
+    ]
+  },
   "FLARE GUN": {
     "prop_id": "flare-gun",
     "name": "Flare Gun",
@@ -73,7 +90,7 @@
       "Part of Mariner's collection of maritime weapons",
       "Bright orange color makes it look absurd to the thugs",
       "Used to shoot Vinnie in the chest on the 13th floor",
-      "Thugs laugh at or mock the weapon before using it",
+      "Thugs laugh at or mock the weapon before Mariner fires it",
       "Red flare creates blinding light during the fight"
     ],
     "narrative_significance_must_mention": [

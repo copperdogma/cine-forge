@@ -9,7 +9,7 @@
       "target_id": "rose",
       "relationship_type_keywords": ["sibling", "brother", "sister", "family"],
       "direction": "symmetric",
-      "must_mention_evidence": ["sister", "Billy", "Will", "Rosey"],
+      "must_mention_evidence": ["sis", "Billy", "Will", "Rosey"],
       "min_confidence": 0.9,
       "importance": "critical"
     },
@@ -33,7 +33,7 @@
       "target_id": "salvatori",
       "relationship_type_keywords": ["adversary", "antagonist", "enemy", "rival", "opponent"],
       "direction": "symmetric",
-      "must_mention_evidence": ["confrontation", "fight", "building", "gang"],
+      "must_mention_evidence": ["fight", "building", "gang", "kneeling"],
       "min_confidence": 0.8,
       "importance": "critical"
     },
@@ -42,7 +42,7 @@
       "source_type": "character",
       "source_id": "the-mariner",
       "target_type": "prop",
-      "target_id": "oar",
+      "target_id": "oar-bosun",
       "relationship_type_keywords": ["owns", "wields", "weapon", "uses", "carries"],
       "direction": "source_to_target",
       "must_mention_evidence": ["BOSUN", "weapon", "oar"],
@@ -54,10 +54,10 @@
       "source_type": "character",
       "source_id": "rose",
       "target_type": "prop",
-      "target_id": "purse",
+      "target_id": "roses-purse",
       "relationship_type_keywords": ["owns", "possesses", "carries", "hides"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["blockchain", "password", "chip", "stolen", "million"],
+      "must_mention_evidence": ["blockchain", "password", "chip", "stole", "million"],
       "min_confidence": 0.8,
       "importance": "important"
     },
@@ -69,7 +69,7 @@
       "target_id": "15th-floor",
       "relationship_type_keywords": ["headquarters", "office", "occupies", "controls", "base"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["office", "15th", "floor", "luxur"],
+      "must_mention_evidence": ["15th", "floor", "luxur", "nightclub"],
       "min_confidence": 0.8,
       "importance": "important"
     },
@@ -81,7 +81,7 @@
       "target_id": "salvatori",
       "relationship_type_keywords": ["adversary", "antagonist", "enemy", "victim", "theft"],
       "direction": "symmetric",
-      "must_mention_evidence": ["stole", "password", "gang", "gunpoint"],
+      "must_mention_evidence": ["stole", "password", "gang", "Memory stick"],
       "min_confidence": 0.8,
       "importance": "critical"
     },
@@ -108,12 +108,39 @@
       "must_mention_evidence": ["ex", "boyfriend", "Vinnie"],
       "min_confidence": 0.7,
       "importance": "secondary"
+    },
+    {
+      "relationship_id": "mariner-flare-gun-weapon",
+      "source_type": "character",
+      "source_id": "the-mariner",
+      "target_type": "prop",
+      "target_id": "flare-gun",
+      "relationship_type_keywords": ["owns", "wields", "weapon", "uses", "carries"],
+      "direction": "source_to_target",
+      "must_mention_evidence": ["flare", "orange", "pistol", "Finding Nemo"],
+      "min_confidence": 0.8,
+      "importance": "important"
+    },
+    {
+      "relationship_id": "mariner-airtag-tracking",
+      "source_type": "character",
+      "source_id": "the-mariner",
+      "target_type": "prop",
+      "target_id": "airtag",
+      "relationship_type_keywords": ["uses", "planted", "tracks", "surveillance", "hidden"],
+      "direction": "source_to_target",
+      "must_mention_evidence": ["AirTag", "stashed", "purse", "Thanksgiving", "tracking"],
+      "min_confidence": 0.8,
+      "importance": "important"
     }
   ],
-  "min_must_find": 5,
+  "min_must_find": 6,
   "max_total_edges": 15,
   "false_positive_examples": [
-    "Any relationship between entities that never interact in the screenplay",
-    "Relationships invented from general knowledge rather than script evidence"
+    "Dad-Salvatori (they never share a scene — Dad is flashback only, Salvatori is present-day only)",
+    "Mariner-Vinnie employer/employee (Mariner does not work for anyone; he is an independent vigilante)",
+    "Rose-Oar (Rose never wields or meaningfully interacts with the oar — it is Mariner's weapon throughout)",
+    "Dad-Purse (Dad has no connection to the purse or the money plot)",
+    "Relationships fabricated from general crime-thriller tropes not evidenced in this screenplay"
   ]
 }

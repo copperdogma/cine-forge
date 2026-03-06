@@ -4,7 +4,7 @@
     "COMMUNITY RADIO STUDIO",
     "HILLTOP WATER TOWER",
     "STUDIO HALLWAY",
-    "RADIO STUDIO"
+    "COMMUNITY RADIO STUDIO - CONTINUOUS"
   ],
   "expected_characters": ["JUNE", "NOAH", "ARIA", "KELL"],
   "required_dialogue": [
@@ -20,7 +20,6 @@
     "^>",
     "^##",
     "\\\\-",
-    "\\\\!",
     "```",
     "\\*\\*",
     "__"
