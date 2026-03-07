@@ -929,12 +929,14 @@ evals:
       - model: "Gemini 2.5 Flash Lite"
         metrics:
           overall: 0.905
+          python: 0.99
+          rubric: 0.82
         latency_ms: 2000
         cost_usd: 0.00053
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
-        note: "Value winner: 0.905 quality at $0.00053, 2.0s. Value score=1698. Production default."
+        measured: 2026-03-07
+        git_sha: "0c2e32b"
+        result_file: benchmarks/results/entity-discovery-story124.json
+        note: "Value winner: 0.905 quality at $0.00053, 2.0s. Value score=1698. Production default. Story 124: verification loop adds recall safety net (+2 optional entities recovered at $0.0008 extra cost when gaps detected, zero cost on happy path)."
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 0.787

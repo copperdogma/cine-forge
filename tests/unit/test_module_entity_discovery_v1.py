@@ -4,7 +4,10 @@ import pytest
 
 import cine_forge.modules.world_building.entity_discovery_v1.main as discovery_main
 from cine_forge.modules.world_building.entity_discovery_v1.main import (
+    _extract_scene_index_signals,
+    _find_recall_gaps,
     _normalize_character_name,
+    _normalize_entity_name,
     run_module,
 )
 
@@ -183,3 +186,174 @@ class TestNormalizeCharacterName:
 
     def test_empty_string(self):
         assert _normalize_character_name("") == ""
+
+
+# ── Entity name normalization (Story 124) ──────────────────────────
+
+
+class TestNormalizeEntityName:
+    def test_location_strips_int_ext(self):
+        assert _normalize_entity_name("INT. OFFICE", "locations") == "OFFICE"
+        assert _normalize_entity_name("EXT. DOCK", "locations") == "DOCK"
+        assert _normalize_entity_name(
+            "INT./EXT. PARKING LOT", "locations"
+        ) == "PARKING LOT"
+
+    def test_location_strips_time_of_day(self):
+        assert _normalize_entity_name(
+            "OFFICE - DAY", "locations"
+        ) == "OFFICE"
+        assert _normalize_entity_name(
+            "DOCK - NIGHT", "locations"
+        ) == "DOCK"
+
+    def test_location_strips_both(self):
+        assert _normalize_entity_name(
+            "INT. OFFICE - DAY", "locations"
+        ) == "OFFICE"
+
+    def test_props_normalizes(self):
+        assert _normalize_entity_name("rare coin", "props") == "RARE COIN"
+
+    def test_characters_delegates(self):
+        assert _normalize_entity_name(
+            "THE MARINER", "characters"
+        ) == "MARINER"
+
+
+# ── Scene index signal extraction (Story 124) ─────────────────────
+
+
+class TestExtractSceneIndexSignals:
+    def test_extracts_locations(self):
+        si = {
+            "unique_locations": ["INT. OFFICE - DAY", "EXT. DOCK - NIGHT"],
+            "entries": [],
+        }
+        signals = _extract_scene_index_signals(si)
+        assert "OFFICE" in signals["locations"]
+        assert "DOCK" in signals["locations"]
+
+    def test_aggregates_props_from_entries(self):
+        si = {
+            "unique_locations": [],
+            "entries": [
+                {"props_mentioned": ["RARE COIN", "GUN"]},
+                {"props_mentioned": ["GUN", "LETTER"]},
+            ],
+        }
+        signals = _extract_scene_index_signals(si)
+        assert set(signals["props"]) == {"RARE COIN", "GUN", "LETTER"}
+
+    def test_empty_scene_index(self):
+        signals = _extract_scene_index_signals({"entries": []})
+        assert "locations" not in signals
+        assert "props" not in signals
+
+
+# ── Recall gap detection (Story 124) ──────────────────────────────
+
+
+class TestFindRecallGaps:
+    def test_no_gaps(self):
+        gaps = _find_recall_gaps(
+            ["OFFICE", "DOCK"], ["OFFICE", "DOCK"], "locations"
+        )
+        assert gaps == []
+
+    def test_detects_missing(self):
+        gaps = _find_recall_gaps(
+            ["OFFICE"], ["OFFICE", "DOCK"], "locations"
+        )
+        assert gaps == ["DOCK"]
+
+    def test_substring_match_handles_aliases(self):
+        gaps = _find_recall_gaps(
+            ["RUDDY & GREENE BUILDING"],
+            ["RUDDY GREENE BUILDING"],
+            "locations",
+        )
+        # "RUDDY GREENE BUILDING" is substring of normalized discovered
+        assert gaps == []
+
+    def test_empty_reference(self):
+        gaps = _find_recall_gaps(["OFFICE"], [], "locations")
+        assert gaps == []
+
+
+# ── Verification flow integration (Story 124) ─────────────────────
+
+
+class TestVerificationFlow:
+    def test_no_gaps_no_extra_calls(self, _mock_llm):
+        """When scene_index locations match discovered, no verification call."""
+        _mock_llm.side_effect = [
+            # locations chunk
+            (MagicMock(items=["OFFICE"]), {"estimated_cost_usd": 0.01}),
+            # props chunk
+            (MagicMock(items=["COIN"]), {"estimated_cost_usd": 0.01}),
+        ]
+        inputs = {
+            "canonical_script": _SCRIPT,
+            "breakdown_scenes": {
+                "unique_characters": ["ABE"],
+                "unique_locations": ["OFFICE"],
+                "entries": [{"props_mentioned": ["COIN"]}],
+            },
+        }
+        params = {"discovery_model": "mock"}
+        result = run_module(inputs, params, {})
+
+        meta = result["artifacts"][0]["data"]["processing_metadata"]
+        assert meta["verification_ran"] is False
+        assert meta["locations_gap_count"] == 0
+        assert meta["props_gap_count"] == 0
+        # Only 2 calls: locations chunk + props chunk (no verification)
+        assert _mock_llm.call_count == 2
+
+    def test_gap_triggers_verification_reprompt(self, _mock_llm):
+        """When scene_index has locations not in discovered, re-prompt fires."""
+        _mock_llm.side_effect = [
+            # locations chunk — misses DOCK
+            (MagicMock(items=["OFFICE"]), {"estimated_cost_usd": 0.01}),
+            # props chunk
+            (MagicMock(items=["COIN"]), {"estimated_cost_usd": 0.01}),
+            # verification re-prompt for locations — adds DOCK
+            (
+                MagicMock(items=["OFFICE", "DOCK"]),
+                {"estimated_cost_usd": 0.02},
+            ),
+        ]
+        inputs = {
+            "canonical_script": _SCRIPT,
+            "breakdown_scenes": {
+                "unique_characters": ["ABE"],
+                "unique_locations": ["OFFICE", "DOCK"],
+                "entries": [{"props_mentioned": ["COIN"]}],
+            },
+        }
+        params = {"discovery_model": "mock"}
+        result = run_module(inputs, params, {})
+
+        data = result["artifacts"][0]["data"]
+        assert "DOCK" in data["locations"]
+        meta = data["processing_metadata"]
+        assert meta["verification_ran"] is True
+        assert meta["locations_gap_count"] == 1
+        assert meta["verification_cost_usd"] == 0.02
+        # 3 calls: locations + props + verification
+        assert _mock_llm.call_count == 3
+
+    def test_no_scene_index_skips_verification(self, _mock_llm):
+        """Without scene_index, verification is skipped entirely."""
+        _mock_llm.side_effect = [
+            (MagicMock(items=["ABE"]), {"estimated_cost_usd": 0.01}),
+            (MagicMock(items=["OFFICE"]), {"estimated_cost_usd": 0.01}),
+            (MagicMock(items=["COIN"]), {"estimated_cost_usd": 0.01}),
+        ]
+        inputs = {"canonical_script": _SCRIPT}
+        params = {"discovery_model": "mock"}
+        result = run_module(inputs, params, {})
+
+        meta = result["artifacts"][0]["data"]["processing_metadata"]
+        assert meta["verification_ran"] is False

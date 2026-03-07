@@ -1,0 +1,364 @@
+{
+  "evalId": "eval-zQo-2026-03-07T18:23:04",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-03-07T18:23:04.001Z",
+    "prompts": [
+      {
+        "raw": "You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Every named person who appears or is mentioned (protagonist, antagonist, supporting, minor, flashback)\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities)\n- **props**: Every significant named object that appears in the story (weapons, vehicles, personal items, plot-relevant objects)\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\" or \"door\" — only named/significant props.\nDo NOT include unnamed \"GUARD #1\" type extras unless they are recurring.",
+        "label": "prompts/entity-discovery.txt: You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Every named person who appears or is mentioned (protagonist, antagonist, supporting, minor, flashback)\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities)\n- **props**: Every significant named object that appears in the story (weapons, vehicles, personal items, plot-relevant objects)\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\" or \"door\" — only named/significant props.\nDo NOT include unnamed \"GUARD #1\" type extras unless they are recurring.",
+        "id": "49fce29c78ab671e46be41ebc7ef88399bbdc912cf04e7002e741b90c8dbcbeb",
+        "provider": "Gemini 2.5 Flash Lite",
+        "metrics": {
+          "score": 0.905,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 2755,
+          "tokenUsage": {
+            "prompt": 4759,
+            "completion": 587,
+            "cached": 0,
+            "total": 5346,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 1894,
+              "prompt": 1194,
+              "completion": 700,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.0007107000000000001
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.0007107000000000001,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.905,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1894,
+            "prompt": 1194,
+            "completion": 700,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.99,
+              "reason": "character_recall=1.00 | json_valid=0.90 | location_recall=1.00 | optional_coverage=1.00 | prop_recall=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/entity_discovery_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this entity discovery output for the screenplay \"The Mariner.\"\n\nThis is a RECALL task — finding everything matters more than precision.\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\n\nKey quality criteria:\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS, GIRL IN CAGE.\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, dock, coastline.\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\n5. Does the model err on the side of inclusion rather than omission?\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\n\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "Let me evaluate against the key criteria:\n\n**Characters:**\n- THE MARINER: ✅ Found (both 'THE MARINER' and 'MARINER')\n- ROSE: ✅ Found\n- SALVATORI: ✅ Found (as 'MR. SALVATORI' and 'SALVATORI')\n- VINNIE: ✅ Found\n- DAD: ✅ Found\n- BILLY: ✅ Found\n- MIKEY: ✅ Found\n- CARLOS: ✅ Found\n- GIRL IN CAGE: ❌ Missing\n- Bonus entities like ROSCO, THUG 1/2/3, YOUNG MARINER found ✅\n- WALDOCOIN and PONZICOIN appear to be cryptocurrency names, not characters — minor false positive but acceptable per rubric\n\n**Locations:**\n- Ruddy & Greene Building: ✅ Found (multiple variants)\n- 15th floor: ✅ Found ('INT. 15TH FLOOR')\n- 11th floor: ✅ Found\n- 13th floor: ✅ Found\n- Stairwell: ✅ Found ('12TH FLOOR STAIRWELL')\n- Elevator: ✅ Found\n- Coastline: ✅ Found\n- CHIMNEY BAY: ✅ Found\n- Dock: ❌ Not explicitly listed (though coastline is there)\n\n**Props:**\n- OAR: ✅ Found ('STOUT WOODEN OAR')\n- PURSE: ✅ Found\n- AIRTAG: ✅ Found\n- NET CAPE: ✅ Found (as 'CAPE' and 'FISHING NET' separately)\n- BRACERS: ✅ Found\n- FLARE GUN: ❌ Missing — this is a notable omission as it's likely a significant prop\n- Other props well covered: fish hooks, bandolier, boots, guns, etc.\n\n**Entity naming:** Generally follows screenplay conventions with ALL CAPS for characters. Location headings include INT./EXT. prefixes in some cases.\n\n**Inclusion bias:** The model does err on the side of inclusion with many props and character variants listed.\n\n**Hallucinations:** WALDOCOIN and PONZICOIN seem like they could be from the screenplay (cryptocurrency plot elements perhaps). No clearly fabricated entities.\n\n**Summary:** All 5 required characters found. All required locations found. The OAR (required prop) found. Missing GIRL IN CAGE (bonus character), FLARE GUN (bonus prop), and dock location. Overall very comprehensive with good recall. Missing a couple bonus items but all required entities are present.",
+              "tokensUsed": {
+                "total": 1894,
+                "prompt": 1194,
+                "completion": 700,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"characters\\\": [\\n    \\\"THE MARINER\\\",\\n    \\\"MARINER\\\",\\n    \\\"ROSE\\\",\\n    \\\"BILLY\\\",\\n    \\\"THUG 1\\\",\\n    \\\"THUG 2\\\",\\n    \\\"THUG 3\\\",\\n    \\\"THUG\\\",\\n    \\\"YOUNG MARINER\\\",\\n    \\\"DAD\\\",\\n    \\\"ROSCO\\\",\\n    \\\"MR. SALVATORI\\\",\\n    \\\"VINNIE\\\",\\n    \\\"MIKEY\\\",\\n    \\\"CARLOS\\\",\\n    \\\"WALDOCOIN\\\",\\n    \\\"PONZICOIN\\\",\\n    \\\"SALVATORI\\\"\\n  ],\\n  \\\"locations\\\": [\\n    \\\"CITY CENTRE\\\",\\n    \\\"RUDDY & GREENE BUILDING\\\",\\n    \\\"RUDDY & GREENE BUILDING - FRONT\\\",\\n    \\\"RUDDY & GREENE BUILDING - REAR\\\",\\n    \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n    \\\"11TH FLOOR\\\",\\n    \\\"12TH FLOOR STAIRWELL\\\",\\n    \\\"13TH FLOOR\\\",\\n    \\\"INT. 15TH FLOOR\\\",\\n    \\\"EXT. COASTLINE\\\",\\n    \\\"EXT. BACKYARD\\\",\\n    \\\"CHIMNEY BAY\\\"\\n  ],\\n  \\\"props\\\": [\\n    \\\"EUROPEAN SUVs\\\",\\n    \\\"DELIVERY VAN\\\",\\n    \\\"McANGUS FISH & BREWIS\\\",\\n    \\\"SWEATER\\\",\\n    \\\"BRACERS\\\",\\n    \\\"TATTOO\\\",\\n    \\\"BANDOLIER\\\",\\n    \\\"FISH HOOKS\\\",\\n    \\\"BOOTS\\\",\\n    \\\"CAPE\\\",\\n    \\\"FISHING NET\\\",\\n    \\\"WEIGHTS\\\",\\n    \\\"STOUT WOODEN OAR\\\",\\n    \\\"METAL\\\",\\n    \\\"AIRTAG\\\",\\n    \\\"PURSE\\\",\\n    \\\"GUN\\\",\\n    \\\"RADIO\\\",\\n    \\\"FILING CABINET\\\",\\n    \\\"WOODEN SAILBOAT\\\",\\n    \\\"BEER\\\",\\n    \\\"CHIP\\\",\\n    \\\"GUN\\\",\\n    \\\"DESK\\\",\\n    \\\"PERSIAN RUG\\\",\\n    \\\"BOOKSHELVES\\\",\\n    \\\"BOOZE\\\",\\n    \\\"PAINTINGS\\\",\\n    \\\"MINTS\\\",\\n    \\\"PURSE\\\",\\n    \\\"SIDE DOORS\\\",\\n    \\\"TUMBLER\\\",\\n    \\\"SCOTCH\\\",\\n    \\\"CIGAR\\\",\\n    \\\"SUBMACHINE GUN\\\",\\n    \\\"HOOP EARRING\\\",\\n    \\\"GOLDEN TOOTH\\\",\\n    \\\"WEEDS\\\",\\n    \\\"BOTTLES\\\",\\n    \\\"RUSTY WEIGHTS\\\",\\n    \\\"BENCH PRESS\\\",\\n    \\\"DUCT-TAPE\\\",\\n    \\\"BOTTLE\\\",\\n    \\\"MEMORY STICK\\\"\\n  ]\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate this entity discovery output for the screenplay \\\"The Mariner.\\\"\\n\\nThis is a RECALL task — finding everything matters more than precision.\\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\\n\\nKey quality criteria:\\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS, GIRL IN CAGE.\\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, dock, coastline.\\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\\n5. Does the model err on the side of inclusion rather than omission?\\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\\n\\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "23b33371-0d02-4da8-9e9e-fc1246127698",
+        "latencyMs": 2755,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Every named person who appears or is mentioned (protagonist, antagonist, supporting, minor, flashback)\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities)\n- **props**: Every significant named object that appears in the story (weapons, vehicles, personal items, plot-relevant objects)\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\" or \"door\" — only named/significant props.\nDo NOT include unnamed \"GUARD #1\" type extras unless they are recurring.",
+          "label": "prompts/entity-discovery.txt: You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Every named person who appears or is mentioned (protagonist, antagonist, supporting, minor, flashback)\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities)\n- **props**: Every significant named object that appears in the story (weapons, vehicles, personal items, plot-relevant objects)\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\" or \"door\" — only named/significant props.\nDo NOT include unnamed \"GUARD #1\" type extras unless they are recurring.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "49fce29c78ab671e46be41ebc7ef88399bbdc912cf04e7002e741b90c8dbcbeb",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-2.5-flash-lite",
+          "label": "Gemini 2.5 Flash Lite"
+        },
+        "response": {
+          "output": "```json\n{\n  \"characters\": [\n    \"THE MARINER\",\n    \"MARINER\",\n    \"ROSE\",\n    \"BILLY\",\n    \"THUG 1\",\n    \"THUG 2\",\n    \"THUG 3\",\n    \"THUG\",\n    \"YOUNG MARINER\",\n    \"DAD\",\n    \"ROSCO\",\n    \"MR. SALVATORI\",\n    \"VINNIE\",\n    \"MIKEY\",\n    \"CARLOS\",\n    \"WALDOCOIN\",\n    \"PONZICOIN\",\n    \"SALVATORI\"\n  ],\n  \"locations\": [\n    \"CITY CENTRE\",\n    \"RUDDY & GREENE BUILDING\",\n    \"RUDDY & GREENE BUILDING - FRONT\",\n    \"RUDDY & GREENE BUILDING - REAR\",\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"11TH FLOOR\",\n    \"12TH FLOOR STAIRWELL\",\n    \"13TH FLOOR\",\n    \"INT. 15TH FLOOR\",\n    \"EXT. COASTLINE\",\n    \"EXT. BACKYARD\",\n    \"CHIMNEY BAY\"\n  ],\n  \"props\": [\n    \"EUROPEAN SUVs\",\n    \"DELIVERY VAN\",\n    \"McANGUS FISH & BREWIS\",\n    \"SWEATER\",\n    \"BRACERS\",\n    \"TATTOO\",\n    \"BANDOLIER\",\n    \"FISH HOOKS\",\n    \"BOOTS\",\n    \"CAPE\",\n    \"FISHING NET\",\n    \"WEIGHTS\",\n    \"STOUT WOODEN OAR\",\n    \"METAL\",\n    \"AIRTAG\",\n    \"PURSE\",\n    \"GUN\",\n    \"RADIO\",\n    \"FILING CABINET\",\n    \"WOODEN SAILBOAT\",\n    \"BEER\",\n    \"CHIP\",\n    \"GUN\",\n    \"DESK\",\n    \"PERSIAN RUG\",\n    \"BOOKSHELVES\",\n    \"BOOZE\",\n    \"PAINTINGS\",\n    \"MINTS\",\n    \"PURSE\",\n    \"SIDE DOORS\",\n    \"TUMBLER\",\n    \"SCOTCH\",\n    \"CIGAR\",\n    \"SUBMACHINE GUN\",\n    \"HOOP EARRING\",\n    \"GOLDEN TOOTH\",\n    \"WEEDS\",\n    \"BOTTLES\",\n    \"RUSTY WEIGHTS\",\n    \"BENCH PRESS\",\n    \"DUCT-TAPE\",\n    \"BOTTLE\",\n    \"MEMORY STICK\"\n  ]\n}\n```",
+          "tokenUsage": {
+            "prompt": 4759,
+            "completion": 587,
+            "total": 5346,
+            "numRequests": 1
+          },
+          "cost": 0.0007107000000000001,
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "```json\n{\n  \"characters\": [\n    \"THE MARINER\",\n    \"MARINER\",\n    \"ROSE\",\n    \"BILLY\",\n    \"THUG 1\",\n    \"THUG 2\",\n    \"THUG 3\",\n    \"THUG\",\n    \"YOUNG MARINER\",\n    \"DAD\",\n    \"ROSCO\",\n    \"MR. SALVATORI\",\n    \"VINNIE\",\n    \"MIKEY\",\n    \"CARLOS\",\n    \"WALDOCOIN\",\n    \"PONZICOIN\",\n    \"SALVATORI\"\n  ],\n  \"locations\": [\n    \"CITY CENTRE\",\n    \"RUDDY & GREENE BUILDING\",\n    \"RUDDY & GREENE BUILDING - FRONT\",\n    \"RUDDY & GREENE BUILDING - REAR\",\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"11TH FLOOR\",\n    \"12TH FLOOR STAIRWELL\",\n    \"13TH FLOOR\",\n    \"INT. 15TH FLOOR\",\n    \"EXT. COASTLINE\",\n    \"EXT. BACKYARD\",\n    \"CHIMNEY BAY\"\n  ],\n  \"props\": [\n    \"EUROPEAN SUVs\",\n    \"DELIVERY VAN\",\n    \"McANGUS FISH & BREWIS\",\n    \"SWEATER\",\n    \"BRACERS\",\n    \"TATTOO\",\n    \"BANDOLIER\",\n    \"FISH HOOKS\",\n    \"BOOTS\",\n    \"CAPE\",\n    \"FISHING NET\",\n    \"WEIGHTS\",\n    \"STOUT WOODEN OAR\",\n    \"METAL\",\n    \"AIRTAG\",\n    \"PURSE\",\n    \"GUN\",\n    \"RADIO\",\n    \"FILING CABINET\",\n    \"WOODEN SAILBOAT\",\n    \"BEER\",\n    \"CHIP\",\n    \"GUN\",\n    \"DESK\",\n    \"PERSIAN RUG\",\n    \"BOOKSHELVES\",\n    \"BOOZE\",\n    \"PAINTINGS\",\n    \"MINTS\",\n    \"PURSE\",\n    \"SIDE DOORS\",\n    \"TUMBLER\",\n    \"SCOTCH\",\n    \"CIGAR\",\n    \"SUBMACHINE GUN\",\n    \"HOOP EARRING\",\n    \"GOLDEN TOOTH\",\n    \"WEEDS\",\n    \"BOTTLES\",\n    \"RUSTY WEIGHTS\",\n    \"BENCH PRESS\",\n    \"DUCT-TAPE\",\n    \"BOTTLE\",\n    \"MEMORY STICK\"\n  ]\n}\n```"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 4759,
+              "candidatesTokenCount": 587,
+              "totalTokenCount": 5346,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 4759
+                }
+              ]
+            },
+            "modelVersion": "gemini-2.5-flash-lite",
+            "responseId": "Cm2saYjsNv-CmtkP1emEsA0"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 0.905,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-entity-discovery.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/entity_discovery_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this entity discovery output for the screenplay \"The Mariner.\"\n\nThis is a RECALL task — finding everything matters more than precision.\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\n\nKey quality criteria:\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS, GIRL IN CAGE.\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, dock, coastline.\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\n5. Does the model err on the side of inclusion rather than omission?\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\n\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-entity-discovery.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 4759,
+        "completion": 587,
+        "cached": 0,
+        "total": 5346,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 1894,
+          "prompt": 1194,
+          "completion": 700,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 16522,
+      "evaluationDurationMs": 16522
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Entity discovery from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/Documents/Projects/cine-forge/benchmarks/prompts/entity-discovery.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-entity-discovery.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/entity_discovery_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this entity discovery output for the screenplay \"The Mariner.\"\n\nThis is a RECALL task — finding everything matters more than precision.\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\n\nKey quality criteria:\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS, GIRL IN CAGE.\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, dock, coastline.\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\n5. Does the model err on the side of inclusion rather than omission?\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\n\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/entity-discovery-story124.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.25",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-03-07T18:23:20.589Z",
+    "evaluationCreatedAt": "2026-03-07T18:23:04.001Z"
+  }
+}

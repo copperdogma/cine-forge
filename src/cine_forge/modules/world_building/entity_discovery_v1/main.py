@@ -116,6 +116,49 @@ def run_module(
 
         results[key] = current_list
 
+    # ── Recall verification (Story 124) ──────────────────────────────
+    # Cross-reference discovered locations/props against scene_index signals.
+    # Re-prompt only when gaps are detected (zero cost on happy path).
+    verification_meta: dict[str, Any] = {
+        "verification_ran": False,
+        "locations_gap_count": 0,
+        "props_gap_count": 0,
+        "verification_cost_usd": 0.0,
+    }
+
+    if scene_index:
+        si_signals = _extract_scene_index_signals(scene_index)
+
+        for key, si_entities in si_signals.items():
+            if key not in results or not si_entities:
+                continue
+            gaps = _find_recall_gaps(results[key], si_entities, key)
+            verification_meta[f"{key}_gap_count"] = len(gaps)
+
+            if gaps:
+                verification_meta["verification_ran"] = True
+                desc_map = {t[0]: t[1] for t in taxonomies}
+                description = desc_map.get(key, key.upper())
+                prompt = _build_verification_prompt(
+                    key, description, results[key], gaps, script_text
+                )
+                payload, cost = call_llm(
+                    prompt=prompt,
+                    model=model,
+                    response_schema=_IncrementalDiscovery,
+                    temperature=0,
+                )
+                _update_cost(total_cost, cost)
+                verification_meta["verification_cost_usd"] += cost.get(
+                    "estimated_cost_usd", 0.0
+                )
+                results[key] = payload.items
+                print(
+                    f"[entity_discovery] Verification for {key}: "
+                    f"{len(gaps)} gaps found, re-prompted → "
+                    f"{len(results[key])} items"
+                )
+
     # Final artifact
     discovery_artifact = EntityDiscoveryResults(
         characters=results["characters"],
@@ -127,6 +170,7 @@ def run_module(
             "chunk_size": chunk_size,
             "model": model,
             "character_source": character_source,
+            **verification_meta,
         }
     )
 
@@ -203,3 +247,116 @@ def _normalize_character_name(value: Any) -> str:
     
     text = re.sub(r"\s+", " ", text).strip()
     return text
+
+
+def _normalize_entity_name(name: str, entity_type: str = "generic") -> str:
+    """Normalize an entity name for comparison across sources."""
+    text = str(name or "").strip().upper()
+    if entity_type == "characters":
+        return _normalize_character_name(name)
+    if entity_type == "locations":
+        # Strip INT./EXT. prefixes common in scene headings
+        text = re.sub(
+            r"^(INT\./EXT\.|INT/EXT|INT\.|EXT\.)\s*", "", text
+        )
+        # Strip trailing time-of-day markers
+        _tod = r"DAY|NIGHT|DAWN|DUSK|EVENING|MORNING|LATER|CONTINUOUS"
+        text = re.sub(rf"\s*-\s*({_tod})\s*$", "", text)
+    # General: strip non-alphanumeric except spaces/apostrophes, collapse whitespace
+    text = re.sub(r"[^A-Z0-9' ]+", "", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def _extract_scene_index_signals(
+    scene_index: dict[str, Any],
+) -> dict[str, list[str]]:
+    """Extract location and prop signals from scene_index for recall verification."""
+    signals: dict[str, list[str]] = {}
+
+    # Locations from unique_locations
+    locs = scene_index.get("unique_locations", [])
+    if locs:
+        signals["locations"] = list(dict.fromkeys(
+            _normalize_entity_name(loc, "locations") for loc in locs if loc
+        ))
+
+    # Props aggregated from per-scene entries
+    all_props: list[str] = []
+    for entry in scene_index.get("entries", []):
+        for prop in entry.get("props_mentioned", []):
+            if prop:
+                all_props.append(prop)
+    if all_props:
+        signals["props"] = list(dict.fromkeys(
+            _normalize_entity_name(p, "props") for p in all_props if p
+        ))
+
+    return signals
+
+
+def _find_recall_gaps(
+    discovered: list[str],
+    reference: list[str],
+    entity_type: str,
+) -> list[str]:
+    """Find reference entities not matched by any discovered entity."""
+    norm_discovered = [
+        _normalize_entity_name(d, entity_type) for d in discovered
+    ]
+    gaps = []
+    for ref in reference:
+        norm_ref = _normalize_entity_name(ref, entity_type)
+        if not norm_ref:
+            continue
+        # Substring match in both directions (handles aliases)
+        matched = any(
+            norm_ref in nd or nd in norm_ref
+            for nd in norm_discovered
+            if nd
+        )
+        if not matched:
+            gaps.append(ref)
+    return gaps
+
+
+def _build_verification_prompt(
+    entity_type: str,
+    description: str,
+    current_list: list[str],
+    missing_hints: list[str],
+    script_text: str,
+) -> str:
+    """Build a targeted re-prompt with specific missing-entity hints."""
+    list_str = ", ".join(current_list) if current_list else "None"
+    hints_str = ", ".join(missing_hints)
+    # Use a bounded excerpt to keep cost reasonable
+    max_context = 30000
+    context = script_text[:max_context]
+    if len(script_text) > max_context:
+        context += "\n\n[... screenplay continues ...]"
+
+    return f"""You are a professional Script Supervisor performing \
+a recall verification for {entity_type}.
+
+TAXONOMY DEFINITION: {description}
+
+YOUR CURRENT LIST:
+{list_str}
+
+POTENTIALLY MISSING (from scene index cross-reference):
+{hints_str}
+
+SCREENPLAY TEXT:
+{context}
+
+TASK:
+The scene index suggests the above items may be missing from your list.
+1. Review each potentially missing item against the screenplay text.
+2. If it meets the taxonomy definition, ADD it to the list.
+3. If it is an alias or variant of an existing item, do NOT add it.
+4. If it does not meet the taxonomy definition, do NOT add it.
+5. Return the complete, updated list of ALL {entity_type}.
+
+Return valid JSON: {{ "items": ["NAME 1", "NAME 2", ...] }}
+"""

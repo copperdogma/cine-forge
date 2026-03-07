@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-03-07-02] — Recall verification loop for entity discovery (Story 124)
+
+### Added
+- Recall verification in `entity_discovery_v1` — cross-references discovered locations/props against scene_index signals, re-prompts when gaps detected
+- `_normalize_entity_name()` — general-purpose entity normalizer for locations (strips INT./EXT., time-of-day) and props
+- `_extract_scene_index_signals()` — extracts location/prop reference lists from scene_index
+- `_find_recall_gaps()` — bidirectional substring matching for recall gap detection
+- `_build_verification_prompt()` — targeted re-prompt with missing entity hints
+- Acceptance test for live verification against The Mariner screenplay
+- 12 new unit tests for verification helpers and integration flow
+
+### Changed
+- `entity_discovery_v1` `processing_metadata` now includes `verification_ran`, `locations_gap_count`, `props_gap_count`, `verification_cost_usd`
+
 ## [2026-03-07-01] — Prompt completeness and grounding (Scout 010)
 
 ### Added
