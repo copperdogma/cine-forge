@@ -517,6 +517,10 @@ def _build_extraction_prompt(
         relevant_text = script["script_text"]
     feedback_block = f"\nQA Feedback to address: {feedback}\n" if feedback else ""
     return f"""You are a prop analyst. Extract a master definition for prop: {prop_name}.
+    Base every field strictly on evidence from the provided screenplay \
+text. If a detail about the prop's appearance, history, or \
+significance cannot be determined from the scenes, leave the field \
+empty rather than inventing plausible details.
 
     Return JSON matching PropBible schema.
 

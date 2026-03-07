@@ -514,9 +514,17 @@ def _build_extraction_prompt(
     )
     feedback_block = f"\nQA Feedback to address: {feedback}\n" if feedback else ""
     return f"""You are a location analyst. Extract a master definition for location: {loc_name}.
+    Base every field strictly on evidence from the provided screenplay \
+text — scene headings, action lines, and dialogue. If an attribute \
+(e.g., time period, architectural style) cannot be determined from \
+the text, leave it empty rather than inventing plausible details.
 
     Return JSON matching LocationBible schema.
     {feedback_block}
+    Before finalizing, verify that every scene set at this location \
+has been considered and no descriptive details from action lines or \
+dialogue have been missed.
+
     Location Context:
     - Name: {loc_name}
     - Scene Count: {entry['scene_count']}

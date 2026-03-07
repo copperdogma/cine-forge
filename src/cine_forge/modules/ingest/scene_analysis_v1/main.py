@@ -348,6 +348,12 @@ def _analyze_batch(
 
     prompt = (
         "You are analyzing a batch of screenplay scenes for narrative structure.\n"
+        "Base all analysis strictly on the scene text provided. Do not infer "
+        "narrative beats, tone, or character motivations from general film "
+        "knowledge — only from what is written in these specific scenes.\n"
+        "You MUST return an entry for every scene in the batch — no scenes "
+        "may be skipped or omitted. Verify your output count matches the "
+        "input count before responding.\n\n"
         "For each scene, identify:\n"
         "1. **narrative_beats**: Key story beats (conflict, revelation, transition, "
         "resolution, setup, escalation, climax, denouement). Each beat has a "

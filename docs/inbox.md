@@ -3,6 +3,8 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 ## Untriaged
 
+- Elevenlabs will now generate music which we can use: https://elevenmusic.io/
+
 - nano banana 2 templates would be useful for global style transfers: https://x.com/geminiapp/status/2027081255804870985?s=12&t=uFZE-MuhgWdh1YErEZzLtQ
 
 - Runway Character Rendered App: https://x.com/runwayml/status/2027411005509161375?s=20
@@ -46,5 +48,7 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 - **Tighten entity_discovery character/prop taxonomy prompts**: Character taxonomy currently reads "speaking roles or silent roles with plot impact" — allows generic noise like WAITER, GUARD, CROWD. Prop taxonomy already excludes "costumes or set dressing" but could be stricter. Add explicit exclusions: unnamed background characters, crowd members, generic service roles. Small prompt edit in `entity_discovery_v1/main.py` lines 49-57. *(Deferred from Story 065 — noise reduction scope)*
 
 - **Story-to-screenplay conversion**: For non-screenplay inputs (short stories, novels, treatments), send to a strong model with "make this into a screenplay" and take the output. Good for commercials and short-form. Not primary workflow but worth having as a convenience path. *(Source: Cam, 011b review)*
+
+- **Multi-pass research mode for complex analysis**: Instead of single-pass extraction, decompose complex analysis into sub-questions, retrieve evidence for each, then synthesize. Could benefit continuity tracking (plan what to track per scene, then extract) and scene analysis (identify narrative threads first, then analyze per-scene). Pattern from OpenAI GPT-5.4 prompt guidance; requires module architecture changes. *(Source: Scout 010)*
 
 - Google's Lyira3: https://deepmind.google/models/lyria/ We could use this for background tracks, but it ALSO will video to go with them. Likely they wouldn't work when placed within a film due to style differences, but many video gen models now have the ability to use a another video as timing/music/motion reference. So for instance we could tell Lyria3 to make an emotional montage with a man and a woman doing x,y,z with a song and the people's actions should sync with the music. Then feed that into a genAI along with reference images of OUR characters and say "use the motion/timing reference and music and replace the man and the woman with our chars." That could be amazing.

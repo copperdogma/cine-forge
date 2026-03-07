@@ -775,6 +775,10 @@ def _build_extraction_prompt(
     )
     feedback_block = f"\nQA Feedback to address: {feedback}\n" if feedback else ""
     return f"""You are a character analyst. Extract a master definition for character: {char_name}.
+    Base every field strictly on evidence from the provided screenplay \
+text. If a trait, relationship, or detail cannot be determined from the \
+scenes provided, leave the field empty or use 'unknown' rather than \
+inventing plausible details.
 
     Return JSON matching CharacterBible schema.
 
@@ -787,6 +791,10 @@ def _build_extraction_prompt(
     - Name: {char_name}
     - Scene Count: {entry['scene_count']}
     - Dialogue Count: {entry['dialogue_count']}
+
+    Before finalizing, verify that every field in the schema has been \
+considered and that no dialogue, action, or description referencing \
+this character has been overlooked in the provided scenes.
 
     Relevant Script Scenes (containing {char_name}):
     {relevant_text}
@@ -810,6 +818,8 @@ def _build_lightweight_prompt(
     )
     return f"""You are a character analyst. Extract a brief definition \
 for minor character: {char_name}.
+    Base all fields on evidence from the provided scene text. Do not \
+invent backstory, motivations, or details not present in the screenplay.
 
     This is a walk-on or minor character. Return JSON matching CharacterBible schema.
     Focus only on: name, description, scene_presence, narrative_role, and prominence.

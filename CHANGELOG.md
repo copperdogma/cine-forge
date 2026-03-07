@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-07-01] — Prompt completeness and grounding (Scout 010)
+
+### Added
+- Completeness contract language in `character_bible_v1`, `location_bible_v1`, `scene_analysis_v1` prompts — models must verify coverage before finalizing
+- Grounding language in `character_bible_v1`, `location_bible_v1`, `scene_analysis_v1`, `prop_bible_v1` prompts — base claims strictly on screenplay text, do not invent
+- "Prompt-First Before Model Escalation" principle in `AGENTS.md` — try prompt improvements before upgrading to expensive models
+- Story 124 (Draft) — Recall Verification Loop for Entity Discovery
+- Multi-pass research mode idea added to `docs/inbox.md`
+- Scout 010 expedition document (`docs/scout/scout-010-openai-prompt-guidance.md`)
+
 ## [2026-03-06-02] — Model discovery snapshot for eval registry
 
 ### Added
