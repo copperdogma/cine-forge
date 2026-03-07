@@ -103,3 +103,5 @@ Verification wired into `run_module()` after each taxonomy's chunked discovery. 
   - Verification cost: $0.0008 (only when gaps detected, zero on happy path)
   - Total cost with verification: $0.0017 vs $0.0009 without
 - **Conclusion**: Verification loop is a safety net. On The Mariner (short screenplay, 2 chunks), required recall is already 100% without verification. The loop catches optional entities that chunked processing drops. Value increases on longer screenplays with more chunks where required entity drops are more likely.
+
+20260307-1840 — Story marked Done. All 8 ACs met, all 8 tasks complete, all checks pass (509 unit tests, lint clean), eval confirmed no regression (0.905). Validation grade: A.
