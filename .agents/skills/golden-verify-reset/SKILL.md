@@ -6,6 +6,8 @@ user-invocable: true
 
 # /golden-verify-reset [--all | fixture-id]
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Reset golden fixture verification status to force re-verification.
 
 **Why:** After schema changes, model upgrades, or when you want to double-check

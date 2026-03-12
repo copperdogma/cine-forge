@@ -6,6 +6,8 @@ user-invocable: true
 
 # /setup-env-dev
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Set up the development environment with emphasis on eval infrastructure. The
 ability to test "can AI do this?" is the foundation everything else builds on.
 

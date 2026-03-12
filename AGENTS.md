@@ -21,9 +21,11 @@ This file is the project-wide source of truth for agent behavior and engineering
 
 - **GREENFIELD PROJECT — NO BACKWARDS COMPATIBILITY**: This app is under active development with zero real users, zero valuable user data, and zero old processes or file formats to preserve. Do NOT waste time on backwards compatibility shims, migration paths, deprecation warnings, old format support, or "gentle" transitions. When something needs to change, **change it directly**. Delete the old code. Update all call sites. If a schema changes, change it — don't version it. If an API changes, change it — don't keep the old endpoint. The only cost is a `git revert` away.
 - **Critical Pushback Required**: When the user proposes an idea, approach, or architecture — push back if it has problems. Point out when an idea is worse than what already exists, when it introduces unnecessary complexity, when it contradicts established patterns, or when it's solving the wrong problem. Sycophantic agreement is actively harmful in design discussions. The user trusts direct, evidence-based disagreement far more than reflexive validation. Say "that's wrong because X" when it's wrong. Say "the spec already handles this better via Y" when it does. This applies to design reviews, spec discussions, architecture decisions, and implementation approach — not to simple task execution.
+- **ADR Discipline**: Before making or reviewing architectural, workflow, schema, or UX decisions, read the relevant decision record(s) under `docs/decisions/` and any supporting decision docs under `docs/design/`. If a task does not cite an ADR but the work touches those areas, search for the relevant decision before choosing an approach. If no ADR applies, state that explicitly instead of guessing.
 - **No Implicit Commits**: NEVER commit or push changes unless explicitly requested by the user.
 - **Security First**: NEVER stage or commit secrets, API keys, or sensitive credentials.
 - **Permissioned Actions**: NEVER run `git commit`, `git push`, or modify remotes without explicit user permission.
+- **Bundled Permission Counts**: A single user message can authorize multiple sequential actions (for example: validate, mark done, commit, and push). Do not create artificial hard stops between already-approved steps unless a real blocker, risk, or contradiction appears.
 - **Verify, Don't Assume**: NEVER assume a library is available or a file has a specific content. Use `read_file` and dependency checks (`package.json`, `pyproject.toml`) to ground your work.
 - **Immutability**: Versioned artifacts are immutable. NEVER mutate an existing version in place; always produce a new version with incremented metadata.
 - **AI-First Engineering**: Prefer roles, prompts, and structured artifacts over rigid hard-coded business rules. Architecture should facilitate AI reasoning.
@@ -139,7 +141,7 @@ For multi-model research tasks, use the `deep-research` CLI tool (v0.3.3+).
 
 ### Model Benchmarking (promptfoo)
 
-We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality across pipeline tasks. Benchmark workspace lives in a separate git worktree (`cine-forge-sidequests` on `sidequests/model-benchmarking`).
+We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality across pipeline tasks. Benchmark workspace lives in a separate git worktree (`cine-forge-sidequests`), currently on the existing user-managed branch `sidequests/model-benchmarking`. New agent-created branches elsewhere should use `codex/*`.
 
 #### Prerequisites
 - **Node.js 24 LTS** (v24.13.1+). Promptfoo requires Node 22+. Installed via nvm.
@@ -304,6 +306,16 @@ Every module default is backed by eval evidence. Selections use **value analysis
 - **Done**: All ACs met, checks pass, work log updated.
 
 Use Draft status liberally for future stories. It prevents premature execution of half-baked stories while still capturing the intent.
+
+### Story Execution Protocol
+
+- `/build-story` owns implementation only. It MUST stop at the implementation handoff, leave the story `In Progress`, summarize the work, and recommend `/validate` as the next step.
+- `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean.
+- `/mark-story-done` is the only skill that may mark a story `Done` or update the story index to `Done`.
+- `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
+- Commit and push happen only when the user explicitly requests them.
+- Each step should end with a concise summary and a recommended next step the user can approve with a simple "yes".
+- If the user already authorized later steps in the chain, continue without redundant confirmation unless a meaningful blocker or risk appears.
 
 ### Runbook Conventions
 
@@ -492,7 +504,11 @@ When adding a new screenplay for testing, create a corresponding golden referenc
 
 ### Worktree Strategy
 
-The user runs multiple Claude Code sessions in parallel. To prevent git conflicts between sessions, we use **git worktrees** — each session works in its own directory on its own branch.
+The user runs multiple agent sessions in parallel. To prevent git conflicts between sessions, we use **git worktrees** — each session works in its own directory on its own branch.
+
+**Preferred model:** one task = one branch = one worktree = one agent.
+
+`main` is the stable integration branch. Feature or story work should normally happen on a task branch in its own worktree. Working directly on `main` is allowed as an exception when the user chooses it, but it is not the preferred development path.
 
 #### Orientation: Which Worktree Am I In?
 
@@ -501,19 +517,21 @@ When starting a session, run `git worktree list` to understand the layout. Commo
 | Directory | Branch | Purpose |
 |---|---|---|
 | `cine-forge/` | `main` | Production code — pipeline, modules, UI, backend |
-| `cine-forge-sidequests/` | `sidequests/<topic>` | Research, tooling, docs-only stories |
+| `cine-forge-sidequests/` | `codex/<topic>` or existing user-managed sidequest branch | Research, tooling, docs-only stories, benchmark experiments |
 
-**If you are in `cine-forge/`** — you are on the main branch. Do code work here. Do NOT touch files that belong to an active side quest branch.
+**If you are in `cine-forge/`** — you may be on `main` or another branch. Check `git branch --show-current` before assuming. If you are on `main`, treat it as the stable integration branch unless the user explicitly chose to work there.
 
-**If you are in `cine-forge-sidequests/`** (or similar) — you are on a feature branch. Do research, tooling evaluation, and documentation here. When done, tell the user so they can merge.
+**If you are in `cine-forge-sidequests/`** (or similar) — you are on a feature or sidequest branch. This may be a new `codex/*` branch or an older user-managed sidequest branch. Stay within that worktree's scope. When done, use `/check-in-diff` if the user explicitly requests check-in.
 
 #### Rules
 
-1. **Never work across worktrees.** Each session stays in its own directory. Don't read or write files in sibling worktrees.
-2. **Branch naming**: `sidequests/<topic>` for research/tooling, `feature/<topic>` for code features.
-3. **Merging**: Only the user (or the main session at the user's request) merges branches. Side quest sessions do NOT merge into main.
-4. **Commits**: Each session commits to its own branch per the normal "No Implicit Commits" mandate. Commits on side quest branches are fine when the user requests them — they won't affect main.
-5. **Shared files**: AGENTS.md, CLAUDE.md, and other root config files are tracked by git and shared across worktrees at their respective commit points. Avoid conflicting edits to these files across sessions — coordinate with the user.
+1. **Never do ordinary work across worktrees.** Each session stays in its own directory and does not edit project files in sibling worktrees. Narrow exception: `/check-in-diff` may run git-only landing commands in the existing `main` worktree when that is the only safe way to fast-forward `main`.
+2. **Preferred structure**: create a task branch per workstream and keep one agent in that worktree at a time.
+3. **Agent-created branches**: when the agent creates a new branch itself, use the `codex/` prefix. Existing user branches do not need to be renamed.
+4. **Check-in flow**: `/check-in-diff` owns commit/push/integrate/land when the user explicitly requests check-in. The preferred landing path is task branch → sync with latest `origin/main` → validate → fast-forward `main`.
+5. **Main fallback**: if the user chose to work on `main`, do not panic. But do not push `main` before validation, and do not resolve integration conflicts directly on `main`; use a temporary integration branch if sync with `origin/main` is required.
+6. **Landing exception only**: if another worktree already has `main` checked out, `/check-in-diff` may use git commands there for the final fast-forward landing step only. Do not do implementation edits or conflict resolution in that sibling worktree.
+7. **Shared files**: AGENTS.md, CLAUDE.md, and other root config files are tracked by git and shared across worktrees at their respective commit points. Avoid conflicting edits to these files across sessions — coordinate with the user.
 
 #### Creating a New Worktree
 
@@ -521,7 +539,7 @@ When the user wants to start a new parallel workstream:
 
 ```bash
 # From the main repo
-git worktree add ../cine-forge-sidequests -b sidequests/<topic-name>
+git worktree add ../cine-forge-sidequests -b codex/<topic-name>
 ```
 
 When a side quest is done and merged:
@@ -529,7 +547,7 @@ When a side quest is done and merged:
 ```bash
 # Clean up
 git worktree remove ../cine-forge-sidequests
-git branch -d sidequests/<topic-name>
+git branch -d codex/<topic-name>
 ```
 
 ## Production Deployment

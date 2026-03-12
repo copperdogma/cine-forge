@@ -6,6 +6,8 @@ user-invocable: true
 
 # /discover-models
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Query OpenAI, Anthropic, and Google model APIs to see what's available, flag untested models, and identify new SOTA options for eval work.
 
 ## Steps

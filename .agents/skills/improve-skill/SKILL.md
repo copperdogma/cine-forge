@@ -6,6 +6,8 @@ user-invocable: true
 
 # /improve-skill
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Evaluate the interaction that just happened with the most recently used skill. Identify where the skill's instructions fell short, propose improvements, and apply approved ones.
 
 ## Philosophy

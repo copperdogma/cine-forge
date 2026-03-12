@@ -6,6 +6,8 @@ user-invocable: true
 
 # /setup-evals
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Build the eval harness and run the first baseline measurement. This is the
 moment of truth: test the simplest possible approach for each capability and
 measure the gap against golden references. That gap IS the architecture you

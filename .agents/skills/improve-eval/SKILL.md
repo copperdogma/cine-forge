@@ -6,6 +6,8 @@ user-invocable: true
 
 # /improve-eval [eval-id] [--autonomous]
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Pick an eval from the registry, study past attempts, and try to improve its score, latency, or cost.
 
 **Improvement types:** Quality (better scores), speed (lower latency), cost (cheaper per call),

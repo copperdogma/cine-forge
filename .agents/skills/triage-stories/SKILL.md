@@ -6,6 +6,8 @@ user-invocable: true
 
 # /triage-stories [story-number]
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Evaluate the story backlog and recommend the best next stories to work on.
 
 ## Arguments

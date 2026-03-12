@@ -18,7 +18,11 @@ Assess whether a story's implementation meets its requirements.
 
 2. **Read the story** — Load `docs/stories/story-{NNN}-*.md`. Note all acceptance criteria and tasks.
 
-3. **Run the full check suite**:
+2b. **Check workflow gates** — Read the `Workflow Gates` section if present. If it is missing on an older story, add equivalent gates before continuing so the handoff state is explicit.
+
+3. **Read architecture context** — Read `docs/ideal.md`, the story's spec refs, and all referenced ADRs. If the story touches architecture, workflows, schemas, or UX patterns and no ADR is cited, search `docs/decisions/` and `docs/design/` for relevant decision records before reviewing implementation quality.
+
+4. **Run the full check suite**:
    - **Mandatory for all code changes** (regardless of perceived scope):
      - **Backend**:
        - `make test-unit PYTHON=.venv/bin/python`
@@ -27,29 +31,51 @@ Assess whether a story's implementation meets its requirements.
      - **UI**:
        - `pnpm --dir ui run lint`
        - `cd ui && npx tsc -b`
+       - If UI files changed: `pnpm --dir ui run build`
    - **Rationale**: Strict linting (e.g., React 19 purity) and type-checking can flag issues that aren't immediately obvious in the IDE. Running these locally is the only way to ensure a green deployment gate.
    - If a command is unavailable (missing script/tool), report it explicitly.
 
-4. **Review acceptance criteria** — For each criterion:
+5. **Review acceptance criteria** — For each criterion:
    - **Met** — Evidence that it works (test output, code reference)
    - **Partial** — Partially implemented, what's missing
    - **Unmet** — Not implemented or broken
 
-5. **Review code quality:**
+6. **Review approach quality and code health:**
+   - Does the implementation match the relevant ADRs and repo patterns?
+   - Is there evidence this was the right approach for this repo, or does the diff look like generic solutioning?
+   - Are there simpler existing abstractions/components/helpers that should have been reused?
+   - Did the change make any older code paths, helpers, components, or docs redundant?
    - Are there any files over 600 lines that should be split?
    - Are types centralized or scattered?
    - Are error cases handled?
    - Are integration tests covering the boundaries?
 
-5b. **Eval mismatch investigation** (if the story touched an AI module or eval):
+7. **Run browser verification for UI changes**:
+   - If UI files changed, use browser tools when possible to load the modified flow, capture a screenshot, and inspect browser console errors
+   - If browser tools are unavailable or failing, follow `docs/runbooks/browser-automation-and-mcp.md` and report the blocker explicitly
+   - Missing browser evidence for a UI-affecting story is a finding, not a footnote
+
+8. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
    - Run `/verify-eval` for the structured investigation protocol. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence.
    - Unclassified mismatches are a finding (priority: high) — grade cannot exceed B
    - **Update `docs/evals/registry.yaml`** with verified scores, `git_sha`, and date for every eval you ran
 
-6. **Check Ideal alignment** — Read the relevant section of `docs/ideal.md`. Does the implementation move toward the Ideal or entrench a compromise? If entrenching: is the compromise justified and does a detection eval exist?
+9. **Check Ideal alignment** — Read the relevant section of `docs/ideal.md`. Does the implementation move toward the Ideal or entrench a compromise? If entrenching: is the compromise justified and does a detection eval exist?
 
-7. **Produce report:**
+10. **Update story handoff state**:
+   - Check `Validation complete or explicitly skipped by user` when validation was actually run
+   - Leave `Story marked done via /mark-story-done` unchecked
+   - Add a work log note summarizing validation outcome and the recommended next step
+
+11. **Produce report** — Findings must explicitly call out:
+   - missing ADR / decision alignment
+   - weak or unproven approach selection
+   - redundant code left behind
+   - missing browser verification for UI work
+   - unmet acceptance criteria or failed checks
+   - recommended next step (`/mark-story-done` if clean, otherwise fix issues)
+   - By default, stop after the report. If the user already explicitly approved the next step(s) and validation is clean enough to proceed, continue to `/mark-story-done` inline instead of asking again
 
 ```
 ## Validation Report — Story {NNN}
@@ -61,10 +87,23 @@ Assess whether a story's implementation meets its requirements.
 - backend tests: PASS/FAIL
 - backend lint: PASS/FAIL
 - ui checks: PASS/FAIL/NOT RUN (with reason)
+- browser verification: PASS/FAIL/NOT RUN (with reason)
 - missing/unavailable checks: [list]
 
 ### Acceptance Criteria
 - [criterion]: Met/Partial/Unmet — evidence
+
+### Architecture / ADR Fit
+- relevant decisions reviewed: [list]
+- aligns with repo patterns: yes/no/partial
+
+### Approach Review
+- chosen approach appears justified: yes/no/partial
+- evidence: [repo-specific evidence or lack thereof]
+
+### Redundancy Review
+- redundant code/docs left behind: yes/no
+- details: [list]
 
 ### Ideal Alignment
 - Moves toward Ideal: yes/no/partial
@@ -81,6 +120,9 @@ Assess whether a story's implementation meets its requirements.
 - Never hide gaps or inflate the grade
 - Always report unmet criteria clearly
 - Always include evidence for "Met" ratings
+- Never mark a story `Done` from `/validate` — story closure belongs to `/mark-story-done`
+- Never give an A to a UI-affecting story without browser verification evidence
+- Never ignore redundant code that the new implementation clearly supersedes
 - If grade is below B, list specific remediation steps
 - **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` for code changes, even if you think only the backend was touched.
 - Prefer project-native checks over generic templates

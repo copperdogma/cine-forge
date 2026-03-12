@@ -6,6 +6,8 @@ user-invocable: true
 
 # /setup-spec
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Build the full project spec. This is NOT a creative exercise — it's an
 engineering response to measured limitations. Every section of this spec
 exists because an eval or analysis proved the Ideal can't be achieved directly.

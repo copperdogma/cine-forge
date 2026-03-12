@@ -6,6 +6,8 @@ user-invocable: true
 
 # /golden-verify [fixture-id]
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Orchestrate verification of all golden reference test fixtures. This is a pure
 orchestrator — it never reads fixture content. It reads the checklist, launches
 subagents to do the work, records their verdicts, and loops.

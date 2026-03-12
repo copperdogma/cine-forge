@@ -216,6 +216,7 @@ NOTES from Cam:
 | 122 | Golden Fixture Helpers | 0 — Infrastructure | Medium | Done | [story-122](stories/story-122-golden-fixture-helpers.md) |
 | 123 | Anthropic Prompt Caching | 0 — Infrastructure | Medium | Done | [story-123](stories/story-123-anthropic-prompt-caching.md) |
 | 124 | Recall Verification Loop | 0 — Infrastructure | Medium | Done | [story-124](stories/story-124-recall-verification-loop.md) |
+| 125 | Agent Workflow Hardening Meta Upgrade | Cross-Cutting | High | Done | [story-125](stories/story-125-agent-workflow-hardening-meta-upgrade.md) |
 
 ## Phase Summary
 

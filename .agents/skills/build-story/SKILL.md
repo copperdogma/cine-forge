@@ -16,10 +16,11 @@ Execute a development story end-to-end.
    - Goal
    - Acceptance Criteria
    - Tasks (checkbox items)
+   - Workflow Gates
    - Work Log
-   If tasks are missing, add actionable checkbox items without discarding existing intent.
+   If tasks or workflow gates are missing, add actionable checkboxes without discarding existing intent.
 
-3. **Read context** — Read `docs/ideal.md` first, then all spec refs, dependency stories, and referenced ADRs. Read the "Files to Modify" list if present.
+3. **Read context** — Read `docs/ideal.md` first, then all spec refs, dependency stories, and referenced ADRs. If the story does not cite an ADR and the work affects architecture, workflow, schemas, or UX patterns, search `docs/decisions/` and `docs/design/` for relevant decision records instead of assuming none exist. Read the "Files to Modify" list if present.
 
 4. **Ideal Alignment Gate** — Before exploring code, verify this story moves toward the Ideal:
    - Does this story close an Ideal gap? → proceed
@@ -33,12 +34,15 @@ Execute a development story end-to-end.
    - Find every file that will need to change (not just the obvious ones)
    - Find every file that could break (callers, consumers, tests)
    - Identify existing patterns and conventions to match
+   - Identify existing components, helpers, services, or abstractions that this change could replace or make redundant
    - Note any schema, config, or migration concerns
 
 6. **Record exploration findings** — Write a brief "Exploration Notes" entry in the work log:
    - Files that will change
    - Files at risk of breaking
+   - ADRs / decision docs consulted
    - Patterns to follow
+   - Potential redundant code or cleanup targets
    - Any surprises or risks found
 
 ## Phase 2 — Plan (produces a written artifact)
@@ -51,7 +55,14 @@ Execute a development story end-to-end.
    - For pure orchestration/storage/plumbing/UI: code is obviously simpler — no comparison needed.
    - **Model selection requires live data**: Never pick models from training data. Query the provider API and check current pricing. Cost differences can be 10-20x.
 
-8. **Structural Health Check** — Before writing the plan, assess architectural fit:
+8. **Repo-fit / optimality gate** — Before writing the plan, prove the chosen approach fits this repo better than the alternatives:
+   - Cite project evidence: relevant `docs/ideal.md` guidance, spec compromises, ADRs, prior stories, existing code patterns, eval results, and current code constraints
+   - State why the chosen approach is better here, not just generally plausible
+   - State why the main alternatives were rejected
+   - If you cannot produce repo-specific evidence, do more research instead of calling the plan "optimal"
+   - Avoid research theater: concise evidence beats generic architecture prose
+
+9. **Structural Health Check** — Before writing the plan, assess architectural fit:
    - Run `make check-size` (or `wc -l` on each file in "Files to Modify") — list every file to be touched with its current line count
    - If any file is >500 lines: note it explicitly in the plan. If the story adds logic to it without a decomposition task first, flag as a plan risk and consider adding an extraction phase
    - If any method to be modified is >100 lines: first task should be extracting it into a testable unit
@@ -59,48 +70,55 @@ Execute a development story end-to-end.
    - For any new event type: verify it has an entry in `src/cine_forge/schemas/events.py` before the emit call site
    - Record the health check findings in the plan
 
-9. **Write the implementation plan** — Add a `## Plan` section to the story file with:
+10. **Write the implementation plan** — Add a `## Plan` section to the story file with:
    - For each task: which files change, what changes, in what order
    - Impact analysis: what tests are affected, what could break
-   - Structural health check findings (from step 8)
+   - Repo-fit / optimality evidence (from step 8)
+   - Structural health check findings (from step 9)
+   - Redundancy plan: what old code, helper paths, or docs should be removed if the new path lands
+   - UI verification plan for UI-affecting work: browser tools to use, golden path to exercise, and fallback runbook if browser tooling is unavailable
    - Any human-approval blockers (new dependencies, schema changes, public API changes)
    - What "done" looks like for each task
 
-10. **Human gate** — Present the plan to the user. Surface any ambiguities or risks. Do not write any implementation code until the user approves. If something in the plan is unclear, ask now — not mid-implementation.
+11. **Human gate** — Present the plan to the user. Surface any ambiguities or risks. Do not write any implementation code until the user approves. If something in the plan is unclear, ask now — not mid-implementation.
 
 ## Phase 3 — Implement
 
-11. **Implement** — Work through tasks in order. For each task:
+12. **Implement** — Work through tasks in order. For each task:
+   - If the story status is `Pending`, set it to `In Progress` before implementation starts
    - Mark task as in progress in the story file
    - Do the work
    - Run relevant project checks after meaningful changes (backend: unit tests + Ruff; UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`)
+   - For significant UI changes, use browser tools during the build loop when possible (screenshot + console check), not only at the end
    - Run relevant tests
    - Mark task complete with brief evidence
 
-12a. **Static verification** — Run the project's full validation suite:
+13a. **Static verification** — Run the project's full validation suite:
    - Backend: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`
    - UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`
    - `pnpm --dir ui run build` (catches errors typecheck misses)
    - Review each acceptance criterion — is it met?
 
-12b. **Eval mismatch investigation** (if the story touched an AI module or eval):
+13b. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
    - Prompt the user to run `/verify-eval`. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** before the story can close. Do not attempt the full investigation inline — it overwhelms context.
    - **Re-assess acceptance criteria against verified scores.** Golden fixes from `/verify-eval` change the real scores. What looked like a passing story on raw scores may fail on verified scores (or vice versa). Only verified scores determine whether acceptance criteria are met.
    - Do not proceed to Done if mismatches remain unclassified
    - **Update `docs/evals/registry.yaml`** with new scores, `git_sha`, and date for every eval you ran. Stale registry scores are worse than no scores — they cause future agents to waste time on already-solved problems or miss regressions.
 
-12c. **Runtime smoke test** — Verify the app actually works end-to-end:
+13c. **Runtime smoke test** — Verify the app actually works end-to-end:
    - Start dev servers — confirm they start with no error output in logs
    - If backend changed: hit the health endpoint — confirm 200 with valid JSON
-   - If any frontend files changed: Chrome MCP screenshot — page loads, no blank screen, no JS console errors
+   - If any frontend files changed: use browser tools when possible to capture a screenshot, exercise the changed UI path, and inspect JS console errors
+   - If browser tools are unavailable or failing: follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
    - If frontend→backend communication was added or changed: confirm the call succeeds and response is correct
-   - Record evidence in the work log: server startup output, curl response, screenshot description
+   - Run a redundancy pass before closing: remove obsolete code paths if safe, otherwise record a concrete follow-up
+   - Record evidence in the work log: server startup output, curl response, screenshot description, console status, redundancy outcome
    - **Do not mark Done if this step was skipped** — static checks passing ≠ app works
 
-13. **Update docs** — Search all docs in the codebase and update any related to what we touched.
+14. **Update docs** — Search all docs in the codebase and update any related to what we touched.
 
-14. **Verify Central Tenets** — Check each tenet checkbox in the story:
+15. **Verify Central Tenets** — Check each tenet checkbox in the story:
    - Tenet 0: Could any user data be lost? Is capture-first preserved?
    - Tenet 1: Is the code AI-friendly? Would another AI session understand it?
    - Tenet 2: Did we over-engineer something AI will handle better soon?
@@ -108,9 +126,14 @@ Execute a development story end-to-end.
    - Tenet 4: Is the work log verbose enough for handoff?
    - Tenet 5: Did we check: can this be simplified toward the ideal?
 
-15. **Update work log** — Add dated entry: what was done, decisions made, evidence, any blockers or follow-ups.
+16. **Update work log** — Add dated entry: what was done, decisions made, evidence, any blockers or follow-ups.
 
-16. **Update status** — If all acceptance criteria met and checks pass, mark story Done. Update `docs/stories.md` index.
+17. **Implementation handoff** — Do not close the story here:
+   - Check the `Build complete` workflow gate
+   - Leave `Validation complete or explicitly skipped by user` and `Story marked done via /mark-story-done` unchecked
+   - Leave the story status as `In Progress`
+   - Give the user a concise implementation summary, highlight any residual risks, and recommend `/validate` as the next step
+   - By default, stop here. If the user already explicitly approved the next step(s), continue to `/validate` inline instead of asking again
 
 ## Work Log Format
 
@@ -122,11 +145,15 @@ Entries should be verbose. Capture decisions, failures, solutions, and learnings
 
 ## Guardrails
 
-- Never write implementation code before the human gate (step 10) — exploration and planning are read-only
+- Never write implementation code before the human gate (step 11) — exploration and planning are read-only
 - Never skip acceptance criteria verification
+- Never claim an approach is "optimal" without repo-specific evidence
+- Never leave obvious redundant code in place without either removing it or recording a concrete follow-up
+- Never mark a story `Done` from `/build-story` — story closure belongs to `/mark-story-done`
 - Never mark Done if any check fails
-- Never mark Done if the runtime smoke test (11c) was skipped — static checks passing ≠ app works
-- Never mark Done if eval mismatches remain unclassified (11b) — silently accepting noise is a hard stop
+- Never mark Done if the runtime smoke test (13c) was skipped — static checks passing ≠ app works
+- Never mark Done if eval mismatches remain unclassified (13b) — silently accepting noise is a hard stop
+- Never mark a UI-affecting story Done without browser-based verification evidence or a documented browser-tool blocker
 - Never commit without running the required checks for changed scope
 - Always update the work log, even for partial progress
 - If blocked, record the blocker and stop — don't guess

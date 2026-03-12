@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-12-01] — Agent workflow hardening meta upgrade (Story 125)
+
+### Added
+- Story 125 to track the repo's agent-workflow hardening bundle with explicit acceptance criteria, workflow gates, and validation evidence
+- `codebase-improvement-scout` skill, runbook, templates, bootstrap script, and research/scout artifacts for report-first repo hygiene
+- ADR-check reminders across reusable skills and scoped agent docs
+
+### Changed
+- Story lifecycle workflow: `build-story` now stops at implementation handoff, `validate` owns validation, and `mark-story-done` is the only story-closing step
+- `check-in-diff`, its runbook, and `AGENTS.md` worktree policy to support task branches plus a safe `main` fallback without pushing unvalidated `main`
+- Story template and story-creation guidance to include workflow gates, ADR refs, redundancy checks, and browser-verification requirements for UI work
+
 ## [2026-03-07-02] — Recall verification loop for entity discovery (Story 124)
 
 ### Added

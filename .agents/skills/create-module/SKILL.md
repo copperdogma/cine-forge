@@ -6,6 +6,8 @@ user-invocable: true
 
 # create-module
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Use this skill to scaffold a module at `src/cine_forge/modules/{stage}/{module_id}/`.
 
 ## Inputs

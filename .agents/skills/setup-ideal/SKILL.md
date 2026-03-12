@@ -6,6 +6,8 @@ user-invocable: true
 
 # /setup-ideal [project-name]
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Build the project's Ideal through guided conversation with the user. This is the
 most important document in the project. Everything else — the spec, the architecture,
 the evals — derives from it.

@@ -5,6 +5,8 @@ description: Toolkit for testing web applications using Playwright. Supports ver
 
 # Web Application Testing
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 *Adapted from [anthropics/skills/webapp-testing](https://github.com/anthropics/skills). Original: Apache 2.0.*
 
 Test CineForge's web application using Python Playwright scripts.

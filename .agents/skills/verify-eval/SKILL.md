@@ -6,6 +6,8 @@ user-invocable: true
 
 # /verify-eval
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Investigate every mismatch between model output and golden reference after an eval
 run. Classify each as model-wrong, golden-wrong, or ambiguous. Fix the golden when
 it's wrong, re-run the eval, and report verified scores.

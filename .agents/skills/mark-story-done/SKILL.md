@@ -6,6 +6,8 @@ user-invocable: true
 
 # /mark-story-done [story-number]
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Close a completed story after validation.
 
 ## Inputs
@@ -16,7 +18,12 @@ Close a completed story after validation.
 
 1. **Resolve story file** — Read `docs/stories/story-{NNN}-*.md`.
 
-2. **Validate completeness:**
+2. **Check workflow gates first:**
+   - [ ] `Build complete` is checked
+   - [ ] `Validation complete or explicitly skipped by user` is checked, or the user explicitly instructed you to skip validation in this close-out request
+   - [ ] `Story marked done via /mark-story-done` is still unchecked
+
+3. **Validate completeness:**
    - [ ] All task checkboxes checked
    - [ ] All acceptance criteria met (with evidence)
    - [ ] Work log is current
@@ -29,16 +36,18 @@ Close a completed story after validation.
    - [ ] Tenet verification checkbox checked
    - [ ] Doc update checkbox checked
 
-3. **Produce completion report** — List any remaining gaps.
+4. **Produce completion report** — List any remaining gaps.
 
 ## Apply Completion
 
 If complete (or user approves remaining gaps):
 
 1. Set story file status to `Done`.
-2. Update corresponding row in `docs/stories.md` to `Done`.
-3. Append completion note to story work log with date and evidence.
-4. Update CHANGELOG.md:
+2. Check `Story marked done via /mark-story-done`.
+3. If validation was explicitly skipped by the user, record that decision in the work log and check `Validation complete or explicitly skipped by user`.
+4. Update corresponding row in `docs/stories.md` to `Done`.
+5. Append completion note to story work log with date and evidence. End the note with the recommended next step: `/check-in-diff`.
+6. Update CHANGELOG.md:
    - Search CHANGELOG.md for the story number (e.g., `Story 001`)
    - If an entry already exists, skip — do not duplicate
    - If no entry exists, prepend a new entry after the `# Changelog` header:
@@ -70,3 +79,5 @@ If not complete, stop and list blockers.
 - Never mark Done without running the full check suite
 - Never mark Done if evals were run without a `/verify-eval` report (or equivalent classification) in the work log
 - Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first
+- End with a concise summary and recommend `/check-in-diff` as the next step unless the user already approved later steps
+- If the user already explicitly approved `/check-in-diff`, commit, or push, continue without redundant confirmation unless a meaningful blocker appears

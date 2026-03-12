@@ -6,6 +6,8 @@ user-invocable: true
 
 # /setup-eval-registry
 
+> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+
 Bootstrap the eval registry system in the current project. Creates the `docs/evals/`
 directory structure, empty registry, templates, and `scripts/discover-models.py`.
 Safe to run on an existing project — does not overwrite existing files.
