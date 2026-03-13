@@ -8,7 +8,8 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 
 | Story | Why |
 |---|---|
-| **025** Shot Planning | The bridge from current creative artifacts to the full generation lane. Unblocks 026, 027, 028, and 030. |
+| **132** Shot Planning UI and Shot List Exports | Closes the human-operability gap left after Story 025 by surfacing shot planning and shot-list exports in the real UI. |
+| **026** Storyboard Generation | Newly unblocked by Story 025. Optional next visualization layer if we want to continue deeper into the film lane. |
 | **029** User Asset Injection | Delivers Ideal R17 in the artifact system and unblocks Story 098. |
 | **031** Change Propagation | R15 Layer 2. Critical before AI artifact editing and deeper iterative editing workflows. |
 | **032** Cost Tracking | Builds the budget and reporting layer on top of already-landed cost hooks. |
@@ -20,9 +21,8 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 
 | Story | Blocked On |
 |---|---|
-| **026** Storyboard Generation | Story 025 |
-| **027** Animatics / Previz | Stories 025, 026 |
-| **028** Render Adapter | Stories 025, 027, 098 |
+| **027** Animatics / Previz | Story 026 |
+| **028** Render Adapter | Stories 027, 098 |
 | **030** Generated Output QA | Stories 028, 032 |
 
 ### Draft — Scope Or Decision Needed First
@@ -80,8 +80,8 @@ NOTES from Cam:
 | 022 | Sound & Music — Sound Direction | 5 — Creative Direction | Medium | Done | [story-022](stories/story-022-sound-designer.md) |
 | 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
 | ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
-| 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | Pending | [story-025](stories/story-025-shot-planning.md) |
-| 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Blocked | [story-026](stories/story-026-storyboard-generation.md) |
+| 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | Done | [story-025](stories/story-025-shot-planning.md) |
+| 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Pending | [story-026](stories/story-026-storyboard-generation.md) |
 | 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Blocked | [story-027](stories/story-027-animatics-previz.md) |
 | 028 | Render Adapter Module | 7 — Generation | Low | Blocked | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Pending | [story-029](stories/story-029-user-asset-injection.md) |
@@ -176,6 +176,7 @@ NOTES from Cam:
 | 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Draft | [story-119](stories/story-119-design-study-prompt-compiler.md) |
 | 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Draft | [story-120](stories/story-120-production-format-setting.md) |
 | 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Draft | [story-121](stories/story-121-design-study-composition-ux.md) |
+| 132 | Shot Planning UI and Shot List Exports | 6 — Shot Planning & Viz | High | Pending | [story-132](stories/story-132-shot-planning-ui-and-shot-list-exports.md) |
 | 122 | Golden Fixture Helpers | 0 — Infrastructure | Medium | Done | [story-122](stories/story-122-golden-fixture-helpers.md) |
 | 123 | Anthropic Prompt Caching | 0 — Infrastructure | Medium | Done | [story-123](stories/story-123-anthropic-prompt-caching.md) |
 | 124 | Recall Verification Loop | 0 — Infrastructure | Medium | Done | [story-124](stories/story-124-recall-verification-loop.md) |

@@ -1,0 +1,53 @@
+module_id: shot_plan_v1
+stage: shot_planning
+description: >
+  Produces one scene-level shot plan per scene, grounded in Rhythm & Flow,
+  Look & Feel, Sound & Music, character bibles, and continuity states. The
+  module also updates the project timeline shot placeholders and writes shot
+  entries onto the shared shots track.
+input_schemas:
+  - canonical_script
+  - scene_index
+  - timeline
+  - track_manifest
+  - continuity_index
+  - rhythm_and_flow
+  - look_and_feel
+  - sound_and_music
+  - character_bible
+  - character_and_performance
+  - intent_mood
+output_schemas:
+  - shot_plan
+  - timeline
+  - track_manifest
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Primary model for shot-planning generation."
+  escalate_model:
+    type: string
+    required: false
+    default: "claude-opus-4-6"
+    description: "Escalation model for QA failures."
+  verify_model:
+    type: string
+    required: false
+    default: "claude-haiku-4-5-20251001"
+    description: "Lightweight verification model for completeness and adequacy."
+  skip_qa:
+    type: boolean
+    required: false
+    default: false
+  concurrency:
+    type: integer
+    required: false
+    default: 4
+    description: "Max parallel scene shot-planning calls."
+  max_tokens:
+    type: integer
+    required: false
+    default: 4800
+    description: "Token ceiling for the scene-level shot-planning response."

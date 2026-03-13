@@ -117,12 +117,12 @@ def test_empty_store_dependent_node_blocked(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
-def test_unimplemented_node_status(tmp_path: Path) -> None:
+def test_shot_planning_blocked_until_dependencies_exist(tmp_path: Path) -> None:
     store = ArtifactStore(project_dir=tmp_path / "project")
     node = _NODE_MAP["shot_planning"]
-    assert not node.implemented
+    assert node.implemented
     status, count = compute_node_status(node, store, {})
-    assert status == NodeStatus.NOT_IMPLEMENTED
+    assert status == NodeStatus.BLOCKED
     assert count == 0
 
 
@@ -468,8 +468,8 @@ def test_check_prerequisites_unknown_node(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
-def test_check_prerequisites_unimplemented_dep(tmp_path: Path) -> None:
-    """shot_planning depends on look_and_feel which is not implemented."""
+def test_check_prerequisites_shot_planning_direction_deps(tmp_path: Path) -> None:
+    """shot_planning reports unmet direction prerequisites when store is empty."""
     store = ArtifactStore(project_dir=tmp_path / "project")
     graph = compute_pipeline_graph(store)
     prereqs = check_prerequisites("shot_planning", graph)

@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-13-08] — Shot planning backend landing (Story 025)
+
+### Added
+- `shot_plan` schemas, module, recipe, and tests for scene-level coverage strategies and ordered shot definitions
+- Shot-list CSV/PDF export support in the backend export path
+
+### Changed
+- Timeline and shots-track artifacts now receive shot-planning updates from the new module
+- Pipeline graph now marks shot planning as implemented
+
+### Fixed
+- Closed the missing backend/API shot-planning gap that was blocking downstream visualization stories
 ## [2026-03-13-07] — Golden fixture re-verification and corrections
 
 ### Fixed

@@ -103,6 +103,13 @@ from .scene import (
     SourceSpan,
 )
 from .script_bible import ActStructure, ScriptBible, ThematicElement
+from .shot_plan import (
+    CoverageAdequacyCheck,
+    CoverageStrategy,
+    PlanningAudit,
+    ShotDefinition,
+    ShotPlan,
+)
 from .suggestion import Decision, Suggestion, SuggestionStatus
 from .timeline import Timeline, TimelineEntry
 from .track import TrackEntry, TrackManifest
@@ -184,6 +191,11 @@ __all__ = [
     "Scene",
     "SceneIndexEntry",
     "SceneIndex",
+    "CoverageAdequacyCheck",
+    "CoverageStrategy",
+    "PlanningAudit",
+    "ShotDefinition",
+    "ShotPlan",
     "Suggestion",
     "SuggestionStatus",
     "Decision",

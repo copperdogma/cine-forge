@@ -60,9 +60,9 @@ def test_build_schema_registry_includes_dict_type() -> None:
 
 
 @pytest.mark.unit
-def test_build_schema_registry_has_37_types() -> None:
+def test_build_schema_registry_has_38_types() -> None:
     registry = build_schema_registry()
-    assert len(registry._schemas) == 37
+    assert len(registry._schemas) == 38
 
 
 @pytest.mark.unit

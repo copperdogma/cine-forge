@@ -43,6 +43,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 
 - **Semantic Quality over Structural Validity**: A JSON that passes a schema but contains "UNKNOWN" or placeholder data is a failure. Assert semantic quality predicates in tests.
 - **Boundary Awareness**: Code that works in a unit test can fail in a long-running service (due to state, cache, or import-time definitions). Validate through the service layer or API boundary.
+- **Dynamic Module Loader Safety**: Internal helper containers inside driver-loaded modules should avoid annotation-dependent dataclass/Pydantic magic unless you confirm they survive dynamic import. Prefer plain classes for purely internal state carriers.
 - **Process Lifecycle**: Restart long-running backend/API processes after changing schemas or core logic. Hot-reloading is a tool, but a clean restart is the source of truth.
 - **Regression Fixes start with Fixtures**: When a real-world run fails, capture the failing input as a deterministic test fixture BEFORE implementing the fix.
 - **Conservative Heuristics**: When building classifiers (screenplay vs. prose), use weighted evidence and confidence scores. Favor "needs_review" over silent incorrectness.

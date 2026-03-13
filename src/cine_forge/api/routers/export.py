@@ -12,6 +12,11 @@ from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
 from cine_forge.export.screenplay import ScreenplayRenderer
+from cine_forge.export.shot_list import (
+    generate_shot_list_pdf,
+    load_shot_plans,
+    render_shot_list_csv,
+)
 
 if TYPE_CHECKING:
     from cine_forge.api.service import OperatorConsoleService
@@ -309,3 +314,48 @@ def export_docx(
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)
         raise HTTPException(status_code=500, detail=f"Docx generation failed: {str(e)}") from e
+
+
+@router.get("/shot-list.csv")
+def export_shot_list_csv(project_id: str):
+    store = get_store(project_id)
+    plans = load_shot_plans(store)
+    if not plans:
+        raise HTTPException(status_code=404, detail="Shot plans not found")
+
+    csv_content = render_shot_list_csv(plans)
+    return Response(
+        content=csv_content,
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={project_id}-shot-list.csv"},
+    )
+
+
+@router.get("/shot-list.pdf")
+def export_shot_list_pdf(project_id: str):
+    store = get_store(project_id)
+    plans = load_shot_plans(store)
+    if not plans:
+        raise HTTPException(status_code=404, detail="Shot plans not found")
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+        output_path = tmp.name
+
+    try:
+        generate_shot_list_pdf(
+            project_name=load_project_title(store, project_id),
+            plans=plans,
+            output_path=output_path,
+        )
+        return FileResponse(
+            output_path,
+            filename=f"{project_id}-shot-list.pdf",
+            media_type="application/pdf",
+            background=BackgroundTask(Path(output_path).unlink, missing_ok=True),
+        )
+    except Exception as exc:
+        Path(output_path).unlink(missing_ok=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Shot-list PDF generation failed: {str(exc)}",
+        ) from exc

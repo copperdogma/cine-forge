@@ -233,8 +233,9 @@ PIPELINE_NODES: list[PipelineNode] = [
         label="Shot Planning",
         phase_id="shots",
         artifact_types=["shot_plan"],
+        check_mode="entity",
         dependencies=["rhythm_and_flow", "look_and_feel", "sound_and_music"],
-        implemented=False,
+        implemented=True,
     ),
     PipelineNode(
         id="coverage",
@@ -354,6 +355,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "rhythm_and_flow": "creative_direction",
     "look_and_feel": "creative_direction",
     "sound_and_music": "creative_direction",
+    "shot_planning": "shot_planning",
 }
 
 
@@ -372,6 +374,11 @@ def _check_node_artifacts(
     if node.check_mode == "bible" and node.bible_entity_type:
         entries = store.list_bible_entries(node.bible_entity_type)
         return len(entries) > 0, len(entries)
+
+    if node.check_mode == "entity":
+        counts = [len(store.list_entities(atype)) for atype in node.artifact_types]
+        total = sum(counts)
+        return total > 0, total
 
     # Default: project-level artifact check.
     for atype in node.artifact_types:
