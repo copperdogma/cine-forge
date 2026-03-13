@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-13-07] — Golden fixture re-verification and corrections
+
+### Fixed
+- Removed incorrect ROSE from scene 13 (INT. STAIRWELL) characters in `the-mariner-scenes.json` — she does not appear in that segment
+- Fixed flashback heading in `enrich-scenes-golden.json` to match screenplay verbatim
+- Fixed COASTLINE and BACKYARD name fields in `the-mariner-locations.json` (were full headings, now plain location names)
+- Added missing `INT. 12TH FLOOR STAIRWELL` to AIRTAG must_mention_scenes in `the-mariner-props.json`
+
+### Changed
+- Full adversarial re-verification of all 10 golden fixtures with updated checklist notes
+
 ## [2026-03-13-06] — Backlog status hygiene and execution map
 
 ### Changed
