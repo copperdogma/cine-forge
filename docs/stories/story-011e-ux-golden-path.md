@@ -1,10 +1,11 @@
 # Story 011e: Operator Console — UX Golden Path
 
-**Status**: Draft
+**Status**: Deferred
 **Created**: 2026-02-15
 **Depends On**: Story 011d (Operator Console Build — done)
 **Leads To**: Story 011f (Conversational AI Chat — adds AI brain to chat panel)
 **Design Docs**: `docs/design/decisions.md`, `docs/design/principles.md`, `docs/design/personas.md`
+**Scope Note**: Foundational phases of this story shipped, but the remaining umbrella scope was decomposed across later UI stories. Do not resume 011e directly; pick up the concrete follow-on story that owns the remaining work.
 
 ---
 
@@ -493,3 +494,8 @@ The system tracks inheritance (script → scene → shot style cascading). The u
 ### 20260215 — UI bug fixes
 - **Screenplay fills content area:** Removed hardcoded `height: calc(100vh - 200px)` and double-border nesting from FreshImportView. Changed AppShell outlet wrapper to `flex flex-col min-h-full`. FreshImportView uses `flex-1 min-h-0` so screenplay fills from header to bottom edge. Removed CodeMirror `maxHeight: 600px` cap on `.cm-scroller`.
 - **Files:** `AppShell.tsx` (flex outlet wrapper), `ProjectHome.tsx` (flex FreshImportView/ProcessingView), `ScreenplayEditor.tsx` (removed maxHeight, removed border, added h-full).
+
+### 20260313 — Backlog hygiene resolution
+- **Why status changed:** `docs/stories.md` had drifted to `Done`, but the canonical story file still had large unchecked umbrella phases. That was misleading in both directions.
+- **Resolution:** Set Story 011e to `Deferred`. The shipped foundation from this story remains documented in the work log, while the unfinished umbrella scope is now owned by later, more focused stories such as 011f, 042, 051, 066, 068, 069, 085, 101, and 126.
+- **Rule going forward:** treat this file as historical design context plus shipped evidence, not as a story to resume directly.

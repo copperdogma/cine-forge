@@ -1,77 +1,40 @@
 # Project Stories — cine-forge
 
-## Recommended Build Order (updated 2026-02-27, post-ADR-003)
+## Current Execution Map (updated 2026-03-13, post-triage)
 
-Phases 0–4 are Done. The pipeline runs script-to-entities with roles, chat, and a production UI. ADR-003 redesigned creative direction around five concern groups. The path forward: **land the concern group data model, build the Scene Workspace, then push toward generation.**
+Phases 0–5 foundation are landed: script understanding, role/chat infrastructure, concern-group schemas, Intent/Mood, Scene Workspace, and design studies are all in place. The active backlog now separates cleanly into three buckets: stories that are ready to build, stories blocked by unfinished dependencies, and drafts that still need scoping or a design decision before `/build-story`.
 
-### Group 1 — ADR-003 Foundation (no blockers, start now)
-
-| Story | Why |
-|---|---|
-| **093** Script Bible | First story-lane artifact after ingestion. Cheap, high-value — every downstream role references it. Promotes to Pending first. |
-| **094** Concern Group Schemas | **Keystone.** Unblocks 095, 099, 100, and the entire concern group architecture. Must land before any creative direction work. |
-
-These two are the critical path. Build them first, in this order (093 is independent; 094 is independent but unblocks more).
-
-### Group 2 — Creative Direction Core (after 094)
+### Pending — Ready To Build Now
 
 | Story | Why |
 |---|---|
-| **095** Intent/Mood Layer | The primary interaction surface for all users. Depends on 094. This is what makes CineForge feel like a creative conversation instead of a form. |
-| **021** Look & Feel ✅ | Done. First visual concern group — per-scene parallel analysis, Visual Architect persona, DirectionTab integration. |
-| **022** Sound & Music ✅ | Done. First audio concern group — per-scene parallel analysis, Sound Designer persona, silence mandate (ADR-003 Decision #3). |
+| **025** Shot Planning | The bridge from current creative artifacts to the full generation lane. Unblocks 026, 027, 028, and 030. |
+| **029** User Asset Injection | Delivers Ideal R17 in the artifact system and unblocks Story 098. |
+| **031** Change Propagation | R15 Layer 2. Critical before AI artifact editing and deeper iterative editing workflows. |
+| **032** Cost Tracking | Builds the budget and reporting layer on top of already-landed cost hooks. |
+| **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
+| **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
+| **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
 
-021 and 022 are technically ready today, but building them *after* 094 lands means they can use the real concern group schemas instead of inventing their own. Start 095 as soon as 094 merges; 021/022 can overlap.
+### Blocked — Dependency Chain Not Ready Yet
 
-### Group 3 — Scene Workspace + Interaction (after 095)
-
-| Story | Why |
+| Story | Blocked On |
 |---|---|
-| **101** Long-Running Action System | ✅ Done |
-| **099** Scene Workspace | ✅ Done — SceneWorkspacePage with 5 concern group tabs, readiness bar, entity roster, generate buttons |
-| **096** "Chat About This" | ✅ Done — generalized the highlight-to-chat pattern from Story 082 into reusable draft-to-chat affordances across Scene Workspace and shared artifact viewers. |
-| **100** Motif Tracking | Depends on 094. Motif annotations feed into Look & Feel and Sound & Music. |
+| **026** Storyboard Generation | Story 025 |
+| **027** Animatics / Previz | Stories 025, 026 |
+| **028** Render Adapter | Stories 025, 027, 098 |
+| **030** Generated Output QA | Stories 028, 032 |
 
-099 and 096 shipped. Next frontier in this lane is Motif Tracking (100), plus the broader editing loop in 097.
+### Draft — Scope Or Decision Needed First
 
-### Group 4 — Upstream Infrastructure (ready now, build when needed)
-
-| Story | Why |
+| Story | Why It Stays Draft |
 |---|---|
-| **092** Continuity AI Detection | Ready now. Strengthens the story-lane foundation that concern groups build on. |
-| **031** Change Propagation (Semantic) | Ready now. R15 Layer 2 — makes upstream edits flow intelligently downstream. Becomes critical once concern groups generate artifacts that depend on each other. |
-| **029** User Asset Injection | Ready now. Unblocks 056 (design studies) and 098 (R17 upload pipeline). |
-| **097** AI Artifact Editing | Ready now. Roles proposing and executing edits is core to the read-only prompt model. |
-
-These are independently valuable and have no undone deps. Slot them in alongside Groups 2–3 based on capacity.
-
-### Group 5 — Shot Planning + Visualization (after 021, 022)
-
-| Story | Why |
-|---|---|
-| **025** Shot Planning | Consumes concern group artifacts. Depends on 021 + 022. The bridge between creative direction and generation. |
-| **023** Character & Performance | Draft — resolve whether formal artifacts are needed (may close as "Won't Do" if character bibles + chat suffice). Inform this during 025. |
-| ~~**056**~~ ~~Entity Design Studies~~ | ~~Done~~ — Imagen 4 generation loop shipped (Story 029 dependency de-scoped). |
-| **026** Storyboard Generation | Depends on 025. Optional but high-value for previz workflows. |
-| **027** Animatics & Previz | Depends on 025 + 026. |
-
-### Group 6 — Generation (after Group 5)
-
-| Story | Why |
-|---|---|
-| **098** Real-World Asset Upload | Depends on 029. R17 upload pipeline — origin-agnostic asset system. |
-| **028** Render Adapter | Depends on 025, 027, 022, 098. The prompt compiler — concern groups → model-ready generation prompts. Last major pipeline stage before video output. |
-| **030** Generated Output QA | Depends on 028, 021, 022, 032. Quality gate on generated video. Deepest node in the dependency graph. |
-
-### Group 7 — Polish & Infrastructure (ready now, lower priority)
-
-| Story | Why |
-|---|---|
-| **032** Cost Tracking | Ready now. Budget caps and cost dashboards. Build when generation gets expensive. |
-| **033** Memory Model | Ready now. Canonical/working/transcript memory tiers. Build when long conversations lose context. |
-| **034** Style Pack Creator | Ready now. In-app style pack authoring. Nice-to-have, not blocking. |
-| **044** Mobile-Friendly UI | Ready now. Responsive layout. Build when users need mobile access. |
-| **046** Theme System | Ready now (Draft). Light/dark/auto + palettes. Build when visual polish matters. |
+| **023** Character & Performance | Explicitly resolved during Story 025; do not build standalone first. |
+| **097** AI Artifact Editing | Important, but needs a concrete implementation plan and pairs naturally with Story 031. |
+| **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
+| **119 / 120 / 121** Design Study follow-ons | Clear lane, but 120 should settle project format handling before 119 and 121 deepen prompt/UX work. |
+| **127 / 128 / 129 / 131** Recent triage stories | Good candidates, but they still need promotion from draft to pending before build. |
+| **102 / 104 / 105 / 106 / 112 / 113 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
 
 ---
 
@@ -102,7 +65,7 @@ NOTES from Cam:
 | 011b | Operator Console — Research & Design Decisions | 2.5 — UI | High | Done | [story-011b](stories/story-011b-operator-console.md) |
 | 011c | Resource-oriented Routing | 2.5 — UI | Medium | Done | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 011d | Operator Console — Design & Build | 2.5 — UI | High | Done | [story-011d](stories/story-011d-operator-console-build.md) |
-| 011e | Operator Console — UX Golden Path | 2.5 — UI | High | Done | [story-011e](stories/story-011e-ux-golden-path.md) |
+| 011e | Operator Console — UX Golden Path | 2.5 — UI | High | Deferred | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 011f | Operator Console — Conversational AI Chat | 2.5 — UI | High | Done | [story-011f](stories/story-011f-conversational-ai-chat.md) |
 | 012 | Timeline Data Artifact | 3 — Timeline | Medium | Done | [story-012](stories/story-012-timeline-artifact.md) |
 | 013 | Track System and Always-Playable Rule | 3 — Timeline | Medium | Done | [story-013](stories/story-013-track-system.md) |
@@ -117,16 +80,16 @@ NOTES from Cam:
 | 022 | Sound & Music — Sound Direction | 5 — Creative Direction | Medium | Done | [story-022](stories/story-022-sound-designer.md) |
 | 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
 | ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
-| 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | To Do | [story-025](stories/story-025-shot-planning.md) |
-| 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | To Do | [story-026](stories/story-026-storyboard-generation.md) |
-| 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | To Do | [story-027](stories/story-027-animatics-previz.md) |
-| 028 | Render Adapter Module | 7 — Generation | Low | To Do | [story-028](stories/story-028-render-adapter.md) |
-| 029 | User Asset Injection | 7 — Generation | Medium | To Do | [story-029](stories/story-029-user-asset-injection.md) |
-| 030 | Generated Output QA | 7 — Generation | Medium | To Do | [story-030](stories/story-030-generated-output-qa.md) |
-| 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | To Do | [story-031](stories/story-031-change-propagation.md) |
-| 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | To Do | [story-032](stories/story-032-cost-tracking.md) |
-| 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | To Do | [story-033](stories/story-033-memory-model.md) |
-| 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | To Do | [story-034](stories/story-034-style-pack-creator.md) |
+| 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | Pending | [story-025](stories/story-025-shot-planning.md) |
+| 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Blocked | [story-026](stories/story-026-storyboard-generation.md) |
+| 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Blocked | [story-027](stories/story-027-animatics-previz.md) |
+| 028 | Render Adapter Module | 7 — Generation | Low | Blocked | [story-028](stories/story-028-render-adapter.md) |
+| 029 | User Asset Injection | 7 — Generation | Medium | Pending | [story-029](stories/story-029-user-asset-injection.md) |
+| 030 | Generated Output QA | 7 — Generation | Medium | Blocked | [story-030](stories/story-030-generated-output-qa.md) |
+| 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Pending | [story-031](stories/story-031-change-propagation.md) |
+| 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | Pending | [story-032](stories/story-032-cost-tracking.md) |
+| 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | Pending | [story-033](stories/story-033-memory-model.md) |
+| 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | Pending | [story-034](stories/story-034-style-pack-creator.md) |
 | 035 | Model Benchmarking Tooling (promptfoo) | Cross-Cutting | High | Done | [story-035](stories/story-035-model-benchmarking.md) |
 | 036 | Model Selection and Eval Framework | Cross-Cutting | High | Done | [story-036](stories/story-036-model-selection.md) |
 | 037 | Production Deployment to cineforge.copper-dog.com | Cross-Cutting | High | Done | [story-037](stories/story-037-production-deployment.md) |
@@ -136,7 +99,7 @@ NOTES from Cam:
 | 041 | Artifact Quality Improvements | Cross-Cutting | Medium | Done | [story-041](stories/story-041-artifact-quality-improvements.md) |
 | 042 | Wire Mock UI to Real APIs | 2.5 — UI | Medium | Done | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 043 | Entity-First Navigation | 2.5 — UI | High | Done | [story-043](stories/story-043-entity-first-navigation.md) |
-| 044 | Mobile-Friendly UI | 2.5 — UI | Medium | To Do | [story-044](stories/story-044-mobile-friendly-ui.md) |
+| 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Pending | [story-044](stories/story-044-mobile-friendly-ui.md) |
 | 045 | Entity Cross-Linking | 2.5 — UI | Medium | Done | [story-045](stories/story-045-entity-cross-linking.md) |
 | 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Draft | [story-046](stories/story-046-theme-system.md) |
 | 047 | Benchmark Sonnet 4.6 Across All Evals | Cross-Cutting | High | Done | [story-047](stories/story-047-sonnet-46-benchmarks.md) |

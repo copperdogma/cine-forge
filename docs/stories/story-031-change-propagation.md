@@ -1,6 +1,6 @@
 # Story 031: Change Propagation (Semantic Impact Layer)
 
-**Status**: To Do
+**Status**: Pending
 **Created**: 2026-02-13
 **Spec Refs**: 2.3 (Revision and Change Propagation — Layer 2), 2.8 (QA — AI assessment)
 **Depends On**: Story 002 (pipeline foundation — Layer 1 structural invalidation), Story 014 (role system — AI assessment roles), Story 010 (entity graph — dependency understanding)

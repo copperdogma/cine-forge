@@ -1,6 +1,6 @@
 # Story 025: Shot Planning
 
-**Status**: To Do
+**Status**: Pending
 **Created**: 2026-02-13
 **Reshaped**: 2026-02-27 — ADR-003 eliminates convergence step. Shot planning consumes concern group artifacts directly.
 **Spec Refs**: 13 (Shot Planning — full section), 13.1 (Coverage Strategy), 13.2 (Individual Shot Definition), 13.3 (Coverage Patterns), 13.4 (Export Compatibility)

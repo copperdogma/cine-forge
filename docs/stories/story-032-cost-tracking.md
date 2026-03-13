@@ -1,6 +1,6 @@
 # Story 032: Cost Tracking and Budget Management
 
-**Status**: To Do
+**Status**: Pending
 **Created**: 2026-02-13
 **Spec Refs**: 2.7 (Cost Transparency), 20 (Metadata & Auditing — cost data in artifacts)
 **Depends On**: Story 002 (pipeline foundation — cost recording hooks), Story 014 (role system — per-role cost attribution)

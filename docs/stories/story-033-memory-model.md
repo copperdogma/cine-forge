@@ -1,6 +1,6 @@
 # Story 033: Memory Model and Transcript Retention
 
-**Status**: To Do
+**Status**: Pending
 **Created**: 2026-02-13
 **Spec Refs**: 19 (Memory Model — full section), 8.6 (Conversation transcripts), 19.3 (Rule: chats are accelerators, artifacts are truth, transcripts are permanent)
 **Depends On**: Story 018 (inter-role communication — conversation recording), Story 014 (role system — Director working memory)

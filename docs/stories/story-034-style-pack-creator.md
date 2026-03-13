@@ -1,6 +1,6 @@
 # Story 034: In-App Style Pack Creator
 
-**Status**: To Do
+**Status**: Pending
 **Created**: 2026-02-13
 **Spec Refs**: 8.4 (Style Pack Creation), 8.3 (Style Packs)
 **Depends On**: Story 016 (style pack infrastructure — templates and format), Story 011b (Operator Console — UI for creation flow)

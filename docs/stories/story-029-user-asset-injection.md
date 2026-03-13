@@ -1,6 +1,6 @@
 # Story 029: User Asset Injection
 
-**Status**: To Do
+**Status**: Pending
 **Created**: 2026-02-13
 **Updated**: 2026-02-27 — ADR-003 elevates real-world assets to core design principle (R17).
 **Spec Refs**: 18 (User Asset Injection — being expanded per ADR-003/R17), 6.3 (Bible Artifact Structure — reference images), 2.1 (Immutability)

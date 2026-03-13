@@ -2,7 +2,7 @@
 
 **Phase**: 2.5 — UI
 **Priority**: Medium
-**Status**: To Do
+**Status**: Pending
 **Created**: 2026-02-16
 **Depends on**: Story 043 (Entity-First Navigation — Done)
 

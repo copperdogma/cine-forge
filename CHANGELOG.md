@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-03-13-06] — Backlog status hygiene and execution map
+
+### Changed
+- Replaced the stale `docs/stories.md` build-order section with a current execution map that distinguishes build-ready, blocked, and still-draft work
+- Normalized live backlog statuses away from `To Do`, promoting executable stories to `Pending` and marking dependency-bound stories as `Blocked`
+
+### Fixed
+- Resolved the Story 011e status contradiction by aligning the story index and canonical story file on `Deferred` with explicit historical-scope notes
+- Eliminated index/file status drift across the updated backlog entries
 ## [2026-03-13-02] — Story scaffolding refinements from Scout 012
 
 ### Added

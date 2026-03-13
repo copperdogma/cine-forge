@@ -1,6 +1,6 @@
 # Story 028: Render Adapter Module
 
-**Status**: To Do
+**Status**: Blocked
 **Created**: 2026-02-13
 **Spec Refs**: 17 (Render Adapter Layer), 17.1 (Two-Part Prompt Architecture), 17.2 (Engine Packs), 17.3 (Error Handling), 7.2 (Tracks — generated video track)
 **Depends On**: Story 025 (shot planning — shot definitions), Story 027 (keyframes — optional generation constraints), Story 022 (Sound & Music — audio intent), Story 013 (track system — video track), Story 098 (real-world asset upload — R17 origin-agnostic inputs)
