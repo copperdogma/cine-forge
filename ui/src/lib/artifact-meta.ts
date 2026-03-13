@@ -6,6 +6,7 @@
 import {
   Activity,
   BookOpen,
+  Camera,
   Compass,
   Eye,
   FileText,
@@ -44,6 +45,7 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   sound_and_music_index: { icon: Volume2, label: 'Sound & Music Index', color: 'text-emerald-300' },
   character_and_performance: { icon: Drama, label: 'Character & Performance', color: 'text-amber-400' },
   story_world: { icon: Globe, label: 'Story World', color: 'text-teal-400' },
+  shot_plan: { icon: Camera, label: 'Shot Plan', color: 'text-cyan-400' },
 }
 
 export function getArtifactMeta(type: string) {

@@ -33,6 +33,7 @@ import { HealthBadge } from '@/components/HealthBadge'
 import { getArtifactMeta } from '@/lib/artifact-meta'
 import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
+import { ShotPlanViewer } from '@/components/ShotPlanViewer'
 
 function formatTimestamp(timestamp?: string | number) {
   if (!timestamp) return 'Unknown'
@@ -292,6 +293,9 @@ export default function ArtifactDetail() {
 
       case 'stage_review':
         return <StageReviewViewer data={data} projectId={projectId ?? ''} />
+
+      case 'shot_plan':
+        return <ShotPlanViewer data={data} />
 
       default:
         return <DefaultViewer data={data} />

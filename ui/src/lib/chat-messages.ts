@@ -186,6 +186,10 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Working on Character & Performance...',
     done: 'Character & Performance direction complete.',
   },
+  shot_planning: {
+    start: 'Planning coverage and shot lists across your scenes...',
+    done: 'Shot planning complete.',
+  },
 }
 
 export function humanizeStageName(name: string): string {

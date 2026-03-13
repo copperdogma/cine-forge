@@ -85,6 +85,10 @@ class _ScenePlanResponse(BaseModel):
     shots: list[_ShotResponse] = Field(default_factory=list, min_length=1)
 
 
+# Dynamic module loading does not always rebuild postponed annotations automatically.
+_ScenePlanResponse.model_rebuild()
+
+
 class _ScenePlanningContext:
     def __init__(
         self,

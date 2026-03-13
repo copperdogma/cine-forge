@@ -4,6 +4,7 @@ export const RECIPE_NAMES: Record<string, string> = {
   world_building: 'World Building',
   narrative_analysis: 'Narrative Logic',
   creative_direction: 'Creative Direction',
+  shot_planning: 'Shot Planning',
 }
 
 /** Human-readable names for artifact types produced by stages. */
@@ -25,6 +26,7 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   sound_and_music: ['sound & music', 'sound & music'],
   character_and_performance: ['character & performance', 'character & performance'],
   story_world: ['story world', 'story world'],
+  shot_plan: ['shot plan', 'shot plans'],
 }
 
 /**

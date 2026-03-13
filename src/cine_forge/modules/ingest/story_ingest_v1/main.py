@@ -365,7 +365,7 @@ def _extract_pdf_text_via_pdfplumber(input_path: Path) -> str:
         with pdfplumber.open(input_path) as pdf:
             for page in pdf.pages:
                 # layout=True preserves the visual structure of the page (columns/alignment)
-                text = page.extract_text(layout=True) or ""
+                text = _normalize_pdf_layout_text(page.extract_text(layout=True) or "")
                 pages.append(text)
     except Exception:
         return ""
@@ -405,6 +405,28 @@ def _is_meaningful_pdf_text(text: str) -> bool:
         return False
     word_gap_count = len(re.findall(r"\b[A-Za-z]{3,}\s+[A-Za-z]{3,}\b", stripped))
     return word_gap_count >= 4
+
+
+def _normalize_pdf_layout_text(text: str) -> str:
+    if not text:
+        return ""
+
+    normalized_lines: list[str] = []
+    blank_pending = False
+
+    for raw_line in text.splitlines():
+        line = re.sub(r"\s+", " ", raw_line).strip()
+        if not line:
+            if normalized_lines:
+                blank_pending = True
+            continue
+
+        if blank_pending:
+            normalized_lines.append("")
+            blank_pending = False
+        normalized_lines.append(line)
+
+    return "\n".join(normalized_lines).strip()
 
 
 def _extract_docx_text(input_path: Path) -> str:

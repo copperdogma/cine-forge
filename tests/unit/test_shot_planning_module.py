@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 from pathlib import Path
 from typing import Any
 
@@ -570,3 +571,21 @@ def test_run_module_preserves_adequacy_review_from_model_output(
     assert adequacy.missing_coverage_risks == ["Missing insert of the console activation."]
     assert plan.shots[-1].coverage_role == "Insert"
     assert plan.shots[-1].audit.intent == "Give the editor the missing decision detail."
+
+
+@pytest.mark.unit
+def test_dynamic_import_rebuilds_scene_plan_response_schema() -> None:
+    module_path = (
+        Path(__file__).resolve().parents[2]
+        / "src/cine_forge/modules/shot_planning/shot_plan_v1/main.py"
+    )
+    spec = importlib.util.spec_from_file_location("shot_plan_v1_dynamic_test", module_path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    schema = module._ScenePlanResponse.model_json_schema()
+
+    assert schema["type"] == "object"
+    assert "coverage_strategy" in schema["properties"]
+    assert "shots" in schema["properties"]

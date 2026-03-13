@@ -71,6 +71,7 @@ function summarizeArtifacts(stages: Record<string, StageState>): string {
     location_bible: ['location bible', 'location bibles'],
     world_overview: ['world overview', 'world overviews'],
     bible_manifest: ['creative bible', 'creative bibles'],
+    shot_plan: ['shot plan', 'shot plans'],
   }
 
   const parts: string[] = []
@@ -328,7 +329,47 @@ export function useRunProgressChat(projectId: string | undefined) {
         const completionStageOrder = (runState.state.stage_order as string[] | undefined) ?? Object.keys(stages)
         const cgComplete = detectConcernGroupRun(recipeId, completionStageOrder)
 
-        if (cgComplete) {
+        if (recipeId === 'shot_planning') {
+          const shotPlanRefs = Object.values(stages)
+            .flatMap((stage) => stage.artifact_refs)
+            .filter((ref) => ref.artifact_type === 'shot_plan')
+          const sceneIds = Array.from(
+            new Set(
+              shotPlanRefs
+                .map((ref) => String(ref.entity_id ?? ''))
+                .filter((entityId) => entityId.startsWith('scene_')),
+            ),
+          ).sort()
+          const firstSceneId = sceneIds[0]
+          const sceneCount = sceneIds.length
+
+          store.addMessage(projectId, {
+            id: `progress_${activeRunId}_complete`,
+            type: 'ai_suggestion',
+            content: sceneCount > 0
+              ? `Shot planning complete. I generated shot plans for ${sceneCount} ${sceneCount === 1 ? 'scene' : 'scenes'}.`
+              : 'Shot planning complete.',
+            timestamp: Date.now(),
+            actions: [
+              ...(firstSceneId
+                ? [
+                    {
+                      id: 'open_scene_workspace',
+                      label: 'Open Scene Workspace',
+                      variant: 'default' as const,
+                      route: `scenes/${firstSceneId}`,
+                    },
+                  ]
+                : []),
+              {
+                id: 'view_run_detail',
+                label: 'Run Details',
+                variant: 'outline' as const,
+                route: `runs/${activeRunId}`,
+              },
+            ],
+          })
+        } else if (cgComplete) {
           // --- Concern group run completion: role-attributed friendly message ---
           // Count per-scene artifacts (exclude index/project-level artifacts)
           const cgStage = stages[completionStageOrder[0]]

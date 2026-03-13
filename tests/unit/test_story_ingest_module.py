@@ -90,6 +90,42 @@ def test_extract_pdf_text_prefers_layout_mode(
 
 
 @pytest.mark.unit
+def test_extract_pdf_text_normalizes_whitespace_heavy_layout(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "whitespace-heavy.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+
+    class _FakePage:
+        def extract_text(self, layout: bool = False) -> str:
+            del layout
+            lead = " " * 48
+            middle = " " * 128
+            return (
+                f"{lead}APPARATUS"
+                f"{middle}FOR"
+                f"{middle}REGISTERING WOTES.\n"
+                f"{lead}PATENT OFFICE."
+            )
+
+    class _FakePDF:
+        def __init__(self) -> None:
+            self.pages = [_FakePage()]
+
+        def __enter__(self) -> _FakePDF:
+            return self
+
+        def __exit__(self, *args: object) -> None:
+            pass
+
+    monkeypatch.setattr("pdfplumber.open", lambda _: _FakePDF())
+
+    extracted = _extract_pdf_text(source)
+    assert "APPARATUS FOR REGISTERING WOTES." in extracted
+    assert "PATENT OFFICE." in extracted
+
+
+@pytest.mark.unit
 def test_extract_pdf_text_uses_ocr_when_pdfplumber_is_sparse(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

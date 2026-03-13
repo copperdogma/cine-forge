@@ -1,7 +1,14 @@
 import { API_BASE, ApiRequestError } from './core'
 
 export type ExportScope = 'everything' | 'scenes' | 'characters' | 'locations' | 'props' | 'single'
-export type ExportFormat = 'markdown' | 'pdf' | 'call-sheet' | 'fountain' | 'docx'
+export type ExportFormat =
+  | 'markdown'
+  | 'pdf'
+  | 'call-sheet'
+  | 'fountain'
+  | 'docx'
+  | 'shot-list-csv'
+  | 'shot-list-pdf'
 
 export function getExportUrl(
   projectId: string,
@@ -29,6 +36,14 @@ export function getExportUrl(
 
   if (format === 'docx') {
     return `${API_BASE}/api/projects/${projectId}/export/docx`
+  }
+
+  if (format === 'shot-list-csv') {
+    return `${API_BASE}/api/projects/${projectId}/export/shot-list.csv`
+  }
+
+  if (format === 'shot-list-pdf') {
+    return `${API_BASE}/api/projects/${projectId}/export/shot-list.pdf`
   }
 
   const layout = format === 'call-sheet'

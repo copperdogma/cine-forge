@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Separator } from '@/components/ui/separator'
 import { exportMarkdown, getExportUrl, type ExportScope, type ExportFormat } from '@/lib/api'
+import { useArtifactGroups } from '@/lib/hooks'
 import { toast } from 'sonner'
-import { FileDown, Copy, FileText, CheckSquare, Square, FileCode } from 'lucide-react'
+import { FileDown, Copy, FileText, CheckSquare, Square, FileCode, Clapperboard } from 'lucide-react'
 
 interface ExportModalProps {
   isOpen: boolean
@@ -29,6 +31,23 @@ export function ExportModal({
   const [selectedComponents, setSelectedComponents] = useState<ExportComponent[]>([
     'script', 'scenes', 'characters', 'locations', 'props'
   ])
+  const { data: artifactGroups } = useArtifactGroups(projectId)
+
+  const hasShotPlans = (artifactGroups ?? []).some((group) => group.artifact_type === 'shot_plan')
+  const showShotListExports =
+    scope === 'everything'
+      || scope === 'scenes'
+      || (scope === 'single' && entityType === 'scene')
+
+  const formatLabels: Record<ExportFormat, string> = {
+    markdown: 'Markdown',
+    pdf: 'PDF',
+    'call-sheet': 'Call Sheet',
+    fountain: 'Fountain',
+    docx: 'DOCX',
+    'shot-list-csv': 'Shot List CSV',
+    'shot-list-pdf': 'Shot List PDF',
+  }
 
   const toggleComponent = (comp: ExportComponent) => {
     setSelectedComponents(prev => 
@@ -59,8 +78,54 @@ export function ExportModal({
   const handleDownload = (format: ExportFormat, includeOverride?: ExportComponent[]) => {
     const url = getExportUrl(projectId, format, scope, entityId, entityType, includeOverride || selectedComponents)
     window.location.href = url
-    toast.success(`${format.toUpperCase()} export started`)
+    toast.success(`${formatLabels[format]} export started`)
     onClose()
+  }
+
+  const renderShotListExports = () => {
+    if (!showShotListExports) return null
+
+    const description = hasShotPlans
+      ? 'Project-wide export built from the latest shot plans across all scenes.'
+      : 'Run shot planning first to enable shot-list exports.'
+
+    return (
+      <div className="space-y-3 pt-2">
+        <Separator />
+        <div className="space-y-1">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Shot List</p>
+          <p className={`text-xs ${hasShotPlans ? 'text-muted-foreground' : 'text-amber-500'}`}>
+            {description}
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <Button
+            variant="outline"
+            className="justify-start h-auto py-2 px-3"
+            onClick={() => handleDownload('shot-list-csv')}
+            disabled={!hasShotPlans}
+          >
+            <Clapperboard className="mr-2 h-4 w-4" />
+            <div className="text-left">
+              <div className="font-medium text-sm">Shot List CSV</div>
+              <div className="text-xs text-muted-foreground">Crew-friendly spreadsheet export</div>
+            </div>
+          </Button>
+          <Button
+            variant="outline"
+            className="justify-start h-auto py-2 px-3"
+            onClick={() => handleDownload('shot-list-pdf')}
+            disabled={!hasShotPlans}
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            <div className="text-left">
+              <div className="font-medium text-sm">Shot List PDF</div>
+              <div className="text-xs text-muted-foreground">Readable formatted shot list</div>
+            </div>
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   const getTitle = () => {
@@ -197,32 +262,38 @@ export function ExportModal({
                   </Button>
                 </div>
               </div>
+
+              {renderShotListExports()}
             </TabsContent>
           </Tabs>
         ) : (
-          <div className="flex flex-col gap-3 py-4">
-            <Button
-              variant="outline"
-              className="justify-start h-auto py-3 px-4"
-              onClick={() => handleCopyMarkdown()}
-            >
-              <Copy className="mr-2 h-4 w-4" />
-              <div className="text-left">
-                <div className="font-medium">Copy Markdown</div>
-                <div className="text-xs opacity-70">To clipboard</div>
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              className="justify-start h-auto py-3 px-4"
-              onClick={() => handleDownload('markdown')}
-            >
-              <FileDown className="mr-2 h-4 w-4" />
-              <div className="text-left">
-                <div className="font-medium">Download Markdown</div>
-                <div className="text-xs opacity-70">.md file</div>
-              </div>
-            </Button>
+          <div className="space-y-3 py-4">
+            <div className="flex flex-col gap-3">
+              <Button
+                variant="outline"
+                className="justify-start h-auto py-3 px-4"
+                onClick={() => handleCopyMarkdown()}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                <div className="text-left">
+                  <div className="font-medium">Copy Markdown</div>
+                  <div className="text-xs opacity-70">To clipboard</div>
+                </div>
+              </Button>
+              <Button
+                variant="outline"
+                className="justify-start h-auto py-3 px-4"
+                onClick={() => handleDownload('markdown')}
+              >
+                <FileDown className="mr-2 h-4 w-4" />
+                <div className="text-left">
+                  <div className="font-medium">Download Markdown</div>
+                  <div className="text-xs opacity-70">.md file</div>
+                </div>
+              </Button>
+            </div>
+
+            {renderShotListExports()}
           </div>
         )}
 

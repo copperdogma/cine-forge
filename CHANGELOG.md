@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-13-09] — Shot planning UI and shot-list exports (Story 132)
+
+### Added
+- A scene-first `Shots` workspace surface and shared shot-plan viewer so operators can run shot planning, inspect readable coverage, and open dedicated artifact detail from the real UI
+
+### Changed
+- Export UI wiring now exposes project-wide shot-list CSV/PDF actions and shot-planning run progress copy uses explicit shot-planning language
+
+### Fixed
+- Resolved the driver-only `shot_plan_v1` dynamic import schema rebuild failure and normalized whitespace-heavy scanned PDF ingest output so the full unit suite closes green
+
 ## [2026-03-13-08] — Shot planning backend landing (Story 025)
 
 ### Added

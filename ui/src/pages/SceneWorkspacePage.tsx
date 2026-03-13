@@ -35,6 +35,7 @@ import { SceneIntentPanel } from '@/components/DirectionTab'
 import { RolePresenceIndicators } from '@/components/DirectionTab'
 import { SceneViewer } from '@/components/ArtifactViewers'
 import { ExportModal } from '@/components/ExportModal'
+import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { EmptyState, ErrorState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
 import { useHistoryBack } from '@/lib/use-history-back'
@@ -470,6 +471,10 @@ export default function SceneWorkspacePage() {
     data?.scene_heading ??
     formatEntityName(entityId)
   ) as string
+  const shotPlanGroup = groups?.find(
+    g => g.artifact_type === 'shot_plan' && g.entity_id === entityId,
+  )
+  const shotPlanLevel = getReadiness(groups, 'shot_plan', entityId)
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -538,6 +543,10 @@ export default function SceneWorkspacePage() {
               </TabsTrigger>
             )
           })}
+          <TabsTrigger value="shots" className="gap-1.5">
+            <ReadinessDot level={shotPlanLevel} label="Shots" />
+            Shots
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview — scene data (text summary = current "best available preview") */}
@@ -557,6 +566,15 @@ export default function SceneWorkspacePage() {
             />
           </TabsContent>
         ))}
+
+        <TabsContent value="shots" className="mt-4">
+          <ShotPlanningPanel
+            projectId={projectId}
+            sceneId={entityId}
+            sceneHeading={displayName}
+            shotPlanGroup={shotPlanGroup}
+          />
+        </TabsContent>
       </Tabs>
 
       <ExportModal
