@@ -17,13 +17,13 @@ Evaluate the story backlog and recommend the best next stories to work on.
 ## Steps
 
 1. **Read project state** — Load `docs/stories.md` (the full story index). Identify all stories by status:
-   - **Draft** — scoped but needs detailed ACs and tasks before building; `/build-story` handles the flesh-out phase
+   - **Draft** — scoped but needs detailed ACs and tasks before building; it must be promoted to `Pending` before `/build-story` can execute it
    - **Pending** — fully detailed, ready to build
    - **In Progress** — currently being worked on
    - **Done** — complete, validated
    - **Blocked** — waiting on dependency or decision
 
-   **Both Draft and Pending** stories with met dependencies are candidates for recommendation. Do not treat Draft as a disqualifier — priority and Ideal alignment matter more than completeness of the story file. `/build-story` will flesh out ACs and tasks before touching code regardless of starting status.
+   **Both Draft and Pending** stories with met dependencies are candidates for recommendation. Do not treat Draft as a disqualifier for prioritization, but be explicit that a Draft story still needs scoping and promotion to `Pending` before `/build-story`.
 
 2. **Read the Ideal** — Load `docs/ideal.md` to ground scoring in what the system should become. Stories that close Ideal gaps rank higher than stories that only optimize compromises.
 
@@ -42,12 +42,13 @@ Evaluate the story backlog and recommend the best next stories to work on.
 5. **Present recommendations** — Show the user a ranked top 3–5 with:
    - Story ID and title
    - Draft or Pending label
+   - If Draft: a short note on what must be scoped before it can be built
    - 2–3 sentence rationale covering the strongest scoring dimensions
    - Any caveats (e.g., "this is large — consider splitting first")
 
 6. **Flag concerns** — Surface any issues noticed during the scan:
    - Stories marked Pending that are actually blocked (missing dependency not recorded)
-   - Draft stories that should be promoted to Pending
+   - Draft stories that should be promoted to Pending before build
    - Stories that appear stale or superseded
    - Dependency chains that are bottlenecked
 

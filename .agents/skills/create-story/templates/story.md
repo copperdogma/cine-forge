@@ -24,6 +24,7 @@
 ## Approach Evaluation
 
 {List candidate approaches — do NOT pre-decide. build-story's eval-first gate selects the winner with evidence.}
+- **Simplification baseline**: {Can a single LLM call already do this? Evidence?}
 - **AI-only**: {Could an LLM call handle this? What would it cost per run?}
 - **Hybrid**: {Cheap detection + AI judgment? Where's the split?}
 - **Pure code**: {Only if this is strictly orchestration/plumbing with no reasoning.}
@@ -41,6 +42,8 @@
   - [ ] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
   - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
   - [ ] UI (if touched): `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
+- [ ] If agent tooling or project instructions are touched: `make skills-check`
+- [ ] If evals or goldens are changed: run `/verify-eval`, classify all mismatches, and update `docs/evals/registry.yaml`
 - [ ] If UI is touched: verify the changed flow with browser tools when possible (screenshot + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
 - [ ] Search all docs and update any related to what we touched
 - [ ] Verify adherence to Central Tenets (0-5):

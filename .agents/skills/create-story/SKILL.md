@@ -17,7 +17,7 @@ Create a new story in `docs/stories/` with consistent format.
 - `spec_refs`: relevant spec.md sections or compromise numbers
 - `adr_refs`: relevant decision records in `docs/decisions/` or `docs/design/` (or `None found after search`)
 - `depends_on`: story IDs this depends on (if any)
-- `status`: Pending (fully detailed, ready to build) or Draft (skeleton with goal + notes, NOT ready to build)
+- `status`: Draft (default, skeleton with goal + notes, NOT ready to build) or Pending (fully detailed, ready to build)
 
 ## Steps
 
@@ -33,13 +33,13 @@ Create a new story in `docs/stories/` with consistent format.
    - Title (replace the slug with the human-readable title)
    - Goal, acceptance criteria, out of scope, tasks, files to modify
    - Ideal refs, spec refs, ADR refs, and dependencies
-   - Approach evaluation: candidate approaches (AI-only, hybrid, code), repo constraints, existing patterns to reuse, and what eval distinguishes them
+   - Approach evaluation: simplification baseline, candidate approaches (AI-only, hybrid, code), repo constraints, existing patterns to reuse, and what eval distinguishes them
    - Workflow gates for build handoff, validation, and story closure
    - Redundancy targets: old code or docs this story may make obsolete
    - UI verification work if the story touches the UI
 
 3. **Update story index** — Add a row to the table in `docs/stories.md`:
-   `| NNN | Title | Priority | Pending | [link](stories/story-NNN-slug.md) |`
+   `| NNN | Title | Priority | Draft | [link](stories/story-NNN-slug.md) |`
    Insert the row in System order (not at the bottom). IDs may be out of numeric order — that is expected and correct.
 
 4. **Verify** — Confirm the file exists, numbering is consistent, and the stories.md row is correct.
@@ -57,9 +57,11 @@ Create a new story in `docs/stories/` with consistent format.
 - Explicitly call out what is in/out of scope
 - Tasks should be implementation-oriented and ordered
 - Always include the Approach Evaluation section — list candidate approaches (AI-only, hybrid, code) without pre-deciding. The story should identify what eval would distinguish approaches, what repo constraints matter, and which ADRs / existing patterns constrain the choice. Approach selection happens during build-story's eval-first gate with measured evidence.
-- Search `docs/decisions/` and `docs/design/` for relevant ADRs / decision records while drafting. If none apply, say so explicitly instead of leaving the field vague.
+- **Simplification baseline gate**: Every story involving new logic must answer: "Can a single LLM call already do this?" If untested, the first task should be measuring that baseline.
+- Search `docs/decisions/` and `docs/design/` for relevant ADRs / decision records while drafting. If none apply, say so explicitly instead of leaving the field vague. If a scout doc or runbook materially constrains execution, cite it in Notes or Decision Context too.
 - If the story changes existing behavior, name likely redundancy / removal targets up front. New code that supersedes old code should not silently accumulate parallel paths.
 - If the story touches the UI, include explicit browser verification work in the task list. Static checks alone are not enough.
+- If the story changes agent tooling or project instructions, include `make skills-check` in the task list.
 - Always include the Workflow Gates section. These are not ordinary implementation tasks; they enforce the handoff chain: `/build-story` summary → `/validate` → `/mark-story-done`.
 - If the story will involve running evals (extraction/pipeline behavior, golden comparison), add a task: "Run `/verify-eval` after eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores — raw scores do not determine story success."
 - Always include the tenet verification checklist with individual checkboxes per tenet

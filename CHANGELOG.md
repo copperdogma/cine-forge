@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-13-02] — Story scaffolding refinements from Scout 012
+
+### Added
+- Scout 012 audit of `codex-forge` agent updates, recorded in `docs/scout/scout-012-codex-forge-agent-updates.md` and indexed in `docs/scout.md`
+
+### Changed
+- `/create-story` guidance now treats `Draft` as the default new-story status, adds the simplification-baseline question, and explicitly reminds story authors to include `make skills-check` for agent-tooling changes
+- Story template tasks now call out `/verify-eval` plus `docs/evals/registry.yaml` updates when evals or goldens move
+- `/triage-stories` now correctly states that Draft stories may be recommended but must be promoted to `Pending` before `/build-story`
+
 ## [2026-03-13-01] — Frontend chat and data-layer decomposition (Story 126)
 
 ### Changed
