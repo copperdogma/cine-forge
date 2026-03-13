@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-03-13-01] — Frontend chat and data-layer decomposition (Story 126)
+
+### Changed
+- Split the frontend chat/data layer into focused modules under `ui/src/components/chat/`, `ui/src/lib/api/`, and `ui/src/lib/hooks/`, reducing `ChatPanel.tsx`, `api.ts`, and `hooks.ts` to clear orchestration/barrel roles
+- Repointed internal chat/run consumers to the new module boundaries while preserving existing routes, payloads, role chat behavior, progress rendering, and entity context handling
+
+### Fixed
+- Restored the dedicated `activity` chat icon after extraction so navigation/activity notes keep their prior visual treatment
+- Repaired the UI validation baseline by adding the direct `@radix-ui/react-dialog` dependency and fixing the `CommandPalette.tsx` implicit-`any` type hole
 ## [2026-03-12-01] — Agent workflow hardening meta upgrade (Story 125)
 
 ### Added

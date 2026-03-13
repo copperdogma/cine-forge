@@ -4,10 +4,10 @@
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
-import { streamAutoInsight } from './api'
+import { streamAutoInsight } from './api/chat'
 import { humanizeStageName } from './chat-messages'
 import { detectConcernGroupRun, countTotalScenes } from './constants'
-import { useRunState, useRunEvents } from './hooks'
+import { useRunState, useRunEvents } from './hooks/runs'
 import type { StageState, ArtifactGroupSummary } from './types'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''

@@ -217,6 +217,7 @@ NOTES from Cam:
 | 123 | Anthropic Prompt Caching | 0 — Infrastructure | Medium | Done | [story-123](stories/story-123-anthropic-prompt-caching.md) |
 | 124 | Recall Verification Loop | 0 — Infrastructure | Medium | Done | [story-124](stories/story-124-recall-verification-loop.md) |
 | 125 | Agent Workflow Hardening Meta Upgrade | Cross-Cutting | High | Done | [story-125](stories/story-125-agent-workflow-hardening-meta-upgrade.md) |
+| 126 | Frontend Chat and Data-Layer Decomposition | 2.5 — UI | High | Done | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
 
 ## Phase Summary
 

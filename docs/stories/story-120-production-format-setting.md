@@ -70,7 +70,8 @@ This is pure plumbing — no AI reasoning required.
 - `src/cine_forge/schemas/project_config.py` (or wherever ProjectConfig is defined) — add `production_format: str | None = None`
 - `src/cine_forge/api/routers/project.py` (or project settings route) — add PATCH for `production_format`
 - `src/cine_forge/ai/image.py` — add `FORMAT_STYLE_MODIFIERS` map; update `build_image_prompt()` to accept + apply format
-- `ui/src/lib/api.ts` — add `production_format` to project type + update/set endpoint
+- `ui/src/lib/types.ts` — add `production_format` to the project summary type
+- `ui/src/lib/api/projects.ts` — extend the project settings endpoint wiring for `production_format`
 - `ui/src/components/DesignStudySection.tsx` — modal trigger logic
 - `ui/src/components/ProductionFormatModal.tsx` — new component (format picker)
 

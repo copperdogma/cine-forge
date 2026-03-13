@@ -1,0 +1,20 @@
+version: 1
+last_run: "2026-03-12T17:46:00-06:00"
+suppressed_findings:
+  - id: oversized-core-refactors-already-tracked
+    updated: "2026-03-12"
+    reason: "engine.py, api/app.py, and api/service.py remain above size thresholds, but Story 115 planned their decomposition and Stories 117/118 already executed the first extraction wave. Do not re-raise until fresh regression evidence appears."
+  - id: marker-scan-high-noise
+    updated: "2026-03-12"
+    reason: "Raw TODO/placeholder/stub grep is dominated by docs, historical story logs, and intentional UI placeholder text; treat it as low-signal unless narrowed to active source files."
+recent_reports:
+  - timestamp: "2026-03-12T17:46:00-06:00"
+    path: "docs/reports/codebase-improvement/20260312-1746.md"
+    recommended_next_step: "Create a Draft story for frontend chat/data-layer decomposition."
+    top_findings:
+      - "Frontend chat/data layer is concentrated in oversized, high-churn files."
+      - "Backend chat orchestration remains a 2,191-line monolith."
+      - "Foundational AI modules still combine orchestration, prompting, QA, and test-mode helpers."
+open_branches: []
+notes:
+  - "No ADR directly applied to this scan's top findings; used AGENTS architecture rules and Story 115/117/118 as the governing references."

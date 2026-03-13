@@ -99,7 +99,7 @@ export function CommandPalette({
   return (
     <CommandDialog
       open={open}
-      onOpenChange={(v) => {
+      onOpenChange={(v: boolean) => {
         setOpen(v)
         if (!v) setQuery("")
       }}

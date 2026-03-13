@@ -47,7 +47,7 @@ This is pure plumbing — no AI reasoning needed for the prompt compiler itself.
 - [ ] Add `sources_used: list[str]` to `DesignStudyRound` schema (e.g. `["bible", "project_config", "look_and_feel"]`)
 - [ ] Write `build_image_prompt()` in `src/cine_forge/ai/image.py` — replaces `synthesize_image_prompt()`, accepts `bible_data` + optional `project_config_data`, `look_and_feel_data`, `intent_mood_data`
 - [ ] Update generate router to load project_config, look_and_feel, intent_mood from artifact store before calling prompt builder; populate `sources_used` on the round
-- [ ] Update `DesignStudyRound` TypeScript interface in `ui/src/lib/api.ts` — add `sources_used: string[]`
+- [ ] Update `DesignStudyRound` TypeScript interface in `ui/src/lib/api/design-study.ts` — add `sources_used: string[]`
 - [ ] Add "Sources used" display in `DesignStudySection.tsx` (collapse toggle under generate controls — show what context was available for the last round)
 - [ ] Update decide router: when decision becomes `selected_final`, write `visual_reference_image` to bible manifest; when deselected, clear it
 - [ ] Add integration test: generate with mock look_and_feel → verify prompt contains style language
@@ -75,7 +75,7 @@ This is pure plumbing — no AI reasoning needed for the prompt compiler itself.
 - `src/cine_forge/schemas/design_study.py` — add `sources_used: list[str] = []` to `DesignStudyRound` (78 lines)
 - `src/cine_forge/ai/image.py` — refactor/extend `synthesize_image_prompt` into `build_image_prompt` accepting multi-source context (188 lines)
 - `src/cine_forge/api/routers/design_study.py` — load context before generation; update decide endpoint to propagate to bible manifest (298 lines)
-- `ui/src/lib/api.ts` — add `sources_used: string[]` to `DesignStudyRound` interface
+- `ui/src/lib/api/design-study.ts` — add `sources_used: string[]` to `DesignStudyRound` interface
 - `ui/src/components/DesignStudySection.tsx` — add Sources display in generate area (465 lines)
 - `tests/integration/test_api_design_study.py` — add context-enrichment test (232 lines)
 

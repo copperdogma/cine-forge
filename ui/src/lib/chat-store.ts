@@ -2,7 +2,7 @@
 // Store is the in-memory view for rendering. Write-through on addMessage.
 
 import { create } from 'zustand'
-import { postChatMessage, getChatMessages } from './api'
+import { getChatMessages, postChatMessage } from './api/chat'
 import type { ChatAction, ChatMessage, ChatMessageType, PreflightData, ToolCallStatus } from './types'
 
 /** AI message types that should have an explicit speaker. */

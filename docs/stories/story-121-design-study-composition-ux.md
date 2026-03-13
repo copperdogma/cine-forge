@@ -74,7 +74,7 @@ Pure UI + data plumbing — no AI reasoning.
 - `src/cine_forge/schemas/design_study.py` — add `positive_refs`, `negative_refs`, `directive` to `DesignStudyRound` (~78 lines)
 - `src/cine_forge/api/routers/design_study.py` — update `GenerateRequest` + forward fields to prompt builder (~298 lines)
 - `src/cine_forge/ai/image.py` — update `build_image_prompt()` to use directive + ref context
-- `ui/src/lib/api.ts` — update `DesignStudyRound` interface + `GenerateDesignStudyParams`
+- `ui/src/lib/api/design-study.ts` — update `DesignStudyRound` interface + `GenerateDesignStudyParams`
 - `ui/src/components/DesignStudySection.tsx` — layout refactor; wire CompositionBar + ContactSheetRow (~465 lines → may need split)
 - `ui/src/components/CompositionBar.tsx` — new component (sticky next-gen bar)
 - `ui/src/components/ContactSheetRow.tsx` — new component (collapsed thumbnail strip per round)
