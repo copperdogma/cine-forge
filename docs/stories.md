@@ -218,6 +218,11 @@ NOTES from Cam:
 | 124 | Recall Verification Loop | 0 — Infrastructure | Medium | Done | [story-124](stories/story-124-recall-verification-loop.md) |
 | 125 | Agent Workflow Hardening Meta Upgrade | Cross-Cutting | High | Done | [story-125](stories/story-125-agent-workflow-hardening-meta-upgrade.md) |
 | 126 | Frontend Chat and Data-Layer Decomposition | 2.5 — UI | High | Done | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
+| 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Draft | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
+| 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Draft | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
+| 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Draft | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
+| 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
+| 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Draft | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
 
 ## Phase Summary
 

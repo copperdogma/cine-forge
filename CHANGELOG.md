@@ -10,6 +10,17 @@
 - Story template tasks now call out `/verify-eval` plus `docs/evals/registry.yaml` updates when evals or goldens move
 - `/triage-stories` now correctly states that Draft stories may be recommended but must be promoted to `Pending` before `/build-story`
 
+## [2026-03-13-03] — Triaged inbox into stories and research spikes
+
+### Added
+- Draft stories 127-131 for artifact health semantics/chat model disclosure, provider failure chat notifications, entity-discovery taxonomy tightening, export fidelity, and preference learning
+- A new `media-generation-capability-refresh` research workspace under `docs/research/` with a populated research prompt for current image/video/music model capabilities
+
+### Changed
+- Emptied `docs/inbox.md` by moving actionable items into tracked stories or the new research spike
+- Folded ADR-003 asset-pipeline ideas into Story 098 instead of leaving them as separate inbox entries
+- Updated `docs/stories.md` to register the new draft backlog items
+
 ## [2026-03-13-01] — Frontend chat and data-layer decomposition (Story 126)
 
 ### Changed

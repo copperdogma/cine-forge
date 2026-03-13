@@ -29,6 +29,15 @@ This is a core design principle, not a feature. The entire pipeline must be orig
 - [ ] Asset thumbnailing and preview generation
 - [ ] Bulk upload support (e.g., 20 location scout photos at once)
 
+## Notes
+
+20260313 inbox triage folded three ADR-003 Decision #9 ideas into this story instead of keeping them as separate backlog items:
+- AI enhancement of minimal inputs: headshot → fuller character reference set, phone video → cleaned location stills
+- Location lookup from web: fetch public exterior/reference images as raw inputs to the same asset pipeline
+- Mood-board synthesis: multiple inspiration images used together as reference input for design generation
+
+These are extensions of the same origin-agnostic asset pipeline, not separate product tracks. Implementation planning should evaluate whether they belong in Story 098 directly, Story 029's injection layer, or as a render/design-study follow-up once the upload foundation exists.
+
 ## Relationship to Story 029
 
 Story 029 (User Asset Injection) covers the lock system, validation, manifest tracking, and downstream integration hooks. This story focuses on the upload UX and the origin-agnostic pipeline guarantee. They may be combined during implementation planning.
