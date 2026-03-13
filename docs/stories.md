@@ -29,10 +29,10 @@ These two are the critical path. Build them first, in this order (093 is indepen
 |---|---|
 | **101** Long-Running Action System | ✅ Done |
 | **099** Scene Workspace | ✅ Done — SceneWorkspacePage with 5 concern group tabs, readiness bar, entity roster, generate buttons |
-| **096** "Chat About This" | Ready now. Generalizes the highlight-to-chat pattern from Story 082 to all artifacts. Natural companion to 099. |
+| **096** "Chat About This" | ✅ Done — generalized the highlight-to-chat pattern from Story 082 into reusable draft-to-chat affordances across Scene Workspace and shared artifact viewers. |
 | **100** Motif Tracking | Depends on 094. Motif annotations feed into Look & Feel and Sound & Music. |
 
-099 shipped. Next frontier: "Chat About This" (096) — now that Scene Workspace exists, users need a way to discuss what they see in each concern group tab.
+099 and 096 shipped. Next frontier in this lane is Motif Tracking (100), plus the broader editing loop in 097.
 
 ### Group 4 — Upstream Infrastructure (ready now, build when needed)
 
@@ -187,7 +187,7 @@ NOTES from Cam:
 | 093 | Script Bible Artifact | 5 — Creative Direction | High | Done | [story-093](stories/story-093-script-bible.md) |
 | 094 | Concern Group Artifact Schemas | 5 — Creative Direction | High | Done | [story-094](stories/story-094-concern-group-schemas.md) |
 | 095 | Intent / Mood Layer | 5 — Creative Direction | High | Done | [story-095](stories/story-095-intent-mood-layer.md) |
-| 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Draft | [story-096](stories/story-096-chat-about-this.md) |
+| 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Done | [story-096](stories/story-096-chat-about-this.md) |
 | 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
 | 098 | Real-World Asset Upload Pipeline | 7 — Generation | Medium | Draft | [story-098](stories/story-098-real-asset-upload.md) |
 | 099 | Scene Workspace | 5 — Creative Direction | High | Done | [story-099](stories/story-099-scene-workspace.md) |

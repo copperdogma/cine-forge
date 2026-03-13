@@ -21,6 +21,22 @@
 - Folded ADR-003 asset-pipeline ideas into Story 098 instead of leaving them as separate inbox entries
 - Updated `docs/stories.md` to register the new draft backlog items
 
+## [2026-03-13-05] — Operator verification handoff guidance
+
+### Changed
+- `AGENTS.md` and the story lifecycle skills (`build-story`, `validate`, `mark-story-done`) now require a short `Where to verify` note whenever there is a concrete path for the user to spot-check completed work
+
+## [2026-03-13-04] — Chat about this interaction pattern (Story 096)
+
+### Added
+- Reusable `Chat about this` draft insertion flow across Scene Workspace concern-group annotations and shared artifact viewers, with contextual role tagging and quoted source text
+
+### Changed
+- Chat intent handling now cleanly separates editable draft insertion from immediate-send help/glossary questions
+
+### Fixed
+- Closed right-panel chat actions no longer drop pending draft/send intents when reopening the chat panel
+
 ## [2026-03-13-01] — Frontend chat and data-layer decomposition (Story 126)
 
 ### Changed

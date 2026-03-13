@@ -51,6 +51,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Context Traceability**: Every run must persist its full execution context (e.g., `runtime_params`, recipe fingerprints) in its core artifacts (`run_state.json`). Never leave the operator guessing which model or flag produced an outcome.
 - **Project-Scoped Preferences**: Store user preferences and settings in `project.json`, not `localStorage`. `localStorage` is ephemeral — it doesn't survive browser clears, doesn't sync across machines, and isn't visible to the backend. Only use `localStorage` for truly throwaway UI state (e.g., collapsed panel memory within a single session). Anything the user would miss if it vanished belongs in project settings.
 - **AI-as-Tester**: AI agents have a blind spot — they default to writing deterministic test scripts even when the problem requires judgment and observation. When verifying AI behavior (role persona quality, creative direction coherence, tone consistency), the correct approach is to *have a conversation personally* with the AI component, not just validate JSON structure. Use the subagent pattern: spawn a subagent to conduct a focused multi-turn probe of the AI behavior, then report findings back to the orchestrator. Structural tests (Pydantic schema, field coverage) are necessary but not sufficient — they miss shallow reasoning, wrong tone, and missing creative insight. This complements promptfoo evals, not replaces them.
+- **Operator Verification Handoff**: When summarizing completed work, include a brief `Where to verify` pointer whenever there is a concrete way for the user to inspect it themselves. For UI work, name the route or screen and 1-3 interactions. For backend or CLI work, give the command, endpoint, or artifact to inspect. Keep it succinct, grounded in what was actually verified, and make clear the extra check is optional.
 
 ## Project Context (CineForge)
 
@@ -315,6 +316,7 @@ Use Draft status liberally for future stories. It prevents premature execution o
 - `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
 - Commit and push happen only when the user explicitly requests them.
 - Each step should end with a concise summary and a recommended next step the user can approve with a simple "yes".
+- When there is a concrete verification path, include a short `Where to verify` note so the user can spot-check the result themselves without reverse-engineering the change.
 - If the user already authorized later steps in the chain, continue without redundant confirmation unless a meaningful blocker or risk appears.
 
 ### Runbook Conventions

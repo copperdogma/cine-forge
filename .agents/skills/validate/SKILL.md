@@ -75,6 +75,8 @@ Assess whether a story's implementation meets its requirements.
    - missing browser verification for UI work
    - unmet acceptance criteria or failed checks
    - recommended next step (`/mark-story-done` if clean, otherwise fix issues)
+   - a short `Where to verify` note whenever there is a concrete path for the user to spot-check the result themselves
+   - `Where to verify` should be concise and optional: UI work should name the route/screen plus 1-3 interactions; CLI/backend work should name the command, endpoint, or file to inspect
    - By default, stop after the report. If the user already explicitly approved the next step(s) and validation is clean enough to proceed, continue to `/mark-story-done` inline instead of asking again
 
 ```

@@ -1,6 +1,8 @@
 // Lightweight film term glossary for hover tooltips.
 // The AI provides deeper explanations when clicked — this is just the 1-liner.
 
+export { askChatQuestion } from './chat-intents'
+
 export const FILM_GLOSSARY: Record<string, string> = {
   // Scene structure
   'INT': 'Interior — scene takes place indoors',
@@ -35,11 +37,4 @@ export const FILM_GLOSSARY: Record<string, string> = {
   'climax': 'The peak moment of conflict — the turning point',
   'resolution': 'How the story wraps up after the climax',
   'exposition': 'Background information the audience needs to understand the story',
-}
-
-/** Dispatch a question to the chat panel. ChatPanel listens for this event. */
-export function askChatQuestion(question: string) {
-  window.dispatchEvent(
-    new CustomEvent('cineforge:ask', { detail: { question } }),
-  )
 }

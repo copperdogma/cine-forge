@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Send, Sparkles, Square, User, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -24,7 +24,11 @@ type ComposerProps = {
   onCancel: () => void
 }
 
-export function Composer({
+export type ComposerHandle = {
+  focusInput: () => void
+}
+
+export const Composer = forwardRef<ComposerHandle, ComposerProps>(function Composer({
   projectId,
   characters,
   entityContext,
@@ -33,7 +37,7 @@ export function Composer({
   onInputTextChange,
   onSend,
   onCancel,
-}: ComposerProps) {
+}, ref) {
   const navigate = useNavigate()
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const mentionStartRef = useRef<number>(-1)
@@ -45,6 +49,16 @@ export function Composer({
   const MIN_INPUT_H = 100
   const MAX_INPUT_H = 400
   const [inputHeight, setInputHeight] = useState(MIN_INPUT_H)
+
+  useImperativeHandle(ref, () => ({
+    focusInput: () => {
+      const element = inputRef.current
+      if (!element) return
+      element.focus()
+      const pos = element.value.length
+      element.setSelectionRange(pos, pos)
+    },
+  }))
 
   const onDragStart = (event: React.PointerEvent) => {
     event.preventDefault()
@@ -318,4 +332,4 @@ export function Composer({
       </div>
     </>
   )
-}
+})

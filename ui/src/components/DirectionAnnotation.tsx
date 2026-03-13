@@ -10,13 +10,13 @@
  * Supports all concern groups: rhythm_and_flow, look_and_feel, sound_and_music,
  * character_and_performance (ADR-003).
  */
-import { Scissors, Eye, Volume2, Drama, MessageSquare } from 'lucide-react'
+import { Scissors, Eye, Volume2, Drama } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+import { ChatAboutButton } from '@/components/ChatAboutButton'
+import { buildQuotedChatDraft, insertChatDraft } from '@/lib/chat-intents'
 import { useRightPanel } from '@/lib/right-panel'
-import { askChatQuestion } from '@/lib/glossary'
 
 // --- Concern group config ---
 
@@ -79,12 +79,19 @@ export function DirectionAnnotation({
   const config = CONCERN_GROUP_CONFIG[concernGroup]
   const Icon = config.icon
 
-  const handleChatAbout = (topic: string) => {
-    if (!panel.state.open) panel.openChat()
-    const sceneCtx = sceneHeading ? ` for scene "${sceneHeading}"` : ''
-    askChatQuestion(
-      `@${config.roleId} I'd like to discuss your ${config.label.toLowerCase()} direction${sceneCtx}: ${topic}`,
-    )
+  const sceneCtx = sceneHeading ? ` for scene "${sceneHeading}"` : ''
+
+  const handleChatAbout = (prompt: string, quote: string) => {
+    const draft = buildQuotedChatDraft({
+      roleId: config.roleId,
+      prompt,
+      quote,
+    })
+    if (!panel.state.open) {
+      panel.openChatWithIntent({ mode: 'draft', text: draft })
+      return
+    }
+    insertChatDraft(draft)
   }
 
   const confidencePct = typeof data.confidence === 'number' ? Math.round(data.confidence * 100) : null
@@ -96,6 +103,9 @@ export function DirectionAnnotation({
     if (Array.isArray(value) && value.length === 0) return false
     return true
   })
+  const fullQuote = fields
+    .map(([key, value]) => `${formatFieldLabel(key)}: ${summarizeDirectionValue(value)}`)
+    .join('\n')
 
   return (
     <Card className="border-l-2" style={{ borderLeftColor: `var(--color-${concernGroup === 'rhythm_and_flow' ? 'pink' : concernGroup === 'look_and_feel' ? 'sky' : concernGroup === 'sound_and_music' ? 'emerald' : 'amber'}-500, hsl(var(--border)))` }}>
@@ -162,7 +172,11 @@ export function DirectionAnnotation({
                 key={key}
                 label={label}
                 value={String(value)}
-                onChat={handleChatAbout}
+                onChat={(fieldLabel, fieldValue) =>
+                  handleChatAbout(
+                    `I'd like to discuss the ${fieldLabel.toLowerCase()} in this ${config.label.toLowerCase()} direction${sceneCtx}.`,
+                    fieldValue,
+                  )}
               />
             )
           })}
@@ -170,15 +184,14 @@ export function DirectionAnnotation({
 
         {/* Chat action */}
         <div className="pt-1">
-          <Button
+          <ChatAboutButton
+            roleId={config.roleId}
+            prompt={`I'd like to discuss this ${config.label.toLowerCase()} direction${sceneCtx}.`}
+            quote={fullQuote}
             variant="ghost"
             size="sm"
             className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => handleChatAbout(config.label.toLowerCase())}
-          >
-            <MessageSquare className="h-3 w-3" />
-            Chat about this
-          </Button>
+          />
         </div>
       </CardContent>
     </Card>
@@ -200,14 +213,14 @@ function DirectionField({
 }: {
   label: string
   value: string
-  onChat: (topic: string) => void
+  onChat: (label: string, value: string) => void
 }) {
   return (
     <div className="group/field">
       <div className="flex items-baseline justify-between gap-2">
         <span className="text-xs text-muted-foreground shrink-0">{label}</span>
         <button
-          onClick={() => onChat(`the ${label.toLowerCase()}: "${value}"`)}
+          onClick={() => onChat(label, value)}
           className="opacity-0 group-hover/field:opacity-100 transition-opacity text-[10px] text-muted-foreground hover:text-foreground cursor-pointer"
         >
           discuss
@@ -216,4 +229,18 @@ function DirectionField({
       <p className="text-foreground/90 leading-relaxed">{value}</p>
     </div>
   )
+}
+
+function summarizeDirectionValue(value: unknown): string {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => {
+        if (typeof item === 'object' && item !== null) {
+          return String((item as Record<string, unknown>).motif_name ?? JSON.stringify(item))
+        }
+        return String(item)
+      })
+      .join(', ')
+  }
+  return String(value)
 }

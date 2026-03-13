@@ -139,10 +139,12 @@ export function DirectionTab({
   }
 
   const handleConverge = () => {
-    if (!panel.state.open) panel.openChat()
-    askChatQuestion(
-      `@director Review all creative direction for this scene and identify any conflicts or opportunities for convergence.`,
-    )
+    const prompt = '@director Review all creative direction for this scene and identify any conflicts or opportunities for convergence.'
+    if (!panel.state.open) {
+      panel.openChatWithIntent({ mode: 'send', text: prompt })
+      return
+    }
+    askChatQuestion(prompt)
   }
 
   return (

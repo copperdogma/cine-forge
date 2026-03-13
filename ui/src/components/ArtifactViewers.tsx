@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { ChatAboutButton } from '@/components/ChatAboutButton'
 import { cn } from '@/lib/utils'
 import { useState, Suspense, lazy, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -23,6 +24,7 @@ function CollapsibleSection({
   icon,
   defaultOpen = true,
   helpQuestion,
+  chatAction,
   children
 }: {
   title: string
@@ -30,6 +32,7 @@ function CollapsibleSection({
   defaultOpen?: boolean
   /** If set, a small ? icon appears next to the title. Click sends this question to the chat. */
   helpQuestion?: string
+  chatAction?: React.ReactNode
   children: React.ReactNode
 }) {
   const [open, setOpen] = useState(defaultOpen)
@@ -42,6 +45,7 @@ function CollapsibleSection({
           <span className="text-xs text-muted-foreground font-medium">{title}</span>
         </CollapsibleTrigger>
         {helpQuestion && <SectionHelp question={helpQuestion} />}
+        {chatAction}
       </div>
       <CollapsibleContent className="mt-2">
         {children}
@@ -381,7 +385,20 @@ export function ProfileViewer({
       {description && (
         <>
           <Separator />
-          <CollapsibleSection title="Description">
+          <CollapsibleSection
+            title="Description"
+            chatAction={
+              <ChatAboutButton
+                roleId="story_editor"
+                prompt={`I'd like to discuss this ${profileType} description.`}
+                quote={description}
+                label="Chat about this"
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-[10px] text-muted-foreground"
+              />
+            }
+          >
             <p className="text-sm leading-relaxed">{description}</p>
           </CollapsibleSection>
         </>
@@ -391,7 +408,19 @@ export function ProfileViewer({
       {profileType === 'character' && dialogueSummary && (
         <>
           <Separator />
-          <CollapsibleSection title="Dialogue Summary">
+          <CollapsibleSection
+            title="Dialogue Summary"
+            chatAction={
+              <ChatAboutButton
+                roleId="story_editor"
+                prompt="I'd like to discuss this dialogue summary."
+                quote={dialogueSummary}
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-[10px] text-muted-foreground"
+              />
+            }
+          >
             <p className="text-sm leading-relaxed">{dialogueSummary}</p>
           </CollapsibleSection>
         </>
@@ -401,7 +430,29 @@ export function ProfileViewer({
       {profileType === 'character' && inferredTraits.length > 0 && (
         <>
           <Separator />
-          <CollapsibleSection title="Inferred Traits" helpQuestion="How are character traits inferred from the screenplay?">
+          <CollapsibleSection
+            title="Inferred Traits"
+            helpQuestion="How are character traits inferred from the screenplay?"
+            chatAction={
+              <ChatAboutButton
+                roleId="story_editor"
+                prompt="I'd like to discuss these inferred traits."
+                quote={inferredTraits
+                  .map((traitObj) => {
+                    if (!isObject(traitObj)) return null
+                    const trait = getString(traitObj, 'trait')
+                    const value = getString(traitObj, 'value')
+                    const rationale = getString(traitObj, 'rationale')
+                    return [trait, value, rationale].filter(Boolean).join(': ')
+                  })
+                  .filter(Boolean)
+                  .join('\n')}
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-[10px] text-muted-foreground"
+              />
+            }
+          >
             <div className="space-y-2">
               {inferredTraits.map((traitObj, i) => {
                 if (!isObject(traitObj)) return null
@@ -443,9 +494,19 @@ export function ProfileViewer({
         <>
           <Separator />
           <div>
-            <p className="text-xs text-muted-foreground mb-2">
-              <GlossaryTerm term="narrative significance">Narrative Significance</GlossaryTerm>
-            </p>
+            <div className="mb-2 flex items-center gap-1.5">
+              <p className="text-xs text-muted-foreground">
+                <GlossaryTerm term="narrative significance">Narrative Significance</GlossaryTerm>
+              </p>
+              <ChatAboutButton
+                roleId="story_editor"
+                prompt={`I'd like to discuss this ${profileType}'s narrative significance.`}
+                quote={narrativeSignificance}
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-[10px] text-muted-foreground"
+              />
+            </div>
             <p className="text-sm leading-relaxed">{narrativeSignificance}</p>
           </div>
         </>
@@ -456,7 +517,29 @@ export function ProfileViewer({
       {profileType === 'character' && explicitEvidence.length > 0 && (
         <>
           <Separator />
-          <CollapsibleSection title="Evidence (sample)" helpQuestion="What counts as explicit evidence for character analysis?">
+          <CollapsibleSection
+            title="Evidence (sample)"
+            helpQuestion="What counts as explicit evidence for character analysis?"
+            chatAction={
+              <ChatAboutButton
+                roleId="story_editor"
+                prompt="I'd like to discuss this supporting evidence."
+                quote={explicitEvidence
+                  .map((evidenceObj) => {
+                    if (!isObject(evidenceObj)) return null
+                    const trait = getString(evidenceObj, 'trait')
+                    const quote = getString(evidenceObj, 'quote')
+                    const sourceScene = getString(evidenceObj, 'source_scene')
+                    return [trait, quote, sourceScene].filter(Boolean).join(' — ')
+                  })
+                  .filter(Boolean)
+                  .join('\n')}
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-[10px] text-muted-foreground"
+              />
+            }
+          >
             <div className="space-y-2">
               {explicitEvidence.map((evidenceObj, i) => {
                 if (!isObject(evidenceObj)) return null
@@ -474,6 +557,18 @@ export function ProfileViewer({
                       )}
                       {sourceScene && (
                         <p className="text-xs text-muted-foreground">— {sourceScene}</p>
+                      )}
+                      {quote && (
+                        <ChatAboutButton
+                          roleId="story_editor"
+                          prompt={trait
+                            ? `I'd like to discuss this evidence for ${trait.toLowerCase()}.`
+                            : "I'd like to discuss this evidence."}
+                          quote={quote}
+                          variant="ghost"
+                          size="sm"
+                          className="h-5 px-1.5 text-[10px] text-muted-foreground"
+                        />
                       )}
                     </CardContent>
                   </Card>
@@ -578,7 +673,19 @@ export function SceneViewer({ data }: { data: Record<string, unknown> }) {
       {toneMood && (
         <>
           <Separator />
-          <CollapsibleSection title="Tone & Mood">
+          <CollapsibleSection
+            title="Tone & Mood"
+            chatAction={
+              <ChatAboutButton
+                roleId="story_editor"
+                prompt="I'd like to discuss this scene's tone and mood."
+                quote={toneMood}
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-[10px] text-muted-foreground"
+              />
+            }
+          >
             <p className="text-sm">{toneMood}</p>
           </CollapsibleSection>
         </>
@@ -588,7 +695,28 @@ export function SceneViewer({ data }: { data: Record<string, unknown> }) {
       {narrativeBeats.length > 0 && (
         <>
           <Separator />
-          <CollapsibleSection title="Narrative Beats" helpQuestion="What are narrative beats and how were they identified in this scene?">
+          <CollapsibleSection
+            title="Narrative Beats"
+            helpQuestion="What are narrative beats and how were they identified in this scene?"
+            chatAction={
+              <ChatAboutButton
+                roleId="editorial_architect"
+                prompt="I'd like to discuss these narrative beats for the scene."
+                quote={narrativeBeats
+                  .map((beatObj) => {
+                    if (!isObject(beatObj)) return null
+                    const beatType = getString(beatObj, 'beat_type')
+                    const description = getString(beatObj, 'description')
+                    return [beatType, description].filter(Boolean).join(': ')
+                  })
+                  .filter(Boolean)
+                  .join('\n')}
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-[10px] text-muted-foreground"
+              />
+            }
+          >
             <div className="space-y-2">
               {narrativeBeats.map((beatObj, i) => {
                 if (!isObject(beatObj)) return null

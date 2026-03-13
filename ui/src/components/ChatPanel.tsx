@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useEffectEvent, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { Sparkles } from 'lucide-react'
@@ -6,11 +6,17 @@ import { toast } from 'sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { postChatMessage, streamChatMessage } from '@/lib/api'
 import { useChatStore } from '@/lib/chat-store'
+import {
+  CHAT_INTENT_EVENT,
+  consumePendingChatIntent,
+  type ChatIntent,
+} from '@/lib/chat-intents'
 import { useProjectCharacters, useProjectInputs, useStartRun } from '@/lib/hooks'
+import { useRightPanel } from '@/lib/right-panel'
 import type { ChatMessage } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { ChatMessageItem } from './chat/ChatMessageItem'
-import { Composer } from './chat/Composer'
+import { Composer, type ComposerHandle } from './chat/Composer'
 import { InteractionModeSelector } from './chat/InteractionModeSelector'
 import { friendlyToolName, getRoleDisplay } from './chat/config'
 
@@ -39,8 +45,10 @@ export function ChatPanel() {
   const addMessage = useChatStore((store) => store.addMessage)
   const entityContext = useChatStore((store) => store.entityContext[projectId ?? ''] ?? null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const composerRef = useRef<ComposerHandle>(null)
   const shouldAutoScrollRef = useRef(true)
   const abortRef = useRef<AbortController | null>(null)
+  const panel = useRightPanel()
   const startRun = useStartRun()
   const { data: inputs } = useProjectInputs(projectId)
   const { data: characters } = useProjectCharacters(projectId)
@@ -208,6 +216,28 @@ export function ChatPanel() {
     setIsStreaming(false)
   }
 
+  const insertDraftText = (draft: string) => {
+    setInputText((current) => {
+      const trimmedCurrent = current.trim()
+      if (!trimmedCurrent) return draft
+      return `${current.replace(/\s+$/, '')}\n\n${draft}`
+    })
+    requestAnimationFrame(() => composerRef.current?.focusInput())
+  }
+
+  const handleChatIntent = useEffectEvent((intent: ChatIntent) => {
+    if (!intent.text) return
+
+    if (intent.mode === 'draft') {
+      insertDraftText(intent.text)
+      return
+    }
+
+    if (!isStreaming) {
+      handleSendMessage(intent.text)
+    }
+  })
+
   useEffect(() => {
     const viewport = scrollRef.current?.querySelector('[data-radix-scroll-area-viewport]')
     if (!viewport) return
@@ -249,15 +279,32 @@ export function ChatPanel() {
   }, [])
 
   useEffect(() => {
-    const handler = (event: Event) => {
-      const question = (event as CustomEvent).detail?.question
-      if (question && !isStreaming) {
-        handleSendMessage(question)
-      }
+    const pendingIntent = panel.state.pendingIntent
+    if (!pendingIntent) return
+    if (pendingIntent.mode === 'send' && isStreaming) return
+
+    const raf = requestAnimationFrame(() => {
+      handleChatIntent(pendingIntent)
+      panel.consumePendingIntent()
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [panel, panel.state.pendingIntent, isStreaming])
+
+  useEffect(() => {
+    const pendingIntent = consumePendingChatIntent()
+    if (pendingIntent) {
+      const raf = requestAnimationFrame(() => handleChatIntent(pendingIntent))
+      return () => cancelAnimationFrame(raf)
     }
-    window.addEventListener('cineforge:ask', handler)
-    return () => window.removeEventListener('cineforge:ask', handler)
-  })
+
+    const handler = (event: Event) => {
+      const intent = (event as CustomEvent<ChatIntent>).detail
+      consumePendingChatIntent()
+      handleChatIntent(intent)
+    }
+    window.addEventListener(CHAT_INTENT_EVENT, handler as EventListener)
+    return () => window.removeEventListener(CHAT_INTENT_EVENT, handler as EventListener)
+  }, [isStreaming, projectId, messages])
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
@@ -315,6 +362,7 @@ export function ChatPanel() {
         </div>
       </ScrollArea>
       <Composer
+        ref={composerRef}
         projectId={projectId}
         characters={characters}
         entityContext={entityContext}

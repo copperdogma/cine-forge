@@ -79,5 +79,5 @@ If not complete, stop and list blockers.
 - Never mark Done without running the full check suite
 - Never mark Done if evals were run without a `/verify-eval` report (or equivalent classification) in the work log
 - Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first
-- End with a concise summary and recommend `/check-in-diff` as the next step unless the user already approved later steps
+- End with a concise summary, recommend `/check-in-diff` as the next step unless the user already approved later steps, and include a short `Where to verify` note whenever there is a concrete path for the user to inspect the result themselves
 - If the user already explicitly approved `/check-in-diff`, commit, or push, continue without redundant confirmation unless a meaningful blocker appears
