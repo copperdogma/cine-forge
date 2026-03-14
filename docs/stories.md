@@ -1,14 +1,13 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-13, post-triage)
+## Current Execution Map (updated 2026-03-14, backlog cleanup)
 
-Phases 0–5 foundation are landed: script understanding, role/chat infrastructure, concern-group schemas, Intent/Mood, Scene Workspace, and design studies are all in place. The active backlog now separates cleanly into three buckets: stories that are ready to build, stories blocked by unfinished dependencies, and drafts that still need scoping or a design decision before `/build-story`.
+Phases 0–5 foundation are landed: script understanding, role/chat infrastructure, concern-group schemas, Intent/Mood, Scene Workspace, and design studies are all in place. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
 
 ### Pending — Ready To Build Now
 
 | Story | Why |
 |---|---|
-| **132** Shot Planning UI and Shot List Exports | Closes the human-operability gap left after Story 025 by surfacing shot planning and shot-list exports in the real UI. |
 | **026** Storyboard Generation | Newly unblocked by Story 025. Optional next visualization layer if we want to continue deeper into the film lane. |
 | **029** User Asset Injection | Delivers Ideal R17 in the artifact system and unblocks Story 098. |
 | **031** Change Propagation | R15 Layer 2. Critical before AI artifact editing and deeper iterative editing workflows. |
@@ -29,12 +28,21 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 
 | Story | Why It Stays Draft |
 |---|---|
-| **023** Character & Performance | Explicitly resolved during Story 025; do not build standalone first. |
+| **046** Theme System | Still references pre-flattened `ui/operator-console/` paths; rewrite against the current `ui/` architecture before promotion. |
+| **098** Real-World Asset Upload | Explicitly downstream of Story 029's injection layer; keep it paired with 029 or promote it only after 029 lands. |
 | **097** AI Artifact Editing | Important, but needs a concrete implementation plan and pairs naturally with Story 031. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
-| **119 / 120 / 121** Design Study follow-ons | Clear lane, but 120 should settle project format handling before 119 and 121 deepen prompt/UX work. |
+| **120** Production Format Setting | Should land before the deeper design-study prompt and iteration work so the visual lane has a stable project-level format model. |
+| **119** Design Study Prompt Compiler | Depends on Story 120 establishing the `production_format` model used by the compiler. |
+| **121** Design Study Composition UX | Depends on Stories 120 and 119 so the iteration UI composes against the final format and prompt pipeline instead of creating rework. |
 | **127 / 128 / 129 / 131** Recent triage stories | Good candidates, but they still need promotion from draft to pending before build. |
 | **102 / 104 / 105 / 106 / 112 / 113 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
+
+### Deferred — Intentionally Parked
+
+| Story | Why It Is Parked |
+|---|---|
+| **023** Character & Performance | Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed. |
 
 ---
 
@@ -78,7 +86,7 @@ NOTES from Cam:
 | 020 | Editorial Architect and Editorial Direction | 5 — Creative Direction | Medium | Done | [story-020](stories/story-020-editorial-architect.md) |
 | 021 | Look & Feel — Visual Direction | 5 — Creative Direction | Medium | Done | [story-021](stories/story-021-visual-architect.md) |
 | 022 | Sound & Music — Sound Direction | 5 — Creative Direction | Medium | Done | [story-022](stories/story-022-sound-designer.md) |
-| 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Draft | [story-023](stories/story-023-actor-agents.md) |
+| 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Deferred | [story-023](stories/story-023-actor-agents.md) |
 | ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
 | 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | Done | [story-025](stories/story-025-shot-planning.md) |
 | 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Pending | [story-026](stories/story-026-storyboard-generation.md) |

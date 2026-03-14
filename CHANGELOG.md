@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-14-03] — Backlog cleanup and story sequencing corrections
+
+### Changed
+- Refreshed the stories execution map so the ready-to-build lane matches the actual story statuses and current dependency graph
+- Clarified draft sequencing for the design-study follow-on stories and documented that Story 098 remains downstream of Story 029
+
+### Fixed
+- Removed the stale execution-map recommendation for already-complete Story 132
+- Moved Story 023 out of ambiguous draft status into an explicit deferred state now that Story 025 proved the fallback path
+- Corrected stale implementation notes in Story 046 so it explicitly requires a rewrite against the current `ui/` tree before promotion
+
 ## [2026-03-14-02] — Agent workflow refinements and eval triage tooling
 
 ### Added

@@ -3,11 +3,14 @@
 **Priority**: Medium
 **Status**: Draft
 **Spec Refs**: Film Lane (spec §267) — iterative visual development, round-by-round creative direction
-**Depends On**: Story 056 (Design Study — Done)
+**Depends On**: Story 056 (Design Study — Done), Story 120 (Production Format Setting), Story 119 (Design Study Prompt Compiler + Visual Reference Propagation)
+**Updated**: 2026-03-14 — backlog cleanup clarified that this story builds on the format and prompt-compiler work first.
 
 ## Goal
 
 The current design study UX is a one-shot affair: generate images, look at them, maybe select one. There's no way to tell the next generation what you liked or didn't like without typing the same guidance from scratch every time. This story introduces a **composition bar** — a sticky "next generation" panel where the user can attach positive reference images (✓), negative reference images (✗), and a text directive, then fire the next round. It also adds **contact sheet history**: previous rounds collapse to a thumbnail strip, preserving the creative archaeology without burying the current round. A "Regenerate from here" action on any historical round pre-seeds the composition bar from that round's context, enabling creative branching. Inspired by Grok Imagine's fluid, scroll-and-heart generation model — adapted for our latency constraints (5–60s per generation).
+
+**Backlog sequencing note:** Build this after Story 120 settles the project-wide `production_format` model and Story 119 establishes the shared prompt compiler. Otherwise the iteration UX risks rework around the wrong prompt pipeline.
 
 ## Acceptance Criteria
 
@@ -96,3 +99,5 @@ definition of done}
 ## Work Log
 
 20260303-1700 — story created: User identified during Story 056 browser testing that there's no UX for iterative generation — each round starts from scratch. Inspired by Grok Imagine's fluid generation model and film contact sheet workflow. Sticky composition bar + contact sheet history is the design direction.
+
+20260314 — Backlog cleanup: added explicit dependencies on Stories 120 and 119 so the composition UX is not built against an unstable format/prompt baseline.

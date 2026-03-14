@@ -1,9 +1,10 @@
 # Story 023: Character & Performance — Performance Direction
 
-**Status**: Draft
+**Status**: Deferred
 **Created**: 2026-02-13
 **Rewritten**: 2026-02-25 — Original scope largely superseded by Story 084.
 **Reshaped**: 2026-02-27 — ADR-003 reorganizes direction types into concern groups. Performance direction → Character & Performance concern group.
+**Updated**: 2026-03-14 — backlog cleanup parked the story after Story 025 confirmed the fallback path.
 **Spec Refs**: 12.5 (Character & Performance)
 **Depends On**: Story 008 (character bibles), Story 005 (scene extraction), Story 010 (entity graph), Story 011 (continuity tracking)
 **Ideal Refs**: R4 (creative conversation with characters), R7 (iterative refinement)
@@ -15,6 +16,8 @@
 Determine whether **Character & Performance** needs a formal structured artifact beyond what character bibles + interactive character chat (Story 084) already provide.
 
 Character & Performance is one of five concern groups in the ADR-003 three-layer architecture. It covers: emotional intensity, vocal delivery, physical performance, blocking, motivation, and performance arc within scenes.
+
+**2026-03-14 triage note:** Story 025 landed with an explicit fallback to character bibles + scene context when no structured Character & Performance artifact exists. This story is intentionally parked until storyboard or render work proves that fallback is no longer sufficient.
 
 ---
 
@@ -37,10 +40,10 @@ Character & Performance is one of five concern groups in the ADR-003 three-layer
 ## Resolution Criteria
 
 This story gets **promoted to Pending** if:
-- Story 025 (shot planning) discovers it genuinely needs structured per-character-per-scene emotional data that can't be pulled from character bibles + scene context on demand
+- Story 026 (storyboards), Story 028 (render), or another downstream consumer discovers it genuinely needs structured per-character-per-scene emotional data that can't be pulled from character bibles + scene context on demand
 
 This story gets **closed as Won't Do** if:
-- Shot planning and generation work fine pulling character context from bibles + chat
+- Storyboard and generation work fine pulling character context from bibles + chat
 - The N characters × M scenes cost of batch extraction isn't justified by downstream consumption
 
 ---
@@ -73,7 +76,7 @@ Not in the spec yet. Users should be able to specify character voices for dialog
 
 ## Tasks
 
-- [ ] Decide: does Story 025 actually need this? (answer during that story's implementation)
+- [ ] Re-evaluate during Story 026, Story 028, or any downstream consumer that needs structured per-character performance data
 - [ ] If yes: implement schema, module, tests
 - [ ] If no: close as "Won't Do — covered by character bibles + chat agents (084)"
 
@@ -86,3 +89,5 @@ Not in the spec yet. Users should be able to specify character voices for dialog
 20260225 — Story rewritten. Original scope (actor agent instantiation, per-character system prompts, governance) delivered by Story 084. Remaining scope narrowed to PerformanceDirection artifacts only.
 
 20260227 — Story reshaped per ADR-003. Performance direction → Character & Performance concern group. Convergence dependency (024) eliminated — the "prove your worth" question is now simpler: does shot planning need formal artifacts or can it pull from bibles + chat? Blocking notes added per ADR-003 Decision #3 (blocking is an acknowledged unknown).
+
+20260314 — Backlog cleanup: Story 025 confirmed shot planning can pull Character & Performance context from character bibles + scene context when no structured artifact exists. Status moved to Deferred so it is not treated as an active draft candidate until storyboard/render work proves a real need.

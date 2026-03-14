@@ -3,6 +3,7 @@
 **Status**: Draft
 **Created**: 2026-02-27
 **Source**: ADR-003, Decision #9, Ideal R17
+**Updated**: 2026-03-14 — backlog cleanup clarified that this story remains downstream of Story 029.
 **Spec Refs**: 18 (User Asset Injection)
 **Ideal Refs**: R17 (real-world assets as first-class inputs)
 **Depends On**: Story 029 (user asset injection — lock system, validation, manifest)
@@ -42,6 +43,8 @@ These are extensions of the same origin-agnostic asset pipeline, not separate pr
 
 Story 029 (User Asset Injection) covers the lock system, validation, manifest tracking, and downstream integration hooks. This story focuses on the upload UX and the origin-agnostic pipeline guarantee. They may be combined during implementation planning.
 
+**Backlog note (2026-03-14):** Do not promote this ahead of Story 029. If the upload UX and the injection layer are easiest to land together, merge them during implementation planning instead of running them as parallel backlog lanes.
+
 ---
 
 ## Work Log
@@ -49,3 +52,5 @@ Story 029 (User Asset Injection) covers the lock system, validation, manifest tr
 *(append-only)*
 
 20260227 — Story created per ADR-003 propagation.
+
+20260314 — Backlog cleanup: clarified that Story 098 is not an independent near-term pick; it remains downstream of Story 029's injection layer and may be merged with that work when implementation starts.

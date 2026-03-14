@@ -1,11 +1,12 @@
 # Story 046 — Theme System (Light/Dark/Auto + Palettes)
 
 **Architecture Note (2026-02-19)**
-- Needs update due to architectural changes since story was written: UI was flattened from ui/operator-console to ui/, so referenced paths and implementation touchpoints should be updated to current structure.
+- This draft still needs a source-level rewrite before promotion: the UI was flattened from `ui/operator-console` to `ui/`, and the implementation notes below have not all been reconciled with the current tree.
 
 **Phase**: 2.5 — UI
 **Priority**: Medium
 **Status**: Draft
+**Updated**: 2026-03-14 — backlog cleanup confirmed that this story cannot move to `Pending` until its implementation notes are refreshed against the current UI structure.
 
 ## Goal
 
@@ -20,6 +21,10 @@ The ThemeShowcase page (`/theme`) already defines 4 dark theme palettes as CSS v
 - No light mode CSS variables are defined (`:root` block has placeholder values)
 - Theme preference is not persisted
 - No production-accessible theme switcher exists
+
+## Promotion Gate
+
+Before this story moves to `Pending`, rewrite its implementation notes against the current `ui/` architecture. The product goal still stands, but the file map and touchpoints were written before the UI flattening and are no longer reliable enough for `/build-story`.
 
 ## Acceptance Criteria
 
@@ -77,7 +82,7 @@ The ThemeShowcase page (`/theme`) already defines 4 dark theme palettes as CSS v
 - **Persistence**: Per AGENTS.md, user preferences go in `project.json`, not `localStorage`. Use `localStorage` only as a fast cache to prevent FOUC, synced from project settings.
 - **`next-themes` config**: Use `attribute="class"`, `defaultTheme="system"`, `storageKey="cineforge-mode"`.
 - **Palette application**: CSS variable overrides via `document.documentElement.style.setProperty()` on the resolved theme element.
-- **Existing code**: ThemeShowcase at `ui/operator-console/src/pages/ThemeShowcase.tsx` has the 4 dark palette definitions — extract and normalize into `src/lib/themes.ts`.
+- **Existing code**: ThemeShowcase at `ui/src/pages/ThemeShowcase.tsx` has the 4 dark palette definitions — extract and normalize into `src/lib/themes.ts`.
 
 ## Dependencies
 
@@ -87,3 +92,5 @@ The ThemeShowcase page (`/theme`) already defines 4 dark theme palettes as CSS v
 ## Work Log
 
 *(Entries added during implementation)*
+
+20260314 — Backlog cleanup: kept this story in Draft and added a promotion gate because the current file references still reflect the pre-flattened `ui/operator-console` layout.

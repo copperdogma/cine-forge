@@ -4,6 +4,7 @@
 **Status**: Draft
 **Spec Refs**: Film Lane (spec §267) — visual style consistency across design studies, storyboards, animatics
 **Depends On**: Story 056 (Design Study — Done)
+**Updated**: 2026-03-14 — backlog cleanup clarified that this story should land before the later design-study prompt/iteration follow-ons.
 
 ## Goal
 
@@ -88,7 +89,7 @@ This is pure plumbing — no AI reasoning required.
   | `concept_art` | "concept art, production design sketch, matte painting style" |
 - The modal should feel lightweight — not a "setup wizard". It's a one-question interstitial, not a settings page.
 - `production_format` stored in `project_config` artifact (not a separate config file) — project_config is the right home for project-wide production decisions.
-- The Story 119 `build_image_prompt()` is the natural injection point for the format modifier. Build this story after 119 (or in parallel if 119's interface is settled).
+- The Story 119 `build_image_prompt()` is the natural injection point for the format modifier. Build this story before Story 119 and Story 121, or merge it with Story 119 as a single implementation slice if that is cleaner.
 
 ## Plan
 
@@ -98,3 +99,5 @@ definition of done}
 ## Work Log
 
 20260303-1700 — story created: User identified during Story 056 browser testing that Imagen images look like concept art drawings rather than photorealistic stills for a live-action project. Production format is a threshold moment between story-half and production-half of the product — surfaces only on first visual generation.
+
+20260314 — Backlog cleanup: corrected the sequencing note. `production_format` is the project-level prerequisite for the prompt-compiler and composition UX follow-ons, not a downstream detail of them.
