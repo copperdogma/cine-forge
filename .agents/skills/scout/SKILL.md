@@ -81,6 +81,7 @@ Wait for user to approve. Options:
 - Specific items by number
 - Groups by letter/name
 - "story for X" — create a story for a large item via `/create-story`
+- Broad instructions such as "port everything relevant" or "pull over the worthwhile bits" count as approval for the inline items you explicitly recommended, but you must still record what was adopted, adapted, and skipped
 
 Update the scout doc's **Approved** section with what was approved.
 
@@ -125,7 +126,7 @@ When escalating: create the story with context from the scout findings, link bac
 
 ## Guardrails
 
-- Never implement without explicit user approval of specific items.
+- Never implement without explicit user approval. Broad approval only covers the inline items you explicitly recommended.
 - Always create the scout document before implementation — it's the audit trail.
 - Never skip the verification phase. Every adopted item needs evidence.
 - When in doubt about size, suggest a story rather than inline implementation.

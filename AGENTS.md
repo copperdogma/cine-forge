@@ -31,12 +31,14 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **AI-First Engineering**: Prefer roles, prompts, and structured artifacts over rigid hard-coded business rules. Architecture should facilitate AI reasoning.
 - **Baseline = Best Model Only**: Never conclude "AI can't do this" from a cheap model's failure. Always test SOTA first. If the best available model succeeds in one call, there is nothing to build — cheaper models are a cost optimization question, not a capability question. This is the single most expensive mistake in eval-first development.
 - **Headless Operation**: All core application capabilities (e.g., export, analysis, remediation) MUST be performable via CLI scripts or direct backend calls, bypassing the UI. This ensures AI agents can autonomously operate the system.
+- **Coherent Scope Expansion**: If exploration reveals small, tightly coupled work that is necessary to actually satisfy the story goal, expand the current story and update the story file/work log instead of punting it as "out of scope." For larger expansions, surface the recommendation explicitly for approval instead of silently absorbing or silently splitting it out.
+- **Relative Effort, Not Calendar Theater**: Unless the user explicitly asks for time estimates, express scope or follow-up effort in relative sizes (`XS`, `S`, `M`, `L`, `XL`), not hours or days. Optimize for coherent AI-sized slices, not human sprint rituals.
 - **Definition of Done**: A task is complete ONLY when:
   1. Relevant tests pass (`make test-unit` minimum).
   2. Artifacts are produced and manually inspected for semantic correctness.
   3. Schema validation passes.
   4. The active story's work log is updated with evidence and next actions.
-  5. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. Silently accepting mismatches as noise is a hard stop.
+  5. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. For compromise or detection evals, record whether any remaining failures are **runtime-blocking** or **non-runtime-blocking**. Silently accepting mismatches as noise is a hard stop.
   6. If you ran an eval (promptfoo, pytest acceptance, or any scored test): update `docs/evals/registry.yaml` with the new score, `git_sha`, and date. Stale scores are worse than no scores.
 
 ## General Agent Engineering Principles
@@ -53,6 +55,13 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Project-Scoped Preferences**: Store user preferences and settings in `project.json`, not `localStorage`. `localStorage` is ephemeral — it doesn't survive browser clears, doesn't sync across machines, and isn't visible to the backend. Only use `localStorage` for truly throwaway UI state (e.g., collapsed panel memory within a single session). Anything the user would miss if it vanished belongs in project settings.
 - **AI-as-Tester**: AI agents have a blind spot — they default to writing deterministic test scripts even when the problem requires judgment and observation. When verifying AI behavior (role persona quality, creative direction coherence, tone consistency), the correct approach is to *have a conversation personally* with the AI component, not just validate JSON structure. Use the subagent pattern: spawn a subagent to conduct a focused multi-turn probe of the AI behavior, then report findings back to the orchestrator. Structural tests (Pydantic schema, field coverage) are necessary but not sufficient — they miss shallow reasoning, wrong tone, and missing creative insight. This complements promptfoo evals, not replaces them.
 - **Operator Verification Handoff**: When summarizing completed work, include a brief `Where to verify` pointer whenever there is a concrete way for the user to inspect it themselves. For UI work, name the route or screen and 1-3 interactions. For backend or CLI work, give the command, endpoint, or artifact to inspect. Keep it succinct, grounded in what was actually verified, and make clear the extra check is optional.
+
+## Working Norms
+
+- **Keep the work log live**: Update the active story's work log for every meaningful implementation, investigation, validation, or scope decision.
+- **Report impact first**: For substantive progress notes or work-log entries, say what changed, what it improved or failed to improve, what evidence you checked, and what the next falsifiable step is.
+- **Debug from artifacts first**: Inspect actual outputs, JSON, eval results, screenshots, and intermediate files before changing code. Prefer evidence-driven diagnosis over guess-and-edit loops.
+- **Reuse proven patterns first**: Before inventing a new helper, prompt shape, or workflow, find a working local pattern and adapt it with the smallest change that fits.
 
 ## Project Context (CineForge)
 
@@ -235,6 +244,14 @@ Every eval should use both:
 
 A test case passes only if *both* assertions pass. This is intentional — Mini scored 0.915 on a Python scorer but 0.62 on the LLM judge for the same output, meaning the judge caught shallow reasoning the structural check missed.
 
+#### Expected-Fail Semantics
+
+Compromise and detection evals are capability detectors, not runtime-default gates.
+
+- They can stay red for long periods and still be healthy.
+- Treat them as process-green only when the harness ran correctly, significant mismatches were classified, and runtime impact was recorded as `runtime-blocking` or `non-runtime-blocking`.
+- Only `runtime-blocking` outcomes, or a story whose explicit goal is to remove that compromise, should block story completion.
+
 #### Pitfalls and Gotchas
 
 - **`max_tokens` is NOT set by default for OpenAI models.** Always set `max_tokens` in provider config or outputs will truncate silently (producing invalid JSON). Anthropic requires it; OpenAI doesn't enforce it but needs it for long outputs.
@@ -263,6 +280,7 @@ All eval scores, targets, and improvement attempts are tracked in **`docs/evals/
 - **View current scores**: Read `docs/evals/registry.yaml`
 - **Check compromise gates**: `.venv/bin/python scripts/check-compromises.py`
 - **Discover available models**: `.venv/bin/python scripts/discover-models.py --summary`
+- **Triage what to work on next**: `/triage-evals`
 - **Improve an eval**: `/improve-eval`
 - **Re-run for a new model**: Add provider block to `benchmarks/tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → update `docs/evals/registry.yaml` with new scores
 
@@ -312,8 +330,8 @@ Use Draft status liberally for future stories. It prevents premature execution o
 ### Story Execution Protocol
 
 - `/build-story` owns implementation only. It MUST stop at the implementation handoff, leave the story `In Progress`, summarize the work, and recommend `/validate` as the next step.
-- `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean.
-- `/mark-story-done` is the only skill that may mark a story `Done` or update the story index to `Done`.
+- `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean. If the story is not clean, it MUST recommend a single disposition: `Rescope then close`, `Keep open`, or `Mark blocked`.
+- `/mark-story-done` is the only skill that may mark a story `Done` or update the story index to `Done`. If the story is incomplete, it MUST still recommend a single disposition (`Rescope then close`, `Keep open`, or `Mark blocked`) instead of stopping at a blocker list.
 - `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
 - Commit and push happen only when the user explicitly requests them.
 - Each step should end with a concise summary and a recommended next step the user can approve with a simple "yes".
@@ -333,6 +351,12 @@ Runbooks live in `docs/runbooks/`. Create a runbook when a process has 3+ steps,
 6. **Lessons learned** — Append-only, dated
 
 **Skill↔runbook rule:** Every runbook should have a corresponding skill. Every skill with 3+ procedural steps should have a runbook. Apply this going forward — don't retroactively create runbooks for existing skills.
+
+Current runbooks:
+- `check-in-worktree-landing.md` — Safe check-in and landing flow for task branches and worktrees (skill: `/check-in-diff`)
+- `codebase-improvement-scout.md` — Repo hygiene scan and cleanup triage flow (skill: `/codebase-improvement-scout`)
+- `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (skill: `/setup-golden`)
+- `triage-evals.md` — Cheap diagnosis of which eval, compromise gate, or stale benchmark needs attention next (skill: `/triage-evals`)
 
 ### UI Development Workflow
 

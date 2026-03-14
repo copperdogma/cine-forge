@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-14-02] — Agent workflow refinements and eval triage tooling
+
+### Added
+- A new `/triage-evals` skill and `docs/runbooks/triage-evals.md` for cheap, read-only diagnosis of which eval, compromise gate, or stale benchmark needs attention next
+- Scout 013 documenting Storybook, Dossier, and codex-forge agent-process findings and adoptions
+
+### Changed
+- `AGENTS.md` now defines coherent scope expansion, relative-effort guidance, working norms, expected-fail semantics for compromise/detection evals, and the stronger story-closure disposition rules
+- Story lifecycle skills now handle scope adjustments and closure recommendations more explicitly: `/build-story` folds small required deltas into the current story, `/validate` and `/mark-story-done` must recommend a single disposition when work is incomplete, and `/scout` recognizes broad explicit approval for recommended inline adoptions
+- Eval documentation now points agents to `/triage-evals` before spending promptfoo time just to decide what to improve next
+
 ## [2026-03-14-01] — xAI eval sweep and benchmark fixture repair
 
 ### Added

@@ -37,6 +37,11 @@ Execute a development story end-to-end.
    - Identify existing components, helpers, services, or abstractions that this change could replace or make redundant
    - Note any schema, config, or migration concerns
 
+5b. **Scope coherence check** — If exploration reveals important work that is missing from the story but is necessary to actually satisfy the story goal:
+   - **Small, tightly coupled delta** → expand the current story inline. Update the story's acceptance criteria, tasks, and work log so the real scope is visible.
+   - **Larger delta** → do not silently absorb it or silently split it out. Add it to the plan as a recommended scope expansion for user approval.
+   - Prefer a follow-up story only when the new work is materially distinct, changes the story goal, adds major blast radius, or would make validation unclear.
+
 6. **Record exploration findings** — Write a brief "Exploration Notes" entry in the work log:
    - Files that will change
    - Files at risk of breaking
@@ -78,9 +83,12 @@ Execute a development story end-to-end.
    - Redundancy plan: what old code, helper paths, or docs should be removed if the new path lands
    - UI verification plan for UI-affecting work: browser tools to use, golden path to exercise, and fallback runbook if browser tooling is unavailable
    - Any human-approval blockers (new dependencies, schema changes, public API changes)
+   - Any recommended scope adjustments discovered during exploration
    - What "done" looks like for each task
 
 11. **Human gate** — Present the plan to the user. Surface any ambiguities or risks. Do not write any implementation code until the user approves. If something in the plan is unclear, ask now — not mid-implementation.
+   - Small scope expansions already folded into the story should be called out explicitly.
+   - Larger scope expansions should be presented as a recommendation with rationale and relative effort (`XS`, `S`, `M`, `L`, `XL`) before implementation starts.
 
 ## Phase 3 — Implement
 
@@ -155,6 +163,7 @@ Entries should be verbose. Capture decisions, failures, solutions, and learnings
 - Never mark Done if the runtime smoke test (13c) was skipped — static checks passing ≠ app works
 - Never mark Done if eval mismatches remain unclassified (13b) — silently accepting noise is a hard stop
 - Never mark a UI-affecting story Done without browser-based verification evidence or a documented browser-tool blocker
+- Never punt necessary adjacent work as "out of scope" when it is still part of delivering the story goal
 - Never commit without running the required checks for changed scope
 - Always update the work log, even for partial progress
 - If blocked, record the blocker and stop — don't guess

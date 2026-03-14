@@ -32,15 +32,25 @@ Close a completed story after validation.
      - Backend: `make test-unit PYTHON=.venv/bin/python` + `.venv/bin/python -m ruff check src/ tests/`
      - UI: `pnpm --dir ui run lint` + `cd ui && npx tsc -b`
    - [ ] If evals were run: `/verify-eval` report exists in work log with every mismatch classified as model-wrong / golden-wrong / ambiguous. Golden-wrong findings must be fixed and evals re-run before closing.
+   - [ ] If any detector or compromise eval remained red: the work log or validation note records whether the remaining failure is runtime-blocking or non-runtime-blocking.
    - [ ] If any eval was run: `docs/evals/registry.yaml` updated with new scores, `git_sha`, and date
    - [ ] Tenet verification checkbox checked
    - [ ] Doc update checkbox checked
 
-4. **Produce completion report** — List any remaining gaps.
+4. **Produce completion report** — List any remaining gaps and recommend a single disposition:
+   - `Close now` — story is complete and can be marked `Done`
+   - `Rescope then close` — a coherent slice shipped, the remaining gaps already live in follow-up work, and this story should be narrowed to match what landed
+   - `Keep open` — remaining work still belongs in this story
+   - `Mark blocked` — an external dependency or decision is preventing closure
+
+   If recommending `Rescope then close`, propose the exact story edits before closing:
+   - Narrow the title, goal, acceptance criteria, and tasks to the shipped slice
+   - Add a work-log note linking the remaining work to the follow-up story or stories
+   - Re-run this close-out check against the revised story
 
 ## Apply Completion
 
-If complete (or user approves remaining gaps):
+If complete (or the user explicitly approves the closure recommendation and any remaining gaps):
 
 1. Set story file status to `Done`.
 2. Check `Story marked done via /mark-story-done`.
@@ -69,7 +79,10 @@ If complete (or user approves remaining gaps):
    - **Versioning (CalVer)**: Use the `YYYY-MM-DD-NN` format for the header, where `NN` is the release sequence for that day (e.g., `01`, `02`, `03`). Check the previous entry to increment correctly. The API parses this into `YYYY.MM.DD-NN`.
    - Only include subsections that apply.
 
-If not complete, stop and list blockers.
+If not complete, stop after reporting:
+- what is incomplete
+- the single recommended disposition (`Rescope then close`, `Keep open`, or `Mark blocked`)
+- the exact edits or next steps required
 
 ## Guardrails
 
@@ -80,4 +93,5 @@ If not complete, stop and list blockers.
 - Never mark Done if evals were run without a `/verify-eval` report (or equivalent classification) in the work log
 - Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first
 - End with a concise summary, recommend `/check-in-diff` as the next step unless the user already approved later steps, and include a short `Where to verify` note whenever there is a concrete path for the user to inspect the result themselves
+- When incomplete, never end with "can't mark done" alone. Always include a firm recommendation: `Rescope then close`, `Keep open`, or `Mark blocked`.
 - If the user already explicitly approved `/check-in-diff`, commit, or push, continue without redundant confirmation unless a meaningful blocker appears

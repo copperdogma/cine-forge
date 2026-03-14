@@ -59,6 +59,7 @@ Assess whether a story's implementation meets its requirements.
    - Run relevant promptfoo evals or acceptance tests
    - Run `/verify-eval` for the structured investigation protocol. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence.
    - Unclassified mismatches are a finding (priority: high) — grade cannot exceed B
+   - For compromise or detection evals, record whether any remaining failures are `runtime-blocking` or `non-runtime-blocking`. Verified red results only block closure when they are runtime-blocking or when removing that compromise is the story's explicit goal.
    - **Update `docs/evals/registry.yaml`** with verified scores, `git_sha`, and date for every eval you ran
 
 9. **Check Ideal alignment** — Read the relevant section of `docs/ideal.md`. Does the implementation move toward the Ideal or entrench a compromise? If entrenching: is the compromise justified and does a detection eval exist?
@@ -74,6 +75,8 @@ Assess whether a story's implementation meets its requirements.
    - redundant code left behind
    - missing browser verification for UI work
    - unmet acceptance criteria or failed checks
+   - a single closure recommendation: `Close now`, `Rescope then close`, `Keep open`, or `Mark blocked`
+   - if recommending `Rescope then close`, the exact story edits needed before closure
    - recommended next step (`/mark-story-done` if clean, otherwise fix issues)
    - a short `Where to verify` note whenever there is a concrete path for the user to spot-check the result themselves
    - `Where to verify` should be concise and optional: UI work should name the route/screen plus 1-3 interactions; CLI/backend work should name the command, endpoint, or file to inspect
@@ -113,6 +116,9 @@ Assess whether a story's implementation meets its requirements.
 
 ### Grade: A/B/C/D/F
 
+### Closure Recommendation
+- Close now / Rescope then close / Keep open / Mark blocked — [reason]
+
 ### Next Steps
 - [what needs to happen before this can be marked Done]
 ```
@@ -126,6 +132,7 @@ Assess whether a story's implementation meets its requirements.
 - Never give an A to a UI-affecting story without browser verification evidence
 - Never ignore redundant code that the new implementation clearly supersedes
 - If grade is below B, list specific remediation steps
+- When the story is not ready to close, never stop at "not done." Always recommend one disposition: `Rescope then close`, `Keep open`, or `Mark blocked`.
 - **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` for code changes, even if you think only the backend was touched.
 - Prefer project-native checks over generic templates
 - Use `tsc -b` (not `tsc --noEmit`) for UI type checks in this repo

@@ -16,3 +16,4 @@ Scouting log for external sources researched for ideas to adopt. See `/scout` sk
 | 010 | [OpenAI GPT-5.4 Prompt Guidance](docs/scout/scout-010-openai-prompt-guidance.md) | 2026-03-07 | Full page — prompt patterns for pipeline modules | 11 | 3 | 1 | Complete |
 | 011 | [Codebase improvement skill](docs/scout/scout-011-codebase-improvement-skill.md) | 2026-03-12 | External landscape scan for scheduled repo hygiene / improvement skill | 9 | 1 | 0 | Complete |
 | 012 | [codex-forge agent updates](docs/scout/scout-012-codex-forge-agent-updates.md) | 2026-03-13 | AGENTS + story-lifecycle delta for AI scoping and Draft/Pending discipline | 6 | 4 | 0 | Complete |
+| 013 | [Storybook, Dossier, codex-forge agent updates](docs/scout/scout-013-storybook-dossier-codex-forge-agent-updates.md) | 2026-03-13 | AGENTS, lifecycle skills, and eval-triage process changes since recent scouts | 8 | 6 | 0 | Complete |
