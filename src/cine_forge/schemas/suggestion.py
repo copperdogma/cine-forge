@@ -31,6 +31,8 @@ class Suggestion(BaseModel):
     proposal: str = Field(min_length=1)
     rationale: str = Field(min_length=1)
     confidence: float = Field(ge=0.0, le=1.0)
+    proposal_type: str | None = None
+    proposal_payload: dict[str, str] = Field(default_factory=dict)
     status: SuggestionStatus = SuggestionStatus.PROPOSED
     status_reason: str | None = None
     decided_by: str | None = None  # Role ID or "human"

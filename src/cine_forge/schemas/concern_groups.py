@@ -199,6 +199,10 @@ class SoundAndMusic(BaseModel):
         default_factory=list,
         description="Sounds from outside frame that expand world or foreshadow",
     )
+    reference_audio_assets: list[str] = Field(
+        default_factory=list,
+        description="Origin-agnostic audio references available to downstream generation/rendering",
+    )
     sound_driven_transitions: str | None = Field(
         default=None,
         description="Audio bridges, stingers, or motifs connecting to adjacent scenes",

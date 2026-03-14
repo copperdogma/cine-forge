@@ -48,6 +48,7 @@ def test_build_schema_registry_returns_populated_registry() -> None:
     assert registry.get("scene") is not None
     assert registry.get("character_bible") is not None
     assert registry.get("entity_graph") is not None
+    assert registry.get("injected_asset_manifest") is not None
     assert registry.get("project_config") is not None
     assert registry.get("script_bible") is not None
     assert registry.get("raw_input") is not None
@@ -62,7 +63,7 @@ def test_build_schema_registry_includes_dict_type() -> None:
 @pytest.mark.unit
 def test_build_schema_registry_has_38_types() -> None:
     registry = build_schema_registry()
-    assert len(registry._schemas) == 38
+    assert len(registry._schemas) == 40
 
 
 @pytest.mark.unit

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import io
+import wave
 from pathlib import Path
 
 import pytest
@@ -18,6 +20,18 @@ from cine_forge.modules.timeline.track_system_v1.main import (
     update_track_entry,
 )
 from cine_forge.schemas import ArtifactMetadata, ArtifactRef, Timeline, TimelineEntry, TrackEntry
+from cine_forge.services import InjectedAssetService
+
+
+def _wav_bytes(duration_seconds: float = 0.25, sample_rate: int = 16000) -> bytes:
+    frame_count = int(duration_seconds * sample_rate)
+    buffer = io.BytesIO()
+    with wave.open(buffer, "wb") as wav:
+        wav.setnchannels(1)
+        wav.setsampwidth(2)
+        wav.setframerate(sample_rate)
+        wav.writeframes(b"\x00\x10" * frame_count)
+    return buffer.getvalue()
 
 
 def _seed_scene_artifacts(project_dir: Path, scene_ids: list[str]) -> ArtifactStore:
@@ -342,3 +356,24 @@ def test_run_module_builds_track_manifest_payload(tmp_path: Path) -> None:
     assert any(ref.artifact_type == "continuity_index" for ref in lineage)
     assert any(ref.artifact_type == "continuity_state" for ref in lineage)
     assert continuity_index_ref.version >= 1
+
+
+@pytest.mark.unit
+def test_build_track_manifest_includes_injected_audio_entries(tmp_path: Path) -> None:
+    scene_ids = ["scene_001"]
+    store = _seed_scene_artifacts(tmp_path, scene_ids)
+    timeline_ref, timeline = _seed_timeline_artifact(store, scene_ids)
+    InjectedAssetService(tmp_path).inject_asset(
+        target_kind="scene",
+        target_id="scene_001",
+        purpose="dialogue_audio",
+        filename="scene.wav",
+        content=_wav_bytes(),
+        content_type="audio/wav",
+    )
+
+    manifest = build_track_manifest(timeline=timeline, timeline_ref=timeline_ref, store=store)
+    audio_entries = [entry for entry in manifest.entries if entry.track_type == "dialogue_audio"]
+    assert len(audio_entries) == 1
+    assert audio_entries[0].notes is not None
+    assert "scene.wav" in audio_entries[0].notes

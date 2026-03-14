@@ -37,6 +37,7 @@ Create a new story in `docs/stories/` with consistent format.
    - Workflow gates for build handoff, validation, and story closure
    - Redundancy targets: old code or docs this story may make obsolete
    - UI verification work if the story touches the UI
+   - If the feature is user-facing and requires both backend/API and UI to be usable, keep that end-to-end path in the same story by default. Split only when the scope is genuinely huge and independently deliverable.
 
 3. **Update story index** — Add a row to the table in `docs/stories.md`:
    `| NNN | Title | Priority | Draft | [link](stories/story-NNN-slug.md) |`
@@ -61,6 +62,7 @@ Create a new story in `docs/stories/` with consistent format.
 - Search `docs/decisions/` and `docs/design/` for relevant ADRs / decision records while drafting. If none apply, say so explicitly instead of leaving the field vague. If a scout doc or runbook materially constrains execution, cite it in Notes or Decision Context too.
 - If the story changes existing behavior, name likely redundancy / removal targets up front. New code that supersedes old code should not silently accumulate parallel paths.
 - If the story touches the UI, include explicit browser verification work in the task list. Static checks alone are not enough.
+- **End-to-end user feature rule**: If a feature needs backend/API plus UI to be usable by a user, keep them in the SAME story by default. Do not create an "API now, UI later" split for an ordinary feature. Only split backend and UI into separate stories when the scope is genuinely huge (`L`/`XL`), independently valuable, and the dependency boundary is explicit in the story text.
 - If the story changes agent tooling or project instructions, include `make skills-check` in the task list.
 - Always include the Workflow Gates section. These are not ordinary implementation tasks; they enforce the handoff chain: `/build-story` summary → `/validate` → `/mark-story-done`.
 - If the story will involve running evals (extraction/pipeline behavior, golden comparison), add a task: "Run `/verify-eval` after eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores — raw scores do not determine story success."

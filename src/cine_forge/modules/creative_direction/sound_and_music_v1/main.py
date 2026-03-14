@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 from typing import Any
 
 from cine_forge.ai.llm import call_llm
@@ -21,6 +22,7 @@ from cine_forge.schemas.concern_groups import (
     SoundAndMusic,
     SoundAndMusicIndex,
 )
+from cine_forge.services import InjectedAssetService
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +96,12 @@ def run_module(
     entries = scene_index.get("entries", [])
     script_text = canonical_script.get("script_text", "")
     script_lines = script_text.splitlines()
+    project_dir = context.get("project_dir")
+    asset_service = (
+        InjectedAssetService(Path(project_dir))
+        if isinstance(project_dir, str) and project_dir
+        else None
+    )
 
     # Optional enrichment input
     intent_context = _build_intent_context(inputs)
@@ -130,7 +138,7 @@ def run_module(
             entry = entries[idx]
             try:
                 direction, cost = future.result()
-                artifact = _build_artifact(entry, direction)
+                artifact = _build_artifact(entry, direction, asset_service)
                 if announce:
                     announce(artifact)
                 artifacts.append(artifact)
@@ -498,8 +506,16 @@ def _build_index_artifact(
 # ---------------------------------------------------------------------------
 
 
-def _build_artifact(entry: dict[str, Any], direction: SoundAndMusic) -> dict[str, Any]:
+def _build_artifact(
+    entry: dict[str, Any],
+    direction: SoundAndMusic,
+    asset_service: InjectedAssetService | None = None,
+) -> dict[str, Any]:
     scene_id = entry.get("scene_id", "unknown")
+    if asset_service is not None and scene_id != "unknown":
+        refs = asset_service.collect_audio_references(scene_id)
+        if refs:
+            direction = direction.model_copy(update={"reference_audio_assets": refs})
     return {
         "artifact_type": "sound_and_music",
         "entity_id": scene_id,
@@ -517,6 +533,7 @@ def _build_artifact(entry: dict[str, Any], direction: SoundAndMusic) -> dict[str
                 "ambient": direction.ambient_environment,
                 "music_intent": direction.music_intent,
                 "silence": direction.silence_placement,
+                "reference_audio_count": len(direction.reference_audio_assets),
             },
         },
     }
@@ -551,6 +568,7 @@ def _mock_direction(scene_id: str) -> SoundAndMusic:
             "A door closing somewhere down the corridor — someone leaving",
             "Distant siren rising then fading — the outside world continuing without them",
         ],
+        reference_audio_assets=[],
         sound_driven_transitions=(
             "The ventilation hum from this scene carries over the cut into the "
             "next scene's exterior, where it transforms into wind — an audio "

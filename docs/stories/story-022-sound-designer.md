@@ -63,7 +63,7 @@ The Sound Designer role produces Sound & Music artifacts per scene, informed by 
 - [ ] Readiness indicator: red/yellow/green. → Deferred to Story 099 (Scene Workspace)
 
 ### Sound Asset List (Spec 11.2)
-- [ ] Optional: generate IRL-ready sound asset lists for real-world production workflows (R17). → Deferred to Story 098
+- [ ] Optional: generate IRL-ready sound asset lists for real-world production workflows (R17). → Deferred to Story 029
 
 ### Testing
 - [x] Unit tests for Sound & Music generation. (13 tests)
@@ -160,7 +160,7 @@ Following the Look & Feel (Story 021) pattern exactly. Most infrastructure alrea
 
 **Deferred:**
 - Readiness indicators (red/yellow/green) → Story 099 (Scene Workspace)
-- Sound asset lists for real-world production → Story 098
+- Sound asset lists for real-world production → Story 029
 
 20260228-1530 — Runtime smoke test (browser, real LLM). Triggered Sound & Music generation from Direction tab on Scene 001 (the-mariner-50 project).
 

@@ -36,6 +36,7 @@ import { RolePresenceIndicators } from '@/components/DirectionTab'
 import { SceneViewer } from '@/components/ArtifactViewers'
 import { ExportModal } from '@/components/ExportModal'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
+import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import { EmptyState, ErrorState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
 import { useHistoryBack } from '@/lib/use-history-back'
@@ -523,6 +524,16 @@ export default function SceneWorkspacePage() {
       {data && (
         <SceneEntityRoster sceneData={data} resolve={resolve} propsInScene={propsInScene} />
       )}
+
+      <ReferenceLibrarySection
+        projectId={projectId}
+        targetKind="scene"
+        targetId={entityId}
+        title="Scene Reference Stack"
+        description="Attach dialogue takes, temp score, blocking clips, and script-side PDFs directly to this scene. These assets stay scene-scoped and merge with project references downstream."
+        purposePresets={['dialogue_audio', 'temp_music', 'blocking_video', 'reference_doc']}
+        activeReferenceHint="Sound & Music and the track system read project + scene audio from this stack. Visual entity design-study picks remain inherited from the linked character/location/prop pages."
+      />
 
       {/* Intent & Mood panel */}
       <SceneIntentPanel projectId={projectId} entityId={entityId} />

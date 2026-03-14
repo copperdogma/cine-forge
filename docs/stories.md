@@ -9,7 +9,7 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 | Story | Why |
 |---|---|
 | **026** Storyboard Generation | Newly unblocked by Story 025. Optional next visualization layer if we want to continue deeper into the film lane. |
-| **029** User Asset Injection | Delivers Ideal R17 in the artifact system and unblocks Story 098. |
+| **029** User Asset Injection | Must land the full R17 user path: asset substrate plus Operator Console upload/manage UX. |
 | **031** Change Propagation | R15 Layer 2. Critical before AI artifact editing and deeper iterative editing workflows. |
 | **032** Cost Tracking | Builds the budget and reporting layer on top of already-landed cost hooks. |
 | **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
@@ -21,7 +21,7 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 | Story | Blocked On |
 |---|---|
 | **027** Animatics / Previz | Story 026 |
-| **028** Render Adapter | Stories 027, 098 |
+| **028** Render Adapter | Stories 027, 029 |
 | **030** Generated Output QA | Stories 028, 032 |
 
 ### Draft — Scope Or Decision Needed First
@@ -29,7 +29,6 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 | Story | Why It Stays Draft |
 |---|---|
 | **046** Theme System | Still references pre-flattened `ui/operator-console/` paths; rewrite against the current `ui/` architecture before promotion. |
-| **098** Real-World Asset Upload | Explicitly downstream of Story 029's injection layer; keep it paired with 029 or promote it only after 029 lands. |
 | **097** AI Artifact Editing | Important, but needs a concrete implementation plan and pairs naturally with Story 031. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **120** Production Format Setting | Should land before the deeper design-study prompt and iteration work so the visual lane has a stable project-level format model. |
@@ -92,7 +91,7 @@ NOTES from Cam:
 | 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Pending | [story-026](stories/story-026-storyboard-generation.md) |
 | 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Blocked | [story-027](stories/story-027-animatics-previz.md) |
 | 028 | Render Adapter Module | 7 — Generation | Low | Blocked | [story-028](stories/story-028-render-adapter.md) |
-| 029 | User Asset Injection | 7 — Generation | Medium | Pending | [story-029](stories/story-029-user-asset-injection.md) |
+| 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
 | 030 | Generated Output QA | 7 — Generation | Medium | Blocked | [story-030](stories/story-030-generated-output-qa.md) |
 | 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Pending | [story-031](stories/story-031-change-propagation.md) |
 | 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | Pending | [story-032](stories/story-032-cost-tracking.md) |
@@ -160,7 +159,7 @@ NOTES from Cam:
 | 095 | Intent / Mood Layer | 5 — Creative Direction | High | Done | [story-095](stories/story-095-intent-mood-layer.md) |
 | 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Done | [story-096](stories/story-096-chat-about-this.md) |
 | 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
-| 098 | Real-World Asset Upload Pipeline | 7 — Generation | Medium | Draft | [story-098](stories/story-098-real-asset-upload.md) |
+| ~~098~~ | ~~Real-World Asset Upload Pipeline~~ | ~~7 — Generation~~ | ~~Medium~~ | Cancelled | ~~[story-098](stories/story-098-real-asset-upload.md)~~ — Merged into Story 029 so asset upload lands as one end-to-end feature. |
 | 099 | Scene Workspace | 5 — Creative Direction | High | Done | [story-099](stories/story-099-scene-workspace.md) |
 | 100 | Motif Tracking System | 5 — Creative Direction | Medium | Draft | [story-100](stories/story-100-motif-tracking.md) |
 | 101 | Centralized Long-Running Action System | 2.5 — UI | High | Done | [story-101](stories/story-101-long-running-action-system.md) |
@@ -207,7 +206,7 @@ NOTES from Cam:
 - **Phase 4 — Role System** (014–019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, human interaction (control modes, creative sessions with @agent, direct artifact editing).
 - **Phase 5 — Creative Direction** (020–023, 093–097, 099–100): Three-layer director's vision model (ADR-003): Intent/Mood layer sets global tone, five concern groups (Look & Feel, Sound & Music, Rhythm & Flow, Character & Performance, Story World) organize ~87 creative elements, prompts are read-only compiled artifacts. Scene Workspace is the per-scene production surface. Script bible, motif tracking, "chat about this," and AI artifact editing support the creative conversation.
 - **Phase 6 — Shot Planning & Visualization** (025–027): Coverage strategy, individual shot definitions, export compatibility, optional storyboards/animatics/keyframes/previz.
-- **Phase 7 — Generation** (028–030, 098): Render adapter (concern group → compiled prompt + engine packs), user asset injection (soft/hard locks, R17 real-world asset pipeline), generated output QA with media perception.
+- **Phase 7 — Generation** (028–030): Render adapter (concern group → compiled prompt + engine packs), user asset injection plus Operator Console upload/manage UX (soft/hard locks, R17 real-world asset pipeline), generated output QA with media perception.
 - **Phase 8 — Cross-Cutting Polish** (031–034): AI-powered semantic impact assessment, cost dashboards and budget caps, memory model (canonical/working/transcript), in-app style pack creator via deep research APIs.
 
 ## Spec Coverage Map
@@ -250,7 +249,7 @@ Quick reference showing which spec sections each phase addresses:
 | 14 Storyboards | 6 (026) |
 | 15 Animatics, 16 Keyframes | 6 (027) |
 | 17 Render Adapter | 7 (028) |
-| 18 User Asset Injection (R17) | 7 (029, 098) |
+| 18 User Asset Injection (R17) | 7 (029) |
 | 19 Memory Model | 8 (033) |
 | 20 Metadata & Auditing | 0 (002, baked in) |
 | 21 Operating Modes | 4 (019) |

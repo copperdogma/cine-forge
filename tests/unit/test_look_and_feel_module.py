@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import base64
 from typing import Any
 
 import pytest
 
+from cine_forge.artifacts import ArtifactStore
 from cine_forge.modules.creative_direction.look_and_feel_v1.main import (
     _build_bible_context,
     _build_intent_context,
@@ -13,9 +15,15 @@ from cine_forge.modules.creative_direction.look_and_feel_v1.main import (
     _mock_direction,
     run_module,
 )
+from cine_forge.schemas import ArtifactMetadata
 from cine_forge.schemas.concern_groups import (
     LookAndFeel,
     LookAndFeelIndex,
+)
+from cine_forge.services import InjectedAssetService
+
+_PNG_BYTES = base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR4nGNgAAAAAgABSK+kcQAAAABJRU5ErkJggg=="
 )
 
 
@@ -110,6 +118,31 @@ def _character_bible_payload() -> dict[str, Any]:
             {"trait": "Guarded", "evidence": "Rarely shows emotion"},
         ],
     }
+
+
+def _seed_character_bible(project_dir, character_id: str = "aria") -> None:
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_bible_entry(
+        entity_type="character",
+        entity_id=character_id,
+        display_name="Aria",
+        files=[
+            {
+                "filename": "master_v1.json",
+                "purpose": "master_definition",
+                "version": 1,
+                "provenance": "ai_extracted",
+            }
+        ],
+        data_files={"master_v1.json": '{"character_id":"aria","name":"Aria"}'},
+        metadata=ArtifactMetadata(
+            lineage=[],
+            intent="seed character bible",
+            rationale="unit test seed",
+            confidence=1.0,
+            source="code",
+        ),
+    )
 
 
 @pytest.mark.unit
@@ -341,3 +374,32 @@ def test_run_module_with_enrichment_inputs() -> None:
 
     result = run_module(inputs, params, context)
     assert len(result["artifacts"]) == 4  # 3 scenes + 1 index
+
+
+@pytest.mark.unit
+def test_run_module_includes_injected_visual_references(tmp_path) -> None:
+    _seed_character_bible(tmp_path)
+    InjectedAssetService(tmp_path).inject_asset(
+        target_kind="character",
+        target_id="aria",
+        purpose="actor_photo",
+        filename="aria.png",
+        content=_PNG_BYTES,
+        content_type="image/png",
+    )
+
+    inputs = {
+        "normalize": _canonical_payload(),
+        "enriched_scene_index": _scene_index_payload(),
+    }
+    params = {"work_model": "mock", "skip_qa": True}
+    context = {"runtime_params": {}, "project_dir": str(tmp_path)}
+
+    result = run_module(inputs, params, context)
+    scene_one = next(
+        artifact
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "look_and_feel" and artifact["entity_id"] == "scene_001"
+    )
+    direction = LookAndFeel.model_validate(scene_one["data"])
+    assert any(path.endswith(".png") for path in direction.reference_imagery)

@@ -138,6 +138,7 @@ class ArtifactStore:
             # 2. Save data files
             for filename, content in data_files.items():
                 file_path = artifact_dir / filename
+                file_path.parent.mkdir(parents=True, exist_ok=True)
                 if isinstance(content, str):
                     file_path.write_text(content, encoding="utf-8")
                 else:

@@ -284,6 +284,8 @@ class RoleContext:
                     proposal=sugg_payload.get("proposal", "No proposal provided"),
                     rationale=sugg_payload.get("rationale", "No rationale provided"),
                     confidence=sugg_payload.get("confidence", response.confidence),
+                    proposal_type=sugg_payload.get("proposal_type"),
+                    proposal_payload=sugg_payload.get("proposal_payload", {}),
                     related_scene_id=sugg_payload.get("related_scene_id"),
                     related_entity_id=sugg_payload.get("related_entity_id"),
                     related_artifact_ref=sugg_payload.get("related_artifact_ref"),

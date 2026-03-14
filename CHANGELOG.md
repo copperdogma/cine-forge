@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-03-14-04] — User asset injection lands end-to-end (Story 029)
+
+### Added
+- An origin-agnostic asset injection system for project, scene, and entity targets, including typed manifests, upload APIs, and reusable Operator Console reference-library surfaces
+
+### Changed
+- Unified uploaded and AI-generated references into the same browser so design-study outputs, scene references, and project references share one working surface
+- Story 029 now owns the merged real-asset upload UX that was previously split into Story 098
+
+### Fixed
+- Removed the stale client fallback for empty asset manifests and decomposed the shared reference browser after validation flagged maintainability debt
+- Corrected the Operator Console upload flow so file selection uploads immediately and the compact reference cards no longer rely on unstable inline controls
+
 ## [2026-03-14-03] — Backlog cleanup and story sequencing corrections
 
 ### Changed

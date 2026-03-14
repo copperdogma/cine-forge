@@ -8,6 +8,7 @@ from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactRef, Timeline, TrackEntry, TrackManifest
+from cine_forge.services import InjectedAssetService
 
 DEFAULT_FALLBACK_ORDER = [
     "generated_video",
@@ -145,6 +146,15 @@ def build_track_manifest(
             )
         )
 
+    entries.extend(
+        _build_injected_audio_entries(
+            timeline=timeline,
+            store=store,
+            time_windows=time_windows,
+            track_registry=registry,
+        )
+    )
+
     if continuity_index is not None:
         entries.extend(
             _build_continuity_entries(
@@ -162,6 +172,54 @@ def build_track_manifest(
         track_fill_counts=_track_counts(entries),
     )
     return manifest
+
+
+def _build_injected_audio_entries(
+    *,
+    timeline: Timeline,
+    store: ArtifactStore,
+    time_windows: dict[str, tuple[float | None, float | None]],
+    track_registry: dict[str, dict[str, Any]],
+) -> list[TrackEntry]:
+    asset_service = InjectedAssetService(store.project_dir)
+    entries: list[TrackEntry] = []
+    for timeline_entry in timeline.entries:
+        manifest, _ = asset_service.load_manifest(
+            target_kind="scene",
+            target_id=timeline_entry.scene_id,
+        )
+        manifest_ref = asset_service.latest_manifest_ref(
+            target_kind="scene",
+            target_id=timeline_entry.scene_id,
+        )
+        if manifest is None or manifest_ref is None:
+            continue
+        start_time, end_time = time_windows[timeline_entry.scene_id]
+        for asset in manifest.assets:
+            if asset.asset_type != "audio":
+                continue
+            purpose = asset.purpose.lower()
+            track_type = (
+                "music_sfx"
+                if ("music" in purpose or "sfx" in purpose)
+                else "dialogue_audio"
+            )
+            entries.append(
+                TrackEntry(
+                    track_type=track_type,
+                    scene_id=timeline_entry.scene_id,
+                    artifact_ref=manifest_ref,
+                    start_time_seconds=start_time,
+                    end_time_seconds=end_time,
+                    priority=_track_priority(track_type, track_registry),
+                    status="available",
+                    notes=(
+                        f"Injected audio asset: {asset.filename} "
+                        f"({asset.lock_status}, {asset.file_path})"
+                    ),
+                )
+            )
+    return entries
 
 
 def add_track_entry(manifest: TrackManifest, entry: TrackEntry) -> TrackManifest:

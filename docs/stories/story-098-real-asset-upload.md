@@ -1,12 +1,14 @@
 # Story 098: Real-World Asset Upload Pipeline
 
-**Status**: Draft
+**Status**: Cancelled — merged into Story 029 so asset upload ships as one end-to-end user feature instead of a backend/UI split.
 **Created**: 2026-02-27
 **Source**: ADR-003, Decision #9, Ideal R17
-**Updated**: 2026-03-14 — backlog cleanup clarified that this story remains downstream of Story 029.
+**Updated**: 2026-03-14 — merged into Story 029 after user review rejected backend-only completion.
+**Cancelled**: 2026-03-14
 **Spec Refs**: 18 (User Asset Injection)
 **Ideal Refs**: R17 (real-world assets as first-class inputs)
 **Depends On**: Story 029 (user asset injection — lock system, validation, manifest)
+**Merged Into**: Story 029 (User Asset Injection)
 
 ---
 
@@ -41,9 +43,9 @@ These are extensions of the same origin-agnostic asset pipeline, not separate pr
 
 ## Relationship to Story 029
 
-Story 029 (User Asset Injection) covers the lock system, validation, manifest tracking, and downstream integration hooks. This story focuses on the upload UX and the origin-agnostic pipeline guarantee. They may be combined during implementation planning.
+Story 029 (User Asset Injection) now covers the lock system, validation, manifest tracking, downstream integration hooks, and the Operator Console upload/manage UX. Keeping this as a separate story would recreate the exact backend/UI split that made the feature unusable.
 
-**Backlog note (2026-03-14):** Do not promote this ahead of Story 029. If the upload UX and the injection layer are easiest to land together, merge them during implementation planning instead of running them as parallel backlog lanes.
+**Merge note (2026-03-14):** This story is cancelled as a standalone backlog item and preserved only as historical record. Its acceptance criteria now live in Story 029.
 
 ---
 
@@ -54,3 +56,5 @@ Story 029 (User Asset Injection) covers the lock system, validation, manifest tr
 20260227 — Story created per ADR-003 propagation.
 
 20260314 — Backlog cleanup: clarified that Story 098 is not an independent near-term pick; it remains downstream of Story 029's injection layer and may be merged with that work when implementation starts.
+
+20260314-1305 — merged: user review rejected the backend/UI split for a user-facing feature, so Story 098 was merged into Story 029 and cancelled as a standalone story; next=`track all remaining upload UX work in Story 029 only`.

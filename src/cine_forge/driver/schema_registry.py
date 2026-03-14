@@ -15,6 +15,8 @@ from cine_forge.schemas import (
     EntityDiscoveryResults,
     EntityEdge,
     EntityGraph,
+    InjectedAsset,
+    InjectedAssetManifest,
     IntentMood,
     LocationBible,
     LookAndFeel,
@@ -62,6 +64,8 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("entity_discovery_results", EntityDiscoveryResults)
     registry.register("entity_edge", EntityEdge)
     registry.register("entity_graph", EntityGraph)
+    registry.register("injected_asset", InjectedAsset)
+    registry.register("injected_asset_manifest", InjectedAssetManifest)
     registry.register("continuity_state", ContinuityState)
     registry.register("continuity_index", ContinuityIndex)
     registry.register("qa_result", QAResult)

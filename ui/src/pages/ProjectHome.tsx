@@ -33,6 +33,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { SceneStrip } from '@/components/SceneStrip'
+import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import {
   useProject,
   useRuns,
@@ -417,6 +418,15 @@ function FreshImportView({ projectId }: { projectId: string }) {
         {bible && (
           <ScriptBiblePanel bible={bible} expanded={bibleExpanded} onToggle={() => setBibleExpanded(e => !e)} />
         )}
+        <ReferenceLibrarySection
+          projectId={projectId}
+          targetKind="project"
+          targetId="project"
+          title="Project References"
+          description="Global look boards, palette stills, temp music, and supporting documents live here. These references apply across scenes unless a scene or entity carries its own more specific material."
+          purposePresets={['style_reference', 'mood_board', 'temp_score', 'lookbook_pdf']}
+          activeReferenceHint="Project-level references are the top of the shared stack: scene-local uploads add to them, and entity pages contribute their own design-study and uploaded visuals downstream."
+        />
       </div>
 
       {/* Screenplay content — fills remaining space */}

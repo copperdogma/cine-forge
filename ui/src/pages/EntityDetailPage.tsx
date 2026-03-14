@@ -40,14 +40,15 @@ import {
   useEntityGraph,
   useEntityResolver,
   useEntityNavigation,
+  useInjectedAssetManifest,
   useSceneIndex,
   type ResolvedLink,
 } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
 import { ProminenceBadge } from '@/components/ProminenceBadge'
-import { DesignStudySection } from '@/components/DesignStudySection'
-import { getDesignStudy, getDesignStudyImageUrl } from '@/lib/api'
+import { EntityReferenceStudio } from '@/components/assets/EntityReferenceStudio'
+import { getAssetFileUrl, getDesignStudy, getDesignStudyImageUrl } from '@/lib/api'
 import type { DesignStudyEntityType, DesignStudyRound, DesignStudyImage, DesignStudyState } from '@/lib/api'
 
 // --- Config ---
@@ -473,6 +474,9 @@ export default function EntityDetailPage({ section }: { section: string }) {
 
   // Design study thumbnail — only for char/loc/prop pages; 404 means no study yet (fine)
   const isEntitySection = section !== 'scenes'
+  const assetTargetKind = isEntitySection
+    ? section.replace(/s$/, '') as 'character' | 'location' | 'prop'
+    : undefined
   // Bible keys are prefixed: "character_mariner", "location_13th_floor", etc.
   const dsEntityId = `${section.replace(/s$/, '')}_${entityId ?? ''}`
   const { data: designStudyState } = useQuery<DesignStudyState | null>({
@@ -481,6 +485,11 @@ export default function EntityDetailPage({ section }: { section: string }) {
     enabled: isEntitySection && !!projectId && !!entityId,
     retry: false,
   })
+  const { data: injectedAssetManifest } = useInjectedAssetManifest(
+    projectId,
+    assetTargetKind,
+    isEntitySection ? entityId : undefined,
+  )
   const thumbnailFilename = designStudyState?.selected_final_filename
     ?? designStudyState?.rounds
         .flatMap((r: DesignStudyRound) => r.images)
@@ -488,9 +497,18 @@ export default function EntityDetailPage({ section }: { section: string }) {
         .find((img: DesignStudyImage) => img.decision === 'favorite')
         ?.filename
     ?? null
+  const uploadedThumbnailAsset = [...(injectedAssetManifest?.assets ?? [])]
+    .reverse()
+    .find(asset => asset.asset_type === 'image' && (asset.thumbnail_path || asset.file_path))
+  const uploadedThumbnailUrl = uploadedThumbnailAsset && projectId
+    ? getAssetFileUrl(
+        projectId,
+        uploadedThumbnailAsset.thumbnail_path ?? uploadedThumbnailAsset.file_path,
+      )
+    : null
   const thumbnailUrl = thumbnailFilename && projectId && dsEntityId
     ? getDesignStudyImageUrl(projectId, dsEntityId, thumbnailFilename)
-    : null
+    : uploadedThumbnailUrl
 
   if (!config || !projectId || !entityId) {
     return <ErrorState message="Invalid entity route" />
@@ -752,16 +770,14 @@ export default function EntityDetailPage({ section }: { section: string }) {
             resolve={resolve}
           />
 
-          {/* 3. Design Study — AI concept art generation */}
-          <Card>
-            <CardContent className="pt-5">
-              <DesignStudySection
-                projectId={projectId}
-                entityId={dsEntityId}
-                entityType={section.replace(/s$/, '') as DesignStudyEntityType}
-              />
-            </CardContent>
-          </Card>
+          {/* 3. Reference Library + Design Study */}
+          <EntityReferenceStudio
+            projectId={projectId}
+            targetId={entityId}
+            entityType={section.replace(/s$/, '') as DesignStudyEntityType}
+            designStudyEntityId={dsEntityId}
+            designStudyState={designStudyState ?? null}
+          />
         </>
       )}
 

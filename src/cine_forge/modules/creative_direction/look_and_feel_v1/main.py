@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 from typing import Any
 
 from cine_forge.ai.llm import call_llm
@@ -18,6 +19,7 @@ from cine_forge.schemas.concern_groups import (
     LookAndFeel,
     LookAndFeelIndex,
 )
+from cine_forge.services import InjectedAssetService
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +90,12 @@ def run_module(
     # Optional enrichment inputs (loaded via store_inputs_optional in the recipe)
     bible_context = _build_bible_context(inputs)
     intent_context = _build_intent_context(inputs)
+    project_dir = context.get("project_dir")
+    asset_service = (
+        InjectedAssetService(Path(project_dir))
+        if isinstance(project_dir, str) and project_dir
+        else None
+    )
 
     print(f"[look_and_feel] Analysing {len(entries)} scenes (concurrency={concurrency}).")
 
@@ -122,7 +130,7 @@ def run_module(
             entry = entries[idx]
             try:
                 direction, cost = future.result()
-                artifact = _build_artifact(entry, direction)
+                artifact = _build_artifact(entry, direction, asset_service)
                 if announce:
                     announce(artifact)
                 artifacts.append(artifact)
@@ -535,8 +543,19 @@ def _build_index_artifact(
 # ---------------------------------------------------------------------------
 
 
-def _build_artifact(entry: dict[str, Any], direction: LookAndFeel) -> dict[str, Any]:
+def _build_artifact(
+    entry: dict[str, Any],
+    direction: LookAndFeel,
+    asset_service: InjectedAssetService | None = None,
+) -> dict[str, Any]:
     scene_id = entry.get("scene_id", "unknown")
+    if asset_service is not None and scene_id != "unknown":
+        refs = asset_service.collect_visual_references(entry)
+        if refs:
+            merged_refs = [*direction.reference_imagery, *refs]
+            direction = direction.model_copy(
+                update={"reference_imagery": list(dict.fromkeys(merged_refs))}
+            )
     return {
         "artifact_type": "look_and_feel",
         "entity_id": scene_id,
@@ -554,6 +573,7 @@ def _build_artifact(entry: dict[str, Any], direction: LookAndFeel) -> dict[str, 
                 "lighting": direction.lighting_concept,
                 "palette": direction.color_palette,
                 "camera": direction.camera_personality,
+                "reference_count": len(direction.reference_imagery),
             },
         },
     }

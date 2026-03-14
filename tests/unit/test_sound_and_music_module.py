@@ -2,20 +2,25 @@
 
 from __future__ import annotations
 
+import io
+import wave
 from typing import Any
 
 import pytest
 
+from cine_forge.artifacts import ArtifactStore
 from cine_forge.modules.creative_direction.sound_and_music_v1.main import (
     _build_intent_context,
     _build_scene_window,
     _mock_direction,
     run_module,
 )
+from cine_forge.schemas import ArtifactMetadata
 from cine_forge.schemas.concern_groups import (
     SoundAndMusic,
     SoundAndMusicIndex,
 )
+from cine_forge.services import InjectedAssetService
 
 
 def _scene_index_payload() -> dict[str, Any]:
@@ -96,6 +101,51 @@ def _intent_mood_payload() -> dict[str, Any]:
         "natural_language_intent": "Stark, minimal soundscapes with deliberate silence",
         "style_preset_id": "minimalist",
     }
+
+
+def _wav_bytes(duration_seconds: float = 0.25, sample_rate: int = 16000) -> bytes:
+    frame_count = int(duration_seconds * sample_rate)
+    buffer = io.BytesIO()
+    with wave.open(buffer, "wb") as wav:
+        wav.setnchannels(1)
+        wav.setsampwidth(2)
+        wav.setframerate(sample_rate)
+        wav.writeframes(b"\x00\x10" * frame_count)
+    return buffer.getvalue()
+
+
+def _seed_scene(project_dir, scene_id: str = "scene_001") -> None:
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="scene",
+        entity_id=scene_id,
+        data={
+            "scene_id": scene_id,
+            "scene_number": 1,
+            "heading": "INT. STUDIO - DAY",
+            "location": "STUDIO",
+            "time_of_day": "DAY",
+            "int_ext": "INT",
+            "characters_present": ["ARIA"],
+            "characters_present_ids": ["aria"],
+            "props_mentioned": [],
+            "elements": [],
+            "narrative_beats": [],
+            "tone_mood": "tense",
+            "tone_shifts": [],
+            "source_span": {"start_line": 1, "end_line": 3},
+            "inferences": [],
+            "provenance": [],
+            "confidence": 1.0,
+        },
+        metadata=ArtifactMetadata(
+            lineage=[],
+            intent="seed scene",
+            rationale="unit test seed",
+            confidence=1.0,
+            source="code",
+        ),
+    )
 
 
 @pytest.mark.unit
@@ -250,6 +300,7 @@ def test_sound_and_music_all_fields_optional() -> None:
     assert minimal.silence_placement is None
     assert minimal.music_intent is None
     assert minimal.offscreen_audio_cues == []
+    assert minimal.reference_audio_assets == []
     assert minimal.audio_motifs == []
 
 
@@ -311,3 +362,32 @@ def test_run_module_with_intent_input() -> None:
 
     result = run_module(inputs, params, context)
     assert len(result["artifacts"]) == 4  # 3 scenes + 1 index
+
+
+@pytest.mark.unit
+def test_run_module_includes_injected_audio_references(tmp_path) -> None:
+    _seed_scene(tmp_path)
+    InjectedAssetService(tmp_path).inject_asset(
+        target_kind="scene",
+        target_id="scene_001",
+        purpose="dialogue_audio",
+        filename="dialogue.wav",
+        content=_wav_bytes(),
+        content_type="audio/wav",
+    )
+
+    inputs = {
+        "normalize": _canonical_payload(),
+        "enriched_scene_index": _scene_index_payload(),
+    }
+    params = {"work_model": "mock", "skip_qa": True}
+    context = {"runtime_params": {}, "project_dir": str(tmp_path)}
+
+    result = run_module(inputs, params, context)
+    scene_one = next(
+        artifact
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "sound_and_music" and artifact["entity_id"] == "scene_001"
+    )
+    direction = SoundAndMusic.model_validate(scene_one["data"])
+    assert any(path.endswith(".wav") for path in direction.reference_audio_assets)

@@ -54,6 +54,13 @@ from .entity_adjudication import (
     EntityVerdict,
 )
 from .graph import EntityEdge, EntityGraph
+from .injected_asset import (
+    AssetLockStatus,
+    AssetTargetKind,
+    AssetType,
+    InjectedAsset,
+    InjectedAssetManifest,
+)
 from .models import (
     Artifact,
     ArtifactHealth,
@@ -156,6 +163,11 @@ __all__ = [
     "EventType",
     "EntityEdge",
     "EntityGraph",
+    "AssetLockStatus",
+    "AssetTargetKind",
+    "AssetType",
+    "InjectedAsset",
+    "InjectedAssetManifest",
     "SourceFileInfo",
     "FormatClassification",
     "ModelStrategy",

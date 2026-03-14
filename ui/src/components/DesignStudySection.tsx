@@ -252,11 +252,19 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
   const [model, setModel] = useState(IMAGEN_MODELS[0].id)
   const [showHistory, setShowHistory] = useState(false)
   const [filter, setFilter] = useState<FilterMode>('all')
+  const [useSeedVariants, setUseSeedVariants] = useState(true)
 
   const { data: state, isLoading } = useQuery({
     queryKey: ['design-study', projectId, entityId],
     queryFn: () => getDesignStudy(projectId, entityId),
   })
+
+  const latestSeedImage = state
+    ? [...state.rounds]
+        .reverse()
+        .flatMap(r => [...r.images].reverse())
+        .find(img => img.decision === 'seed_for_variants')
+    : undefined
 
   const generateMutation = useMutation({
     mutationFn: () =>
@@ -265,6 +273,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
         count,
         guidance: guidance.trim() || null,
         model,
+        seed_image_filename: useSeedVariants ? latestSeedImage?.filename ?? null : null,
       }),
     onSuccess: (updated) => {
       queryClient.setQueryData(['design-study', projectId, entityId], updated)
@@ -340,11 +349,36 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
           onChange={e => setGuidance(e.target.value)}
           className="text-sm resize-none h-14"
         />
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1">
+        {latestSeedImage && (
+          <div className="rounded-lg border border-sky-500/20 bg-sky-500/8 px-3 py-2">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="text-xs font-medium text-sky-100">Variant seed available</p>
+                <p className="text-xs text-muted-foreground">
+                  {latestSeedImage.filename} will guide the next round when seed mode is on.
+                  Current support is prompt-guided variation, not direct upload image-conditioning.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setUseSeedVariants(v => !v)}
+                className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
+                  useSeedVariants
+                    ? 'border-sky-400/40 bg-sky-500/20 text-sky-100'
+                    : 'border-border bg-background text-muted-foreground hover:bg-muted'
+                }`}
+              >
+                {useSeedVariants ? 'Seed on' : 'Seed off'}
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2">
             {([1, 2, 4, 8] as const).map(n => (
               <button
                 key={n}
+                type="button"
                 onClick={() => setCount(n)}
                 className={`w-7 h-7 rounded text-xs border transition-colors ${
                   count === n
@@ -355,12 +389,13 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
                 {n}
               </button>
             ))}
-            <span className="text-xs text-muted-foreground ml-1">image{count !== 1 ? 's' : ''}</span>
+            <span className="text-xs text-muted-foreground">image{count !== 1 ? 's' : ''}</span>
           </div>
-          <div className="flex items-center gap-1 ml-auto">
+          <div className="flex flex-wrap items-center gap-1">
             {IMAGEN_MODELS.map(m => (
               <button
                 key={m.id}
+                type="button"
                 onClick={() => setModel(m.id)}
                 title={m.id}
                 className={`px-2 h-7 rounded text-xs border transition-colors ${
@@ -375,6 +410,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
           </div>
           <Button
             size="sm"
+            className="w-full justify-center"
             disabled={generateMutation.isPending}
             onClick={() => generateMutation.mutate()}
           >
@@ -400,7 +436,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
 
       {/* Loading skeleton */}
       {isLoading && (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid gap-3">
           {[0, 1].map(i => (
             <div key={i} className="rounded-lg border bg-muted animate-pulse h-48" />
           ))}
@@ -409,10 +445,11 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
 
       {/* Filter tabs — only when images exist */}
       {allImages.length > 0 && (
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           {(Object.keys(FILTER_LABELS) as FilterMode[]).map(mode => (
             <button
               key={mode}
+              type="button"
               onClick={() => setFilter(mode)}
               className={`px-2.5 py-1 rounded text-xs border transition-colors ${
                 filter === mode
@@ -430,7 +467,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
       {filteredLatest.length > 0 && (
         <div className="space-y-2">
           <p className="text-xs text-muted-foreground">Round {state!.rounds.length}</p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3">
             {filteredLatest.map((img, i) => (
               <ImageCard
                 key={img.filename}
@@ -450,6 +487,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
       {historicalImages.length > 0 && (
         <div className="space-y-2">
           <button
+            type="button"
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
             onClick={() => setShowHistory(v => !v)}
           >
@@ -457,7 +495,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
             {showHistory ? 'Hide' : 'Show'} earlier rounds ({historicalImages.length} image{historicalImages.length !== 1 ? 's' : ''})
           </button>
           {showHistory && filteredHistory.length > 0 && (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3">
               {filteredHistory.map((img, i) => (
                 <ImageCard
                   key={img.filename}
