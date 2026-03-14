@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-13-10] — Model refresh, eval verification, and project defaults (Story 133)
+
+### Added
+- New validated model options for provider refresh candidates in the runtime and project model-setting surfaces, with Story 133 capturing the cross-cutting benchmark/verification work
+
+### Changed
+- Refreshed registry-backed eval evidence and project-scoped model-default behavior so saved settings propagate honestly into live runs and explicit per-run clears remain possible
+
+### Fixed
+- Corrected benchmark scorer/golden defects uncovered during verification and fixed the `/api/runs/start` merge path so cleared optional model overrides are no longer silently replaced by saved project defaults
+
 ## [2026-03-13-09] — Shot planning UI and shot-list exports (Story 132)
 
 ### Added

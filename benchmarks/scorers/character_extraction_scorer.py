@@ -31,6 +31,19 @@ def text_contains(haystack: str, needle: str) -> bool:
     return normalize(needle) in normalize(haystack)
 
 
+def relationship_target_matches(
+    model_relationships_text: str,
+    target: str,
+    all_golden: dict,
+) -> bool:
+    """Allow golden aliases when checking relationship targets."""
+    target_golden = all_golden.get(target, {})
+    aliases = target_golden.get("aliases", []) if isinstance(target_golden, dict) else []
+    candidates = [target, *aliases]
+    normalized_text = normalize(model_relationships_text)
+    return any(normalize(candidate) in normalized_text for candidate in candidates if candidate)
+
+
 def get_assert(output: str, context: dict) -> dict:
     """Promptfoo assertion entry point."""
 
@@ -154,9 +167,7 @@ def get_assert(output: str, context: dict) -> dict:
         found = 0
         missing = []
         for rel in golden_rels:
-            target = normalize(rel["target"])
-            # Check if target character is mentioned anywhere in relationships
-            if target in normalize(model_rels_text):
+            if relationship_target_matches(model_rels_text, rel["target"], all_golden):
                 found += 1
             else:
                 missing.append(f"{rel['target']} ({rel['type']})")

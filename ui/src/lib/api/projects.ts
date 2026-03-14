@@ -61,6 +61,10 @@ export function updateProjectSettings(
     display_name?: string
     human_control_mode?: 'autonomous' | 'checkpoint' | 'advisory'
     interaction_mode?: 'guided' | 'balanced' | 'expert'
+    default_model?: string | null
+    work_model?: string | null
+    verify_model?: string | null
+    escalate_model?: string | null
     ui_preferences?: Record<string, string>
   },
 ): Promise<ProjectSummary> {

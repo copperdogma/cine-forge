@@ -36,6 +36,12 @@ providers:
       temperature: 0
       maxOutputTokens: 16384
 
+  - id: google:gemini-3.1-flash-lite-preview
+    label: "Gemini 3.1 Flash Lite"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
   # --- Mid tier ---
   - id: anthropic:messages:claude-sonnet-4-6
     label: "Claude Sonnet 4.6"
@@ -62,8 +68,21 @@ providers:
       temperature: 0
       max_tokens: 4096
 
+  - id: openai:gpt-5.4
+    label: "GPT-5.4"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
+  - id: google:gemini-3.1-pro-preview
+    label: "Gemini 3.1 Pro"
     config:
       temperature: 0
       maxOutputTokens: 16384
@@ -85,7 +104,7 @@ tests:
           3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.
           4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.
           5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.
-          6. Is the setting grounded in specifics? Expect: contemporary urban Toronto setting, the Ruddy & Greene Building (15th floor final confrontation), fishing-themed vigilante aesthetic.
+          6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.
           7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.
           8. Does the analysis avoid generic statements that could apply to any film?
 

@@ -187,6 +187,7 @@ NOTES from Cam:
 | 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Draft | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
 | 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Draft | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
+| 133 | Model Refresh, Eval Verification, and Project Model Defaults | Cross-Cutting | High | Done | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |
 
 ## Phase Summary
 

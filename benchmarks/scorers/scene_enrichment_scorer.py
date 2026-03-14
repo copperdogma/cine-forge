@@ -21,11 +21,27 @@ import os
 import re
 
 
+def heading_has_explicit_time(scene_text: str) -> bool:
+    """Only grade time-of-day when the excerpt actually provides it."""
+    for line in scene_text.splitlines():
+        stripped = line.strip().upper()
+        if not stripped:
+            continue
+        return bool(
+            re.search(
+                r"\b(DAY|NIGHT|MORNING|EVENING|AFTERNOON|SUNSET|SUNRISE|DAWN|DUSK|CONTINUOUS|LATER)\b",
+                stripped,
+            )
+        )
+    return False
+
+
 def get_assert(output: str, context: dict) -> dict:
     """Promptfoo assertion entry point."""
 
     golden_path = context.get("vars", {}).get("golden_path", "")
     scene_key = context.get("vars", {}).get("scene_key", "")
+    scene_text = context.get("vars", {}).get("scene_text", "")
 
     # Resolve relative path from the benchmarks directory
     if golden_path and not os.path.isabs(golden_path):
@@ -100,7 +116,9 @@ def get_assert(output: str, context: dict) -> dict:
     # --- 3. Time of day ---
     expected_time = golden.get("time_of_day", "").upper()
     model_time = str(result.get("time_of_day", "")).upper()
-    if expected_time and model_time:
+    if not heading_has_explicit_time(scene_text):
+        scores["time_accuracy"] = 0.5
+    elif expected_time and model_time:
         if expected_time in model_time or model_time in expected_time:
             scores["time_accuracy"] = 1.0
         else:

@@ -49,7 +49,7 @@ import { updateProjectSettings } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { timeAgo, formatDuration } from '@/lib/format'
 import { getStatusConfig } from '@/components/StatusBadge'
-import type { ProjectState } from '@/lib/types'
+import type { ProjectState, ProjectSummary } from '@/lib/types'
 
 import type { ScreenplayEditorHandle, SceneDividerData } from '@/components/ScreenplayEditor'
 
@@ -96,8 +96,8 @@ function EditableTitle({
     }
     setSaving(true)
     try {
-      await updateProjectSettings(projectId, { display_name: trimmed })
-      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      const updatedProject = await updateProjectSettings(projectId, { display_name: trimmed })
+      queryClient.setQueryData<ProjectSummary>(['projects', projectId], updatedProject)
       queryClient.invalidateQueries({ queryKey: ['projects'] })
       setEditing(false)
     } catch (error) {

@@ -26,6 +26,13 @@ from cine_forge.schemas import ArtifactMetadata, ArtifactRef
 
 log = logging.getLogger(__name__)
 
+PROJECT_MODEL_KEYS = (
+    "default_model",
+    "work_model",
+    "verify_model",
+    "escalate_model",
+)
+
 
 # ---------------------------------------------------------------------------
 # Search helpers — fuzzy matching for search_entities
@@ -202,10 +209,7 @@ class OperatorConsoleService:
         project_path: Path,
         slug: str,
         display_name: str,
-        human_control_mode: str | None = None,
-        interaction_mode: str | None = None,
-        style_packs: dict[str, str] | None = None,
-        ui_preferences: dict[str, Any] | None = None,
+        updates: dict[str, Any] | None = None,
     ) -> None:
         """Write project.json with slug, display_name, and optional settings.
 
@@ -224,18 +228,20 @@ class OperatorConsoleService:
         # Update with new values
         existing["slug"] = slug
         existing["display_name"] = display_name
-        if human_control_mode is not None:
-            existing["human_control_mode"] = human_control_mode
-        if interaction_mode is not None:
-            existing["interaction_mode"] = interaction_mode
-        if style_packs is not None:
-            existing["style_packs"] = style_packs
+        for key, value in (updates or {}).items():
+            if key == "ui_preferences":
+                if value is None:
+                    existing.pop("ui_preferences", None)
+                    continue
+                existing_prefs = existing.get("ui_preferences", {})
+                existing_prefs.update(value)
+                existing["ui_preferences"] = existing_prefs
+                continue
 
-        # Merge ui_preferences if provided (shallow merge)
-        if ui_preferences is not None:
-            existing_prefs = existing.get("ui_preferences", {})
-            existing_prefs.update(ui_preferences)
-            existing["ui_preferences"] = existing_prefs
+            if value is None:
+                existing.pop(key, None)
+            else:
+                existing[key] = value
 
         pj_path.write_text(
             json.dumps(existing, indent=2), encoding="utf-8",
@@ -254,35 +260,25 @@ class OperatorConsoleService:
     def update_project_settings(
         self,
         project_id: str,
-        display_name: str | None = None,
-        human_control_mode: str | None = None,
-        interaction_mode: str | None = None,
-        style_packs: dict[str, str] | None = None,
-        ui_preferences: dict[str, Any] | None = None,
+        updates: dict[str, Any],
     ) -> dict[str, Any]:
         """Update mutable project settings (display_name, human_control_mode, etc.)."""
         path = self.require_project_path(project_id)
         pj = self._read_project_json(path) or {"slug": project_id}
 
         # Update human_control_mode and sync to config if provided
-        if human_control_mode is not None:
-            self._sync_human_control_mode_to_config(project_id, human_control_mode)
+        if "human_control_mode" in updates and updates["human_control_mode"] is not None:
+            self._sync_human_control_mode_to_config(project_id, updates["human_control_mode"])
+
+        display_name = updates.get("display_name")
+        persisted_updates = {key: value for key, value in updates.items() if key != "display_name"}
 
         # Write back with all changes
         self._write_project_json(
             path,
             pj.get("slug", project_id),
-            display_name if display_name is not None else pj.get("display_name", project_id),
-            human_control_mode=(
-                human_control_mode if human_control_mode is not None
-                else pj.get("human_control_mode")
-            ),
-            interaction_mode=(
-                interaction_mode if interaction_mode is not None
-                else pj.get("interaction_mode")
-            ),
-            style_packs=style_packs if style_packs is not None else pj.get("style_packs"),
-            ui_preferences=ui_preferences,
+            display_name if "display_name" in updates else pj.get("display_name", project_id),
+            updates=persisted_updates,
         )
 
         return self.project_summary(project_id)
@@ -476,6 +472,10 @@ class OperatorConsoleService:
             "ui_preferences": ui_preferences,
             "human_control_mode": human_control_mode,
             "interaction_mode": interaction_mode,
+            "default_model": (pj or {}).get("default_model"),
+            "work_model": (pj or {}).get("work_model"),
+            "verify_model": (pj or {}).get("verify_model"),
+            "escalate_model": (pj or {}).get("escalate_model"),
         }
 
     @staticmethod
@@ -942,7 +942,17 @@ class OperatorConsoleService:
         return recipes
 
     def start_run(self, project_id: str, request: dict[str, Any]) -> str:
-        return self._orchestrator.start_run(project_id, request)
+        project_path = self.require_project_path(project_id)
+        pj = self._read_project_json(project_path) or {}
+
+        merged_request = dict(request)
+        for key in PROJECT_MODEL_KEYS:
+            if key not in merged_request and pj.get(key):
+                merged_request[key] = pj[key]
+        if "human_control_mode" not in merged_request and pj.get("human_control_mode"):
+            merged_request["human_control_mode"] = pj["human_control_mode"]
+
+        return self._orchestrator.start_run(project_id, merged_request)
 
     def retry_failed_stage(self, run_id: str) -> str:
         return self._orchestrator.retry_failed_stage(run_id)

@@ -196,6 +196,20 @@ def test_estimate_cost_usd_uses_known_model_pricing() -> None:
 
 
 @pytest.mark.unit
+@pytest.mark.parametrize(
+    ("model", "expected"),
+    [
+        ("gpt-5.4", 17.5),
+        ("gemini-3.1-pro-preview", 11.5),
+        ("gemini-3.1-flash-lite-preview", 0.5),
+    ],
+)
+def test_estimate_cost_usd_supports_newly_added_models(model: str, expected: float) -> None:
+    cost = estimate_cost_usd(model=model, input_tokens=1_000_000, output_tokens=1_000_000)
+    assert cost == pytest.approx(expected)
+
+
+@pytest.mark.unit
 def test_call_llm_detects_truncation_when_fail_on_truncation() -> None:
     def truncated_transport(_: dict[str, Any]) -> dict[str, Any]:
         return {

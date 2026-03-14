@@ -36,6 +36,7 @@ EVAL_ID_PREFIXES = [
     "character-extraction",
     "config-detection",
     "continuity-extraction",
+    "entity-discovery",
     "location-extraction",
     "normalization",
     "prop-extraction",
@@ -43,15 +44,21 @@ EVAL_ID_PREFIXES = [
     "relationship-discovery",
     "scene-enrichment",
     "scene-extraction",
+    "script-bible",
 ]
 
 
 def filename_to_eval_id(filename: str) -> str | None:
     """Extract eval ID from a result filename like 'character-extraction-run3.json'."""
     stem = Path(filename).stem
-    for prefix in sorted(EVAL_ID_PREFIXES, key=len, reverse=True):
-        if stem.startswith(prefix):
-            return prefix
+    stems_to_check = [stem]
+    if stem.startswith("model-scout-"):
+        stems_to_check.append(stem.removeprefix("model-scout-"))
+
+    for candidate in stems_to_check:
+        for prefix in sorted(EVAL_ID_PREFIXES, key=len, reverse=True):
+            if candidate.startswith(prefix):
+                return prefix
     return None
 
 
@@ -74,11 +81,14 @@ def normalize_label(label: str) -> str:
 # Pricing from src/cine_forge/ai/llm.py MODEL_PRICING_PER_M_TOKEN
 # (input_per_M, output_per_M) in USD
 PRICING: dict[str, tuple[float, float]] = {
+    "gpt-5.4": (2.5, 15.0),
     "claude-sonnet-4-6": (3.0, 15.0),
     "claude-sonnet-4-5": (3.0, 15.0),
     "claude-sonnet-4-5-20250929": (3.0, 15.0),
     "claude-opus-4-6": (15.0, 75.0),
     "claude-haiku-4-5-20251001": (0.80, 4.0),
+    "gemini-3.1-flash-lite-preview": (0.10, 0.40),
+    "gemini-3.1-pro-preview": (1.50, 10.0),
 }
 
 
@@ -212,7 +222,7 @@ def update_registry(result_files: list[Path], dry_run: bool = False):
         print(f"ERROR: Registry not found at {REGISTRY_PATH}", file=sys.stderr)
         sys.exit(1)
 
-    registry = yaml.safe_load(REGISTRY_PATH.read_text())
+    yaml.safe_load(REGISTRY_PATH.read_text())
     lines = REGISTRY_PATH.read_text().splitlines()
 
     # Build comprehensive metrics from all result files
@@ -234,7 +244,6 @@ def update_registry(result_files: list[Path], dry_run: bool = False):
 
     # Walk through lines and insert latency_ms/cost_usd after metrics blocks
     updated = 0
-    skipped = 0
     current_eval_id = None
     current_model = None
     new_lines = []
@@ -300,8 +309,16 @@ def update_registry(result_files: list[Path], dry_run: bool = False):
 
 def main():
     parser = argparse.ArgumentParser(description="Extract latency/cost from promptfoo results")
-    parser.add_argument("--update-registry", action="store_true", help="Write metrics into registry.yaml")
-    parser.add_argument("--dry-run", action="store_true", help="Show what would change without writing")
+    parser.add_argument(
+        "--update-registry",
+        action="store_true",
+        help="Write metrics into registry.yaml",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would change without writing",
+    )
     parser.add_argument("--result-file", type=Path, help="Process a single result file")
     args = parser.parse_args()
 

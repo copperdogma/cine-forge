@@ -18,6 +18,10 @@ export type ProjectSummary = {
   ui_preferences: Record<string, string>
   human_control_mode: 'autonomous' | 'checkpoint' | 'advisory'
   interaction_mode: InteractionMode
+  default_model?: string | null
+  work_model?: string | null
+  verify_model?: string | null
+  escalate_model?: string | null
 }
 
 export type RecentProjectSummary = ProjectSummary & {
@@ -43,13 +47,13 @@ export type RunStartPayload = {
   project_id: string
   input_file: string
   default_model: string
-  work_model?: string
-  verify_model?: string
-  escalate_model?: string
+  work_model?: string | null
+  verify_model?: string | null
+  escalate_model?: string | null
   recipe_id?: string
   human_control_mode?: 'autonomous' | 'checkpoint' | 'advisory'
   skip_qa?: boolean
-  qa_model?: string
+  qa_model?: string | null
   accept_config: boolean
   run_id?: string
   force?: boolean

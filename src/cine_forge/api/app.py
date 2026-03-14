@@ -198,15 +198,9 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         log = logging.getLogger("cine_forge.api.settings")
         log.info("Updating settings for project %s: %s", project_id, request.model_dump())
         try:
+            updates = request.model_dump(exclude_unset=True)
             return ProjectSummary.model_validate(
-                service.update_project_settings(
-                    project_id,
-                    display_name=request.display_name,
-                    human_control_mode=request.human_control_mode,
-                    interaction_mode=request.interaction_mode,
-                    style_packs=request.style_packs,
-                    ui_preferences=request.ui_preferences,
-                )
+                service.update_project_settings(project_id, updates)
             )
         except Exception as exc:
             log.exception("Failed to update project settings")
@@ -694,7 +688,10 @@ Return valid JSON matching the schema."""
         if request.retry_failed_stage_for_run_id:
             run_id = service.retry_failed_stage(request.retry_failed_stage_for_run_id)
         else:
-            run_id = service.start_run(request.project_id, request.model_dump())
+            run_id = service.start_run(
+                request.project_id,
+                request.model_dump(exclude_unset=True),
+            )
         return RunStartResponse(
             run_id=run_id,
             state_url=f"/api/runs/{run_id}/state",

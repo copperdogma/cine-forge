@@ -54,7 +54,7 @@ def test_recent_projects_lists_initialized_paths(tmp_path: Path) -> None:
     assert response.status_code == 200
     payload = response.json()
     assert len(payload) == 1
-    assert payload[0]["display_name"] == "project-recent"
+    assert payload[0]["display_name"] == "Project Recent"
     assert payload[0]["project_path"] == str(project_path)
 
 
@@ -229,6 +229,55 @@ def test_run_start_and_run_polling_endpoints(tmp_path: Path, monkeypatch) -> Non
     events = client.get(f"/api/runs/{run_id}/events")
     assert events.status_code == 200
     assert events.json()["events"][0]["event"] == "stage_started"
+
+
+def test_run_start_preserves_explicitly_cleared_optional_model_overrides(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "run-clear-test", "Run Clear Test")
+    service = client.app.state.console_service
+    service.update_project_settings(
+        project_id,
+        {
+            "default_model": "gpt-5.4",
+            "work_model": "gemini-3.1-pro-preview",
+            "verify_model": "gpt-4.1-mini",
+            "escalate_model": "claude-opus-4-6",
+        },
+    )
+
+    captured: dict[str, object] = {}
+
+    def _fake_start_run(project_id_arg: str, request: dict[str, object]) -> str:
+        captured["project_id"] = project_id_arg
+        captured["request"] = request
+        return "run-clear-test"
+
+    monkeypatch.setattr(service._orchestrator, "start_run", _fake_start_run)
+
+    response = client.post(
+        "/api/runs/start",
+        json={
+            "project_id": project_id,
+            "input_file": "tests/fixtures/sample_screenplay.fountain",
+            "default_model": "gpt-5.4",
+            "work_model": None,
+            "verify_model": None,
+            "accept_config": True,
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json()["run_id"] == "run-clear-test"
+    assert captured["project_id"] == project_id
+    request = captured["request"]
+    assert isinstance(request, dict)
+    assert request["default_model"] == "gpt-5.4"
+    assert request["work_model"] is None
+    assert request["verify_model"] is None
+    assert request["escalate_model"] == "claude-opus-4-6"
 
 
 @pytest.mark.unit
@@ -976,3 +1025,136 @@ def test_project_ui_preferences_persist(tmp_path: Path) -> None:
     assert "ui_preferences" in project_data
     assert project_data["ui_preferences"]["characters.sort"] == "prominence"
     assert project_data["ui_preferences"]["locations.sort"] == "script-order"
+
+
+def test_project_model_settings_persist_and_clear(tmp_path: Path) -> None:
+    """Project model defaults should round-trip through project settings."""
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "model-pref-test", "Model Preference Test")
+
+    update_resp = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={
+            "default_model": "gpt-5.4",
+            "work_model": "gemini-3.1-flash-lite-preview",
+            "verify_model": "gpt-4.1-mini",
+            "escalate_model": "claude-opus-4-6",
+        },
+    )
+    assert update_resp.status_code == 200
+    payload = update_resp.json()
+    assert payload["default_model"] == "gpt-5.4"
+    assert payload["work_model"] == "gemini-3.1-flash-lite-preview"
+    assert payload["verify_model"] == "gpt-4.1-mini"
+    assert payload["escalate_model"] == "claude-opus-4-6"
+
+    project_path = tmp_path / "output" / "model-pref-test"
+    project_json = json.loads((project_path / "project.json").read_text(encoding="utf-8"))
+    assert project_json["default_model"] == "gpt-5.4"
+    assert project_json["work_model"] == "gemini-3.1-flash-lite-preview"
+    assert project_json["verify_model"] == "gpt-4.1-mini"
+    assert project_json["escalate_model"] == "claude-opus-4-6"
+
+    clear_resp = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={"verify_model": None, "escalate_model": None},
+    )
+    assert clear_resp.status_code == 200
+    clear_payload = clear_resp.json()
+    assert clear_payload["verify_model"] is None
+    assert clear_payload["escalate_model"] is None
+
+    cleared_project_json = json.loads((project_path / "project.json").read_text(encoding="utf-8"))
+    assert "verify_model" not in cleared_project_json
+    assert "escalate_model" not in cleared_project_json
+
+
+def test_service_start_run_applies_saved_project_model_defaults(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Saved project model settings should fill run-start omissions."""
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_id = service.create_project_from_slug("saved-models", "Saved Models")
+    service.update_project_settings(
+        project_id,
+        {
+            "default_model": "gpt-5.4",
+            "work_model": "gemini-3.1-pro-preview",
+            "verify_model": "gpt-4.1-mini",
+            "escalate_model": "claude-opus-4-6",
+        },
+    )
+
+    captured: dict[str, object] = {}
+
+    def _fake_start_run(project_id_arg: str, request: dict[str, object]) -> str:
+        captured["project_id"] = project_id_arg
+        captured["request"] = request
+        return "run-model-defaults"
+
+    monkeypatch.setattr(service._orchestrator, "start_run", _fake_start_run)
+
+    run_id = service.start_run(
+        project_id,
+        {
+            "input_file": "tests/fixtures/sample_screenplay.fountain",
+            "accept_config": True,
+        },
+    )
+
+    assert run_id == "run-model-defaults"
+    assert captured["project_id"] == project_id
+    request = captured["request"]
+    assert isinstance(request, dict)
+    assert request["default_model"] == "gpt-5.4"
+    assert request["work_model"] == "gemini-3.1-pro-preview"
+    assert request["verify_model"] == "gpt-4.1-mini"
+    assert request["escalate_model"] == "claude-opus-4-6"
+
+
+def test_service_start_run_preserves_explicitly_cleared_optional_model_overrides(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Explicit per-run clears should not be replaced by saved project defaults."""
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_id = service.create_project_from_slug("saved-model-clears", "Saved Model Clears")
+    service.update_project_settings(
+        project_id,
+        {
+            "default_model": "gpt-5.4",
+            "work_model": "gemini-3.1-pro-preview",
+            "verify_model": "gpt-4.1-mini",
+            "escalate_model": "claude-opus-4-6",
+        },
+    )
+
+    captured: dict[str, object] = {}
+
+    def _fake_start_run(project_id_arg: str, request: dict[str, object]) -> str:
+        captured["project_id"] = project_id_arg
+        captured["request"] = request
+        return "run-model-clears"
+
+    monkeypatch.setattr(service._orchestrator, "start_run", _fake_start_run)
+
+    run_id = service.start_run(
+        project_id,
+        {
+            "input_file": "tests/fixtures/sample_screenplay.fountain",
+            "accept_config": True,
+            "work_model": None,
+            "verify_model": None,
+            "escalate_model": None,
+        },
+    )
+
+    assert run_id == "run-model-clears"
+    assert captured["project_id"] == project_id
+    request = captured["request"]
+    assert isinstance(request, dict)
+    assert request["default_model"] == "gpt-5.4"
+    assert request["work_model"] is None
+    assert request["verify_model"] is None
+    assert request["escalate_model"] is None

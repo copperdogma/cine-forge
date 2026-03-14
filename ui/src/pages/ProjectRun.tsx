@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useHistoryBack } from '@/lib/use-history-back'
 import {
@@ -39,6 +39,7 @@ import { useChatStore } from '@/lib/chat-store'
 import { toast } from 'sonner'
 import { getOrderedStageIds, RECIPE_NAMES } from '@/lib/constants'
 import { humanizeStageName } from '@/lib/chat-messages'
+import { getProjectRunModelDefaults } from '@/lib/project-models'
 
 // Fallback recipes in case API fails
 const fallbackRecipes = [
@@ -94,19 +95,42 @@ type UploadedInputResponse = {
   size_bytes: number
 }
 
+type ProjectRunModelField = 'defaultModel' | 'workModel' | 'verifyModel'
+
 export default function ProjectRun() {
   const { projectId, runId } = useParams()
   const navigate = useNavigate()
   const goBack = useHistoryBack(`/${projectId}/runs`)
+  const routeKey = `${projectId ?? ''}:${runId ?? 'new'}`
+  const initialModelDefaults = getProjectRunModelDefaults()
   const [selectedRecipe, setSelectedRecipe] = useState('mvp_ingest')
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [dragOver, setDragOver] = useState(false)
   const [selectedScene, setSelectedScene] = useState<number | undefined>(undefined)
   const [uploadedFile, setUploadedFile] = useState<UploadedInputResponse | null>(null)
-  const [defaultModel, setDefaultModel] = useState('claude-sonnet-4-6')
-  const [workModel, setWorkModel] = useState('claude-haiku-4-5-20251001')
-  const [verifyModel, setVerifyModel] = useState('')
+  const [defaultModel, setDefaultModel] = useState(initialModelDefaults.defaultModel)
+  const [workModel, setWorkModel] = useState(initialModelDefaults.workModel)
+  const [verifyModel, setVerifyModel] = useState(initialModelDefaults.verifyModel)
   const [startFrom, setStartFrom] = useState('')
+  const touchedModelFieldsRef = useRef<Record<ProjectRunModelField, boolean>>({
+    defaultModel: false,
+    workModel: false,
+    verifyModel: false,
+  })
+  const lastAppliedProjectDefaultsRef = useRef<ReturnType<typeof getProjectRunModelDefaults> | null>(null)
+
+  const updateModelField = (field: ProjectRunModelField, value: string) => {
+    touchedModelFieldsRef.current[field] = true
+    if (field === 'defaultModel') {
+      setDefaultModel(value)
+      return
+    }
+    if (field === 'workModel') {
+      setWorkModel(value)
+      return
+    }
+    setVerifyModel(value)
+  }
 
   // API hooks
   const uploadMutation = useUploadInput(projectId || '')
@@ -156,6 +180,43 @@ export default function ProjectRun() {
     }
   }, [runId, runStateData])
 
+  useEffect(() => {
+    touchedModelFieldsRef.current = {
+      defaultModel: false,
+      workModel: false,
+      verifyModel: false,
+    }
+    lastAppliedProjectDefaultsRef.current = null
+  }, [routeKey])
+
+  useEffect(() => {
+    if (runId || !projectData) return
+    const defaults = getProjectRunModelDefaults(projectData)
+    const previousDefaults = lastAppliedProjectDefaultsRef.current
+    if (
+      previousDefaults &&
+      previousDefaults.defaultModel === defaults.defaultModel &&
+      previousDefaults.workModel === defaults.workModel &&
+      previousDefaults.verifyModel === defaults.verifyModel
+    ) {
+      return
+    }
+
+    const t = setTimeout(() => {
+      if (!touchedModelFieldsRef.current.defaultModel) {
+        setDefaultModel(defaults.defaultModel)
+      }
+      if (!touchedModelFieldsRef.current.workModel) {
+        setWorkModel(defaults.workModel)
+      }
+      if (!touchedModelFieldsRef.current.verifyModel) {
+        setVerifyModel(defaults.verifyModel)
+      }
+      lastAppliedProjectDefaultsRef.current = defaults
+    }, 0)
+    return () => clearTimeout(t)
+  }, [projectData, runId])
+
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 1000)
@@ -187,12 +248,19 @@ export default function ProjectRun() {
       return
     }
 
+    const workModelPayload = touchedModelFieldsRef.current.workModel
+      ? (workModel || null)
+      : (workModel || undefined)
+    const verifyModelPayload = touchedModelFieldsRef.current.verifyModel
+      ? (verifyModel || null)
+      : (verifyModel || undefined)
+
     const payload = {
       project_id: projectId,
       input_file: uploadedFile.stored_path,
       default_model: defaultModel,
-      ...(workModel && { work_model: workModel }),
-      ...(verifyModel && { verify_model: verifyModel }),
+      ...(workModelPayload !== undefined ? { work_model: workModelPayload } : {}),
+      ...(verifyModelPayload !== undefined ? { verify_model: verifyModelPayload } : {}),
       human_control_mode: projectData?.human_control_mode ?? 'autonomous',
       recipe_id: selectedRecipe,
       accept_config: true,
@@ -660,7 +728,7 @@ export default function ProjectRun() {
                   <Input
                     id="default-model"
                     value={defaultModel}
-                    onChange={e => setDefaultModel(e.target.value)}
+                    onChange={e => updateModelField('defaultModel', e.target.value)}
                     className="text-sm"
                   />
                 </div>
@@ -671,7 +739,7 @@ export default function ProjectRun() {
                   <Input
                     id="work-model"
                     value={workModel}
-                    onChange={e => setWorkModel(e.target.value)}
+                    onChange={e => updateModelField('workModel', e.target.value)}
                     className="text-sm"
                   />
                 </div>
@@ -682,7 +750,7 @@ export default function ProjectRun() {
                   <Input
                     id="verify-model"
                     value={verifyModel}
-                    onChange={e => setVerifyModel(e.target.value)}
+                    onChange={e => updateModelField('verifyModel', e.target.value)}
                     placeholder="Same as default"
                     className="text-sm"
                   />

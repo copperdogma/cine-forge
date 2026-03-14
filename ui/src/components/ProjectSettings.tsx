@@ -29,6 +29,13 @@ import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { updateProjectSettings } from "@/lib/api"
 import type { ProjectSummary } from "@/lib/types"
+import {
+  getPersistedProjectModelState,
+  getProjectModelFormState,
+  normalizeProjectModelSettings,
+  OPTIONAL_PROJECT_MODEL_OPTIONS,
+  PROJECT_MODEL_OPTIONS,
+} from "@/lib/project-models"
 
 interface ProjectSettingsProps {
   projectId: string
@@ -57,32 +64,23 @@ export function ProjectSettings({
   const [editName, setEditName] = React.useState(projectName)
   const [editMode, setEditMode] = React.useState(controlMode)
   const [saving, setSaving] = React.useState(false)
+  const [savingModels, setSavingModels] = React.useState(false)
 
   React.useEffect(() => {
     if (open) {
       setEditName(projectName)
       setEditMode(controlMode)
+      setModelSettings(getProjectModelFormState(project))
     }
-  }, [open, projectName, controlMode])
+  }, [open, project, projectName, controlMode])
 
-  const [modelSettings, setModelSettings] = React.useState({
-    defaultModel: "claude-sonnet-4-5",
-    workModel: "claude-sonnet-4-5",
-    verifyModel: "claude-opus-4",
-    escalateModel: "claude-opus-4",
-  })
+  const [modelSettings, setModelSettings] = React.useState(() => getProjectModelFormState(project))
 
   const [pipelineSettings, setPipelineSettings] = React.useState({
     defaultRecipe: "mvp-ingest",
     skipQA: false,
     forceRerun: false,
   })
-
-  const modelOptions = [
-    { value: "claude-sonnet-4-5", label: "Claude Sonnet 4.5" },
-    { value: "claude-opus-4", label: "Claude Opus 4" },
-    { value: "gpt-4o", label: "GPT-4o" },
-  ]
 
   const recipeOptions = [
     { value: "mvp-ingest", label: "MVP Ingest" },
@@ -108,8 +106,8 @@ export function ProjectSettings({
 
     setSaving(true)
     try {
-      await updateProjectSettings(projectId, changes)
-      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      const updatedProject = await updateProjectSettings(projectId, changes)
+      queryClient.setQueryData(['projects', projectId], updatedProject)
       queryClient.invalidateQueries({ queryKey: ['projects'] })
       toast.success("Project settings updated")
     } catch (error) {
@@ -120,8 +118,34 @@ export function ProjectSettings({
     }
   }
 
-  const handleSaveModels = () => {
-    toast.success("Settings saved")
+  const handleSaveModels = async () => {
+    const normalized = normalizeProjectModelSettings(modelSettings)
+    const persisted = getPersistedProjectModelState(project)
+    const changes: Parameters<typeof updateProjectSettings>[1] = {}
+
+    for (const [key, value] of Object.entries(normalized)) {
+      if (persisted[key as keyof typeof persisted] !== value) {
+        changes[key as keyof typeof normalized] = value
+      }
+    }
+
+    if (Object.keys(changes).length === 0) {
+      toast.info("No changes to save")
+      return
+    }
+
+    setSavingModels(true)
+    try {
+      const updatedProject = await updateProjectSettings(projectId, changes)
+      queryClient.setQueryData(['projects', projectId], updatedProject)
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      toast.success("Model defaults updated")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to save"
+      toast.error(message)
+    } finally {
+      setSavingModels(false)
+    }
   }
 
   const handleSavePipeline = () => {
@@ -240,7 +264,7 @@ export function ProjectSettings({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {modelOptions.map((option) => (
+                    {PROJECT_MODEL_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
@@ -266,7 +290,7 @@ export function ProjectSettings({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {modelOptions.map((option) => (
+                    {OPTIONAL_PROJECT_MODEL_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
@@ -292,7 +316,7 @@ export function ProjectSettings({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {modelOptions.map((option) => (
+                    {OPTIONAL_PROJECT_MODEL_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
@@ -318,7 +342,7 @@ export function ProjectSettings({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {modelOptions.map((option) => (
+                    {OPTIONAL_PROJECT_MODEL_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
@@ -331,7 +355,9 @@ export function ProjectSettings({
             <Separator />
 
             <div className="flex justify-end">
-              <Button onClick={handleSaveModels}>Save</Button>
+              <Button onClick={handleSaveModels} disabled={savingModels}>
+                {savingModels ? "Saving..." : "Save"}
+              </Button>
             </div>
           </TabsContent>
 

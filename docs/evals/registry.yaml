@@ -47,66 +47,98 @@ evals:
       cost_usd_max: 0.10
 
     scores:
-      - model: "Sonnet 4.6"
-        metrics:
-          overall: 0.952
-        latency_ms: 50913
-        cost_usd: 0.0536
-        cost_estimated: true
-        measured: 2026-03-01
-        git_sha: "8c9e0a1"
-        result_file: benchmarks/results/character-extraction-post-golden-verify.json
-        note: "Up from 0.942 — golden fix removed phantom penalties"
       - model: "Opus 4.6"
         metrics:
-          overall: 0.930
-        latency_ms: 50208
-        cost_usd: 0.0991
-        measured: 2026-03-01
-        git_sha: "8c9e0a1"
-        result_file: benchmarks/results/character-extraction-post-golden-verify.json
-      - model: "Gemini 3 Pro"
+          overall: 0.942
+        latency_ms: 53293
+        cost_usd: 0.1042
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+        note: "Verified after scorer fix for relationship-target aliases. Quality leader by 0.001, but not worth 2x Sonnet 4.6 cost."
+      - model: "Sonnet 4.6"
         metrics:
-          overall: 0.907
-        latency_ms: 42333
-        cost_usd: 0.0497
-        measured: 2026-03-01
-        git_sha: "8c9e0a1"
-        result_file: benchmarks/results/character-extraction-post-golden-verify.json
+          overall: 0.941
+        latency_ms: 45213
+        cost_usd: 0.0518
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+        note: "Verified after scorer fix for relationship-target aliases. Still the value default within 0.001 of Opus 4.6 at half the cost."
       - model: "Sonnet 4.5"
         metrics:
-          overall: 0.887
-        latency_ms: 39359
-        cost_usd: 0.0476
-        measured: 2026-03-01
-        git_sha: "8c9e0a1"
-        result_file: benchmarks/results/character-extraction-post-golden-verify.json
-      - model: "Gemini 2.5 Flash"
+          overall: 0.929
+        latency_ms: 38230
+        cost_usd: 0.0447
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+      - model: "GPT-5.4"
         metrics:
-          overall: 0.881
-        latency_ms: 20237
-        cost_usd: 0.0140
-        measured: 2026-03-01
-        git_sha: "8c9e0a1"
-        result_file: benchmarks/results/character-extraction-post-golden-verify.json
-        note: "Best cost-quality ratio in mid-tier"
+          overall: 0.919
+        latency_ms: 29274
+        cost_usd: 0.0415
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+        note: "Verified after scorer fix for relationship-target aliases. Strong on ROSE/DAD, but still below the Claude leaders overall."
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.886
+        latency_ms: 28733
+        cost_usd: 0.0521
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+      - model: "Gemini 3.1 Pro"
+        metrics:
+          overall: 0.886
+        latency_ms: 30787
+        cost_usd: 0.0521
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+        note: "ROSE improved once sibling aliases were scored correctly, but the model still has no quality or value win."
       - model: "GPT-5.2"
         metrics:
-          overall: 0.854
-        latency_ms: 18740
-        cost_usd: 0.0300
-        measured: 2026-03-01
-        git_sha: "8c9e0a1"
-        result_file: benchmarks/results/character-extraction-post-golden-verify.json
-        note: "Up from 0.826 — was penalized for correct answers"
+          overall: 0.878
+        latency_ms: 26013
+        cost_usd: 0.0331
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.860
+        latency_ms: 19227
+        cost_usd: 0.0130
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+        note: "Best cost-quality ratio in mid-tier"
       - model: "Gemini 3 Flash"
         metrics:
-          overall: 0.805
-        latency_ms: 13369
-        cost_usd: 0.0094
-        measured: 2026-03-01
-        git_sha: "8c9e0a1"
-        result_file: benchmarks/results/character-extraction-post-golden-verify.json
+          overall: 0.829
+        latency_ms: 13374
+        cost_usd: 0.0092
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+      - model: "Gemini 3.1 Flash Lite"
+        metrics:
+          overall: 0.654
+        latency_ms: 4045
+        cost_usd: 0.0008
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
+        note: "Failed 2/3. Model-wrong: missed ROSE's Tim Hortons/$20M/final-speech details and DAD's dual-presentation/Chimney Bay/dead-belief reveal."
 
     attempts: []
 
@@ -627,50 +659,94 @@ evals:
     scores:
       - model: "Sonnet 4.6"
         metrics:
-          overall: 0.890
-        latency_ms: 10662
-        cost_usd: 0.0106
+          overall: 0.963
+        latency_ms: 10558
+        cost_usd: 0.0103
         cost_estimated: true
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/scene-enrichment-2026-02-18.json
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+        note: "Verified after neutralizing impossible elevator time-of-day grading when the excerpt heading omits time."
+      - model: "GPT-5.4"
+        metrics:
+          overall: 0.915
+        latency_ms: 15455
+        cost_usd: 0.0109
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+        note: "Verified after scorer fix. Strong output, but still below Sonnet 4.6 and just over the 15s latency target."
       - model: "Opus 4.6"
         metrics:
-          overall: 0.812
-        latency_ms: 12282
-        cost_usd: 0.0194
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "GPT-5.2"
-        metrics:
-          overall: 0.799
-        latency_ms: 8327
-        cost_usd: 0.0086
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-      - model: "Sonnet 4.5"
-        metrics:
-          overall: 0.784
-        latency_ms: 8637
-        cost_usd: 0.0095
-        measured: 2026-02-18
-        git_sha: "324ebf4"
+          overall: 0.896
+        latency_ms: 12895
+        cost_usd: 0.0214
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
       - model: "Gemini 3 Flash"
         metrics:
-          overall: 0.755
-        latency_ms: 8020
+          overall: 0.865
+        latency_ms: 7106
         cost_usd: 0.0039
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/scene-enrichment-gemini-2026-02-18.json
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+      - model: "GPT-5.2"
+        metrics:
+          overall: 0.839
+        latency_ms: 8046
+        cost_usd: 0.0086
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.833
+        latency_ms: 18408
+        cost_usd: 0.0227
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
       - model: "Gemini 3 Pro"
         metrics:
-          overall: 0.755
-        latency_ms: 25317
-        cost_usd: 0.0269
-        measured: 2026-02-18
-        git_sha: "324ebf4"
-        result_file: benchmarks/results/scene-enrichment-gemini-2026-02-18.json
+          overall: 0.826
+        latency_ms: 18443
+        cost_usd: 0.0257
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+      - model: "Gemini 3.1 Pro"
+        metrics:
+          overall: 0.816
+        latency_ms: 18444
+        cost_usd: 0.0257
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+        note: "Scorer fix removed the false elevator time penalty, but the model still trails Sonnet 4.6 and misses the latency target."
+      - model: "Sonnet 4.5"
+        metrics:
+          overall: 0.785
+        latency_ms: 10490
+        cost_usd: 0.0102
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+      - model: "Gemini 3.1 Flash Lite"
+        metrics:
+          overall: 0.743
+        latency_ms: 2364
+        cost_usd: 0.0002
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
+        note: "Failed flashback scene. Model-wrong: missed flashback/idealized-memory framing and foreshadowing."
 
     attempts: []
 
@@ -875,8 +951,8 @@ evals:
         cost_usd: 0.01313
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
-        note: "Quality leader: Python 1.000, Rubric 0.880"
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+        note: "Quality leader: Python 1.000, Rubric 0.880. Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.935
@@ -884,7 +960,37 @@ evals:
         cost_usd: 0.02046
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+      - model: "GPT-5.4"
+        metrics:
+          overall: 0.925
+        latency_ms: 7001
+        cost_usd: 0.01846
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+        note: "Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged. Tied the new-model cohort, but offers no value win over cheaper Gemini tiers."
+      - model: "Gemini 3.1 Pro"
+        metrics:
+          overall: 0.925
+        latency_ms: 30139
+        cost_usd: 0.04397
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+        note: "Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged. Strong quality, but too slow and expensive to justify over cheaper leaders."
+      - model: "Gemini 3.1 Flash Lite"
+        metrics:
+          overall: 0.925
+        latency_ms: 2048
+        cost_usd: 0.00061
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+        note: "Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged. Promising value candidate: beats the current 2.5 Flash Lite baseline (0.905) on this eval at similar latency, but only on this single screenplay."
       - model: "Haiku 4.5"
         metrics:
           overall: 0.920
@@ -892,7 +998,7 @@ evals:
         cost_usd: 0.00669
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
       - model: "Opus 4.6"
         metrics:
           overall: 0.920
@@ -900,7 +1006,7 @@ evals:
         cost_usd: 0.10704
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
       - model: "Gemini 3 Flash"
         metrics:
           overall: 0.920
@@ -908,7 +1014,7 @@ evals:
         cost_usd: 0.00104
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
         note: "Value runner-up: 0.920 quality at $0.001/call"
       - model: "Gemini 2.5 Flash"
         metrics:
@@ -917,7 +1023,7 @@ evals:
         cost_usd: 0.00112
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
       - model: "GPT-4.1 Nano"
         metrics:
           overall: 0.910
@@ -925,7 +1031,7 @@ evals:
         cost_usd: 0.00061
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
       - model: "Gemini 2.5 Flash Lite"
         metrics:
           overall: 0.905
@@ -935,8 +1041,8 @@ evals:
         cost_usd: 0.00053
         measured: 2026-03-07
         git_sha: "0c2e32b"
-        result_file: benchmarks/results/entity-discovery-story124.json
-        note: "Value winner: 0.905 quality at $0.00053, 2.0s. Value score=1698. Production default. Story 124: verification loop adds recall safety net (+2 optional entities recovered at $0.0008 extra cost when gaps detected, zero cost on happy path)."
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+        note: "Value winner: 0.905 quality at $0.00053, 2.0s. Value score=1698. Production default. Story 124: verification loop adds recall safety net (+2 optional entities recovered at $0.0008 extra cost when gaps detected, zero cost on happy path). Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged."
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 0.787
@@ -944,8 +1050,8 @@ evals:
         cost_usd: 0.00239
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
-        note: "Failed — rubric 0.700 (below 0.75 pass threshold). Misses some entities."
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+        note: "Failed — rubric 0.700 (below 0.75 pass threshold). Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged. Judge mentions of GIRL IN CAGE/DOCK were bonus-only, not the cause of failure. Real miss remained required 15TH FLOOR."
       - model: "Gemini 3 Pro"
         metrics:
           overall: null
@@ -953,10 +1059,13 @@ evals:
         cost_usd: null
         measured: 2026-03-02
         git_sha: "0aaf2fc"
-        result_file: benchmarks/results/entity-discovery-run1.json
-        note: "API error (503 high demand) — score not measured."
+        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
+        note: "API error (503 high demand) — score not measured. Corrected-golden verification used archived outputs where available; this model still has no scored output to re-verify."
 
-    attempts: []
+    attempts:
+      - date: 2026-03-13
+        git_sha: "69d61e3"
+        note: "Verified archived outputs against corrected golden/rubric after removing nonexistent optional entries GIRL IN CAGE, CON, SECURITY GUARD, and DOCK. Deterministic scores were unchanged for all scored providers. GPT-4.1 Mini's rubric reason mentioned GIRL IN CAGE/DOCK only as bonus omissions; the real failure remained missing required 15TH FLOOR. Fresh promptfoo reruns stalled under provider 429 backoff, so verification artifact was reconstructed from archived outputs in entity-discovery-run1.json, entity-discovery-story124.json, and model-scout-entity-discovery-2026-03-13.json."
 
   - id: script-bible
     name: Script Bible
@@ -981,75 +1090,104 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "GPT-5.4"
+        metrics:
+          overall: 0.970
+        latency_ms: 59097
+        cost_usd: 0.0588
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+        note: "Verified after removing the unsupported Toronto rubric criterion. Clear quality leader, but 59.1s and $0.0588/call still make it a poor default candidate."
+      - model: "Gemini 3.1 Pro"
+        metrics:
+          overall: 0.960
+        latency_ms: 30007
+        cost_usd: 0.0507
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+        note: "Near the quality lead, but still too slow and expensive to beat the value default."
+      - model: "Gemini 3 Pro"
+        metrics:
+          overall: 0.960
+        latency_ms: 35186
+        cost_usd: 0.0507
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.948
+        latency_ms: 82642
+        cost_usd: 0.0718
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
       - model: "Opus 4.6"
         metrics:
-          overall: 0.907
-        latency_ms: 74600
-        cost_usd: 0.32437
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
-        note: "Quality leader but $0.32/call and 74.6s — unacceptable for ingest default"
-      - model: "Gemini 3 Flash"
+          overall: 0.948
+        latency_ms: 82783
+        cost_usd: 0.1157
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+      - model: "Gemini 2.5 Flash"
         metrics:
-          overall: 0.902
-        latency_ms: 18800
-        cost_usd: 0.00165
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
-        note: "Value runner-up: 0.902 quality at $0.002/call, 18.8s"
+          overall: 0.922
+        latency_ms: 25099
+        cost_usd: 0.0155
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
       - model: "GPT-4.1 Mini"
         metrics:
-          overall: 0.890
-        latency_ms: 21100
-        cost_usd: 0.00417
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
+          overall: 0.915
+        latency_ms: 27140
+        cost_usd: 0.0045
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+      - model: "Haiku 4.5"
+        metrics:
+          overall: 0.912
+        latency_ms: 37139
+        cost_usd: 0.0221
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+      - model: "Gemini 3 Flash"
+        metrics:
+          overall: 0.893
+        latency_ms: 15818
+        cost_usd: 0.0099
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+      - model: "Gemini 3.1 Flash Lite"
+        metrics:
+          overall: 0.889
+        latency_ms: 5939
+        cost_usd: 0.0009
+        cost_estimated: true
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+        note: "Passes once the unsupported Toronto rubric penalty is removed, but the gain over Gemini 2.5 Flash Lite is too small to justify promoting a preview model."
       - model: "Gemini 2.5 Flash Lite"
         metrics:
           overall: 0.885
-        latency_ms: 7800
-        cost_usd: 0.00089
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
-        note: "Value winner: 0.885 quality at $0.00089, 7.8s. Value score=1000. Production default."
-      - model: "Haiku 4.5"
-        metrics:
-          overall: 0.875
-        latency_ms: 28300
-        cost_usd: 0.01482
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
-      - model: "Gemini 3 Pro"
-        metrics:
-          overall: 0.875
-        latency_ms: 49200
-        cost_usd: 0.02226
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
-      - model: "Sonnet 4.6"
-        metrics:
-          overall: 0.863
-        latency_ms: 73500
-        cost_usd: 0.06610
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
-        note: "Worst passing model: 73.5s and $0.066 — Gemini Flash Lite beats it on all axes"
-      - model: "Gemini 2.5 Flash"
-        metrics:
-          overall: 0.810
-        latency_ms: 23800
-        cost_usd: 0.00206
-        measured: 2026-03-02
-        git_sha: "0aaf2fc"
-        result_file: benchmarks/results/script-bible-run1.json
-        note: "Failed — rubric 0.650. Structural ok but thematic grounding weak."
+        latency_ms: 8047
+        cost_usd: 0.0012
+        measured: 2026-03-13
+        git_sha: "69d61e3"
+        result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+        note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts: []
 

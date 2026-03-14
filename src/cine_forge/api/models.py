@@ -42,6 +42,10 @@ class ProjectSummary(BaseModel):
     ui_preferences: dict[str, Any] = Field(default_factory=dict)
     human_control_mode: str = "autonomous"
     interaction_mode: str = "balanced"
+    default_model: str | None = None
+    work_model: str | None = None
+    verify_model: str | None = None
+    escalate_model: str | None = None
 
 
 class RecentProjectSummary(ProjectSummary):
@@ -201,6 +205,10 @@ class ProjectSettingsUpdate(BaseModel):
     display_name: str | None = None
     human_control_mode: Literal["autonomous", "checkpoint", "advisory"] | None = None
     interaction_mode: Literal["guided", "balanced", "expert"] | None = None
+    default_model: str | None = None
+    work_model: str | None = None
+    verify_model: str | None = None
+    escalate_model: str | None = None
     style_packs: dict[str, str] | None = None
     ui_preferences: dict[str, Any] | None = None
 
