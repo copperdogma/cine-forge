@@ -1,0 +1,805 @@
+{
+  "evalId": "eval-9DY-2026-03-14T05:09:45",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-03-14T05:09:45.512Z",
+    "prompts": [
+      {
+        "raw": "You are a character analyst working on a film production. Extract a master definition for the character \"{{character_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "label": "benchmarks/prompts/character-extraction.txt: You are a character analyst working on a film production. Extract a master definition for the character \"{{character_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+        "id": "c819940f22244bc93052a071e1c83fb5848b8fb600cbd92c4cc81e2cff0e7943",
+        "provider": "xai:grok-4.20-beta-0309-reasoning",
+        "metrics": {
+          "score": 2.13555,
+          "testPassCount": 2,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 5,
+          "assertFailCount": 1,
+          "totalLatencyMs": 41767,
+          "tokenUsage": {
+            "prompt": 14253,
+            "completion": 2935,
+            "cached": 0,
+            "total": 25291,
+            "numRequests": 3,
+            "completionDetails": {
+              "reasoning": 8103,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 5705,
+              "prompt": 4074,
+              "completion": 1631,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "Invalid JSON output",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.45,
+          "reason": "Invalid JSON output",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2084,
+            "prompt": 1569,
+            "completion": 515,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Invalid JSON output",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/character_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the character extraction for THE MARINER from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify him as the protagonist?\n2. Does it mention his real name (Billy/Will)?\n3. Does it describe his fishing-themed vigilante outfit (oar, net cape, bracers, flare gun)?\n4. Does it identify his relationships (sister Rose, father Dad, antagonist Salvatori)?\n5. Does it capture his emotional arc — believing his father was a hero, then learning the truth?\n6. Does it note his moral code (\"honesty, bravery, and grit\")?\n7. Does it distinguish between his outward strength and inner vulnerability?\n8. Is evidence grounded in the actual screenplay text?\n\nScore strictly: a good extraction captures both surface traits AND the deeper arc.\n"
+              },
+              "pass": true,
+              "score": 0.9,
+              "reason": "This is a very strong character extraction that hits nearly all the key criteria:\n\n1. **Protagonist identification**: Yes, explicitly listed as narrative_role: 'protagonist'. ✓\n2. **Real name**: Yes, aliases include 'Billy', 'Will', and 'Billy MacAngus'. ✓\n3. **Fishing-themed vigilante outfit**: The description mentions 'fishing-net cape, anchor bracers, and a bloodied wooden oar weapon' and 'red knit cap' and 'nautical-themed costume'. The flare gun is not explicitly mentioned, but most key costume elements are covered. Mostly ✓\n4. **Relationships**: Rose is identified as sister with strong evidence. Salvatori is identified as adversary (though the output is cut off). The father is discussed extensively in traits and the description. ✓\n5. **Emotional arc**: Excellently captured. The description states 'his lifelong idealized origin story about his heroic father completely collapse when Rose reveals the man was an abusive drunk who abandoned him, yet this revelation ultimately allows him to embrace his own authentic heroism.' The inferred traits also capture this with 'becomes childlike and defeated when the idealized image is destroyed' and the 'Nobody' quote. ✓\n6. **Moral code**: Directly quoted: 'honesty, bravery, and grit. A true hero never backs down from a fight.' ✓\n7. **Outward strength vs inner vulnerability**: Well captured through explicit evidence of 'immense physical strength' contrasted with inferred traits of 'emotionally vulnerable about father' and 'stoic exterior', plus the vivid description 'a hulking bearded man with the eyes of a wounded child.' ✓\n8. **Evidence grounded in screenplay**: Quotes are attributed to specific scenes, and the evidence appears consistent with screenplay content. ✓\n\nMinor issues: The output appears truncated at the end (Salvatori relationship evidence is cut off), and the flare gun is not mentioned. But overall this is a thorough, well-structured extraction that captures both surface traits and the deeper emotional arc with strong textual grounding.",
+              "tokensUsed": {
+                "total": 2084,
+                "prompt": 1569,
+                "completion": 515,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\n  \\\"character_id\\\": \\\"the-mariner\\\",\\n  \\\"name\\\": \\\"MARINER\\\",\\n  \\\"aliases\\\": [\\\"Billy\\\", \\\"Will\\\", \\\"Bosun\\\", \\\"Billy MacAngus\\\"],\\n  \\\"description\\\": \\\"The Mariner is a massive, stoic vigilante with a pro-wrestler build, thick curly beard, red knit cap, and nautical-themed costume including a fishing-net cape, anchor bracers, and a bloodied wooden oar weapon. He functions as a one-man rescue force, storming a gangster-occupied building to save his sister Rose after she is targeted for stealing gang money. His key arc sees his lifelong idealized origin story about his heroic father completely collapse when Rose reveals the man was an abusive drunk who abandoned him, yet this revelation ultimately allows him to embrace his own authentic heroism.\\\",\\n  \\\"explicit_evidence\\\": [\\n    {\\n      \\\"trait\\\": \\\"immense physical strength\\\",\\n      \\\"quote\\\": \\\"Christ you’re strong, Billy. That’s gotta be juice, right?\\\",\\n      \\\"source_scene\\\": \\\"INT. 15TH FLOOR\\\"\\n    },\\n    {\\n      \\\"trait\\\": \\\"personal moral code\\\",\\n      \\\"quote\\\": \\\"I live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\\\",\\n      \\\"source_scene\\\": \\\"INT. 13TH FLOOR\\\"\\n    },\\n    {\\n      \\\"trait\\\": \\\"protective of sister\\\",\\n      \\\"quote\\\": \\\"It’s my fault they went after you. I never thought they’d--\\\",\\n      \\\"source_scene\\\": \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\"\\n    },\\n    {\\n      \\\"trait\\\": \\\"reverence for father\\\",\\n      \\\"quote\\\": \\\"Dad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\\\",\\n      \\\"source_scene\\\": \\\"INT. 15TH FLOOR\\\"\\n    },\\n    {\\n      \\\"trait\\\": \\\"combat effectiveness\\\",\\n      \\\"quote\\\": \\\"All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along\\\",\\n      \\\"source_scene\\\": \\\"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\\\"\\n    }\\n  ],\\n  \\\"inferred_traits\\\": [\\n    {\\n      \\\"trait\\\": \\\"idealizes father\\\",\\n      \\\"value\\\": \\\"has built his entire identity and heroic code around a romanticized memory of his father as a wise teacher and role model\\\",\\n      \\\"confidence\\\": 0.9,\\n      \\\"rationale\\\": \\\"Multiple flashbacks triggered by his 'Dad' tattoo and statements about how his father taught him to be a man, contrasted with the later revelation of abuse\\\"\\n    },\\n    {\\n      \\\"trait\\\": \\\"emotionally vulnerable about father\\\",\\n      \\\"value\\\": \\\"becomes childlike and defeated when the idealized image is destroyed\\\",\\n      \\\"confidence\\\": 0.95,\\n      \\\"rationale\\\": \\\"Mariner looks lost; a hulking bearded man with the eyes of a wounded child and later hangs his head and says 'Nobody' when asked who he is\\\"\\n    },\\n    {\\n      \\\"trait\\\": \\\"stoic exterior\\\",\\n      \\\"value\\\": \\\"maintains a frowning, laconic demeanor even while covered in blood and fighting\\\",\\n      \\\"confidence\\\": 0.85,\\n      \\\"rationale\\\": \\\"Repeated descriptions of his 'broad, stoic, and frowning' face and minimal dialogue like 'Yeaaaaah...' and grumbling\\\"\\n    }\\n  ],\\n  \\\"scene_presence\\\": [\\n    \\\"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\\\",\\n    \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n    \\\"INT. 11TH FLOOR - CONTINUOUS\\\",\\n    \\\"INT. STAIRWELL - CONTINUOUS\\\",\\n    \\\"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\\\",\\n    \\\"INT. 13TH FLOOR\\\",\\n    \\\"INT. 15TH FLOOR\\\"\\n  ],\\n  \\\"dialogue_summary\\\": \\\"The Mariner speaks in a gruff, laconic, and occasionally mumbling style, often grumbling complaints while expressing earnest belief in his personal heroic code. His dialogue reveals both confusion about modern technology and a deep emotional attachment to his father's teachings, shifting from confident vigilante to quietly devastated when his origin story is dismantled.\\\",\\n  \\\"narrative_role\\\": \\\"protagonist\\\",\\n  \\\"relationships\\\": [\\n    {\\n      \\\"target_character\\\": \\\"ROSE\\\",\\n      \\\"relationship_type\\\": \\\"sister\\\",\\n      \\\"evidence\\\": \\\"calls her 'sis', references 'Last Thanksgiving at ma’s', AirTag in her purse, and she calls him Billy/Will\\\",\\n      \\\"confidence\\\": 0.95\\n    },\\n    {\\n      \\\"target_character\\\": \\\"SALVATORI\\\",\\n      \\\"relationship_type\\\": \\\"adversary\\\",\\n      \\\"evidence\\\": \\\"confronts Salvatori in the penthouse office where\\n</Output>\\n<Rubric>\\nEvaluate the character extraction for THE MARINER from the screenplay \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it identify him as the protagonist?\\n2. Does it mention his real name (Billy/Will)?\\n3. Does it describe his fishing-themed vigilante outfit (oar, net cape, bracers, flare gun)?\\n4. Does it identify his relationships (sister Rose, father Dad, antagonist Salvatori)?\\n5. Does it capture his emotional arc — believing his father was a hero, then learning the truth?\\n6. Does it note his moral code (\\\"honesty, bravery, and grit\\\")?\\n7. Does it distinguish between his outward strength and inner vulnerability?\\n8. Is evidence grounded in the actual screenplay text?\\n\\nScore strictly: a good extraction captures both surface traits AND the deeper arc.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "fa3c3276-7574-43a5-b5ed-ef12833e1ecc",
+        "latencyMs": 14430,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a character analyst working on a film production. Extract a master definition for the character \"THE MARINER\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "benchmarks/prompts/character-extraction.txt: You are a character analyst working on a film production. Extract a master definition for the character \"{{character_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "c819940f22244bc93052a071e1c83fb5848b8fb600cbd92c4cc81e2cff0e7943",
+        "promptIdx": 0,
+        "provider": {
+          "id": "xai:grok-4.20-beta-0309-reasoning",
+          "label": ""
+        },
+        "response": {
+          "output": "{\n  \"character_id\": \"the-mariner\",\n  \"name\": \"MARINER\",\n  \"aliases\": [\"Billy\", \"Will\", \"Bosun\", \"Billy MacAngus\"],\n  \"description\": \"The Mariner is a massive, stoic vigilante with a pro-wrestler build, thick curly beard, red knit cap, and nautical-themed costume including a fishing-net cape, anchor bracers, and a bloodied wooden oar weapon. He functions as a one-man rescue force, storming a gangster-occupied building to save his sister Rose after she is targeted for stealing gang money. His key arc sees his lifelong idealized origin story about his heroic father completely collapse when Rose reveals the man was an abusive drunk who abandoned him, yet this revelation ultimately allows him to embrace his own authentic heroism.\",\n  \"explicit_evidence\": [\n    {\n      \"trait\": \"immense physical strength\",\n      \"quote\": \"Christ you’re strong, Billy. That’s gotta be juice, right?\",\n      \"source_scene\": \"INT. 15TH FLOOR\"\n    },\n    {\n      \"trait\": \"personal moral code\",\n      \"quote\": \"I live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\",\n      \"source_scene\": \"INT. 13TH FLOOR\"\n    },\n    {\n      \"trait\": \"protective of sister\",\n      \"quote\": \"It’s my fault they went after you. I never thought they’d--\",\n      \"source_scene\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\"\n    },\n    {\n      \"trait\": \"reverence for father\",\n      \"quote\": \"Dad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\",\n      \"source_scene\": \"INT. 15TH FLOOR\"\n    },\n    {\n      \"trait\": \"combat effectiveness\",\n      \"quote\": \"All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along\",\n      \"source_scene\": \"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\"\n    }\n  ],\n  \"inferred_traits\": [\n    {\n      \"trait\": \"idealizes father\",\n      \"value\": \"has built his entire identity and heroic code around a romanticized memory of his father as a wise teacher and role model\",\n      \"confidence\": 0.9,\n      \"rationale\": \"Multiple flashbacks triggered by his 'Dad' tattoo and statements about how his father taught him to be a man, contrasted with the later revelation of abuse\"\n    },\n    {\n      \"trait\": \"emotionally vulnerable about father\",\n      \"value\": \"becomes childlike and defeated when the idealized image is destroyed\",\n      \"confidence\": 0.95,\n      \"rationale\": \"Mariner looks lost; a hulking bearded man with the eyes of a wounded child and later hangs his head and says 'Nobody' when asked who he is\"\n    },\n    {\n      \"trait\": \"stoic exterior\",\n      \"value\": \"maintains a frowning, laconic demeanor even while covered in blood and fighting\",\n      \"confidence\": 0.85,\n      \"rationale\": \"Repeated descriptions of his 'broad, stoic, and frowning' face and minimal dialogue like 'Yeaaaaah...' and grumbling\"\n    }\n  ],\n  \"scene_presence\": [\n    \"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\",\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"INT. 11TH FLOOR - CONTINUOUS\",\n    \"INT. STAIRWELL - CONTINUOUS\",\n    \"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\",\n    \"INT. 13TH FLOOR\",\n    \"INT. 15TH FLOOR\"\n  ],\n  \"dialogue_summary\": \"The Mariner speaks in a gruff, laconic, and occasionally mumbling style, often grumbling complaints while expressing earnest belief in his personal heroic code. His dialogue reveals both confusion about modern technology and a deep emotional attachment to his father's teachings, shifting from confident vigilante to quietly devastated when his origin story is dismantled.\",\n  \"narrative_role\": \"protagonist\",\n  \"relationships\": [\n    {\n      \"target_character\": \"ROSE\",\n      \"relationship_type\": \"sister\",\n      \"evidence\": \"calls her 'sis', references 'Last Thanksgiving at ma’s', AirTag in her purse, and she calls him Billy/Will\",\n      \"confidence\": 0.95\n    },\n    {\n      \"target_character\": \"SALVATORI\",\n      \"relationship_type\": \"adversary\",\n      \"evidence\": \"confronts Salvatori in the penthouse office where",
+          "tokenUsage": {
+            "total": 8529,
+            "prompt": 4752,
+            "completion": 1024,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 2753,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 14430,
+          "finishReason": "length",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-allow-origin": "*",
+                "access-control-expose-headers": "*",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9dc0c4a0c8953cf6-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "gzip",
+                "content-type": "application/json",
+                "date": "Sat, 14 Mar 2026 05:10:00 GMT",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=Wt7aRoKAXKd9qHwI.vTCD2MqxlAWirB3nJkTStWBqOk-1773465000-1.0.1.1-w51fnfWK.ZBJCM5mJ_fXJZwRdcAclsxQ2QJKzENgt3LtaGxQLYH617LvqTpBTYUzOnDmKL5rXWF97qGD25zeh8khoc1EnxMaG6bKS.UQnuU; path=/; expires=Sat, 14-Mar-26 05:40:00 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+                "strict-transport-security": "max-age=31536000",
+                "transfer-encoding": "chunked",
+                "vary": "origin, access-control-request-method, access-control-request-headers",
+                "x-request-id": "00-18f6b3068ed55fc926fecaadda1c2bc6-7c83ea2d00056c2b-01"
+              }
+            }
+          }
+        },
+        "score": 0.45,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "character_name": "THE MARINER",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-characters.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/character_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the character extraction for THE MARINER from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify him as the protagonist?\n2. Does it mention his real name (Billy/Will)?\n3. Does it describe his fishing-themed vigilante outfit (oar, net cape, bracers, flare gun)?\n4. Does it identify his relationships (sister Rose, father Dad, antagonist Salvatori)?\n5. Does it capture his emotional arc — believing his father was a hero, then learning the truth?\n6. Does it note his moral code (\"honesty, bravery, and grit\")?\n7. Does it distinguish between his outward strength and inner vulnerability?\n8. Is evidence grounded in the actual screenplay text?\n\nScore strictly: a good extraction captures both surface traits AND the deeper arc.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "character_name": "THE MARINER",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-characters.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-allow-origin": "*",
+              "access-control-expose-headers": "*",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9dc0c4a0c8953cf6-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "gzip",
+              "content-type": "application/json",
+              "date": "Sat, 14 Mar 2026 05:10:00 GMT",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=Wt7aRoKAXKd9qHwI.vTCD2MqxlAWirB3nJkTStWBqOk-1773465000-1.0.1.1-w51fnfWK.ZBJCM5mJ_fXJZwRdcAclsxQ2QJKzENgt3LtaGxQLYH617LvqTpBTYUzOnDmKL5rXWF97qGD25zeh8khoc1EnxMaG6bKS.UQnuU; path=/; expires=Sat, 14-Mar-26 05:40:00 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+              "strict-transport-security": "max-age=31536000",
+              "transfer-encoding": "chunked",
+              "vary": "origin, access-control-request-method, access-control-request-headers",
+              "x-request-id": "00-18f6b3068ed55fc926fecaadda1c2bc6-7c83ea2d00056c2b-01"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.83805,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1704,
+            "prompt": 1225,
+            "completion": 479,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.7961,
+              "reason": "alias_recall=1.00 | evidence_grounding=0.75 | fact_recall=0.86 | field_completeness=1.00 | json_valid=1.00 | narrative_role=1.00 | relationship_recall=0.75 | scene_coverage=1.00 | trait_coverage=0.20 | Missing traits: resourceful, sharp-tongued, brave | Missing rels: DAD (parent) | Evidence: 3/4 key items found | Facts: 6/7 recalled",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/character_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the character extraction for ROSE from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify her relationship to Mariner (sister)?\n2. Does it mention she stole $20 million in cryptocurrency from the gang?\n3. Does it note Vinnie as her ex-boyfriend?\n4. Does it capture her Tim Hortons uniform and mid-30s age?\n5. Does it identify her role as the one who knows the truth about their father?\n6. Does it capture her final speech redefining Mariner as a true hero?\n7. Does it note her resourcefulness and sharp tongue?\n8. Is evidence grounded in the actual screenplay text?\n\nScore strictly: Rose is a complex character hiding crucial information.\n"
+              },
+              "pass": true,
+              "score": 0.88,
+              "reason": "The extraction is thorough and well-structured. Let me evaluate against each criterion:\n\n1. **Sister to Mariner**: Yes, clearly identified with explicit evidence and quote ('You were too young, Will').\n2. **Stole $20M in cryptocurrency**: Yes, explicitly stated with direct quote ('I stole it, okay? From these assholes. It's gang money.').\n3. **Vinnie as ex-boyfriend**: Yes, identified with evidence and quote ('Ex boyfriend. Yeah I know.').\n4. **Tim Hortons uniform and mid-30s age**: Yes, mentioned in description ('mid-30s woman with messy hair wearing a blood-spattered Tim Hortons uniform').\n5. **Knows truth about their father**: Yes, captured in the description ('shattering her brother's lifelong hero-worship of their abusive, deadbeat father') and in the inferred trait about emotional insight ('She precisely articulates how Billy transformed their abusive father into a superhero').\n6. **Final speech redefining Mariner as a true hero**: Partially captured. The description mentions 'ultimately inspiring him to become a genuine hero rather than a costume parody' and the inferred trait references 'delivers the painful truth specifically to empower him,' but there's no direct quote from the final speech itself. This is a minor gap.\n7. **Resourcefulness and sharp tongue**: Yes, captured in tactical thinking ('We'll take the stairs up. They won't expect that.') and dialogue summary ('blunt, sarcastic, profanity-filled style laced with dark humor').\n8. **Evidence grounded in actual screenplay text**: Yes, quotes are attributed to specific scenes and appear authentic.\n\nThe extraction is comprehensive, well-evidenced, and captures Rose's complexity as a character hiding crucial information. The only minor weakness is the lack of a direct quote from her climactic speech about their father/hero transformation, though the concept is well-described. The confidence scores are reasonable, relationships are well-documented, and the overall portrait is accurate and nuanced.",
+              "tokensUsed": {
+                "total": 1704,
+                "prompt": 1225,
+                "completion": 479,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"character_id\\\":\\\"rose\\\",\\\"name\\\":\\\"ROSE\\\",\\\"aliases\\\":[\\\"Rosey\\\",\\\"Rosie\\\",\\\"sis\\\"],\\\"description\\\":\\\"Rose is a mid-30s woman with messy hair wearing a blood-spattered Tim Hortons uniform. She is the Mariner's (Billy's) older sister and the one who stole $20 million in gang cryptocurrency, using her brother as unwitting backup. Her key arc is shattering her brother's lifelong hero-worship of their abusive, deadbeat father, ultimately inspiring him to become a genuine hero rather than a costume parody.\\\",\\\"explicit_evidence\\\":[{\\\"trait\\\":\\\"sister to the Mariner (Billy/Will)\\\",\\\"quote\\\":\\\"You were too young, Will. She didn’t want to break your heart.\\\",\\\"source_scene\\\":\\\"INT. 15TH FLOOR\\\"},{\\\"trait\\\":\\\"stole gang money\\\",\\\"quote\\\":\\\"I stole it, okay? From these assholes. It’s gang money.\\\",\\\"source_scene\\\":\\\"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\\\"},{\\\"trait\\\":\\\"romantic history with Vinnie\\\",\\\"quote\\\":\\\"Ex boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\\\",\\\"source_scene\\\":\\\"INT. 13TH FLOOR\\\"},{\\\"trait\\\":\\\"quick tactical thinking\\\",\\\"quote\\\":\\\"We’ll take the stairs up. They won’t expect that.\\\",\\\"source_scene\\\":\\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\"},{\\\"trait\\\":\\\"disgust at violence\\\",\\\"quote\\\":\\\"Is that skull??\\\",\\\"source_scene\\\":\\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\"}],\\\"inferred_traits\\\":[{\\\"trait\\\":\\\"emotionally insightful\\\",\\\"value\\\":\\\"understands the psychological roots of her brother's hero delusion\\\",\\\"confidence\\\":0.85,\\\"rationale\\\":\\\"She precisely articulates how Billy transformed their abusive father into a superhero and uses this insight to snap him out of it during a life-or-death moment\\\"},{\\\"trait\\\":\\\"protective of brother\\\",\\\"value\\\":\\\"shields and motivates Mariner even while being the more criminal of the two\\\",\\\"confidence\\\":0.8,\\\"rationale\\\":\\\"She steps in front of him with thugs, tends his wounds, and delivers the painful truth specifically to empower him\\\"},{\\\"trait\\\":\\\"pragmatic criminal\\\",\\\"value\\\":\\\"willing to steal from dangerous people but has a code against pointless violence\\\",\\\"confidence\\\":0.75,\\\"rationale\\\":\\\"She robs a gang of 20 million but shows disgust at the bloody skull fragment and only uses violence when necessary\\\"}],\\\"scene_presence\\\":[\\\"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\\\",\\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\\"INT. 11TH FLOOR - CONTINUOUS\\\",\\\"INT. STAIRWELL - CONTINUOUS\\\",\\\"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\\\",\\\"INT. 13TH FLOOR\\\",\\\"INT. 15TH FLOOR\\\"],\\\"dialogue_summary\\\":\\\"Rose speaks in a blunt, sarcastic, profanity-filled style laced with dark humor. She is direct and impatient, often laughing bitterly when angry or under extreme stress.\\\",\\\"narrative_role\\\":\\\"supporting\\\",\\\"relationships\\\":[{\\\"target_character\\\":\\\"MARINER\\\",\\\"relationship_type\\\":\\\"sibling\\\",\\\"evidence\\\":\\\"Calls him Billy and Will, references shared childhood and mother, reveals family secrets about their father\\\",\\\"confidence\\\":0.95},{\\\"target_character\\\":\\\"VINNIE\\\",\\\"relationship_type\\\":\\\"romantic_ex\\\",\\\"evidence\\\":\\\"Vinnie calls her 'Rosey, baby' and references being her booty call; Rose confirms 'Ex boyfriend'\\\",\\\"confidence\\\":0.9},{\\\"target_character\\\":\\\"SALVATORI\\\",\\\"relationship_type\\\":\\\"adversary\\\",\\\"evidence\\\":\\\"She stole $20M from his gang; he holds her at gunpoint demanding the password\\\",\\\"confidence\\\":0.95}],\\\"overall_confidence\\\":0.88}\\n</Output>\\n<Rubric>\\nEvaluate the character extraction for ROSE from the screenplay \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it identify her relationship to Mariner (sister)?\\n2. Does it mention she stole $20 million in cryptocurrency from the gang?\\n3. Does it note Vinnie as her ex-boyfriend?\\n4. Does it capture her Tim Hortons uniform and mid-30s age?\\n5. Does it identify her role as the one who knows the truth about their father?\\n6. Does it capture her final speech redefining Mariner as a true hero?\\n7. Does it note her resourcefulness and sharp tongue?\\n8. Is evidence grounded in the actual screenplay text?\\n\\nScore strictly: Rose is a complex character hiding crucial information.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "e2a538db-4848-473a-a493-2e1398cd6d32",
+        "latencyMs": 14239,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a character analyst working on a film production. Extract a master definition for the character \"ROSE\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "benchmarks/prompts/character-extraction.txt: You are a character analyst working on a film production. Extract a master definition for the character \"{{character_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "c819940f22244bc93052a071e1c83fb5848b8fb600cbd92c4cc81e2cff0e7943",
+        "promptIdx": 0,
+        "provider": {
+          "id": "xai:grok-4.20-beta-0309-reasoning",
+          "label": ""
+        },
+        "response": {
+          "output": "{\n  \"character_id\": \"rose\",\n  \"name\": \"ROSE\",\n  \"aliases\": [\"Rosey\", \"Rosie\", \"sis\"],\n  \"description\": \"Rose is a mid-30s woman with messy hair wearing a blood-spattered Tim Hortons uniform. She is the Mariner's (Billy's) older sister and the one who stole $20 million in gang cryptocurrency, using her brother as unwitting backup. Her key arc is shattering her brother's lifelong hero-worship of their abusive, deadbeat father, ultimately inspiring him to become a genuine hero rather than a costume parody.\",\n  \"explicit_evidence\": [\n    {\n      \"trait\": \"sister to the Mariner (Billy/Will)\",\n      \"quote\": \"You were too young, Will. She didn’t want to break your heart.\",\n      \"source_scene\": \"INT. 15TH FLOOR\"\n    },\n    {\n      \"trait\": \"stole gang money\",\n      \"quote\": \"I stole it, okay? From these assholes. It’s gang money.\",\n      \"source_scene\": \"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\"\n    },\n    {\n      \"trait\": \"romantic history with Vinnie\",\n      \"quote\": \"Ex boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\",\n      \"source_scene\": \"INT. 13TH FLOOR\"\n    },\n    {\n      \"trait\": \"quick tactical thinking\",\n      \"quote\": \"We’ll take the stairs up. They won’t expect that.\",\n      \"source_scene\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\"\n    },\n    {\n      \"trait\": \"disgust at violence\",\n      \"quote\": \"Is that skull??\",\n      \"source_scene\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\"\n    }\n  ],\n  \"inferred_traits\": [\n    {\n      \"trait\": \"emotionally insightful\",\n      \"value\": \"understands the psychological roots of her brother's hero delusion\",\n      \"confidence\": 0.85,\n      \"rationale\": \"She precisely articulates how Billy transformed their abusive father into a superhero and uses this insight to snap him out of it during a life-or-death moment\"\n    },\n    {\n      \"trait\": \"protective of brother\",\n      \"value\": \"shields and motivates Mariner even while being the more criminal of the two\",\n      \"confidence\": 0.8,\n      \"rationale\": \"She steps in front of him with thugs, tends his wounds, and delivers the painful truth specifically to empower him\"\n    },\n    {\n      \"trait\": \"pragmatic criminal\",\n      \"value\": \"willing to steal from dangerous people but has a code against pointless violence\",\n      \"confidence\": 0.75,\n      \"rationale\": \"She robs a gang of 20 million but shows disgust at the bloody skull fragment and only uses violence when necessary\"\n    }\n  ],\n  \"scene_presence\": [\n    \"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\",\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"INT. 11TH FLOOR - CONTINUOUS\",\n    \"INT. STAIRWELL - CONTINUOUS\",\n    \"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\",\n    \"INT. 13TH FLOOR\",\n    \"INT. 15TH FLOOR\"\n  ],\n  \"dialogue_summary\": \"Rose speaks in a blunt, sarcastic, profanity-filled style laced with dark humor. She is direct and impatient, often laughing bitterly when angry or under extreme stress.\",\n  \"narrative_role\": \"supporting\",\n  \"relationships\": [\n    {\n      \"target_character\": \"MARINER\",\n      \"relationship_type\": \"sibling\",\n      \"evidence\": \"Calls him Billy and Will, references shared childhood and mother, reveals family secrets about their father\",\n      \"confidence\": 0.95\n    },\n    {\n      \"target_character\": \"VINNIE\",\n      \"relationship_type\": \"romantic_ex\",\n      \"evidence\": \"Vinnie calls her 'Rosey, baby' and references being her booty call; Rose confirms 'Ex boyfriend'\",\n      \"confidence\": 0.9\n    },\n    {\n      \"target_character\": \"SALVATORI\",\n      \"relationship_type\": \"adversary\",\n      \"evidence\": \"She stole $20M from his gang; he holds her at gunpoint demanding the password\",\n      \"confidence\": 0.95\n    }\n  ],\n  \"overall_confidence\": 0.88\n}",
+          "tokenUsage": {
+            "total": 8483,
+            "prompt": 4751,
+            "completion": 966,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 2766,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 14239,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-allow-origin": "*",
+                "access-control-expose-headers": "*",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9dc0c4a0cde04ad5-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "gzip",
+                "content-type": "application/json",
+                "date": "Sat, 14 Mar 2026 05:09:59 GMT",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=Ywgw.CWZBgW8SNSAunD6kOYGxnwxX9ndGOsvsguiMJQ-1773464999-1.0.1.1-wQJg.hxJAwlBoOd1ai58qb6XKSP6tJauy5WIThjezfpXsXuy63CODlxxalKb6lewFmRZKDRdUrJdTKqowSRKGNhDNbnmas8ko59OS1e1ucI; path=/; expires=Sat, 14-Mar-26 05:39:59 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+                "strict-transport-security": "max-age=31536000",
+                "transfer-encoding": "chunked",
+                "vary": "origin, access-control-request-method, access-control-request-headers",
+                "x-envoy-wasm-route": "ic-protected-inference-api",
+                "x-envoy-wasm-service": "prod-ic-inference-api",
+                "x-request-id": "00-52ce47ed1edb66e1da4bd4ebe7b0a49e-ab500dff0005bf98-01"
+              }
+            }
+          }
+        },
+        "score": 0.83805,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "character_name": "ROSE",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-characters.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/character_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the character extraction for ROSE from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify her relationship to Mariner (sister)?\n2. Does it mention she stole $20 million in cryptocurrency from the gang?\n3. Does it note Vinnie as her ex-boyfriend?\n4. Does it capture her Tim Hortons uniform and mid-30s age?\n5. Does it identify her role as the one who knows the truth about their father?\n6. Does it capture her final speech redefining Mariner as a true hero?\n7. Does it note her resourcefulness and sharp tongue?\n8. Is evidence grounded in the actual screenplay text?\n\nScore strictly: Rose is a complex character hiding crucial information.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "character_name": "ROSE",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-characters.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-allow-origin": "*",
+              "access-control-expose-headers": "*",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9dc0c4a0cde04ad5-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "gzip",
+              "content-type": "application/json",
+              "date": "Sat, 14 Mar 2026 05:09:59 GMT",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=Ywgw.CWZBgW8SNSAunD6kOYGxnwxX9ndGOsvsguiMJQ-1773464999-1.0.1.1-wQJg.hxJAwlBoOd1ai58qb6XKSP6tJauy5WIThjezfpXsXuy63CODlxxalKb6lewFmRZKDRdUrJdTKqowSRKGNhDNbnmas8ko59OS1e1ucI; path=/; expires=Sat, 14-Mar-26 05:39:59 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+              "strict-transport-security": "max-age=31536000",
+              "transfer-encoding": "chunked",
+              "vary": "origin, access-control-request-method, access-control-request-headers",
+              "x-envoy-wasm-route": "ic-protected-inference-api",
+              "x-envoy-wasm-service": "prod-ic-inference-api",
+              "x-request-id": "00-52ce47ed1edb66e1da4bd4ebe7b0a49e-ab500dff0005bf98-01"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.8474999999999999,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1917,
+            "prompt": 1280,
+            "completion": 637,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.875,
+              "reason": "alias_recall=1.00 | evidence_grounding=0.67 | fact_recall=0.89 | field_completeness=1.00 | json_valid=1.00 | narrative_role=1.00 | relationship_recall=1.00 | scene_coverage=1.00 | trait_coverage=0.50 | Missing traits: manipulative, absent | Evidence: 2/3 key items found | Facts: 8/9 recalled",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/character_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the character extraction for DAD from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it note he appears ONLY in flashbacks, never in present-day scenes?\n2. Does it identify the dual presentation — idealized vs. dark/true versions?\n3. In the idealized version: warm, teaching, encouraging?\n4. In the dark version: abusive, alcoholic, violent, neglectful?\n5. Does it mention he punches young Mariner?\n6. Does it note he abandoned the family and lives in Chimney Bay?\n7. Does it capture that Mariner believed he was dead?\n8. Does it identify the Newfoundland dialect in his speech?\n\nScore strictly: the dual presentation is the most important narrative device\nin the screenplay and a good extraction MUST capture it.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "Let me evaluate against each criterion:\n\n1. **Flashback-only appearance**: Yes, clearly stated - 'appears only in flashbacks' in the description and scene_presence lists only flashback/past scenes. ✓\n\n2. **Dual presentation (idealized vs. dark/true)**: Yes, this is well captured. The description says 'Initially shown as a rugged, beer-drinking mentor teaching his young son lessons about heroism, bravery, and manhood, he is later revealed to be an abusive, neglectful deadbeat.' The explicit_evidence includes both idealized quotes (teaching heroism) and dark quotes (mocking, abusive). This is the most important criterion and it's handled well. ✓\n\n3. **Idealized version - warm, teaching, encouraging**: Partially. The first quote shows him teaching about heroism ('Ya knows what's a hero? 'E's the one what's brave an true'). However, the extraction could have been more explicit about the warmth and encouragement in the idealized version - it's somewhat present but blended with the darker traits. ✓ (partial)\n\n4. **Dark version - abusive, alcoholic, violent, neglectful**: Yes, thoroughly covered with explicit evidence of physical abuse, alcoholism, mocking, and neglect. ✓\n\n5. **Punches young Mariner**: The explicit evidence mentions 'ya got yer ass whupped' and the inferred traits mention 'punches the boy, kicks bottles in disgust.' ✓\n\n6. **Abandoned family, lives in Chimney Bay**: Yes, explicitly stated in inferred traits: 'Rose explicitly states he is alive in Chimney Bay with a skank, was on pogey the summer of the flashbacks.' ✓\n\n7. **Mariner believed he was dead**: This is NOT mentioned in the extraction. The description says Rose 'recontextualizes' the lessons and it 'shatters Billy's hero-worship,' but it doesn't specifically note that Billy believed his father was dead. This is a significant omission. ✗\n\n8. **Newfoundland dialect**: The dialogue_summary mentions 'thick, folksy Maritime dialect' with examples like 'b'y', 'bosun', 'ya knows'. While it says 'Maritime' rather than specifically 'Newfoundland,' this is close enough. ✓ (mostly)\n\nThe dual presentation is captured well, which is the most important criterion. The main gap is not mentioning that Mariner believed his father was dead, which is a meaningful narrative detail. Overall this is a strong extraction that captures the essential narrative device.",
+              "tokensUsed": {
+                "total": 1917,
+                "prompt": 1280,
+                "completion": 637,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"character_id\\\":\\\"dad\\\",\\\"name\\\":\\\"DAD\\\",\\\"aliases\\\":[\\\"Pa\\\",\\\"me bosun's pa\\\"],\\\"description\\\":\\\"DAD is a 30-something fisherman who appears only in flashbacks as the father of Billy (The Mariner) and Rose. Initially shown as a rugged, beer-drinking mentor teaching his young son lessons about heroism, bravery, and manhood, he is later revealed to be an abusive, neglectful deadbeat who physically struck his child, drank heavily, and abandoned the family for another woman while on unemployment benefits. His 'lessons' form the basis of Billy's Mariner persona and code, which Rose recontextualizes as the misguided idealization of a loser. This revelation shatters Billy's hero-worship during the climax.\\\",\\\"explicit_evidence\\\":[{\\\"trait\\\":\\\"teaches concept of heroism\\\",\\\"quote\\\":\\\"Oi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that.\\\",\\\"source_scene\\\":\\\"EXT. COASTLINE - DAY - PAST\\\"},{\\\"trait\\\":\\\"teaches never running from fights\\\",\\\"quote\\\":\\\"don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does.\\\",\\\"source_scene\\\":\\\"EXT. BACKYARD - DAY - PAST\\\"},{\\\"trait\\\":\\\"physically abusive to son\\\",\\\"quote\\\":\\\"Jeeeeezuz, b'y, ya gots to stand up fer yerself, bosun! No wonders ya got yer ass whupped. ... Don’t never run from a fight again, ya hear?\\\",\\\"source_scene\\\":\\\"EXT. BACKYARD - DAY - (FLASHBACK)\\\"},{\\\"trait\\\":\\\"alcoholic and mocking\\\",\\\"quote\\\":\\\"Ya know whats a hero, b’y? It’s got two thumbs and ‘e looks like this! Ha! Now fetch me anudder.\\\",\\\"source_scene\\\":\\\"EXT. COASTLINE - DAY - (FLASHBACK)\\\"}],\\\"inferred_traits\\\":[{\\\"trait\\\":\\\"neglectful deadbeat father\\\",\\\"value\\\":\\\"abandoned children for another woman while collecting pogey and leaving son with friend\\\",\\\"confidence\\\":0.95,\\\"rationale\\\":\\\"Rose explicitly states he is alive in Chimney Bay with a skank, was on pogey the summer of the flashbacks, and ditched Billy to get drunk instead of caring for him\\\"},{\\\"trait\\\":\\\"emotionally abusive\\\",\\\"value\\\":\\\"berates and insults young son, calling him a 'bag a sad'\\\",\\\"confidence\\\":0.9,\\\"rationale\\\":\\\"Shown in flashback where he punches the boy, kicks bottles in disgust, and mocks him\\\"},{\\\"trait\\\":\\\"source of son's hero complex\\\",\\\"value\\\":\\\"idealized by Billy as a superhero despite being a loser\\\",\\\"confidence\\\":0.85,\\\"rationale\\\":\\\"Rose directly tells Billy he turned a deadbeat father into a superhero and based his entire code and costume on him\\\"}],\\\"scene_presence\\\":[\\\"EXT. COASTLINE - DAY - PAST\\\",\\\"EXT. BACKYARD - DAY - PAST\\\",\\\"EXT. BACKYARD - DAY - (FLASHBACK)\\\",\\\"EXT. COASTLINE - DAY - (FLASHBACK)\\\"],\\\"dialogue_summary\\\":\\\"DAD speaks in a thick, folksy Maritime dialect full of terms like 'b'y', 'bosun', 'me bosun', and 'ya knows', dispensing blunt 'lessons' on manhood while drinking beer or physically disciplining his son.\\\",\\\"narrative_role\\\":\\\"supporting\\\",\\\"relationships\\\":[{\\\"target_character\\\":\\\"MARINER\\\",\\\"relationship_type\\\":\\\"father\\\",\\\"evidence\\\":\\\"Biological father of Billy (The Mariner); appears in flashbacks teaching him; Rose reveals he abandoned him\\\",\\\"confidence\\\":1},{\\\"target_character\\\":\\\"ROSE\\\",\\\"relationship_type\\\":\\\"father\\\",\\\"evidence\\\":\\\"Rose refers to him as the father who abandoned the family and was supposed to be taking care of Billy\\\",\\\"confidence\\\":0.9}],\\\"overall_confidence\\\":0.9}\\n</Output>\\n<Rubric>\\nEvaluate the character extraction for DAD from the screenplay \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Does it note he appears ONLY in flashbacks, never in present-day scenes?\\n2. Does it identify the dual presentation — idealized vs. dark/true versions?\\n3. In the idealized version: warm, teaching, encouraging?\\n4. In the dark version: abusive, alcoholic, violent, neglectful?\\n5. Does it mention he punches young Mariner?\\n6. Does it note he abandoned the family and lives in Chimney Bay?\\n7. Does it capture that Mariner believed he was dead?\\n8. Does it identify the Newfoundland dialect in his speech?\\n\\nScore strictly: the dual presentation is the most important narrative device\\nin the screenplay and a good extraction MUST capture it.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "cf328605-d9d7-46a9-a7f2-14414cdcadf6",
+        "latencyMs": 13098,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a character analyst working on a film production. Extract a master definition for the character \"DAD\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========",
+          "label": "benchmarks/prompts/character-extraction.txt: You are a character analyst working on a film production. Extract a master definition for the character \"{{character_name}}\" from the following screenplay.\n\nReturn ONLY valid JSON with these fields:\n- character_id: A URL-safe slug (e.g., \"the-mariner\")\n- name: The character's name as it appears in dialogue cues\n- aliases: Array of other names used for this character (nicknames, real names, etc.)\n- description: 2-4 sentence description covering appearance, role in the story, and key arc\n- explicit_evidence: Array of objects, each with:\n  - trait: What the evidence establishes (e.g., \"physical strength\", \"moral code\")\n  - quote: A direct or near-direct quote from the screenplay\n  - source_scene: The scene heading where this evidence appears\n- inferred_traits: Array of objects, each with:\n  - trait: The characteristic name (e.g., \"emotionally repressed\")\n  - value: Brief description of how this trait manifests\n  - confidence: Float 0-1 indicating certainty\n  - rationale: Why you infer this trait\n- scene_presence: Array of scene headings where this character appears or is heard\n- dialogue_summary: 1-2 sentences characterizing how this character speaks\n- narrative_role: One of \"protagonist\", \"antagonist\", \"supporting\", \"minor\"\n- relationships: Array of objects, each with:\n  - target_character: The other character's name\n  - relationship_type: e.g., \"sibling\", \"parent\", \"romantic_ex\", \"adversary\"\n  - evidence: Brief textual evidence for this relationship\n  - confidence: Float 0-1\n- overall_confidence: Float 0-1 for the extraction as a whole\n\nImportant:\n- Ground all evidence in the actual screenplay text\n- Include characters heard off-screen (O.S.) in scene_presence\n- Distinguish between what is explicitly stated vs. inferred\n- For flashback characters, note which scenes are flashbacks vs. present-day\n- Pay attention to revelations that recontextualize earlier scenes\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "c819940f22244bc93052a071e1c83fb5848b8fb600cbd92c4cc81e2cff0e7943",
+        "promptIdx": 0,
+        "provider": {
+          "id": "xai:grok-4.20-beta-0309-reasoning",
+          "label": ""
+        },
+        "response": {
+          "output": "{\n  \"character_id\": \"dad\",\n  \"name\": \"DAD\",\n  \"aliases\": [\"Pa\", \"me bosun's pa\"],\n  \"description\": \"DAD is a 30-something fisherman who appears only in flashbacks as the father of Billy (The Mariner) and Rose. Initially shown as a rugged, beer-drinking mentor teaching his young son lessons about heroism, bravery, and manhood, he is later revealed to be an abusive, neglectful deadbeat who physically struck his child, drank heavily, and abandoned the family for another woman while on unemployment benefits. His 'lessons' form the basis of Billy's Mariner persona and code, which Rose recontextualizes as the misguided idealization of a loser. This revelation shatters Billy's hero-worship during the climax.\",\n  \"explicit_evidence\": [\n    {\n      \"trait\": \"teaches concept of heroism\",\n      \"quote\": \"Oi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that.\",\n      \"source_scene\": \"EXT. COASTLINE - DAY - PAST\"\n    },\n    {\n      \"trait\": \"teaches never running from fights\",\n      \"quote\": \"don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does.\",\n      \"source_scene\": \"EXT. BACKYARD - DAY - PAST\"\n    },\n    {\n      \"trait\": \"physically abusive to son\",\n      \"quote\": \"Jeeeeezuz, b'y, ya gots to stand up fer yerself, bosun! No wonders ya got yer ass whupped. ... Don’t never run from a fight again, ya hear?\",\n      \"source_scene\": \"EXT. BACKYARD - DAY - (FLASHBACK)\"\n    },\n    {\n      \"trait\": \"alcoholic and mocking\",\n      \"quote\": \"Ya know whats a hero, b’y? It’s got two thumbs and ‘e looks like this! Ha! Now fetch me anudder.\",\n      \"source_scene\": \"EXT. COASTLINE - DAY - (FLASHBACK)\"\n    }\n  ],\n  \"inferred_traits\": [\n    {\n      \"trait\": \"neglectful deadbeat father\",\n      \"value\": \"abandoned children for another woman while collecting pogey and leaving son with friend\",\n      \"confidence\": 0.95,\n      \"rationale\": \"Rose explicitly states he is alive in Chimney Bay with a skank, was on pogey the summer of the flashbacks, and ditched Billy to get drunk instead of caring for him\"\n    },\n    {\n      \"trait\": \"emotionally abusive\",\n      \"value\": \"berates and insults young son, calling him a 'bag a sad'\",\n      \"confidence\": 0.9,\n      \"rationale\": \"Shown in flashback where he punches the boy, kicks bottles in disgust, and mocks him\"\n    },\n    {\n      \"trait\": \"source of son's hero complex\",\n      \"value\": \"idealized by Billy as a superhero despite being a loser\",\n      \"confidence\": 0.85,\n      \"rationale\": \"Rose directly tells Billy he turned a deadbeat father into a superhero and based his entire code and costume on him\"\n    }\n  ],\n  \"scene_presence\": [\n    \"EXT. COASTLINE - DAY - PAST\",\n    \"EXT. BACKYARD - DAY - PAST\",\n    \"EXT. BACKYARD - DAY - (FLASHBACK)\",\n    \"EXT. COASTLINE - DAY - (FLASHBACK)\"\n  ],\n  \"dialogue_summary\": \"DAD speaks in a thick, folksy Maritime dialect full of terms like 'b'y', 'bosun', 'me bosun', and 'ya knows', dispensing blunt 'lessons' on manhood while drinking beer or physically disciplining his son.\",\n  \"narrative_role\": \"supporting\",\n  \"relationships\": [\n    {\n      \"target_character\": \"MARINER\",\n      \"relationship_type\": \"father\",\n      \"evidence\": \"Biological father of Billy (The Mariner); appears in flashbacks teaching him; Rose reveals he abandoned him\",\n      \"confidence\": 1.0\n    },\n    {\n      \"target_character\": \"ROSE\",\n      \"relationship_type\": \"father\",\n      \"evidence\": \"Rose refers to him as the father who abandoned the family and was supposed to be taking care of Billy\",\n      \"confidence\": 0.9\n    }\n  ],\n  \"overall_confidence\": 0.9\n}",
+          "tokenUsage": {
+            "total": 8279,
+            "prompt": 4750,
+            "completion": 945,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 2584,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 13098,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-allow-origin": "*",
+                "access-control-expose-headers": "*",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9dc0c53c9ead3cf6-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "gzip",
+                "content-type": "application/json",
+                "date": "Sat, 14 Mar 2026 05:10:23 GMT",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=THSbLyd0Vtzd3hEWlMe6mzEKvZ4MDl_Fereo5.Tj7kM-1773465023-1.0.1.1-nfTXwh.LOaWKEQ22WOovmVCJzD0EezdFOWKLMMaIzW5c7dTlQfoNJaxwF55kfTdm1FmCGNz0LYL55s1D7ln1nzc4XiBKTzceR6udO8eQ6BU; path=/; expires=Sat, 14-Mar-26 05:40:23 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+                "strict-transport-security": "max-age=31536000",
+                "transfer-encoding": "chunked",
+                "vary": "origin, access-control-request-method, access-control-request-headers",
+                "x-request-id": "00-86f21236d702858bf9d8b6593bb3b073-97b5b32d0005d0d3-01"
+              }
+            }
+          }
+        },
+        "score": 0.8474999999999999,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "character_name": "DAD",
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-characters.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/character_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the character extraction for DAD from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it note he appears ONLY in flashbacks, never in present-day scenes?\n2. Does it identify the dual presentation — idealized vs. dark/true versions?\n3. In the idealized version: warm, teaching, encouraging?\n4. In the dark version: abusive, alcoholic, violent, neglectful?\n5. Does it mention he punches young Mariner?\n6. Does it note he abandoned the family and lives in Chimney Bay?\n7. Does it capture that Mariner believed he was dead?\n8. Does it identify the Newfoundland dialect in his speech?\n\nScore strictly: the dual presentation is the most important narrative device\nin the screenplay and a good extraction MUST capture it.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "character_name": "DAD",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-characters.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-allow-origin": "*",
+              "access-control-expose-headers": "*",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9dc0c53c9ead3cf6-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "gzip",
+              "content-type": "application/json",
+              "date": "Sat, 14 Mar 2026 05:10:23 GMT",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=THSbLyd0Vtzd3hEWlMe6mzEKvZ4MDl_Fereo5.Tj7kM-1773465023-1.0.1.1-nfTXwh.LOaWKEQ22WOovmVCJzD0EezdFOWKLMMaIzW5c7dTlQfoNJaxwF55kfTdm1FmCGNz0LYL55s1D7ln1nzc4XiBKTzceR6udO8eQ6BU; path=/; expires=Sat, 14-Mar-26 05:40:23 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+              "strict-transport-security": "max-age=31536000",
+              "transfer-encoding": "chunked",
+              "vary": "origin, access-control-request-method, access-control-request-headers",
+              "x-request-id": "00-86f21236d702858bf9d8b6593bb3b073-97b5b32d0005d0d3-01"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 2,
+      "failures": 1,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 14253,
+        "completion": 2935,
+        "cached": 0,
+        "total": 25291,
+        "numRequests": 3,
+        "completionDetails": {
+          "reasoning": 8103,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 5705,
+          "prompt": 4074,
+          "completion": 1631,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 51449,
+      "evaluationDurationMs": 51449
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Character extraction from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/bfce/cine-forge/benchmarks/prompts/character-extraction.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-flash-lite-preview",
+        "label": "Gemini 3.1 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.4",
+        "label": "GPT-5.4",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-pro-preview",
+        "label": "Gemini 3.1 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "character_name": "THE MARINER",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-characters.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/character_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the character extraction for THE MARINER from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify him as the protagonist?\n2. Does it mention his real name (Billy/Will)?\n3. Does it describe his fishing-themed vigilante outfit (oar, net cape, bracers, flare gun)?\n4. Does it identify his relationships (sister Rose, father Dad, antagonist Salvatori)?\n5. Does it capture his emotional arc — believing his father was a hero, then learning the truth?\n6. Does it note his moral code (\"honesty, bravery, and grit\")?\n7. Does it distinguish between his outward strength and inner vulnerability?\n8. Is evidence grounded in the actual screenplay text?\n\nScore strictly: a good extraction captures both surface traits AND the deeper arc.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "character_name": "ROSE",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-characters.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/character_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the character extraction for ROSE from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it identify her relationship to Mariner (sister)?\n2. Does it mention she stole $20 million in cryptocurrency from the gang?\n3. Does it note Vinnie as her ex-boyfriend?\n4. Does it capture her Tim Hortons uniform and mid-30s age?\n5. Does it identify her role as the one who knows the truth about their father?\n6. Does it capture her final speech redefining Mariner as a true hero?\n7. Does it note her resourcefulness and sharp tongue?\n8. Is evidence grounded in the actual screenplay text?\n\nScore strictly: Rose is a complex character hiding crucial information.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "character_name": "DAD",
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-characters.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/character_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the character extraction for DAD from the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Does it note he appears ONLY in flashbacks, never in present-day scenes?\n2. Does it identify the dual presentation — idealized vs. dark/true versions?\n3. In the idealized version: warm, teaching, encouraging?\n4. In the dark version: abusive, alcoholic, violent, neglectful?\n5. Does it mention he punches young Mariner?\n6. Does it note he abandoned the family and lives in Chimney Bay?\n7. Does it capture that Mariner believed he was dead?\n8. Does it identify the Newfoundland dialect in his speech?\n\nScore strictly: the dual presentation is the most important narrative device\nin the screenplay and a good extraction MUST capture it.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "benchmarks/results/model-scout-character-extraction-grok-4-20-beta-0309-reasoning.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-03-14T05:10:36.979Z",
+    "evaluationCreatedAt": "2026-03-14T05:09:45.512Z"
+  }
+}

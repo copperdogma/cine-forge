@@ -1,0 +1,17 @@
+{
+  "scene_number": 4,
+  "heading": "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+  "int_ext": "INT",
+  "location": "RUDDY & GREEN BUILDING - ELEVATOR",
+  "time_of_day": null,
+  "characters_present": ["ROSE", "MARINER"],
+  "summary": "Rose and Mariner ride the elevator after a violent rescue. Rose discovers a skull fragment on the floor while muzak plays. Mariner is introduced in full — a hulking vigilante in fishing-themed costume with an oar, net cape, and shell bandolier. Rose confronts him about being late to pick her up, and he reveals he tracked her via an AirTag on her phone, sparking a trust conflict between them.",
+  "narrative_beats": [
+    {"beat_type": "character_introduction", "description": "Full description of Mariner's fishing-themed vigilante costume — oar, net cape, bracers, shell bandolier, fish hooks.", "confidence": 0.95},
+    {"beat_type": "comic_relief", "description": "Rose discovers a skull fragment while muzak plays, establishing the dark comedy tone.", "confidence": 0.90},
+    {"beat_type": "revelation", "description": "Mariner admits he tracked Rose via AirTag on her phone, creating a trust conflict.", "confidence": 0.88},
+    {"beat_type": "conflict", "description": "Rose's anger escalates from being grabbed to learning she was being surveilled by Mariner.", "confidence": 0.85}
+  ],
+  "tone_mood": "dark comedy with bursts of tension",
+  "confidence": 0.91
+}

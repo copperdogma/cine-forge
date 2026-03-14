@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-03-14-01] — xAI eval sweep and benchmark fixture repair
+
+### Added
+- xAI benchmark result artifacts for the Grok evaluation sweep, including the full `grok-4-1-fast-reasoning` quality pass across the promptfoo task suite
+
+### Changed
+- `docs/evals/registry.yaml` now records `Grok 4.1 Fast Reasoning` scores, latency, and cost across the quality evals so the xAI comparison is tracked in the canonical registry
+
+### Fixed
+- Repaired missing benchmark input fixtures needed by normalization, continuity, and QA evals
+- Updated `benchmarks/tasks/qa-pass.yaml` to use the maintained elevator scene fixture path instead of the vanished `benchmarks/input` duplicate
+- Narrowed `.gitignore` so canonical benchmark inputs under `benchmarks/input/` are no longer silently ignored
+
 ## [2026-03-13-11] — Deploy runbook timing recalibration
 
 ### Changed

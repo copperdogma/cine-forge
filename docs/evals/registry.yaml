@@ -139,6 +139,15 @@ evals:
         git_sha: "69d61e3"
         result_file: benchmarks/results/character-extraction-verify-2026-03-13-v2.json
         note: "Failed 2/3. Model-wrong: missed ROSE's Tim Hortons/$20M/final-speech details and DAD's dual-presentation/Chimney Bay/dead-belief reveal."
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.858
+        latency_ms: 11184
+        cost_usd: 0.001536
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-character-extraction-grok-4-1-fast-reasoning-full.json
+        note: "Passed 3/3 cheaply, but still trailed the verified leaders, especially on DAD depth."
 
     attempts: []
 
@@ -214,6 +223,14 @@ evals:
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/location-extraction-verify-eval.json
         note: "Fast + cheap, competitive quality"
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.899
+        latency_ms: 9235
+        cost_usd: 0.001150
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-location-extraction-grok-4-1-fast-reasoning-full.json
 
     attempts: []
 
@@ -288,6 +305,14 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/prop-extraction-verify-eval.json
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.874
+        latency_ms: 9655
+        cost_usd: 0.001064
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-prop-extraction-grok-4-1-fast-reasoning-full.json
 
     attempts: []
 
@@ -370,6 +395,14 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.986
+        latency_ms: 25379
+        cost_usd: 0.001701
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-relationship-discovery-grok-4-1-fast-reasoning-full.json
 
     attempts: []
 
@@ -457,6 +490,14 @@ evals:
         git_sha: "f58cc06"
         result_file: benchmarks/results/config-detection-golden-fix2.json
         note: "Was 0.965 under incorrect golden. Fails format+duration with corrected golden."
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.868
+        latency_ms: 22281
+        cost_usd: 0.001385
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-config-detection-grok-4-1-fast-reasoning-full.json
 
     attempts:
       - id: "001"
@@ -547,6 +588,15 @@ evals:
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/scene-extraction-post-golden-verify.json
         note: "Down from 0.762 (-0.131) — was rewarded for fabricated scene details"
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.375
+        latency_ms: 58245
+        cost_usd: 0.001867
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-scene-extraction-grok-4-1-fast-reasoning-full.json
+        note: "Failed the single full-screenplay extraction case. Not viable for this module."
 
     attempts: []
 
@@ -633,6 +683,15 @@ evals:
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/normalization-post-golden-verify.json
         note: "Opus still underperforms Sonnet — over-edits content"
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.740
+        latency_ms: 13680
+        cost_usd: 0.000355
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-normalization-grok-4-1-fast-reasoning-full.json
+        note: "Failed both normalization cases. Model-wrong on faithful Fountain cleanup."
 
     attempts: []
 
@@ -747,6 +806,15 @@ evals:
         git_sha: "69d61e3"
         result_file: benchmarks/results/scene-enrichment-verify-2026-03-13-v2.json
         note: "Failed flashback scene. Model-wrong: missed flashback/idealized-memory framing and foreshadowing."
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.762
+        latency_ms: 7733
+        cost_usd: 0.000315
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-scene-enrichment-grok-4-1-fast-reasoning-full.json
+        note: "Passed elevator, failed flashback. Still well below the current leaders on nuanced scene analysis."
 
     attempts: []
 
@@ -832,6 +900,15 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.513
+        latency_ms: 6254
+        cost_usd: 0.000426
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-qa-pass-grok-4-1-fast-reasoning-full.json
+        note: "Caught the bad extraction but incorrectly failed the good one, making it unsafe as a QA gate."
 
     attempts: []
 
@@ -917,6 +994,14 @@ evals:
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/continuity-extraction-post-golden-verify.json
         note: "Down from 0.948 — was rewarded for incomplete patterns"
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.858
+        latency_ms: 24410
+        cost_usd: 0.000749
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-continuity-extraction-grok-4-1-fast-reasoning-full.json
 
     attempts: []
 
@@ -1061,6 +1146,15 @@ evals:
         git_sha: "0aaf2fc"
         result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
         note: "API error (503 high demand) — score not measured. Corrected-golden verification used archived outputs where available; this model still has no scored output to re-verify."
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.925
+        latency_ms: 23866
+        cost_usd: 0.001015
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-entity-discovery-grok-4-1-fast-reasoning-full.json
+        note: "Competitive recall at low cost, but still below the GPT-4.1 quality lead and not enough evidence yet to displace the current value default."
 
     attempts:
       - date: 2026-03-13
@@ -1144,6 +1238,15 @@ evals:
         measured: 2026-03-13
         git_sha: "69d61e3"
         result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
+      - model: "Grok 4.1 Fast Reasoning"
+        metrics:
+          overall: 0.955
+        latency_ms: 15861
+        cost_usd: 0.001676
+        measured: 2026-03-14
+        git_sha: "e704243"
+        result_file: benchmarks/results/model-scout-script-bible-grok-4-1-fast-reasoning-full.json
+        note: "Interesting value candidate: within 0.015 of the quality leader at a fraction of the cost."
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 0.915

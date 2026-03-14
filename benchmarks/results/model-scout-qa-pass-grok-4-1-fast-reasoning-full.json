@@ -1,0 +1,635 @@
+{
+  "evalId": "eval-e4w-2026-03-14T05:21:16",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-03-14T05:21:16.425Z",
+    "prompts": [
+      {
+        "raw": "You are a QA reviewer validating whether an AI-extracted scene analysis is accurate and faithful to the source screenplay text.\n\nCompare the extracted scene data against the original scene text and evaluate:\n\n1. **Heading accuracy**: Is the scene heading correct (location, INT/EXT, time of day)?\n2. **Character completeness**: Are all characters who appear or speak listed?\n3. **Summary fidelity**: Does the summary accurately describe what happens? No fabrications?\n4. **Narrative beats**: Are the identified beats actually present in the scene?\n5. **Tone assessment**: Does the tone description match the actual mood of the scene?\n6. **Confidence calibration**: Is the confidence score reasonable given the quality?\n\nReturn a JSON object with:\n- passed: boolean (true if the extraction is faithful, false if it has significant errors)\n- confidence: float 0-1 (your confidence in this QA judgment)\n- issues: array of objects, each with:\n  - severity: \"error\" (factual wrong), \"warning\" (misleading), or \"note\" (minor)\n  - description: what's wrong\n  - location: which field has the issue\n- summary: 1-2 sentence overall assessment\n\nBe strict: wrong character names, fabricated events, or incorrect locations are errors.\nMinor omissions or imprecise tone descriptions are warnings.\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nORIGINAL SCENE TEXT:\n{{scene_text}}\n\n==========\nEXTRACTED SCENE DATA:\n{{extracted_data}}\n==========",
+        "label": "benchmarks/prompts/qa-pass.txt: You are a QA reviewer validating whether an AI-extracted scene analysis is accurate and faithful to the source screenplay text.\n\nCompare the extracted scene data against the original scene text and evaluate:\n\n1. **Heading accuracy**: Is the scene heading correct (location, INT/EXT, time of day)?\n2. **Character completeness**: Are all characters who appear or speak listed?\n3. **Summary fidelity**: Does the summary accurately describe what happens? No fabrications?\n4. **Narrative beats**: Are the identified beats actually present in the scene?\n5. **Tone assessment**: Does the tone description match the actual mood of the scene?\n6. **Confidence calibration**: Is the confidence score reasonable given the quality?\n\nReturn a JSON object with:\n- passed: boolean (true if the extraction is faithful, false if it has significant errors)\n- confidence: float 0-1 (your confidence in this QA judgment)\n- issues: array of objects, each with:\n  - severity: \"error\" (factual wrong), \"warning\" (misleading), or \"note\" (minor)\n  - description: what's wrong\n  - location: which field has the issue\n- summary: 1-2 sentence overall assessment\n\nBe strict: wrong character names, fabricated events, or incorrect locations are errors.\nMinor omissions or imprecise tone descriptions are warnings.\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nORIGINAL SCENE TEXT:\n{{scene_text}}\n\n==========\nEXTRACTED SCENE DATA:\n{{extracted_data}}\n==========",
+        "id": "13e0a8e29474658382e66eb33a0158efb6fc703ae0c951d4aa9ffc6acdadd69d",
+        "provider": "xai:grok-4-1-fast-reasoning",
+        "metrics": {
+          "score": 1.025,
+          "testPassCount": 1,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 2,
+          "totalLatencyMs": 12509,
+          "tokenUsage": {
+            "prompt": 2961,
+            "completion": 520,
+            "cached": 0,
+            "total": 5028,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 1547,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 1558,
+              "prompt": 1248,
+              "completion": 310,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.0008522
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.000437,
+        "error": "The QA evaluation marked the extraction as failed (passed: false) with high confidence (0.96) and identified multiple alleged errors including fabrications and factual inaccuracies. According to the rubric, this was a GOOD extraction that accurately reflects the source text, meaning the QA model produced a false negative. It should have marked it as passed with zero or very few errors. Instead, it found 5 issues (3 errors, 1 error, 1 warning) and concluded the extraction was unfaithful. This is a clear false negative and scores poorly.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.025,
+          "reason": "The QA evaluation marked the extraction as failed (passed: false) with high confidence (0.96) and identified multiple alleged errors including fabrications and factual inaccuracies. According to the rubric, this was a GOOD extraction that accurately reflects the source text, meaning the QA model produced a false negative. It should have marked it as passed with zero or very few errors. Instead, it found 5 issues (3 errors, 1 error, 1 warning) and concluded the extraction was unfaithful. This is a clear false negative and scores poorly.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 716,
+            "prompt": 571,
+            "completion": 145,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Invalid JSON output",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/qa_pass_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "This QA evaluation was given a GOOD scene extraction that accurately\nreflects the source text. The QA model should have:\n\n1. Marked it as passed (true)\n2. Found zero or very few errors\n3. Had high confidence in the assessment\n4. Written a summary confirming accuracy\n\nIf the model incorrectly flagged the good extraction as failing,\nthat's a false negative and should score poorly.\n"
+              },
+              "pass": false,
+              "score": 0.05,
+              "reason": "The QA evaluation marked the extraction as failed (passed: false) with high confidence (0.96) and identified multiple alleged errors including fabrications and factual inaccuracies. According to the rubric, this was a GOOD extraction that accurately reflects the source text, meaning the QA model produced a false negative. It should have marked it as passed with zero or very few errors. Instead, it found 5 issues (3 errors, 1 error, 1 warning) and concluded the extraction was unfaithful. This is a clear false negative and scores poorly.",
+              "tokensUsed": {
+                "total": 716,
+                "prompt": 571,
+                "completion": 145,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"passed\\\":false,\\\"confidence\\\":0.96,\\\"issues\\\":[{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Summary fabricates Rose confronting Mariner about being 'late to pick her up'—no such dialogue or event exists; she asks how he found her.\\\",\\\"location\\\":\\\"summary\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Summary incorrectly states AirTag was 'on her phone'; original text says 'in your purse'.\\\",\\\"location\\\":\\\"summary\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Narrative beat 3 incorrectly states AirTag 'on her phone'; it's in her purse.\\\",\\\"location\\\":\\\"narrative_beats[2]\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Narrative beat 4 fabricates 'Rose's anger escalates from being grabbed'—no grabbing mentioned in scene.\\\",\\\"location\\\":\\\"narrative_beats[3]\\\"},{\\\"severity\\\":\\\"warning\\\",\\\"description\\\":\\\"characters_present omits THUGS who appear, speak into radio, and engage in action.\\\",\\\"location\\\":\\\"characters_present\\\"}],\\\"\\\"summary\\\":\\\"The extraction contains significant factual errors and fabrications in the summary and narrative beats, including invented events like being late or grabbed and misstated AirTag location, rendering it unfaithful to the source. Character list is incomplete by omitting thugs.\\\"}\\n</Output>\\n<Rubric>\\nThis QA evaluation was given a GOOD scene extraction that accurately\\nreflects the source text. The QA model should have:\\n\\n1. Marked it as passed (true)\\n2. Found zero or very few errors\\n3. Had high confidence in the assessment\\n4. Written a summary confirming accuracy\\n\\nIf the model incorrectly flagged the good extraction as failing,\\nthat's a false negative and should score poorly.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "c205935c-d44a-4e2a-832d-e9282311c130",
+        "latencyMs": 6535,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA reviewer validating whether an AI-extracted scene analysis is accurate and faithful to the source screenplay text.\n\nCompare the extracted scene data against the original scene text and evaluate:\n\n1. **Heading accuracy**: Is the scene heading correct (location, INT/EXT, time of day)?\n2. **Character completeness**: Are all characters who appear or speak listed?\n3. **Summary fidelity**: Does the summary accurately describe what happens? No fabrications?\n4. **Narrative beats**: Are the identified beats actually present in the scene?\n5. **Tone assessment**: Does the tone description match the actual mood of the scene?\n6. **Confidence calibration**: Is the confidence score reasonable given the quality?\n\nReturn a JSON object with:\n- passed: boolean (true if the extraction is faithful, false if it has significant errors)\n- confidence: float 0-1 (your confidence in this QA judgment)\n- issues: array of objects, each with:\n  - severity: \"error\" (factual wrong), \"warning\" (misleading), or \"note\" (minor)\n  - description: what's wrong\n  - location: which field has the issue\n- summary: 1-2 sentence overall assessment\n\nBe strict: wrong character names, fabricated events, or incorrect locations are errors.\nMinor omissions or imprecise tone descriptions are warnings.\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nORIGINAL SCENE TEXT:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n\n==========\nEXTRACTED SCENE DATA:\n{\n  \"scene_number\": 4,\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": null,\n  \"characters_present\": [\"ROSE\", \"MARINER\"],\n  \"summary\": \"Rose and Mariner ride the elevator after a violent rescue. Rose discovers a skull fragment on the floor while muzak plays. Mariner is introduced in full — a hulking vigilante in fishing-themed costume with an oar, net cape, and shell bandolier. Rose confronts him about being late to pick her up, and he reveals he tracked her via an AirTag on her phone, sparking a trust conflict between them.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"character_introduction\", \"description\": \"Full description of Mariner's fishing-themed vigilante costume — oar, net cape, bracers, shell bandolier, fish hooks.\", \"confidence\": 0.95},\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose discovers a skull fragment while muzak plays, establishing the dark comedy tone.\", \"confidence\": 0.90},\n    {\"beat_type\": \"revelation\", \"description\": \"Mariner admits he tracked Rose via AirTag on her phone, creating a trust conflict.\", \"confidence\": 0.88},\n    {\"beat_type\": \"conflict\", \"description\": \"Rose's anger escalates from being grabbed to learning she was being surveilled by Mariner.\", \"confidence\": 0.85}\n  ],\n  \"tone_mood\": \"dark comedy with bursts of tension\",\n  \"confidence\": 0.91\n}\n==========",
+          "label": "benchmarks/prompts/qa-pass.txt: You are a QA reviewer validating whether an AI-extracted scene analysis is accurate and faithful to the source screenplay text.\n\nCompare the extracted scene data against the original scene text and evaluate:\n\n1. **Heading accuracy**: Is the scene heading correct (location, INT/EXT, time of day)?\n2. **Character completeness**: Are all characters who appear or speak listed?\n3. **Summary fidelity**: Does the summary accurately describe what happens? No fabrications?\n4. **Narrative beats**: Are the identified beats actually present in the scene?\n5. **Tone assessment**: Does the tone description match the actual mood of the scene?\n6. **Confidence calibration**: Is the confidence score reasonable given the quality?\n\nReturn a JSON object with:\n- passed: boolean (true if the extraction is faithful, false if it has significant errors)\n- confidence: float 0-1 (your confidence in this QA judgment)\n- issues: array of objects, each with:\n  - severity: \"error\" (factual wrong), \"warning\" (misleading), or \"note\" (minor)\n  - description: what's wrong\n  - location: which field has the issue\n- summary: 1-2 sentence overall assessment\n\nBe strict: wrong character names, fabricated events, or incorrect locations are errors.\nMinor omissions or imprecise tone descriptions are warnings.\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nORIGINAL SCENE TEXT:\n{{scene_text}}\n\n==========\nEXTRACTED SCENE DATA:\n{{extracted_data}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "13e0a8e29474658382e66eb33a0158efb6fc703ae0c951d4aa9ffc6acdadd69d",
+        "promptIdx": 0,
+        "provider": {
+          "id": "xai:grok-4-1-fast-reasoning",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"passed\":false,\"confidence\":0.96,\"issues\":[{\"severity\":\"error\",\"description\":\"Summary fabricates Rose confronting Mariner about being 'late to pick her up'—no such dialogue or event exists; she asks how he found her.\",\"location\":\"summary\"},{\"severity\":\"error\",\"description\":\"Summary incorrectly states AirTag was 'on her phone'; original text says 'in your purse'.\",\"location\":\"summary\"},{\"severity\":\"error\",\"description\":\"Narrative beat 3 incorrectly states AirTag 'on her phone'; it's in her purse.\",\"location\":\"narrative_beats[2]\"},{\"severity\":\"error\",\"description\":\"Narrative beat 4 fabricates 'Rose's anger escalates from being grabbed'—no grabbing mentioned in scene.\",\"location\":\"narrative_beats[3]\"},{\"severity\":\"warning\",\"description\":\"characters_present omits THUGS who appear, speak into radio, and engage in action.\",\"location\":\"characters_present\"}],\"\"summary\":\"The extraction contains significant factual errors and fabrications in the summary and narrative beats, including invented events like being late or grabbed and misstated AirTag location, rendering it unfaithful to the source. Character list is incomplete by omitting thugs.\"}",
+          "tokenUsage": {
+            "total": 2712,
+            "prompt": 1585,
+            "completion": 240,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 887,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 6535,
+          "finishReason": "stop",
+          "cost": 0.000437,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-allow-origin": "*",
+                "access-control-expose-headers": "*",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9dc0d57eed967daf-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "gzip",
+                "content-type": "application/json",
+                "date": "Sat, 14 Mar 2026 05:21:23 GMT",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=W2Iu1a.PkpM_EKdlT6LsH9_.u6BjwEDzDMmuswl4his-1773465683-1.0.1.1-cQuHtYiP8d5.1IV8DACuWMHssRi7fxeljdM.ob0.vzC1c_C5Q6diZc8ERdyv6Qthij9prCdobf3XN.e9a0GYB8eGHg.EyZ7YO6zojjuYXjs; path=/; expires=Sat, 14-Mar-26 05:51:23 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+                "strict-transport-security": "max-age=31536000",
+                "transfer-encoding": "chunked",
+                "vary": "origin, access-control-request-method, access-control-request-headers",
+                "x-metrics-e2e-ms": "6337.8",
+                "x-metrics-mean-itl-ms": "5.4",
+                "x-metrics-ttft-ms": "115.0",
+                "x-ratelimit-limit-requests": "607",
+                "x-ratelimit-limit-tokens": "4000000",
+                "x-ratelimit-remaining-requests": "607",
+                "x-ratelimit-remaining-tokens": "4000000",
+                "x-request-id": "00-5c25ae9b49c37ec0c7a2718cf9cdee83-953f79f70006e91e-01",
+                "x-zero-data-retention": "false"
+              }
+            }
+          }
+        },
+        "score": 0.025,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "extracted_data": "file://../input/qa-good-scene.json",
+            "golden_path": "golden/qa-pass-golden.json",
+            "test_key": "good_scene"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/qa_pass_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "This QA evaluation was given a GOOD scene extraction that accurately\nreflects the source text. The QA model should have:\n\n1. Marked it as passed (true)\n2. Found zero or very few errors\n3. Had high confidence in the assessment\n4. Written a summary confirming accuracy\n\nIf the model incorrectly flagged the good extraction as failing,\nthat's a false negative and should score poorly.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-good-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "good_scene"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-allow-origin": "*",
+              "access-control-expose-headers": "*",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9dc0d57eed967daf-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "gzip",
+              "content-type": "application/json",
+              "date": "Sat, 14 Mar 2026 05:21:23 GMT",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=W2Iu1a.PkpM_EKdlT6LsH9_.u6BjwEDzDMmuswl4his-1773465683-1.0.1.1-cQuHtYiP8d5.1IV8DACuWMHssRi7fxeljdM.ob0.vzC1c_C5Q6diZc8ERdyv6Qthij9prCdobf3XN.e9a0GYB8eGHg.EyZ7YO6zojjuYXjs; path=/; expires=Sat, 14-Mar-26 05:51:23 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+              "strict-transport-security": "max-age=31536000",
+              "transfer-encoding": "chunked",
+              "vary": "origin, access-control-request-method, access-control-request-headers",
+              "x-metrics-e2e-ms": "6337.8",
+              "x-metrics-mean-itl-ms": "5.4",
+              "x-metrics-ttft-ms": "115.0",
+              "x-ratelimit-limit-requests": "607",
+              "x-ratelimit-limit-tokens": "4000000",
+              "x-ratelimit-remaining-requests": "607",
+              "x-ratelimit-remaining-tokens": "4000000",
+              "x-request-id": "00-5c25ae9b49c37ec0c7a2718cf9cdee83-953f79f70006e91e-01",
+              "x-zero-data-retention": "false"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.0004152,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 842,
+            "prompt": 677,
+            "completion": 165,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "confidence_calibration=1.00 | issue_detection=1.00 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=1.00 | summary_quality=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/qa_pass_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "This QA evaluation was given a BAD scene extraction with multiple errors:\n- Wrong building name (Office Building vs Ruddy & Green)\n- Time of day fabricated (claims DAY, but scene heading has none)\n- Wrong character name (Billy instead of Mariner)\n- Fabricated content (grocery discussion never happens)\n\nThe QA model should have:\n1. Marked it as failed (false)\n2. Identified at least 2-3 specific errors\n3. Flagged the fabricated summary content\n4. Used \"error\" severity for factual mistakes\n\nIf the model let this pass, that's a dangerous false positive.\n"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The QA evaluation correctly identified the extraction as failed (passed: false) with high confidence. It identified far more than 2-3 specific errors, covering: (1) wrong building name (Office Building vs Ruddy & Green), (2) fabricated time of day (DAY), (3) wrong character name (Billy instead of Mariner), (4) fabricated summary content (grocery/evening plans discussion), (5) wrong narrative beats, and (6) incorrect tone. All factual mistakes were appropriately flagged with 'error' severity. The fabricated summary content was explicitly called out. This is not a false positive — the model correctly rejected the bad extraction.",
+              "tokensUsed": {
+                "total": 842,
+                "prompt": 677,
+                "completion": 165,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"passed\\\":false,\\\"confidence\\\":1,\\\"issues\\\":[{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Heading and location incorrectly changed to 'OFFICE BUILDING - ELEVATOR'; original is 'RUDDY & GREEN BUILDING - ELEVATOR'. Time of day 'DAY' added despite not being specified.\\\",\\\"location\\\":\\\"heading\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Characters listed as 'ROSE' and 'BILLY'; 'BILLY' does not appear, correct character is 'MARINER'. Thugs appear outside but are not listed.\\\",\\\"location\\\":\\\"characters_present\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Summary fabricates entirely new events (discussing evening plans and groceries); actual scene involves post-fight panting, AirTag discussion, purse, and elevator fight with thugs.\\\",\\\"location\\\":\\\"summary\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Narrative beats describe non-existent 'daily plans' discussion; no such exposition occurs.\\\",\\\"location\\\":\\\"narrative_beats\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Tone 'casual' mismatches tense, bloody, action-packed scene with combat.\\\",\\\"location\\\":\\\"tone_mood\\\"},{\\\"severity\\\":\\\"warning\\\",\\\"description\\\":\\\"High confidence score (0.88) unreasonable for severely inaccurate extraction.\\\",\\\"location\\\":\\\"confidence\\\"}],\\\"summary\\\":\\\"The extraction is fundamentally unfaithful with wrong location, characters, summary, beats, and tone, fabricating a mundane conversation instead of the violent action scene. Multiple critical errors make it entirely inaccurate.\\\"}\\n</Output>\\n<Rubric>\\nThis QA evaluation was given a BAD scene extraction with multiple errors:\\n- Wrong building name (Office Building vs Ruddy & Green)\\n- Time of day fabricated (claims DAY, but scene heading has none)\\n- Wrong character name (Billy instead of Mariner)\\n- Fabricated content (grocery discussion never happens)\\n\\nThe QA model should have:\\n1. Marked it as failed (false)\\n2. Identified at least 2-3 specific errors\\n3. Flagged the fabricated summary content\\n4. Used \\\"error\\\" severity for factual mistakes\\n\\nIf the model let this pass, that's a dangerous false positive.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "c3c1a389-79ba-4c6f-8b82-36899e54e724",
+        "latencyMs": 5974,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA reviewer validating whether an AI-extracted scene analysis is accurate and faithful to the source screenplay text.\n\nCompare the extracted scene data against the original scene text and evaluate:\n\n1. **Heading accuracy**: Is the scene heading correct (location, INT/EXT, time of day)?\n2. **Character completeness**: Are all characters who appear or speak listed?\n3. **Summary fidelity**: Does the summary accurately describe what happens? No fabrications?\n4. **Narrative beats**: Are the identified beats actually present in the scene?\n5. **Tone assessment**: Does the tone description match the actual mood of the scene?\n6. **Confidence calibration**: Is the confidence score reasonable given the quality?\n\nReturn a JSON object with:\n- passed: boolean (true if the extraction is faithful, false if it has significant errors)\n- confidence: float 0-1 (your confidence in this QA judgment)\n- issues: array of objects, each with:\n  - severity: \"error\" (factual wrong), \"warning\" (misleading), or \"note\" (minor)\n  - description: what's wrong\n  - location: which field has the issue\n- summary: 1-2 sentence overall assessment\n\nBe strict: wrong character names, fabricated events, or incorrect locations are errors.\nMinor omissions or imprecise tone descriptions are warnings.\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nORIGINAL SCENE TEXT:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n\n==========\nEXTRACTED SCENE DATA:\n{\n  \"scene_number\": 4,\n  \"heading\": \"INT. OFFICE BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"OFFICE BUILDING - ELEVATOR\",\n  \"time_of_day\": \"DAY\",\n  \"characters_present\": [\"ROSE\", \"BILLY\"],\n  \"summary\": \"Billy and Rose take the elevator in an office building. They discuss their plans for the evening. Rose mentions she needs to pick up groceries.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"exposition\", \"description\": \"Characters discuss daily plans.\", \"confidence\": 0.85}\n  ],\n  \"tone_mood\": \"casual\",\n  \"confidence\": 0.88\n}\n==========",
+          "label": "benchmarks/prompts/qa-pass.txt: You are a QA reviewer validating whether an AI-extracted scene analysis is accurate and faithful to the source screenplay text.\n\nCompare the extracted scene data against the original scene text and evaluate:\n\n1. **Heading accuracy**: Is the scene heading correct (location, INT/EXT, time of day)?\n2. **Character completeness**: Are all characters who appear or speak listed?\n3. **Summary fidelity**: Does the summary accurately describe what happens? No fabrications?\n4. **Narrative beats**: Are the identified beats actually present in the scene?\n5. **Tone assessment**: Does the tone description match the actual mood of the scene?\n6. **Confidence calibration**: Is the confidence score reasonable given the quality?\n\nReturn a JSON object with:\n- passed: boolean (true if the extraction is faithful, false if it has significant errors)\n- confidence: float 0-1 (your confidence in this QA judgment)\n- issues: array of objects, each with:\n  - severity: \"error\" (factual wrong), \"warning\" (misleading), or \"note\" (minor)\n  - description: what's wrong\n  - location: which field has the issue\n- summary: 1-2 sentence overall assessment\n\nBe strict: wrong character names, fabricated events, or incorrect locations are errors.\nMinor omissions or imprecise tone descriptions are warnings.\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nORIGINAL SCENE TEXT:\n{{scene_text}}\n\n==========\nEXTRACTED SCENE DATA:\n{{extracted_data}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "13e0a8e29474658382e66eb33a0158efb6fc703ae0c951d4aa9ffc6acdadd69d",
+        "promptIdx": 0,
+        "provider": {
+          "id": "xai:grok-4-1-fast-reasoning",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"passed\":false,\"confidence\":1.0,\"issues\":[{\"severity\":\"error\",\"description\":\"Heading and location incorrectly changed to 'OFFICE BUILDING - ELEVATOR'; original is 'RUDDY & GREEN BUILDING - ELEVATOR'. Time of day 'DAY' added despite not being specified.\",\"location\":\"heading\"},{\"severity\":\"error\",\"description\":\"Characters listed as 'ROSE' and 'BILLY'; 'BILLY' does not appear, correct character is 'MARINER'. Thugs appear outside but are not listed.\",\"location\":\"characters_present\"},{\"severity\":\"error\",\"description\":\"Summary fabricates entirely new events (discussing evening plans and groceries); actual scene involves post-fight panting, AirTag discussion, purse, and elevator fight with thugs.\",\"location\":\"summary\"},{\"severity\":\"error\",\"description\":\"Narrative beats describe non-existent 'daily plans' discussion; no such exposition occurs.\",\"location\":\"narrative_beats\"},{\"severity\":\"error\",\"description\":\"Tone 'casual' mismatches tense, bloody, action-packed scene with combat.\",\"location\":\"tone_mood\"},{\"severity\":\"warning\",\"description\":\"High confidence score (0.88) unreasonable for severely inaccurate extraction.\",\"location\":\"confidence\"}],\"summary\":\"The extraction is fundamentally unfaithful with wrong location, characters, summary, beats, and tone, fabricating a mundane conversation instead of the violent action scene. Multiple critical errors make it entirely inaccurate.\"}",
+          "tokenUsage": {
+            "total": 2316,
+            "prompt": 1376,
+            "completion": 280,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 660,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 5974,
+          "finishReason": "stop",
+          "cost": 0.0004152,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-allow-origin": "*",
+                "access-control-expose-headers": "*",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9dc0d57eef06b872-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "gzip",
+                "content-type": "application/json",
+                "date": "Sat, 14 Mar 2026 05:21:22 GMT",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=9hVSNpDXAKW6hzm3FekaEj1QC_q5pY20MuRj1rKX1uI-1773465682-1.0.1.1-l2bJ9yRKh1NKVfbCtWXT2dHBv5dbJRRxZf7ZZh6NyN.rZ6AIeKoRi6CwwIxOxicIG8GRZSe.NfqwCid6gts4kewtUq42LA1UPLI4gtpHqtQ; path=/; expires=Sat, 14-Mar-26 05:51:22 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+                "strict-transport-security": "max-age=31536000",
+                "transfer-encoding": "chunked",
+                "vary": "origin, access-control-request-method, access-control-request-headers",
+                "x-metrics-e2e-ms": "5720.0",
+                "x-metrics-mean-itl-ms": "5.9",
+                "x-metrics-ttft-ms": "108.1",
+                "x-ratelimit-limit-requests": "607",
+                "x-ratelimit-limit-tokens": "4000000",
+                "x-ratelimit-remaining-requests": "607",
+                "x-ratelimit-remaining-tokens": "4000000",
+                "x-request-id": "00-15556a9ae1bb6c81b7a719139c25408e-f71dd3bd00077e3d-01",
+                "x-zero-data-retention": "false"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "extracted_data": "file://../input/qa-bad-scene.json",
+            "golden_path": "golden/qa-pass-golden.json",
+            "test_key": "bad_scene"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/qa_pass_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "This QA evaluation was given a BAD scene extraction with multiple errors:\n- Wrong building name (Office Building vs Ruddy & Green)\n- Time of day fabricated (claims DAY, but scene heading has none)\n- Wrong character name (Billy instead of Mariner)\n- Fabricated content (grocery discussion never happens)\n\nThe QA model should have:\n1. Marked it as failed (false)\n2. Identified at least 2-3 specific errors\n3. Flagged the fabricated summary content\n4. Used \"error\" severity for factual mistakes\n\nIf the model let this pass, that's a dangerous false positive.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-bad-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "bad_scene"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-allow-origin": "*",
+              "access-control-expose-headers": "*",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9dc0d57eef06b872-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "gzip",
+              "content-type": "application/json",
+              "date": "Sat, 14 Mar 2026 05:21:22 GMT",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=9hVSNpDXAKW6hzm3FekaEj1QC_q5pY20MuRj1rKX1uI-1773465682-1.0.1.1-l2bJ9yRKh1NKVfbCtWXT2dHBv5dbJRRxZf7ZZh6NyN.rZ6AIeKoRi6CwwIxOxicIG8GRZSe.NfqwCid6gts4kewtUq42LA1UPLI4gtpHqtQ; path=/; expires=Sat, 14-Mar-26 05:51:22 GMT; domain=.x.ai; HttpOnly; Secure; SameSite=None",
+              "strict-transport-security": "max-age=31536000",
+              "transfer-encoding": "chunked",
+              "vary": "origin, access-control-request-method, access-control-request-headers",
+              "x-metrics-e2e-ms": "5720.0",
+              "x-metrics-mean-itl-ms": "5.9",
+              "x-metrics-ttft-ms": "108.1",
+              "x-ratelimit-limit-requests": "607",
+              "x-ratelimit-limit-tokens": "4000000",
+              "x-ratelimit-remaining-requests": "607",
+              "x-ratelimit-remaining-tokens": "4000000",
+              "x-request-id": "00-15556a9ae1bb6c81b7a719139c25408e-f71dd3bd00077e3d-01",
+              "x-zero-data-retention": "false"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 1,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 2961,
+        "completion": 520,
+        "cached": 0,
+        "total": 5028,
+        "numRequests": 2,
+        "completionDetails": {
+          "reasoning": 1547,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 1558,
+          "prompt": 1248,
+          "completion": 310,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 11222,
+      "evaluationDurationMs": 11222
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "QA pass — judge scene extraction quality (good vs bad outputs)",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/bfce/cine-forge/benchmarks/prompts/qa-pass.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-good-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "good_scene"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/qa_pass_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "This QA evaluation was given a GOOD scene extraction that accurately\nreflects the source text. The QA model should have:\n\n1. Marked it as passed (true)\n2. Found zero or very few errors\n3. Had high confidence in the assessment\n4. Written a summary confirming accuracy\n\nIf the model incorrectly flagged the good extraction as failing,\nthat's a false negative and should score poorly.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-bad-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "bad_scene"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/qa_pass_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "This QA evaluation was given a BAD scene extraction with multiple errors:\n- Wrong building name (Office Building vs Ruddy & Green)\n- Time of day fabricated (claims DAY, but scene heading has none)\n- Wrong character name (Billy instead of Mariner)\n- Fabricated content (grocery discussion never happens)\n\nThe QA model should have:\n1. Marked it as failed (false)\n2. Identified at least 2-3 specific errors\n3. Flagged the fabricated summary content\n4. Used \"error\" severity for factual mistakes\n\nIf the model let this pass, that's a dangerous false positive.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "benchmarks/results/model-scout-qa-pass-grok-4-1-fast-reasoning-full.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-03-14T05:21:27.662Z",
+    "evaluationCreatedAt": "2026-03-14T05:21:16.425Z"
+  }
+}

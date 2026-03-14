@@ -104,7 +104,7 @@ providers:
 tests:
   # Test 1: Good extraction — should PASS QA
   - vars:
-      scene_text: file://../input/enrich-scene-elevator.txt
+      scene_text: file://../fixtures/enrich-scene-elevator.txt
       extracted_data: file://../input/qa-good-scene.json
       golden_path: golden/qa-pass-golden.json
       test_key: good_scene
@@ -126,7 +126,7 @@ tests:
 
   # Test 2: Bad extraction — should FAIL QA
   - vars:
-      scene_text: file://../input/enrich-scene-elevator.txt
+      scene_text: file://../fixtures/enrich-scene-elevator.txt
       extracted_data: file://../input/qa-bad-scene.json
       golden_path: golden/qa-pass-golden.json
       test_key: bad_scene
