@@ -1,7 +1,7 @@
 # Story 127 — Artifact Health Semantics + Chat Model Disclosure
 
 **Priority**: Medium
-**Status**: Draft
+**Status**: Pending
 **Ideal Refs**: R11 (readiness clarity), R12 (radical transparency)
 **Spec Refs**: 2.3 (change propagation / stale state), 20 (metadata & auditing)
 **ADR Refs**: ADR-002, `docs/design/decisions.md` ("Inline stale indicators")
@@ -95,3 +95,4 @@ To be written by `/build-story` after implementation planning and file-level exp
 ## Work Log
 
 20260313-1658 — triage: created from inbox items "Stale: why is this entity listed as stale?" and "show what model is actually doing the chatting". Existing homes checked: Story 088 covers pipeline/inbox stale UX but not entity/detail/list badges; no existing story owns chat model disclosure. Next=`/build-story` when ready.
+20260314 — backlog cleanup: promoted from `Draft` to `Pending`. Acceptance criteria, decision context, and touched-file map are already concrete enough for `/build-story`.

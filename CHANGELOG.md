@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-14-06] — Backlog readiness cleanup and story promotion
+
+### Changed
+- Refreshed the execution map in `docs/stories.md` so the ready-to-build lane matches the real dependency graph and no longer treats completed Story 029 as pending
+- Promoted Stories 046, 120, 127, 128, 129, and 131 from `Draft` to `Pending` now that their scopes and file maps are build-ready
+
+### Fixed
+- Corrected the blocked-chain note for Story 028 so it no longer lists already-complete Story 029 as an active blocker
+- Rewrote Story 046 against the current `ui/` architecture so the theme-system work can move forward without stale path references
+
 ## [2026-03-14-05] — Record screenplay formatting repro inputs
 
 ### Added

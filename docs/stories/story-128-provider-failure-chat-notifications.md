@@ -1,7 +1,7 @@
 # Story 128 — Provider Failure Chat Notifications
 
 **Priority**: Medium
-**Status**: Draft
+**Status**: Pending
 **Ideal Refs**: R12 (radical transparency)
 **Spec Refs**: 20 (metadata & auditing)
 **ADR Refs**: `docs/design/decisions.md` ("Inbox is a lens on actionable chat messages")
@@ -92,3 +92,4 @@ To be written by `/build-story` after implementation planning and file-level exp
 ## Work Log
 
 20260313-1658 — triage: created from inbox item "Surface provider quota/billing errors in chat". Existing homes checked: Story 050 covers retry/fallback mechanics and the codebase already has a partial notification path, but no active story owns expanding it to full operator-facing coverage. Next=`/build-story` when ready.
+20260314 — backlog cleanup: promoted from `Draft` to `Pending`. This stays narrowly scoped to operator-facing failure translation rather than a larger resilience redesign.

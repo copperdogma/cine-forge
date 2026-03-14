@@ -1,7 +1,7 @@
 # Story 131 — Preference Learning from User Choices
 
 **Priority**: Medium
-**Status**: Draft
+**Status**: Pending
 **Ideal Refs**: R13 (learn from user choices)
 **Spec Refs**: 8.5 (Suggestion System), 20 (Metadata & Auditing), Untriaged idea — AI preference learning from user choices
 **ADR Refs**: None found after search
@@ -94,3 +94,4 @@ To be written by `/build-story` after implementation planning, schema design, an
 ## Work Log
 
 20260313-1658 — triage: created from inbox item "AI preference learning from user choices". Existing homes checked: `spec.md` and `docs/retrofit-gaps.md` already tracked the gap, but no story existed. Next=`/build-story` when ready.
+20260314 — backlog cleanup: promoted from `Draft` to `Pending`. The story now has a build-ready backlog home for the transparent preference-learning loop required by Ideal R13.

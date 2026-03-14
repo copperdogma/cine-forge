@@ -1,7 +1,7 @@
 # Story 120 — Production Format Setting
 
 **Priority**: Medium
-**Status**: Draft
+**Status**: Pending
 **Spec Refs**: Film Lane (spec §267) — visual style consistency across design studies, storyboards, animatics
 **Depends On**: Story 056 (Design Study — Done)
 **Updated**: 2026-03-14 — backlog cleanup clarified that this story should land before the later design-study prompt/iteration follow-ons.
@@ -100,4 +100,4 @@ definition of done}
 
 20260303-1700 — story created: User identified during Story 056 browser testing that Imagen images look like concept art drawings rather than photorealistic stills for a live-action project. Production format is a threshold moment between story-half and production-half of the product — surfaces only on first visual generation.
 
-20260314 — Backlog cleanup: corrected the sequencing note. `production_format` is the project-level prerequisite for the prompt-compiler and composition UX follow-ons, not a downstream detail of them.
+20260314 — Backlog cleanup: corrected the sequencing note, confirmed the story is build-shaped, and promoted it from `Draft` to `Pending`. `production_format` is the project-level prerequisite for the prompt-compiler and composition UX follow-ons, not a downstream detail of them.

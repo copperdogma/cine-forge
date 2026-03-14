@@ -1,12 +1,9 @@
 # Story 046 — Theme System (Light/Dark/Auto + Palettes)
 
-**Architecture Note (2026-02-19)**
-- This draft still needs a source-level rewrite before promotion: the UI was flattened from `ui/operator-console` to `ui/`, and the implementation notes below have not all been reconciled with the current tree.
-
 **Phase**: 2.5 — UI
 **Priority**: Medium
-**Status**: Draft
-**Updated**: 2026-03-14 — backlog cleanup confirmed that this story cannot move to `Pending` until its implementation notes are refreshed against the current UI structure.
+**Status**: Pending
+**Updated**: 2026-03-14 — backlog cleanup refreshed the implementation notes against the current `ui/` architecture and promoted the story to `Pending`.
 
 ## Goal
 
@@ -21,10 +18,6 @@ The ThemeShowcase page (`/theme`) already defines 4 dark theme palettes as CSS v
 - No light mode CSS variables are defined (`:root` block has placeholder values)
 - Theme preference is not persisted
 - No production-accessible theme switcher exists
-
-## Promotion Gate
-
-Before this story moves to `Pending`, rewrite its implementation notes against the current `ui/` architecture. The product goal still stands, but the file map and touchpoints were written before the UI flattening and are no longer reliable enough for `/build-story`.
 
 ## Acceptance Criteria
 
@@ -43,12 +36,12 @@ Before this story moves to `Pending`, rewrite its implementation notes against t
 
 ### Phase 1 — Theme Infrastructure
 
-- [ ] Wire up `next-themes` `<ThemeProvider>` in App.tsx with `attribute="class"` strategy
-- [ ] Remove hardcoded `.dark` class from root div
-- [ ] Define light mode CSS variables in `:root` block of `index.css` (matching Slate palette as default)
-- [ ] Create a `ThemeContext` or Zustand slice to manage palette selection alongside mode
-- [ ] Create palette definitions file (`src/lib/themes.ts`) with all light + dark palettes as structured objects
-- [ ] Implement palette application logic (apply CSS variable overrides when palette changes)
+- [ ] Wire up `next-themes` `<ThemeProvider>` in `ui/src/App.tsx` (or a focused theme wrapper imported there) with `attribute="class"` strategy
+- [ ] Remove the hardcoded `.dark` class from the app root in `ui/src/App.tsx`
+- [ ] Extract the existing ThemeShowcase palette definitions from `ui/src/pages/ThemeShowcase.tsx` into a shared theme module under `ui/src/lib/` or `ui/src/components/`
+- [ ] Define light mode CSS variables in `ui/src/index.css` (matching Slate as the default baseline palette)
+- [ ] Manage palette selection alongside mode using the current frontend architecture, not a stale `ui/operator-console` context path
+- [ ] Persist `theme_mode` + `theme_palette` through the existing project settings `ui_preferences` path instead of page-local state
 
 ### Phase 2 — Light Palettes
 
@@ -62,35 +55,49 @@ Before this story moves to `Pending`, rewrite its implementation notes against t
 
 ### Phase 3 — Theme Switcher UI
 
-- [ ] Add theme switcher component to AppShell (header area or settings dropdown)
+- [ ] Add a theme switcher to the current shell/settings flow (`ui/src/components/AppShell.tsx` and/or `ui/src/components/ProjectSettings.tsx`)
 - [ ] Mode selector: Light / Dark / Auto toggle (sun/moon/auto icons)
 - [ ] Palette selector: visual swatches showing each palette's primary + accent colors
 - [ ] Preview palette on hover before committing
-- [ ] Persist selection to project settings via API (not localStorage)
+- [ ] Persist selection through the existing `updateProjectSettings()` API path using `ui_preferences`
 
 ### Phase 4 — Polish & Verification
 
-- [ ] Update ThemeShowcase to display all palettes in both modes side by side
-- [ ] Fix Sonner toast integration (pass resolved theme from `next-themes`)
+- [ ] Update `ui/src/pages/ThemeShowcase.tsx` to display all palettes in both modes using the shared palette source
+- [ ] Fix Sonner toast integration in `ui/src/components/ui/sonner.tsx` so it follows the resolved theme
 - [ ] Audit all pages for light mode rendering issues (contrast, borders, shadows)
-- [ ] Handle edge case: project settings unavailable → fall back to system dark + Slate
-- [ ] Prevent FOUC: inject theme class before React hydration via `<script>` in index.html
+- [ ] Handle edge case: project settings unavailable → fall back to system mode + Slate palette
+- [ ] Prevent FOUC by restoring the saved theme class/palette before React hydration (likely via `ui/index.html` or the earliest bootstrap point)
 
 ## Technical Notes
 
 - **Color format**: OKLCH (perceptually uniform). All palettes use `oklch()` values for CSS variables.
-- **Persistence**: Per AGENTS.md, user preferences go in `project.json`, not `localStorage`. Use `localStorage` only as a fast cache to prevent FOUC, synced from project settings.
+- **Persistence**: Per AGENTS.md, user preferences go in project settings / `project.json`. In the current app this should flow through the existing `ui_preferences` settings path. Use `localStorage` only as a fast cache to prevent FOUC, synced from the backend-backed preference.
 - **`next-themes` config**: Use `attribute="class"`, `defaultTheme="system"`, `storageKey="cineforge-mode"`.
 - **Palette application**: CSS variable overrides via `document.documentElement.style.setProperty()` on the resolved theme element.
-- **Existing code**: ThemeShowcase at `ui/src/pages/ThemeShowcase.tsx` has the 4 dark palette definitions — extract and normalize into `src/lib/themes.ts`.
+- **Existing code**: `ui/src/pages/ThemeShowcase.tsx` already contains the 4 dark palette definitions, `ui/src/App.tsx` still hardcodes `.dark`, `ui/src/components/ProjectSettings.tsx` already persists project settings, and `ui/src/components/ui/sonner.tsx` already reads `next-themes`.
 
 ## Dependencies
 
 - `next-themes` (already installed, ^0.4.6)
 - shadcn/ui CSS variable system (already in place)
 
+## Files to Modify
+
+- `ui/src/App.tsx` — remove hardcoded `.dark`, mount theme provider/wrapper
+- `ui/src/index.css` — define light palettes and shared token defaults
+- `ui/src/pages/ThemeShowcase.tsx` — consume shared palette definitions instead of page-local constants
+- `ui/src/components/ProjectSettings.tsx` — expose appearance controls through the current settings surface
+- `ui/src/components/AppShell.tsx` — optional quick-access affordance if the chosen UX needs it
+- `ui/src/components/ui/sonner.tsx` — ensure toasts inherit the resolved theme
+- `ui/src/lib/types.ts` — typed frontend support for appearance preferences if needed
+- `ui/src/lib/api/projects.ts` — reuse or extend project settings persistence wiring
+- `src/cine_forge/api/models.py` — only if typed backend support for appearance preferences is needed beyond free-form `ui_preferences`
+- `src/cine_forge/api/service.py` — only if backend merge behavior for `ui_preferences` needs adjustment
+- `ui/index.html` — optional pre-hydration theme bootstrap for FOUC prevention
+
 ## Work Log
 
 *(Entries added during implementation)*
 
-20260314 — Backlog cleanup: kept this story in Draft and added a promotion gate because the current file references still reflect the pre-flattened `ui/operator-console` layout.
+20260314 — Backlog cleanup: refreshed the story against the current `ui/` tree (`App.tsx`, `ThemeShowcase.tsx`, `ProjectSettings.tsx`, `index.css`, existing `ui_preferences` settings path) and promoted it to `Pending`.

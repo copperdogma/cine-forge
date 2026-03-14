@@ -9,32 +9,34 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 | Story | Why |
 |---|---|
 | **026** Storyboard Generation | Newly unblocked by Story 025. Optional next visualization layer if we want to continue deeper into the film lane. |
-| **029** User Asset Injection | Must land the full R17 user path: asset substrate plus Operator Console upload/manage UX. |
 | **031** Change Propagation | R15 Layer 2. Critical before AI artifact editing and deeper iterative editing workflows. |
 | **032** Cost Tracking | Builds the budget and reporting layer on top of already-landed cost hooks. |
 | **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
+| **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
+| **120** Production Format Setting | The right visual-lane prerequisite before prompt compilation and iterative image-composition work. |
+| **127** Artifact Health Semantics + Chat Model Disclosure | Direct transparency fix on top of recent UI decomposition. Small, user-visible, and already grounded in existing design decisions. |
+| **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
+| **129** Entity Discovery Taxonomy Tightening | Eval-backed prompt refinement that reduces upstream entity noise before it pollutes downstream artifacts. |
+| **131** Preference Learning from User Choices | Turns existing suggestion/decision tracking into the explicit, inspectable learning loop required by Ideal R13. |
 
 ### Blocked — Dependency Chain Not Ready Yet
 
 | Story | Blocked On |
 |---|---|
 | **027** Animatics / Previz | Story 026 |
-| **028** Render Adapter | Stories 027, 029 |
+| **028** Render Adapter | Story 027 |
 | **030** Generated Output QA | Stories 028, 032 |
 
 ### Draft — Scope Or Decision Needed First
 
 | Story | Why It Stays Draft |
 |---|---|
-| **046** Theme System | Still references pre-flattened `ui/operator-console/` paths; rewrite against the current `ui/` architecture before promotion. |
 | **097** AI Artifact Editing | Important, but needs a concrete implementation plan and pairs naturally with Story 031. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
-| **120** Production Format Setting | Should land before the deeper design-study prompt and iteration work so the visual lane has a stable project-level format model. |
 | **119** Design Study Prompt Compiler | Depends on Story 120 establishing the `production_format` model used by the compiler. |
 | **121** Design Study Composition UX | Depends on Stories 120 and 119 so the iteration UI composes against the final format and prompt pipeline instead of creating rework. |
-| **127 / 128 / 129 / 131** Recent triage stories | Good candidates, but they still need promotion from draft to pending before build. |
 | **102 / 104 / 105 / 106 / 112 / 113 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
 
 ### Deferred — Intentionally Parked
@@ -108,7 +110,7 @@ NOTES from Cam:
 | 043 | Entity-First Navigation | 2.5 — UI | High | Done | [story-043](stories/story-043-entity-first-navigation.md) |
 | 044 | Mobile-Friendly UI | 2.5 — UI | Medium | Pending | [story-044](stories/story-044-mobile-friendly-ui.md) |
 | 045 | Entity Cross-Linking | 2.5 — UI | Medium | Done | [story-045](stories/story-045-entity-cross-linking.md) |
-| 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Draft | [story-046](stories/story-046-theme-system.md) |
+| 046 | Theme System (Light/Dark/Auto + Palettes) | 2.5 — UI | Medium | Pending | [story-046](stories/story-046-theme-system.md) |
 | 047 | Benchmark Sonnet 4.6 Across All Evals | Cross-Cutting | High | Done | [story-047](stories/story-047-sonnet-46-benchmarks.md) |
 | 048 | PDF Input Preview Decode Fix | 2.5 — UI/API | High | Done | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | 1 — MVP Pipeline | High | Done | [story-049](stories/story-049-import-normalization-format-suite.md) |
@@ -181,7 +183,7 @@ NOTES from Cam:
 | 117 | Engine Decomposition | Cross-Cutting | Medium | Done | [story-117](stories/story-117-engine-decomposition.md) |
 | 118 | Service Layer Decomposition | Cross-Cutting | Medium | Done | [story-118](stories/story-118-service-decomposition.md) |
 | 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Draft | [story-119](stories/story-119-design-study-prompt-compiler.md) |
-| 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Draft | [story-120](stories/story-120-production-format-setting.md) |
+| 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Pending | [story-120](stories/story-120-production-format-setting.md) |
 | 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Draft | [story-121](stories/story-121-design-study-composition-ux.md) |
 | 132 | Shot Planning UI and Shot List Exports | 6 — Shot Planning & Viz | High | Done | [story-132](stories/story-132-shot-planning-ui-and-shot-list-exports.md) |
 | 122 | Golden Fixture Helpers | 0 — Infrastructure | Medium | Done | [story-122](stories/story-122-golden-fixture-helpers.md) |
@@ -189,11 +191,11 @@ NOTES from Cam:
 | 124 | Recall Verification Loop | 0 — Infrastructure | Medium | Done | [story-124](stories/story-124-recall-verification-loop.md) |
 | 125 | Agent Workflow Hardening Meta Upgrade | Cross-Cutting | High | Done | [story-125](stories/story-125-agent-workflow-hardening-meta-upgrade.md) |
 | 126 | Frontend Chat and Data-Layer Decomposition | 2.5 — UI | High | Done | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
-| 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Draft | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
-| 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Draft | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
-| 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Draft | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
+| 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Pending | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
+| 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Pending | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
+| 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Pending | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
-| 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Draft | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
+| 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Pending | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
 | 133 | Model Refresh, Eval Verification, and Project Model Defaults | Cross-Cutting | High | Done | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |
 
 ## Phase Summary

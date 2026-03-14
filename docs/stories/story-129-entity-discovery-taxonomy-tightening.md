@@ -1,7 +1,7 @@
 # Story 129 — Entity Discovery Taxonomy Tightening
 
 **Priority**: Medium
-**Status**: Draft
+**Status**: Pending
 **Ideal Refs**: Story Understanding quality bar
 **Spec Refs**: 6 (Bibles & Entity Graph)
 **ADR Refs**: None found after search; bounded prompt-quality follow-up on Story 124
@@ -92,3 +92,4 @@ To be written by `/build-story` after implementation planning and eval planning.
 ## Work Log
 
 20260313-1658 — triage: created from inbox item "Tighten entity_discovery character/prop taxonomy prompts". Existing homes checked: Story 065 explicitly deferred this, Story 124 covers recall verification but not taxonomy noise. Next=`/build-story` when ready.
+20260314 — backlog cleanup: promoted from `Draft` to `Pending`. Scope remains intentionally small: prompt-first, eval-backed taxonomy tightening before any heavier architecture change.
