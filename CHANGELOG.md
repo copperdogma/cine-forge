@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-03-14-05] — Record screenplay formatting repro inputs
+
+### Added
+- Benchmark input fixtures for the elevator and flashback scene-enrichment cases tied to the latest screenplay formatting regression report
+
+### Changed
+- Updated the inbox with a concrete reproduction note describing the dialogue/action spacing failure seen in the Brick & Steel PDF import
+
 ## [2026-03-14-04] — User asset injection lands end-to-end (Story 029)
 
 ### Added
