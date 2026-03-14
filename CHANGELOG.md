@@ -1,5 +1,11 @@
 # Changelog
 
+## [2026-03-13-11] — Deploy runbook timing recalibration
+
+### Changed
+- Recalibrated the `/deploy` skill's expected duration from ~2 minutes to ~2.5 minutes to match the trailing successful deploy median more closely
+- Expanded deploy timing memory with the March 14 Fly remote-builder failures and the successful local-only fallback deployment
+
 ## [2026-03-13-10] — Model refresh, eval verification, and project defaults (Story 133)
 
 ### Added

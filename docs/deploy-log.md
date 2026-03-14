@@ -39,3 +39,6 @@ Entries:
 20260227-2230 | 100 | success | partial | Stories 085-089+093 batch deploy; v2026.02.27-03; src/ rebuilt, frontend rebuilt; API smoke passed (health/recipes/projects/changelog 200); browser UI smoke passed (no app errors)
 20260302-0052 | 149 | success | partial | Eval verification deploy; v2026.03.02-01; src/ rebuilt (pip reinstall), frontend rebuilt; API smoke passed (health/recipes/projects/changelog 200); browser UI smoke passed (no app errors)
 20260302-1530 | 123 | success | partial | Story 111 hash-based "View in Script" scroll fix; v2026.03.02-04; frontend rebuilt (4 UI files changed), src/ cached; API smoke passed (health 200 version confirmed); browser disconnected (HTTP fallback — title OK, bundle 200)
+2026-03-14T04:43:58Z | 14 | failed | unknown | Fly remote builder transport failure before image build: unable to upgrade to h2c, received 500
+2026-03-14T04:46:14Z | 12 | failed | unknown | Second remote deploy retry hit the same Fly builder h2c 500 before Docker build
+2026-03-14T04:50:33Z | 247 | success | no | Local-only deploy after remote builder failures; API smoke passed (health/recipes/projects/recent/changelog 200); UI HTTP fallback passed (title OK, bundle 200); browser unavailable in-session
