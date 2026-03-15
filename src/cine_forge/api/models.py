@@ -6,6 +6,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
+from cine_forge.schemas import ArtifactRef, CostRecord, ImpactAssessment
 from cine_forge.schemas.models import ProductionFormat
 
 
@@ -68,6 +69,22 @@ class RunSummary(BaseModel):
     finished_at: float | None = None
 
 
+class ArtifactHealthDetailsResponse(BaseModel):
+    """Live graph health details plus provenance for one artifact."""
+
+    health: str
+    source_kind: str | None = None
+    reason: str | None = None
+    trigger_ref: ArtifactRef | None = None
+    source_artifact_ref: ArtifactRef | None = None
+    upstream_change_summary: str | None = None
+    suggested_revision: str | None = None
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+    assessing_role: str | None = None
+    decided_by: str | None = None
+    updated_at: str | None = None
+
+
 class ArtifactGroupSummary(BaseModel):
     """Latest version summary for one artifact type/entity group."""
 
@@ -75,6 +92,7 @@ class ArtifactGroupSummary(BaseModel):
     entity_id: str | None = None
     latest_version: int = Field(ge=1)
     health: str | None = None
+    health_details: ArtifactHealthDetailsResponse | None = None
 
 
 class ArtifactVersionSummary(BaseModel):
@@ -84,6 +102,7 @@ class ArtifactVersionSummary(BaseModel):
     entity_id: str | None = None
     version: int = Field(ge=1)
     health: str | None = None
+    health_details: ArtifactHealthDetailsResponse | None = None
     path: str
     created_at: str | None = None
     intent: str | None = None
@@ -150,6 +169,8 @@ class ArtifactDetailResponse(BaseModel):
     artifact_type: str
     entity_id: str | None = None
     version: int = Field(ge=1)
+    health: str | None = None
+    health_details: ArtifactHealthDetailsResponse | None = None
     payload: dict[str, Any]
     bible_files: dict[str, Any] | None = None
 
@@ -168,6 +189,72 @@ class ArtifactEditResponse(BaseModel):
     entity_id: str | None = None
     version: int = Field(ge=1)
     path: str
+
+
+class ImpactPreviewTargetResponse(BaseModel):
+    """One stale artifact included in an impact preview."""
+
+    artifact_ref: ArtifactRef
+    artifact_type: str
+    entity_id: str | None = None
+    current_health: str
+
+
+class ImpactPreviewRequest(BaseModel):
+    """Request payload for previewing semantic impact scope."""
+
+    artifact_ref: ArtifactRef
+    selected_artifact_refs: list[ArtifactRef] | None = None
+    model: str | None = None
+    budget_cap_usd: float | None = Field(default=None, ge=0.0)
+
+
+class ImpactPreviewResponse(BaseModel):
+    """Scope preview for a semantic impact assessment run."""
+
+    trigger_artifact_ref: ArtifactRef
+    requested_artifact_ref: ArtifactRef
+    total_stale: int = Field(ge=0)
+    affected_types: list[str] = Field(default_factory=list)
+    estimated_cost: CostRecord
+    budget_cap_usd: float | None = Field(default=None, ge=0.0)
+    within_budget: bool = True
+    targets: list[ImpactPreviewTargetResponse] = Field(default_factory=list)
+
+
+class ImpactAssessmentRequest(BaseModel):
+    """Request payload for running semantic impact assessment."""
+
+    artifact_ref: ArtifactRef
+    selected_artifact_refs: list[ArtifactRef] | None = None
+    model: str | None = None
+    role_id: str | None = None
+    budget_cap_usd: float | None = Field(default=None, ge=0.0)
+
+
+class ImpactAssessmentResponse(BaseModel):
+    """Assessment artifact and payload returned to the UI."""
+
+    assessment_ref: ArtifactRef
+    assessment: ImpactAssessment
+
+
+class ArtifactHealthOverrideRequest(BaseModel):
+    """Manual resolution of a live artifact health state."""
+
+    artifact_ref: ArtifactRef
+    target_health: Literal["valid", "needs_revision", "confirmed_valid"]
+    rationale: str = Field(min_length=1)
+    decided_by: str = Field(default="human", min_length=1)
+
+
+class ArtifactHealthOverrideResponse(BaseModel):
+    """Result payload after a manual health override."""
+
+    decision_ref: ArtifactRef
+    artifact_ref: ArtifactRef
+    health: str
+    health_details: ArtifactHealthDetailsResponse | None = None
 
 
 class RecipeSummary(BaseModel):

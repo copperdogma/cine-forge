@@ -54,6 +54,7 @@ from .entity_adjudication import (
     EntityVerdict,
 )
 from .graph import EntityEdge, EntityGraph
+from .impact import ArtifactImpact, ImpactAssessment
 from .injected_asset import (
     AssetLockStatus,
     AssetTargetKind,
@@ -163,6 +164,8 @@ __all__ = [
     "EventType",
     "EntityEdge",
     "EntityGraph",
+    "ArtifactImpact",
+    "ImpactAssessment",
     "AssetLockStatus",
     "AssetTargetKind",
     "AssetType",

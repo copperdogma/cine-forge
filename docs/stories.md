@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-14, Story 120 landed)
+## Current Execution Map (updated 2026-03-15, Story 031 landed)
 
 Phases 0–5 foundation are landed: script understanding, role/chat infrastructure, concern-group schemas, Intent/Mood, Scene Workspace, and design studies are all in place. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
 
@@ -9,7 +9,6 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 | Story | Why |
 |---|---|
 | **026** Storyboard Generation | Newly unblocked by Story 025. Optional next visualization layer, but Story 119 should land first if we want storyboard prompts to inherit canonical design-study refs instead of re-inventing look consistency. |
-| **031** Change Propagation | R15 Layer 2. Critical before AI artifact editing and deeper iterative editing workflows. |
 | **032** Cost Tracking | Builds the budget and reporting layer on top of already-landed cost hooks. |
 | **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
@@ -33,7 +32,7 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 
 | Story | Why It Stays Draft |
 |---|---|
-| **097** AI Artifact Editing | Important, but it should not outrun Story 031. AI edits without semantic impact triage would create noisy downstream staleness. |
+| **097** AI Artifact Editing | Now unblocked by Story 031, but it is still only draft-scoped. Promote it only after the editing UX, safety rails, and downstream revision flow are detailed enough to validate coherently. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **121** Design Study Composition UX | Still blocked on Story 119 landing first so the iteration UI composes against the final prompt pipeline instead of creating rework. |
 | **102 / 104 / 105 / 106 / 112 / 113 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
@@ -94,7 +93,7 @@ NOTES from Cam:
 | 028 | Render Adapter Module | 7 — Generation | Low | Blocked | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
 | 030 | Generated Output QA | 7 — Generation | Medium | Blocked | [story-030](stories/story-030-generated-output-qa.md) |
-| 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Pending | [story-031](stories/story-031-change-propagation.md) |
+| 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Done | [story-031](stories/story-031-change-propagation.md) |
 | 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | Pending | [story-032](stories/story-032-cost-tracking.md) |
 | 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | Pending | [story-033](stories/story-033-memory-model.md) |
 | 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | Pending | [story-034](stories/story-034-style-pack-creator.md) |

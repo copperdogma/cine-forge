@@ -14,7 +14,8 @@ from typing import Any
 
 from cine_forge.api.exceptions import ServiceError
 from cine_forge.artifacts import ArtifactStore
-from cine_forge.schemas import ArtifactMetadata, ArtifactRef
+from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
+from cine_forge.services import ImpactAssessmentError, ImpactAssessmentService
 from cine_forge.services.injected_assets import list_text_extensions
 
 log = logging.getLogger(__name__)
@@ -66,13 +67,14 @@ class ArtifactManager:
                     if not refs:
                         continue
                     latest = refs[-1]
-                    health = store.graph.get_health(latest)
+                    health_payload = self._live_health_payload(store, latest)
                     groups.append(
                         {
                             "artifact_type": "bible_manifest",
                             "entity_id": entity_id,
                             "latest_version": latest.version,
-                            "health": health.value if health else None,
+                            "health": health_payload["health"],
+                            "health_details": health_payload["health_details"],
                         }
                     )
                 continue
@@ -89,13 +91,14 @@ class ArtifactManager:
                 if not refs:
                     continue
                 latest = refs[-1]
-                health = store.graph.get_health(latest)
+                health_payload = self._live_health_payload(store, latest)
                 groups.append(
                     {
                         "artifact_type": artifact_type,
                         "entity_id": entity_id,
                         "latest_version": latest.version,
-                        "health": health.value if health else None,
+                        "health": health_payload["health"],
+                        "health_details": health_payload["health_details"],
                     }
                 )
         return groups
@@ -112,13 +115,14 @@ class ArtifactManager:
         versions: list[dict[str, Any]] = []
         for ref in refs:
             artifact = store.load_artifact(ref)
-            health = store.graph.get_health(ref)
+            health_payload = self._live_health_payload(store, ref)
             versions.append(
                 {
                     "artifact_type": artifact_type,
                     "entity_id": normalized_entity,
                     "version": ref.version,
-                    "health": health.value if health else None,
+                    "health": health_payload["health"],
+                    "health_details": health_payload["health_details"],
                     "path": ref.path,
                     "created_at": artifact.metadata.created_at.isoformat(),
                     "intent": artifact.metadata.intent,
@@ -152,11 +156,18 @@ class ArtifactManager:
             )
 
         artifact = store.load_artifact(ref)
+        health_payload = self._live_health_payload(store, ref)
+        artifact_payload = artifact.model_dump(mode="json")
+        metadata = artifact_payload.get("metadata")
+        if isinstance(metadata, dict) and health_payload["health"] is not None:
+            metadata["health"] = health_payload["health"]
         response: dict[str, Any] = {
             "artifact_type": artifact_type,
             "entity_id": normalized_entity,
             "version": version,
-            "payload": artifact.model_dump(mode="json"),
+            "health": health_payload["health"],
+            "health_details": health_payload["health_details"],
+            "payload": artifact_payload,
         }
 
         # If it's a bible manifest, load the contents of the files it references
@@ -195,6 +206,107 @@ class ArtifactManager:
             response["bible_files"] = bible_files
 
         return response
+
+    def preview_impact_scope(
+        self,
+        project_id: str,
+        artifact_ref: ArtifactRef,
+        model: str | None = None,
+        selected_refs: list[ArtifactRef] | None = None,
+        budget_cap_usd: float | None = None,
+    ) -> dict[str, Any]:
+        project_path = self._resolve_path(project_id)
+        service = ImpactAssessmentService(
+            project_dir=project_path,
+            role_catalog=self._role_catalog,
+        )
+        try:
+            preview = service.preview_scope(
+                artifact_ref,
+                selected_refs=selected_refs,
+                model=model,
+                budget_cap_usd=budget_cap_usd,
+            )
+        except ImpactAssessmentError as exc:
+            raise ServiceError(
+                code="impact_preview_failed",
+                message=str(exc),
+                hint="Open the latest stale artifact version and try again.",
+                status_code=422,
+            ) from exc
+        return preview.model_dump(mode="json")
+
+    def run_impact_assessment(
+        self,
+        project_id: str,
+        artifact_ref: ArtifactRef,
+        *,
+        selected_refs: list[ArtifactRef] | None = None,
+        model: str | None = None,
+        role_id: str | None = None,
+        budget_cap_usd: float | None = None,
+    ) -> dict[str, Any]:
+        project_path = self._resolve_path(project_id)
+        service = ImpactAssessmentService(
+            project_dir=project_path,
+            role_catalog=self._role_catalog,
+        )
+        try:
+            assessment_ref, assessment = service.run_assessment(
+                artifact_ref,
+                selected_refs=selected_refs,
+                model=model,
+                role_id=role_id,
+                budget_cap_usd=budget_cap_usd,
+            )
+        except ImpactAssessmentError as exc:
+            raise ServiceError(
+                code="impact_assessment_failed",
+                message=str(exc),
+                hint="Preview the scope first or pick a currently stale artifact.",
+                status_code=422,
+            ) from exc
+        return {
+            "assessment_ref": assessment_ref.model_dump(mode="json"),
+            "assessment": assessment.model_dump(mode="json"),
+        }
+
+    def override_artifact_health(
+        self,
+        project_id: str,
+        artifact_ref: ArtifactRef,
+        *,
+        target_health: ArtifactHealth,
+        rationale: str,
+        decided_by: str = "human",
+    ) -> dict[str, Any]:
+        project_path = self._resolve_path(project_id)
+        service = ImpactAssessmentService(
+            project_dir=project_path,
+            role_catalog=self._role_catalog,
+        )
+        try:
+            decision_ref = service.manual_override(
+                artifact_ref,
+                target_health=target_health,
+                rationale=rationale,
+                decided_by=decided_by,
+            )
+        except ImpactAssessmentError as exc:
+            raise ServiceError(
+                code="impact_override_failed",
+                message=str(exc),
+                hint="Open the latest artifact version and try again.",
+                status_code=422,
+            ) from exc
+        store = ArtifactStore(project_dir=project_path)
+        health_payload = self._live_health_payload(store, artifact_ref)
+        return {
+            "decision_ref": decision_ref.model_dump(mode="json"),
+            "artifact_ref": artifact_ref.model_dump(mode="json"),
+            "health": health_payload["health"],
+            "health_details": health_payload["health_details"],
+        }
 
     # ------------------------------------------------------------------
     # Editing
@@ -293,3 +405,33 @@ class ArtifactManager:
                 )
         except Exception:
             log.exception("Failed to notify agents of edit")
+
+    def _live_health_payload(
+        self,
+        store: ArtifactStore,
+        artifact_ref: ArtifactRef,
+    ) -> dict[str, Any]:
+        health = store.graph.get_health(artifact_ref)
+        health_info = store.graph.get_health_info(artifact_ref)
+        if not health and not health_info:
+            return {"health": None, "health_details": None}
+
+        details = None
+        if health_info:
+            details = {
+                "health": health_info["health"],
+                "source_kind": health_info.get("source_kind"),
+                "reason": health_info.get("reason"),
+                "trigger_ref": health_info.get("trigger_ref"),
+                "source_artifact_ref": health_info.get("source_artifact_ref"),
+                "upstream_change_summary": health_info.get("upstream_change_summary"),
+                "suggested_revision": health_info.get("suggested_revision"),
+                "confidence": health_info.get("confidence"),
+                "assessing_role": health_info.get("assessing_role"),
+                "decided_by": health_info.get("decided_by"),
+                "updated_at": health_info.get("updated_at"),
+            }
+        return {
+            "health": health.value if health else (health_info["health"] if health_info else None),
+            "health_details": details,
+        }

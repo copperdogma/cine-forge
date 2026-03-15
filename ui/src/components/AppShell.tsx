@@ -43,12 +43,13 @@ import { useChatStore } from '@/lib/chat-store'
 import { useRunProgressChat } from '@/lib/use-run-progress'
 import { cn } from '@/lib/utils'
 import {
-  staleItemId,
+  artifactAttentionItemId,
   errorItemId,
   reviewItemId,
   parseReadIds,
   READ_INBOX_KEY,
 } from '@/lib/inbox-utils'
+import { isAttentionHealth } from '@/lib/health'
 
 /** Artifact type → nav route mapping for count badges. */
 const NAV_ARTIFACT_TYPES: Record<string, string[]> = {
@@ -236,21 +237,22 @@ function ShellInner() {
         counts[route] = artifactGroups.filter(g => types.includes(g.artifact_type)).length
       }
     }
-    // Inbox: match ProjectInbox logic — stale artifacts + failed runs + v1 bibles needing review
+    // Inbox: match ProjectInbox logic — health attention items + failed runs + v1 bibles needing review
     // Badge shows unread count only, using shared ID builders (story 069)
     const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
     const readSet = new Set(parseReadIds(project?.ui_preferences?.[READ_INBOX_KEY]))
-    const staleCount = artifactGroups?.filter(g =>
-      g.health === 'stale' && !readSet.has(staleItemId(g.artifact_type, g.entity_id))
+    const attentionCount = artifactGroups?.filter(g =>
+      isAttentionHealth(g.health) &&
+      !readSet.has(artifactAttentionItemId(g.health, g.artifact_type, g.entity_id))
     ).length ?? 0
     const errorCount = runs?.filter(r =>
       r.status === 'failed' && !readSet.has(errorItemId(r.run_id))
     ).length ?? 0
     const reviewCount = artifactGroups?.filter(g =>
-      BIBLE_TYPES.includes(g.artifact_type) && g.latest_version === 1 && g.health !== 'stale' &&
+      BIBLE_TYPES.includes(g.artifact_type) && g.latest_version === 1 && !isAttentionHealth(g.health) &&
       !readSet.has(reviewItemId(g.artifact_type, g.entity_id, g.latest_version))
     ).length ?? 0
-    counts['inbox'] = staleCount + errorCount + reviewCount
+    counts['inbox'] = attentionCount + errorCount + reviewCount
     return counts
   }, [artifactGroups, runs, project?.ui_preferences])
 

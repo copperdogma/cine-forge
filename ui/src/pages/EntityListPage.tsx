@@ -169,6 +169,7 @@ interface BibleEntity {
   entity_id: string
   latest_version: number
   health: string | null
+  health_details?: import('@/lib/types').ArtifactHealthDetails | null
   description?: string
   sceneCount: number
   firstSceneNumber: number | null
@@ -221,7 +222,7 @@ function BibleCompactRow({
       <Badge variant="outline" className="text-xs">
         v{item.latest_version}
       </Badge>
-      <HealthBadge health={item.health} />
+      <HealthBadge health={item.health} details={item.health_details} />
     </div>
   )
 }
@@ -262,7 +263,7 @@ function BibleMediumCard({
               <Badge variant="outline" className="text-xs">
                 v{item.latest_version}
               </Badge>
-              <HealthBadge health={item.health} />
+              <HealthBadge health={item.health} details={item.health_details} />
             </div>
           </div>
         </div>
@@ -314,7 +315,7 @@ function BibleLargeCard({
               <Badge variant="outline" className="text-xs">
                 v{item.latest_version}
               </Badge>
-              <HealthBadge health={item.health} />
+              <HealthBadge health={item.health} details={item.health_details} />
             </div>
           </div>
         </div>

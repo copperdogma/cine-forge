@@ -22,7 +22,7 @@ from cine_forge.modules.ingest.story_ingest_v1.main import (
     read_source_text_with_diagnostics,
 )
 from cine_forge.roles.runtime import RoleCatalog, RoleContext
-from cine_forge.schemas import ArtifactMetadata, ArtifactRef
+from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
 
 log = logging.getLogger(__name__)
 
@@ -755,6 +755,58 @@ class OperatorConsoleService:
         """Create a new version of an artifact with human-edited data."""
         return self._artifact_mgr.edit_artifact(
             project_id, artifact_type, entity_id, data, rationale
+        )
+
+    def preview_impact_scope(
+        self,
+        project_id: str,
+        artifact_ref: ArtifactRef,
+        model: str | None = None,
+        selected_refs: list[ArtifactRef] | None = None,
+        budget_cap_usd: float | None = None,
+    ) -> dict[str, Any]:
+        return self._artifact_mgr.preview_impact_scope(
+            project_id,
+            artifact_ref,
+            model=model,
+            selected_refs=selected_refs,
+            budget_cap_usd=budget_cap_usd,
+        )
+
+    def run_impact_assessment(
+        self,
+        project_id: str,
+        artifact_ref: ArtifactRef,
+        *,
+        selected_refs: list[ArtifactRef] | None = None,
+        model: str | None = None,
+        role_id: str | None = None,
+        budget_cap_usd: float | None = None,
+    ) -> dict[str, Any]:
+        return self._artifact_mgr.run_impact_assessment(
+            project_id,
+            artifact_ref,
+            selected_refs=selected_refs,
+            model=model,
+            role_id=role_id,
+            budget_cap_usd=budget_cap_usd,
+        )
+
+    def override_artifact_health(
+        self,
+        project_id: str,
+        artifact_ref: ArtifactRef,
+        *,
+        target_health: ArtifactHealth,
+        rationale: str,
+        decided_by: str = "human",
+    ) -> dict[str, Any]:
+        return self._artifact_mgr.override_artifact_health(
+            project_id,
+            artifact_ref,
+            target_health=target_health,
+            rationale=rationale,
+            decided_by=decided_by,
         )
 
     # --- Chat persistence (delegates to ChatStore) ---

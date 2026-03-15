@@ -27,7 +27,7 @@ import { timeAgo } from '@/lib/format'
 import { PageHeader } from '@/components/PageHeader'
 import * as api from '@/lib/api'
 import {
-  staleItemId,
+  artifactAttentionItemId,
   errorItemId,
   reviewItemId,
   gateItemId,
@@ -36,14 +36,16 @@ import {
 } from '@/lib/inbox-utils'
 import type { InboxFilter } from '@/lib/inbox-utils'
 import type { ProjectSummary } from '@/lib/types'
+import { healthDescription, healthLabel, isAttentionHealth } from '@/lib/health'
 
-type InboxItemType = 'stale' | 'review' | 'error' | 'gate_review'
+type InboxItemType = 'attention' | 'review' | 'error' | 'gate_review'
 
 interface InboxItem {
   id: string
   type: InboxItemType
   title: string
   description: string
+  health?: string | null
   artifact_type?: string
   entity_id?: string
   version?: number
@@ -70,8 +72,8 @@ function formatArtifactType(type: string): string {
 
 function getItemTooltip(type: InboxItemType): string {
   switch (type) {
-    case 'stale':
-      return 'This artifact is stale because upstream inputs have changed. Re-run to regenerate it.'
+    case 'attention':
+      return 'This artifact has a live health state that needs attention.'
     case 'error':
       return 'This pipeline stage failed during execution. Review the error and retry.'
     case 'review':
@@ -81,11 +83,15 @@ function getItemTooltip(type: InboxItemType): string {
   }
 }
 
-function itemIcon(type: InboxItemType) {
-  const tooltipText = getItemTooltip(type)
+function itemIcon(item: InboxItem) {
+  const tooltipText = item.type === 'attention'
+    ? healthDescription(item.health)
+    : getItemTooltip(item.type)
 
   const iconMap = {
-    stale: <AlertTriangle className="h-4 w-4 text-amber-400" />,
+    attention: item.health === 'confirmed_valid'
+      ? <CheckCircle className="h-4 w-4 text-sky-300" />
+      : <AlertTriangle className="h-4 w-4 text-amber-400" />,
     error: <XCircle className="h-4 w-4 text-destructive" />,
     review: <Eye className="h-4 w-4 text-primary" />,
     gate_review: <Lock className="h-4 w-4 text-primary" />,
@@ -95,7 +101,7 @@ function itemIcon(type: InboxItemType) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="cursor-help">{iconMap[type]}</div>
+          <div className="cursor-help">{iconMap[item.type]}</div>
         </TooltipTrigger>
         <TooltipContent>
           <p>{tooltipText}</p>
@@ -113,7 +119,7 @@ function itemAction(
 ) {
   const actionLabel = item.type === 'error' ? 'View Run'
     : item.type === 'gate_review' ? 'Review Stage'
-    : item.type === 'stale' ? 'View'
+    : item.type === 'attention' ? 'View'
     : 'Review'
 
   const handleClick = (e: React.MouseEvent) => {
@@ -183,16 +189,17 @@ export default function ProjectInbox() {
     persistReadIds([...readIds, id])
   }, [readIds, persistReadIds])
 
-  // Derive stale items from artifact groups (stable IDs via inbox-utils)
-  const staleItems = useMemo<InboxItem[]>(() => {
+  // Derive actionable health items from artifact groups (stable IDs via inbox-utils)
+  const attentionItems = useMemo<InboxItem[]>(() => {
     if (!artifactGroups) return []
     return artifactGroups
-      .filter(group => group.health === 'stale')
+      .filter(group => isAttentionHealth(group.health))
       .map((group) => ({
-        id: staleItemId(group.artifact_type, group.entity_id),
-        type: 'stale' as const,
-        title: `${group.entity_id ?? 'Unknown'} — ${formatArtifactType(group.artifact_type)} is stale`,
-        description: 'Upstream inputs have changed since this artifact was produced.',
+        id: artifactAttentionItemId(group.health, group.artifact_type, group.entity_id),
+        type: 'attention' as const,
+        title: `${group.entity_id ?? 'Unknown'} — ${formatArtifactType(group.artifact_type)} is ${healthLabel(group.health).toLowerCase()}`,
+        description: healthDescription(group.health, group.health_details),
+        health: group.health,
         artifact_type: group.artifact_type,
         entity_id: group.entity_id ?? undefined,
         timestamp: 0,
@@ -221,7 +228,7 @@ export default function ProjectInbox() {
       .filter(group =>
         BIBLE_TYPES.includes(group.artifact_type) &&
         group.latest_version === 1 &&
-        group.health !== 'stale'
+        !isAttentionHealth(group.health)
       )
       .map((group) => ({
         id: reviewItemId(group.artifact_type, group.entity_id, group.latest_version),
@@ -259,8 +266,8 @@ export default function ProjectInbox() {
 
   // All items (no filtering — we show read/unread based on filter)
   const allItems = useMemo(
-    () => [...staleItems, ...errorItems, ...reviewItems, ...gateReviewItems],
-    [staleItems, errorItems, reviewItems, gateReviewItems],
+    () => [...attentionItems, ...errorItems, ...reviewItems, ...gateReviewItems],
+    [attentionItems, errorItems, reviewItems, gateReviewItems],
   )
 
   const unreadCount = allItems.filter(i => !readIds.has(i.id)).length
@@ -281,7 +288,7 @@ export default function ProjectInbox() {
   }, [allItems, readIds, filter])
 
   // Counts by type (from visible items)
-  const staleCount = visibleItems.filter(i => i.type === 'stale').length
+  const attentionCount = visibleItems.filter(i => i.type === 'attention').length
   const errorCount = visibleItems.filter(i => i.type === 'error').length
   const reviewCount = visibleItems.filter(i => i.type === 'review').length
   const gateReviewCount = visibleItems.filter(i => i.type === 'gate_review').length
@@ -325,10 +332,10 @@ export default function ProjectInbox() {
               ))}
             </div>
 
-            {staleCount > 0 && (
+            {attentionCount > 0 && (
               <Badge variant="outline" className="text-xs text-amber-400 border-amber-400/30 gap-1">
                 <AlertTriangle className="h-3 w-3" />
-                {staleCount} stale
+                {attentionCount} attention
               </Badge>
             )}
             {errorCount > 0 && (
@@ -412,7 +419,7 @@ export default function ProjectInbox() {
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
-                        <div className="mt-0.5">{itemIcon(item.type)}</div>
+                        <div className="mt-0.5">{itemIcon(item)}</div>
                         <div className="min-w-0 flex-1">
                           <p className={`text-sm ${isRead ? 'font-normal' : 'font-medium'}`}>{item.title}</p>
                           <p className="text-xs text-muted-foreground mt-0.5">

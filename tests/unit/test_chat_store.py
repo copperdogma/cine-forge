@@ -53,6 +53,44 @@ def test_upsert_replaces_existing_user_message(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
+def test_upsert_replaces_existing_ai_status_message(tmp_path: Path) -> None:
+    store = ChatStore()
+    original = {"id": "status-1", "type": "ai_status", "content": "Working..."}
+    store.append(tmp_path, original)
+
+    updated = {"id": "status-1", "type": "ai_status_done", "content": "Working — complete"}
+    store.append(tmp_path, updated)
+
+    messages = store.list_messages(tmp_path)
+    assert len(messages) == 1
+    assert messages[0]["type"] == "ai_status_done"
+    assert messages[0]["content"] == "Working — complete"
+
+
+@pytest.mark.unit
+def test_upsert_replaces_existing_task_progress_message(tmp_path: Path) -> None:
+    store = ChatStore()
+    original = {
+        "id": "task-1",
+        "type": "task_progress",
+        "content": '{"heading":"Task","items":[{"label":"A","status":"running"}]}',
+    }
+    store.append(tmp_path, original)
+
+    updated = {
+        "id": "task-1",
+        "type": "task_progress",
+        "content": '{"heading":"Task","items":[{"label":"A","status":"done","detail":"ok"}]}',
+    }
+    store.append(tmp_path, updated)
+
+    messages = store.list_messages(tmp_path)
+    assert len(messages) == 1
+    assert '"status":"done"' in messages[0]["content"]
+    assert '"detail":"ok"' in messages[0]["content"]
+
+
+@pytest.mark.unit
 def test_idempotent_duplicate_id_produces_one_entry(tmp_path: Path) -> None:
     """Calling append twice with the same non-activity message ID keeps one entry."""
     store = ChatStore()

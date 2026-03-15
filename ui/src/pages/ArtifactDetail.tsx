@@ -30,6 +30,7 @@ import {
 } from '@/components/ArtifactViewers'
 import { ProvenanceBadge } from '@/components/ProvenanceBadge'
 import { HealthBadge } from '@/components/HealthBadge'
+import { ImpactAssessmentCard } from '@/components/ImpactAssessmentCard'
 import { getArtifactMeta } from '@/lib/artifact-meta'
 import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
@@ -175,7 +176,21 @@ export default function ArtifactDetail() {
   }
 
   const currentVersion = versions?.find(v => v.version === versionNum)
-  const health = currentVersion?.health ?? null
+  const latestVersion = versions?.reduce((max, item) => Math.max(max, item.version), 0) ?? 0
+  const isLatestVersion = versionNum === latestVersion
+  const health = artifact.health ?? currentVersion?.health ?? null
+  const healthDetails = artifact.health_details ?? currentVersion?.health_details ?? null
+  const payloadMetadata = artifact.payload?.metadata as Record<string, unknown> | undefined
+  const payloadRef = payloadMetadata?.ref as Record<string, unknown> | undefined
+
+  const artifactRef = projectId && artifactType && entityId && versionNum !== undefined
+    ? {
+        artifact_type: artifactType,
+        entity_id: entityId === 'project' || entityId === '__project__' ? null : entityId,
+        version: versionNum,
+        path: typeof payloadRef?.path === 'string' ? payloadRef.path : (currentVersion?.path ?? ''),
+      }
+    : null
 
   // Extract a human-friendly display name from the artifact data
   const data = artifact?.payload?.data as Record<string, unknown> | undefined
@@ -327,7 +342,7 @@ export default function ArtifactDetail() {
               <h1 className="text-2xl font-bold tracking-tight truncate">
                 {displayName ?? entityId ?? meta.label}
               </h1>
-              <HealthBadge health={health} />
+              <HealthBadge health={health} details={healthDetails} />
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>{meta.label}</span>
@@ -383,9 +398,13 @@ export default function ArtifactDetail() {
                           : 'border-border hover:bg-accent/50',
                       )}
                     >
-                      <div className="flex items-center justify-between mb-1">
+                      <div className="mb-1 flex flex-wrap items-center gap-2">
                         <span className="text-sm font-medium">v{v.version}</span>
-                        <HealthBadge health={v.health} />
+                        <HealthBadge
+                          health={v.health}
+                          details={v.health_details}
+                          className="h-auto max-w-full justify-start whitespace-normal break-words text-left leading-tight"
+                        />
                       </div>
                       {v.created_at && (
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -404,6 +423,16 @@ export default function ArtifactDetail() {
 
         {/* Main Content */}
         <main className="lg:col-span-3 space-y-4">
+          {artifactRef && (
+            <ImpactAssessmentCard
+              projectId={projectId ?? ''}
+              artifactRef={artifactRef}
+              health={health}
+              details={healthDetails}
+              isLatestVersion={isLatestVersion}
+            />
+          )}
+
           {/* Metadata Card */}
           <Card>
             <CardHeader className="pb-3">

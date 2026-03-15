@@ -156,3 +156,51 @@ def test_sibling_not_marked_stale_via_shared_intermediate(tmp_path: Path) -> Non
     graph.propagate_stale_for_new_version(s001_v3)
 
     assert graph.get_health(s002_v3) == ArtifactHealth.VALID
+
+
+@pytest.mark.unit
+def test_graph_records_assessment_provenance(tmp_path: Path) -> None:
+    """Assessment results should update live health and preserve provenance."""
+    graph = DependencyGraph(project_dir=tmp_path)
+    trigger_v2 = ArtifactRef(
+        artifact_type="character_bible",
+        entity_id="billy",
+        version=2,
+        path="artifacts/character_bible/billy/v2.json",
+    )
+    assessment_ref = ArtifactRef(
+        artifact_type="impact_assessment",
+        entity_id="character_bible_billy_v2",
+        version=1,
+        path="artifacts/impact_assessment/character_bible_billy_v2/v1.json",
+    )
+    stale_ref = ArtifactRef(
+        artifact_type="scene",
+        entity_id="scene_001",
+        version=1,
+        path="artifacts/scene/scene_001/v1.json",
+    )
+
+    graph.register_artifact(trigger_v2, [])
+    graph.register_artifact(stale_ref, [trigger_v2])
+    graph.set_assessment_result(
+        stale_ref,
+        assessed_health=ArtifactHealth.NEEDS_REVISION,
+        trigger_ref=trigger_v2,
+        source_artifact_ref=assessment_ref,
+        rationale="Performance note depends on the old character motivation.",
+        upstream_change_summary="Billy's core motivation changed.",
+        suggested_revision="Update the scene performance direction.",
+        confidence=0.91,
+        assessing_role="director",
+    )
+
+    info = graph.get_health_info(stale_ref)
+    refs = graph.get_refs_for_trigger(trigger_v2, ArtifactHealth.NEEDS_REVISION)
+
+    assert graph.get_health(stale_ref) == ArtifactHealth.NEEDS_REVISION
+    assert info is not None
+    assert info["source_kind"] == "impact_assessment"
+    assert info["reason"] == "Performance note depends on the old character motivation."
+    assert ArtifactRef.model_validate(info["source_artifact_ref"]) == assessment_ref
+    assert refs == [stale_ref]

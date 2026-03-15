@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-03-15-01] — Semantic change propagation lands (Story 031)
+
+### Added
+- Semantic impact assessment artifacts, API routes, and browser actions for previewing stale scope, running selective assessment, and recording immutable assessment provenance
+
+### Changed
+- Artifact detail, inbox, artifact lists, and home health summaries now surface live graph health states and attention semantics instead of relying on persisted snapshot metadata
+
+### Fixed
+- Added request-scoped assessment budget caps, long-running operation feedback for impact assessment, and automated selective-assessment coverage so Story 031 closes against its full acceptance criteria
+- Persisted long-running chat status updates by message ID so impact-assessment completion survives reload with the correct permanent record
+- Wrapped artifact-detail version-history health badges so long status labels stay inside the sidebar card instead of overflowing
+
 ## [2026-03-14-08] — Story backlog sequencing corrections
 
 ### Changed

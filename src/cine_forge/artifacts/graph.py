@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 import threading
 from collections import deque
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from cine_forge.schemas import ArtifactHealth, ArtifactRef
 
@@ -99,6 +101,12 @@ class DependencyGraph:
                 seen.add(node_key)
                 nodes[node_key]["health"] = ArtifactHealth.STALE.value
                 nodes[node_key]["stale_cause"] = new_ref.key()
+                nodes[node_key]["health_context"] = self._build_health_context(
+                    source_kind="structural_invalidation",
+                    trigger_ref=new_ref,
+                    source_artifact_ref=None,
+                    reason="Upstream artifact changed and this artifact now needs review.",
+                )
                 stale_refs.append(ArtifactRef.model_validate(nodes[node_key]["ref"]))
                 # If a newer version of this node exists, its downstream was already
                 # rebuilt from fresh data — mark stale here but stop BFS propagation
@@ -133,11 +141,18 @@ class DependencyGraph:
     def get_stale(self) -> list[ArtifactRef]:
         with self._lock:
             graph = self._read_graph()
-        return [
-            ArtifactRef.model_validate(node["ref"])
-            for node in graph["nodes"].values()
-            if node["health"] == ArtifactHealth.STALE.value
-        ]
+        return self._collect_refs_by_health(
+            graph=graph,
+            healths={ArtifactHealth.STALE},
+        )
+
+    def get_refs_by_health(self, *healths: ArtifactHealth) -> list[ArtifactRef]:
+        """Return artifact refs whose live graph health matches any provided state."""
+        if not healths:
+            return []
+        with self._lock:
+            graph = self._read_graph()
+        return self._collect_refs_by_health(graph=graph, healths=set(healths))
 
     def get_stale_with_causes(self) -> list[tuple[ArtifactRef, str | None]]:
         """Return stale artifacts with the cause key that triggered staleness.
@@ -165,6 +180,121 @@ class DependencyGraph:
             return None
         return ArtifactHealth(node["health"])
 
+    def get_health_info(self, artifact_ref: ArtifactRef) -> dict[str, Any] | None:
+        """Return current graph health plus provenance context for one artifact."""
+        with self._lock:
+            graph = self._read_graph()
+        node = graph["nodes"].get(artifact_ref.key())
+        if not node:
+            return None
+        context = dict(node.get("health_context") or {})
+        return {
+            "health": node["health"],
+            "trigger_ref": context.get("trigger_ref"),
+            "source_artifact_ref": context.get("source_artifact_ref"),
+            "source_kind": context.get("source_kind"),
+            "reason": context.get("reason"),
+            "upstream_change_summary": context.get("upstream_change_summary"),
+            "suggested_revision": context.get("suggested_revision"),
+            "confidence": context.get("confidence"),
+            "assessing_role": context.get("assessing_role"),
+            "decided_by": context.get("decided_by"),
+            "updated_at": context.get("updated_at"),
+        }
+
+    def get_refs_for_trigger(
+        self,
+        trigger_ref: ArtifactRef,
+        *healths: ArtifactHealth,
+    ) -> list[ArtifactRef]:
+        """Return refs whose live health context points at *trigger_ref*."""
+        with self._lock:
+            graph = self._read_graph()
+        allowed = set(healths) if healths else None
+        refs: list[ArtifactRef] = []
+        trigger_key = trigger_ref.key()
+        for node in graph["nodes"].values():
+            node_health = ArtifactHealth(node["health"])
+            if allowed and node_health not in allowed:
+                continue
+            context = node.get("health_context") or {}
+            context_trigger = context.get("trigger_ref")
+            if isinstance(context_trigger, dict):
+                try:
+                    if ArtifactRef.model_validate(context_trigger).key() != trigger_key:
+                        continue
+                except Exception:
+                    continue
+            elif node.get("stale_cause") != trigger_key:
+                continue
+            refs.append(ArtifactRef.model_validate(node["ref"]))
+        return refs
+
+    def set_assessment_result(
+        self,
+        artifact_ref: ArtifactRef,
+        *,
+        assessed_health: ArtifactHealth,
+        trigger_ref: ArtifactRef,
+        source_artifact_ref: ArtifactRef,
+        rationale: str,
+        upstream_change_summary: str,
+        suggested_revision: str | None,
+        confidence: float,
+        assessing_role: str,
+    ) -> None:
+        """Persist the live outcome of an impact assessment in graph state."""
+        if assessed_health not in {
+            ArtifactHealth.NEEDS_REVISION,
+            ArtifactHealth.CONFIRMED_VALID,
+        }:
+            raise ValueError(f"Unsupported assessed health: {assessed_health}")
+        with self._lock:
+            graph = self._read_graph()
+            node = graph["nodes"].get(artifact_ref.key())
+            if not node:
+                raise KeyError(f"Unknown artifact ref: {artifact_ref.key()}")
+            node["health"] = assessed_health.value
+            node["health_context"] = self._build_health_context(
+                source_kind="impact_assessment",
+                trigger_ref=trigger_ref,
+                source_artifact_ref=source_artifact_ref,
+                reason=rationale,
+                upstream_change_summary=upstream_change_summary,
+                suggested_revision=suggested_revision,
+                confidence=confidence,
+                assessing_role=assessing_role,
+            )
+            self._write_graph(graph)
+
+    def set_manual_health_override(
+        self,
+        artifact_ref: ArtifactRef,
+        *,
+        health: ArtifactHealth,
+        trigger_ref: ArtifactRef | None,
+        source_artifact_ref: ArtifactRef | None,
+        rationale: str,
+        decided_by: str,
+    ) -> None:
+        """Apply a manual health decision while preserving provenance context."""
+        with self._lock:
+            graph = self._read_graph()
+            node = graph["nodes"].get(artifact_ref.key())
+            if not node:
+                raise KeyError(f"Unknown artifact ref: {artifact_ref.key()}")
+            node["health"] = health.value
+            if health == ArtifactHealth.VALID:
+                node["stale_cause"] = None
+            node["health_context"] = self._build_health_context(
+                source_kind="manual_override",
+                trigger_ref=trigger_ref,
+                source_artifact_ref=source_artifact_ref,
+                reason=rationale,
+                decided_by=decided_by,
+            )
+            self._write_graph(graph)
+
     def _read_graph(self) -> dict:
         with self._graph_path.open("r", encoding="utf-8") as file:
             return json.load(file)
@@ -172,3 +302,44 @@ class DependencyGraph:
     def _write_graph(self, graph: dict) -> None:
         with self._graph_path.open("w", encoding="utf-8") as file:
             json.dump(graph, file, indent=2, sort_keys=True)
+
+    def _collect_refs_by_health(
+        self,
+        *,
+        graph: dict[str, Any],
+        healths: set[ArtifactHealth],
+    ) -> list[ArtifactRef]:
+        health_values = {health.value for health in healths}
+        return [
+            ArtifactRef.model_validate(node["ref"])
+            for node in graph["nodes"].values()
+            if node["health"] in health_values
+        ]
+
+    def _build_health_context(
+        self,
+        *,
+        source_kind: str,
+        trigger_ref: ArtifactRef | None,
+        source_artifact_ref: ArtifactRef | None,
+        reason: str | None,
+        upstream_change_summary: str | None = None,
+        suggested_revision: str | None = None,
+        confidence: float | None = None,
+        assessing_role: str | None = None,
+        decided_by: str | None = None,
+    ) -> dict[str, Any]:
+        return {
+            "source_kind": source_kind,
+            "trigger_ref": trigger_ref.model_dump(mode="json") if trigger_ref else None,
+            "source_artifact_ref": (
+                source_artifact_ref.model_dump(mode="json") if source_artifact_ref else None
+            ),
+            "reason": reason,
+            "upstream_change_summary": upstream_change_summary,
+            "suggested_revision": suggested_revision,
+            "confidence": confidence,
+            "assessing_role": assessing_role,
+            "decided_by": decided_by,
+            "updated_at": datetime.now(UTC).isoformat(),
+        }

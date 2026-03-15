@@ -668,7 +668,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h1 className="text-2xl font-bold tracking-tight truncate">{displayName}</h1>
-            <HealthBadge health={group.health} />
+            <HealthBadge health={group.health} details={group.health_details} />
             {section === 'characters' && (
               <ProminenceBadge prominence={data?.prominence as string | undefined} />
             )}

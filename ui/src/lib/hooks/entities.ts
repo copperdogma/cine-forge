@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useQueries } from '@tanstack/react-query'
 import { getArtifact } from '../api'
-import type { ArtifactDetailResponse } from '../types'
+import type { ArtifactDetailResponse, ArtifactHealthDetails } from '../types'
 import { useArtifactGroups, useSceneIndex } from './artifacts'
 
 export interface Scene {
@@ -22,6 +22,7 @@ export interface EnrichedEntity {
   artifact_type: string
   latest_version: number
   health: string | null
+  health_details?: ArtifactHealthDetails | null
   description: string | null
   sceneCount: number
   firstSceneNumber: number | null
@@ -164,6 +165,7 @@ export function useEntityDetails(
         artifact_type: group.artifact_type,
         latest_version: group.latest_version,
         health: group.health,
+        health_details: group.health_details,
         description: data?.description ?? null,
         sceneCount: data?.scene_presence?.length ?? 0,
         firstSceneNumber: computeFirstSceneNumber(

@@ -18,6 +18,7 @@ from enum import StrEnum
 from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.schemas import ArtifactHealth
 
 # ---------------------------------------------------------------------------
 # Enums
@@ -392,10 +393,13 @@ def _check_node_staleness(
     node: PipelineNode,
     store: ArtifactStore,
 ) -> bool:
-    """Return True if any of this node's latest artifacts are stale."""
-    stale_refs = store.graph.get_stale()
-    stale_types = {r.artifact_type for r in stale_refs}
-    return bool(stale_types & set(node.artifact_types))
+    """Return True if any latest artifacts still need attention."""
+    attention_refs = store.graph.get_refs_by_health(
+        ArtifactHealth.STALE,
+        ArtifactHealth.NEEDS_REVISION,
+    )
+    attention_types = {r.artifact_type for r in attention_refs}
+    return bool(attention_types & set(node.artifact_types))
 
 
 def trace_staleness(
@@ -426,6 +430,13 @@ def trace_staleness(
                 )
                 cause_label = cause_node.label if cause_node else cause_type
                 return f"{cause_label} was updated"
+
+    for ref in store.graph.get_refs_by_health(ArtifactHealth.NEEDS_REVISION):
+        if ref.artifact_type not in node_types:
+            continue
+        health_info = store.graph.get_health_info(ref) or {}
+        if health_info.get("reason"):
+            return str(health_info["reason"])
 
     return None
 

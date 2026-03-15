@@ -109,6 +109,8 @@ interface ChatStore {
   setInjectedContent: (projectId: string, messageId: string, content: string) => void
   /** Finalize a streaming message: remove streaming flag, persist to backend. */
   finalizeStreamingMessage: (projectId: string, messageId: string) => void
+  /** Persist the current in-memory snapshot of a message to the backend. */
+  persistMessage: (projectId: string, messageId: string) => void
   getMessages: (projectId: string) => ChatMessage[]
   clearMessages: (projectId: string) => void
   hasMessages: (projectId: string) => boolean
@@ -330,6 +332,15 @@ export const useChatStore = create<ChatStore>()(
       // so the chat log records what tools ran and what context was attached.
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { streaming: _s, ...persistable } = finalized
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      postChatMessage(projectId, persistable as any).catch(() => {})
+    },
+
+    persistMessage: (projectId, messageId) => {
+      const msg = get().messages[projectId]?.find(m => m.id === messageId)
+      if (!msg) return
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { streaming: _streaming, ...persistable } = msg
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       postChatMessage(projectId, persistable as any).catch(() => {})
     },

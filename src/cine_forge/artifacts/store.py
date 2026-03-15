@@ -111,6 +111,16 @@ class ArtifactStore:
             )
         return refs
 
+    def latest_ref(self, artifact_type: str, entity_id: str | None) -> ArtifactRef | None:
+        """Return the latest version ref for one artifact group, if any."""
+        refs = self.list_versions(artifact_type=artifact_type, entity_id=entity_id)
+        return refs[-1] if refs else None
+
+    def is_latest_ref(self, artifact_ref: ArtifactRef) -> bool:
+        """Return True when *artifact_ref* is the latest version for its group."""
+        latest = self.latest_ref(artifact_ref.artifact_type, artifact_ref.entity_id)
+        return latest is not None and latest.version == artifact_ref.version
+
     def save_bible_entry(
         self,
         entity_type: str,

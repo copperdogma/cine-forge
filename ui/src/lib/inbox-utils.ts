@@ -7,6 +7,14 @@ export function staleItemId(artifactType: string, entityId: string | null): stri
   return `stale-${artifactType}-${entityId ?? 'null'}`
 }
 
+export function artifactAttentionItemId(
+  health: string | null,
+  artifactType: string,
+  entityId: string | null,
+): string {
+  return `${health ?? 'unknown'}-${artifactType}-${entityId ?? 'null'}`
+}
+
 export function errorItemId(runId: string): string {
   return `error-${runId}`
 }

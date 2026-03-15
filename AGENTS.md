@@ -381,6 +381,7 @@ When building or substantially redesigning a UI, follow this process:
 
 #### 3. Build Loop (screenshot-verified)
 - Build one component or page at a time.
+- Before changing a state-specific screen, confirm that the view is actually wired into the active route tree. This repo still contains alternate components that are not the live path (for example, `AnalyzedView` in `ui/src/pages/ProjectHome.tsx`), so code in the wrong branch can look finished while users never see it.
 - After each significant change: take a screenshot via Chrome MCP → inspect the result → fix issues → screenshot again.
 - **Never generate large amounts of UI code without visual verification.** This is the #1 anti-pattern — blind CSS/HTML generation produces garbage.
 - **After wiring pages to real API data**, reload the app with the backend running and click through every modified page. Check `read_console_messages` for runtime errors. `npm run build` passing does NOT mean the UI works — runtime data mismatches (e.g., backend sends `'done'` but switch handles `'completed'`) only crash in the browser.
@@ -624,6 +625,7 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-28 — Stale model selection: Never pick models from training data — query `/v1/models` or provider docs and check current pricing before model decisions. Cost differences can be 10-20x. Model lineups change rapidly; a model that was expensive last month may have been superseded by a cheaper alternative.
 - 2026-02-28 — Silent long-running operations: Any button that triggers work taking >1s MUST provide both a status banner on-page and per-item chat timeline entries (spinners → checkmarks). Users cannot tell if something is working, stuck, or failed without this feedback. See `AGENTS.md > UI Development Workflow > User Feedback Contract` for the mandatory pattern. This applies to ALL async operations — pipeline runs, propagation, AI calls, exports, etc.
 - 2026-03-01 — LLM resolution degrades from synthetic to real data: Small-scale synthetic test fixtures (10-20 entities) can produce excellent scores (P=1.00, R=0.91) while the same approach struggles on real-world data (40-80+ entities). A passing eval on a small fixture does not guarantee production readiness. Always test against realistic-scale inputs before declaring a capability works.
+- 2026-03-14 — Dead UI branches can hide regressions: before calling a UI story complete, verify the changed view is part of the active route switch and not just a dormant alternate component. Story 031 initially updated `AnalyzedView` while `ProjectHome` still rendered `FreshImportView` for every non-empty state, which would have left the new attention UX invisible.
 
 ### Lessons Learned
 - 2026-02-12 — Build the pipeline spine before AI modules: Land immutable store and graph first.

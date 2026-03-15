@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 class ChatStore:
-    """Append-only JSONL chat store with upsert support for activity messages."""
+    """JSONL chat store with idempotent append and per-message upsert by ID."""
 
     def __init__(self) -> None:
         self._lock = threading.Lock()
@@ -43,11 +43,12 @@ class ChatStore:
         return messages
 
     def append(self, project_path: Path, message: dict[str, Any]) -> dict[str, Any]:
-        """Append a chat message (idempotent by message ID).
+        """Append or replace a chat message by ID.
 
-        Activity-typed and user messages use upsert semantics: if a line with
-        the same ID already exists it is replaced in-place so at most one
-        activity entry appears in the JSONL at any time (Story 067).
+        Messages are persisted with stable IDs, so later writes for the same ID
+        should replace the existing line instead of leaving stale state behind.
+        This keeps the backend chat journal aligned with the in-memory view for
+        activity notes, user message enrichment, and long-running status cards.
 
         The entire method is protected by a lock to prevent concurrent
         read-modify-write races (Story 118 fix).
@@ -55,14 +56,11 @@ class ChatStore:
         with self._lock:
             path = self._chat_path(project_path)
             msg_id = message.get("id", "")
-            msg_type = message.get("type", "")
+            new_line = json.dumps(message, separators=(",", ":"))
 
-            # Activity and user messages: upsert (replace existing line with same ID).
-            # User messages need upsert so injectedContent can be added after initial persist.
-            if msg_type in ("activity", "user_message") and msg_id and path.exists():
+            if msg_id and path.exists():
                 lines = path.read_text(encoding="utf-8").splitlines()
                 replaced = False
-                new_line = json.dumps(message, separators=(",", ":"))
                 updated_lines: list[str] = []
                 for raw in lines:
                     stripped = raw.strip()
@@ -71,6 +69,8 @@ class ChatStore:
                     try:
                         existing = json.loads(stripped)
                         if existing.get("id") == msg_id:
+                            if existing == message:
+                                return existing
                             updated_lines.append(new_line)
                             replaced = True
                             continue
@@ -82,22 +82,8 @@ class ChatStore:
                         "\n".join(updated_lines) + "\n", encoding="utf-8"
                     )
                     return message
-                # No existing line found — fall through to append below
-
-            # Idempotency check — scan for existing ID (non-activity messages)
-            if path.exists() and msg_id:
-                for line in path.read_text(encoding="utf-8").splitlines():
-                    line = line.strip()
-                    if not line:
-                        continue
-                    try:
-                        existing = json.loads(line)
-                        if existing.get("id") == msg_id:
-                            return existing  # Already persisted
-                    except json.JSONDecodeError:
-                        continue
 
             # Append
             with path.open("a", encoding="utf-8") as f:
-                f.write(json.dumps(message, separators=(",", ":")) + "\n")
+                f.write(new_line + "\n")
             return message

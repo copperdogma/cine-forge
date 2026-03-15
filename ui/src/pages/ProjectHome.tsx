@@ -10,18 +10,14 @@ import {
   FileText,
   AlertTriangle,
   CheckCircle2,
-  Clock,
   Loader2,
   Package,
   Inbox,
-  History,
-  ExternalLink,
-  Calendar,
   Pencil,
   Share,
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -33,10 +29,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { SceneStrip } from '@/components/SceneStrip'
 import {
   useProject,
-  useRuns,
   useArtifactGroups,
   useScenes,
   useEntityResolver,
@@ -47,9 +41,8 @@ import {
   useProjectState,
 } from '@/lib/hooks'
 import { updateProjectSettings } from '@/lib/api'
+import { healthLabel, isAttentionHealth } from '@/lib/health'
 import { cn } from '@/lib/utils'
-import { timeAgo, formatDuration } from '@/lib/format'
-import { getStatusConfig } from '@/components/StatusBadge'
 import type { ProjectState, ProjectSummary } from '@/lib/types'
 
 import type { ScreenplayEditorHandle, SceneDividerData } from '@/components/ScreenplayEditor'
@@ -280,6 +273,7 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const { hash } = useLocation()
   const scrolledToHashRef = useRef<string | null>(null)
   const { data: project } = useProject(projectId)
+  const { data: artifactGroups } = useArtifactGroups(projectId)
   const { data: inputs } = useProjectInputs(projectId)
   const { data: scenes } = useScenes(projectId)
   const { resolve } = useEntityResolver(projectId)
@@ -290,6 +284,10 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const editorRef = useRef<ScreenplayEditorHandle>(null)
   const [isExportOpen, setIsExportOpen] = useState(false)
   const [bibleExpanded, setBibleExpanded] = useState(false)
+  const attentionGroups = artifactGroups?.filter(group => isAttentionHealth(group.health)) ?? []
+  const attentionArtifacts = attentionGroups.length
+  const totalArtifacts = artifactGroups?.length ?? 0
+  const currentArtifacts = Math.max(totalArtifacts - attentionArtifacts, 0)
 
   // Extract script bible data
   const bible = scriptBibleArtifact?.payload?.data as {
@@ -428,6 +426,72 @@ function FreshImportView({ projectId }: { projectId: string }) {
         )}
       </div>
 
+      {totalArtifacts > 0 && (
+        <Card className={cn(attentionArtifacts > 0 && 'border-amber-500/30 bg-amber-500/5')}>
+          <CardContent className="flex flex-col gap-4 py-4 md:flex-row md:items-start md:justify-between">
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="rounded-full border border-border bg-muted/30 p-2">
+                  {attentionArtifacts > 0 ? (
+                    <AlertTriangle className="h-4 w-4 text-amber-400" />
+                  ) : (
+                    <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <div className="text-sm font-semibold">Artifact Health</div>
+                  <p className="text-sm text-muted-foreground">
+                    {attentionArtifacts > 0
+                      ? `${attentionArtifacts} artifact${attentionArtifacts === 1 ? '' : 's'} need attention. ${currentArtifacts} current.`
+                      : `All ${totalArtifacts} artifact${totalArtifacts === 1 ? '' : 's'} are current.`}
+                  </p>
+                </div>
+              </div>
+
+              {attentionArtifacts > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {attentionGroups.slice(0, 3).map((group) => (
+                    <Button
+                      key={`${group.artifact_type}-${group.entity_id ?? 'project'}`}
+                      variant="outline"
+                      size="sm"
+                      className="justify-start text-left"
+                      onClick={() => navigate(`/${projectId}/artifacts/${group.artifact_type}/${group.entity_id ?? 'project'}/${group.latest_version}`)}
+                    >
+                      {(group.entity_id ?? 'Project')}
+                      {' · '}
+                      {healthLabel(group.health).toLowerCase()}
+                    </Button>
+                  ))}
+                  {attentionArtifacts > 3 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate(`/${projectId}/inbox`)}
+                    >
+                      +{attentionArtifacts - 3} more
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {attentionArtifacts > 0 && (
+                <Button onClick={() => navigate(`/${projectId}/inbox`)}>
+                  <Inbox className="mr-2 h-4 w-4" />
+                  Open Inbox
+                </Button>
+              )}
+              <Button variant="outline" onClick={() => navigate(`/${projectId}/artifacts`)}>
+                <Package className="mr-2 h-4 w-4" />
+                Browse Artifacts
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Screenplay content — fills remaining space */}
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
@@ -467,233 +531,6 @@ function FreshImportView({ projectId }: { projectId: string }) {
         projectId={projectId}
         defaultScope="everything"
       />
-    </div>
-  )
-}
-
-// --- Analyzed / Complete View: Dashboard with scenes, artifacts, runs ---
-
-// TODO: Wire AnalyzedView into project state switch (Story 041 Phase 3)
-export function AnalyzedView({ projectId }: { projectId: string }) {
-  const navigate = useNavigate()
-  const { data: project } = useProject(projectId)
-  const { data: runs } = useRuns(projectId)
-  const { data: artifactGroups } = useArtifactGroups(projectId)
-  const { data: scenes, isLoading: scenesLoading } = useScenes(projectId)
-
-  const totalRuns = runs?.length ?? 0
-  const completedRuns = runs?.filter(r => r.status === 'done').length ?? 0
-  const failedRuns = runs?.filter(r => r.status === 'failed').length ?? 0
-  const totalArtifacts = artifactGroups?.length ?? 0
-  const staleArtifacts = artifactGroups?.filter(g => g.health === 'stale').length ?? 0
-
-  const recentRuns = runs
-    ? [...runs].sort((a, b) => (b.started_at ?? 0) - (a.started_at ?? 0)).slice(0, 5)
-    : []
-
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <Film className="h-8 w-8 text-primary" />
-        <div className="min-w-0 flex-1">
-          <EditableTitle
-            projectId={projectId}
-            displayName={project?.display_name ?? projectId}
-            className="text-3xl"
-          />
-          <p className="text-sm text-muted-foreground">
-            {totalArtifacts} artifacts · {totalRuns} runs
-          </p>
-        </div>
-      </div>
-
-      <Separator />
-
-      {/* Scene overview */}
-      {scenes && scenes.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Scenes</CardTitle>
-            <CardDescription>
-              {scenes.length} scene{scenes.length !== 1 ? 's' : ''} detected
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="px-0">
-            {scenesLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              </div>
-            ) : (
-              <SceneStrip scenes={scenes} />
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Quick stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="cursor-pointer hover:bg-accent/30 transition-colors" onClick={() => navigate('artifacts')}>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Package className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <div className="text-2xl font-bold">{totalArtifacts}</div>
-                <p className="text-xs text-muted-foreground">
-                  {staleArtifacts > 0
-                    ? <><span className="text-amber-400">{staleArtifacts} stale</span> · {totalArtifacts - staleArtifacts} healthy</>
-                    : 'All healthy'
-                  }
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="cursor-pointer hover:bg-accent/30 transition-colors" onClick={() => navigate('runs')}>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <History className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <div className="text-2xl font-bold">{totalRuns}</div>
-                <p className="text-xs text-muted-foreground">
-                  <span className="text-green-400">{completedRuns} completed</span>
-                  {failedRuns > 0 && <> · <span className="text-red-400">{failedRuns} failed</span></>}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="cursor-pointer hover:bg-accent/30 transition-colors" onClick={() => navigate('inbox')}>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Inbox className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <div className="text-2xl font-bold">{staleArtifacts}</div>
-                <p className="text-xs text-muted-foreground">
-                  {staleArtifacts > 0 ? 'Items need attention' : 'Inbox clear'}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent runs */}
-      {recentRuns.length > 0 && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Recent Runs</CardTitle>
-              <Button variant="outline" size="sm" onClick={() => navigate('runs')} className="gap-2">
-                View All <ExternalLink className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {recentRuns.map(run => {
-                const statusConfig = getStatusConfig(run.status)
-                const StatusIcon = statusConfig.icon
-                const duration = run.finished_at && run.started_at
-                  ? formatDuration(run.finished_at - run.started_at)
-                  : null
-                return (
-                  <div
-                    key={run.run_id}
-                    className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors cursor-pointer"
-                    onClick={() => navigate(`runs/${run.run_id}`)}
-                  >
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <StatusIcon className={cn('h-4 w-4 shrink-0', statusConfig.className)} />
-                      <span className="font-mono text-sm truncate">{run.run_id}</span>
-                      <Badge variant="outline" className={cn('text-xs px-1.5 py-0', statusConfig.className)}>
-                        {statusConfig.label}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground shrink-0">
-                      {run.started_at && (
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {timeAgo(run.started_at * 1000)}
-                        </span>
-                      )}
-                      {duration && (
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {duration}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Artifact health */}
-      {totalArtifacts > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Artifact Health</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex items-center justify-between cursor-help">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-400" />
-                        <span className="text-sm">Healthy</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-mono text-muted-foreground">
-                          {totalArtifacts - staleArtifacts}
-                        </span>
-                        <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-green-500"
-                            style={{ width: `${((totalArtifacts - staleArtifacts) / totalArtifacts) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>Up to date and passed all quality checks.</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              {staleArtifacts > 0 && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center justify-between cursor-help">
-                        <div className="flex items-center gap-2">
-                          <AlertTriangle className="h-4 w-4 text-amber-400" />
-                          <span className="text-sm">Stale</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-mono text-muted-foreground">{staleArtifacts}</span>
-                          <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-amber-500"
-                              style={{ width: `${(staleArtifacts / totalArtifacts) * 100}%` }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Upstream changes detected. Regeneration recommended.</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   )
 }

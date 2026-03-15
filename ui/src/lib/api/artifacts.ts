@@ -3,7 +3,13 @@ import type {
   ArtifactEditRequest,
   ArtifactEditResponse,
   ArtifactGroupSummary,
+  ArtifactHealthOverrideRequest,
+  ArtifactHealthOverrideResponse,
   ArtifactVersionSummary,
+  ImpactAssessmentRequest,
+  ImpactAssessmentResponse,
+  ImpactPreviewRequest,
+  ImpactPreviewResponse,
 } from '../types'
 import { request } from './core'
 
@@ -45,4 +51,34 @@ export function editArtifact(
       body: JSON.stringify(payload),
     },
   )
+}
+
+export function previewImpactScope(
+  projectId: string,
+  payload: ImpactPreviewRequest,
+): Promise<ImpactPreviewResponse> {
+  return request<ImpactPreviewResponse>(`/api/projects/${projectId}/impact/preview`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function runImpactAssessment(
+  projectId: string,
+  payload: ImpactAssessmentRequest,
+): Promise<ImpactAssessmentResponse> {
+  return request<ImpactAssessmentResponse>(`/api/projects/${projectId}/impact/assess`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function overrideArtifactHealth(
+  projectId: string,
+  payload: ArtifactHealthOverrideRequest,
+): Promise<ArtifactHealthOverrideResponse> {
+  return request<ArtifactHealthOverrideResponse>(`/api/projects/${projectId}/impact/override`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
 }

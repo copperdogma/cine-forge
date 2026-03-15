@@ -5,13 +5,22 @@ import {
   getPipelineGraph,
   listArtifactGroups,
   listArtifactVersions,
+  overrideArtifactHealth,
+  previewImpactScope,
+  runImpactAssessment,
 } from '../api'
 import type {
   ArtifactDetailResponse,
   ArtifactEditRequest,
   ArtifactEditResponse,
   ArtifactGroupSummary,
+  ArtifactHealthOverrideRequest,
+  ArtifactHealthOverrideResponse,
   ArtifactVersionSummary,
+  ImpactAssessmentRequest,
+  ImpactAssessmentResponse,
+  ImpactPreviewRequest,
+  ImpactPreviewResponse,
   PipelineGraphResponse,
 } from '../types'
 
@@ -77,6 +86,61 @@ export function useEditArtifact() {
       queryClient.invalidateQueries({
         queryKey: ['projects', variables.projectId, 'artifacts', variables.artifactType],
       })
+    },
+  })
+}
+
+export function usePreviewImpactScope() {
+  return useMutation<
+    ImpactPreviewResponse,
+    Error,
+    {
+      projectId: string
+      payload: ImpactPreviewRequest
+    }
+  >({
+    mutationFn: ({ projectId, payload }) => previewImpactScope(projectId, payload),
+  })
+}
+
+export function useRunImpactAssessment() {
+  const queryClient = useQueryClient()
+  return useMutation<
+    ImpactAssessmentResponse,
+    Error,
+    {
+      projectId: string
+      payload: ImpactAssessmentRequest
+    }
+  >({
+    mutationFn: ({ projectId, payload }) => runImpactAssessment(projectId, payload),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['projects', variables.projectId, 'artifacts'] })
+      queryClient.invalidateQueries({
+        queryKey: ['projects', variables.projectId, 'pipeline-graph'],
+      })
+      queryClient.invalidateQueries({ queryKey: ['projects', variables.projectId] })
+    },
+  })
+}
+
+export function useOverrideArtifactHealth() {
+  const queryClient = useQueryClient()
+  return useMutation<
+    ArtifactHealthOverrideResponse,
+    Error,
+    {
+      projectId: string
+      payload: ArtifactHealthOverrideRequest
+    }
+  >({
+    mutationFn: ({ projectId, payload }) => overrideArtifactHealth(projectId, payload),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['projects', variables.projectId, 'artifacts'] })
+      queryClient.invalidateQueries({
+        queryKey: ['projects', variables.projectId, 'pipeline-graph'],
+      })
+      queryClient.invalidateQueries({ queryKey: ['projects', variables.projectId] })
     },
   })
 }

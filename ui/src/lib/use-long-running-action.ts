@@ -107,6 +107,7 @@ export function useLongRunningAction<T>(config: LongRunningActionConfig<T>) {
       setTimeout(() => store.removeOperation(projectId, opId), 1500)
 
       onSuccess?.(result, { chatMessageId: chatMsgId })
+      chatStore.persistMessage(projectId, chatMsgId)
     } catch (err) {
       // 4b. Failure — update chat + store
       const error = err instanceof Error ? err : new Error(String(err))
@@ -126,6 +127,7 @@ export function useLongRunningAction<T>(config: LongRunningActionConfig<T>) {
       setTimeout(() => store.removeOperation(projectId, opId), 1500)
 
       onError?.(error)
+      chatStore.persistMessage(projectId, chatMsgId)
     } finally {
       runningRef.current = false
     }

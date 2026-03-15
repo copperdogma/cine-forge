@@ -1,151 +1,15 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  AlertTriangle,
-  RefreshCw,
   Package,
-  Eye,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { useArtifactGroups } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
 import { PageHeader } from '@/components/PageHeader'
 import { getArtifactMeta } from '@/lib/artifact-meta'
-import { toast } from 'sonner'
-
-type ArtifactGroupSummary = {
-  artifact_type: string
-  entity_id: string | null
-  latest_version: number
-  health: string | null
-}
-
-function getHealthTooltip(health: string | null): string {
-  switch (health) {
-    case 'valid':
-      return 'This artifact is up to date and has passed all quality checks.'
-    case 'stale':
-      return 'Upstream artifacts have changed. This artifact needs to be regenerated.'
-    case 'needs_review':
-      return 'AI flagged this artifact for human review before use in downstream stages.'
-    case null:
-      return 'Health status not yet determined.'
-    default:
-      return 'Unknown health status.'
-  }
-}
-
-interface HealthBadgeProps {
-  health: string | null
-  projectId?: string
-}
-
-function HealthBadge({ health, projectId }: HealthBadgeProps) {
-  const navigate = useNavigate()
-
-  if (!health) return null
-
-  // Valid/healthy artifacts get a green badge
-  if (health === 'valid' || health === 'healthy') {
-    return (
-      <Badge variant="outline" className="text-xs text-green-400 border-green-400/30">
-        <span className="sr-only">Health status: </span>
-        {health}
-      </Badge>
-    )
-  }
-
-  const tooltipText = getHealthTooltip(health)
-
-  if (health === 'stale') {
-    return (
-      <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Badge variant="outline" className="text-xs text-amber-400 border-amber-400/30 gap-1">
-                <AlertTriangle className="h-3 w-3" aria-hidden="true" />
-                <span className="sr-only">Health status: </span>
-                Stale
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{tooltipText}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-5 w-5"
-          aria-label="Re-run pipeline to regenerate artifact"
-          onClick={() => {
-            navigate(`/${projectId}/run`)
-            toast.info('Navigate to Pipeline to re-run the relevant recipe')
-          }}
-        >
-          <RefreshCw className="h-3 w-3 text-amber-400" />
-        </Button>
-      </div>
-    )
-  }
-
-  if (health === 'needs_review') {
-    return (
-      <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Badge variant="destructive" className="text-xs gap-1">
-                <AlertTriangle className="h-3 w-3" aria-hidden="true" />
-                <span className="sr-only">Health status: </span>
-                Needs Review
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{tooltipText}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-5 w-5"
-          aria-label="View artifact details"
-          onClick={() => {
-            toast.info('Click the artifact card to review')
-          }}
-        >
-          <Eye className="h-3 w-3 text-destructive" />
-        </Button>
-      </div>
-    )
-  }
-
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Badge variant="destructive" className="text-xs">
-            {health}
-          </Badge>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{tooltipText}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  )
-}
+import { HealthBadge } from '@/components/HealthBadge'
 
 function CardSkeleton() {
   return (
@@ -166,7 +30,7 @@ export default function ProjectArtifacts() {
 
   const navigate = useNavigate()
 
-  function navigateToArtifact(item: ArtifactGroupSummary) {
+  function navigateToArtifact(item: { artifact_type: string; entity_id: string | null; latest_version: number }) {
     navigate(`/${projectId}/artifacts/${item.artifact_type}/${item.entity_id ?? 'project'}/${item.latest_version}`)
   }
 
@@ -213,7 +77,7 @@ export default function ProjectArtifacts() {
     }
 
     // Group by artifact_type for display
-    const grouped = new Map<string, ArtifactGroupSummary[]>()
+    const grouped = new Map<string, typeof groups>()
     for (const g of groups) {
       const list = grouped.get(g.artifact_type) ?? []
       list.push(g)
@@ -272,7 +136,7 @@ export default function ProjectArtifacts() {
                         <p className="text-sm font-medium truncate">{item.entity_id ?? 'project'}</p>
                         <p className="text-xs text-muted-foreground">v{item.latest_version}</p>
                       </div>
-                      <HealthBadge health={item.health} projectId={projectId} />
+                      <HealthBadge health={item.health} details={item.health_details} />
                     </CardContent>
                   </Card>
                 ))}

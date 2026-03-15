@@ -104,11 +104,42 @@ export type RunEventsResponse = {
   events: Array<Record<string, unknown>>
 }
 
+export type ArtifactRef = {
+  artifact_type: string
+  entity_id: string | null
+  version: number
+  path: string
+}
+
+export type CostRecord = {
+  model: string
+  input_tokens: number
+  output_tokens: number
+  estimated_cost_usd: number
+  latency_seconds?: number | null
+  request_id?: string | null
+}
+
+export type ArtifactHealthDetails = {
+  health: string
+  source_kind?: string | null
+  reason?: string | null
+  trigger_ref?: ArtifactRef | null
+  source_artifact_ref?: ArtifactRef | null
+  upstream_change_summary?: string | null
+  suggested_revision?: string | null
+  confidence?: number | null
+  assessing_role?: string | null
+  decided_by?: string | null
+  updated_at?: string | null
+}
+
 export type ArtifactGroupSummary = {
   artifact_type: string
   entity_id: string | null
   latest_version: number
   health: string | null
+  health_details?: ArtifactHealthDetails | null
 }
 
 export type ArtifactVersionSummary = {
@@ -116,6 +147,7 @@ export type ArtifactVersionSummary = {
   entity_id: string | null
   version: number
   health: string | null
+  health_details?: ArtifactHealthDetails | null
   path: string
   created_at?: string
   intent?: string
@@ -126,6 +158,8 @@ export type ArtifactDetailResponse = {
   artifact_type: string
   entity_id: string | null
   version: number
+  health?: string | null
+  health_details?: ArtifactHealthDetails | null
   payload: Record<string, unknown>
   bible_files?: Record<string, unknown>
 }
@@ -140,6 +174,79 @@ export type ArtifactEditResponse = {
   entity_id: string | null
   version: number
   path: string
+}
+
+export type ImpactPreviewTarget = {
+  artifact_ref: ArtifactRef
+  artifact_type: string
+  entity_id: string | null
+  current_health: string
+}
+
+export type ImpactPreviewRequest = {
+  artifact_ref: ArtifactRef
+  selected_artifact_refs?: ArtifactRef[] | null
+  model?: string | null
+  budget_cap_usd?: number | null
+}
+
+export type ImpactPreviewResponse = {
+  trigger_artifact_ref: ArtifactRef
+  requested_artifact_ref: ArtifactRef
+  total_stale: number
+  affected_types: string[]
+  estimated_cost: CostRecord
+  budget_cap_usd?: number | null
+  within_budget: boolean
+  targets: ImpactPreviewTarget[]
+}
+
+export type ArtifactImpact = {
+  artifact_ref: ArtifactRef
+  previous_health: string
+  assessed_health: 'needs_revision' | 'confirmed_valid'
+  rationale: string
+  upstream_change_summary: string
+  suggested_revision?: string | null
+  confidence: number
+  assessing_role: string
+}
+
+export type ImpactAssessment = {
+  trigger_artifact_ref: ArtifactRef
+  trigger_diff_summary: string
+  assessments: ArtifactImpact[]
+  total_stale: number
+  total_needs_revision: number
+  total_confirmed_valid: number
+  assessment_cost: CostRecord
+}
+
+export type ImpactAssessmentRequest = {
+  artifact_ref: ArtifactRef
+  selected_artifact_refs?: ArtifactRef[] | null
+  model?: string | null
+  role_id?: string | null
+  budget_cap_usd?: number | null
+}
+
+export type ImpactAssessmentResponse = {
+  assessment_ref: ArtifactRef
+  assessment: ImpactAssessment
+}
+
+export type ArtifactHealthOverrideRequest = {
+  artifact_ref: ArtifactRef
+  target_health: 'valid' | 'needs_revision' | 'confirmed_valid'
+  rationale: string
+  decided_by?: string
+}
+
+export type ArtifactHealthOverrideResponse = {
+  decision_ref: ArtifactRef
+  artifact_ref: ArtifactRef
+  health: string
+  health_details?: ArtifactHealthDetails | null
 }
 
 export type RecipeSummary = {
