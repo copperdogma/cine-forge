@@ -1,21 +1,26 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Wand2, Heart, CheckCircle, XCircle, GitBranch, ChevronDown, ChevronUp, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
+import { ProductionFormatModal } from '@/components/ProductionFormatModal'
 import {
   getDesignStudy,
   generateDesignStudy,
   decideDesignStudy,
   getDesignStudyImageUrl,
+  updateProjectSettings,
 } from '@/lib/api'
+import { useProject } from '@/lib/hooks'
 import type {
   DesignStudyState,
   DesignStudyImage,
   DesignStudyEntityType,
   ImageDecision,
 } from '@/lib/api'
+import type { ProductionFormat, ProjectSummary } from '@/lib/types'
 
 interface Props {
   projectId: string
@@ -247,12 +252,14 @@ function filterImages(images: DesignStudyImage[], mode: FilterMode): DesignStudy
 
 export function DesignStudySection({ projectId, entityId, entityType }: Props) {
   const queryClient = useQueryClient()
+  const { data: project, isLoading: projectLoading } = useProject(projectId)
   const [guidance, setGuidance] = useState('')
   const [count, setCount] = useState<1 | 2 | 4 | 8>(1)
   const [model, setModel] = useState(IMAGEN_MODELS[0].id)
   const [showHistory, setShowHistory] = useState(false)
   const [filter, setFilter] = useState<FilterMode>('all')
   const [useSeedVariants, setUseSeedVariants] = useState(true)
+  const [formatModalOpen, setFormatModalOpen] = useState(false)
 
   const { data: state, isLoading } = useQuery({
     queryKey: ['design-study', projectId, entityId],
@@ -278,6 +285,19 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
     onSuccess: (updated) => {
       queryClient.setQueryData(['design-study', projectId, entityId], updated)
       setGuidance('')
+    },
+  })
+
+  const saveFormatMutation = useMutation({
+    mutationFn: (format: ProductionFormat) =>
+      updateProjectSettings(projectId, { production_format: format }),
+    onSuccess: (updatedProject) => {
+      queryClient.setQueryData<ProjectSummary>(['projects', projectId], updatedProject)
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+    },
+    onError: (error) => {
+      const message = error instanceof Error ? error.message : 'Failed to save visual medium'
+      toast.error(message)
     },
   })
 
@@ -323,6 +343,24 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
 
   function handleDecide(filename: string, decision: ImageDecision, g?: string) {
     decideMutation.mutate({ filename, decision, guidance: g })
+  }
+
+  async function handleFormatSelect(format: ProductionFormat) {
+    try {
+      await saveFormatMutation.mutateAsync(format)
+      setFormatModalOpen(false)
+      generateMutation.mutate()
+    } catch {
+      // Error surfaced through mutation state; keep modal open for retry.
+    }
+  }
+
+  function handleGenerateClick() {
+    if (!project?.production_format) {
+      setFormatModalOpen(true)
+      return
+    }
+    generateMutation.mutate()
   }
 
   return (
@@ -411,13 +449,13 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
           <Button
             size="sm"
             className="w-full justify-center"
-            disabled={generateMutation.isPending}
-            onClick={() => generateMutation.mutate()}
+            disabled={generateMutation.isPending || saveFormatMutation.isPending || projectLoading}
+            onClick={handleGenerateClick}
           >
-            {generateMutation.isPending ? (
+            {generateMutation.isPending || saveFormatMutation.isPending ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                Generating…
+                {saveFormatMutation.isPending ? 'Saving format…' : 'Generating…'}
               </>
             ) : (
               <>
@@ -521,6 +559,20 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
           No design study yet. Generate the first image above.
         </p>
       )}
+
+      <ProductionFormatModal
+        open={formatModalOpen}
+        onOpenChange={setFormatModalOpen}
+        selectedFormat={project?.production_format ?? null}
+        pending={saveFormatMutation.isPending}
+        title="Choose a visual medium before generating"
+        description="This one project-wide choice sets the base visual medium for image generation. You can refine it later from Intent & Mood."
+        onSelect={handleFormatSelect}
+        onSkip={() => {
+          setFormatModalOpen(false)
+          generateMutation.mutate()
+        }}
+      />
     </div>
   )
 }

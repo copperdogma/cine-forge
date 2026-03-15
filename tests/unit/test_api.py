@@ -1027,6 +1027,84 @@ def test_project_ui_preferences_persist(tmp_path: Path) -> None:
     assert project_data["ui_preferences"]["locations.sort"] == "script-order"
 
 
+def test_project_production_format_persists_and_syncs_project_config(tmp_path: Path) -> None:
+    """Production format should round-trip through settings and sync canonical config."""
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "format-pref-test", "Format Preference Test")
+    project_path = tmp_path / "output" / "format-pref-test"
+
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="seed config",
+        rationale="test fixture",
+        confidence=1.0,
+        source="human",
+        producing_module="test.fixture",
+    )
+    store.save_artifact(
+        artifact_type="project_config",
+        entity_id="project",
+        data={
+            "title": "Pilot",
+            "format": "feature",
+            "genre": ["drama"],
+            "tone": ["grounded"],
+            "estimated_duration_minutes": 110.0,
+            "primary_characters": ["MARA"],
+            "supporting_characters": [],
+            "location_count": 3,
+            "locations_summary": ["Harbor", "Diner", "Apartment"],
+            "target_audience": None,
+            "aspect_ratio": "2.39:1",
+            "production_mode": "ai_generated",
+            "production_format": None,
+            "human_control_mode": "autonomous",
+            "style_packs": {},
+            "budget_cap_usd": None,
+            "default_model": "claude-sonnet-4-6",
+            "detection_details": {},
+            "confirmed": True,
+            "confirmed_at": "2026-03-14T00:00:00Z",
+        },
+        metadata=metadata,
+    )
+
+    update_resp = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={"production_format": "anime"},
+    )
+    assert update_resp.status_code == 200
+    payload = update_resp.json()
+    assert payload["production_format"] == "anime"
+
+    project_json = json.loads((project_path / "project.json").read_text(encoding="utf-8"))
+    assert project_json["production_format"] == "anime"
+
+    refs = store.list_versions("project_config", "project")
+    assert len(refs) == 2
+    latest = store.load_artifact(refs[-1])
+    latest_data = latest.data if isinstance(latest.data, dict) else latest.data.model_dump()
+    assert latest_data["production_format"] == "anime"
+    assert latest.metadata.lineage[0].version == 1
+
+    clear_resp = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={"production_format": None},
+    )
+    assert clear_resp.status_code == 200
+    clear_payload = clear_resp.json()
+    assert clear_payload["production_format"] is None
+
+    cleared_json = json.loads((project_path / "project.json").read_text(encoding="utf-8"))
+    assert "production_format" not in cleared_json
+
+    refs = store.list_versions("project_config", "project")
+    assert len(refs) == 3
+    cleared = store.load_artifact(refs[-1])
+    cleared_data = cleared.data if isinstance(cleared.data, dict) else cleared.data.model_dump()
+    assert cleared_data["production_format"] is None
+
+
 def test_project_model_settings_persist_and_clear(tmp_path: Path) -> None:
     """Project model defaults should round-trip through project settings."""
     client = _make_client(tmp_path)

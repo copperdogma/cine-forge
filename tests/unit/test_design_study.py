@@ -1,8 +1,8 @@
-"""Unit tests for the Design Study schemas and image prompt synthesis."""
+"""Unit tests for the Design Study schemas and image prompt building."""
 
 import pytest
 
-from cine_forge.ai.image import synthesize_image_prompt
+from cine_forge.ai.image import build_image_prompt, synthesize_image_prompt
 from cine_forge.schemas.design_study import (
     DesignStudyImage,
     DesignStudyRound,
@@ -124,6 +124,19 @@ def test_all_images_newest_first():
     assert all_imgs[1].filename == "r1.jpg"
 
 
+@pytest.mark.unit
+def test_design_study_round_tracks_sources_used():
+    round_ = DesignStudyRound(
+        round_number=1,
+        prompt="test",
+        model="imagen-4.0-generate-001",
+        entity_type="character",
+        entity_id="character_mariner",
+        sources_used=["entity_bible", "production_format"],
+    )
+    assert round_.sources_used == ["entity_bible", "production_format"]
+
+
 # ---------------------------------------------------------------------------
 # Prompt synthesis tests
 # ---------------------------------------------------------------------------
@@ -185,3 +198,30 @@ def test_synthesize_prompt_handles_missing_fields():
     prompt = synthesize_image_prompt("character", {"name": "Bob"})
     assert "Bob" in prompt
     assert len(prompt) > 0
+
+
+@pytest.mark.unit
+def test_build_image_prompt_tracks_production_format_source():
+    prompt, sources_used = build_image_prompt(
+        "character",
+        {"name": "The Mariner", "description": "A grizzled old sailor."},
+        guidance="More weathered",
+        project_config_data={"production_format": "anime"},
+    )
+    assert "More weathered" in prompt
+    assert "anime" in prompt.lower()
+    assert "production_format" in sources_used
+    assert "user_guidance" in sources_used
+
+
+@pytest.mark.unit
+def test_build_image_prompt_skips_production_format_source_when_unset():
+    prompt, sources_used = build_image_prompt(
+        "prop",
+        {"name": "The Oar", "description": "A heavy oak oar."},
+        seed_image_filename="design_study_r1_img1.jpg",
+        project_config_data={},
+    )
+    assert "Variation of the previously approved design direction" in prompt
+    assert "seed_image" in sources_used
+    assert "production_format" not in sources_used

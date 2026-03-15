@@ -40,6 +40,7 @@ class DesignStudyRound(BaseModel):
     entity_id: str
     guidance: str | None = None
     seed_image_filename: str | None = None
+    sources_used: list[str] = Field(default_factory=list)
     count: int = 1
     created_at: datetime = Field(default_factory=datetime.now)
     images: list[DesignStudyImage] = Field(default_factory=list)

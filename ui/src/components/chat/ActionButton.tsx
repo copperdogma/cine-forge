@@ -4,6 +4,9 @@ import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { useChatStore } from '@/lib/chat-store'
+import { getRunningRunLabel } from '@/lib/constants'
+import { useActiveProjectRun } from '@/lib/hooks'
+import { startTrackedRun } from '@/lib/run-actions'
 import type { ChatAction, RunStartPayload } from '@/lib/types'
 import { RUN_ACTION_IDS } from './config'
 
@@ -28,10 +31,13 @@ export function ActionButton({
   onRetry,
 }: ActionButtonProps) {
   const navigate = useNavigate()
-  const addMessage = useChatStore((store) => store.addMessage)
   const [busy, setBusy] = useState(false)
+  const { isRunning: hasActiveRun, recipeId: activeRecipeId } = useActiveProjectRun(projectId)
+  const isRunAction = !!RUN_ACTION_IDS[action.id] || action.confirm_action?.type === 'start_run'
 
   const handleClick = async () => {
+    if (isRunAction && hasActiveRun) return
+
     if (action.retry_text && onRetry) {
       onRetry(action.retry_text)
       return
@@ -106,40 +112,25 @@ export function ActionButton({
 
     const recipeId = RUN_ACTION_IDS[action.id]
 
-    if (recipeId) {
-      addMessage(projectId, {
-        id: `action_${Date.now()}`,
-        type: 'user_action',
-        content: action.label,
-        timestamp: Date.now(),
-      })
-    }
-
     if (recipeId && inputPath) {
       setBusy(true)
-      const store = useChatStore.getState()
       try {
-        const result = await startRun.mutateAsync({
-          project_id: projectId,
-          input_file: inputPath,
-          default_model: 'claude-sonnet-4-6',
-          recipe_id: recipeId,
-          accept_config: true,
+        await startTrackedRun({
+          projectId,
+          actionLabel: action.label,
+          startRun: startRun.mutateAsync,
+          payload: {
+            project_id: projectId,
+            input_file: inputPath,
+            default_model: 'claude-sonnet-4-6',
+            recipe_id: recipeId,
+            accept_config: true,
+          },
         })
-        store.setActiveRun(projectId, result.run_id)
-        store.addMessage(projectId, {
-          id: `run_started_${result.run_id}`,
-          type: 'ai_status',
-          content: 'Breaking down your screenplay now...',
-          timestamp: Date.now(),
-          actions: [
-            { id: 'view_run_details', label: 'View Run Details', variant: 'outline', route: `runs/${result.run_id}` },
-          ],
-        })
-        store.addActivity(projectId, `Started pipeline: ${recipeId}`, `runs/${result.run_id}`)
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to start analysis'
         toast.error(message)
+        const store = useChatStore.getState()
         store.addMessage(projectId, {
           id: `error_${Date.now()}`,
           type: 'ai_suggestion',
@@ -170,13 +161,15 @@ export function ActionButton({
       size="sm"
       className="cursor-pointer"
       onClick={handleClick}
-      disabled={busy || startRun.isPending}
+      disabled={busy || startRun.isPending || (isRunAction && hasActiveRun)}
     >
       {busy ? (
         <>
           <Loader2 className="h-3 w-3 mr-1.5 animate-spin" />
           Starting...
         </>
+      ) : isRunAction && hasActiveRun ? (
+        getRunningRunLabel(activeRecipeId)
       ) : (
         action.label
       )}

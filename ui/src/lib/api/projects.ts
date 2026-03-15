@@ -1,6 +1,7 @@
 import type {
   InputFileSummary,
   PipelineGraphResponse,
+  ProductionFormat,
   ProjectSummary,
   RecentProjectSummary,
   SearchResponse,
@@ -60,6 +61,7 @@ export function updateProjectSettings(
   settings: {
     display_name?: string
     human_control_mode?: 'autonomous' | 'checkpoint' | 'advisory'
+    production_format?: ProductionFormat | null
     interaction_mode?: 'guided' | 'balanced' | 'expert'
     default_model?: string | null
     work_model?: string | null

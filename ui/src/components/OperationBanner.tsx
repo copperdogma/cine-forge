@@ -4,32 +4,23 @@
 
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
 import { useOperationStore, type Operation } from '@/lib/operation-store'
-import { useChatStore } from '@/lib/chat-store'
-import { useRunState, useArtifactGroups } from '@/lib/hooks'
+import { useArtifactGroups, useActiveProjectRun } from '@/lib/hooks'
 import { getStageStartMessage } from '@/lib/chat-messages'
+import { getRunningRunLabel } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { detectConcernGroupRun, countSceneProgress, countTotalScenes } from '@/lib/constants'
 
 const EMPTY_OPS: Operation[] = []
 
 function RunBannerContent({ projectId }: { projectId: string }) {
-  const activeRunId = useChatStore((s) => s.activeRunId?.[projectId] ?? null)
-  const { data: runState } = useRunState(activeRunId ?? undefined)
+  const { activeRunId, runState, recipeId, isRunning } = useActiveProjectRun(projectId)
   const { data: artifactGroups } = useArtifactGroups(projectId)
   const totalScenes = countTotalScenes(artifactGroups)
 
-  if (!activeRunId) return null
+  if (!activeRunId || !isRunning) return null
 
-  let statusText = 'Processing your screenplay...'
+  let statusText = getRunningRunLabel(recipeId)
   if (runState) {
-    const recipeId = runState.state.recipe_id
-    if (recipeId === 'world_building') {
-      statusText = 'Running Deep Breakdown...'
-    } else if (recipeId === 'creative_direction') {
-      statusText = 'Running Creative Direction...'
-    } else if (recipeId === 'mvp_ingest') {
-      statusText = 'Running Script Breakdown...'
-    }
     const stages = runState.state.stages
     // Use stage_order as authoritative list — it reflects start_from/end_at slicing.
     const stageOrder = (runState.state.stage_order as string[] | undefined) ?? Object.keys(stages)
@@ -43,7 +34,7 @@ function RunBannerContent({ projectId }: { projectId: string }) {
     }
 
     // For single-stage concern group runs: show per-scene progress
-    const cg = detectConcernGroupRun(recipeId, executedStages)
+    const cg = detectConcernGroupRun(recipeId ?? '', executedStages)
     if (cg && runningStage && totalScenes > 0) {
       const scenesDone = countSceneProgress(runningStage[1], runningStage[0])
       statusText = `${statusText} (${scenesDone}/${totalScenes} scenes)`
@@ -97,13 +88,13 @@ function BannerRow({ status, label }: { status: 'running' | 'done' | 'failed'; l
 
 export function OperationBanner({ projectId }: { projectId: string }) {
   const operations = useOperationStore((s) => s.operations[projectId] ?? EMPTY_OPS)
-  const hasActiveRun = useChatStore((s) => !!s.activeRunId?.[projectId])
+  const { isRunning } = useActiveProjectRun(projectId)
 
-  if (operations.length === 0 && !hasActiveRun) return null
+  if (operations.length === 0 && !isRunning) return null
 
   return (
     <div className="flex flex-col gap-2 px-6 pt-2">
-      {hasActiveRun && <RunBannerContent projectId={projectId} />}
+      {isRunning && <RunBannerContent projectId={projectId} />}
       {operations.map((op) => (
         <OperationBannerContent key={op.id} op={op} />
       ))}

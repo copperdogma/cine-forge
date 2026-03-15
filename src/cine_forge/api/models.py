@@ -6,6 +6,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
+from cine_forge.schemas.models import ProductionFormat
+
 
 class ErrorPayload(BaseModel):
     """Structured API error envelope."""
@@ -41,6 +43,7 @@ class ProjectSummary(BaseModel):
     input_files: list[str] = []
     ui_preferences: dict[str, Any] = Field(default_factory=dict)
     human_control_mode: str = "autonomous"
+    production_format: ProductionFormat | None = None
     interaction_mode: str = "balanced"
     default_model: str | None = None
     work_model: str | None = None
@@ -204,6 +207,7 @@ class ProjectSettingsUpdate(BaseModel):
 
     display_name: str | None = None
     human_control_mode: Literal["autonomous", "checkpoint", "advisory"] | None = None
+    production_format: ProductionFormat | None = None
     interaction_mode: Literal["guided", "balanced", "expert"] | None = None
     default_model: str | None = None
     work_model: str | None = None

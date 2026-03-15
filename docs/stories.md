@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-14, backlog cleanup)
+## Current Execution Map (updated 2026-03-14, Story 120 landed)
 
 Phases 0–5 foundation are landed: script understanding, role/chat infrastructure, concern-group schemas, Intent/Mood, Scene Workspace, and design studies are all in place. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
 
@@ -15,7 +15,6 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
 | **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
-| **120** Production Format Setting | The right visual-lane prerequisite before prompt compilation and iterative image-composition work. |
 | **127** Artifact Health Semantics + Chat Model Disclosure | Direct transparency fix on top of recent UI decomposition. Small, user-visible, and already grounded in existing design decisions. |
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
 | **129** Entity Discovery Taxonomy Tightening | Eval-backed prompt refinement that reduces upstream entity noise before it pollutes downstream artifacts. |
@@ -35,8 +34,8 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 |---|---|
 | **097** AI Artifact Editing | Important, but needs a concrete implementation plan and pairs naturally with Story 031. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
-| **119** Design Study Prompt Compiler | Depends on Story 120 establishing the `production_format` model used by the compiler. |
-| **121** Design Study Composition UX | Depends on Stories 120 and 119 so the iteration UI composes against the final format and prompt pipeline instead of creating rework. |
+| **119** Design Study Prompt Compiler | Story 120 landed the `production_format` model and prompt provenance seam; this draft now needs a narrower prompt-compilation plan before promotion. |
+| **121** Design Study Composition UX | Still depends on Story 119 so the iteration UI composes against the final prompt pipeline instead of creating rework. |
 | **102 / 104 / 105 / 106 / 112 / 113 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
 
 ### Deferred — Intentionally Parked
@@ -183,7 +182,7 @@ NOTES from Cam:
 | 117 | Engine Decomposition | Cross-Cutting | Medium | Done | [story-117](stories/story-117-engine-decomposition.md) |
 | 118 | Service Layer Decomposition | Cross-Cutting | Medium | Done | [story-118](stories/story-118-service-decomposition.md) |
 | 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Draft | [story-119](stories/story-119-design-study-prompt-compiler.md) |
-| 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Pending | [story-120](stories/story-120-production-format-setting.md) |
+| 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Done | [story-120](stories/story-120-production-format-setting.md) |
 | 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Draft | [story-121](stories/story-121-design-study-composition-ux.md) |
 | 132 | Shot Planning UI and Shot List Exports | 6 — Shot Planning & Viz | High | Done | [story-132](stories/story-132-shot-planning-ui-and-shot-list-exports.md) |
 | 122 | Golden Fixture Helpers | 0 — Infrastructure | Medium | Done | [story-122](stories/story-122-golden-fixture-helpers.md) |

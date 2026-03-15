@@ -266,9 +266,13 @@ class OperatorConsoleService:
         path = self.require_project_path(project_id)
         pj = self._read_project_json(path) or {"slug": project_id}
 
-        # Update human_control_mode and sync to config if provided
+        config_updates: dict[str, Any] = {}
         if "human_control_mode" in updates and updates["human_control_mode"] is not None:
-            self._sync_human_control_mode_to_config(project_id, updates["human_control_mode"])
+            config_updates["human_control_mode"] = updates["human_control_mode"]
+        if "production_format" in updates:
+            config_updates["production_format"] = updates["production_format"]
+        if config_updates:
+            self._sync_project_settings_to_config(project_id, config_updates)
 
         display_name = updates.get("display_name")
         persisted_updates = {key: value for key, value in updates.items() if key != "display_name"}
@@ -283,39 +287,52 @@ class OperatorConsoleService:
 
         return self.project_summary(project_id)
 
-    def _sync_human_control_mode_to_config(self, project_id: str, mode: str) -> None:
-        """Update the canonical ProjectConfig artifact if it exists."""
+    def _sync_project_settings_to_config(
+        self,
+        project_id: str,
+        updates: dict[str, Any],
+    ) -> None:
+        """Update the canonical ProjectConfig artifact for mutable project-level settings."""
         try:
             project_path = self.require_project_path(project_id)
             store = ArtifactStore(project_dir=project_path)
             versions = store.list_versions(artifact_type="project_config", entity_id="project")
             if not versions:
-                log.info("No project_config found to sync human_control_mode")
+                log.info("No project_config found to sync settings: %s", ", ".join(sorted(updates)))
                 return
 
             latest_ref = versions[-1]
             artifact = store.load_artifact(latest_ref)
             data = artifact.data
-            
-            log.info("Syncing human_control_mode to project_config v%d", latest_ref.version)
-            
-            # Use model_dump if it's a Pydantic model, otherwise dict()
+
+            log.info(
+                "Syncing project settings to project_config v%d: %s",
+                latest_ref.version,
+                ", ".join(sorted(updates)),
+            )
+
             if hasattr(data, "model_dump"):
                 new_data = data.model_dump()
             elif isinstance(data, dict):
                 new_data = dict(data)
             else:
-                new_data = dict(data) # Fallback
+                new_data = dict(data)
 
-            if new_data.get("human_control_mode") == mode:
+            changed: dict[str, Any] = {}
+            for key, value in updates.items():
+                if new_data.get(key) == value:
+                    continue
+                new_data[key] = value
+                changed[key] = value
+
+            if not changed:
                 return
 
-            new_data["human_control_mode"] = mode
-
+            change_notes = ", ".join(f"{key}={value!r}" for key, value in sorted(changed.items()))
             metadata = ArtifactMetadata(
                 lineage=[latest_ref],
-                intent="Update human control mode.",
-                rationale=f"User changed mode to '{mode}' via settings.",
+                intent="Update project settings.",
+                rationale=f"User changed project settings via operator console: {change_notes}.",
                 confidence=1.0,
                 source="human",
                 producing_module="operator_console.settings",
@@ -327,7 +344,11 @@ class OperatorConsoleService:
                 metadata=metadata,
             )
         except Exception:
-            log.exception("Failed to sync human_control_mode to ProjectConfig")
+            log.exception("Failed to sync project settings to ProjectConfig")
+
+    def _sync_human_control_mode_to_config(self, project_id: str, mode: str) -> None:
+        """Update the canonical ProjectConfig artifact if it exists."""
+        self._sync_project_settings_to_config(project_id, {"human_control_mode": mode})
 
     def create_project_from_slug(self, slug: str, display_name: str) -> str:
         """Create a new project under output/{slug}/ and return the slug as project_id."""
@@ -461,6 +482,7 @@ class OperatorConsoleService:
         display_name = (pj or {}).get("display_name") or self._clean_display_name(path, input_files)
         ui_preferences = (pj or {}).get("ui_preferences", {})
         human_control_mode = (pj or {}).get("human_control_mode", "autonomous")
+        production_format = (pj or {}).get("production_format")
         interaction_mode = (pj or {}).get("interaction_mode", "balanced")
         return {
             "project_id": project_id,
@@ -471,6 +493,7 @@ class OperatorConsoleService:
             "input_files": input_files,
             "ui_preferences": ui_preferences,
             "human_control_mode": human_control_mode,
+            "production_format": production_format,
             "interaction_mode": interaction_mode,
             "default_model": (pj or {}).get("default_model"),
             "work_model": (pj or {}).get("work_model"),

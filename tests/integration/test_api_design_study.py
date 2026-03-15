@@ -75,6 +75,13 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert created.status_code == 200
     project_id = created.json()["project_id"]
 
+    format_resp = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={"production_format": "animation_3d"},
+    )
+    assert format_resp.status_code == 200
+    assert format_resp.json()["production_format"] == "animation_3d"
+
     entity_id = "character_mariner"
 
     # Seed a bible so the generate endpoint can load bible data
@@ -99,6 +106,8 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert state["entity_id"] == entity_id
     assert len(state["rounds"]) == 1
     assert len(state["rounds"][0]["images"]) == 2
+    assert "production_format" in state["rounds"][0]["sources_used"]
+    assert "animation_3d" in state["rounds"][0]["prompt"].lower()
     image_filename = state["rounds"][0]["images"][0]["filename"]
     assert image_filename.startswith("design_study_r1_img")
 
@@ -167,6 +176,9 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert len(state2["rounds"]) == 2
     assert state2["rounds"][1]["round_number"] == 2
     assert len(state2["rounds"][1]["images"]) == 1
+    assert "user_guidance" in state2["rounds"][1]["sources_used"]
+    assert "seed_image" in state2["rounds"][1]["sources_used"]
+    assert "production_format" in state2["rounds"][1]["sources_used"]
     # selected_final from round 1 should still be set
     assert state2["selected_final_filename"] == image_filename
 

@@ -21,8 +21,8 @@ from pydantic import BaseModel
 
 from cine_forge.ai.image import (
     ImageGenerationError,
+    build_image_prompt,
     generate_image,
-    synthesize_image_prompt,
 )
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.schemas.design_study import (
@@ -104,6 +104,31 @@ def _load_bible_data(project_path: Path, entity_id: str) -> dict[str, Any] | Non
     return None
 
 
+def _load_project_config_data(project_path: Path) -> dict[str, Any]:
+    """Load the latest project-level config data used for image prompt context."""
+    store = ArtifactStore(project_dir=project_path)
+    refs = store.list_versions(artifact_type="project_config", entity_id="project")
+    if refs:
+        artifact = store.load_artifact(refs[-1])
+        data = artifact.data
+        if hasattr(data, "model_dump"):
+            return data.model_dump()
+        if isinstance(data, dict):
+            return dict(data)
+
+    project_json_path = project_path / "project.json"
+    if project_json_path.exists():
+        try:
+            project_json = json.loads(project_json_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            return {}
+        return {
+            "production_format": project_json.get("production_format"),
+        }
+
+    return {}
+
+
 # ---------------------------------------------------------------------------
 # Request / response models
 # ---------------------------------------------------------------------------
@@ -158,14 +183,14 @@ async def generate_design_study(
     )
     round_number = len(state.rounds) + 1
 
-    # Synthesize prompt
-    base_prompt = synthesize_image_prompt(body.entity_type, bible_data)
-    if body.guidance:
-        prompt = f"{body.guidance}. {base_prompt}"
-    elif body.seed_image_filename:
-        prompt = f"Variation of previous design, same character. {base_prompt}"
-    else:
-        prompt = base_prompt
+    project_config_data = _load_project_config_data(project_path)
+    prompt, sources_used = build_image_prompt(
+        body.entity_type,
+        bible_data,
+        guidance=body.guidance,
+        seed_image_filename=body.seed_image_filename,
+        project_config_data=project_config_data,
+    )
 
     # Generate images — ensure bible dir exists once before writing any files
     bib_dir.mkdir(parents=True, exist_ok=True)
@@ -205,6 +230,7 @@ async def generate_design_study(
         entity_id=entity_id,
         guidance=body.guidance,
         seed_image_filename=body.seed_image_filename,
+        sources_used=sources_used,
         count=body.count,
         images=images,
     )

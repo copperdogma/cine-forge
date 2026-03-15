@@ -7,6 +7,63 @@ export const RECIPE_NAMES: Record<string, string> = {
   shot_planning: 'Shot Planning',
 }
 
+/** Plain-language recipe names for operator-facing UI. */
+export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
+  mvp_ingest: 'Script Breakdown',
+  world_building: 'Deep Breakdown',
+  narrative_analysis: 'Narrative Analysis',
+  creative_direction: 'Creative Direction',
+  shot_planning: 'Shot Planning',
+}
+
+export function getUserFacingRecipeName(recipeId: string | null | undefined): string {
+  if (!recipeId) return 'Run'
+  return USER_FACING_RECIPE_NAMES[recipeId] ?? RECIPE_NAMES[recipeId] ?? recipeId
+}
+
+export function getRunningRunLabel(recipeId: string | null | undefined): string {
+  return `Running ${getUserFacingRecipeName(recipeId)}...`
+}
+
+export function getRunStartedMessage(recipeId: string | null | undefined): string {
+  if (recipeId === 'world_building') {
+    return 'Deep Breakdown started — building your story world now...'
+  }
+  if (recipeId === 'mvp_ingest') {
+    return 'Script Breakdown started — processing your screenplay now...'
+  }
+  if (recipeId === 'creative_direction') {
+    return 'Creative Direction started — generating scene direction now...'
+  }
+  if (recipeId === 'shot_planning') {
+    return 'Shot Planning started — building scene shot lists now...'
+  }
+  return 'Run started — processing your project now...'
+}
+
+export function getRunCompletedMessage(
+  recipeId: string | null | undefined,
+  summary?: string,
+): string {
+  if (recipeId === 'mvp_ingest') {
+    return summary
+      ? `Script Breakdown complete! I found ${summary} in your screenplay.`
+      : 'Script Breakdown complete!'
+  }
+  if (recipeId === 'world_building') {
+    return summary
+      ? `Deep Breakdown complete! I built ${summary} for your project.`
+      : 'Deep Breakdown complete!'
+  }
+  return summary
+    ? `Run complete! I produced ${summary} for your project.`
+    : 'Run complete!'
+}
+
+export function getRunActivityLabel(recipeId: string | null | undefined): string {
+  return recipeId ? `Started ${getUserFacingRecipeName(recipeId)}` : 'Started pipeline run'
+}
+
 /** Human-readable names for artifact types produced by stages. */
 export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   scene: ['scene', 'scenes'],

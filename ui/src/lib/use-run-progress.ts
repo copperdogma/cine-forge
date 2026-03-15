@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
 import { streamAutoInsight } from './api/chat'
 import { humanizeStageName } from './chat-messages'
-import { detectConcernGroupRun, countTotalScenes } from './constants'
+import { detectConcernGroupRun, countTotalScenes, getRunCompletedMessage } from './constants'
 import { useRunState, useRunEvents } from './hooks/runs'
 import type { StageState, ArtifactGroupSummary } from './types'
 
@@ -292,84 +292,85 @@ export function useRunProgressChat(projectId: string | undefined) {
     const completionAlreadyPersisted = store.getMessages(projectId).some(
       (m) => m.id === `progress_${activeRunId}_complete` || m.id === `progress_${activeRunId}_failed`,
     )
-    if (runState.state.finished_at && !completedRef.current.has(activeRunId) && !completionAlreadyPersisted) {
-      completedRef.current.add(activeRunId)
+    if (runState.state.finished_at) {
+      if (!completedRef.current.has(activeRunId) && !completionAlreadyPersisted) {
+        completedRef.current.add(activeRunId)
 
-      // Resolve any remaining in-flight spinners from this run
-      store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
-      // Bible progress messages are removed per-stage above, but clean up any stragglers
-      for (const t of ['character_bible', 'location_bible', 'prop_bible']) {
-        store.removeMessage(projectId, `bible_progress_${activeRunId}_${t}`)
-      }
+        // Resolve any remaining in-flight spinners from this run
+        store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
+        // Bible progress messages are removed per-stage above, but clean up any stragglers
+        for (const t of ['character_bible', 'location_bible', 'prop_bible']) {
+          store.removeMessage(projectId, `bible_progress_${activeRunId}_${t}`)
+        }
 
-      // A stage left 'pending' on a finished run means an unhandled exception
-      // (e.g. missing upstream output) aborted the wave before stage_state was updated.
-      const hasFailed = Object.values(stages).some(
-        (s) => s.status === 'failed' || s.status === 'pending',
-      )
+        // A stage left 'pending' on a finished run means an unhandled exception
+        // (e.g. missing upstream output) aborted the wave before stage_state was updated.
+        const hasFailed = Object.values(stages).some(
+          (s) => s.status === 'failed' || s.status === 'pending',
+        )
 
-      if (hasFailed) {
-        store.addMessage(projectId, {
-          id: `progress_${activeRunId}_failed`,
-          type: 'ai_suggestion',
-          content: 'Some stages failed. You can view the run details to see what went wrong.',
-          timestamp: Date.now(),
-          actions: [
-            {
-              id: 'view_run',
-              label: 'View Details',
-              variant: 'outline',
-              route: `runs/${activeRunId}`,
-            },
-          ],
-        })
-      } else {
-        const summary = summarizeArtifacts(stages)
-        const recipeId = runState.state.recipe_id
-        const completionStageOrder = (runState.state.stage_order as string[] | undefined) ?? Object.keys(stages)
-        const cgComplete = detectConcernGroupRun(recipeId, completionStageOrder)
-
-        if (recipeId === 'shot_planning') {
-          const shotPlanRefs = Object.values(stages)
-            .flatMap((stage) => stage.artifact_refs)
-            .filter((ref) => ref.artifact_type === 'shot_plan')
-          const sceneIds = Array.from(
-            new Set(
-              shotPlanRefs
-                .map((ref) => String(ref.entity_id ?? ''))
-                .filter((entityId) => entityId.startsWith('scene_')),
-            ),
-          ).sort()
-          const firstSceneId = sceneIds[0]
-          const sceneCount = sceneIds.length
-
+        if (hasFailed) {
           store.addMessage(projectId, {
-            id: `progress_${activeRunId}_complete`,
+            id: `progress_${activeRunId}_failed`,
             type: 'ai_suggestion',
-            content: sceneCount > 0
-              ? `Shot planning complete. I generated shot plans for ${sceneCount} ${sceneCount === 1 ? 'scene' : 'scenes'}.`
-              : 'Shot planning complete.',
+            content: 'Some stages failed. You can view the run details to see what went wrong.',
             timestamp: Date.now(),
             actions: [
-              ...(firstSceneId
-                ? [
-                    {
-                      id: 'open_scene_workspace',
-                      label: 'Open Scene Workspace',
-                      variant: 'default' as const,
-                      route: `scenes/${firstSceneId}`,
-                    },
-                  ]
-                : []),
               {
-                id: 'view_run_detail',
-                label: 'Run Details',
-                variant: 'outline' as const,
+                id: 'view_run',
+                label: 'View Details',
+                variant: 'outline',
                 route: `runs/${activeRunId}`,
               },
             ],
           })
-        } else if (cgComplete) {
+        } else {
+          const summary = summarizeArtifacts(stages)
+          const recipeId = runState.state.recipe_id
+          const completionStageOrder = (runState.state.stage_order as string[] | undefined) ?? Object.keys(stages)
+          const cgComplete = detectConcernGroupRun(recipeId, completionStageOrder)
+
+          if (recipeId === 'shot_planning') {
+            const shotPlanRefs = Object.values(stages)
+              .flatMap((stage) => stage.artifact_refs)
+              .filter((ref) => ref.artifact_type === 'shot_plan')
+            const sceneIds = Array.from(
+              new Set(
+                shotPlanRefs
+                  .map((ref) => String(ref.entity_id ?? ''))
+                  .filter((entityId) => entityId.startsWith('scene_')),
+              ),
+            ).sort()
+            const firstSceneId = sceneIds[0]
+            const sceneCount = sceneIds.length
+
+            store.addMessage(projectId, {
+              id: `progress_${activeRunId}_complete`,
+              type: 'ai_suggestion',
+              content: sceneCount > 0
+                ? `Shot planning complete. I generated shot plans for ${sceneCount} ${sceneCount === 1 ? 'scene' : 'scenes'}.`
+                : 'Shot planning complete.',
+              timestamp: Date.now(),
+              actions: [
+                ...(firstSceneId
+                  ? [
+                      {
+                        id: 'open_scene_workspace',
+                        label: 'Open Scene Workspace',
+                        variant: 'default' as const,
+                        route: `scenes/${firstSceneId}`,
+                      },
+                    ]
+                  : []),
+                {
+                  id: 'view_run_detail',
+                  label: 'Run Details',
+                  variant: 'outline' as const,
+                  route: `runs/${activeRunId}`,
+                },
+              ],
+            })
+          } else if (cgComplete) {
           // --- Concern group run completion: role-attributed friendly message ---
           // Count per-scene artifacts (exclude index/project-level artifacts)
           const cgStage = stages[completionStageOrder[0]]
@@ -407,14 +408,12 @@ export function useRunProgressChat(projectId: string | undefined) {
           })
           // Skip requestPostRunInsight and addNextStepCta —
           // the role intro + completion messages are sufficient context.
-        } else {
+          } else {
           // --- Generic (non-concern-group) run completion ---
           store.addMessage(projectId, {
             id: `progress_${activeRunId}_complete`,
             type: 'ai_suggestion',
-            content: summary
-              ? `Breakdown complete! I found ${summary} in your screenplay.`
-              : 'Breakdown complete!',
+            content: getRunCompletedMessage(recipeId, summary),
             timestamp: Date.now(),
             actions: [
               {
@@ -434,8 +433,9 @@ export function useRunProgressChat(projectId: string | undefined) {
 
           // Insight placeholder goes first so it streams in above the CTA.
           // CTA goes last so the button stays at the bottom while insight fills in above it.
-          requestPostRunInsight(projectId, recipeId, summary)
-          addNextStepCta(projectId, recipeId, activeRunId)
+            requestPostRunInsight(projectId, recipeId, summary)
+            addNextStepCta(projectId, recipeId, activeRunId)
+          }
         }
       }
 

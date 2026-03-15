@@ -8,6 +8,15 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
+ProductionFormat = Literal[
+    "live_action",
+    "animation_2d",
+    "animation_3d",
+    "anime",
+    "graphic_novel",
+    "concept_art",
+]
+
 
 class ArtifactHealth(StrEnum):
     """Structural health state for an artifact in the dependency graph."""
@@ -132,6 +141,7 @@ class ProjectConfig(BaseModel):
     target_audience: str | None = None
     aspect_ratio: str
     production_mode: Literal["ai_generated", "irl", "hybrid"]
+    production_format: ProductionFormat | None = None
     human_control_mode: Literal["autonomous", "checkpoint", "advisory"]
     style_packs: dict[str, str] = Field(default_factory=dict)
     budget_cap_usd: float | None = Field(default=None, ge=0.0)

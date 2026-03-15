@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, useCallback } from 'react'
 import { Compass, Sparkles, X, Plus, Loader2, ChevronDown, ChevronRight, Check, BookOpen } from 'lucide-react'
@@ -10,10 +10,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { PageHeader } from '@/components/PageHeader'
+import { ProjectReferencesSection } from '@/components/ProjectReferencesSection'
+import { VisualMediumCard } from '@/components/VisualMediumCard'
 import { toast } from 'sonner'
 import { useChatStore } from '@/lib/chat-store'
+import { getRunningRunLabel, getUserFacingRecipeName } from '@/lib/constants'
 import { useLongRunningAction } from '@/lib/use-long-running-action'
-import { useArtifactGroups, useProjectInputs, useStartRun } from '@/lib/hooks'
+import { useActiveProjectRun, useArtifactGroups, useProject, useProjectInputs, useStartRun } from '@/lib/hooks'
 import {
   getStylePresets,
   getIntentMood,
@@ -25,6 +28,7 @@ import {
   type PropagationResponse,
   type PropagatedGroupResponse,
 } from '@/lib/api'
+import { startTrackedRun } from '@/lib/run-actions'
 import { cn } from '@/lib/utils'
 
 /** Concern group display config. */
@@ -46,12 +50,16 @@ const MOOD_SUGGESTIONS = [
 export default function IntentMoodPage() {
   const { projectId } = useParams()
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
+  const { data: project } = useProject(projectId)
+  const { isRunning: hasActiveRun, recipeId: activeRecipeId } = useActiveProjectRun(projectId)
 
   // --- Deep breakdown gate ---
   const { data: artifactGroups } = useArtifactGroups(projectId)
   const hasDeepBreakdown = artifactGroups?.some(
     g => g.artifact_type === 'character_bible' || g.artifact_type === 'entity_graph'
+  ) ?? false
+  const hasBreakdownArtifacts = artifactGroups?.some(
+    g => g.artifact_type === 'canonical_script' || g.artifact_type === 'script_bible' || g.artifact_type === 'scene',
   ) ?? false
   const { data: inputs } = useProjectInputs(projectId)
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
@@ -75,6 +83,37 @@ export default function IntentMoodPage() {
     queryFn: () => getScriptContext(projectId!),
     enabled: !!projectId,
   })
+  const hasScriptBreakdown = !!scriptContext || hasBreakdownArtifacts
+  const requiredRecipeId = hasScriptBreakdown ? 'world_building' : 'mvp_ingest'
+  const requiredRunLabel = hasScriptBreakdown ? 'Deep Breakdown' : 'Script Breakdown'
+  const deepBreakdownBlocked = startRun.isPending || hasActiveRun
+  const deepBreakdownLabel = startRun.isPending
+    ? `Starting ${requiredRunLabel}...`
+    : hasActiveRun
+      ? getRunningRunLabel(activeRecipeId)
+      : `Run ${requiredRunLabel}`
+  const activeRunLabel = getUserFacingRecipeName(activeRecipeId)
+  const gateTitle = hasActiveRun
+    ? `${activeRunLabel} in progress`
+    : hasScriptBreakdown
+      ? 'Deep Breakdown needed first'
+      : 'Script Breakdown needed first'
+  const gateDescription = hasActiveRun
+    ? activeRecipeId === 'mvp_ingest'
+      ? 'We are standardizing your screenplay and extracting the script foundation now. When this finishes, the next step becomes Deep Breakdown.'
+      : activeRecipeId === 'world_building'
+        ? 'We are building character, location, and world artifacts now. This page unlocks fully as soon as the run finishes.'
+        : `We are currently running ${activeRunLabel}. Additional creative controls will unlock when that run completes.`
+    : hasScriptBreakdown
+      ? 'To do that meaningfully, the system still needs your characters, locations, and story world. Run a Deep Breakdown next — it builds character bibles, location bibles, and an entity relationship graph that the creative direction can reference.'
+      : 'To do that meaningfully, the system first needs a clean script foundation. Run a Script Breakdown first — it standardizes your screenplay, extracts scenes, and builds the script context that Deep Breakdown depends on.'
+  const gateFootnote = hasActiveRun
+    ? activeRecipeId === 'world_building'
+      ? 'Building character, location, and world bibles from your screenplay'
+      : 'Standardizing your screenplay and extracting the script foundation Deep Breakdown needs'
+    : hasScriptBreakdown
+      ? 'Builds character, location, and world bibles from your screenplay'
+      : 'Standardizes your screenplay and extracts the script foundation Deep Breakdown needs'
 
   // --- Local form state ---
   const [moodTags, setMoodTags] = useState<string[]>([])
@@ -219,22 +258,25 @@ export default function IntentMoodPage() {
           title="Intent & Mood"
           subtitle="Set the creative vision for your project. Pick a vibe, describe the feeling, and let AI propagate it across all concern groups."
         />
+        {projectId && (
+          <VisualMediumCard
+            projectId={projectId}
+            value={project?.production_format ?? null}
+          />
+        )}
         <Card className="border-dashed border-amber-500/30 bg-amber-500/5">
           <CardContent className="py-8 space-y-5">
             <div className="flex items-start gap-4">
               <BookOpen className="h-10 w-10 text-amber-400 mt-0.5 shrink-0" />
               <div className="space-y-3">
-                <CardTitle className="text-lg">Deep Breakdown needed first</CardTitle>
+                <CardTitle className="text-lg">{gateTitle}</CardTitle>
                 <CardDescription className="text-sm leading-relaxed max-w-2xl">
                   Intent & Mood is the bridge between your <span className="text-foreground font-medium">story</span> and
                   the <span className="text-foreground font-medium">visual film</span>. It translates your creative
                   vision into direction for cinematography, sound, pacing, performance, and world-building.
                 </CardDescription>
                 <CardDescription className="text-sm leading-relaxed max-w-2xl">
-                  But to do that meaningfully, the system needs to know your characters, locations, and story world.
-                  Run a <span className="text-foreground font-medium">Deep Breakdown</span> first — it analyzes your
-                  screenplay and builds character bibles, location bibles, and an entity relationship graph that
-                  the creative direction can reference.
+                  {gateDescription}
                 </CardDescription>
                 {scriptContext && (
                   <p className="text-xs text-muted-foreground italic">
@@ -251,39 +293,39 @@ export default function IntentMoodPage() {
                     return
                   }
                   try {
-                    useChatStore.getState().addActivity(
-                      projectId!,
-                      'Starting Deep Breakdown — analyzing your screenplay to build character bibles, location bibles, and an entity relationship graph...',
-                      'intent',
-                    )
-                    await startRun.mutateAsync({
-                      project_id: projectId!,
-                      input_file: latestInputPath,
-                      default_model: 'claude-sonnet-4-6',
-                      recipe_id: 'world_building',
-                      accept_config: true,
+                    await startTrackedRun({
+                      projectId: projectId!,
+                      actionLabel: `Run ${requiredRunLabel}`,
+                      startRun: startRun.mutateAsync,
+                      payload: {
+                        project_id: projectId!,
+                        input_file: latestInputPath,
+                        default_model: 'claude-sonnet-4-6',
+                        recipe_id: requiredRecipeId,
+                        accept_config: true,
+                      },
                     })
-                    toast.success('Deep Breakdown started — this may take a few minutes')
-                    navigate(`/${projectId}`)
+                    toast.success(`${requiredRunLabel} started — this may take a few minutes`)
                   } catch (err) {
                     toast.error(err instanceof Error ? err.message : 'Failed to start run')
                   }
                 }}
-                disabled={startRun.isPending || !latestInputPath}
+                disabled={deepBreakdownBlocked || !latestInputPath}
               >
-                {startRun.isPending ? (
+                {deepBreakdownBlocked ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 ) : (
                   <BookOpen className="h-4 w-4 mr-2" />
                 )}
-                Run Deep Breakdown
+                {deepBreakdownLabel}
               </Button>
               <span className="text-xs text-muted-foreground">
-                Analyzes your screenplay and builds character, location, and world bibles
+                {gateFootnote}
               </span>
             </div>
           </CardContent>
         </Card>
+        {projectId && <ProjectReferencesSection projectId={projectId} />}
       </div>
     )
   }
@@ -294,6 +336,13 @@ export default function IntentMoodPage() {
         title="Intent & Mood"
         subtitle="Set the creative vision for your project. Pick a vibe, describe the feeling, and let AI propagate it across all concern groups."
       />
+      {projectId && (
+        <VisualMediumCard
+          projectId={projectId}
+          value={project?.production_format ?? null}
+        />
+      )}
+      {projectId && <ProjectReferencesSection projectId={projectId} />}
 
       {/* Warm invitation — script context + suggest */}
       {!currentIntent && scriptContext && (

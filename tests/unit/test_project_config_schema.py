@@ -20,6 +20,7 @@ def _payload() -> dict[str, object]:
         "target_audience": None,
         "aspect_ratio": "16:9",
         "production_mode": "ai_generated",
+        "production_format": "live_action",
         "human_control_mode": "checkpoint",
         "style_packs": {},
         "budget_cap_usd": None,
@@ -41,6 +42,7 @@ def _payload() -> dict[str, object]:
 def test_project_config_schema_accepts_valid_payload() -> None:
     config = ProjectConfig.model_validate(_payload())
     assert config.title == "Pilot"
+    assert config.production_format == "live_action"
     assert config.detection_details["title"].source == "auto_detected"
 
 

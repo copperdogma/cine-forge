@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-03-14-07] — Visual medium selection and prompt grounding (Story 120)
+
+### Added
+- A project-level `production_format` setting that persists through the existing project settings path and feeds format-aware design-study prompt building with `sources_used` provenance
+- Reusable `Visual Medium` UI surfaces: first-run picker modal for design-study generation, an Intent-owned editor, and a Script breadcrumb pill back to Intent
+
+### Changed
+- Moved project-level visual references out of Script and into Intent & Mood so the screenplay page stays focused on reading
+- Unified Script Breakdown / Deep Breakdown CTA state and operator copy around the shared active-run path so Intent, chat buttons, and progress banners agree on what is running
+
+### Fixed
+- Clarified operator messaging so script-breakdown completion and deep-breakdown completion are distinguished instead of collapsing into a misleading generic `Breakdown complete!`
+
 ## [2026-03-14-06] — Backlog readiness cleanup and story promotion
 
 ### Changed

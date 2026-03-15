@@ -27,6 +27,7 @@ export interface DesignStudyRound {
   entity_id: string
   guidance: string | null
   seed_image_filename: string | null
+  sources_used: string[]
   count: number
   created_at: string
   images: DesignStudyImage[]

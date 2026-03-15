@@ -8,6 +8,7 @@ import {
   retryFailedStage,
   startRun,
 } from '../api'
+import { useChatStore } from '../chat-store'
 import type {
   ArtifactEditResponse,
   RunEventsResponse,
@@ -108,4 +109,18 @@ export function useRunEvents(runId: string | undefined, finished?: boolean) {
     refetchInterval: finished ? false : 3000,
     refetchIntervalInBackground: true,
   })
+}
+
+export function useActiveProjectRun(projectId: string | undefined) {
+  const activeRunId = useChatStore((store) => (projectId ? store.activeRunId?.[projectId] ?? null : null))
+  const { data: runState } = useRunState(activeRunId ?? undefined)
+  const recipeId = runState?.state.recipe_id ?? null
+  const isRunning = !!activeRunId && !runState?.state.finished_at
+
+  return {
+    activeRunId,
+    runState,
+    recipeId,
+    isRunning,
+  }
 }

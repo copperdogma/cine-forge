@@ -18,6 +18,8 @@ import urllib.error
 import urllib.request
 from typing import Any
 
+from cine_forge.schemas.models import ProductionFormat
+
 IMAGEN_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 OPENAI_BASE_URL = "https://api.openai.com/v1"
 
@@ -39,6 +41,34 @@ OPENAI_SIZE_BY_ENTITY_TYPE: dict[str, str] = {
 
 # Models that route to OpenAI instead of Google.
 _OPENAI_MODELS: frozenset[str] = frozenset({"gpt-image-1"})
+
+FORMAT_STYLE_MODIFIERS: dict[ProductionFormat, str] = {
+    "live_action": (
+        "Render as live-action film imagery: photorealistic materials, real actors,"
+        " cinematic lighting, and natural lens behavior."
+    ),
+    "animation_2d": (
+        "Override the visual medium to 2D animated feature art with hand-drawn linework,"
+        " stylized shapes, and flat color fills. Do not render as live-action."
+    ),
+    "animation_3d": (
+        "Override the visual medium to 3D animated feature-film imagery with stylized"
+        " physically based rendering, expressive proportions, and polished surface lighting."
+        " Do not render as live-action."
+    ),
+    "anime": (
+        "Override the visual medium to anime cel art with crisp linework, stylized facial"
+        " language, and vibrant flat colors. Do not render as live-action."
+    ),
+    "graphic_novel": (
+        "Override the visual medium to graphic novel illustration with inked contours,"
+        " bold contrast, and printed-page texture. Do not render as photorealistic live-action."
+    ),
+    "concept_art": (
+        "Emphasize exploratory production concept art with painterly ideation, key-art energy,"
+        " and art-department visualization rather than final photorealism."
+    ),
+}
 
 
 class ImageGenerationError(Exception):
@@ -130,6 +160,46 @@ def synthesize_image_prompt(entity_type: str, bible_data: dict[str, Any]) -> str
         parts = [description, "Style: cinematic concept art, film production design."]
 
     return " ".join(p.strip() for p in parts if p.strip())
+
+
+def build_image_prompt(
+    entity_type: str,
+    bible_data: dict[str, Any],
+    *,
+    guidance: str | None = None,
+    seed_image_filename: str | None = None,
+    project_config_data: dict[str, Any] | None = None,
+) -> tuple[str, list[str]]:
+    """Build a design-study prompt plus a provenance list for the prompt sources used."""
+    base_prompt = synthesize_image_prompt(entity_type, bible_data)
+    prompt_parts: list[str] = []
+    sources_used = ["entity_bible"]
+
+    if guidance:
+        prompt_parts.append(guidance)
+        sources_used.append("user_guidance")
+
+    if seed_image_filename:
+        prompt_parts.append(
+            "Variation of the previously approved design direction while preserving the"
+            " same subject identity and core design language."
+        )
+        sources_used.append("seed_image")
+
+    prompt_parts.append(base_prompt)
+
+    raw_format = None
+    if isinstance(project_config_data, dict):
+        raw_format = project_config_data.get("production_format")
+
+    if isinstance(raw_format, str):
+        style_modifier = FORMAT_STYLE_MODIFIERS.get(raw_format)  # type: ignore[arg-type]
+        if style_modifier:
+            prompt_parts.append(f"Production format target: {raw_format}. {style_modifier}")
+            sources_used.append("production_format")
+
+    prompt = " ".join(part.strip() for part in prompt_parts if part and part.strip())
+    return prompt, sources_used
 
 
 def _generate_image_openai(

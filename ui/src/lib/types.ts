@@ -7,6 +7,13 @@ export type ApiError = {
 }
 
 export type InteractionMode = 'guided' | 'balanced' | 'expert'
+export type ProductionFormat =
+  | 'live_action'
+  | 'animation_2d'
+  | 'animation_3d'
+  | 'anime'
+  | 'graphic_novel'
+  | 'concept_art'
 
 export type ProjectSummary = {
   project_id: string
@@ -17,6 +24,7 @@ export type ProjectSummary = {
   input_files: string[]
   ui_preferences: Record<string, string>
   human_control_mode: 'autonomous' | 'checkpoint' | 'advisory'
+  production_format: ProductionFormat | null
   interaction_mode: InteractionMode
   default_model?: string | null
   work_model?: string | null
