@@ -27,9 +27,9 @@ primary_region = "ord"
   path = "/api/health"
 
 [mounts]
-  source = "cineforge_data"
+  source = "cineforge_data_v2"
   destination = "/app/output"
 
 [[vm]]
-  size = "shared-cpu-1x"
+  size = "shared-cpu-2x"
   memory = "512mb"

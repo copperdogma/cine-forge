@@ -91,7 +91,7 @@ Copy these skills from a reference project (or create fresh):
 - `create-cross-cli-skill` — Skill creation meta-skill
 - `create-story` — Story scaffolding
 - `mark-story-done` — Story completion validation
-- `reflect` — Change impact propagation
+- `adr-reflect` — Change impact propagation
 - `triage-inbox` — Inbox processing
 - `triage-stories` — Backlog prioritization
 - `validate` — Quality validation

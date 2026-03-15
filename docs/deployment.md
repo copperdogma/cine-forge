@@ -10,16 +10,16 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 | **Domain** | `cineforge.copper-dog.com` | Also accessible at `cineforge-app.fly.dev` |
 | **DNS** | Cloudflare | Zone: `copper-dog.com`, Zone ID: `372acf29f0a6f95c35e9f7ea94aa7efa` |
 | **SSL** | Let's Encrypt (via Fly.io) | Auto-renewed, CNAME-validated |
-| **Storage** | Fly.io Volume | `cineforge_data` 1GB mounted at `/app/output` |
+| **Storage** | Fly.io Volume | `cineforge_data_v2` 1GB mounted at `/app/output` |
 | **Secrets** | Fly.io Secrets | `ANTHROPIC_API_KEY` |
 | **Container** | Multi-stage Docker | Node 24 (frontend build) → Python 3.12-slim (runtime), ~168MB |
-| **Cost** | ~$3-5/month | shared-cpu-1x, 512MB RAM, 1GB volume, auto-stop |
+| **Cost** | ~$5-7/month | shared-cpu-2x, 512MB RAM, 1GB volume, auto-stop |
 
 ## Architecture
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Fly.io Machine (shared-cpu-1x, 512MB)      │
+│  Fly.io Machine (shared-cpu-2x, 512MB)      │
 │                                             │
 │  ┌─────────────────────────────────────┐    │
 │  │ uvicorn → FastAPI                   │    │

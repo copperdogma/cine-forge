@@ -1,10 +1,10 @@
 ---
-name: reflect
+name: adr-reflect
 description: Propagate implications of a change across ideal.md, spec.md, stories, and evals
 user-invocable: true
 ---
 
-# /reflect [what-changed]
+# /adr-reflect [what-changed]
 
 Trace the implications of a change across the project's core documents.
 Read-only and advisory — surfaces what needs attention, doesn't rewrite anything.
