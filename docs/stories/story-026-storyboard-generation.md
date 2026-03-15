@@ -43,6 +43,7 @@ Storyboards are optional. The pipeline can skip this stage entirely and go strai
   - [ ] Character descriptions from bibles.
   - [ ] Location descriptions from bibles.
   - [ ] Continuity states for character/location appearance.
+  - [ ] Canonical `visual_reference_image` from the relevant bible manifest when available (propagated by Story 119).
 - [ ] Cost tracking per frame.
 - [ ] Retry logic for generation failures.
 
@@ -53,7 +54,7 @@ Storyboards are optional. The pipeline can skip this stage entirely and go strai
 
 ### Module Manifest
 - [ ] Module directory: `src/cine_forge/modules/visualization/storyboard_v1/`
-- [ ] Reads shot plan, Look & Feel concern group artifacts, character/location bibles, continuity states.
+- [ ] Reads shot plan, Look & Feel concern group artifacts, character/location bibles, continuity states, and bible-manifest visual references when present.
 - [ ] Outputs storyboard image artifacts + storyboard index.
 
 ### Testing
@@ -76,6 +77,9 @@ Photoreal storyboards are expensive and often unnecessary. They should be gated 
 ### Character Consistency
 Maintaining visual consistency for characters across storyboard frames is a known challenge with AI image generation. Consider using character reference images (from user asset injection, Story 029) or style-consistent generation techniques.
 
+### Sequencing with Design Studies
+Story 119 is the preferred upstream for storyboard quality because it writes selected design-study finals back to bible manifests as `visual_reference_image`. Storyboard generation should consume that canonical field when present rather than inventing a second reference-selection path, while still degrading gracefully when no design-study reference exists yet.
+
 ---
 
 ## Tasks
@@ -97,3 +101,5 @@ Maintaining visual consistency for characters across storyboard frames is a know
 ## Work Log
 
 *(append-only)*
+
+20260314 — Backlog cleanup: clarified that storyboard generation should consume Story 119's propagated `visual_reference_image` when available. This keeps the story Pending, but makes the preferred sequencing explicit.

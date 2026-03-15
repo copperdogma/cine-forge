@@ -5,7 +5,7 @@
 **Source**: ADR-003, Decision #4
 **Spec Refs**: 12.8 (Prompt Compilation Model — upstream editing mechanism)
 **Ideal Refs**: R4 (creative conversation), R5 (full spectrum of involvement), R12 (transparency)
-**Depends On**: Story 014 (role system), Story 089 (interaction mode / autonomy settings)
+**Depends On**: Story 014 (role system), Story 031 (semantic change propagation), Story 089 (interaction mode / autonomy settings)
 
 ---
 
@@ -20,6 +20,10 @@ The Ideal describes conversational iteration: "No, darker." "Give John slicked-b
 This is also essential for the read-only prompt model. Users can't edit prompts directly; instead, they tell the AI what to change, and the AI changes the right upstream artifact. Without this capability, the read-only prompt decision creates friction.
 
 Per-edit permission is governed by the autonomy settings from Story 089 (interaction mode selection).
+
+## Sequencing Note
+
+Do not build this ahead of Story 031. Layer 1 stale-marking from Story 002 makes AI edits technically possible, but without semantic impact triage the edit flow would create noisy downstream staleness and undermine the conversational-editing experience this story is supposed to unlock.
 
 ## Acceptance Criteria
 
@@ -38,3 +42,4 @@ Per-edit permission is governed by the autonomy settings from Story 089 (interac
 *(append-only)*
 
 20260227 — Story created per ADR-003 propagation.
+20260314 — Backlog cleanup: added explicit dependency on Story 031 so AI editing does not land ahead of semantic impact assessment.

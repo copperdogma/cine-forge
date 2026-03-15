@@ -8,13 +8,14 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 
 | Story | Why |
 |---|---|
-| **026** Storyboard Generation | Newly unblocked by Story 025. Optional next visualization layer if we want to continue deeper into the film lane. |
+| **026** Storyboard Generation | Newly unblocked by Story 025. Optional next visualization layer, but Story 119 should land first if we want storyboard prompts to inherit canonical design-study refs instead of re-inventing look consistency. |
 | **031** Change Propagation | R15 Layer 2. Critical before AI artifact editing and deeper iterative editing workflows. |
 | **032** Cost Tracking | Builds the budget and reporting layer on top of already-landed cost hooks. |
 | **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
 | **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
+| **119** Design Study Prompt Compiler | Story 120 landed and the prompt/compiler scope is now concrete. Best continuation of the current film lane, and the right foundation before Story 121 or higher-fidelity storyboard work. |
 | **127** Artifact Health Semantics + Chat Model Disclosure | Direct transparency fix on top of recent UI decomposition. Small, user-visible, and already grounded in existing design decisions. |
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
 | **129** Entity Discovery Taxonomy Tightening | Eval-backed prompt refinement that reduces upstream entity noise before it pollutes downstream artifacts. |
@@ -32,10 +33,9 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 
 | Story | Why It Stays Draft |
 |---|---|
-| **097** AI Artifact Editing | Important, but needs a concrete implementation plan and pairs naturally with Story 031. |
+| **097** AI Artifact Editing | Important, but it should not outrun Story 031. AI edits without semantic impact triage would create noisy downstream staleness. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
-| **119** Design Study Prompt Compiler | Story 120 landed the `production_format` model and prompt provenance seam; this draft now needs a narrower prompt-compilation plan before promotion. |
-| **121** Design Study Composition UX | Still depends on Story 119 so the iteration UI composes against the final prompt pipeline instead of creating rework. |
+| **121** Design Study Composition UX | Still blocked on Story 119 landing first so the iteration UI composes against the final prompt pipeline instead of creating rework. |
 | **102 / 104 / 105 / 106 / 112 / 113 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
 
 ### Deferred — Intentionally Parked
@@ -181,7 +181,7 @@ NOTES from Cam:
 | 116 | Event System Refactor | Cross-Cutting | Medium | Done | [story-116](stories/story-116-event-system-refactor.md) |
 | 117 | Engine Decomposition | Cross-Cutting | Medium | Done | [story-117](stories/story-117-engine-decomposition.md) |
 | 118 | Service Layer Decomposition | Cross-Cutting | Medium | Done | [story-118](stories/story-118-service-decomposition.md) |
-| 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Draft | [story-119](stories/story-119-design-study-prompt-compiler.md) |
+| 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Pending | [story-119](stories/story-119-design-study-prompt-compiler.md) |
 | 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Done | [story-120](stories/story-120-production-format-setting.md) |
 | 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Draft | [story-121](stories/story-121-design-study-composition-ux.md) |
 | 132 | Shot Planning UI and Shot List Exports | 6 — Shot Planning & Viz | High | Done | [story-132](stories/story-132-shot-planning-ui-and-shot-list-exports.md) |

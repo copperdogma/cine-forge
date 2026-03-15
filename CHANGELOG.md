@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-14-08] — Story backlog sequencing corrections
+
+### Changed
+- Promoted Story 119 to `Pending` now that Story 120 landed and the design-study prompt-compiler scope is concrete enough to build
+- Clarified that Story 026 should consume Story 119's propagated `visual_reference_image` when available so storyboard generation follows the canonical design-study reference path
+
+### Fixed
+- Added Story 031 as an explicit dependency for Story 097 so AI artifact editing no longer appears build-ready ahead of semantic change propagation
+- Updated `docs/stories.md` so the execution map and story table reflect the corrected sequencing and status information
+
 ## [2026-03-14-07] — Visual medium selection and prompt grounding (Story 120)
 
 ### Added

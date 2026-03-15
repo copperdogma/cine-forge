@@ -1,7 +1,8 @@
 # Story 119 — Design Study Prompt Compiler + Visual Reference Propagation
 
 **Priority**: Medium
-**Status**: Draft
+**Status**: Pending
+**Updated**: 2026-03-14 — backlog cleanup promoted this story to Pending after Story 120 landed and the prompt/compiler scope was tightened.
 **Spec Refs**: Film Lane (spec §267) — visual references flow forward into shot planning, storyboards, animatics
 **Depends On**: Story 056 (Design Study — Done), Story 120 (Production Format Setting — for `production_format` field in prompt compiler)
 
@@ -95,3 +96,4 @@ definition of done}
 ## Work Log
 
 20260303-1600 — story created: Design discussion with user during Story 056 browser testing — user wants prompt compiler (gather genre/style/mood context) and downstream propagation (selected_final → bible manifest). This is a Draft; needs design review before building.
+20260314 — Backlog cleanup: promoted to Pending. Story 120 landed, the tasks/files are concrete, and this is the right foundation before Story 121 or storyboard-quality follow-ons.
