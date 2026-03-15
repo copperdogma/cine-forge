@@ -27,7 +27,7 @@ When a user first generates a visual (character/location/prop image), CineForge 
 - [x] On gated Intent states, the prerequisite/status card sits directly below `Visual Medium` and above `Project References`, so the page explains its readiness before showing supporting reference controls
 - [x] Chat completion copy distinguishes `Script Breakdown` from `Deep Breakdown`, so the two pipeline phases are not conflated in the operator UI
 - [x] Image prompt compiler incorporates a style modifier based on `production_format` (e.g. live_action → "photorealistic", animation_3d → "Pixar-style 3D render", anime → "anime cel art")
-- [x] `sources_used` includes `"production_format"` when the modifier is applied (hooks into Story 119 sources tracking)
+- [x] `sources_used` includes `"project_config"` when the format-derived project context is applied (normalized by Story 119's broader prompt provenance taxonomy)
 - [x] All existing design study integration tests pass
 
 ## Out of Scope
@@ -54,7 +54,7 @@ This is pure plumbing — no AI reasoning required.
 - [x] Extend the existing project settings API surface (`ProjectSettingsUpdate`, `ProjectSummary`, service persistence/sync path, and `PATCH /api/projects/{project_id}/settings`) to round-trip `production_format`
 - [x] Add TypeScript `production_format` field to the project types and update project fetch + mutate calls
 - [x] Write `FORMAT_STYLE_MODIFIERS` map in `image.py` — format id → style string appended to prompt
-- [x] Introduce the minimal `build_image_prompt()` wrapper needed for Story 120, route design-study generation through it, and add `"production_format"` to `sources_used` when applied
+- [x] Introduce the minimal `build_image_prompt()` wrapper needed for Story 120, route design-study generation through it, and add project-config prompt provenance when the format-derived medium modifier is applied
 - [x] Add `sources_used` to the design-study round schema/API/UI types so prompt provenance survives the round-trip
 - [x] Build `ProductionFormatModal` component — picker with 6 format options, short labels + 1-line descriptions, "Skip for now" escape hatch
 - [x] Build a reusable `ProductionFormatPill` control that can either edit the saved value in Intent or act as a Script breadcrumb back to Intent
@@ -141,9 +141,9 @@ This is pure plumbing — no AI reasoning required.
 
 2. Add the smallest prompt-builder slice necessary to apply format styling cleanly.
    Files: `src/cine_forge/ai/image.py`, `src/cine_forge/schemas/design_study.py`, `src/cine_forge/api/routers/design_study.py`, `tests/unit/test_design_study.py`, `tests/integration/test_api_design_study.py`, `ui/src/lib/api/design-study.ts`.
-   Change: introduce `build_image_prompt()` as a thin deterministic wrapper around the existing design-study prompt synthesis, add `FORMAT_STYLE_MODIFIERS`, and record `"production_format"` in `sources_used` when the modifier is applied. Extend the round schema/API/UI types so `sources_used` survives round-tripping.
+   Change: introduce `build_image_prompt()` as a thin deterministic wrapper around the existing design-study prompt synthesis, add `FORMAT_STYLE_MODIFIERS`, and record project-config prompt provenance when the modifier is applied. Extend the round schema/API/UI types so `sources_used` survives round-tripping.
    Why this fits here: Story 120 cannot honestly claim prompt provenance or format-aware generation without a prompt-builder seam. This is the minimal tightly coupled scope expansion from Story 119; the broader multi-source prompt-composition work remains deferred there.
-   Done looks like: prompt-building tests cover each format mapping, unformatted projects degrade gracefully, and API tests show `sources_used` includes `production_format` only when appropriate.
+   Done looks like: prompt-building tests cover each format mapping, unformatted projects degrade gracefully, and API tests show `sources_used` includes `project_config` only when project-level visual context is actually applied.
 
 3. Keep the first-run modal in design study, but move the durable control into Intent and reduce Script to a breadcrumb.
    Files: `ui/src/components/ProductionFormatModal.tsx`, `ui/src/components/ProductionFormatPill.tsx`, `ui/src/components/VisualMediumCard.tsx`, `ui/src/pages/ProjectHome.tsx`, `ui/src/pages/IntentMoodPage.tsx`, `ui/src/components/DesignStudySection.tsx`, `ui/src/lib/types.ts`, `ui/src/lib/api/projects.ts`.

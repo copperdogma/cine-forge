@@ -18,6 +18,16 @@ from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
 
 
+def _metadata(intent: str) -> ArtifactMetadata:
+    return ArtifactMetadata(
+        intent=intent,
+        rationale=f"{intent} fixture",
+        confidence=1.0,
+        source="human",
+        producing_module="test",
+    )
+
+
 def _create_mock_bible(project_path: Path, entity_id: str) -> None:
     """Write a minimal bible_manifest artifact so the generate endpoint can load it.
 
@@ -49,17 +59,50 @@ def _create_mock_bible(project_path: Path, entity_id: str) -> None:
             "provenance": "ai_extracted",
         }],
         data_files={"master_definition.json": master_definition},
-        metadata=ArtifactMetadata(
-            intent="test bible",
-            rationale="integration test fixture",
-            confidence=1.0,
-            source="human",
-            producing_module="test",
-        ),
+        metadata=_metadata("test bible"),
     )
 
 
 _FAKE_JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0] + [0x00] * 100)  # minimal JPEG header stub
+
+
+def _seed_project_prompt_context(project_path: Path) -> None:
+    store = ArtifactStore(project_dir=project_path)
+    store.save_artifact(
+        artifact_type="project_config",
+        entity_id="project",
+        data={
+            "title": "The Mariner",
+            "format": "feature",
+            "genre": ["nautical drama"],
+            "tone": ["bleak", "windswept"],
+            "production_format": "animation_3d",
+        },
+        metadata=_metadata("seed project config"),
+    )
+    store.save_artifact(
+        artifact_type="look_and_feel",
+        entity_id="project",
+        data={
+            "scope": "project",
+            "lighting_concept": "Single-source lantern light with hard falloff.",
+            "color_palette": "Sea-worn cyan and rust.",
+            "camera_personality": "Close, observant, and slightly unstable.",
+            "costume_notes": "Salt-crusted wool coat and patched knit cap.",
+        },
+        metadata=_metadata("seed look and feel"),
+    )
+    store.save_artifact(
+        artifact_type="intent_mood",
+        entity_id="project",
+        data={
+            "scope": "project",
+            "mood_descriptors": ["lonely", "ominous"],
+            "reference_films": ["The Lighthouse"],
+            "natural_language_intent": "Make the world feel ancient and judging.",
+        },
+        metadata=_metadata("seed intent mood"),
+    )
 
 
 @pytest.mark.integration
@@ -75,17 +118,11 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert created.status_code == 200
     project_id = created.json()["project_id"]
 
-    format_resp = client.patch(
-        f"/api/projects/{project_id}/settings",
-        json={"production_format": "animation_3d"},
-    )
-    assert format_resp.status_code == 200
-    assert format_resp.json()["production_format"] == "animation_3d"
-
     entity_id = "character_mariner"
 
     # Seed a bible so the generate endpoint can load bible data
     _create_mock_bible(project_path, entity_id)
+    _seed_project_prompt_context(project_path)
 
     # --- Step 1: GET before any study exists → 404 ---
     resp = client.get(f"/api/projects/{project_id}/design-study/{entity_id}")
@@ -106,8 +143,13 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert state["entity_id"] == entity_id
     assert len(state["rounds"]) == 1
     assert len(state["rounds"][0]["images"]) == 2
-    assert "production_format" in state["rounds"][0]["sources_used"]
+    assert "project_config" in state["rounds"][0]["sources_used"]
+    assert "look_and_feel" in state["rounds"][0]["sources_used"]
+    assert "intent_mood" in state["rounds"][0]["sources_used"]
     assert "animation_3d" in state["rounds"][0]["prompt"].lower()
+    assert "nautical drama" in state["rounds"][0]["prompt"].lower()
+    assert "single-source lantern light" in state["rounds"][0]["prompt"].lower()
+    assert "the lighthouse" in state["rounds"][0]["prompt"].lower()
     image_filename = state["rounds"][0]["images"][0]["filename"]
     assert image_filename.startswith("design_study_r1_img")
 
@@ -137,6 +179,10 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert final_state["selected_final_filename"] == image_filename
     img_entry = final_state["rounds"][0]["images"][0]
     assert img_entry["decision"] == "selected_final"
+    store = ArtifactStore(project_dir=project_path)
+    manifest_refs = store.list_versions("bible_manifest", entity_id)
+    latest_manifest, _ = store.load_bible_entry(manifest_refs[-1])
+    assert latest_manifest.visual_reference_image == image_filename
 
     # --- Step 6: Decide — mark second image as seed_for_variants with guidance ---
     second_filename = state["rounds"][0]["images"][1]["filename"]
@@ -178,7 +224,7 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert len(state2["rounds"][1]["images"]) == 1
     assert "user_guidance" in state2["rounds"][1]["sources_used"]
     assert "seed_image" in state2["rounds"][1]["sources_used"]
-    assert "production_format" in state2["rounds"][1]["sources_used"]
+    assert "project_config" in state2["rounds"][1]["sources_used"]
     # selected_final from round 1 should still be set
     assert state2["selected_final_filename"] == image_filename
 
@@ -241,3 +287,105 @@ def test_design_study_decide_unknown_image(tmp_path: Path) -> None:
         json={"filename": "design_study_r99_img1.jpg", "decision": "favorite"},
     )
     assert resp.status_code == 404
+
+
+@pytest.mark.integration
+def test_design_study_clearing_selected_final_clears_visual_reference_image(
+    tmp_path: Path,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    app = create_app(workspace_root=workspace_root)
+    client = TestClient(app)
+
+    project_path = tmp_path / "design-study-clear-final"
+    created = client.post("/api/projects/new", json={"project_path": str(project_path)})
+    assert created.status_code == 200
+    project_id = created.json()["project_id"]
+
+    entity_id = "character_mariner"
+    _create_mock_bible(project_path, entity_id)
+
+    with patch(
+        "cine_forge.api.routers.design_study.generate_image",
+        return_value=(_FAKE_JPEG, "imagen-4.0-generate-001"),
+    ):
+        resp = client.post(
+            f"/api/projects/{project_id}/design-study/{entity_id}/generate",
+            json={"entity_type": "character", "count": 1},
+        )
+
+    assert resp.status_code == 200
+    image_filename = resp.json()["rounds"][0]["images"][0]["filename"]
+
+    select_resp = client.post(
+        f"/api/projects/{project_id}/design-study/{entity_id}/decide",
+        json={"filename": image_filename, "decision": "selected_final"},
+    )
+    assert select_resp.status_code == 200
+
+    clear_resp = client.post(
+        f"/api/projects/{project_id}/design-study/{entity_id}/decide",
+        json={"filename": image_filename, "decision": "pending"},
+    )
+    assert clear_resp.status_code == 200
+
+    store = ArtifactStore(project_dir=project_path)
+    manifest_refs = store.list_versions("bible_manifest", entity_id)
+    assert len(manifest_refs) == 3
+    latest_manifest, _ = store.load_bible_entry(manifest_refs[-1])
+    assert latest_manifest.visual_reference_image is None
+
+
+@pytest.mark.integration
+def test_design_study_selecting_new_final_clears_previous_final_badge(
+    tmp_path: Path,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    app = create_app(workspace_root=workspace_root)
+    client = TestClient(app)
+
+    project_path = tmp_path / "design-study-switch-final"
+    created = client.post("/api/projects/new", json={"project_path": str(project_path)})
+    assert created.status_code == 200
+    project_id = created.json()["project_id"]
+
+    entity_id = "character_mariner"
+    _create_mock_bible(project_path, entity_id)
+
+    with patch(
+        "cine_forge.api.routers.design_study.generate_image",
+        return_value=(_FAKE_JPEG, "imagen-4.0-generate-001"),
+    ):
+        resp = client.post(
+            f"/api/projects/{project_id}/design-study/{entity_id}/generate",
+            json={"entity_type": "character", "count": 2},
+        )
+
+    assert resp.status_code == 200
+    images = resp.json()["rounds"][0]["images"]
+    first_filename = images[0]["filename"]
+    second_filename = images[1]["filename"]
+
+    first_select = client.post(
+        f"/api/projects/{project_id}/design-study/{entity_id}/decide",
+        json={"filename": first_filename, "decision": "selected_final"},
+    )
+    assert first_select.status_code == 200
+
+    second_select = client.post(
+        f"/api/projects/{project_id}/design-study/{entity_id}/decide",
+        json={"filename": second_filename, "decision": "selected_final"},
+    )
+    assert second_select.status_code == 200
+
+    state = client.get(f"/api/projects/{project_id}/design-study/{entity_id}").json()
+    assert state["selected_final_filename"] == second_filename
+    round_images = {image["filename"]: image for image in state["rounds"][0]["images"]}
+    assert round_images[first_filename]["decision"] == "pending"
+    assert round_images[second_filename]["decision"] == "selected_final"
+
+    store = ArtifactStore(project_dir=project_path)
+    latest_manifest, _ = store.load_bible_entry(
+        store.list_versions("bible_manifest", entity_id)[-1]
+    )
+    assert latest_manifest.visual_reference_image == second_filename

@@ -24,7 +24,6 @@ from cine_forge.schemas import (
     AssetTargetKind,
     AssetType,
     BibleManifest,
-    DesignStudyState,
     InjectedAsset,
     InjectedAssetManifest,
     Suggestion,
@@ -389,19 +388,10 @@ class InjectedAssetService:
         self, target_kind: AssetTargetKind, target_id: str
     ) -> list[str]:
         refs = self._collect_asset_paths(target_kind, target_id, asset_type="image")
-        design_study_path = (
-            self.project_dir
-            / "artifacts"
-            / "bibles"
-            / f"{target_kind}_{target_id}"
-            / "design_study_state.json"
-        )
-        if design_study_path.exists():
-            state = DesignStudyState.model_validate_json(
-                design_study_path.read_text(encoding="utf-8")
-            )
-            selected = state.thumbnail_filename()
-            if selected:
+        latest_ref = self.store.latest_ref("bible_manifest", f"{target_kind}_{target_id}")
+        if latest_ref is not None:
+            manifest, _ = self.store.load_bible_entry(latest_ref)
+            if manifest.visual_reference_image:
                 refs.append(
                     str(
                         (
@@ -409,7 +399,7 @@ class InjectedAssetService:
                             / "artifacts"
                             / "bibles"
                             / f"{target_kind}_{target_id}"
-                            / selected
+                            / manifest.visual_reference_image
                         ).relative_to(self.project_dir)
                     )
                 )

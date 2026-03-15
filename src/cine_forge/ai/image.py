@@ -1,7 +1,8 @@
 """Image generation via Google Imagen 4 and OpenAI gpt-image-1.
 
-Provides two functions:
+Provides prompt compilation plus provider dispatch:
   - synthesize_image_prompt: build a rich visual prompt from a bible dict
+  - build_image_prompt: compile bible + project/style context into one prompt
   - generate_image: dispatch to the appropriate provider and return raw image bytes + model used
 
 Provider routing:
@@ -73,6 +74,97 @@ FORMAT_STYLE_MODIFIERS: dict[ProductionFormat, str] = {
 
 class ImageGenerationError(Exception):
     """Raised when the image generation API call fails."""
+
+
+def _ensure_sentence(value: str) -> str:
+    value = value.strip()
+    if not value:
+        return ""
+    if value.endswith((".", "!", "?")):
+        return value
+    return f"{value}."
+
+
+def _string_list(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    cleaned: list[str] = []
+    for item in values:
+        if isinstance(item, str) and item.strip():
+            cleaned.append(item.strip())
+    return cleaned
+
+
+def _project_config_context(project_config_data: dict[str, Any] | None) -> list[str]:
+    if not isinstance(project_config_data, dict):
+        return []
+
+    lines: list[str] = []
+    genres = _string_list(project_config_data.get("genre"))
+    tones = _string_list(project_config_data.get("tone"))
+    if genres:
+        lines.append(f"Genre direction: {', '.join(genres)}.")
+    if tones:
+        lines.append(f"Tone targets: {', '.join(tones)}.")
+
+    raw_format = project_config_data.get("production_format")
+    if isinstance(raw_format, str) and raw_format.strip():
+        style_modifier = FORMAT_STYLE_MODIFIERS.get(raw_format)  # type: ignore[arg-type]
+        if style_modifier:
+            lines.append(f"Visual medium: {raw_format}. {style_modifier}")
+        else:
+            lines.append(f"Visual medium: {raw_format}.")
+
+    return lines
+
+
+def _look_and_feel_context(look_and_feel_data: dict[str, Any] | None) -> list[str]:
+    if not isinstance(look_and_feel_data, dict):
+        return []
+
+    lines: list[str] = []
+    field_labels = (
+        ("lighting_concept", "Lighting concept"),
+        ("color_palette", "Color palette"),
+        ("composition_philosophy", "Composition philosophy"),
+        ("camera_personality", "Camera personality"),
+        ("costume_notes", "Costume notes"),
+        ("production_design_notes", "Production design notes"),
+    )
+    for field_name, label in field_labels:
+        value = look_and_feel_data.get(field_name)
+        if isinstance(value, str) and value.strip():
+            lines.append(f"{label}: {_ensure_sentence(value)}")
+
+    reference_imagery = _string_list(look_and_feel_data.get("reference_imagery"))
+    if reference_imagery:
+        lines.append(f"Reference imagery anchors: {', '.join(reference_imagery)}.")
+
+    return lines
+
+
+def _intent_mood_context(intent_mood_data: dict[str, Any] | None) -> list[str]:
+    if not isinstance(intent_mood_data, dict):
+        return []
+
+    lines: list[str] = []
+    mood_descriptors = _string_list(intent_mood_data.get("mood_descriptors"))
+    if mood_descriptors:
+        lines.append(f"Mood descriptors: {', '.join(mood_descriptors)}.")
+
+    reference_films = _string_list(intent_mood_data.get("reference_films"))
+    if reference_films:
+        lines.append(f"Reference films: {', '.join(reference_films)}.")
+
+    natural_language_intent = intent_mood_data.get("natural_language_intent")
+    if isinstance(natural_language_intent, str) and natural_language_intent.strip():
+        lines.append(f"Intent brief: {_ensure_sentence(natural_language_intent)}")
+
+    style_preset_id = intent_mood_data.get("style_preset_id")
+    if isinstance(style_preset_id, str) and style_preset_id.strip():
+        lines.append(f"Style preset: {style_preset_id.strip()}.")
+
+    return lines
 
 
 def synthesize_image_prompt(entity_type: str, bible_data: dict[str, Any]) -> str:
@@ -169,6 +261,8 @@ def build_image_prompt(
     guidance: str | None = None,
     seed_image_filename: str | None = None,
     project_config_data: dict[str, Any] | None = None,
+    look_and_feel_data: dict[str, Any] | None = None,
+    intent_mood_data: dict[str, Any] | None = None,
 ) -> tuple[str, list[str]]:
     """Build a design-study prompt plus a provenance list for the prompt sources used."""
     base_prompt = synthesize_image_prompt(entity_type, bible_data)
@@ -188,15 +282,20 @@ def build_image_prompt(
 
     prompt_parts.append(base_prompt)
 
-    raw_format = None
-    if isinstance(project_config_data, dict):
-        raw_format = project_config_data.get("production_format")
+    look_and_feel_lines = _look_and_feel_context(look_and_feel_data)
+    if look_and_feel_lines:
+        prompt_parts.extend(look_and_feel_lines)
+        sources_used.append("look_and_feel")
 
-    if isinstance(raw_format, str):
-        style_modifier = FORMAT_STYLE_MODIFIERS.get(raw_format)  # type: ignore[arg-type]
-        if style_modifier:
-            prompt_parts.append(f"Production format target: {raw_format}. {style_modifier}")
-            sources_used.append("production_format")
+    project_config_lines = _project_config_context(project_config_data)
+    if project_config_lines:
+        prompt_parts.extend(project_config_lines)
+        sources_used.append("project_config")
+
+    intent_mood_lines = _intent_mood_context(intent_mood_data)
+    if intent_mood_lines:
+        prompt_parts.extend(intent_mood_lines)
+        sources_used.append("intent_mood")
 
     prompt = " ".join(part.strip() for part in prompt_parts if part and part.strip())
     return prompt, sources_used

@@ -1,7 +1,8 @@
 # Story 113 — Per-Provider LLM Circuit Breaker
 
 **Priority**: Medium
-**Status**: Draft
+**Status**: Cancelled — Superseded by Story 050. Provider circuit breaker behavior already exists in `src/cine_forge/ai/llm.py`, so keeping this as active backlog would duplicate landed work.
+**Cancelled**: 2026-03-15
 **Spec Refs**: C3 (provider resilience, Story 050 extended)
 **Depends On**: None (Story 050 retry/fallback already done)
 
@@ -79,4 +80,4 @@ Reference implementation: `src/dossier/circuit_breaker.py` — 244 lines, zero e
 
 ## Work Log
 
-{Entries added during implementation}
+20260315-1158 — Backlog cleanup: cancelled as duplicate work. Verified the landed implementation in `src/cine_forge/ai/llm.py` (`_is_circuit_breaker_open`, `_breaker_state`, `_reset_circuit_breakers`) and the corresponding unit coverage in `tests/unit/test_ai_llm.py`. Story 050 already delivered the capability this draft proposed.

@@ -49,6 +49,7 @@ def test_artifact_store_save_load_bible_entry(tmp_path: Path) -> None:
     assert manifest.display_name == "Aria"
     assert len(manifest.files) == 1
     assert manifest.files[0].filename == "master_v1.json"
+    assert manifest.visual_reference_image is None
     
     # Check data file
     data_file_path = tmp_path / "artifacts" / "bibles" / "character_aria" / "master_v1.json"
@@ -75,3 +76,96 @@ def test_artifact_store_list_bible_entries(tmp_path: Path) -> None:
     
     locs = store.list_bible_entries("location")
     assert locs == ["studio"]
+
+
+@pytest.mark.unit
+def test_artifact_store_save_bible_entry_persists_visual_reference_image(tmp_path: Path) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    metadata = ArtifactMetadata(
+        intent="test",
+        rationale="test",
+        confidence=1.0,
+        source="human",
+    )
+
+    ref = store.save_bible_entry(
+        entity_type="character",
+        entity_id="aria",
+        display_name="Aria",
+        files=[],
+        data_files={},
+        metadata=metadata,
+        visual_reference_image="design_study_r1_img1.jpg",
+    )
+
+    manifest, _ = store.load_bible_entry(ref)
+    assert manifest.visual_reference_image == "design_study_r1_img1.jpg"
+
+
+@pytest.mark.unit
+def test_artifact_store_save_bible_entry_preserves_visual_reference_when_omitted(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    metadata = ArtifactMetadata(
+        intent="test",
+        rationale="test",
+        confidence=1.0,
+        source="human",
+    )
+
+    store.save_bible_entry(
+        entity_type="character",
+        entity_id="aria",
+        display_name="Aria",
+        files=[],
+        data_files={},
+        metadata=metadata,
+        visual_reference_image="design_study_r1_img1.jpg",
+    )
+    ref = store.save_bible_entry(
+        entity_type="character",
+        entity_id="aria",
+        display_name="Aria",
+        files=[],
+        data_files={},
+        metadata=metadata,
+    )
+
+    manifest, _ = store.load_bible_entry(ref)
+    assert manifest.visual_reference_image == "design_study_r1_img1.jpg"
+
+
+@pytest.mark.unit
+def test_artifact_store_save_bible_entry_clears_visual_reference_when_explicit_none(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    metadata = ArtifactMetadata(
+        intent="test",
+        rationale="test",
+        confidence=1.0,
+        source="human",
+    )
+
+    store.save_bible_entry(
+        entity_type="character",
+        entity_id="aria",
+        display_name="Aria",
+        files=[],
+        data_files={},
+        metadata=metadata,
+        visual_reference_image="design_study_r1_img1.jpg",
+    )
+    ref = store.save_bible_entry(
+        entity_type="character",
+        entity_id="aria",
+        display_name="Aria",
+        files=[],
+        data_files={},
+        metadata=metadata,
+        visual_reference_image=None,
+    )
+
+    manifest, _ = store.load_bible_entry(ref)
+    assert manifest.visual_reference_image is None

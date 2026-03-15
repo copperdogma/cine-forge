@@ -35,6 +35,13 @@ class BibleManifest(BaseModel):
     entity_id: str
     display_name: str
     files: list[BibleFileEntry] = Field(default_factory=list)
+    visual_reference_image: str | None = Field(
+        default=None,
+        description=(
+            "Canonical design-study image filename selected for downstream visual"
+            " reference use (storyboards, shot planning, render prep)."
+        ),
+    )
     version: int = Field(ge=1)
     created_at: datetime = Field(default_factory=datetime.now)
 

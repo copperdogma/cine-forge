@@ -25,6 +25,7 @@ from cine_forge.ai.image import (
     generate_image,
 )
 from cine_forge.artifacts.store import ArtifactStore
+from cine_forge.schemas import ArtifactMetadata
 from cine_forge.schemas.design_study import (
     DesignStudyImage,
     DesignStudyRound,
@@ -77,26 +78,48 @@ def _write_state(bible_dir: Path, state: DesignStudyState) -> None:
     state_file.write_text(state.model_dump_json(indent=2), encoding="utf-8")
 
 
-def _load_bible_data(project_path: Path, entity_id: str) -> dict[str, Any] | None:
+def _artifact_data_as_dict(data: Any) -> dict[str, Any]:
+    if hasattr(data, "model_dump"):
+        return data.model_dump()
+    if isinstance(data, dict):
+        return dict(data)
+    return dict(data)
+
+
+def _load_latest_artifact_data(
+    store: ArtifactStore,
+    *,
+    artifact_type: str,
+    entity_id: str,
+) -> dict[str, Any] | None:
+    refs = store.list_versions(artifact_type=artifact_type, entity_id=entity_id)
+    if not refs:
+        return None
+    artifact = store.load_artifact(refs[-1])
+    return _artifact_data_as_dict(artifact.data)
+
+
+def _load_bible_data(
+    store: ArtifactStore,
+    project_path: Path,
+    entity_id: str,
+) -> dict[str, Any] | None:
     """Load the latest bible data for an entity.
 
     entity_id is the full prefixed form: 'character_mariner'.
     Returns the bible data dict, or None if no bible or master_definition exists.
     """
-    store = ArtifactStore(project_dir=project_path)
     refs = store.list_versions(artifact_type="bible_manifest", entity_id=entity_id)
     if not refs:
         return None
     latest = max(refs, key=lambda r: r.version)
-    artifact = store.load_artifact(latest)
-    manifest_data = artifact.data if isinstance(artifact.data, dict) else artifact.data.model_dump()
+    manifest, _ = store.load_bible_entry(latest)
 
     # Find and load the master_definition file
-    files = manifest_data.get("files", [])
     dir_path = (project_path / latest.path).parent
-    for entry in files:
-        if entry.get("purpose") == "master_definition":
-            filename = entry.get("filename", "")
+    for entry in manifest.files:
+        if entry.purpose == "master_definition":
+            filename = entry.filename
             master_path = dir_path / filename
             if master_path.exists():
                 return json.loads(master_path.read_text(encoding="utf-8"))
@@ -104,17 +127,15 @@ def _load_bible_data(project_path: Path, entity_id: str) -> dict[str, Any] | Non
     return None
 
 
-def _load_project_config_data(project_path: Path) -> dict[str, Any]:
+def _load_project_config_data(store: ArtifactStore, project_path: Path) -> dict[str, Any]:
     """Load the latest project-level config data used for image prompt context."""
-    store = ArtifactStore(project_dir=project_path)
-    refs = store.list_versions(artifact_type="project_config", entity_id="project")
-    if refs:
-        artifact = store.load_artifact(refs[-1])
-        data = artifact.data
-        if hasattr(data, "model_dump"):
-            return data.model_dump()
-        if isinstance(data, dict):
-            return dict(data)
+    data = _load_latest_artifact_data(
+        store,
+        artifact_type="project_config",
+        entity_id="project",
+    )
+    if data is not None:
+        return data
 
     project_json_path = project_path / "project.json"
     if project_json_path.exists():
@@ -127,6 +148,65 @@ def _load_project_config_data(project_path: Path) -> dict[str, Any]:
         }
 
     return {}
+
+
+def _load_prompt_context(
+    store: ArtifactStore,
+    project_path: Path,
+) -> tuple[dict[str, Any], dict[str, Any] | None, dict[str, Any] | None]:
+    project_config_data = _load_project_config_data(store, project_path)
+    look_and_feel_data = _load_latest_artifact_data(
+        store,
+        artifact_type="look_and_feel",
+        entity_id="project",
+    )
+    intent_mood_data = _load_latest_artifact_data(
+        store,
+        artifact_type="intent_mood",
+        entity_id="project",
+    )
+    return project_config_data, look_and_feel_data, intent_mood_data
+
+
+def _persist_visual_reference_image(
+    store: ArtifactStore,
+    *,
+    entity_id: str,
+    visual_reference_image: str | None,
+) -> None:
+    refs = store.list_versions(artifact_type="bible_manifest", entity_id=entity_id)
+    if not refs:
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                f"No bible found for entity '{entity_id}'."
+                " Run the world-building pipeline first."
+            ),
+        )
+
+    latest_ref = refs[-1]
+    manifest, _ = store.load_bible_entry(latest_ref)
+    metadata = ArtifactMetadata(
+        lineage=[latest_ref],
+        intent="Update canonical visual reference image.",
+        rationale=(
+            "User selected a design-study image as the canonical downstream reference."
+            if visual_reference_image
+            else "User cleared the canonical downstream design-study reference."
+        ),
+        confidence=1.0,
+        source="human",
+        producing_module="operator_console.design_study",
+    )
+    store.save_bible_entry(
+        entity_type=manifest.entity_type,
+        entity_id=manifest.entity_id,
+        display_name=manifest.display_name,
+        files=[entry.model_dump(mode="json") for entry in manifest.files],
+        data_files={},
+        metadata=metadata,
+        visual_reference_image=visual_reference_image,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -163,10 +243,11 @@ async def generate_design_study(
     stores images in the bible folder, and returns updated DesignStudyState.
     """
     project_path = _get_project_path(project_id)
+    store = ArtifactStore(project_dir=project_path)
     bib_dir = _bible_dir(project_path, entity_id)
 
     # Load bible data for prompt synthesis
-    bible_data = _load_bible_data(project_path, entity_id)
+    bible_data = _load_bible_data(store, project_path, entity_id)
     if bible_data is None:
         raise HTTPException(
             status_code=404,
@@ -183,13 +264,18 @@ async def generate_design_study(
     )
     round_number = len(state.rounds) + 1
 
-    project_config_data = _load_project_config_data(project_path)
+    project_config_data, look_and_feel_data, intent_mood_data = _load_prompt_context(
+        store,
+        project_path,
+    )
     prompt, sources_used = build_image_prompt(
         body.entity_type,
         bible_data,
         guidance=body.guidance,
         seed_image_filename=body.seed_image_filename,
         project_config_data=project_config_data,
+        look_and_feel_data=look_and_feel_data,
+        intent_mood_data=intent_mood_data,
     )
 
     # Generate images — ensure bible dir exists once before writing any files
@@ -273,6 +359,14 @@ async def decide_design_study(
         raise HTTPException(status_code=404, detail=f"No design study found for '{entity_id}'.")
 
     updated = False
+    previous_selected_final = state.selected_final_filename
+
+    if body.decision == "selected_final":
+        for round_ in state.rounds:
+            for img in round_.images:
+                if img.filename != body.filename and img.decision == "selected_final":
+                    img.decision = "pending"
+
     for round_ in state.rounds:
         for img in round_.images:
             if img.filename == body.filename:
@@ -292,6 +386,14 @@ async def decide_design_study(
     elif body.decision != "selected_final" and state.selected_final_filename == body.filename:
         # Unselect if previously selected
         state.selected_final_filename = None
+
+    store = ArtifactStore(project_dir=project_path)
+    if state.selected_final_filename != previous_selected_final:
+        _persist_visual_reference_image(
+            store,
+            entity_id=entity_id,
+            visual_reference_image=state.selected_final_filename,
+        )
 
     state.last_updated = datetime.now()
     _write_state(bib_dir, state)

@@ -16,6 +16,8 @@ from cine_forge.schemas import (
     BibleManifest,
 )
 
+_MANIFEST_VALUE_UNSET = object()
+
 
 class ArtifactStore:
     """Persist and retrieve immutable artifact snapshots.
@@ -129,6 +131,8 @@ class ArtifactStore:
         files: list[dict[str, Any]],  # data for BibleFileEntry
         data_files: dict[str, bytes | str],  # filename -> content
         metadata: ArtifactMetadata,
+        *,
+        visual_reference_image: str | None | object = _MANIFEST_VALUE_UNSET,
     ) -> ArtifactRef:
         """Create or update a bible entry folder with a new manifest version."""
         with self._write_lock:
@@ -144,6 +148,7 @@ class ArtifactStore:
                 if p.stem.removeprefix("manifest_v").isdigit()
             ]
             version = (max(manifest_versions) if manifest_versions else 0) + 1
+            previous_visual_reference = self._latest_bible_visual_reference(artifact_dir)
 
             # 2. Save data files
             for filename, content in data_files.items():
@@ -160,6 +165,11 @@ class ArtifactStore:
                 entity_id=entity_id,
                 display_name=display_name,
                 files=[BibleFileEntry.model_validate(f) for f in files],
+                visual_reference_image=(
+                    previous_visual_reference
+                    if visual_reference_image is _MANIFEST_VALUE_UNSET
+                    else visual_reference_image
+                ),
                 version=version,
             )
 
@@ -193,6 +203,24 @@ class ArtifactStore:
             )
             self.graph.propagate_stale_for_new_version(new_ref=artifact_ref)
         return artifact_ref
+
+    def _latest_bible_visual_reference(self, artifact_dir: Path) -> str | None:
+        """Return the latest persisted visual reference filename for a bible folder."""
+        manifest_refs = [
+            int(p.stem.removeprefix("manifest_v"))
+            for p in artifact_dir.glob("manifest_v*.json")
+            if p.stem.removeprefix("manifest_v").isdigit()
+        ]
+        if not manifest_refs:
+            return None
+
+        latest_version = max(manifest_refs)
+        latest_path = artifact_dir / f"manifest_v{latest_version}.json"
+        with latest_path.open("r", encoding="utf-8") as file:
+            payload = json.load(file)
+        artifact = Artifact.model_validate(payload)
+        manifest = BibleManifest.model_validate(artifact.data)
+        return manifest.visual_reference_image
 
     def load_bible_entry(self, artifact_ref: ArtifactRef) -> tuple[BibleManifest, ArtifactMetadata]:
         """Load a bible manifest and its metadata."""

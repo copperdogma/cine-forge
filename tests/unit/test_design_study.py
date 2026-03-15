@@ -132,9 +132,9 @@ def test_design_study_round_tracks_sources_used():
         model="imagen-4.0-generate-001",
         entity_type="character",
         entity_id="character_mariner",
-        sources_used=["entity_bible", "production_format"],
+        sources_used=["entity_bible", "project_config"],
     )
-    assert round_.sources_used == ["entity_bible", "production_format"]
+    assert round_.sources_used == ["entity_bible", "project_config"]
 
 
 # ---------------------------------------------------------------------------
@@ -201,21 +201,27 @@ def test_synthesize_prompt_handles_missing_fields():
 
 
 @pytest.mark.unit
-def test_build_image_prompt_tracks_production_format_source():
+def test_build_image_prompt_tracks_project_config_source():
     prompt, sources_used = build_image_prompt(
         "character",
         {"name": "The Mariner", "description": "A grizzled old sailor."},
         guidance="More weathered",
-        project_config_data={"production_format": "anime"},
+        project_config_data={
+            "genre": ["nautical drama"],
+            "tone": ["bleak", "windswept"],
+            "production_format": "anime",
+        },
     )
     assert "More weathered" in prompt
     assert "anime" in prompt.lower()
-    assert "production_format" in sources_used
+    assert "nautical drama" in prompt
+    assert "bleak, windswept" in prompt
+    assert "project_config" in sources_used
     assert "user_guidance" in sources_used
 
 
 @pytest.mark.unit
-def test_build_image_prompt_skips_production_format_source_when_unset():
+def test_build_image_prompt_skips_project_config_source_when_unset():
     prompt, sources_used = build_image_prompt(
         "prop",
         {"name": "The Oar", "description": "A heavy oak oar."},
@@ -224,4 +230,39 @@ def test_build_image_prompt_skips_production_format_source_when_unset():
     )
     assert "Variation of the previously approved design direction" in prompt
     assert "seed_image" in sources_used
-    assert "production_format" not in sources_used
+    assert "project_config" not in sources_used
+
+
+@pytest.mark.unit
+def test_build_image_prompt_includes_look_and_feel_context():
+    prompt, sources_used = build_image_prompt(
+        "character",
+        {"name": "The Mariner", "description": "A grizzled old sailor."},
+        look_and_feel_data={
+            "lighting_concept": "Low-key practical lantern light",
+            "color_palette": "Sea-worn cyan and rust",
+            "camera_personality": "Close, observant, slightly unstable",
+            "costume_notes": "Salt-crusted wool coat and patched knit cap",
+        },
+    )
+    assert "Low-key practical lantern light" in prompt
+    assert "Sea-worn cyan and rust" in prompt
+    assert "Salt-crusted wool coat" in prompt
+    assert "look_and_feel" in sources_used
+
+
+@pytest.mark.unit
+def test_build_image_prompt_includes_intent_mood_context():
+    prompt, sources_used = build_image_prompt(
+        "location",
+        {"name": "The Harbour", "description": "A fog-shrouded Victorian harbour."},
+        intent_mood_data={
+            "mood_descriptors": ["lonely", "ominous"],
+            "reference_films": ["The Lighthouse"],
+            "natural_language_intent": "Make the harbour feel ancient and judging.",
+        },
+    )
+    assert "lonely, ominous" in prompt
+    assert "The Lighthouse" in prompt
+    assert "ancient and judging" in prompt
+    assert "intent_mood" in sources_used

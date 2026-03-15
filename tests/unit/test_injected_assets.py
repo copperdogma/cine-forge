@@ -151,6 +151,47 @@ def test_inject_character_image_updates_bible_and_manifest(tmp_path: Path) -> No
 
 
 @pytest.mark.unit
+def test_collect_visual_references_includes_canonical_design_study_image(tmp_path: Path) -> None:
+    _seed_character_bible(tmp_path)
+    _seed_scene(tmp_path)
+
+    design_study_filename = "design_study_r1_img1.jpg"
+    design_study_path = tmp_path / "artifacts" / "bibles" / "character_aria" / design_study_filename
+    design_study_path.write_bytes(_PNG_BYTES)
+
+    store = ArtifactStore(project_dir=tmp_path)
+    latest_ref = store.list_versions("bible_manifest", "character_aria")[-1]
+    manifest, _ = store.load_bible_entry(latest_ref)
+    store.save_bible_entry(
+        entity_type=manifest.entity_type,
+        entity_id=manifest.entity_id,
+        display_name=manifest.display_name,
+        files=[entry.model_dump(mode="json") for entry in manifest.files],
+        data_files={},
+        metadata=ArtifactMetadata(
+            lineage=[latest_ref],
+            intent="seed canonical design study reference",
+            rationale="unit test seed",
+            confidence=1.0,
+            source="code",
+        ),
+        visual_reference_image=design_study_filename,
+    )
+
+    service = InjectedAssetService(tmp_path)
+    references = service.collect_visual_references(
+        {
+            "scene_id": "scene_001",
+            "characters_present_ids": ["aria"],
+            "location": "",
+            "props_mentioned": [],
+        }
+    )
+
+    assert "artifacts/bibles/character_aria/design_study_r1_img1.jpg" in references
+
+
+@pytest.mark.unit
 def test_inject_scene_audio_generates_waveform(tmp_path: Path) -> None:
     _seed_scene(tmp_path)
     service = InjectedAssetService(tmp_path)

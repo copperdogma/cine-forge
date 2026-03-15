@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-03-15-02] — Design-study prompt compiler and reference propagation (Story 119)
+
+### Added
+- Per-round design-study provenance panels and immutable bible-manifest `visual_reference_image` persistence so the operator can inspect prompt inputs and downstream tools can consume one canonical image reference
+
+### Changed
+- Design-study prompt compilation now incorporates project config, look-and-feel, and intent-mood context through the shared deterministic `build_image_prompt()` path
+- Backlog/story docs now reflect Story 119 as landed, keep Story 026 sequence-sensitive against the canonical reference path, and retire the stale Story 113 circuit-breaker item
+
+### Fixed
+- `selected_final` decisions now set and clear canonical visual references via new bible manifest versions instead of leaving downstream consumers tied to design-study state alone
+- Downstream entity reference collection now reads the bible-manifest canonical image field, and the design-study UI optimistically clears prior finals to match backend single-final behavior
+
 ## [2026-03-15-01] — Semantic change propagation lands (Story 031)
 
 ### Added
