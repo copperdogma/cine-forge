@@ -1124,15 +1124,15 @@ evals:
         result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
       - model: "Gemini 2.5 Flash Lite"
         metrics:
-          overall: 0.905
+          overall: 0.920
           python: 0.99
-          rubric: 0.82
-        latency_ms: 2000
-        cost_usd: 0.00053
-        measured: 2026-03-07
-        git_sha: "0c2e32b"
-        result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
-        note: "Value winner: 0.905 quality at $0.00053, 2.0s. Value score=1698. Production default. Story 124: verification loop adds recall safety net (+2 optional entities recovered at $0.0008 extra cost when gaps detected, zero cost on happy path). Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged."
+          rubric: 0.85
+        latency_ms: 3834
+        cost_usd: 0.0007045
+        measured: 2026-03-16
+        git_sha: "35e29f1"
+        result_file: benchmarks/results/story-129-entity-discovery-taxonomy-tightening.json
+        note: "Story 129 tightened the taxonomy contract and aligned the standalone benchmark prompt with the module wording. Verified 0.920 overall (python 0.99, rubric 0.85) while restoring the required 15TH FLOOR sublocation after an initial prompt-only regression. Remaining prop clutter such as GUN/SWEATER/DESK-class items is classified as model-wrong and non-runtime-blocking for this story because required recall holds and the Story 124 acceptance test still passes. Production default remains the value winner."
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 0.787

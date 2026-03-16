@@ -196,7 +196,7 @@ NOTES from Cam:
 | 126 | Frontend Chat and Data-Layer Decomposition | 2.5 — UI | High | Done | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
 | 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Pending | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
 | 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Pending | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
-| 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Pending | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
+| 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Done | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
 | 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Pending | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
 | 133 | Model Refresh, Eval Verification, and Project Model Defaults | Cross-Cutting | High | Done | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |

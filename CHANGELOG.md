@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-15-05] — Entity discovery taxonomy tightening (Story 129)
+
+### Changed
+- Tightened the `entity_discovery_v1` taxonomy contract for background-character exclusions, prop-noise exclusions, and floor-level location retention while keeping the recall-verification loop intact
+- Aligned the standalone entity-discovery benchmark prompt with the module wording so promptfoo reruns measure the same taxonomy policy the runtime uses
+
+### Fixed
+- Added direct regression tests for the entity-discovery prompt contract so future edits cannot silently relax the background-role and set-dressing exclusions
+- Re-ran the Gemini 2.5 Flash Lite entity-discovery eval, recovered the required `15TH FLOOR` location after an initial prompt regression, and raised the recorded score to `0.920`
+
 ## [2026-03-15-04] — Brick & Steel PDF normalization regression fixed (Story 135)
 
 ### Added

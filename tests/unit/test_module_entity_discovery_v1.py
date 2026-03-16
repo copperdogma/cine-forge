@@ -4,10 +4,12 @@ import pytest
 
 import cine_forge.modules.world_building.entity_discovery_v1.main as discovery_main
 from cine_forge.modules.world_building.entity_discovery_v1.main import (
+    _build_discovery_prompt,
     _extract_scene_index_signals,
     _find_recall_gaps,
     _normalize_character_name,
     _normalize_entity_name,
+    _taxonomy_description,
     run_module,
 )
 
@@ -169,6 +171,46 @@ class TestLLMFallback:
 
 
 # ── Normalization unit tests ─────────────────────────────────────────
+
+
+class TestTaxonomyPromptContract:
+    def test_location_taxonomy_keeps_story_sublocations(self):
+        description = _taxonomy_description("locations")
+        assert "specific sublocations" in description
+
+        prompt = _build_discovery_prompt("locations", description, [], "INT. 15TH FLOOR")
+        assert "15TH FLOOR, STAIRWELL, or ELEVATOR" in prompt
+
+    def test_character_taxonomy_exclusions_are_explicit(self):
+        description = _taxonomy_description("characters")
+        assert "unnamed background extras" in description
+        assert "crowd labels" in description
+        assert "WAITER, GUARD, SECURITY, or THUG" in description
+
+        prompt = _build_discovery_prompt("characters", description, [], "ABE enters.")
+        assert description in prompt
+        assert "character bible entry" in prompt
+        assert "THUG 2 or GUARD #1" in prompt
+        assert "Drop bare labels like CROWD or THUG 2" in prompt
+        assert "better than inventing bibles for extras" in prompt
+
+    def test_prop_taxonomy_exclusions_are_explicit(self):
+        description = _taxonomy_description("props")
+        assert "ordinary wardrobe/costumes" in description
+        assert "set dressing" in description
+        assert "generic environmental objects" in description
+        assert "generic weapons/tools like GUN" in description
+
+        prompt = _build_discovery_prompt("props", description, [], "ABE grabs a coin.")
+        assert description in prompt
+        assert "prop bible entry" in prompt
+        assert "alter story comprehension, blocking, or continuity" in prompt
+        assert "parts or descriptors of another prop" in prompt
+        assert (
+            "Reject examples: SWEATER, BOOTS, DESK, RUG, PAINTINGS, MINTS, "
+            "generic GUN." in prompt
+        )
+        assert "A short, clean list is better than a bloated list" in prompt
 
 
 class TestNormalizeCharacterName:

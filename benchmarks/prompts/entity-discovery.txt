@@ -3,9 +3,25 @@ You are a script breakdown artist. Read the following screenplay and discover al
 Your job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.
 
 Discover:
-- **characters**: Every named person who appears or is mentioned (protagonist, antagonist, supporting, minor, flashback)
-- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities)
-- **props**: Every significant named object that appears in the story (weapons, vehicles, personal items, plot-relevant objects)
+- **characters**: Narratively specific people who appear or are mentioned. Exclude unnamed background extras, crowd labels, and generic role labels such as WAITER, GUARD, SECURITY, or THUG unless the screenplay gives them a specific narrative identity, recurring relationship, or clear story consequence.
+- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities), including specific sublocations such as floors, stairwells, or elevators when the screenplay stages action there separately.
+- **props**: Story-relevant objects that characters handle, use, exchange, seek, or that materially change events. Exclude ordinary wardrobe/costumes, set dressing, furniture, decor, and generic environmental objects unless the screenplay treats that exact item as distinctive or plot-significant. Exclude generic weapons/tools like GUN unless the specific object clearly matters.
+
+Decision filter:
+- Only include characters that would deserve their own character bible entry.
+- Keep specific story identities such as named family members, villains, or recurring henchmen with individual names. Drop bare labels like CROWD or THUG 2 unless the screenplay individualizes them.
+- Keep specific sublocations inside a larger place when the screenplay stages them as separate action spaces, such as a 15TH FLOOR, STAIRWELL, or ELEVATOR.
+- Only include props that would deserve their own prop bible entry.
+- Only include a prop if changing or removing it would alter story comprehension, blocking, or continuity.
+- For props, include worn gear only when the screenplay treats that exact item as a distinctive signature object or plot-significant equipment.
+- For props, exclude ordinary wardrobe, furniture, decor, scenery, injuries, sounds, materials, inscriptions, and parts/descriptors of another prop.
+- Good prop examples: OAR, AIRTAG, PURSE, FLARE GUN, MEMORY STICK.
+- Reject examples: SWEATER, BOOTS, DESK, RUG, PAINTINGS, MINTS, generic GUN.
+- If an item is borderline set dressing or a generic extra, leave it out.
+
+Important:
+- Character noise hurts downstream bibles. A shorter list of specific people is better than inventing bibles for extras.
+- Prop noise hurts downstream prop bibles. A short, clean list is better than a bloated list of wardrobe and set dressing.
 
 SCREENPLAY:
 ==========
@@ -20,5 +36,5 @@ Return ONLY valid JSON in this exact format:
 }
 
 Use the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).
-Do NOT include generic items like "gun" or "door" — only named/significant props.
-Do NOT include unnamed "GUARD #1" type extras unless they are recurring.
+Do NOT include generic items like "gun", "door", "desk", or "rug" unless the screenplay singles out that exact object as important.
+Do NOT include unnamed "GUARD #1", "THUG 2", or crowd-type extras unless they are narratively specific.
