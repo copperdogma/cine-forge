@@ -109,8 +109,8 @@ Execute a development story end-to-end.
 
 13b. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
-   - Prompt the user to run `/verify-eval`. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** before the story can close. Do not attempt the full investigation inline — it overwhelms context.
-   - **Re-assess acceptance criteria against verified scores.** Golden fixes from `/verify-eval` change the real scores. What looked like a passing story on raw scores may fail on verified scores (or vice versa). Only verified scores determine whether acceptance criteria are met.
+   - Prompt the user to run `/improve-eval` when structured mismatch investigation is needed. At minimum, complete its failure-classification workflow so every mismatch is tagged **model-wrong**, **golden-wrong**, or **ambiguous** before the story can close. Do not attempt the full investigation inline — it overwhelms context.
+   - **Re-assess acceptance criteria against verified scores.** Golden or scorer fixes discovered through `/improve-eval` change the real scores. What looked like a passing story on raw scores may fail on verified scores (or vice versa). Only verified scores determine whether acceptance criteria are met.
    - Do not proceed to Done if mismatches remain unclassified
    - **Update `docs/evals/registry.yaml`** with new scores, `git_sha`, and date for every eval you ran. Stale registry scores are worse than no scores — they cause future agents to waste time on already-solved problems or miss regressions.
 

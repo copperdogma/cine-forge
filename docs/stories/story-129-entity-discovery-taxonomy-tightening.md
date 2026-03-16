@@ -16,7 +16,7 @@ Reduce obvious entity noise before it pollutes downstream bibles. The current ch
 - [ ] Character discovery instructions explicitly exclude unnamed background characters, crowd labels, and generic service/security roles unless they have plot impact and a specific narrative identity.
 - [ ] Prop discovery instructions explicitly exclude costumes, set dressing, and generic environmental objects unless they are handled by actors or materially matter to the story.
 - [ ] Unit tests verify the tightened prompt language so future edits do not silently relax the exclusions.
-- [ ] Entity-discovery eval is re-run after the prompt change, all significant mismatches are classified via `/verify-eval`, and `docs/evals/registry.yaml` is updated if scores move.
+- [ ] Entity-discovery eval is re-run after the prompt change, all significant mismatches are classified via `/improve-eval` or equivalent mismatch investigation, and `docs/evals/registry.yaml` is updated if scores move.
 - [ ] Noise reduction does not regress required recall on the existing golden fixture.
 
 ## Out of Scope
@@ -32,7 +32,7 @@ Reduce obvious entity noise before it pollutes downstream bibles. The current ch
 - **Hybrid**: Prompt tightening plus a small deterministic post-filter is possible if eval shows prompt-only is insufficient.
 - **Pure code**: A pure post-filter is risky because generic names can sometimes be real plot entities. It should be a fallback, not the default assumption.
 - **Repo constraints / ADRs**: AGENTS requires prompt-first before model escalation. Story 124 already gave us a stable eval harness and verification loop, so this story should prove the smaller prompt fix before reaching for extra heuristics.
-- **Existing patterns to reuse**: `entity_discovery_v1/main.py`, Story 124 eval assets (`benchmarks/tasks/entity-discovery.yaml`, scorer, golden), `/verify-eval` workflow, `tests/unit/test_module_entity_discovery_v1.py`.
+- **Existing patterns to reuse**: `entity_discovery_v1/main.py`, Story 124 eval assets (`benchmarks/tasks/entity-discovery.yaml`, scorer, golden), `/improve-eval` mismatch-classification workflow, `tests/unit/test_module_entity_discovery_v1.py`.
 - **Eval**: Existing entity-discovery promptfoo eval plus targeted unit tests distinguish prompt-only vs prompt+filter approaches. This capability already has a benchmark and registry entry.
 
 ## Tasks
@@ -40,7 +40,7 @@ Reduce obvious entity noise before it pollutes downstream bibles. The current ch
 - [ ] Tighten the character and prop taxonomy strings in `entity_discovery_v1`.
 - [ ] Add prompt-text regression tests so the exclusions remain explicit.
 - [ ] Run the entity-discovery eval after the prompt change.
-- [ ] Run `/verify-eval` if mismatches appear; classify all meaningful diffs as model-wrong, golden-wrong, or ambiguous.
+- [ ] Run `/improve-eval` or equivalent mismatch investigation if mismatches appear; classify all meaningful diffs as model-wrong, golden-wrong, or ambiguous.
 - [ ] Update `docs/evals/registry.yaml` with the post-change score, date, and git SHA if the eval is rerun.
 - [ ] Check whether the chosen implementation makes any existing code, helper paths, or docs redundant; remove them or create a concrete follow-up
 - [ ] Run required checks for touched scope:

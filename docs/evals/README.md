@@ -17,8 +17,10 @@ docs/evals/
 ## Registry Protocol
 
 If the question is "which eval should we work on next?" use `/triage-evals` before
-running a fresh benchmark. That workflow diagnoses stale scores, compromise leverage,
-and likely next actions from existing registry data.
+running a fresh benchmark. If the question is broader than evals and you need one
+cross-system recommendation, use `/triage` and let it route. The eval-specific
+workflow diagnoses stale scores, compromise leverage, and likely next actions from
+existing registry data.
 
 ### When to update `registry.yaml`
 

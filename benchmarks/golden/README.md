@@ -16,7 +16,7 @@ investigated individually.**
 This makes the eval suite self-correcting. Golden references improve with every
 eval run. No discrepancy is ever silently ignored or bulk-accepted.
 
-See `/verify-eval` for the structured 5-phase mismatch investigation protocol.
+See `/improve-eval` for the structured mismatch-classification and golden-fix protocol.
 
 ## Architecture: Scorer Reference Files
 
@@ -206,4 +206,4 @@ Object keyed by test case key (`"good_scene"`, `"bad_scene"`). Each entry:
 - **Verify golden**: `/golden-verify` (adversarial, parallel subagents)
 - **Validate structure**: `.venv/bin/python benchmarks/golden/validate-golden.py`
 - **Reset for re-check**: `/golden-verify-reset`
-- **Investigate mismatches**: `/verify-eval`
+- **Investigate mismatches**: `/improve-eval`

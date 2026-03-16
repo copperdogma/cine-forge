@@ -148,7 +148,7 @@ The user reviews and either approves or gives feedback. Iterate if needed.
 See `docs/runbooks/golden-build.md` for the detailed build methodology, including:
 - Phase-by-phase build process (identify → draft with SOTA → structural review → semantic review → fix → dual eval baseline)
 - Common failure patterns and how to fix them (missing aliases, shallow descriptions, phantom entries, wrong relationship types, convention inconsistencies)
-- Eval-driven golden improvement protocol (ties into `/verify-eval`)
+- Eval-driven golden improvement protocol (ties into `/improve-eval` failure classification)
 - Periodic golden audit process and enforcement across lifecycle skills
 - Inbox → create → verify → validate lifecycle
 

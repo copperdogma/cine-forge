@@ -43,7 +43,7 @@
   - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
   - [ ] UI (if touched): `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
 - [ ] If agent tooling or project instructions are touched: `make skills-check`
-- [ ] If evals or goldens are changed: run `/verify-eval`, classify all mismatches, and update `docs/evals/registry.yaml`
+- [ ] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
 - [ ] If UI is touched: verify the changed flow with browser tools when possible (screenshot + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
 - [ ] Search all docs and update any related to what we touched
 - [ ] Verify adherence to Central Tenets (0-5):

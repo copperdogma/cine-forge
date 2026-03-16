@@ -109,8 +109,8 @@ When the pipeline improves and disagrees with the golden:
 6. Reset the fixture's verification status: `/golden-verify-reset {fixture-id}`
 
 This protocol means golden references improve over time as the system finds
-edge cases the original author missed. See `/verify-eval` for the structured
-mismatch investigation process.
+edge cases the original author missed. See `/improve-eval` for the structured
+mismatch-classification and golden-fix process.
 
 ## 3. Re-Verification After Schema Changes
 
@@ -163,10 +163,10 @@ Golden quality is enforced at multiple points in the development lifecycle:
 
 | Skill | How It Enforces Golden Quality |
 |-------|-------------------------------|
-| `/build-story` (11b) | Runs evals, prompts `/verify-eval` for mismatch classification |
+| `/build-story` (13b) | Runs evals, prompts `/improve-eval` when mismatch classification is needed |
 | `/validate` (5b) | Runs evals, requires mismatch classification with evidence |
 | `/mark-story-done` | Blocks Done if eval mismatches remain unclassified |
-| `/verify-eval` | Structured 5-phase investigation: locate → enumerate → classify → fix golden → report |
+| `/improve-eval` | Classifies mismatches as model-wrong / golden-wrong / ambiguous, then fixes prompts, goldens, scorers, or models as needed |
 | `/setup-golden` | Bootstraps golden workspace with validator and verification protocol |
 | `/golden-create` | Creates new goldens with validator run and checklist tracking |
 | `/golden-verify` | Adversarial verification with parallel subagents, loops until CLEAN |

@@ -57,7 +57,7 @@ Assess whether a story's implementation meets its requirements.
 
 8. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
-   - Run `/verify-eval` for the structured investigation protocol. Every mismatch must be classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence.
+   - Use `/improve-eval` when structured mismatch investigation is required. At minimum, complete its failure-classification workflow so every mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence.
    - Unclassified mismatches are a finding (priority: high) — grade cannot exceed B
    - For compromise or detection evals, record whether any remaining failures are `runtime-blocking` or `non-runtime-blocking`. Verified red results only block closure when they are runtime-blocking or when removing that compromise is the story's explicit goal.
    - **Update `docs/evals/registry.yaml`** with verified scores, `git_sha`, and date for every eval you ran

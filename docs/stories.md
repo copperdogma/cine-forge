@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-15, Story 031 landed)
+## Current Execution Map (updated 2026-03-15, Story 134 added)
 
 Phases 0–5 foundation are landed: script understanding, role/chat infrastructure, concern-group schemas, Intent/Mood, Scene Workspace, and design studies are all in place. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
 
@@ -17,6 +17,7 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
 | **129** Entity Discovery Taxonomy Tightening | Eval-backed prompt refinement that reduces upstream entity noise before it pollutes downstream artifacts. |
 | **131** Preference Learning from User Choices | Turns existing suggestion/decision tracking into the explicit, inspectable learning loop required by Ideal R13. |
+| **134** Compromise Convergence Tooling Migration | Meta-infrastructure port of Storybook ADR-019's build-map/align/triage model, adapted to CineForge's actual strengths instead of copied blindly. |
 
 ### Pending — Ready, But Sequence-Sensitive
 
@@ -200,6 +201,7 @@ NOTES from Cam:
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
 | 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Pending | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
 | 133 | Model Refresh, Eval Verification, and Project Model Defaults | Cross-Cutting | High | Done | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |
+| 134 | Compromise Convergence Tooling Migration | Cross-Cutting | High | Done | [story-134](stories/story-134-compromise-convergence-tooling-migration.md) |
 
 ## Phase Summary
 

@@ -6,7 +6,7 @@ user-invocable: true
 
 # /triage-stories [story-number]
 
-> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Evaluate the story backlog and recommend the best next stories to work on.
 
@@ -25,7 +25,11 @@ Evaluate the story backlog and recommend the best next stories to work on.
 
    **Both Draft and Pending** stories with met dependencies are candidates for recommendation. Do not treat Draft as a disqualifier for prioritization, but be explicit that a Draft story still needs scoping and promotion to `Pending` before `/build-story`.
 
-2. **Read the Ideal** — Load `docs/ideal.md` to ground scoring in what the system should become. Stories that close Ideal gaps rank higher than stories that only optimize compromises.
+2. **Read the shared frame** — Load:
+   - `docs/ideal.md`
+   - `docs/methodology-ideal-spec-compromise.md`
+   - `docs/build-map.md`
+   Stories that close Ideal gaps or materially advance build-map convergence rank higher than stories that only optimize compromises.
 
 3. **Read candidate stories** — For every candidate story (Draft or Pending) with met dependencies, read the actual story file to understand its goal, notes, dependencies, and scope. Don't just go by titles.
 
@@ -33,6 +37,7 @@ Evaluate the story backlog and recommend the best next stories to work on.
    - **Dependency readiness**: Are all upstream stories Done? Does this unblock downstream stories?
    - **Blocking power**: How many other stories depend on this one?
    - **Ideal alignment**: Does this story move toward the Ideal (`docs/ideal.md`) or implement a detection mechanism? Rank higher than stories that only entrench compromises.
+   - **Convergence value**: Does this story advance a build-map Optimize path or move a compromise closer to elimination?
    - **Simplification leverage**: Does this story (e.g., an eval harness) unblock future simplification across multiple compromises?
    - **Phase coherence**: Does it continue the current phase or require a context switch?
    - **Momentum**: Does it build on recently completed work (shared context, warm caches, related code)?

@@ -1,6 +1,6 @@
 ---
 name: setup-stories
-description: Decompose spec into tracked stories via feature map and coverage matrix
+description: Decompose spec into tracked stories via build map and coverage matrix
 user-invocable: true
 ---
 
@@ -13,29 +13,29 @@ significantly (e.g., after new eval results eliminate compromises).
 
 ## Pipeline
 
-spec.md + ADRs → Feature Map → Coverage Matrix → Stories
-                  (systems)     (line-by-line)    (vertical slices)
+spec.md + ADRs → Build Map → Coverage Matrix → Stories
+                  (systems)   (line-by-line)    (vertical slices)
 
 ## Key Concept: Systems Own Stories
 
-The feature map defines systems — technical umbrellas like "Screenplay Intake", "World Building",
+The build map defines systems — technical umbrellas like "Screenplay Intake", "World Building",
 or "Operator Console". A system is NOT a story. Each system owns one or more stories,
 starting with an MVP slice and adding capability with follow-up stories.
 
-Feature Map System (e.g., "Screenplay Intake")
+Build Map System (e.g., "Screenplay Intake")
   ├── Story 001 — FDX/Fountain parsing (MVP slice: detect format → normalize → store)
   ├── Story 002 — PDF extraction & OCR
   └── Story 003 — Format validation & error recovery
 
 Small systems (auth, scaffold, spikes) may be a single story. Large systems should always be
-multiple stories. The feature map checkbox means "ALL stories under this system are complete",
+multiple stories. The build map checkbox means "ALL stories under this system are complete",
 not "one story exists."
 
 ## Steps
 
-1. Build the Feature Map — Read `docs/ideal.md` first to understand the north star,
-   then read `docs/spec.md` and all decided ADRs. Identify major systems/components.
-   Write to docs/feature-map.md:
+1. Build the Build Map — Read `docs/ideal.md` first to understand the north star,
+   then read `docs/spec.md`, `docs/build-map.md` (if it exists), and all decided ADRs. Identify major systems/components.
+   Write to `docs/build-map.md`:
    - Each system gets a section with: name, summary, spec sections covered, ADR refs,
      dependencies on other systems
    - Order by dependency (foundations first)
@@ -54,7 +54,7 @@ not "one story exists."
 3. Create Story Skeletons — For each MVP system, create one or more vertical-slice stories
    via /create-story:
 
-   The umbrella rule: A feature map system is NOT a story. Systems own stories. Start each
+   The umbrella rule: A build map system is NOT a story. Systems own stories. Start each
    system with its MVP slice — the smallest vertical cut that delivers demoable value for
    that system. Larger systems get additional skeleton stories for follow-up slices.
 
@@ -91,7 +91,7 @@ not "one story exists."
 
 ## Living Documents
 
-- docs/feature-map.md — Updated when spec changes or new ADRs are decided. Systems checked
+- docs/build-map.md — Updated when spec changes or new ADRs are decided. Systems checked
   off when ALL their stories are complete.
 - docs/coverage.md — Updated every time a story is created, modified, or completed. The
   single source of truth for "is every spec item tracked?"
@@ -119,8 +119,8 @@ Update `docs/setup-checklist.md` — check off Phase 6 items.
 - Never create stories without updating the coverage matrix
 - Every story must trace back to an Ideal requirement or a spec compromise. Untraceable stories are scope creep.
 - For every system that implements an AI compromise: include a story for the detection eval. No stage ships without its deletion mechanism.
-- Never skip the feature map — it prevents the "flat list" problem
-- A feature map system ≠ a story. Systems are umbrellas; stories are vertical slices under them.
+- Never skip the build map — it prevents the "flat list" problem
+- A build map system ≠ a story. Systems are umbrellas; stories are vertical slices under them.
 - One story = one demoable outcome. If you can't demo it in one sentence, split it.
 - Skeleton stories are real story files (same template) with status `Draft` — just not fully detailed yet
 - The coverage matrix is append-only for spec items — don't remove rows, mark them Deferred or Cut

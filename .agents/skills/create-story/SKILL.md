@@ -65,7 +65,7 @@ Create a new story in `docs/stories/` with consistent format.
 - **End-to-end user feature rule**: If a feature needs backend/API plus UI to be usable by a user, keep them in the SAME story by default. Do not create an "API now, UI later" split for an ordinary feature. Only split backend and UI into separate stories when the scope is genuinely huge (`L`/`XL`), independently valuable, and the dependency boundary is explicit in the story text.
 - If the story changes agent tooling or project instructions, include `make skills-check` in the task list.
 - Always include the Workflow Gates section. These are not ordinary implementation tasks; they enforce the handoff chain: `/build-story` summary → `/validate` → `/mark-story-done`.
-- If the story will involve running evals (extraction/pipeline behavior, golden comparison), add a task: "Run `/verify-eval` after eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores — raw scores do not determine story success."
+- If the story will involve running evals (extraction/pipeline behavior, golden comparison), add a task: "Run `/improve-eval` or equivalent mismatch investigation after the eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores — raw scores do not determine story success."
 - Always include the tenet verification checklist with individual checkboxes per tenet
 - "Files to Modify" is gold for AI agents — fill it in when known
 - Stories are living documents — the AI reads them repeatedly during implementation

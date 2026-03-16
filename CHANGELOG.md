@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-15-03] — Compromise convergence tooling migration (Story 134)
+
+### Added
+- Added CineForge-specific convergence source-of-truth docs: `docs/build-map.md`, `docs/methodology-ideal-spec-compromise.md`, and new `align` / `triage` runbooks and skills
+
+### Changed
+- Migrated active agent guidance from `adr-reflect` to `align`, introduced orchestrating `/triage`, and updated setup, triage, story-template, and lifecycle skills to the post-migration methodology graph
+- Merged eval mismatch classification into `/improve-eval` and aligned active golden/runbook/template guidance with the unified flow
+
+### Fixed
+- Removed the retired `adr-reflect` / `verify-eval` skills and stale Gemini wrappers
+- Cleaned migration-doc mismatches: stale `/verify-eval` guidance, absolute local markdown links, and unchecked build-map coverage boxes
 ## [2026-03-15-02] — Design-study prompt compiler and reference propagation (Story 119)
 
 ### Added

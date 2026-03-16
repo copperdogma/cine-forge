@@ -16,9 +16,10 @@ This is the operational companion to `/triage-evals`.
 
 1. **[script] Read the current registry and repo state**
    - Open `docs/evals/registry.yaml`
+   - Open `docs/build-map.md`
    - Run `git rev-parse --short HEAD`
    - Run `git status --short`
-   - Goal: know whether score entries are obviously stale relative to current code
+   - Goal: know whether score entries are obviously stale relative to current code and which systems/compromises would benefit most from eval movement
 
 2. **[script] Check compromise status**
    - Run `.venv/bin/python scripts/check-compromises.py`
@@ -40,7 +41,7 @@ This is the operational companion to `/triage-evals`.
 5. **[judgment] Choose the cheapest next action**
    - Prefer:
      - rerun benchmark first when scores are stale
-     - `/verify-eval` when mismatch classification or golden quality is the blocker
+     - `/improve-eval` when mismatch classification or golden quality is the blocker
      - `/improve-eval` when the registry is current enough and the next attempt is obvious
      - skip when the item is healthy enough or not actionable yet
    - Good output: each candidate ends with one concrete next action, not a vague paragraph

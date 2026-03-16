@@ -31,7 +31,7 @@ Close a completed story after validation.
    - [ ] Required checks passed for all code changes:
      - Backend: `make test-unit PYTHON=.venv/bin/python` + `.venv/bin/python -m ruff check src/ tests/`
      - UI: `pnpm --dir ui run lint` + `cd ui && npx tsc -b`
-   - [ ] If evals were run: `/verify-eval` report exists in work log with every mismatch classified as model-wrong / golden-wrong / ambiguous. Golden-wrong findings must be fixed and evals re-run before closing.
+   - [ ] If evals were run: the work log contains a mismatch-classification report from `/improve-eval` or equivalent protocol with every mismatch classified as model-wrong / golden-wrong / ambiguous. Golden-wrong findings must be fixed and evals re-run before closing.
    - [ ] If any detector or compromise eval remained red: the work log or validation note records whether the remaining failure is runtime-blocking or non-runtime-blocking.
    - [ ] If any eval was run: `docs/evals/registry.yaml` updated with new scores, `git_sha`, and date
    - [ ] Tenet verification checkbox checked
@@ -90,7 +90,7 @@ If not complete, stop after reporting:
 - Ask for confirmation when unresolved items remain
 - Do not duplicate CHANGELOG.md entries — always check before writing
 - Never mark Done without running the full check suite
-- Never mark Done if evals were run without a `/verify-eval` report (or equivalent classification) in the work log
+- Never mark Done if evals were run without a mismatch-classification report (`/improve-eval` or equivalent) in the work log
 - Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first
 - End with a concise summary, recommend `/check-in-diff` as the next step unless the user already approved later steps, and include a short `Where to verify` note whenever there is a concrete path for the user to inspect the result themselves
 - When incomplete, never end with "can't mark done" alone. Always include a firm recommendation: `Rescope then close`, `Keep open`, or `Mark blocked`.

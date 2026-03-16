@@ -1,14 +1,14 @@
 ---
 name: improve-eval
-description: Autonomously pick an eval and attempt to improve its score, latency, or cost
+description: Investigate eval failures, classify mismatches, and improve score, latency, or cost
 user-invocable: true
 ---
 
 # /improve-eval [eval-id] [--autonomous]
 
-> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
-Pick an eval from the registry, study past attempts, and try to improve its score, latency, or cost.
+Pick an eval from the registry, study past attempts, classify any failures, and try to improve its score, latency, or cost.
 
 **Improvement types:** Quality (better scores), speed (lower latency), cost (cheaper per call),
 or any combination. "Same quality at 10x faster" is a valid and valuable improvement.
@@ -151,7 +151,30 @@ cp docs/evals/attempt-template.md docs/evals/attempts/{NNN}-{eval-id}-{short-tit
 4. **Human gate.** Present the plan to the user and wait for approval.
    (Skip this gate in `--autonomous` mode.)
 
-## Phase 4 — Execute
+## Phase 4 — Classify Failures
+
+Before fixing anything, classify the failures. Raw eval scores are not enough.
+
+For each significant mismatch between model behavior and expected behavior:
+
+| Finding | Action |
+|---------|--------|
+| **Model-wrong** — the model output is actually wrong, shallow, or hallucinated | Fix prompt/model/architecture in Phase 5 |
+| **Golden-wrong** — the golden or scorer is incomplete, incorrect, or too strict | Fix the golden/scorer in Phase 5 |
+| **Ambiguous** — reasonable reviewers could disagree | Record it with evidence; escalate only if it blocks the story goal |
+
+### Cost discipline for re-runs
+
+1. **Use cached outputs when only goldens or scorers changed.** Fresh model calls are unnecessary if the subject output is identical.
+2. **Drop LLM-judge passes during iteration.** Add the judge back for the final verified run.
+3. **Filter to the relevant models and test cases.** Do not re-run a broad matrix to debug one mismatch.
+4. **Reserve `--no-cache` for prompt/model changes or the final verified run.**
+
+### Guardrail
+
+- CineForge's mismatch taxonomy is **model-wrong / golden-wrong / ambiguous**. Do not silently swap in another repo's taxonomy.
+
+## Phase 5 — Execute
 
 1. **Make changes** according to the plan. This might involve:
    - Editing prompt templates in `benchmarks/prompts/`
@@ -180,7 +203,7 @@ This shows quality, latency_ms, and cost_usd per model. Record ALL three in the 
    - If you have a clear next idea, iterate (up to 3 attempts within one session).
    - If you're out of ideas, stop and record the failure.
 
-## Phase 5 — Record (MANDATORY — never skip)
+## Phase 6 — Record (MANDATORY — never skip)
 
 Regardless of success or failure:
 

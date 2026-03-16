@@ -16,6 +16,11 @@ This file is the project-wide source of truth for agent behavior and engineering
 > eliminated. Compromise-level preferences (on individual compromises in `docs/spec.md`)
 > are legitimate investments but die when their compromise is eliminated. Know which
 > level you're working at.
+>
+> **Methodology stack**: `docs/methodology-ideal-spec-compromise.md` explains how
+> the Ideal, spec, build map, stories, and evals fit together. `docs/build-map.md`
+> is the current system map and compromise-progress tracker. Read both when work
+> touches planning, methodology, or convergence decisions.
 
 ## Core Agent Mandates
 
@@ -280,7 +285,7 @@ All eval scores, targets, and improvement attempts are tracked in **`docs/evals/
 - **View current scores**: Read `docs/evals/registry.yaml`
 - **Check compromise gates**: `.venv/bin/python scripts/check-compromises.py`
 - **Discover available models**: `.venv/bin/python scripts/discover-models.py --summary`
-- **Triage what to work on next**: `/triage-evals`
+- **Triage what to work on next**: `/triage` for cross-system prioritization, `/triage-evals` for eval-only triage
 - **Improve an eval**: `/improve-eval`
 - **Re-run for a new model**: Add provider block to `benchmarks/tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → update `docs/evals/registry.yaml` with new scores
 
@@ -353,9 +358,11 @@ Runbooks live in `docs/runbooks/`. Create a runbook when a process has 3+ steps,
 **Skill↔runbook rule:** Every runbook should have a corresponding skill. Every skill with 3+ procedural steps should have a runbook. Apply this going forward — don't retroactively create runbooks for existing skills.
 
 Current runbooks:
+- `align.md` — Methodology-graph drift check across Ideal/spec/build map/stories/evals (skill: `/align`)
 - `check-in-worktree-landing.md` — Safe check-in and landing flow for task branches and worktrees (skill: `/check-in-diff`)
 - `codebase-improvement-scout.md` — Repo hygiene scan and cleanup triage flow (skill: `/codebase-improvement-scout`)
 - `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (skill: `/setup-golden`)
+- `triage.md` — Cross-system routing to the highest-value next action (skill: `/triage`)
 - `triage-evals.md` — Cheap diagnosis of which eval, compromise gate, or stale benchmark needs attention next (skill: `/triage-evals`)
 
 ### UI Development Workflow

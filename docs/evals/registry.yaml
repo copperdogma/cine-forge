@@ -6,6 +6,11 @@
 #   quality     — "How good is our output?" Continuous improvement target.
 #   compromise  — "Can we eliminate this compromise?" Binary pass/fail gate.
 #
+# Eval classes (derived from type + context, not stored as a field):
+#   quality-runtime      — default-driving quality evals whose targets matter now for shipped behavior
+#   quality-capability   — exploratory or future-facing quality evals that measure frontier capability
+#   compromise-detection — compromise-linked detectors that tell us when a spec limitation can be deleted
+#
 # Score fields:
 #   latency_ms      — avg per-call latency from promptfoo result file (REQUIRED)
 #   cost_usd        — avg per-call cost in USD (REQUIRED if model has pricing)
