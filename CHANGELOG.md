@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-15-04] — Brick & Steel PDF normalization regression fixed (Story 135)
+
+### Added
+- Added deterministic Brick & Steel PDF regression coverage through the real ingest path plus focused normalizer coverage for dialogue/action boundary preservation
+
+### Changed
+- Extracted screenplay normalization routing into a focused helper so PDF screenplay inputs bypass `smart_chunk_skip` and use the existing single-pass cleanup path
+
+### Fixed
+- Preserved blank-line-separated action after dialogue in deterministic Fountain normalization so canonical scripts no longer re-collapse the repaired Brick & Steel passage
+
 ## [2026-03-15-03] — Compromise convergence tooling migration (Story 134)
 
 ### Added

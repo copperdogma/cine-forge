@@ -44,6 +44,7 @@ def normalize_fountain_text(text: str) -> str:
     # 3. Identify and tag elements
     elements: list[tuple[str, str]] = []
     in_metadata = True
+    blank_since_last_body_element = False
     
     for idx, line in enumerate(processed_lines):
         # Metadata check must happen BEFORE stripping to catch indentation
@@ -74,7 +75,10 @@ def normalize_fountain_text(text: str) -> str:
                 
         stripped = line.strip()
         if not stripped:
+            if elements and elements[-1][0] != "metadata":
+                blank_since_last_body_element = True
             continue
+        prev_type = elements[-1][0] if elements else None
                 
         # Body elements
         if _is_scene_heading(stripped):
@@ -85,8 +89,7 @@ def normalize_fountain_text(text: str) -> str:
             elements.append(("character", stripped.upper()))
         elif stripped.startswith("(") and stripped.endswith(")"):
             # Check if this is a valid parenthetical (preceded by char or paren)
-            prev_type = elements[-1][0] if elements else None
-            if prev_type in ("character", "parenthetical", "dialogue"):
+            if _continues_dialogue_block(prev_type, blank_since_last_body_element):
                 elements.append(("parenthetical", stripped))
             else:
                 elements.append(("action", stripped))
@@ -94,11 +97,11 @@ def normalize_fountain_text(text: str) -> str:
             elements.append(("transition", stripped.upper()))
         else:
             # Check if this is dialogue (preceded by char or paren)
-            prev_type = elements[-1][0] if elements else None
-            if prev_type in ("character", "parenthetical", "dialogue"):
+            if _continues_dialogue_block(prev_type, blank_since_last_body_element):
                 elements.append(("dialogue", stripped))
             else:
                 elements.append(("action", stripped))
+        blank_since_last_body_element = False
 
     # 4. Reconstruct with correct spacing
     final_lines: list[str] = []
@@ -317,6 +320,12 @@ def _looks_like_character_candidate(line: str, lines: list[str], index: int) -> 
     if not next_line or _is_scene_heading(next_line):
         return False
     return True
+
+
+def _continues_dialogue_block(prev_type: str | None, blank_since_last_body_element: bool) -> bool:
+    if prev_type in ("character", "parenthetical"):
+        return True
+    return prev_type == "dialogue" and not blank_since_last_body_element
 
 
 def _find_first_scene_heading(lines: list[str]) -> int:

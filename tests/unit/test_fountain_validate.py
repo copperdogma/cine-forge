@@ -14,6 +14,21 @@ def test_normalize_fountain_text_enforces_scene_and_cue_casing() -> None:
 
 
 @pytest.mark.unit
+def test_normalize_fountain_text_preserves_dialogue_action_boundary() -> None:
+    source = (
+        "EXT. BRICK'S PATIO - DAY\n\n"
+        "STEEL\n"
+        "(beer raised)\n"
+        "To retirement.\n\n"
+        "BRICK\n"
+        "To retirement.\n\n"
+        "They drink long and well from the beers.\n"
+    )
+    normalized = normalize_fountain_text(source)
+    assert "BRICK\nTo retirement.\n\nThey drink long and well from the beers." in normalized
+
+
+@pytest.mark.unit
 def test_lint_fountain_text_detects_orphaned_character_cue() -> None:
     text = "INT. LAB - DAY\n\nMARA\n\nEXT. STREET - DAY\n"
     lint = lint_fountain_text(text)

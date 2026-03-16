@@ -20,13 +20,13 @@ from cine_forge.ai import (
     group_scenes_into_chunks,
     initialize_running_metadata,
     qa_check_with_repairs,
-    select_strategy,
     split_screenplay_by_scene,
     split_text_into_chunks,
     update_running_metadata,
     validate_fountain_structure,
 )
 from cine_forge.ai.fountain_validate import lint_fountain_text, normalize_fountain_text
+from cine_forge.modules.ingest.script_normalize_v1.routing import build_normalization_route
 from cine_forge.schemas import ArtifactHealth, Assumption, CanonicalScript, Invention, QAResult
 
 SCENE_HEADING_RE = re.compile(
@@ -145,27 +145,18 @@ def run_module(
     max_tokens = int(params.get("max_tokens", 16000))
     patch_fuzzy_threshold = float(params.get("patch_fuzzy_threshold", 0.85))
 
-    target_strategy = "passthrough_cleanup" if screenplay_path else "full_conversion"
-    long_doc_strategy = select_strategy(
-        source_format="screenplay" if screenplay_path else source_format,
-        confidence=source_confidence,
-        text=content,
+    route = build_normalization_route(
+        content=content,
+        screenplay_path=screenplay_path,
+        source_format=source_format,
+        source_confidence=source_confidence,
+        file_format=file_format,
     )
-
-    # For already-formatted screenplays, edit_list_cleanup is unreliable —
-    # small docs should use single_pass, large docs should use chunked_conversion
-    strategy = long_doc_strategy.name
-    is_clean_screenplay = (
-        source_format in ("screenplay", "fountain") and source_confidence >= 0.8
-    )
-    if strategy == "edit_list_cleanup" and is_clean_screenplay:
-        long_doc_strategy = LongDocStrategy(
-            name="single_pass",
-            estimated_tokens=long_doc_strategy.estimated_tokens,
-        )
+    target_strategy = route.target_strategy
+    long_doc_strategy = route.long_doc_strategy
 
     # Try smart chunk-skip first for screenplay passthrough
-    if screenplay_path and target_strategy == "passthrough_cleanup":
+    if route.use_smart_chunk_skip:
         smart_result = _normalize_smart_chunks(
             content=content,
             model=work_model,

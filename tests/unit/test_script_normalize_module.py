@@ -33,8 +33,6 @@ def _raw_input_payload(
             "evidence": ["test fixture"],
         },
     }
-
-
 @pytest.mark.unit
 def test_prompt_strategy_cleanup_for_high_confidence_screenplay() -> None:
     prompt = _build_normalization_prompt(
@@ -149,7 +147,6 @@ def test_run_module_routes_ocr_noisy_pdf_misclassified_as_prose_to_tier2() -> No
     artifact = result["artifacts"][0]
     assert artifact["metadata"]["annotations"]["normalization_tier"] == 2
     assert artifact["data"]["script_text"].strip() != ""
-
 
 @pytest.mark.unit
 def test_run_module_with_mock_model_produces_canonical_script() -> None:
