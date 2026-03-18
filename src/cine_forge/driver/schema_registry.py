@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from cine_forge.schemas import (
+    Animatic,
     BibleManifest,
     CanonicalScript,
     CharacterAndPerformance,
@@ -19,9 +20,11 @@ from cine_forge.schemas import (
     InjectedAsset,
     InjectedAssetManifest,
     IntentMood,
+    KeyframeArtifact,
     LocationBible,
     LookAndFeel,
     LookAndFeelIndex,
+    PrevizReel,
     ProjectConfig,
     PropBible,
     QAResult,
@@ -93,4 +96,7 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("script_bible", ScriptBible)
     registry.register("shot_plan", ShotPlan)
     registry.register("storyboard", Storyboard)
+    registry.register("animatic", Animatic)
+    registry.register("keyframe", KeyframeArtifact)
+    registry.register("previz_reel", PrevizReel)
     return registry

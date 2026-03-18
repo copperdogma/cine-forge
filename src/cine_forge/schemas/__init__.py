@@ -1,5 +1,15 @@
 """Artifact schema package."""
 
+from .animatic import (
+    Animatic,
+    AnimaticSegment,
+    AudioReference,
+    Keyframe,
+    KeyframeArtifact,
+    MediaFile,
+    PrevizReel,
+    PrevizSceneSegment,
+)
 from .bible import (
     BibleFileEntry,
     BibleManifest,
@@ -128,6 +138,9 @@ __all__ = [
     "ArtifactHealth",
     "ArtifactMetadata",
     "ArtifactRef",
+    "Animatic",
+    "AnimaticSegment",
+    "AudioReference",
     "BibleFileEntry",
     "BibleManifest",
     "CharacterAndPerformance",
@@ -173,7 +186,10 @@ __all__ = [
     "InjectedAsset",
     "InjectedAssetManifest",
     "SourceFileInfo",
+    "Keyframe",
+    "KeyframeArtifact",
     "FormatClassification",
+    "MediaFile",
     "ModelStrategy",
     "ProjectConfig",
     "RawInput",
@@ -212,6 +228,8 @@ __all__ = [
     "PlanningAudit",
     "ShotDefinition",
     "ShotPlan",
+    "PrevizReel",
+    "PrevizSceneSegment",
     "Storyboard",
     "StoryboardFrame",
     "StoryboardImageFile",

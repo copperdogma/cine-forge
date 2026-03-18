@@ -35,6 +35,7 @@ import { SceneIntentPanel } from '@/components/DirectionTab'
 import { RolePresenceIndicators } from '@/components/DirectionTab'
 import { SceneViewer } from '@/components/ArtifactViewers'
 import { ExportModal } from '@/components/ExportModal'
+import { AnimaticsPanel } from '@/components/AnimaticsPanel'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { StoryboardPanel } from '@/components/StoryboardPanel'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
@@ -481,6 +482,16 @@ export default function SceneWorkspacePage() {
     g => g.artifact_type === 'storyboard' && g.entity_id === entityId,
   )
   const storyboardLevel = getReadiness(groups, 'storyboard', entityId)
+  const animaticGroup = groups?.find(
+    g => g.artifact_type === 'animatic' && g.entity_id === entityId,
+  )
+  const keyframeGroup = groups?.find(
+    g => g.artifact_type === 'keyframe' && g.entity_id === entityId,
+  )
+  const previzGroup = groups?.find(
+    g => g.artifact_type === 'previz_reel',
+  )
+  const animaticLevel = getReadiness(groups, 'animatic', entityId)
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -567,6 +578,10 @@ export default function SceneWorkspacePage() {
             <ReadinessDot level={storyboardLevel} label="Storyboard" />
             Storyboard
           </TabsTrigger>
+          <TabsTrigger value="animatics" className="gap-1.5">
+            <ReadinessDot level={animaticLevel} label="Animatics" />
+            Animatics
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview — scene data (text summary = current "best available preview") */}
@@ -603,6 +618,19 @@ export default function SceneWorkspacePage() {
             sceneHeading={displayName}
             storyboardGroup={storyboardGroup}
             shotPlanGroup={shotPlanGroup}
+          />
+        </TabsContent>
+
+        <TabsContent value="animatics" className="mt-4">
+          <AnimaticsPanel
+            projectId={projectId}
+            sceneId={entityId}
+            sceneHeading={displayName}
+            shotPlanGroup={shotPlanGroup}
+            storyboardGroup={storyboardGroup}
+            animaticGroup={animaticGroup}
+            keyframeGroup={keyframeGroup}
+            previzGroup={previzGroup}
           />
         </TabsContent>
       </Tabs>

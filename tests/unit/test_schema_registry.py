@@ -62,9 +62,11 @@ def test_build_schema_registry_includes_dict_type() -> None:
 
 
 @pytest.mark.unit
-def test_build_schema_registry_has_42_types() -> None:
+def test_build_schema_registry_includes_animatic_types() -> None:
     registry = build_schema_registry()
-    assert len(registry._schemas) == 42
+    assert registry.get("animatic") is not None
+    assert registry.get("keyframe") is not None
+    assert registry.get("previz_reel") is not None
 
 
 @pytest.mark.unit

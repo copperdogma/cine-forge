@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-03-18-04] — Animatics, keyframes, and previz baseline (Story 027)
+
+### Added
+- Added scene-level animatic and keyframe artifacts plus a project-level previz reel, with a deterministic ffmpeg-based recipe that composes storyboard stills, shot timing, and optional temp audio into a playable review assembly
+- Added Scene Workspace and Artifact Detail review surfaces for animatics, keyframes, and previz artifacts, including in-app immutable keyframe lock controls
+- Captured the richer previz follow-up as Story 137 and logged the cross-cutting agentic video/audio validation gap in the inbox
+
+### Changed
+- Updated the pipeline graph, schema registry, artifact metadata, and operator-facing run copy so animatics and keyframes behave like first-class visualization stages
+- Marked Story 027 done and advanced Story 028 from blocked to pending now that the animatic/keyframe substrate exists
+
+### Fixed
+- Replaced the stepped-motion slideshow path with true per-frame motion generation for the smoke previz output
+- Replaced the synthetic smoke audio with a real public-domain sample clip and hardened WAV validation so streamed WAV headers no longer inflate injected-audio durations
+
 ## [2026-03-18-03] — Scout 014: finish-and-push lifecycle wrapper
 
 ### Added

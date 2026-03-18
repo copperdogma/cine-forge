@@ -253,6 +253,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         label="Storyboards",
         phase_id="storyboards",
         artifact_types=["storyboard"],
+        check_mode="entity",
         dependencies=["shot_planning"],
         implemented=True,
     ),
@@ -261,8 +262,18 @@ PIPELINE_NODES: list[PipelineNode] = [
         label="Animatics",
         phase_id="storyboards",
         artifact_types=["animatic"],
-        dependencies=["storyboard_gen"],
-        implemented=False,
+        check_mode="entity",
+        dependencies=["shot_planning"],
+        implemented=True,
+    ),
+    PipelineNode(
+        id="keyframes",
+        label="Keyframes",
+        phase_id="storyboards",
+        artifact_types=["keyframe"],
+        check_mode="entity",
+        dependencies=["animatics"],
+        implemented=True,
     ),
 
     # --- Production phase (future) ---
@@ -325,7 +336,7 @@ PIPELINE_PHASES: list[PipelinePhase] = [
         id="storyboards",
         label="Storyboards",
         icon="LayoutGrid",
-        node_ids=["storyboard_gen", "animatics"],
+        node_ids=["storyboard_gen", "animatics", "keyframes"],
     ),
     PipelinePhase(
         id="production",

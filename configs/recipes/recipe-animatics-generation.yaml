@@ -1,0 +1,27 @@
+recipe_id: animatics_generation
+description: >
+  Generate scene-level animatics, lockable keyframes, and a project-level
+  previz reel from shot plans, storyboard frames, and optional temp audio.
+project: {}
+stages:
+  - id: animatics
+    module: animatic_v1
+    params: {}
+    needs: []
+    store_inputs:
+      track_manifest: track_manifest
+    store_inputs_all:
+      shot_plan: shot_plan
+      storyboard: storyboard
+      sound_and_music: sound_and_music
+  - id: keyframes
+    module: keyframe_v1
+    params: {}
+    needs:
+      - animatics
+    store_inputs:
+      track_manifest: track_manifest
+    store_inputs_all:
+      shot_plan: shot_plan
+      storyboard: storyboard
+      animatic: animatic

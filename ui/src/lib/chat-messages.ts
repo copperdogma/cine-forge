@@ -190,6 +190,14 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Planning coverage and shot lists across your scenes...',
     done: 'Shot planning complete.',
   },
+  animatics: {
+    start: 'Building playable scene animatics from the current shot plans...',
+    done: 'Animatics complete.',
+  },
+  keyframes: {
+    start: 'Deriving lockable start, mid, and end keyframes...',
+    done: 'Keyframes complete.',
+  },
 }
 
 export function humanizeStageName(name: string): string {

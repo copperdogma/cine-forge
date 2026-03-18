@@ -708,6 +708,11 @@ def _validate_wav_audio(content: bytes) -> AudioValidation:
             channel_count = wav.getnchannels()
             if not frame_rate or frame_count <= 0:
                 raise InjectedAssetError("Audio file has no readable waveform data.")
+            bytes_per_frame = sample_width * channel_count
+            if bytes_per_frame <= 0:
+                raise InjectedAssetError("Audio file has no readable waveform data.")
+            if frame_count * bytes_per_frame > len(content):
+                raise InjectedAssetError("Audio file declared an invalid WAV frame count.")
             duration = frame_count / frame_rate
             waveform = _build_waveform_points(
                 wav=wav,

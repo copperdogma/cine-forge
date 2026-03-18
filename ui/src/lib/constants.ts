@@ -5,6 +5,7 @@ export const RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Logic',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
+  animatics_generation: 'Animatics',
 }
 
 /** Plain-language recipe names for operator-facing UI. */
@@ -14,6 +15,7 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Analysis',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
+  animatics_generation: 'Animatics',
 }
 
 export function getUserFacingRecipeName(recipeId: string | null | undefined): string {
@@ -38,6 +40,9 @@ export function getRunStartedMessage(recipeId: string | null | undefined): strin
   if (recipeId === 'shot_planning') {
     return 'Shot Planning started — building scene shot lists now...'
   }
+  if (recipeId === 'animatics_generation') {
+    return 'Animatics started — building rough cuts and keyframes now...'
+  }
   return 'Run started — processing your project now...'
 }
 
@@ -54,6 +59,11 @@ export function getRunCompletedMessage(
     return summary
       ? `Deep Breakdown complete! I built ${summary} for your project.`
       : 'Deep Breakdown complete!'
+  }
+  if (recipeId === 'animatics_generation') {
+    return summary
+      ? `Animatics complete! I produced ${summary} for your project.`
+      : 'Animatics complete!'
   }
   return summary
     ? `Run complete! I produced ${summary} for your project.`
@@ -84,6 +94,10 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   character_and_performance: ['character & performance', 'character & performance'],
   story_world: ['story world', 'story world'],
   shot_plan: ['shot plan', 'shot plans'],
+  storyboard: ['storyboard', 'storyboards'],
+  animatic: ['animatic', 'animatics'],
+  keyframe: ['keyframe set', 'keyframe sets'],
+  previz_reel: ['previz reel', 'previz reels'],
 }
 
 /**

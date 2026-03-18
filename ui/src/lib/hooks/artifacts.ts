@@ -84,8 +84,12 @@ export function useEditArtifact() {
       editArtifact(projectId, artifactType, entityId, payload),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['projects', variables.projectId, 'artifacts', variables.artifactType],
+        queryKey: ['projects', variables.projectId, 'artifacts'],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['projects', variables.projectId, 'pipeline-graph'],
+      })
+      queryClient.invalidateQueries({ queryKey: ['projects', variables.projectId] })
     },
   })
 }

@@ -1,0 +1,24 @@
+module_id: keyframe_v1
+stage: visualization
+description: >
+  Produces per-scene lockable keyframe artifacts from storyboard or animatic
+  sources and updates the shared keyframe track.
+input_schemas:
+  - shot_plan
+  - animatic
+  - storyboard
+  - track_manifest
+output_schemas:
+  - keyframe
+  - track_manifest
+parameters:
+  frame_width:
+    type: integer
+    required: false
+    default: 1280
+    description: "Rendered keyframe width."
+  frame_height:
+    type: integer
+    required: false
+    default: 720
+    description: "Rendered keyframe height."

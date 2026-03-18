@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-18, Story 136 done)
+## Current Execution Map (updated 2026-03-18, Story 027 done)
 
-Phases 0–5 foundation are landed, and the first two Phase 6 visualization layers are now in place: shot planning and storyboard generation both have real operator-facing surfaces. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
+Phases 0–5 foundation are landed, and the first three Phase 6 visualization layers are now in place: shot planning, storyboard generation, and symbolic animatics/previz all have real operator-facing surfaces. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
 
 ### Pending — Ready To Build Now
 
@@ -26,13 +26,12 @@ No stories are actively in progress right now.
 
 | Story | Why |
 |---|---|
-| **027** Animatics / Previz | Story 026 is now landed, so the next optional visualization step is unblocked. Keep it sequence-sensitive because it unlocks Story 028 and should build directly on the shipped storyboard + track contracts instead of inventing a parallel path. |
+| **028** Render Adapter | Story 027 is now landed, so the next optional generation step is unblocked. Keep it sequence-sensitive because it should build directly on the shipped animatic/keyframe contracts instead of inventing a parallel path. |
 
 ### Blocked — Dependency Chain Not Ready Yet
 
 | Story | Blocked On |
 |---|---|
-| **028** Render Adapter | Story 027 |
 | **030** Generated Output QA | Stories 028, 032 |
 
 ### Draft — Scope Or Decision Needed First
@@ -43,6 +42,7 @@ No stories are actively in progress right now.
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |
 | **121** Design Study Composition UX | Story 119 is now landed, but this still stays Draft until the composition/editing UX is scoped tightly enough to validate against the new prompt pipeline without rework. |
+| **137** Previz Fidelity Upgrade | Story 027 now proves the minimal previz loop exists, but richer previz stays Draft until a usefulness eval can choose between shared video-generation and structured blocking approaches. |
 | **102 / 104 / 105 / 106 / 112 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
 
 ### Deferred — Intentionally Parked
@@ -97,8 +97,9 @@ NOTES from Cam:
 | ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
 | 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | Done | [story-025](stories/story-025-shot-planning.md) |
 | 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-026](stories/story-026-storyboard-generation.md) |
-| 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Pending | [story-027](stories/story-027-animatics-previz.md) |
-| 028 | Render Adapter Module | 7 — Generation | Low | Blocked | [story-028](stories/story-028-render-adapter.md) |
+| 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-027](stories/story-027-animatics-previz.md) |
+| 137 | Previz Fidelity Upgrade | 6 — Shot Planning & Viz | Low | Draft | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
+| 028 | Render Adapter Module | 7 — Generation | Low | Pending | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
 | 030 | Generated Output QA | 7 — Generation | Medium | Blocked | [story-030](stories/story-030-generated-output-qa.md) |
 | 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Done | [story-031](stories/story-031-change-propagation.md) |

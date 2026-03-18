@@ -35,6 +35,9 @@ import { getArtifactMeta } from '@/lib/artifact-meta'
 import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 import { ShotPlanViewer } from '@/components/ShotPlanViewer'
+import { AnimaticViewer } from '@/components/AnimaticViewer'
+import { KeyframeViewer } from '@/components/KeyframeViewer'
+import { PrevizReelViewer } from '@/components/PrevizReelViewer'
 import { StoryboardViewer } from '@/components/StoryboardViewer'
 
 function formatTimestamp(timestamp?: string | number) {
@@ -315,6 +318,15 @@ export default function ArtifactDetail() {
 
       case 'storyboard':
         return <StoryboardViewer data={data} projectId={projectId ?? ''} />
+
+      case 'animatic':
+        return <AnimaticViewer data={data} projectId={projectId ?? ''} />
+
+      case 'keyframe':
+        return <KeyframeViewer data={data} projectId={projectId ?? ''} />
+
+      case 'previz_reel':
+        return <PrevizReelViewer data={data} projectId={projectId ?? ''} />
 
       default:
         return <DefaultViewer data={data} />

@@ -57,6 +57,24 @@ def _compressed_audio_bytes(format_name: str) -> bytes:
     return process.stdout
 
 
+def _streamed_wav_bytes() -> bytes:
+    ffmpeg = shutil.which("ffmpeg")
+    if ffmpeg is None:
+        pytest.skip("ffmpeg is required for streamed-wav asset tests")
+
+    process = subprocess.run(
+        [ffmpeg, "-v", "error", "-i", "pipe:0", "-f", "wav", "pipe:1"],
+        input=_wav_bytes(),
+        capture_output=True,
+        check=False,
+        timeout=30,
+    )
+    if process.returncode != 0 or not process.stdout:
+        detail = process.stderr.decode("utf-8", errors="replace")
+        pytest.fail(f"Failed to build streamed wav test fixture via ffmpeg: {detail}")
+    return process.stdout
+
+
 def _seed_character_bible(project_dir: Path, character_id: str = "aria") -> None:
     store = ArtifactStore(project_dir=project_dir)
     store.save_bible_entry(
@@ -214,6 +232,26 @@ def test_inject_scene_audio_generates_waveform(tmp_path: Path) -> None:
     waveform = json.loads(waveform_path.read_text(encoding="utf-8"))
     assert len(waveform["points"]) == 64
     assert asset.extra_metadata["waveform_points"] == waveform["points"]
+
+
+@pytest.mark.unit
+def test_inject_scene_streamed_wav_falls_back_to_decoded_duration(tmp_path: Path) -> None:
+    _seed_scene(tmp_path)
+    service = InjectedAssetService(tmp_path)
+
+    manifest = service.inject_asset(
+        target_kind="scene",
+        target_id="scene_001",
+        purpose="dialogue_audio",
+        filename="scene.wav",
+        content=_streamed_wav_bytes(),
+        content_type="audio/wav",
+    )
+
+    asset = manifest.assets[0]
+    assert asset.asset_type == "audio"
+    assert asset.duration_seconds == pytest.approx(0.25, rel=0.1)
+    assert asset.waveform_path is not None
 
 
 @pytest.mark.unit
