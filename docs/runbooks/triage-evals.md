@@ -19,7 +19,7 @@ This is the operational companion to `/triage-evals`.
    - Open `docs/build-map.md`
    - Run `git rev-parse --short HEAD`
    - Run `git status --short`
-   - Goal: know whether score entries are obviously stale relative to current code and which systems/compromises would benefit most from eval movement
+   - Goal: know whether score entries are obviously stale relative to current code, which systems/compromises would benefit most from eval movement, and whether the right move is a `climb`, `hold`, or `converge` action
 
 2. **[script] Check compromise status**
    - Run `.venv/bin/python scripts/check-compromises.py`
@@ -33,16 +33,16 @@ This is the operational companion to `/triage-evals`.
    - Separate candidates into:
      - stale default-driving evals
      - near-target evals
-     - compromise-leverage evals
+     - climb / converge leverage evals
      - under-investigated failures
-     - passing-but-expensive defaults
+     - hold-phase efficiency opportunities
    - Good output: a short list with a clear reason each item matters now
 
 5. **[judgment] Choose the cheapest next action**
    - Prefer:
      - rerun benchmark first when scores are stale
      - `/improve-eval` when mismatch classification or golden quality is the blocker
-     - `/improve-eval` when the registry is current enough and the next attempt is obvious
+     - `/improve-eval` when the registry is current enough and the next attempt is obvious for the category's current phase
      - skip when the item is healthy enough or not actionable yet
    - Good output: each candidate ends with one concrete next action, not a vague paragraph
 

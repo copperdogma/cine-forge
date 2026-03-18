@@ -181,15 +181,15 @@ Tracking everything updated (or needing update) as a result of this ADR.
 
 #### Spec
 - [x] Rewrite §12 (Creative Direction Artifacts) — four direction types → five concern groups + Intent/Mood layer
-- [x] Add section: Script Bible — §4.5
-- [x] Add section: Two-Lane Architecture — §4.6
-- [x] Add section: Prompt Compilation Model — §12.8
-- [x] Update §4.4 (Project Configuration) — project = story (technical container around the script)
-- [x] Update §9 (Combined Roles) — roles contribute to concern groups, not produce standalone direction artifacts
-- [x] Update §13 (Shot Planning) — consumes concern group artifacts, not converged direction set
-- [x] Expand §18 (User Asset Injection) — flesh out for R17 (origin-agnostic asset system)
+- [x] Add section: `spec:2.5` (Script Bible)
+- [x] Add section: `spec:2.6` (Two-Lane Architecture)
+- [x] Add section: `spec:4.10.7` (Prompt Compilation Model)
+- [x] Update `spec:2.4` (Project Configuration) — project = story (technical container around the script)
+- [x] Update `spec:4.7` (Combined Roles) — roles contribute to concern groups, not produce standalone direction artifacts
+- [x] Update `spec:6.1` (Shot Planning) — consumes concern-group artifacts, not converged direction set
+- [x] Expand `spec:7.2` (User Asset Injection) — flesh out for R17 (origin-agnostic asset system)
 - [x] Resolve untriaged item "Prompt transparency / direct prompt editing" — now decided (read-only, Decision #4)
-- [x] Update Compromise Index — role consolidation note at §9.1-9.2 needs context update
+- [x] Update role-consolidation note in `spec:4.7` — primary contributor ownership now lives on the combined-role model instead of a separate compromise index
 
 #### Stories — Cancel
 - [x] Cancel Story 024 (Direction Convergence) — eliminated by ADR-003

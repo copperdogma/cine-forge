@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 9.1 (Editorial Architect), 12.1 (Editorial Direction), 12.5 (Direction Convergence — editorial input)
+**Spec Refs**: spec:4.7.1 (Editorial Architect), spec:4.10.4 (Rhythm & Flow)
 **Depends On**: Story 014 (role system foundation), Story 015 (Director — reviews editorial direction), Story 005 (scene extraction)
 
 ---

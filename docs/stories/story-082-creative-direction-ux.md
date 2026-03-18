@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: spec.md 8.7 (Human Interaction Model), 9 (Editorial Architect), 12.1–12.5 (Direction Artifacts & Convergence)
+**Spec Refs**: spec:5.4 (Human Interaction Model), spec:4.7.1 (Editorial Architect), spec:4.10.1 (Intent / Mood Layer), spec:4.10.2 (Look & Feel), spec:4.10.3 (Sound & Music), spec:4.10.4 (Rhythm & Flow), spec:4.10.5 (Character & Performance)
 **Depends On**: 020 (Editorial Direction pipeline), 019 (Human Control Modes & Creative Sessions), 011f (Conversational AI Chat)
 
 ## Goal

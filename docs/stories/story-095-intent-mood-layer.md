@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-27
 **Source**: ADR-003, Synthesis §6 (Final Recommendation)
-**Spec Refs**: 12.1 (Intent / Mood Layer)
+**Spec Refs**: spec:4.10.1 (Intent / Mood Layer)
 **Ideal Refs**: R5 (full spectrum of involvement), R7 (iterative refinement), R11 (production readiness)
 **Depends On**: Story 094 (concern group schemas), Story 014 (role system)
 

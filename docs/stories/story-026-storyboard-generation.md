@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 14 (Storyboards), 7.2 (Tracks — storyboard track), 7.3 (Always-Playable Rule)
+**Spec Refs**: spec:6.2 (Storyboards), spec:10.2 (Tracks — storyboard track), spec:10.3 (Always-Playable Rule)
 **Depends On**: Story 025 (shot planning — storyboards derived from shot plan), Story 013 (track system — storyboard track slot)
 
 ---

@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-13
 **Reshaped**: 2026-02-27 — ADR-003 reorganizes direction types into concern groups. Visual direction → Look & Feel concern group.
-**Spec Refs**: 9.2 (Visual Architect), 12.2 (Look & Feel)
+**Spec Refs**: spec:4.7.2 (Visual Architect), spec:4.10.2 (Look & Feel)
 **Depends On**: Story 014 (role system foundation), Story 015 (Director — reviews direction), Story 008 (character bibles), Story 009 (location/prop bibles), Story 011 (continuity states)
 **Ideal Refs**: R7 (iterative refinement), R11 (production readiness), R12 (transparency)
 

@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: World Building / Character Bible
+**Spec Refs**: spec:3.1 (Asset Masters), spec:3.3 (Bible Artifact Structure)
 **Depends On**: 055 (LLM-First Entity Adjudication), 076 (Entity Detail Cross-Ref Layout)
 
 ## Goal

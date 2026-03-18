@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 8.1 (Role Hierarchy), 8.2 (Capability Gating), 8.3 (Style Packs — loading), 2.4 (AI-Driven), 2.6 (Explanation Mandatory)
+**Spec Refs**: spec:4.1 (Role Hierarchy), spec:4.2 (Capability Gating), spec:4.3 (Style Packs — loading), spec:1.4 (AI-Driven Runtime Boundary), spec:5.2 (Explanation Is Mandatory)
 **Depends On**: Story 002 (pipeline foundation), Story 006 (project configuration — style pack selections)
 
 ---

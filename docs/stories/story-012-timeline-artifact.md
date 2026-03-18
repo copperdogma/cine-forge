@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-13
 **Last Updated**: 2026-02-19
-**Spec Refs**: 7.1 (Timeline Artifact), 7.3 (Always-Playable Rule Foundation), 3.1 (Scene/Story Ordering), 2.1 (Immutability)
+**Spec Refs**: spec:10.1 (Timeline Artifact), spec:10.3 (Always-Playable Rule Foundation), spec:5.3 (Stage Progression), spec:1.1 (Immutability)
 **Depends On**: Story 005 (scene extraction), Story 011 (continuity tracking), Story 011c (resource-oriented identity), Story 050/051 (current driver/run-state contracts)
 
 ---

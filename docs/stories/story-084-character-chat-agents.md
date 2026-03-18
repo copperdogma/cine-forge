@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: spec.md 8.6 (Inter-Role Communication), 8.7 (Human Interaction Model)
+**Spec Refs**: spec:4.6 (Inter-Role Communication), spec:5.4 (Human Interaction Model)
 **Depends On**: 083 (Group Chat Architecture)
 
 ## Goal

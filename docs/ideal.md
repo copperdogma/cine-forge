@@ -1,10 +1,13 @@
 # CineForge — The Ideal
 
 > **This is the most important document in the project.** It defines what CineForge
-> should be with zero limitations. Every architectural decision should move toward
-> this Ideal. Every compromise in `docs/spec.md` carries a detection mechanism for
-> when it's no longer needed. The Ideal is the Requirements. The Spec is the
-> Compromises. The Spec shrinks over time. This document rarely changes.
+> should be with zero limitations at two levels: the **product ideal** (what the
+> user should get) and the **execution ideal** (what building CineForge should
+> feel like when AI no longer needs scaffolding). Every architectural decision
+> should move toward these ideals. Every compromise in `docs/spec.md` carries a
+> detection mechanism for when it's no longer needed. The Ideal is the
+> Requirements. The Spec is the Compromises. The Spec shrinks over time. This
+> document rarely changes.
 >
 > **Preferences exist at two levels:**
 > - **Vision-level preferences** (below) attach to the Ideal. They persist across
@@ -55,7 +58,18 @@ Qualities that persist regardless of implementation — these are part of the Id
 
 ---
 
-## 2. Requirements and Quality Bar
+## 2. The Execution Ideal
+
+> What building this product should be like if there were no limitations.
+> Perfect AI tools, unlimited context, flawless reasoning. No process overhead.
+
+You describe what you want. The AI builds it. It presents options, sometimes delighting you with approaches you had not considered. You have a conversation about what you see, what you like, what to change. It iterates. You never make a technical decision, manage a backlog, or think about architecture. You provide the ideal, your preferences, and your reactions. Everything else is the AI's job.
+
+Even with perfect AI, this is genuinely iterative. You do not fully know what you want until you see options. The AI fills in blanks, proposes solutions, and refines through conversation. That iteration is the ideal, not a compromise.
+
+---
+
+## 3. Requirements and Quality Bar
 
 Requirements are capabilities the system must have regardless of implementation. Each is universal to the Ideal. Quality bar entries define "correct" with concrete examples — these become golden reference seeds.
 

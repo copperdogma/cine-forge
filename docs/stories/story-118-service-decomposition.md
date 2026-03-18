@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: None (architecture quality — enables every Ideal requirement)
+**Spec Refs**: spec:1 (Foundation & Artifact Runtime)
 **Depends On**: Story 116 (Event System Refactor — clean events before service refactor)
 
 ## Goal

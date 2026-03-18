@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-11
-**Spec Refs**: 4.1 (Accepted Inputs), 4.3 (Canonical Script Rule)
+**Spec Refs**: spec:2.1 (Accepted Inputs), spec:2.3 (Canonical Script Rule)
 **Depends On**: Story 002 (pipeline foundation — artifact store, module contract, driver)
 
 ---

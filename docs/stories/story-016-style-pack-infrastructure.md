@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 8.3 (Style Packs), 8.4 (Style Pack Creation — creation prompt templates only), 6.3 (Bible Artifact Structure — folder-based pattern)
+**Spec Refs**: spec:4.3 (Style Packs), spec:4.4 (Style Pack Creation — creation prompt templates only), spec:3.3 (Bible Artifact Structure — folder-based pattern)
 **Depends On**: Story 014 (role system foundation — style pack loading)
 
 ---

@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Done
 **Ideal Refs**: Eval infrastructure reliability
-**Spec Refs**: AGENTS.md Golden References, Definition of Done #5
+**Spec Refs**: spec:11.3 (Verification, Eval Classification, and Registry Discipline), spec:11.4 (Agent Instructions, Skills, and Runbooks)
 **Depends On**: None
 
 ## Goal

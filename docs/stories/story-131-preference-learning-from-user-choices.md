@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Pending
 **Ideal Refs**: R13 (learn from user choices)
-**Spec Refs**: 8.5 (Suggestion System), 20 (Metadata & Auditing), Untriaged idea — AI preference learning from user choices
+**Spec Refs**: spec:4.5 (Suggestion System), spec:1.6 (Metadata & Auditing), spec:9 (Memory & Collaboration)
 **ADR Refs**: None found after search
 **Depends On**: Story 017 (Suggestion and Decision Tracking)
 

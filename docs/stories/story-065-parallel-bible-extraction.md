@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: 6 Bibles & Entity Graph, 2.7 Cost Transparency
+**Spec Refs**: spec:3 (World Building & Continuity), spec:8.1 (Cost Transparency)
 **Depends On**: 008, 009, 055, 060
 
 ## Goal

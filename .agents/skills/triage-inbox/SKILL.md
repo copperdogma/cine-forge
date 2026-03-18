@@ -26,6 +26,7 @@ Go through accumulated inbox items together with the user.
      - Is it blocking current work?
      - Is it a quick win (bug fix, small story)?
      - Is it high user-impact?
+     - Does it fill missing or partial substrate in an active build-map category?
      - Does it unlock other deferred items?
      - Is it time-sensitive (external API, model availability)?
    - Flag items that are probably **defer/discard** candidates so the user can batch-dismiss them.

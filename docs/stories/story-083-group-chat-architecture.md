@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: spec.md 8.6 (Inter-Role Communication), 8.7 (Human Interaction Model — Creative Sessions), 19 (Memory Model — conversation transcripts)
+**Spec Refs**: spec:4.6 (Inter-Role Communication), spec:5.4 (Human Interaction Model — Creative Sessions), spec:9 (Memory Model — conversation transcripts)
 **Depends On**: 011f (Conversational AI Chat), 019 (Human Control Modes & Creative Sessions), 082 (Creative Direction UX)
 
 ## Goal

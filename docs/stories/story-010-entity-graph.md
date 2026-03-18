@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 6.2 (Entity Graph — full relationship model), 2.1 (Immutability), 2.6 (Explanation Mandatory)
+**Spec Refs**: spec:3.2 (Entity Graph — full relationship model), spec:1.1 (Immutability), spec:5.2 (Explanation Is Mandatory)
 **Depends On**: Story 008 (character bibles), Story 009 (location/prop bibles), Story 005 (scene extraction — co-occurrence data)
 
 ---

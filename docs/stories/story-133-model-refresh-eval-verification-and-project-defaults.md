@@ -3,7 +3,7 @@
 **Priority**: High
 **Status**: Done
 **Ideal Refs**: R1 (story understanding quality), R12 (AI decisions explainable and overridable), R14 (provenance and auditability)
-**Spec Refs**: 2.7 (Cost Transparency), 2.8 (Quality Validation), 2.9 (Subsumption-based Model Strategy), 4.4 (Project Configuration)
+**Spec Refs**: spec:8.1 (Cost Transparency), spec:8.2 (Quality Validation), spec:8.3 (Subsumption-Based Model Strategy), spec:2.4 (Project Configuration)
 **ADR Refs**: `docs/design/decisions.md`, `docs/decisions/adr-003-film-elements/adr.md` (no ADR specifically governs model scouting or promptfoo registry maintenance)
 **Depends On**: Story 107 (Value-Optimized Model Selection), Story 124 (Recall Verification Loop)
 

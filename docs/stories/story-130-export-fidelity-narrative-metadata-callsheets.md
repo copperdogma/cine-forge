@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Draft
 **Ideal Refs**: Production Output and timeline interchange quality bars
-**Spec Refs**: 7 (Timeline), 13.4 (Export compatibility), Untriaged idea — narrative-aware timeline export
+**Spec Refs**: spec:10 (Timeline & Playable Assembly), spec:6.1.4 (Export Compatibility), spec:7 (Generation & Export)
 **ADR Refs**: None found after search
 **Depends On**: Story 012 (Timeline Artifact), Story 013 (Track System), Story 058 (Comprehensive Export & Share)
 

@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: World Building / Entity Discovery, Scene Breakdown
+**Spec Refs**: spec:3 (World Building & Continuity), spec:2.7 (Scene Breakdown & Analysis)
 **Depends On**: 077 (Character Coverage & Prominence Tiers), 055 (LLM-First Entity Adjudication)
 
 ## Goal

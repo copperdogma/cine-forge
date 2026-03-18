@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Done
 **Ideal Refs**: Story Understanding quality bar
-**Spec Refs**: 6 (Bibles & Entity Graph)
+**Spec Refs**: spec:3 (World Building & Continuity)
 **ADR Refs**: None found after search; bounded prompt-quality follow-up on Story 124
 **Depends On**: Story 081 (Scene Index as Canonical Character Source), Story 124 (Recall Verification Loop)
 

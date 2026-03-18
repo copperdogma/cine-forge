@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 6.1 (Asset Masters — locations, props), 6.3 (Bible Artifact Structure), 6.4 (Asset States — state tracking hooks), 2.6 (Explanation Mandatory)
+**Spec Refs**: spec:3.1 (Asset Masters — locations, props), spec:3.3 (Bible Artifact Structure), spec:3.4 (Asset States — state tracking hooks), spec:5.2 (Explanation Is Mandatory)
 **Depends On**: Story 008 (bible infrastructure + character bible pattern), Story 005 (scene extraction — location/prop data)
 
 ---

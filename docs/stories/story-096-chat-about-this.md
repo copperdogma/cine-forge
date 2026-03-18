@@ -4,7 +4,7 @@
 **Status**: Done
 **Created**: 2026-02-27
 **Source**: ADR-003, Decision #4
-**Spec Refs**: 12.8 (Prompt Compilation Model — "Chat about this" affordance)
+**Spec Refs**: spec:4.10.7 (Prompt Compilation Model — "Chat about this" affordance)
 **Ideal Refs**: R4 (creative conversation), R7 (iterative refinement), R12 (transparency)
 **ADR Refs**: ADR-003 (Decision #10), ADR-002 (chat panel as primary conversational work surface)
 **Depends On**: Story 011f (conversational AI chat), Story 082 (creative direction UX), Story 099 (Scene Workspace), Story 126 (frontend chat/data-layer decomposition)

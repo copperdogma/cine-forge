@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: docs/spec.md#pipeline-processing, docs/spec.md#ui
+**Spec Refs**: spec:2 (Story Intake & Understanding), spec:5 (Operator Console & Interactive UX)
 **Depends On**: story-062
 
 ## Goal

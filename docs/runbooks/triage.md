@@ -40,7 +40,8 @@ This is the operational companion to `/triage`.
    - Choose the strongest next step using:
      - Ideal alignment
      - blocking power
-     - compromise-elimination leverage
+     - substrate leverage
+     - phase-appropriate leverage (`climb`, `hold`, `converge`)
      - urgency/staleness
      - recent momentum
      - operator cost
@@ -68,7 +69,7 @@ This is the operational companion to `/triage`.
 ## Troubleshooting
 
 - **Leaf recommendations conflict**
-  - Fix: prefer the one with the strongest blocking or convergence leverage and explain why the others lost.
+  - Fix: prefer the one with the strongest blocking, substrate, or credible convergence leverage and explain why the others lost.
 
 - **A leaf skill is stale or missing**
   - Fix: call out the gap instead of pretending the full sweep is complete.

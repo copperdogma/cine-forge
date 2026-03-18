@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: All (architecture quality enables every Ideal requirement)
+**Spec Refs**: spec:1 (Foundation & Artifact Runtime)
 **Depends On**: Story 116 (Event System Refactor — EventEmitter must exist before engine extractions can wire into it)
 
 ## Goal

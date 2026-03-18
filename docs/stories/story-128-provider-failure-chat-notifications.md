@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Pending
 **Ideal Refs**: R12 (radical transparency)
-**Spec Refs**: 20 (metadata & auditing)
+**Spec Refs**: spec:1.6 (Metadata & Auditing)
 **ADR Refs**: `docs/design/decisions.md` ("Inbox is a lens on actionable chat messages")
 **Depends On**: Story 050 (Provider Resilience), Story 083 (Group Chat Architecture)
 

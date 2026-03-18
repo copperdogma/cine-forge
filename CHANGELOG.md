@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-18-01] — Planning-stack governance migration (Story 136)
+
+### Added
+- Added the execution ideal to `docs/ideal.md` and made execution constraints first-class in the planning stack through `spec:11` and the matching build-map category
+
+### Changed
+- Reorganized `docs/spec.md` and `docs/build-map.md` around stable `spec:N(.N)` references, substrate status, and `climb` / `hold` / `converge` governance
+- Aligned `AGENTS.md`, methodology docs, triage skills, triage runbooks, and active story `Spec Refs` with the new category model
+
+### Fixed
+- Resolved the missing Timeline owner in the build map and archived `docs/retrofit-gaps.md` after reconciling the drifted C1/C2/C3/C4/C7 thresholds back into the live planning surfaces
+
 ## [2026-03-17-01] — Storyboard generation and review surface (Story 026)
 
 ### Added

@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: UI / Entity Navigation
+**Spec Refs**: spec:5 (Operator Console & Interactive UX)
 **Depends On**: 045 (Entity Cross-Linking), 057 (Prev/Next Navigation)
 
 ## Goal

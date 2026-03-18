@@ -2,6 +2,11 @@
 
 Retrofitting Ideal-first methodology onto existing project. Generated 2026-02-26.
 
+> Historical note: Story 136 (2026-03-18) migrated the live methodology to the
+> dual-ideal, category-aligned `spec:N` / build-map model. References below to
+> the old `Compromise Index` and live `docs/retrofit-gaps.md` surface are
+> historical only.
+
 ## Completed
 
 - [x] Existing docs, stories, code, inbox, and ADRs reviewed (Phase 1)

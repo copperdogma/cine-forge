@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: UI / Entity Navigation
+**Spec Refs**: spec:5 (Operator Console & Interactive UX)
 **Depends On**: 076 (Entity Detail Cross-Ref Layout)
 
 ## Goal

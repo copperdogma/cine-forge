@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: 2.5 — UI
+**Spec Refs**: spec:5 (Operator Console & Interactive UX)
 **Depends On**: none
 
 ## Goal

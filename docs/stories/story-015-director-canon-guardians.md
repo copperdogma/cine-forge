@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 8.1 (Role Hierarchy — Director, Script Supervisor, Continuity Supervisor), 8.6 (Disagreement Protocol), 3.1 (Stage Progression — completion criteria)
+**Spec Refs**: spec:4.1 (Role Hierarchy — Director, Script Supervisor, Continuity Supervisor), spec:4.6 (Disagreement Protocol), spec:5.3 (Stage Progression — completion criteria)
 **Depends On**: Story 014 (role system foundation), Story 011 (continuity tracking — data for Continuity Supervisor)
 
 ---

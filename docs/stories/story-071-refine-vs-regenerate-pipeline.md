@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Deferred
 **Phase**: Cross-Cutting
-**Spec Refs**: spec.md §2.1 (Immutability), §2.2 (Versioning)
+**Spec Refs**: spec:1.1 (Artifact Immutability), spec:1.2 (Version History)
 **Depends On**: None (builds on existing `ArtifactStore`, `store_inputs_all`, and `world_building` recipe infrastructure)
 
 ## Why Deferred

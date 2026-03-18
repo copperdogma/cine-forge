@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-27
 **Source**: ADR-003, Ideal R11
-**Spec Refs**: 12.7 (Readiness Indicators)
+**Spec Refs**: spec:5.5 (Readiness Indicators)
 **Ideal Refs**: R11 (production readiness per scene), R7 (iterative refinement)
 **Depends On**: Story 094 (concern group schemas), Story 095 (intent/mood layer), Story 085 (pipeline graph)
 

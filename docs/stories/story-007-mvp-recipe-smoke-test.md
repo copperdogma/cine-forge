@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-11
-**Spec Refs**: 3 (High-Level Pipeline Overview), 3.1 (Stage Progression), 2.7 (Cost Transparency), 2.8 (QA)
+**Spec Refs**: spec:1.5 (Pipeline Overview), spec:5.3 (Stage Progression), spec:8.1 (Cost Transparency), spec:8.2 (Quality Validation)
 **Depends On**: Story 002 (driver, artifact store, recipes), Story 003 (ingestion), Story 004 (normalization), Story 005 (scene extraction), Story 006 (project config)
 
 ---

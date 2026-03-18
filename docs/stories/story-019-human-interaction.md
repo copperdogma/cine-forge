@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-12
 **Updated**: 2026-02-20
-**Spec Refs**: 2.5 (Human Control Modes), 8.7 (Human Interaction Model), 21 (Operating Modes)
+**Spec Refs**: spec:5.1 (Human Control Is Optional and Configurable), spec:5.4 (Human Interaction Model), spec:9.4 (Operating Modes)
 **Depends On**: Story 014 (role system foundation), Story 015 (Director and Canon Guardians), Story 017 (suggestion/decision tracking), Story 018 (inter-role communication), Story 011b (Operator Console — UI surface for interactions)
 
 ---

@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 2.3 (Revision and Change Propagation — Layer 2), 2.8 (QA — AI assessment)
+**Spec Refs**: spec:1.3 (Revision and Change Propagation — Layer 2), spec:8.2 (QA — AI assessment)
 **Depends On**: Story 002 (pipeline foundation — Layer 1 structural invalidation), Story 014 (role system — AI assessment roles), Story 010 (entity graph — dependency understanding)
 
 ---

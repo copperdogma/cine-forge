@@ -5,7 +5,7 @@
 **Source**: ADR-003, Decision #9, Ideal R17
 **Updated**: 2026-03-14 — merged into Story 029 after user review rejected backend-only completion.
 **Cancelled**: 2026-03-14
-**Spec Refs**: 18 (User Asset Injection)
+**Spec Refs**: spec:7.2 (User Asset Injection)
 **Ideal Refs**: R17 (real-world assets as first-class inputs)
 **Depends On**: Story 029 (user asset injection — lock system, validation, manifest)
 **Merged Into**: Story 029 (User Asset Injection)

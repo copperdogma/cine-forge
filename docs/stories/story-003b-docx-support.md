@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13  
-**Spec Refs**: 4 (Ingestion)  
+**Spec Refs**: spec:2 (Story Intake & Understanding)
 **Depends On**: Story 003, Story 007b
 
 ---

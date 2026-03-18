@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-13
 **Reshaped**: 2026-02-27 — ADR-003 eliminates convergence step. Shot planning consumes concern group artifacts directly.
-**Spec Refs**: 13 (Shot Planning — full section), 13.1 (Coverage Strategy), 13.2 (Individual Shot Definition), 13.3 (Coverage Patterns), 13.4 (Export Compatibility)
+**Spec Refs**: spec:6.1 (Shot Planning — full section), spec:6.1.1 (Coverage Strategy), spec:6.1.2 (Individual Shot Definition), spec:6.1.3 (Coverage Patterns), spec:6.1.4 (Export Compatibility)
 **Depends On**: Story 021 (Look & Feel), Story 022 (Sound & Music), Story 020 (editorial direction / Rhythm & Flow), Story 013 (track system — shots track), Story 012 (timeline — shot subdivision slots), Story 011 (continuity — asset state snapshots)
 **Ideal Refs**: R7 (iterative refinement), R8 (production artifacts), R11 (production readiness)
 

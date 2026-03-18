@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: Film Lane (spec §267) — visual style consistency across design studies, storyboards, animatics
+**Spec Refs**: spec:2.4 (Project Configuration), spec:2.6 (Two-Lane Architecture / Film Lane), spec:6.2 (Storyboards), spec:6.3 (Animatics / Previz Video)
 **Depends On**: Story 056 (Design Study — Done)
 **Updated**: 2026-03-14 — backlog cleanup clarified that this story should land before the later design-study prompt/iteration follow-ons.
 

@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Pending
 **Ideal Refs**: R11 (readiness clarity), R12 (radical transparency)
-**Spec Refs**: 2.3 (change propagation / stale state), 20 (metadata & auditing)
+**Spec Refs**: spec:1.3 (change propagation / stale state), spec:1.6 (Metadata & Auditing)
 **ADR Refs**: ADR-002, `docs/design/decisions.md` ("Inline stale indicators")
 **Depends On**: Story 083 (Group Chat Architecture), Story 088 (Staleness UX), Story 126 (Frontend Chat and Data-Layer Decomposition)
 

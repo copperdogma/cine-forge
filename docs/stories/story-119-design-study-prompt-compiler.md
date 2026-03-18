@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Done
 **Updated**: 2026-03-15 — story closed after validation; handed to `/check-in-diff`.
-**Spec Refs**: Film Lane (spec §267) — visual references flow forward into shot planning, storyboards, animatics
+**Spec Refs**: spec:2.6 (Two-Lane Architecture / Film Lane), spec:6.1 (Shot Planning), spec:6.2 (Storyboards), spec:6.3 (Animatics / Previz Video)
 **Depends On**: Story 056 (Design Study — Done), Story 120 (Production Format Setting — for `production_format` field in prompt compiler)
 
 ## Goal

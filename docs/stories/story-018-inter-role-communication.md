@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 8.6 (Inter-Role Communication and Disagreement Protocol), 19 (Memory Model — conversation transcripts), 20 (Metadata & Auditing)
+**Spec Refs**: spec:4.6 (Inter-Role Communication and Disagreement Protocol), spec:9 (Memory Model — conversation transcripts), spec:1.6 (Metadata & Auditing)
 **Depends On**: Story 014 (role system foundation), Story 015 (Director and Canon Guardians), Story 017 (suggestion/decision tracking)
 
 ---

@@ -2,7 +2,7 @@
 
 **Status**: Blocked
 **Created**: 2026-02-12
-**Spec Refs**: 2.4 (AI-Driven), 2.7 (Cost Transparency), 2.8 (QA), 19 (Memory Model), Phase 7 Story 030 (Generated Output QA)
+**Spec Refs**: spec:7 (Generation & Export), spec:8.2 (Quality Validation), spec:9 (Memory & Collaboration)
 **Depends On**: Story 005 (scene extraction artifacts), Story 012 (timeline artifacts), Story 021 (Look & Feel), Story 022 (Sound & Music), Story 028 (render adapter), Story 032 (cost tracking)
 
 ---

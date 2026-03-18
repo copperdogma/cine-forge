@@ -3,7 +3,7 @@
 **Phase**: Cross-Cutting
 **Priority**: High
 **Status**: Done
-**Spec Refs**: `docs/spec.md` §2.6 (Explanation Is Mandatory), §2.8 (Quality Validation), §5 (Scene Extraction), §6.1 (Asset Masters)
+**Spec Refs**: spec:5.2 (Explanation Is Mandatory), spec:8.2 (Quality Validation), spec:2.7 (Scene Breakdown & Analysis), spec:3.1 (Asset Masters)
 **Depends On**: Story 008, Story 041
 
 ## Goal

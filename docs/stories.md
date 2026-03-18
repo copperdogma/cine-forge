@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-17, Story 026 closed)
+## Current Execution Map (updated 2026-03-18, Story 136 done)
 
 Phases 0–5 foundation are landed, and the first two Phase 6 visualization layers are now in place: shot planning and storyboard generation both have real operator-facing surfaces. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
 
@@ -17,6 +17,10 @@ Phases 0–5 foundation are landed, and the first two Phase 6 visualization laye
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
 | **129** Entity Discovery Taxonomy Tightening | Eval-backed prompt refinement that reduces upstream entity noise before it pollutes downstream artifacts. |
 | **131** Preference Learning from User Choices | Turns existing suggestion/decision tracking into the explicit, inspectable learning loop required by Ideal R13. |
+
+### In Progress
+
+No stories are actively in progress right now.
 
 ### Pending — Ready, But Sequence-Sensitive
 
@@ -201,6 +205,7 @@ NOTES from Cam:
 | 133 | Model Refresh, Eval Verification, and Project Model Defaults | Cross-Cutting | High | Done | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |
 | 134 | Compromise Convergence Tooling Migration | Cross-Cutting | High | Done | [story-134](stories/story-134-compromise-convergence-tooling-migration.md) |
 | 135 | Brick & Steel PDF Normalization Regression | 1 — MVP Pipeline | High | Done | [story-135](stories/story-135-screenplay-normalization-brick-steel-pdf-regression.md) |
+| 136 | ADR-021 Execution-Ideal and Phase-Governance Migration | Cross-Cutting | High | Done | [story-136](stories/story-136-adr-021-execution-planning-migration.md) |
 
 ## Phase Summary
 

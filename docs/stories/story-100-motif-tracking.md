@@ -3,7 +3,7 @@
 **Status**: Draft
 **Created**: 2026-02-27
 **Source**: ADR-003, Decision #3
-**Spec Refs**: 12.6 (Story World — motif tracking)
+**Spec Refs**: spec:4.10.6 (Story World — motif tracking)
 **Ideal Refs**: R3 (continuity), R8 (production artifacts)
 **Depends On**: Story 008 (character bibles), Story 009 (location/prop bibles), Story 011 (continuity), Story 094 (concern group schemas — motifs feed into Look & Feel and Sound & Music)
 

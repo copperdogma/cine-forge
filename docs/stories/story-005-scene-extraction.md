@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-11
-**Spec Refs**: 5.1 (Scene Definition), 5.2 (Creative Inference), 4.3 (Canonical Script Rule — downstream references), 2.6 (Explanation Mandatory), 2.7 (Cost Transparency), 2.8 (QA Validation)
+**Spec Refs**: spec:2.7 (Scene Breakdown & Analysis), spec:2.7.1 (Scene Definition), spec:2.7.2 (Creative Inference), spec:2.3 (Canonical Script Rule), spec:5.2 (Explanation Is Mandatory), spec:8.1 (Cost Transparency), spec:8.2 (Quality Validation)
 **Depends On**: Story 002 (pipeline foundation), Story 004 (script normalization — provides `canonical_script` artifact)
 
 ---

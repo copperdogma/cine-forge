@@ -1,168 +1,327 @@
-# Build Map — System Structure + Compromise Progress
+# Build Map
 
-> This file combines system structure (what exists, dependencies, story coverage)
-> with compromise convergence tracking (how close each compromise is to resolution).
-> Each compromise carries dual tracking: **Optimize** (improve the workaround) and
-> **Eliminate** (detect when the limitation resolves and delete the code).
-> See [docs/methodology-ideal-spec-compromise.md](methodology-ideal-spec-compromise.md)
-> for the methodology and [Story 134](stories/story-134-compromise-convergence-tooling-migration.md)
-> for the migration that introduced this document.
+> Central dashboard for system progress. Organized by category matching
+> `docs/spec.md` (`spec:1` through `spec:11`). Each category tracks product need,
+> tech need, substrate status, story coverage, and the current phase of its live
+> compromises or execution constraints.
 
-## How to Read Compromise Progress
+## How to Read This Map
 
-Each system with an active compromise has a **Compromise Progress** subsection with two parts:
+- **Product need**: what the category must deliver to the user or to the
+  execution experience while the execution ideal still needs scaffolding.
+- **Tech need**: what architectural substrate must exist in code or repo process.
+- **Substrate**: `exists`, `partial`, `missing`, or `unplanned`.
+- **Phase**:
+  - `climb` — substrate is still incomplete, or current work should improve
+    quality/capability
+  - `hold` — substrate exists and the current focus is keeping it coherent,
+    cheaper, faster, or simpler
+  - `converge` — deletion gate passes; the compromise is ready to be removed
+  - `unplanned` — no coherent build path exists yet
 
-- **Optimize** — how CineForge is improving the current workaround while the limitation still exists
-- **Eliminate** — the deletion gate, including the eval or external trigger that would let us remove the compromise
+## 1. Foundation & Artifact Runtime                                           `spec:1`
 
-Not every system carries a compromise. Systems without one still matter here because the build map is also the repo's system-structure overview.
+**Product need:** Artifacts, decisions, and runtime operations stay immutable,
+auditable, and safe to revise.
+**Tech need:** Snapshot versioning, dependency-aware invalidation, AI/runtime
+boundary discipline, and durable audit metadata.
+**Substrate:** exists
+**Phase:** hold
 
----
-
-## 1. Foundation & Artifact Runtime
-- [x] Stories cover this system
-
-**Summary:** Project scaffolding, artifact store, schema discipline, driver orchestration, change propagation, progress events, and service/API decomposition. This is the core runtime substrate every other lane builds on.
-
-**Spec Sections:** 2.1-2.6, 3, 20
+**Story coverage:** partial
+**Stories:** 001, 002, 007, 031, 037, 040, 050, 052, 073, 074, 101, 114, 116, 117, 118, 122, 123, 124
+**Spec:** spec:1 (spec:1.1, spec:1.2, spec:1.3, spec:1.4, spec:1.5, spec:1.6)
 **ADR Refs:** None found after search
-**Dependencies:** None
-**Story Coverage:** 001, 002, 007, 031, 037, 040, 050, 052, 073, 074, 101, 114, 116, 117, 118, 122, 123, 124
+**Absorbs:** Foundation & Artifact Runtime (old 1)
 
----
+### Phase Notes
 
-## 2. Script Understanding Pipeline
-- [x] Stories cover this system
+- Core substrate exists. Current work here is mostly maintenance, decomposition,
+  and verification hardening rather than a missing-system climb.
 
-**Summary:** Story ingestion, script normalization, scene breakdown, scene analysis, project config detection, and the first-pass understanding path from raw script to structured screenplay artifacts.
+## 2. Story Intake & Understanding                                            `spec:2`
 
-**Spec Sections:** 4, 5, 5.1-5.3
-**ADR Refs:** None found after search
-**Dependencies:** Foundation & Artifact Runtime
-**Story Coverage:** 003, 003b, 004, 005, 006, 049, 061, 062, 063, 064, 065
+**Product need:** CineForge can accept story inputs in multiple formats and turn
+them into a coherent, browsable understanding of the screenplay quickly enough
+to start creative work.
+**Tech need:** Ingestion, normalization, canonical script handling, project
+configuration, script-bible extraction, and scene understanding.
+**Substrate:** exists
+**Phase:** climb
 
-#### Compromise Progress
+**Story coverage:** partial
+**Stories:** 003, 003b, 004, 005, 006, 049, 061, 062, 063, 064, 065, 135
+**Spec:** spec:2 (spec:2.1 through spec:2.7.2)
+**ADR Refs:** ADR-003 (project is the story; two-lane architecture)
+**Absorbs:** Script Understanding Pipeline (old 2)
 
-**C4 — Two-Tier Scene Architecture** (Limitation: AI capability)
-- **Optimize**: The fast structural breakdown plus slower narrative enrichment split keeps the screenplay browsable immediately while deeper scene understanding stays optional. Current improvement work happens through scene extraction/enrichment evals, scene UX, and latency/cost tuning rather than by collapsing the split prematurely.
-- **Eliminate**: Eval `compromise-C4-two-tier-scenes` in [docs/evals/registry.yaml](evals/registry.yaml). Target: combined quality >= `0.90` and latency <= `5000ms` per scene. Latest: no score entry on the compromise eval itself; `scripts/check-compromises.py` reported on `2026-03-15` that the best candidate was `Sonnet 4.6` at `0.885` combined quality and `35527ms`, still `7.1x` too slow. Retry when: scene extraction/enrichment benchmarks improve or a new SOTA model lands. When passes: merge `scene_breakdown_v1` and `scene_analysis_v1`, delete placeholder narrative fields and the separate "Analyze Scenes" step.
+### Compromise Progress
 
----
+- **C4: Two-Tier Scene Architecture** (AI capability) — **climb**
+  - Current: structural scene breakdown lands quickly, while slower narrative
+    enrichment remains separate and user-triggered.
+  - Converge signal: single-pass scene understanding that is both fast enough
+    and good enough to replace the split.
+  - Eval: `compromise-C4-two-tier-scenes` — latest local signal from
+    `scripts/check-compromises.py` on 2026-03-15 still shows the best candidate
+    below the quality/latency bar, so the split remains justified.
 
-## 3. World Building & Continuity
-- [x] Stories cover this system
+## 3. World Building & Continuity                                              `spec:3`
 
-**Summary:** Character, location, and prop bibles; entity graph; continuity tracking; discovery and adjudication loops that turn screenplay understanding into persistent world artifacts.
+**Product need:** Characters, locations, props, and continuity states persist as
+first-class world knowledge.
+**Tech need:** Bible folders, relationship edges, and state snapshots over story
+time.
+**Substrate:** exists
+**Phase:** hold
 
-**Spec Sections:** 6, 7
+**Story coverage:** partial
+**Stories:** 008, 009, 010, 011, 055, 060, 077, 080, 081, 092, 129
+**Spec:** spec:3 (spec:3.1, spec:3.2, spec:3.3, spec:3.4)
 **ADR Refs:** ADR-001 (shared entity extraction)
-**Dependencies:** Script Understanding Pipeline
-**Story Coverage:** 008, 009, 010, 011, 055, 060, 077, 080, 081, 092, 129
+**Absorbs:** World Building & Continuity (old 3)
 
----
+### Phase Notes
 
-## 4. Role System & Creative Direction
-- [x] Stories cover this system
+- Core substrate exists. Remaining work is mostly quality refinement, continuity
+  detection depth, and better downstream reuse of the world model.
 
-**Summary:** Role hierarchy, style packs, inter-role communication, editorial/visual/sound direction, script bible, scene workspace, and the AI collaboration surface that turns analysis into creative exploration.
+## 4. Role System & Creative Direction                                         `spec:4`
 
-**Spec Sections:** 8, 9, 10, 11, 12
-**ADR Refs:** ADR-002 (goal-oriented navigation), ADR-003 (film elements and creative-direction structure)
-**Dependencies:** World Building & Continuity
-**Story Coverage:** 014-023, 033, 082-100, 121, 131
+**Product need:** Creative roles and characters should feel like collaborators
+who understand the story deeply and shape it across disciplines.
+**Tech need:** Role hierarchy, style packs, transcripts, suggestion artifacts,
+and concern-group direction artifacts.
+**Substrate:** exists
+**Phase:** hold
 
-#### Compromise Progress
+**Story coverage:** partial
+**Stories:** 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 082, 083, 084, 093, 094, 095, 096, 097, 099, 100, 121
+**Spec:** spec:4 (spec:4.1 through spec:4.10.7)
+**ADR Refs:** ADR-002 (goal-oriented navigation), ADR-003 (film elements and concern-group structure)
+**Absorbs:** Role System & Creative Direction (old 4)
 
-**C5 — Capability Gating** (Limitation: AI capability)
-- **Optimize**: Role capabilities remain explicitly scoped by modality so roles do not pretend to understand media they cannot actually perceive. Current role and scene-workspace work stays honest by routing around these limits instead of hiding them.
-- **Eliminate**: Eval `compromise-C5-role-modality` in [docs/evals/registry.yaml](evals/registry.yaml). Target: one SOTA model reliably reasons across text, image, video, and audio in a single call. Latest: no scores recorded. Retry when: provider capability surface changes materially. When passes: delete role perception-capability declarations and modality routing logic.
+### Compromise Progress
 
----
+- **C5: Capability Gating** (AI capability) — **hold**
+  - Current: roles declare modality limits and route around them instead of
+    pretending to perceive media they cannot understand.
+  - Converge signal: one broadly usable multimodal model makes per-role
+    modality declarations unnecessary.
+  - Eval: `compromise-C5-role-modality` — no passing deletion signal exists yet;
+    wait for meaningful provider capability changes before pushing this toward
+    convergence.
 
-## 5. Operator Console & Interactive UX
-- [x] Stories cover this system
+## 5. Operator Console & Interactive UX                                        `spec:5`
 
-**Summary:** The screenplay-first app shell, chat-driven operator flow, entity pages, inbox, run views, search, settings, navigation, and all user-facing workflows that expose the pipeline as an enjoyable product instead of a DAG viewer.
+**Product need:** The operator should feel like they are working with their
+story, not administering a pipeline.
+**Tech need:** Control modes, explanation surfaces, stage-progression rules,
+human interaction models, and readiness signals that keep the UI honest.
+**Substrate:** exists
+**Phase:** hold
 
-**Spec Sections:** 2.5, 2.6, 12.7, 20, 21
-**ADR Refs:** ADR-002 (goal-oriented navigation), ADR-003 (creative workspace structure)
-**Dependencies:** Foundation & Artifact Runtime, Script Understanding Pipeline, Role System & Creative Direction
-**Story Coverage:** 011b-011f, 042-048, 051, 057-059, 066-072, 075-079, 085-089, 096, 098, 099, 101, 108-111, 126-128, 130, 132
+**Story coverage:** partial
+**Stories:** 011b, 011c, 011d, 011e, 011f, 042, 043, 044, 045, 046, 048, 051, 057, 058, 059, 066, 067, 068, 069, 070, 071, 072, 075, 076, 078, 079, 085, 086, 087, 088, 089, 096, 099, 101, 108, 109, 110, 111, 126, 127, 128, 130, 132
+**Spec:** spec:5 (spec:5.1, spec:5.2, spec:5.3, spec:5.4, spec:5.5)
+**ADR Refs:** ADR-002 (goal-oriented navigation), ADR-003 (scene workspace / prompt compilation UX)
+**Absorbs:** Operator Console & Interactive UX (old 5)
 
----
+### Phase Notes
 
-## 6. Shot Planning & Visualization
-- [x] Stories cover this system
+- The app shell and user flows exist. Current work is about clarity, polish,
+  transparency, and closing remaining UX holes rather than inventing the shell
+  from scratch.
 
-**Summary:** Shot planning, design studies, visual reference propagation, storyboards, animatics, previz, and the intermediate planning artifacts that bridge creative direction into generation-ready instructions.
+## 6. Shot Planning & Visualization                                            `spec:6`
 
-**Spec Sections:** 13, 14, 15, 16
-**ADR Refs:** ADR-003 (film elements)
-**Dependencies:** Role System & Creative Direction, Operator Console & Interactive UX
-**Story Coverage:** 025-027, 056, 119, 120, 121, 132
+**Product need:** Creative intent becomes concrete planning artifacts usable by
+humans and generation models.
+**Tech need:** Coverage strategy, shot definitions, storyboard/animatic assets,
+and optional keyframes linked to upstream direction.
+**Substrate:** partial
+**Phase:** climb
 
----
+**Story coverage:** partial
+**Stories:** 025, 026, 027, 056, 119, 120, 121, 132
+**Spec:** spec:6 (spec:6.1 through spec:6.4)
+**ADR Refs:** ADR-003 (shot planning consumes concern-group artifacts)
+**Absorbs:** Shot Planning & Visualization (old 6)
 
-## 7. Generation & Export
-- [x] Stories cover this system
+### Phase Notes
 
-**Summary:** Render adapter, engine-pack mediation, user asset injection, generated-output QA, and export fidelity for carrying CineForge's narrative intelligence into downstream tools.
+- Shot planning and storyboard generation exist, but animatics/previz/keyframe
+  coverage is still incomplete. This category is a true climb.
 
-**Spec Sections:** 17, 18
+## 7. Generation & Export                                                      `spec:7`
+
+**Product need:** CineForge can compile direction into generation requests and
+carry user-provided assets through the same pipeline.
+**Tech need:** Render-adapter compilation, engine-pack knowledge, error handling,
+and origin-agnostic asset injection.
+**Substrate:** partial
+**Phase:** climb
+
+**Story coverage:** partial
+**Stories:** 028, 029, 030, 058, 130
+**Spec:** spec:7 (spec:7.1, spec:7.1.1, spec:7.1.2, spec:7.1.3, spec:7.2)
 **ADR Refs:** ADR-003 (real-world assets as first-class inputs)
-**Dependencies:** Shot Planning & Visualization, Operator Console & Interactive UX
-**Story Coverage:** 028-030, 058, 098, 130
+**Absorbs:** Generation & Export (old 7)
 
-#### Compromise Progress
+### Compromise Progress
 
-**C6 — Render Adapter Engine Packs** (Limitation: Ecosystem/Infrastructure)
-- **Optimize**: The render-adapter abstraction remains the right workaround while model APIs, input capabilities, and duration limits stay fragmented. The lane is mostly still ahead of us, so optimization work is chiefly about keeping the architecture ready for heterogeneous providers rather than pretending a single backend already exists.
-- **Eliminate**: No registry eval exists yet. Detection remains the ecosystem trigger from [docs/spec.md](spec.md): a dominant standardized video API or a single model that cleanly handles all required inputs. Latest: no scores recorded. Retry when: provider/API landscape shifts materially. When passes: delete engine-pack tuning, model-specific prompt synthesis, and per-model capability UI.
+- **C6: Render Adapter Engine Packs** (Ecosystem / infrastructure) — **hold**
+  - Current: heterogeneous video APIs still justify a render-adapter abstraction
+    with model-specific engine-pack knowledge.
+  - Converge signal: a dominant standard API, or one model that cleanly handles
+    all required inputs.
+  - Eval: no registry-backed deletion harness exists yet; this remains an
+    ecosystem detector rather than an active convergence push.
 
----
+## 8. AI Platform, Evaluation & Model Strategy                                 `spec:8`
 
-## 8. AI Platform, Model Selection & Validation
-- [x] Stories cover this system
+**Product need:** AI cost, quality, and model tradeoffs are visible enough that
+operators can trust the system.
+**Tech need:** Cost tracking, QA patterns, current eval registry discipline, and
+model-slot strategy.
+**Substrate:** exists
+**Phase:** hold
 
-**Summary:** Promptfoo benchmarking, model discovery, default selection, compromise checks, cost/latency tracking, and the reliability infrastructure that decides how CineForge uses AI models responsibly.
-
-**Spec Sections:** 2.7, 2.8, 2.9
+**Story coverage:** partial
+**Stories:** 032, 035, 036, 039, 041, 047, 053, 060, 102, 104, 107, 109, 133
+**Spec:** spec:8 (spec:8.1, spec:8.2, spec:8.3)
 **ADR Refs:** None found after search
-**Dependencies:** Foundation & Artifact Runtime
-**Story Coverage:** 032, 035, 036, 039, 041, 047, 053, 060, 102, 104, 107, 109, 133, 134
+**Absorbs:** AI Platform, Model Selection & Validation (old 8)
 
-#### Compromise Progress
+### Compromise Progress
 
-**C1 — Cost Transparency** (Limitation: Ecosystem/Infrastructure)
-- **Optimize**: CineForge already records cost and latency in run/eval artifacts, and Story 032 is still the live path for fuller budget surfaces. This workaround remains useful because provider pricing and quality tradeoffs are still material.
-- **Eliminate**: No registry eval exists. Detection remains the pricing watch from [docs/spec.md](spec.md): when inference drops below `$0.001 / 1M tokens` across the providers we use. Latest: no scores recorded. Retry when: provider pricing changes materially. When passes: delete per-call cost tracking, budget caps, and cost-quality tiering UI.
+- **C1: Cost Transparency** (Ecosystem / infrastructure) — **hold**
+  - Current: per-call and per-run cost tracking still matters because model
+    pricing and tradeoffs are material.
+  - Converge signal: per-call cost tracking becomes unnecessary when inference
+    is cheap enough to stop shaping operator behavior.
+  - Eval: no registry eval; detection remains pricing-watch based. Current
+    threshold is still far away.
 
-**C2 — Dedicated QA Validation Passes** (Limitation: AI capability)
-- **Optimize**: QA-pass evaluation and lighter-weight validator patterns improve reliability without pretending first-pass outputs are already safe. Story 133 tightened defaults and verification discipline, but the dedicated QA concept still stands.
-- **Eliminate**: Eval `compromise-C2-qa-validation` in [docs/evals/registry.yaml](evals/registry.yaml). Target: `10` diverse extraction tasks pass structural + semantic checks on the first attempt with no QA retry. Latest: no score entry on the compromise eval itself; `scripts/check-compromises.py` reported on `2026-03-15` that `GPT-4.1 Mini` scored `1.000` on the existing QA eval, but the full first-attempt harness does not exist yet. Retry when: the dedicated compromise harness is implemented or broader first-pass benchmarks are recorded. When passes: delete dedicated QA pass stages, the verify model tier, and QA-specific schemas.
+- **C2: Dedicated QA Validation Passes** (AI capability) — **hold**
+  - Current: dedicated QA / verification remains the safest path for structured
+    output quality.
+  - Converge signal: first-attempt output becomes reliable enough to demote QA
+    to lightweight assertions only.
+  - Eval: `compromise-C2-qa-validation` — current registry and checker evidence
+    does not justify deletion yet.
 
-**C3 — Tiered Model Strategy** (Limitation: AI capability + Ecosystem)
-- **Optimize**: Registry-backed model selection, per-module defaults, and targeted triage keep the current multi-model strategy defensible instead of ad hoc. This is a legitimate investment while no single model wins across the whole surface.
-- **Eliminate**: Eval `compromise-C3-tiered-models` in [docs/evals/registry.yaml](evals/registry.yaml), computed from existing quality evals. Target: one model meets all quality targets at acceptable latency/cost. Latest: `scripts/check-compromises.py` on `2026-03-15` reported `Sonnet 4.6` as the best candidate, meeting `5/12` targets and still missing `scene-extraction`, `config-detection`, and several extraction quality bars. Retry when: any default-driving eval score changes, new providers/models land, or stale scores are refreshed. When passes: delete work/verify/escalate slots, subsumption hierarchy, and per-stage model override infrastructure.
+- **C3: Tiered Model Strategy** (AI capability + ecosystem) — **hold**
+  - Current: value-optimized model selection is still justified because no single
+    model dominates CineForge's full task surface.
+  - Converge signal: one model meets all current default-driving quality bars at
+    acceptable latency and cost.
+  - Eval: `compromise-C3-tiered-models` — current checker signal still leaves the
+    repo below the single-model bar.
 
----
+## 9. Memory & Collaboration                                                   `spec:9`
 
-## 9. Memory & Collaboration
-- [x] Stories cover this system
+**Product need:** Long-running collaboration should preserve context, transcripts,
+and operating-mode intent without losing provenance.
+**Tech need:** Canonical memory artifacts, working-memory summaries, and explicit
+operating-mode rules.
+**Substrate:** partial
+**Phase:** climb
 
-**Summary:** Suggestion/decision tracking, long-running collaboration, preference learning, working-memory management, and eventual multi-human collaboration behavior.
-
-**Spec Sections:** 19, 21
+**Story coverage:** partial
+**Stories:** 017, 018, 019, 033, 069, 083, 089, 101, 131
+**Spec:** spec:9 (spec:9.1, spec:9.2, spec:9.3, spec:9.4)
 **ADR Refs:** None found after search
-**Dependencies:** Role System & Creative Direction, Operator Console & Interactive UX
-**Story Coverage:** 017, 018, 019, 033, 069, 083, 089, 101, 131
+**Absorbs:** Memory & Collaboration (old 9)
 
-#### Compromise Progress
+### Compromise Progress
 
-**C7 — Working Memory Distinction** (Limitation: AI capability)
-- **Optimize**: The canonical-vs-working-memory split remains a necessary compromise while context windows are finite and expensive. Story 033 is still the main execution path for building the durable version of this workaround.
-- **Eliminate**: Eval `compromise-C7-working-memory` in [docs/evals/registry.yaml](evals/registry.yaml). Target: context windows exceed `10M` tokens at negligible cost or native persistent cross-session memory becomes available. Latest: no scores recorded. Retry when: provider memory capabilities change materially. When passes: delete summarization/compaction controls, memory budgets, and the working-memory distinction itself.
+- **C7: Working Memory Distinction** (AI capability) — **hold**
+  - Current: canonical memory plus working-memory caches remain necessary while
+    context windows are finite and expensive.
+  - Converge signal: persistent, effectively unbounded memory makes the split
+    unnecessary.
+  - Eval: `compromise-C7-working-memory` — no deletion signal exists yet, so the
+    current distinction remains the correct default.
+
+## 10. Timeline & Playable Assembly                                            `spec:10`
+
+**Product need:** Users can inspect pacing, order, and best-available playback
+throughout the pipeline.
+**Tech need:** Independent timeline artifacts, stacked tracks, and the
+always-playable fallback rule.
+**Substrate:** exists
+**Phase:** hold
+
+**Story coverage:** partial
+**Stories:** 012, 013
+**Spec:** spec:10 (spec:10.1, spec:10.2, spec:10.3)
+**ADR Refs:** None found after search
+**Absorbs:** None — new explicit category extracted from existing spec/stories
+
+### Phase Notes
+
+- Timeline substrate exists but had no explicit home in the pre-ADR-021 build
+  map. This category fixes that gap and makes future preview/export work legible.
+
+## 11. Planning Infrastructure & Agent Tooling                                 `spec:11`
+
+**Product need:** CineForge still needs explicit planning scaffolding while
+current AI cannot yet build and verify large repo changes from the ideal in one
+shot.
+**Tech need:** Story lifecycle tracking, build-map substrate visibility, triage
+skills, workflow gates, AGENTS instructions, runbooks, and verbose work logs.
+**Substrate:** exists
+**Phase:** hold
+
+**Story coverage:** partial
+**Stories:** 053, 103, 109, 125, 134, 136
+**Spec:** spec:11 (spec:11.1, spec:11.2, spec:11.3, spec:11.4)
+**ADR Refs:** None found after search in CineForge; external reference source is Storybook ADR-021
+**Absorbs:** None — new execution category
+
+### Compromise Progress
+
+- **B1: Story files and tracked checklists** (AI capability) — **hold**
+  - Current: story files remain the safest way to preserve scope, acceptance
+    criteria, and work-log context across sessions.
+  - Converge signal: long-horizon planning continuity is reliable enough that
+    explicit story slicing is optional.
+  - Eval: no automated harness; human capability detection remains the practical
+    signal here.
+
+- **B2: Build map and substrate tracking** (AI capability) — **hold**
+  - Current: build-map substrate tracking is still required so triage can reason
+    about architecture readiness instead of guessing from repo shape alone.
+  - Converge signal: architectural readiness becomes inferable directly from the
+    repo at triage time.
+  - Eval: no automated harness; use repeated successful autonomous triage as the
+    detector.
+
+- **B3: Triage skills and routing runbooks** (AI capability) — **hold**
+  - Current: explicit routing and domain-specific triage logic still produce
+    better next-step choices than monolithic generic planning.
+  - Converge signal: repo-aware prioritization becomes reliable without
+    procedural scaffolding.
+  - Eval: no automated harness; the detector is sustained autonomous prioritizer
+    quality.
+
+- **B4: Workflow gates and story-closure chain** (Human / trust) — **hold**
+  - Current: `/build-story`, `/validate`, and `/mark-story-done` remain useful
+    because human trust and AI self-verification are not yet strong enough to
+    collapse the chain.
+  - Converge signal: the chain shrinks to the level of review the operator
+    actually wants.
+  - Eval: human trust plus repeated correct autonomous closure is the detector.
+
+- **B5: `AGENTS.md`, skills, and runbooks** (AI capability) — **hold**
+  - Current: explicit repo conventions and procedural docs are still needed so
+    future sessions do not re-learn the same rules from scratch.
+  - Converge signal: project conventions become inferable from code and normal
+    repo artifacts alone.
+  - Eval: no automated harness; use reliable convention inference across fresh
+    sessions as the detector.
 
 ---
 
-*Last updated: 2026-03-15 (Story 134)*
+*Last updated: 2026-03-18 (Story 136 in progress)*

@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Done
 **Ideal Refs**: All (architecture quality is a prerequisite for every Ideal requirement)
-**Spec Refs**: All pipeline stages (this is meta-infrastructure, not a feature)
+**Spec Refs**: spec:1 (Foundation & Artifact Runtime), spec:11 (Planning Infrastructure & Agent Tooling)
 **Depends On**: None — pure research and planning
 
 ---

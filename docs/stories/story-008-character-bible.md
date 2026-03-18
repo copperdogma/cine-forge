@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 6.1 (Asset Masters), 6.2 (Entity Graph — character edges), 6.3 (Bible Artifact Structure), 2.1 (Immutability), 2.6 (Explanation Mandatory), 2.7 (Cost Transparency)
+**Spec Refs**: spec:3.1 (Asset Masters), spec:3.2 (Entity Graph — character edges), spec:3.3 (Bible Artifact Structure), spec:1.1 (Immutability), spec:5.2 (Explanation Is Mandatory), spec:8.1 (Cost Transparency)
 **Depends On**: Story 005 (scene extraction — provides per-scene character lists), Story 002 (artifact store — folder-based artifact support)
 
 ---

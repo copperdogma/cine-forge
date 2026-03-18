@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: 4.4 Project Configuration (Auto-Initialized)
+**Spec Refs**: spec:2.4 (Project Configuration)
 **Depends On**: 003, 006
 
 ## Goal

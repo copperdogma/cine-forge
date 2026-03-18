@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 6.4 (Asset States / Continuity), 8.1 (Continuity Supervisor role — future), 2.1 (Immutability)
+**Spec Refs**: spec:3.4 (Asset States / Continuity), spec:1.1 (Artifact Immutability)
 **Depends On**: Story 008 (character bibles), Story 009 (location/prop bibles), Story 010 (entity graph), Story 005 (scene extraction — scene ordering)
 
 ---

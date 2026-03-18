@@ -16,6 +16,10 @@ Companion runbook: `docs/runbooks/triage-evals.md`
 
 - Identify the next eval, compromise gate, or stale score that deserves attention
 - Surface whether the right next action is `/improve-eval`, a fresh benchmark rerun, or no action
+- Respect build-map phase semantics:
+  - `climb` = quality/capability work
+  - `hold` = efficiency, simplicity, latency, or cost work
+  - `converge` = deletion work once the gate is truly green
 - Keep diagnosis cheap by reading `docs/evals/registry.yaml`, `docs/build-map.md`, result artifacts, and existing helper scripts instead of running promptfoo by default
 
 ## Inputs
@@ -40,7 +44,8 @@ Companion runbook: `docs/runbooks/triage-evals.md`
 
 3. **Read the build map when compromise leverage matters**
    - Open `docs/build-map.md`
-   - Note whether the candidate moves an Optimize path, an Eliminate path, or both
+   - Note the owning category and whether the next useful move is a `climb`,
+     `hold`, or `converge` action
 
 4. **Check compromise status cheaply**:
    - Run `.venv/bin/python scripts/check-compromises.py`
@@ -70,14 +75,15 @@ If no id was passed:
 1. Rank candidates using this order:
    - **Priority 1: stale default-driving evals** — scores behind `HEAD` on evals that back current model defaults
    - **Priority 2: near-target evals** — quality, latency, or cost gaps small enough that one more attempt could plausibly close them
-   - **Priority 3: compromise leverage** — evals whose improvement could eliminate or materially simplify a live compromise
+   - **Priority 3: phase leverage** — evals that unblock a `climb` category or provide a real `converge` deletion signal
    - **Priority 4: under-investigated failures** — weak or empty attempt history despite clear gaps
-   - **Priority 5: passing-but-expensive defaults** — good quality with suspicious latency/cost compared to the rest of the field
+   - **Priority 5: hold-phase efficiency opportunities** — good quality with suspicious latency/cost or unnecessary complexity compared to the rest of the field
 
 2. For each top candidate, answer:
    - What is the current state?
    - Why does it matter now?
    - What is the cheapest next step?
+   - Which build-map phase does it support?
    - Is the problem likely model-wrong, golden-wrong, stale-measurement, or architecture-limited?
 
 3. Produce a ranked top 3-5 list unless `--stale-only` was passed.

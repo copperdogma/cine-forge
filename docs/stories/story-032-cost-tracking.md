@@ -2,7 +2,7 @@
 
 **Status**: Pending
 **Created**: 2026-02-13
-**Spec Refs**: 2.7 (Cost Transparency), 20 (Metadata & Auditing — cost data in artifacts)
+**Spec Refs**: spec:8.1 (Cost Transparency), spec:1.6 (Metadata & Auditing — cost data in artifacts)
 **Depends On**: Story 002 (pipeline foundation — cost recording hooks), Story 014 (role system — per-role cost attribution)
 
 ---

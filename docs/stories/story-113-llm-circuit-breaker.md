@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Cancelled — Superseded by Story 050. Provider circuit breaker behavior already exists in `src/cine_forge/ai/llm.py`, so keeping this as active backlog would duplicate landed work.
 **Cancelled**: 2026-03-15
-**Spec Refs**: C3 (provider resilience, Story 050 extended)
+**Spec Refs**: spec:8.3 (Subsumption-Based Model Strategy), spec:1.4 (AI-Driven Runtime Boundary)
 **Depends On**: None (Story 050 retry/fallback already done)
 
 ## Goal

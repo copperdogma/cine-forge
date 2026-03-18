@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-12
-**Spec Refs**: 2.5 (Human Control), 3.1 (Stage Progression), 4 (Ingestion/Normalization/Config), 20 (Metadata & Auditing), 21 (Operating Modes)
+**Spec Refs**: spec:5.1 (Human Control Is Optional and Configurable), spec:5.3 (Stage Progression), spec:2 (Story Intake & Understanding), spec:1.6 (Metadata & Auditing), spec:9.4 (Valid Operating Modes)
 **Depends On**: Story 002 (pipeline foundation), Story 003 (ingestion), Story 004 (normalization), Story 005 (scene extraction), Story 006 (project config), Story 007 (MVP smoke)
 
 ---

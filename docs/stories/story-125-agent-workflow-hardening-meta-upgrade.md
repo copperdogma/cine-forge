@@ -3,7 +3,7 @@
 **Priority**: High
 **Status**: Done
 **Ideal Refs**: Vision-level preference: easy, fun, and engaging; R12 (decisions explainable and overridable); R14 (process traceability)
-**Spec Refs**: None (repo process quality)
+**Spec Refs**: spec:11.1 (Story Lifecycle and Handoff Chain), spec:11.3 (Verification, Eval Classification, and Registry Discipline), spec:11.4 (Agent Instructions, Skills, and Runbooks)
 **ADR Refs**: None found after search
 **Depends On**: 053
 

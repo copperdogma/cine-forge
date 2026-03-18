@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-11
-**Spec Refs**: 2.1 (Immutability), 2.2 (Versioning), 2.3 Layer 1 (Structural Invalidation), 2.4 (Non-AI Logic), 2.6 (Explanation/Audit), 2.7 (Cost Hooks), 2.8 (Structural QA), 3 (Pipeline Overview), 3.1 (Stage Progression), 20 (Metadata & Auditing)
+**Spec Refs**: spec:1.1 (Artifact Immutability), spec:1.2 (Version History), spec:1.3 (Revision and Change Propagation), spec:1.4 (AI-Driven Runtime Boundary), spec:1.5 (Pipeline Overview), spec:1.6 (Metadata & Auditing), spec:5.2 (Explanation Is Mandatory), spec:5.3 (Stage Progression), spec:8.1 (Cost Transparency), spec:8.2 (Quality Validation)
 **Depends On**: Story 001 (project scaffolding)
 
 ---

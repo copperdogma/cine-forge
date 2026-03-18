@@ -3,7 +3,7 @@
 **Priority**: High
 **Status**: Done
 **Ideal Refs**: Vision-level preference: easy, fun, and engaging; iterative by nature; creative partnership; R12 (decisions explainable and overridable)
-**Spec Refs**: spec.md 3.1 (user-controlled stage progression), 8.6 (inter-role communication), 8.7 (human interaction model), 19 (memory model / transcript continuity)
+**Spec Refs**: spec:5.3 (user-controlled stage progression), spec:4.6 (inter-role communication), spec:5.4 (human interaction model), spec:9 (memory model / transcript continuity)
 **ADR Refs**: `docs/decisions/adr-002-goal-oriented-navigation/adr.md` (behavioral constraints only); no ADR directly governs the module split itself
 **Depends On**: 083 (Group Chat Architecture), 101 (Centralized Long-Running Action System)
 

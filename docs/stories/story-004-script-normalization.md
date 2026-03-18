@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-11
-**Spec Refs**: 4.2 (Script Normalization), 4.3 (Canonical Script Rule), 2.4 (AI-Driven), 2.6 (Explanation Mandatory), 2.7 (Cost Transparency), 2.8 (QA Tier 1 + Role-Level)
+**Spec Refs**: spec:2.2 (Script Normalization), spec:2.3 (Canonical Script Rule), spec:1.4 (AI-Driven Runtime Boundary), spec:5.2 (Explanation Is Mandatory), spec:8.1 (Cost Transparency), spec:8.2 (QA Tier 1 + Role-Level)
 **Depends On**: Story 002 (pipeline foundation), Story 003 (story ingestion — provides `raw_input` artifact)
 
 ---

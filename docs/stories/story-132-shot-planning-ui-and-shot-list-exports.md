@@ -3,7 +3,7 @@
 **Priority**: High
 **Status**: Done
 **Ideal Refs**: R9 (professional exports), R11 (production readiness per scene), R7 (iterative refinement)
-**Spec Refs**: 4.6 (Film Lane on demand), 12.7 (Readiness Indicators), 13 (Shot Planning), 13.4 (Export Compatibility), note 1050 (scene-first with shot detail drill-down)
+**Spec Refs**: spec:2.6 (Two-Lane Architecture / Film Lane), spec:5.5 (Readiness Indicators), spec:6.1 (Shot Planning), spec:6.1.4 (Export Compatibility)
 **ADR Refs**: `docs/decisions/adr-002-goal-oriented-navigation/adr.md`, `docs/decisions/adr-003-film-elements/adr.md`
 **Depends On**: Story 025 (Shot Planning), Story 058 (Comprehensive Export & Share), Story 099 (Scene Workspace), Story 101 (Centralized Long-Running Action System)
 

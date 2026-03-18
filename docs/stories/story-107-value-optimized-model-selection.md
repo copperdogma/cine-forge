@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: Cross-Cutting
+**Spec Refs**: spec:8.1 (Cost Transparency), spec:8.3 (Subsumption-Based Model Strategy)
 **Depends On**: 036 (Model Selection — eval framework), 039 (Apply Model Selections — defaults applied), 092 (Continuity — proved the value-analysis pattern)
 **Blocks**: None
 

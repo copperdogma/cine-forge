@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-11
-**Spec Refs**: 4.4 (Project Configuration), 2.5 (Human Control Modes), 2.7 (Cost Transparency / Budget Caps)
+**Spec Refs**: spec:2.4 (Project Configuration), spec:5.1 (Human Control Is Optional and Configurable), spec:8.1 (Cost Transparency / Budget Caps)
 **Depends On**: Story 002 (pipeline foundation), Story 004 (canonical script — the text to analyze), Story 005 (scene extraction — provides character/location counts)
 
 ---

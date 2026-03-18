@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-13
 **Updated**: 2026-03-14 — Closed after revalidation; backend substrate, Operator Console upload UX, and downstream propagation all landed.
-**Spec Refs**: 18 (User Asset Injection — being expanded per ADR-003/R17), 6.3 (Bible Artifact Structure — reference images), 2.1 (Immutability)
+**Spec Refs**: spec:7.2 (User Asset Injection — being expanded per ADR-003/R17), spec:3.3 (Bible Artifact Structure — reference images), spec:1.1 (Immutability)
 **Depends On**: Story 008 (character bibles — asset attachment points), Story 009 (location/prop bibles), Story 014 (role system — lock negotiation), Story 017 (suggestion/decision tracking — lock negotiation via suggestions)
 **Ideal Refs**: R17 (real-world assets as first-class inputs)
 **Absorbs**: Story 098 (Real-World Asset Upload Pipeline — merged 2026-03-14)

@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-27
 **Source**: ADR-003
-**Spec Refs**: 12.1-12.7 (Creative Direction — Concern Groups)
+**Spec Refs**: spec:4.10 (Concern Groups), spec:4.10.1 through spec:4.10.7
 **Ideal Refs**: R8 (production artifacts), R11 (production readiness), R12 (transparency)
 **Depends On**: Story 002 (artifact store)
 

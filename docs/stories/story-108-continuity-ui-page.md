@@ -3,7 +3,7 @@
 **Priority**: High
 **Status**: Done
 **Ideal Refs**: R3 (perfect continuity tracking across narrative)
-**Spec Refs**: Spec 6.4 (Asset States / Continuity)
+**Spec Refs**: spec:3.4 (Asset States / Continuity)
 **Depends On**: 092 (Continuity AI Detection — backend module)
 
 ## Goal

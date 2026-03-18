@@ -3,7 +3,7 @@
 **Status**: Draft
 **Created**: 2026-02-27
 **Source**: ADR-003, Decision #4
-**Spec Refs**: 12.8 (Prompt Compilation Model — upstream editing mechanism)
+**Spec Refs**: spec:4.10.7 (Prompt Compilation Model — upstream editing mechanism)
 **Ideal Refs**: R4 (creative conversation), R5 (full spectrum of involvement), R12 (transparency)
 **Depends On**: Story 014 (role system), Story 031 (semantic change propagation), Story 089 (interaction mode / autonomy settings)
 

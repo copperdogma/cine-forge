@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-15
-**Spec Refs**: 2.5 (Human Control), 3.1 (Stage Progression), 4–6 (Ingestion/Normalization/Config), 6–7 (Bibles/Entity Graph/Continuity), 8.7 (Human Interaction Model), 20 (Metadata & Auditing), 21 (Operating Modes)
+**Spec Refs**: spec:5.1 (Human Control), spec:5.3 (Stage Progression), spec:2 (Story Intake & Understanding), spec:3 (World Building & Continuity), spec:5.4 (Human Interaction Model), spec:1.6 (Metadata & Auditing), spec:9.4 (Valid Operating Modes)
 **Depends On**: Story 011b (Research & Design Decisions — complete), Story 011 (Continuity Tracking)
 **Replaces / Evolves**: Story 007b (Operator Console Lite — stopgap GUI)
 **Design Docs**: `docs/design/decisions.md`, `docs/design/principles.md`, `docs/design/personas.md`, `docs/design/landscape.md`, `docs/design/ui-stack.md`

@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-27
 **Source**: ADR-003, Decisions #1/#11/#14 (story-lane always runs on import), #12 (script bible artifact)
-**Spec Refs**: 4.5 (Script Bible), 4.6 (Two-Lane Architecture)
+**Spec Refs**: spec:2.5 (Script Bible), spec:2.6 (Two-Lane Architecture)
 **Ideal Refs**: R1 (story understanding), R8 (production artifacts)
 **Depends On**: Story 003 (story ingestion), Story 004 (script normalization)
 

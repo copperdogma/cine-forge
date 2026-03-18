@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: docs/spec.md#pipeline-processing
+**Spec Refs**: spec:2.7 (Scene Breakdown & Analysis)
 **Depends On**: {depends on}
 
 ## Goal

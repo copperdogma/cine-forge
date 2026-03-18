@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13
-**Spec Refs**: 8.5 (Suggestion System), 8.6 (Inter-Role Communication — decisions), 2.6 (Explanation Mandatory), 20 (Metadata & Auditing)
+**Spec Refs**: spec:4.5 (Suggestion System), spec:4.6 (Inter-Role Communication — decisions), spec:5.2 (Explanation Is Mandatory), spec:1.6 (Metadata & Auditing)
 **Depends On**: Story 014 (role system foundation), Story 015 (Director and Canon Guardians — decision authority)
 
 ---

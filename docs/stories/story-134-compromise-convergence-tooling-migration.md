@@ -3,7 +3,7 @@
 **Priority**: High
 **Status**: Done
 **Ideal Refs**: Vision-level preference: easy, fun, and engaging; R12 (every AI decision explainable and overridable); R14 (nothing is ever lost)
-**Spec Refs**: Spec preamble on compromises + detection mechanisms; Compromise Index (C1-C7)
+**Spec Refs**: spec:11.2 (Build Map, Triage, and Substrate Tracking), spec:11.3 (Verification, Eval Classification, and Registry Discipline), spec:11.4 (Agent Instructions, Skills, and Runbooks)
 **ADR Refs**: None found after search in CineForge; reviewed `docs/design/decisions.md` and local ADR-001..003, which do not govern agent-tooling methodology. External reference source: Storybook ADR-019 migration guide and companion artifacts.
 **Depends On**: Story 053, Story 125
 

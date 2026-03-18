@@ -2,7 +2,7 @@
 
 **Status**: Pending
 **Created**: 2026-02-13
-**Spec Refs**: 15 (Animatics / Previz Video), 16 (Keyframes), 7.2 (Tracks — animatic/keyframe tracks), 7.3 (Always-Playable Rule)
+**Spec Refs**: spec:6.3 (Animatics / Previz Video), spec:6.4 (Keyframes), spec:10.2 (Tracks — animatic/keyframe tracks), spec:10.3 (Always-Playable Rule)
 **Depends On**: Story 025 (shot planning), Story 026 (storyboards — optional input), Story 013 (track system)
 
 ---

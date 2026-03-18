@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-13
 **Last Updated**: 2026-02-20
-**Spec Refs**: 7.2 (Tracks), 7.3 (Always-Playable Rule), 7.1 (Timeline Integration)
+**Spec Refs**: spec:10.2 (Tracks), spec:10.3 (Always-Playable Rule), spec:10.1 (Timeline Artifact)
 **Depends On**: Story 012 (timeline core artifact), Story 011 (continuity index/states), Story 050/051 (current run-state/event contracts)
 
 ---

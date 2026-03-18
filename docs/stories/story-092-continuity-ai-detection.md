@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: 6 (Bibles, Entity Graph, Continuity)
+**Spec Refs**: spec:3 (World Building & Continuity)
 **Depends On**: 011 (Continuity Tracking — schemas + skeleton)
 **Blocks**: 025 (Shot Planning — shots consume continuity states)
 

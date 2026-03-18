@@ -3,7 +3,7 @@
 **Status**: Done
 **Created**: 2026-02-13
 **Reshaped**: 2026-02-27 — ADR-003 reorganizes direction types into concern groups. Sound direction → Sound & Music concern group.
-**Spec Refs**: 11 (Sound Design), 12.3 (Sound & Music)
+**Spec Refs**: spec:4.9 (Sound Design), spec:4.10.3 (Sound & Music)
 **Depends On**: Story 014 (role system foundation), Story 015 (Director — reviews direction), Story 005 (scene extraction)
 **Ideal Refs**: R7 (iterative refinement), R11 (production readiness), R12 (transparency)
 

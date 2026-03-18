@@ -3,10 +3,13 @@
 This file is the project-wide source of truth for agent behavior and engineering principles. It serves as both a core directive and a living memory for AI agents working on this codebase.
 
 > **The Ideal (`docs/ideal.md`) is the most important document in this project.**
-> It defines what CineForge should be with zero limitations. Every architectural
-> decision should move toward the Ideal. Every compromise in the spec (`docs/spec.md`)
-> carries a detection mechanism for when it's no longer needed. When in doubt about
-> a design choice, ask: "Does this move us toward the Ideal?"
+> It defines what CineForge should be with zero limitations at two levels: the
+> **product ideal** (what the user should get) and the **execution ideal** (what
+> building CineForge should feel like when AI no longer needs scaffolding). Every
+> architectural decision should move toward those ideals. Every compromise in the
+> spec (`docs/spec.md`) carries a detection mechanism for when it's no longer
+> needed. When in doubt about a design choice, ask: "Does this move us toward the
+> Ideal?"
 >
 > The Ideal's primary test: **Is it easy, fun, and engaging?** If using CineForge
 > feels like work, something is wrong.
@@ -18,9 +21,11 @@ This file is the project-wide source of truth for agent behavior and engineering
 > level you're working at.
 >
 > **Methodology stack**: `docs/methodology-ideal-spec-compromise.md` explains how
-> the Ideal, spec, build map, stories, and evals fit together. `docs/build-map.md`
-> is the current system map and compromise-progress tracker. Read both when work
-> touches planning, methodology, or convergence decisions.
+> the dual ideals, category-aligned spec (`spec:1` through `spec:11`), build map,
+> stories, and evals fit together. `docs/build-map.md` is the central dashboard:
+> it tracks product need, tech need, substrate status, story coverage, ADR refs,
+> and phase governance (`climb`, `hold`, `converge`, `unplanned`). Read both when
+> work touches planning, methodology, or simplification decisions.
 
 ## Core Agent Mandates
 

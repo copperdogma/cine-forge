@@ -29,7 +29,10 @@ Evaluate the story backlog and recommend the best next stories to work on.
    - `docs/ideal.md`
    - `docs/methodology-ideal-spec-compromise.md`
    - `docs/build-map.md`
-   Stories that close Ideal gaps or materially advance build-map convergence rank higher than stories that only optimize compromises.
+   For each likely candidate, note its owning category, substrate status, and
+   phase. Stories that close Ideal gaps, complete missing substrate, or execute a
+   credible convergence step rank higher than stories that only polish an
+   existing hold-phase workaround.
 
 3. **Read candidate stories** — For every candidate story (Draft or Pending) with met dependencies, read the actual story file to understand its goal, notes, dependencies, and scope. Don't just go by titles.
 
@@ -37,9 +40,9 @@ Evaluate the story backlog and recommend the best next stories to work on.
    - **Dependency readiness**: Are all upstream stories Done? Does this unblock downstream stories?
    - **Blocking power**: How many other stories depend on this one?
    - **Ideal alignment**: Does this story move toward the Ideal (`docs/ideal.md`) or implement a detection mechanism? Rank higher than stories that only entrench compromises.
-   - **Convergence value**: Does this story advance a build-map Optimize path or move a compromise closer to elimination?
+   - **Build-map leverage**: Does this story close missing substrate in a `climb` category, keep a `hold` category coherent, or execute a real `converge` deletion? Prefer `climb` and credible `converge` work over hold-only polish unless user impact clearly outweighs it.
    - **Simplification leverage**: Does this story (e.g., an eval harness) unblock future simplification across multiple compromises?
-   - **Phase coherence**: Does it continue the current phase or require a context switch?
+   - **Phase coherence**: Does it continue the current category phase cleanly, or does it fight the build map's current state?
    - **Momentum**: Does it build on recently completed work (shared context, warm caches, related code)?
    - **Complexity vs. payoff**: Is the effort proportional to the value delivered?
    - **User impact**: Does it visibly improve the product or is it internal plumbing?

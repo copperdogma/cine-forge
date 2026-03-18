@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-13  
-**Spec Refs**: 2.4 (AI-Driven), 2.6 (Explanation Required), 2.8 (QA), 3.1 (Stage Progression), 4 (Ingestion/Normalization/Config), 5 (Scene Extraction), 20 (Metadata & Auditing)  
+**Spec Refs**: spec:1.4 (AI-Driven Runtime Boundary), spec:5.2 (Explanation Is Mandatory), spec:5.3 (Stage Progression), spec:2 (Story Intake & Understanding), spec:2.7 (Scene Breakdown & Analysis), spec:1.6 (Metadata & Auditing), spec:8.2 (Quality Validation)
 **Depends On**: Story 003, Story 004, Story 005, Story 006, Story 007, Story 007b
 
 ---

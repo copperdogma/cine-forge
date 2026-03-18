@@ -2,7 +2,7 @@
 
 **Priority**: High
 **Status**: Done
-**Spec Refs**: AGENTS.md > UI Development Workflow, AGENTS.md > General Agent Engineering Principles
+**Spec Refs**: spec:5 (Operator Console & Interactive UX), spec:11.4 (Agent Instructions, Skills, and Runbooks)
 **Depends On**: None
 
 ## Goal

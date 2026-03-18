@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Draft
-**Spec Refs**: Film Lane (spec §267) — iterative visual development, round-by-round creative direction
+**Spec Refs**: spec:2.6 (Two-Lane Architecture / Film Lane), spec:4.10.2 (Look & Feel), spec:6.2 (Storyboards), spec:6.3 (Animatics / Previz Video)
 **Depends On**: Story 056 (Design Study — Done), Story 120 (Production Format Setting), Story 119 (Design Study Prompt Compiler + Visual Reference Propagation)
 **Updated**: 2026-03-14 — backlog cleanup clarified that this story builds on the format and prompt-compiler work first.
 

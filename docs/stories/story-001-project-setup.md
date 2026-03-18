@@ -2,7 +2,7 @@
 
 **Status**: Done
 **Created**: 2026-02-11
-**Spec Refs**: All (foundation for everything); specifically 2.1–2.8 (design principles), 3 (pipeline overview), 20 (metadata & auditing)
+**Spec Refs**: spec:1 (Foundation & Artifact Runtime), spec:1.5 (Pipeline Overview), spec:1.6 (Metadata & Auditing), spec:5.1 (Human Control Is Optional and Configurable), spec:5.2 (Explanation Is Mandatory), spec:8.1 (Cost Transparency), spec:8.2 (Quality Validation)
 
 ---
 

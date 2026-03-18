@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: 4 Ingestion, Normalization, Config
+**Spec Refs**: spec:2 (Story Intake & Understanding)
 **Depends On**: 003, 006, 062
 
 ## Goal

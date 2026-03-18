@@ -3,7 +3,7 @@
 **Priority**: High
 **Status**: Done
 **Ideal Refs**: R1 (story input understanding quality bar)
-**Spec Refs**: 4.2 (Script Normalization), 4.3 (Canonical Script Rule), 2.8 (QA validation)
+**Spec Refs**: spec:2.2 (Script Normalization), spec:2.3 (Canonical Script Rule), spec:8.2 (Quality Validation)
 **ADR Refs**: None found after search
 **Depends On**: Story 004 (Script Normalization), Story 064 (Screenplay Format Round-Trip)
 

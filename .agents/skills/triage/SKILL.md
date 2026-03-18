@@ -6,7 +6,7 @@ user-invocable: true
 
 # /triage [stories|inbox|evals] [sub-arg]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known compromise in `docs/spec.md`, respect its limitation type and evolution path. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current build-map phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
 
 `/triage` is the proactive meta-skill. It does **not** own all domain logic itself. It dispatches to focused leaf skills and, in full-sweep mode, fans them out and synthesizes one recommendation.
 
@@ -60,7 +60,8 @@ When invoked with no scope, run a lightweight orchestration pass:
    Choose using:
    - Ideal alignment
    - blocking power
-   - compromise elimination leverage
+   - substrate leverage
+   - phase-appropriate leverage
    - urgency / staleness
    - momentum from recent work
    - operator cost

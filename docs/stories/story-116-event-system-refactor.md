@@ -2,7 +2,7 @@
 
 **Priority**: Medium
 **Status**: Done
-**Spec Refs**: All (architecture quality enables every Ideal requirement)
+**Spec Refs**: spec:1 (Foundation & Artifact Runtime)
 **Depends On**: None (Story 115 is the research story that produced this)
 
 ## Goal

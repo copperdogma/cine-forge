@@ -3,7 +3,7 @@
 **Priority**: Medium
 **Status**: Draft
 **Ideal Refs**: R3 (perfect continuity tracking across narrative)
-**Spec Refs**: Spec 6.4 (Asset States / Continuity)
+**Spec Refs**: spec:3.4 (Asset States / Continuity)
 **Depends On**: 092 (Continuity AI Detection — built the current implementation), 108 (Continuity UI Page — revealed the UX problems)
 
 ## Goal

@@ -5,7 +5,7 @@
 **Rewritten**: 2026-02-25 — Original scope largely superseded by Story 084.
 **Reshaped**: 2026-02-27 — ADR-003 reorganizes direction types into concern groups. Performance direction → Character & Performance concern group.
 **Updated**: 2026-03-14 — backlog cleanup parked the story after Story 025 confirmed the fallback path.
-**Spec Refs**: 12.5 (Character & Performance)
+**Spec Refs**: spec:4.10.5 (Character & Performance)
 **Depends On**: Story 008 (character bibles), Story 005 (scene extraction), Story 010 (entity graph), Story 011 (continuity tracking)
 **Ideal Refs**: R4 (creative conversation with characters), R7 (iterative refinement)
 
