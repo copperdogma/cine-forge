@@ -200,6 +200,8 @@ def test_estimate_cost_usd_uses_known_model_pricing() -> None:
     ("model", "expected"),
     [
         ("gpt-5.4", 17.5),
+        ("gpt-5.4-mini", 5.25),
+        ("gpt-5.4-nano", 1.45),
         ("gemini-3.1-pro-preview", 11.5),
         ("gemini-3.1-flash-lite-preview", 0.5),
     ],

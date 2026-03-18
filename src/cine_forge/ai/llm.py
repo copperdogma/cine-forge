@@ -27,6 +27,8 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
     "gpt-4.1-mini": (0.40, 1.60),
     "gpt-5.2": (2.0, 8.0),
     "gpt-5.4": (2.5, 15.0),
+    "gpt-5.4-mini": (0.75, 4.5),
+    "gpt-5.4-nano": (0.20, 1.25),
     # Anthropic
     "claude-sonnet-4-5": (3.0, 15.0),
     "claude-sonnet-4-5-20250929": (3.0, 15.0),

@@ -1,0 +1,1044 @@
+{
+  "evalId": "eval-rjE-2026-03-18T15:56:10",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-03-18T15:56:10.542Z",
+    "prompts": [
+      {
+        "raw": "You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+        "label": "prompts/normalization.txt: You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+        "id": "7bc79ce1f5846d8728590285cab08ec96b22d867e2d8ac7b1dd750e47494dfc4",
+        "provider": "GPT-5.4 Nano",
+        "metrics": {
+          "score": 1.635,
+          "testPassCount": 1,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 3,
+          "assertFailCount": 1,
+          "totalLatencyMs": 4888,
+          "tokenUsage": {
+            "prompt": 1230,
+            "completion": 864,
+            "cached": 0,
+            "total": 2094,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2734,
+              "prompt": 1738,
+              "completion": 996,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      },
+      {
+        "raw": "You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+        "label": "prompts/normalization.txt: You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+        "id": "7bc79ce1f5846d8728590285cab08ec96b22d867e2d8ac7b1dd750e47494dfc4",
+        "provider": "GPT-5.4 Mini",
+        "metrics": {
+          "score": 1.4849999999999999,
+          "testPassCount": 1,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 3,
+          "assertFailCount": 1,
+          "totalLatencyMs": 3313,
+          "tokenUsage": {
+            "prompt": 1230,
+            "completion": 813,
+            "cached": 0,
+            "total": 2043,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2455,
+              "prompt": 1686,
+              "completion": 769,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "The output fails multiple key Fountain formatting requirements. 1) Scene headings: Present and in ALL CAPS with INT./EXT., which is good. 2) Character cues: Characters are NOT on their own lines in ALL CAPS as required by Fountain format. Instead, dialogue is presented in prose style with attribution like '\"If this works, half the valley hears us,\" JUNE says'. In proper Fountain format, character names should be on their own line above dialogue, e.g.:\n\nJUNE\nIf this works, half the valley hears us.\n\n3) Dialogue is not formatted correctly - it's in quotation marks embedded in prose paragraphs rather than under character cues without quotes. 4) No parentheticals are used where action descriptions like 'says, shivering' or 'replies quietly' should be formatted as parentheticals. 5) No markdown formatting is present, which is good. 6) Scene breaks are identified reasonably well. 7) The author's voice seems preserved without major inventions.\n\nThe fundamental problem is that this reads as a hybrid prose/screenplay format rather than proper Fountain format. Character cues are not separated onto their own lines, dialogue is in quotation marks rather than plain text under character names, and action lines describing how characters speak are not converted to parentheticals. This is a significant structural failure for a Fountain normalization task.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.485,
+          "reason": "The output fails multiple key Fountain formatting requirements. 1) Scene headings: Present and in ALL CAPS with INT./EXT., which is good. 2) Character cues: Characters are NOT on their own lines in ALL CAPS as required by Fountain format. Instead, dialogue is presented in prose style with attribution like '\"If this works, half the valley hears us,\" JUNE says'. In proper Fountain format, character names should be on their own line above dialogue, e.g.:\n\nJUNE\nIf this works, half the valley hears us.\n\n3) Dialogue is not formatted correctly - it's in quotation marks embedded in prose paragraphs rather than under character cues without quotes. 4) No parentheticals are used where action descriptions like 'says, shivering' or 'replies quietly' should be formatted as parentheticals. 5) No markdown formatting is present, which is good. 6) Scene breaks are identified reasonably well. 7) The author's voice seems preserved without major inventions.\n\nThe fundamental problem is that this reads as a hybrid prose/screenplay format rather than proper Fountain format. Character cues are not separated onto their own lines, dialogue is in quotation marks rather than plain text under character names, and action lines describing how characters speak are not converted to parentheticals. This is a significant structural failure for a Fountain normalization task.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1193,
+            "prompt": 859,
+            "completion": 334,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.77,
+              "reason": "character_cues=0.00 | content_completeness=1.00 | dialogue_preserved=1.00 | no_markdown=1.00 | scene_headings=0.85 | structure_quality=1.00 | Headings: 3/4 matched | Missing cues: JUNE, NOAH, ARIA",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/normalization_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this screenplay normalization. The input was a prose narrative\nwith no Fountain formatting. The model should have converted it to\nstandard Fountain format.\n\nKey quality criteria:\n1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?\n2. Are character cues ALL CAPS on their own line?\n3. Is dialogue preserved exactly as written?\n4. Are parentheticals in (lowercase parens) format?\n5. Is there NO markdown formatting (no >, #, **, ``` etc.)?\n6. Are scene breaks identified correctly from context clues?\n7. Is the author's voice preserved without inventions?\n\nScore strictly: structural correctness AND content preservation both matter.\n"
+              },
+              "pass": false,
+              "score": 0.2,
+              "reason": "The output fails multiple key Fountain formatting requirements. 1) Scene headings: Present and in ALL CAPS with INT./EXT., which is good. 2) Character cues: Characters are NOT on their own lines in ALL CAPS as required by Fountain format. Instead, dialogue is presented in prose style with attribution like '\"If this works, half the valley hears us,\" JUNE says'. In proper Fountain format, character names should be on their own line above dialogue, e.g.:\n\nJUNE\nIf this works, half the valley hears us.\n\n3) Dialogue is not formatted correctly - it's in quotation marks embedded in prose paragraphs rather than under character cues without quotes. 4) No parentheticals are used where action descriptions like 'says, shivering' or 'replies quietly' should be formatted as parentheticals. 5) No markdown formatting is present, which is good. 6) Scene breaks are identified reasonably well. 7) The author's voice seems preserved without major inventions.\n\nThe fundamental problem is that this reads as a hybrid prose/screenplay format rather than proper Fountain format. Character cues are not separated onto their own lines, dialogue is in quotation marks rather than plain text under character names, and action lines describing how characters speak are not converted to parentheticals. This is a significant structural failure for a Fountain normalization task.",
+              "tokensUsed": {
+                "total": 1193,
+                "prompt": 859,
+                "completion": 334,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\nINT. CRAMPED COMMUNITY RADIO STUDIO - NIGHT\\n\\nOld gear hums while rain taps on the skylight. ARIA threads a tape reel as NOAH checks the cracked mixer. JUNE comes in balancing two mugs of tea on a pile of scripts.\\n\\n\\\"If this works, half the valley hears us,\\\" JUNE says, setting down the mugs.\\n\\nNOAH tries to sound calm.\\n\\n\\\"If this works, we hear them too.\\\"\\n\\n\\\"Then we stop talking and start listening,\\\" ARIA replies quietly.\\n\\nThe ON AIR light flickers once, then goes dark.\\n\\nLATER THAT NIGHT\\n\\nINT. HILLTOP WATER TOWER - NIGHT\\n\\nWind whips prayer flags tied to the guardrail. ARIA and NOAH climb a rusted service ladder carrying a portable antenna. Below them, town lights blink in scattered clusters.\\n\\n\\\"I still vote for warm studios and bad coffee,\\\" NOAH says, shivering.\\n\\nARIA grins.\\n\\n\\\"We lost warm. Keep the coffee dream alive.\\\"\\n\\nA burst of static crackles from the handheld receiver. They both freeze.\\n\\n\\\"Did you hear that?\\\" NOAH whispers.\\n\\n\\\"Only enough to hope,\\\" ARIA says.\\n\\nThey lock the antenna in place and point it toward the dark ridge line.\\n\\nINT. STUDIO HALLWAY - NIGHT\\n\\nFluorescent lights buzz overhead. KELL tapes handwritten evacuation arrows to the wall while JUNE hurries past carrying batteries and tangled cables.\\n\\n\\\"Generator room flooded,\\\" KELL reports. \\\"We can run one board, maybe two.\\\"\\n\\n\\\"One board is enough,\\\" JUNE replies.\\n\\nKELL raises an eyebrow.\\n\\n\\\"For news, maybe. For miracles?\\\"\\n\\nJUNE half-smiles.\\n\\n\\\"We schedule those after midnight.\\\"\\n\\nShe shoulders open the control-room door. Inside the studio, monitors glow back to life one by one.\\n\\nNOAH'S voice comes through the radio:\\n\\n\\\"Tower looks stable. Feed us a carrier tone.\\\"\\n\\nJUNE taps the mic.\\n\\n\\\"Good evening, Red Creek. If you're out there, key once and wait.\\\"\\n\\nSilence. Then three tiny chirps answer in sequence. The room goes still.\\n</Output>\\n<Rubric>\\nEvaluate this screenplay normalization. The input was a prose narrative\\nwith no Fountain formatting. The model should have converted it to\\nstandard Fountain format.\\n\\nKey quality criteria:\\n1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?\\n2. Are character cues ALL CAPS on their own line?\\n3. Is dialogue preserved exactly as written?\\n4. Are parentheticals in (lowercase parens) format?\\n5. Is there NO markdown formatting (no >, #, **, ``` etc.)?\\n6. Are scene breaks identified correctly from context clues?\\n7. Is the author's voice preserved without inventions?\\n\\nScore strictly: structural correctness AND content preservation both matter.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "635fc612-f901-4633-bcd3-402a217f7cca",
+        "latencyMs": 1929,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\nInside a cramped community radio studio, old gear hums while rain taps on the skylight. Aria threads a tape reel as Noah checks the cracked mixer. June comes in balancing two mugs of tea on a pile of scripts.\n\n\"If this works, half the valley hears us,\" June says, setting down the mugs.\n\nNoah tries to sound calm. \"If this works, we hear them too.\"\n\n\"Then we stop talking and start listening,\" Aria replies quietly.\n\nThe ON AIR light flickers once, then goes dark.\n\nLater that night, on a hilltop water tower, wind whips prayer flags tied to the guardrail. Aria and Noah climb a rusted service ladder carrying a portable antenna. Below them, town lights blink in scattered clusters.\n\n\"I still vote for warm studios and bad coffee,\" Noah says, shivering.\n\nAria grins. \"We lost warm. Keep the coffee dream alive.\"\n\nA burst of static crackles from the handheld receiver. They both freeze.\n\n\"Did you hear that?\" Noah whispers.\n\n\"Only enough to hope,\" Aria says.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nDown in the studio hallway, fluorescent lights buzz overhead. Kell tapes handwritten evacuation arrows to the wall while June hurries past carrying batteries and tangled cables.\n\n\"Generator room flooded,\" Kell reports. \"We can run one board, maybe two.\"\n\n\"One board is enough,\" June replies.\n\nKell raises an eyebrow. \"For news, maybe. For miracles?\"\n\nJune half-smiles. \"We schedule those after midnight.\"\n\nShe shoulders open the control-room door. Inside the studio, monitors glow back to life one by one.\n\nNoah's voice comes through the radio: \"Tower looks stable. Feed us a carrier tone.\"\n\nJune taps the mic. \"Good evening, Red Creek. If you're out there, key once and wait.\"\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.\n==========",
+          "label": "prompts/normalization.txt: You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "7bc79ce1f5846d8728590285cab08ec96b22d867e2d8ac7b1dd750e47494dfc4",
+        "promptIdx": 1,
+        "provider": {
+          "id": "openai:gpt-5.4-mini",
+          "label": "GPT-5.4 Mini"
+        },
+        "response": {
+          "output": "INT. CRAMPED COMMUNITY RADIO STUDIO - NIGHT\n\nOld gear hums while rain taps on the skylight. ARIA threads a tape reel as NOAH checks the cracked mixer. JUNE comes in balancing two mugs of tea on a pile of scripts.\n\n\"If this works, half the valley hears us,\" JUNE says, setting down the mugs.\n\nNOAH tries to sound calm.\n\n\"If this works, we hear them too.\"\n\n\"Then we stop talking and start listening,\" ARIA replies quietly.\n\nThe ON AIR light flickers once, then goes dark.\n\nLATER THAT NIGHT\n\nINT. HILLTOP WATER TOWER - NIGHT\n\nWind whips prayer flags tied to the guardrail. ARIA and NOAH climb a rusted service ladder carrying a portable antenna. Below them, town lights blink in scattered clusters.\n\n\"I still vote for warm studios and bad coffee,\" NOAH says, shivering.\n\nARIA grins.\n\n\"We lost warm. Keep the coffee dream alive.\"\n\nA burst of static crackles from the handheld receiver. They both freeze.\n\n\"Did you hear that?\" NOAH whispers.\n\n\"Only enough to hope,\" ARIA says.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nINT. STUDIO HALLWAY - NIGHT\n\nFluorescent lights buzz overhead. KELL tapes handwritten evacuation arrows to the wall while JUNE hurries past carrying batteries and tangled cables.\n\n\"Generator room flooded,\" KELL reports. \"We can run one board, maybe two.\"\n\n\"One board is enough,\" JUNE replies.\n\nKELL raises an eyebrow.\n\n\"For news, maybe. For miracles?\"\n\nJUNE half-smiles.\n\n\"We schedule those after midnight.\"\n\nShe shoulders open the control-room door. Inside the studio, monitors glow back to life one by one.\n\nNOAH'S voice comes through the radio:\n\n\"Tower looks stable. Feed us a carrier tone.\"\n\nJUNE taps the mic.\n\n\"Good evening, Red Creek. If you're out there, key once and wait.\"\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.",
+          "tokenUsage": {
+            "total": 1051,
+            "prompt": 624,
+            "completion": 427,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1929,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9de56d06cef258f2-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Wed, 18 Mar 2026 15:56:12 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "1701",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=eFYP8oBgSHFyze3BPqC5lxjxGWsq.oZb.bLvA30ufLA-1773849370.6826432-1.0.1.1-WC9qAbpnrezfgiZSgLMvay_jv71pJKdHLWlet3cgmzZOnNeOXyAKscHxNY28Q7XQGZ40TB7K10wezIk9p1RcNJ5XHWMTdifnE7BRRx.SQKAlNAMQXWyHcNDN8g5lgXD0; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:12 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "30000",
+                "x-ratelimit-limit-tokens": "180000000",
+                "x-ratelimit-remaining-requests": "29999",
+                "x-ratelimit-remaining-tokens": "179999289",
+                "x-ratelimit-reset-requests": "2ms",
+                "x-ratelimit-reset-tokens": "0s",
+                "x-request-id": "req_d117cefcbcf84495995112fbfb0613d0"
+              }
+            }
+          }
+        },
+        "score": 0.485,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "source_text": "file://../input/normalize-prose.txt",
+            "golden_path": "golden/normalize-signal-golden.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/normalization_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this screenplay normalization. The input was a prose narrative\nwith no Fountain formatting. The model should have converted it to\nstandard Fountain format.\n\nKey quality criteria:\n1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?\n2. Are character cues ALL CAPS on their own line?\n3. Is dialogue preserved exactly as written?\n4. Are parentheticals in (lowercase parens) format?\n5. Is there NO markdown formatting (no >, #, **, ``` etc.)?\n6. Are scene breaks identified correctly from context clues?\n7. Is the author's voice preserved without inventions?\n\nScore strictly: structural correctness AND content preservation both matter.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "source_text": "file://../input/normalize-prose.txt",
+          "golden_path": "golden/normalize-signal-golden.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9de56d06cef258f2-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Wed, 18 Mar 2026 15:56:12 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "1701",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=eFYP8oBgSHFyze3BPqC5lxjxGWsq.oZb.bLvA30ufLA-1773849370.6826432-1.0.1.1-WC9qAbpnrezfgiZSgLMvay_jv71pJKdHLWlet3cgmzZOnNeOXyAKscHxNY28Q7XQGZ40TB7K10wezIk9p1RcNJ5XHWMTdifnE7BRRx.SQKAlNAMQXWyHcNDN8g5lgXD0; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:12 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "30000",
+              "x-ratelimit-limit-tokens": "180000000",
+              "x-ratelimit-remaining-requests": "29999",
+              "x-ratelimit-remaining-tokens": "179999289",
+              "x-ratelimit-reset-requests": "2ms",
+              "x-ratelimit-reset-tokens": "0s",
+              "x-request-id": "req_d117cefcbcf84495995112fbfb0613d0"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Evaluating against the rubric criteria:\n\n1. **Scene headings**: Present and in ALL CAPS (INT. CRAMPED COMMUNITY RADIO STUDIO - NIGHT, EXT. HILLTOP WATER TOWER - LATER THAT NIGHT, INT. RADIO STUDIO HALLWAY - NIGHT). These are properly formatted in Fountain style. ✓\n\n2. **Character cues**: Character names appear in ALL CAPS on their own lines (JUNE, NOAH, ARIA, KELL). However, there's a significant error: one character cue says 'AMBIA' instead of 'ARIA' — this is an invention/error that changes the content. ✗\n\n3. **Dialogue preservation**: The dialogue is wrapped in quotation marks and includes attribution phrases like 'June says, setting down the mugs' and 'Noah tries to sound calm.' In standard Fountain format, dialogue should NOT have quotation marks and should NOT include prose attribution ('says,' 'replies,' etc.). The action/description should be separated from dialogue. This is a significant formatting failure — the prose narration is mixed into the dialogue lines rather than being properly separated into action lines and clean dialogue. ✗\n\n4. **Parentheticals**: There are no parentheticals used at all. Some of the prose attributions (like 'shivering', 'grins', 'whispers') should have been converted to parentheticals like (shivering), (grinning), (whispering). ✗\n\n5. **No markdown formatting**: The output appears free of markdown symbols like >, #, **, ```. ✓\n\n6. **Scene breaks**: Three scenes are identified from context clues (studio, hilltop water tower, studio hallway). These seem reasonable. ✓\n\n7. **Author's voice preserved without inventions**: The 'AMBIA' character cue is an error/invention. Otherwise content seems preserved but the formatting approach of keeping prose narration within dialogue lines is problematic. ✗\n\nMajor issues: (a) Dialogue still contains quotation marks and prose attribution tags — not proper Fountain dialogue format. (b) Action lines describing character behavior are mixed into dialogue blocks rather than being separate action lines. (c) The 'AMBIA' typo introduces an error. (d) No parentheticals used where appropriate. The output reads more like a hybrid prose-screenplay than proper Fountain format. The structural conversion is incomplete.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.635,
+          "reason": "Evaluating against the rubric criteria:\n\n1. **Scene headings**: Present and in ALL CAPS (INT. CRAMPED COMMUNITY RADIO STUDIO - NIGHT, EXT. HILLTOP WATER TOWER - LATER THAT NIGHT, INT. RADIO STUDIO HALLWAY - NIGHT). These are properly formatted in Fountain style. ✓\n\n2. **Character cues**: Character names appear in ALL CAPS on their own lines (JUNE, NOAH, ARIA, KELL). However, there's a significant error: one character cue says 'AMBIA' instead of 'ARIA' — this is an invention/error that changes the content. ✗\n\n3. **Dialogue preservation**: The dialogue is wrapped in quotation marks and includes attribution phrases like 'June says, setting down the mugs' and 'Noah tries to sound calm.' In standard Fountain format, dialogue should NOT have quotation marks and should NOT include prose attribution ('says,' 'replies,' etc.). The action/description should be separated from dialogue. This is a significant formatting failure — the prose narration is mixed into the dialogue lines rather than being properly separated into action lines and clean dialogue. ✗\n\n4. **Parentheticals**: There are no parentheticals used at all. Some of the prose attributions (like 'shivering', 'grins', 'whispers') should have been converted to parentheticals like (shivering), (grinning), (whispering). ✗\n\n5. **No markdown formatting**: The output appears free of markdown symbols like >, #, **, ```. ✓\n\n6. **Scene breaks**: Three scenes are identified from context clues (studio, hilltop water tower, studio hallway). These seem reasonable. ✓\n\n7. **Author's voice preserved without inventions**: The 'AMBIA' character cue is an error/invention. Otherwise content seems preserved but the formatting approach of keeping prose narration within dialogue lines is problematic. ✗\n\nMajor issues: (a) Dialogue still contains quotation marks and prose attribution tags — not proper Fountain dialogue format. (b) Action lines describing character behavior are mixed into dialogue blocks rather than being separate action lines. (c) The 'AMBIA' typo introduces an error. (d) No parentheticals used where appropriate. The output reads more like a hybrid prose-screenplay than proper Fountain format. The structural conversion is incomplete.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1499,
+            "prompt": 908,
+            "completion": 591,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.97,
+              "reason": "character_cues=1.00 | content_completeness=1.00 | dialogue_preserved=1.00 | no_markdown=1.00 | scene_headings=0.85 | structure_quality=1.00 | Headings: 3/4 matched",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/normalization_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this screenplay normalization. The input was a prose narrative\nwith no Fountain formatting. The model should have converted it to\nstandard Fountain format.\n\nKey quality criteria:\n1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?\n2. Are character cues ALL CAPS on their own line?\n3. Is dialogue preserved exactly as written?\n4. Are parentheticals in (lowercase parens) format?\n5. Is there NO markdown formatting (no >, #, **, ``` etc.)?\n6. Are scene breaks identified correctly from context clues?\n7. Is the author's voice preserved without inventions?\n\nScore strictly: structural correctness AND content preservation both matter.\n"
+              },
+              "pass": false,
+              "score": 0.3,
+              "reason": "Evaluating against the rubric criteria:\n\n1. **Scene headings**: Present and in ALL CAPS (INT. CRAMPED COMMUNITY RADIO STUDIO - NIGHT, EXT. HILLTOP WATER TOWER - LATER THAT NIGHT, INT. RADIO STUDIO HALLWAY - NIGHT). These are properly formatted in Fountain style. ✓\n\n2. **Character cues**: Character names appear in ALL CAPS on their own lines (JUNE, NOAH, ARIA, KELL). However, there's a significant error: one character cue says 'AMBIA' instead of 'ARIA' — this is an invention/error that changes the content. ✗\n\n3. **Dialogue preservation**: The dialogue is wrapped in quotation marks and includes attribution phrases like 'June says, setting down the mugs' and 'Noah tries to sound calm.' In standard Fountain format, dialogue should NOT have quotation marks and should NOT include prose attribution ('says,' 'replies,' etc.). The action/description should be separated from dialogue. This is a significant formatting failure — the prose narration is mixed into the dialogue lines rather than being properly separated into action lines and clean dialogue. ✗\n\n4. **Parentheticals**: There are no parentheticals used at all. Some of the prose attributions (like 'shivering', 'grins', 'whispers') should have been converted to parentheticals like (shivering), (grinning), (whispering). ✗\n\n5. **No markdown formatting**: The output appears free of markdown symbols like >, #, **, ```. ✓\n\n6. **Scene breaks**: Three scenes are identified from context clues (studio, hilltop water tower, studio hallway). These seem reasonable. ✓\n\n7. **Author's voice preserved without inventions**: The 'AMBIA' character cue is an error/invention. Otherwise content seems preserved but the formatting approach of keeping prose narration within dialogue lines is problematic. ✗\n\nMajor issues: (a) Dialogue still contains quotation marks and prose attribution tags — not proper Fountain dialogue format. (b) Action lines describing character behavior are mixed into dialogue blocks rather than being separate action lines. (c) The 'AMBIA' typo introduces an error. (d) No parentheticals used where appropriate. The output reads more like a hybrid prose-screenplay than proper Fountain format. The structural conversion is incomplete.",
+              "tokensUsed": {
+                "total": 1499,
+                "prompt": 908,
+                "completion": 591,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\nINT. CRAMPED COMMUNITY RADIO STUDIO - NIGHT\\n\\nInside a cramped community radio studio, old gear hums while rain taps on the skylight. Aria threads a tape reel as Noah checks the cracked mixer. June comes in balancing two mugs of tea on a pile of scripts.\\n\\nJUNE\\n\\n\\\"If this works, half the valley hears us,\\\" June says, setting down the mugs.\\n\\nNOAH\\n\\nNoah tries to sound calm. \\\"If this works, we hear them too.\\\"\\n\\nAMBIA\\n\\n\\\"Then we stop talking and start listening,\\\" Aria replies quietly.\\n\\nThe ON AIR light flickers once, then goes dark.\\n\\nEXT. HILLTOP WATER TOWER - LATER THAT NIGHT\\n\\nLater that night, on a hilltop water tower, wind whips prayer flags tied to the guardrail. Aria and Noah climb a rusted service ladder carrying a portable antenna. Below them, town lights blink in scattered clusters.\\n\\nNOAH\\n\\n\\\"I still vote for warm studios and bad coffee,\\\" Noah says, shivering.\\n\\nARIA\\n\\nAria grins. \\\"We lost warm. Keep the coffee dream alive.\\\"\\n\\nA burst of static crackles from the handheld receiver. They both freeze.\\n\\nNOAH\\n\\n\\\"Did you hear that?\\\" Noah whispers.\\n\\nARIA\\n\\n\\\"Only enough to hope,\\\" Aria says.\\n\\nThey lock the antenna in place and point it toward the dark ridge line.\\n\\nINT. RADIO STUDIO HALLWAY - NIGHT\\n\\nDown in the studio hallway, fluorescent lights buzz overhead. Kell tapes handwritten evacuation arrows to the wall while June hurries past carrying batteries and tangled cables.\\n\\nKELL\\n\\n\\\"Generator room flooded,\\\" Kell reports. \\\"We can run one board, maybe two.\\\"\\n\\nJUNE\\n\\n\\\"One board is enough,\\\" June replies.\\n\\nKELL\\n\\nKell raises an eyebrow. \\\"For news, maybe. For miracles?\\\"\\n\\nJUNE\\n\\nJune half-smiles. \\\"We schedule those after midnight.\\\"\\n\\nJune shoulders open the control-room door. Inside the studio, monitors glow back to life one by one.\\n\\nNOAH\\n\\nNoah's voice comes through the radio: \\\"Tower looks stable. Feed us a carrier tone.\\\"\\n\\nJUNE\\n\\nJune taps the mic. \\\"Good evening, Red Creek. If you're out there, key once and wait.\\\"\\n\\nSilence. Then three tiny chirps answer in sequence. The room goes still.\\n</Output>\\n<Rubric>\\nEvaluate this screenplay normalization. The input was a prose narrative\\nwith no Fountain formatting. The model should have converted it to\\nstandard Fountain format.\\n\\nKey quality criteria:\\n1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?\\n2. Are character cues ALL CAPS on their own line?\\n3. Is dialogue preserved exactly as written?\\n4. Are parentheticals in (lowercase parens) format?\\n5. Is there NO markdown formatting (no >, #, **, ``` etc.)?\\n6. Are scene breaks identified correctly from context clues?\\n7. Is the author's voice preserved without inventions?\\n\\nScore strictly: structural correctness AND content preservation both matter.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "4a7fc84d-8bca-4606-b54c-c5f96fcab1ad",
+        "latencyMs": 2686,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\nInside a cramped community radio studio, old gear hums while rain taps on the skylight. Aria threads a tape reel as Noah checks the cracked mixer. June comes in balancing two mugs of tea on a pile of scripts.\n\n\"If this works, half the valley hears us,\" June says, setting down the mugs.\n\nNoah tries to sound calm. \"If this works, we hear them too.\"\n\n\"Then we stop talking and start listening,\" Aria replies quietly.\n\nThe ON AIR light flickers once, then goes dark.\n\nLater that night, on a hilltop water tower, wind whips prayer flags tied to the guardrail. Aria and Noah climb a rusted service ladder carrying a portable antenna. Below them, town lights blink in scattered clusters.\n\n\"I still vote for warm studios and bad coffee,\" Noah says, shivering.\n\nAria grins. \"We lost warm. Keep the coffee dream alive.\"\n\nA burst of static crackles from the handheld receiver. They both freeze.\n\n\"Did you hear that?\" Noah whispers.\n\n\"Only enough to hope,\" Aria says.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nDown in the studio hallway, fluorescent lights buzz overhead. Kell tapes handwritten evacuation arrows to the wall while June hurries past carrying batteries and tangled cables.\n\n\"Generator room flooded,\" Kell reports. \"We can run one board, maybe two.\"\n\n\"One board is enough,\" June replies.\n\nKell raises an eyebrow. \"For news, maybe. For miracles?\"\n\nJune half-smiles. \"We schedule those after midnight.\"\n\nShe shoulders open the control-room door. Inside the studio, monitors glow back to life one by one.\n\nNoah's voice comes through the radio: \"Tower looks stable. Feed us a carrier tone.\"\n\nJune taps the mic. \"Good evening, Red Creek. If you're out there, key once and wait.\"\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.\n==========",
+          "label": "prompts/normalization.txt: You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "7bc79ce1f5846d8728590285cab08ec96b22d867e2d8ac7b1dd750e47494dfc4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-5.4-nano",
+          "label": "GPT-5.4 Nano"
+        },
+        "response": {
+          "output": "INT. CRAMPED COMMUNITY RADIO STUDIO - NIGHT\n\nInside a cramped community radio studio, old gear hums while rain taps on the skylight. Aria threads a tape reel as Noah checks the cracked mixer. June comes in balancing two mugs of tea on a pile of scripts.\n\nJUNE\n\n\"If this works, half the valley hears us,\" June says, setting down the mugs.\n\nNOAH\n\nNoah tries to sound calm. \"If this works, we hear them too.\"\n\nAMBIA\n\n\"Then we stop talking and start listening,\" Aria replies quietly.\n\nThe ON AIR light flickers once, then goes dark.\n\nEXT. HILLTOP WATER TOWER - LATER THAT NIGHT\n\nLater that night, on a hilltop water tower, wind whips prayer flags tied to the guardrail. Aria and Noah climb a rusted service ladder carrying a portable antenna. Below them, town lights blink in scattered clusters.\n\nNOAH\n\n\"I still vote for warm studios and bad coffee,\" Noah says, shivering.\n\nARIA\n\nAria grins. \"We lost warm. Keep the coffee dream alive.\"\n\nA burst of static crackles from the handheld receiver. They both freeze.\n\nNOAH\n\n\"Did you hear that?\" Noah whispers.\n\nARIA\n\n\"Only enough to hope,\" Aria says.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nINT. RADIO STUDIO HALLWAY - NIGHT\n\nDown in the studio hallway, fluorescent lights buzz overhead. Kell tapes handwritten evacuation arrows to the wall while June hurries past carrying batteries and tangled cables.\n\nKELL\n\n\"Generator room flooded,\" Kell reports. \"We can run one board, maybe two.\"\n\nJUNE\n\n\"One board is enough,\" June replies.\n\nKELL\n\nKell raises an eyebrow. \"For news, maybe. For miracles?\"\n\nJUNE\n\nJune half-smiles. \"We schedule those after midnight.\"\n\nJune shoulders open the control-room door. Inside the studio, monitors glow back to life one by one.\n\nNOAH\n\nNoah's voice comes through the radio: \"Tower looks stable. Feed us a carrier tone.\"\n\nJUNE\n\nJune taps the mic. \"Good evening, Red Creek. If you're out there, key once and wait.\"\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.",
+          "tokenUsage": {
+            "total": 1101,
+            "prompt": 624,
+            "completion": 477,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 2686,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9de56d06ceb10b9d-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Wed, 18 Mar 2026 15:56:13 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "2428",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=linwZjaNpnfnZk6O5MyvalwD3fY_3yFe43A56ojw3YU-1773849370.6821706-1.0.1.1-f_1YQoo_X_SYJXTQDBCCC4fnN7sPVAaC3qgJnG_ex.z.X3TyRlx2hwAzlw3_g6yPGJiX97RHD.FMV3R5zzqggYjMiuumlY65hjW6FNYA.0stw24eMLZTPl2kxoS2tibk; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:13 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "30000",
+                "x-ratelimit-limit-tokens": "180000000",
+                "x-ratelimit-remaining-requests": "29999",
+                "x-ratelimit-remaining-tokens": "179999289",
+                "x-ratelimit-reset-requests": "2ms",
+                "x-ratelimit-reset-tokens": "0s",
+                "x-request-id": "req_fc0cd6a6a1394928a750789eb6bc309b"
+              }
+            }
+          }
+        },
+        "score": 0.635,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "source_text": "file://../input/normalize-prose.txt",
+            "golden_path": "golden/normalize-signal-golden.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/normalization_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this screenplay normalization. The input was a prose narrative\nwith no Fountain formatting. The model should have converted it to\nstandard Fountain format.\n\nKey quality criteria:\n1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?\n2. Are character cues ALL CAPS on their own line?\n3. Is dialogue preserved exactly as written?\n4. Are parentheticals in (lowercase parens) format?\n5. Is there NO markdown formatting (no >, #, **, ``` etc.)?\n6. Are scene breaks identified correctly from context clues?\n7. Is the author's voice preserved without inventions?\n\nScore strictly: structural correctness AND content preservation both matter.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "source_text": "file://../input/normalize-prose.txt",
+          "golden_path": "golden/normalize-signal-golden.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9de56d06ceb10b9d-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Wed, 18 Mar 2026 15:56:13 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "2428",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=linwZjaNpnfnZk6O5MyvalwD3fY_3yFe43A56ojw3YU-1773849370.6821706-1.0.1.1-f_1YQoo_X_SYJXTQDBCCC4fnN7sPVAaC3qgJnG_ex.z.X3TyRlx2hwAzlw3_g6yPGJiX97RHD.FMV3R5zzqggYjMiuumlY65hjW6FNYA.0stw24eMLZTPl2kxoS2tibk; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:13 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "30000",
+              "x-ratelimit-limit-tokens": "180000000",
+              "x-ratelimit-remaining-requests": "29999",
+              "x-ratelimit-remaining-tokens": "179999289",
+              "x-ratelimit-reset-requests": "2ms",
+              "x-ratelimit-reset-tokens": "0s",
+              "x-request-id": "req_fc0cd6a6a1394928a750789eb6bc309b"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1235,
+            "prompt": 830,
+            "completion": 405,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "character_cues=1.00 | content_completeness=1.00 | dialogue_preserved=1.00 | no_markdown=1.00 | scene_headings=1.00 | structure_quality=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/normalization_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this screenplay normalization. The input was broken Fountain\nformat with markdown artifacts (## headers, > blockquotes, escaped\ncharacters like \\-). The model should have fixed these issues while\npreserving the screenplay structure.\n\nKey quality criteria:\n1. Are scene headings ALL CAPS (not lowercase like the input)?\n2. Are character cues ALL CAPS (not lowercase like the input)?\n3. Are markdown artifacts removed (no ##, >, \\-, \\!)?\n4. Is dialogue preserved exactly?\n5. Are parentheticals formatted correctly?\n6. Is the V.O. designation preserved for Noah's line?\n7. Is the CUT TO: transition plain text, not a markdown header?\n\nScore strictly: this is a cleanup task — every markdown artifact should be gone.\n"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "Evaluating the output against the rubric criteria:\n\n1. **Scene headings ALL CAPS**: Yes - 'INT. COMMUNITY RADIO STUDIO', 'EXT. HILLTOP WATER TOWER - NIGHT', 'INT. STUDIO HALLWAY - NIGHT', 'INT. COMMUNITY RADIO STUDIO - CONTINUOUS' are all in ALL CAPS.\n\n2. **Character cues ALL CAPS**: Yes - ARIA, NOAH, JUNE, KELL are all in ALL CAPS.\n\n3. **Markdown artifacts removed**: Yes - There are no ##, >, \\-, \\! or other markdown artifacts visible in the output. The text is clean.\n\n4. **Dialogue preserved**: The dialogue appears natural and well-preserved. However, since I don't have the original input to compare word-for-word, I can only verify the output looks like proper screenplay dialogue. The rubric says dialogue should be preserved 'exactly' but without the input, the output dialogue reads coherently and appears complete.\n\n5. **Parentheticals formatted correctly**: Yes - '(trying to sound calm)' and '(half-smiling)' are on their own lines, in parentheses, which is standard Fountain/screenplay format.\n\n6. **V.O. designation preserved**: Yes - 'NOAH (V.O.)' is present and correctly formatted.\n\n7. **CUT TO: transition**: Yes - 'CUT TO:' appears as plain text, not as a markdown header.\n\nThe output appears to be a clean, properly formatted screenplay with all markdown artifacts removed and proper Fountain conventions applied. All seven criteria are met.",
+              "tokensUsed": {
+                "total": 1235,
+                "prompt": 830,
+                "completion": 405,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\nSignal in the Rain\\n\\nINT. COMMUNITY RADIO STUDIO\\n\\nA cramped studio hums with old gear. Rain taps the skylight in steady rhythm.\\n\\nARIA threads a tape reel while NOAH checks a cracked mixer. JUNE balances two mugs of tea on a stack of scripts.\\n\\nJUNE\\nIf this works, half the valley hears us.\\n\\nNOAH\\n(trying to sound calm)\\nIf this works, we hear them too.\\n\\nARIA\\nThen we stop talking and start listening.\\n\\nThe ON AIR light flickers once, then goes dark.\\n\\nCUT TO:\\n\\nEXT. HILLTOP WATER TOWER - NIGHT\\n\\nWind lashes prayer flags tied to the guardrail. ARIA and NOAH climb a rusted service ladder with a portable antenna.\\nFar below, town lights blink in uneven clusters.\\n\\nNOAH\\nI still vote for warm studios and bad coffee.\\n\\nARIA\\nWe lost warm. Keep the coffee dream alive.\\n\\nA burst of static jumps from the handheld receiver. They freeze.\\n\\nNOAH\\nDid you hear that?\\n\\nARIA\\nOnly enough to hope.\\n\\nThey lock the antenna in place and point it toward the dark ridge line.\\n\\nINT. STUDIO HALLWAY - NIGHT\\n\\nFluorescent lights buzz. KELL tapes handwritten evacuation arrows to the wall.\\n\\nKELL\\nGenerator room flooded. We can run one board, maybe two.\\n\\nJUNE\\nOne board is enough.\\n\\nKELL\\nFor news, maybe. For miracles?\\n\\nJUNE\\n(half-smiling)\\nWe schedule those after midnight.\\n\\nShe shoulders open the control-room door.\\n\\nINT. COMMUNITY RADIO STUDIO - CONTINUOUS\\n\\nMonitors glow back to life one by one.\\n\\nNOAH (V.O.)\\nTower looks stable. Feed us a carrier tone.\\n\\nJUNE\\nGood evening, Red Creek. If you're out there, key once and wait.\\n\\nSilence. Then three tiny chirps answer in sequence. The room goes still.\\n</Output>\\n<Rubric>\\nEvaluate this screenplay normalization. The input was broken Fountain\\nformat with markdown artifacts (## headers, > blockquotes, escaped\\ncharacters like \\\\-). The model should have fixed these issues while\\npreserving the screenplay structure.\\n\\nKey quality criteria:\\n1. Are scene headings ALL CAPS (not lowercase like the input)?\\n2. Are character cues ALL CAPS (not lowercase like the input)?\\n3. Are markdown artifacts removed (no ##, >, \\\\-, \\\\!)?\\n4. Is dialogue preserved exactly?\\n5. Are parentheticals formatted correctly?\\n6. Is the V.O. designation preserved for Noah's line?\\n7. Is the CUT TO: transition plain text, not a markdown header?\\n\\nScore strictly: this is a cleanup task — every markdown artifact should be gone.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "ebea4b80-68ac-4751-a06c-323cfeb67558",
+        "latencyMs": 2202,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\nTitle: Signal in the Rain\n\nint. community radio studio\n\nA cramped studio hums with old gear. Rain taps the skylight in steady rhythm.\naria threads a tape reel while noah checks a cracked mixer. june balances two mugs of tea on a stack of scripts.\n\njune\nIf this works, half the valley hears us.\n\nnoah\n> (trying to sound calm)\nIf this works, we hear them too.\n\naria\nThen we stop talking and start listening.\n\nThe ON AIR light flickers once, then goes dark.\n\n## CUT TO:\n\next. hilltop water tower \\- night\n\nWind lashes prayer flags tied to the guardrail. aria and noah climb a rusted service ladder with a portable antenna.\nFar below, town lights blink in uneven clusters.\n\nnoah\nI still vote for warm studios and bad coffee.\n\naria\nWe lost warm. Keep the coffee dream alive.\n\nA burst of static jumps from the handheld receiver. They freeze.\n\nnoah\nDid you hear that?\n\naria\nOnly enough to hope.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nint. studio hallway \\- night\n\nFluorescent lights buzz. kell tapes handwritten evacuation arrows to the wall.\n\nkell\nGenerator room flooded. We can run one board, maybe two.\n\njune\nOne board is enough.\n\nkell\nFor news, maybe. For miracles?\n\njune\n> (half\\-smiling)\nWe schedule those after midnight.\n\nShe shoulders open the control\\-room door.\n\nint. community radio studio \\- continuous\n\nMonitors glow back to life one by one.\n\nnoah (V.O.)\nTower looks stable. Feed us a carrier tone.\n\njune\nGood evening, Red Creek. If you're out there, key once and wait.\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.\n==========",
+          "label": "prompts/normalization.txt: You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "7bc79ce1f5846d8728590285cab08ec96b22d867e2d8ac7b1dd750e47494dfc4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-5.4-nano",
+          "label": "GPT-5.4 Nano"
+        },
+        "response": {
+          "output": "Signal in the Rain\n\nINT. COMMUNITY RADIO STUDIO\n\nA cramped studio hums with old gear. Rain taps the skylight in steady rhythm.\n\nARIA threads a tape reel while NOAH checks a cracked mixer. JUNE balances two mugs of tea on a stack of scripts.\n\nJUNE\nIf this works, half the valley hears us.\n\nNOAH\n(trying to sound calm)\nIf this works, we hear them too.\n\nARIA\nThen we stop talking and start listening.\n\nThe ON AIR light flickers once, then goes dark.\n\nCUT TO:\n\nEXT. HILLTOP WATER TOWER - NIGHT\n\nWind lashes prayer flags tied to the guardrail. ARIA and NOAH climb a rusted service ladder with a portable antenna.\nFar below, town lights blink in uneven clusters.\n\nNOAH\nI still vote for warm studios and bad coffee.\n\nARIA\nWe lost warm. Keep the coffee dream alive.\n\nA burst of static jumps from the handheld receiver. They freeze.\n\nNOAH\nDid you hear that?\n\nARIA\nOnly enough to hope.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nINT. STUDIO HALLWAY - NIGHT\n\nFluorescent lights buzz. KELL tapes handwritten evacuation arrows to the wall.\n\nKELL\nGenerator room flooded. We can run one board, maybe two.\n\nJUNE\nOne board is enough.\n\nKELL\nFor news, maybe. For miracles?\n\nJUNE\n(half-smiling)\nWe schedule those after midnight.\n\nShe shoulders open the control-room door.\n\nINT. COMMUNITY RADIO STUDIO - CONTINUOUS\n\nMonitors glow back to life one by one.\n\nNOAH (V.O.)\nTower looks stable. Feed us a carrier tone.\n\nJUNE\nGood evening, Red Creek. If you're out there, key once and wait.\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.",
+          "tokenUsage": {
+            "total": 993,
+            "prompt": 606,
+            "completion": 387,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 2202,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9de56d4e2d990b9d-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Wed, 18 Mar 2026 15:56:24 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "2034",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=7BLvIctQ_jQN46APYUd3qCF0ASHbSZVdp1UhD3Jtozo-1773849382.1067388-1.0.1.1-ig4gsjmmvw7brShdIK1O2V.O9w8kpbdFyQY2AwC_VS9IbSTGEfbvfzbpJOEsWE8DBG1QJ1anNA6200DIy8AaEXna8MuM9KjqS.mLoEJeOvjC.BKpnMBrvrF7iBFVntxJ; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:24 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "30000",
+                "x-ratelimit-limit-tokens": "180000000",
+                "x-ratelimit-remaining-requests": "29999",
+                "x-ratelimit-remaining-tokens": "179999337",
+                "x-ratelimit-reset-requests": "2ms",
+                "x-ratelimit-reset-tokens": "0s",
+                "x-request-id": "req_f8cfc4c99063437cabd71f51641e20ef"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "source_text": "file://../input/normalize-broken-fountain.txt",
+            "golden_path": "golden/normalize-signal-golden.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/normalization_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this screenplay normalization. The input was broken Fountain\nformat with markdown artifacts (## headers, > blockquotes, escaped\ncharacters like \\-). The model should have fixed these issues while\npreserving the screenplay structure.\n\nKey quality criteria:\n1. Are scene headings ALL CAPS (not lowercase like the input)?\n2. Are character cues ALL CAPS (not lowercase like the input)?\n3. Are markdown artifacts removed (no ##, >, \\-, \\!)?\n4. Is dialogue preserved exactly?\n5. Are parentheticals formatted correctly?\n6. Is the V.O. designation preserved for Noah's line?\n7. Is the CUT TO: transition plain text, not a markdown header?\n\nScore strictly: this is a cleanup task — every markdown artifact should be gone.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "source_text": "file://../input/normalize-broken-fountain.txt",
+          "golden_path": "golden/normalize-signal-golden.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9de56d4e2d990b9d-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Wed, 18 Mar 2026 15:56:24 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "2034",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=7BLvIctQ_jQN46APYUd3qCF0ASHbSZVdp1UhD3Jtozo-1773849382.1067388-1.0.1.1-ig4gsjmmvw7brShdIK1O2V.O9w8kpbdFyQY2AwC_VS9IbSTGEfbvfzbpJOEsWE8DBG1QJ1anNA6200DIy8AaEXna8MuM9KjqS.mLoEJeOvjC.BKpnMBrvrF7iBFVntxJ; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:24 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "30000",
+              "x-ratelimit-limit-tokens": "180000000",
+              "x-ratelimit-remaining-requests": "29999",
+              "x-ratelimit-remaining-tokens": "179999337",
+              "x-ratelimit-reset-requests": "2ms",
+              "x-ratelimit-reset-tokens": "0s",
+              "x-request-id": "req_f8cfc4c99063437cabd71f51641e20ef"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1262,
+            "prompt": 827,
+            "completion": 435,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "character_cues=1.00 | content_completeness=1.00 | dialogue_preserved=1.00 | no_markdown=1.00 | scene_headings=1.00 | structure_quality=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/normalization_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this screenplay normalization. The input was broken Fountain\nformat with markdown artifacts (## headers, > blockquotes, escaped\ncharacters like \\-). The model should have fixed these issues while\npreserving the screenplay structure.\n\nKey quality criteria:\n1. Are scene headings ALL CAPS (not lowercase like the input)?\n2. Are character cues ALL CAPS (not lowercase like the input)?\n3. Are markdown artifacts removed (no ##, >, \\-, \\!)?\n4. Is dialogue preserved exactly?\n5. Are parentheticals formatted correctly?\n6. Is the V.O. designation preserved for Noah's line?\n7. Is the CUT TO: transition plain text, not a markdown header?\n\nScore strictly: this is a cleanup task — every markdown artifact should be gone.\n"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "Evaluating the output against the rubric criteria:\n\n1. **Scene headings ALL CAPS**: Yes - 'INT. COMMUNITY RADIO STUDIO', 'EXT. HILLTOP WATER TOWER - NIGHT', 'INT. STUDIO HALLWAY - NIGHT', 'INT. COMMUNITY RADIO STUDIO - CONTINUOUS' are all in ALL CAPS.\n\n2. **Character cues ALL CAPS**: Yes - JUNE, NOAH, ARIA, KELL, NOAH (V.O.) are all in ALL CAPS.\n\n3. **Markdown artifacts removed**: There are no ##, >, \\-, \\! or other markdown artifacts visible in the output. The text is clean.\n\n4. **Dialogue preserved**: The dialogue appears natural and well-formatted. However, since I don't have the original input to compare word-for-word, I can only verify the output looks like properly formatted screenplay dialogue. The rubric says dialogue should be preserved exactly, but without the original input visible, I'll assess based on the output's internal consistency and formatting quality.\n\n5. **Parentheticals formatted correctly**: Yes - '(trying to sound calm)' and '(half-smiling)' are on their own lines, in parentheses, which is correct Fountain/screenplay format.\n\n6. **V.O. designation preserved**: Yes - 'NOAH (V.O.)' is present and correctly formatted.\n\n7. **CUT TO: transition**: 'CUT TO:' appears as plain text, not as a markdown header. Correct.\n\nAll seven criteria appear to be met. The output is clean, properly formatted screenplay text with no markdown artifacts, correct ALL CAPS for scene headings and character names, proper parentheticals, and preserved V.O. designation.",
+              "tokensUsed": {
+                "total": 1262,
+                "prompt": 827,
+                "completion": 435,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\nTitle: Signal in the Rain\\n\\nINT. COMMUNITY RADIO STUDIO\\n\\nA cramped studio hums with old gear. Rain taps the skylight in steady rhythm. Aria threads a tape reel while Noah checks a cracked mixer. June balances two mugs of tea on a stack of scripts.\\n\\nJUNE\\nIf this works, half the valley hears us.\\n\\nNOAH\\n(trying to sound calm)\\nIf this works, we hear them too.\\n\\nARIA\\nThen we stop talking and start listening.\\n\\nThe ON AIR light flickers once, then goes dark.\\n\\nCUT TO:\\n\\nEXT. HILLTOP WATER TOWER - NIGHT\\n\\nWind lashes prayer flags tied to the guardrail. Aria and Noah climb a rusted service ladder with a portable antenna. Far below, town lights blink in uneven clusters.\\n\\nNOAH\\nI still vote for warm studios and bad coffee.\\n\\nARIA\\nWe lost warm. Keep the coffee dream alive.\\n\\nA burst of static jumps from the handheld receiver. They freeze.\\n\\nNOAH\\nDid you hear that?\\n\\nARIA\\nOnly enough to hope.\\n\\nThey lock the antenna in place and point it toward the dark ridge line.\\n\\nINT. STUDIO HALLWAY - NIGHT\\n\\nFluorescent lights buzz. Kell tapes handwritten evacuation arrows to the wall.\\n\\nKELL\\nGenerator room flooded. We can run one board, maybe two.\\n\\nJUNE\\nOne board is enough.\\n\\nKELL\\nFor news, maybe. For miracles?\\n\\nJUNE\\n(half-smiling)\\nWe schedule those after midnight.\\n\\nShe shoulders open the control-room door.\\n\\nINT. COMMUNITY RADIO STUDIO - CONTINUOUS\\n\\nMonitors glow back to life one by one.\\n\\nNOAH (V.O.)\\nTower looks stable. Feed us a carrier tone.\\n\\nJUNE\\nGood evening, Red Creek. If you're out there, key once and wait.\\n\\nSilence. Then three tiny chirps answer in sequence. The room goes still.\\n</Output>\\n<Rubric>\\nEvaluate this screenplay normalization. The input was broken Fountain\\nformat with markdown artifacts (## headers, > blockquotes, escaped\\ncharacters like \\\\-). The model should have fixed these issues while\\npreserving the screenplay structure.\\n\\nKey quality criteria:\\n1. Are scene headings ALL CAPS (not lowercase like the input)?\\n2. Are character cues ALL CAPS (not lowercase like the input)?\\n3. Are markdown artifacts removed (no ##, >, \\\\-, \\\\!)?\\n4. Is dialogue preserved exactly?\\n5. Are parentheticals formatted correctly?\\n6. Is the V.O. designation preserved for Noah's line?\\n7. Is the CUT TO: transition plain text, not a markdown header?\\n\\nScore strictly: this is a cleanup task — every markdown artifact should be gone.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "76f2feb5-76fe-4b92-ba15-21e7ef08ced8",
+        "latencyMs": 1384,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\nTitle: Signal in the Rain\n\nint. community radio studio\n\nA cramped studio hums with old gear. Rain taps the skylight in steady rhythm.\naria threads a tape reel while noah checks a cracked mixer. june balances two mugs of tea on a stack of scripts.\n\njune\nIf this works, half the valley hears us.\n\nnoah\n> (trying to sound calm)\nIf this works, we hear them too.\n\naria\nThen we stop talking and start listening.\n\nThe ON AIR light flickers once, then goes dark.\n\n## CUT TO:\n\next. hilltop water tower \\- night\n\nWind lashes prayer flags tied to the guardrail. aria and noah climb a rusted service ladder with a portable antenna.\nFar below, town lights blink in uneven clusters.\n\nnoah\nI still vote for warm studios and bad coffee.\n\naria\nWe lost warm. Keep the coffee dream alive.\n\nA burst of static jumps from the handheld receiver. They freeze.\n\nnoah\nDid you hear that?\n\naria\nOnly enough to hope.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nint. studio hallway \\- night\n\nFluorescent lights buzz. kell tapes handwritten evacuation arrows to the wall.\n\nkell\nGenerator room flooded. We can run one board, maybe two.\n\njune\nOne board is enough.\n\nkell\nFor news, maybe. For miracles?\n\njune\n> (half\\-smiling)\nWe schedule those after midnight.\n\nShe shoulders open the control\\-room door.\n\nint. community radio studio \\- continuous\n\nMonitors glow back to life one by one.\n\nnoah (V.O.)\nTower looks stable. Feed us a carrier tone.\n\njune\nGood evening, Red Creek. If you're out there, key once and wait.\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.\n==========",
+          "label": "prompts/normalization.txt: You are a professional script supervisor normalizing creative writing into standard Fountain screenplay format.\n\nYour task: convert the input text into properly formatted Fountain screenplay format.\n\nFountain format rules:\n- Scene headings: INT./EXT. on their own line, ALL CAPS\n- Character cues: ALL CAPS on their own line, preceded by blank line\n- Dialogue: plain text on lines immediately after character cue\n- Parentheticals: (lowercase in parens) on their own line between character cue and dialogue\n- Action: plain text paragraphs separated by blank lines\n- Do NOT use markdown formatting (no >, *, #, or blockquotes)\n- Do NOT escape special characters (no \\- or \\!)\n- Transitions (CUT TO:, DISSOLVE TO:, etc.) should be plain text, not markdown headers\n\nPreserve the author's voice, dialogue, and narrative content exactly. Do not invent new dialogue or action. Fix only structural and formatting issues.\n\nReturn ONLY the normalized screenplay text. No explanations, no JSON wrapping, no markdown code fences.\n\n==========\nINPUT TEXT:\n{{source_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "7bc79ce1f5846d8728590285cab08ec96b22d867e2d8ac7b1dd750e47494dfc4",
+        "promptIdx": 1,
+        "provider": {
+          "id": "openai:gpt-5.4-mini",
+          "label": "GPT-5.4 Mini"
+        },
+        "response": {
+          "output": "Title: Signal in the Rain\n\nINT. COMMUNITY RADIO STUDIO\n\nA cramped studio hums with old gear. Rain taps the skylight in steady rhythm. Aria threads a tape reel while Noah checks a cracked mixer. June balances two mugs of tea on a stack of scripts.\n\nJUNE\nIf this works, half the valley hears us.\n\nNOAH\n(trying to sound calm)\nIf this works, we hear them too.\n\nARIA\nThen we stop talking and start listening.\n\nThe ON AIR light flickers once, then goes dark.\n\nCUT TO:\n\nEXT. HILLTOP WATER TOWER - NIGHT\n\nWind lashes prayer flags tied to the guardrail. Aria and Noah climb a rusted service ladder with a portable antenna. Far below, town lights blink in uneven clusters.\n\nNOAH\nI still vote for warm studios and bad coffee.\n\nARIA\nWe lost warm. Keep the coffee dream alive.\n\nA burst of static jumps from the handheld receiver. They freeze.\n\nNOAH\nDid you hear that?\n\nARIA\nOnly enough to hope.\n\nThey lock the antenna in place and point it toward the dark ridge line.\n\nINT. STUDIO HALLWAY - NIGHT\n\nFluorescent lights buzz. Kell tapes handwritten evacuation arrows to the wall.\n\nKELL\nGenerator room flooded. We can run one board, maybe two.\n\nJUNE\nOne board is enough.\n\nKELL\nFor news, maybe. For miracles?\n\nJUNE\n(half-smiling)\nWe schedule those after midnight.\n\nShe shoulders open the control-room door.\n\nINT. COMMUNITY RADIO STUDIO - CONTINUOUS\n\nMonitors glow back to life one by one.\n\nNOAH (V.O.)\nTower looks stable. Feed us a carrier tone.\n\nJUNE\nGood evening, Red Creek. If you're out there, key once and wait.\n\nSilence. Then three tiny chirps answer in sequence. The room goes still.",
+          "tokenUsage": {
+            "total": 992,
+            "prompt": 606,
+            "completion": 386,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1384,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9de56d6fff0f0b9d-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Wed, 18 Mar 2026 15:56:28 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "1248",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=mdUiakb90_A_qVltHia75M7aRuTtUD7IqrK1cV5Kwc8-1773849387.5135188-1.0.1.1-mECV12z.nSNe6ZP5Ar_gAIZPcLLBM49g2WUTZx_yJEOFMZX4g8wruQk.k0bHmaNKKxSTWg8GkWYEsDAseeDGge3Jvhf3kZXPvjiE45kZRCUDEhWOjQrUlPjqC31RCqMY; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:28 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "30000",
+                "x-ratelimit-limit-tokens": "180000000",
+                "x-ratelimit-remaining-requests": "29999",
+                "x-ratelimit-remaining-tokens": "179999340",
+                "x-ratelimit-reset-requests": "2ms",
+                "x-ratelimit-reset-tokens": "0s",
+                "x-request-id": "req_5cc34ce14342493ba3fff8c1ae13799e"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "source_text": "file://../input/normalize-broken-fountain.txt",
+            "golden_path": "golden/normalize-signal-golden.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/normalization_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this screenplay normalization. The input was broken Fountain\nformat with markdown artifacts (## headers, > blockquotes, escaped\ncharacters like \\-). The model should have fixed these issues while\npreserving the screenplay structure.\n\nKey quality criteria:\n1. Are scene headings ALL CAPS (not lowercase like the input)?\n2. Are character cues ALL CAPS (not lowercase like the input)?\n3. Are markdown artifacts removed (no ##, >, \\-, \\!)?\n4. Is dialogue preserved exactly?\n5. Are parentheticals formatted correctly?\n6. Is the V.O. designation preserved for Noah's line?\n7. Is the CUT TO: transition plain text, not a markdown header?\n\nScore strictly: this is a cleanup task — every markdown artifact should be gone.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "source_text": "file://../input/normalize-broken-fountain.txt",
+          "golden_path": "golden/normalize-signal-golden.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9de56d6fff0f0b9d-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Wed, 18 Mar 2026 15:56:28 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "1248",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=mdUiakb90_A_qVltHia75M7aRuTtUD7IqrK1cV5Kwc8-1773849387.5135188-1.0.1.1-mECV12z.nSNe6ZP5Ar_gAIZPcLLBM49g2WUTZx_yJEOFMZX4g8wruQk.k0bHmaNKKxSTWg8GkWYEsDAseeDGge3Jvhf3kZXPvjiE45kZRCUDEhWOjQrUlPjqC31RCqMY; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Mar 2026 16:26:28 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "30000",
+              "x-ratelimit-limit-tokens": "180000000",
+              "x-ratelimit-remaining-requests": "29999",
+              "x-ratelimit-remaining-tokens": "179999340",
+              "x-ratelimit-reset-requests": "2ms",
+              "x-ratelimit-reset-tokens": "0s",
+              "x-request-id": "req_5cc34ce14342493ba3fff8c1ae13799e"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 2,
+      "failures": 2,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 2460,
+        "completion": 1677,
+        "cached": 0,
+        "total": 4137,
+        "numRequests": 4,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 5189,
+          "prompt": 3424,
+          "completion": 1765,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 26960,
+      "evaluationDurationMs": 26960
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Script normalization — prose and broken Fountain to valid Fountain",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/aff8/cine-forge/benchmarks/prompts/normalization.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "openai:gpt-5.4-nano",
+        "label": "GPT-5.4 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "openai:gpt-5.4-mini",
+        "label": "GPT-5.4 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "source_text": "file://../input/normalize-prose.txt",
+          "golden_path": "golden/normalize-signal-golden.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/normalization_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this screenplay normalization. The input was a prose narrative\nwith no Fountain formatting. The model should have converted it to\nstandard Fountain format.\n\nKey quality criteria:\n1. Are scene headings present and properly formatted (INT./EXT. ALL CAPS)?\n2. Are character cues ALL CAPS on their own line?\n3. Is dialogue preserved exactly as written?\n4. Are parentheticals in (lowercase parens) format?\n5. Is there NO markdown formatting (no >, #, **, ``` etc.)?\n6. Are scene breaks identified correctly from context clues?\n7. Is the author's voice preserved without inventions?\n\nScore strictly: structural correctness AND content preservation both matter.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "source_text": "file://../input/normalize-broken-fountain.txt",
+          "golden_path": "golden/normalize-signal-golden.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/normalization_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this screenplay normalization. The input was broken Fountain\nformat with markdown artifacts (## headers, > blockquotes, escaped\ncharacters like \\-). The model should have fixed these issues while\npreserving the screenplay structure.\n\nKey quality criteria:\n1. Are scene headings ALL CAPS (not lowercase like the input)?\n2. Are character cues ALL CAPS (not lowercase like the input)?\n3. Are markdown artifacts removed (no ##, >, \\-, \\!)?\n4. Is dialogue preserved exactly?\n5. Are parentheticals formatted correctly?\n6. Is the V.O. designation preserved for Noah's line?\n7. Is the CUT TO: transition plain text, not a markdown header?\n\nScore strictly: this is a cleanup task — every markdown artifact should be gone.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/gpt54-mini-nano-normalization-2026-03-18.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-03-18T15:56:37.578Z",
+    "evaluationCreatedAt": "2026-03-18T15:56:10.542Z"
+  }
+}

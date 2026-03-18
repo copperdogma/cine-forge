@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-03-18-02] — GPT-5.4 mini/nano eval refresh
+
+### Added
+- Added targeted promptfoo coverage and saved result artifacts for `gpt-5.4-mini` and `gpt-5.4-nano` across config detection, QA pass, normalization, scene extraction, and entity discovery
+
+### Changed
+- Refreshed `docs/evals/registry.yaml` with the March 18, 2026 scores, latency, cost, and adoption notes for the new OpenAI cheap-tier models
+
+### Fixed
+- Added runtime pricing support and unit-test coverage for `gpt-5.4-mini` and `gpt-5.4-nano` so live cost accounting no longer reports `$0.00`
+
 ## [2026-03-18-01] — Planning-stack governance migration (Story 136)
 
 ### Added

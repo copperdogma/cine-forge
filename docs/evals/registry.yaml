@@ -486,6 +486,16 @@ evals:
         git_sha: "f58cc06"
         result_file: benchmarks/results/config-detection-golden-fix2.json
         note: "Format wrong (feature film). High Python but low LLM."
+      - model: "GPT-5.4 Mini"
+        metrics:
+          overall: 0.70775
+        latency_ms: 3973
+        cost_usd: 0.007528
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-config-detection-2026-03-18.json
+        note: "Model-wrong: still classifies the screenplay as a feature film despite estimating a 15-minute runtime. Faster than GPT-4.1 Mini, but well below the Gemini 3 Flash winner."
       - model: "GPT-4.1"
         metrics:
           overall: 0.635
@@ -495,6 +505,16 @@ evals:
         git_sha: "f58cc06"
         result_file: benchmarks/results/config-detection-golden-fix2.json
         note: "Was 0.965 under incorrect golden. Fails format+duration with corrected golden."
+      - model: "GPT-5.4 Nano"
+        metrics:
+          overall: 0.5174
+        latency_ms: 5049
+        cost_usd: 0.002179
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-config-detection-2026-03-18.json
+        note: "Model-wrong: misses the short-film classification and falls below even the already-rejected GPT-4.1 baseline."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
           overall: 0.868
@@ -593,6 +613,26 @@ evals:
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/scene-extraction-post-golden-verify.json
         note: "Down from 0.762 (-0.131) — was rewarded for fabricated scene details"
+      - model: "GPT-5.4 Mini"
+        metrics:
+          overall: 0.60835
+        latency_ms: 5056
+        cost_usd: 0.009326
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-scene-extraction-2026-03-18.json
+        note: "Model-wrong: collapsed the screenplay to 10 scenes by folding flashbacks into parent scenes. Fast, but not viable."
+      - model: "GPT-5.4 Nano"
+        metrics:
+          overall: 0.5988
+        latency_ms: 12587
+        cost_usd: 0.004106
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-scene-extraction-2026-03-18.json
+        note: "Model-wrong: over-split the screenplay to 22 scenes and hallucinated extra scene variants."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
           overall: 0.375
@@ -688,6 +728,26 @@ evals:
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/normalization-post-golden-verify.json
         note: "Opus still underperforms Sonnet — over-edits content"
+      - model: "GPT-5.4 Nano"
+        metrics:
+          overall: 0.8175
+        latency_ms: 2444
+        cost_usd: 0.000663
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-normalization-2026-03-18.json
+        note: "Passed the broken-Fountain cleanup, but failed prose-to-Fountain conversion by keeping dialogue in prose paragraphs instead of proper character cues."
+      - model: "GPT-5.4 Mini"
+        metrics:
+          overall: 0.7425
+        latency_ms: 1656
+        cost_usd: 0.002291
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-normalization-2026-03-18.json
+        note: "Fast, but model-wrong on prose normalization for the same core reason: it leaves dialogue embedded in prose instead of emitting Fountain dialogue blocks."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
           overall: 0.740
@@ -905,6 +965,26 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+      - model: "GPT-5.4 Mini"
+        metrics:
+          overall: 0.640625
+        latency_ms: 2156
+        cost_usd: 0.002894
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-qa-pass-2026-03-18.json
+        note: "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene."
+      - model: "GPT-5.4 Nano"
+        metrics:
+          overall: 0.6125
+        latency_ms: 2762
+        cost_usd: 0.00091
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-qa-pass-2026-03-18.json
+        note: "Unsafe QA gate: same false-negative pattern as GPT-5.4 Mini on the known-good scene."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
           overall: 0.513
@@ -1043,6 +1123,16 @@ evals:
         git_sha: "0aaf2fc"
         result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
         note: "Quality leader: Python 1.000, Rubric 0.880. Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged."
+      - model: "GPT-5.4 Mini"
+        metrics:
+          overall: 0.940
+        latency_ms: 1158
+        cost_usd: 0.00473
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-entity-discovery-2026-03-18.json
+        note: "Meets the eval target with GPT-4.1-level quality at lower latency/cost. Still emits prop noise (e.g. uniform, bandolier, generic gun), so this is a strong candidate but not an automatic default flip."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.935
@@ -1142,6 +1232,16 @@ evals:
         git_sha: "0aaf2fc"
         result_file: benchmarks/results/entity-discovery-verify-2026-03-13-v2.json
         note: "Failed — rubric 0.700 (below 0.75 pass threshold). Re-verified on 2026-03-13 against the corrected golden using archived output; score unchanged. Judge mentions of GIRL IN CAGE/DOCK were bonus-only, not the cause of failure. Real miss remained required 15TH FLOOR."
+      - model: "GPT-5.4 Nano"
+        metrics:
+          overall: 0.815
+        latency_ms: 5825
+        cost_usd: 0.001683
+        cost_estimated: true
+        measured: 2026-03-18
+        git_sha: "cfb2c78"
+        result_file: benchmarks/results/gpt54-mini-nano-entity-discovery-2026-03-18.json
+        note: "Failed the recall gate by missing required character DAD despite otherwise broad coverage."
       - model: "Gemini 3 Pro"
         metrics:
           overall: null
