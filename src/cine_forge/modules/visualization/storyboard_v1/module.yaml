@@ -1,0 +1,43 @@
+module_id: storyboard_v1
+stage: visualization
+description: >
+  Produces one scene-level storyboard artifact per scene from shot plans,
+  design direction, bibles, and continuity, then updates the shared
+  storyboard track for always-playable fallback.
+input_schemas:
+  - shot_plan
+  - track_manifest
+  - project_config
+  - look_and_feel
+  - character_bible
+  - location_bible
+  - intent_mood
+output_schemas:
+  - storyboard
+  - track_manifest
+parameters:
+  image_model:
+    type: string
+    required: false
+    default: "imagen-4.0-generate-001"
+    description: "Image model used for storyboard frame generation."
+  style:
+    type: string
+    required: false
+    default: "sketch"
+    description: "Storyboard visual style."
+  photoreal_opt_in:
+    type: boolean
+    required: false
+    default: false
+    description: "Required when style=photoreal because of higher cost."
+  max_retries:
+    type: integer
+    required: false
+    default: 2
+    description: "Maximum retries for image generation failures."
+  retry_delay_seconds:
+    type: number
+    required: false
+    default: 0.5
+    description: "Base delay between image-generation retries."

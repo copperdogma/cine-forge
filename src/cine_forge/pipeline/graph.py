@@ -254,7 +254,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="storyboards",
         artifact_types=["storyboard"],
         dependencies=["shot_planning"],
-        implemented=False,
+        implemented=True,
     ),
     PipelineNode(
         id="animatics",

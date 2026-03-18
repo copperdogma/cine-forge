@@ -17,7 +17,7 @@ import json
 import os
 import urllib.error
 import urllib.request
-from typing import Any
+from typing import Any, Literal
 
 from cine_forge.schemas.models import ProductionFormat
 
@@ -42,6 +42,28 @@ OPENAI_SIZE_BY_ENTITY_TYPE: dict[str, str] = {
 
 # Models that route to OpenAI instead of Google.
 _OPENAI_MODELS: frozenset[str] = frozenset({"gpt-image-1"})
+
+_OPENAI_IMAGE_COST_BY_MODEL: dict[str, dict[str, dict[str, float]]] = {
+    "gpt-image-1": {
+        "low": {"1024x1024": 0.011, "1024x1536": 0.016, "1536x1024": 0.016},
+        "medium": {"1024x1024": 0.042, "1024x1536": 0.063, "1536x1024": 0.063},
+        "high": {"1024x1024": 0.167, "1024x1536": 0.25, "1536x1024": 0.25},
+    },
+}
+
+_MOCK_IMAGE_BYTES = (
+    b'<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" '
+    b'viewBox="0 0 1536 1024"><rect width="1536" height="1024" fill="#f2efe7"/>'
+    b'<rect x="96" y="96" width="1344" height="832" rx="24" fill="#ffffff" '
+    b'stroke="#1f2937" stroke-width="12"/><line x1="128" y1="220" x2="1408" '
+    b'y2="220" stroke="#1f2937" stroke-width="10"/><line x1="128" y1="804" '
+    b'x2="1408" y2="804" stroke="#1f2937" stroke-width="10"/><circle cx="440" '
+    b'cy="530" r="92" fill="#cbd5e1"/><circle cx="1088" cy="486" r="116" '
+    b'fill="#94a3b8"/><path d="M560 680c96-128 240-176 420-132" fill="none" '
+    b'stroke="#1f2937" stroke-width="16"/><text x="768" y="150" text-anchor="middle" '
+    b'font-size="60" font-family="Helvetica, Arial, sans-serif" fill="#1f2937">'
+    b'Storyboard Mock</text></svg>'
+)
 
 FORMAT_STYLE_MODIFIERS: dict[ProductionFormat, str] = {
     "live_action": (
@@ -305,6 +327,7 @@ def _generate_image_openai(
     prompt: str,
     entity_type: str = "character",
     model: str = "gpt-image-1",
+    quality: Literal["auto", "low", "medium", "high"] = "auto",
 ) -> tuple[bytes, str]:
     """Generate an image via OpenAI gpt-image-1 and return (image_bytes, model_used).
 
@@ -321,6 +344,7 @@ def _generate_image_openai(
         "prompt": prompt,
         "n": 1,
         "size": size,
+        "quality": quality,
         "output_format": "jpeg",
     }
 
@@ -427,6 +451,7 @@ def generate_image(
     entity_type: str = "character",
     model: str = DEFAULT_MODEL,
     aspect_ratio: str | None = None,
+    quality: Literal["auto", "low", "medium", "high"] = "auto",
 ) -> tuple[bytes, str]:
     """Generate an image and return (image_bytes, model_used).
 
@@ -447,6 +472,38 @@ def generate_image(
     Raises:
         ImageGenerationError: If the API call fails or returns no image.
     """
+    if model == "mock":
+        return _MOCK_IMAGE_BYTES, model
     if model in _OPENAI_MODELS:
-        return _generate_image_openai(prompt, entity_type, model)
+        return _generate_image_openai(prompt, entity_type, model, quality)
     return _generate_image_imagen(prompt, entity_type, model, aspect_ratio)
+
+
+def estimate_image_generation_cost_usd(
+    model: str,
+    *,
+    entity_type: str = "character",
+    quality: Literal["auto", "low", "medium", "high"] = "auto",
+) -> float:
+    """Return a best-effort per-image cost estimate for supported providers."""
+    if model == "mock":
+        return 0.0
+
+    if model in _OPENAI_MODELS:
+        size = OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")
+        effective_quality = "medium" if quality == "auto" else quality
+        return _OPENAI_IMAGE_COST_BY_MODEL.get(model, {}).get(effective_quality, {}).get(size, 0.0)
+
+    if model.startswith("imagen-4.0-ultra"):
+        return 0.06
+    if model.startswith("imagen-4.0-fast"):
+        return 0.02
+    if model.startswith("imagen-4.0"):
+        return 0.04
+    if model.startswith("imagen-3") and "fast" in model:
+        return 0.02
+    if model.startswith("imagen-3"):
+        return 0.04
+    if model.startswith("imagen-2") or model.startswith("imagen-1"):
+        return 0.02
+    return 0.0

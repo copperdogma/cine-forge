@@ -15,6 +15,7 @@ import {
   Globe,
   Clapperboard,
   Drama,
+  Image as ImageIcon,
   MessageSquare,
   Package,
   Scissors,
@@ -46,6 +47,7 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   character_and_performance: { icon: Drama, label: 'Character & Performance', color: 'text-amber-400' },
   story_world: { icon: Globe, label: 'Story World', color: 'text-teal-400' },
   shot_plan: { icon: Camera, label: 'Shot Plan', color: 'text-cyan-400' },
+  storyboard: { icon: ImageIcon, label: 'Storyboard', color: 'text-fuchsia-400' },
 }
 
 export function getArtifactMeta(type: string) {

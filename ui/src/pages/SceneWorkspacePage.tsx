@@ -36,6 +36,7 @@ import { RolePresenceIndicators } from '@/components/DirectionTab'
 import { SceneViewer } from '@/components/ArtifactViewers'
 import { ExportModal } from '@/components/ExportModal'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
+import { StoryboardPanel } from '@/components/StoryboardPanel'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import { EmptyState, ErrorState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
@@ -476,6 +477,10 @@ export default function SceneWorkspacePage() {
     g => g.artifact_type === 'shot_plan' && g.entity_id === entityId,
   )
   const shotPlanLevel = getReadiness(groups, 'shot_plan', entityId)
+  const storyboardGroup = groups?.find(
+    g => g.artifact_type === 'storyboard' && g.entity_id === entityId,
+  )
+  const storyboardLevel = getReadiness(groups, 'storyboard', entityId)
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -558,6 +563,10 @@ export default function SceneWorkspacePage() {
             <ReadinessDot level={shotPlanLevel} label="Shots" />
             Shots
           </TabsTrigger>
+          <TabsTrigger value="storyboard" className="gap-1.5">
+            <ReadinessDot level={storyboardLevel} label="Storyboard" />
+            Storyboard
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview — scene data (text summary = current "best available preview") */}
@@ -583,6 +592,16 @@ export default function SceneWorkspacePage() {
             projectId={projectId}
             sceneId={entityId}
             sceneHeading={displayName}
+            shotPlanGroup={shotPlanGroup}
+          />
+        </TabsContent>
+
+        <TabsContent value="storyboard" className="mt-4">
+          <StoryboardPanel
+            projectId={projectId}
+            sceneId={entityId}
+            sceneHeading={displayName}
+            storyboardGroup={storyboardGroup}
             shotPlanGroup={shotPlanGroup}
           />
         </TabsContent>

@@ -17,6 +17,14 @@ ProductionFormat = Literal[
     "concept_art",
 ]
 
+StoryboardStyleValue = Literal[
+    "sketch",
+    "clean_line",
+    "animation_style",
+    "abstract_color_coded",
+    "photoreal",
+]
+
 
 class ArtifactHealth(StrEnum):
     """Structural health state for an artifact in the dependency graph."""
@@ -142,6 +150,7 @@ class ProjectConfig(BaseModel):
     aspect_ratio: str
     production_mode: Literal["ai_generated", "irl", "hybrid"]
     production_format: ProductionFormat | None = None
+    storyboard_style: StoryboardStyleValue | None = None
     human_control_mode: Literal["autonomous", "checkpoint", "advisory"]
     style_packs: dict[str, str] = Field(default_factory=dict)
     budget_cap_usd: float | None = Field(default=None, ge=0.0)

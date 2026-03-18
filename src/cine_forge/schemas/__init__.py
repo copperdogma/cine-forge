@@ -118,6 +118,7 @@ from .shot_plan import (
     ShotDefinition,
     ShotPlan,
 )
+from .storyboard import Storyboard, StoryboardFrame, StoryboardImageFile, StoryboardOverlay
 from .suggestion import Decision, Suggestion, SuggestionStatus
 from .timeline import Timeline, TimelineEntry
 from .track import TrackEntry, TrackManifest
@@ -211,6 +212,10 @@ __all__ = [
     "PlanningAudit",
     "ShotDefinition",
     "ShotPlan",
+    "Storyboard",
+    "StoryboardFrame",
+    "StoryboardImageFile",
+    "StoryboardOverlay",
     "Suggestion",
     "SuggestionStatus",
     "Decision",

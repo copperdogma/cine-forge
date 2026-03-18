@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-15, Story 135 closed)
+## Current Execution Map (updated 2026-03-17, Story 026 closed)
 
-Phases 0–5 foundation are landed: script understanding, role/chat infrastructure, concern-group schemas, Intent/Mood, Scene Workspace, and design studies are all in place. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
+Phases 0–5 foundation are landed, and the first two Phase 6 visualization layers are now in place: shot planning and storyboard generation both have real operator-facing surfaces. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
 
 ### Pending — Ready To Build Now
 
@@ -22,13 +22,12 @@ Phases 0–5 foundation are landed: script understanding, role/chat infrastructu
 
 | Story | Why |
 |---|---|
-| **026** Storyboard Generation | Technically buildable after Story 025 and now has the canonical `visual_reference_image` path from Story 119 available. Keep it sequence-sensitive so storyboard prompts consume that landed reference flow instead of inventing a second consistency path. |
+| **027** Animatics / Previz | Story 026 is now landed, so the next optional visualization step is unblocked. Keep it sequence-sensitive because it unlocks Story 028 and should build directly on the shipped storyboard + track contracts instead of inventing a parallel path. |
 
 ### Blocked — Dependency Chain Not Ready Yet
 
 | Story | Blocked On |
 |---|---|
-| **027** Animatics / Previz | Story 026 |
 | **028** Render Adapter | Story 027 |
 | **030** Generated Output QA | Stories 028, 032 |
 
@@ -93,8 +92,8 @@ NOTES from Cam:
 | 023 | Character & Performance — Performance Direction | 5 — Creative Direction | Medium | Deferred | [story-023](stories/story-023-actor-agents.md) |
 | ~~024~~ | ~~Direction Convergence and Review~~ | ~~5 — Creative Direction~~ | ~~Medium~~ | Cancelled | ~~[story-024](stories/story-024-direction-convergence.md)~~ — Eliminated by ADR-003. Intent/Mood layer handles cross-group coherence. |
 | 025 | Shot Planning | 6 — Shot Planning & Viz | Medium | Done | [story-025](stories/story-025-shot-planning.md) |
-| 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Pending | [story-026](stories/story-026-storyboard-generation.md) |
-| 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Blocked | [story-027](stories/story-027-animatics-previz.md) |
+| 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-026](stories/story-026-storyboard-generation.md) |
+| 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Pending | [story-027](stories/story-027-animatics-previz.md) |
 | 028 | Render Adapter Module | 7 — Generation | Low | Blocked | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
 | 030 | Generated Output QA | 7 — Generation | Medium | Blocked | [story-030](stories/story-030-generated-output-qa.md) |

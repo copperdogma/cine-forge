@@ -1,6 +1,6 @@
 # Story 027: Animatics, Keyframes, and Previz (Optional)
 
-**Status**: Blocked
+**Status**: Pending
 **Created**: 2026-02-13
 **Spec Refs**: 15 (Animatics / Previz Video), 16 (Keyframes), 7.2 (Tracks — animatic/keyframe tracks), 7.3 (Always-Playable Rule)
 **Depends On**: Story 025 (shot planning), Story 026 (storyboards — optional input), Story 013 (track system)

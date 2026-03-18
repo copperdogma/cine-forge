@@ -39,6 +39,7 @@ from cine_forge.schemas import (
     SoundAndMusic,
     SoundAndMusicIndex,
     StageReviewArtifact,
+    Storyboard,
     StoryWorld,
     StylePack,
     Suggestion,
@@ -91,4 +92,5 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("story_world", StoryWorld)
     registry.register("script_bible", ScriptBible)
     registry.register("shot_plan", ShotPlan)
+    registry.register("storyboard", Storyboard)
     return registry

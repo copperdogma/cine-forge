@@ -35,6 +35,7 @@ import { getArtifactMeta } from '@/lib/artifact-meta'
 import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 import { ShotPlanViewer } from '@/components/ShotPlanViewer'
+import { StoryboardViewer } from '@/components/StoryboardViewer'
 
 function formatTimestamp(timestamp?: string | number) {
   if (!timestamp) return 'Unknown'
@@ -311,6 +312,9 @@ export default function ArtifactDetail() {
 
       case 'shot_plan':
         return <ShotPlanViewer data={data} />
+
+      case 'storyboard':
+        return <StoryboardViewer data={data} projectId={projectId ?? ''} />
 
       default:
         return <DefaultViewer data={data} />

@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-17-01] — Storyboard generation and review surface (Story 026)
+
+### Added
+- Added scene-level `storyboard` artifacts, the `storyboard_v1` visualization module, and a dedicated storyboard-generation recipe with persisted frame files, storyboard-track integration, per-frame estimated image costs, and project/run style selection including photoreal opt-in gating
+- Added a first-class storyboard review surface in the UI with a Scene Workspace `Storyboard` tab, a dedicated inline viewer, and Artifact Detail rendering for storyboard artifacts
+
+### Changed
+- Updated backlog/status docs to mark Story 026 done and advance Story 027 now that storyboard generation is landed
+- Recorded a reusable AGENTS.md lesson that driver-loaded helper modules should use absolute package imports
+
 ## [2026-03-15-05] — Entity discovery taxonomy tightening (Story 129)
 
 ### Changed
