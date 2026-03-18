@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-03-18-03] — Scout 014: finish-and-push lifecycle wrapper
+
+### Added
+- Added a new `/finish-and-push` skill and `docs/runbooks/finish-and-push.md` to bundle story closure with the validated landing flow when the user explicitly requests the full chain
+
+### Changed
+- Updated `AGENTS.md` story-execution and runbook guidance to recognize `/finish-and-push` as the bundled close-out path and list its companion runbook
+- Recorded Scout 014 for the Dossier delta focused on `finish-and-push` and updated `docs/scout.md` with the completed expedition
+
 ## [2026-03-18-02] — GPT-5.4 mini/nano eval refresh
 
 ### Added

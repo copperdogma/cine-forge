@@ -344,6 +344,7 @@ Use Draft status liberally for future stories. It prevents premature execution o
 - `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean. If the story is not clean, it MUST recommend a single disposition: `Rescope then close`, `Keep open`, or `Mark blocked`.
 - `/mark-story-done` is the only skill that may mark a story `Done` or update the story index to `Done`. If the story is incomplete, it MUST still recommend a single disposition (`Rescope then close`, `Keep open`, or `Mark blocked`) instead of stopping at a blocker list.
 - `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
+- `/finish-and-push` is the bundled close-out path when the user explicitly wants story closure plus validated check-in/landing in one request. It MUST run `/mark-story-done` before `/check-in-diff` and may only fix minor close-out issues inline.
 - Commit and push happen only when the user explicitly requests them.
 - Each step should end with a concise summary and a recommended next step the user can approve with a simple "yes".
 - When there is a concrete verification path, include a short `Where to verify` note so the user can spot-check the result themselves without reverse-engineering the change.
@@ -367,6 +368,7 @@ Current runbooks:
 - `align.md` — Methodology-graph drift check across Ideal/spec/build map/stories/evals (skill: `/align`)
 - `check-in-worktree-landing.md` — Safe check-in and landing flow for task branches and worktrees (skill: `/check-in-diff`)
 - `codebase-improvement-scout.md` — Repo hygiene scan and cleanup triage flow (skill: `/codebase-improvement-scout`)
+- `finish-and-push.md` — Bundled story closure plus validated landing flow (skill: `/finish-and-push`)
 - `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (skill: `/setup-golden`)
 - `triage.md` — Cross-system routing to the highest-value next action (skill: `/triage`)
 - `triage-evals.md` — Cheap diagnosis of which eval, compromise gate, or stale benchmark needs attention next (skill: `/triage-evals`)
