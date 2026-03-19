@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-19-01] — Render adapter and generated video review (Story 028)
+
+### Added
+- Added the `render_adapter_v1` generation module, initial OpenAI Sora 2 and Google Veo 3.1 engine packs, and thin video-provider transports that compile concern-group artifacts into immutable `render_prompt` and `generated_video` artifacts
+- Added Scene Workspace and Artifact Detail review surfaces for generated video and compiled render prompts, including chat handoff from selected prompt text
+
+### Changed
+- Updated the pipeline graph, schema registry, recipe wiring, story index, and build map so `generated_video` is the canonical render output surface and Story 028 is now closed
+
+### Fixed
+- Blocked backend/chat-side direct edits to `render_prompt` artifacts and excluded `track_manifest` bookkeeping from render artifact staleness lineage so fresh outputs stay valid on creation
+
 ## [2026-03-18-04] — Animatics, keyframes, and previz baseline (Story 027)
 
 ### Added

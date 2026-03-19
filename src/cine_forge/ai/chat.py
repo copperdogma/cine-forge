@@ -19,6 +19,8 @@ from collections.abc import Generator
 from dataclasses import dataclass, field
 from typing import Any
 
+from cine_forge.artifacts.edit_policy import get_artifact_edit_restriction
+
 log = logging.getLogger(__name__)
 
 CHAT_MODEL = "claude-sonnet-4-6"
@@ -1166,6 +1168,15 @@ def _execute_propose_artifact_edit(
     eid = tool_input.get("entity_id", "__project__")
     changes = tool_input.get("changes", {})
     rationale = tool_input.get("rationale", "AI-proposed edit")
+
+    restriction = get_artifact_edit_restriction(atype)
+    if restriction is not None:
+        message, hint = restriction
+        return ToolResult(content=json.dumps({
+            "error": message,
+            "hint": hint,
+            "artifact": f"{atype}/{eid}",
+        }))
 
     # Load the current artifact
     groups = service.list_artifact_groups(project_id)

@@ -969,6 +969,45 @@ def test_edit_artifact_requires_existing_artifact(tmp_path: Path) -> None:
     assert edit_payload["code"] == "artifact_not_found"
 
 
+def test_edit_artifact_rejects_read_only_render_prompt(tmp_path: Path) -> None:
+    """Render prompts are review-only compiled artifacts."""
+    client = _make_client(tmp_path)
+    project_path = tmp_path / "project-edit-render-prompt"
+    project_id = _init_project(client, project_path)
+
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="initial",
+        rationale="Seed compiled render prompt",
+        confidence=0.9,
+        source="ai",
+        producing_module="test.module",
+    )
+    store.save_artifact(
+        artifact_type="render_prompt",
+        entity_id="scene_001",
+        data={"prompt_text": "Original compiled prompt"},
+        metadata=metadata,
+    )
+
+    edit_response = client.post(
+        f"/api/projects/{project_id}/artifacts/render_prompt/scene_001/edit",
+        json={
+            "data": {"prompt_text": "Manual override"},
+            "rationale": "Trying to override a compiled prompt",
+        },
+    )
+
+    assert edit_response.status_code == 422
+    edit_payload = edit_response.json()
+    assert edit_payload["code"] == "artifact_read_only"
+    assert "review-only" in edit_payload["message"]
+
+    versions = client.get(f"/api/projects/{project_id}/artifacts/render_prompt/scene_001")
+    assert versions.status_code == 200
+    assert len(versions.json()) == 1
+
+
 def test_project_ui_preferences_persist(tmp_path: Path) -> None:
     """Test that UI preferences can be saved and retrieved via project settings."""
     client = _make_client(tmp_path)

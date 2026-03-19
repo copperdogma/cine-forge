@@ -9,6 +9,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from cine_forge.driver.artifact_persister import ArtifactPersister
+from cine_forge.schemas import ArtifactRef
 
 _TEST_METADATA: dict[str, Any] = {
     "intent": "test artifact",
@@ -154,3 +155,44 @@ def test_persist_batch_emits_events() -> None:
     ]
     persister.persist_batch(outputs, cost_record=None)
     persister.emitter.emit.assert_called_once()
+
+
+@pytest.mark.unit
+def test_persist_batch_can_exclude_selected_upstream_lineage_types() -> None:
+    store = MagicMock()
+    store.save_artifact.return_value = MagicMock(
+        model_dump=lambda: {
+            "artifact_type": "scene",
+            "version": 1,
+            "entity_id": "s1",
+        }
+    )
+    persister = _make_persister(store=store)
+    persister.upstream_refs = [
+        ArtifactRef(
+            artifact_type="track_manifest",
+            entity_id="project",
+            version=1,
+            path="artifacts/track_manifest/project/v1.json",
+        ),
+        ArtifactRef(
+            artifact_type="scene",
+            entity_id="scene_001",
+            version=1,
+            path="artifacts/scene/scene_001/v1.json",
+        ),
+    ]
+
+    persister.persist_batch(
+        [
+            _artifact(
+                entity_id="s1",
+                data={"heading": "INT. ROOM"},
+                exclude_upstream_lineage_types=["track_manifest"],
+            )
+        ],
+        cost_record=None,
+    )
+
+    saved_metadata = store.save_artifact.call_args.kwargs["metadata"]
+    assert [ref.artifact_type for ref in saved_metadata.lineage] == ["scene"]

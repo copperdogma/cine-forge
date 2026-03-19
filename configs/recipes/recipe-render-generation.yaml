@@ -1,0 +1,25 @@
+recipe_id: render_generation
+description: >
+  Compile scene-level render prompts, generate scene video previews, and register
+  them on the shared generated-video track.
+project: {}
+stages:
+  - id: render
+    module: render_adapter_v1
+    params: {}
+    needs: []
+    store_inputs:
+      track_manifest: track_manifest
+    store_inputs_optional:
+      project_config: project_config
+      intent_mood: intent_mood
+    store_inputs_all:
+      shot_plan: shot_plan
+      look_and_feel: look_and_feel
+      sound_and_music: sound_and_music
+      rhythm_and_flow: rhythm_and_flow
+      character_and_performance: character_and_performance
+      character_bible: character_bible
+      location_bible: location_bible
+      keyframe: keyframe
+      injected_asset_manifest: injected_asset_manifest

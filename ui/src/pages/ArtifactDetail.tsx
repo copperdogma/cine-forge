@@ -36,8 +36,10 @@ import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 import { ShotPlanViewer } from '@/components/ShotPlanViewer'
 import { AnimaticViewer } from '@/components/AnimaticViewer'
+import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
 import { KeyframeViewer } from '@/components/KeyframeViewer'
 import { PrevizReelViewer } from '@/components/PrevizReelViewer'
+import { RenderPromptViewer } from '@/components/RenderPromptViewer'
 import { StoryboardViewer } from '@/components/StoryboardViewer'
 
 function formatTimestamp(timestamp?: string | number) {
@@ -102,6 +104,7 @@ export default function ArtifactDetail() {
 
   const meta = getArtifactMeta(artifactType ?? '')
   const Icon = meta.icon
+  const canEditArtifact = artifactType !== 'render_prompt'
 
   // Loading state
   if (artifactLoading || versionsLoading) {
@@ -211,6 +214,10 @@ export default function ArtifactDetail() {
   }
 
   function enterEditMode() {
+    if (!canEditArtifact) {
+      toast.error('This artifact is review-only. Update upstream artifacts instead.')
+      return
+    }
     if (!artifact?.payload?.data) {
       toast.error('No artifact data to edit')
       return
@@ -328,6 +335,12 @@ export default function ArtifactDetail() {
       case 'previz_reel':
         return <PrevizReelViewer data={data} projectId={projectId ?? ''} />
 
+      case 'render_prompt':
+        return <RenderPromptViewer data={data} />
+
+      case 'generated_video':
+        return <GeneratedVideoViewer data={data} projectId={projectId ?? ''} />
+
       default:
         return <DefaultViewer data={data} />
     }
@@ -375,7 +388,7 @@ export default function ArtifactDetail() {
               </span>
             </div>
           </div>
-          {!isEditMode && (
+          {!isEditMode && canEditArtifact && (
             <Button
               variant="outline"
               size="sm"

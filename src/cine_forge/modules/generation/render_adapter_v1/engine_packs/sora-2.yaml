@@ -1,0 +1,38 @@
+pack_id: openai_sora2
+provider: openai
+target_model: sora-2
+description: >
+  Fast OpenAI Sora pack for first-pass scene renders with optional opening-frame
+  image guidance.
+preferred_prompt_style: >
+  Use concise physical language with explicit camera, lighting, motion, and
+  blocking instructions. Avoid abstract theory unless it directly affects the
+  frame.
+known_strengths:
+  - Fast iteration on scene-level cinematic motion and lighting prompts.
+  - Good response to concise camera-language prompts with an opening-frame guide.
+known_limitations:
+  - Initial CineForge integration keeps this pack to 8-second 720p renders for predictable latency.
+  - Only one opening-frame image reference is supported in this integration.
+  - Direct audio upload is not supported; audio intent must be encoded in prompt text.
+  - Human-face image references are subject to current provider restrictions.
+limits:
+  supported_durations_seconds: [8]
+  supported_resolutions: ["1280x720", "720x1280"]
+  supported_aspect_ratios: ["16:9", "9:16"]
+  max_reference_images: 1
+  supports_first_frame: true
+  supports_last_frame: false
+  supports_audio_upload: false
+  supports_audio_cues: true
+request_defaults:
+  landscape_size: "1280x720"
+  portrait_size: "720x1280"
+retry_policy:
+  max_attempts: 2
+  poll_interval_seconds: 10
+  retryable_http_statuses: [408, 429, 500, 502, 503, 504]
+  retryable_error_substrings:
+    - "rate limit"
+    - "timeout"
+    - "temporarily unavailable"

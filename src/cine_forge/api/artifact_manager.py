@@ -14,6 +14,7 @@ from typing import Any
 
 from cine_forge.api.exceptions import ServiceError
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.artifacts.edit_policy import get_artifact_edit_restriction
 from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
 from cine_forge.services import ImpactAssessmentError, ImpactAssessmentService
 from cine_forge.services.injected_assets import list_text_extensions
@@ -321,6 +322,16 @@ class ArtifactManager:
         rationale: str,
     ) -> dict[str, Any]:
         """Create a new version of an artifact with human-edited data."""
+
+        restriction = get_artifact_edit_restriction(artifact_type)
+        if restriction is not None:
+            message, hint = restriction
+            raise ServiceError(
+                code="artifact_read_only",
+                message=message,
+                hint=hint,
+                status_code=422,
+            )
 
         project_path = self._resolve_path(project_id)
         normalized_entity = None if entity_id == "__project__" else entity_id

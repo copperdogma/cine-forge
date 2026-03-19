@@ -36,6 +36,7 @@ import { RolePresenceIndicators } from '@/components/DirectionTab'
 import { SceneViewer } from '@/components/ArtifactViewers'
 import { ExportModal } from '@/components/ExportModal'
 import { AnimaticsPanel } from '@/components/AnimaticsPanel'
+import { GeneratedVideoPanel } from '@/components/GeneratedVideoPanel'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { StoryboardPanel } from '@/components/StoryboardPanel'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
@@ -491,7 +492,14 @@ export default function SceneWorkspacePage() {
   const previzGroup = groups?.find(
     g => g.artifact_type === 'previz_reel',
   )
+  const renderPromptGroup = groups?.find(
+    g => g.artifact_type === 'render_prompt' && g.entity_id === entityId,
+  )
+  const generatedVideoGroup = groups?.find(
+    g => g.artifact_type === 'generated_video' && g.entity_id === entityId,
+  )
   const animaticLevel = getReadiness(groups, 'animatic', entityId)
+  const renderLevel = getReadiness(groups, 'generated_video', entityId)
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -582,6 +590,10 @@ export default function SceneWorkspacePage() {
             <ReadinessDot level={animaticLevel} label="Animatics" />
             Animatics
           </TabsTrigger>
+          <TabsTrigger value="render" className="gap-1.5">
+            <ReadinessDot level={renderLevel} label="Render" />
+            Render
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview — scene data (text summary = current "best available preview") */}
@@ -631,6 +643,18 @@ export default function SceneWorkspacePage() {
             animaticGroup={animaticGroup}
             keyframeGroup={keyframeGroup}
             previzGroup={previzGroup}
+          />
+        </TabsContent>
+
+        <TabsContent value="render" className="mt-4">
+          <GeneratedVideoPanel
+            projectId={projectId}
+            sceneId={entityId}
+            sceneHeading={displayName}
+            shotPlanGroup={shotPlanGroup}
+            renderPromptGroup={renderPromptGroup}
+            generatedVideoGroup={generatedVideoGroup}
+            keyframeGroup={keyframeGroup}
           />
         </TabsContent>
       </Tabs>

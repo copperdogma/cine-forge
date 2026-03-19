@@ -52,6 +52,8 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   animatic: { icon: Clapperboard, label: 'Animatic', color: 'text-emerald-400' },
   keyframe: { icon: ImageIcon, label: 'Keyframes', color: 'text-amber-400' },
   previz_reel: { icon: Film, label: 'Previz Reel', color: 'text-sky-400' },
+  render_prompt: { icon: MessageSquare, label: 'Render Prompt', color: 'text-slate-300' },
+  generated_video: { icon: Film, label: 'Generated Video', color: 'text-violet-400' },
 }
 
 export function getArtifactMeta(type: string) {

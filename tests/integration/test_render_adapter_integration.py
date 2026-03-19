@@ -1,0 +1,159 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from cine_forge.ai.video import VideoGenerationResult
+from cine_forge.driver.engine import DriverEngine
+from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
+from cine_forge.schemas import ArtifactRef, GeneratedVideoArtifact, TrackManifest
+from tests.render_fixtures import seed_render_project
+
+
+@pytest.mark.integration
+def test_render_recipe_persists_prompt_video_and_track_entries(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+
+    def _fake_call_llm(**kwargs):
+        schema = kwargs["response_schema"]
+        return (
+            schema.model_validate(
+                {
+                    "prompt_text": (
+                        "Render the lab confrontation as an eight-second controlled push through "
+                        "cold monitor spill, matching the locked opening frame before the camera "
+                        "advances into Mara's decision."
+                    ),
+                    "sections": [
+                        {
+                            "section_id": "shot_definition",
+                            "title": "Shot Definition",
+                            "body": "Preserve the planned coverage and slow push.",
+                            "source_artifact_types": ["shot_plan"],
+                        },
+                        {
+                            "section_id": "look_and_feel",
+                            "title": "Look & Feel",
+                            "body": (
+                                "Cold practical spill, clipped whites, and divided "
+                                "monitor geometry."
+                            ),
+                            "source_artifact_types": ["look_and_feel"],
+                        },
+                        {
+                            "section_id": "sound_and_music",
+                            "title": "Sound & Music",
+                            "body": "Keep machinery hum and held tension in the soundtrack cues.",
+                            "source_artifact_types": ["sound_and_music"],
+                        },
+                        {
+                            "section_id": "character_and_performance",
+                            "title": "Character & Performance",
+                            "body": (
+                                "Keep Mara compressed and deliberate while the frame "
+                                "tightens around her."
+                            ),
+                            "source_artifact_types": ["character_and_performance", "shot_plan"],
+                        },
+                        {
+                            "section_id": "keyframes",
+                            "title": "Keyframe Constraints",
+                            "body": "Match the locked opening frame before motion begins.",
+                            "source_artifact_types": ["keyframe"],
+                        },
+                        {
+                            "section_id": "character_bible_state",
+                            "title": "Character State",
+                            "body": "Mara remains exhausted but deliberate in frame.",
+                            "source_artifact_types": ["character_bible", "bible_manifest"],
+                        },
+                        {
+                            "section_id": "location_bible_state",
+                            "title": "Location State",
+                            "body": "The lab is steel-blue, wet, and dense with screens.",
+                            "source_artifact_types": ["location_bible", "bible_manifest"],
+                        },
+                        {
+                            "section_id": "injected_assets",
+                            "title": "Injected Assets",
+                            "body": "Use the scene image only as a supporting look reference.",
+                            "source_artifact_types": ["injected_asset_manifest"],
+                        },
+                    ],
+                    "covered_categories": [
+                        "shot_definition",
+                        "look_and_feel",
+                        "sound_and_music",
+                        "character_and_performance",
+                        "keyframes",
+                        "character_bible_state",
+                        "location_bible_state",
+                        "injected_assets",
+                    ],
+                    "missing_inputs": [],
+                    "operator_notes": [],
+                }
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 200,
+                "output_tokens": 150,
+                "estimated_cost_usd": 0.01,
+                "latency_seconds": 0.5,
+                "request_id": "compile-001",
+            },
+        )
+
+    def _fake_generate_video(*, request, engine_pack):
+        return VideoGenerationResult(
+            video_bytes=b"integration-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="video-001",
+            provider_job_id="job-001",
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
+        _fake_call_llm,
+    )
+    monkeypatch.setattr("cine_forge.ai.video.generate_video", _fake_generate_video)
+
+    run_state = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
+        run_id="integration-render",
+        force=True,
+        runtime_params={
+            "engine_pack_id": "openai_sora2",
+            "compiler_model": "gpt-5.4-mini",
+            "duration_seconds": 8,
+        },
+    )
+
+    assert run_state["stages"]["render"]["status"] == "done"
+
+    refs = [
+        ArtifactRef.model_validate(item) for item in run_state["stages"]["render"]["artifact_refs"]
+    ]
+    render_prompt_refs = [ref for ref in refs if ref.artifact_type == "render_prompt"]
+    generated_video_refs = [ref for ref in refs if ref.artifact_type == "generated_video"]
+    assert len(render_prompt_refs) == 1
+    assert len(generated_video_refs) == 1
+
+    generated_video = GeneratedVideoArtifact.model_validate(
+        engine.store.load_artifact(generated_video_refs[0]).data
+    )
+    assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
+
+    track_ref = next(ref for ref in refs if ref.artifact_type == "track_manifest")
+    manifest = TrackManifest.model_validate(engine.store.load_artifact(track_ref).data)
+    assert (
+        best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
+        == "generated_video"
+    )

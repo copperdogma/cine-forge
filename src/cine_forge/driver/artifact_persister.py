@@ -71,7 +71,7 @@ class ArtifactPersister:
                 **a_source_meta,
                 "lineage": _merge_lineage(
                     module_lineage=a_source_meta.get("lineage", []),
-                    upstream_refs=self.upstream_refs,
+                    upstream_refs=self._upstream_refs_for_artifact(artifact_dict),
                     stage_refs=[],
                 ),
                 "producing_module": self.module_id,
@@ -141,7 +141,7 @@ class ArtifactPersister:
                     **source_metadata,
                     "lineage": _merge_lineage(
                         module_lineage=source_metadata.get("lineage", []),
-                        upstream_refs=self.upstream_refs,
+                        upstream_refs=self._upstream_refs_for_artifact(artifact),
                         stage_refs=stage_lineage_refs,
                     ),
                     "producing_module": self.module_id,
@@ -199,6 +199,22 @@ class ArtifactPersister:
                 }
             )
         return persisted_outputs
+
+    def _upstream_refs_for_artifact(self, artifact: dict[str, Any]) -> list[ArtifactRef]:
+        """Return upstream refs after any artifact-specific lineage exclusions."""
+        excluded_types_raw = artifact.get("exclude_upstream_lineage_types", [])
+        if not isinstance(excluded_types_raw, list):
+            return self.upstream_refs
+
+        excluded_types = {
+            item for item in excluded_types_raw if isinstance(item, str) and item
+        }
+        if not excluded_types:
+            return self.upstream_refs
+
+        return [
+            ref for ref in self.upstream_refs if ref.artifact_type not in excluded_types
+        ]
 
     @staticmethod
     def _schema_names_for_artifact(

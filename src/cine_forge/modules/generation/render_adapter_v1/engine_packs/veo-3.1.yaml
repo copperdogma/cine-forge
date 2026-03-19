@@ -1,0 +1,39 @@
+pack_id: google_veo31
+provider: google
+target_model: veo-3.1-generate-preview
+description: >
+  Google Veo 3.1 pack for scene-level renders with native audio cues, optional
+  first/last-frame interpolation, and up to three reference images.
+preferred_prompt_style: >
+  Use explicit cinematic language with shot progression, subject action,
+  ambience, and sound cues written directly into the prompt.
+known_strengths:
+  - Native audio generation from prompt cues.
+  - Supports first-frame, last-frame, and multi-image guidance in one pack.
+known_limitations:
+  - Duration is limited to 4, 6, or 8 seconds.
+  - Reference images and 1080p output require an 8-second render.
+  - Direct audio upload is not supported; audio references must be translated into prompt cues.
+limits:
+  supported_durations_seconds: [4, 6, 8]
+  supported_resolutions: ["720p", "1080p"]
+  supported_aspect_ratios: ["16:9", "9:16"]
+  max_reference_images: 3
+  supports_first_frame: true
+  supports_last_frame: true
+  supports_audio_upload: false
+  supports_audio_cues: true
+request_defaults:
+  default_resolution: "720p"
+  landscape_aspect_ratio: "16:9"
+  portrait_aspect_ratio: "9:16"
+  reference_images_require_eight_seconds: true
+  high_resolution_requires_eight_seconds: true
+retry_policy:
+  max_attempts: 2
+  poll_interval_seconds: 10
+  retryable_http_statuses: [408, 429, 500, 502, 503, 504]
+  retryable_error_substrings:
+    - "rate limit"
+    - "timeout"
+    - "backendError"

@@ -281,9 +281,11 @@ PIPELINE_NODES: list[PipelineNode] = [
         id="render",
         label="Render",
         phase_id="production",
-        artifact_types=["render_output"],
-        dependencies=["storyboard_gen"],
-        implemented=False,
+        artifact_types=["generated_video"],
+        check_mode="entity",
+        dependencies=["shot_planning"],
+        nav_route="/scenes",
+        implemented=True,
     ),
     PipelineNode(
         id="final_output",
@@ -368,6 +370,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "look_and_feel": "creative_direction",
     "sound_and_music": "creative_direction",
     "shot_planning": "shot_planning",
+    "render": "render_generation",
 }
 
 

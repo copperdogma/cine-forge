@@ -6,6 +6,7 @@ export const RECIPE_NAMES: Record<string, string> = {
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
   animatics_generation: 'Animatics',
+  render_generation: 'Scene Renders',
 }
 
 /** Plain-language recipe names for operator-facing UI. */
@@ -16,6 +17,7 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
   animatics_generation: 'Animatics',
+  render_generation: 'Scene Renders',
 }
 
 export function getUserFacingRecipeName(recipeId: string | null | undefined): string {
@@ -43,6 +45,9 @@ export function getRunStartedMessage(recipeId: string | null | undefined): strin
   if (recipeId === 'animatics_generation') {
     return 'Animatics started — building rough cuts and keyframes now...'
   }
+  if (recipeId === 'render_generation') {
+    return 'Scene Renders started — compiling prompts and generating scene video now...'
+  }
   return 'Run started — processing your project now...'
 }
 
@@ -64,6 +69,11 @@ export function getRunCompletedMessage(
     return summary
       ? `Animatics complete! I produced ${summary} for your project.`
       : 'Animatics complete!'
+  }
+  if (recipeId === 'render_generation') {
+    return summary
+      ? `Scene Renders complete! I produced ${summary} for your project.`
+      : 'Scene Renders complete!'
   }
   return summary
     ? `Run complete! I produced ${summary} for your project.`
@@ -98,6 +108,8 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   animatic: ['animatic', 'animatics'],
   keyframe: ['keyframe set', 'keyframe sets'],
   previz_reel: ['previz reel', 'previz reels'],
+  render_prompt: ['render prompt', 'render prompts'],
+  generated_video: ['generated video', 'generated videos'],
 }
 
 /**

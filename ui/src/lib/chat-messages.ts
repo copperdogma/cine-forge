@@ -198,6 +198,10 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Deriving lockable start, mid, and end keyframes...',
     done: 'Keyframes complete.',
   },
+  render: {
+    start: 'Compiling render prompts and generating scene videos...',
+    done: 'Scene renders complete.',
+  },
 }
 
 export function humanizeStageName(name: string): string {

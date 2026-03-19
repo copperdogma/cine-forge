@@ -136,6 +136,7 @@ These rules prevent the accumulation of god objects and untyped interfaces. They
 ### Test Commands
 - **Unit tests**: `.venv/bin/python -m pytest -m unit` (not system pytest — version mismatch)
 - **Lint**: `.venv/bin/python -m ruff check src/ tests/`
+- **Backend smoke fallback**: if `uvicorn` is unavailable in the active Python env but FastAPI CLI is installed, use `fastapi run src/cine_forge/api/app.py --host 127.0.0.1 --port 8000 --app app` for local browser/API smoke checks.
 
 ### Deep Research
 For multi-model research tasks, use the `deep-research` CLI tool (v0.3.3+).

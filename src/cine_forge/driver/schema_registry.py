@@ -8,6 +8,7 @@ from cine_forge.schemas import (
     CanonicalScript,
     CharacterAndPerformance,
     CharacterBible,
+    CompiledRenderPrompt,
     ContinuityIndex,
     ContinuityState,
     Conversation,
@@ -16,6 +17,7 @@ from cine_forge.schemas import (
     EntityDiscoveryResults,
     EntityEdge,
     EntityGraph,
+    GeneratedVideoArtifact,
     ImpactAssessment,
     InjectedAsset,
     InjectedAssetManifest,
@@ -99,4 +101,6 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("animatic", Animatic)
     registry.register("keyframe", KeyframeArtifact)
     registry.register("previz_reel", PrevizReel)
+    registry.register("render_prompt", CompiledRenderPrompt)
+    registry.register("generated_video", GeneratedVideoArtifact)
     return registry

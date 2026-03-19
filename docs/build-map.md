@@ -139,7 +139,7 @@ human interaction models, and readiness signals that keep the UI honest.
 humans and generation models.
 **Tech need:** Coverage strategy, shot definitions, storyboard/animatic assets,
 and optional keyframes linked to upstream direction.
-**Substrate:** partial
+**Substrate:** exists
 **Phase:** climb
 
 **Story coverage:** partial
@@ -167,6 +167,11 @@ and origin-agnostic asset injection.
 **Spec:** spec:7 (spec:7.1, spec:7.1.1, spec:7.1.2, spec:7.1.3, spec:7.2)
 **ADR Refs:** ADR-003 (real-world assets as first-class inputs)
 **Absorbs:** Generation & Export (old 7)
+
+### Phase Notes
+
+- Render-adapter compilation, engine-pack knowledge, error handling, and origin-agnostic asset injection now exist as real substrate.
+- This category stays in `climb` because generated-output QA and richer export fidelity remain unfinished, but the next work is quality/coverage follow-on rather than a missing render foundation.
 
 ### Compromise Progress
 

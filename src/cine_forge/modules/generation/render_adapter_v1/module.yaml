@@ -1,0 +1,47 @@
+module_id: render_adapter_v1
+stage: generation
+description: >
+  Compiles scene-level render prompts from shot plans, concern-group artifacts,
+  keyframes, and injected references, then generates immutable scene video
+  artifacts and updates the shared generated-video track.
+input_schemas:
+  - shot_plan
+  - track_manifest
+  - project_config
+  - intent_mood
+  - look_and_feel
+  - sound_and_music
+  - rhythm_and_flow
+  - character_and_performance
+  - character_bible
+  - location_bible
+  - keyframe
+  - injected_asset_manifest
+output_schemas:
+  - render_prompt
+  - generated_video
+  - track_manifest
+parameters:
+  engine_pack_id:
+    type: string
+    required: false
+    default: "openai_sora2"
+    description: "Engine pack used for provider capability checks and request shaping."
+  compiler_model:
+    type: string
+    required: false
+    default: "gpt-5.4-mini"
+    description: "Model used to compile the final render prompt."
+  duration_seconds:
+    type: number
+    required: false
+    default: 8
+    description: "Requested scene render duration before engine-pack normalization."
+  resolution:
+    type: string
+    required: false
+    description: "Optional target resolution override when supported by the selected engine pack."
+  aspect_ratio:
+    type: string
+    required: false
+    description: "Optional aspect-ratio override before engine-pack normalization."

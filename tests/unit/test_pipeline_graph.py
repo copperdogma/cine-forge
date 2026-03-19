@@ -240,14 +240,14 @@ def test_phase_blocked_when_all_blocked() -> None:
 
 
 @pytest.mark.unit
-def test_phase_not_started_when_all_unimplemented() -> None:
-    """A phase with only unimplemented nodes shows as not_started."""
+def test_phase_blocked_when_render_is_implemented_but_missing_inputs() -> None:
+    """Production stays blocked until render prerequisites are satisfied."""
     phase = _PHASE_MAP["production"]
     node_statuses = {
-        "render": NodeStatus.NOT_IMPLEMENTED,
+        "render": NodeStatus.BLOCKED,
         "final_output": NodeStatus.NOT_IMPLEMENTED,
     }
-    assert compute_phase_status(phase, node_statuses) == PhaseStatus.NOT_STARTED
+    assert compute_phase_status(phase, node_statuses) == PhaseStatus.BLOCKED
 
 
 # ---------------------------------------------------------------------------
@@ -277,6 +277,9 @@ def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
     # Look & Feel is implemented but blocked (deps not met in empty store).
     lf = next(n for n in graph["nodes"] if n["id"] == "look_and_feel")
     assert lf["status"] == "blocked"
+
+    render = next(n for n in graph["nodes"] if n["id"] == "render")
+    assert render["status"] == "blocked"
 
 
 @pytest.mark.unit

@@ -1,0 +1,159 @@
+import { Clock, DollarSign, Film, Video } from 'lucide-react'
+import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  asArray,
+  asNumber,
+  asRecord,
+  asString,
+  asStringArray,
+  formatDuration,
+  formatMoney,
+  formatToken,
+  parseRenderInputUsage,
+  type RenderInputUsageView,
+} from '@/components/render-utils'
+import { getAssetFileUrl } from '@/lib/api/assets'
+
+type GeneratedVideoViewerProps = {
+  data: Record<string, unknown>
+  projectId: string
+}
+
+type GeneratedVideoView = {
+  sceneHeading: string | null
+  sceneNumber: number | null
+  videoPath: string | null
+  durationSeconds: number | null
+  resolution: string | null
+  aspectRatio: string | null
+  targetProvider: string | null
+  targetModel: string | null
+  enginePackId: string | null
+  requestId: string | null
+  estimatedCostUsd: number | null
+  notes: string[]
+  resolvedInputs: RenderInputUsageView[]
+  providerParams: Record<string, unknown>
+}
+
+function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView {
+  const video = asRecord(data.video)
+  const cost = asRecord(data.cost)
+  const generationParams = asRecord(data.generation_params)
+  const providerParams = asRecord(generationParams?.provider_params) ?? {}
+  return {
+    sceneHeading: asString(data.scene_heading),
+    sceneNumber: asNumber(data.scene_number),
+    videoPath: asString(video?.relative_path),
+    durationSeconds: asNumber(data.duration_seconds),
+    resolution: asString(data.resolution),
+    aspectRatio: asString(data.aspect_ratio),
+    targetProvider: asString(data.target_provider),
+    targetModel: asString(data.target_model),
+    enginePackId: asString(data.engine_pack_id),
+    requestId: asString(data.request_id),
+    estimatedCostUsd: asNumber(cost?.estimated_cost_usd),
+    notes: asStringArray(data.notes),
+    resolvedInputs: asArray(data.resolved_inputs)
+      .map(parseRenderInputUsage)
+      .filter((input): input is RenderInputUsageView => input !== null),
+    providerParams,
+  }
+}
+
+export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerProps) {
+  const render = parseGeneratedVideo(data)
+  const sceneLabel =
+    render.sceneNumber !== null ? `Scene ${render.sceneNumber}` : 'Generated Video'
+  const videoUrl = render.videoPath ? getAssetFileUrl(projectId, render.videoPath) : null
+  const providerParamsJson = JSON.stringify(render.providerParams, null, 2)
+
+  return (
+    <div className="space-y-4">
+      <Card className="gap-0">
+        <CardHeader className="pb-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div className="space-y-1">
+              <CardTitle>{sceneLabel}</CardTitle>
+              <CardDescription>
+                {render.sceneHeading ?? 'Scene-level generated render'}
+              </CardDescription>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {render.targetProvider && (
+                <Badge variant="secondary">{formatToken(render.targetProvider)}</Badge>
+              )}
+              {render.targetModel && <Badge variant="outline">{render.targetModel}</Badge>}
+              {render.enginePackId && (
+                <Badge variant="outline" className="gap-1">
+                  <Film className="h-3 w-3" />
+                  {render.enginePackId}
+                </Badge>
+              )}
+              {formatDuration(render.durationSeconds) && (
+                <Badge variant="outline" className="gap-1">
+                  <Clock className="h-3 w-3" />
+                  {formatDuration(render.durationSeconds)}
+                </Badge>
+              )}
+              {render.resolution && <Badge variant="outline">{render.resolution}</Badge>}
+              {render.aspectRatio && <Badge variant="outline">{render.aspectRatio}</Badge>}
+              {formatMoney(render.estimatedCostUsd) && (
+                <Badge variant="outline" className="gap-1">
+                  <DollarSign className="h-3 w-3" />
+                  {formatMoney(render.estimatedCostUsd)}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {videoUrl ? (
+            <video
+              controls
+              preload="metadata"
+              className="w-full rounded-xl border border-border bg-black"
+              src={videoUrl}
+            />
+          ) : (
+            <div className="rounded-xl border border-dashed border-border px-6 py-12 text-center text-sm text-muted-foreground">
+              Generated video media is missing from this artifact.
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+            {render.requestId && (
+              <span className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1">
+                <Video className="h-3 w-3" />
+                Request ID: {render.requestId}
+              </span>
+            )}
+          </div>
+
+          {render.notes.length > 0 && (
+            <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
+              {render.notes.map(note => (
+                <p key={note}>{note}</p>
+              ))}
+            </div>
+          )}
+
+          {Object.keys(render.providerParams).length > 0 && (
+            <div className="rounded-lg border border-border bg-card/60 px-4 py-3">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Provider Params
+              </p>
+              <pre className="overflow-x-auto rounded-md bg-muted/40 p-3 text-xs text-foreground/85">
+                {providerParamsJson}
+              </pre>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <RenderInputUsageCard inputs={render.resolvedInputs} />
+    </div>
+  )
+}

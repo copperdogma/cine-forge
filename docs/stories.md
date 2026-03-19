@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-18, Story 027 done)
+## Current Execution Map (updated 2026-03-19, Story 028 done)
 
-Phases 0–5 foundation are landed, and the first three Phase 6 visualization layers are now in place: shot planning, storyboard generation, and symbolic animatics/previz all have real operator-facing surfaces. The active backlog now separates cleanly into stories that are ready to build, stories blocked by unfinished dependencies, drafts that still need scoping or a design decision before `/build-story`, and a small set of intentionally parked stories that should not be picked accidentally.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. The active backlog now centers on output QA, cost visibility, UX polish, and draft follow-ons rather than missing render-adapter substrate.
 
 ### Pending — Ready To Build Now
 
@@ -15,7 +15,6 @@ Phases 0–5 foundation are landed, and the first three Phase 6 visualization la
 | **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
 | **127** Artifact Health Semantics + Chat Model Disclosure | Direct transparency fix on top of recent UI decomposition. Small, user-visible, and already grounded in existing design decisions. |
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
-| **129** Entity Discovery Taxonomy Tightening | Eval-backed prompt refinement that reduces upstream entity noise before it pollutes downstream artifacts. |
 | **131** Preference Learning from User Choices | Turns existing suggestion/decision tracking into the explicit, inspectable learning loop required by Ideal R13. |
 
 ### In Progress
@@ -24,15 +23,13 @@ No stories are actively in progress right now.
 
 ### Pending — Ready, But Sequence-Sensitive
 
-| Story | Why |
-|---|---|
-| **028** Render Adapter | Story 027 is now landed, so the next optional generation step is unblocked. Keep it sequence-sensitive because it should build directly on the shipped animatic/keyframe contracts instead of inventing a parallel path. |
+No stories currently need the sequence-sensitive lane.
 
 ### Blocked — Dependency Chain Not Ready Yet
 
 | Story | Blocked On |
 |---|---|
-| **030** Generated Output QA | Stories 028, 032 |
+| **030** Generated Output QA | Story 032 |
 
 ### Draft — Scope Or Decision Needed First
 
@@ -99,7 +96,7 @@ NOTES from Cam:
 | 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-026](stories/story-026-storyboard-generation.md) |
 | 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-027](stories/story-027-animatics-previz.md) |
 | 137 | Previz Fidelity Upgrade | 6 — Shot Planning & Viz | Low | Draft | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
-| 028 | Render Adapter Module | 7 — Generation | Low | Pending | [story-028](stories/story-028-render-adapter.md) |
+| 028 | Render Adapter Module | 7 — Generation | Low | Done | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
 | 030 | Generated Output QA | 7 — Generation | Medium | Blocked | [story-030](stories/story-030-generated-output-qa.md) |
 | 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Done | [story-031](stories/story-031-change-propagation.md) |
