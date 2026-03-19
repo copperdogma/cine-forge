@@ -67,6 +67,9 @@ export function updateProjectSettings(
     work_model?: string | null
     verify_model?: string | null
     escalate_model?: string | null
+    project_budget_limit_usd?: number | null
+    default_run_budget_limit_usd?: number | null
+    budget_warning_threshold_ratio?: number | null
     ui_preferences?: Record<string, string>
   },
 ): Promise<ProjectSummary> {

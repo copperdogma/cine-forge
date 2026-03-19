@@ -98,6 +98,7 @@ class StageCanonGate:
         if any(r.get("readiness") == ReviewReadiness.AWAITING_USER for r in latest_reviews):
             with self.state_lock:
                 self.stage_state["status"] = "paused"
+                self.stage_state["pause_reason"] = "awaiting_human_approval"
                 self.stage_state["duration_seconds"] = round(
                     time.time() - self.stage_started, 4
                 )

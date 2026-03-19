@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Literal
@@ -9,6 +10,7 @@ from fastapi.responses import FileResponse, Response
 from starlette.background import BackgroundTask
 
 from cine_forge.artifacts.store import ArtifactStore
+from cine_forge.export.cost_report import render_project_cost_csv, render_run_cost_csv
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
 from cine_forge.export.screenplay import ScreenplayRenderer
@@ -17,6 +19,7 @@ from cine_forge.export.shot_list import (
     load_shot_plans,
     render_shot_list_csv,
 )
+from cine_forge.services.cost_tracking import CostTrackingService
 
 if TYPE_CHECKING:
     from cine_forge.api.service import OperatorConsoleService
@@ -40,6 +43,12 @@ def get_store(project_id: str) -> ArtifactStore:
         raise HTTPException(status_code=500, detail="Export router not initialized")
     project_dir = _service.require_project_path(project_id)
     return ArtifactStore(project_dir)
+
+
+def get_cost_tracking_service() -> CostTrackingService:
+    if _service is None:
+        raise HTTPException(status_code=500, detail="Export router not initialized")
+    return CostTrackingService(_service.workspace_root)
 
 def load_all_artifacts(store: ArtifactStore):
     scenes = []
@@ -359,3 +368,69 @@ def export_shot_list_pdf(project_id: str):
             status_code=500,
             detail=f"Shot-list PDF generation failed: {str(exc)}",
         ) from exc
+
+
+@router.get("/costs.csv")
+def export_costs_csv(project_id: str, run_id: str | None = None):
+    project_path = _service.require_project_path(project_id) if _service is not None else None
+    if project_path is None:
+        raise HTTPException(status_code=500, detail="Export router not initialized")
+
+    cost_tracking = get_cost_tracking_service()
+    if run_id:
+        run_data = cost_tracking.load_run_data(run_id)
+        if run_data.project_path != project_path:
+            raise HTTPException(status_code=404, detail="Run not found for project")
+        content = render_run_cost_csv(
+            cost_tracking.build_run_summary(
+                run_id=run_id,
+                project_id=project_id,
+                project_path=project_path,
+            )
+        )
+        filename = f"{run_id}-costs.csv"
+    else:
+        content = render_project_cost_csv(
+            cost_tracking.build_project_summary(
+                project_id=project_id,
+                project_path=project_path,
+            )
+        )
+        filename = f"{project_id}-costs.csv"
+
+    return Response(
+        content=content,
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
+@router.get("/costs.json")
+def export_costs_json(project_id: str, run_id: str | None = None):
+    project_path = _service.require_project_path(project_id) if _service is not None else None
+    if project_path is None:
+        raise HTTPException(status_code=500, detail="Export router not initialized")
+
+    cost_tracking = get_cost_tracking_service()
+    if run_id:
+        run_data = cost_tracking.load_run_data(run_id)
+        if run_data.project_path != project_path:
+            raise HTTPException(status_code=404, detail="Run not found for project")
+        payload = cost_tracking.build_run_summary(
+            run_id=run_id,
+            project_id=project_id,
+            project_path=project_path,
+        ).model_dump(mode="json")
+        filename = f"{run_id}-costs.json"
+    else:
+        payload = cost_tracking.build_project_summary(
+            project_id=project_id,
+            project_path=project_path,
+        ).model_dump(mode="json")
+        filename = f"{project_id}-costs.json"
+
+    return Response(
+        content=json.dumps(payload, indent=2, sort_keys=True),
+        media_type="application/json",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )

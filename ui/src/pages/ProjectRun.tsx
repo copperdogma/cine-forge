@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { RunCostSummaryPanel } from '@/components/RunCostSummaryPanel'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { SceneStrip } from '@/components/SceneStrip'
@@ -27,18 +28,21 @@ import { RunEventLog } from '@/components/RunEventLog'
 import type { RunEvent } from '@/components/RunEventLog'
 import { 
   useUploadInput, 
+  useResumeRun,
+  useRunCosts,
   useStartRun, 
-  useRunState, 
   useRunEvents, 
-  useRecipes, 
-  useScenes, 
+  useProject,
   useProjectInputs,
-  useProject
+  useRecipes, 
+  useRunState, 
+  useScenes, 
 } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import { toast } from 'sonner'
 import { getOrderedStageIds, RECIPE_NAMES } from '@/lib/constants'
 import { humanizeStageName } from '@/lib/chat-messages'
+import { formatDuration } from '@/lib/format'
 import { getProjectRunModelDefaults } from '@/lib/project-models'
 
 // Fallback recipes in case API fails
@@ -63,6 +67,7 @@ function transformBackendEvents(events?: Array<Record<string, unknown>>): RunEve
       stage_retrying: 'warning',
       stage_fallback: 'warning',
       stage_paused: 'warning',
+      budget_warning: 'warning',
     }
     const validTypes = ['stage_start', 'stage_end', 'ai_call', 'artifact_produced', 'error', 'warning', 'info']
     const mappedType = eventTypeMap[backendEvent] ?? type
@@ -76,10 +81,18 @@ function transformBackendEvents(events?: Array<Record<string, unknown>>): RunEve
       message = `Fallback model selected: ${(evt.to_model as string) ?? 'unknown'}`
     } else if (backendEvent === 'stage_failed') {
       message = (evt.error as string) ?? `Stage ${stageId ?? ''} failed`
+    } else if (backendEvent === 'budget_warning') {
+      const scope = (evt.budget_scope as string) ?? 'budget'
+      message = (evt.reason as string) ?? `${scope} budget warning`
+    } else if (backendEvent === 'stage_paused' && evt.budget_scope) {
+      const scope = (evt.budget_scope as string) ?? 'budget'
+      message = (evt.reason as string) ?? `${scope} budget limit reached`
     }
     return {
-      timestamp: typeof evt.timestamp === 'number'
-        ? evt.timestamp * 1000 // backend uses seconds, UI uses ms
+      timestamp: typeof evt.ts === 'number'
+        ? evt.ts * 1000
+        : typeof evt.timestamp === 'number'
+          ? evt.timestamp * 1000
         : Date.now(),
       type: (validTypes.includes(mappedType) ? mappedType : 'info') as RunEvent['type'],
       stage: stageId,
@@ -112,6 +125,7 @@ export default function ProjectRun() {
   const [workModel, setWorkModel] = useState(initialModelDefaults.workModel)
   const [verifyModel, setVerifyModel] = useState(initialModelDefaults.verifyModel)
   const [startFrom, setStartFrom] = useState('')
+  const [runBudgetLimitUsd, setRunBudgetLimitUsd] = useState('')
   const touchedModelFieldsRef = useRef<Record<ProjectRunModelField, boolean>>({
     defaultModel: false,
     workModel: false,
@@ -134,6 +148,8 @@ export default function ProjectRun() {
 
   // API hooks
   const uploadMutation = useUploadInput(projectId || '')
+  const resumeRunMutation = useResumeRun()
+  const { data: runCostSummary } = useRunCosts(runId || '')
   const startRunMutation = useStartRun()
   const { data: runStateData, isLoading: runStateLoading } = useRunState(runId || '')
   const { data: runEventsData } = useRunEvents(runId || '', !!runStateData?.state?.finished_at)
@@ -175,6 +191,9 @@ export default function ProjectRun() {
         if (params.default_model) setDefaultModel(params.default_model as string)
         if (params.work_model) setWorkModel(params.work_model as string)
         if (params.verify_model) setVerifyModel(params.verify_model as string)
+        if (params.run_budget_limit_usd != null) {
+          setRunBudgetLimitUsd(String(params.run_budget_limit_usd))
+        }
       }, 0)
       return () => clearTimeout(t)
     }
@@ -187,6 +206,10 @@ export default function ProjectRun() {
       verifyModel: false,
     }
     lastAppliedProjectDefaultsRef.current = null
+    const timeout = setTimeout(() => {
+      setRunBudgetLimitUsd('')
+    }, 0)
+    return () => clearTimeout(timeout)
   }, [routeKey])
 
   useEffect(() => {
@@ -216,6 +239,16 @@ export default function ProjectRun() {
     }, 0)
     return () => clearTimeout(t)
   }, [projectData, runId])
+
+  useEffect(() => {
+    if (runId || !projectData) return
+    if (runBudgetLimitUsd) return
+    if (projectData.default_run_budget_limit_usd == null) return
+    const timeout = setTimeout(() => {
+      setRunBudgetLimitUsd(String(projectData.default_run_budget_limit_usd))
+    }, 0)
+    return () => clearTimeout(timeout)
+  }, [projectData, runBudgetLimitUsd, runId])
 
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => {
@@ -248,6 +281,14 @@ export default function ProjectRun() {
       return
     }
 
+    if (runBudgetLimitUsd.trim()) {
+      const parsedBudget = Number(runBudgetLimitUsd)
+      if (!Number.isFinite(parsedBudget) || parsedBudget < 0) {
+        toast.error('Run budget limit must be zero or greater')
+        return
+      }
+    }
+
     const workModelPayload = touchedModelFieldsRef.current.workModel
       ? (workModel || null)
       : (workModel || undefined)
@@ -265,6 +306,9 @@ export default function ProjectRun() {
       recipe_id: selectedRecipe,
       accept_config: true,
       ...(startFrom && { start_from: startFrom }),
+      ...(runBudgetLimitUsd.trim()
+        ? { run_budget_limit_usd: Number(runBudgetLimitUsd) }
+        : {}),
     }
 
     startRunMutation.mutate(payload, {
@@ -344,7 +388,8 @@ export default function ProjectRun() {
 
     const completedStages = Object.values(stages).filter(s => s.status === 'done' || s.status === 'skipped_reused').length
     const totalStages = stageIds.length
-    const totalCost = Object.values(stages).reduce((acc, s) => acc + (s.cost_usd || 0), 0)
+    const totalCost = runCostSummary?.total_cost_usd
+      ?? Object.values(stages).reduce((acc, s) => acc + (s.cost_usd || 0), 0)
 
     const duration = runStateData?.state.finished_at && runStateData?.state.started_at
       ? runStateData.state.finished_at - runStateData.state.started_at
@@ -360,17 +405,24 @@ export default function ProjectRun() {
       return 'pending'
     }
 
-    const formatDuration = (seconds: number) => {
-      if (!seconds || seconds <= 0) return '0s'
-      if (seconds < 60) return `${seconds.toFixed(1)}s`
-      const minutes = Math.floor(seconds / 60)
-      const remainingSeconds = Math.floor(seconds % 60)
-      return `${minutes}m ${remainingSeconds}s`
-    }
-
     const formatCost = (cost?: number) => {
       if (!cost) return null
       return `$${cost.toFixed(4)}`
+    }
+
+    const handleResumeRun = async (nextRunBudgetLimitUsd?: number) => {
+      try {
+        const result = await resumeRunMutation.mutateAsync({
+          runId: runId!,
+          projectId,
+          runBudgetLimitUsd: nextRunBudgetLimitUsd,
+        })
+        navigate(`/${projectId}/run/${result.run_id}`)
+        toast.success('Pipeline resumed')
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error'
+        toast.error(`Failed to resume: ${message}`)
+      }
     }
 
     const renderHeaderTitle = () => {
@@ -519,6 +571,17 @@ export default function ProjectRun() {
             })}
           </CardContent>
         </Card>
+
+        {projectId && runCostSummary && (
+          <RunCostSummaryPanel
+            projectId={projectId}
+            summary={runCostSummary}
+            resumeAction={{
+              isPending: resumeRunMutation.isPending,
+              onResume: handleResumeRun,
+            }}
+          />
+        )}
 
         {/* Scene overview strip */}
         {scenesData.length > 0 && (
@@ -764,6 +827,21 @@ export default function ProjectRun() {
                     value={startFrom}
                     onChange={e => setStartFrom(e.target.value)}
                     placeholder="Beginning"
+                    className="text-sm"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="run-budget-limit" className="text-xs font-medium text-muted-foreground mb-1.5 block">
+                    Run Budget Limit (USD)
+                  </label>
+                  <Input
+                    id="run-budget-limit"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={runBudgetLimitUsd}
+                    onChange={e => setRunBudgetLimitUsd(e.target.value)}
+                    placeholder="Use project default"
                     className="text-sm"
                   />
                 </div>

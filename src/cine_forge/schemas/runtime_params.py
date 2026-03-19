@@ -32,6 +32,9 @@ class RuntimeParams(BaseModel):
     accept_config: bool = False
     skip_qa: bool = False
     user_approved: bool = False
+    project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    budget_warning_threshold_ratio: float | None = Field(default=None, ge=0.0, le=1.0)
 
     # --- File references ---
     config_file: str | None = None

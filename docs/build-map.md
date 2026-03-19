@@ -329,4 +329,4 @@ skills, workflow gates, AGENTS instructions, runbooks, and verbose work logs.
 
 ---
 
-*Last updated: 2026-03-18 (Story 136 in progress)*
+*Last updated: 2026-03-19 (Story 032 done; no active stories in progress)*

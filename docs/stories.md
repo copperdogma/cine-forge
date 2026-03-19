@@ -1,14 +1,14 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-19, Story 028 done)
+## Current Execution Map (updated 2026-03-19, Story 032 done)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. The active backlog now centers on output QA, cost visibility, UX polish, and draft follow-ons rather than missing render-adapter substrate.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. The active backlog now centers on output QA, cost-control follow-ons, UX polish, and draft follow-ons rather than missing render-adapter substrate.
 
 ### Pending — Ready To Build Now
 
 | Story | Why |
 |---|---|
-| **032** Cost Tracking | Builds the budget and reporting layer on top of already-landed cost hooks. |
+| **030** Generated Output QA | Story 032 is closed, so the video-understanding benchmark is unblocked and can now become the main Phase 7 quality gate. |
 | **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
@@ -19,7 +19,7 @@ Phases 0–5 foundation are landed, the first three Phase 6 visualization layers
 
 ### In Progress
 
-No stories are actively in progress right now.
+No stories currently in progress.
 
 ### Pending — Ready, But Sequence-Sensitive
 
@@ -27,14 +27,13 @@ No stories currently need the sequence-sensitive lane.
 
 ### Blocked — Dependency Chain Not Ready Yet
 
-| Story | Blocked On |
-|---|---|
-| **030** Generated Output QA | Story 032 |
+No stories currently blocked.
 
 ### Draft — Scope Or Decision Needed First
 
 | Story | Why It Stays Draft |
 |---|---|
+| **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
 | **097** AI Artifact Editing | Now unblocked by Story 031, but it is still only draft-scoped. Promote it only after the editing UX, safety rails, and downstream revision flow are detailed enough to validate coherently. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |
@@ -98,9 +97,9 @@ NOTES from Cam:
 | 137 | Previz Fidelity Upgrade | 6 — Shot Planning & Viz | Low | Draft | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
 | 028 | Render Adapter Module | 7 — Generation | Low | Done | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
-| 030 | Generated Output QA | 7 — Generation | Medium | Blocked | [story-030](stories/story-030-generated-output-qa.md) |
+| 030 | Generated Output QA | 7 — Generation | Medium | Pending | [story-030](stories/story-030-generated-output-qa.md) |
 | 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Done | [story-031](stories/story-031-change-propagation.md) |
-| 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | Pending | [story-032](stories/story-032-cost-tracking.md) |
+| 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | Done | [story-032](stories/story-032-cost-tracking.md) |
 | 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | Pending | [story-033](stories/story-033-memory-model.md) |
 | 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | Pending | [story-034](stories/story-034-style-pack-creator.md) |
 | 035 | Model Benchmarking Tooling (promptfoo) | Cross-Cutting | High | Done | [story-035](stories/story-035-model-benchmarking.md) |
@@ -204,6 +203,7 @@ NOTES from Cam:
 | 134 | Compromise Convergence Tooling Migration | Cross-Cutting | High | Done | [story-134](stories/story-134-compromise-convergence-tooling-migration.md) |
 | 135 | Brick & Steel PDF Normalization Regression | 1 — MVP Pipeline | High | Done | [story-135](stories/story-135-screenplay-normalization-brick-steel-pdf-regression.md) |
 | 136 | ADR-021 Execution-Ideal and Phase-Governance Migration | Cross-Cutting | High | Done | [story-136](stories/story-136-adr-021-execution-planning-migration.md) |
+| 138 | Cost Profiles, Model Comparison, and Stage Budget Controls | Cross-Cutting | Medium | Draft | [story-138](stories/story-138-cost-profiles-model-comparison-stage-budgets.md) |
 
 ## Phase Summary
 

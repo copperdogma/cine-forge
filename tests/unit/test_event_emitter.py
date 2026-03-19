@@ -38,6 +38,7 @@ class TestProgressEvent:
             "stage_paused",
             "stage_finished",
             "stage_failed",
+            "budget_warning",
             "pipeline_started",
             "pipeline_finished",
         }

@@ -20,6 +20,7 @@ class EventType(StrEnum):
     stage_paused = "stage_paused"
     stage_finished = "stage_finished"
     stage_failed = "stage_failed"
+    budget_warning = "budget_warning"
     pipeline_started = "pipeline_started"
     pipeline_finished = "pipeline_finished"
 
@@ -63,6 +64,8 @@ class ProgressEvent(BaseModel):
 
     # stage_finished
     cost_usd: float | None = None
+    input_tokens: int | None = None
+    output_tokens: int | None = None
 
     # stage_failed
     error: str | None = None
@@ -71,6 +74,13 @@ class ProgressEvent(BaseModel):
     model: str | None = None
     attempt_count: int | None = None
     terminal_reason: str | None = None
+
+    # budget_warning / budget-driven stage_paused
+    budget_scope: str | None = None
+    budget_limit_usd: float | None = None
+    budget_consumed_usd: float | None = None
+    budget_remaining_usd: float | None = None
+    warning_threshold_usd: float | None = None
 
     # pipeline_started
     recipe_id: str | None = None

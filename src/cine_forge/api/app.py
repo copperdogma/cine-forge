@@ -38,6 +38,7 @@ from cine_forge.api.models import (
     PropagationResponse,
     RecentProjectSummary,
     RecipeSummary,
+    ResumeRunRequest,
     RunEventsResponse,
     RunStartRequest,
     RunStartResponse,
@@ -50,7 +51,7 @@ from cine_forge.api.models import (
     StylePresetResponse,
     UploadedInputResponse,
 )
-from cine_forge.api.routers import assets, design_study, export, impact
+from cine_forge.api.routers import assets, costs, design_study, export, impact
 from cine_forge.api.service import OperatorConsoleService
 
 load_dotenv()
@@ -88,10 +89,12 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app = FastAPI(title="CineForge API", version=app_version)
     app.state.console_service = service
     assets.set_service(service)
+    costs.set_service(service)
     export.set_service(service)
     design_study.set_service(service)
     impact.set_service(service)
     app.include_router(assets.router, prefix="/api")
+    app.include_router(costs.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
     app.include_router(design_study.router, prefix="/api")
     app.include_router(impact.router, prefix="/api")
@@ -712,8 +715,12 @@ Return valid JSON matching the schema."""
         )
 
     @app.post("/api/runs/{run_id}/resume", response_model=RunStartResponse)
-    async def resume_run(run_id: str) -> RunStartResponse:
-        new_run_id = service.resume_run(run_id)
+    async def resume_run(
+        run_id: str,
+        request: ResumeRunRequest | None = None,
+    ) -> RunStartResponse:
+        overrides = request.model_dump(exclude_unset=True) if request is not None else None
+        new_run_id = service.resume_run(run_id, overrides=overrides)
         return RunStartResponse(
             run_id=new_run_id,
             state_url=f"/api/runs/{new_run_id}/state",

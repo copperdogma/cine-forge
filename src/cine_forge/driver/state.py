@@ -35,7 +35,10 @@ class StageRunState(BaseModel):
     artifact_refs: list[ArtifactRef] = Field(default_factory=list)
     duration_seconds: float = Field(ge=0.0, default=0.0)
     cost_usd: float = Field(ge=0.0, default=0.0)
+    input_tokens: int = Field(ge=0, default=0)
+    output_tokens: int = Field(ge=0, default=0)
     started_at: float | None = None
+    pause_reason: str | None = None
 
 
 class RunState(BaseModel):
@@ -48,6 +51,8 @@ class RunState(BaseModel):
     stages: dict[str, StageRunState]
     runtime_params: dict[str, Any] = Field(default_factory=dict)
     total_cost_usd: float = Field(ge=0.0)
+    project_cost_baseline_usd: float = Field(ge=0.0, default=0.0)
+    budget_warning_scopes: list[str] = Field(default_factory=list)
     stage_order: list[str] = Field(default_factory=list)
     instrumented: bool
     finished_at: float | None = None

@@ -14,13 +14,20 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { RunCostSummaryPanel } from '@/components/RunCostSummaryPanel'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RunEventLog, type RunEvent } from '@/components/RunEventLog'
 import { ErrorState } from '@/components/StateViews'
 import { cn } from '@/lib/utils'
 import type { StageState } from '@/lib/types'
-import { useRunState, useRunEvents, useRetryFailedStage, useResumeRun } from '@/lib/hooks'
+import {
+  useRetryFailedStage,
+  useResumeRun,
+  useRunCosts,
+  useRunEvents,
+  useRunState,
+} from '@/lib/hooks'
 import { RECIPE_NAMES } from '@/lib/constants'
 import { toast } from 'sonner'
 import { formatDuration } from '@/lib/format'
@@ -89,6 +96,7 @@ function mapApiEventsToRunEvents(apiEvents: Array<Record<string, unknown>>): Run
     stage_retrying: 'warning',
     stage_fallback: 'warning',
     stage_paused: 'warning',
+    budget_warning: 'warning',
   }
   return apiEvents.map((event) => {
     const backendEvent = (event.event as string) ?? ''
@@ -103,9 +111,17 @@ function mapApiEventsToRunEvents(apiEvents: Array<Record<string, unknown>>): Run
       message = `Fallback model selected: ${(event.to_model as string) ?? 'unknown'}`
     } else if (backendEvent === 'stage_failed') {
       message = (event.error as string) || `Stage ${stageId ?? ''} failed`
+    } else if (backendEvent === 'budget_warning') {
+      const scope = (event.budget_scope as string) ?? 'budget'
+      message = (event.reason as string) ?? `${scope} budget warning`
     }
     return {
-      timestamp: (event.timestamp as number) || Date.now(),
+      timestamp:
+        typeof event.ts === 'number'
+          ? event.ts * 1000
+          : typeof event.timestamp === 'number'
+            ? event.timestamp * 1000
+            : Date.now(),
       type: eventTypeMap[backendEvent] ?? ((event.type as RunEvent['type']) || 'info'),
       stage: stageId,
       message,
@@ -119,6 +135,7 @@ export default function RunDetail() {
   const navigate = useNavigate()
   const goBack = useHistoryBack(`/${projectId}/runs`)
 
+  const { data: runCostSummary } = useRunCosts(runId)
   const { data: runStateResponse, isLoading, error, refetch } = useRunState(runId)
   const { data: eventsResponse, isLoading: eventsLoading } = useRunEvents(runId, !!runStateResponse?.state?.finished_at)
   const retryFailedStage = useRetryFailedStage()
@@ -331,6 +348,35 @@ export default function RunDetail() {
           </CardContent>
         </Card>
       </div>
+
+      {projectId && runCostSummary && (
+        <div className="mb-6">
+          <RunCostSummaryPanel
+            projectId={projectId}
+            summary={runCostSummary}
+            resumeAction={{
+              isPending: resumeRun.isPending,
+              onResume: (nextRunBudgetLimitUsd?: number) => {
+                void (async () => {
+                  try {
+                    const result = await resumeRun.mutateAsync({
+                      runId: runId!,
+                      projectId,
+                      runBudgetLimitUsd: nextRunBudgetLimitUsd,
+                    })
+                    navigate(`/${projectId}/run/${result.run_id}`)
+                    toast.success("Pipeline resumed")
+                  } catch (err) {
+                    toast.error(
+                      "Failed to resume: " + (err instanceof Error ? err.message : "Unknown error")
+                    )
+                  }
+                })()
+              },
+            }}
+          />
+        </div>
+      )}
 
       {/* Stage progress */}
       <Card className="mb-6">

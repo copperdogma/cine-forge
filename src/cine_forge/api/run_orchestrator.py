@@ -19,6 +19,7 @@ from cine_forge.api.exceptions import ServiceError
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.schemas import ArtifactRef, RuntimeParams
+from cine_forge.services.cost_tracking import CostTrackingService
 
 if TYPE_CHECKING:
     from cine_forge.api.chat_store import ChatStore
@@ -106,6 +107,7 @@ class RunOrchestrator:
                     "recipe_id": state.get("recipe_id", "mvp_ingest"),
                     "started_at": state.get("started_at"),
                     "finished_at": state.get("finished_at"),
+                    "total_cost_usd": float(state.get("total_cost_usd", 0.0) or 0.0),
                 }
             )
         return runs
@@ -122,6 +124,7 @@ class RunOrchestrator:
 
         project_path = self._project_path_resolver(project_id)
         run_id = request.get("run_id") or f"run-{uuid.uuid4().hex[:8]}"
+        pj = self._project_json_reader(project_path) or {}
 
         recipe_id = request.get("recipe_id") or "mvp_ingest"
         recipe_filename = f"recipe-{str(recipe_id).replace('_', '-')}.yaml"
@@ -135,6 +138,21 @@ class RunOrchestrator:
             )
 
         verify_or_qa = request.get("verify_model") or request.get("qa_model")
+        project_budget_limit_usd = (
+            request["project_budget_limit_usd"]
+            if "project_budget_limit_usd" in request
+            else pj.get("project_budget_limit_usd")
+        )
+        run_budget_limit_usd = (
+            request["run_budget_limit_usd"]
+            if "run_budget_limit_usd" in request
+            else pj.get("default_run_budget_limit_usd")
+        )
+        budget_warning_threshold_ratio = (
+            request["budget_warning_threshold_ratio"]
+            if "budget_warning_threshold_ratio" in request
+            else pj.get("budget_warning_threshold_ratio")
+        )
         params = RuntimeParams(
             input_file=request["input_file"],
             default_model=request["default_model"],
@@ -148,6 +166,9 @@ class RunOrchestrator:
             verify_model=verify_or_qa,
             qa_model=verify_or_qa,
             escalate_model=request.get("escalate_model"),
+            project_budget_limit_usd=project_budget_limit_usd,
+            run_budget_limit_usd=run_budget_limit_usd,
+            budget_warning_threshold_ratio=budget_warning_threshold_ratio,
         )
         runtime_params = params.model_dump(by_alias=True, exclude_none=True)
 
@@ -190,7 +211,7 @@ class RunOrchestrator:
         worker.start()
         return run_id
 
-    def resume_run(self, run_id: str) -> str:
+    def resume_run(self, run_id: str, overrides: dict[str, Any] | None = None) -> str:
 
         run_dir = self.workspace_root / "output" / "runs" / run_id
         state_path = run_dir / "run_state.json"
@@ -233,6 +254,14 @@ class RunOrchestrator:
         base_params = dict(state.get("runtime_params", {}))
         base_params["human_control_mode"] = mode
         base_params["user_approved"] = True
+        if "project_budget_limit_usd" in pj:
+            base_params["project_budget_limit_usd"] = pj.get("project_budget_limit_usd")
+        if "budget_warning_threshold_ratio" in pj:
+            base_params["budget_warning_threshold_ratio"] = pj.get("budget_warning_threshold_ratio")
+        if "run_budget_limit_usd" not in base_params and "default_run_budget_limit_usd" in pj:
+            base_params["run_budget_limit_usd"] = pj.get("default_run_budget_limit_usd")
+        for key, value in (overrides or {}).items():
+            base_params[key] = value
         base_params["resume_artifact_refs_by_stage"] = {
             sid: s.get("artifact_refs", [])
             for sid, s in stages.items() if isinstance(s, dict)
@@ -487,6 +516,11 @@ class RunOrchestrator:
                 start_from=start_from,
                 end_at=end_at,
             )
+            self._persist_cost_report_if_possible(
+                project_id=project_id,
+                project_path=project_path,
+                run_id=run_id,
+            )
             with self._run_lock:
                 self._run_errors.pop(run_id, None)
         except Exception as exc:  # noqa: BLE001
@@ -498,6 +532,11 @@ class RunOrchestrator:
             except Exception:  # noqa: BLE001
                 pass
 
+            self._persist_cost_report_if_possible(
+                project_id=project_id,
+                project_path=project_path,
+                run_id=run_id,
+            )
             self._handle_run_failure_chat_notification(project_id, project_path, run_id, exc)
         finally:
             with self._run_lock:
@@ -611,3 +650,19 @@ class RunOrchestrator:
             if isinstance(content, str) and content.strip():
                 return True
         return False
+
+    def _persist_cost_report_if_possible(
+        self,
+        *,
+        project_id: str,
+        project_path: Path,
+        run_id: str,
+    ) -> None:
+        try:
+            CostTrackingService(self.workspace_root).persist_run_cost_report(
+                project_id=project_id,
+                project_path=project_path,
+                run_id=run_id,
+            )
+        except Exception:  # noqa: BLE001
+            log.exception("Failed to persist cost report for run %s", run_id)

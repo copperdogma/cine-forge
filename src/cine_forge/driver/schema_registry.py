@@ -12,6 +12,7 @@ from cine_forge.schemas import (
     ContinuityIndex,
     ContinuityState,
     Conversation,
+    CostReport,
     Decision,
     DisagreementArtifact,
     EntityDiscoveryResults,
@@ -103,4 +104,5 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("previz_reel", PrevizReel)
     registry.register("render_prompt", CompiledRenderPrompt)
     registry.register("generated_video", GeneratedVideoArtifact)
+    registry.register("cost_report", CostReport)
     return registry

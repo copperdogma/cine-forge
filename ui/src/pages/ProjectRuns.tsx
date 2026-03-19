@@ -1,15 +1,25 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { History, Plus } from 'lucide-react'
+import { ProjectCostSummaryPanel } from '@/components/ProjectCostSummaryPanel'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useRuns } from '@/lib/hooks'
+import { useProjectCosts, useRuns } from '@/lib/hooks'
 import { ErrorState, EmptyState } from '@/components/StateViews'
 import { RECIPE_NAMES } from '@/lib/constants'
 import { timeAgo } from '@/lib/format'
 import { StatusIcon, StatusBadge } from '@/components/StatusBadge'
 import { PageHeader } from '@/components/PageHeader'
+
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 4,
+  }).format(value)
+}
 
 function RunListSkeleton() {
   return (
@@ -41,6 +51,7 @@ export default function ProjectRuns() {
   const { projectId } = useParams()
   const navigate = useNavigate()
   const { data: runs, isLoading, error, refetch } = useRuns(projectId)
+  const { data: projectCosts } = useProjectCosts(projectId)
 
   if (isLoading) {
     return (
@@ -92,6 +103,12 @@ export default function ProjectRuns() {
         </Button>
       </div>
 
+      {projectId && projectCosts && (
+        <div className="mb-6">
+          <ProjectCostSummaryPanel projectId={projectId} summary={projectCosts} />
+        </div>
+      )}
+
       <Card>
         <CardContent className="py-2 px-0">
           {runs.map((run, i) => (
@@ -120,7 +137,7 @@ export default function ProjectRuns() {
                   </div>
                 </div>
                 <span className="text-xs text-muted-foreground shrink-0">
-                  {run.started_at ? timeAgo(run.started_at * 1000) : 'Unknown'}
+                  {formatCurrency(run.total_cost_usd)}
                 </span>
               </button>
               {i < runs.length - 1 && <Separator />}

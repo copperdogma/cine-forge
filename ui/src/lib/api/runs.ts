@@ -1,6 +1,8 @@
 import type {
   ArtifactEditResponse,
+  ProjectCostSummary,
   RunEventsResponse,
+  RunCostSummary,
   RunStartPayload,
   RunStateResponse,
   RunSummary,
@@ -24,9 +26,13 @@ export function retryFailedStage(runId: string): Promise<{ run_id: string }> {
   })
 }
 
-export function resumeRun(runId: string): Promise<{ run_id: string }> {
+export function resumeRun(
+  runId: string,
+  overrides?: { run_budget_limit_usd?: number | null },
+): Promise<{ run_id: string }> {
   return request<{ run_id: string }>(`/api/runs/${runId}/resume`, {
     method: 'POST',
+    body: overrides ? JSON.stringify(overrides) : undefined,
   })
 }
 
@@ -52,4 +58,12 @@ export function getRunState(runId: string): Promise<RunStateResponse> {
 
 export function getRunEvents(runId: string): Promise<RunEventsResponse> {
   return request<RunEventsResponse>(`/api/runs/${runId}/events`)
+}
+
+export function getRunCosts(runId: string): Promise<RunCostSummary> {
+  return request<RunCostSummary>(`/api/runs/${runId}/costs`)
+}
+
+export function getProjectCosts(projectId: string): Promise<ProjectCostSummary> {
+  return request<ProjectCostSummary>(`/api/projects/${projectId}/costs`)
 }

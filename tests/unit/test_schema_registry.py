@@ -47,6 +47,7 @@ def test_build_schema_registry_returns_populated_registry() -> None:
     # Spot-check 6 representative artifact types
     assert registry.get("scene") is not None
     assert registry.get("character_bible") is not None
+    assert registry.get("cost_report") is not None
     assert registry.get("entity_graph") is not None
     assert registry.get("injected_asset_manifest") is not None
     assert registry.get("project_config") is not None

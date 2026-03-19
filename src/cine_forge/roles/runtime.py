@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import json
+import logging
 import threading
 import uuid
 from collections.abc import Callable
+from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -47,6 +49,8 @@ MODEL_CAPABILITIES: dict[str, set[PerceptionCapability]] = {
     "mock": {PerceptionCapability.TEXT},
     "fixture": {PerceptionCapability.TEXT},
 }
+
+log = logging.getLogger(__name__)
 
 
 class _StructuredRoleAnswer(BaseModel):
@@ -196,6 +200,7 @@ class RoleContext:
         model_resolver: Callable[[str], str] | None = None,
         style_pack_selections: dict[str, str] | None = None,
         llm_callable: Callable[..., tuple[str | BaseModel, dict[str, Any]]] = call_llm,
+        cost_observer: Callable[[dict[str, Any]], None] | None = None,
     ) -> None:
         self.catalog = catalog
         self.project_dir = project_dir
@@ -206,6 +211,8 @@ class RoleContext:
         self._model_resolver = model_resolver or (lambda _role_id: "mock")
         self._style_pack_selections = style_pack_selections or {}
         self._llm_callable = llm_callable
+        self._cost_observer = cost_observer
+        self._execution_context = threading.local()
 
         # Validate style-pack assignments on startup.
         for role_id, style_pack_id in self._style_pack_selections.items():
@@ -214,6 +221,20 @@ class RoleContext:
                 raise RoleRuntimeError(
                     f"Role '{role_id}' rejects style packs but was assigned '{style_pack_id}'"
                 )
+
+    @contextmanager
+    def bind_execution_context(self, **context: Any):
+        """Bind run/stage context for nested role invocations on the current thread."""
+        previous = dict(getattr(self._execution_context, "value", {}))
+        merged = dict(previous)
+        for key, value in context.items():
+            if value is not None:
+                merged[key] = value
+        self._execution_context.value = merged
+        try:
+            yield
+        finally:
+            self._execution_context.value = previous
 
     def invoke(self, role_id: str, prompt: str, inputs: dict[str, Any]) -> RoleResponse:
         role = self.catalog.get_role(role_id)
@@ -273,6 +294,20 @@ class RoleContext:
             suggestions=list(structured_response.suggestions),
             cost_data=CostRecord.model_validate(cost_meta),
         )
+        invocation_context = self._build_invocation_context(inputs=inputs)
+
+        if self._cost_observer and response.cost_data is not None:
+            try:
+                self._cost_observer(
+                    {
+                        **invocation_context,
+                        "role_id": role_id,
+                        "model": model,
+                        "cost_data": response.cost_data.model_dump(mode="json"),
+                    }
+                )
+            except Exception:  # noqa: BLE001
+                log.exception("Failed to record role invocation cost context")
 
         if self.store and response.suggestions:
             for sugg_payload in response.suggestions:
@@ -313,6 +348,7 @@ class RoleContext:
             prompt=prompt,
             inputs=inputs,
             response=response,
+            invocation_context=invocation_context,
         )
         return response
 
@@ -356,12 +392,14 @@ class RoleContext:
         prompt: str,
         inputs: dict[str, Any],
         response: RoleResponse,
+        invocation_context: dict[str, Any],
     ) -> None:
         log_record = {
             "created_at": datetime.now(UTC).isoformat(),
             "role_id": role.role_id,
             "tier": role.tier.value,
             "model": model,
+            **invocation_context,
             "style_pack_id": style_pack_id,
             "prompt": prompt,
             "inputs": inputs,
@@ -371,3 +409,63 @@ class RoleContext:
         with self._log_lock:
             with self._log_path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(log_record, sort_keys=True) + "\n")
+
+    def _build_invocation_context(self, *, inputs: dict[str, Any]) -> dict[str, Any]:
+        current = dict(getattr(self._execution_context, "value", {}))
+
+        run_id = self._first_string(
+            inputs.get("run_id"),
+            current.get("run_id"),
+        )
+        stage_id = self._first_string(
+            inputs.get("stage_id"),
+            current.get("stage_id"),
+        )
+        scene_id = self._first_string(
+            inputs.get("scene_id"),
+            self._exact_scene_id(inputs.get("entity_id")),
+            self._scene_id_from_artifact_ref(inputs.get("artifact_ref")),
+            current.get("scene_id"),
+        )
+        entity_id = self._first_string(
+            inputs.get("entity_id"),
+            inputs.get("related_entity_id"),
+            self._entity_id_from_artifact_ref(inputs.get("artifact_ref")),
+            current.get("entity_id"),
+        )
+
+        context = {
+            "run_id": run_id,
+            "stage_id": stage_id,
+            "scene_id": scene_id,
+            "entity_id": entity_id,
+        }
+        return {key: value for key, value in context.items() if value is not None}
+
+    @staticmethod
+    def _first_string(*values: Any) -> str | None:
+        for value in values:
+            if isinstance(value, str) and value.strip():
+                return value
+        return None
+
+    @staticmethod
+    def _entity_id_from_artifact_ref(payload: Any) -> str | None:
+        if isinstance(payload, dict):
+            entity_id = payload.get("entity_id")
+            if isinstance(entity_id, str) and entity_id.strip():
+                return entity_id
+        return None
+
+    @staticmethod
+    def _scene_id_from_artifact_ref(payload: Any) -> str | None:
+        return RoleContext._exact_scene_id(RoleContext._entity_id_from_artifact_ref(payload))
+
+    @staticmethod
+    def _exact_scene_id(value: Any) -> str | None:
+        if not isinstance(value, str):
+            return None
+        parts = value.split("_")
+        if len(parts) == 2 and parts[0] == "scene" and parts[1].isdigit():
+            return value
+        return None

@@ -271,6 +271,8 @@ class OperatorConsoleService:
             config_updates["human_control_mode"] = updates["human_control_mode"]
         if "production_format" in updates:
             config_updates["production_format"] = updates["production_format"]
+        if "project_budget_limit_usd" in updates:
+            config_updates["budget_cap_usd"] = updates["project_budget_limit_usd"]
         if config_updates:
             self._sync_project_settings_to_config(project_id, config_updates)
 
@@ -499,6 +501,9 @@ class OperatorConsoleService:
             "work_model": (pj or {}).get("work_model"),
             "verify_model": (pj or {}).get("verify_model"),
             "escalate_model": (pj or {}).get("escalate_model"),
+            "project_budget_limit_usd": (pj or {}).get("project_budget_limit_usd"),
+            "default_run_budget_limit_usd": (pj or {}).get("default_run_budget_limit_usd"),
+            "budget_warning_threshold_ratio": (pj or {}).get("budget_warning_threshold_ratio", 0.8),
         }
 
     @staticmethod
@@ -866,9 +871,9 @@ class OperatorConsoleService:
             input_payload={"human_feedback": feedback} if feedback else None
         )
 
-    def resume_run(self, run_id: str) -> str:
+    def resume_run(self, run_id: str, overrides: dict[str, Any] | None = None) -> str:
         """Resume a paused pipeline run (e.g. after human approval)."""
-        return self._orchestrator.resume_run(run_id)
+        return self._orchestrator.resume_run(run_id, overrides=overrides)
 
     def search_entities(self, project_id: str, query: str) -> dict[str, Any]:
         """Search across scenes, characters, locations, and props for a project."""

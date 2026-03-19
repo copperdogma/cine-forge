@@ -16,6 +16,7 @@ from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.artifact_persister import ArtifactPersister
+from cine_forge.driver.budget_guard import BudgetDecision, BudgetGuard
 from cine_forge.driver.canon_gate_runner import StageCanonGate
 from cine_forge.driver.discovery import ModuleManifest, discover_modules
 from cine_forge.driver.event_emitter import EventEmitter
@@ -34,6 +35,7 @@ from cine_forge.roles import RoleCatalog, RoleContext
 from cine_forge.schemas import (
     ArtifactHealth,
     ArtifactRef,
+    BudgetStatus,
     CostRecord,
     EventType,
     ProgressEvent,
@@ -125,11 +127,16 @@ class DriverEngine:
                     "artifact_refs": [],
                     "duration_seconds": 0.0,
                     "cost_usd": 0.0,
+                    "input_tokens": 0,
+                    "output_tokens": 0,
+                    "pause_reason": None,
                 }
                 for stage in recipe.stages
             },
             "runtime_params": resolved_runtime_params,
             "total_cost_usd": 0.0,
+            "project_cost_baseline_usd": 0.0,
+            "budget_warning_scopes": [],
             "instrumented": instrument,
         }
 
@@ -179,6 +186,13 @@ class DriverEngine:
         # Lock protects shared mutable state accessed by parallel stage threads:
         # run_state["total_cost_usd"], _write_run_state, emitter.emit, _update_stage_cache
         state_lock = threading.Lock()
+        budget_guard = BudgetGuard(
+            workspace_root=self.workspace_root,
+            project_path=self.project_dir,
+            run_id=run_id,
+            runtime_params=resolved_runtime_params,
+        )
+        run_state["project_cost_baseline_usd"] = budget_guard.project_cost_baseline_usd
 
         # Initialize role system for gating and creative feedback
         role_catalog = RoleCatalog()
@@ -194,6 +208,11 @@ class DriverEngine:
             model_resolver=lambda _role_id: resolved_runtime_params.get("default_model", "mock"),
             style_pack_selections=style_packs,
             llm_callable=llm_callable or call_llm,
+            cost_observer=self._make_role_cost_observer(
+                run_state=run_state,
+                state_lock=state_lock,
+                state_path=state_path,
+            ),
         )
 
         emitter.emit(ProgressEvent(
@@ -203,7 +222,21 @@ class DriverEngine:
         ))
 
         run_paused = False
-        for wave in waves:
+        if ordered_stages:
+            initial_budget_decision = budget_guard.evaluate(
+                run_state,
+                next_stage_id=ordered_stages[0],
+            )
+            run_paused = self._apply_budget_decision(
+                run_state=run_state,
+                decision=initial_budget_decision,
+                pause_stage_id=ordered_stages[0],
+                emitter=emitter,
+                state_lock=state_lock,
+                state_path=state_path,
+            )
+
+        for wave_index, wave in enumerate(waves):
             if run_paused:
                 break
 
@@ -230,6 +263,20 @@ class DriverEngine:
                 )
                 if result == "paused":
                     run_paused = True
+                    break
+                budget_decision = budget_guard.evaluate(
+                    run_state,
+                    next_stage_id=self._next_stage_id(waves, wave_index),
+                )
+                run_paused = self._apply_budget_decision(
+                    run_state=run_state,
+                    decision=budget_decision,
+                    pause_stage_id=self._next_stage_id(waves, wave_index),
+                    emitter=emitter,
+                    state_lock=state_lock,
+                    state_path=state_path,
+                )
+                if run_paused:
                     break
             else:
                 # Multi-stage wave — run in parallel
@@ -284,6 +331,20 @@ class DriverEngine:
                         error=str(first_exc),
                     ))
                     raise first_exc
+                if not run_paused:
+                    next_stage_id = self._next_stage_id(waves, wave_index)
+                    budget_decision = budget_guard.evaluate(
+                        run_state,
+                        next_stage_id=next_stage_id,
+                    )
+                    run_paused = self._apply_budget_decision(
+                        run_state=run_state,
+                        decision=budget_decision,
+                        pause_stage_id=next_stage_id,
+                        emitter=emitter,
+                        state_lock=state_lock,
+                        state_path=state_path,
+                    )
 
         run_state["finished_at"] = time.time()
         self._write_run_state(state_path, run_state)
@@ -364,138 +425,152 @@ class DriverEngine:
 
         print(f"[{run_id}] Stage '{stage_id}' starting...")
         try:
-            module_runner = _load_module_runner(module_manifest=module_manifest)
-            persister = ArtifactPersister(
-                store=self.store,
-                schemas=self.schemas,
-                module_id=module_manifest.module_id,
-                output_schemas=module_manifest.output_schemas,
-                upstream_refs=upstream_refs,
-                stage_id=stage_id,
-                stage_state=stage_state,
-                run_state=run_state,
-                state_lock=state_lock,
-                emitter=emitter,
-                write_run_state=lambda: self._write_run_state(state_path, run_state),
-            )
-            model_attempt_plan = self.retry_policy.build_stage_model_attempt_plan(
-                stage_id=stage_id,
-                stage_params=stage.params,
-                fallback_overrides=retry_config.fallback_overrides,
-                max_attempts=self.retry_policy.max_attempts_for_stage(
+            with role_context.bind_execution_context(run_id=run_id, stage_id=stage_id):
+                module_runner = _load_module_runner(module_manifest=module_manifest)
+                persister = ArtifactPersister(
+                    store=self.store,
+                    schemas=self.schemas,
+                    module_id=module_manifest.module_id,
+                    output_schemas=module_manifest.output_schemas,
+                    upstream_refs=upstream_refs,
                     stage_id=stage_id,
-                    default_max_attempts=retry_config.default_max_attempts,
-                    stage_overrides=retry_config.stage_max_attempt_overrides,
-                ),
-            )
-            module_result, active_attempt_model = self._run_module_with_retry(
-                module_runner=module_runner,
-                module_inputs=module_inputs,
-                stage=stage,
-                stage_id=stage_id,
-                run_id=run_id,
-                resolved_runtime_params=resolved_runtime_params,
-                persister=persister,
-                model_attempt_plan=model_attempt_plan,
-                retry_config=retry_config,
-                stage_state=stage_state,
-                state_lock=state_lock,
-                emitter=emitter,
-                state_path=state_path,
-                run_state=run_state,
-            )
-            outputs = module_result.get("artifacts", [])
-            cost_record = _coerce_cost(module_result.get("cost"))
-            raw_cost = module_result.get("cost")
-            call_count = 0
-            if isinstance(raw_cost, list):
-                call_count = len(raw_cost)
-            elif isinstance(raw_cost, dict):
-                call_count = 1
-            model_used = module_result.get("model")
-            if not model_used and cost_record:
-                model_used = cost_record.model
-            if not model_used and active_attempt_model:
-                model_used = active_attempt_model
-
-            with state_lock:
-                stage_state["model_used"] = model_used or "code"
-                stage_state["call_count"] = call_count
-                if cost_record:
-                    stage_state["cost_usd"] = cost_record.estimated_cost_usd
-                    run_state["total_cost_usd"] += cost_record.estimated_cost_usd
-
-            persisted_outputs = persister.persist_batch(outputs, cost_record)
-
-            # --- Story 019: Canon review gating ---
-            control_mode = human_control_mode or resolved_runtime_params.get(
-                "human_control_mode", "autonomous"
-            )
-            canon_gate = StageCanonGate(
-                store=self.store,
-                role_context=role_context,
-                stage_id=stage_id,
-                stage_state=stage_state,
-                state_lock=state_lock,
-                emitter=emitter,
-                write_run_state=lambda: self._write_run_state(state_path, run_state),
-                run_id=run_id,
-                stage_started=stage_started,
-            )
-            if canon_gate.evaluate(
-                outputs=outputs,
-                persisted_outputs=persisted_outputs,
-                control_mode=control_mode,
-                resolved_runtime_params=resolved_runtime_params,
-            ):
-                return "paused"
-
-            with state_lock:
-                stage_outputs[stage_id] = persisted_outputs
-                self._update_stage_cache(
-                    stage_cache=stage_cache,
-                    recipe_id=recipe.recipe_id,
-                    stage_id=stage_id,
-                    outputs=persisted_outputs,
-                    stage_fingerprint=stage_fingerprint,
+                    stage_state=stage_state,
+                    run_state=run_state,
+                    state_lock=state_lock,
+                    emitter=emitter,
+                    write_run_state=lambda: self._write_run_state(state_path, run_state),
                 )
+                model_attempt_plan = self.retry_policy.build_stage_model_attempt_plan(
+                    stage_id=stage_id,
+                    stage_params=stage.params,
+                    fallback_overrides=retry_config.fallback_overrides,
+                    max_attempts=self.retry_policy.max_attempts_for_stage(
+                        stage_id=stage_id,
+                        default_max_attempts=retry_config.default_max_attempts,
+                        stage_overrides=retry_config.stage_max_attempt_overrides,
+                    ),
+                )
+                module_result, active_attempt_model = self._run_module_with_retry(
+                    module_runner=module_runner,
+                    module_inputs=module_inputs,
+                    stage=stage,
+                    stage_id=stage_id,
+                    run_id=run_id,
+                    resolved_runtime_params=resolved_runtime_params,
+                    persister=persister,
+                    model_attempt_plan=model_attempt_plan,
+                    retry_config=retry_config,
+                    stage_state=stage_state,
+                    state_lock=state_lock,
+                    emitter=emitter,
+                    state_path=state_path,
+                    run_state=run_state,
+                )
+                outputs = module_result.get("artifacts", [])
+                cost_record = _coerce_cost(module_result.get("cost"))
+                raw_cost = module_result.get("cost")
+                call_count = 0
+                if isinstance(raw_cost, list):
+                    call_count = len(raw_cost)
+                elif isinstance(raw_cost, dict):
+                    call_count = 1
+                model_used = module_result.get("model")
+                if not model_used and cost_record:
+                    model_used = cost_record.model
+                if not model_used and active_attempt_model:
+                    model_used = active_attempt_model
 
-            pause_reason = module_result.get("pause_reason")
-            if pause_reason:
                 with state_lock:
-                    stage_state["status"] = "paused"
+                    stage_state["model_used"] = model_used or "code"
+                    stage_state["call_count"] += call_count
+                    if cost_record:
+                        stage_state["cost_usd"] = round(
+                            float(stage_state.get("cost_usd", 0.0) or 0.0)
+                            + cost_record.estimated_cost_usd,
+                            8,
+                        )
+                        stage_state["input_tokens"] += cost_record.input_tokens
+                        stage_state["output_tokens"] += cost_record.output_tokens
+                        run_state["total_cost_usd"] = round(
+                            float(run_state.get("total_cost_usd", 0.0) or 0.0)
+                            + cost_record.estimated_cost_usd,
+                            8,
+                        )
+
+                persisted_outputs = persister.persist_batch(outputs, cost_record)
+
+                # --- Story 019: Canon review gating ---
+                control_mode = human_control_mode or resolved_runtime_params.get(
+                    "human_control_mode", "autonomous"
+                )
+                canon_gate = StageCanonGate(
+                    store=self.store,
+                    role_context=role_context,
+                    stage_id=stage_id,
+                    stage_state=stage_state,
+                    state_lock=state_lock,
+                    emitter=emitter,
+                    write_run_state=lambda: self._write_run_state(state_path, run_state),
+                    run_id=run_id,
+                    stage_started=stage_started,
+                )
+                if canon_gate.evaluate(
+                    outputs=outputs,
+                    persisted_outputs=persisted_outputs,
+                    control_mode=control_mode,
+                    resolved_runtime_params=resolved_runtime_params,
+                ):
+                    return "paused"
+
+                with state_lock:
+                    stage_outputs[stage_id] = persisted_outputs
+                    self._update_stage_cache(
+                        stage_cache=stage_cache,
+                        recipe_id=recipe.recipe_id,
+                        stage_id=stage_id,
+                        outputs=persisted_outputs,
+                        stage_fingerprint=stage_fingerprint,
+                    )
+
+                pause_reason = module_result.get("pause_reason")
+                if pause_reason:
+                    with state_lock:
+                        stage_state["status"] = "paused"
+                        stage_state["pause_reason"] = str(pause_reason)
+                        stage_state["duration_seconds"] = round(
+                            time.time() - stage_started, 4
+                        )
+                        emitter.emit(ProgressEvent(
+                            event=EventType.stage_paused,
+                            stage_id=stage_id,
+                            reason=str(pause_reason),
+                            artifacts=stage_state["artifact_refs"],
+                        ))
+                        self._write_run_state(state_path, run_state)
+                    print(f"[{run_id}] Stage '{stage_id}' paused: {pause_reason}")
+                    return "paused"
+
+                with state_lock:
+                    stage_state["status"] = "done"
                     stage_state["duration_seconds"] = round(
                         time.time() - stage_started, 4
                     )
                     emitter.emit(ProgressEvent(
-                        event=EventType.stage_paused,
+                        event=EventType.stage_finished,
                         stage_id=stage_id,
-                        reason=str(pause_reason),
+                        cost_usd=stage_state["cost_usd"],
+                        input_tokens=stage_state["input_tokens"],
+                        output_tokens=stage_state["output_tokens"],
                         artifacts=stage_state["artifact_refs"],
                     ))
                     self._write_run_state(state_path, run_state)
-                print(f"[{run_id}] Stage '{stage_id}' paused: {pause_reason}")
-                return "paused"
 
-            with state_lock:
-                stage_state["status"] = "done"
-                stage_state["duration_seconds"] = round(
-                    time.time() - stage_started, 4
+                print(
+                    f"[{run_id}] Stage '{stage_id}' done in "
+                    f"{stage_state['duration_seconds']}s (cost ${stage_state['cost_usd']:.4f}; "
+                    f"total ${run_state['total_cost_usd']:.4f})."
                 )
-                emitter.emit(ProgressEvent(
-                    event=EventType.stage_finished,
-                    stage_id=stage_id,
-                    cost_usd=stage_state["cost_usd"],
-                    artifacts=stage_state["artifact_refs"],
-                ))
-                self._write_run_state(state_path, run_state)
-
-            print(
-                f"[{run_id}] Stage '{stage_id}' done in "
-                f"{stage_state['duration_seconds']}s (cost ${stage_state['cost_usd']:.4f}; "
-                f"total ${run_state['total_cost_usd']:.4f})."
-            )
-            return "done"
+                return "done"
         except Exception as exc:  # noqa: BLE001
             self._handle_stage_failure(
                 exc=exc,
@@ -817,6 +892,103 @@ class DriverEngine:
 
         return collected, lineage
 
+    @staticmethod
+    def _next_stage_id(waves: list[list[str]], current_wave_index: int) -> str | None:
+        for later_wave in waves[current_wave_index + 1 :]:
+            if later_wave:
+                return later_wave[0]
+        return None
+
+    def _apply_budget_decision(
+        self,
+        *,
+        run_state: dict[str, Any],
+        decision: BudgetDecision,
+        pause_stage_id: str | None,
+        emitter: EventEmitter,
+        state_lock: threading.Lock,
+        state_path: Path,
+    ) -> bool:
+        paused = False
+        with state_lock:
+            for warning in decision.warnings:
+                emitter.emit(self._budget_event(
+                    event=EventType.budget_warning,
+                    status=warning,
+                ))
+            if decision.pause_status is not None and pause_stage_id is not None:
+                pause_reason = (
+                    f"{decision.pause_status.message} Increase the budget and resume to continue."
+                )
+                pause_stage = run_state["stages"][pause_stage_id]
+                pause_stage["status"] = "paused"
+                pause_stage["pause_reason"] = pause_reason
+                emitter.emit(self._budget_event(
+                    event=EventType.stage_paused,
+                    status=decision.pause_status,
+                    stage_id=pause_stage_id,
+                    reason=pause_reason,
+                    artifacts=pause_stage.get("artifact_refs"),
+                ))
+                paused = True
+            if decision.warnings or paused:
+                self._write_run_state(state_path, run_state)
+        return paused
+
+    @staticmethod
+    def _budget_event(
+        *,
+        event: EventType,
+        status: BudgetStatus,
+        stage_id: str | None = None,
+        reason: str | None = None,
+        artifacts: list[dict[str, Any]] | None = None,
+    ) -> ProgressEvent:
+        return ProgressEvent(
+            event=event,
+            stage_id=stage_id,
+            reason=reason or status.message,
+            artifacts=artifacts,
+            budget_scope=status.scope.value,
+            budget_limit_usd=status.limit_usd,
+            budget_consumed_usd=status.consumed_usd,
+            budget_remaining_usd=status.remaining_usd,
+            warning_threshold_usd=status.warning_threshold_usd,
+        )
+
+    def _make_role_cost_observer(
+        self,
+        *,
+        run_state: dict[str, Any],
+        state_lock: threading.Lock,
+        state_path: Path,
+    ) -> Callable[[dict[str, Any]], None]:
+        def _observe(payload: dict[str, Any]) -> None:
+            cost_data = payload.get("cost_data")
+            if not isinstance(cost_data, dict):
+                return
+            record = CostRecord.model_validate(cost_data)
+            stage_id = payload.get("stage_id")
+            with state_lock:
+                if isinstance(stage_id, str) and stage_id in run_state["stages"]:
+                    stage_state = run_state["stages"][stage_id]
+                    stage_state["call_count"] += 1
+                    stage_state["cost_usd"] = round(
+                        float(stage_state.get("cost_usd", 0.0) or 0.0)
+                        + record.estimated_cost_usd,
+                        8,
+                    )
+                    stage_state["input_tokens"] += record.input_tokens
+                    stage_state["output_tokens"] += record.output_tokens
+                run_state["total_cost_usd"] = round(
+                    float(run_state.get("total_cost_usd", 0.0) or 0.0)
+                    + record.estimated_cost_usd,
+                    8,
+                )
+                self._write_run_state(state_path, run_state)
+
+        return _observe
+
     def _load_stage_cache(self) -> dict[str, dict[str, dict[str, Any]]]:
         if not self._stage_cache_path.exists():
             return {}
@@ -1089,9 +1261,29 @@ class DriverEngine:
             json.dump(validated.to_json_payload(), file, indent=2, sort_keys=True)
 
 
-def _coerce_cost(cost_payload: dict[str, Any] | None) -> CostRecord | None:
+def _coerce_cost(cost_payload: dict[str, Any] | list[dict[str, Any]] | None) -> CostRecord | None:
     if not cost_payload:
         return None
+    if isinstance(cost_payload, list):
+        records = [
+            CostRecord.model_validate(item)
+            for item in cost_payload
+            if isinstance(item, dict)
+        ]
+        if not records:
+            return None
+        model = records[0].model if len({record.model for record in records}) == 1 else "multiple"
+        return CostRecord(
+            model=model,
+            input_tokens=sum(record.input_tokens for record in records),
+            output_tokens=sum(record.output_tokens for record in records),
+            estimated_cost_usd=round(
+                sum(record.estimated_cost_usd for record in records),
+                8,
+            ),
+            latency_seconds=None,
+            request_id=None,
+        )
     return CostRecord.model_validate(cost_payload)
 
 

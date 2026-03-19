@@ -3,10 +3,10 @@ import { Settings, Cpu, Workflow } from "lucide-react"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 
-import { cn } from "@/lib/utils"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -27,6 +27,10 @@ import {
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import {
+  ProjectBudgetSettingsSection,
+  type BudgetSettingsFormState,
+} from "@/components/ProjectBudgetSettingsSection"
 import { updateProjectSettings } from "@/lib/api"
 import type { ProjectSummary } from "@/lib/types"
 import {
@@ -43,6 +47,18 @@ interface ProjectSettingsProps {
   children?: React.ReactNode
   open?: boolean
   onOpenChange?: (open: boolean) => void
+}
+
+function getBudgetSettingsFormState(project?: ProjectSummary): BudgetSettingsFormState {
+  return {
+    projectBudgetLimitUsd:
+      project?.project_budget_limit_usd != null ? String(project.project_budget_limit_usd) : "",
+    defaultRunBudgetLimitUsd:
+      project?.default_run_budget_limit_usd != null
+        ? String(project.default_run_budget_limit_usd)
+        : "",
+    budgetWarningThresholdRatio: String(project?.budget_warning_threshold_ratio ?? 0.8),
+  }
 }
 
 export function ProjectSettings({
@@ -65,28 +81,21 @@ export function ProjectSettings({
   const [editMode, setEditMode] = React.useState(controlMode)
   const [saving, setSaving] = React.useState(false)
   const [savingModels, setSavingModels] = React.useState(false)
+  const [savingBudget, setSavingBudget] = React.useState(false)
 
   React.useEffect(() => {
     if (open) {
       setEditName(projectName)
       setEditMode(controlMode)
       setModelSettings(getProjectModelFormState(project))
+      setBudgetSettings(getBudgetSettingsFormState(project))
     }
   }, [open, project, projectName, controlMode])
 
   const [modelSettings, setModelSettings] = React.useState(() => getProjectModelFormState(project))
-
-  const [pipelineSettings, setPipelineSettings] = React.useState({
-    defaultRecipe: "mvp-ingest",
-    skipQA: false,
-    forceRerun: false,
-  })
-
-  const recipeOptions = [
-    { value: "mvp-ingest", label: "MVP Ingest" },
-    { value: "world-building", label: "World Building" },
-    { value: "narrative-analysis", label: "Narrative Analysis" },
-  ]
+  const [budgetSettings, setBudgetSettings] = React.useState<BudgetSettingsFormState>(() =>
+    getBudgetSettingsFormState(project)
+  )
 
   const controlModeOptions = [
     { value: "autonomous", label: "Autonomous", description: "Director makes progression decisions." },
@@ -148,8 +157,62 @@ export function ProjectSettings({
     }
   }
 
-  const handleSavePipeline = () => {
-    toast.success("Settings saved")
+  const handleSaveBudget = async () => {
+    const parseOptionalNumber = (raw: string): number | null => {
+      if (!raw.trim()) return null
+      const value = Number(raw)
+      if (!Number.isFinite(value) || value < 0) {
+        throw new Error("Budget limits must be zero or greater.")
+      }
+      return value
+    }
+
+    const thresholdValue = Number(budgetSettings.budgetWarningThresholdRatio)
+    if (!Number.isFinite(thresholdValue) || thresholdValue < 0 || thresholdValue > 1) {
+      toast.error("Budget warning threshold must be between 0 and 1.")
+      return
+    }
+
+    let projectBudgetLimitUsd: number | null
+    let defaultRunBudgetLimitUsd: number | null
+    try {
+      projectBudgetLimitUsd = parseOptionalNumber(budgetSettings.projectBudgetLimitUsd)
+      defaultRunBudgetLimitUsd = parseOptionalNumber(budgetSettings.defaultRunBudgetLimitUsd)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Invalid budget settings"
+      toast.error(message)
+      return
+    }
+
+    const changes: Parameters<typeof updateProjectSettings>[1] = {}
+    if ((project?.project_budget_limit_usd ?? null) !== projectBudgetLimitUsd) {
+      changes.project_budget_limit_usd = projectBudgetLimitUsd
+    }
+    if ((project?.default_run_budget_limit_usd ?? null) !== defaultRunBudgetLimitUsd) {
+      changes.default_run_budget_limit_usd = defaultRunBudgetLimitUsd
+    }
+    if ((project?.budget_warning_threshold_ratio ?? 0.8) !== thresholdValue) {
+      changes.budget_warning_threshold_ratio = thresholdValue
+    }
+
+    if (Object.keys(changes).length === 0) {
+      toast.info("No changes to save")
+      return
+    }
+
+    setSavingBudget(true)
+    try {
+      const updatedProject = await updateProjectSettings(projectId, changes)
+      queryClient.setQueryData(['projects', projectId], updatedProject)
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'costs'] })
+      toast.success("Budget settings updated")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to save"
+      toast.error(message)
+    } finally {
+      setSavingBudget(false)
+    }
   }
 
   return (
@@ -161,6 +224,9 @@ export function ProjectSettings({
             <Settings className="size-5" />
             Project Settings
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Configure project metadata, model defaults, and pipeline budget settings.
+          </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="general" className="w-full">
@@ -363,78 +429,17 @@ export function ProjectSettings({
 
           {/* Pipeline Tab */}
           <TabsContent value="pipeline" className="space-y-4 mt-4">
-            <div className="space-y-3">
-              <div className="space-y-1.5">
-                <label htmlFor="default-recipe" className="text-sm font-medium">
-                  Default Recipe
-                </label>
-                <Select
-                  value={pipelineSettings.defaultRecipe}
-                  onValueChange={(value) =>
-                    setPipelineSettings({
-                      ...pipelineSettings,
-                      defaultRecipe: value,
-                    })
-                  }
-                >
-                  <SelectTrigger id="default-recipe" className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {recipeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-3 pt-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={pipelineSettings.skipQA}
-                    onChange={(e) =>
-                      setPipelineSettings({
-                        ...pipelineSettings,
-                        skipQA: e.target.checked,
-                      })
-                    }
-                    className={cn(
-                      "size-4 rounded border-input bg-transparent cursor-pointer",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                      "disabled:cursor-not-allowed disabled:opacity-50"
-                    )}
-                  />
-                  <span className="text-sm font-medium">Skip QA</span>
-                </label>
-
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={pipelineSettings.forceRerun}
-                    onChange={(e) =>
-                      setPipelineSettings({
-                        ...pipelineSettings,
-                        forceRerun: e.target.checked,
-                      })
-                    }
-                    className={cn(
-                      "size-4 rounded border-input bg-transparent cursor-pointer",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                      "disabled:cursor-not-allowed disabled:opacity-50"
-                    )}
-                  />
-                  <span className="text-sm font-medium">Force re-run</span>
-                </label>
-              </div>
-            </div>
+            <ProjectBudgetSettingsSection
+              value={budgetSettings}
+              onChange={setBudgetSettings}
+            />
 
             <Separator />
 
             <div className="flex justify-end">
-              <Button onClick={handleSavePipeline}>Save</Button>
+              <Button onClick={handleSaveBudget} disabled={savingBudget}>
+                {savingBudget ? "Saving..." : "Save"}
+              </Button>
             </div>
           </TabsContent>
         </Tabs>

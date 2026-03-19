@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   getRunEvents,
+  getRunCosts,
   getRunState,
+  getProjectCosts,
   listRuns,
   respondToReview,
   resumeRun,
@@ -11,7 +13,9 @@ import {
 import { useChatStore } from '../chat-store'
 import type {
   ArtifactEditResponse,
+  ProjectCostSummary,
   RunEventsResponse,
+  RunCostSummary,
   RunStartPayload,
   RunStateResponse,
   RunSummary,
@@ -33,6 +37,9 @@ export function useStartRun() {
       queryClient.invalidateQueries({
         queryKey: ['projects', variables.project_id, 'runs'],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['projects', variables.project_id, 'costs'],
+      })
     },
   })
 }
@@ -53,12 +60,25 @@ export function useRetryFailedStage() {
 
 export function useResumeRun() {
   const queryClient = useQueryClient()
-  return useMutation<{ run_id: string }, Error, { runId: string; projectId?: string }>({
-    mutationFn: ({ runId }) => resumeRun(runId),
+  return useMutation<
+    { run_id: string },
+    Error,
+    { runId: string; projectId?: string; runBudgetLimitUsd?: number | null }
+  >({
+    mutationFn: ({ runId, runBudgetLimitUsd }) =>
+      resumeRun(
+        runId,
+        runBudgetLimitUsd != null
+          ? { run_budget_limit_usd: runBudgetLimitUsd }
+          : undefined,
+      ),
     onSuccess: (_data, variables) => {
       if (variables.projectId) {
         queryClient.invalidateQueries({
           queryKey: ['projects', variables.projectId, 'runs'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['projects', variables.projectId, 'costs'],
         })
       }
     },
@@ -107,6 +127,29 @@ export function useRunEvents(runId: string | undefined, finished?: boolean) {
     queryFn: () => getRunEvents(runId!),
     enabled: !!runId,
     refetchInterval: finished ? false : 3000,
+    refetchIntervalInBackground: true,
+  })
+}
+
+export function useRunCosts(runId: string | undefined) {
+  return useQuery<RunCostSummary>({
+    queryKey: ['runs', runId, 'costs'],
+    queryFn: () => getRunCosts(runId!),
+    enabled: !!runId,
+    refetchInterval: (query) => {
+      const data = query.state.data
+      return data?.finished_at ? false : 2000
+    },
+    refetchIntervalInBackground: true,
+  })
+}
+
+export function useProjectCosts(projectId: string | undefined) {
+  return useQuery<ProjectCostSummary>({
+    queryKey: ['projects', projectId, 'costs'],
+    queryFn: () => getProjectCosts(projectId!),
+    enabled: !!projectId,
+    refetchInterval: 3000,
     refetchIntervalInBackground: true,
   })
 }

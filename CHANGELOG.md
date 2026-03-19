@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-03-19-02] — Cost tracking and budget controls (Story 032)
+
+### Added
+- Added typed run/project cost summaries, budget enforcement, deterministic cost-report exports, and operator-facing cost surfaces across Runs, Run Detail, and Project Settings
+- Added end-to-end resume coverage proving a budget-paused run can continue cleanly after the operator raises the run cap
+
+### Changed
+- Narrowed Story 032 to the shipped cost-tracking slice, moved deferred cost-profile/model-comparison/stage-cap work into Story 138, and advanced Story 030 out of blocked status
+
+### Fixed
+- Corrected stale planning state in the build map and story index so Story 032 closure no longer leaves backlog drift behind
+
 ## [2026-03-19-01] — Render adapter and generated video review (Story 028)
 
 ### Added

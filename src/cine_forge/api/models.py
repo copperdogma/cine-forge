@@ -50,6 +50,9 @@ class ProjectSummary(BaseModel):
     work_model: str | None = None
     verify_model: str | None = None
     escalate_model: str | None = None
+    project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    default_run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    budget_warning_threshold_ratio: float = Field(default=0.8, ge=0.0, le=1.0)
 
 
 class RecentProjectSummary(ProjectSummary):
@@ -67,6 +70,7 @@ class RunSummary(BaseModel):
     recipe_id: str = "mvp_ingest"
     started_at: float | None = None
     finished_at: float | None = None
+    total_cost_usd: float = Field(default=0.0, ge=0.0)
 
 
 class ArtifactHealthDetailsResponse(BaseModel):
@@ -129,6 +133,9 @@ class RunStartRequest(BaseModel):
     start_from: str | None = None
     end_at: str | None = None
     skip_qa: bool = False
+    project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    budget_warning_threshold_ratio: float | None = Field(default=None, ge=0.0, le=1.0)
     retry_failed_stage_for_run_id: str | None = None
 
 
@@ -300,8 +307,17 @@ class ProjectSettingsUpdate(BaseModel):
     work_model: str | None = None
     verify_model: str | None = None
     escalate_model: str | None = None
+    project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    default_run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
+    budget_warning_threshold_ratio: float | None = Field(default=None, ge=0.0, le=1.0)
     style_packs: dict[str, str] | None = None
     ui_preferences: dict[str, Any] | None = None
+
+
+class ResumeRunRequest(BaseModel):
+    """Optional per-run budget override when resuming a paused run."""
+
+    run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
 
 
 class ChatMessagePayload(BaseModel):

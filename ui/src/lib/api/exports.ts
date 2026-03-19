@@ -10,6 +10,8 @@ export type ExportFormat =
   | 'shot-list-csv'
   | 'shot-list-pdf'
 
+export type CostExportFormat = 'cost-report-csv' | 'cost-report-json'
+
 export function getExportUrl(
   projectId: string,
   format: ExportFormat,
@@ -75,4 +77,18 @@ export async function exportMarkdown(
     throw new ApiRequestError(`Export failed (${response.status})`)
   }
   return response.text()
+}
+
+export function getCostExportUrl(
+  projectId: string,
+  format: CostExportFormat,
+  runId?: string,
+): string {
+  const params = new URLSearchParams()
+  if (runId) {
+    params.set('run_id', runId)
+  }
+  const path = format === 'cost-report-csv' ? 'costs.csv' : 'costs.json'
+  const query = params.toString()
+  return `${API_BASE}/api/projects/${projectId}/export/${path}${query ? `?${query}` : ''}`
 }
