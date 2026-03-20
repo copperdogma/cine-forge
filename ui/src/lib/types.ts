@@ -33,6 +33,52 @@ export type ProjectSummary = {
   project_budget_limit_usd?: number | null
   default_run_budget_limit_usd?: number | null
   budget_warning_threshold_ratio: number
+  preference_learning_enabled: boolean
+  preference_learning_cleared_at?: string | null
+}
+
+export type PreferenceSignalPolarity = 'positive' | 'negative' | 'directional' | 'neutral'
+export type PreferenceCueType = 'preferred' | 'avoid' | 'variation'
+export type PreferenceEntityType = 'character' | 'location' | 'prop'
+
+export type PreferenceSignal = {
+  signal_id: string
+  source_kind: 'design_study_decision'
+  entity_id: string
+  entity_type: PreferenceEntityType
+  round_number: number
+  image_filename: string
+  decision: 'pending' | 'selected_final' | 'favorite' | 'rejected' | 'seed_for_variants'
+  polarity: PreferenceSignalPolarity
+  guidance?: string | null
+  round_guidance?: string | null
+  prompt_used: string
+  prompt_sources_used: string[]
+  model?: string | null
+  created_at: string
+}
+
+export type PreferenceCue = {
+  cue_type: PreferenceCueType
+  entity_id: string
+  entity_type: PreferenceEntityType
+  text: string
+  weight: number
+  signal_count: number
+  source_signal_ids: string[]
+  source_image_filenames: string[]
+}
+
+export type PreferenceProfile = {
+  enabled: boolean
+  last_cleared_at?: string | null
+  active_signal_count: number
+  entity_count: number
+  summary_lines: string[]
+  preferred_cues: PreferenceCue[]
+  avoid_cues: PreferenceCue[]
+  variation_cues: PreferenceCue[]
+  recent_signals: PreferenceSignal[]
 }
 
 export type RecentProjectSummary = ProjectSummary & {

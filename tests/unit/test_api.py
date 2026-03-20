@@ -1066,6 +1066,28 @@ def test_project_ui_preferences_persist(tmp_path: Path) -> None:
     assert project_data["ui_preferences"]["locations.sort"] == "script-order"
 
 
+def test_project_preference_learning_settings_persist(tmp_path: Path) -> None:
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "project-pref-learning", "Project Pref Learning")
+
+    initial = client.get(f"/api/projects/{project_id}")
+    assert initial.status_code == 200
+    assert initial.json()["preference_learning_enabled"] is True
+    assert initial.json()["preference_learning_cleared_at"] is None
+
+    response = client.patch(
+        f"/api/projects/{project_id}/settings",
+        json={"preference_learning_enabled": False},
+    )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["preference_learning_enabled"] is False
+
+    project_path = tmp_path / "output" / "project-pref-learning"
+    project_json = json.loads((project_path / "project.json").read_text(encoding="utf-8"))
+    assert project_json["preference_learning_enabled"] is False
+
+
 def test_project_production_format_persists_and_syncs_project_config(tmp_path: Path) -> None:
     """Production format should round-trip through settings and sync canonical config."""
     client = _make_client(tmp_path)

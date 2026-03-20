@@ -203,7 +203,20 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert second_entry["decision"] == "seed_for_variants"
     assert second_entry["guidance"] == "more weathered, darker costume"
 
-    # --- Step 7: Generate a second round (count=1) ---
+    # --- Step 7: Project-level preference profile exposes active learned signals ---
+    resp = client.get(f"/api/projects/{project_id}/preferences/profile")
+    assert resp.status_code == 200
+    profile = resp.json()
+    assert profile["enabled"] is True
+    assert profile["active_signal_count"] == 2
+    assert any(signal["decision"] == "selected_final" for signal in profile["recent_signals"])
+    assert any(signal["decision"] == "seed_for_variants" for signal in profile["recent_signals"])
+    assert any(
+        cue["text"] == "more weathered, darker costume"
+        for cue in profile["variation_cues"]
+    )
+
+    # --- Step 8: Generate a second round (count=1) and verify learned preferences apply ---
     with patch(
         "cine_forge.api.routers.design_study.generate_image",
         return_value=(_FAKE_JPEG, "imagen-4.0-generate-001"),
@@ -213,7 +226,6 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
             json={
                 "entity_type": "character",
                 "count": 1,
-                "guidance": "more weathered",
                 "seed_image_filename": second_filename,
             },
         )
@@ -222,18 +234,85 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert len(state2["rounds"]) == 2
     assert state2["rounds"][1]["round_number"] == 2
     assert len(state2["rounds"][1]["images"]) == 1
-    assert "user_guidance" in state2["rounds"][1]["sources_used"]
     assert "seed_image" in state2["rounds"][1]["sources_used"]
     assert "project_config" in state2["rounds"][1]["sources_used"]
+    assert "learned_preferences" in state2["rounds"][1]["sources_used"]
+    assert state2["rounds"][1]["learned_preferences_used"]
+    assert "Preserve continuity" in state2["rounds"][1]["prompt"]
+    assert "more weathered, darker costume" in state2["rounds"][1]["prompt"]
     # selected_final from round 1 should still be set
     assert state2["selected_final_filename"] == image_filename
 
-    # --- Step 8: Serve image file ---
+    # --- Step 9: Serve image file ---
     resp = client.get(
         f"/api/projects/{project_id}/design-study/{entity_id}/images/{image_filename}"
     )
     assert resp.status_code == 200
     assert resp.headers["content-type"] == "image/jpeg"
+
+
+@pytest.mark.integration
+def test_preference_profile_clear_resets_active_learning(tmp_path: Path) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    app = create_app(workspace_root=workspace_root)
+    client = TestClient(app)
+
+    project_path = tmp_path / "design-study-clear-profile"
+    created = client.post("/api/projects/new", json={"project_path": str(project_path)})
+    assert created.status_code == 200
+    project_id = created.json()["project_id"]
+
+    entity_id = "character_mariner"
+    _create_mock_bible(project_path, entity_id)
+    _seed_project_prompt_context(project_path)
+
+    with patch(
+        "cine_forge.api.routers.design_study.generate_image",
+        return_value=(_FAKE_JPEG, "imagen-4.0-generate-001"),
+    ):
+        generated = client.post(
+            f"/api/projects/{project_id}/design-study/{entity_id}/generate",
+            json={"entity_type": "character", "count": 1},
+        )
+    assert generated.status_code == 200
+    filename = generated.json()["rounds"][0]["images"][0]["filename"]
+
+    decided = client.post(
+        f"/api/projects/{project_id}/design-study/{entity_id}/decide",
+        json={
+            "filename": filename,
+            "decision": "seed_for_variants",
+            "guidance": "more weathered, darker costume",
+        },
+    )
+    assert decided.status_code == 200
+
+    profile_before = client.get(f"/api/projects/{project_id}/preferences/profile")
+    assert profile_before.status_code == 200
+    assert profile_before.json()["active_signal_count"] == 1
+
+    cleared = client.post(f"/api/projects/{project_id}/preferences/clear")
+    assert cleared.status_code == 200
+    cleared_payload = cleared.json()
+    assert cleared_payload["active_signal_count"] == 0
+    assert cleared_payload["last_cleared_at"] is not None
+
+    project_summary = client.get(f"/api/projects/{project_id}")
+    assert project_summary.status_code == 200
+    assert project_summary.json()["preference_learning_cleared_at"] is not None
+
+    with patch(
+        "cine_forge.api.routers.design_study.generate_image",
+        return_value=(_FAKE_JPEG, "imagen-4.0-generate-001"),
+    ):
+        next_round = client.post(
+            f"/api/projects/{project_id}/design-study/{entity_id}/generate",
+            json={"entity_type": "character", "count": 1},
+        )
+    assert next_round.status_code == 200
+    latest_round = next_round.json()["rounds"][-1]
+    assert "learned_preferences" not in latest_round["sources_used"]
+    assert latest_round["learned_preferences_used"] == []
 
 
 @pytest.mark.integration

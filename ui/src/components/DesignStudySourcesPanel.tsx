@@ -7,6 +7,7 @@ const SOURCE_LABELS: Record<string, string> = {
   entity_bible: 'Entity Bible',
   user_guidance: 'User Guidance',
   seed_image: 'Seed Image',
+  learned_preferences: 'Learned Preferences',
   look_and_feel: 'Look & Feel',
   project_config: 'Project Config',
   intent_mood: 'Intent & Mood',
@@ -18,6 +19,7 @@ const SOURCE_ORDER = [
   'project_config',
   'intent_mood',
   'user_guidance',
+  'learned_preferences',
   'seed_image',
 ]
 
@@ -85,6 +87,16 @@ export function DesignStudySourcesPanel({ round, defaultOpen = false }: Props) {
             <p className="text-xs text-muted-foreground">
               Seed image: <span className="font-mono text-foreground">{round.seed_image_filename}</span>
             </p>
+          )}
+          {round.learned_preferences_used.length > 0 && (
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-foreground">Applied learned preferences</p>
+              {round.learned_preferences_used.map((line) => (
+                <p key={line} className="text-xs text-muted-foreground">
+                  {line}
+                </p>
+              ))}
+            </div>
           )}
         </div>
       )}

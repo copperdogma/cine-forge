@@ -103,6 +103,12 @@ from .models import (
     RawInput,
     SourceFileInfo,
 )
+from .preferences import (
+    PreferenceCue,
+    PreferenceLearningSettings,
+    PreferenceProfile,
+    PreferenceSignal,
+)
 from .progress_event import EventType, ProgressEvent
 from .qa import QAIssue, QAResult
 from .readiness import ReadinessState, SceneReadiness, compute_scene_readiness
@@ -244,6 +250,10 @@ __all__ = [
     "MediaFile",
     "ModelStrategy",
     "ProjectConfig",
+    "PreferenceCue",
+    "PreferenceLearningSettings",
+    "PreferenceProfile",
+    "PreferenceSignal",
     "RawInput",
     "ReadinessState",
     "SceneReadiness",

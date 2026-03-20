@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-03-20-02] — Transparent preference learning from design-study choices (Story 131)
+
+### Added
+- Added a first-class transparent preference-learning loop for design-study decisions, including immutable `preference_signal` artifacts, a project-level preference profile API, and a dedicated Project Settings inspection surface
+
+### Changed
+- Changed design-study prompt compilation to consume explicit learned-preference context with visible provenance in the round sources panel
+- Updated the story index and Story 131 close-out records to reflect the landed preference-learning slice
+
 ## [2026-03-20-01] — Methodology bootstrap package and eval scaffolding surface
 
 ### Added

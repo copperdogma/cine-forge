@@ -282,6 +282,7 @@ def build_image_prompt(
     *,
     guidance: str | None = None,
     seed_image_filename: str | None = None,
+    learned_preferences_lines: list[str] | None = None,
     project_config_data: dict[str, Any] | None = None,
     look_and_feel_data: dict[str, Any] | None = None,
     intent_mood_data: dict[str, Any] | None = None,
@@ -301,6 +302,12 @@ def build_image_prompt(
             " same subject identity and core design language."
         )
         sources_used.append("seed_image")
+
+    if learned_preferences_lines:
+        prompt_parts.extend(
+            _ensure_sentence(line) for line in learned_preferences_lines if line and line.strip()
+        )
+        sources_used.append("learned_preferences")
 
     prompt_parts.append(base_prompt)
 

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Settings, Cpu, Workflow } from "lucide-react"
+import { Settings, Cpu, Workflow, Fingerprint } from "lucide-react"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -31,6 +31,7 @@ import {
   ProjectBudgetSettingsSection,
   type BudgetSettingsFormState,
 } from "@/components/ProjectBudgetSettingsSection"
+import { ProjectPreferenceLearningSection } from "@/components/ProjectPreferenceLearningSection"
 import { updateProjectSettings } from "@/lib/api"
 import type { ProjectSummary } from "@/lib/types"
 import {
@@ -243,6 +244,10 @@ export function ProjectSettings({
               <Workflow className="size-4" />
               Pipeline
             </TabsTrigger>
+            <TabsTrigger value="preferences">
+              <Fingerprint className="size-4" />
+              Preferences
+            </TabsTrigger>
           </TabsList>
 
           {/* General Tab */}
@@ -441,6 +446,10 @@ export function ProjectSettings({
                 {savingBudget ? "Saving..." : "Save"}
               </Button>
             </div>
+          </TabsContent>
+
+          <TabsContent value="preferences" className="space-y-4 mt-4">
+            <ProjectPreferenceLearningSection projectId={projectId} project={project} />
           </TabsContent>
         </Tabs>
       </DialogContent>

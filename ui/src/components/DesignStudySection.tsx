@@ -115,7 +115,16 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
             ...r,
             images: r.images.map(img =>
               img.filename === filename
-                ? { ...img, decision, ...(g !== undefined ? { guidance: g } : {}) }
+                ? {
+                    ...img,
+                    decision,
+                    guidance:
+                      decision === 'pending'
+                        ? null
+                        : g !== undefined
+                          ? g
+                          : img.guidance,
+                  }
                 : decision === 'selected_final' && img.decision === 'selected_final'
                   ? { ...img, decision: 'pending' }
                   : img,

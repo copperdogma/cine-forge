@@ -486,6 +486,12 @@ class OperatorConsoleService:
         human_control_mode = (pj or {}).get("human_control_mode", "autonomous")
         production_format = (pj or {}).get("production_format")
         interaction_mode = (pj or {}).get("interaction_mode", "balanced")
+        raw_preference_learning_enabled = (pj or {}).get("preference_learning_enabled", True)
+        preference_learning_enabled = (
+            raw_preference_learning_enabled
+            if isinstance(raw_preference_learning_enabled, bool)
+            else True
+        )
         return {
             "project_id": project_id,
             "display_name": display_name,
@@ -504,6 +510,8 @@ class OperatorConsoleService:
             "project_budget_limit_usd": (pj or {}).get("project_budget_limit_usd"),
             "default_run_budget_limit_usd": (pj or {}).get("default_run_budget_limit_usd"),
             "budget_warning_threshold_ratio": (pj or {}).get("budget_warning_threshold_ratio", 0.8),
+            "preference_learning_enabled": preference_learning_enabled,
+            "preference_learning_cleared_at": (pj or {}).get("preference_learning_cleared_at"),
         }
 
     @staticmethod

@@ -8,6 +8,7 @@ from .impact_assessment import (
     ImpactPreview,
 )
 from .injected_assets import InjectedAssetError, InjectedAssetService
+from .preferences import PreferenceService
 
 __all__ = [
     "DEFAULT_ASSESSING_ROLE",
@@ -17,4 +18,5 @@ __all__ = [
     "ImpactPreview",
     "InjectedAssetError",
     "InjectedAssetService",
+    "PreferenceService",
 ]

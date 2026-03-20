@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-19, Story 030 done)
+## Current Execution Map (updated 2026-03-20, Story 131 done)
 
 Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. The active backlog now centers on output QA, cost-control follow-ons, UX polish, and draft follow-ons rather than missing render-adapter substrate.
 
@@ -14,8 +14,6 @@ Phases 0–5 foundation are landed, the first three Phase 6 visualization layers
 | **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
 | **127** Artifact Health Semantics + Chat Model Disclosure | Direct transparency fix on top of recent UI decomposition. Small, user-visible, and already grounded in existing design decisions. |
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
-| **131** Preference Learning from User Choices | Turns existing suggestion/decision tracking into the explicit, inspectable learning loop required by Ideal R13. |
-
 ### In Progress
 
 No stories currently in progress.
@@ -197,7 +195,7 @@ NOTES from Cam:
 | 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Pending | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
 | 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Done | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
-| 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Pending | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
+| 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Done | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
 | 133 | Model Refresh, Eval Verification, and Project Model Defaults | Cross-Cutting | High | Done | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |
 | 134 | Compromise Convergence Tooling Migration | Cross-Cutting | High | Done | [story-134](stories/story-134-compromise-convergence-tooling-migration.md) |
 | 135 | Brick & Steel PDF Normalization Regression | 1 — MVP Pipeline | High | Done | [story-135](stories/story-135-screenplay-normalization-brick-steel-pdf-regression.md) |

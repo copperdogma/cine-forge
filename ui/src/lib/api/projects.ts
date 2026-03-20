@@ -70,6 +70,8 @@ export function updateProjectSettings(
     project_budget_limit_usd?: number | null
     default_run_budget_limit_usd?: number | null
     budget_warning_threshold_ratio?: number | null
+    preference_learning_enabled?: boolean
+    preference_learning_cleared_at?: string | null
     ui_preferences?: Record<string, string>
   },
 ): Promise<ProjectSummary> {

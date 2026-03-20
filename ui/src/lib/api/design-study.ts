@@ -28,6 +28,7 @@ export interface DesignStudyRound {
   guidance: string | null
   seed_image_filename: string | null
   sources_used: string[]
+  learned_preferences_used: string[]
   count: number
   created_at: string
   images: DesignStudyImage[]

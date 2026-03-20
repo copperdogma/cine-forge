@@ -266,3 +266,18 @@ def test_build_image_prompt_includes_intent_mood_context():
     assert "The Lighthouse" in prompt
     assert "ancient and judging" in prompt
     assert "intent_mood" in sources_used
+
+
+@pytest.mark.unit
+def test_build_image_prompt_includes_learned_preferences_context():
+    prompt, sources_used = build_image_prompt(
+        "character",
+        {"name": "The Mariner", "description": "A grizzled old sailor."},
+        learned_preferences_lines=[
+            "Preserve continuity with the user's recently approved design direction.",
+            "Carry forward these requested refinements: more weathered, darker costume.",
+        ],
+    )
+    assert "recently approved design direction" in prompt
+    assert "more weathered, darker costume" in prompt
+    assert "learned_preferences" in sources_used

@@ -25,13 +25,14 @@ from cine_forge.ai.image import (
     generate_image,
 )
 from cine_forge.artifacts.store import ArtifactStore
-from cine_forge.schemas import ArtifactMetadata
+from cine_forge.schemas import ArtifactMetadata, ArtifactRef
 from cine_forge.schemas.design_study import (
     DesignStudyImage,
     DesignStudyRound,
     DesignStudyState,
     ImageDecision,
 )
+from cine_forge.services import PreferenceService
 
 if TYPE_CHECKING:
     from cine_forge.api.service import OperatorConsoleService
@@ -168,6 +169,52 @@ def _load_prompt_context(
     return project_config_data, look_and_feel_data, intent_mood_data
 
 
+def _load_prompt_context_refs(store: ArtifactStore) -> dict[str, ArtifactRef]:
+    refs: dict[str, ArtifactRef] = {}
+    project_config_ref = store.latest_ref("project_config", "project")
+    if project_config_ref is not None:
+        refs["project_config"] = project_config_ref
+    look_and_feel_ref = store.latest_ref("look_and_feel", "project")
+    if look_and_feel_ref is not None:
+        refs["look_and_feel"] = look_and_feel_ref
+    intent_mood_ref = store.latest_ref("intent_mood", "project")
+    if intent_mood_ref is not None:
+        refs["intent_mood"] = intent_mood_ref
+    return refs
+
+
+def _find_round_image(
+    state: DesignStudyState,
+    filename: str,
+) -> tuple[DesignStudyRound, DesignStudyImage]:
+    for round_ in state.rounds:
+        for image in round_.images:
+            if image.filename == filename:
+                return round_, image
+    raise HTTPException(
+        status_code=404,
+        detail=f"Image '{filename}' not found in design study state.",
+    )
+
+
+def _build_preference_signal_lineage(
+    store: ArtifactStore,
+    *,
+    entity_id: str,
+    round_: DesignStudyRound,
+) -> list[ArtifactRef]:
+    lineage: list[ArtifactRef] = []
+    bible_ref = store.latest_ref("bible_manifest", entity_id)
+    if bible_ref is not None:
+        lineage.append(bible_ref)
+    prompt_context_refs = _load_prompt_context_refs(store)
+    for source_name in round_.sources_used:
+        ref = prompt_context_refs.get(source_name)
+        if ref is not None:
+            lineage.append(ref)
+    return lineage
+
+
 def _persist_visual_reference_image(
     store: ArtifactStore,
     *,
@@ -268,11 +315,16 @@ async def generate_design_study(
         store,
         project_path,
     )
+    learned_preferences_used = PreferenceService(project_path).build_prompt_context_for_entity(
+        entity_id=entity_id,
+        entity_type=body.entity_type,
+    )
     prompt, sources_used = build_image_prompt(
         body.entity_type,
         bible_data,
         guidance=body.guidance,
         seed_image_filename=body.seed_image_filename,
+        learned_preferences_lines=learned_preferences_used,
         project_config_data=project_config_data,
         look_and_feel_data=look_and_feel_data,
         intent_mood_data=intent_mood_data,
@@ -317,6 +369,7 @@ async def generate_design_study(
         guidance=body.guidance,
         seed_image_filename=body.seed_image_filename,
         sources_used=sources_used,
+        learned_preferences_used=learned_preferences_used,
         count=body.count,
         images=images,
     )
@@ -360,18 +413,23 @@ async def decide_design_study(
 
     updated = False
     previous_selected_final = state.selected_final_filename
+    auto_cleared_final_filename: str | None = None
 
     if body.decision == "selected_final":
         for round_ in state.rounds:
             for img in round_.images:
                 if img.filename != body.filename and img.decision == "selected_final":
                     img.decision = "pending"
+                    img.guidance = None
+                    auto_cleared_final_filename = img.filename
 
     for round_ in state.rounds:
         for img in round_.images:
             if img.filename == body.filename:
                 img.decision = body.decision
-                if body.guidance is not None:
+                if body.decision == "pending":
+                    img.guidance = None
+                elif body.guidance is not None:
                     img.guidance = body.guidance
                 updated = True
 
@@ -397,6 +455,49 @@ async def decide_design_study(
 
     state.last_updated = datetime.now()
     _write_state(bib_dir, state)
+
+    preference_service = PreferenceService(project_path)
+    if preference_service.get_settings().enabled:
+        round_, image = _find_round_image(state, body.filename)
+        preference_service.record_design_study_signal(
+            entity_id=entity_id,
+            entity_type=state.entity_type,
+            round_number=round_.round_number,
+            image_filename=image.filename,
+            decision=image.decision,
+            guidance=image.guidance,
+            round_guidance=round_.guidance,
+            prompt_used=image.prompt_used,
+            prompt_sources_used=round_.sources_used,
+            model=image.model,
+            lineage_refs=_build_preference_signal_lineage(
+                store,
+                entity_id=entity_id,
+                round_=round_,
+            ),
+        )
+        if (
+            auto_cleared_final_filename is not None
+            and auto_cleared_final_filename != body.filename
+        ):
+            cleared_round, cleared_image = _find_round_image(state, auto_cleared_final_filename)
+            preference_service.record_design_study_signal(
+                entity_id=entity_id,
+                entity_type=state.entity_type,
+                round_number=cleared_round.round_number,
+                image_filename=cleared_image.filename,
+                decision=cleared_image.decision,
+                guidance=cleared_image.guidance,
+                round_guidance=cleared_round.guidance,
+                prompt_used=cleared_image.prompt_used,
+                prompt_sources_used=cleared_round.sources_used,
+                model=cleared_image.model,
+                lineage_refs=_build_preference_signal_lineage(
+                    store,
+                    entity_id=entity_id,
+                    round_=cleared_round,
+                ),
+            )
     return {"updated": True}
 
 

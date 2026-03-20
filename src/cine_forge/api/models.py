@@ -53,6 +53,8 @@ class ProjectSummary(BaseModel):
     project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
     default_run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
     budget_warning_threshold_ratio: float = Field(default=0.8, ge=0.0, le=1.0)
+    preference_learning_enabled: bool = True
+    preference_learning_cleared_at: str | None = None
 
 
 class RecentProjectSummary(ProjectSummary):
@@ -310,6 +312,8 @@ class ProjectSettingsUpdate(BaseModel):
     project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
     default_run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
     budget_warning_threshold_ratio: float | None = Field(default=None, ge=0.0, le=1.0)
+    preference_learning_enabled: bool | None = None
+    preference_learning_cleared_at: str | None = None
     style_packs: dict[str, str] | None = None
     ui_preferences: dict[str, Any] | None = None
 
