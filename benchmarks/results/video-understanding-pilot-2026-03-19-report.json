@@ -1,0 +1,78 @@
+{
+  "eval_id": "video-understanding",
+  "models": [
+    {
+      "model": "Claude Sonnet 4.6",
+      "python_overall": 0.8017,
+      "rubric_overall": 0.6083,
+      "overall": 0.705,
+      "latency_ms": 13067,
+      "cost_usd": 0.014106,
+      "value_score_per_dollar": 49.98,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.75,
+        "color": 1.0,
+        "continuity": 0.8333,
+        "emotion": 0.5833,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.6667,
+        "summary": 0.8333,
+        "tone": 0.75
+      },
+      "calls": 6,
+      "previous_overall": null
+    },
+    {
+      "model": "GPT-4.1",
+      "python_overall": 0.745,
+      "rubric_overall": 0.5833,
+      "overall": 0.6642,
+      "latency_ms": 6524,
+      "cost_usd": 0.007978,
+      "value_score_per_dollar": 83.25,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.6667,
+        "color": 0.8611,
+        "continuity": 0.8333,
+        "emotion": 0.5833,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.5556,
+        "summary": 0.7778,
+        "tone": 0.6667
+      },
+      "calls": 6,
+      "previous_overall": null
+    },
+    {
+      "model": "Gemini 2.5 Flash",
+      "python_overall": 0.0788,
+      "rubric_overall": 0.2467,
+      "overall": 0.1627,
+      "latency_ms": 7264,
+      "cost_usd": 0.000409,
+      "value_score_per_dollar": 397.8,
+      "dimension_scores": {
+        "audio": 0.1667,
+        "camera": 0.0,
+        "color": 0.1111,
+        "continuity": 0.1333,
+        "emotion": 0.0,
+        "evidence": 0.1667,
+        "hard_constraints": 0.1667,
+        "motion": 0.0,
+        "summary": 0.1111,
+        "tone": 0.0833
+      },
+      "calls": 6,
+      "previous_overall": null
+    }
+  ],
+  "recommendation": {
+    "decision": "hold",
+    "rationale": "Claude Sonnet 4.6 is the current leader at 0.705, but the pilot quality bar is still too low for a switch recommendation."
+  }
+}

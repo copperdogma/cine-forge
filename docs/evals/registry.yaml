@@ -1090,6 +1090,118 @@ evals:
 
     attempts: []
 
+  - id: video-understanding
+    name: Video Understanding
+    type: quality
+    description: >
+      Director-facing QA of generated scene clips using a clip packet
+      (mp4 + sampled frames + transcript/audio metadata). Measures tone,
+      emotion, shot language, motion, continuity, and audio intent on
+      Story 030's anchor subset before the full 20-clip matrix rerun.
+    pipeline_stage: qa
+    runner: promptfoo
+    command: "cd benchmarks && PROMPTFOO_PYTHON=python promptfoo eval -c tasks/video-understanding.yaml --no-cache --filter-first-n 6 -j 1"
+    config: benchmarks/tasks/video-understanding.yaml
+    scorer: benchmarks/scorers/video_understanding_scorer.py
+    golden: benchmarks/video_understanding/manifest.json
+    test_cases: 6  # anchor-subset pilot; full task currently defines 20 clips
+
+    target:
+      metric: overall
+      value: 0.80
+      latency_ms_max: 15000
+      cost_usd_max: 0.02
+      note: "Do not switch defaults until the full 20-clip matrix clears the pilot floor."
+
+    scores:
+      - model: "GPT-5.4"
+        metrics:
+          overall: 0.7923
+        latency_ms: 5492
+        cost_usd: 0.01006
+        cost_estimated: true
+        measured: 2026-03-19
+        git_sha: "7a58387"
+        result_file: benchmarks/results/video-understanding-rerun-gpt54-2026-03-19.json
+        note: "Discovery-spike rerun leader. Improved the OpenAI slot from the earlier GPT-4.1 pilot and passed 5/6 anchor clips. Remaining miss is model-wrong on neon_crosswalk_reveal: still misses the intended reveal/motion read."
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.697
+        latency_ms: 13192
+        cost_usd: 0.013971
+        cost_estimated: true
+        measured: 2026-03-19
+        git_sha: "7a58387"
+        result_file: benchmarks/results/video-understanding-rerun-sonnet46-2026-03-19.json
+        note: "Refreshed rerun trails GPT-5.4 and still misses director-facing detail on dialogue_confession_push_in, neon_crosswalk_reveal, and muzak_aftermath_tableau. Classified model-wrong, not golden-wrong."
+      - model: "GPT-4.1"
+        metrics:
+          overall: 0.6642
+        latency_ms: 6524
+        cost_usd: 0.007978
+        cost_estimated: true
+        measured: 2026-03-19
+        git_sha: "7a58387"
+        result_file: benchmarks/results/video-understanding-pilot-gpt41-2026-03-19.json
+        note: "Initial anchor pilot baseline. Superseded as the OpenAI slot after the discover-models spike promoted GPT-5.4 for the rerun."
+      - model: "Gemini 3 Flash Preview"
+        metrics:
+          overall: 0.5475
+        latency_ms: 10566
+        cost_usd: 0.00111
+        cost_estimated: true
+        measured: 2026-03-19
+        git_sha: "7a58387"
+        result_file: benchmarks/results/video-understanding-rerun-gemini3flash-maxout-2026-03-19.json
+        note: "Corrected rerun after raising Gemini 3.x maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves materially, but the model still trails GPT-5.4 and misses key action/reveal and emotion reads on alarm_chase_whip_pan, quiet_bedside_vigil, prop_swap_continuity_break, neon_crosswalk_reveal, and muzak_aftermath_tableau. Remaining misses are model-wrong, not golden drift."
+      - model: "Gemini 3.1 Pro Preview"
+        metrics:
+          overall: 0.6342
+        latency_ms: 14711
+        cost_usd: 0.01261
+        cost_estimated: true
+        measured: 2026-03-19
+        git_sha: "7a58387"
+        result_file: benchmarks/results/video-understanding-rerun-gemini31pro-maxout-2026-03-19.json
+        note: "Corrected rerun after raising Gemini 3.x maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves from 0.2813 to 0.6342, confirming the earlier truncation was a harness-budget issue. Remaining misses on prop_swap_continuity_break, neon_crosswalk_reveal, and muzak_aftermath_tableau are model-wrong on this task."
+      - model: "Gemini 2.5 Flash"
+        metrics:
+          overall: 0.6523
+        latency_ms: 8706
+        cost_usd: 0.000551
+        cost_estimated: true
+        measured: 2026-03-19
+        git_sha: "7a58387"
+        result_file: benchmarks/results/video-understanding-rerun-gemini25flash-maxout-2026-03-19.json
+        note: "Corrected rerun after raising Gemini maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves from 0.1561 to 0.6523, making this the best Google subject on the current frame-packet harness. Remaining misses on prop_swap_continuity_break, neon_crosswalk_reveal, and muzak_aftermath_tableau are model-wrong."
+      - model: "Gemini 2.5 Pro"
+        metrics:
+          overall: 0.5662
+        latency_ms: 16244
+        cost_usd: 0.006295
+        cost_estimated: true
+        measured: 2026-03-19
+        git_sha: "7a58387"
+        result_file: benchmarks/results/video-understanding-rerun-gemini25pro-maxout-2026-03-19.json
+        note: "Corrected rerun after raising Gemini maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves from 0.1492 to 0.5662, but latency now exceeds the 15s pilot target and the model still misses dialogue/emotion and reveal quality on four clips. Remaining misses are model-wrong."
+
+    attempts:
+      - id: "002"
+        story: attempts/002-video-understanding-google-max-output-budget.md
+        date: 2026-03-19
+        status: succeeded
+        approach: "Raised Gemini maxOutputTokens from 1400 to 65536 after usage metadata showed hidden thinking was exhausting the output budget across the Google suite."
+        worker_model: "Codex (GPT-5)"
+        worker_model_date: 2026-03-19
+        subject_model: "Gemini Google suite (best corrected subject: Gemini 2.5 Flash)"
+        score_before: 0.3487
+        score_after: 0.6523
+        latency_before: 7617
+        latency_after: 8706
+        retry_when:
+          - condition: new-approach
+            note: "Add a native-video Gemini provider path instead of the current sampled-frames harness."
+
   - id: entity-discovery
     name: Entity Discovery
     type: quality

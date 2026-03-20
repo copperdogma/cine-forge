@@ -45,6 +45,7 @@ EVAL_ID_PREFIXES = [
     "scene-enrichment",
     "scene-extraction",
     "script-bible",
+    "video-understanding",
 ]
 
 

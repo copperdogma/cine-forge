@@ -1,0 +1,60 @@
+{
+  "clip_id": "alarm_chase_whip_pan",
+  "title": "Alarm chase whip pan",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "A pulsing alarm and clipped percussion hits.",
+  "summary_reference": "Red alarm light pulses through a corridor as the camera whip-pans after a sprinting figure clutching a bag.",
+  "required_keywords": [
+    "alarm",
+    "red",
+    "chase"
+  ],
+  "tone_tags": [
+    "urgent",
+    "tense"
+  ],
+  "emotion_tags": [
+    "panic"
+  ],
+  "color_tags": [
+    "red"
+  ],
+  "camera_tags": [
+    "whip_pan"
+  ],
+  "motion_tags": [
+    "escalating",
+    "fast_lateral",
+    "pulsing_light"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The red bag remains with the runner."
+  ],
+  "audio_tags": [
+    "alarm",
+    "percussion"
+  ],
+  "clip_tags": [
+    "action",
+    "motion"
+  ],
+  "anchor_subset": true,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

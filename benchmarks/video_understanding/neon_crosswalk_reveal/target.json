@@ -1,0 +1,59 @@
+{
+  "clip_id": "neon_crosswalk_reveal",
+  "title": "Neon crosswalk reveal",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "A low synth drone hangs under the reveal.",
+  "summary_reference": "A wet crosswalk glows in magenta and cyan as the camera cranes up to reveal the street geometry.",
+  "required_keywords": [
+    "neon",
+    "crosswalk",
+    "reveal"
+  ],
+  "tone_tags": [
+    "surreal",
+    "tense"
+  ],
+  "emotion_tags": [
+    "wonder"
+  ],
+  "color_tags": [
+    "magenta",
+    "neon",
+    "teal"
+  ],
+  "camera_tags": [
+    "overhead_reveal"
+  ],
+  "motion_tags": [
+    "slow_drift"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "Light reflections stay consistent across the reveal."
+  ],
+  "audio_tags": [
+    "drone"
+  ],
+  "clip_tags": [
+    "stylized_color",
+    "city"
+  ],
+  "anchor_subset": true,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

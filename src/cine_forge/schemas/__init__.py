@@ -160,6 +160,22 @@ from .storyboard import Storyboard, StoryboardFrame, StoryboardImageFile, Storyb
 from .suggestion import Decision, Suggestion, SuggestionStatus
 from .timeline import Timeline, TimelineEntry
 from .track import TrackEntry, TrackManifest
+from .video_analysis import (
+    AudioTag,
+    CameraTag,
+    ColorTag,
+    ContinuityStatus,
+    EmotionTag,
+    MotionTag,
+    ToneTag,
+    VideoAnalysisDimensionScore,
+    VideoAnalysisPrediction,
+    VideoAnalysisScore,
+    VideoAnalysisTarget,
+    VideoAnalysisWeights,
+    VideoEvidence,
+    VideoSourceType,
+)
 
 __all__ = [
     "Artifact",
@@ -250,6 +266,20 @@ __all__ = [
     "RenderResolvedInput",
     "RoleResponse",
     "StageReviewArtifact",
+    "VideoAnalysisDimensionScore",
+    "VideoAnalysisPrediction",
+    "VideoAnalysisScore",
+    "VideoAnalysisTarget",
+    "VideoAnalysisWeights",
+    "VideoEvidence",
+    "VideoSourceType",
+    "ContinuityStatus",
+    "ToneTag",
+    "EmotionTag",
+    "ColorTag",
+    "CameraTag",
+    "MotionTag",
+    "AudioTag",
     "StylePack",
     "StylePackFileRef",
     "RoleTier",

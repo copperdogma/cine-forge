@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-03-19-03] — Video understanding benchmark and model selection baseline (Story 030)
+
+### Added
+- Added a full promptfoo-based video-understanding benchmark lane with grouped video-analysis schemas, benchmark docs, a 20-clip synthetic previz dataset, provider/scorer/report tooling, and registry-backed result tracking
+- Added corrected March 19, 2026 anchor-subset result artifacts showing `GPT-5.4` as the current leader and the best corrected Google subject as `Gemini 2.5 Flash`
+
+### Changed
+- Updated `AGENTS.md` and Story 030 planning/validation records so model selection now requires live discovery first and benchmark closure is scoped to Story 030-owned lint evidence rather than unrelated repo-wide Ruff debt
+- Updated the story index to mark Story 030 done and clear the active in-progress lane
+
+### Fixed
+- Fixed the benchmark conclusion for Gemini models by raising the Google output-token budget to the live max after usage metadata showed the earlier low scores were harness-budget artifacts, not reliable model evidence
+- Restored the shared UI toolchain in the worktree so the mandatory close-out `lint` and `tsc -b` gates could run successfully during story closure
+
 ## [2026-03-19-02] — Cost tracking and budget controls (Story 032)
 
 ### Added

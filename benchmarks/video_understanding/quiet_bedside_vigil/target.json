@@ -1,0 +1,61 @@
+{
+  "clip_id": "quiet_bedside_vigil",
+  "title": "Quiet bedside vigil",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "A soft room tone with a faint heartbeat monitor and low piano.",
+  "summary_reference": "A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.",
+  "required_keywords": [
+    "bedside",
+    "warm",
+    "still"
+  ],
+  "tone_tags": [
+    "intimate",
+    "mournful"
+  ],
+  "emotion_tags": [
+    "tenderness",
+    "grief"
+  ],
+  "color_tags": [
+    "amber",
+    "desaturated"
+  ],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
+  "motion_tags": [
+    "stillness"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The folded blanket remains untouched at frame right."
+  ],
+  "audio_tags": [
+    "heartbeat",
+    "soft_music"
+  ],
+  "clip_tags": [
+    "quiet_emotion",
+    "interior"
+  ],
+  "anchor_subset": true,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

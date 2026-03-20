@@ -1,0 +1,58 @@
+{
+  "clip_id": "muzak_aftermath_tableau",
+  "title": "Muzak aftermath tableau",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "Cheerful store music plays against a wrecked room.",
+  "summary_reference": "A static aftermath tableau holds on a trashed table while cheerful elevator-style muzak creates tonal dissonance.",
+  "required_keywords": [
+    "muzak",
+    "aftermath",
+    "tableau"
+  ],
+  "tone_tags": [
+    "playful",
+    "detached"
+  ],
+  "emotion_tags": [
+    "suspicion"
+  ],
+  "color_tags": [
+    "desaturated"
+  ],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
+  "motion_tags": [
+    "stillness"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The tipped chair and broken glass stay fixed in place."
+  ],
+  "audio_tags": [
+    "muzak"
+  ],
+  "clip_tags": [
+    "audio_intent",
+    "contrast"
+  ],
+  "anchor_subset": true,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

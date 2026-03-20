@@ -1,0 +1,58 @@
+{
+  "clip_id": "radio_hold_tracking",
+  "title": "Radio hold tracking",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": "Unit three, hold position until the lights settle.",
+  "audio_description": "A dry radio dispatch over light room tone.",
+  "summary_reference": "A lateral tracking move follows two officers along a blue corridor while a radio command orders them to hold position.",
+  "required_keywords": [
+    "radio",
+    "hold",
+    "tracking"
+  ],
+  "tone_tags": [
+    "urgent"
+  ],
+  "emotion_tags": [
+    "resolve"
+  ],
+  "color_tags": [
+    "navy",
+    "teal"
+  ],
+  "camera_tags": [
+    "lateral_track"
+  ],
+  "motion_tags": [
+    "measured"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The amber flashlight stays with the lead officer."
+  ],
+  "audio_tags": [
+    "radio",
+    "speech"
+  ],
+  "clip_tags": [
+    "dialogue",
+    "procedural"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

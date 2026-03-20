@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-19, Story 032 done)
+## Current Execution Map (updated 2026-03-19, Story 030 done)
 
 Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. The active backlog now centers on output QA, cost-control follow-ons, UX polish, and draft follow-ons rather than missing render-adapter substrate.
 
@@ -8,7 +8,6 @@ Phases 0–5 foundation are landed, the first three Phase 6 visualization layers
 
 | Story | Why |
 |---|---|
-| **030** Generated Output QA | Story 032 is closed, so the video-understanding benchmark is unblocked and can now become the main Phase 7 quality gate. |
 | **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
@@ -97,7 +96,7 @@ NOTES from Cam:
 | 137 | Previz Fidelity Upgrade | 6 — Shot Planning & Viz | Low | Draft | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
 | 028 | Render Adapter Module | 7 — Generation | Low | Done | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
-| 030 | Generated Output QA | 7 — Generation | Medium | Pending | [story-030](stories/story-030-generated-output-qa.md) |
+| 030 | Generated Output QA | 7 — Generation | Medium | Done | [story-030](stories/story-030-generated-output-qa.md) |
 | 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Done | [story-031](stories/story-031-change-propagation.md) |
 | 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | Done | [story-032](stories/story-032-cost-tracking.md) |
 | 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | Pending | [story-033](stories/story-033-memory-model.md) |

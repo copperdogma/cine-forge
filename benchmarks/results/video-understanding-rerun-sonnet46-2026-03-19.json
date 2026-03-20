@@ -1,0 +1,1337 @@
+{
+  "evalId": "eval-Nf0-2026-03-19T23:51:03",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-03-19T23:51:03.005Z",
+    "prompts": [
+      {
+        "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "label": "prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "id": "1a62b43eee0c1ce32b1bbff785e6baec9aed0f48c161f6da5461a8de6efe6237",
+        "provider": "Claude Sonnet 4.6",
+        "metrics": {
+          "score": 4.182,
+          "testPassCount": 3,
+          "testFailCount": 3,
+          "testErrorCount": 0,
+          "assertPassCount": 8,
+          "assertFailCount": 4,
+          "totalLatencyMs": 79152,
+          "tokenUsage": {
+            "prompt": 13047,
+            "completion": 2979,
+            "cached": 0,
+            "total": 16026,
+            "numRequests": 6,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 7373,
+              "prompt": 4797,
+              "completion": 2576,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.08382600000000001
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.015192,
+        "error": "The output captures most of the key elements from the reference analysis, but with some notable differences:\n\n**Tone/Emotion:** Excellent match. The output includes 'intimate' and 'regretful' (matching reference), plus adds 'mournful' which is reasonable. Emotion tags include 'hesitation' and 'vulnerability' (both matching), plus 'grief' which is a reasonable extension.\n\n**Color:** Partially correct. The output identifies 'teal' (matching reference) and 'desaturated' (reasonable), but includes 'amber' instead of 'navy'. The reference specifies 'navy, teal' — the output misses navy and introduces amber, which appears to be an invention or misread.\n\n**Camera language:** The output identifies 'slow_push_in' (matching) and 'wide_master' instead of 'locked_two_shot'. These are related but not the same — 'locked_two_shot' is more specific and accurate per the reference.\n\n**Motion:** 'measured' is captured correctly, though 'slow_drift' and 'stillness' are added extras.\n\n**Continuity:** This is a significant divergence. The reference states continuity is 'intact' with the white envelope staying in the speaker's hand throughout. The output marks continuity as 'ambiguous' and raises concerns about the push-in being too subtle. While the output does mention an 'ENVELOPE label' on figure B, it interprets this as an 'unresolved UI annotation' rather than recognizing it as the white envelope prop that the reference specifically calls out as a key continuity element. This is a meaningful miss — the model failed to identify the envelope as a narrative prop and instead treated it as a rendering artifact.\n\n**Audio:** Correctly identifies 'soft_music' and 'speech', and accurately captures the transcript line.\n\n**Summary:** The output's summary mentions 'placeholder figures' and 'dark teal gradient' — the placeholder language is reasonable for previz, but calling it a 'dark teal gradient' misses the 'cool blue two-shot' description. The summary mentions the confession about a missed train departure (correct) but doesn't mention the envelope being held by the speaker, which is a key directorial detail in the reference.\n\n**Overall:** Good coverage of tone, emotion, audio, and transcript. Moderate accuracy on color and camera. The biggest penalty is for misreading the continuity state (ambiguous vs. intact) and failing to recognize the envelope as a narrative prop, which was a key directorial cue in the reference.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.66,
+          "reason": "The output captures most of the key elements from the reference analysis, but with some notable differences:\n\n**Tone/Emotion:** Excellent match. The output includes 'intimate' and 'regretful' (matching reference), plus adds 'mournful' which is reasonable. Emotion tags include 'hesitation' and 'vulnerability' (both matching), plus 'grief' which is a reasonable extension.\n\n**Color:** Partially correct. The output identifies 'teal' (matching reference) and 'desaturated' (reasonable), but includes 'amber' instead of 'navy'. The reference specifies 'navy, teal' — the output misses navy and introduces amber, which appears to be an invention or misread.\n\n**Camera language:** The output identifies 'slow_push_in' (matching) and 'wide_master' instead of 'locked_two_shot'. These are related but not the same — 'locked_two_shot' is more specific and accurate per the reference.\n\n**Motion:** 'measured' is captured correctly, though 'slow_drift' and 'stillness' are added extras.\n\n**Continuity:** This is a significant divergence. The reference states continuity is 'intact' with the white envelope staying in the speaker's hand throughout. The output marks continuity as 'ambiguous' and raises concerns about the push-in being too subtle. While the output does mention an 'ENVELOPE label' on figure B, it interprets this as an 'unresolved UI annotation' rather than recognizing it as the white envelope prop that the reference specifically calls out as a key continuity element. This is a meaningful miss — the model failed to identify the envelope as a narrative prop and instead treated it as a rendering artifact.\n\n**Audio:** Correctly identifies 'soft_music' and 'speech', and accurately captures the transcript line.\n\n**Summary:** The output's summary mentions 'placeholder figures' and 'dark teal gradient' — the placeholder language is reasonable for previz, but calling it a 'dark teal gradient' misses the 'cool blue two-shot' description. The summary mentions the confession about a missed train departure (correct) but doesn't mention the envelope being held by the speaker, which is a key directorial detail in the reference.\n\n**Overall:** Good coverage of tone, emotion, audio, and transcript. Moderate accuracy on color and camera. The biggest penalty is for misreading the continuity state (ambiguous vs. intact) and failing to recognize the envelope as a narrative prop, which was a key directorial cue in the reference.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1488,
+            "prompt": 879,
+            "completion": 609,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.77,
+              "reason": "overall=0.770 | uncertainty=0.380 | summary=1.00 | tone=1.00 | emotion=1.00 | color=0.50 | camera=0.50 | motion=1.00 | continuity=0.00 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | color: navy | camera: locked_two_shot | continuity: status=intact, The white envelope stays in the right speaker's hand through the push-in.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              },
+              "pass": false,
+              "score": 0.55,
+              "reason": "The output captures most of the key elements from the reference analysis, but with some notable differences:\n\n**Tone/Emotion:** Excellent match. The output includes 'intimate' and 'regretful' (matching reference), plus adds 'mournful' which is reasonable. Emotion tags include 'hesitation' and 'vulnerability' (both matching), plus 'grief' which is a reasonable extension.\n\n**Color:** Partially correct. The output identifies 'teal' (matching reference) and 'desaturated' (reasonable), but includes 'amber' instead of 'navy'. The reference specifies 'navy, teal' — the output misses navy and introduces amber, which appears to be an invention or misread.\n\n**Camera language:** The output identifies 'slow_push_in' (matching) and 'wide_master' instead of 'locked_two_shot'. These are related but not the same — 'locked_two_shot' is more specific and accurate per the reference.\n\n**Motion:** 'measured' is captured correctly, though 'slow_drift' and 'stillness' are added extras.\n\n**Continuity:** This is a significant divergence. The reference states continuity is 'intact' with the white envelope staying in the speaker's hand throughout. The output marks continuity as 'ambiguous' and raises concerns about the push-in being too subtle. While the output does mention an 'ENVELOPE label' on figure B, it interprets this as an 'unresolved UI annotation' rather than recognizing it as the white envelope prop that the reference specifically calls out as a key continuity element. This is a meaningful miss — the model failed to identify the envelope as a narrative prop and instead treated it as a rendering artifact.\n\n**Audio:** Correctly identifies 'soft_music' and 'speech', and accurately captures the transcript line.\n\n**Summary:** The output's summary mentions 'placeholder figures' and 'dark teal gradient' — the placeholder language is reasonable for previz, but calling it a 'dark teal gradient' misses the 'cool blue two-shot' description. The summary mentions the confession about a missed train departure (correct) but doesn't mention the envelope being held by the speaker, which is a key directorial detail in the reference.\n\n**Overall:** Good coverage of tone, emotion, audio, and transcript. Moderate accuracy on color and camera. The biggest penalty is for misreading the continuity state (ambiguous vs. intact) and failing to recognize the envelope as a narrative prop, which was a key directorial cue in the reference.",
+              "tokensUsed": {
+                "total": 1488,
+                "prompt": 879,
+                "completion": 609,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"dialogue_confession_push_in\\\",\\\"summary\\\":\\\"Two placeholder figures (A and B) face each other against a dark teal gradient as character A delivers a single confessional line about a missed train departure. A slow camera push-in toward the pair underscores the emotional weight of the admission, accompanied by soft piano.\\\",\\\"tone_tags\\\":[\\\"intimate\\\",\\\"regretful\\\",\\\"mournful\\\"],\\\"emotion_tags\\\":[\\\"vulnerability\\\",\\\"hesitation\\\",\\\"grief\\\"],\\\"color_tags\\\":[\\\"teal\\\",\\\"amber\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"slow_push_in\\\",\\\"wide_master\\\"],\\\"motion_tags\\\":[\\\"slow_drift\\\",\\\"measured\\\",\\\"stillness\\\"],\\\"continuity_status\\\":\\\"ambiguous\\\",\\\"continuity_notes\\\":\\\"The named clip tag 'slow_push_in' implies a gradual zoom advance, but across all five sampled frames the figure scale and framing appear nearly identical with only marginal size increase visible by frame 5, suggesting the push-in motion may be too subtle or not yet fully rendered in this previz pass.\\\",\\\"audio_tags\\\":[\\\"soft_music\\\",\\\"speech\\\"],\\\"audio_notes\\\":\\\"Soft piano drone underlies the single spoken confession line 'I should have told you before the train left.' No additional sound layers detected; audio matches the quiet-emotion tag intent.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.5,\\\"cue\\\":\\\"Both placeholder figures A (amber) and B (light blue) are visible in a static wide master; subtitle line appears confirming speech onset.\\\"},{\\\"timestamp_seconds\\\":1.5,\\\"cue\\\":\\\"Figure scale shows minimal increase relative to frame 1, indicating slow push-in is in progress but barely perceptible at previz fidelity.\\\"},{\\\"timestamp_seconds\\\":2.5,\\\"cue\\\":\\\"ENVELOPE label persists on figure B across all sampled frames, suggesting an unresolved UI annotation that may indicate an incomplete asset state.\\\"},{\\\"timestamp_seconds\\\":3.8,\\\"cue\\\":\\\"Final frame shows marginally larger figures confirming push-in direction is correct, but the motion magnitude is insufficient to clearly read as an intentional dramatic push-in without further render refinement.\\\"}],\\\"overall_confidence\\\":0.62}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Dialogue confession push-in\\n\\n- Summary: A cool blue two-shot slowly pushes toward the hesitant speaker holding a white envelope during a hushed confession.\\n- Tone: intimate, regretful\\n- Emotion: hesitation, vulnerability\\n- Color / grade: navy, teal\\n- Camera language: locked_two_shot, slow_push_in\\n- Motion: measured\\n- Continuity: intact — The white envelope stays in the right speaker's hand through the push-in.\\n- Audio intent: soft_music, speech\\n- Transcript: I should have told you before the train left.\\n\\nReward outputs that accurately capture tone, emotional read, camera language,\\nmotion, continuity state, and audio intent. Penalize shallow summaries,\\ninvented details, or missed directorial cues.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Dialogue confession push-in\n\n- Summary: A cool blue two-shot slowly pushes toward the hesitant speaker holding a white envelope during a hushed confession.\n- Tone: intimate, regretful\n- Emotion: hesitation, vulnerability\n- Color / grade: navy, teal\n- Camera language: locked_two_shot, slow_push_in\n- Motion: measured\n- Continuity: intact — The white envelope stays in the right speaker's hand through the push-in.\n- Audio intent: soft_music, speech\n- Transcript: I should have told you before the train left.\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              }
+            }
+          ]
+        },
+        "id": "08a099a5-0f54-446f-b4f3-78e75559098a",
+        "latencyMs": 15639,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "1a62b43eee0c1ce32b1bbff785e6baec9aed0f48c161f6da5461a8de6efe6237",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"dialogue_confession_push_in\",\n  \"summary\": \"Two placeholder figures (A and B) face each other against a dark teal gradient as character A delivers a single confessional line about a missed train departure. A slow camera push-in toward the pair underscores the emotional weight of the admission, accompanied by soft piano.\",\n  \"tone_tags\": [\"intimate\", \"regretful\", \"mournful\"],\n  \"emotion_tags\": [\"vulnerability\", \"hesitation\", \"grief\"],\n  \"color_tags\": [\"teal\", \"amber\", \"desaturated\"],\n  \"camera_tags\": [\"slow_push_in\", \"wide_master\"],\n  \"motion_tags\": [\"slow_drift\", \"measured\", \"stillness\"],\n  \"continuity_status\": \"ambiguous\",\n  \"continuity_notes\": \"The named clip tag 'slow_push_in' implies a gradual zoom advance, but across all five sampled frames the figure scale and framing appear nearly identical with only marginal size increase visible by frame 5, suggesting the push-in motion may be too subtle or not yet fully rendered in this previz pass.\",\n  \"audio_tags\": [\"soft_music\", \"speech\"],\n  \"audio_notes\": \"Soft piano drone underlies the single spoken confession line 'I should have told you before the train left.' No additional sound layers detected; audio matches the quiet-emotion tag intent.\",\n  \"evidence\": [\n    {\n      \"timestamp_seconds\": 0.5,\n      \"cue\": \"Both placeholder figures A (amber) and B (light blue) are visible in a static wide master; subtitle line appears confirming speech onset.\"\n    },\n    {\n      \"timestamp_seconds\": 1.5,\n      \"cue\": \"Figure scale shows minimal increase relative to frame 1, indicating slow push-in is in progress but barely perceptible at previz fidelity.\"\n    },\n    {\n      \"timestamp_seconds\": 2.5,\n      \"cue\": \"ENVELOPE label persists on figure B across all sampled frames, suggesting an unresolved UI annotation that may indicate an incomplete asset state.\"\n    },\n    {\n      \"timestamp_seconds\": 3.8,\n      \"cue\": \"Final frame shows marginally larger figures confirming push-in direction is correct, but the motion magnitude is insufficient to clearly read as an intentional dramatic push-in without further render refinement.\"\n    }\n  ],\n  \"overall_confidence\": 0.62\n}",
+          "tokenUsage": {
+            "total": 2756,
+            "prompt": 2179,
+            "completion": 577,
+            "numRequests": 1
+          },
+          "cost": 0.015192,
+          "latencyMs": 15639,
+          "cached": false,
+          "metadata": {
+            "clip_id": "dialogue_confession_push_in",
+            "prompt_version": "video-understanding-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "claude-sonnet-4-6",
+            "provider": "anthropic"
+          }
+        },
+        "score": 0.66,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "dialogue_confession_push_in",
+            "clip_title": "Dialogue confession push-in",
+            "clip_dir": "../video_understanding/dialogue_confession_push_in",
+            "target_path": "video_understanding/dialogue_confession_push_in/target.json",
+            "target_markdown": "file://../video_understanding/dialogue_confession_push_in/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "clip_id": "dialogue_confession_push_in",
+          "clip_title": "Dialogue confession push-in",
+          "clip_dir": "../video_understanding/dialogue_confession_push_in",
+          "target_path": "video_understanding/dialogue_confession_push_in/target.json",
+          "target_markdown": "file://../video_understanding/dialogue_confession_push_in/target.md"
+        },
+        "metadata": {
+          "clip_id": "dialogue_confession_push_in",
+          "prompt_version": "video-understanding-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "claude-sonnet-4-6",
+          "provider": "anthropic",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.014049,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.94,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1240,
+            "prompt": 812,
+            "completion": 428,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "overall=1.000 | uncertainty=0.180 | summary=1.00 | tone=1.00 | emotion=1.00 | color=1.00 | camera=1.00 | motion=1.00 | continuity=1.00 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | Prediction aligned with the normalized target.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              },
+              "pass": true,
+              "score": 0.88,
+              "reason": "The output closely matches the reference analysis across all key dimensions. **Summary**: Captures the red alarm environment, whip-pan camera motion, sprinting figure, and bag — though it describes a 'simplified humanoid figure' in a 'synthetic previz scene' rather than a more naturalistic corridor, this is a reasonable interpretation of what appears to be a stylized/synthetic clip. **Tone**: 'tense' and 'urgent' match exactly. **Emotion**: 'panic' matches; 'resolve' is an addition not in the reference but not unreasonable. **Color**: 'red' matches; 'desaturated' is an addition. **Camera language**: 'whip_pan' matches; 'lateral_track' is additional but consistent with the chase motion described. **Motion**: 'fast_lateral', 'escalating', 'pulsing_light' all match the reference exactly. **Continuity**: 'intact' matches, and the notes confirm the bag stays with the runner, matching the reference note. **Audio**: 'alarm' and 'percussion' match exactly, and the note about no speech confirms the [none] transcript. **Evidence**: Four timestamped observations provide detailed frame-by-frame analysis showing lateral movement progression and whip-pan cues — this is thorough, not shallow. **Potential issues**: The summary frames it as a 'synthetic previz scene' with a 'simplified humanoid figure' which could be seen as either accurate description of the clip's nature or slightly clinical. The addition of 'resolve' as an emotion tag and 'lateral_track' as a camera tag are minor additions rather than errors. No significant directorial cues were missed. No invented details that contradict the reference. Overall confidence of 0.82 is reasonable. This is a strong, detailed analysis that captures essentially all reference elements.",
+              "tokensUsed": {
+                "total": 1240,
+                "prompt": 812,
+                "completion": 428,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"alarm_chase_whip_pan\\\",\\\"summary\\\":\\\"A synthetic previz scene depicts a simplified humanoid figure running laterally across a deep-red, rain-streaked environment toward a labeled bag object. The sequence is driven by a pulsing alarm and percussion, with on-screen labels reinforcing the chase and whip-pan intent.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"urgent\\\"],\\\"emotion_tags\\\":[\\\"panic\\\",\\\"resolve\\\"],\\\"color_tags\\\":[\\\"red\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"whip_pan\\\",\\\"lateral_track\\\"],\\\"motion_tags\\\":[\\\"fast_lateral\\\",\\\"escalating\\\",\\\"pulsing_light\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"The humanoid figure moves consistently left-to-right across all five sampled frames, with the BAG object remaining in relative proximity ahead of it. No positional jumps or scene discontinuities detected.\\\",\\\"audio_tags\\\":[\\\"alarm\\\",\\\"percussion\\\"],\\\"audio_notes\\\":\\\"Audio description confirms a pulsing alarm tone layered with clipped percussion hits, consistent with the urgent chase tone and the on-screen ALARM label. No speech or music bed present.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0,\\\"cue\\\":\\\"Humanoid figure labeled RUN positioned far left of frame; BAG object visible to its right; diagonal white motion-streak lines establish kinetic environment.\\\"},{\\\"timestamp_seconds\\\":1.3,\\\"cue\\\":\\\"Figure has shifted noticeably rightward toward center-left; BAG label moves in tandem, confirming lateral tracking motion.\\\"},{\\\"timestamp_seconds\\\":2.6,\\\"cue\\\":\\\"Figure reaches center frame; WHIP label in upper-right corner remains persistent, signaling imminent whip-pan camera event.\\\"},{\\\"timestamp_seconds\\\":4,\\\"cue\\\":\\\"Figure and BAG object now occupy right-center of frame; lateral movement arc complete, consistent with a whip-pan chase resolution.\\\"}],\\\"overall_confidence\\\":0.82}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Alarm chase whip pan\\n\\n- Summary: Red alarm light pulses through a corridor as the camera whip-pans after a sprinting figure clutching a bag.\\n- Tone: urgent, tense\\n- Emotion: panic\\n- Color / grade: red\\n- Camera language: whip_pan\\n- Motion: escalating, fast_lateral, pulsing_light\\n- Continuity: intact — The red bag remains with the runner.\\n- Audio intent: alarm, percussion\\n- Transcript: [none]\\n\\nReward outputs that accurately capture tone, emotional read, camera language,\\nmotion, continuity state, and audio intent. Penalize shallow summaries,\\ninvented details, or missed directorial cues.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Alarm chase whip pan\n\n- Summary: Red alarm light pulses through a corridor as the camera whip-pans after a sprinting figure clutching a bag.\n- Tone: urgent, tense\n- Emotion: panic\n- Color / grade: red\n- Camera language: whip_pan\n- Motion: escalating, fast_lateral, pulsing_light\n- Continuity: intact — The red bag remains with the runner.\n- Audio intent: alarm, percussion\n- Transcript: [none]\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              }
+            }
+          ]
+        },
+        "id": "fbfbb150-f91c-4b9a-b16b-2fb8a585d901",
+        "latencyMs": 13763,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "1a62b43eee0c1ce32b1bbff785e6baec9aed0f48c161f6da5461a8de6efe6237",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"alarm_chase_whip_pan\",\n  \"summary\": \"A synthetic previz scene depicts a simplified humanoid figure running laterally across a deep-red, rain-streaked environment toward a labeled bag object. The sequence is driven by a pulsing alarm and percussion, with on-screen labels reinforcing the chase and whip-pan intent.\",\n  \"tone_tags\": [\"tense\", \"urgent\"],\n  \"emotion_tags\": [\"panic\", \"resolve\"],\n  \"color_tags\": [\"red\", \"desaturated\"],\n  \"camera_tags\": [\"whip_pan\", \"lateral_track\"],\n  \"motion_tags\": [\"fast_lateral\", \"escalating\", \"pulsing_light\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": \"The humanoid figure moves consistently left-to-right across all five sampled frames, with the BAG object remaining in relative proximity ahead of it. No positional jumps or scene discontinuities detected.\",\n  \"audio_tags\": [\"alarm\", \"percussion\"],\n  \"audio_notes\": \"Audio description confirms a pulsing alarm tone layered with clipped percussion hits, consistent with the urgent chase tone and the on-screen ALARM label. No speech or music bed present.\",\n  \"evidence\": [\n    {\"timestamp_seconds\": 0.0, \"cue\": \"Humanoid figure labeled RUN positioned far left of frame; BAG object visible to its right; diagonal white motion-streak lines establish kinetic environment.\"},\n    {\"timestamp_seconds\": 1.3, \"cue\": \"Figure has shifted noticeably rightward toward center-left; BAG label moves in tandem, confirming lateral tracking motion.\"},\n    {\"timestamp_seconds\": 2.6, \"cue\": \"Figure reaches center frame; WHIP label in upper-right corner remains persistent, signaling imminent whip-pan camera event.\"},\n    {\"timestamp_seconds\": 4.0, \"cue\": \"Figure and BAG object now occupy right-center of frame; lateral movement arc complete, consistent with a whip-pan chase resolution.\"}\n  ],\n  \"overall_confidence\": 0.82\n}",
+          "tokenUsage": {
+            "total": 2675,
+            "prompt": 2173,
+            "completion": 502,
+            "numRequests": 1
+          },
+          "cost": 0.014049,
+          "latencyMs": 13763,
+          "cached": false,
+          "metadata": {
+            "clip_id": "alarm_chase_whip_pan",
+            "prompt_version": "video-understanding-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "claude-sonnet-4-6",
+            "provider": "anthropic"
+          }
+        },
+        "score": 0.94,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "clip_id": "alarm_chase_whip_pan",
+            "clip_title": "Alarm chase whip pan",
+            "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+            "target_path": "video_understanding/alarm_chase_whip_pan/target.json",
+            "target_markdown": "file://../video_understanding/alarm_chase_whip_pan/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "clip_id": "alarm_chase_whip_pan",
+          "clip_title": "Alarm chase whip pan",
+          "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+          "target_path": "video_understanding/alarm_chase_whip_pan/target.json",
+          "target_markdown": "file://../video_understanding/alarm_chase_whip_pan/target.md"
+        },
+        "metadata": {
+          "clip_id": "alarm_chase_whip_pan",
+          "prompt_version": "video-understanding-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "claude-sonnet-4-6",
+          "provider": "anthropic",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.014394,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.8180000000000001,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1220,
+            "prompt": 805,
+            "completion": 415,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.856,
+              "reason": "overall=0.856 | uncertainty=0.280 | summary=0.67 | tone=1.00 | emotion=0.50 | color=1.00 | camera=1.00 | motion=1.00 | continuity=0.80 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | summary: warm | emotion: tenderness | continuity: The folded blanket remains untouched at frame right.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              },
+              "pass": true,
+              "score": 0.78,
+              "reason": "The output closely matches the reference analysis across nearly all dimensions. Summary: Both describe a static bedside scene with a seated figure, though the output adds some extra detail (figure A, bed proxy) that is reasonable for previz. Tone: Output includes 'mournful' and 'intimate' (matching reference) plus 'detached' (not in reference, but not unreasonable). Emotion: Output has 'grief' (matching) and 'vulnerability' and 'isolation' instead of 'tenderness' — missing 'tenderness' is a minor gap, and 'isolation' could be seen as slightly different from the reference's emotional read. Color: Output has 'desaturated' and 'amber' (both matching) plus 'navy' (not in reference but reasonable given the dark background). Camera: 'static' and 'wide_master' match exactly. Motion: 'stillness' matches; 'measured' is added but not contradictory. Continuity: Both say 'intact', though the output doesn't mention the specific detail about the folded blanket remaining untouched — this is a missed directorial cue per the rubric. Audio: 'heartbeat' and 'soft_music' match; 'drone' is added but not contradictory. Transcript: correctly noted as none. The evidence section is well-structured with timestamps. The output adds 'drone' audio tag and 'navy' color tag which aren't in the reference but aren't invented fabrications — they're reasonable inferences. The main penalties are: missing 'tenderness' emotion, missing the specific blanket continuity detail, and adding 'detached' tone which slightly mischaracterizes the intimate warmth. Overall this is a strong analysis that captures the core directorial intent well.",
+              "tokensUsed": {
+                "total": 1220,
+                "prompt": 805,
+                "completion": 415,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"quiet_bedside_vigil\\\",\\\"summary\\\":\\\"A static previz shot holds on a simplified interior scene depicting a figure (A) seated beside a bed, suggesting a motionless bedside vigil. No camera movement or character animation is detectable across all five sampled frames.\\\",\\\"tone_tags\\\":[\\\"mournful\\\",\\\"intimate\\\",\\\"detached\\\"],\\\"emotion_tags\\\":[\\\"grief\\\",\\\"vulnerability\\\",\\\"isolation\\\"],\\\"color_tags\\\":[\\\"desaturated\\\",\\\"amber\\\",\\\"navy\\\"],\\\"camera_tags\\\":[\\\"static\\\",\\\"wide_master\\\"],\\\"motion_tags\\\":[\\\"stillness\\\",\\\"measured\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"All five sampled frames are visually identical in layout, character position, and lighting gradient. No continuity breaks detected; the scene holds a single locked composition throughout the 4-second duration.\\\",\\\"audio_tags\\\":[\\\"heartbeat\\\",\\\"soft_music\\\",\\\"drone\\\"],\\\"audio_notes\\\":\\\"Audio description confirms a faint heartbeat monitor and low piano over ambient room tone. No speech or transcript present. The heartbeat element reinforces the medical vigil context and contributes to the mournful tone.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0,\\\"cue\\\":\\\"Opening frame establishes wide static shot: amber figure (A) seated right of a grey rectangular bed proxy against a dark desaturated background gradient.\\\"},{\\\"timestamp_seconds\\\":1.3,\\\"cue\\\":\\\"No positional change in figure or bed geometry; stillness motion tag confirmed by absence of any pixel-level displacement.\\\"},{\\\"timestamp_seconds\\\":2.6,\\\"cue\\\":\\\"Lighting gradient (dark navy-to-charcoal top, amber-toned floor plane) remains consistent, supporting desaturated and navy color tags.\\\"},{\\\"timestamp_seconds\\\":4,\\\"cue\\\":\\\"Final frame identical to frame 1; combined with heartbeat monitor audio cue, the locked composition reinforces isolation and grief emotion tags.\\\"}],\\\"overall_confidence\\\":0.72}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Quiet bedside vigil\\n\\n- Summary: A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.\\n- Tone: intimate, mournful\\n- Emotion: tenderness, grief\\n- Color / grade: amber, desaturated\\n- Camera language: static, wide_master\\n- Motion: stillness\\n- Continuity: intact — The folded blanket remains untouched at frame right.\\n- Audio intent: heartbeat, soft_music\\n- Transcript: [none]\\n\\nReward outputs that accurately capture tone, emotional read, camera language,\\nmotion, continuity state, and audio intent. Penalize shallow summaries,\\ninvented details, or missed directorial cues.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Quiet bedside vigil\n\n- Summary: A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.\n- Tone: intimate, mournful\n- Emotion: tenderness, grief\n- Color / grade: amber, desaturated\n- Camera language: static, wide_master\n- Motion: stillness\n- Continuity: intact — The folded blanket remains untouched at frame right.\n- Audio intent: heartbeat, soft_music\n- Transcript: [none]\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              }
+            }
+          ]
+        },
+        "id": "bff9da3a-fc7b-40e7-b6ad-43467e2708a3",
+        "latencyMs": 12624,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "1a62b43eee0c1ce32b1bbff785e6baec9aed0f48c161f6da5461a8de6efe6237",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"quiet_bedside_vigil\",\n  \"summary\": \"A static previz shot holds on a simplified interior scene depicting a figure (A) seated beside a bed, suggesting a motionless bedside vigil. No camera movement or character animation is detectable across all five sampled frames.\",\n  \"tone_tags\": [\"mournful\", \"intimate\", \"detached\"],\n  \"emotion_tags\": [\"grief\", \"vulnerability\", \"isolation\"],\n  \"color_tags\": [\"desaturated\", \"amber\", \"navy\"],\n  \"camera_tags\": [\"static\", \"wide_master\"],\n  \"motion_tags\": [\"stillness\", \"measured\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": \"All five sampled frames are visually identical in layout, character position, and lighting gradient. No continuity breaks detected; the scene holds a single locked composition throughout the 4-second duration.\",\n  \"audio_tags\": [\"heartbeat\", \"soft_music\", \"drone\"],\n  \"audio_notes\": \"Audio description confirms a faint heartbeat monitor and low piano over ambient room tone. No speech or transcript present. The heartbeat element reinforces the medical vigil context and contributes to the mournful tone.\",\n  \"evidence\": [\n    {\n      \"timestamp_seconds\": 0.0,\n      \"cue\": \"Opening frame establishes wide static shot: amber figure (A) seated right of a grey rectangular bed proxy against a dark desaturated background gradient.\"\n    },\n    {\n      \"timestamp_seconds\": 1.3,\n      \"cue\": \"No positional change in figure or bed geometry; stillness motion tag confirmed by absence of any pixel-level displacement.\"\n    },\n    {\n      \"timestamp_seconds\": 2.6,\n      \"cue\": \"Lighting gradient (dark navy-to-charcoal top, amber-toned floor plane) remains consistent, supporting desaturated and navy color tags.\"\n    },\n    {\n      \"timestamp_seconds\": 4.0,\n      \"cue\": \"Final frame identical to frame 1; combined with heartbeat monitor audio cue, the locked composition reinforces isolation and grief emotion tags.\"\n    }\n  ],\n  \"overall_confidence\": 0.72\n}",
+          "tokenUsage": {
+            "total": 2702,
+            "prompt": 2178,
+            "completion": 524,
+            "numRequests": 1
+          },
+          "cost": 0.014394,
+          "latencyMs": 12624,
+          "cached": false,
+          "metadata": {
+            "clip_id": "quiet_bedside_vigil",
+            "prompt_version": "video-understanding-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "claude-sonnet-4-6",
+            "provider": "anthropic"
+          }
+        },
+        "score": 0.8180000000000001,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "clip_id": "quiet_bedside_vigil",
+            "clip_title": "Quiet bedside vigil",
+            "clip_dir": "../video_understanding/quiet_bedside_vigil",
+            "target_path": "video_understanding/quiet_bedside_vigil/target.json",
+            "target_markdown": "file://../video_understanding/quiet_bedside_vigil/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "clip_id": "quiet_bedside_vigil",
+          "clip_title": "Quiet bedside vigil",
+          "clip_dir": "../video_understanding/quiet_bedside_vigil",
+          "target_path": "video_understanding/quiet_bedside_vigil/target.json",
+          "target_markdown": "file://../video_understanding/quiet_bedside_vigil/target.md"
+        },
+        "metadata": {
+          "clip_id": "quiet_bedside_vigil",
+          "prompt_version": "video-understanding-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "claude-sonnet-4-6",
+          "provider": "anthropic",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.013128,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.7030000000000001,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1048,
+            "prompt": 755,
+            "completion": 293,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.726,
+              "reason": "overall=0.726 | uncertainty=0.180 | summary=1.00 | tone=0.50 | emotion=0.00 | color=1.00 | camera=0.50 | motion=1.00 | continuity=0.80 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | tone: tense | emotion: suspicion | camera: cross_cut | continuity: The tabletop folder changes from red to blue after the cut.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              },
+              "pass": true,
+              "score": 0.68,
+              "reason": "The output captures most key elements accurately. Summary correctly identifies the prop swap from red to blue folder as a continuity break. Continuity status is correctly 'broken' with detailed notes about the color change. Color tags include 'navy' matching reference. Camera tags include 'static' but miss 'cross_cut' which the reference lists. Motion tags include 'abrupt_cut' matching reference, plus 'stillness' which is reasonable. Audio is correctly identified as silent. Tone is 'detached' matching one of the reference tags but misses 'tense'. Emotion is 'isolation' rather than 'suspicion' — this is a miss. The output adds some invented specificity (e.g., 'prop badge', specific frame numbers, 'previz shot') that aren't necessarily wrong but add detail not in the reference. The evidence section is well-structured with timestamps. The summary refers to a 'labeled FOLDER prop badge' which slightly mischaracterizes what appears to be a folder on a tabletop, but the core observation is correct. Overall, the analysis is thorough and mostly accurate, with minor misses on tone ('tense'), emotion ('suspicion' vs 'isolation'), and camera language ('cross_cut').",
+              "tokensUsed": {
+                "total": 1048,
+                "prompt": 755,
+                "completion": 293,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"prop_swap_continuity_break\\\",\\\"summary\\\":\\\"A static synthetic previz shot holds on a dark, minimal desk surface with a labeled 'FOLDER' prop badge visible at the right edge. The prop label changes color from red to blue partway through the clip, marking a clear continuity break.\\\",\\\"tone_tags\\\":[\\\"detached\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\"],\\\"color_tags\\\":[\\\"navy\\\",\\\"desaturated\\\",\\\"red\\\"],\\\"camera_tags\\\":[\\\"static\\\"],\\\"motion_tags\\\":[\\\"stillness\\\",\\\"abrupt_cut\\\"],\\\"continuity_status\\\":\\\"broken\\\",\\\"continuity_notes\\\":\\\"The 'FOLDER' prop badge is rendered with a red background in frames 1–2 (approximately 0–1.5 s) and switches to a blue background in frames 3–5 (approximately 2.0–4.0 s) with no in-scene justification. This constitutes a direct prop-color continuity break across the cut.\\\",\\\"audio_tags\\\":[\\\"silent\\\"],\\\"audio_notes\\\":\\\"No audio track is present; clip packet confirms has_audio: false.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.5,\\\"cue\\\":\\\"FOLDER badge displays solid red background — initial prop state established.\\\"},{\\\"timestamp_seconds\\\":1,\\\"cue\\\":\\\"FOLDER badge still red; scene otherwise unchanged, confirming stable first state.\\\"},{\\\"timestamp_seconds\\\":2,\\\"cue\\\":\\\"FOLDER badge abruptly appears with blue background — prop color swap occurs here.\\\"},{\\\"timestamp_seconds\\\":3.5,\\\"cue\\\":\\\"FOLDER badge remains blue through end of clip, confirming the swap is persistent and not a flicker artifact.\\\"}],\\\"overall_confidence\\\":0.82}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Prop swap continuity break\\n\\n- Summary: A table scene cuts between matching framings, but the folder on the tabletop changes from red to blue after the cut.\\n- Tone: detached, tense\\n- Emotion: suspicion\\n- Color / grade: navy\\n- Camera language: cross_cut, static\\n- Motion: abrupt_cut\\n- Continuity: broken — The tabletop folder changes from red to blue after the cut.\\n- Audio intent: silent\\n- Transcript: [none]\\n\\nReward outputs that accurately capture tone, emotional read, camera language,\\nmotion, continuity state, and audio intent. Penalize shallow summaries,\\ninvented details, or missed directorial cues.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Prop swap continuity break\n\n- Summary: A table scene cuts between matching framings, but the folder on the tabletop changes from red to blue after the cut.\n- Tone: detached, tense\n- Emotion: suspicion\n- Color / grade: navy\n- Camera language: cross_cut, static\n- Motion: abrupt_cut\n- Continuity: broken — The tabletop folder changes from red to blue after the cut.\n- Audio intent: silent\n- Transcript: [none]\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              }
+            }
+          ]
+        },
+        "id": "f4b6fbb8-6567-4e6f-9a16-280c144834c0",
+        "latencyMs": 11886,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "1a62b43eee0c1ce32b1bbff785e6baec9aed0f48c161f6da5461a8de6efe6237",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"prop_swap_continuity_break\",\n  \"summary\": \"A static synthetic previz shot holds on a dark, minimal desk surface with a labeled 'FOLDER' prop badge visible at the right edge. The prop label changes color from red to blue partway through the clip, marking a clear continuity break.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [\"isolation\"],\n  \"color_tags\": [\"navy\", \"desaturated\", \"red\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"stillness\", \"abrupt_cut\"],\n  \"continuity_status\": \"broken\",\n  \"continuity_notes\": \"The 'FOLDER' prop badge is rendered with a red background in frames 1–2 (approximately 0–1.5 s) and switches to a blue background in frames 3–5 (approximately 2.0–4.0 s) with no in-scene justification. This constitutes a direct prop-color continuity break across the cut.\",\n  \"audio_tags\": [\"silent\"],\n  \"audio_notes\": \"No audio track is present; clip packet confirms has_audio: false.\",\n  \"evidence\": [\n    {\"timestamp_seconds\": 0.5, \"cue\": \"FOLDER badge displays solid red background — initial prop state established.\"},\n    {\"timestamp_seconds\": 1.0, \"cue\": \"FOLDER badge still red; scene otherwise unchanged, confirming stable first state.\"},\n    {\"timestamp_seconds\": 2.0, \"cue\": \"FOLDER badge abruptly appears with blue background — prop color swap occurs here.\"},\n    {\"timestamp_seconds\": 3.5, \"cue\": \"FOLDER badge remains blue through end of clip, confirming the swap is persistent and not a flicker artifact.\"}\n  ],\n  \"overall_confidence\": 0.82\n}",
+          "tokenUsage": {
+            "total": 2608,
+            "prompt": 2166,
+            "completion": 442,
+            "numRequests": 1
+          },
+          "cost": 0.013128,
+          "latencyMs": 11886,
+          "cached": false,
+          "metadata": {
+            "clip_id": "prop_swap_continuity_break",
+            "prompt_version": "video-understanding-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "claude-sonnet-4-6",
+            "provider": "anthropic"
+          }
+        },
+        "score": 0.7030000000000001,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "clip_id": "prop_swap_continuity_break",
+            "clip_title": "Prop swap continuity break",
+            "clip_dir": "../video_understanding/prop_swap_continuity_break",
+            "target_path": "video_understanding/prop_swap_continuity_break/target.json",
+            "target_markdown": "file://../video_understanding/prop_swap_continuity_break/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "vars": {
+          "clip_id": "prop_swap_continuity_break",
+          "clip_title": "Prop swap continuity break",
+          "clip_dir": "../video_understanding/prop_swap_continuity_break",
+          "target_path": "video_understanding/prop_swap_continuity_break/target.json",
+          "target_markdown": "file://../video_understanding/prop_swap_continuity_break/target.md"
+        },
+        "metadata": {
+          "clip_id": "prop_swap_continuity_break",
+          "prompt_version": "video-understanding-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "claude-sonnet-4-6",
+          "provider": "anthropic",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.013461,
+        "error": "The output captures several elements correctly: tone includes 'surreal' (matching reference), emotion includes 'wonder' (matching), color tags include magenta, teal, and neon (matching), continuity status is 'intact' (matching), and audio tags include 'drone' (matching). However, there are significant issues:\n\n1. **Summary**: The model describes a 'synthetic previz shot' with a 'magenta-violet grid field with a teal triangle and two dark squares' — this appears to be an invented/hallucinated description of abstract geometry rather than the actual content (a wet crosswalk glowing in magenta and cyan). The model seems to have interpreted the clip as a static graphic rather than a real/rendered scene of a street.\n\n2. **Camera language**: The model says 'static' with no camera movement detected, while the reference clearly states 'overhead_reveal' with a crane-up motion. This is a major miss of a key directorial cue.\n\n3. **Motion**: The model says 'stillness' and 'measured', while the reference says 'slow_drift'. The model explicitly claims no movement occurred, directly contradicting the reference.\n\n4. **Tone**: The model has 'detached' instead of 'tense' as the second tone tag. It got 'surreal' correct but missed 'tense'.\n\n5. **Emotion**: The model includes 'isolation' which isn't in the reference, though 'wonder' is correctly included.\n\n6. **Continuity notes**: The model describes pixel-consistent static frames, while the reference describes light reflections staying consistent across a reveal — fundamentally different observations.\n\nThe model appears to have fundamentally misread the clip content, treating it as a static graphic/previz rather than a dynamic camera reveal of a wet crosswalk. While it gets some tags right (likely through keyword matching from the clip title), the core analysis is inaccurate with invented details about geometric shapes and text overlays. The missed crane/reveal camera movement and the incorrect 'static/stillness' assessment are significant errors.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.493,
+          "reason": "The output captures several elements correctly: tone includes 'surreal' (matching reference), emotion includes 'wonder' (matching), color tags include magenta, teal, and neon (matching), continuity status is 'intact' (matching), and audio tags include 'drone' (matching). However, there are significant issues:\n\n1. **Summary**: The model describes a 'synthetic previz shot' with a 'magenta-violet grid field with a teal triangle and two dark squares' — this appears to be an invented/hallucinated description of abstract geometry rather than the actual content (a wet crosswalk glowing in magenta and cyan). The model seems to have interpreted the clip as a static graphic rather than a real/rendered scene of a street.\n\n2. **Camera language**: The model says 'static' with no camera movement detected, while the reference clearly states 'overhead_reveal' with a crane-up motion. This is a major miss of a key directorial cue.\n\n3. **Motion**: The model says 'stillness' and 'measured', while the reference says 'slow_drift'. The model explicitly claims no movement occurred, directly contradicting the reference.\n\n4. **Tone**: The model has 'detached' instead of 'tense' as the second tone tag. It got 'surreal' correct but missed 'tense'.\n\n5. **Emotion**: The model includes 'isolation' which isn't in the reference, though 'wonder' is correctly included.\n\n6. **Continuity notes**: The model describes pixel-consistent static frames, while the reference describes light reflections staying consistent across a reveal — fundamentally different observations.\n\nThe model appears to have fundamentally misread the clip content, treating it as a static graphic/previz rather than a dynamic camera reveal of a wet crosswalk. While it gets some tags right (likely through keyword matching from the clip title), the core analysis is inaccurate with invented details about geometric shapes and text overlays. The missed crane/reveal camera movement and the incorrect 'static/stillness' assessment are significant errors.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1265,
+            "prompt": 769,
+            "completion": 496,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.686,
+              "reason": "overall=0.686 | uncertainty=0.280 | summary=1.00 | tone=0.50 | emotion=1.00 | color=1.00 | camera=0.00 | motion=0.00 | continuity=0.80 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | tone: tense | camera: overhead_reveal | motion: slow_drift | continuity: Light reflections stay consistent across the reveal.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              },
+              "pass": false,
+              "score": 0.3,
+              "reason": "The output captures several elements correctly: tone includes 'surreal' (matching reference), emotion includes 'wonder' (matching), color tags include magenta, teal, and neon (matching), continuity status is 'intact' (matching), and audio tags include 'drone' (matching). However, there are significant issues:\n\n1. **Summary**: The model describes a 'synthetic previz shot' with a 'magenta-violet grid field with a teal triangle and two dark squares' — this appears to be an invented/hallucinated description of abstract geometry rather than the actual content (a wet crosswalk glowing in magenta and cyan). The model seems to have interpreted the clip as a static graphic rather than a real/rendered scene of a street.\n\n2. **Camera language**: The model says 'static' with no camera movement detected, while the reference clearly states 'overhead_reveal' with a crane-up motion. This is a major miss of a key directorial cue.\n\n3. **Motion**: The model says 'stillness' and 'measured', while the reference says 'slow_drift'. The model explicitly claims no movement occurred, directly contradicting the reference.\n\n4. **Tone**: The model has 'detached' instead of 'tense' as the second tone tag. It got 'surreal' correct but missed 'tense'.\n\n5. **Emotion**: The model includes 'isolation' which isn't in the reference, though 'wonder' is correctly included.\n\n6. **Continuity notes**: The model describes pixel-consistent static frames, while the reference describes light reflections staying consistent across a reveal — fundamentally different observations.\n\nThe model appears to have fundamentally misread the clip content, treating it as a static graphic/previz rather than a dynamic camera reveal of a wet crosswalk. While it gets some tags right (likely through keyword matching from the clip title), the core analysis is inaccurate with invented details about geometric shapes and text overlays. The missed crane/reveal camera movement and the incorrect 'static/stillness' assessment are significant errors.",
+              "tokensUsed": {
+                "total": 1265,
+                "prompt": 769,
+                "completion": 496,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"neon_crosswalk_reveal\\\",\\\"summary\\\":\\\"A stylized synthetic previz shot holds on a magenta-violet grid field with a teal triangle and two dark squares, evoking a retro-neon city crosswalk aesthetic. The composition remains nearly static across all sampled frames with no camera movement or cut detected.\\\",\\\"tone_tags\\\":[\\\"surreal\\\",\\\"detached\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\",\\\"wonder\\\"],\\\"color_tags\\\":[\\\"magenta\\\",\\\"teal\\\",\\\"violet\\\",\\\"neon\\\"],\\\"camera_tags\\\":[\\\"static\\\"],\\\"motion_tags\\\":[\\\"stillness\\\",\\\"measured\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"All five sampled frames show an identical layout with no positional drift in geometry, text overlays, or background grid, indicating a fully stable hold shot across the 4-second duration.\\\",\\\"audio_tags\\\":[\\\"drone\\\"],\\\"audio_notes\\\":\\\"Audio description confirms a low synth drone sustained beneath the visual reveal; no percussive hits, speech, or secondary layers are noted.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0,\\\"cue\\\":\\\"Opening frame establishes magenta-violet grid background with centered teal triangle and flanking dark squares; title text 'NEON' and 'REVEAL' visible.\\\"},{\\\"timestamp_seconds\\\":1.3,\\\"cue\\\":\\\"No positional change in any geometric element or text overlay; drone audio implied to be sustaining.\\\"},{\\\"timestamp_seconds\\\":2.6,\\\"cue\\\":\\\"Grid perspective lines and triangle apex remain pixel-consistent with frame 1, confirming locked static composition.\\\"},{\\\"timestamp_seconds\\\":4,\\\"cue\\\":\\\"Final sampled frame identical to all prior frames; no reveal animation or camera move has materialized within the sampled window.\\\"}],\\\"overall_confidence\\\":0.72}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Neon crosswalk reveal\\n\\n- Summary: A wet crosswalk glows in magenta and cyan as the camera cranes up to reveal the street geometry.\\n- Tone: surreal, tense\\n- Emotion: wonder\\n- Color / grade: magenta, neon, teal\\n- Camera language: overhead_reveal\\n- Motion: slow_drift\\n- Continuity: intact — Light reflections stay consistent across the reveal.\\n- Audio intent: drone\\n- Transcript: [none]\\n\\nReward outputs that accurately capture tone, emotional read, camera language,\\nmotion, continuity state, and audio intent. Penalize shallow summaries,\\ninvented details, or missed directorial cues.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Neon crosswalk reveal\n\n- Summary: A wet crosswalk glows in magenta and cyan as the camera cranes up to reveal the street geometry.\n- Tone: surreal, tense\n- Emotion: wonder\n- Color / grade: magenta, neon, teal\n- Camera language: overhead_reveal\n- Motion: slow_drift\n- Continuity: intact — Light reflections stay consistent across the reveal.\n- Audio intent: drone\n- Transcript: [none]\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              }
+            }
+          ]
+        },
+        "id": "ee83f0a1-b5ea-4767-a10a-0b8975cfbd53",
+        "latencyMs": 11953,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "1a62b43eee0c1ce32b1bbff785e6baec9aed0f48c161f6da5461a8de6efe6237",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"neon_crosswalk_reveal\",\n  \"summary\": \"A stylized synthetic previz shot holds on a magenta-violet grid field with a teal triangle and two dark squares, evoking a retro-neon city crosswalk aesthetic. The composition remains nearly static across all sampled frames with no camera movement or cut detected.\",\n  \"tone_tags\": [\"surreal\", \"detached\"],\n  \"emotion_tags\": [\"isolation\", \"wonder\"],\n  \"color_tags\": [\"magenta\", \"teal\", \"violet\", \"neon\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"stillness\", \"measured\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": \"All five sampled frames show an identical layout with no positional drift in geometry, text overlays, or background grid, indicating a fully stable hold shot across the 4-second duration.\",\n  \"audio_tags\": [\"drone\"],\n  \"audio_notes\": \"Audio description confirms a low synth drone sustained beneath the visual reveal; no percussive hits, speech, or secondary layers are noted.\",\n  \"evidence\": [\n    {\"timestamp_seconds\": 0.0, \"cue\": \"Opening frame establishes magenta-violet grid background with centered teal triangle and flanking dark squares; title text 'NEON' and 'REVEAL' visible.\"},\n    {\"timestamp_seconds\": 1.3, \"cue\": \"No positional change in any geometric element or text overlay; drone audio implied to be sustaining.\"},\n    {\"timestamp_seconds\": 2.6, \"cue\": \"Grid perspective lines and triangle apex remain pixel-consistent with frame 1, confirming locked static composition.\"},\n    {\"timestamp_seconds\": 4.0, \"cue\": \"Final sampled frame identical to all prior frames; no reveal animation or camera move has materialized within the sampled window.\"}\n  ],\n  \"overall_confidence\": 0.72\n}",
+          "tokenUsage": {
+            "total": 2639,
+            "prompt": 2177,
+            "completion": 462,
+            "numRequests": 1
+          },
+          "cost": 0.013461,
+          "latencyMs": 11953,
+          "cached": false,
+          "metadata": {
+            "clip_id": "neon_crosswalk_reveal",
+            "prompt_version": "video-understanding-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "claude-sonnet-4-6",
+            "provider": "anthropic"
+          }
+        },
+        "score": 0.493,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "neon_crosswalk_reveal",
+            "clip_title": "Neon crosswalk reveal",
+            "clip_dir": "../video_understanding/neon_crosswalk_reveal",
+            "target_path": "video_understanding/neon_crosswalk_reveal/target.json",
+            "target_markdown": "file://../video_understanding/neon_crosswalk_reveal/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "vars": {
+          "clip_id": "neon_crosswalk_reveal",
+          "clip_title": "Neon crosswalk reveal",
+          "clip_dir": "../video_understanding/neon_crosswalk_reveal",
+          "target_path": "video_understanding/neon_crosswalk_reveal/target.json",
+          "target_markdown": "file://../video_understanding/neon_crosswalk_reveal/target.md"
+        },
+        "metadata": {
+          "clip_id": "neon_crosswalk_reveal",
+          "prompt_version": "video-understanding-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "claude-sonnet-4-6",
+          "provider": "anthropic",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.013602,
+        "error": "The output captures several key elements correctly: desaturated color, static/wide_master camera, stillness motion, intact continuity, and muzak audio intent. The tonal dissonance between cheerful muzak and bleak visuals is well-identified. However, there are notable issues: (1) The tone tags include 'surreal' and 'mournful' but miss 'playful' which is a key reference tone - 'detached' is correct. (2) Emotion tags list 'isolation', 'vulnerability', 'hesitation' but miss 'suspicion' entirely. (3) The summary describes a 'dark rectangular block against a grey gradient background' as placeholder/previz geometry, which appears to be an invention - the reference describes a 'trashed table' with 'tipped chair and broken glass'. The model seems to have failed to recognize the actual scene content and instead interpreted it as placeholder geometry, which is a significant misread. (4) The continuity notes mention 'no geometry shift' but miss the specific details about tipped chair and broken glass staying fixed. (5) 'amber' color tag is added without reference support. The model correctly identifies the audio-visual contrast and several structural elements, but the fundamental misidentification of the scene content (calling it previz placeholder instead of recognizing the trashed table tableau) and missing the 'playful' tone and 'suspicion' emotion are significant penalties.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.5680000000000001,
+          "reason": "The output captures several key elements correctly: desaturated color, static/wide_master camera, stillness motion, intact continuity, and muzak audio intent. The tonal dissonance between cheerful muzak and bleak visuals is well-identified. However, there are notable issues: (1) The tone tags include 'surreal' and 'mournful' but miss 'playful' which is a key reference tone - 'detached' is correct. (2) Emotion tags list 'isolation', 'vulnerability', 'hesitation' but miss 'suspicion' entirely. (3) The summary describes a 'dark rectangular block against a grey gradient background' as placeholder/previz geometry, which appears to be an invention - the reference describes a 'trashed table' with 'tipped chair and broken glass'. The model seems to have failed to recognize the actual scene content and instead interpreted it as placeholder geometry, which is a significant misread. (4) The continuity notes mention 'no geometry shift' but miss the specific details about tipped chair and broken glass staying fixed. (5) 'amber' color tag is added without reference support. The model correctly identifies the audio-visual contrast and several structural elements, but the fundamental misidentification of the scene content (calling it previz placeholder instead of recognizing the trashed table tableau) and missing the 'playful' tone and 'suspicion' emotion are significant penalties.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1112,
+            "prompt": 777,
+            "completion": 335,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.786,
+              "reason": "overall=0.786 | uncertainty=0.450 | summary=1.00 | tone=0.50 | emotion=0.00 | color=1.00 | camera=1.00 | motion=1.00 | continuity=0.80 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | tone: playful | emotion: suspicion | continuity: The tipped chair and broken glass stay fixed in place.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              },
+              "pass": false,
+              "score": 0.35,
+              "reason": "The output captures several key elements correctly: desaturated color, static/wide_master camera, stillness motion, intact continuity, and muzak audio intent. The tonal dissonance between cheerful muzak and bleak visuals is well-identified. However, there are notable issues: (1) The tone tags include 'surreal' and 'mournful' but miss 'playful' which is a key reference tone - 'detached' is correct. (2) Emotion tags list 'isolation', 'vulnerability', 'hesitation' but miss 'suspicion' entirely. (3) The summary describes a 'dark rectangular block against a grey gradient background' as placeholder/previz geometry, which appears to be an invention - the reference describes a 'trashed table' with 'tipped chair and broken glass'. The model seems to have failed to recognize the actual scene content and instead interpreted it as placeholder geometry, which is a significant misread. (4) The continuity notes mention 'no geometry shift' but miss the specific details about tipped chair and broken glass staying fixed. (5) 'amber' color tag is added without reference support. The model correctly identifies the audio-visual contrast and several structural elements, but the fundamental misidentification of the scene content (calling it previz placeholder instead of recognizing the trashed table tableau) and missing the 'playful' tone and 'suspicion' emotion are significant penalties.",
+              "tokensUsed": {
+                "total": 1112,
+                "prompt": 777,
+                "completion": 335,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"muzak_aftermath_tableau\\\",\\\"summary\\\":\\\"A static previz placeholder holds a single dark rectangular block against a grey gradient background across all four seconds, with no camera movement or scene change. Cheerful store muzak plays over the inert geometry, establishing an ironic audio-visual contrast between upbeat sound and a bleak, motionless tableau.\\\",\\\"tone_tags\\\":[\\\"surreal\\\",\\\"detached\\\",\\\"mournful\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\",\\\"vulnerability\\\",\\\"hesitation\\\"],\\\"color_tags\\\":[\\\"desaturated\\\",\\\"amber\\\"],\\\"camera_tags\\\":[\\\"static\\\",\\\"wide_master\\\"],\\\"motion_tags\\\":[\\\"stillness\\\",\\\"measured\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"All five sampled frames are visually identical; no geometry shift, lighting change, or cut is detectable. Continuity is trivially intact because no transition occurs.\\\",\\\"audio_tags\\\":[\\\"muzak\\\",\\\"soft_music\\\"],\\\"audio_notes\\\":\\\"Cheerful store music described in audio_description creates deliberate tonal dissonance against the dark, wrecked-room intent; no speech, drone, or percussion layer is indicated.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0,\\\"cue\\\":\\\"Title card 'AFTERMATH / Muzak aftermath tableau' overlaid on static grey gradient with dark block placeholder geometry.\\\"},{\\\"timestamp_seconds\\\":1.3,\\\"cue\\\":\\\"Frame identical to opening; no camera motion or lighting variation detected, confirming locked static composition.\\\"},{\\\"timestamp_seconds\\\":2.6,\\\"cue\\\":\\\"Block geometry and background remain unchanged; absence of debris or environmental detail signals incomplete previz asset.\\\"},{\\\"timestamp_seconds\\\":4,\\\"cue\\\":\\\"Final sampled frame matches all prior frames exactly; cheerful muzak audio contrast is the sole expressive element in the clip.\\\"}],\\\"overall_confidence\\\":0.55}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Muzak aftermath tableau\\n\\n- Summary: A static aftermath tableau holds on a trashed table while cheerful elevator-style muzak creates tonal dissonance.\\n- Tone: playful, detached\\n- Emotion: suspicion\\n- Color / grade: desaturated\\n- Camera language: static, wide_master\\n- Motion: stillness\\n- Continuity: intact — The tipped chair and broken glass stay fixed in place.\\n- Audio intent: muzak\\n- Transcript: [none]\\n\\nReward outputs that accurately capture tone, emotional read, camera language,\\nmotion, continuity state, and audio intent. Penalize shallow summaries,\\ninvented details, or missed directorial cues.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Muzak aftermath tableau\n\n- Summary: A static aftermath tableau holds on a trashed table while cheerful elevator-style muzak creates tonal dissonance.\n- Tone: playful, detached\n- Emotion: suspicion\n- Color / grade: desaturated\n- Camera language: static, wide_master\n- Motion: stillness\n- Continuity: intact — The tipped chair and broken glass stay fixed in place.\n- Audio intent: muzak\n- Transcript: [none]\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+              }
+            }
+          ]
+        },
+        "id": "687fdb1b-afd0-42ad-bae6-b184317d0e2e",
+        "latencyMs": 13287,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "1a62b43eee0c1ce32b1bbff785e6baec9aed0f48c161f6da5461a8de6efe6237",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Claude Sonnet 4.6"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"muzak_aftermath_tableau\",\n  \"summary\": \"A static previz placeholder holds a single dark rectangular block against a grey gradient background across all four seconds, with no camera movement or scene change. Cheerful store muzak plays over the inert geometry, establishing an ironic audio-visual contrast between upbeat sound and a bleak, motionless tableau.\",\n  \"tone_tags\": [\"surreal\", \"detached\", \"mournful\"],\n  \"emotion_tags\": [\"isolation\", \"vulnerability\", \"hesitation\"],\n  \"color_tags\": [\"desaturated\", \"amber\"],\n  \"camera_tags\": [\"static\", \"wide_master\"],\n  \"motion_tags\": [\"stillness\", \"measured\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": \"All five sampled frames are visually identical; no geometry shift, lighting change, or cut is detectable. Continuity is trivially intact because no transition occurs.\",\n  \"audio_tags\": [\"muzak\", \"soft_music\"],\n  \"audio_notes\": \"Cheerful store music described in audio_description creates deliberate tonal dissonance against the dark, wrecked-room intent; no speech, drone, or percussion layer is indicated.\",\n  \"evidence\": [\n    {\"timestamp_seconds\": 0.0, \"cue\": \"Title card 'AFTERMATH / Muzak aftermath tableau' overlaid on static grey gradient with dark block placeholder geometry.\"},\n    {\"timestamp_seconds\": 1.3, \"cue\": \"Frame identical to opening; no camera motion or lighting variation detected, confirming locked static composition.\"},\n    {\"timestamp_seconds\": 2.6, \"cue\": \"Block geometry and background remain unchanged; absence of debris or environmental detail signals incomplete previz asset.\"},\n    {\"timestamp_seconds\": 4.0, \"cue\": \"Final sampled frame matches all prior frames exactly; cheerful muzak audio contrast is the sole expressive element in the clip.\"}\n  ],\n  \"overall_confidence\": 0.55\n}",
+          "tokenUsage": {
+            "total": 2646,
+            "prompt": 2174,
+            "completion": 472,
+            "numRequests": 1
+          },
+          "cost": 0.013602,
+          "latencyMs": 13287,
+          "cached": false,
+          "metadata": {
+            "clip_id": "muzak_aftermath_tableau",
+            "prompt_version": "video-understanding-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "claude-sonnet-4-6",
+            "provider": "anthropic"
+          }
+        },
+        "score": 0.5680000000000001,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "muzak_aftermath_tableau",
+            "clip_title": "Muzak aftermath tableau",
+            "clip_dir": "../video_understanding/muzak_aftermath_tableau",
+            "target_path": "video_understanding/muzak_aftermath_tableau/target.json",
+            "target_markdown": "file://../video_understanding/muzak_aftermath_tableau/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "vars": {
+          "clip_id": "muzak_aftermath_tableau",
+          "clip_title": "Muzak aftermath tableau",
+          "clip_dir": "../video_understanding/muzak_aftermath_tableau",
+          "target_path": "video_understanding/muzak_aftermath_tableau/target.json",
+          "target_markdown": "file://../video_understanding/muzak_aftermath_tableau/target.md"
+        },
+        "metadata": {
+          "clip_id": "muzak_aftermath_tableau",
+          "prompt_version": "video-understanding-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "claude-sonnet-4-6",
+          "provider": "anthropic",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      }
+    ],
+    "stats": {
+      "successes": 3,
+      "failures": 3,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 13047,
+        "completion": 2979,
+        "cached": 0,
+        "total": 16026,
+        "numRequests": 6,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 7373,
+          "prompt": 4797,
+          "completion": 2576,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 146970,
+      "evaluationDurationMs": 146970
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Video understanding — director-facing clip-packet QA for generated outputs",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/5d24/cine-forge/benchmarks/prompts/video-understanding.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "GPT-5.4",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-v1",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "provider": "anthropic",
+          "model": "claude-sonnet-4-6",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-v1",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "provider": "google",
+          "model": "gemini-2.5-pro",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-v1",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "provider": "google",
+          "model": "gemini-2.5-flash",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-v1",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "clip_id": "dialogue_confession_push_in",
+          "clip_title": "Dialogue confession push-in",
+          "clip_dir": "../video_understanding/dialogue_confession_push_in",
+          "target_path": "video_understanding/dialogue_confession_push_in/target.json",
+          "target_markdown": "file://../video_understanding/dialogue_confession_push_in/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "alarm_chase_whip_pan",
+          "clip_title": "Alarm chase whip pan",
+          "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+          "target_path": "video_understanding/alarm_chase_whip_pan/target.json",
+          "target_markdown": "file://../video_understanding/alarm_chase_whip_pan/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "quiet_bedside_vigil",
+          "clip_title": "Quiet bedside vigil",
+          "clip_dir": "../video_understanding/quiet_bedside_vigil",
+          "target_path": "video_understanding/quiet_bedside_vigil/target.json",
+          "target_markdown": "file://../video_understanding/quiet_bedside_vigil/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "prop_swap_continuity_break",
+          "clip_title": "Prop swap continuity break",
+          "clip_dir": "../video_understanding/prop_swap_continuity_break",
+          "target_path": "video_understanding/prop_swap_continuity_break/target.json",
+          "target_markdown": "file://../video_understanding/prop_swap_continuity_break/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "neon_crosswalk_reveal",
+          "clip_title": "Neon crosswalk reveal",
+          "clip_dir": "../video_understanding/neon_crosswalk_reveal",
+          "target_path": "video_understanding/neon_crosswalk_reveal/target.json",
+          "target_markdown": "file://../video_understanding/neon_crosswalk_reveal/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "muzak_aftermath_tableau",
+          "clip_title": "Muzak aftermath tableau",
+          "clip_dir": "../video_understanding/muzak_aftermath_tableau",
+          "target_path": "video_understanding/muzak_aftermath_tableau/target.json",
+          "target_markdown": "file://../video_understanding/muzak_aftermath_tableau/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "radio_hold_tracking",
+          "clip_title": "Radio hold tracking",
+          "clip_dir": "../video_understanding/radio_hold_tracking",
+          "target_path": "video_understanding/radio_hold_tracking/target.json",
+          "target_markdown": "file://../video_understanding/radio_hold_tracking/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "hallway_standoff_crosscut",
+          "clip_title": "Hallway standoff cross-cut",
+          "clip_dir": "../video_understanding/hallway_standoff_crosscut",
+          "target_path": "video_understanding/hallway_standoff_crosscut/target.json",
+          "target_markdown": "file://../video_understanding/hallway_standoff_crosscut/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "sunset_reunion_pullback",
+          "clip_title": "Sunset reunion pull-back",
+          "clip_dir": "../video_understanding/sunset_reunion_pullback",
+          "target_path": "video_understanding/sunset_reunion_pullback/target.json",
+          "target_markdown": "file://../video_understanding/sunset_reunion_pullback/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "surveillance_green_monitor",
+          "clip_title": "Surveillance green monitor",
+          "clip_dir": "../video_understanding/surveillance_green_monitor",
+          "target_path": "video_understanding/surveillance_green_monitor/target.json",
+          "target_markdown": "file://../video_understanding/surveillance_green_monitor/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "flashback_sepia_drift",
+          "clip_title": "Flashback sepia drift",
+          "clip_dir": "../video_understanding/flashback_sepia_drift",
+          "target_path": "video_understanding/flashback_sepia_drift/target.json",
+          "target_markdown": "file://../video_understanding/flashback_sepia_drift/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "rooftop_escape_crash_zoom",
+          "clip_title": "Rooftop escape crash zoom",
+          "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+          "target_path": "video_understanding/rooftop_escape_crash_zoom/target.json",
+          "target_markdown": "file://../video_understanding/rooftop_escape_crash_zoom/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "mirror_isolation_profile",
+          "clip_title": "Mirror isolation profile",
+          "clip_dir": "../video_understanding/mirror_isolation_profile",
+          "target_path": "video_understanding/mirror_isolation_profile/target.json",
+          "target_markdown": "file://../video_understanding/mirror_isolation_profile/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "warehouse_drone_wide",
+          "clip_title": "Warehouse drone wide",
+          "clip_dir": "../video_understanding/warehouse_drone_wide",
+          "target_path": "video_understanding/warehouse_drone_wide/target.json",
+          "target_markdown": "file://../video_understanding/warehouse_drone_wide/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "storm_tunnel_lateral_run",
+          "clip_title": "Storm tunnel lateral run",
+          "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+          "target_path": "video_understanding/storm_tunnel_lateral_run/target.json",
+          "target_markdown": "file://../video_understanding/storm_tunnel_lateral_run/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "countdown_control_room",
+          "clip_title": "Countdown control room",
+          "clip_dir": "../video_understanding/countdown_control_room",
+          "target_path": "video_understanding/countdown_control_room/target.json",
+          "target_markdown": "file://../video_understanding/countdown_control_room/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "golden_memory_orbit",
+          "clip_title": "Golden memory orbit",
+          "clip_dir": "../video_understanding/golden_memory_orbit",
+          "target_path": "video_understanding/golden_memory_orbit/target.json",
+          "target_markdown": "file://../video_understanding/golden_memory_orbit/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "handheld_panic_stairwell",
+          "clip_title": "Handheld panic stairwell",
+          "clip_dir": "../video_understanding/handheld_panic_stairwell",
+          "target_path": "video_understanding/handheld_panic_stairwell/target.json",
+          "target_markdown": "file://../video_understanding/handheld_panic_stairwell/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "match_cut_envelope",
+          "clip_title": "Match-cut envelope",
+          "clip_dir": "../video_understanding/match_cut_envelope",
+          "target_path": "video_understanding/match_cut_envelope/target.json",
+          "target_markdown": "file://../video_understanding/match_cut_envelope/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "violet_dream_percussion",
+          "clip_title": "Violet dream percussion",
+          "clip_dir": "../video_understanding/violet_dream_percussion",
+          "target_path": "video_understanding/violet_dream_percussion/target.json",
+          "target_markdown": "file://../video_understanding/violet_dream_percussion/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that accurately capture tone, emotional read, camera language,\nmotion, continuity state, and audio intent. Penalize shallow summaries,\ninvented details, or missed directorial cues.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/video-understanding-rerun-sonnet46-2026-03-19.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-03-19T23:53:30.181Z",
+    "evaluationCreatedAt": "2026-03-19T23:51:03.005Z"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "clip_id": "match_cut_envelope",
+  "title": "Match-cut envelope",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": "Read it now, before the room changes its mind.",
+  "audio_description": "Low dialogue with no underscore.",
+  "summary_reference": "A sharp match cut preserves the white envelope's placement across two different framings of the same exchange.",
+  "required_keywords": [
+    "match cut",
+    "envelope",
+    "continuity"
+  ],
+  "tone_tags": [
+    "intimate",
+    "tense"
+  ],
+  "emotion_tags": [
+    "hesitation"
+  ],
+  "color_tags": [
+    "navy",
+    "desaturated"
+  ],
+  "camera_tags": [
+    "cross_cut",
+    "profile_closeup"
+  ],
+  "motion_tags": [
+    "match_cut",
+    "abrupt_cut"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The envelope remains at the same hand and angle across the cut."
+  ],
+  "audio_tags": [
+    "speech"
+  ],
+  "clip_tags": [
+    "continuity",
+    "match_cut"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

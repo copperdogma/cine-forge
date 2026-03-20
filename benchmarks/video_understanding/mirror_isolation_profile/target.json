@@ -1,0 +1,60 @@
+{
+  "clip_id": "mirror_isolation_profile",
+  "title": "Mirror isolation profile",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": false,
+  "transcript": null,
+  "audio_description": null,
+  "summary_reference": "A violet profile close-up and mirror split isolate one figure in a hushed self-interrogation.",
+  "required_keywords": [
+    "mirror",
+    "profile",
+    "isolation"
+  ],
+  "tone_tags": [
+    "detached",
+    "mournful"
+  ],
+  "emotion_tags": [
+    "isolation",
+    "hesitation"
+  ],
+  "color_tags": [
+    "violet",
+    "desaturated"
+  ],
+  "camera_tags": [
+    "profile_closeup",
+    "static"
+  ],
+  "motion_tags": [
+    "stillness"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The cracked mirror line stays centered between face and reflection."
+  ],
+  "audio_tags": [
+    "silent"
+  ],
+  "clip_tags": [
+    "quiet_emotion",
+    "portrait"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

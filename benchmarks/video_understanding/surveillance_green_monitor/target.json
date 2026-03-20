@@ -1,0 +1,59 @@
+{
+  "clip_id": "surveillance_green_monitor",
+  "title": "Surveillance green monitor",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "A low electrical hum with no dialogue.",
+  "summary_reference": "A green surveillance feed watches a quiet doorway in a locked wide frame with timestamp overlays and monitor noise.",
+  "required_keywords": [
+    "surveillance",
+    "green",
+    "monitor"
+  ],
+  "tone_tags": [
+    "detached",
+    "ominous"
+  ],
+  "emotion_tags": [
+    "isolation"
+  ],
+  "color_tags": [
+    "green",
+    "monochrome"
+  ],
+  "camera_tags": [
+    "wide_master",
+    "static"
+  ],
+  "motion_tags": [
+    "stillness"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The doorway and feed overlays remain stable."
+  ],
+  "audio_tags": [
+    "drone"
+  ],
+  "clip_tags": [
+    "stylized_color",
+    "monitor"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

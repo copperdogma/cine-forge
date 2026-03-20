@@ -1,0 +1,19 @@
+{
+  "clip_id": "surveillance_green_monitor",
+  "title": "Surveillance green monitor",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "fps": 8,
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "A low electrical hum with no dialogue.",
+  "tags": [
+    "stylized_color",
+    "monitor"
+  ],
+  "anchor_subset": false,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+}

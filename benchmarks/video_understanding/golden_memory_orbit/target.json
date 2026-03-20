@@ -1,0 +1,60 @@
+{
+  "clip_id": "golden_memory_orbit",
+  "title": "Golden memory orbit",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "Warm, floating strings with no dialogue.",
+  "summary_reference": "A golden memory circles gently around two figures, turning the scene into a tender, idealized recollection.",
+  "required_keywords": [
+    "golden",
+    "memory",
+    "orbit"
+  ],
+  "tone_tags": [
+    "hopeful",
+    "nostalgic"
+  ],
+  "emotion_tags": [
+    "tenderness",
+    "wonder"
+  ],
+  "color_tags": [
+    "gold",
+    "amber"
+  ],
+  "camera_tags": [
+    "slow_push_in"
+  ],
+  "motion_tags": [
+    "spiral_orbit",
+    "slow_drift"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The shared lantern stays centered between the figures."
+  ],
+  "audio_tags": [
+    "soft_music"
+  ],
+  "clip_tags": [
+    "flashback",
+    "stylized_color"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

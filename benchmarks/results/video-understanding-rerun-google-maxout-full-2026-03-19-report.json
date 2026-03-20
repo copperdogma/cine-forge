@@ -1,0 +1,147 @@
+{
+  "eval_id": "video-understanding",
+  "models": [
+    {
+      "model": "GPT-5.4",
+      "python_overall": 0.8612,
+      "rubric_overall": 0.7233,
+      "overall": 0.7923,
+      "latency_ms": 5492,
+      "cost_usd": 0.01006,
+      "value_score_per_dollar": 78.76,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.75,
+        "color": 1.0,
+        "continuity": 0.8667,
+        "emotion": 1.0,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.7222,
+        "summary": 0.8333,
+        "tone": 0.75
+      },
+      "calls": 6,
+      "previous_overall": 0.7923
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "python_overall": 0.804,
+      "rubric_overall": 0.59,
+      "overall": 0.697,
+      "latency_ms": 13192,
+      "cost_usd": 0.013971,
+      "value_score_per_dollar": 49.89,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.6667,
+        "color": 0.9167,
+        "continuity": 0.7,
+        "emotion": 0.5833,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.8333,
+        "summary": 0.9444,
+        "tone": 0.75
+      },
+      "calls": 6,
+      "previous_overall": null
+    },
+    {
+      "model": "Gemini 2.5 Flash",
+      "python_overall": 0.7496,
+      "rubric_overall": 0.555,
+      "overall": 0.6523,
+      "latency_ms": 8706,
+      "cost_usd": 0.000551,
+      "value_score_per_dollar": 1183.85,
+      "dimension_scores": {
+        "audio": 0.8833,
+        "camera": 0.5833,
+        "color": 0.7778,
+        "continuity": 0.8333,
+        "emotion": 0.5833,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.7778,
+        "summary": 0.8333,
+        "tone": 0.6667
+      },
+      "calls": 6,
+      "previous_overall": 0.1561
+    },
+    {
+      "model": "Gemini 3.1 Pro Preview",
+      "python_overall": 0.7067,
+      "rubric_overall": 0.5617,
+      "overall": 0.6342,
+      "latency_ms": 14711,
+      "cost_usd": 0.01261,
+      "value_score_per_dollar": 50.29,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.5833,
+        "color": 0.8611,
+        "continuity": 0.8333,
+        "emotion": 0.4167,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.5556,
+        "summary": 0.6667,
+        "tone": 0.75
+      },
+      "calls": 6,
+      "previous_overall": 0.6342
+    },
+    {
+      "model": "Gemini 2.5 Pro",
+      "python_overall": 0.6623,
+      "rubric_overall": 0.47,
+      "overall": 0.5662,
+      "latency_ms": 16244,
+      "cost_usd": 0.006295,
+      "value_score_per_dollar": 89.94,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.5833,
+        "color": 0.7778,
+        "continuity": 0.7,
+        "emotion": 0.4167,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.5556,
+        "summary": 0.5556,
+        "tone": 0.75
+      },
+      "calls": 6,
+      "previous_overall": 0.1492
+    },
+    {
+      "model": "Gemini 3 Flash Preview",
+      "python_overall": 0.6534,
+      "rubric_overall": 0.4417,
+      "overall": 0.5475,
+      "latency_ms": 10566,
+      "cost_usd": 0.00111,
+      "value_score_per_dollar": 493.24,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.4167,
+        "color": 0.8056,
+        "continuity": 0.8667,
+        "emotion": 0.4167,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.5556,
+        "summary": 0.5556,
+        "tone": 0.6667
+      },
+      "calls": 6,
+      "previous_overall": 0.5475
+    }
+  ],
+  "recommendation": {
+    "decision": "hold",
+    "rationale": "GPT-5.4 is the current leader at 0.792, but the pilot quality bar is still too low for a switch recommendation."
+  }
+}

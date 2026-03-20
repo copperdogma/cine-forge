@@ -1,0 +1,60 @@
+{
+  "clip_id": "rooftop_escape_crash_zoom",
+  "title": "Rooftop escape crash zoom",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "Aggressive percussion punches through a low synth bed.",
+  "summary_reference": "A runner clears a rooftop gap as the camera crash-zooms toward the leap under hard sodium light.",
+  "required_keywords": [
+    "rooftop",
+    "crash",
+    "leap"
+  ],
+  "tone_tags": [
+    "urgent",
+    "tense"
+  ],
+  "emotion_tags": [
+    "panic",
+    "resolve"
+  ],
+  "color_tags": [
+    "amber",
+    "navy"
+  ],
+  "camera_tags": [
+    "crash_zoom"
+  ],
+  "motion_tags": [
+    "escalating"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The yellow cable remains looped at the runner's waist."
+  ],
+  "audio_tags": [
+    "percussion",
+    "drone"
+  ],
+  "clip_tags": [
+    "action",
+    "vertical_space"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

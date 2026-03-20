@@ -1,0 +1,19 @@
+{
+  "clip_id": "prop_swap_continuity_break",
+  "title": "Prop swap continuity break",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "fps": 8,
+  "has_audio": false,
+  "transcript": null,
+  "audio_description": null,
+  "tags": [
+    "continuity",
+    "prop"
+  ],
+  "anchor_subset": true,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+}

@@ -78,6 +78,14 @@ def test_build_schema_registry_includes_render_types() -> None:
 
 
 @pytest.mark.unit
+def test_build_schema_registry_includes_video_analysis_types() -> None:
+    registry = build_schema_registry()
+    assert registry.get("video_analysis_target") is not None
+    assert registry.get("video_analysis_prediction") is not None
+    assert registry.get("video_analysis_score") is not None
+
+
+@pytest.mark.unit
 def test_build_schema_registry_rejects_unknown_type() -> None:
     registry = build_schema_registry()
     assert not registry.has("nonexistent_type")

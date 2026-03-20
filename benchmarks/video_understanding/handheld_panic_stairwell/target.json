@@ -1,0 +1,60 @@
+{
+  "clip_id": "handheld_panic_stairwell",
+  "title": "Handheld panic stairwell",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "Heavy breaths, heartbeat, and clipped percussion.",
+  "summary_reference": "A handheld stairwell scramble jolts violently as the subject glances back and loses the frame edge.",
+  "required_keywords": [
+    "handheld",
+    "stairwell",
+    "panic"
+  ],
+  "tone_tags": [
+    "urgent",
+    "tense"
+  ],
+  "emotion_tags": [
+    "panic"
+  ],
+  "color_tags": [
+    "red",
+    "desaturated"
+  ],
+  "camera_tags": [
+    "handheld_jitter"
+  ],
+  "motion_tags": [
+    "jitter",
+    "escalating"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The orange scarf stays around the subject's neck."
+  ],
+  "audio_tags": [
+    "heartbeat",
+    "percussion"
+  ],
+  "clip_tags": [
+    "action",
+    "panic"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

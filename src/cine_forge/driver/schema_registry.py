@@ -51,6 +51,9 @@ from cine_forge.schemas import (
     Suggestion,
     Timeline,
     TrackManifest,
+    VideoAnalysisPrediction,
+    VideoAnalysisScore,
+    VideoAnalysisTarget,
 )
 
 
@@ -105,4 +108,7 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("render_prompt", CompiledRenderPrompt)
     registry.register("generated_video", GeneratedVideoArtifact)
     registry.register("cost_report", CostReport)
+    registry.register("video_analysis_target", VideoAnalysisTarget)
+    registry.register("video_analysis_prediction", VideoAnalysisPrediction)
+    registry.register("video_analysis_score", VideoAnalysisScore)
     return registry

@@ -1,0 +1,58 @@
+{
+  "clip_id": "hallway_standoff_crosscut",
+  "title": "Hallway standoff cross-cut",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": true,
+  "transcript": "Take one more step and this hallway closes on both of us.",
+  "audio_description": "Dry, unscored dialogue in a dead corridor.",
+  "summary_reference": "A tense hallway standoff cross-cuts between two profiles as each side waits for the other to move.",
+  "required_keywords": [
+    "standoff",
+    "cross-cut",
+    "hallway"
+  ],
+  "tone_tags": [
+    "tense"
+  ],
+  "emotion_tags": [
+    "anger",
+    "suspicion"
+  ],
+  "color_tags": [
+    "desaturated"
+  ],
+  "camera_tags": [
+    "cross_cut",
+    "profile_closeup"
+  ],
+  "motion_tags": [
+    "abrupt_cut"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The silver knife stays at the same side of frame when the aggressor returns."
+  ],
+  "audio_tags": [
+    "speech"
+  ],
+  "clip_tags": [
+    "dialogue",
+    "conflict"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}

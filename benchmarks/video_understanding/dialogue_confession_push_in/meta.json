@@ -1,0 +1,19 @@
+{
+  "clip_id": "dialogue_confession_push_in",
+  "title": "Dialogue confession push-in",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "fps": 8,
+  "has_audio": true,
+  "transcript": "I should have told you before the train left.",
+  "audio_description": "Soft piano under a single confession line.",
+  "tags": [
+    "dialogue",
+    "quiet_emotion"
+  ],
+  "anchor_subset": true,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+}

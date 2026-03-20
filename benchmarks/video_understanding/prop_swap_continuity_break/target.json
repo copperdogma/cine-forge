@@ -1,0 +1,58 @@
+{
+  "clip_id": "prop_swap_continuity_break",
+  "title": "Prop swap continuity break",
+  "source_type": "synthetic_previz",
+  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "has_audio": false,
+  "transcript": null,
+  "audio_description": null,
+  "summary_reference": "A table scene cuts between matching framings, but the folder on the tabletop changes from red to blue after the cut.",
+  "required_keywords": [
+    "folder",
+    "continuity",
+    "break"
+  ],
+  "tone_tags": [
+    "detached",
+    "tense"
+  ],
+  "emotion_tags": [
+    "suspicion"
+  ],
+  "color_tags": [
+    "navy"
+  ],
+  "camera_tags": [
+    "cross_cut",
+    "static"
+  ],
+  "motion_tags": [
+    "abrupt_cut"
+  ],
+  "continuity_status": "broken",
+  "continuity_notes": [
+    "The tabletop folder changes from red to blue after the cut."
+  ],
+  "audio_tags": [
+    "silent"
+  ],
+  "clip_tags": [
+    "continuity",
+    "prop"
+  ],
+  "anchor_subset": true,
+  "weights": {
+    "summary": 0.18,
+    "tone": 0.14,
+    "emotion": 0.12,
+    "color": 0.1,
+    "camera": 0.12,
+    "motion": 0.1,
+    "continuity": 0.12,
+    "audio": 0.08,
+    "evidence": 0.04
+  }
+}
