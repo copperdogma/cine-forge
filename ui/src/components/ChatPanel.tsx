@@ -90,7 +90,7 @@ export function ChatPanel() {
     let currentContent = ''
     const lastUserText = userText
 
-    const createStreamingMsg = (speaker?: string): string => {
+    const createStreamingMsg = (speaker?: string, model?: string): string => {
       const messageId = `ai_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
       useChatStore.getState().addMessage(projectId, {
         id: messageId,
@@ -99,6 +99,7 @@ export function ChatPanel() {
         timestamp: Date.now(),
         streaming: true,
         speaker,
+        model,
       })
       return messageId
     }
@@ -119,7 +120,7 @@ export function ChatPanel() {
             store.removeMessage(projectId, currentMsgId)
           }
           currentContent = ''
-          currentMsgId = createStreamingMsg(chunk.speaker)
+          currentMsgId = createStreamingMsg(chunk.speaker, chunk.model)
           if (chunk.speaker) {
             store.setActiveRole(projectId, chunk.speaker)
           }
@@ -132,6 +133,9 @@ export function ChatPanel() {
         } else if (chunk.type === 'text') {
           currentContent += chunk.content ?? ''
           store.updateMessageContent(projectId, currentMsgId, currentContent)
+          if (chunk.model && currentMsgId) {
+            store.updateMessageModel(projectId, currentMsgId, chunk.model)
+          }
           if (chunk.speaker && currentMsgId) {
             const activeMessages = store.messages[projectId] ?? []
             const activeMessage = activeMessages.find((message) => message.id === currentMsgId)
@@ -154,6 +158,9 @@ export function ChatPanel() {
           }
         } else if (chunk.type === 'tool_start') {
           const rawName = chunk.name ?? 'tool'
+          if (chunk.model && currentMsgId) {
+            store.updateMessageModel(projectId, currentMsgId, chunk.model)
+          }
           store.addToolCall(projectId, currentMsgId, {
             id: chunk.id ?? `tool_${Date.now()}`,
             name: rawName,
@@ -161,10 +168,16 @@ export function ChatPanel() {
             done: false,
           })
         } else if (chunk.type === 'tool_result') {
+          if (chunk.model && currentMsgId) {
+            store.updateMessageModel(projectId, currentMsgId, chunk.model)
+          }
           if (chunk.id) {
             store.completeToolCall(projectId, currentMsgId, chunk.id)
           }
         } else if (chunk.type === 'actions' && chunk.actions) {
+          if (chunk.model && currentMsgId) {
+            store.updateMessageModel(projectId, currentMsgId, chunk.model)
+          }
           store.attachActions(projectId, currentMsgId, chunk.actions, chunk.preflight_data)
         }
       },

@@ -68,6 +68,23 @@ def test_upsert_replaces_existing_ai_status_message(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
+def test_append_preserves_optional_model_metadata(tmp_path: Path) -> None:
+    store = ChatStore()
+    message = {
+        "id": "ai-1",
+        "type": "ai_response",
+        "content": "Here's the analysis.",
+        "model": "claude-sonnet-4-6",
+    }
+
+    store.append(tmp_path, message)
+
+    messages = store.list_messages(tmp_path)
+    assert len(messages) == 1
+    assert messages[0]["model"] == "claude-sonnet-4-6"
+
+
+@pytest.mark.unit
 def test_upsert_replaces_existing_task_progress_message(tmp_path: Path) -> None:
     store = ChatStore()
     original = {

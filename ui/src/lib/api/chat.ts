@@ -18,6 +18,7 @@ export interface ChatStreamChunk {
   id?: string
   speaker?: string
   display_name?: string
+  model?: string
   actions?: ChatAction[]
   preflight_data?: PreflightData
 }

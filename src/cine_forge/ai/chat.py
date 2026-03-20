@@ -1710,10 +1710,12 @@ def _stream_single_role(
     """Stream a response for a single role, handling tool use loops.
 
     Yields dicts with these shapes:
-      {"type": "text", "content": "...", "speaker": "..."} — text chunk
-      {"type": "tool_start", "name": "...", "id": "...", "speaker": "..."} — tool call
-      {"type": "tool_result", "name": "...", "content": "...", "speaker": "..."} — tool result
-      {"type": "actions", "actions": [...], "speaker": "..."} — action buttons
+      {"type": "text", "content": "...", "speaker": "...", "model": "..."} — text chunk
+      {"type": "tool_start", "name": "...", "id": "...", "speaker": "...",
+       "model": "..."} — tool call
+      {"type": "tool_result", "name": "...", "content": "...", "speaker": "...",
+       "model": "..."} — tool result
+      {"type": "actions", "actions": [...], "speaker": "...", "model": "..."} — action buttons
     Does NOT yield done/error — the caller handles those.
     """
     compacted = _compact_transcript(messages, project_id)
@@ -1775,6 +1777,7 @@ def _stream_single_role(
                         "name": current_tool_name,
                         "id": current_tool_id,
                         "speaker": speaker,
+                        "model": model,
                     }
 
             elif etype == "content_block_delta":
@@ -1783,7 +1786,12 @@ def _stream_single_role(
                     text = delta.get("text", "")
                     if text:
                         text_buffer += text
-                        yield {"type": "text", "content": text, "speaker": speaker}
+                        yield {
+                            "type": "text",
+                            "content": text,
+                            "speaker": speaker,
+                            "model": model,
+                        }
                 elif delta.get("type") == "input_json_delta":
                     current_tool_input_json += delta.get("partial_json", "")
 
@@ -1839,6 +1847,7 @@ def _stream_single_role(
                     "id": tb["id"],
                     "content": preview,
                     "speaker": speaker,
+                    "model": model,
                 }
                 tool_results.append({
                     "type": "tool_result",
@@ -1862,6 +1871,7 @@ def _stream_single_role(
                 "type": "actions",
                 "actions": pending_actions,
                 "speaker": speaker,
+                "model": model,
             }
             if pending_preflight:
                 chunk["preflight_data"] = pending_preflight
@@ -1874,6 +1884,7 @@ def _stream_single_role(
             "type": "actions",
             "actions": pending_actions,
             "speaker": speaker,
+            "model": model,
         }
         if pending_preflight:
             exhaust_chunk["preflight_data"] = pending_preflight
@@ -1895,11 +1906,11 @@ def stream_group_chat(
     """Stream group chat responses from roles and/or characters.
 
     Ordering: non-Director roles → characters → Director (if present).
-    Characters use Haiku model, no tools, fat system prompt.
+    Characters use the current chat model, no tools, fat system prompt.
 
     Yields the same chunk shapes as _stream_single_role, plus:
-      {"type": "role_start", "speaker": "...", "display_name": "..."}
-      {"type": "role_done", "speaker": "..."}
+      {"type": "role_start", "speaker": "...", "display_name": "...", "model": "..."}
+      {"type": "role_done", "speaker": "...", "model": "..."}
       {"type": "done"} — all roles finished
     """
     from cine_forge.roles.runtime import RoleCatalog
@@ -1924,9 +1935,15 @@ def stream_group_chat(
             "type": "role_start",
             "speaker": role_id,
             "display_name": role.display_name,
+            "model": model,
         }
         if page_context:
-            yield {"type": "context_info", "content": page_context, "speaker": role_id}
+            yield {
+                "type": "context_info",
+                "content": page_context,
+                "speaker": role_id,
+                "model": model,
+            }
             # Emit the actual injected artifact content for persistence/debugging
             injected = _inject_page_artifact(page_context, service, project_id)
             if injected:
@@ -1934,6 +1951,7 @@ def stream_group_chat(
                     "type": "injected_content",
                     "content": injected,
                     "speaker": role_id,
+                    "model": model,
                 }
         system_prompt = build_role_system_prompt(
             role_id, project_summary, state_info, catalog,
@@ -1944,12 +1962,12 @@ def stream_group_chat(
         yield from _stream_single_role(
             msgs, system_prompt, tools, service, project_id, role_id, model,
         )
-        yield {"type": "role_done", "speaker": role_id}
+        yield {"type": "role_done", "speaker": role_id, "model": model}
 
     def _stream_one_character(
         char_entity_id: str, msgs: list[dict[str, Any]],
     ) -> Generator[dict[str, Any], None, None]:
-        """Stream a character response — Haiku, trimmed history, fat system prompt.
+        """Stream a character response — current chat model, trimmed history, fat system prompt.
 
         Characters get a short transcript window (last 10 messages) to avoid
         history poisoning — long conversations with repeated patterns can
@@ -1963,7 +1981,12 @@ def stream_group_chat(
         if not char_prompt:
             # Character data not available — emit a graceful error
             speaker = f"char:{char_entity_id.replace('character_', '')}"
-            yield {"type": "role_start", "speaker": speaker, "display_name": char_entity_id}
+            yield {
+                "type": "role_start",
+                "speaker": speaker,
+                "display_name": char_entity_id,
+                "model": CHAT_MODEL,
+            }
             yield {
                 "type": "text",
                 "content": (
@@ -1972,13 +1995,15 @@ def stream_group_chat(
                     "pipeline first to bring me to life."
                 ),
                 "speaker": speaker,
+                "model": CHAT_MODEL,
             }
-            yield {"type": "role_done", "speaker": speaker}
+            yield {"type": "role_done", "speaker": speaker, "model": CHAT_MODEL}
             return
 
         char_handle = char_entity_id.replace("character_", "")
         speaker = f"char:{char_handle}"
         display_name = char_handle.replace("_", " ").title()
+        character_model = CHAT_MODEL
 
         # Filter transcript to this character's thread only.
         # The merged message list contains responses from ALL characters.
@@ -2021,10 +2046,20 @@ def stream_group_chat(
             last = char_msgs[-1]
             char_msgs[-1] = {**last, "content": last["content"] + hint}
 
-        yield {"type": "role_start", "speaker": speaker, "display_name": display_name}
+        yield {
+            "type": "role_start",
+            "speaker": speaker,
+            "display_name": display_name,
+            "model": character_model,
+        }
         # Emit context info so the user sees what was injected
         if page_context:
-            yield {"type": "context_info", "content": page_context, "speaker": speaker}
+            yield {
+                "type": "context_info",
+                "content": page_context,
+                "speaker": speaker,
+                "model": character_model,
+            }
             # Emit the actual injected artifact content for persistence/debugging
             injected = _inject_page_artifact(page_context, service, project_id)
             if injected:
@@ -2032,12 +2067,13 @@ def stream_group_chat(
                     "type": "injected_content",
                     "content": injected,
                     "speaker": speaker,
+                    "model": character_model,
                 }
         # Characters use Sonnet — Haiku is too easily swayed by chat history patterns
         yield from _stream_single_role(
-            char_msgs, char_prompt, READ_TOOLS, service, project_id, speaker, CHAT_MODEL,
+            char_msgs, char_prompt, READ_TOOLS, service, project_id, speaker, character_model,
         )
-        yield {"type": "role_done", "speaker": speaker}
+        yield {"type": "role_done", "speaker": speaker, "model": character_model}
 
     # Build the streaming order: non-Director roles → characters → Director
     non_director_roles = [r for r in target_roles if r != "director"]
@@ -2156,7 +2192,12 @@ def stream_chat_response(
             if delta.get("type") == "text_delta":
                 text = delta.get("text", "")
                 if text:
-                    yield {"type": "text", "content": text}
+                    yield {
+                        "type": "text",
+                        "content": text,
+                        "speaker": "assistant",
+                        "model": model,
+                    }
 
     yield {"type": "done"}
 

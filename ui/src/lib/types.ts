@@ -506,6 +506,8 @@ export type ChatMessage = {
   timestamp: number
   /** Role that produced this message (e.g., "assistant", "director", "editorial_architect"). */
   speaker?: string
+  /** Runtime model that produced this AI message (e.g., "claude-sonnet-4-6"). */
+  model?: string | null
   actions?: ChatAction[]
   needsAction?: boolean
   streaming?: boolean

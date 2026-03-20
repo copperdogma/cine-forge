@@ -820,7 +820,7 @@ Return valid JSON matching the schema."""
         """Stream AI chat responses using SSE with group chat routing.
 
         Detects @-mentions in the message to route to specific creative roles
-        and/or project characters. Characters use Haiku model with no tools.
+        and/or project characters. Characters use the current chat model with no tools.
         """
         from cine_forge.ai.chat import (
             compute_project_state,

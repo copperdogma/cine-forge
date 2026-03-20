@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-20, Story 121 done)
+## Current Execution Map (updated 2026-03-20, Story 127 done)
 
 Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. With the design-study composition loop now landed, the active backlog centers on output QA, cost-control follow-ons, transparency polish, and draft follow-ons rather than missing render-adapter substrate.
 
@@ -12,7 +12,6 @@ Phases 0–5 foundation are landed, the first three Phase 6 visualization layers
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
 | **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
-| **127** Artifact Health Semantics + Chat Model Disclosure | Direct transparency fix on top of recent UI decomposition. Small, user-visible, and already grounded in existing design decisions. |
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
 ### In Progress
 
@@ -30,6 +29,7 @@ No stories currently blocked.
 
 | Story | Why It Stays Draft |
 |---|---|
+| **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |
 | **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
 | **097** AI Artifact Editing | Now unblocked by Story 031, but it is still only draft-scoped. Promote it only after the editing UX, safety rails, and downstream revision flow are detailed enough to validate coherently. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
@@ -190,7 +190,8 @@ NOTES from Cam:
 | 124 | Recall Verification Loop | 0 — Infrastructure | Medium | Done | [story-124](stories/story-124-recall-verification-loop.md) |
 | 125 | Agent Workflow Hardening Meta Upgrade | Cross-Cutting | High | Done | [story-125](stories/story-125-agent-workflow-hardening-meta-upgrade.md) |
 | 126 | Frontend Chat and Data-Layer Decomposition | 2.5 — UI | High | Done | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
-| 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Pending | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
+| 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Done | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
+| 139 | Historical Run Progress Cards Stop Polling Missing Runs | 2.5 — UI | Medium | Draft | [story-139](stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md) |
 | 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Pending | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
 | 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Done | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |

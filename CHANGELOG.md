@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-20-04] — Chat model disclosure and transparency close-out (Story 127)
+
+### Added
+- Added runtime model provenance to persisted and streamed chat messages so assistant and role responses can disclose which model produced them
+- Added focused chat provenance regression coverage for message persistence and streamed role/text chunks
+
+### Changed
+- Changed the chat transcript UI to render a subtle per-response model badge while keeping shared artifact health semantics authoritative
+- Updated Story 127 close-out records and backlog tracking so the unrelated stale historical run polling bug is explicitly captured as Story 139 instead of being left implicit
+
 ## [2026-03-20-03] — Design-study composition loop and browser automation reset path (Story 121)
 
 ### Added

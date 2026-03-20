@@ -490,6 +490,7 @@ function requestPostRunInsight(
     content: '',
     timestamp: Date.now() + 2, // After the completion messages
     streaming: true,
+    speaker: 'assistant',
   })
 
   let fullContent = ''
@@ -511,6 +512,9 @@ function requestPostRunInsight(
       if (chunk.type === 'text') {
         fullContent += chunk.content ?? ''
         useChatStore.getState().updateMessageContent(projectId, aiMsgId, fullContent)
+        if (chunk.model) {
+          useChatStore.getState().updateMessageModel(projectId, aiMsgId, chunk.model)
+        }
       }
       // tool_start/tool_result from insight are silent — the AI uses tools
       // internally to read artifacts but we don't show those indicators

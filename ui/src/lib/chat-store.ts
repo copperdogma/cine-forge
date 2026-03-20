@@ -103,6 +103,8 @@ interface ChatStore {
   removeMessage: (projectId: string, messageId: string) => void
   /** Update the speaker of an existing message (in-memory only — for streaming). */
   updateMessageSpeaker: (projectId: string, messageId: string, speaker: string) => void
+  /** Update the model of an existing message (in-memory only — for streaming). */
+  updateMessageModel: (projectId: string, messageId: string, model: string) => void
   /** Set page context label on a message (e.g., "Scene 005"). */
   setMessageContext: (projectId: string, messageId: string, context: string) => void
   /** Set the actual injected artifact content on a message (for persistence/debugging). */
@@ -288,6 +290,17 @@ export const useChatStore = create<ChatStore>()(
         if (idx === -1) return state
         const updated = [...msgs]
         updated[idx] = { ...updated[idx], speaker }
+        return { messages: { ...state.messages, [projectId]: updated } }
+      }),
+
+    updateMessageModel: (projectId, messageId, model) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        const idx = msgs.findIndex(m => m.id === messageId)
+        if (idx === -1) return state
+        const updated = [...msgs]
+        updated[idx] = { ...updated[idx], model }
         return { messages: { ...state.messages, [projectId]: updated } }
       }),
 

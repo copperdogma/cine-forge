@@ -4,11 +4,34 @@ import { useNavigate } from 'react-router-dom'
 import { PreflightCard } from '@/components/PreflightCard'
 import { RunProgressCard } from '@/components/RunProgressCard'
 import { TaskProgressCard } from '@/components/TaskProgressCard'
+import { PROJECT_MODEL_OPTIONS } from '@/lib/project-models'
 import type { ChatMessage } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { ActionButton, type StartRunAction } from './ActionButton'
 import { getRoleDisplay, SECTION_ICONS } from './config'
 import { ToolIndicator } from './ToolIndicator'
+
+const MODEL_LABELS = new Map(PROJECT_MODEL_OPTIONS.map((option) => [option.value, option.label]))
+
+function getModelLabel(model?: string | null): string | null {
+  if (!model) return null
+  const normalized = model.split(':').at(-1) ?? model
+  return MODEL_LABELS.get(normalized) ?? normalized
+}
+
+function ModelBadge({ model }: { model?: string | null }) {
+  const label = getModelLabel(model)
+  if (!label || label === 'mock') return null
+
+  return (
+    <span
+      className="inline-flex items-center rounded-md border border-border/50 bg-background/40 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground"
+      title={model ?? undefined}
+    >
+      {label}
+    </span>
+  )
+}
 
 function MessageIcon({ type, speaker }: { type: ChatMessage['type']; speaker?: string }) {
   if (speaker && (type === 'ai_response' || type === 'ai_welcome' || type === 'ai_suggestion')) {
@@ -108,13 +131,16 @@ export function ChatMessageItem({
   const showRoleLabel = roleConfig && (
     message.type === 'ai_response' || message.type === 'ai_welcome' || message.type === 'ai_suggestion'
   )
+  const showGenericModelLabel = !showRoleLabel && (
+    message.type === 'ai_response' || message.type === 'ai_welcome' || message.type === 'ai_suggestion'
+  ) && !!message.model
 
   if (showRoleLabel) {
     const RoleIcon = roleConfig.icon
     return (
       <div className="py-1.5" data-role-speaker={message.speaker}>
         <div className={cn('rounded-lg px-3 py-2', roleConfig.bgClass)}>
-          <div className="flex items-center gap-1.5 mb-1">
+          <div className="flex items-center gap-1.5 mb-1 flex-wrap">
             <RoleIcon className={cn('h-3 w-3 shrink-0', roleConfig.iconClass)} />
             {'isCharacter' in roleConfig && roleConfig.isCharacter ? (
               <button
@@ -135,6 +161,7 @@ export function ChatMessageItem({
                 {roleConfig.name}
               </span>
             )}
+            <ModelBadge model={message.model} />
             {message.pageContext && (() => {
               const ContextIcon = SECTION_ICONS[message.pageContext.toLowerCase().split(' ')[0]] ?? Sparkles
               return (
@@ -192,6 +219,11 @@ export function ChatMessageItem({
     <div className={cn('flex gap-2.5 py-2', isUser && 'flex-row-reverse')}>
       <MessageIcon type={message.type} speaker={message.speaker} />
       <div className={cn('flex-1 min-w-0', isUser && 'text-right')}>
+        {showGenericModelLabel && (
+          <div className={cn('mb-1', isUser && 'flex justify-end')}>
+            <ModelBadge model={message.model} />
+          </div>
+        )}
         {isThinking && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0" />

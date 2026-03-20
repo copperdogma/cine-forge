@@ -332,6 +332,7 @@ class ChatMessagePayload(BaseModel):
     content: str
     timestamp: float
     speaker: str | None = None
+    model: str | None = None
     actions: list[dict[str, Any]] | None = None
     needsAction: bool | None = None
     route: str | None = None
