@@ -51,7 +51,7 @@ export type PreferenceSignal = {
   decision: 'pending' | 'selected_final' | 'favorite' | 'rejected' | 'seed_for_variants'
   polarity: PreferenceSignalPolarity
   guidance?: string | null
-  round_guidance?: string | null
+  round_directive?: string | null
   prompt_used: string
   prompt_sources_used: string[]
   model?: string | null

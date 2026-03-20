@@ -5,7 +5,9 @@ import type { DesignStudyRound } from '@/lib/api'
 
 const SOURCE_LABELS: Record<string, string> = {
   entity_bible: 'Entity Bible',
-  user_guidance: 'User Guidance',
+  directive: 'Directive',
+  positive_refs: 'Positive Refs',
+  negative_refs: 'Negative Refs',
   seed_image: 'Seed Image',
   learned_preferences: 'Learned Preferences',
   look_and_feel: 'Look & Feel',
@@ -18,7 +20,9 @@ const SOURCE_ORDER = [
   'look_and_feel',
   'project_config',
   'intent_mood',
-  'user_guidance',
+  'directive',
+  'positive_refs',
+  'negative_refs',
   'learned_preferences',
   'seed_image',
 ]
@@ -78,10 +82,34 @@ export function DesignStudySourcesPanel({ round, defaultOpen = false }: Props) {
               </Badge>
             ))}
           </div>
-          {round.guidance && (
+          {round.directive && (
             <p className="text-xs text-muted-foreground">
-              Direction: <span className="text-foreground">"{round.guidance}"</span>
+              Directive: <span className="text-foreground">"{round.directive}"</span>
             </p>
+          )}
+          {round.positive_refs.length > 0 && (
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-foreground">Positive references</p>
+              <div className="flex flex-wrap gap-1.5">
+                {round.positive_refs.map(filename => (
+                  <Badge key={filename} variant="outline" className="font-mono text-[10px]">
+                    {filename}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          {round.negative_refs.length > 0 && (
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-foreground">Negative references</p>
+              <div className="flex flex-wrap gap-1.5">
+                {round.negative_refs.map(filename => (
+                  <Badge key={filename} variant="outline" className="font-mono text-[10px]">
+                    {filename}
+                  </Badge>
+                ))}
+              </div>
+            </div>
           )}
           {round.seed_image_filename && (
             <p className="text-xs text-muted-foreground">

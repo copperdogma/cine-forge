@@ -25,7 +25,9 @@ export interface DesignStudyRound {
   model: string
   entity_type: DesignStudyEntityType
   entity_id: string
-  guidance: string | null
+  directive: string | null
+  positive_refs: string[]
+  negative_refs: string[]
   seed_image_filename: string | null
   sources_used: string[]
   learned_preferences_used: string[]
@@ -45,7 +47,9 @@ export interface DesignStudyState {
 export interface GenerateDesignStudyParams {
   entity_type: DesignStudyEntityType
   count?: 1 | 2 | 4 | 8
-  guidance?: string | null
+  directive?: string | null
+  positive_refs?: string[]
+  negative_refs?: string[]
   seed_image_filename?: string | null
   model?: string
 }

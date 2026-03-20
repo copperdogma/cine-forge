@@ -132,8 +132,14 @@ def test_design_study_round_tracks_sources_used():
         model="imagen-4.0-generate-001",
         entity_type="character",
         entity_id="character_mariner",
+        directive="More weathered, older",
+        positive_refs=["design_study_r1_img1.jpg"],
+        negative_refs=["design_study_r1_img2.jpg"],
         sources_used=["entity_bible", "project_config"],
     )
+    assert round_.directive == "More weathered, older"
+    assert round_.positive_refs == ["design_study_r1_img1.jpg"]
+    assert round_.negative_refs == ["design_study_r1_img2.jpg"]
     assert round_.sources_used == ["entity_bible", "project_config"]
 
 
@@ -205,7 +211,7 @@ def test_build_image_prompt_tracks_project_config_source():
     prompt, sources_used = build_image_prompt(
         "character",
         {"name": "The Mariner", "description": "A grizzled old sailor."},
-        guidance="More weathered",
+        directive="More weathered",
         project_config_data={
             "genre": ["nautical drama"],
             "tone": ["bleak", "windswept"],
@@ -217,7 +223,7 @@ def test_build_image_prompt_tracks_project_config_source():
     assert "nautical drama" in prompt
     assert "bleak, windswept" in prompt
     assert "project_config" in sources_used
-    assert "user_guidance" in sources_used
+    assert "directive" in sources_used
 
 
 @pytest.mark.unit
@@ -231,6 +237,30 @@ def test_build_image_prompt_skips_project_config_source_when_unset():
     assert "Variation of the previously approved design direction" in prompt
     assert "seed_image" in sources_used
     assert "project_config" not in sources_used
+
+
+@pytest.mark.unit
+def test_build_image_prompt_includes_composition_reference_context():
+    prompt, sources_used = build_image_prompt(
+        "character",
+        {"name": "The Mariner", "description": "A grizzled old sailor."},
+        directive="Push the silhouette older and harsher",
+        positive_reference_lines=[
+            (
+                "Round directive: weather-beaten profile. Prompt anchor: deeply lined"
+                " face and salt-crusted wool coat."
+            ),
+        ],
+        negative_reference_lines=[
+            "Prompt anchor: polished heroic lighting and spotless costume.",
+        ],
+    )
+    assert "Push the silhouette older and harsher" in prompt
+    assert "positive references" in prompt
+    assert "negative references" in prompt
+    assert "directive" in sources_used
+    assert "positive_refs" in sources_used
+    assert "negative_refs" in sources_used
 
 
 @pytest.mark.unit

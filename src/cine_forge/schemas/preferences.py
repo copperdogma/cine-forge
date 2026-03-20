@@ -34,7 +34,7 @@ class PreferenceSignal(BaseModel):
     decision: ImageDecision
     polarity: PreferenceSignalPolarity
     guidance: str | None = None
-    round_guidance: str | None = None
+    round_directive: str | None = None
     prompt_used: str = Field(min_length=1)
     prompt_sources_used: list[str] = Field(default_factory=list)
     model: str | None = None

@@ -106,11 +106,18 @@ For CineForge production smoke:
    - Browser launch failure
    - Page navigation failure
    - Screenshot/console tool failure
-6. Capture evidence:
+   - Local UI server bound to the wrong host/port
+6. If the error looks like a wedged Playwright profile (`Opening in existing browser session`, `UKM database locked`, `bootstrap_check_in ... Permission denied`, or attach timeouts), reset only the Playwright-scoped session and retry once:
+   - `python3 scripts/reset_playwright_mcp.py`
+   - If the current MCP transport closes because the reset killed the stale `playwright-mcp` process itself, restart the host session once and re-run the probe
+7. For local Vite-backed probes in this repo, prefer a direct Vite invocation over the npm script wrapper:
+   - Use `pnpm --dir ui exec vite --host 127.0.0.1 --port 5174`
+   - Avoid `pnpm --dir ui run dev -- --host 127.0.0.1 --port 5174` for automation here; in this workspace it leaves Vite on `localhost`, which can produce `ERR_CONNECTION_REFUSED` when the probe hits `127.0.0.1`
+8. Capture evidence:
    - exact command/tool call
    - error text
    - whether API fallback checks passed
-7. Use fallback HTTP checks only when browser path is blocked:
+9. Use fallback HTTP checks only when browser path is blocked:
    - `curl -sf https://cineforge.copper-dog.com/` and verify `<title>CineForge</title>`
    - verify JS bundle returns HTTP 200
 
@@ -124,19 +131,29 @@ For CineForge production smoke:
 2. **Gemini CLI requires restart for tool discovery**
    - Symptom: `gemini mcp add` reports success but tools like `playwright_navigate` are not found.
    - Cause: Gemini CLI loads available tools once at the beginning of the session.
-   - Fix: Close the current session and start a new one after modifying settings. Use a local Playwright script (`node scripts/smoke_test_ui.mjs`) as a fallback during the current session.
+   - Fix: Close the current session and start a new one after modifying settings. Use a local Playwright script (`node scripts/ui_smoke_probe.mjs`) as a fallback during the current session.
 
-2. **Redirecting logs into non-existent directory**
+3. **Stale Playwright MCP daemons or Playwright-scoped Chrome profile**
+   - Symptom: browser attach fails with `Opening in existing browser session`, `UKM database locked`, `bootstrap_check_in ... Permission denied`, or repeated timeouts.
+   - Cause: orphaned `playwright-mcp` / `npm exec @playwright/mcp@latest` processes or a stuck Chrome process using `~/Library/Caches/ms-playwright/mcp-*`.
+   - Fix: run `python3 scripts/reset_playwright_mcp.py`, then retry the browser probe once. Prefer this over manually deleting the whole profile tree.
+
+4. **Redirecting logs into non-existent directory**
    - Symptom: shell fails before browser command starts (`No such file or directory`).
    - Fix: create directories first (`mkdir -p tmp/browser-smoke tmp/browser-smoke/logs`) before `> .../log.txt`.
 
-3. **Verbose nested-run output is hard to parse**
+5. **Verbose nested-run output is hard to parse**
    - Symptom: giant stdout logs with mixed tool traces.
    - Fix: use `codex exec -o <file>` to save final message and keep deterministic evidence.
 
-4. **`list_mcp_resources` appears empty while nested browser runs still work**
+6. **`list_mcp_resources` appears empty while nested browser runs still work**
    - Symptom: resource listing looks unavailable, but `codex exec` with MCP succeeds.
    - Fix: trust probe execution result; record the discrepancy and continue with evidence artifacts.
+
+7. **UI dev script wrapper can miss the requested host binding**
+   - Symptom: `with_server.py` reports the UI ready, but Playwright gets `ERR_CONNECTION_REFUSED` on `http://127.0.0.1:<port>/...`; Vite logs still say `Local: http://localhost:<port>/`.
+   - Cause: `pnpm --dir ui run dev -- --host 127.0.0.1 --port <port>` passes a literal `--` through the script wrapper in this repo, so Vite ignores the requested host override.
+   - Fix: start the UI with `pnpm --dir ui exec vite --host 127.0.0.1 --port <port>` for automated probes.
 
 ## Known CineForge-Specific Gotcha
 

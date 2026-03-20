@@ -95,7 +95,7 @@ class PreferenceService:
         image_filename: str,
         decision: ImageDecision,
         guidance: str | None,
-        round_guidance: str | None,
+        round_directive: str | None,
         prompt_used: str,
         prompt_sources_used: list[str],
         model: str | None,
@@ -110,7 +110,7 @@ class PreferenceService:
             decision=decision,
             polarity=_decision_polarity(decision),
             guidance=_clean_text(guidance),
-            round_guidance=_clean_text(round_guidance),
+            round_directive=_clean_text(round_directive),
             prompt_used=prompt_used,
             prompt_sources_used=list(prompt_sources_used),
             model=model,
@@ -215,7 +215,7 @@ class PreferenceService:
         positive_signals = [
             signal for signal in active_signals if signal.decision in {"selected_final", "favorite"}
         ]
-        preferred_texts = self._texts_for_signals(positive_signals, include_round_guidance=True)
+        preferred_texts = self._texts_for_signals(positive_signals, include_round_directive=True)
         if preferred_texts:
             lines.append(
                 "Lean toward these previously approved directions: "
@@ -230,7 +230,7 @@ class PreferenceService:
         variation_signals = [
             signal for signal in active_signals if signal.decision == "seed_for_variants"
         ]
-        variation_texts = self._texts_for_signals(variation_signals, include_round_guidance=True)
+        variation_texts = self._texts_for_signals(variation_signals, include_round_directive=True)
         if variation_texts:
             lines.append(
                 "Carry forward these requested refinements: "
@@ -240,7 +240,7 @@ class PreferenceService:
         rejected_signals = [
             signal for signal in active_signals if signal.decision == "rejected"
         ]
-        rejected_texts = self._texts_for_signals(rejected_signals, include_round_guidance=False)
+        rejected_texts = self._texts_for_signals(rejected_signals, include_round_directive=False)
         if rejected_texts:
             lines.append(
                 "Avoid previously rejected directions such as: "
@@ -259,11 +259,11 @@ class PreferenceService:
         for signal in active_signals:
             texts: list[str] = []
             if cue_type == "preferred" and signal.decision in {"selected_final", "favorite"}:
-                texts = self._texts_for_signals([signal], include_round_guidance=True)
+                texts = self._texts_for_signals([signal], include_round_directive=True)
             elif cue_type == "avoid" and signal.decision == "rejected":
-                texts = self._texts_for_signals([signal], include_round_guidance=False)
+                texts = self._texts_for_signals([signal], include_round_directive=False)
             elif cue_type == "variation" and signal.decision == "seed_for_variants":
-                texts = self._texts_for_signals([signal], include_round_guidance=True)
+                texts = self._texts_for_signals([signal], include_round_directive=True)
 
             for text in texts:
                 key = (signal.entity_id, cue_type, _normalize_text(text))
@@ -336,14 +336,14 @@ class PreferenceService:
         self,
         signals: list[PreferenceSignal],
         *,
-        include_round_guidance: bool,
+        include_round_directive: bool,
     ) -> list[str]:
         texts: list[str] = []
         seen: set[str] = set()
         for signal in signals:
             candidates = [signal.guidance]
-            if include_round_guidance:
-                candidates.append(signal.round_guidance)
+            if include_round_directive:
+                candidates.append(signal.round_directive)
             for candidate in candidates:
                 cleaned = _clean_text(candidate)
                 if not cleaned:

@@ -226,6 +226,9 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
             json={
                 "entity_type": "character",
                 "count": 1,
+                "directive": "Make the silhouette more severe and the coat more weather-beaten",
+                "positive_refs": [image_filename],
+                "negative_refs": [second_filename],
                 "seed_image_filename": second_filename,
             },
         )
@@ -234,12 +237,22 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert len(state2["rounds"]) == 2
     assert state2["rounds"][1]["round_number"] == 2
     assert len(state2["rounds"][1]["images"]) == 1
+    assert state2["rounds"][1]["directive"] == (
+        "Make the silhouette more severe and the coat more weather-beaten"
+    )
+    assert state2["rounds"][1]["positive_refs"] == [image_filename]
+    assert state2["rounds"][1]["negative_refs"] == [second_filename]
+    assert "directive" in state2["rounds"][1]["sources_used"]
+    assert "positive_refs" in state2["rounds"][1]["sources_used"]
+    assert "negative_refs" in state2["rounds"][1]["sources_used"]
     assert "seed_image" in state2["rounds"][1]["sources_used"]
     assert "project_config" in state2["rounds"][1]["sources_used"]
     assert "learned_preferences" in state2["rounds"][1]["sources_used"]
     assert state2["rounds"][1]["learned_preferences_used"]
     assert "Preserve continuity" in state2["rounds"][1]["prompt"]
     assert "more weathered, darker costume" in state2["rounds"][1]["prompt"]
+    assert "positive references" in state2["rounds"][1]["prompt"]
+    assert "negative references" in state2["rounds"][1]["prompt"]
     # selected_final from round 1 should still be set
     assert state2["selected_final_filename"] == image_filename
 

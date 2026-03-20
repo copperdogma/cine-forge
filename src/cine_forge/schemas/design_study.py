@@ -38,7 +38,9 @@ class DesignStudyRound(BaseModel):
     model: str
     entity_type: EntityType
     entity_id: str
-    guidance: str | None = None
+    directive: str | None = None
+    positive_refs: list[str] = Field(default_factory=list)
+    negative_refs: list[str] = Field(default_factory=list)
     seed_image_filename: str | None = None
     sources_used: list[str] = Field(default_factory=list)
     learned_preferences_used: list[str] = Field(default_factory=list)

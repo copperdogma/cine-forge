@@ -280,7 +280,9 @@ def build_image_prompt(
     entity_type: str,
     bible_data: dict[str, Any],
     *,
-    guidance: str | None = None,
+    directive: str | None = None,
+    positive_reference_lines: list[str] | None = None,
+    negative_reference_lines: list[str] | None = None,
     seed_image_filename: str | None = None,
     learned_preferences_lines: list[str] | None = None,
     project_config_data: dict[str, Any] | None = None,
@@ -292,9 +294,33 @@ def build_image_prompt(
     prompt_parts: list[str] = []
     sources_used = ["entity_bible"]
 
-    if guidance:
-        prompt_parts.append(guidance)
-        sources_used.append("user_guidance")
+    if directive:
+        prompt_parts.append(f"Composition directive: {_ensure_sentence(directive)}")
+        sources_used.append("directive")
+
+    positive_reference_lines = [
+        _ensure_sentence(line)
+        for line in positive_reference_lines or []
+        if line and line.strip()
+    ]
+    if positive_reference_lines:
+        prompt_parts.append(
+            "Carry forward visual cues from these positive references: "
+            + " ".join(positive_reference_lines)
+        )
+        sources_used.append("positive_refs")
+
+    negative_reference_lines = [
+        _ensure_sentence(line)
+        for line in negative_reference_lines or []
+        if line and line.strip()
+    ]
+    if negative_reference_lines:
+        prompt_parts.append(
+            "Avoid the visual cues present in these negative references: "
+            + " ".join(negative_reference_lines)
+        )
+        sources_used.append("negative_refs")
 
     if seed_image_filename:
         prompt_parts.append(

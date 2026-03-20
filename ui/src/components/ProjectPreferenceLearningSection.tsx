@@ -214,7 +214,7 @@ export function ProjectPreferenceLearningSection({ projectId, project }: Props) 
             ) : (
               <div className="space-y-2">
                 {profile.recent_signals.map((signal) => {
-                  const supportingText = signal.guidance ?? signal.round_guidance
+                  const supportingText = signal.guidance ?? signal.round_directive
                   return (
                     <div
                       key={signal.signal_id}

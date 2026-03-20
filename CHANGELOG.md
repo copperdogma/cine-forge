@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-20-03] — Design-study composition loop and browser automation reset path (Story 121)
+
+### Added
+- Added a composition-bar iteration flow for design studies, including positive and negative reference staging, directive capture, round branching from history, and extracted contact-sheet history UI
+- Added `scripts/reset_playwright_mcp.py` plus Scout 016 so stale Playwright/Chrome profile locks can be detected and cleared before browser automation reruns
+
+### Changed
+- Changed design-study round contracts, prompt compilation, sources provenance, and preference-learning inputs so `directive`, `positive_refs`, and `negative_refs` flow end to end instead of the old round-level `guidance` field
+- Updated the browser automation runbook and Story 121 close-out records so browser verification now documents the reliable reset and local Vite invocation path
+
 ## [2026-03-20-02] — Transparent preference learning from design-study choices (Story 131)
 
 ### Added

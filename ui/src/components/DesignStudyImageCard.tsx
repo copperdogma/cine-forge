@@ -2,14 +2,17 @@ import { useState } from 'react'
 import {
   Heart,
   CheckCircle,
+  Check,
   XCircle,
   GitBranch,
   ChevronDown,
   ChevronUp,
+  X,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { getDesignStudyImageUrl } from '@/lib/api'
+import { cn } from '@/lib/utils'
 import type { DesignStudyImage, ImageDecision } from '@/lib/api'
 
 const IMAGEN_MODELS: Array<{ id: string; label: string }> = [
@@ -36,6 +39,8 @@ interface Props {
   entityId: string
   onDecide: (filename: string, decision: ImageDecision, guidance?: string) => void
   isDeciding: boolean
+  onComposeRef: (filename: string, polarity: 'positive' | 'negative') => void
+  compositionState: 'positive' | 'negative' | null
 }
 
 export function DesignStudyImageCard({
@@ -45,6 +50,8 @@ export function DesignStudyImageCard({
   entityId,
   onDecide,
   isDeciding,
+  onComposeRef,
+  compositionState,
 }: Props) {
   const [showPrompt, setShowPrompt] = useState(false)
   const [guidanceText, setGuidanceText] = useState('')
@@ -117,6 +124,57 @@ export function DesignStudyImageCard({
       </a>
 
       <div className="space-y-2 p-3">
+        <div className="rounded-md border border-border/60 bg-muted/20 p-2">
+          <div className="mb-2 flex items-center justify-between">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+              Next Round
+            </p>
+            {compositionState && (
+              <Badge
+                variant="outline"
+                className={cn(
+                  'text-[10px]',
+                  compositionState === 'positive'
+                    ? 'border-emerald-500/30 text-emerald-300'
+                    : 'border-destructive/30 text-red-200',
+                )}
+              >
+                {compositionState === 'positive' ? 'Positive ref' : 'Negative ref'}
+              </Badge>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-1">
+            <button
+              type="button"
+              disabled={isDeciding}
+              onClick={() => onComposeRef(img.filename, 'positive')}
+              className={cn(
+                'flex items-center justify-center gap-1 rounded border py-1.5 text-xs transition-colors',
+                compositionState === 'positive'
+                  ? 'border-emerald-500 bg-emerald-500/15 text-emerald-200'
+                  : 'border-border hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:text-emerald-300',
+              )}
+            >
+              <Check className="h-3.5 w-3.5" />
+              Ref +
+            </button>
+            <button
+              type="button"
+              disabled={isDeciding}
+              onClick={() => onComposeRef(img.filename, 'negative')}
+              className={cn(
+                'flex items-center justify-center gap-1 rounded border py-1.5 text-xs transition-colors',
+                compositionState === 'negative'
+                  ? 'border-destructive bg-destructive/15 text-red-200'
+                  : 'border-border hover:border-destructive/50 hover:bg-destructive/10 hover:text-red-200',
+              )}
+            >
+              <X className="h-3.5 w-3.5" />
+              Ref -
+            </button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-4 gap-1">
           <button
             type="button"

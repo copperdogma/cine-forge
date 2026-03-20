@@ -17,12 +17,17 @@ from typing import TYPE_CHECKING, Any, Literal
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from cine_forge.ai.image import (
     ImageGenerationError,
     build_image_prompt,
     generate_image,
+)
+from cine_forge.api.routers.design_study_support import (
+    apply_image_decision,
+    find_round_image,
+    resolve_composition_context,
 )
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata, ArtifactRef
@@ -183,20 +188,6 @@ def _load_prompt_context_refs(store: ArtifactStore) -> dict[str, ArtifactRef]:
     return refs
 
 
-def _find_round_image(
-    state: DesignStudyState,
-    filename: str,
-) -> tuple[DesignStudyRound, DesignStudyImage]:
-    for round_ in state.rounds:
-        for image in round_.images:
-            if image.filename == filename:
-                return round_, image
-    raise HTTPException(
-        status_code=404,
-        detail=f"Image '{filename}' not found in design study state.",
-    )
-
-
 def _build_preference_signal_lineage(
     store: ArtifactStore,
     *,
@@ -263,7 +254,9 @@ def _persist_visual_reference_image(
 class GenerateRequest(BaseModel):
     entity_type: Literal["character", "location", "prop"]
     count: Literal[1, 2, 4, 8] = 1
-    guidance: str | None = None
+    directive: str | None = None
+    positive_refs: list[str] = Field(default_factory=list)
+    negative_refs: list[str] = Field(default_factory=list)
     seed_image_filename: str | None = None
     model: str = "imagen-4.0-generate-001"
 
@@ -310,6 +303,11 @@ async def generate_design_study(
         entity_type=body.entity_type,
     )
     round_number = len(state.rounds) + 1
+    composition_context = resolve_composition_context(
+        state,
+        positive_refs=body.positive_refs,
+        negative_refs=body.negative_refs,
+    )
 
     project_config_data, look_and_feel_data, intent_mood_data = _load_prompt_context(
         store,
@@ -322,7 +320,9 @@ async def generate_design_study(
     prompt, sources_used = build_image_prompt(
         body.entity_type,
         bible_data,
-        guidance=body.guidance,
+        directive=body.directive,
+        positive_reference_lines=composition_context.positive_reference_lines,
+        negative_reference_lines=composition_context.negative_reference_lines,
         seed_image_filename=body.seed_image_filename,
         learned_preferences_lines=learned_preferences_used,
         project_config_data=project_config_data,
@@ -366,7 +366,9 @@ async def generate_design_study(
         model=model_used,
         entity_type=body.entity_type,
         entity_id=entity_id,
-        guidance=body.guidance,
+        directive=body.directive,
+        positive_refs=composition_context.positive_refs,
+        negative_refs=composition_context.negative_refs,
         seed_image_filename=body.seed_image_filename,
         sources_used=sources_used,
         learned_preferences_used=learned_preferences_used,
@@ -411,39 +413,13 @@ async def decide_design_study(
     if state is None:
         raise HTTPException(status_code=404, detail=f"No design study found for '{entity_id}'.")
 
-    updated = False
     previous_selected_final = state.selected_final_filename
-    auto_cleared_final_filename: str | None = None
-
-    if body.decision == "selected_final":
-        for round_ in state.rounds:
-            for img in round_.images:
-                if img.filename != body.filename and img.decision == "selected_final":
-                    img.decision = "pending"
-                    img.guidance = None
-                    auto_cleared_final_filename = img.filename
-
-    for round_ in state.rounds:
-        for img in round_.images:
-            if img.filename == body.filename:
-                img.decision = body.decision
-                if body.decision == "pending":
-                    img.guidance = None
-                elif body.guidance is not None:
-                    img.guidance = body.guidance
-                updated = True
-
-    if not updated:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Image '{body.filename}' not found in design study for '{entity_id}'.",
-        )
-
-    if body.decision == "selected_final":
-        state.selected_final_filename = body.filename
-    elif body.decision != "selected_final" and state.selected_final_filename == body.filename:
-        # Unselect if previously selected
-        state.selected_final_filename = None
+    round_, image, auto_cleared_final_filename = apply_image_decision(
+        state,
+        filename=body.filename,
+        decision=body.decision,
+        guidance=body.guidance,
+    )
 
     store = ArtifactStore(project_dir=project_path)
     if state.selected_final_filename != previous_selected_final:
@@ -458,7 +434,6 @@ async def decide_design_study(
 
     preference_service = PreferenceService(project_path)
     if preference_service.get_settings().enabled:
-        round_, image = _find_round_image(state, body.filename)
         preference_service.record_design_study_signal(
             entity_id=entity_id,
             entity_type=state.entity_type,
@@ -466,7 +441,7 @@ async def decide_design_study(
             image_filename=image.filename,
             decision=image.decision,
             guidance=image.guidance,
-            round_guidance=round_.guidance,
+            round_directive=round_.directive,
             prompt_used=image.prompt_used,
             prompt_sources_used=round_.sources_used,
             model=image.model,
@@ -480,7 +455,7 @@ async def decide_design_study(
             auto_cleared_final_filename is not None
             and auto_cleared_final_filename != body.filename
         ):
-            cleared_round, cleared_image = _find_round_image(state, auto_cleared_final_filename)
+            cleared_round, cleared_image = find_round_image(state, auto_cleared_final_filename)
             preference_service.record_design_study_signal(
                 entity_id=entity_id,
                 entity_type=state.entity_type,
@@ -488,7 +463,7 @@ async def decide_design_study(
                 image_filename=cleared_image.filename,
                 decision=cleared_image.decision,
                 guidance=cleared_image.guidance,
-                round_guidance=cleared_round.guidance,
+                round_directive=cleared_round.directive,
                 prompt_used=cleared_image.prompt_used,
                 prompt_sources_used=cleared_round.sources_used,
                 model=cleared_image.model,

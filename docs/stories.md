@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-20, Story 131 done)
+## Current Execution Map (updated 2026-03-20, Story 121 done)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. The active backlog now centers on output QA, cost-control follow-ons, UX polish, and draft follow-ons rather than missing render-adapter substrate.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. With the design-study composition loop now landed, the active backlog centers on output QA, cost-control follow-ons, transparency polish, and draft follow-ons rather than missing render-adapter substrate.
 
 ### Pending — Ready To Build Now
 
@@ -34,7 +34,6 @@ No stories currently blocked.
 | **097** AI Artifact Editing | Now unblocked by Story 031, but it is still only draft-scoped. Promote it only after the editing UX, safety rails, and downstream revision flow are detailed enough to validate coherently. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |
-| **121** Design Study Composition UX | Story 119 is now landed, but this still stays Draft until the composition/editing UX is scoped tightly enough to validate against the new prompt pipeline without rework. |
 | **137** Previz Fidelity Upgrade | Story 027 now proves the minimal previz loop exists, but richer previz stays Draft until a usefulness eval can choose between shared video-generation and structured blocking approaches. |
 | **102 / 104 / 105 / 106 / 112 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
 
@@ -184,7 +183,7 @@ NOTES from Cam:
 | 118 | Service Layer Decomposition | Cross-Cutting | Medium | Done | [story-118](stories/story-118-service-decomposition.md) |
 | 119 | Design Study Prompt Compiler + Visual Reference Propagation | 6 — Shot Planning & Viz | Medium | Done | [story-119](stories/story-119-design-study-prompt-compiler.md) |
 | 120 | Production Format Setting | 6 — Shot Planning & Viz | Medium | Done | [story-120](stories/story-120-production-format-setting.md) |
-| 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Draft | [story-121](stories/story-121-design-study-composition-ux.md) |
+| 121 | Design Study Composition UX | 6 — Shot Planning & Viz | Medium | Done | [story-121](stories/story-121-design-study-composition-ux.md) |
 | 132 | Shot Planning UI and Shot List Exports | 6 — Shot Planning & Viz | High | Done | [story-132](stories/story-132-shot-planning-ui-and-shot-list-exports.md) |
 | 122 | Golden Fixture Helpers | 0 — Infrastructure | Medium | Done | [story-122](stories/story-122-golden-fixture-helpers.md) |
 | 123 | Anthropic Prompt Caching | 0 — Infrastructure | Medium | Done | [story-123](stories/story-123-anthropic-prompt-caching.md) |

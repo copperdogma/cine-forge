@@ -1,12 +1,9 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Wand2, ChevronDown, ChevronUp, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Textarea } from '@/components/ui/textarea'
-import { DesignStudyImageCard } from '@/components/DesignStudyImageCard'
-import { DesignStudySourcesPanel } from '@/components/DesignStudySourcesPanel'
+import { CompositionBar } from '@/components/CompositionBar'
+import { ContactSheetRow } from '@/components/ContactSheetRow'
 import { ProductionFormatModal } from '@/components/ProductionFormatModal'
 import {
   getDesignStudy,
@@ -16,7 +13,6 @@ import {
 } from '@/lib/api'
 import { useProject } from '@/lib/hooks'
 import type {
-  DesignStudyState,
   DesignStudyImage,
   DesignStudyRound,
   DesignStudyEntityType,
@@ -55,13 +51,15 @@ function filterImages(images: DesignStudyImage[], mode: FilterMode): DesignStudy
 export function DesignStudySection({ projectId, entityId, entityType }: Props) {
   const queryClient = useQueryClient()
   const { data: project, isLoading: projectLoading } = useProject(projectId)
-  const [guidance, setGuidance] = useState('')
+  const [directive, setDirective] = useState('')
+  const [positiveRefs, setPositiveRefs] = useState<string[]>([])
+  const [negativeRefs, setNegativeRefs] = useState<string[]>([])
   const [count, setCount] = useState<1 | 2 | 4 | 8>(1)
   const [model, setModel] = useState(IMAGEN_MODELS[0].id)
-  const [showHistory, setShowHistory] = useState(false)
   const [filter, setFilter] = useState<FilterMode>('all')
   const [useSeedVariants, setUseSeedVariants] = useState(true)
   const [formatModalOpen, setFormatModalOpen] = useState(false)
+  const [expandedRoundNumber, setExpandedRoundNumber] = useState<number | null>(null)
 
   const { data: state, isLoading } = useQuery({
     queryKey: ['design-study', projectId, entityId],
@@ -74,19 +72,41 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
         .flatMap(r => [...r.images].reverse())
         .find(img => img.decision === 'seed_for_variants')
     : undefined
+  const roundsNewestFirst: DesignStudyRound[] = state ? [...state.rounds].reverse() : []
+  const latestRound = roundsNewestFirst[0]
+  const activeRoundNumber =
+    expandedRoundNumber !== null
+    && roundsNewestFirst.some(round => round.round_number === expandedRoundNumber)
+      ? expandedRoundNumber
+      : latestRound?.round_number ?? null
+  const allImages: DesignStudyImage[] = roundsNewestFirst.flatMap(round => round.images)
+  const imageByFilename = new Map(allImages.map(image => [image.filename, image]))
+  const positiveRefChips = positiveRefs.map(filename => ({
+    filename,
+    label: formatCompositionRefLabel(imageByFilename.get(filename), filename),
+  }))
+  const negativeRefChips = negativeRefs.map(filename => ({
+    filename,
+    label: formatCompositionRefLabel(imageByFilename.get(filename), filename),
+  }))
 
   const generateMutation = useMutation({
     mutationFn: () =>
       generateDesignStudy(projectId, entityId, {
         entity_type: entityType,
         count,
-        guidance: guidance.trim() || null,
+        directive: directive.trim() || null,
+        positive_refs: positiveRefs,
+        negative_refs: negativeRefs,
         model,
         seed_image_filename: useSeedVariants ? latestSeedImage?.filename ?? null : null,
       }),
     onSuccess: (updated) => {
       queryClient.setQueryData(['design-study', projectId, entityId], updated)
-      setGuidance('')
+      setDirective('')
+      setPositiveRefs([])
+      setNegativeRefs([])
+      setExpandedRoundNumber(updated.rounds[updated.rounds.length - 1]?.round_number ?? null)
     },
   })
 
@@ -106,58 +126,52 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
   const decideMutation = useMutation({
     mutationFn: ({ filename, decision, guidance: g }: { filename: string; decision: ImageDecision; guidance?: string }) =>
       decideDesignStudy(projectId, entityId, { filename, decision, guidance: g ?? null }),
-    onSuccess: (_, { filename, decision, guidance: g }) => {
-      queryClient.setQueryData(
-        ['design-study', projectId, entityId],
-        (prev: DesignStudyState | null | undefined) => {
-          if (!prev) return prev
-          const rounds = prev.rounds.map(r => ({
-            ...r,
-            images: r.images.map(img =>
-              img.filename === filename
-                ? {
-                    ...img,
-                    decision,
-                    guidance:
-                      decision === 'pending'
-                        ? null
-                        : g !== undefined
-                          ? g
-                          : img.guidance,
-                  }
-                : decision === 'selected_final' && img.decision === 'selected_final'
-                  ? { ...img, decision: 'pending' }
-                  : img,
-            ),
-          }))
-          const selected_final_filename =
-            decision === 'selected_final'
-              ? filename
-              : prev.selected_final_filename === filename
-                ? null
-                : prev.selected_final_filename
-          return { ...prev, rounds, selected_final_filename }
-        },
-      )
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['design-study', projectId, entityId] }),
+        queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'preferences', 'profile'] }),
+      ])
     },
   })
 
-  const roundsNewestFirst: DesignStudyRound[] = state ? [...state.rounds].reverse() : []
-  const latestRound = roundsNewestFirst[0]
-  const historicalRounds = roundsNewestFirst.slice(1)
-  const allImages: DesignStudyImage[] = roundsNewestFirst.flatMap(r => r.images)
-  const latestRoundImages = latestRound?.images ?? []
-  const filteredLatest = filterImages(latestRoundImages, filter)
-  const filteredHistoricalRounds = historicalRounds
-    .map(round => ({
-      round,
-      images: filterImages(round.images, filter),
-    }))
-    .filter(({ images }) => images.length > 0)
-  const historicalImageCount = historicalRounds.reduce((sum, round) => sum + round.images.length, 0)
-
   function handleDecide(filename: string, decision: ImageDecision, g?: string) {
     decideMutation.mutate({ filename, decision, guidance: g })
+  }
+
+  function handleComposeRef(filename: string, polarity: 'positive' | 'negative') {
+    if (polarity === 'positive') {
+      setPositiveRefs(current =>
+        current.includes(filename)
+          ? current.filter(value => value !== filename)
+          : [...current, filename],
+      )
+      setNegativeRefs(current => current.filter(value => value !== filename))
+      return
+    }
+    setNegativeRefs(current =>
+      current.includes(filename)
+        ? current.filter(value => value !== filename)
+        : [...current, filename],
+    )
+    setPositiveRefs(current => current.filter(value => value !== filename))
+  }
+
+  function handleRemoveRef(filename: string, polarity: 'positive' | 'negative') {
+    if (polarity === 'positive') {
+      setPositiveRefs(current => current.filter(value => value !== filename))
+      return
+    }
+    setNegativeRefs(current => current.filter(value => value !== filename))
+  }
+
+  function handleRegenerateFromRound(round: DesignStudyRound) {
+    setExpandedRoundNumber(round.round_number)
+    setDirective(round.directive ?? '')
+    setPositiveRefs([])
+    setNegativeRefs([])
+    setModel(IMAGEN_MODELS.some(option => option.id === round.model) ? round.model : IMAGEN_MODELS[0].id)
+    setCount(isImageCount(round.count) ? round.count : 1)
+    setUseSeedVariants(false)
   }
 
   async function handleFormatSelect(format: ProductionFormat) {
@@ -178,6 +192,19 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
     generateMutation.mutate()
   }
 
+  const generationLabel = saveFormatMutation.isPending ? 'Saving format…' : 'Generating…'
+  const generationError = generateMutation.isError
+    ? generateMutation.error instanceof Error
+      ? `Generation failed: ${generateMutation.error.message}`
+      : 'Generation failed: Unknown error'
+    : null
+  const visibleRounds = roundsNewestFirst.filter(round => {
+    if (round.round_number === activeRoundNumber) {
+      return true
+    }
+    return filterImages(round.images, filter).length > 0
+  })
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -194,100 +221,6 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
         )}
       </div>
 
-      {/* Generate controls */}
-      <div className="space-y-2">
-        <Textarea
-          placeholder="Optional direction — e.g. 'more weathered, older' or 'sunlit, hopeful'"
-          value={guidance}
-          onChange={e => setGuidance(e.target.value)}
-          className="text-sm resize-none h-14"
-        />
-        {latestSeedImage && (
-          <div className="rounded-lg border border-sky-500/20 bg-sky-500/8 px-3 py-2">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <p className="text-xs font-medium text-sky-100">Variant seed available</p>
-                <p className="text-xs text-muted-foreground">
-                  {latestSeedImage.filename} will guide the next round when seed mode is on.
-                  Current support is prompt-guided variation, not direct upload image-conditioning.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setUseSeedVariants(v => !v)}
-                className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
-                  useSeedVariants
-                    ? 'border-sky-400/40 bg-sky-500/20 text-sky-100'
-                    : 'border-border bg-background text-muted-foreground hover:bg-muted'
-                }`}
-              >
-                {useSeedVariants ? 'Seed on' : 'Seed off'}
-              </button>
-            </div>
-          </div>
-        )}
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            {([1, 2, 4, 8] as const).map(n => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => setCount(n)}
-                className={`w-7 h-7 rounded text-xs border transition-colors ${
-                  count === n
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-background border-border hover:bg-muted text-muted-foreground'
-                }`}
-              >
-                {n}
-              </button>
-            ))}
-            <span className="text-xs text-muted-foreground">image{count !== 1 ? 's' : ''}</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-1">
-            {IMAGEN_MODELS.map(m => (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => setModel(m.id)}
-                title={m.id}
-                className={`px-2 h-7 rounded text-xs border transition-colors ${
-                  model === m.id
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-background border-border hover:bg-muted text-muted-foreground'
-                }`}
-              >
-                {m.label}
-              </button>
-            ))}
-          </div>
-          <Button
-            size="sm"
-            className="w-full justify-center"
-            disabled={generateMutation.isPending || saveFormatMutation.isPending || projectLoading}
-            onClick={handleGenerateClick}
-          >
-            {generateMutation.isPending || saveFormatMutation.isPending ? (
-              <>
-                <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                {saveFormatMutation.isPending ? 'Saving format…' : 'Generating…'}
-              </>
-            ) : (
-              <>
-                <Wand2 className="w-3.5 h-3.5 mr-1.5" />
-                Generate
-              </>
-            )}
-          </Button>
-        </div>
-        {generateMutation.isError && (
-          <p className="text-xs text-destructive">
-            Generation failed: {generateMutation.error instanceof Error ? generateMutation.error.message : 'Unknown error'}
-          </p>
-        )}
-      </div>
-
-      {/* Loading skeleton */}
       {isLoading && (
         <div className="grid gap-3">
           {[0, 1].map(i => (
@@ -296,7 +229,6 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
         </div>
       )}
 
-      {/* Filter tabs — only when images exist */}
       {allImages.length > 0 && (
         <div className="flex flex-wrap gap-1">
           {(Object.keys(FILTER_LABELS) as FilterMode[]).map(mode => (
@@ -316,78 +248,81 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
         </div>
       )}
 
-      {/* Latest round images */}
-      {latestRound && (
-        <div className="space-y-2">
-          <p className="text-xs text-muted-foreground">Round {latestRound.round_number}</p>
-          <DesignStudySourcesPanel round={latestRound} defaultOpen />
-          {filteredLatest.length > 0 ? (
-            <div className="grid gap-3">
-              {filteredLatest.map((img, i) => (
-                <DesignStudyImageCard
-                  key={img.filename}
-                  img={img}
-                  index={i + 1}
+      {!isLoading && visibleRounds.length > 0 && (
+        <div className="space-y-4">
+          {visibleRounds.map(round => {
+            const expanded = round.round_number === activeRoundNumber
+            return (
+              <div key={round.round_number} className="space-y-3">
+                <ContactSheetRow
+                  round={round}
+                  images={filterImages(round.images, filter)}
                   projectId={projectId}
                   entityId={entityId}
-                  onDecide={handleDecide}
+                  expanded={expanded}
+                  isLatest={round.round_number === latestRound?.round_number}
                   isDeciding={decideMutation.isPending}
+                  positiveRefs={positiveRefs}
+                  negativeRefs={negativeRefs}
+                  onExpand={() => setExpandedRoundNumber(round.round_number)}
+                  onRegenerateFromHere={handleRegenerateFromRound}
+                  onDecide={handleDecide}
+                  onComposeRef={handleComposeRef}
                 />
-              ))}
-            </div>
-          ) : (
-            <p className="text-xs italic text-muted-foreground">
-              No images in the latest round match this filter.
-            </p>
-          )}
+                {expanded && (
+                  <CompositionBar
+                    directive={directive}
+                    positiveRefs={positiveRefChips}
+                    negativeRefs={negativeRefChips}
+                    count={count}
+                    model={model}
+                    models={IMAGEN_MODELS}
+                    canGenerate={!projectLoading && !saveFormatMutation.isPending}
+                    isGenerating={generateMutation.isPending || saveFormatMutation.isPending}
+                    generationLabel={generationLabel}
+                    errorMessage={generationError}
+                    latestSeedFilename={latestSeedImage?.filename ?? null}
+                    useSeedVariants={useSeedVariants}
+                    onDirectiveChange={setDirective}
+                    onCountChange={setCount}
+                    onModelChange={setModel}
+                    onRemoveRef={handleRemoveRef}
+                    onToggleSeedVariants={() => setUseSeedVariants(value => !value)}
+                    onGenerate={handleGenerateClick}
+                  />
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
 
-      {/* History toggle */}
-      {historicalImageCount > 0 && (
-        <div className="space-y-2">
-          <button
-            type="button"
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => setShowHistory(v => !v)}
-          >
-            {showHistory ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-            {showHistory ? 'Hide' : 'Show'} earlier rounds ({historicalImageCount} image{historicalImageCount !== 1 ? 's' : ''})
-          </button>
-          {showHistory && filteredHistoricalRounds.length > 0 && (
-            <div className="space-y-4">
-              {filteredHistoricalRounds.map(({ round, images }) => (
-                <div key={round.round_number} className="space-y-2">
-                  <p className="text-xs text-muted-foreground">Round {round.round_number}</p>
-                  <DesignStudySourcesPanel round={round} />
-                  <div className="grid gap-3">
-                    {images.map((img, i) => (
-                      <DesignStudyImageCard
-                        key={img.filename}
-                        img={img}
-                        index={i + 1}
-                        projectId={projectId}
-                        entityId={entityId}
-                        onDecide={handleDecide}
-                        isDeciding={decideMutation.isPending}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          {showHistory && filteredHistoricalRounds.length === 0 && (
-            <p className="text-xs text-muted-foreground italic">No earlier images match this filter.</p>
-          )}
+      {!isLoading && !state && (
+        <div className="space-y-3">
+          <p className="py-1 text-center text-xs text-muted-foreground">
+            No design study yet. Generate the first image to start the contact-sheet loop.
+          </p>
+          <CompositionBar
+            directive={directive}
+            positiveRefs={positiveRefChips}
+            negativeRefs={negativeRefChips}
+            count={count}
+            model={model}
+            models={IMAGEN_MODELS}
+            canGenerate={!projectLoading && !saveFormatMutation.isPending}
+            isGenerating={generateMutation.isPending || saveFormatMutation.isPending}
+            generationLabel={generationLabel}
+            errorMessage={generationError}
+            latestSeedFilename={null}
+            useSeedVariants={false}
+            onDirectiveChange={setDirective}
+            onCountChange={setCount}
+            onModelChange={setModel}
+            onRemoveRef={handleRemoveRef}
+            onToggleSeedVariants={() => undefined}
+            onGenerate={handleGenerateClick}
+          />
         </div>
-      )}
-
-      {/* Empty state */}
-      {!isLoading && !state && !generateMutation.isPending && (
-        <p className="text-xs text-muted-foreground text-center py-4">
-          No design study yet. Generate the first image above.
-        </p>
       )}
 
       <ProductionFormatModal
@@ -405,4 +340,18 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
       />
     </div>
   )
+}
+
+function formatCompositionRefLabel(
+  image: DesignStudyImage | undefined,
+  filename: string,
+): string {
+  if (!image) {
+    return filename
+  }
+  return `R${image.round_number} · ${filename}`
+}
+
+function isImageCount(value: number): value is 1 | 2 | 4 | 8 {
+  return value === 1 || value === 2 || value === 4 || value === 8
 }
