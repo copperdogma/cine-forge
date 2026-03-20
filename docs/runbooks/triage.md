@@ -27,25 +27,34 @@ This is the operational companion to `/triage`.
      - `docs/methodology-ideal-spec-compromise.md`
      - `docs/spec.md`
      - `docs/build-map.md`
-     - relevant ADRs with open status
    - Optionally inspect recent `git log --oneline -20` for momentum context.
+   - Goal: identify the highest-leverage live gap before looking at the backlog.
 
-3. **[script] Run the leaf sweeps**
+3. **[judgment] Name the primary gap**
+   - State the unmet Ideal promise or overscaffolded compromise
+   - Map it to the owning spec section(s)
+   - Map it to the owning build-map category, substrate, and phase
+   - Name 1-2 runner-up gaps
+   - Goal: decide what actually matters before looking for convenient work
+
+4. **[script] Read decision constraints for that gap**
+   - Open the relevant ADRs / design docs
+   - If none apply, say so explicitly
+   - Goal: make sure the next move fits the chosen architecture
+
+5. **[script] Query existing work under that gap**
    - Stories: `/triage-stories`
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
-   - Goal: gather one recommendation per domain without duplicating leaf logic.
+   - Goal: find which existing artifacts already advance the chosen gap
 
-4. **[judgment] Synthesize one next action**
-   - Choose the strongest next step using:
-     - Ideal alignment
-     - blocking power
-     - substrate leverage
-     - phase-appropriate leverage (`climb`, `hold`, `converge`)
-     - urgency/staleness
-     - recent momentum
-     - operator cost
-   - Good output: one recommended action, plus runner-ups.
+6. **[judgment] Synthesize one next action**
+   - Prefer:
+     - continuing the strongest existing story under the chosen gap
+     - promoting or reshaping the draft that best advances the chosen gap
+     - creating the missing story / ADR / spec update / eval if the gap has no home
+   - Only fall back to smaller unrelated ready work when the larger gap is not actionable yet
+   - Good output: one recommended action, plus runner-ups, with an explicit reason the chosen gap won.
 
 ## Boundaries
 
@@ -54,6 +63,7 @@ This is the operational companion to `/triage`.
 - Keep full-sweep `/triage` read-only
 - Let leaf skills own their domain logic
 - End with one clear recommendation
+- Start from Ideal/spec/build-map gaps, not the backlog
 
 ### Ask first
 
@@ -65,11 +75,12 @@ This is the operational companion to `/triage`.
 - Never duplicate leaf-skill logic in `/triage`
 - Never let full-sweep `/triage` modify inbox items or other files
 - Never return three equal-priority recommendations without choosing one
+- Never let "easy and ready" silently outrank "important and under-owned"
 
 ## Troubleshooting
 
 - **Leaf recommendations conflict**
-  - Fix: prefer the one with the strongest blocking, substrate, or credible convergence leverage and explain why the others lost.
+  - Fix: go back to the named primary gap and prefer the recommendation that most directly advances it.
 
 - **A leaf skill is stale or missing**
   - Fix: call out the gap instead of pretending the full sweep is complete.
@@ -80,3 +91,4 @@ This is the operational companion to `/triage`.
 ## Lessons Learned
 
 - 2026-03-15 — `/triage` works best as an orchestrator. CineForge already had useful eval-triage logic; folding that into a monolith would have been a regression.
+- 2026-03-20 — Orchestration still has to be methodology-first. If triage starts from stories or eval queues, the backlog begins prioritizing itself instead of serving the Ideal/spec/build-map spine.

@@ -1,5 +1,11 @@
 # Changelog
 
+## [2026-03-20-05] — Methodology-first triage ordering
+
+### Changed
+- Reworked `/triage`, `/triage-stories`, `/triage-inbox`, and `/triage-evals` so they now prioritize Ideal → spec → build map → ADRs before considering stories, inbox items, or eval queues
+- Updated the triage runbooks, methodology guide, and bootstrap skill guidance so the planning stack consistently treats backlog artifacts as continuations of named methodology gaps rather than the source of priority
+
 ## [2026-03-20-04] — Chat model disclosure and transparency close-out (Story 127)
 
 ### Added

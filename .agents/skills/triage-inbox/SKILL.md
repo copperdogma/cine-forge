@@ -17,27 +17,35 @@ Go through accumulated inbox items together with the user.
 
 ## Steps
 
-1. **Read inbox** — Load `docs/inbox.md`. List all untriaged items.
+1. **Read the methodology frame first**
+   - Read `docs/ideal.md`, `docs/spec.md`, and `docs/build-map.md`
+   - Goal: identify the current live gaps before letting inbox novelty drive priority
 
-2. **Prioritize** — Before diving into individual items, evaluate the full inbox and present a prioritized recommendation:
-   - Read the current story index (`docs/stories.md`) and recent project state to understand what's in flight.
+2. **Read inbox** — Load `docs/inbox.md`. List all untriaged items.
+
+3. **Map inbox items to methodology gaps** — Before diving into individual items:
+   - Identify which active gap or category each inbox item plausibly advances
+   - If an item does not advance any meaningful gap, say so plainly
+
+4. **Prioritize** — Evaluate the full inbox and present a prioritized recommendation:
+   - Read the current story index (`docs/stories.md`) and recent project state to understand what's in flight
    - Group items by theme if natural clusters exist (e.g., "these 3 are all chat UI bugs").
    - Recommend a **top 3-5** to triage first, with a short "why" for each:
+     - What Ideal/spec/build-map gap does it address?
+     - Does it advance the highest-leverage live gap or just a side issue?
      - Is it blocking current work?
-     - Is it a quick win (bug fix, small story)?
-     - Is it high user-impact?
      - Does it fill missing or partial substrate in an active build-map category?
      - Does it unlock other deferred items?
      - Is it time-sensitive (external API, model availability)?
    - Flag items that are probably **defer/discard** candidates so the user can batch-dismiss them.
    - Let the user adjust the order or override before proceeding.
 
-3. **If running in `scan` mode, stop after the prioritized recommendation**
+5. **If running in `scan` mode, stop after the prioritized recommendation**
    - Return the top items, likely dispositions, and any health flags.
    - Do not create artifacts.
    - Do not delete inbox entries.
 
-4. **For each item, evaluate and discuss with the user:**
+6. **For each item, evaluate and discuss with the user:**
 
    a. **Challenge first: "What if we don't do this?"** — Before proposing a disposition, ask: what happens if we ignore this entirely? If the answer is "nothing much" or "20 lines in an existing module," it may not warrant a story or any action at all. This prevents backlog inflation.
 
@@ -45,6 +53,7 @@ Go through accumulated inbox items together with the user.
       - Does an existing story already cover this scope?
       - Would this naturally fit as a task or note within an existing story?
       - Is there a Draft story that could absorb this?
+      - Does the current build map reveal a larger gap that this item should be attached to rather than tracked as a standalone feature?
 
    c. **Propose disposition:**
       - **Fold into existing story** → Add as a note/task to that story's Notes section (preferred when a home exists)
@@ -55,11 +64,11 @@ Go through accumulated inbox items together with the user.
       - **Backlog/defer** → Note why and revisit later
       - **Discard** → Remove from inbox with brief rationale
 
-5. **Create artifacts** — For each decision, create the appropriate artifact immediately.
+7. **Create artifacts** — For each decision, create the appropriate artifact immediately.
 
-6. **Delete from inbox** — Remove processed items from `docs/inbox.md`. The inbox is a processing queue, not an archive. Once an item has landed in a story, ADR, spec, or been explicitly discarded, it has no purpose remaining in the inbox. The artifact it created is now the source of truth.
+8. **Delete from inbox** — Remove processed items from `docs/inbox.md`. The inbox is a processing queue, not an archive. Once an item has landed in a story, ADR, spec, or been explicitly discarded, it has no purpose remaining in the inbox. The artifact it created is now the source of truth.
 
-7. **Summarize** — Quick summary of what was processed and any follow-up actions.
+9. **Summarize** — Quick summary of what was processed and any follow-up actions.
 
 ## Guardrails
 
@@ -69,3 +78,4 @@ Go through accumulated inbox items together with the user.
 - Prefer folding into existing stories over creating new ones — fight backlog inflation
 - Always ask "what if we don't do this?" before committing to a story
 - `scan` mode is read-only — never create artifacts or delete inbox items there
+- Do not let inbox novelty outrank a larger live Ideal/spec/build-map gap without saying why

@@ -1,6 +1,6 @@
 ---
 name: triage
-description: Orchestrate the triage leaf skills and synthesize the highest-value next action
+description: Identify the highest-leverage Ideal/spec/build-map gap, then recommend the next action that best advances it
 user-invocable: true
 ---
 
@@ -8,7 +8,17 @@ user-invocable: true
 
 > Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current build-map phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
 
-`/triage` is the proactive meta-skill. It does **not** own all domain logic itself. It dispatches to focused leaf skills and, in full-sweep mode, fans them out and synthesizes one recommendation.
+`/triage` is the proactive meta-skill. Its job is to choose the **most important live methodology gap** before looking for convenient work.
+
+The required order is:
+
+1. **Ideal** — what major user promise or simplification opportunity is most visibly unmet?
+2. **Spec** — which active constraint or requirement expresses that gap?
+3. **Build map** — which category owns it, and is the correct move `climb`, `hold`, `converge`, or `unplanned`?
+4. **ADRs / design docs** — what decisions constrain the next move?
+5. **Existing work** — which stories, inbox items, or evals already advance that exact gap?
+
+Stories, inbox items, and evals are **not** the source of priority. They are candidate continuations of the priority established by Ideal/spec/build-map reasoning.
 
 Companion runbook: `docs/runbooks/triage.md`
 
@@ -34,42 +44,57 @@ When a scope is provided, hand off completely to the leaf skill. Do **not** keep
 
 ## Full-Sweep Mode
 
-When invoked with no scope, run a lightweight orchestration pass:
+When invoked with no scope, run a methodology-first orchestration pass:
 
 1. **Read the shared frame**
    - `docs/ideal.md`
    - `docs/methodology-ideal-spec-compromise.md`
    - `docs/spec.md`
    - `docs/build-map.md`
-   - relevant ADRs / decision docs
    - recent `git log --oneline -20`
+   - Goal: identify the biggest live gap or simplification opportunity before reading stories as a backlog.
 
-2. **Run the leaf sweeps**
+2. **Name the primary gap**
+   - State the unmet Ideal promise or overscaffolded compromise in plain language
+   - Map it to the owning spec section(s)
+   - Map it to the owning build-map category
+   - State why this gap wins right now:
+     - missing or partial substrate
+     - highest-value `climb`
+     - credible `converge`
+     - urgent trust break
+     - simplification leverage
+   - Also name 1-2 runner-up gaps
+
+3. **Read decision constraints for that gap**
+   - Open the relevant ADRs / design docs for the chosen gap
+   - If none apply, say so explicitly
+   - Goal: avoid picking a next action that fights a settled architecture decision
+
+4. **Query the existing work under that gap**
    - Stories: `/triage-stories`
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
+   - But interpret each leaf through one question:
+     - what already exists that advances the chosen gap?
+   - Do **not** let a smaller ready story outrank the chosen gap just because it is easier to start
 
-3. **Collect leaf outputs**
-   Each leaf should provide:
-   - its top recommendation
-   - 1-3 reasons
-   - major blockers / health flags
-   - whether the next step is read-only or action-taking
+5. **Choose one next action**
+   Prefer this order:
+   - continue an in-flight or ready story that directly advances the chosen gap
+   - promote or reshape an existing draft story that is the clearest continuation of the chosen gap
+   - create the missing story / ADR / spec update / eval if the gap has no proper home yet
+   - only fall back to a smaller unrelated ready story if the larger gap is genuinely not actionable yet, and explain why
 
-4. **Synthesize one next action**
-   Choose using:
-   - Ideal alignment
-   - blocking power
-   - substrate leverage
-   - phase-appropriate leverage
-   - urgency / staleness
-   - momentum from recent work
-   - operator cost
-
-5. **Return a short report**
+6. **Return a short report**
 
 ```markdown
 ## Triage
+
+### Primary Gap
+- {Ideal promise or simplification opportunity}
+- Spec: {spec refs}
+- Build Map: {category + substrate + phase}
 
 ### Recommended Action
 - {one next action}
@@ -82,9 +107,9 @@ When invoked with no scope, run a lightweight orchestration pass:
 - {alternate action}
 
 ### Domain Notes
-- Stories: {summary}
-- Inbox: {summary}
-- Evals: {summary}
+- Stories: {which stories do or do not advance the chosen gap}
+- Inbox: {which inbox items do or do not map to the chosen gap}
+- Evals: {which evals matter for the chosen gap, or why eval work is not the move}
 
 ### Health Flags
 - {blocker or "none"}
@@ -96,3 +121,6 @@ When invoked with no scope, run a lightweight orchestration pass:
 - Full-sweep mode is read-only
 - Do not let `/triage` absorb leaf-skill implementation detail
 - Always converge to one recommendation
+- Never start from "what stories are ready?" Start from "what gap matters most?"
+- If the top gap has no story yet, recommend creating or promoting the right artifact instead of silently skipping it
+- Do not let inbox novelty, eval staleness, or small ready work outrank a larger live gap without an explicit explanation

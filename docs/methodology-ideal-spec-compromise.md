@@ -111,17 +111,20 @@ Two repo-level skills operate across this methodology graph:
 
 Proactive. Answers: "What is the highest-value next action?"
 
-It reads the shared frame:
+It starts from the planning spine, in order:
 - Ideal
 - spec
 - build map
 - relevant ADRs
-- leaf triage outputs
 
-It then chooses one next action instead of leaving the operator to reconcile
-multiple partial signals. The build map matters here because a strong next step
-in a `climb` category is different from a strong next step in `hold` or
-`converge`.
+Only after naming the primary live gap does it consult leaf triage outputs
+(stories, inbox, evals) to find the best continuation of that gap.
+
+Stories, inbox items, and evals are not the source of priority. They are the
+execution surfaces that may or may not already advance the chosen gap.
+
+The build map matters here because a strong next step in a `climb` category is
+different from a strong next step in `hold` or `converge`.
 
 ### `/align`
 

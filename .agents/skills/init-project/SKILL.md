@@ -137,7 +137,7 @@ Canonical location: `.agents/skills/` with symlinks for `.claude/skills`, `.curs
 - `/validate` — Assess implementation quality vs requirements
 - `/check-in-diff` — Audit git changes before commit + CHANGELOG enforcement
 - `/mark-story-done` — Validate and close stories + update CHANGELOG
-- `/triage` — Process inbox items
+- `/triage` — Identify the highest-leverage methodology gap and recommend the next action
 - `/scout` — Research external sources for adoptable patterns
 - `/create-adr` — Create ADR with research scaffolding (bootstrap script + templates)
 - `/create-cross-cli-skill` — Create new skills in canonical cross-CLI format
