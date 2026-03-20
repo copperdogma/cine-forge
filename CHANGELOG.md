@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-03-20-01] — Methodology bootstrap package and eval scaffolding surface
+
+### Added
+- Added the canonical `/setup-methodology` skill package with its setup runbook, bundled checklist template, and mode reference
+- Added the `/create-eval` skill plus dedicated `create-eval` and `promptfoo` runbooks for CineForge's benchmark workflow
+- Added Scout 015 and upgraded the scout template/skill to record transfusion intent plus explicit verification and evidence sections
+
+### Changed
+- Updated `AGENTS.md`, `init-project`, the setup checklist, eval docs, and golden runbook to teach the consolidated methodology package and day-to-day eval surface
+- Updated the methodology bootstrap docs to treat `/setup-methodology` as the single setup front door and remove stale phased-setup guidance
+
+### Removed
+- Removed the deprecated phased `setup-*` skills and their Gemini wrappers so the repo no longer carries a second setup surface
+
 ## [2026-03-19-03] — Video understanding benchmark and model selection baseline (Story 030)
 
 ### Added

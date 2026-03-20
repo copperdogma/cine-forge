@@ -12,6 +12,11 @@
    What: What the source does
    Us: Do we have this? Current state?
    Recommendation: Adopt inline | Create story | Skip
+   Transfusion (optional when porting a concrete pattern):
+   Exemplar: {concrete source pattern}
+   Invariant: {what must survive locally}
+   Adaptation: {how CineForge should differ}
+   Proof target: {what successful transfer looks like}
 
 ## Approved
 
@@ -20,3 +25,11 @@
 ## Skipped / Rejected
 
 - N. Title — Reason
+
+## Verification
+
+- {checks run}
+
+## Evidence
+
+- {where the change landed / how the proof target was met}

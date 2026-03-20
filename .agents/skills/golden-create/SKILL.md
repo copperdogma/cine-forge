@@ -21,7 +21,8 @@ be perfect — `/golden-verify` catches issues on subsequent passes.
 ## Prerequisites
 
 The golden workspace must exist at `benchmarks/golden/` with at least a
-`README.md` format spec. If it doesn't, tell the user to run `/setup-golden` first.
+`README.md` format spec. If it doesn't, tell the user to run
+`/setup-methodology refresh` first.
 
 ## Where Things Live
 

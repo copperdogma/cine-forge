@@ -2,6 +2,10 @@
 
 Central tracking for all evaluation metrics, improvement attempts, and compromise gates.
 
+Baseline eval/golden setup now belongs to `/setup-methodology`. Once that
+package exists, use `/create-eval` to scaffold new evals and `/improve-eval`
+to iterate on existing ones.
+
 ## Structure
 
 ```
@@ -47,6 +51,13 @@ A score is **stale** if the codebase has changed significantly since `git_sha`. 
 3. Read ALL previous attempts for the target eval before starting
 4. Follow the Definition of Done checklist at the bottom of the template
 
+## Creating a New Eval
+
+Use `/create-eval` when the registry needs a new entry, a new benchmark config
+or script needs to be scaffolded, or a new compromise gate is being introduced.
+
+Use `/improve-eval` only after the eval already exists.
+
 ### Attempt summary in registry
 
 After completing an attempt (success or failure), add a compact summary to the eval's `attempts` list:
@@ -75,6 +86,7 @@ attempts:
 | `new-worker-model` | Smarter AI might execute same approach better | New model release |
 | `new-subject-model` | Better pipeline model might pass without code changes | New model release |
 | `cheaper-subject-model` | Works on expensive model, need cost parity | Pricing changes |
+| `faster-subject-model` | Works on slow model, need latency parity | Pricing/release changes |
 | `new-approach` | Current approaches exhausted | Fresh thinking / new technique |
 | `golden-fix` | Golden reference may be wrong/incomplete | Manual review |
 | `architecture-change` | Upstream pipeline needs to change first | Pipeline refactor |

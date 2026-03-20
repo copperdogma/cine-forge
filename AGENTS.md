@@ -25,7 +25,9 @@ This file is the project-wide source of truth for agent behavior and engineering
 > stories, and evals fit together. `docs/build-map.md` is the central dashboard:
 > it tracks product need, tech need, substrate status, story coverage, ADR refs,
 > and phase governance (`climb`, `hold`, `converge`, `unplanned`). Read both when
-> work touches planning, methodology, or simplification decisions.
+> work touches planning, methodology, or simplification decisions. Canonical
+> methodology bootstrap skill: `/setup-methodology`. Recurring companion skills:
+> `/create-eval`, `/improve-eval`, and `/align`.
 
 ## Core Agent Mandates
 
@@ -166,6 +168,8 @@ For multi-model research tasks, use the `deep-research` CLI tool (v0.3.3+).
 ### Model Benchmarking (promptfoo)
 
 We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality across pipeline tasks. Benchmark workspace lives in a separate git worktree (`cine-forge-sidequests`), currently on the existing user-managed branch `sidequests/model-benchmarking`. New agent-created branches elsewhere should use `codex/*`.
+
+Runbook: `docs/runbooks/promptfoo.md`
 
 #### Prerequisites
 - **Node.js 24 LTS** (v24.13.1+). Promptfoo requires Node 22+. Installed via nvm.
@@ -371,8 +375,11 @@ Current runbooks:
 - `align.md` — Methodology-graph drift check across Ideal/spec/build map/stories/evals (skill: `/align`)
 - `check-in-worktree-landing.md` — Safe check-in and landing flow for task branches and worktrees (skill: `/check-in-diff`)
 - `codebase-improvement-scout.md` — Repo hygiene scan and cleanup triage flow (skill: `/codebase-improvement-scout`)
+- `create-eval.md` — Scaffold a new eval in the registry and benchmark workspace (skill: `/create-eval`)
 - `finish-and-push.md` — Bundled story closure plus validated landing flow (skill: `/finish-and-push`)
-- `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (skill: `/setup-golden`)
+- `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (canonical bootstrap: `/setup-methodology`; day-to-day: `/golden-create`, `/golden-verify`)
+- `promptfoo.md` — Run, inspect, and record promptfoo benchmark passes in the sidequest eval workspace
+- `setup-methodology.md` — Install or refresh the methodology package and canonical setup surface (skill: `/setup-methodology`)
 - `triage.md` — Cross-system routing to the highest-value next action (skill: `/triage`)
 - `triage-evals.md` — Cheap diagnosis of which eval, compromise gate, or stale benchmark needs attention next (skill: `/triage-evals`)
 

@@ -1,13 +1,61 @@
-# CineForge — Retrofit Checklist
+# CineForge — Methodology Bootstrap Checklist
 
-Retrofitting Ideal-first methodology onto existing project. Generated 2026-02-26.
+> Working copy refreshed by `/setup-methodology`.
+> This is the canonical setup / refresh checklist now. Keep historical context,
+> but do not use the old one-off retrofit checklist as the active methodology
+> surface.
 
-> Historical note: Story 136 (2026-03-18) migrated the live methodology to the
-> dual-ideal, category-aligned `spec:N` / build-map model. References below to
-> the old `Compromise Index` and live `docs/retrofit-gaps.md` surface are
-> historical only.
+## Mode
 
-## Completed
+- [x] Mode chosen: `refresh`
+- [x] Canonical references reviewed (`AGENTS.md`, methodology doc, setup runbook, relevant repo docs)
+
+## Canonical Surface
+
+- [x] `/setup-methodology` is the only advertised setup entrypoint
+- [x] Deprecated phased setup skills are removed from the repo
+- [x] `AGENTS.md` advertises the canonical setup/eval surfaces only
+- [x] `docs/runbooks/setup-methodology.md` exists and matches the skill
+
+## Methodology Graph
+
+- [x] `docs/ideal.md` contains both product and execution ideals
+- [x] `docs/spec.md` is category-aligned and matches the build map
+- [x] `docs/build-map.md` is the central planning / triage dashboard
+- [x] Build-map-first operating rule is documented in `AGENTS.md`
+- [x] Supporting docs reference the same hierarchy and public surface
+
+## Baseline Evidence Setup
+
+- [x] Golden workspace exists and remains the baseline golden surface for current schemas
+- [x] Eval registry / baseline harness exists and remains current
+- [x] `docs/evals/README.md`, `docs/evals/registry.yaml`, and `docs/evals/attempt-template.md` match the current workflow
+- [x] `docs/runbooks/promptfoo.md` now exists for promptfoo-style evals
+- [x] `/create-eval` is installed for new eval scaffolding
+- [x] `/improve-eval` remains the recurring improvement path
+
+## Story / Planning Setup
+
+- [x] Story framework remains anchored to build-map + spec
+- [x] Story/bootstrap guidance no longer teaches the stale phased setup model as the public surface
+- [x] `init-project` installs the same methodology package for new repos
+
+## Validation
+
+- [x] Reference audit completed (`rg` for stale phased-setup promotions in AGENTS/runbooks/eval docs/active skills)
+- [x] Skill sync completed (`scripts/sync-agent-skills.sh`)
+- [x] Skill sync check completed (`scripts/sync-agent-skills.sh --check`)
+- [x] Deprecated-surface audit completed
+- [x] Eval workflow audit completed
+- [x] Alignment sweep completed
+
+## Historical Retrofit Archive (2026-02-26 checklist)
+
+Historical note: Story 136 (2026-03-18) migrated the live methodology to the
+dual-ideal, category-aligned `spec:N` / build-map model. The material below is
+preserved for provenance only; it is **not** the active setup checklist.
+
+### Completed
 
 - [x] Existing docs, stories, code, inbox, and ADRs reviewed (Phase 1)
 - [x] `docs/ideal.md` created — 16 requirements across 7 themes (Phase 2)
@@ -34,9 +82,9 @@ Retrofitting Ideal-first methodology onto existing project. Generated 2026-02-26
 - [x] Retrofit checklist created (Phase 5)
 - [x] AGENTS.md updated with Ideal reference (Phase 6)
 
-## Remaining (prioritized)
+### Remaining (historical carry-forwards)
 
-### P0 — Highest leverage
+#### P0 — Highest leverage
 
 - [ ] ~~Create simplification eval: "single-call screenplay understanding"~~ — **Dossier will handle extraction** (see `docs/retrofit-gaps.md` §6)
 - [ ] ~~Create simplification eval: "single-pass scene analysis"~~ — **Dossier will handle extraction**
@@ -45,7 +93,7 @@ Retrofitting Ideal-first methodology onto existing project. Generated 2026-02-26
 - [ ] Story 092 (Continuity AI) — highest-value pending story, directly implements R3
 - [ ] Create Dossier adapter story — intake path that accepts Dossier structured output → CineForge artifacts
 
-### P1 — Fill critical gaps
+#### P1 — Fill critical gaps
 
 - [ ] Create golden reference for concern group artifacts (R8, ADR-003) — Look & Feel, Sound & Music, Rhythm & Flow for 3 scenes
 - [ ] Create promptfoo eval for concern group generation (Rhythm & Flow / editorial direction first)
@@ -57,7 +105,7 @@ Retrofitting Ideal-first methodology onto existing project. Generated 2026-02-26
 - [ ] Create story for R9 (narrative-aware timeline export)
 - [ ] Create story for R11 (Scene Workspace — per-scene production readiness surface)
 
-### P2 — Important but not urgent
+#### P2 — Important but not urgent
 
 - [ ] Create story for R10 (video preview/assembly view)
 - [ ] Create story for R7 (explicit iterative generation UX story)
@@ -70,7 +118,7 @@ Retrofitting Ideal-first methodology onto existing project. Generated 2026-02-26
 - [x] ~~Story 090 (Persona-Adaptive Workspaces)~~ — Cancelled, superseded by two-view architecture + interaction mode (Story 089)
 - [ ] ADR-003 (Film Elements) — resolve element grouping before building Stories 021-024
 
-### P3 — Polish and ongoing
+#### P3 — Polish and ongoing
 
 - [ ] Update `docs/stories.md` with Ideal-alignment notes per story
 - [ ] Create golden references for shot planning, export metadata, production readiness

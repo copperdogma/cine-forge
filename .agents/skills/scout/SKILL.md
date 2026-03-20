@@ -10,6 +10,12 @@ user-invocable: true
 
 Research external sources for patterns, ideas, and approaches worth adopting. Produces a persistent scout document tracking what was found, what was adopted, and verification evidence.
 
+When a finding is a concrete reusable pattern worth porting, treat it as a
+**gene transfusion**: capture the source exemplar, the invariant worth
+preserving, the local adaptation, and the proof target. Do **not** force this
+for every finding. Use it only when there is a real pattern transfer, not just
+an inspiration or a skip.
+
 ## Inputs
 
 - **source** (required): One of:
@@ -60,8 +66,15 @@ This handles all setup in one call:
    - Do we already have this? (check our files)
    - How valuable would it be for this project? (HIGH / MEDIUM / LOW)
    - How much effort to adopt? (small = inline, large = needs a story)
+   - If it is a real pattern-transfer candidate, add a short gene-transfusion
+     note:
+     - **Exemplar** — the concrete source pattern being copied
+     - **Invariant** — the behavior or principle that must survive locally
+     - **Adaptation** — what changes in CineForge because the local context differs
+     - **Proof target** — what will show the transfusion actually worked
 
-4. **Fill in the scout document** created in Phase 0 with findings.
+4. **Fill in the scout document** created in Phase 0 with findings. Include
+   gene-transfusion notes only for concrete port/adaptation candidates.
 
 5. **Present findings** as a numbered list with value ratings and effort estimates. Group items if there are more than 5.
 
@@ -94,6 +107,8 @@ Update the scout doc's **Approved** section with what was approved.
    - Mark the scout item as "Deferred → Story NNN"
 4. For inline items:
    - Make the changes
+   - For gene-transfusion items, preserve the invariant, not the source repo's
+     accidental details or broader ideology
    - Mark complete with brief evidence
 
 ## Phase 4 — Verification
@@ -102,6 +117,8 @@ After all implementation is done:
 
 1. **Re-read every modified file** to confirm changes landed correctly.
 2. **Fill in evidence** for each approved item in the scout doc.
+   - For gene-transfusion items, explicitly confirm whether the proof target
+     was met and where that evidence lives
 3. **Run any relevant checks** (sync scripts, lint, typecheck — whatever applies to the changes made).
 4. **Update the scout doc** with final status per item. Set status to Complete.
 5. **Update `docs/scout.md` index** with the new expedition row.

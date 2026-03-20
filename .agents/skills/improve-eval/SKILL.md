@@ -10,6 +10,12 @@ user-invocable: true
 
 Pick an eval from the registry, study past attempts, classify any failures, and try to improve its score, latency, or cost.
 
+If the eval does not exist yet, use `/create-eval` first.
+
+For promptfoo-backed evals, treat `benchmarks/` references below as the
+benchmark workspace documented in `AGENTS.md`. That workspace may live in a
+separate sidequest worktree rather than this checkout.
+
 **Improvement types:** Quality (better scores), speed (lower latency), cost (cheaper per call),
 or any combination. "Same quality at 10x faster" is a valid and valuable improvement.
 

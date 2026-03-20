@@ -1,16 +1,24 @@
 ---
 name: init-project
-description: Bootstrap a new AI-coded repo from patterns in existing repos
+description: Bootstrap a new AI-coded repo from patterns in existing repos, installing the canonical methodology package instead of re-explaining setup from scratch
 user-invocable: true
 ---
 
 # /init-project [repo-path-or-url ...]
 
-Bootstrap a new AI-coded project repo by extracting and adapting patterns from one or more existing repos.
+Bootstrap a new AI-coded project repo by extracting reusable patterns from one
+or more reference repos, then installing the **same methodology package** used
+here: ideal/spec/build-map, checklist, eval/golden baseline, AGENTS wiring, and
+canonical cross-CLI skill surface.
 
 ## What It Does
 
-Takes reference repos (local paths or GitHub URLs), extracts the reusable scaffolding patterns, and generates a new project repo tailored to the new project's needs.
+1. Reads reference repos for durable patterns.
+2. Extracts the project-agnostic methodology package.
+3. Adapts that package to the new project's domain, stack, and constraints.
+4. Installs the canonical bootstrap/eval skill surface into the new repo.
+5. Leaves the new repo ready to use `/setup-methodology greenfield` as the
+   canonical day-zero workflow.
 
 ## Steps
 
@@ -23,7 +31,15 @@ Takes reference repos (local paths or GitHub URLs), extracts the reusable scaffo
    - `CHANGELOG.md` — Versioning format
    - AI Learning Log in AGENTS.md — Accumulated wisdom from past sessions
 
-2. **Extract project-agnostic patterns** — Strip project-specific content, keep everything below.
+2. **Extract the methodology package** — Preserve the durable package, not just
+   isolated docs:
+   - dual ideal structure
+   - category-aligned spec + build map
+   - setup checklist flow
+   - baseline eval + golden discipline, including registry/docs/templates and
+     the golden fixture workspace
+   - story / decomposition discipline
+   - canonical skill surface and cross-CLI sync
 
 3. **Gather project details** — Ask the user:
    - Project name and description
@@ -63,6 +79,16 @@ These patterns have been validated across multiple AI-coded projects. Include al
 - When new models drop, re-run all evals. Update calls where new model wins.
 - Eval workspace: `benchmarks/` directory.
 
+### Methodology Package
+
+- `ideal.md` holds both product and execution ideals
+- `spec.md` is category-aligned and contains product + build constraints
+- `build-map.md` is the central planning / triage dashboard
+- `docs/setup-checklist.md` is the working copy used during bootstrap / refresh runs
+- goldens + evals are part of baseline setup, not an optional later add-on
+- planning starts from the build map; implementation starts from the story, but
+  must read the relevant build-map category and `spec:N` first
+
 ### Checkboxes Everywhere
 - All planning docs, stories, specs, work logs use checkboxes.
 - Check off items when captured elsewhere — never delete.
@@ -88,16 +114,24 @@ These patterns have been validated across multiple AI-coded projects. Include al
 - No aggressive "DO NOT CHANGE" language — let the conversation stay open.
 
 ### Documentation Hierarchy
-- **AGENTS.md** — loaded every session (facts, conventions, commands)
-- **spec.md** — loaded when building features (what, not how)
-- **stories/** — loaded when working on a specific story
-- **decisions/** — searched when questioning fundamentals (ADRs + research)
-- **inbox.md** — ideas for triage
+- **AGENTS.md** — repo facts, conventions, commands, public skill surface
+- **docs/runbooks/setup-methodology.md** — canonical methodology bootstrap guide
+- **docs/runbooks/promptfoo.md** — prompt-eval operating guide when the repo uses promptfoo
+- **docs/ideal.md** — north star
+- **docs/spec.md** — current constraints
+- **docs/build-map.md** — central dashboard and planning surface
+- **docs/stories/** — implementation slices
+- **docs/decisions/** — ADRs and research
+- **docs/evals/** — eval registry and attempt history
 - **CHANGELOG.md** — updated by mark-story-done skill
 
-### Skills (copy and adapt all of these)
+### Canonical Skill Surface
 Canonical location: `.agents/skills/` with symlinks for `.claude/skills`, `.cursor/skills`, and generated `.gemini/commands/*.toml` wrappers. Use `scripts/sync-agent-skills.sh` to wire everything up.
 
+- `/setup-methodology`
+- `/create-eval`
+- `/improve-eval`
+- `/align`
 - `/create-story` — Scaffold story files with template (bootstrap script + template)
 - `/build-story` — Implement stories with work-log discipline + AI-first check + tenet verification
 - `/validate` — Assess implementation quality vs requirements
@@ -108,6 +142,9 @@ Canonical location: `.agents/skills/` with symlinks for `.claude/skills`, `.curs
 - `/create-adr` — Create ADR with research scaffolding (bootstrap script + templates)
 - `/create-cross-cli-skill` — Create new skills in canonical cross-CLI format
 - `/deploy` — Deploy to production (scaffold early, fill in when ready)
+
+Do not install the old phased setup aliases in a fresh repo. The public setup
+surface starts with `/setup-methodology`.
 
 ### Known AI Failure Modes (include all of these)
 - **"Helpful Rewrite"** — rewrites entire file instead of minimal fix
@@ -150,16 +187,33 @@ Canonical location: `.agents/skills/` with symlinks for `.claude/skills`, `.curs
 ## Generated Artifacts
 
 ```
-AGENTS.md               # Adapted from patterns above + project details
-CLAUDE.md               # Points to AGENTS.md
-CHANGELOG.md            # Keep a Changelog format
+AGENTS.md
+CLAUDE.md
+CHANGELOG.md
 docs/
-  spec.md               # Product spec skeleton
-  stories.md            # Story index with table format
-  inbox.md              # Ideas for triage
-  decisions/            # ADR folder
-  intake/               # Legacy artifacts folder (if applicable)
-.agents/skills/           # Canonical skill location
+  ideal.md
+  spec.md
+  build-map.md
+  setup-checklist.md
+  stories.md
+  inbox.md
+  decisions/
+  intake/               # if applicable
+  evals/
+    README.md
+    registry.yaml
+    attempt-template.md
+  runbooks/
+    setup-methodology.md
+    promptfoo.md        # if the repo uses promptfoo-style evals
+.agents/skills/
+  setup-methodology/
+    SKILL.md
+    templates/
+    references/
+  create-eval/SKILL.md
+  improve-eval/SKILL.md
+  align/SKILL.md
   create-story/SKILL.md   # + scripts/ + templates/
   build-story/SKILL.md
   validate/SKILL.md
@@ -169,18 +223,27 @@ docs/
   scout/SKILL.md          # + scripts/ + templates/
   create-adr/SKILL.md     # + scripts/ + templates/
   create-cross-cli-skill/SKILL.md
-  deploy/SKILL.md         # Scaffold (not ready)
-  init-project/SKILL.md   # This skill (meta!)
-skills -> .agents/skills  # Symlink for backwards compat
+  deploy/SKILL.md
+  init-project/SKILL.md
+skills -> .agents/skills
 .claude/skills -> ../.agents/skills
 .cursor/skills -> ../.agents/skills
-.gemini/commands/*.toml   # Generated wrappers
+.gemini/commands/*.toml
 scripts/sync-agent-skills.sh
 .gitignore
 ```
 
 ## Notes
 
+- `init-project` should **install the package**, not reteach an older phased
+  setup flow from scratch.
+- After the repo skeleton exists, the canonical bootstrap path is
+  `/setup-methodology greenfield`.
+- When copying from a reference repo, prefer reusing the same templates and
+  packaged skill assets over rewriting them by hand.
+- Do not copy path assumptions blindly. If the target repo uses a different
+  layout, update the bundled skills/runbooks/templates so their paths point at
+  the new repo's actual eval, prompt, fixture, and story locations.
 - This skill improves as more repos establish patterns
 - The user's repos are the training data for what "good AI-coded repo" looks like
 - When patterns conflict between reference repos, ask the user which to prefer

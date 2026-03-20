@@ -1,10 +1,13 @@
 ---
 name: retrofit-ideal
 description: Apply Ideal-first methodology to an existing project — extract the Ideal from what's already built
-user-invocable: true
+user-invocable: false
 ---
 
 # /retrofit-ideal
+
+Legacy setup leaf. `/setup-methodology` is the canonical public bootstrap
+entrypoint; use this only when that package explicitly dispatches here.
 
 Apply the Ideal-first methodology to a project that's already underway. Instead
 of starting from scratch, extract the Ideal from existing specs, stories,
@@ -64,8 +67,8 @@ but it's informed by existing architecture, so you can ask much sharper question
 - "The config has three depth presets. Are those genuine user intents or
   cost workarounds?"
 
-Surface implicit ideals (security, trust, performance, accessibility) as
-described in `/setup-ideal`.
+Surface implicit ideals (security, trust, performance, accessibility) using the
+same ideal-capture discipline as the current methodology package.
 
 ### Phase 3: Annotate the Spec
 
@@ -79,7 +82,7 @@ Go through the existing spec section by section. For each:
    - What gets deleted/transformed when the limitation resolves
 3. **Is this a raw idea without clear status?** Move to `## Untriaged Ideas`.
 
-Reorganize the spec into the structure from `/setup-spec`:
+Reorganize the spec into the current methodology-package structure:
 - Untriaged Ideas (top)
 - AI Compromises (with deletion evals)
 - World Compromises (with evolution paths)
@@ -150,7 +153,8 @@ Add a prominent reference to `docs/ideal.md` at the top of AGENTS.md:
 
 - Does NOT rewrite existing stories. Flag misaligned stories for triage.
 - Does NOT create evals or golden references. Flag gaps. Those are separate
-  skills (`/setup-golden`, `/setup-evals`).
+  flows (`/setup-methodology refresh` for baseline package gaps, then
+  `/create-eval`, `/golden-create`, and `/golden-verify` for recurring work).
 - Does NOT restructure code. The architecture stays as-is until eval results
   prove something can be simplified.
 - Does NOT discard existing work. Everything gets categorized, nothing gets lost.
