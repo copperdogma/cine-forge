@@ -58,6 +58,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 
 - **Semantic Quality over Structural Validity**: A JSON that passes a schema but contains "UNKNOWN" or placeholder data is a failure. Assert semantic quality predicates in tests.
 - **Boundary Awareness**: Code that works in a unit test can fail in a long-running service (due to state, cache, or import-time definitions). Validate through the service layer or API boundary.
+- **Package Init Boundaries**: Keep package `__init__.py` files import-light. Do not eagerly import FastAPI apps or other top-level stacks from packages reused by services/helpers; prefer lazy re-exports when package imports would otherwise create circular dependencies during test or driver import.
 - **Dynamic Module Loader Safety**: Internal helper containers inside driver-loaded modules should avoid annotation-dependent dataclass/Pydantic magic unless you confirm they survive dynamic import. Prefer plain classes for purely internal state carriers.
 - **Dynamic Module Loader Imports**: When splitting a driver-loaded module across helper files, use absolute package imports (`cine_forge...`) instead of relative imports. Driver entrypoints are loaded via `spec_from_file_location`, so absolute imports are the safe default.
 - **Process Lifecycle**: Restart long-running backend/API processes after changing schemas or core logic. Hot-reloading is a tool, but a clean restart is the source of truth.

@@ -20,6 +20,8 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import (
     ArtifactMetadata,
     CostRecord,
+    MemoryQueryRequest,
+    MemoryQueryResult,
     PerceptionCapability,
     RoleDefinition,
     RoleResponse,
@@ -357,6 +359,12 @@ class RoleContext:
 
     def get_hierarchy_tier(self, role_id: str) -> str:
         return self.catalog.get_hierarchy_tier(role_id).value
+
+    def query_memory(self, request: MemoryQueryRequest) -> MemoryQueryResult:
+        """Query canonical project memory via the dedicated memory service."""
+        from cine_forge.services.memory import MemoryService
+
+        return MemoryService(project_dir=self.project_dir).query_memory(request)
 
     def _compose_system_prompt(self, role: RoleDefinition) -> str:
         if role.style_pack_slot == StylePackSlot.FORBIDDEN:

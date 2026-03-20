@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-20-06] — Memory model and transcript retention (Story 033)
+
+### Added
+- Added a schema-first memory layer with transcript search, canonical-memory query support, working-memory summaries, and project-scoped memory settings for long-running role collaboration
+- Added focused service, API, and chat-memory regression coverage for transcript linkage, substantive artifact-state answers, and persisted working-memory lifecycle behavior
+
+### Changed
+- Changed Director and optional Script Supervisor memory handling to reuse persisted working-memory summaries and canonical transcript/artifact retrieval instead of relying on ephemeral chat state alone
+- Updated Story 033 close-out records and backlog tracking so the non-blocking `MemoryService` decomposition follow-up is documented as structural debt rather than left implicit
+
 ## [2026-03-20-05] — Methodology-first triage ordering
 
 ### Changed

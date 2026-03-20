@@ -78,6 +78,13 @@ def test_build_schema_registry_includes_render_types() -> None:
 
 
 @pytest.mark.unit
+def test_build_schema_registry_includes_memory_types() -> None:
+    registry = build_schema_registry()
+    assert registry.get("transcript_index") is not None
+    assert registry.get("working_memory_summary") is not None
+
+
+@pytest.mark.unit
 def test_build_schema_registry_includes_video_analysis_types() -> None:
     registry = build_schema_registry()
     assert registry.get("video_analysis_target") is not None

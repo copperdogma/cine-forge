@@ -51,7 +51,7 @@ from cine_forge.api.models import (
     StylePresetResponse,
     UploadedInputResponse,
 )
-from cine_forge.api.routers import assets, costs, design_study, export, impact, preferences
+from cine_forge.api.routers import assets, costs, design_study, export, impact, memory, preferences
 from cine_forge.api.service import OperatorConsoleService
 
 load_dotenv()
@@ -93,12 +93,14 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     export.set_service(service)
     design_study.set_service(service)
     impact.set_service(service)
+    memory.set_service(service)
     preferences.set_service(service)
     app.include_router(assets.router, prefix="/api")
     app.include_router(costs.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
     app.include_router(design_study.router, prefix="/api")
     app.include_router(impact.router, prefix="/api")
+    app.include_router(memory.router, prefix="/api")
     app.include_router(preferences.router, prefix="/api")
 
     app.add_middleware(

@@ -52,9 +52,11 @@ from cine_forge.schemas import (
     Suggestion,
     Timeline,
     TrackManifest,
+    TranscriptIndex,
     VideoAnalysisPrediction,
     VideoAnalysisScore,
     VideoAnalysisTarget,
+    WorkingMemorySummary,
 )
 
 
@@ -90,6 +92,8 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("decision", Decision)
     registry.register("conversation", Conversation)
     registry.register("disagreement", DisagreementArtifact)
+    registry.register("transcript_index", TranscriptIndex)
+    registry.register("working_memory_summary", WorkingMemorySummary)
     registry.register("intent_mood", IntentMood)
     registry.register("look_and_feel", LookAndFeel)
     registry.register("look_and_feel_index", LookAndFeelIndex)

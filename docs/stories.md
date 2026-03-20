@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-20, Story 127 done)
+## Current Execution Map (updated 2026-03-20, Story 033 done)
 
 Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. With the design-study composition loop now landed, the active backlog centers on output QA, cost-control follow-ons, transparency polish, and draft follow-ons rather than missing render-adapter substrate.
 
@@ -8,7 +8,6 @@ Phases 0–5 foundation are landed, the first three Phase 6 visualization layers
 
 | Story | Why |
 |---|---|
-| **033** Memory Model | Formalizes canonical memory, working memory, and transcript retention for long-running collaboration. |
 | **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
 | **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
@@ -96,7 +95,7 @@ NOTES from Cam:
 | 030 | Generated Output QA | 7 — Generation | Medium | Done | [story-030](stories/story-030-generated-output-qa.md) |
 | 031 | Change Propagation (Semantic Impact Layer) | 8 — Cross-Cutting Polish | Medium | Done | [story-031](stories/story-031-change-propagation.md) |
 | 032 | Cost Tracking and Budget Management | 8 — Cross-Cutting Polish | Medium | Done | [story-032](stories/story-032-cost-tracking.md) |
-| 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | Pending | [story-033](stories/story-033-memory-model.md) |
+| 033 | Memory Model and Transcript Retention | 8 — Cross-Cutting Polish | Low | Done | [story-033](stories/story-033-memory-model.md) |
 | 034 | In-App Style Pack Creator | 8 — Cross-Cutting Polish | Low | Pending | [story-034](stories/story-034-style-pack-creator.md) |
 | 035 | Model Benchmarking Tooling (promptfoo) | Cross-Cutting | High | Done | [story-035](stories/story-035-model-benchmarking.md) |
 | 036 | Model Selection and Eval Framework | Cross-Cutting | High | Done | [story-036](stories/story-036-model-selection.md) |

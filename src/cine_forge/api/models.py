@@ -339,6 +339,9 @@ class ChatMessagePayload(BaseModel):
     pageContext: str | None = None
     toolCalls: list[dict[str, Any]] | None = None
     injectedContent: str | None = None
+    relatedArtifacts: list[ArtifactRef] | None = None
+    decisionIds: list[str] | None = None
+    suggestionIds: list[str] | None = None
 
 
 # --- Search ---

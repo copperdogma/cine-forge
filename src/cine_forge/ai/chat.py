@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from cine_forge.artifacts.edit_policy import get_artifact_edit_restriction
+from cine_forge.services.memory import MemoryService
 
 log = logging.getLogger(__name__)
 
@@ -1533,7 +1534,9 @@ def _estimate_tokens(messages: list[dict[str, Any]]) -> int:
 
 
 def _summarize_prefix(
-    messages: list[dict[str, Any]], project_id: str,
+    messages: list[dict[str, Any]],
+    project_id: str,
+    existing_summary: str | None = None,
 ) -> str:
     """Call Haiku to summarize older messages into a compact paragraph."""
     # Build a text blob of the messages to summarize
@@ -1551,11 +1554,17 @@ def _summarize_prefix(
         blob = blob[:30000] + "\n... (truncated)"
 
     prompt_messages = [
-        {"role": "user", "content": (
-            "Summarize this conversation transcript concisely. "
-            "Preserve key decisions, creative direction, and any pending questions. "
-            "Write 2-4 paragraphs.\n\n" + blob
-        )},
+        {
+            "role": "user",
+            "content": (
+                "Update this existing conversation summary with the new transcript turns. "
+                f"Existing summary:\n{existing_summary}\n\nNew turns:\n{blob}"
+                if existing_summary
+                else "Summarize this conversation transcript concisely. "
+                "Preserve key decisions, creative direction, and any pending questions. "
+                "Write 2-4 paragraphs.\n\n" + blob
+            ),
+        },
     ]
     payload = {
         "model": "claude-haiku-4-5-20251001",
@@ -1602,7 +1611,10 @@ def _call_anthropic_sync(payload: dict[str, Any]) -> str:
 
 
 def _compact_transcript(
-    messages: list[dict[str, Any]], project_id: str,
+    messages: list[dict[str, Any]],
+    project_id: str,
+    service: Any,
+    role_id: str,
 ) -> list[dict[str, Any]]:
     """If the transcript is too long, summarize older messages with Haiku.
 
@@ -1616,6 +1628,37 @@ def _compact_transcript(
     # Split: keep the last N messages verbatim, summarize the rest
     if len(messages) <= _KEEP_RECENT:
         return messages
+
+    try:
+        project_path = service.require_project_path(project_id)
+        memory_service = MemoryService(project_dir=project_path)
+        compacted = memory_service.compact_messages(
+            role_id=role_id,
+            messages=messages,
+            keep_recent=_KEEP_RECENT,
+            summarizer=lambda prefix, existing: _summarize_prefix(
+                prefix,
+                project_id,
+                existing_summary=existing,
+            ),
+        )
+        if compacted != messages:
+            recent = compacted[-_KEEP_RECENT:] if len(compacted) > _KEEP_RECENT else compacted
+            summary_text = str(compacted[0].get("content", "")) if compacted else ""
+            log.info(
+                (
+                    "Compacted transcript with working memory [%s]: "
+                    "%d messages → summary + %d recent (est. %d→%d tokens)"
+                ),
+                role_id,
+                len(messages),
+                len(recent),
+                estimated,
+                _estimate_tokens(recent) + len(summary_text) // _CHARS_PER_TOKEN,
+            )
+            return compacted
+    except Exception:
+        log.warning("Working-memory compaction failed for role '%s'", role_id, exc_info=True)
 
     prefix = messages[:-_KEEP_RECENT]
     recent = messages[-_KEEP_RECENT:]
@@ -1718,7 +1761,7 @@ def _stream_single_role(
       {"type": "actions", "actions": [...], "speaker": "...", "model": "..."} — action buttons
     Does NOT yield done/error — the caller handles those.
     """
-    compacted = _compact_transcript(messages, project_id)
+    compacted = _compact_transcript(messages, project_id, service, speaker)
     current_messages = _add_cache_breakpoints(compacted)
     max_tool_rounds = 5
 
@@ -2173,7 +2216,8 @@ def stream_chat_response(
     system_blocks = [
         {"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}},
     ]
-    cached_messages = _add_cache_breakpoints(messages)
+    compacted = _compact_transcript(messages, project_id, service, "assistant")
+    cached_messages = _add_cache_breakpoints(compacted)
     payload = {
         "model": model,
         "system": system_blocks,

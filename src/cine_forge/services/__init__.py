@@ -8,6 +8,7 @@ from .impact_assessment import (
     ImpactPreview,
 )
 from .injected_assets import InjectedAssetError, InjectedAssetService
+from .memory import MemoryService
 from .preferences import PreferenceService
 
 __all__ = [
@@ -18,5 +19,6 @@ __all__ = [
     "ImpactPreview",
     "InjectedAssetError",
     "InjectedAssetService",
+    "MemoryService",
     "PreferenceService",
 ]
