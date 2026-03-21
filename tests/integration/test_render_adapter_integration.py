@@ -7,7 +7,13 @@ import pytest
 from cine_forge.ai.video import VideoGenerationResult
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
-from cine_forge.schemas import ArtifactRef, GeneratedVideoArtifact, TrackManifest
+from cine_forge.schemas import (
+    ArtifactHealth,
+    ArtifactRef,
+    GeneratedVideoArtifact,
+    MediaValidationArtifact,
+    TrackManifest,
+)
 from tests.render_fixtures import seed_render_project
 
 
@@ -19,6 +25,13 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
     workspace_root = Path(__file__).resolve().parents[2]
     seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
     engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+    clip_bytes = (
+        workspace_root
+        / "benchmarks"
+        / "video_understanding"
+        / "dialogue_confession_push_in"
+        / "clip.mp4"
+    ).read_bytes()
 
     def _fake_call_llm(**kwargs):
         schema = kwargs["response_schema"]
@@ -112,7 +125,7 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
 
     def _fake_generate_video(*, request, engine_pack):
         return VideoGenerationResult(
-            video_bytes=b"integration-mp4",
+            video_bytes=clip_bytes,
             media_type="video/mp4",
             model_used=engine_pack.target_model,
             request_id="video-001",
@@ -137,6 +150,7 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
     )
 
     assert run_state["stages"]["render"]["status"] == "done"
+    assert run_state["stages"]["validate_media"]["status"] == "done"
 
     refs = [
         ArtifactRef.model_validate(item) for item in run_state["stages"]["render"]["artifact_refs"]
@@ -157,3 +171,16 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
         == "generated_video"
     )
+
+    validation_refs = [
+        ArtifactRef.model_validate(item)
+        for item in run_state["stages"]["validate_media"]["artifact_refs"]
+    ]
+    assert len(validation_refs) == 1
+    assert validation_refs[0].artifact_type == "media_validation"
+
+    validation = MediaValidationArtifact.model_validate(
+        engine.store.load_artifact(validation_refs[0]).data
+    )
+    assert validation.target_ref.path == generated_video_refs[0].path
+    assert validation.recommended_health == ArtifactHealth.NEEDS_REVIEW

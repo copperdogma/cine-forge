@@ -90,6 +90,15 @@ from .injected_asset import (
     InjectedAsset,
     InjectedAssetManifest,
 )
+from .media_validation import (
+    DeterministicMediaProbe,
+    MediaStreamSummary,
+    MediaValidationArtifact,
+    MediaValidationEvidence,
+    MediaValidationFinding,
+    MediaValidationSample,
+    SemanticMediaReview,
+)
 from .memory import (
     MemoryQueryEvidence,
     MemoryQueryRequest,
@@ -262,6 +271,12 @@ __all__ = [
     "MemoryQueryResult",
     "MemorySettings",
     "MemorySettingsUpdate",
+    "DeterministicMediaProbe",
+    "MediaStreamSummary",
+    "MediaValidationArtifact",
+    "MediaValidationEvidence",
+    "MediaValidationFinding",
+    "MediaValidationSample",
     "SourceFileInfo",
     "Keyframe",
     "KeyframeArtifact",
@@ -294,6 +309,7 @@ __all__ = [
     "RenderPromptSection",
     "RenderResolvedInput",
     "RoleResponse",
+    "SemanticMediaReview",
     "StageReviewArtifact",
     "VideoAnalysisDimensionScore",
     "VideoAnalysisPrediction",

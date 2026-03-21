@@ -1,15 +1,28 @@
 from __future__ import annotations
 
 import io
+import json
+import shutil
 import wave
 from pathlib import Path
 from typing import Any
 
 from PIL import Image, ImageDraw
 
-from cine_forge.schemas import Keyframe, KeyframeArtifact, MediaFile
+from cine_forge.schemas import (
+    ArtifactMetadata,
+    CompiledRenderPrompt,
+    CostRecord,
+    GeneratedVideoArtifact,
+    Keyframe,
+    KeyframeArtifact,
+    MediaFile,
+)
 from cine_forge.services import InjectedAssetService
 from tests.storyboard_fixtures import save_artifact, seed_storyboard_project
+
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+_BENCHMARK_CLIP_SLUG = "dialogue_confession_push_in"
 
 
 def _write_seed_image(project_dir: Path, *, scene_id: str, name: str, label: str) -> str:
@@ -141,3 +154,139 @@ def seed_render_project(
         "scene_id": scene_id,
         "project_dir": project_dir,
     }
+
+
+def seed_generated_video_project(
+    tmp_path: Path,
+    *,
+    clip_slug: str = _BENCHMARK_CLIP_SLUG,
+    scene_heading: str = "INT. LAB - NIGHT",
+    prompt_text: str = "Keep the scene coherent and inspectable.",
+) -> dict[str, Any]:
+    seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
+    project_dir = seeded["project_dir"]
+    store = seeded["store"]
+    scene_id = seeded["scene_id"]
+
+    clip_path, clip_meta = _fixture_clip(clip_slug)
+    media_dir = project_dir / "artifacts" / "generated_video_media" / scene_id / "v1"
+    media_dir.mkdir(parents=True, exist_ok=True)
+    output_path = media_dir / "scene_render.mp4"
+    shutil.copyfile(clip_path, output_path)
+
+    scene_ref = store.list_versions("scene", scene_id)[-1]
+    shot_plan_ref = store.list_versions("shot_plan", scene_id)[-1]
+    keyframe_ref = store.list_versions("keyframe", scene_id)[-1]
+
+    prompt = CompiledRenderPrompt(
+        scene_id=scene_id,
+        scene_number=1,
+        scene_heading=scene_heading,
+        render_unit="scene",
+        scene_ref=scene_ref,
+        shot_plan_ref=shot_plan_ref,
+        keyframe_ref=keyframe_ref,
+        target_provider="openai",
+        target_model="fixture-video",
+        engine_pack_id="fixture_pack",
+        compiler_model="gpt-5.4-mini",
+        requested_duration_seconds=float(clip_meta["duration_seconds"]),
+        resolved_duration_seconds=float(clip_meta["duration_seconds"]),
+        resolution=str(clip_meta["resolution"]),
+        aspect_ratio="16:9",
+        provider_params={},
+        prompt_text=prompt_text,
+        sections=[
+            {
+                "section_id": "shot_definition",
+                "title": "Shot Definition",
+                "body": "Hold on the emotional center of the scene.",
+                "source_artifact_types": ["shot_plan"],
+            }
+        ],
+        completeness={
+            "included_categories": ["shot_definition"],
+            "missing_categories": [],
+            "notes": [],
+        },
+        prompt_sources_used=["shot_plan"],
+        resolved_inputs=[],
+    )
+    prompt_ref = store.save_artifact(
+        artifact_type="render_prompt",
+        entity_id=scene_id,
+        data=prompt.model_dump(mode="json"),
+        metadata=ArtifactMetadata(
+            lineage=[scene_ref, shot_plan_ref, keyframe_ref],
+            intent="seed render prompt",
+            rationale="seed generated video fixture",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.render_fixtures",
+        ),
+    )
+
+    generated_video = GeneratedVideoArtifact(
+        scene_id=scene_id,
+        scene_number=1,
+        scene_heading=scene_heading,
+        render_unit="scene",
+        scene_ref=scene_ref,
+        shot_plan_ref=shot_plan_ref,
+        prompt_ref=prompt_ref,
+        keyframe_ref=keyframe_ref,
+        video=MediaFile(
+            relative_path=str(output_path.relative_to(project_dir)),
+            media_type="video/mp4",
+            duration_seconds=float(clip_meta["duration_seconds"]),
+        ),
+        duration_seconds=float(clip_meta["duration_seconds"]),
+        resolution=str(clip_meta["resolution"]),
+        aspect_ratio="16:9",
+        generation_params={},
+        target_provider="openai",
+        target_model="fixture-video",
+        engine_pack_id="fixture_pack",
+        request_id="fixture-video-001",
+        cost=CostRecord(
+            model="fixture-video",
+            input_tokens=0,
+            output_tokens=0,
+            estimated_cost_usd=0.0,
+        ),
+        resolved_inputs=[],
+        notes=[],
+    )
+    generated_video_ref = store.save_artifact(
+        artifact_type="generated_video",
+        entity_id=scene_id,
+        data=generated_video.model_dump(mode="json"),
+        metadata=ArtifactMetadata(
+            lineage=[scene_ref, shot_plan_ref, keyframe_ref, prompt_ref],
+            intent="seed generated video",
+            rationale="seed generated video fixture",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.render_fixtures",
+        ),
+    )
+
+    return {
+        **seeded,
+        "project_dir": project_dir,
+        "scene_id": scene_id,
+        "clip_path": clip_path,
+        "clip_meta": clip_meta,
+        "prompt_ref": prompt_ref,
+        "generated_video_ref": generated_video_ref,
+        "generated_video": generated_video,
+    }
+
+
+def _fixture_clip(slug: str) -> tuple[Path, dict[str, Any]]:
+    clip_dir = _REPO_ROOT / "benchmarks" / "video_understanding" / slug
+    meta_path = clip_dir / "meta.json"
+    if not meta_path.exists():
+        raise FileNotFoundError(f"Missing benchmark clip metadata for {slug}")
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    return clip_dir / "clip.mp4", meta

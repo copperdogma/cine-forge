@@ -1,0 +1,30 @@
+module_id: media_validation_v1
+stage: qa
+description: >
+  Runs deterministic media probes and optional semantic review on generated
+  scene videos, then persists inspectable validation artifacts with health
+  recommendations.
+input_schemas:
+  - generated_video
+output_schemas:
+  - media_validation
+parameters:
+  sample_count:
+    type: integer
+    required: false
+    default: 5
+    description: "How many evenly spaced JPG frames to extract for inspection."
+  semantic_review_model:
+    type: string
+    required: false
+    description: "Optional multimodal model used for sampled-frame semantic review."
+  semantic_review_max_tokens:
+    type: integer
+    required: false
+    default: 1200
+    description: "Output cap for the semantic-review model call."
+  semantic_review_temperature:
+    type: number
+    required: false
+    default: 0
+    description: "Sampling temperature for the semantic-review model call."

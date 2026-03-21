@@ -38,6 +38,7 @@ import { ShotPlanViewer } from '@/components/ShotPlanViewer'
 import { AnimaticViewer } from '@/components/AnimaticViewer'
 import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
 import { KeyframeViewer } from '@/components/KeyframeViewer'
+import { MediaValidationViewer } from '@/components/MediaValidationViewer'
 import { PrevizReelViewer } from '@/components/PrevizReelViewer'
 import { RenderPromptViewer } from '@/components/RenderPromptViewer'
 import { StoryboardViewer } from '@/components/StoryboardViewer'
@@ -104,7 +105,7 @@ export default function ArtifactDetail() {
 
   const meta = getArtifactMeta(artifactType ?? '')
   const Icon = meta.icon
-  const canEditArtifact = artifactType !== 'render_prompt'
+  const canEditArtifact = !['render_prompt', 'media_validation'].includes(artifactType ?? '')
 
   // Loading state
   if (artifactLoading || versionsLoading) {
@@ -340,6 +341,9 @@ export default function ArtifactDetail() {
 
       case 'generated_video':
         return <GeneratedVideoViewer data={data} projectId={projectId ?? ''} />
+
+      case 'media_validation':
+        return <MediaValidationViewer data={data} projectId={projectId ?? ''} />
 
       default:
         return <DefaultViewer data={data} />

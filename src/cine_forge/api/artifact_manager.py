@@ -15,7 +15,12 @@ from typing import Any
 from cine_forge.api.exceptions import ServiceError
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.artifacts.edit_policy import get_artifact_edit_restriction
-from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
+from cine_forge.schemas import (
+    ArtifactHealth,
+    ArtifactMetadata,
+    ArtifactRef,
+    MediaValidationArtifact,
+)
 from cine_forge.services import ImpactAssessmentError, ImpactAssessmentService
 from cine_forge.services.injected_assets import list_text_extensions
 
@@ -422,8 +427,20 @@ class ArtifactManager:
         store: ArtifactStore,
         artifact_ref: ArtifactRef,
     ) -> dict[str, Any]:
+        validation_artifact_payload = self._media_validation_artifact_payload(
+            store, artifact_ref
+        )
+        if validation_artifact_payload is not None:
+            return validation_artifact_payload
         health = store.graph.get_health(artifact_ref)
         health_info = store.graph.get_health_info(artifact_ref)
+        validation_overlay = self._validation_health_payload(store, artifact_ref)
+        if self._should_apply_validation_overlay(
+            health=health,
+            health_info=health_info,
+            validation_overlay=validation_overlay,
+        ):
+            return validation_overlay
         if not health and not health_info:
             return {"health": None, "health_details": None}
 
@@ -446,3 +463,91 @@ class ArtifactManager:
             "health": health.value if health else (health_info["health"] if health_info else None),
             "health_details": details,
         }
+
+    def _media_validation_artifact_payload(
+        self,
+        store: ArtifactStore,
+        artifact_ref: ArtifactRef,
+    ) -> dict[str, Any] | None:
+        if artifact_ref.artifact_type != "media_validation":
+            return None
+
+        artifact = store.load_artifact(artifact_ref)
+        validation = MediaValidationArtifact.model_validate(artifact.data)
+        return {
+            "health": validation.recommended_health.value,
+            "health_details": {
+                "health": validation.recommended_health.value,
+                "source_kind": "media_validation",
+                "reason": validation.summary,
+                "trigger_ref": validation.target_ref.model_dump(mode="json"),
+                "source_artifact_ref": artifact_ref.model_dump(mode="json"),
+                "upstream_change_summary": None,
+                "suggested_revision": _validation_suggested_revision(validation),
+                "confidence": artifact.metadata.confidence,
+                "assessing_role": validation.validator_id,
+                "decided_by": None,
+                "updated_at": artifact.metadata.created_at.isoformat(),
+            },
+        }
+
+    def _should_apply_validation_overlay(
+        self,
+        *,
+        health: ArtifactHealth | None,
+        health_info: dict[str, Any] | None,
+        validation_overlay: dict[str, Any] | None,
+    ) -> bool:
+        if validation_overlay is None:
+            return False
+        if health is None:
+            return True
+        if health != ArtifactHealth.VALID:
+            return False
+        source_kind = health_info.get("source_kind") if isinstance(health_info, dict) else None
+        return not source_kind
+
+    def _validation_health_payload(
+        self,
+        store: ArtifactStore,
+        artifact_ref: ArtifactRef,
+    ) -> dict[str, Any] | None:
+        if artifact_ref.artifact_type != "generated_video" or not artifact_ref.entity_id:
+            return None
+
+        validation_refs = store.list_versions("media_validation", artifact_ref.entity_id)
+        for validation_ref in reversed(validation_refs):
+            validation_health = store.graph.get_health(validation_ref)
+            if validation_health == ArtifactHealth.STALE:
+                continue
+            artifact = store.load_artifact(validation_ref)
+            validation = MediaValidationArtifact.model_validate(artifact.data)
+            if validation.target_ref.key() != artifact_ref.key():
+                continue
+            return {
+                "health": validation.recommended_health.value,
+                "health_details": {
+                    "health": validation.recommended_health.value,
+                    "source_kind": "media_validation",
+                    "reason": validation.summary,
+                    "trigger_ref": None,
+                    "source_artifact_ref": validation_ref.model_dump(mode="json"),
+                    "upstream_change_summary": None,
+                    "suggested_revision": _validation_suggested_revision(validation),
+                    "confidence": artifact.metadata.confidence,
+                    "assessing_role": validation.validator_id,
+                    "decided_by": None,
+                    "updated_at": artifact.metadata.created_at.isoformat(),
+                },
+            }
+        return None
+
+
+def _validation_suggested_revision(validation: MediaValidationArtifact) -> str | None:
+    for finding in validation.semantic_review.findings:
+        if finding.severity in {"warning", "error"}:
+            return finding.message
+    for finding in validation.deterministic_probe.findings:
+        if finding.severity in {"warning", "error"}:
+            return finding.message
+    return None

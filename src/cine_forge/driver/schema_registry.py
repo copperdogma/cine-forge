@@ -27,6 +27,7 @@ from cine_forge.schemas import (
     LocationBible,
     LookAndFeel,
     LookAndFeelIndex,
+    MediaValidationArtifact,
     PreferenceSignal,
     PrevizReel,
     ProjectConfig,
@@ -113,6 +114,7 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("preference_signal", PreferenceSignal)
     registry.register("render_prompt", CompiledRenderPrompt)
     registry.register("generated_video", GeneratedVideoArtifact)
+    registry.register("media_validation", MediaValidationArtifact)
     registry.register("cost_report", CostReport)
     registry.register("video_analysis_target", VideoAnalysisTarget)
     registry.register("video_analysis_prediction", VideoAnalysisPrediction)

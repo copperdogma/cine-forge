@@ -173,6 +173,9 @@ export function ImpactAssessmentCard({
   if (!health || !['stale', 'needs_revision', 'confirmed_valid'].includes(health)) {
     return null
   }
+  if (details?.source_kind === 'media_validation') {
+    return null
+  }
 
   function handleBudgetCapChange(value: string) {
     setBudgetCapUsd(value)

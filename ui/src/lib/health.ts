@@ -1,6 +1,6 @@
 import type { ArtifactHealthDetails } from './types'
 
-export const ATTENTION_HEALTHS = ['stale', 'needs_revision', 'confirmed_valid'] as const
+export const ATTENTION_HEALTHS = ['stale', 'needs_revision', 'needs_review', 'confirmed_valid'] as const
 
 export function isAttentionHealth(health: string | null | undefined): boolean {
   return !!health && ATTENTION_HEALTHS.includes(health as (typeof ATTENTION_HEALTHS)[number])

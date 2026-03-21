@@ -23,3 +23,9 @@ stages:
       location_bible: location_bible
       keyframe: keyframe
       injected_asset_manifest: injected_asset_manifest
+  - id: validate_media
+    module: media_validation_v1
+    params: {}
+    after: [render]
+    store_inputs_all:
+      generated_video: generated_video

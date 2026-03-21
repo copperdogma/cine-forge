@@ -163,15 +163,15 @@ and origin-agnostic asset injection.
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 028, 029, 030, 058, 130
+**Stories:** 028, 029, 030, 058, 130, 140
 **Spec:** spec:7 (spec:7.1, spec:7.1.1, spec:7.1.2, spec:7.1.3, spec:7.2)
 **ADR Refs:** ADR-003 (real-world assets as first-class inputs)
 **Absorbs:** Generation & Export (old 7)
 
 ### Phase Notes
 
-- Render-adapter compilation, engine-pack knowledge, error handling, and origin-agnostic asset injection now exist as real substrate.
-- This category stays in `climb` because generated-output QA and richer export fidelity remain unfinished, but the next work is quality/coverage follow-on rather than a missing render foundation.
+- Render-adapter compilation, engine-pack knowledge, error handling, origin-agnostic asset injection, and runtime generated-video validation now exist as real substrate.
+- This category stays in `climb` because richer export fidelity and broader media-validation coverage remain unfinished, but the next work is quality/coverage follow-on rather than a missing render foundation.
 
 ### Compromise Progress
 
@@ -259,7 +259,7 @@ always-playable fallback rule.
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 012, 013
+**Stories:** 012, 013, 140
 **Spec:** spec:10 (spec:10.1, spec:10.2, spec:10.3)
 **ADR Refs:** None found after search
 **Absorbs:** None — new explicit category extracted from existing spec/stories
@@ -268,6 +268,7 @@ always-playable fallback rule.
 
 - Timeline substrate exists but had no explicit home in the pre-ADR-021 build
   map. This category fixes that gap and makes future preview/export work legible.
+- Story 140 strengthens the always-playable trust rule at the generated-video layer by surfacing validation-backed health and inspection paths instead of leaving broken outputs opaque.
 
 ## 11. Planning Infrastructure & Agent Tooling                                 `spec:11`
 

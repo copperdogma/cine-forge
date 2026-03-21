@@ -110,6 +110,7 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   previz_reel: ['previz reel', 'previz reels'],
   render_prompt: ['render prompt', 'render prompts'],
   generated_video: ['generated video', 'generated videos'],
+  media_validation: ['media validation', 'media validation reports'],
 }
 
 /**

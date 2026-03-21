@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { ExternalLink, Film, Loader2, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
+import { HealthBadge } from '@/components/HealthBadge'
+import { MediaValidationViewer } from '@/components/MediaValidationViewer'
 import { RenderPromptViewer } from '@/components/RenderPromptViewer'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -41,6 +43,15 @@ export function GeneratedVideoPanel({
     sceneId,
     generatedVideoGroup?.latest_version,
   )
+  const validationRef = generatedVideoGroup?.health_details?.source_kind === 'media_validation'
+    ? generatedVideoGroup.health_details.source_artifact_ref
+    : null
+  const { data: validationArtifact, isLoading: validationLoading } = useArtifact(
+    projectId,
+    validationRef?.artifact_type,
+    validationRef?.entity_id ?? undefined,
+    validationRef?.version,
+  )
   const { data: inputs } = useProjectInputs(projectId)
   const startRun = useStartRun()
   const activeRunId = useChatStore(store => store.activeRunId?.[projectId] ?? null)
@@ -54,11 +65,15 @@ export function GeneratedVideoPanel({
   const canStartRender = !!latestInputPath && !!shotPlanGroup && !hasActiveRun
   const promptData = promptArtifact?.payload?.data as Record<string, unknown> | undefined
   const videoData = videoArtifact?.payload?.data as Record<string, unknown> | undefined
+  const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
   const promptDetailHref = renderPromptGroup
     ? `/${projectId}/artifacts/render_prompt/${sceneId}/${renderPromptGroup.latest_version}`
     : null
   const videoDetailHref = generatedVideoGroup
     ? `/${projectId}/artifacts/generated_video/${sceneId}/${generatedVideoGroup.latest_version}`
+    : null
+  const validationDetailHref = validationRef?.entity_id && validationRef.version
+    ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
     : null
 
   async function handleStartRender() {
@@ -108,7 +123,13 @@ export function GeneratedVideoPanel({
                   <Badge variant="secondary">Prompt v{renderPromptGroup.latest_version}</Badge>
                 )}
                 {generatedVideoGroup && (
-                  <Badge variant="secondary">Render v{generatedVideoGroup.latest_version}</Badge>
+                  <>
+                    <Badge variant="secondary">Render v{generatedVideoGroup.latest_version}</Badge>
+                    <HealthBadge
+                      health={generatedVideoGroup.health}
+                      details={generatedVideoGroup.health_details}
+                    />
+                  </>
                 )}
               </div>
               <CardDescription className="max-w-3xl leading-relaxed">
@@ -133,6 +154,14 @@ export function GeneratedVideoPanel({
                   <Link to={videoDetailHref}>
                     <Film className="h-3.5 w-3.5" />
                     Video Detail
+                  </Link>
+                </Button>
+              )}
+              {validationDetailHref && (
+                <Button asChild variant="outline" size="sm">
+                  <Link to={validationDetailHref}>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Validation Detail
                   </Link>
                 </Button>
               )}
@@ -254,6 +283,19 @@ export function GeneratedVideoPanel({
 
       {(videoLoading || promptLoading) && (generatedVideoGroup || renderPromptGroup) && !videoData && !promptData && (
         <div className="h-80 rounded-xl border border-border bg-muted/20 animate-pulse" />
+      )}
+
+      {validationLoading && validationRef && !validationArtifact && (
+        <div className="h-36 rounded-xl border border-border bg-muted/20 animate-pulse" />
+      )}
+
+      {validationData && (
+        <MediaValidationViewer
+          data={validationData}
+          projectId={projectId}
+          compact
+          detailHref={validationDetailHref}
+        />
       )}
 
       {videoData && <GeneratedVideoViewer data={videoData} projectId={projectId} />}

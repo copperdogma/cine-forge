@@ -1,0 +1,49 @@
+{
+  "cases": [
+    {
+      "case_id": "quiet-bedside-review",
+      "label": "Quiet bedside review",
+      "clip_slug": "quiet_bedside_vigil",
+      "scene_heading": "Quiet bedside vigil",
+      "prompt_text": "A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.",
+      "mutation": "none",
+      "expected_health": "needs_review",
+      "category": "semantic",
+      "expectation_note": "Static sampled-frame packet should stay reviewable rather than fail outright."
+    },
+    {
+      "case_id": "prop-swap-revision",
+      "label": "Prop swap revision",
+      "clip_slug": "prop_swap_continuity_break",
+      "scene_heading": "Prop swap continuity break",
+      "prompt_text": "A table scene cuts between matching framings, but the folder on the tabletop changes from red to blue after the cut.",
+      "mutation": "none",
+      "expected_health": "needs_revision",
+      "category": "semantic",
+      "expectation_note": "Continuity-breaking prop swap should be treated as blocking."
+    },
+    {
+      "case_id": "missing-file-revision",
+      "label": "Missing file revision",
+      "clip_slug": "quiet_bedside_vigil",
+      "scene_heading": "Quiet bedside vigil",
+      "prompt_text": "A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.",
+      "mutation": "missing_file",
+      "expected_health": "needs_revision",
+      "category": "structural",
+      "expectation_note": "Missing media file is a blocking runtime failure."
+    },
+    {
+      "case_id": "corrupt-decode-revision",
+      "label": "Corrupt decode revision",
+      "clip_slug": "quiet_bedside_vigil",
+      "scene_heading": "Quiet bedside vigil",
+      "prompt_text": "A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.",
+      "mutation": "truncate_media",
+      "truncate_bytes": 512,
+      "expected_health": "needs_revision",
+      "category": "structural",
+      "expectation_note": "Corrupt media that cannot decode is a blocking runtime failure."
+    }
+  ]
+}

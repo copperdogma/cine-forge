@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-20, Story 033 done)
+## Current Execution Map (updated 2026-03-20, Story 140 closed)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate is now landed: CineForge can compile concern-group artifacts into reviewable prompts and generated-video outputs. With the design-study composition loop now landed, the active backlog centers on output QA, cost-control follow-ons, transparency polish, and draft follow-ons rather than missing render-adapter substrate.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The active backlog centers on follow-on polish and adjacent trust/export work rather than a missing render-validation substrate.
 
 ### Pending — Ready To Build Now
 
@@ -191,6 +191,7 @@ NOTES from Cam:
 | 126 | Frontend Chat and Data-Layer Decomposition | 2.5 — UI | High | Done | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
 | 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Done | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
 | 139 | Historical Run Progress Cards Stop Polling Missing Runs | 2.5 — UI | Medium | Draft | [story-139](stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md) |
+| 140 | Agentic Media Validation Loop | 7 — Generation | High | Done | [story-140](stories/story-140-agentic-media-validation-loop.md) |
 | 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Pending | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
 | 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Done | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |

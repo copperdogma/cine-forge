@@ -1202,6 +1202,66 @@ evals:
           - condition: new-approach
             note: "Add a native-video Gemini provider path instead of the current sampled-frames harness."
 
+  - id: runtime-media-validation
+    name: Runtime Media Validation
+    type: quality
+    description: >
+      End-to-end runtime validation baseline for generated-video artifacts. Compares
+      deterministic-only, AI-only, and hybrid validation on a fixed `generated_video`
+      fixture pack with semantic-review cases plus blocking structural failures.
+    pipeline_stage: qa
+    runner: custom
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/runtime_media_validation_eval.py --model gpt-5.4 --output-prefix benchmarks/results/runtime-media-validation-gpt54"
+    script: benchmarks/scripts/runtime_media_validation_eval.py
+    golden: benchmarks/fixtures/runtime_media_validation_cases.json
+    test_cases: 4
+
+    target:
+      metric: overall
+      value: 0.90
+      latency_ms_max: 6000
+      cost_usd_max: 0.01
+      note: "Hybrid should lead AI-only and deterministic-only while preserving full structural-case recall on the pilot pack."
+
+    scores:
+      - model: "Hybrid (GPT-5.4)"
+        metrics:
+          overall: 1.0
+          semantic_cases: 1.0
+          structural_cases: 1.0
+        latency_ms: 2547
+        cost_usd: 0.003530
+        cost_estimated: true
+        measured: 2026-03-20
+        git_sha: "28dac8f"
+        result_file: benchmarks/results/runtime-media-validation-gpt54-2026-03-20.json
+        note: "Pilot leader. Cleared all 4 seeded runtime cases: review-only static packet, semantic continuity break, missing file, and corrupt decode."
+      - model: "Deterministic Only"
+        metrics:
+          overall: 0.75
+          semantic_cases: 0.5
+          structural_cases: 1.0
+        latency_ms: 428
+        cost_usd: 0.0
+        measured: 2026-03-20
+        git_sha: "28dac8f"
+        result_file: benchmarks/results/runtime-media-validation-gpt54-2026-03-20.json
+        note: "Ambiguous comparator miss, non-runtime-blocking: it correctly handles hard runtime failures but cannot escalate the prop continuity break beyond `needs_review` without semantic judgment."
+      - model: "AI-Only (GPT-5.4)"
+        metrics:
+          overall: 0.5
+          semantic_cases: 1.0
+          structural_cases: 0.0
+        latency_ms: 2594
+        cost_usd: 0.003478
+        cost_estimated: true
+        measured: 2026-03-20
+        git_sha: "28dac8f"
+        result_file: benchmarks/results/runtime-media-validation-gpt54-2026-03-20.json
+        note: "Ambiguous comparator misses, non-runtime-blocking: it handles the sampled semantic cases, but missing/corrupt media collapse to `needs_review` because no sample packet exists."
+
+    attempts: []
+
   - id: entity-discovery
     name: Entity Discovery
     type: quality

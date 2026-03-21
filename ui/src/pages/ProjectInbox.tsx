@@ -35,7 +35,7 @@ import {
   READ_INBOX_KEY,
 } from '@/lib/inbox-utils'
 import type { InboxFilter } from '@/lib/inbox-utils'
-import type { ProjectSummary } from '@/lib/types'
+import type { ArtifactRef, ProjectSummary } from '@/lib/types'
 import { healthDescription, healthLabel, isAttentionHealth } from '@/lib/health'
 
 type InboxItemType = 'attention' | 'review' | 'error' | 'gate_review'
@@ -49,6 +49,7 @@ interface InboxItem {
   artifact_type?: string
   entity_id?: string
   version?: number
+  source_artifact_ref?: ArtifactRef | null
   run_id?: string
   stage_id?: string
   scene_id?: string
@@ -68,6 +69,12 @@ function formatArtifactType(type: string): string {
     .split('_')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
+}
+
+function parseTimestamp(value: string | null | undefined): number {
+  if (!value) return 0
+  const parsed = Date.parse(value)
+  return Number.isFinite(parsed) ? parsed : 0
 }
 
 function getItemTooltip(type: InboxItemType): string {
@@ -193,17 +200,25 @@ export default function ProjectInbox() {
   const attentionItems = useMemo<InboxItem[]>(() => {
     if (!artifactGroups) return []
     return artifactGroups
-      .filter(group => isAttentionHealth(group.health))
-      .map((group) => ({
-        id: artifactAttentionItemId(group.health, group.artifact_type, group.entity_id),
-        type: 'attention' as const,
-        title: `${group.entity_id ?? 'Unknown'} — ${formatArtifactType(group.artifact_type)} is ${healthLabel(group.health).toLowerCase()}`,
-        description: healthDescription(group.health, group.health_details),
-        health: group.health,
-        artifact_type: group.artifact_type,
-        entity_id: group.entity_id ?? undefined,
-        timestamp: 0,
-      }))
+      .filter(group => isAttentionHealth(group.health) && group.artifact_type !== 'stage_review')
+      .map((group) => {
+        const sourceRef = group.health_details?.source_artifact_ref
+        const targetArtifactType = sourceRef?.artifact_type ?? group.artifact_type
+        const targetEntityId = sourceRef?.entity_id ?? group.entity_id ?? 'project'
+        const targetVersion = sourceRef?.version ?? group.latest_version
+        return {
+          id: artifactAttentionItemId(group.health, group.artifact_type, group.entity_id),
+          type: 'attention' as const,
+          title: `${group.entity_id ?? 'Unknown'} — ${formatArtifactType(group.artifact_type)} is ${healthLabel(group.health).toLowerCase()}`,
+          description: healthDescription(group.health, group.health_details),
+          health: group.health,
+          artifact_type: targetArtifactType,
+          entity_id: targetEntityId,
+          version: targetVersion,
+          source_artifact_ref: sourceRef,
+          timestamp: parseTimestamp(group.health_details?.updated_at),
+        }
+      })
   }, [artifactGroups])
 
   // Derive error items from failed runs
@@ -426,7 +441,7 @@ export default function ProjectInbox() {
                             {item.description}
                           </p>
                           <p className="text-xs text-muted-foreground mt-1">
-                            {timeAgo(item.timestamp)}
+                            {item.timestamp > 0 ? timeAgo(item.timestamp) : 'Recently'}
                           </p>
                         </div>
                         <div className="shrink-0 mt-0.5">

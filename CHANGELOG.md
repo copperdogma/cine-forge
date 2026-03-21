@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-03-20-07] — Runtime media validation loop for generated video (Story 140)
+
+### Added
+- Added a headless `media_validation_v1` pipeline stage, typed `media_validation` artifacts, and a dedicated runtime-media-validation benchmark harness for generated-video outputs
+- Added focused backend and UI coverage for deterministic media probes, semantic-review handling, validation-backed artifact health, and generated-video trust surfaces
+
+### Changed
+- Changed generated-video review to surface validation status through the existing render, artifact-detail, and inbox health paths instead of leaving validation in run logs
+- Changed the runtime validator internals to split deterministic probing and multimodal semantic-review transport into focused modules, keeping the validation substrate within repo size rules
+
+### Fixed
+- Fixed `ffprobe`-absent fallback behavior so decodable clips no longer false-fail with `missing_video_stream`
+- Fixed media-validation artifact badges and inbox timestamps so trust state now stays consistent across header, version history, and inbox attention items
+
 ## [2026-03-20-06] — Memory model and transcript retention (Story 033)
 
 ### Added
