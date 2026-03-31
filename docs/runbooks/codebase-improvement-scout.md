@@ -27,13 +27,15 @@ The companion skill is `/codebase-improvement-scout`.
 
 3. **[script] Run deterministic discovery**
    - Run repo-native checks first (`ruff`, `pytest`, `pnpm lint`, `tsc`, duplication lint, hotspot/history scans, `rg` marker scans)
+   - If `AGENTS.md` or `.agents/skills/` are part of the scan scope, also run `./scripts/sync-agent-skills.sh --check`
    - Run optional tools only if they are already installed / configured
+   - Explicitly scan hotspots for architecture-drift signatures: compatibility shims, duplicate ownership, dead wrappers, placeholder pass-throughs, and widened guards around unclear ownership
 
 4. **[judgment] Classify findings**
    - Auto-fix only if the change is mechanical, small, and verifiable
    - Draft a story for structural or architectural issues
    - Suppress or ignore low-value or intentionally-accepted findings
-   - Rank by leverage, not issue count
+   - Rank by leverage, not issue count, and include drift pressure when a bad pattern is likely to be preserved again on the next edit
 
 5. **[judgment] Produce the scan artifact**
    - Fill the report with top findings, evidence, and one recommended next step
@@ -61,6 +63,7 @@ Never do:
 - Unconstrained "make the repo better" refactors
 - Cosmetic churn
 - Architecture relitigation that ignores ADRs
+- Ignore duplicate ownership, obsolete shims, or other drift signals just because tests still pass
 - More than 5 changed files in one auto-fix cluster
 - Commit or push without explicit permission
 

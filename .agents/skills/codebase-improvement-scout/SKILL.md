@@ -65,6 +65,7 @@ Run the strongest available deterministic checks first. Verify tools exist befor
    - UI: `pnpm --dir ui run lint`
    - UI typecheck: `cd ui && npx tsc -b`
    - UI duplication lint if available: `pnpm --dir ui run lint:duplication`
+   - Skill sync when agent surfaces are involved: `./scripts/sync-agent-skills.sh --check` if `AGENTS.md` or `.agents/skills/` are under review
 
 3. **Optional narrow detectors if installed:**
    - TypeScript dead code / deps: `knip`
@@ -76,6 +77,11 @@ Run the strongest available deterministic checks first. Verify tools exist befor
    - Inspect the top hotspot files
    - Inspect recent stories affecting those areas
    - Check whether an apparent issue is already tracked or intentionally suppressed
+   - Explicitly scan for architecture-drift signatures:
+     - compatibility shims or fallback layers preserving an obsolete contract
+     - duplicate ownership / second homes for the same behavior
+     - empty stubs, dead wrappers, or placeholder pass-throughs left after refactors
+     - widened types or defensive guards that patch around unclear ownership instead of resolving it
 
 ## Phase 2 — Triage and Classification
 
@@ -106,6 +112,7 @@ Rank findings by leverage, not raw issue count:
 - user-facing impact
 - maintenance drag
 - confidence
+- drift pressure: whether the issue is likely to cause agents to preserve and duplicate it again on the next edit
 
 Prefer the top 3-5 findings. Low-signal laundry lists are a failure.
 
@@ -174,6 +181,7 @@ Only enter this phase when `--autofix` is set or the user explicitly approved sa
 - Never relitigate settled architecture if ADRs already answer the question.
 - Never raise the same suppressed finding repeatedly without new evidence.
 - Never do cosmetic-only churn.
+- Never treat "tests still pass" as sufficient reason to ignore duplicate ownership, obsolete shims, or other drift signatures.
 - Never auto-fix structural or architectural issues.
 - Never auto-edit on a dirty worktree unless the user explicitly approved that risk.
 - Never commit or push without explicit user permission.

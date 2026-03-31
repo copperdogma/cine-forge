@@ -17,6 +17,7 @@ Use this runbook when creating, running, or recording promptfoo-based evals.
 - API keys set for the providers under test
 - access to the benchmark workspace that contains `benchmarks/tasks/`
 - `docs/evals/registry.yaml` available in the main repo
+- If you want a freshness delay for the global `promptfoo` install, configure it in `~/.npmrc`; repo-local npm config does not reliably govern global installs
 
 ## Steps
 
@@ -84,6 +85,8 @@ promptfoo eval -c tasks/<eval>.yaml --no-cache --output results/<run-name>.json 
 
 - If `promptfoo` cannot write under your normal home directory, set a repo-local
   `PROMPTFOO_HOME` for the run and record that choice in the work log.
+- If you want npm release-age gating for global `promptfoo` updates, set it in
+  `~/.npmrc`; this repo cannot enforce that knob for a global install.
 - If a config looks valid but the model returns truncated JSON, check output
   token caps before concluding the model is weak.
 - If the benchmark workspace is missing entirely, restore or create it through

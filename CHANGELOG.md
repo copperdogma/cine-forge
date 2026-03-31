@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-31-02] — Agent workflow drift guards and scout refresh
+
+### Added
+- Added Scout 017 covering doc-web, Storybook, and Dossier process deltas plus verification that the local worktree already matched CineForge's recent ideal-alignment skill commits
+- Added explicit drift-signal review guidance to `/validate` and `/codebase-improvement-scout`, including ownership-aware skill-sync checks for agent-surface edits
+
+### Changed
+- Changed `AGENTS.md` to treat architecture drift as real debt, require clearer ownership before parallel subagent edits, and document the user-level npm boundary for global `promptfoo` freshness gating
+- Changed the codebase-improvement and promptfoo runbooks so they teach the same drift-scan and global-install boundaries as the live skills
+
 ## [2026-03-31-01] — Export fidelity and narrative interchange (Story 130)
 
 ### Added

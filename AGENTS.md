@@ -62,6 +62,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Dynamic Module Loader Safety**: Internal helper containers inside driver-loaded modules should avoid annotation-dependent dataclass/Pydantic magic unless you confirm they survive dynamic import. Prefer plain classes for purely internal state carriers.
 - **Dynamic Module Loader Imports**: When splitting a driver-loaded module across helper files, use absolute package imports (`cine_forge...`) instead of relative imports. Driver entrypoints are loaded via `spec_from_file_location`, so absolute imports are the safe default.
 - **Process Lifecycle**: Restart long-running backend/API processes after changing schemas or core logic. Hot-reloading is a tool, but a clean restart is the source of truth.
+- **Architecture Drift Is Real Debt**: Compatibility shims, duplicate ownership, dead wrappers, placeholder pass-throughs, and widened guards that preserve an obsolete path are bugs even when tests still pass. Remove the obsolete path or re-home the responsibility instead of papering over it.
 - **Regression Fixes start with Fixtures**: When a real-world run fails, capture the failing input as a deterministic test fixture BEFORE implementing the fix.
 - **Conservative Heuristics**: When building classifiers (screenplay vs. prose), use weighted evidence and confidence scores. Favor "needs_review" over silent incorrectness.
 - **Prompt-First Before Model Escalation**: Before escalating to a more expensive model to improve quality, first try strengthening the prompt: add a completeness contract ("verify all items are covered before responding"), add grounding language ("base claims strictly on provided text"), add a verification instruction ("check your output against every requirement"). Only increase model size or reasoning effort after prompt-level improvements have been measured and found insufficient. (Source: Scout 010 — OpenAI GPT-5.4 Prompt Guidance)
@@ -101,7 +102,7 @@ Use subagents aggressively to parallelize work and protect the main context wind
 | Writing docs, updating AGENTS.md | **Haiku** | Mechanical text, Opus reviews |
 
 ### Guidelines
-- **Parallelize independent work**: If building 3 pages that don't depend on each other, launch 3 subagents simultaneously.
+- **Parallelize independent work only when ownership is clear**: If building 3 pages that don't depend on each other and the write boundaries are already clear, launch 3 subagents simultaneously. If ownership is overlapping or unclear, keep one primary execution path and use subagents for exploration/review instead of concurrent edits.
 - **Opus orchestrates, delegates, reviews**: The main agent reads results, spots issues, and iterates — never blindly trusts.
 - **Context protection**: Use subagents for tasks that produce large output (exploration, research) to avoid flooding the main context.
 - **Fail fast**: If a subagent produces bad output, don't retry the same prompt — adjust the approach or do it yourself.
@@ -177,6 +178,7 @@ Runbook: `docs/runbooks/promptfoo.md`
 - **promptfoo** installed globally: `npm install -g promptfoo` (v0.120.24+).
 - Shell sessions need nvm loaded: `source ~/.nvm/nvm.sh && nvm use 24`.
 - API keys: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and `GEMINI_API_KEY` must be set in environment.
+- If you want a freshness delay for the global `promptfoo` install, configure it at the user level (`~/.npmrc`). npm added `min-release-age` in `11.10.0`; a repo-local file cannot reliably enforce it for global installs.
 
 #### Workspace Structure
 ```

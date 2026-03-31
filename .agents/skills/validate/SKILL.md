@@ -20,6 +20,11 @@ Assess whether a story's implementation meets its requirements.
 
 2b. **Check workflow gates** — Read the `Workflow Gates` section if present. If it is missing on an older story, add equivalent gates before continuing so the handoff state is explicit.
 
+2c. **Separate implementation completeness from close-out bookkeeping**:
+   - Missing close-out items owned by `/mark-story-done` or `/finish-and-push` do **not** count as implementation gaps by themselves.
+   - Examples: story/status/index flips, changelog entries, commit/push/PR hygiene, or "Story marked done via /mark-story-done".
+   - If implementation is complete and only that bookkeeping remains, treat the story as implementation-complete and recommend `Close now`.
+
 3. **Read architecture context** — Read `docs/ideal.md`, the story's spec refs, and all referenced ADRs. If the story touches architecture, workflows, schemas, or UX patterns and no ADR is cited, search `docs/decisions/` and `docs/design/` for relevant decision records before reviewing implementation quality.
 
 4. **Run the full check suite**:
@@ -32,6 +37,8 @@ Assess whether a story's implementation meets its requirements.
        - `pnpm --dir ui run lint`
        - `cd ui && npx tsc -b`
        - If UI files changed: `pnpm --dir ui run build`
+     - **Agent/process surfaces**:
+       - If `AGENTS.md` or `.agents/skills/` changed: `./scripts/sync-agent-skills.sh --check`
    - **Rationale**: Strict linting (e.g., React 19 purity) and type-checking can flag issues that aren't immediately obvious in the IDE. Running these locally is the only way to ensure a green deployment gate.
    - If a command is unavailable (missing script/tool), report it explicitly.
 
@@ -45,6 +52,11 @@ Assess whether a story's implementation meets its requirements.
    - Is there evidence this was the right approach for this repo, or does the diff look like generic solutioning?
    - Are there simpler existing abstractions/components/helpers that should have been reused?
    - Did the change make any older code paths, helpers, components, or docs redundant?
+   - Did the diff introduce architecture-drift signals such as:
+     - compatibility shims or normalization layers that preserve an obsolete path
+     - duplicate ownership where two modules/prompts/flows now own the same behavior
+     - empty stubs or dead wrappers left behind after a refactor
+     - widened types or guard clauses added to tolerate uncertainty instead of fixing the source contract
    - Are there any files over 600 lines that should be split?
    - Are types centralized or scattered?
    - Are error cases handled?
@@ -68,13 +80,16 @@ Assess whether a story's implementation meets its requirements.
    - Check `Validation complete or explicitly skipped by user` when validation was actually run
    - Leave `Story marked done via /mark-story-done` unchecked
    - Add a work log note summarizing validation outcome and the recommended next step
+   - In that note and in the report, label results only from commands rerun in this validation pass; anything not rerun here must be called out as not freshly verified
 
 11. **Produce report** — Findings must explicitly call out:
    - missing ADR / decision alignment
    - weak or unproven approach selection
    - redundant code left behind
+   - explicit drift signals
    - missing browser verification for UI work
    - unmet acceptance criteria or failed checks
+   - remaining implementation gaps separately from close-out bookkeeping owned by `/mark-story-done` or `/finish-and-push`
    - a single closure recommendation: `Close now`, `Rescope then close`, `Keep open`, or `Mark blocked`
    - if recommending `Rescope then close`, the exact story edits needed before closure
    - recommended next step (`/mark-story-done` if clean, otherwise fix issues)
@@ -93,10 +108,14 @@ Assess whether a story's implementation meets its requirements.
 - backend lint: PASS/FAIL
 - ui checks: PASS/FAIL/NOT RUN (with reason)
 - browser verification: PASS/FAIL/NOT RUN (with reason)
+- agent skill sync: PASS/FAIL/N/A
 - missing/unavailable checks: [list]
 
 ### Acceptance Criteria
 - [criterion]: Met/Partial/Unmet — evidence
+
+### Close-out Follow-up
+- [item]: Needed / Not needed — owner (`/mark-story-done`, `/finish-and-push`, or N/A)
 
 ### Architecture / ADR Fit
 - relevant decisions reviewed: [list]
@@ -108,6 +127,10 @@ Assess whether a story's implementation meets its requirements.
 
 ### Redundancy Review
 - redundant code/docs left behind: yes/no
+- details: [list]
+
+### Drift Signals
+- compatibility shims / stacked normalization / duplicate ownership / dead wrappers / widened guards: none found | found
 - details: [list]
 
 ### Ideal Alignment
@@ -131,8 +154,12 @@ Assess whether a story's implementation meets its requirements.
 - Never mark a story `Done` from `/validate` — story closure belongs to `/mark-story-done`
 - Never give an A to a UI-affecting story without browser verification evidence
 - Never ignore redundant code that the new implementation clearly supersedes
+- Never ignore explicit drift signals just because tests pass
+- Never treat close-out bookkeeping owned by `/mark-story-done` or `/finish-and-push` as an implementation failure by itself
 - If grade is below B, list specific remediation steps
 - When the story is not ready to close, never stop at "not done." Always recommend one disposition: `Rescope then close`, `Keep open`, or `Mark blocked`.
+- If implementation is complete and only close-out bookkeeping remains, prefer `Close now`
+- Never report a check as PASS/FAIL unless you reran it in this validation pass and inspected the output
 - **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` for code changes, even if you think only the backend was touched.
 - Prefer project-native checks over generic templates
 - Use `tsc -b` (not `tsc --noEmit`) for UI type checks in this repo
