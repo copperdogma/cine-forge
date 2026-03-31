@@ -7,11 +7,16 @@ from typing import Any
 
 import yaml
 
-from cine_forge.api.routers.export import load_all_artifacts
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
+from cine_forge.export.call_sheet import generate_call_sheet_pdf
+from cine_forge.export.interchange_fcpxml import (
+    build_narrative_interchange_export,
+    render_fcpxml,
+)
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
+from cine_forge.export.project_loader import load_all_artifacts, load_project_title
 
 
 def _parse_param_overrides(raw_params: list[str]) -> dict[str, Any]:
@@ -84,6 +89,7 @@ def handle_export(args):
 
     store = ArtifactStore(project_dir)
     scenes, characters, locations, props = load_all_artifacts(store)
+    project_title = load_project_title(store, args.project)
     
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -92,7 +98,7 @@ def handle_export(args):
         exporter = MarkdownExporter()
         if args.scope == "everything":
             content = exporter.generate_project_markdown(
-                project_name=args.project, 
+                project_name=project_title,
                 project_id=args.project, 
                 scenes=scenes, 
                 characters=characters, 
@@ -108,15 +114,15 @@ def handle_export(args):
     elif args.format == "pdf":
         pdf_gen = PDFGenerator()
         if args.layout == "call-sheet":
-            pdf_gen.generate_call_sheet(
-                project_name=args.project,
+            generate_call_sheet_pdf(
+                project_name=project_title,
                 scenes=scenes,
                 output_path=str(out_path)
             )
             print(f"Exported call sheet PDF to {out_path}")
         else:
             pdf_gen.generate_project_pdf(
-                project_name=args.project,
+                project_name=project_title,
                 project_id=args.project,
                 scenes=scenes,
                 characters=characters,
@@ -125,6 +131,14 @@ def handle_export(args):
                 output_path=str(out_path)
             )
             print(f"Exported project report PDF to {out_path}")
+    elif args.format == "fcpxml":
+        payload = build_narrative_interchange_export(
+            store,
+            project_id=args.project,
+            project_title=project_title,
+        )
+        out_path.write_text(render_fcpxml(payload), encoding="utf-8")
+        print(f"Exported FCPXML interchange to {out_path}")
 
 def main():
     parser = argparse.ArgumentParser(description="CineForge CLI")
@@ -153,7 +167,7 @@ def main():
     export_parser = subparsers.add_parser("export", help="Export project artifacts")
     export_parser.add_argument("--project", required=True, help="Project ID")
     export_parser.add_argument(
-        "--format", required=True, choices=["markdown", "pdf"], 
+        "--format", required=True, choices=["markdown", "pdf", "fcpxml"],
         help="Export format"
     )
     export_parser.add_argument(

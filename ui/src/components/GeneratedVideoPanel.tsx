@@ -8,7 +8,7 @@ import { RenderPromptViewer } from '@/components/RenderPromptViewer'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useArtifact, useProjectInputs, useRunState, useStartRun } from '@/lib/hooks'
+import { isRunActive, useArtifact, useProjectInputs, useRunState, useStartRun } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import type { ArtifactGroupSummary } from '@/lib/types'
 
@@ -58,7 +58,7 @@ export function GeneratedVideoPanel({
   const { data: runState } = useRunState(activeRunId ?? undefined)
 
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
-  const hasActiveRun = !!activeRunId && !runState?.state.finished_at
+  const hasActiveRun = isRunActive(activeRunId, runState)
   const renderRunActive = hasActiveRun && runState?.state.recipe_id === 'render_generation'
   const anotherRunActive =
     hasActiveRun && !!runState && runState.state.recipe_id !== 'render_generation'

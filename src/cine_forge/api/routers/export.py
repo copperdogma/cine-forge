@@ -10,9 +10,20 @@ from fastapi.responses import FileResponse, Response
 from starlette.background import BackgroundTask
 
 from cine_forge.artifacts.store import ArtifactStore
+from cine_forge.export.call_sheet import generate_call_sheet_pdf
 from cine_forge.export.cost_report import render_project_cost_csv, render_run_cost_csv
+from cine_forge.export.interchange_fcpxml import (
+    build_narrative_interchange_export,
+    render_fcpxml,
+)
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
+from cine_forge.export.project_loader import (
+    load_all_artifacts,
+    load_exportable_script_content,
+    load_pre_scene_text,
+    load_project_title,
+)
 from cine_forge.export.screenplay import ScreenplayRenderer
 from cine_forge.export.shot_list import (
     generate_shot_list_pdf,
@@ -30,6 +41,12 @@ ExportScope = Literal["everything", "scenes", "characters", "locations", "props"
 ExportFormat = Literal["markdown", "pdf", "call-sheet", "fountain", "docx"]
 
 _service: OperatorConsoleService | None = None
+_REPORT_EXPORT_PRECONDITION = (
+    "Project data PDF export requires basic breakdown artifacts. Run basic breakdown first."
+)
+_CALL_SHEET_PRECONDITION = (
+    "Call sheet export requires scene breakdown artifacts. Run basic breakdown first."
+)
 
 
 def set_service(svc: OperatorConsoleService) -> None:
@@ -49,82 +66,6 @@ def get_cost_tracking_service() -> CostTrackingService:
     if _service is None:
         raise HTTPException(status_code=500, detail="Export router not initialized")
     return CostTrackingService(_service.workspace_root)
-
-def load_all_artifacts(store: ArtifactStore):
-    scenes = []
-    characters = {}
-    locations = {}
-    props = {}
-
-    # Load Scenes
-    scene_ids = store.list_entities("scene")
-    for sid in scene_ids:
-        versions = store.list_versions("scene", sid)
-        if versions:
-            latest = sorted(versions, key=lambda r: r.version)[-1]
-            data = store.load_artifact(latest).data
-            if data:
-                scenes.append(data)
-    scenes.sort(key=lambda s: s.get("scene_number", 0))
-
-    # Load Characters
-    char_ids = store.list_entities("character_bible")
-    for cid in char_ids:
-        versions = store.list_versions("character_bible", cid)
-        if versions:
-            latest = sorted(versions, key=lambda r: r.version)[-1]
-            data = store.load_artifact(latest).data
-            if data:
-                characters[cid] = data
-
-    # Load Locations
-    loc_ids = store.list_entities("location_bible")
-    for lid in loc_ids:
-        versions = store.list_versions("location_bible", lid)
-        if versions:
-            latest = sorted(versions, key=lambda r: r.version)[-1]
-            data = store.load_artifact(latest).data
-            if data:
-                locations[lid] = data
-
-    # Load Props
-    prop_ids = store.list_entities("prop_bible")
-    for pid in prop_ids:
-        versions = store.list_versions("prop_bible", pid)
-        if versions:
-            latest = sorted(versions, key=lambda r: r.version)[-1]
-            data = store.load_artifact(latest).data
-            if data:
-                props[pid] = data
-
-    return scenes, characters, locations, props
-
-def load_script_content(store: ArtifactStore) -> str:
-    versions = store.list_versions("canonical_script", "project")
-    if versions:
-        latest = sorted(versions, key=lambda r: r.version)[-1]
-        data = store.load_artifact(latest).data
-        return data.get("script_text") or data.get("content") or data.get("text") or ""
-    return ""
-
-def load_pre_scene_text(store: ArtifactStore, first_scene_start_line: int) -> str:
-    versions = store.list_versions("canonical_script", "project")
-    if versions:
-        latest = sorted(versions, key=lambda r: r.version)[-1]
-        data = store.load_artifact(latest).data
-        full_text = data.get("script_text") or ""
-        lines = full_text.splitlines()
-        if first_scene_start_line > 1:
-            return "\n".join(lines[:first_scene_start_line-1])
-    return ""
-
-def load_project_title(store: ArtifactStore, project_id: str) -> str:
-    versions = store.list_versions("project_config", "project")
-    if versions:
-        latest = sorted(versions, key=lambda r: r.version)[-1]
-        data = store.load_artifact(latest).data
-        return data.get("title") or project_id
-    return project_id
 
 @router.get("/markdown")
 def export_markdown(
@@ -170,7 +111,10 @@ def export_markdown(
     filename = f"{project_id}-export.md"
 
     if scope == "everything":
-        script_content = load_script_content(store)
+        try:
+            script_content = load_exportable_script_content(store)
+        except ValueError:
+            script_content = ""
         
         md = exporter.generate_project_markdown(
             project_name=project_title,
@@ -210,9 +154,10 @@ def export_markdown(
 @router.get("/fountain")
 def export_fountain(project_id: str):
     store = get_store(project_id)
-    content = load_script_content(store)
-    if not content:
-        raise HTTPException(status_code=404, detail="Script not found")
+    try:
+        content = load_exportable_script_content(store)
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
     
     return Response(
         content=content, 
@@ -238,7 +183,9 @@ def export_pdf(
     
     try:
         if layout == "call-sheet":
-            pdf_gen.generate_call_sheet(
+            if not scenes:
+                raise HTTPException(status_code=409, detail=_CALL_SHEET_PRECONDITION)
+            generate_call_sheet_pdf(
                 project_name=project_title, 
                 scenes=scenes, 
                 output_path=output_path
@@ -254,7 +201,16 @@ def export_pdf(
                 and not (include and "scenes" in include and len(include) > 1)
             )
             if only_script:
-                script_text = load_script_content(store)
+                try:
+                    script_text = load_exportable_script_content(store)
+                except ValueError as exc:
+                    raise HTTPException(status_code=409, detail=str(exc)) from exc
+                renderer.render_script_pdf(script_text, output_path)
+            elif not scenes:
+                try:
+                    script_text = load_exportable_script_content(store)
+                except ValueError as exc:
+                    raise HTTPException(status_code=409, detail=str(exc)) from exc
                 renderer.render_script_pdf(script_text, output_path)
             else:
                 pre_scene_text = ""
@@ -270,6 +226,8 @@ def export_pdf(
                 )
             filename = f"{project_id}-screenplay.pdf"
         else:
+            if not any((scenes, characters, locations, props)):
+                raise HTTPException(status_code=409, detail=_REPORT_EXPORT_PRECONDITION)
             pdf_gen.generate_project_pdf(
                 project_name=project_title, project_id=project_id,
                 scenes=scenes, characters=characters, locations=locations, props=props,
@@ -283,9 +241,36 @@ def export_pdf(
             media_type="application/pdf",
             background=BackgroundTask(Path(output_path).unlink, missing_ok=True)
         )
+    except HTTPException:
+        Path(output_path).unlink(missing_ok=True)
+        raise
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)
         raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}") from e
+
+
+@router.get("/fcpxml")
+def export_fcpxml(project_id: str):
+    store = get_store(project_id)
+    project_title = load_project_title(store, project_id)
+
+    try:
+        payload = build_narrative_interchange_export(
+            store,
+            project_id=project_id,
+            project_title=project_title,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    xml_content = render_fcpxml(payload)
+    return Response(
+        content=xml_content,
+        media_type="application/xml",
+        headers={
+            "Content-Disposition": f"attachment; filename={project_id}-timeline.fcpxml"
+        },
+    )
 
 @router.get("/docx")
 def export_docx(
@@ -301,17 +286,33 @@ def export_docx(
 
     try:
         renderer = ScreenplayRenderer()
-        pre_scene_text = ""
-        if scenes:
-            first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
-            pre_scene_text = load_pre_scene_text(store, first_scene_line)
-            
-        renderer.render_docx(
-            scenes=scenes, 
-            output_path=output_path, 
-            pre_scene_text=pre_scene_text, 
-            project_title=project_title
+        only_script = (
+            include and "script" in include
+            and not (include and "scenes" in include and len(include) > 1)
         )
+        if only_script or not scenes:
+            try:
+                script_text = load_exportable_script_content(store)
+            except ValueError as exc:
+                raise HTTPException(status_code=409, detail=str(exc)) from exc
+            renderer.render_docx(
+                scenes=[],
+                output_path=output_path,
+                pre_scene_text=script_text,
+                project_title=project_title,
+            )
+        else:
+            pre_scene_text = ""
+            if scenes:
+                first_scene_line = scenes[0].get("source_span", {}).get("start_line", 1)
+                pre_scene_text = load_pre_scene_text(store, first_scene_line)
+
+            renderer.render_docx(
+                scenes=scenes,
+                output_path=output_path,
+                pre_scene_text=pre_scene_text,
+                project_title=project_title,
+            )
         filename = f"{project_id}-screenplay.docx"
             
         return FileResponse(
@@ -320,6 +321,9 @@ def export_docx(
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             background=BackgroundTask(Path(output_path).unlink, missing_ok=True)
         )
+    except HTTPException:
+        Path(output_path).unlink(missing_ok=True)
+        raise
     except Exception as e:
         Path(output_path).unlink(missing_ok=True)
         raise HTTPException(status_code=500, detail=f"Docx generation failed: {str(e)}") from e

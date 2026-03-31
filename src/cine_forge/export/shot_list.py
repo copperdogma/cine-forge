@@ -87,8 +87,9 @@ def generate_shot_list_pdf(
     output_path: str,
 ) -> None:
     """Render a readable PDF shot list grouped by scene."""
-    pdf = PDFExporter()
+    pdf = PDFExporter(header_title="CineForge Shot List")
     helper = PDFGenerator()
+    pdf.alias_nb_pages()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 

@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { AnimaticViewer } from '@/components/AnimaticViewer'
 import { KeyframeViewer } from '@/components/KeyframeViewer'
-import { useArtifact, useProjectInputs, useRunState, useStartRun } from '@/lib/hooks'
+import { isRunActive, useArtifact, useProjectInputs, useRunState, useStartRun } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import type { ArtifactGroupSummary } from '@/lib/types'
 
@@ -49,7 +49,7 @@ export function AnimaticsPanel({
   const { data: runState } = useRunState(activeRunId ?? undefined)
 
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
-  const hasActiveRun = !!activeRunId && !runState?.state.finished_at
+  const hasActiveRun = isRunActive(activeRunId, runState)
   const animaticsRunActive = hasActiveRun && runState?.state.recipe_id === 'animatics_generation'
   const anotherRunActive =
     hasActiveRun && !!runState && runState.state.recipe_id !== 'animatics_generation'

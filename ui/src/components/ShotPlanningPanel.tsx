@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom'
-import { Clapperboard, ExternalLink, Loader2, RefreshCw } from 'lucide-react'
+import { AlertCircle, Clapperboard, ExternalLink, Loader2, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useArtifact, useProjectInputs, useRunState, useStartRun } from '@/lib/hooks'
+import {
+  isRunActive,
+  runHasFailed,
+  useArtifact,
+  useArtifactGroups,
+  useProjectInputs,
+  useRunState,
+  useStartRun,
+} from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import type { ArtifactGroupSummary } from '@/lib/types'
 import { ShotPlanViewer } from '@/components/ShotPlanViewer'
@@ -28,24 +36,33 @@ export function ShotPlanningPanel({
     sceneId,
     shotPlanGroup?.latest_version,
   )
+  const { data: artifactGroups } = useArtifactGroups(projectId)
   const { data: inputs } = useProjectInputs(projectId)
   const startRun = useStartRun()
   const activeRunId = useChatStore((store) => store.activeRunId?.[projectId] ?? null)
   const { data: runState } = useRunState(activeRunId ?? undefined)
 
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
-  const hasActiveRun = !!activeRunId && !runState?.state.finished_at
+  const hasTimeline = (artifactGroups ?? []).some((group) => group.artifact_type === 'timeline')
+  const hasActiveRun = isRunActive(activeRunId, runState)
   const shotPlanningRunActive = hasActiveRun && runState?.state.recipe_id === 'shot_planning'
   const anotherRunActive = hasActiveRun && !!runState && runState.state.recipe_id !== 'shot_planning'
+  const shotPlanningRunFailed =
+    !!activeRunId && runState?.state.recipe_id === 'shot_planning' && runHasFailed(runState)
+  const shotPlanningError = shotPlanningRunFailed
+    ? runState?.background_error ?? 'Shot planning failed. Open run details for more information.'
+    : null
   const runBlocked = startRun.isPending || hasActiveRun
+  const canStartShotPlanning = !!latestInputPath && hasTimeline && !runBlocked
 
   const artifactData = shotPlanArtifact?.payload?.data as Record<string, unknown> | undefined
   const detailHref = shotPlanGroup
     ? `/${projectId}/artifacts/shot_plan/${sceneId}/${shotPlanGroup.latest_version}`
     : null
+  const runDetailHref = activeRunId ? `/${projectId}/run/${activeRunId}` : null
 
   async function handleStartShotPlanning() {
-    if (!latestInputPath) return
+    if (!latestInputPath || !hasTimeline) return
 
     try {
       const { run_id } = await startRun.mutateAsync({
@@ -103,7 +120,7 @@ export function ShotPlanningPanel({
                 size="sm"
                 className="sm:self-start"
                 onClick={handleStartShotPlanning}
-                disabled={!latestInputPath || runBlocked}
+                disabled={!canStartShotPlanning}
               >
                 {startRun.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -121,6 +138,12 @@ export function ShotPlanningPanel({
           {!latestInputPath && (
             <p>No screenplay input is available for this project yet.</p>
           )}
+          {!hasTimeline && (
+            <p>
+              Shot planning depends on a project timeline. Run basic breakdown first so CineForge
+              has scene timing and edit-order context to plan against.
+            </p>
+          )}
           {anotherRunActive && (
             <p>
               Another pipeline run is already in progress. Wait for it to finish before starting
@@ -135,6 +158,30 @@ export function ShotPlanningPanel({
           )}
         </CardContent>
       </Card>
+
+      {shotPlanningRunFailed && shotPlanningError && (
+        <Card className="gap-0 border-destructive/40 bg-destructive/5">
+          <CardContent className="flex items-start gap-3 py-4">
+            <AlertCircle className="mt-0.5 h-4 w-4 text-destructive" />
+            <div className="space-y-2">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-destructive">Shot planning failed</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {shotPlanningError}
+                </p>
+              </div>
+              {runDetailHref && (
+                <Button asChild variant="outline" size="sm">
+                  <Link to={runDetailHref}>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Open Run Details
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {shotPlanningRunActive && artifactData && (
         <Card className="gap-0 border-amber-500/30 bg-amber-500/5">
@@ -168,7 +215,7 @@ export function ShotPlanningPanel({
         </div>
       )}
 
-      {!artifactData && !shotPlanningRunActive && !shotPlanGroup && !artifactLoading && (
+      {!artifactData && !shotPlanningRunActive && !shotPlanningRunFailed && !shotPlanGroup && !artifactLoading && (
         <div className="rounded-xl border border-dashed border-border bg-card/50 px-6 py-12 text-center">
           <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
             <div className="rounded-full bg-muted p-3">
@@ -182,7 +229,7 @@ export function ShotPlanningPanel({
                 resolves back to {sceneHeading}.
               </p>
             </div>
-            <Button onClick={handleStartShotPlanning} disabled={!latestInputPath || runBlocked}>
+            <Button onClick={handleStartShotPlanning} disabled={!canStartShotPlanning}>
               {startRun.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (

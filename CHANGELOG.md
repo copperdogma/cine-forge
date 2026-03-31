@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-03-31-01] — Export fidelity and narrative interchange (Story 130)
+
+### Added
+- Added typed narrative export metadata plus a deterministic `FCPXML` export path shared by the API, CLI, and export UI
+- Added focused regression coverage for metadata assembly, `FCPXML` serialization, call-sheet PDF generation, and export route/CLI behavior
+
+### Changed
+- Changed call-sheet export to a reference-driven layout with honest logistics placeholders and extracted shared project-loading/export helpers
+- Changed export downloads to use backend fetch/blob flows with accurate preflight blocking instead of optimistic location redirects
+
+### Fixed
+- Fixed screenplay export before breakdown so it falls back to the latest uploaded script instead of generating blank PDFs
+- Fixed failed shot-planning runs and scene-workspace panels so missing prerequisites terminate cleanly instead of spinning forever
+
 ## [2026-03-20-07] — Runtime media validation loop for generated video (Story 140)
 
 ### Added

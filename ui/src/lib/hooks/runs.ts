@@ -21,6 +21,24 @@ import type {
   RunSummary,
 } from '../types'
 
+export function runHasFailed(runState: RunStateResponse | undefined | null): boolean {
+  if (!runState) return false
+  if (runState.background_error) return true
+  return Object.values(runState.state.stages ?? {}).some((stage) => stage.status === 'failed')
+}
+
+export function isRunStateTerminal(runState: RunStateResponse | undefined | null): boolean {
+  if (!runState) return false
+  return runState.state.finished_at != null || runHasFailed(runState)
+}
+
+export function isRunActive(
+  activeRunId: string | undefined | null,
+  runState: RunStateResponse | undefined | null,
+): boolean {
+  return Boolean(activeRunId) && (!runState || !isRunStateTerminal(runState))
+}
+
 export function useRuns(projectId: string | undefined) {
   return useQuery<RunSummary[]>({
     queryKey: ['projects', projectId, 'runs'],
@@ -115,7 +133,7 @@ export function useRunState(runId: string | undefined) {
     enabled: !!runId,
     refetchInterval: (query) => {
       const data = query.state.data
-      return data?.state?.finished_at ? false : 2000
+      return isRunStateTerminal(data) ? false : 2000
     },
     refetchIntervalInBackground: true,
   })
@@ -158,7 +176,7 @@ export function useActiveProjectRun(projectId: string | undefined) {
   const activeRunId = useChatStore((store) => (projectId ? store.activeRunId?.[projectId] ?? null : null))
   const { data: runState } = useRunState(activeRunId ?? undefined)
   const recipeId = runState?.state.recipe_id ?? null
-  const isRunning = !!activeRunId && !runState?.state.finished_at
+  const isRunning = isRunActive(activeRunId, runState)
 
   return {
     activeRunId,

@@ -455,19 +455,35 @@ class RunOrchestrator:
                 background_error = error_path.read_text(encoding="utf-8")
 
         # Detect orphaned runs (marked running/pending but no thread active)
+        state_changed = False
         if not is_active and not state.get("finished_at"):
             any_stuck = False
             for stage in state.get("stages", {}).values():
                 if stage.get("status") in ("running", "pending"):
                     stage["status"] = "failed"
                     any_stuck = True
+                    state_changed = True
 
             if any_stuck:
-                state_path.write_text(
-                    json.dumps(state, indent=2), encoding="utf-8"
-                )
                 if not background_error:
                     background_error = "Run orphaned (backend restart or crash)"
+
+            statuses = {
+                str(stage.get("status") or "")
+                for stage in state.get("stages", {}).values()
+                if isinstance(stage, dict)
+            }
+            should_finalize = (
+                bool(background_error)
+                or "failed" in statuses
+                or (statuses and statuses <= {"done", "failed", "skipped_reused"})
+            )
+            if should_finalize:
+                state["finished_at"] = now
+                state_changed = True
+
+            if state_changed:
+                state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
 
         return {"run_id": run_id, "state": state, "background_error": background_error}
 

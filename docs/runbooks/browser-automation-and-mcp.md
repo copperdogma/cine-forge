@@ -110,14 +110,29 @@ For CineForge production smoke:
 6. If the error looks like a wedged Playwright profile (`Opening in existing browser session`, `UKM database locked`, `bootstrap_check_in ... Permission denied`, or attach timeouts), reset only the Playwright-scoped session and retry once:
    - `python3 scripts/reset_playwright_mcp.py`
    - If the current MCP transport closes because the reset killed the stale `playwright-mcp` process itself, restart the host session once and re-run the probe
-7. For local Vite-backed probes in this repo, prefer a direct Vite invocation over the npm script wrapper:
+7. If the error is `ENOENT` / permission denied around `/.playwright-mcp`, treat it as a broken MCP working-directory/output-root setup, not an app failure:
+   - Cause: Playwright MCP resolves its artifact output root from the server `cwd`; if the Codex MCP server starts with `cwd=/`, it tries to create `/.playwright-mcp`
+   - Fix the Codex MCP config in `~/.codex/config.toml` so the Playwright server has a writable cwd and explicit output/profile dirs, for example:
+     ```toml
+     [mcp_servers.playwright]
+     command = "npx"
+     args = ["-y", "@playwright/mcp@latest"]
+     cwd = "/Users/<you>"
+
+     [mcp_servers.playwright.env]
+     HOME = "/Users/<you>"
+     PLAYWRIGHT_MCP_OUTPUT_DIR = "/Users/<you>/.codex/playwright"
+     PLAYWRIGHT_MCP_USER_DATA_DIR = "/Users/<you>/Library/Caches/ms-playwright/mcp-chrome-profile"
+     ```
+   - Then restart the host Codex session and rerun the minimal probe
+8. For local Vite-backed probes in this repo, prefer a direct Vite invocation over the npm script wrapper:
    - Use `pnpm --dir ui exec vite --host 127.0.0.1 --port 5174`
    - Avoid `pnpm --dir ui run dev -- --host 127.0.0.1 --port 5174` for automation here; in this workspace it leaves Vite on `localhost`, which can produce `ERR_CONNECTION_REFUSED` when the probe hits `127.0.0.1`
-8. Capture evidence:
+9. Capture evidence:
    - exact command/tool call
    - error text
    - whether API fallback checks passed
-9. Use fallback HTTP checks only when browser path is blocked:
+10. Use fallback HTTP checks only when browser path is blocked:
    - `curl -sf https://cineforge.copper-dog.com/` and verify `<title>CineForge</title>`
    - verify JS bundle returns HTTP 200
 
@@ -138,19 +153,24 @@ For CineForge production smoke:
    - Cause: orphaned `playwright-mcp` / `npm exec @playwright/mcp@latest` processes or a stuck Chrome process using `~/Library/Caches/ms-playwright/mcp-*`.
    - Fix: run `python3 scripts/reset_playwright_mcp.py`, then retry the browser probe once. Prefer this over manually deleting the whole profile tree.
 
-4. **Redirecting logs into non-existent directory**
+4. **Codex Playwright MCP started with `cwd=/`**
+   - Symptom: browser actions fail immediately with `ENOENT: no such file or directory, mkdir '/.playwright-mcp'` or similar permission errors under `/.playwright-mcp`.
+   - Cause: Playwright MCP resolves its output directory from the server working directory. If Codex launches the MCP server with `cwd=/`, the tool tries to write to the filesystem root.
+   - Fix: set `mcp_servers.playwright.cwd` plus explicit `PLAYWRIGHT_MCP_OUTPUT_DIR` and `PLAYWRIGHT_MCP_USER_DATA_DIR` in `~/.codex/config.toml`, restart the Codex session, then rerun the minimal probe.
+
+5. **Redirecting logs into non-existent directory**
    - Symptom: shell fails before browser command starts (`No such file or directory`).
    - Fix: create directories first (`mkdir -p tmp/browser-smoke tmp/browser-smoke/logs`) before `> .../log.txt`.
 
-5. **Verbose nested-run output is hard to parse**
+6. **Verbose nested-run output is hard to parse**
    - Symptom: giant stdout logs with mixed tool traces.
    - Fix: use `codex exec -o <file>` to save final message and keep deterministic evidence.
 
-6. **`list_mcp_resources` appears empty while nested browser runs still work**
+7. **`list_mcp_resources` appears empty while nested browser runs still work**
    - Symptom: resource listing looks unavailable, but `codex exec` with MCP succeeds.
    - Fix: trust probe execution result; record the discrepancy and continue with evidence artifacts.
 
-7. **UI dev script wrapper can miss the requested host binding**
+8. **UI dev script wrapper can miss the requested host binding**
    - Symptom: `with_server.py` reports the UI ready, but Playwright gets `ERR_CONNECTION_REFUSED` on `http://127.0.0.1:<port>/...`; Vite logs still say `Local: http://localhost:<port>/`.
    - Cause: `pnpm --dir ui run dev -- --host 127.0.0.1 --port <port>` passes a literal `--` through the script wrapper in this repo, so Vite ignores the requested host override.
    - Fix: start the UI with `pnpm --dir ui exec vite --host 127.0.0.1 --port <port>` for automated probes.

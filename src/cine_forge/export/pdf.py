@@ -4,11 +4,15 @@ from fpdf import FPDF
 
 
 class PDFExporter(FPDF):
+    def __init__(self, *args, header_title: str = "CineForge Project Report", **kwargs):
+        super().__init__(*args, **kwargs)
+        self.header_title = header_title
+
     def header(self):
         if self.page_no() > 1:
             self.set_font("helvetica", "I", 8)
             self.cell(
-                0, 10, "CineForge Project Report", 
+                0, 10, self.header_title,
                 align="R", new_x="LMARGIN", new_y="NEXT"
             )
 
@@ -47,7 +51,8 @@ class PDFGenerator:
         props: dict[str, dict[str, Any]],
         output_path: str
     ):
-        pdf = PDFExporter()
+        pdf = PDFExporter(header_title="CineForge Project Report")
+        pdf.alias_nb_pages()
         pdf.set_auto_page_break(auto=True, margin=15)
         pdf.add_page()
         
@@ -183,48 +188,5 @@ class PDFGenerator:
                         pdf.multi_cell(0, 4, self.sanitize(f"- {p}"), new_x="LMARGIN", new_y="NEXT")
                 
                 pdf.ln(5)
-
-        pdf.output(output_path)
-
-    def generate_call_sheet(
-        self,
-        project_name: str,
-        scenes: list[dict[str, Any]],
-        output_path: str
-    ):
-        pdf = PDFExporter()
-        pdf.add_page()
-        
-        pdf.set_font("helvetica", "B", 24)
-        pdf.cell(0, 15, "CALL SHEET", align="C", new_x="LMARGIN", new_y="NEXT")
-        pdf.ln(5)
-        
-        pdf.set_font("helvetica", "B", 12)
-        pdf.cell(30, 8, "Production:")
-        pdf.set_font("helvetica", "", 12)
-        pdf.cell(0, 8, self.sanitize(project_name), new_x="LMARGIN", new_y="NEXT")
-        
-        pdf.ln(10)
-
-        rows = [["Scene", "Set", "Desc", "Cast", "Pages"]]
-        for i, scene in enumerate(scenes):
-            idx = str(scene.get("scene_number") or (i + 1))
-            heading = scene.get("heading") or "Unknown"
-            summary = (scene.get("summary") or "")[:50]
-            cast = ", ".join(scene.get("characters_present") or [])[:30]
-            pages = "1/8"
-            rows.append([
-                self.sanitize(idx), 
-                self.sanitize(heading), 
-                self.sanitize(summary), 
-                self.sanitize(cast), 
-                pages
-            ])
-
-        with pdf.table(col_widths=(15, 60, 60, 40, 15)) as table:
-            for row in rows:
-                row_cells = table.row()
-                for item in row:
-                    row_cells.cell(item)
 
         pdf.output(output_path)

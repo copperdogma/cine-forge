@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
-import { exportMarkdown, getExportUrl, type ExportScope, type ExportFormat } from '@/lib/api'
+import { downloadExport, exportMarkdown, type ExportScope, type ExportFormat } from '@/lib/api'
 import { useArtifactGroups } from '@/lib/hooks'
 import { toast } from 'sonner'
 import { FileDown, Copy, FileText, CheckSquare, Square, FileCode, Clapperboard } from 'lucide-react'
@@ -34,6 +34,16 @@ export function ExportModal({
   const { data: artifactGroups } = useArtifactGroups(projectId)
 
   const hasShotPlans = (artifactGroups ?? []).some((group) => group.artifact_type === 'shot_plan')
+  const hasTimeline = (artifactGroups ?? []).some((group) => group.artifact_type === 'timeline')
+  const hasScenes = (artifactGroups ?? []).some((group) => group.artifact_type === 'scene')
+  const hasCharacters = (artifactGroups ?? []).some((group) => group.artifact_type === 'character_bible')
+  const hasLocations = (artifactGroups ?? []).some((group) => group.artifact_type === 'location_bible')
+  const hasProps = (artifactGroups ?? []).some((group) => group.artifact_type === 'prop_bible')
+  const hasStructuredProjectData = hasScenes || hasCharacters || hasLocations || hasProps
+  const onlyScriptSelected =
+    selectedComponents.length === 1 && selectedComponents[0] === 'script'
+  const canExportProjectPdf =
+    selectedComponents.length > 0 && (onlyScriptSelected || hasStructuredProjectData)
   const showShotListExports =
     scope === 'everything'
       || scope === 'scenes'
@@ -43,6 +53,7 @@ export function ExportModal({
     markdown: 'Markdown',
     pdf: 'PDF',
     'call-sheet': 'Call Sheet',
+    fcpxml: 'FCPXML',
     fountain: 'Fountain',
     docx: 'DOCX',
     'shot-list-csv': 'Shot List CSV',
@@ -70,16 +81,27 @@ export function ExportModal({
       toast.success('Copied Markdown to clipboard')
       onClose()
     } catch (error) {
-      toast.error('Failed to copy markdown')
+      toast.error(error instanceof Error ? error.message : 'Failed to copy markdown')
       console.error(error)
     }
   }
 
-  const handleDownload = (format: ExportFormat, includeOverride?: ExportComponent[]) => {
-    const url = getExportUrl(projectId, format, scope, entityId, entityType, includeOverride || selectedComponents)
-    window.location.href = url
-    toast.success(`${formatLabels[format]} export started`)
-    onClose()
+  const handleDownload = async (format: ExportFormat, includeOverride?: ExportComponent[]) => {
+    try {
+      await downloadExport(
+        projectId,
+        format,
+        scope,
+        entityId,
+        entityType,
+        includeOverride || selectedComponents,
+      )
+      toast.success(`${formatLabels[format]} export downloaded`)
+      onClose()
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Export failed')
+      console.error(error)
+    }
   }
 
   const renderShotListExports = () => {
@@ -124,6 +146,36 @@ export function ExportModal({
             </div>
           </Button>
         </div>
+      </div>
+    )
+  }
+
+  const renderInterchangeExports = () => {
+    const description = hasTimeline
+      ? 'Timeline-backed interchange with scene markers, beats, character entrances/exits, and mood notes.'
+      : 'Run timeline generation first to enable FCPXML interchange export.'
+
+    return (
+      <div className="space-y-3 pt-2">
+        <Separator />
+        <div className="space-y-1">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Interchange</p>
+          <p className={`text-xs ${hasTimeline ? 'text-muted-foreground' : 'text-amber-500'}`}>
+            {description}
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          className="justify-start h-auto py-2 px-3 w-full"
+          onClick={() => handleDownload('fcpxml')}
+          disabled={!hasTimeline}
+        >
+          <FileCode className="mr-2 h-4 w-4" />
+          <div className="text-left">
+            <div className="font-medium text-sm">FCPXML</div>
+            <div className="text-xs text-muted-foreground">Narrative timeline interchange export</div>
+          </div>
+        </Button>
       </div>
     )
   }
@@ -243,27 +295,44 @@ export function ExportModal({
                   <Button
                     variant="outline"
                     className="justify-start h-auto py-2 px-3"
-                    onClick={() => handleDownload('pdf')}
+                    onClick={() => void handleDownload('pdf')}
+                    disabled={!canExportProjectPdf}
                   >
                     <FileText className="mr-2 h-4 w-4" />
                     <div className="text-left">
-                      <div className="font-medium text-sm">PDF Report</div>
+                      <div className="font-medium text-sm">
+                        {onlyScriptSelected ? 'Screenplay PDF' : 'PDF Report'}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {onlyScriptSelected
+                          ? 'Only Script is selected, so this downloads the screenplay.'
+                          : hasStructuredProjectData
+                            ? 'Project report built from the latest breakdown artifacts.'
+                            : 'Run basic breakdown first to enable this export.'}
+                      </div>
                     </div>
                   </Button>
                   <Button
                     variant="outline"
                     className="justify-start h-auto py-2 px-3"
-                    onClick={() => handleDownload('call-sheet')}
+                    onClick={() => void handleDownload('call-sheet')}
+                    disabled={!hasScenes}
                   >
                     <FileText className="mr-2 h-4 w-4" />
                     <div className="text-left">
                       <div className="font-medium text-sm">Call Sheet</div>
+                      <div className="text-xs text-muted-foreground">
+                        {hasScenes
+                          ? 'Narrative call sheet built from scene breakdown data.'
+                          : 'Run basic breakdown first to enable call sheets.'}
+                      </div>
                     </div>
                   </Button>
                 </div>
               </div>
 
               {renderShotListExports()}
+              {renderInterchangeExports()}
             </TabsContent>
           </Tabs>
         ) : (

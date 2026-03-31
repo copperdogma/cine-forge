@@ -18,7 +18,7 @@ Source: Real user feedback (actor testing her own screenplay). Quotes:
 - *"I wonder if it could handle creating day sheets for cast and crew if locations were added in?"*
 - *"I feel like I could just hand this in to any literary agent and be like, here you go."*
 
-She attached a [real industry call sheet](file:///Users/cam/Documents/Projects/cine-forge/input/CALL%20SHEET_DAY4_TSOT.pdf) as a reference for the day sheet format.
+She attached real industry call-sheet references under `/Users/cam/Documents/Projects/cine-forge/input/Sample Call Sheets/` for the day-sheet format.
 
 ## Scope
 
@@ -113,7 +113,7 @@ Based on industry standard (reference PDF on file):
 - [x] Create `src/cine_forge/export/` module
 - [x] Implement `MarkdownExporter` class (ports logic from UI prototype, supports all entity types)
 - [x] Implement `PDFExporter` class using `fpdf2` (supports Project Report and Call Sheet layouts)
-- [x] **Verification:** Write script `scripts/verify_backend_export.py` to generate files from `lc-2` and manually verify contents.
+- [x] **Verification:** Manual backend export verification was originally done with an ad hoc helper that is no longer present in this worktree. Story 130 replaces that path with regression coverage plus artifact/API smoke checks.
 
 ### API Layer
 - [x] Create `src/cine_forge/api/routers/export.py`
@@ -205,7 +205,7 @@ Based on industry standard (reference PDF on file):
 2026-02-21 15:10 — Implemented Backend Export & CLI.
 - Added `fpdf2` dependency.
 - Created `src/cine_forge/export/` with `MarkdownExporter` and `PDFGenerator`.
-- Verified logic with `scripts/verify_backend_export.py` (manual inspection passed).
+- Verified logic with a manual backend export reproduction at the time. Historical note: the original ad hoc helper script is not present in the current worktree; Story 130 supersedes this with committed regression coverage.
 - Created `src/cine_forge/api/routers/export.py` with endpoints for MD and PDF.
 - Created `src/cine_forge/cli.py` and `__main__.py` to support `cine_forge run` and `cine_forge export` commands.
 - Updated `ui/src/components/ExportModal.tsx` to use backend endpoints.
@@ -223,7 +223,7 @@ Based on industry standard (reference PDF on file):
 - **PDF Overhaul**: Redesigned the Project Report PDF to be readable and professional (Record-based instead of basic tables).
 - **Bug Fix**: Debugged and resolved `FPDFException` (horizontal space error) by forcing X-position resets after `multi_cell` calls.
 - **Fountain Export**: Added dedicated `.fountain` download.
-- **Verification**: Verified all formats via `scripts/verify_v3_exports.py` against real `lc-2` data.
+- **Verification**: Verified all formats via an ad hoc reproduction against real `lc-2` data. Historical note: the original `scripts/verify_v3_exports.py` helper referenced here is not present in the current worktree; Story 130 replaces that path with committed tests and route/CLI smoke coverage.
 
 2026-02-21 16:45 — Refined Markdown script export.
 - Updated `MarkdownExporter` to return raw content when only the script is requested, removing project headers and code block wrappers.

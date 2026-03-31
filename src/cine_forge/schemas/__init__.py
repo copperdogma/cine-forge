@@ -81,6 +81,12 @@ from .entity_adjudication import (
     EntityType,
     EntityVerdict,
 )
+from .export_interchange import (
+    NarrativeAnnotation,
+    NarrativeAnnotationKind,
+    NarrativeInterchangeExport,
+    NarrativeSceneSegment,
+)
 from .graph import EntityEdge, EntityGraph
 from .impact import ArtifactImpact, ImpactAssessment
 from .injected_asset import (
@@ -250,6 +256,10 @@ __all__ = [
     "EntityAdjudicationDecision",
     "EntityType",
     "EntityVerdict",
+    "NarrativeAnnotation",
+    "NarrativeAnnotationKind",
+    "NarrativeInterchangeExport",
+    "NarrativeSceneSegment",
     "CostRecord",
     "DetectedValue",
     "Invention",

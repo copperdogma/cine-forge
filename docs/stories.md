@@ -2,7 +2,7 @@
 
 ## Current Execution Map (updated 2026-03-20, Story 140 closed)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The active backlog centers on follow-on polish and adjacent trust/export work rather than a missing render-validation substrate.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The active backlog now centers on follow-on polish and trust-hardening work rather than a missing render-validation substrate.
 
 ### Pending — Ready To Build Now
 
@@ -34,7 +34,7 @@ No stories currently blocked.
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |
 | **137** Previz Fidelity Upgrade | Story 027 now proves the minimal previz loop exists, but richer previz stays Draft until a usefulness eval can choose between shared video-generation and structured blocking approaches. |
-| **102 / 104 / 105 / 106 / 112 / 130** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
+| **102 / 104 / 105 / 106 / 112** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |
 
 ### Deferred — Intentionally Parked
 
@@ -194,7 +194,7 @@ NOTES from Cam:
 | 140 | Agentic Media Validation Loop | 7 — Generation | High | Done | [story-140](stories/story-140-agentic-media-validation-loop.md) |
 | 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Pending | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
 | 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Done | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
-| 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Draft | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
+| 130 | Export Fidelity: Narrative Metadata + Callsheets | 2.5 — UI/API | Medium | Done | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
 | 131 | Preference Learning from User Choices | Cross-Cutting | Medium | Done | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
 | 133 | Model Refresh, Eval Verification, and Project Model Defaults | Cross-Cutting | High | Done | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |
 | 134 | Compromise Convergence Tooling Migration | Cross-Cutting | High | Done | [story-134](stories/story-134-compromise-convergence-tooling-migration.md) |

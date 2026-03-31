@@ -310,10 +310,13 @@ export function useRunProgressChat(projectId: string | undefined) {
         )
 
         if (hasFailed) {
+          const failureMessage =
+            runState.background_error?.trim()
+            || 'Some stages failed. You can view the run details to see what went wrong.'
           store.addMessage(projectId, {
             id: `progress_${activeRunId}_failed`,
             type: 'ai_suggestion',
-            content: 'Some stages failed. You can view the run details to see what went wrong.',
+            content: failureMessage,
             timestamp: Date.now(),
             actions: [
               {

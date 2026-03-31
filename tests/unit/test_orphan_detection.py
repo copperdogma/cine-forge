@@ -43,17 +43,52 @@ def test_orphan_detection_persists_failed_status_to_disk(tmp_path: Path) -> None
     assert stages["breakdown"]["status"] == "failed"
     assert stages["ingest"]["status"] == "done"  # Unchanged
     assert result["background_error"] == "Run orphaned (backend restart or crash)"
+    assert result["state"]["finished_at"] is not None
 
     # Verify persistence: re-read from disk
     persisted = json.loads(state_path.read_text(encoding="utf-8"))
     assert persisted["stages"]["normalize"]["status"] == "failed"
     assert persisted["stages"]["breakdown"]["status"] == "failed"
     assert persisted["stages"]["ingest"]["status"] == "done"
+    assert persisted["finished_at"] is not None
 
 
 @pytest.mark.unit
-def test_orphan_detection_does_not_write_if_no_stuck_stages(tmp_path: Path) -> None:
-    """If all stages are done/failed, no write should occur."""
+def test_failed_inactive_run_gets_finished_at_persisted(tmp_path: Path) -> None:
+    """A failed run with no active worker should still be finalized on disk."""
+    service = OperatorConsoleService(workspace_root=tmp_path)
+
+    run_id = "run-failed"
+    run_dir = tmp_path / "output" / "runs" / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    state = {
+        "run_id": run_id,
+        "recipe_id": "test_recipe",
+        "runtime_params": {},
+        "stages": {
+            "timeline": {"status": "failed"},
+        },
+    }
+    state_path = run_dir / "run_state.json"
+    state_path.write_text(json.dumps(state), encoding="utf-8")
+    (run_dir / "background_error.log").write_text(
+        "Stage 'timeline' requires upstream artifacts.",
+        encoding="utf-8",
+    )
+
+    result = service.read_run_state(run_id)
+
+    assert result["background_error"] == "Stage 'timeline' requires upstream artifacts."
+    assert result["state"]["finished_at"] is not None
+
+    persisted = json.loads(state_path.read_text(encoding="utf-8"))
+    assert persisted["finished_at"] is not None
+
+
+@pytest.mark.unit
+def test_completed_inactive_run_gets_finished_at_when_missing(tmp_path: Path) -> None:
+    """A completed run with no worker should be finalized on read."""
     service = OperatorConsoleService(workspace_root=tmp_path)
 
     run_id = "run-clean"
@@ -70,10 +105,10 @@ def test_orphan_detection_does_not_write_if_no_stuck_stages(tmp_path: Path) -> N
         },
     }
     state_path = run_dir / "run_state.json"
-    original_content = json.dumps(state)
-    state_path.write_text(original_content, encoding="utf-8")
+    state_path.write_text(json.dumps(state), encoding="utf-8")
 
-    service.read_run_state(run_id)
+    result = service.read_run_state(run_id)
 
-    # File should not be rewritten (same content)
-    assert state_path.read_text(encoding="utf-8") == original_content
+    assert result["state"]["finished_at"] is not None
+    persisted = json.loads(state_path.read_text(encoding="utf-8"))
+    assert persisted["finished_at"] is not None
