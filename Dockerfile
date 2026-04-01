@@ -23,7 +23,13 @@ RUN apt-get update && \
 # Install Python dependencies
 COPY pyproject.toml ./
 COPY src/ ./src/
-RUN pip install --no-cache-dir .
+RUN CUTOFF=$(python - <<'PY'
+from datetime import UTC, datetime, timedelta
+print((datetime.now(UTC) - timedelta(days=7)).replace(microsecond=0).isoformat().replace("+00:00", "Z"))
+PY
+) && \
+    pip install --no-cache-dir uv==0.6.3 && \
+    UV_EXCLUDE_NEWER="$CUTOFF" uv pip install --system --break-system-packages .
 
 # Copy pipeline configs (recipes, etc.)
 COPY configs/ ./configs/

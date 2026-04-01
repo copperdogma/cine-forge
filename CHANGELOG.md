@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-03-31-03] — Dependency freshness hardening for npm, pnpm, and uv
+
+### Added
+- Added repo-local npm freshness gates at the root and under `ui/`, plus a `ui/pnpm-workspace.yaml` minimum release age policy for the frontend workspace
+- Added `scripts/uv-safe.sh` so Python dependency syncs can apply a rolling 7-day `uv --exclude-newer` cutoff instead of relying on a stale fixed date
+
+### Changed
+- Changed the documented setup flow to use the `uv` wrapper, clarified the tool-version limits of the freshness controls, and switched the UI install example to `npm ci`
+- Changed the Docker runtime build to bootstrap pinned `uv` and install Python dependencies with a computed 7-day freshness cutoff instead of raw `pip install .`
+
 ## [2026-03-31-02] — Agent workflow drift guards and scout refresh
 
 ### Added

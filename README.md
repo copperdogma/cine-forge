@@ -24,12 +24,21 @@ forward immutable artifacts with full provenance.
 
 ## Setup
 
-1. Create and activate a virtual environment.
-2. Install dependencies:
+1. Install `uv` (recommended for repo-managed Python environments).
+2. Sync dependencies through the repo wrapper so the rolling 7-day freshness delay is applied:
+
+```bash
+./scripts/uv-safe.sh sync --extra dev
+```
+
+Fallback:
 
 ```bash
 python3 -m pip install -e ".[dev]"
 ```
+
+The `pip` fallback bypasses the repo-local freshness delay. Direct `uv` commands do too unless
+you pass `--exclude-newer` yourself. Use those paths only if you intentionally want to opt out.
 
 ## Quick Start (Agentic Development)
 
@@ -110,11 +119,22 @@ Start the API and UI in two terminals:
 PYTHONPATH=src python -m cine_forge.api
 
 # Terminal 2: UI
-cd ui && npm install && npm run dev
+cd ui && npm ci && npm run dev
 ```
 
 - **API**: http://localhost:8000 (OpenAPI docs at `/docs`)
 - **UI**: http://localhost:5174
+
+## Dependency Freshness Hardening
+
+- Node installs are delayed by 7 days via repo-local npm/pnpm config. `npm` uses `.npmrc` and
+  needs version `11.10.0+` for `min-release-age`; `pnpm` uses `ui/pnpm-workspace.yaml` and needs
+  `10.16.0+` for `minimumReleaseAge`. Older releases ignore these settings.
+- Python installs are delayed by 7 days when they go through `./scripts/uv-safe.sh ...`, which
+  computes a fresh `uv --exclude-newer` cutoff at runtime.
+- These guards reduce exposure to brand-new malicious publishes. They do not help if a bad
+  version is already in a lockfile, is installed explicitly, or survives unnoticed past the
+  7-day window.
 
 ## Notes
 

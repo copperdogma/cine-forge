@@ -53,7 +53,7 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 Multi-stage build defined in `/Dockerfile`:
 
 1. **Stage 1 (frontend)**: `node:24-slim` — `npm ci && npm run build` → produces `/app/ui/dist/`
-2. **Stage 2 (runtime)**: `python:3.12-slim` — `pip install .` → copies frontend dist to `/app/static/`
+2. **Stage 2 (runtime)**: `python:3.12-slim` — pinned `uv` bootstrap + `uv pip install --exclude-newer <7d cutoff> .` → copies frontend dist to `/app/static/`
 3. Runs as non-root user `cineforge` (uid 1001)
 4. Entrypoint: `uvicorn cine_forge.api.app:app --host 0.0.0.0 --port 8000`
 
