@@ -404,8 +404,10 @@ class IntentMoodInput(BaseModel):
 
     mood_descriptors: list[str] = []
     reference_films: list[str] = []
+    filmmaker_anchors: list[str] = []
     style_preset_id: str | None = None
     natural_language_intent: str | None = None
+    look_notes: str | None = None
     scope: str = "project"
     scene_id: str | None = None
 
@@ -417,8 +419,10 @@ class IntentMoodResponse(BaseModel):
     scene_id: str | None = None
     mood_descriptors: list[str] = []
     reference_films: list[str] = []
+    filmmaker_anchors: list[str] = []
     style_preset_id: str | None = None
     natural_language_intent: str | None = None
+    look_notes: str | None = None
     user_approved: bool = False
     version: int = 1
 
@@ -466,8 +470,10 @@ class IntentMoodSuggestion(BaseModel):
 
     mood_descriptors: list[str]
     reference_films: list[str] = []
+    filmmaker_anchors: list[str] = []
     style_preset_id: str | None = None
     natural_language_intent: str | None = None
+    look_notes: str | None = None
     rationale: str = ""
 
 

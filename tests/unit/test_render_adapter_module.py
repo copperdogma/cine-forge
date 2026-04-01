@@ -44,6 +44,15 @@ def test_run_module_generates_prompt_video_and_track_entries(
                     ),
                     "sections": [
                         {
+                            "section_id": "creative_brief",
+                            "title": "Creative Brief",
+                            "body": (
+                                "Live-action pressure cooker with wind-scoured tension "
+                                "and named project taste cues."
+                            ),
+                            "source_artifact_types": [],
+                        },
+                        {
                             "section_id": "shot_definition",
                             "title": "Shot Definition",
                             "body": "Use the planned slow push and preserve the hero coverage.",
@@ -102,6 +111,7 @@ def test_run_module_generates_prompt_video_and_track_entries(
                         },
                     ],
                     "covered_categories": [
+                        "creative_brief",
                         "shot_definition",
                         "look_and_feel",
                         "sound_and_music",
@@ -183,9 +193,11 @@ def test_run_module_generates_prompt_video_and_track_entries(
     manifest = TrackManifest.model_validate(manifest_payload)
 
     assert "Coverage approach" in str(captured["compiler_prompt"])
+    assert "CREATIVE BRIEF:" in str(captured["compiler_prompt"])
     assert prompt_output["exclude_upstream_lineage_types"] == ["track_manifest"]
     assert prompt_artifact.target_provider == "openai"
     assert prompt_artifact.completeness.missing_categories == []
+    assert prompt_artifact.creative_brief_preview is not None
     assert video_output["exclude_upstream_lineage_types"] == ["track_manifest"]
     assert any(item.used_as == "input_reference" for item in prompt_artifact.resolved_inputs)
     assert generated_video.prompt_ref.artifact_type == "render_prompt"

@@ -207,21 +207,37 @@ def test_synthesize_prompt_handles_missing_fields():
 
 
 @pytest.mark.unit
-def test_build_image_prompt_tracks_project_config_source():
+def test_build_image_prompt_tracks_creative_brief_sources():
     prompt, sources_used = build_image_prompt(
         "character",
         {"name": "The Mariner", "description": "A grizzled old sailor."},
         directive="More weathered",
-        project_config_data={
-            "genre": ["nautical drama"],
-            "tone": ["bleak", "windswept"],
-            "production_format": "anime",
+        creative_brief_data={
+            "visual_medium": "anime",
+            "mood_descriptors": ["bleak", "windswept"],
+            "reference_films": ["The Lighthouse"],
+            "filmmaker_anchors": ["Robert Eggers"],
+            "style_preset_id": None,
+            "natural_language_intent": "Keep the harbour ancient and unforgiving.",
+            "look_notes": "Salt-crusted wardrobe and cold cyan palette.",
+            "active_project_references": [],
+            "summary_lines": [
+                "Visual medium: anime.",
+                "Mood descriptors: bleak, windswept.",
+                "Film anchors: The Lighthouse.",
+                "Filmmaker anchors: Robert Eggers.",
+                "Creative direction: Keep the harbour ancient and unforgiving.",
+                "Look notes: Salt-crusted wardrobe and cold cyan palette.",
+            ],
+            "operator_preview": "anime visual medium. mood=bleak, windswept.",
+            "sources_used": ["project_config", "intent_mood"],
         },
     )
     assert "More weathered" in prompt
     assert "anime" in prompt.lower()
-    assert "nautical drama" in prompt
     assert "bleak, windswept" in prompt
+    assert "The Lighthouse" in prompt
+    assert "Robert Eggers" in prompt
     assert "project_config" in sources_used
     assert "directive" in sources_used
 
@@ -232,7 +248,6 @@ def test_build_image_prompt_skips_project_config_source_when_unset():
         "prop",
         {"name": "The Oar", "description": "A heavy oak oar."},
         seed_image_filename="design_study_r1_img1.jpg",
-        project_config_data={},
     )
     assert "Variation of the previously approved design direction" in prompt
     assert "seed_image" in sources_used
@@ -282,20 +297,50 @@ def test_build_image_prompt_includes_look_and_feel_context():
 
 
 @pytest.mark.unit
-def test_build_image_prompt_includes_intent_mood_context():
+def test_build_image_prompt_includes_creative_brief_project_references():
     prompt, sources_used = build_image_prompt(
         "location",
         {"name": "The Harbour", "description": "A fog-shrouded Victorian harbour."},
-        intent_mood_data={
+        creative_brief_data={
+            "visual_medium": "live_action",
             "mood_descriptors": ["lonely", "ominous"],
             "reference_films": ["The Lighthouse"],
+            "filmmaker_anchors": [],
+            "style_preset_id": None,
             "natural_language_intent": "Make the harbour feel ancient and judging.",
+            "look_notes": None,
+            "active_project_references": [
+                {
+                    "asset_id": "asset-1",
+                    "filename": "storm_palette_board.jpg",
+                    "purpose": "mood_board",
+                    "lock_status": "soft_locked",
+                    "transparency_note": (
+                        "storm_palette_board.jpg (mood_board, soft_locked): mood-board cue "
+                        "from filename/purpose only; keep interpretation transparent and bounded."
+                    ),
+                },
+            ],
+            "summary_lines": [
+                "Visual medium: live action.",
+                "Mood descriptors: lonely, ominous.",
+                "Film anchors: The Lighthouse.",
+                "Creative direction: Make the harbour feel ancient and judging.",
+                (
+                    "Project reference cue: storm_palette_board.jpg (mood_board, soft_locked): "
+                    "mood-board cue from filename/purpose only; keep interpretation "
+                    "transparent and bounded."
+                ),
+            ],
+            "operator_preview": "live action visual medium. mood=lonely, ominous.",
+            "sources_used": ["project_config", "intent_mood", "project_references"],
         },
     )
     assert "lonely, ominous" in prompt
     assert "The Lighthouse" in prompt
     assert "ancient and judging" in prompt
-    assert "intent_mood" in sources_used
+    assert "storm_palette_board.jpg" in prompt
+    assert "project_references" in sources_used
 
 
 @pytest.mark.unit

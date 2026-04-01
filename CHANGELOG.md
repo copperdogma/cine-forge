@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-01-01] — Intent-side creative brief transparency (Story 141)
+
+### Added
+- Added richer Intent taste inputs for filmmaker anchors and look notes, plus a typed compiled creative brief preview shared by the backend and UI
+- Added focused regression coverage and a story-scoped prompt probe for the shared creative-brief seam across design-study and render-adapter consumers
+
+### Changed
+- Changed the Intent API surface into a dedicated router with a read-only creative-brief endpoint instead of keeping more route logic inline in the main API app
+- Changed design-study and render-adapter prompt compilation to consume the same compiled creative brief and persist the exact brief preview used downstream
+
 ## [2026-03-31-03] — Dependency freshness hardening for npm, pnpm, and uv
 
 ### Added

@@ -64,7 +64,11 @@ class IntentMood(BaseModel):
     )
     reference_films: list[str] = Field(
         default_factory=list,
-        description="Titles, directors, aesthetic references (e.g. 'like Blade Runner')",
+        description="Film / series anchors describing the desired visual or tonal lineage",
+    )
+    filmmaker_anchors: list[str] = Field(
+        default_factory=list,
+        description="Directors, cinematographers, or creators used as taste anchors",
     )
     style_preset_id: str | None = Field(
         default=None,
@@ -73,6 +77,10 @@ class IntentMood(BaseModel):
     natural_language_intent: str | None = Field(
         default=None,
         description="Free-text direction (e.g. 'make this scene darker and tenser')",
+    )
+    look_notes: str | None = Field(
+        default=None,
+        description="Freeform visual look notes that do not fit the chip/tag inputs",
     )
     user_approved: bool = Field(
         default=False,

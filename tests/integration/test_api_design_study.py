@@ -6,16 +6,19 @@ Uses TestClient (no real HTTP server) and mocks generate_image to avoid Imagen A
 
 from __future__ import annotations
 
+import io
 import json
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
+from PIL import Image
 
 from cine_forge.api.app import create_app
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
+from cine_forge.services import InjectedAssetService
 
 
 def _metadata(intent: str) -> ArtifactMetadata:
@@ -63,7 +66,14 @@ def _create_mock_bible(project_path: Path, entity_id: str) -> None:
     )
 
 
-_FAKE_JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0] + [0x00] * 100)  # minimal JPEG header stub
+def _jpeg_bytes(color: tuple[int, int, int] = (34, 56, 82)) -> bytes:
+    buffer = io.BytesIO()
+    image = Image.new("RGB", (1280, 720), color=color)
+    image.save(buffer, format="JPEG", quality=90)
+    return buffer.getvalue()
+
+
+_FAKE_JPEG = _jpeg_bytes()
 
 
 def _seed_project_prompt_context(project_path: Path) -> None:
@@ -99,9 +109,30 @@ def _seed_project_prompt_context(project_path: Path) -> None:
             "scope": "project",
             "mood_descriptors": ["lonely", "ominous"],
             "reference_films": ["The Lighthouse"],
+            "filmmaker_anchors": ["Robert Eggers"],
             "natural_language_intent": "Make the world feel ancient and judging.",
+            "look_notes": "Salt-crusted wardrobe and cold cyan palette.",
         },
         metadata=_metadata("seed intent mood"),
+    )
+    asset_service = InjectedAssetService(project_path)
+    asset_service.inject_asset(
+        target_kind="project",
+        target_id="project",
+        purpose="mood_board",
+        filename="storm_palette_board.jpg",
+        content=_FAKE_JPEG,
+        lock_status="soft_locked",
+        content_type="image/jpeg",
+    )
+    asset_service.inject_asset(
+        target_kind="project",
+        target_id="project",
+        purpose="style_reference",
+        filename="salt_crusted_costume_stills.pdf",
+        content=b"%PDF-1.4 mock style reference",
+        lock_status="hard_locked",
+        content_type="application/pdf",
     )
 
 
@@ -146,10 +177,13 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     assert "project_config" in state["rounds"][0]["sources_used"]
     assert "look_and_feel" in state["rounds"][0]["sources_used"]
     assert "intent_mood" in state["rounds"][0]["sources_used"]
-    assert "animation_3d" in state["rounds"][0]["prompt"].lower()
-    assert "nautical drama" in state["rounds"][0]["prompt"].lower()
+    assert "project_references" in state["rounds"][0]["sources_used"]
+    assert "animation 3d" in state["rounds"][0]["prompt"].lower()
     assert "single-source lantern light" in state["rounds"][0]["prompt"].lower()
     assert "the lighthouse" in state["rounds"][0]["prompt"].lower()
+    assert "storm_palette_board.jpg" in state["rounds"][0]["prompt"].lower()
+    assert state["rounds"][0]["creative_brief_preview"]["filmmaker_anchors"] == ["Robert Eggers"]
+    assert len(state["rounds"][0]["creative_brief_preview"]["active_project_references"]) == 2
     image_filename = state["rounds"][0]["images"][0]["filename"]
     assert image_filename.startswith("design_study_r1_img")
 

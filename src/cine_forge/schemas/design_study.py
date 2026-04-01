@@ -7,6 +7,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from .creative_brief import VisualCreativeBrief
+
 EntityType = Literal["character", "location", "prop"]
 
 ImageDecision = Literal[
@@ -44,6 +46,7 @@ class DesignStudyRound(BaseModel):
     seed_image_filename: str | None = None
     sources_used: list[str] = Field(default_factory=list)
     learned_preferences_used: list[str] = Field(default_factory=list)
+    creative_brief_preview: VisualCreativeBrief | None = None
     count: int = 1
     created_at: datetime = Field(default_factory=datetime.now)
     images: list[DesignStudyImage] = Field(default_factory=list)

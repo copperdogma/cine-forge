@@ -66,6 +66,7 @@ from .cost_tracking import (
     SceneCostSummary,
     StageCostSummary,
 )
+from .creative_brief import CreativeBriefProjectReference, VisualCreativeBrief
 from .design_study import (
     DesignStudyImage,
     DesignStudyRound,
@@ -233,6 +234,7 @@ __all__ = [
     "CostAttribution",
     "CostAttributionKind",
     "CostReport",
+    "CreativeBriefProjectReference",
     "ModelCostSummary",
     "EntityDiscoveryResults",
     "InferredTrait",
@@ -390,6 +392,7 @@ __all__ = [
     "DesignStudyState",
     "DesignStudyEntityType",
     "ImageDecision",
+    "VisualCreativeBrief",
     "SchemaRegistry",
     "ValidationErrorDetail",
     "ValidationResult",

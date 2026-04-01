@@ -118,8 +118,12 @@ def _build_propagation_prompt(
         parts.append(f"Mood: {', '.join(intent.mood_descriptors)}")
     if intent.reference_films:
         parts.append(f"References: {', '.join(intent.reference_films)}")
+    if getattr(intent, "filmmaker_anchors", None):
+        parts.append(f"Filmmaker anchors: {', '.join(intent.filmmaker_anchors)}")
     if intent.natural_language_intent:
         parts.append(f"Direction: {intent.natural_language_intent}")
+    if getattr(intent, "look_notes", None):
+        parts.append(f"Look notes: {intent.look_notes}")
     if intent.style_preset_id:
         parts.append(f"Style preset: {intent.style_preset_id}")
 

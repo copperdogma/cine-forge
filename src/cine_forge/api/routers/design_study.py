@@ -38,6 +38,8 @@ from cine_forge.schemas.design_study import (
     ImageDecision,
 )
 from cine_forge.services import PreferenceService
+from cine_forge.services.creative_brief import build_visual_creative_brief
+from cine_forge.services.injected_assets import InjectedAssetService, manifest_entity_id
 
 if TYPE_CHECKING:
     from cine_forge.api.service import OperatorConsoleService
@@ -159,8 +161,7 @@ def _load_project_config_data(store: ArtifactStore, project_path: Path) -> dict[
 def _load_prompt_context(
     store: ArtifactStore,
     project_path: Path,
-) -> tuple[dict[str, Any], dict[str, Any] | None, dict[str, Any] | None]:
-    project_config_data = _load_project_config_data(store, project_path)
+) -> tuple[dict[str, Any] | None, Any]:
     look_and_feel_data = _load_latest_artifact_data(
         store,
         artifact_type="look_and_feel",
@@ -171,7 +172,15 @@ def _load_prompt_context(
         artifact_type="intent_mood",
         entity_id="project",
     )
-    return project_config_data, look_and_feel_data, intent_mood_data
+    creative_brief = build_visual_creative_brief(
+        project_config_data=_load_project_config_data(store, project_path),
+        intent_mood_data=intent_mood_data,
+        project_manifest=InjectedAssetService(project_path).get_manifest(
+            target_kind="project",
+            target_id="project",
+        ),
+    )
+    return look_and_feel_data, creative_brief
 
 
 def _load_prompt_context_refs(store: ArtifactStore) -> dict[str, ArtifactRef]:
@@ -185,6 +194,12 @@ def _load_prompt_context_refs(store: ArtifactStore) -> dict[str, ArtifactRef]:
     intent_mood_ref = store.latest_ref("intent_mood", "project")
     if intent_mood_ref is not None:
         refs["intent_mood"] = intent_mood_ref
+    project_manifest_ref = store.latest_ref(
+        "injected_asset_manifest",
+        manifest_entity_id("project", "project"),
+    )
+    if project_manifest_ref is not None:
+        refs["project_references"] = project_manifest_ref
     return refs
 
 
@@ -309,7 +324,7 @@ async def generate_design_study(
         negative_refs=body.negative_refs,
     )
 
-    project_config_data, look_and_feel_data, intent_mood_data = _load_prompt_context(
+    look_and_feel_data, creative_brief = _load_prompt_context(
         store,
         project_path,
     )
@@ -325,9 +340,8 @@ async def generate_design_study(
         negative_reference_lines=composition_context.negative_reference_lines,
         seed_image_filename=body.seed_image_filename,
         learned_preferences_lines=learned_preferences_used,
-        project_config_data=project_config_data,
         look_and_feel_data=look_and_feel_data,
-        intent_mood_data=intent_mood_data,
+        creative_brief_data=creative_brief.model_dump(mode="json") if creative_brief else None,
     )
 
     # Generate images — ensure bible dir exists once before writing any files
@@ -372,6 +386,7 @@ async def generate_design_study(
         seed_image_filename=body.seed_image_filename,
         sources_used=sources_used,
         learned_preferences_used=learned_preferences_used,
+        creative_brief_preview=creative_brief,
         count=body.count,
         images=images,
     )

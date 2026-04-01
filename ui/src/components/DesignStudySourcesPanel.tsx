@@ -13,6 +13,7 @@ const SOURCE_LABELS: Record<string, string> = {
   look_and_feel: 'Look & Feel',
   project_config: 'Project Config',
   intent_mood: 'Intent & Mood',
+  project_references: 'Project References',
 }
 
 const SOURCE_ORDER = [
@@ -20,6 +21,7 @@ const SOURCE_ORDER = [
   'look_and_feel',
   'project_config',
   'intent_mood',
+  'project_references',
   'directive',
   'positive_refs',
   'negative_refs',
@@ -82,6 +84,35 @@ export function DesignStudySourcesPanel({ round, defaultOpen = false }: Props) {
               </Badge>
             ))}
           </div>
+          {round.creative_brief_preview && (
+            <div className="space-y-2 rounded-md border border-border/60 bg-background/60 p-3">
+              <p className="text-xs font-medium text-foreground">Compiled creative brief</p>
+              <p className="text-xs text-muted-foreground">
+                {round.creative_brief_preview.operator_preview}
+              </p>
+              {round.creative_brief_preview.summary_lines.length > 0 && (
+                <div className="space-y-1">
+                  {round.creative_brief_preview.summary_lines.map((line) => (
+                    <p key={line} className="text-xs text-muted-foreground">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              )}
+              {round.creative_brief_preview.active_project_references.length > 0 && (
+                <div className="space-y-1">
+                  <p className="text-xs font-medium text-foreground">Active project references</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {round.creative_brief_preview.active_project_references.map((reference) => (
+                      <Badge key={reference.asset_id} variant="outline" className="text-[10px]">
+                        {reference.filename} · {reference.purpose}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
           {round.directive && (
             <p className="text-xs text-muted-foreground">
               Directive: <span className="text-foreground">"{round.directive}"</span>

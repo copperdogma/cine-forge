@@ -54,6 +54,10 @@ from cine_forge.schemas import (
     TrackEntry,
     TrackManifest,
 )
+from cine_forge.services.creative_brief import (
+    build_visual_creative_brief,
+    creative_brief_source_artifact_types,
+)
 from cine_forge.services.injected_assets import manifest_entity_id
 
 _SLUG_RE = re.compile(r"[^a-z0-9]+")
@@ -202,11 +206,7 @@ def _render_scene(
     prompt_draft, compile_cost, required_categories = compile_render_prompt(
         compiler_model=compiler_model,
         engine_pack=engine_pack,
-        scene_block=_scene_block(
-            scene=scene,
-            plan=plan,
-            intent_mood=source_maps["intent_mood"],
-        ),
+        scene_block=_scene_block(scene=scene, plan=plan),
         context_blocks=_context_blocks(
             scene=scene,
             plan=plan,
@@ -224,6 +224,9 @@ def _render_scene(
         prompt_draft=prompt_draft,
         required_categories=required_categories,
         resolved_inputs=resolved_inputs,
+        extra_source_artifact_types=creative_brief_source_artifact_types(
+            source_maps["creative_brief"]
+        ),
         notes=[
             note for note in (aspect_note, duration_note, resolution_note, *request_notes) if note
         ],
@@ -259,6 +262,7 @@ def _render_scene(
         sections=sections,
         completeness=completeness,
         prompt_sources_used=prompt_sources,
+        creative_brief_preview=source_maps["creative_brief"],
         resolved_inputs=resolved_inputs,
     )
 
@@ -356,6 +360,16 @@ def _shot_plans(inputs: dict[str, Any]) -> list[ShotPlan]:
 
 
 def _build_source_maps(inputs: dict[str, Any]) -> dict[str, Any]:
+    project_config = (
+        ProjectConfig.model_validate(inputs["project_config"])
+        if isinstance(inputs.get("project_config"), dict)
+        else None
+    )
+    intent_mood = (
+        IntentMood.model_validate(inputs["intent_mood"])
+        if isinstance(inputs.get("intent_mood"), dict)
+        else None
+    )
     look_and_feel = _scene_payload_map(
         inputs.get("look_and_feel"), LookAndFeel, scene_key="scene_id"
     )
@@ -368,15 +382,12 @@ def _build_source_maps(inputs: dict[str, Any]) -> dict[str, Any]:
     keyframes = _scene_payload_map(inputs.get("keyframe"), KeyframeArtifact, scene_key="scene_id")
     manifests = _manifest_payload_map(inputs.get("injected_asset_manifest"))
     return {
-        "project_config": (
-            ProjectConfig.model_validate(inputs["project_config"])
-            if isinstance(inputs.get("project_config"), dict)
-            else None
-        ),
-        "intent_mood": (
-            IntentMood.model_validate(inputs["intent_mood"])
-            if isinstance(inputs.get("intent_mood"), dict)
-            else None
+        "project_config": project_config,
+        "intent_mood": intent_mood,
+        "creative_brief": build_visual_creative_brief(
+            project_config_data=project_config.model_dump(mode="json") if project_config else None,
+            intent_mood_data=intent_mood,
+            project_manifest=manifests.get(("project", "project")),
         ),
         "look_and_feel": look_and_feel,
         "sound_and_music": sound_and_music,
@@ -782,23 +793,18 @@ def _scene_block(
     *,
     scene: Scene,
     plan: ShotPlan,
-    intent_mood: IntentMood | None,
 ) -> str:
     excerpt_lines: list[str] = []
     for element in scene.elements[:6]:
         excerpt_lines.append(f"- {element.element_type}: {element.content}")
     if not excerpt_lines:
         excerpt_lines.append("- No scene excerpt available.")
-    intent_line = ""
-    if intent_mood is not None and intent_mood.natural_language_intent:
-        intent_line = f"\nProject intent: {intent_mood.natural_language_intent}"
     return (
         f"Scene {scene.scene_number}: {scene.heading}\n"
         f"Location: {scene.location} ({scene.int_ext}, {scene.time_of_day})\n"
         f"Tone: {scene.tone_mood}\n"
         f"Characters present: {', '.join(scene.characters_present) or 'none'}\n"
-        f"Estimated shot-plan duration: {plan.total_estimated_duration_seconds:.1f}s"
-        f"{intent_line}\n"
+        f"Estimated shot-plan duration: {plan.total_estimated_duration_seconds:.1f}s\n"
         "Screenplay excerpt:\n" + "\n".join(excerpt_lines)
     )
 
@@ -812,6 +818,7 @@ def _context_blocks(
 ) -> dict[str, str]:
     return {
         "shot_definition": _shot_definition_block(plan),
+        "creative_brief": _creative_brief_block(source_maps["creative_brief"]),
         "look_and_feel": _look_and_feel_block(source_maps["look_and_feel"].get(plan.scene_id)),
         "sound_and_music": _sound_block(
             source_maps["sound_and_music"].get(plan.scene_id),
@@ -860,6 +867,15 @@ def _shot_definition_block(plan: ShotPlan) -> str:
             )
         )
     return "\n".join(lines)
+
+
+def _creative_brief_block(creative_brief: Any) -> str:
+    if creative_brief is None:
+        return ""
+    lines = getattr(creative_brief, "summary_lines", None)
+    if not isinstance(lines, list):
+        return ""
+    return "\n".join(line for line in lines if isinstance(line, str) and line.strip())
 
 
 def _look_and_feel_block(look_and_feel: LookAndFeel | None) -> str:
@@ -1025,6 +1041,7 @@ def _finalize_prompt_sections(
     prompt_draft: Any,
     required_categories: list[str],
     resolved_inputs: list[RenderResolvedInput],
+    extra_source_artifact_types: list[str],
     notes: list[str],
 ) -> tuple[list[RenderPromptSection], RenderCompletenessCheck, list[str]]:
     sections: list[RenderPromptSection] = []
@@ -1046,6 +1063,9 @@ def _finalize_prompt_sections(
     missing = {item for item in prompt_draft.missing_inputs if isinstance(item, str) and item}
     missing.update(category for category in required_categories if category not in covered)
     prompt_sources = prompt_sources_from_sections(sections, resolved_inputs)
+    for artifact_type in extra_source_artifact_types:
+        if artifact_type not in prompt_sources:
+            prompt_sources.append(artifact_type)
     completeness = RenderCompletenessCheck(
         included_categories=sorted(covered),
         missing_categories=sorted(missing),

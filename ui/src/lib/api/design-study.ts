@@ -1,4 +1,5 @@
 import { ApiRequestError, API_BASE, request } from './core'
+import type { VisualCreativeBrief } from './intent-mood'
 
 export type ImageDecision =
   | 'pending'
@@ -31,6 +32,7 @@ export interface DesignStudyRound {
   seed_image_filename: string | null
   sources_used: string[]
   learned_preferences_used: string[]
+  creative_brief_preview: VisualCreativeBrief | null
   count: number
   created_at: string
   images: DesignStudyImage[]

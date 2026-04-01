@@ -28,6 +28,11 @@ Rules:
 """
 
 _CATEGORY_SPECS: dict[str, dict[str, Any]] = {
+    "creative_brief": {
+        "title": "Creative Brief",
+        "source_role_id": "director",
+        "source_artifact_types": [],
+    },
     "shot_definition": {
         "title": "Shot Definition",
         "source_role_id": "shot_planning",
