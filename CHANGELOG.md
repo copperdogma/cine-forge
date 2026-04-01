@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-01-02] — Inbox triage and onboarding trust follow-up
+
+### Added
+- Added Story 142 to track the fresh-intake artifact-health trust bug where the two-step onboarding path can end by surfacing self-inflicted attention debt
+
+### Changed
+- Changed the stories index to surface Story 142 in the ready lane and record the new pending story in the master story table
+- Changed Story 137 to absorb the cheap fast-video previz idea as an eval candidate instead of spawning a duplicate story
+- Cleared the processed inbox queue after triaging both outstanding items into their canonical homes
+
 ## [2026-04-01-01] — Intent-side creative brief transparency (Story 141)
 
 ### Added

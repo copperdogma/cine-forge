@@ -3,7 +3,4 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 ## Untriaged
 
-- Gemini Veo 3.1 Light out -- super cheap! Maybe we should use the crazy cheap models for animatics?
-
-- Issue: Stale artifacts on intial intake: http://127.0.0.1:5174/the-mariner
-  - This should never happen. I uploaded the script, did the basic breakdown, then the deep breakdown. At the end fo the deep breakdown I had "Artifact Health/14 artifacts need attention." How? That feels like a program failure. If it's all part of the initial intake, a) how can anything go stale? and b) if we're doing the INTAKE, even if something goes stale somehow it should be auto-rectified. It's a terrible experience to go thorough the two-step script onboarding and basically have the system tell you "there's a bunch of system crap you need to deal with."
+Nothing queued right now.
