@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-03-20, Story 140 closed)
+## Current Execution Map (updated 2026-04-01, Story 141 done)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The active backlog now centers on follow-on polish and trust-hardening work rather than a missing render-validation substrate.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The active backlog now centers on remaining operator-surface polish, style-pack authoring, and trust-hardening around the existing generation workflow.
 
 ### Pending — Ready To Build Now
 
@@ -157,6 +157,7 @@ NOTES from Cam:
 | 093 | Script Bible Artifact | 5 — Creative Direction | High | Done | [story-093](stories/story-093-script-bible.md) |
 | 094 | Concern Group Artifact Schemas | 5 — Creative Direction | High | Done | [story-094](stories/story-094-concern-group-schemas.md) |
 | 095 | Intent / Mood Layer | 5 — Creative Direction | High | Done | [story-095](stories/story-095-intent-mood-layer.md) |
+| 141 | Intent Taste Stack and Transparent Creative Brief | 5 — Creative Direction | High | Done | [story-141](stories/story-141-intent-taste-stack-and-transparent-creative-brief.md) |
 | 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Done | [story-096](stories/story-096-chat-about-this.md) |
 | 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
 | ~~098~~ | ~~Real-World Asset Upload Pipeline~~ | ~~7 — Generation~~ | ~~Medium~~ | Cancelled | ~~[story-098](stories/story-098-real-asset-upload.md)~~ — Merged into Story 029 so asset upload lands as one end-to-end feature. |

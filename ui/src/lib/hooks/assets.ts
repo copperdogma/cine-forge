@@ -40,6 +40,9 @@ export function useInjectAsset(projectId: string) {
       queryClient.invalidateQueries({
         queryKey: assetManifestKey(projectId, params.target_kind, params.target_id),
       })
+      if (params.target_kind === 'project' && params.target_id === 'project') {
+        queryClient.invalidateQueries({ queryKey: ['creative-brief', projectId] })
+      }
     },
   })
 }
@@ -52,6 +55,9 @@ export function useUpdateInjectedAssetLock(projectId: string) {
       queryClient.invalidateQueries({
         queryKey: assetManifestKey(projectId, params.target_kind, params.target_id),
       })
+      if (params.target_kind === 'project' && params.target_id === 'project') {
+        queryClient.invalidateQueries({ queryKey: ['creative-brief', projectId] })
+      }
     },
   })
 }

@@ -1,4 +1,5 @@
 import { request } from './core'
+import type { AssetLockStatus } from './assets'
 
 export interface ScriptContextResponse {
   title: string
@@ -11,8 +12,10 @@ export interface ScriptContextResponse {
 export interface IntentMoodSuggestion {
   mood_descriptors: string[]
   reference_films: string[]
+  filmmaker_anchors: string[]
   style_preset_id: string | null
   natural_language_intent: string | null
+  look_notes: string | null
   rationale: string
 }
 
@@ -31,8 +34,10 @@ export interface IntentMoodResponse {
   scene_id: string | null
   mood_descriptors: string[]
   reference_films: string[]
+  filmmaker_anchors: string[]
   style_preset_id: string | null
   natural_language_intent: string | null
+  look_notes: string | null
   user_approved: boolean
   version: number
 }
@@ -40,10 +45,34 @@ export interface IntentMoodResponse {
 export interface IntentMoodInput {
   mood_descriptors: string[]
   reference_films: string[]
+  filmmaker_anchors: string[]
   style_preset_id: string | null
   natural_language_intent: string | null
+  look_notes: string | null
   scope: string
   scene_id?: string | null
+}
+
+export interface CreativeBriefProjectReference {
+  asset_id: string
+  filename: string
+  purpose: string
+  lock_status: AssetLockStatus
+  transparency_note: string
+}
+
+export interface VisualCreativeBrief {
+  visual_medium: string | null
+  mood_descriptors: string[]
+  reference_films: string[]
+  filmmaker_anchors: string[]
+  style_preset_id: string | null
+  natural_language_intent: string | null
+  look_notes: string | null
+  active_project_references: CreativeBriefProjectReference[]
+  summary_lines: string[]
+  operator_preview: string
+  sources_used: string[]
 }
 
 export interface PropagatedGroupResponse {
@@ -91,6 +120,10 @@ export function saveIntentMood(projectId: string, data: IntentMoodInput): Promis
     method: 'POST',
     body: JSON.stringify(data),
   })
+}
+
+export function getCreativeBriefPreview(projectId: string): Promise<VisualCreativeBrief | null> {
+  return request<VisualCreativeBrief | null>(`/api/projects/${projectId}/intent-mood/creative-brief`)
 }
 
 export function propagateMood(

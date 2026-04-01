@@ -45,6 +45,15 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
                     ),
                     "sections": [
                         {
+                            "section_id": "creative_brief",
+                            "title": "Creative Brief",
+                            "body": (
+                                "Project-level tension, pressure, and named taste cues "
+                                "remain active."
+                            ),
+                            "source_artifact_types": [],
+                        },
+                        {
                             "section_id": "shot_definition",
                             "title": "Shot Definition",
                             "body": "Preserve the planned coverage and slow push.",
@@ -100,6 +109,7 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
                         },
                     ],
                     "covered_categories": [
+                        "creative_brief",
                         "shot_definition",
                         "look_and_feel",
                         "sound_and_music",
@@ -164,6 +174,8 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
         engine.store.load_artifact(generated_video_refs[0]).data
     )
     assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
+    render_prompt = engine.store.load_artifact(render_prompt_refs[0]).data
+    assert render_prompt["creative_brief_preview"] is not None
 
     track_ref = next(ref for ref in refs if ref.artifact_type == "track_manifest")
     manifest = TrackManifest.model_validate(engine.store.load_artifact(track_ref).data)

@@ -1,16 +1,16 @@
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, useCallback } from 'react'
-import { Compass, Sparkles, X, Plus, Loader2, ChevronDown, ChevronRight, Check, BookOpen } from 'lucide-react'
+import { Compass, Sparkles, Loader2, ChevronDown, ChevronRight, Check, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { PageHeader } from '@/components/PageHeader'
 import { ProjectReferencesSection } from '@/components/ProjectReferencesSection'
+import { CreativeBriefPreviewCard } from '@/components/intent/CreativeBriefPreviewCard'
+import { IntentTasteStackFields } from '@/components/intent/IntentTasteStackFields'
 import { VisualMediumCard } from '@/components/VisualMediumCard'
 import { toast } from 'sonner'
 import { useChatStore } from '@/lib/chat-store'
@@ -20,6 +20,7 @@ import { useActiveProjectRun, useArtifactGroups, useProject, useProjectInputs, u
 import {
   getStylePresets,
   getIntentMood,
+  getCreativeBriefPreview,
   getScriptContext,
   suggestIntentMood,
   saveIntentMood,
@@ -78,6 +79,12 @@ export default function IntentMoodPage() {
     enabled: !!projectId,
   })
 
+  const { data: creativeBrief, isLoading: creativeBriefLoading } = useQuery({
+    queryKey: ['creative-brief', projectId],
+    queryFn: () => getCreativeBriefPreview(projectId!),
+    enabled: !!projectId,
+  })
+
   const { data: scriptContext } = useQuery({
     queryKey: ['script-context', projectId],
     queryFn: () => getScriptContext(projectId!),
@@ -118,9 +125,12 @@ export default function IntentMoodPage() {
   // --- Local form state ---
   const [moodTags, setMoodTags] = useState<string[]>([])
   const [refFilms, setRefFilms] = useState<string[]>([])
+  const [filmmakerAnchors, setFilmmakerAnchors] = useState<string[]>([])
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null)
   const [nlIntent, setNlIntent] = useState('')
+  const [lookNotes, setLookNotes] = useState('')
   const [filmInput, setFilmInput] = useState('')
+  const [filmmakerInput, setFilmmakerInput] = useState('')
   const [moodInput, setMoodInput] = useState('')
   const [propagation, setPropagation] = useState<PropagationResponse | null>(null)
   const [initialized, setInitialized] = useState(false)
@@ -129,8 +139,10 @@ export default function IntentMoodPage() {
   if (currentIntent && !initialized) {
     setMoodTags(currentIntent.mood_descriptors)
     setRefFilms(currentIntent.reference_films)
+    setFilmmakerAnchors(currentIntent.filmmaker_anchors)
     setSelectedPreset(currentIntent.style_preset_id)
     setNlIntent(currentIntent.natural_language_intent ?? '')
+    setLookNotes(currentIntent.look_notes ?? '')
     setInitialized(true)
   }
 
@@ -140,12 +152,15 @@ export default function IntentMoodPage() {
       saveIntentMood(projectId!, {
         mood_descriptors: moodTags,
         reference_films: refFilms,
+        filmmaker_anchors: filmmakerAnchors,
         style_preset_id: selectedPreset,
         natural_language_intent: nlIntent || null,
+        look_notes: lookNotes || null,
         scope: 'project',
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['intent-mood', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['creative-brief', projectId] })
       queryClient.invalidateQueries({ queryKey: ['artifact-groups', projectId] })
       toast.success('Intent saved')
     },
@@ -157,8 +172,10 @@ export default function IntentMoodPage() {
     onSuccess: (data) => {
       setMoodTags(data.mood_descriptors)
       setRefFilms(data.reference_films)
+      setFilmmakerAnchors(data.filmmaker_anchors)
       setSelectedPreset(data.style_preset_id)
       setNlIntent(data.natural_language_intent ?? '')
+      setLookNotes(data.look_notes ?? '')
       toast.success('Suggestion applied — review and save when ready')
     },
     onError: (err: Error) => toast.error(err.message),
@@ -235,18 +252,41 @@ export default function IntentMoodPage() {
     setRefFilms(prev => prev.filter(f => f !== film))
   }, [])
 
+  const addFilmmaker = useCallback((name: string) => {
+    const clean = name.trim()
+    if (clean && !filmmakerAnchors.includes(clean)) {
+      setFilmmakerAnchors(prev => [...prev, clean])
+    }
+    setFilmmakerInput('')
+  }, [filmmakerAnchors])
+
+  const removeFilmmaker = useCallback((name: string) => {
+    setFilmmakerAnchors(prev => prev.filter(anchor => anchor !== name))
+  }, [])
+
   const handleSaveAndPropagate = useCallback(async () => {
     await saveMutation.mutateAsync()
     propagateAction.start()
   }, [saveMutation, propagateAction])
 
   const hasChanges = (() => {
-    if (!currentIntent) return moodTags.length > 0 || refFilms.length > 0 || nlIntent.length > 0 || selectedPreset !== null
+    if (!currentIntent) {
+      return (
+        moodTags.length > 0
+        || refFilms.length > 0
+        || filmmakerAnchors.length > 0
+        || nlIntent.length > 0
+        || lookNotes.length > 0
+        || selectedPreset !== null
+      )
+    }
     return (
       JSON.stringify(moodTags) !== JSON.stringify(currentIntent.mood_descriptors) ||
       JSON.stringify(refFilms) !== JSON.stringify(currentIntent.reference_films) ||
+      JSON.stringify(filmmakerAnchors) !== JSON.stringify(currentIntent.filmmaker_anchors) ||
       selectedPreset !== currentIntent.style_preset_id ||
-      (nlIntent || null) !== (currentIntent.natural_language_intent || null)
+      (nlIntent || null) !== (currentIntent.natural_language_intent || null) ||
+      (lookNotes || null) !== (currentIntent.look_notes || null)
     )
   })()
 
@@ -431,108 +471,30 @@ export default function IntentMoodPage() {
 
       <Separator />
 
-      {/* Mood Descriptors */}
-      <section>
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">Mood Descriptors</h3>
-        <div className="flex flex-wrap gap-2 mb-3">
-          {moodTags.map(tag => (
-            <Badge
-              key={tag}
-              variant="secondary"
-              className="gap-1 pr-1 text-sm"
-            >
-              {tag}
-              <button
-                onClick={() => removeMoodTag(tag)}
-                className="ml-0.5 rounded-full p-0.5 hover:bg-destructive/20 cursor-pointer"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </Badge>
-          ))}
-          <div className="flex gap-1">
-            <Input
-              value={moodInput}
-              onChange={e => setMoodInput(e.target.value)}
-              onKeyDown={e => {
-                if (e.key === 'Enter' && moodInput.trim()) {
-                  e.preventDefault()
-                  addMoodTag(moodInput)
-                }
-              }}
-              placeholder="Add mood..."
-              className="h-7 w-32 text-sm"
-            />
-            {moodInput.trim() && (
-              <Button size="sm" variant="ghost" className="h-7 px-2" onClick={() => addMoodTag(moodInput)}>
-                <Plus className="h-3 w-3" />
-              </Button>
-            )}
-          </div>
-        </div>
-        {/* Quick suggestions */}
-        <div className="flex flex-wrap gap-1.5">
-          {MOOD_SUGGESTIONS.filter(s => !moodTags.includes(s)).slice(0, 10).map(s => (
-            <button
-              key={s}
-              onClick={() => addMoodTag(s)}
-              className="text-xs px-2 py-0.5 rounded-full border border-dashed border-border text-muted-foreground hover:border-primary/50 hover:text-foreground transition-colors cursor-pointer"
-            >
-              + {s}
-            </button>
-          ))}
-        </div>
-      </section>
+      <IntentTasteStackFields
+        moodTags={moodTags}
+        moodInput={moodInput}
+        onMoodInputChange={setMoodInput}
+        onAddMoodTag={addMoodTag}
+        onRemoveMoodTag={removeMoodTag}
+        moodSuggestions={MOOD_SUGGESTIONS}
+        refFilms={refFilms}
+        filmInput={filmInput}
+        onFilmInputChange={setFilmInput}
+        onAddFilm={addFilm}
+        onRemoveFilm={removeFilm}
+        filmmakerAnchors={filmmakerAnchors}
+        filmmakerInput={filmmakerInput}
+        onFilmmakerInputChange={setFilmmakerInput}
+        onAddFilmmaker={addFilmmaker}
+        onRemoveFilmmaker={removeFilmmaker}
+        nlIntent={nlIntent}
+        onNlIntentChange={setNlIntent}
+        lookNotes={lookNotes}
+        onLookNotesChange={setLookNotes}
+      />
 
-      {/* Reference Films */}
-      <section>
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">Reference Films</h3>
-        {refFilms.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-3">
-            {refFilms.map(film => (
-              <Badge key={film} variant="outline" className="gap-1 pr-1 text-sm">
-                {film}
-                <button
-                  onClick={() => removeFilm(film)}
-                  className="ml-0.5 rounded-full p-0.5 hover:bg-destructive/20 cursor-pointer"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-          </div>
-        )}
-        <div className="flex gap-2">
-          <Input
-            value={filmInput}
-            onChange={e => setFilmInput(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter' && filmInput.trim()) {
-                e.preventDefault()
-                addFilm(filmInput)
-              }
-            }}
-            placeholder="Add film or director..."
-            className="text-sm"
-          />
-          {filmInput.trim() && (
-            <Button size="sm" variant="ghost" className="h-8 px-2" onClick={() => addFilm(filmInput)}>
-              <Plus className="h-3 w-3" />
-            </Button>
-          )}
-        </div>
-      </section>
-
-      {/* Natural Language Intent */}
-      <section>
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">Creative Direction</h3>
-        <Textarea
-          value={nlIntent}
-          onChange={e => setNlIntent(e.target.value)}
-          placeholder="Describe the feeling you want... e.g., 'Make this feel like a fading memory — warm but unreliable, with a sense of things slipping away'"
-          className="min-h-[80px] text-sm"
-        />
-      </section>
+      <CreativeBriefPreviewCard brief={creativeBrief} isLoading={creativeBriefLoading} />
 
       {/* Action buttons */}
       <div className="space-y-2">

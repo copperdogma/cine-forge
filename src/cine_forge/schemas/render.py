@@ -7,6 +7,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, model_validator
 
 from .animatic import MediaFile
+from .creative_brief import VisualCreativeBrief
 from .models import ArtifactRef, CostRecord
 
 RenderProvider = Literal["openai", "google"]
@@ -84,6 +85,7 @@ class CompiledRenderPrompt(BaseModel):
     sections: list[RenderPromptSection] = Field(default_factory=list, min_length=1)
     completeness: RenderCompletenessCheck
     prompt_sources_used: list[str] = Field(default_factory=list)
+    creative_brief_preview: VisualCreativeBrief | None = None
     resolved_inputs: list[RenderResolvedInput] = Field(default_factory=list)
 
     @model_validator(mode="after")

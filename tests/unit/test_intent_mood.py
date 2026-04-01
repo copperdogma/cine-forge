@@ -196,7 +196,9 @@ class TestIntentMoodSchema:
         intent = IntentMood()
         assert intent.mood_descriptors == []
         assert intent.reference_films == []
+        assert intent.filmmaker_anchors == []
         assert intent.style_preset_id is None
+        assert intent.look_notes is None
         assert intent.user_approved is False
 
     def test_populated_intent_mood(self) -> None:
@@ -204,12 +206,16 @@ class TestIntentMoodSchema:
             scope="project",
             mood_descriptors=["tense", "dark"],
             reference_films=["Blade Runner", "Se7en"],
+            filmmaker_anchors=["David Fincher"],
             style_preset_id="neo-noir",
             natural_language_intent="Make it feel claustrophobic.",
+            look_notes="Wet streets, sodium spill, hard reflections.",
             user_approved=True,
         )
         assert len(intent.mood_descriptors) == 2
+        assert intent.filmmaker_anchors == ["David Fincher"]
         assert intent.style_preset_id == "neo-noir"
+        assert intent.look_notes == "Wet streets, sodium spill, hard reflections."
         assert intent.user_approved is True
 
     def test_scene_scoped_intent_mood(self) -> None:
@@ -352,14 +358,18 @@ class TestSuggestModels:
 
         suggestion = IntentMoodSuggestion(
             mood_descriptors=["dark", "tense", "atmospheric"],
+            filmmaker_anchors=["David Fincher"],
             style_preset_id="neo-noir",
             natural_language_intent="A noir thriller.",
+            look_notes="City reflections and wet asphalt.",
             rationale="Based on genre and tone.",
         )
         data = suggestion.model_dump()
         restored = IntentMoodSuggestion(**data)
         assert restored.mood_descriptors == ["dark", "tense", "atmospheric"]
+        assert restored.filmmaker_anchors == ["David Fincher"]
         assert restored.style_preset_id == "neo-noir"
+        assert restored.look_notes == "City reflections and wet asphalt."
 
     def test_intent_mood_suggestion_defaults(self) -> None:
         from cine_forge.api.models import IntentMoodSuggestion
@@ -368,7 +378,9 @@ class TestSuggestModels:
             mood_descriptors=["warm"],
         )
         assert suggestion.reference_films == []
+        assert suggestion.filmmaker_anchors == []
         assert suggestion.style_preset_id is None
+        assert suggestion.look_notes is None
         assert suggestion.rationale == ""
 
 

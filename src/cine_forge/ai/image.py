@@ -19,7 +19,8 @@ import urllib.error
 import urllib.request
 from typing import Any, Literal
 
-from cine_forge.schemas.models import ProductionFormat
+from cine_forge.schemas import VisualCreativeBrief
+from cine_forge.services.creative_brief import creative_brief_prompt_lines
 
 IMAGEN_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 OPENAI_BASE_URL = "https://api.openai.com/v1"
@@ -65,35 +66,6 @@ _MOCK_IMAGE_BYTES = (
     b'Storyboard Mock</text></svg>'
 )
 
-FORMAT_STYLE_MODIFIERS: dict[ProductionFormat, str] = {
-    "live_action": (
-        "Render as live-action film imagery: photorealistic materials, real actors,"
-        " cinematic lighting, and natural lens behavior."
-    ),
-    "animation_2d": (
-        "Override the visual medium to 2D animated feature art with hand-drawn linework,"
-        " stylized shapes, and flat color fills. Do not render as live-action."
-    ),
-    "animation_3d": (
-        "Override the visual medium to 3D animated feature-film imagery with stylized"
-        " physically based rendering, expressive proportions, and polished surface lighting."
-        " Do not render as live-action."
-    ),
-    "anime": (
-        "Override the visual medium to anime cel art with crisp linework, stylized facial"
-        " language, and vibrant flat colors. Do not render as live-action."
-    ),
-    "graphic_novel": (
-        "Override the visual medium to graphic novel illustration with inked contours,"
-        " bold contrast, and printed-page texture. Do not render as photorealistic live-action."
-    ),
-    "concept_art": (
-        "Emphasize exploratory production concept art with painterly ideation, key-art energy,"
-        " and art-department visualization rather than final photorealism."
-    ),
-}
-
-
 class ImageGenerationError(Exception):
     """Raised when the image generation API call fails."""
 
@@ -115,29 +87,6 @@ def _string_list(values: Any) -> list[str]:
         if isinstance(item, str) and item.strip():
             cleaned.append(item.strip())
     return cleaned
-
-
-def _project_config_context(project_config_data: dict[str, Any] | None) -> list[str]:
-    if not isinstance(project_config_data, dict):
-        return []
-
-    lines: list[str] = []
-    genres = _string_list(project_config_data.get("genre"))
-    tones = _string_list(project_config_data.get("tone"))
-    if genres:
-        lines.append(f"Genre direction: {', '.join(genres)}.")
-    if tones:
-        lines.append(f"Tone targets: {', '.join(tones)}.")
-
-    raw_format = project_config_data.get("production_format")
-    if isinstance(raw_format, str) and raw_format.strip():
-        style_modifier = FORMAT_STYLE_MODIFIERS.get(raw_format)  # type: ignore[arg-type]
-        if style_modifier:
-            lines.append(f"Visual medium: {raw_format}. {style_modifier}")
-        else:
-            lines.append(f"Visual medium: {raw_format}.")
-
-    return lines
 
 
 def _look_and_feel_context(look_and_feel_data: dict[str, Any] | None) -> list[str]:
@@ -165,28 +114,16 @@ def _look_and_feel_context(look_and_feel_data: dict[str, Any] | None) -> list[st
     return lines
 
 
-def _intent_mood_context(intent_mood_data: dict[str, Any] | None) -> list[str]:
-    if not isinstance(intent_mood_data, dict):
-        return []
-
-    lines: list[str] = []
-    mood_descriptors = _string_list(intent_mood_data.get("mood_descriptors"))
-    if mood_descriptors:
-        lines.append(f"Mood descriptors: {', '.join(mood_descriptors)}.")
-
-    reference_films = _string_list(intent_mood_data.get("reference_films"))
-    if reference_films:
-        lines.append(f"Reference films: {', '.join(reference_films)}.")
-
-    natural_language_intent = intent_mood_data.get("natural_language_intent")
-    if isinstance(natural_language_intent, str) and natural_language_intent.strip():
-        lines.append(f"Intent brief: {_ensure_sentence(natural_language_intent)}")
-
-    style_preset_id = intent_mood_data.get("style_preset_id")
-    if isinstance(style_preset_id, str) and style_preset_id.strip():
-        lines.append(f"Style preset: {style_preset_id.strip()}.")
-
-    return lines
+def _creative_brief_context(
+    creative_brief_data: VisualCreativeBrief | dict[str, Any] | None,
+) -> tuple[list[str], list[str]]:
+    if isinstance(creative_brief_data, VisualCreativeBrief):
+        brief = creative_brief_data
+    elif isinstance(creative_brief_data, dict):
+        brief = VisualCreativeBrief.model_validate(creative_brief_data)
+    else:
+        return [], []
+    return creative_brief_prompt_lines(brief), list(brief.sources_used)
 
 
 def synthesize_image_prompt(entity_type: str, bible_data: dict[str, Any]) -> str:
@@ -285,9 +222,8 @@ def build_image_prompt(
     negative_reference_lines: list[str] | None = None,
     seed_image_filename: str | None = None,
     learned_preferences_lines: list[str] | None = None,
-    project_config_data: dict[str, Any] | None = None,
     look_and_feel_data: dict[str, Any] | None = None,
-    intent_mood_data: dict[str, Any] | None = None,
+    creative_brief_data: VisualCreativeBrief | dict[str, Any] | None = None,
 ) -> tuple[str, list[str]]:
     """Build a design-study prompt plus a provenance list for the prompt sources used."""
     base_prompt = synthesize_image_prompt(entity_type, bible_data)
@@ -342,15 +278,12 @@ def build_image_prompt(
         prompt_parts.extend(look_and_feel_lines)
         sources_used.append("look_and_feel")
 
-    project_config_lines = _project_config_context(project_config_data)
-    if project_config_lines:
-        prompt_parts.extend(project_config_lines)
-        sources_used.append("project_config")
-
-    intent_mood_lines = _intent_mood_context(intent_mood_data)
-    if intent_mood_lines:
-        prompt_parts.extend(intent_mood_lines)
-        sources_used.append("intent_mood")
+    creative_brief_lines, creative_brief_sources = _creative_brief_context(creative_brief_data)
+    if creative_brief_lines:
+        prompt_parts.extend(creative_brief_lines)
+        for source in creative_brief_sources:
+            if source not in sources_used:
+                sources_used.append(source)
 
     prompt = " ".join(part.strip() for part in prompt_parts if part and part.strip())
     return prompt, sources_used

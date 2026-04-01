@@ -1,0 +1,210 @@
+{
+  "story": 141,
+  "deterministic_checks": {
+    "design_study": {
+      "legacy": {
+        "visual_medium": true,
+        "reference_film": true,
+        "filmmaker_anchor": false,
+        "look_notes": false,
+        "project_reference_filename": false,
+        "reference_transparency": false,
+        "look_and_feel": true
+      },
+      "new": {
+        "visual_medium": true,
+        "reference_film": true,
+        "filmmaker_anchor": true,
+        "look_notes": true,
+        "project_reference_filename": true,
+        "reference_transparency": true,
+        "look_and_feel": true
+      },
+      "new_sources_used": [
+        "entity_bible",
+        "look_and_feel",
+        "project_config",
+        "intent_mood",
+        "project_references"
+      ]
+    },
+    "render_adapter": {
+      "legacy": {
+        "visual_medium": false,
+        "reference_film": false,
+        "filmmaker_anchor": false,
+        "look_notes": false,
+        "project_reference_filename": true,
+        "reference_transparency": false,
+        "look_and_feel": true
+      },
+      "new": {
+        "visual_medium": true,
+        "reference_film": true,
+        "filmmaker_anchor": true,
+        "look_notes": true,
+        "project_reference_filename": true,
+        "reference_transparency": true,
+        "look_and_feel": true
+      },
+      "new_sources_used": [
+        "project_config",
+        "intent_mood",
+        "project_references"
+      ]
+    }
+  },
+  "artifacts": {
+    "design_study_brief": {
+      "visual_medium": "animation_3d",
+      "mood_descriptors": [
+        "lonely",
+        "ominous"
+      ],
+      "reference_films": [
+        "The Lighthouse"
+      ],
+      "filmmaker_anchors": [
+        "Robert Eggers"
+      ],
+      "style_preset_id": null,
+      "natural_language_intent": "Make the world feel ancient and judging.",
+      "look_notes": "Salt-crusted wardrobe and cold cyan palette.",
+      "active_project_references": [
+        {
+          "asset_id": "asset-b19dd52f50",
+          "filename": "storm_palette_board.jpg",
+          "purpose": "mood_board",
+          "lock_status": "soft_locked",
+          "transparency_note": "storm_palette_board.jpg (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-dee17047de",
+          "filename": "salt_crusted_costume_stills.pdf",
+          "purpose": "style_reference",
+          "lock_status": "hard_locked",
+          "transparency_note": "salt_crusted_costume_stills.pdf (style_reference, hard_locked): hard-locked named cue only; do not infer unseen visual details."
+        }
+      ],
+      "summary_lines": [
+        "Visual medium: animation 3d.",
+        "Mood descriptors: lonely, ominous.",
+        "Film anchors: The Lighthouse.",
+        "Filmmaker anchors: Robert Eggers.",
+        "Creative direction: Make the world feel ancient and judging.",
+        "Look notes: Salt-crusted wardrobe and cold cyan palette.",
+        "Project reference cue: storm_palette_board.jpg (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded.",
+        "Project reference cue: salt_crusted_costume_stills.pdf (style_reference, hard_locked): hard-locked named cue only; do not infer unseen visual details."
+      ],
+      "operator_preview": "animation 3d visual medium. mood=lonely, ominous. anchors=The Lighthouse, Robert Eggers. Make the world feel ancient and judging. look notes=Salt-crusted wardrobe and cold cyan palette. project refs=storm_palette_board.jpg (mood_board, soft_locked); salt_crusted_costume_stills.pdf (style_reference, hard_locked)",
+      "sources_used": [
+        "project_config",
+        "intent_mood",
+        "project_references"
+      ]
+    },
+    "render_adapter_brief": {
+      "visual_medium": "animation_3d",
+      "mood_descriptors": [
+        "lonely",
+        "ominous"
+      ],
+      "reference_films": [
+        "The Lighthouse"
+      ],
+      "filmmaker_anchors": [
+        "Robert Eggers"
+      ],
+      "style_preset_id": null,
+      "natural_language_intent": "Make the world feel ancient and judging.",
+      "look_notes": "Salt-crusted wardrobe and cold cyan palette.",
+      "active_project_references": [
+        {
+          "asset_id": "asset-b19dd52f50",
+          "filename": "storm_palette_board.jpg",
+          "purpose": "mood_board",
+          "lock_status": "soft_locked",
+          "transparency_note": "storm_palette_board.jpg (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-dee17047de",
+          "filename": "salt_crusted_costume_stills.pdf",
+          "purpose": "style_reference",
+          "lock_status": "hard_locked",
+          "transparency_note": "salt_crusted_costume_stills.pdf (style_reference, hard_locked): hard-locked named cue only; do not infer unseen visual details."
+        }
+      ],
+      "summary_lines": [
+        "Visual medium: animation 3d.",
+        "Mood descriptors: lonely, ominous.",
+        "Film anchors: The Lighthouse.",
+        "Filmmaker anchors: Robert Eggers.",
+        "Creative direction: Make the world feel ancient and judging.",
+        "Look notes: Salt-crusted wardrobe and cold cyan palette.",
+        "Project reference cue: storm_palette_board.jpg (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded.",
+        "Project reference cue: salt_crusted_costume_stills.pdf (style_reference, hard_locked): hard-locked named cue only; do not infer unseen visual details."
+      ],
+      "operator_preview": "animation 3d visual medium. mood=lonely, ominous. anchors=The Lighthouse, Robert Eggers. Make the world feel ancient and judging. look notes=Salt-crusted wardrobe and cold cyan palette. project refs=storm_palette_board.jpg (mood_board, soft_locked); salt_crusted_costume_stills.pdf (style_reference, hard_locked)",
+      "sources_used": [
+        "project_config",
+        "intent_mood",
+        "project_references"
+      ]
+    }
+  },
+  "judge": {
+    "model": "claude-opus-4-6",
+    "result": {
+      "design_study": {
+        "winner": "new",
+        "rationale": "The new prompt preserves all the same core visual and narrative content as the legacy prompt while adding several important taste signals. It includes filmmaker anchors (Robert Eggers), explicit look notes ('Salt-crusted wardrobe and cold cyan palette'), and properly structured project reference cues with transparency guardrails (storm_palette_board.jpg as mood-board cue with bounded interpretation, salt_crusted_costume_stills.pdf as hard-locked named cue with explicit instruction not to infer unseen visual details). The legacy prompt uses a verbose 'Override the visual medium' instruction and includes genre/tone fields that are less cleanly structured. The new prompt also drops the redundant 'photorealistic' style note that contradicts the animation_3d medium, and uses cleaner field labels (Film anchors, Filmmaker anchors, Creative direction, Look notes) that are more transparent about their role. Both prompts share the same strong visual language, but the new version is better organized and more transparent about reference participation.",
+        "preserved_signals": [
+          "visual medium: animation 3d",
+          "mood descriptors: lonely, ominous",
+          "film anchors: The Lighthouse",
+          "filmmaker anchors: Robert Eggers (new addition, correctly sourced)",
+          "look notes: Salt-crusted wardrobe and cold cyan palette",
+          "project-reference participation: storm_palette_board.jpg and salt_crusted_costume_stills.pdf with bounded transparency cues",
+          "lighting concept: Single-source lantern light with hard monitor highlights",
+          "color palette: Steel blue, sea-worn cyan, and rust",
+          "composition philosophy: Use practical geometry to trap the subject",
+          "camera personality: Close, observant, and slightly unstable"
+        ],
+        "regressions": [
+          "Legacy included explicit genre direction (nautical drama) and tone targets (bleak, windswept) as separate fields, which are absent in the new prompt \u2014 minor loss as mood descriptors partially cover this"
+        ]
+      },
+      "render_adapter": {
+        "winner": "new",
+        "rationale": "The new render-adapter prompt introduces a clearly delineated CREATIVE BRIEF section that consolidates project-level taste signals (visual medium, mood descriptors, film anchors, filmmaker anchors, creative direction, look notes, and project reference cues with transparency instructions) into a structured block. The legacy prompt lacks this section entirely \u2014 it embeds the 'Project visual intent' as a single line inside SCENE CONTEXT, which is less discoverable and less complete. The new prompt's creative brief carries all the key taste signals: animation_3d medium, The Lighthouse film anchor, Robert Eggers filmmaker anchor, look notes about salt-crusted wardrobe and cold cyan palette, and properly bounded project reference cues. Both prompts share identical engine pack specs, scene context (minus the project visual intent line in legacy), shot definitions, look & feel, character/performance, location state, keyframe constraints, injected assets, resolved inputs, and response contract. The new prompt is strictly more informative and better structured for the render adapter to compile a faithful prompt.",
+        "preserved_signals": [
+          "visual medium: animation 3d in creative brief",
+          "mood descriptors: lonely, ominous",
+          "film anchors: The Lighthouse",
+          "filmmaker anchors: Robert Eggers",
+          "creative direction: Make the world feel ancient and judging",
+          "look notes: Salt-crusted wardrobe and cold cyan palette",
+          "project-reference participation: storm_palette_board.jpg (mood_board, soft_locked) and salt_crusted_costume_stills.pdf (style_reference, hard_locked) with transparency guardrails",
+          "all engine pack constraints preserved",
+          "all shot definitions, look & feel, character state, location state preserved",
+          "keyframe constraints and resolved inputs identical"
+        ],
+        "regressions": [
+          "Legacy included 'Project visual intent: Make the world feel ancient and judging' inline in SCENE CONTEXT, which is now moved to the CREATIVE BRIEF section \u2014 not a true regression but a relocation that could theoretically be missed if the adapter only reads SCENE CONTEXT"
+        ]
+      },
+      "overall_summary": "The new prompts are superior in both lanes. For the design study, the new version adds filmmaker anchors (Robert Eggers), explicit look notes, and properly bounded project reference cues with transparency instructions, while maintaining all existing visual and narrative signals. For the render adapter, the new version introduces a dedicated CREATIVE BRIEF section that consolidates all project-level taste signals \u2014 visual medium, mood, film/filmmaker anchors, look notes, and reference cues with transparency guardrails \u2014 that were either absent or scattered in the legacy version. Both new prompts demonstrate better transparency discipline around project references, explicitly instructing consumers not to hallucinate unseen content from referenced assets."
+    },
+    "cost": {
+      "model": "claude-opus-4-6",
+      "input_tokens": 4701,
+      "output_tokens": 1148,
+      "estimated_cost_usd": 0.156615,
+      "latency_seconds": 28.859223,
+      "request_id": "msg_01FcSjhWN5MF1Q3f3P2vatqT",
+      "finish_reason": "stop",
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0
+    }
+  }
+}
