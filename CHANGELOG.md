@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-04-01-02] — Triage yes-only recommendation close
+
+### Changed
+- Changed `/triage` and its runbook so the orchestrator closes with one recommended next step the user can approve by saying `yes`, instead of presenting an explicit yes/no menu
+
 ## [2026-04-01-01] — Intent-side creative brief transparency (Story 141)
 
 ### Added

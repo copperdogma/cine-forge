@@ -113,6 +113,9 @@ When invoked with no scope, run a methodology-first orchestration pass:
 
 ### Health Flags
 - {blocker or "none"}
+
+### Next Step
+- Recommended next step: {one concrete next action}. If you want me to do that, say "yes".
 ```
 
 ## Guardrails
@@ -121,6 +124,8 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Full-sweep mode is read-only
 - Do not let `/triage` absorb leaf-skill implementation detail
 - Always converge to one recommendation
+- End with one recommended next step the user can approve by replying `"yes"`
+- Do not offer a paired yes/no menu or ask the user to choose between explicit yes and no options
 - Never start from "what stories are ready?" Start from "what gap matters most?"
 - If the top gap has no story yet, recommend creating or promoting the right artifact instead of silently skipping it
 - Do not let inbox novelty, eval staleness, or small ready work outrank a larger live gap without an explicit explanation

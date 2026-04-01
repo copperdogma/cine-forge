@@ -55,6 +55,7 @@ This is the operational companion to `/triage`.
      - creating the missing story / ADR / spec update / eval if the gap has no home
    - Only fall back to smaller unrelated ready work when the larger gap is not actionable yet
    - Good output: one recommended action, plus runner-ups, with an explicit reason the chosen gap won.
+   - Close with a single recommended next-step sentence that the user can approve by saying `"yes"`.
 
 ## Boundaries
 
@@ -63,6 +64,7 @@ This is the operational companion to `/triage`.
 - Keep full-sweep `/triage` read-only
 - Let leaf skills own their domain logic
 - End with one clear recommendation
+- Phrase the close so the user can accept the recommendation with `"yes"`
 - Start from Ideal/spec/build-map gaps, not the backlog
 
 ### Ask first
@@ -75,6 +77,7 @@ This is the operational companion to `/triage`.
 - Never duplicate leaf-skill logic in `/triage`
 - Never let full-sweep `/triage` modify inbox items or other files
 - Never return three equal-priority recommendations without choosing one
+- Never end with an explicit yes/no menu
 - Never let "easy and ready" silently outrank "important and under-owned"
 
 ## Troubleshooting
