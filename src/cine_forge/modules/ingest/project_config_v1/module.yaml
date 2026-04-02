@@ -26,3 +26,13 @@ parameters:
     type: string
     required: false
     description: "Path to a user-edited config file to use instead of auto-detection."
+  refresh_existing_only:
+    type: boolean
+    required: false
+    default: false
+    description: "When true, only emit a refreshed config if a confirmed project_config already exists."
+  skip_if_latest_user_owned:
+    type: boolean
+    required: false
+    default: false
+    description: "When true, return no artifact if the latest confirmed config came from human edits or a config file."

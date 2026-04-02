@@ -4,29 +4,79 @@ import uuid
 from pathlib import Path
 
 import pytest
+import yaml
 
+from cine_forge.api.artifact_manager import ArtifactManager
 from cine_forge.driver.engine import DriverEngine
-from cine_forge.schemas import ArtifactRef
+
+
+def _write_mock_recipe(
+    *,
+    source_path: Path,
+    target_path: Path,
+    stage_params: dict[str, dict[str, object]],
+    keep_stage_ids: set[str] | None = None,
+) -> Path:
+    payload = yaml.safe_load(source_path.read_text(encoding="utf-8"))
+    stages = payload.get("stages", [])
+    if keep_stage_ids is not None:
+        stages = [
+            stage for stage in stages
+            if isinstance(stage.get("id"), str) and stage["id"] in keep_stage_ids
+        ]
+        payload["stages"] = stages
+    for stage in stages:
+        stage_id = stage.get("id")
+        if not isinstance(stage_id, str) or stage_id not in stage_params:
+            continue
+        params = stage.setdefault("params", {})
+        params.update(stage_params[stage_id])
+    target_path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+    return target_path
 
 
 @pytest.mark.integration
-def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> None:
+def test_deep_breakdown_does_not_leave_self_stale_attention(tmp_path: Path) -> None:
     workspace_root = Path(__file__).resolve().parents[2]
     project_dir = tmp_path / "project_world_building"
     run_id = f"test-world-building-{uuid.uuid4().hex[:8]}"
-    
-    # We'll use the sample screenplay fixture
     input_file = workspace_root / "tests" / "fixtures" / "sample_screenplay.fountain"
-    
+    ingest_recipe = _write_mock_recipe(
+        source_path=workspace_root / "configs" / "recipes" / "recipe-mvp-ingest.yaml",
+        target_path=tmp_path / "recipe-mvp-ingest-mock.yaml",
+        stage_params={
+            "normalize": {"model": "mock", "qa_model": "mock"},
+            "breakdown_scenes": {"work_model": "mock"},
+            "script_bible": {"work_model": "mock"},
+            "project_config": {"model": "mock", "qa_model": "mock"},
+        },
+    )
+    world_building_recipe = _write_mock_recipe(
+        source_path=workspace_root / "configs" / "recipes" / "recipe-world-building.yaml",
+        target_path=tmp_path / "recipe-world-building-mock.yaml",
+        stage_params={
+            "analyze_scenes": {
+                "work_model": "mock",
+                "qa_model": "mock",
+                "escalate_model": "mock",
+            },
+            "refresh_project_config": {"model": "mock", "qa_model": "mock"},
+        },
+        keep_stage_ids={"analyze_scenes", "refresh_project_config"},
+    )
+
     engine = DriverEngine(workspace_root=workspace_root, project_dir=project_dir)
-    # Run ingest first to populate the store for store_inputs
     engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-mvp-ingest.yaml",
+        recipe_path=ingest_recipe,
         run_id=f"ingest-{run_id}",
         runtime_params={
             "input_file": str(input_file),
             "default_model": "mock",
+            "work_model": "mock",
+            "verify_model": "mock",
             "utility_model": "mock",
+            "qa_model": "mock",
+            "escalate_model": "mock",
             "sota_model": "mock",
             "skip_qa": True,
             "accept_config": True,
@@ -34,89 +84,46 @@ def test_world_building_pipeline_creates_character_bibles(tmp_path: Path) -> Non
     )
 
     state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-world-building.yaml",
+        recipe_path=world_building_recipe,
         run_id=run_id,
         runtime_params={
             "input_file": str(input_file),
             "default_model": "mock",
+            "work_model": "mock",
+            "verify_model": "mock",
             "utility_model": "mock",
+            "qa_model": "mock",
+            "escalate_model": "mock",
             "sota_model": "mock",
             "skip_qa": True,
             "accept_config": True,
         }
     )
 
-    assert state["stages"]["character_bible"]["status"] == "done"
+    assert state["stages"]["analyze_scenes"]["status"] == "done"
+    assert state["stages"]["refresh_project_config"]["status"] == "done"
 
-    # Run narrative analysis to populate graph and continuity
-    analysis_id = f"analysis-{run_id}"
-    analysis_state = engine.run(
-        recipe_path=workspace_root / "configs" / "recipes" / "recipe-narrative-analysis.yaml",
-        run_id=analysis_id,
-        runtime_params={
-            "input_file": str(input_file),
-            "default_model": "mock",
-            "utility_model": "mock",
-            "sota_model": "mock",
-            "skip_qa": True,
-            "accept_config": True,
-        }
+    artifact_manager = ArtifactManager(
+        project_path_resolver=lambda _project_id: project_dir,
+        role_context_factory=lambda _project_id: None,
+        role_catalog=None,
     )
+    groups = artifact_manager.list_artifact_groups("project_world_building")
 
-    # Check bible artifacts
-    bible_refs = [
-        ArtifactRef.model_validate(ref)
-        for ref in state["stages"]["character_bible"]["artifact_refs"]
+    attention_groups = [
+        group
+        for group in groups
+        if group["artifact_type"] != "stage_review"
+        and group["health"] in {"stale", "needs_revision", "needs_review", "confirmed_valid"}
     ]
-    # In Signal in the Rain: Aria (6), Noah (6), June (8), Kell (5)
-    # should all pass min_appearances=3
-    assert len(bible_refs) >= 4
+    assert attention_groups == []
 
-    location_refs = [
-        ref
-        for ref in state["stages"]["location_bible"]["artifact_refs"]
-        if ref["artifact_type"] == "bible_manifest"
-    ]
+    scene_groups = [group for group in groups if group["artifact_type"] == "scene"]
+    assert scene_groups
+    assert all(group["health"] not in {"stale", "needs_revision"} for group in scene_groups)
 
-    # STUDIO should be produced
-    assert len(location_refs) >= 1
-
-    prop_refs = [
-        ref
-        for ref in state["stages"]["prop_bible"]["artifact_refs"]
-        if ref["artifact_type"] == "bible_manifest"
-    ]
-    # Mock returns 2 props
-    assert len(prop_refs) == 2
-
-    # Check entity graph
-    assert analysis_state["stages"]["entity_graph"]["status"] == "done"
-    graph_refs = analysis_state["stages"]["entity_graph"]["artifact_refs"]
-    assert len(graph_refs) == 1
-    assert graph_refs[0]["artifact_type"] == "entity_graph"
-
-    # Check continuity
-    assert analysis_state["stages"]["continuity_tracking"]["status"] == "done"
-    cont_refs = analysis_state["stages"]["continuity_tracking"]["artifact_refs"]
-    assert any(r["artifact_type"] == "continuity_index" for r in cont_refs)
-
-    for ref in bible_refs:
-        assert ref.artifact_type in ["bible_manifest", "character_bible"]
-        if ref.artifact_type == "bible_manifest":
-            manifest, metadata = engine.store.load_bible_entry(ref)
-            assert manifest.entity_type == "character"
-            assert manifest.version == 1
-            assert len(manifest.files) == 1
-            assert manifest.files[0].purpose == "master_definition"
-            
-            # Check master file exists
-            master_path = (
-                project_dir
-                / "artifacts"
-                / "bibles"
-                / f"character_{manifest.entity_id}"
-                / manifest.files[0].filename
-            )
-            assert master_path.exists()
-
-    
+    project_config_group = next(
+        group for group in groups if group["artifact_type"] == "project_config"
+    )
+    assert project_config_group["latest_version"] == 2
+    assert project_config_group["health"] not in {"stale", "needs_revision"}

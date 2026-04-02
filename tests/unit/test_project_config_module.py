@@ -6,7 +6,9 @@ from typing import Any
 import pytest
 import yaml
 
+from cine_forge.artifacts import ArtifactStore
 from cine_forge.modules.ingest.project_config_v1.main import run_module
+from cine_forge.schemas import ArtifactMetadata
 
 
 def _canonical_script(title: str, text: str) -> dict[str, Any]:
@@ -42,6 +44,43 @@ def _scene_index(
         "scenes_need_review": 0,
         "entries": entries or [],
     }
+
+
+def _save_project_config(
+    *,
+    tmp_path: Path,
+    project_dir: Path,
+    source: str = "hybrid",
+    config_file: str | None = None,
+    confirmed: bool = True,
+) -> None:
+    artifact = run_module(
+        inputs={
+            "normalize": _canonical_script("Original", "INT. ROOM - NIGHT\nMARA\nGo."),
+            "extract": _scene_index(8.0, ["MARA"], ["ROOM"], 8),
+        },
+        params={"model": "mock", "qa_model": "mock", "accept_config": confirmed},
+        context={
+            "run_id": "seed",
+            "stage_id": "config",
+            "runtime_params": {"accept_config": confirmed},
+        },
+    )["artifacts"][0]
+
+    metadata = dict(artifact["metadata"])
+    annotations = dict(metadata.get("annotations", {}))
+    annotations["config_file"] = config_file
+    metadata["annotations"] = annotations
+    metadata["source"] = source
+    metadata["producing_module"] = "project_config_v1"
+
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="project_config" if confirmed else "draft_project_config",
+        entity_id="project",
+        data=artifact["data"],
+        metadata=ArtifactMetadata.model_validate(metadata),
+    )
 
 
 @pytest.mark.unit
@@ -272,3 +311,105 @@ def test_accept_config_runtime_flag_confirms_draft(
     )
     assert result["artifacts"][0]["artifact_type"] == "project_config"
     assert result["artifacts"][0]["data"]["confirmed"] is True
+
+
+@pytest.mark.unit
+def test_refresh_existing_only_skips_without_confirmed_latest_config(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    project_dir = tmp_path / "project"
+
+    result = run_module(
+        inputs={
+            "normalize": _canonical_script("Original", "INT. ROOM - NIGHT\nMARA\nGo."),
+            "extract": _scene_index(8.0, ["MARA"], ["ROOM"], 8),
+        },
+        params={
+            "model": "mock",
+            "qa_model": "mock",
+            "accept_config": True,
+            "refresh_existing_only": True,
+        },
+        context={
+            "run_id": "unit",
+            "stage_id": "config",
+            "project_dir": str(project_dir),
+            "runtime_params": {"accept_config": True},
+        },
+    )
+
+    assert result["artifacts"] == []
+    assert result["model"] == "code"
+
+
+@pytest.mark.unit
+def test_refresh_existing_only_skips_user_owned_latest_config(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    project_dir = tmp_path / "project"
+    _save_project_config(
+        tmp_path=tmp_path,
+        project_dir=project_dir,
+        source="human",
+    )
+
+    result = run_module(
+        inputs={
+            "normalize": _canonical_script("Original", "INT. ROOM - NIGHT\nMARA\nGo."),
+            "extract": _scene_index(8.0, ["MARA", "JON"], ["ROOM"], 8),
+        },
+        params={
+            "model": "mock",
+            "qa_model": "mock",
+            "accept_config": True,
+            "refresh_existing_only": True,
+            "skip_if_latest_user_owned": True,
+        },
+        context={
+            "run_id": "unit",
+            "stage_id": "config",
+            "project_dir": str(project_dir),
+            "runtime_params": {"accept_config": True},
+        },
+    )
+
+    assert result["artifacts"] == []
+    assert result["model"] == "code"
+
+
+@pytest.mark.unit
+def test_refresh_existing_only_rebuilds_system_owned_latest_config(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    project_dir = tmp_path / "project"
+    _save_project_config(
+        tmp_path=tmp_path,
+        project_dir=project_dir,
+        source="hybrid",
+    )
+
+    result = run_module(
+        inputs={
+            "normalize": _canonical_script("Original", "INT. ROOM - NIGHT\nMARA\nGo."),
+            "extract": _scene_index(8.0, ["MARA", "JON"], ["ROOM"], 8),
+        },
+        params={
+            "model": "mock",
+            "qa_model": "mock",
+            "accept_config": True,
+            "refresh_existing_only": True,
+            "skip_if_latest_user_owned": True,
+        },
+        context={
+            "run_id": "unit",
+            "stage_id": "config",
+            "project_dir": str(project_dir),
+            "runtime_params": {"accept_config": True},
+        },
+    )
+
+    assert len(result["artifacts"]) == 1
+    assert result["artifacts"][0]["artifact_type"] == "project_config"

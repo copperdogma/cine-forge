@@ -36,7 +36,13 @@ import {
 } from '@/lib/inbox-utils'
 import type { InboxFilter } from '@/lib/inbox-utils'
 import type { ArtifactRef, ProjectSummary } from '@/lib/types'
-import { healthDescription, healthLabel, isAttentionHealth } from '@/lib/health'
+import {
+  actionableHealthGroups,
+  gateReviewGroups,
+  healthDescription,
+  healthLabel,
+  reviewableBibleGroups,
+} from '@/lib/health'
 
 type InboxItemType = 'attention' | 'review' | 'error' | 'gate_review'
 
@@ -55,8 +61,6 @@ interface InboxItem {
   scene_id?: string
   timestamp: number
 }
-
-const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
 
 const FILTER_LABELS: Record<InboxFilter, string> = {
   unread: 'Unread',
@@ -198,9 +202,7 @@ export default function ProjectInbox() {
 
   // Derive actionable health items from artifact groups (stable IDs via inbox-utils)
   const attentionItems = useMemo<InboxItem[]>(() => {
-    if (!artifactGroups) return []
-    return artifactGroups
-      .filter(group => isAttentionHealth(group.health) && group.artifact_type !== 'stage_review')
+    return actionableHealthGroups(artifactGroups)
       .map((group) => {
         const sourceRef = group.health_details?.source_artifact_ref
         const targetArtifactType = sourceRef?.artifact_type ?? group.artifact_type
@@ -238,13 +240,7 @@ export default function ProjectInbox() {
 
   // Derive review items from new (v1) bible artifacts that may need human review
   const reviewItems = useMemo<InboxItem[]>(() => {
-    if (!artifactGroups) return []
-    return artifactGroups
-      .filter(group =>
-        BIBLE_TYPES.includes(group.artifact_type) &&
-        group.latest_version === 1 &&
-        !isAttentionHealth(group.health)
-      )
+    return reviewableBibleGroups(artifactGroups)
       .map((group) => ({
         id: reviewItemId(group.artifact_type, group.entity_id, group.latest_version),
         type: 'review' as const,
@@ -259,9 +255,7 @@ export default function ProjectInbox() {
 
   // Derive gate review items from stage_review artifacts
   const gateReviewItems = useMemo<InboxItem[]>(() => {
-    if (!artifactGroups) return []
-    return artifactGroups
-      .filter(group => group.artifact_type === 'stage_review' && group.health === 'needs_review')
+    return gateReviewGroups(artifactGroups)
       .map((group) => {
         const [sceneId, stageId] = (group.entity_id ?? '').split('_')
         return {

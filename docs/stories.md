@@ -1,6 +1,6 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-04-01, Story 142 added)
+## Current Execution Map (updated 2026-04-01, Story 142 done)
 
 Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The active backlog now centers on remaining operator-surface polish, style-pack authoring, and trust-hardening around the existing generation workflow.
 
@@ -12,7 +12,6 @@ Phases 0–5 foundation are landed, the first three Phase 6 visualization layers
 | **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |
 | **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
 | **128** Provider Failure Chat Notifications | Focused hardening of an already-partial operator path so user-fixable provider failures surface cleanly in chat. |
-| **142** Initial Intake Should Not Self-Stale | User-reported golden-path trust bug: fresh onboarding can finish by surfacing self-inflicted artifact-health debt instead of a coherent current state or a concrete real failure. |
 ### In Progress
 
 No stories currently in progress.
@@ -193,7 +192,7 @@ NOTES from Cam:
 | 126 | Frontend Chat and Data-Layer Decomposition | 2.5 — UI | High | Done | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
 | 127 | Artifact Health Semantics + Chat Model Disclosure | 2.5 — UI | Medium | Done | [story-127](stories/story-127-artifact-health-semantics-chat-model-disclosure.md) |
 | 139 | Historical Run Progress Cards Stop Polling Missing Runs | 2.5 — UI | Medium | Draft | [story-139](stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md) |
-| 142 | Initial Intake Should Not Self-Stale | 2.5 — UI/API | High | Pending | [story-142](stories/story-142-intake-onboarding-should-not-self-stale.md) |
+| 142 | Initial Intake Should Not Self-Stale | 2.5 — UI/API | High | Done | [story-142](stories/story-142-intake-onboarding-should-not-self-stale.md) |
 | 140 | Agentic Media Validation Loop | 7 — Generation | High | Done | [story-140](stories/story-140-agentic-media-validation-loop.md) |
 | 128 | Provider Failure Chat Notifications | Cross-Cutting | Medium | Pending | [story-128](stories/story-128-provider-failure-chat-notifications.md) |
 | 129 | Entity Discovery Taxonomy Tightening | World Building | Medium | Done | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |

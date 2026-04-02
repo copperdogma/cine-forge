@@ -59,6 +59,7 @@ class _MacroAnalysisEnvelope(BaseModel):
     scenes: list[_SceneEnrichment] = Field(default_factory=list)
 
 
+_SceneEnrichment.model_rebuild()
 _MacroAnalysisEnvelope.model_rebuild()
 
 
@@ -176,6 +177,7 @@ def run_module(
             {
                 "artifact_type": "scene",
                 "entity_id": entry.scene_id,
+                "exclude_upstream_lineage_types": ["scene_index"],
                 "data": scene_payload,
                 "metadata": {
                     "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",

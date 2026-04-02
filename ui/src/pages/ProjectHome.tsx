@@ -41,7 +41,7 @@ import {
   useProjectState,
 } from '@/lib/hooks'
 import { updateProjectSettings } from '@/lib/api'
-import { healthLabel, isAttentionHealth } from '@/lib/health'
+import { actionableHealthGroups, healthLabel } from '@/lib/health'
 import { cn } from '@/lib/utils'
 import type { ProjectState, ProjectSummary } from '@/lib/types'
 
@@ -284,7 +284,7 @@ function FreshImportView({ projectId }: { projectId: string }) {
   const editorRef = useRef<ScreenplayEditorHandle>(null)
   const [isExportOpen, setIsExportOpen] = useState(false)
   const [bibleExpanded, setBibleExpanded] = useState(false)
-  const attentionGroups = artifactGroups?.filter(group => isAttentionHealth(group.health)) ?? []
+  const attentionGroups = actionableHealthGroups(artifactGroups)
   const attentionArtifacts = attentionGroups.length
   const totalArtifacts = artifactGroups?.length ?? 0
   const currentArtifacts = Math.max(totalArtifacts - attentionArtifacts, 0)

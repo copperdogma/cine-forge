@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 
 from cine_forge.ai import qa_check
 from cine_forge.ai.llm import call_llm
+from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactHealth, ProjectConfig, QAResult
 
 logger = logging.getLogger(__name__)
@@ -101,6 +102,16 @@ def run_module(
     accept_config = bool(runtime_params.get("accept_config") or params.get("accept_config", False))
     autonomous = bool(runtime_params.get("autonomous", False))
     skip_qa = bool(params.get("skip_qa", False))
+    refresh_existing_only = bool(params.get("refresh_existing_only", False))
+    skip_if_latest_user_owned = bool(params.get("skip_if_latest_user_owned", False))
+
+    refresh_guard = _refresh_guard_decision(
+        context=context,
+        refresh_existing_only=refresh_existing_only,
+        skip_if_latest_user_owned=skip_if_latest_user_owned,
+    )
+    if refresh_guard is not None:
+        return refresh_guard
 
     logger.info("Detecting project values...")
     start_detect = time.time()
@@ -218,6 +229,61 @@ def _extract_inputs(inputs: dict[str, Any]) -> tuple[dict[str, Any], dict[str, A
     if scene_index is None:
         raise ValueError("project_config_v1 requires scene_index input")
     return canonical_script, scene_index
+
+
+def _refresh_guard_decision(
+    *,
+    context: dict[str, Any],
+    refresh_existing_only: bool,
+    skip_if_latest_user_owned: bool,
+) -> dict[str, Any] | None:
+    if not refresh_existing_only:
+        return None
+
+    latest_config = _load_latest_project_config(context)
+    if latest_config is None or not latest_config["confirmed"]:
+        logger.info(
+            "Skipping project config refresh: no confirmed latest project_config is available."
+        )
+        return {"artifacts": [], "cost": None, "model": "code"}
+
+    if skip_if_latest_user_owned and latest_config["user_owned"]:
+        logger.info(
+            "Skipping project config refresh: latest project_config is user-owned."
+        )
+        return {"artifacts": [], "cost": None, "model": "code"}
+
+    return None
+
+
+def _load_latest_project_config(context: dict[str, Any]) -> dict[str, bool] | None:
+    project_dir_raw = context.get("project_dir")
+    if not isinstance(project_dir_raw, str) or not project_dir_raw:
+        return None
+
+    store = ArtifactStore(project_dir=Path(project_dir_raw))
+    latest_ref = store.latest_ref("project_config", "project")
+    if latest_ref is None:
+        return None
+
+    artifact = store.load_artifact(latest_ref)
+    payload = artifact.data
+    if hasattr(payload, "model_dump"):
+        payload = payload.model_dump(mode="json")
+    if not isinstance(payload, dict):
+        return None
+
+    annotations = artifact.metadata.annotations
+    if not isinstance(annotations, dict):
+        annotations = {}
+
+    return {
+        "confirmed": bool(payload.get("confirmed")),
+        "user_owned": (
+            artifact.metadata.source == "human"
+            or bool(annotations.get("config_file"))
+        ),
+    }
 
 
 def _detect_project_values(

@@ -1,9 +1,37 @@
-import type { ArtifactHealthDetails } from './types'
+import type { ArtifactGroupSummary, ArtifactHealthDetails } from './types'
 
 export const ATTENTION_HEALTHS = ['stale', 'needs_revision', 'needs_review', 'confirmed_valid'] as const
+export const BIBLE_REVIEW_TYPES = ['character_bible', 'location_bible', 'prop_bible'] as const
 
 export function isAttentionHealth(health: string | null | undefined): boolean {
   return !!health && ATTENTION_HEALTHS.includes(health as (typeof ATTENTION_HEALTHS)[number])
+}
+
+export function actionableHealthGroups(
+  groups: ArtifactGroupSummary[] | null | undefined,
+): ArtifactGroupSummary[] {
+  return (groups ?? []).filter(
+    group => isAttentionHealth(group.health) && group.artifact_type !== 'stage_review',
+  )
+}
+
+export function reviewableBibleGroups(
+  groups: ArtifactGroupSummary[] | null | undefined,
+): ArtifactGroupSummary[] {
+  return (groups ?? []).filter(
+    group =>
+      BIBLE_REVIEW_TYPES.includes(group.artifact_type as (typeof BIBLE_REVIEW_TYPES)[number]) &&
+      group.latest_version === 1 &&
+      !isAttentionHealth(group.health),
+  )
+}
+
+export function gateReviewGroups(
+  groups: ArtifactGroupSummary[] | null | undefined,
+): ArtifactGroupSummary[] {
+  return (groups ?? []).filter(
+    group => group.artifact_type === 'stage_review' && group.health === 'needs_review',
+  )
 }
 
 export function healthLabel(health: string | null | undefined): string {

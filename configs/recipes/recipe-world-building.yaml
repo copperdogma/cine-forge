@@ -12,6 +12,17 @@ stages:
       normalize: canonical_script
       breakdown_scenes: scene_index
 
+  - id: refresh_project_config
+    module: project_config_v1
+    params:
+      accept_config: true
+      refresh_existing_only: true
+      skip_if_latest_user_owned: true
+    after: [analyze_scenes]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+
   - id: entity_discovery
     module: entity_discovery_v1
     params:

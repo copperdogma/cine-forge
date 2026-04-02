@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-01-03] — Onboarding artifact health trust fix (Story 142)
+
+### Added
+- Added focused unit and integration coverage for onboarding self-staleness, including guarded `project_config` refresh behavior and scene-lineage exclusions
+
+### Changed
+- Changed deep breakdown to refresh only confirmed system-owned `project_config` artifacts after `scene_index` enrichment
+- Changed home, inbox, and shell badge actionability semantics to share one onboarding-health filter in the UI
+
+### Fixed
+- Fixed fresh onboarding so `basic breakdown -> deep breakdown` no longer ends with self-inflicted artifact-health attention debt
+
 ## [2026-04-01-02] — Inbox triage and onboarding trust follow-up
 
 ### Added

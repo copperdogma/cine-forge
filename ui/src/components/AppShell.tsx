@@ -45,11 +45,12 @@ import { cn } from '@/lib/utils'
 import {
   artifactAttentionItemId,
   errorItemId,
+  gateItemId,
   reviewItemId,
   parseReadIds,
   READ_INBOX_KEY,
 } from '@/lib/inbox-utils'
-import { isAttentionHealth } from '@/lib/health'
+import { actionableHealthGroups, gateReviewGroups, reviewableBibleGroups } from '@/lib/health'
 
 /** Artifact type → nav route mapping for count badges. */
 const NAV_ARTIFACT_TYPES: Record<string, string[]> = {
@@ -239,20 +240,20 @@ function ShellInner() {
     }
     // Inbox: match ProjectInbox logic — health attention items + failed runs + v1 bibles needing review
     // Badge shows unread count only, using shared ID builders (story 069)
-    const BIBLE_TYPES = ['character_bible', 'location_bible', 'prop_bible']
     const readSet = new Set(parseReadIds(project?.ui_preferences?.[READ_INBOX_KEY]))
-    const attentionCount = artifactGroups?.filter(g =>
-      isAttentionHealth(g.health) &&
+    const attentionCount = actionableHealthGroups(artifactGroups).filter(g =>
       !readSet.has(artifactAttentionItemId(g.health, g.artifact_type, g.entity_id))
     ).length ?? 0
     const errorCount = runs?.filter(r =>
       r.status === 'failed' && !readSet.has(errorItemId(r.run_id))
     ).length ?? 0
-    const reviewCount = artifactGroups?.filter(g =>
-      BIBLE_TYPES.includes(g.artifact_type) && g.latest_version === 1 && !isAttentionHealth(g.health) &&
+    const reviewCount = reviewableBibleGroups(artifactGroups).filter(g =>
       !readSet.has(reviewItemId(g.artifact_type, g.entity_id, g.latest_version))
     ).length ?? 0
-    counts['inbox'] = attentionCount + errorCount + reviewCount
+    const gateReviewCount = gateReviewGroups(artifactGroups).filter(g =>
+      !readSet.has(gateItemId(g.entity_id))
+    ).length ?? 0
+    counts['inbox'] = attentionCount + errorCount + reviewCount + gateReviewCount
     return counts
   }, [artifactGroups, runs, project?.ui_preferences])
 

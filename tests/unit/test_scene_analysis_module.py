@@ -297,8 +297,10 @@ def test_run_module_mock_produces_enriched_scenes() -> None:
 
     for scene in scenes:
         assert scene["metadata"]["annotations"]["discovery_tier"] == "llm_enriched"
+        assert scene["exclude_upstream_lineage_types"] == ["scene_index"]
 
     assert indexes[0]["metadata"]["annotations"]["discovery_tier"] == "llm_enriched"
+    assert "exclude_upstream_lineage_types" not in indexes[0]
 
 
 @pytest.mark.unit
