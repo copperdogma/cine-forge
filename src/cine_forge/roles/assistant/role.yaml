@@ -45,12 +45,19 @@ permissions:
   - project_config
   - scene
   - scene_index
+  - bible_manifest
   - character_bible
   - location_bible
   - prop_bible
   - entity_graph
+  - script_bible
+  - intent_mood
+  - look_and_feel
+  - sound_and_music
   - timeline
   - track_manifest
   - rhythm_and_flow
+  - character_and_performance
+  - story_world
   - continuity_state
   - continuity_index

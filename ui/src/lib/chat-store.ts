@@ -87,6 +87,8 @@ interface ChatStore {
   loadMessages: (projectId: string, messages: ChatMessage[]) => void
   /** Add a message to store and persist to backend (fire-and-forget). */
   addMessage: (projectId: string, message: ChatMessage) => void
+  /** Add a message to store without persisting it to the backend. */
+  addLocalMessage: (projectId: string, message: ChatMessage) => void
   /** Post a compact activity note to the chat timeline. */
   addActivity: (projectId: string, content: string, route?: string) => void
   /** Update the type of an existing message (in-memory only, no backend write). */
@@ -95,6 +97,8 @@ interface ChatStore {
   updateMessageContent: (projectId: string, messageId: string, content: string) => void
   /** Attach actions to an existing message (in-memory only — for proposal buttons). */
   attachActions: (projectId: string, messageId: string, actions: ChatAction[], preflightData?: PreflightData) => void
+  /** Clear actions from an existing message without persisting the dismissal. */
+  dismissMessageActions: (projectId: string, messageId: string) => void
   /** Add a tool call to an existing AI message (in-memory only — for inline tool indicators). */
   addToolCall: (projectId: string, messageId: string, tool: ToolCallStatus) => void
   /** Mark a tool call as complete on an existing AI message (in-memory only). */
@@ -182,6 +186,19 @@ export const useChatStore = create<ChatStore>()(
       })
     },
 
+    addLocalMessage: (projectId, message) => {
+      set((state) => {
+        const existing = state.messages[projectId] ?? []
+        if (existing.some(m => m.id === message.id)) return state
+        return {
+          messages: {
+            ...state.messages,
+            [projectId]: [...existing, message],
+          },
+        }
+      })
+    },
+
     addActivity: (projectId, content, route) => {
       const state = get()
       const existing = state.messages[projectId] ?? []
@@ -245,6 +262,21 @@ export const useChatStore = create<ChatStore>()(
           actions,
           needsAction: true,
           ...(preflightData ? { preflightData } : {}),
+        }
+        return { messages: { ...state.messages, [projectId]: updated } }
+      }),
+
+    dismissMessageActions: (projectId, messageId) =>
+      set((state) => {
+        const msgs = state.messages[projectId]
+        if (!msgs) return state
+        const idx = msgs.findIndex(m => m.id === messageId)
+        if (idx === -1) return state
+        const updated = [...msgs]
+        updated[idx] = {
+          ...updated[idx],
+          actions: [],
+          needsAction: false,
         }
         return { messages: { ...state.messages, [projectId]: updated } }
       }),

@@ -7,7 +7,6 @@ Model: Claude Sonnet 4.5 (configurable).
 
 from __future__ import annotations
 
-import copy
 import http.client
 import json
 import logging
@@ -19,7 +18,10 @@ from collections.abc import Generator
 from dataclasses import dataclass, field
 from typing import Any
 
-from cine_forge.artifacts.edit_policy import get_artifact_edit_restriction
+from cine_forge.ai.artifact_editing import (
+    build_artifact_edit_tool_result,
+    build_assistant_broker_tool_result,
+)
 from cine_forge.services.memory import MemoryService
 
 log = logging.getLogger(__name__)
@@ -94,6 +96,15 @@ phase over starting a new one.
 When proposing a run (`propose_run`), always check the pipeline graph first. If the recipe \
 requires upstream artifacts that are missing or stale, warn the user before proposing. Never \
 propose a run that will fail due to missing prerequisites without explaining what's needed.
+"""
+
+CREATIVE_EDIT_BROKER_EXTRA = """\
+
+## Assistant Broker for Canon Edits
+You cannot apply artifact edits directly. When the user asks to change canon and the
+requested artifact is within your permissions, use `request_assistant_artifact_edit`.
+That packages the exact change into an assistant-targeted handoff so the user does not
+need to restate it manually. Use this for edit intent, not for general commentary.
 """
 
 
@@ -295,6 +306,8 @@ def build_role_system_prompt(
     # Assistant gets extra write-tool instructions
     if role_id == "assistant":
         prompt += ASSISTANT_EXTRA
+    else:
+        prompt += CREATIVE_EDIT_BROKER_EXTRA
 
     # Inject interaction mode instructions (guided/expert — balanced is default, no extra)
     interaction_mode = project_summary.get("interaction_mode", "balanced")
@@ -909,8 +922,52 @@ WRITE_TOOLS: list[dict[str, Any]] = [
     },
 ]
 
-# Combined: assistant gets all tools; creative roles get READ_TOOLS only.
+# Broker tools — available to creative roles so the assistant remains the writer.
+BROKER_TOOLS: list[dict[str, Any]] = [
+    {
+        "name": "request_assistant_artifact_edit",
+        "description": (
+            "Package a canon edit request for the assistant. Use this when the user "
+            "asks you to change an artifact and you want the assistant to generate the "
+            "actual edit proposal. This does not apply changes directly."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "artifact_type": {
+                    "type": "string",
+                    "description": (
+                        "The artifact type to edit (e.g., 'character_bible', "
+                        "'location_bible', 'script_bible')."
+                    ),
+                },
+                "entity_id": {
+                    "type": "string",
+                    "description": (
+                        "The entity ID (e.g., 'mariner', 'location_harbor', "
+                        "'__project__')."
+                    ),
+                },
+                "changes": {
+                    "type": "object",
+                    "description": (
+                        "The fields to change. Use dot notation for nested fields. "
+                        "Provide the full new value for each field you want to update."
+                    ),
+                },
+                "rationale": {
+                    "type": "string",
+                    "description": "Brief explanation of why these changes are being made.",
+                },
+            },
+            "required": ["artifact_type", "entity_id", "changes", "rationale"],
+        },
+    }
+]
+
+# Combined: assistant gets all tools; creative roles get read tools plus broker handoff.
 ALL_CHAT_TOOLS = READ_TOOLS + WRITE_TOOLS
+CREATIVE_CHAT_TOOLS = READ_TOOLS + BROKER_TOOLS
 
 
 @dataclass
@@ -921,54 +978,13 @@ class ToolResult:
     preflight_data: dict[str, Any] | None = None  # Structured preflight summary for UI card
 
 
-def _compute_artifact_diff(
-    old_data: dict[str, Any],
-    new_data: dict[str, Any],
-    prefix: str = "",
-) -> list[str]:
-    """Compute a human-readable field-level diff between two artifact payloads."""
-    changes: list[str] = []
-    all_keys = set(list(old_data.keys()) + list(new_data.keys()))
-
-    for key in sorted(all_keys):
-        path = f"{prefix}.{key}" if prefix else key
-        old_val = old_data.get(key)
-        new_val = new_data.get(key)
-
-        if key not in old_data:
-            changes.append(f"+ {path}: {_summarize_value(new_val)}")
-        elif key not in new_data:
-            changes.append(f"- {path}: (removed)")
-        elif old_val != new_val:
-            if isinstance(old_val, dict) and isinstance(new_val, dict):
-                changes.extend(_compute_artifact_diff(old_val, new_val, path))
-            else:
-                changes.append(
-                    f"~ {path}: {_summarize_value(old_val)} → {_summarize_value(new_val)}"
-                )
-    return changes
-
-
-def _summarize_value(val: Any, max_len: int = 80) -> str:
-    """Summarize a value for diff display."""
-    if val is None:
-        return "(none)"
-    if isinstance(val, str):
-        if len(val) > max_len:
-            return f'"{val[:max_len]}..."'
-        return f'"{val}"'
-    if isinstance(val, list):
-        return f"[{len(val)} items]"
-    if isinstance(val, dict):
-        return f"{{{len(val)} fields}}"
-    return str(val)
-
-
 def execute_tool(
     tool_name: str,
     tool_input: dict[str, Any],
     service: Any,
     project_id: str,
+    role_id: str,
+    chat_message_id: str | None = None,
 ) -> ToolResult:
     """Execute a chat tool and return a ToolResult with content and optional actions."""
     try:
@@ -1068,7 +1084,21 @@ def execute_tool(
         # ---- Write tools (proposals with confirmation) ----
 
         elif tool_name == "propose_artifact_edit":
-            return _execute_propose_artifact_edit(tool_input, service, project_id)
+            return _execute_propose_artifact_edit(
+                tool_input,
+                service,
+                project_id,
+                role_id=role_id,
+                chat_message_id=chat_message_id,
+            )
+
+        elif tool_name == "request_assistant_artifact_edit":
+            return _execute_request_assistant_artifact_edit(
+                tool_input,
+                service,
+                project_id,
+                role_id=role_id,
+            )
 
         elif tool_name == "propose_run":
             return _execute_propose_run(tool_input, service, project_id)
@@ -1163,100 +1193,36 @@ def _execute_propose_artifact_edit(
     tool_input: dict[str, Any],
     service: Any,
     project_id: str,
+    *,
+    role_id: str,
+    chat_message_id: str | None = None,
 ) -> ToolResult:
-    """Build a diff preview and emit confirmation action buttons."""
-    atype = tool_input.get("artifact_type", "")
-    eid = tool_input.get("entity_id", "__project__")
-    changes = tool_input.get("changes", {})
-    rationale = tool_input.get("rationale", "AI-proposed edit")
-
-    restriction = get_artifact_edit_restriction(atype)
-    if restriction is not None:
-        message, hint = restriction
-        return ToolResult(content=json.dumps({
-            "error": message,
-            "hint": hint,
-            "artifact": f"{atype}/{eid}",
-        }))
-
-    # Load the current artifact
-    groups = service.list_artifact_groups(project_id)
-    match = next(
-        (g for g in groups
-         if g["artifact_type"] == atype
-         and (g.get("entity_id") or "__project__") == eid),
-        None,
+    """Build or apply an artifact edit via the extracted helper."""
+    result = build_artifact_edit_tool_result(
+        tool_input,
+        service,
+        project_id,
+        role_id,
+        chat_message_id=chat_message_id,
     )
-    if not match:
-        return ToolResult(content=json.dumps({
-            "error": f"Artifact not found: {atype}/{eid}",
-            "hint": "Check available artifacts with get_project_state.",
-        }))
+    return ToolResult(content=result.content, actions=result.actions)
 
-    detail = service.read_artifact(project_id, atype, eid, match["latest_version"])
-    old_payload = detail.get("payload", {})
-    old_data = old_payload.get("data", old_payload)
 
-    # Apply changes to build the proposed new data
-    new_data = copy.deepcopy(old_data)
-    for key, value in changes.items():
-        # Support simple dot notation for one level of nesting
-        if "." in key:
-            parts = key.split(".", 1)
-            if parts[0] in new_data and isinstance(new_data[parts[0]], dict):
-                new_data[parts[0]][parts[1]] = value
-            else:
-                new_data[key] = value
-        else:
-            new_data[key] = value
-
-    # Compute diff
-    diff_lines = _compute_artifact_diff(old_data, new_data)
-    if not diff_lines:
-        return ToolResult(content=json.dumps({
-            "status": "no_changes",
-            "message": "The proposed changes don't differ from the current artifact.",
-        }))
-
-    diff_preview = "\n".join(diff_lines)
-
-    # Build the full proposed payload (preserving envelope structure)
-    proposed_payload = copy.deepcopy(old_payload)
-    if "data" in proposed_payload:
-        proposed_payload["data"] = new_data
-    else:
-        proposed_payload = new_data
-
-    # Build action buttons for the frontend
-    actions = [
-        {
-            "id": f"confirm_edit_{eid}_{int(time.time())}",
-            "label": "Apply Changes",
-            "variant": "default",
-            "confirm_action": {
-                "type": "edit_artifact",
-                "endpoint": f"/api/projects/{project_id}/artifacts/{atype}/{eid}/edit",
-                "payload": {
-                    "data": proposed_payload,
-                    "rationale": rationale,
-                },
-            },
-        },
-        {
-            "id": f"cancel_edit_{eid}_{int(time.time())}",
-            "label": "Cancel",
-            "variant": "outline",
-        },
-    ]
-
-    result = {
-        "status": "proposal_ready",
-        "artifact": f"{atype}/{eid}",
-        "current_version": match["latest_version"],
-        "diff": diff_preview,
-        "change_count": len(diff_lines),
-    }
-    return ToolResult(content=json.dumps(result, indent=2), actions=actions)
+def _execute_request_assistant_artifact_edit(
+    tool_input: dict[str, Any],
+    service: Any,
+    project_id: str,
+    *,
+    role_id: str,
+) -> ToolResult:
+    """Build a creative-role handoff that asks the assistant to broker the edit."""
+    result = build_assistant_broker_tool_result(
+        tool_input,
+        service,
+        project_id,
+        role_id,
+    )
+    return ToolResult(content=result.content, actions=result.actions)
 
 
 def _check_recipe_preflight(
@@ -1402,6 +1368,7 @@ def _execute_propose_run(
             "id": f"cancel_run_{recipe_id}_{int(time.time())}",
             "label": "Cancel",
             "variant": "outline",
+            "dismiss_action": True,
         },
     ]
 
@@ -1748,6 +1715,7 @@ def _stream_single_role(
     service: Any,
     project_id: str,
     speaker: str,
+    chat_message_id: str | None = None,
     model: str = CHAT_MODEL,
 ) -> Generator[dict[str, Any], None, None]:
     """Stream a response for a single role, handling tool use loops.
@@ -1877,7 +1845,12 @@ def _stream_single_role(
             pending_preflight = None
             for tb in tool_use_blocks:
                 result = execute_tool(
-                    tb["name"], tb["input"], service, project_id
+                    tb["name"],
+                    tb["input"],
+                    service,
+                    project_id,
+                    role_id=speaker,
+                    chat_message_id=chat_message_id,
                 )
                 preview = (
                     result.content[:500] + "..."
@@ -1944,6 +1917,7 @@ def stream_group_chat(
     catalog: Any,
     style_pack_selections: dict[str, str] | None = None,
     page_context: str | None = None,
+    message_id: str | None = None,
     model: str = CHAT_MODEL,
 ) -> Generator[dict[str, Any], None, None]:
     """Stream group chat responses from roles and/or characters.
@@ -1964,10 +1938,10 @@ def stream_group_chat(
     target_characters = targets.characters
 
     def _tools_for_role(role_id: str) -> list[dict[str, Any]]:
-        """Assistant gets all tools; creative roles get read tools only."""
+        """Assistant gets write tools; creative roles get read tools plus broker handoff."""
         if role_id == "assistant":
             return ALL_CHAT_TOOLS
-        return READ_TOOLS
+        return CREATIVE_CHAT_TOOLS
 
     def _stream_one_role(
         role_id: str, msgs: list[dict[str, Any]],
@@ -2003,7 +1977,14 @@ def stream_group_chat(
         )
         tools = _tools_for_role(role_id)
         yield from _stream_single_role(
-            msgs, system_prompt, tools, service, project_id, role_id, model,
+            msgs,
+            system_prompt,
+            tools,
+            service,
+            project_id,
+            role_id,
+            chat_message_id=message_id,
+            model=model,
         )
         yield {"type": "role_done", "speaker": role_id, "model": model}
 
@@ -2114,7 +2095,14 @@ def stream_group_chat(
                 }
         # Characters use Sonnet — Haiku is too easily swayed by chat history patterns
         yield from _stream_single_role(
-            char_msgs, char_prompt, READ_TOOLS, service, project_id, speaker, character_model,
+            char_msgs,
+            char_prompt,
+            READ_TOOLS,
+            service,
+            project_id,
+            speaker,
+            chat_message_id=message_id,
+            model=character_model,
         )
         yield {"type": "role_done", "speaker": speaker, "model": character_model}
 

@@ -202,6 +202,7 @@ export function ChatMessageItem({
                 <ActionButton
                   key={action.id}
                   action={action}
+                  messageId={message.id}
                   projectId={projectId}
                   startRun={startRun}
                   inputPath={inputPath}
@@ -254,6 +255,7 @@ export function ChatMessageItem({
               <ActionButton
                 key={action.id}
                 action={action}
+                messageId={message.id}
                 projectId={projectId}
                 startRun={startRun}
                 inputPath={inputPath}

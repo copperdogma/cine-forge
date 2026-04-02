@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-04-01, Story 142 done)
+## Current Execution Map (updated 2026-04-02, Story 097 done)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The active backlog now centers on remaining operator-surface polish, style-pack authoring, and trust-hardening around the existing generation workflow.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The creative conversation loop now includes conversational upstream canon editing, so the active backlog centers on remaining operator-surface polish and trust-hardening around the existing generation workflow.
 
 ### Pending — Ready To Build Now
 
@@ -30,7 +30,6 @@ No stories currently blocked.
 |---|---|
 | **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |
 | **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
-| **097** AI Artifact Editing | Now unblocked by Story 031, but it is still only draft-scoped. Promote it only after the editing UX, safety rails, and downstream revision flow are detailed enough to validate coherently. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |
 | **137** Previz Fidelity Upgrade | Story 027 now proves the minimal previz loop exists, but richer previz stays Draft until a usefulness eval can choose between shared video-generation and structured blocking approaches. |
@@ -159,7 +158,7 @@ NOTES from Cam:
 | 095 | Intent / Mood Layer | 5 — Creative Direction | High | Done | [story-095](stories/story-095-intent-mood-layer.md) |
 | 141 | Intent Taste Stack and Transparent Creative Brief | 5 — Creative Direction | High | Done | [story-141](stories/story-141-intent-taste-stack-and-transparent-creative-brief.md) |
 | 096 | "Chat About This" Interaction Pattern | 5 — Creative Direction | Medium | Done | [story-096](stories/story-096-chat-about-this.md) |
-| 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Draft | [story-097](stories/story-097-ai-artifact-editing.md) |
+| 097 | AI Artifact Editing | 5 — Creative Direction | Medium | Done | [story-097](stories/story-097-ai-artifact-editing.md) |
 | ~~098~~ | ~~Real-World Asset Upload Pipeline~~ | ~~7 — Generation~~ | ~~Medium~~ | Cancelled | ~~[story-098](stories/story-098-real-asset-upload.md)~~ — Merged into Story 029 so asset upload lands as one end-to-end feature. |
 | 099 | Scene Workspace | 5 — Creative Direction | High | Done | [story-099](stories/story-099-scene-workspace.md) |
 | 100 | Motif Tracking System | 5 — Creative Direction | Medium | Draft | [story-100](stories/story-100-motif-tracking.md) |

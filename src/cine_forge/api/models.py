@@ -189,6 +189,10 @@ class ArtifactEditRequest(BaseModel):
 
     data: dict[str, Any] = Field(min_length=1)
     rationale: str = Field(min_length=1)
+    source: Literal["human", "ai"] = "human"
+    producing_role: str | None = None
+    chat_message_id: str | None = None
+    bible_files: dict[str, Any] | None = None
 
 
 class ArtifactEditResponse(BaseModel):
@@ -342,6 +346,7 @@ class ChatMessagePayload(BaseModel):
     relatedArtifacts: list[ArtifactRef] | None = None
     decisionIds: list[str] | None = None
     suggestionIds: list[str] | None = None
+    resolvedMessageId: str | None = None
 
 
 # --- Search ---
@@ -387,6 +392,7 @@ class ChatStreamRequest(BaseModel):
     chat_history: list[dict[str, Any]] = []
     page_context: str | None = None
     active_role: str | None = None
+    message_id: str | None = None
 
 
 class InsightRequest(BaseModel):

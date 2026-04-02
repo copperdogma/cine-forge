@@ -764,10 +764,23 @@ class OperatorConsoleService:
         entity_id: str,
         data: dict[str, Any],
         rationale: str,
+        *,
+        source: str = "human",
+        producing_role: str | None = None,
+        chat_message_id: str | None = None,
+        bible_files: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """Create a new version of an artifact with human-edited data."""
+        """Create a new version of an artifact with human or AI provenance."""
         return self._artifact_mgr.edit_artifact(
-            project_id, artifact_type, entity_id, data, rationale
+            project_id,
+            artifact_type,
+            entity_id,
+            data,
+            rationale,
+            source=source,
+            producing_role=producing_role,
+            chat_message_id=chat_message_id,
+            bible_files=bible_files,
         )
 
     def preview_impact_scope(

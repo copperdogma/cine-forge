@@ -346,6 +346,10 @@ export type ArtifactDetailResponse = {
 export type ArtifactEditRequest = {
   data: Record<string, unknown>
   rationale: string
+  source?: 'human' | 'ai'
+  producing_role?: string | null
+  chat_message_id?: string | null
+  bible_files?: Record<string, unknown> | null
 }
 
 export type ArtifactEditResponse = {
@@ -472,6 +476,8 @@ export type ChatAction = {
   variant: 'default' | 'secondary' | 'outline'
   route?: string
   confirm_action?: ConfirmAction
+  /** If true, clicking this action records the dismissal locally without a network call. */
+  dismiss_action?: boolean
   /** If set, clicking this action re-sends the given text as a new chat message. */
   retry_text?: string
 }
@@ -520,6 +526,8 @@ export type ChatMessage = {
   injectedContent?: string
   /** Structured preflight data for run proposals. */
   preflightData?: PreflightData
+  /** Actionable message this user action resolved, if any. */
+  resolvedMessageId?: string
 }
 
 // --- Search ---

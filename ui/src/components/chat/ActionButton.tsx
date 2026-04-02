@@ -7,7 +7,7 @@ import { useChatStore } from '@/lib/chat-store'
 import { getRunningRunLabel } from '@/lib/constants'
 import { useActiveProjectRun } from '@/lib/hooks'
 import { startTrackedRun } from '@/lib/run-actions'
-import type { ChatAction, RunStartPayload } from '@/lib/types'
+import type { ChatAction, ChatMessage, RunStartPayload } from '@/lib/types'
 import { RUN_ACTION_IDS } from './config'
 
 export type StartRunAction = {
@@ -17,14 +17,23 @@ export type StartRunAction = {
 
 type ActionButtonProps = {
   action: ChatAction
+  messageId: string
   projectId: string
   startRun: StartRunAction
   inputPath: string | undefined
   onRetry?: (text: string) => void
 }
 
+function extractEditEntityId(endpoint: string): string | undefined {
+  const parts = endpoint.split('/').filter(Boolean)
+  const editIndex = parts.lastIndexOf('edit')
+  if (editIndex < 2) return undefined
+  return parts[editIndex - 1]
+}
+
 export function ActionButton({
   action,
+  messageId,
   projectId,
   startRun,
   inputPath,
@@ -37,21 +46,45 @@ export function ActionButton({
 
   const handleClick = async () => {
     if (isRunAction && hasActiveRun) return
+    const store = useChatStore.getState()
+
+    const recordUserAction = () => {
+      const message: ChatMessage = {
+        id: `action_${Date.now()}`,
+        type: 'user_action',
+        content: action.label,
+        timestamp: Date.now(),
+        resolvedMessageId: messageId,
+      }
+      store.addMessage(projectId, message)
+    }
+
+    const recordLocalUserAction = () => {
+      const message: ChatMessage = {
+        id: `action_${Date.now()}`,
+        type: 'user_action',
+        content: action.label,
+        timestamp: Date.now(),
+        resolvedMessageId: messageId,
+      }
+      store.addLocalMessage(projectId, message)
+    }
 
     if (action.retry_text && onRetry) {
+      recordUserAction()
       onRetry(action.retry_text)
+      return
+    }
+
+    if (action.dismiss_action) {
+      store.dismissMessageActions(projectId, messageId)
+      recordLocalUserAction()
       return
     }
 
     if (action.confirm_action) {
       setBusy(true)
-      const store = useChatStore.getState()
-      store.addMessage(projectId, {
-        id: `action_${Date.now()}`,
-        type: 'user_action',
-        content: action.label,
-        timestamp: Date.now(),
-      })
+      recordUserAction()
 
       try {
         const response = await fetch(action.confirm_action.endpoint, {
@@ -80,9 +113,11 @@ export function ActionButton({
           })
           store.addActivity(projectId, 'Started pipeline run', `runs/${result.run_id}`)
         } else if (action.confirm_action.type === 'edit_artifact') {
-          const artLabel = `${result.artifact_type ?? 'artifact'}/${result.entity_id ?? 'unknown'}`
-          const artRoute = result.artifact_type && result.entity_id
-            ? `artifacts/${result.artifact_type}/${result.entity_id}/${result.version ?? 1}`
+          const routeEntityId = result.entity_id ?? extractEditEntityId(action.confirm_action.endpoint)
+          const entityLabel = routeEntityId === '__project__' ? 'project' : (routeEntityId ?? 'unknown')
+          const artLabel = `${result.artifact_type ?? 'artifact'}/${entityLabel}`
+          const artRoute = result.artifact_type && routeEntityId
+            ? `artifacts/${result.artifact_type}/${routeEntityId}/${result.version ?? 1}`
             : undefined
           store.addMessage(projectId, {
             id: `edit_done_${Date.now()}`,

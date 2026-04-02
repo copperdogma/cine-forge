@@ -333,7 +333,15 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     ) -> ArtifactEditResponse:
         return ArtifactEditResponse.model_validate(
             service.edit_artifact(
-                project_id, artifact_type, entity_id, request.data, request.rationale
+                project_id,
+                artifact_type,
+                entity_id,
+                request.data,
+                request.rationale,
+                source=request.source,
+                producing_role=request.producing_role,
+                chat_message_id=request.chat_message_id,
+                bible_files=request.bible_files,
             )
         )
 
@@ -609,6 +617,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
                     catalog=catalog,
                     style_pack_selections=style_packs,
                     page_context=request.page_context,
+                    message_id=request.message_id,
                 ):
                     yield f"data: {json.dumps(chunk)}\n\n"
             except Exception as exc:

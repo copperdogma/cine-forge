@@ -109,6 +109,7 @@ export function ChatPanel() {
     await streamChatMessage(
       projectId,
       userText,
+      userMsgId,
       chatHistory,
       (chunk) => {
         const store = useChatStore.getState()
@@ -357,7 +358,11 @@ export function ChatPanel() {
             messages.map((message, index) => {
               const actionTaken = !!(
                 message.needsAction
-                && messages.slice(index + 1).some((nextMessage) => nextMessage.type === 'user_action')
+                && messages.slice(index + 1).some(
+                  (nextMessage) =>
+                    nextMessage.type === 'user_action'
+                    && nextMessage.resolvedMessageId === message.id,
+                )
               )
               return (
                 <ChatMessageItem

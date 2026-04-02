@@ -107,6 +107,7 @@ export function listProjectCharacters(projectId: string): Promise<ChatCharacter[
 export function streamChatMessage(
   projectId: string,
   message: string,
+  messageId: string,
   chatHistory: Array<{ type: string; content: string; speaker?: string }>,
   onChunk: (chunk: ChatStreamChunk) => void,
   onDone: () => void,
@@ -119,6 +120,7 @@ export function streamChatMessage(
     `/api/projects/${projectId}/chat/stream`,
     {
       message,
+      message_id: messageId,
       chat_history: chatHistory,
       ...(pageContext ? { page_context: pageContext } : {}),
       ...(activeRole ? { active_role: activeRole } : {}),

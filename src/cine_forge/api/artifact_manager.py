@@ -12,12 +12,11 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from cine_forge.api.artifact_editing import apply_artifact_edit
 from cine_forge.api.exceptions import ServiceError
 from cine_forge.artifacts import ArtifactStore
-from cine_forge.artifacts.edit_policy import get_artifact_edit_restriction
 from cine_forge.schemas import (
     ArtifactHealth,
-    ArtifactMetadata,
     ArtifactRef,
     MediaValidationArtifact,
 )
@@ -325,58 +324,34 @@ class ArtifactManager:
         entity_id: str,
         data: dict[str, Any],
         rationale: str,
+        *,
+        source: str = "human",
+        producing_role: str | None = None,
+        chat_message_id: str | None = None,
+        bible_files: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """Create a new version of an artifact with human-edited data."""
-
-        restriction = get_artifact_edit_restriction(artifact_type)
-        if restriction is not None:
-            message, hint = restriction
-            raise ServiceError(
-                code="artifact_read_only",
-                message=message,
-                hint=hint,
-                status_code=422,
-            )
+        """Create a new version of an artifact with human or AI provenance."""
 
         project_path = self._resolve_path(project_id)
         normalized_entity = None if entity_id == "__project__" else entity_id
-        store = ArtifactStore(project_dir=project_path)
-
-        refs = store.list_versions(
-            artifact_type=artifact_type, entity_id=normalized_entity
-        )
-        if not refs:
-            raise ServiceError(
-                code="artifact_not_found",
-                message=f"No existing artifact found for {artifact_type}/{entity_id}.",
-                hint="You can only edit existing artifacts.",
-                status_code=404,
-            )
-
-        latest_ref = refs[-1]
-
-        metadata = ArtifactMetadata(
-            lineage=[latest_ref],
-            intent="override",
-            rationale=rationale,
-            confidence=1.0,
-            source="human",
-            producing_module="operator_console.manual_edit",
-        )
-
-        new_ref = store.save_artifact(
+        new_ref = apply_artifact_edit(
+            project_path=project_path,
             artifact_type=artifact_type,
             entity_id=normalized_entity,
             data=data,
-            metadata=metadata,
+            rationale=rationale,
+            source="ai" if source == "ai" else "human",
+            producing_role=producing_role,
+            chat_message_id=chat_message_id,
+            bible_files=bible_files,
         )
 
-        # Notify agents in the background
-        threading.Thread(
-            target=self._notify_agents_of_edit,
-            args=(project_id, artifact_type, normalized_entity, new_ref, rationale),
-            daemon=True,
-        ).start()
+        if source == "human":
+            threading.Thread(
+                target=self._notify_agents_of_edit,
+                args=(project_id, artifact_type, normalized_entity, new_ref, rationale),
+                daemon=True,
+            ).start()
 
         return {
             "artifact_type": artifact_type,

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-02-01] — Conversational upstream canon editing (Story 097)
+
+### Added
+- Added shared artifact-edit helpers plus focused backend, API, and chat regression coverage for AI-authored canon edits across plain JSON artifacts and folder-backed bible manifests
+- Added a creative-role broker handoff so non-assistant roles can package canon edit requests for the assistant without widening write-tool ownership
+
+### Changed
+- Changed chat-driven artifact editing to record AI provenance, honor `human_control_mode`, diff canonical `bible_files`, and route bible edits through discoverable manifest-version saves
+- Changed chat action handling so dismiss stays local to the acted-on proposal while retry/approve actions stay attributable to the specific message they resolved
+
+### Fixed
+- Fixed `bible_manifest` edits so new versions are browsable through the standard artifact APIs instead of landing on undiscoverable generic filenames
+- Fixed proposal dismissal so it no longer hides unrelated pending actions or writes a backend chat message for a local-only reject action
+
 ## [2026-04-01-03] — Onboarding artifact health trust fix (Story 142)
 
 ### Added
