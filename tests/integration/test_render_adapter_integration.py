@@ -174,8 +174,11 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
         engine.store.load_artifact(generated_video_refs[0]).data
     )
     assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
+    assert generated_video.preview_provenance is not None
+    assert generated_video.preview_provenance.mode == "generated_render"
     render_prompt = engine.store.load_artifact(render_prompt_refs[0]).data
     assert render_prompt["creative_brief_preview"] is not None
+    assert render_prompt["preview_provenance"]["mode"] == "generated_render"
 
     track_ref = next(ref for ref in refs if ref.artifact_type == "track_manifest")
     manifest = TrackManifest.model_validate(engine.store.load_artifact(track_ref).data)

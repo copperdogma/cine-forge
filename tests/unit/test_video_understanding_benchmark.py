@@ -76,6 +76,25 @@ def test_provider_payload_builders_include_all_frames() -> None:
 
 
 @pytest.mark.unit
+def test_provider_resolves_candidate_variant_clip_dir(tmp_path: Path) -> None:
+    clip_dir = provider._resolve_clip_dir(
+        base_path=tmp_path,
+        config={
+            "clip_root": "../previz_usefulness",
+            "candidate_variant": "annotated_symbolic",
+        },
+        vars_data={"clip_id": "dialogue_confession_push_in"},
+    )
+    expected = (
+        tmp_path
+        / "../previz_usefulness"
+        / "annotated_symbolic"
+        / "dialogue_confession_push_in"
+    ).resolve()
+    assert clip_dir == expected
+
+
+@pytest.mark.unit
 def test_scorer_parses_fenced_json() -> None:
     prediction = scorer.parse_prediction(
         """```json

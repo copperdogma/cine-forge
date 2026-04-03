@@ -143,7 +143,7 @@ and optional keyframes linked to upstream direction.
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 025, 026, 027, 056, 119, 120, 121, 132
+**Stories:** 025, 026, 027, 056, 119, 120, 121, 132, 137
 **Spec:** spec:6 (spec:6.1 through spec:6.4)
 **ADR Refs:** ADR-003 (shot planning consumes concern-group artifacts)
 **Absorbs:** Shot Planning & Visualization (old 6)

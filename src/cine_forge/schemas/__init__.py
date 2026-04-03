@@ -7,6 +7,7 @@ from .animatic import (
     Keyframe,
     KeyframeArtifact,
     MediaFile,
+    PreviewProvenance,
     PrevizReel,
     PrevizSceneSegment,
 )
@@ -369,6 +370,7 @@ __all__ = [
     "StageCostSummary",
     "PrevizReel",
     "PrevizSceneSegment",
+    "PreviewProvenance",
     "Storyboard",
     "StoryboardFrame",
     "StoryboardImageFile",

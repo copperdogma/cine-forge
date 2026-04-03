@@ -34,3 +34,8 @@ parameters:
     required: false
     default: 2.0
     description: "Fallback scene duration when no shot duration is available."
+  previz_mode:
+    type: string
+    required: false
+    default: annotated_symbolic
+    description: "Animatic treatment: `annotated_symbolic` for richer deterministic previz, or `symbolic` for the bare fallback."

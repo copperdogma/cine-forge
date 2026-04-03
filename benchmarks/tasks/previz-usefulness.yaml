@@ -1,0 +1,97 @@
+# Story 137 — Previz usefulness pilot
+#
+# Usage:
+#   source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
+#   cd benchmarks
+#   python scripts/generate_previz_usefulness_dataset.py
+#   PROMPTFOO_PYTHON=python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
+#     --output results/previz-usefulness-pilot-2026-04-02.json
+
+description: "Previz usefulness — compare symbolic, annotated, and shared-video scene previews"
+
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/video-understanding.txt
+
+providers:
+  - id: file://../providers/video_understanding_provider.py
+    label: "Symbolic Animatic"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: previz-usefulness-v1
+      clip_root: ../previz_usefulness
+      candidate_variant: symbolic
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Annotated Animatic"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: previz-usefulness-v1
+      clip_root: ../previz_usefulness
+      candidate_variant: annotated_symbolic
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Shared Video"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: previz-usefulness-v1
+      clip_root: ../previz_usefulness
+      candidate_variant: shared_video
+      pythonExecutable: python
+      timeout: 300000
+
+tests:
+  - vars:
+      clip_id: dialogue_confession_push_in
+      clip_title: Dialogue confession push-in
+      target_path: video_understanding/dialogue_confession_push_in/target.json
+      target_markdown: file://../video_understanding/dialogue_confession_push_in/target.md
+    assert: &previz_usefulness_assertions
+      - type: python
+        value: file://../scorers/video_understanding_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate this model's structured clip analysis against the reference below.
+
+          Reference analysis:
+          {{target_markdown}}
+
+          Reward outputs that preserve camera placement, blocking clarity, motion readability,
+          pacing, and audio cues from the reference scene. Penalize outputs that flatten spatial
+          relationships, miss the planned movement, or reduce the clip to generic summary.
+
+  - vars:
+      clip_id: quiet_bedside_vigil
+      clip_title: Quiet bedside vigil
+      target_path: video_understanding/quiet_bedside_vigil/target.json
+      target_markdown: file://../video_understanding/quiet_bedside_vigil/target.md
+    assert: *previz_usefulness_assertions
+
+  - vars:
+      clip_id: radio_hold_tracking
+      clip_title: Radio hold tracking
+      target_path: video_understanding/radio_hold_tracking/target.json
+      target_markdown: file://../video_understanding/radio_hold_tracking/target.md
+    assert: *previz_usefulness_assertions

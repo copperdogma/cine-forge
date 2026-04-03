@@ -1,0 +1,21 @@
+{
+  "clip_id": "radio_hold_tracking",
+  "title": "Radio hold tracking",
+  "source_type": "synthetic_previz",
+  "source_description": "Story 137 symbolic comparison candidate derived from radio_hold_tracking.",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "fps": 8,
+  "has_audio": true,
+  "transcript": "Unit three, hold position until the lights settle.",
+  "audio_description": "A dry radio dispatch over light room tone.",
+  "tags": [
+    "dialogue",
+    "procedural"
+  ],
+  "anchor_subset": false,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "candidate_variant": "symbolic",
+  "candidate_label": "Symbolic Animatic"
+}

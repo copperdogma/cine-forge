@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.modules.visualization.animatic_v1.annotated import (
+    compose_annotated_segment_video,
+)
 from cine_forge.modules.visualization.animatic_v1.support import (
     DEFAULT_FPS,
     DEFAULT_FRAME_HEIGHT,
@@ -37,6 +41,7 @@ from cine_forge.schemas import (
     AnimaticSegment,
     ArtifactRef,
     MediaFile,
+    PreviewProvenance,
     PrevizReel,
     PrevizSceneSegment,
     Scene,
@@ -60,6 +65,7 @@ def run_module(
     fps = int(params.get("fps") or DEFAULT_FPS)
     width = int(params.get("frame_width") or DEFAULT_FRAME_WIDTH)
     height = int(params.get("frame_height") or DEFAULT_FRAME_HEIGHT)
+    previz_mode = _previz_mode(params)
 
     track_manifest_payload = inputs.get("track_manifest")
     if not isinstance(track_manifest_payload, dict):
@@ -97,6 +103,7 @@ def run_module(
             width=width,
             height=height,
             fps=fps,
+            previz_mode=previz_mode,
         )
         animatics_by_scene[plan.scene_id] = animatic
         animatic_refs[plan.scene_id] = animatic_ref
@@ -224,7 +231,9 @@ def build_scene_animatic(
     width: int,
     height: int,
     fps: int,
+    previz_mode: str,
 ) -> Animatic:
+    started = time.perf_counter()
     media_dir = animatic_media_dir(store.project_dir, plan.scene_id, animatic_ref.version)
     media_dir.mkdir(parents=True, exist_ok=True)
 
@@ -249,16 +258,34 @@ def build_scene_animatic(
             height=height,
         )
         segment_output = media_dir / f"segment_{idx:02d}_{shot.shot_id.lower()}.mp4"
-        segment_video = compose_segment_video(
-            ffmpeg=ffmpeg,
-            image_path=image_path,
-            output_path=segment_output,
-            duration_seconds=shot.duration_estimate_seconds,
-            camera_movement=shot.camera_movement,
-            width=width,
-            height=height,
-            fps=fps,
-        )
+        if previz_mode == "annotated_symbolic":
+            segment_video = compose_annotated_segment_video(
+                ffmpeg=ffmpeg,
+                image_path=image_path,
+                output_path=segment_output,
+                duration_seconds=shot.duration_estimate_seconds,
+                camera_movement=shot.camera_movement,
+                width=width,
+                height=height,
+                fps=fps,
+                scene_heading=plan.scene_heading,
+                shot_id=shot.shot_id,
+                shot_size=shot.shot_size,
+                camera_angle=shot.camera_angle,
+                characters=shot.characters_in_frame,
+                edit_intent=shot.edit_intent,
+            )
+        else:
+            segment_video = compose_segment_video(
+                ffmpeg=ffmpeg,
+                image_path=image_path,
+                output_path=segment_output,
+                duration_seconds=shot.duration_estimate_seconds,
+                camera_movement=shot.camera_movement,
+                width=width,
+                height=height,
+                fps=fps,
+            )
         segment_paths.append(segment_output)
         segments.append(
             AnimaticSegment(
@@ -293,6 +320,7 @@ def build_scene_animatic(
 
     storyboard_ref = latest_ref_or_none(store, "storyboard", plan.scene_id)
     sound_ref = latest_ref_or_none(store, "sound_and_music", plan.scene_id)
+    latency_ms = round((time.perf_counter() - started) * 1000)
 
     return Animatic(
         scene_id=plan.scene_id,
@@ -311,6 +339,19 @@ def build_scene_animatic(
         audio_refs=audio_refs,
         total_duration_seconds=sum(segment.duration_seconds for segment in segments),
         source_mix=sorted({segment.source_kind for segment in segments}),
+        preview_provenance=PreviewProvenance(
+            mode=previz_mode,
+            fidelity_intent=(
+                "blocking_review" if previz_mode == "annotated_symbolic" else "symbolic_baseline"
+            ),
+            intended_use=["human_review"],
+            upstream_inputs=_animatic_upstream_inputs(
+                storyboard_ref=storyboard_ref,
+                sound_ref=sound_ref,
+            ),
+            estimated_cost_usd=0.0,
+            generation_latency_ms=latency_ms,
+        ),
     )
 
 
@@ -350,6 +391,7 @@ def build_previz_reel(
                 audio_refs=animatic.audio_refs,
                 duration_seconds=animatic.total_duration_seconds,
                 notes="Scene animatic selected as the best available representation.",
+                preview_provenance=animatic.preview_provenance,
             )
         )
 
@@ -369,6 +411,29 @@ def build_previz_reel(
         scenes=scene_items,
         total_duration_seconds=sum(item.duration_seconds for item in scene_items),
     )
+
+
+def _previz_mode(params: dict[str, Any]) -> str:
+    raw = params.get("previz_mode")
+    if raw is None:
+        return "annotated_symbolic"
+    value = str(raw).strip().lower()
+    if value not in {"symbolic", "annotated_symbolic"}:
+        raise ValueError("animatic_v1 previz_mode must be 'symbolic' or 'annotated_symbolic'")
+    return value
+
+
+def _animatic_upstream_inputs(
+    *,
+    storyboard_ref: ArtifactRef | None,
+    sound_ref: ArtifactRef | None,
+) -> list[str]:
+    inputs = ["scene", "shot_plan"]
+    if storyboard_ref is not None:
+        inputs.append("storyboard")
+    if sound_ref is not None:
+        inputs.append("sound_and_music")
+    return inputs
 
 
 def extract_storyboard_image_path(frame_data: dict[str, Any] | None) -> str | None:

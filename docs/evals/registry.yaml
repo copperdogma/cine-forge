@@ -1202,6 +1202,77 @@ evals:
           - condition: new-approach
             note: "Add a native-video Gemini provider path instead of the current sampled-frames harness."
 
+  - id: previz-usefulness
+    name: Previz Usefulness
+    type: quality
+    description: >
+      Compares three scene-level previz candidates on the same fixed fixture pack:
+      Story 027's symbolic baseline, a richer deterministic annotated animatic, and
+      the shared low-detail generated-video lane. Uses Story 030's frame-packet
+      video-understanding substrate with GPT-5.4 as the fixed analysis model and a
+      rubric centered on camera readability, blocking clarity, motion, and pacing
+      usefulness for human review.
+    pipeline_stage: visualization
+    runner: promptfoo
+    command: "cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-validation-2026-04-03-rerun.json"
+    config: benchmarks/tasks/previz-usefulness.yaml
+    scorer: benchmarks/scorers/video_understanding_scorer.py
+    golden: benchmarks/previz_usefulness/manifest.json
+    test_cases: 3
+
+    target:
+      metric: overall
+      value: 0.75
+      latency_ms_max: 12000
+      cost_usd_max: 0.015
+      note: "Adopt a richer default only if one candidate clears the first usefulness floor and leads the symbolic baseline by at least 0.03."
+
+    scores:
+      - model: "Annotated Animatic"
+        metrics:
+          overall: 0.8113
+          python: 0.8493
+          rubric: 0.7733
+        latency_ms: 7556
+        cost_usd: 0.010937
+        cost_estimated: true
+        measured: 2026-04-03
+        git_sha: "07379cf"
+        result_file: benchmarks/results/previz-usefulness-validation-2026-04-03-rerun.json
+        note: "Verified clean from scratch after fixing the dataset generator. Annotated Animatic still leads the full rerun and clears the usefulness floor for camera/blocking readability."
+      - model: "Shared Video"
+        metrics:
+          overall: 0.7497
+          python: 0.836
+          rubric: 0.6633
+        latency_ms: 7946
+        cost_usd: 0.010393
+        cost_estimated: true
+        measured: 2026-04-03
+        git_sha: "07379cf"
+        result_file: benchmarks/results/previz-usefulness-validation-2026-04-03-rerun.json
+        note: "Comparator only, non-runtime-blocking. The clean rerun improved this candidate overall, but it still trails Annotated Animatic and still misses radio_hold_tracking in a model-wrong way by flattening the lateral-track setup."
+      - model: "Symbolic Animatic"
+        metrics:
+          overall: 0.6763
+          python: 0.756
+          rubric: 0.5967
+        latency_ms: 7364
+        cost_usd: 0.010452
+        cost_estimated: true
+        measured: 2026-04-03
+        git_sha: "07379cf"
+        result_file: benchmarks/results/previz-usefulness-validation-2026-04-03-rerun.json
+        note: "Baseline comparator, non-runtime-blocking. It remains the explicit fallback, and the remaining radio_hold_tracking miss is still ambiguous rather than golden drift because the candidate itself simplifies the planned lateral move."
+
+    attempts:
+      - date: 2026-04-03
+        git_sha: "07379cf"
+        note: "Validation rerun used the existing benchmark dataset and reconfirmed the ranking at Annotated 0.8503, Symbolic 0.6887, and Shared 0.593. That pass exposed the README write bug in benchmarks/scripts/generate_previz_usefulness_dataset.py."
+      - date: 2026-04-03
+        git_sha: "07379cf"
+        note: "Post-fix clean rerun succeeded end to end after repairing the dataset generator. Final verified ranking: Annotated 0.8113, Shared 0.7497, Symbolic 0.6763. Remaining failures are non-runtime-blocking and classified: Shared Video on radio_hold_tracking is model-wrong, Symbolic Animatic on radio_hold_tracking is ambiguous."
+
   - id: runtime-media-validation
     name: Runtime Media Validation
     type: quality

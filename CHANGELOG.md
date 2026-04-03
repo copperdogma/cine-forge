@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-03-01] — Previz fidelity benchmark and annotated upgrade (Story 137)
+
+### Added
+- Added a dedicated `previz-usefulness` benchmark task, fixture dataset generator, and report helper so symbolic animatics, annotated animatics, and shared-video candidates can be compared on the same scene pack
+- Added richer deterministic `annotated_symbolic` previz rendering plus operator-facing provenance metadata shared across animatic, previz-reel, and generated-video artifacts
+
+### Changed
+- Changed the default previz path to the measured `annotated_symbolic` mode while preserving the cheaper symbolic fallback as an explicit option
+- Changed Scene Workspace and artifact-detail viewers to show preview mode, fidelity intent, inputs, latency, and cost so operators can tell whether they are looking at symbolic previz, richer previz, or generated render output
+
+### Fixed
+- Fixed the previz-usefulness dataset generator so the benchmark now reruns cleanly from scratch instead of depending on a previously generated fixture pack
+- Fixed a dead animatic previz-reel parameter left behind by the richer-previz refactor
 ## [2026-04-02-01] — Conversational upstream canon editing (Story 097)
 
 ### Added

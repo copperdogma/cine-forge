@@ -115,8 +115,9 @@ export function AnimaticsPanel({
               </div>
               <CardDescription className="max-w-3xl leading-relaxed">
                 Animatics turn the current shot plan into a playable rough cut with timing,
-                lightweight motion, and temp audio when available. The recipe runs across every
-                scene in the project, then this tab resolves back to the latest result for {sceneHeading}.
+                lightweight motion, and on-screen camera/blocking guidance, plus temp audio when
+                available. The recipe runs across every scene in the project, then this tab
+                resolves back to the latest result for {sceneHeading}.
               </CardDescription>
             </div>
 

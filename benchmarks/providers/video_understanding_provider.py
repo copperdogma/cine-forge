@@ -35,7 +35,11 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
     frame_policy = config.get("frame_policy", "five_evenly_spaced_jpegs_v1")
 
     try:
-        clip_dir = _resolve_relative(base_path, context.get("vars", {}).get("clip_dir", ""))
+        clip_dir = _resolve_clip_dir(
+            base_path=base_path,
+            config=config,
+            vars_data=context.get("vars", {}),
+        )
         packet = _load_clip_packet(clip_dir, max_frames=int(config.get("max_frames", 5)))
         user_text = _build_user_text(prompt, packet["meta"], prompt_version=prompt_version)
         model = str(config.get("model", "")).strip()
@@ -102,12 +106,32 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
         "cached": False,
         "metadata": {
             "clip_id": packet["meta"]["clip_id"],
+            "candidate_variant": packet["meta"].get("candidate_variant"),
             "prompt_version": prompt_version,
             "frame_policy": frame_policy,
             "model": model,
             "provider": provider,
         },
     }
+
+
+def _resolve_clip_dir(
+    *,
+    base_path: Path,
+    config: dict[str, Any],
+    vars_data: dict[str, Any],
+) -> Path:
+    clip_dir_value = str(config.get("clip_dir", "")).strip()
+    if clip_dir_value:
+        return _resolve_relative(base_path, clip_dir_value)
+
+    root_value = str(config.get("clip_root", "")).strip()
+    variant = str(config.get("candidate_variant", "")).strip()
+    clip_id = str(vars_data.get("clip_id", "")).strip()
+    if root_value and variant and clip_id:
+        return (_resolve_relative(base_path, root_value) / variant / clip_id).resolve()
+
+    return _resolve_relative(base_path, str(vars_data.get("clip_dir", "")))
 
 
 def _resolve_relative(base_path: Path, value: str) -> Path:

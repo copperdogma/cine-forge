@@ -1,0 +1,75 @@
+{
+  "eval_id": "previz-usefulness",
+  "candidates": [
+    {
+      "candidate": "Annotated Animatic",
+      "python_overall": 0.8493,
+      "rubric_overall": 0.7733,
+      "overall": 0.8113,
+      "latency_ms": 7556,
+      "analysis_cost_usd": 0.010937,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 1.0,
+        "color": 1.0,
+        "continuity": 0.8,
+        "emotion": 0.5,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 1.0,
+        "summary": 0.8889,
+        "tone": 0.6667
+      },
+      "calls": 3,
+      "previous_overall": 0.8503
+    },
+    {
+      "candidate": "Shared Video",
+      "python_overall": 0.836,
+      "rubric_overall": 0.6633,
+      "overall": 0.7497,
+      "latency_ms": 7946,
+      "analysis_cost_usd": 0.010393,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 1.0,
+        "color": 0.6667,
+        "continuity": 0.8,
+        "emotion": 0.6667,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 1.0,
+        "summary": 0.8889,
+        "tone": 0.6667
+      },
+      "calls": 3,
+      "previous_overall": 0.593
+    },
+    {
+      "candidate": "Symbolic Animatic",
+      "python_overall": 0.756,
+      "rubric_overall": 0.5967,
+      "overall": 0.6763,
+      "latency_ms": 7364,
+      "analysis_cost_usd": 0.010452,
+      "dimension_scores": {
+        "audio": 1.0,
+        "camera": 0.5,
+        "color": 0.6667,
+        "continuity": 0.8,
+        "emotion": 0.6667,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 1.0,
+        "summary": 0.7778,
+        "tone": 0.6667
+      },
+      "calls": 3,
+      "previous_overall": 0.6887
+    }
+  ],
+  "recommendation": {
+    "decision": "adopt",
+    "rationale": "Annotated Animatic led the pilot at 0.811 overall and cleared the first usefulness floor for camera/blocking readability."
+  }
+}

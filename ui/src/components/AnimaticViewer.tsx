@@ -1,7 +1,14 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  formatLatencyMs,
+  formatMoney,
+  formatPreviewIntent,
+  formatPreviewMode,
+  parsePreviewProvenance,
+} from '@/components/preview-provenance'
 import { getAssetFileUrl } from '@/lib/api/assets'
-import { Clock, Film, Volume2 } from 'lucide-react'
+import { Clock, DollarSign, Film, Timer, Volume2 } from 'lucide-react'
 
 type AnimaticViewerProps = {
   data: Record<string, unknown>
@@ -29,6 +36,7 @@ type AnimaticView = {
   audioRefs: Array<{ relativePath: string; label: string | null }>
   sourceMix: string[]
   segments: SegmentView[]
+  previewProvenance: ReturnType<typeof parsePreviewProvenance>
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -98,6 +106,7 @@ function parseAnimatic(data: Record<string, unknown>): AnimaticView {
       .filter((item): item is { relativePath: string; label: string | null } => item !== null),
     sourceMix: asStringArray(data.source_mix),
     segments: asArray(data.segments).map(parseSegment),
+    previewProvenance: parsePreviewProvenance(data.preview_provenance),
   }
 }
 
@@ -123,10 +132,32 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
                   {formatDuration(animatic.durationSeconds)}
                 </Badge>
               )}
+              {formatPreviewMode(animatic.previewProvenance?.mode ?? null) && (
+                <Badge variant="secondary">
+                  {formatPreviewMode(animatic.previewProvenance?.mode ?? null)}
+                </Badge>
+              )}
+              {formatPreviewIntent(animatic.previewProvenance?.fidelityIntent ?? null) && (
+                <Badge variant="outline">
+                  {formatPreviewIntent(animatic.previewProvenance?.fidelityIntent ?? null)}
+                </Badge>
+              )}
               {animatic.audioRefs.length > 0 && (
                 <Badge variant="secondary" className="gap-1">
                   <Volume2 className="h-3 w-3" />
                   Temp audio
+                </Badge>
+              )}
+              {formatLatencyMs(animatic.previewProvenance?.generationLatencyMs ?? null) && (
+                <Badge variant="outline" className="gap-1">
+                  <Timer className="h-3 w-3" />
+                  {formatLatencyMs(animatic.previewProvenance?.generationLatencyMs ?? null)}
+                </Badge>
+              )}
+              {formatMoney(animatic.previewProvenance?.estimatedCostUsd ?? null) && (
+                <Badge variant="outline" className="gap-1">
+                  <DollarSign className="h-3 w-3" />
+                  {formatMoney(animatic.previewProvenance?.estimatedCostUsd ?? null)}
                 </Badge>
               )}
               {animatic.sourceMix.map(source => (
@@ -154,6 +185,19 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
           {animatic.audioRefs.length > 0 && (
             <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
               Audio sources: {animatic.audioRefs.map(item => item.label ?? item.relativePath).join(', ')}
+            </div>
+          )}
+
+          {animatic.previewProvenance && (
+            <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
+              <p>
+                Intended use: {animatic.previewProvenance.intendedUse.join(', ') || 'human review'}
+              </p>
+              {animatic.previewProvenance.upstreamInputs.length > 0 && (
+                <p>
+                  Inputs: {animatic.previewProvenance.upstreamInputs.join(', ')}
+                </p>
+              )}
             </div>
           )}
         </CardContent>

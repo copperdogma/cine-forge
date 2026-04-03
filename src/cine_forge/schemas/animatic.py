@@ -29,6 +29,33 @@ class AudioReference(BaseModel):
     duration_seconds: float | None = Field(default=None, ge=0.0)
 
 
+PreviewMode = Literal[
+    "symbolic",
+    "annotated_symbolic",
+    "shared_video",
+    "generated_render",
+    "final_render",
+]
+PreviewFidelityIntent = Literal[
+    "symbolic_baseline",
+    "blocking_review",
+    "render_preview",
+    "final_render",
+]
+PreviewIntendedUse = Literal["human_review", "ai_conditioning"]
+
+
+class PreviewProvenance(BaseModel):
+    """Operator-facing provenance for preview and render artifacts."""
+
+    mode: PreviewMode = "symbolic"
+    fidelity_intent: PreviewFidelityIntent = "symbolic_baseline"
+    intended_use: list[PreviewIntendedUse] = Field(default_factory=lambda: ["human_review"])
+    upstream_inputs: list[str] = Field(default_factory=list)
+    estimated_cost_usd: float = Field(default=0.0, ge=0.0)
+    generation_latency_ms: int | None = Field(default=None, ge=0)
+
+
 class AnimaticSegment(BaseModel):
     """Single shot-aligned animatic segment."""
 
@@ -62,6 +89,7 @@ class Animatic(BaseModel):
     audio_refs: list[AudioReference] = Field(default_factory=list)
     total_duration_seconds: float = Field(ge=0.0)
     source_mix: list[str] = Field(default_factory=list)
+    preview_provenance: PreviewProvenance = Field(default_factory=PreviewProvenance)
 
     @model_validator(mode="after")
     def _validate_total_duration(self) -> Animatic:
@@ -113,6 +141,7 @@ class PrevizSceneSegment(BaseModel):
     audio_refs: list[AudioReference] = Field(default_factory=list)
     duration_seconds: float = Field(ge=0.0)
     notes: str | None = None
+    preview_provenance: PreviewProvenance = Field(default_factory=PreviewProvenance)
 
 
 class PrevizReel(BaseModel):
@@ -123,4 +152,3 @@ class PrevizReel(BaseModel):
     reel_video: MediaFile
     scenes: list[PrevizSceneSegment] = Field(default_factory=list, min_length=1)
     total_duration_seconds: float = Field(ge=0.0)
-

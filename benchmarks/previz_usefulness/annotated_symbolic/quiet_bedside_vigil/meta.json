@@ -1,0 +1,21 @@
+{
+  "clip_id": "quiet_bedside_vigil",
+  "title": "Quiet bedside vigil",
+  "source_type": "synthetic_previz",
+  "source_description": "Story 137 annotated_symbolic comparison candidate derived from quiet_bedside_vigil.",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "640x360",
+  "fps": 8,
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "A soft room tone with a faint heartbeat monitor and low piano.",
+  "tags": [
+    "quiet_emotion",
+    "interior"
+  ],
+  "anchor_subset": true,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "candidate_variant": "annotated_symbolic",
+  "candidate_label": "Annotated Animatic"
+}

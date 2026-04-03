@@ -8,6 +8,7 @@ from cine_forge.schemas import (
     CostRecord,
     GeneratedVideoArtifact,
     MediaFile,
+    PreviewProvenance,
     RenderCompletenessCheck,
     RenderPromptSection,
 )
@@ -75,6 +76,14 @@ def test_compiled_render_prompt_round_trip() -> None:
         ),
         prompt_sources_used=["shot_plan"],
         resolved_inputs=[],
+        preview_provenance=PreviewProvenance(
+            mode="generated_render",
+            fidelity_intent="render_preview",
+            intended_use=["human_review", "ai_conditioning"],
+            upstream_inputs=["shot_plan"],
+            estimated_cost_usd=0.01,
+            generation_latency_ms=1200,
+        ),
     )
 
     restored = CompiledRenderPrompt.model_validate_json(prompt.model_dump_json())

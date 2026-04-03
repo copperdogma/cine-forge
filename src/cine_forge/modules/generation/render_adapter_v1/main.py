@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import time
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +44,7 @@ from cine_forge.schemas import (
     LocationBible,
     LookAndFeel,
     MediaFile,
+    PreviewProvenance,
     ProjectConfig,
     RenderCompletenessCheck,
     RenderPromptSection,
@@ -166,6 +168,7 @@ def _render_scene(
     requested_resolution: str | None,
     requested_aspect_ratio: str | None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    started = time.perf_counter()
     prompt_ref = anticipated_entity_ref(store, "render_prompt", plan.scene_id)
     video_ref = anticipated_entity_ref(store, "generated_video", plan.scene_id)
     shot_plan_ref = latest_entity_ref(store, "shot_plan", plan.scene_id)
@@ -264,6 +267,17 @@ def _render_scene(
         prompt_sources_used=prompt_sources,
         creative_brief_preview=source_maps["creative_brief"],
         resolved_inputs=resolved_inputs,
+        preview_provenance=PreviewProvenance(
+            mode="generated_render",
+            fidelity_intent="render_preview",
+            intended_use=["human_review", "ai_conditioning"],
+            upstream_inputs=_render_upstream_inputs(
+                prompt_sources=prompt_sources,
+                resolved_inputs=resolved_inputs,
+            ),
+            estimated_cost_usd=float(scene_cost.get("estimated_cost_usd", 0.0) or 0.0),
+            generation_latency_ms=None,
+        ),
     )
 
     request = VideoGenerationRequest(
@@ -287,6 +301,7 @@ def _render_scene(
     media_dir.mkdir(parents=True, exist_ok=True)
     output_path = media_dir / "scene_render.mp4"
     output_path.write_bytes(result.video_bytes)
+    latency_ms = round((time.perf_counter() - started) * 1000)
 
     generated_video = GeneratedVideoArtifact(
         scene_id=plan.scene_id,
@@ -317,6 +332,17 @@ def _render_scene(
         cost=CostRecord.model_validate(scene_cost),
         resolved_inputs=resolved_inputs,
         notes=completeness.notes,
+        preview_provenance=PreviewProvenance(
+            mode="generated_render",
+            fidelity_intent="render_preview",
+            intended_use=["human_review", "ai_conditioning"],
+            upstream_inputs=_render_upstream_inputs(
+                prompt_sources=prompt_sources,
+                resolved_inputs=resolved_inputs,
+            ),
+            estimated_cost_usd=float(scene_cost.get("estimated_cost_usd", 0.0) or 0.0),
+            generation_latency_ms=latency_ms,
+        ),
     )
     return (
         _prompt_artifact_dict(prompt_artifact),
@@ -1251,6 +1277,16 @@ def _look_and_feel_aspect_ratio(look_and_feel: LookAndFeel | None) -> str | None
     if look_and_feel is None:
         return None
     return _optional_string(look_and_feel.aspect_ratio_override)
+
+
+def _render_upstream_inputs(
+    *,
+    prompt_sources: list[str],
+    resolved_inputs: list[RenderResolvedInput],
+) -> list[str]:
+    labels = set(prompt_sources)
+    labels.update(item.kind for item in resolved_inputs)
+    return sorted(labels)
 
 
 def _project_aspect_ratio(project_config: ProjectConfig | None) -> str | None:

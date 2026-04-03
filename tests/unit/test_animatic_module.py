@@ -59,6 +59,8 @@ def test_animatic_module_uses_placeholder_when_storyboards_missing(tmp_path: Pat
     assert animatic.segments[0].source_kind == "placeholder"
     assert (seeded["project_dir"] / animatic.video.relative_path).exists()
     assert animatic.audio_refs == []
+    assert animatic.preview_provenance.mode == "annotated_symbolic"
+    assert animatic.preview_provenance.fidelity_intent == "blocking_review"
 
 
 @pytest.mark.unit
@@ -115,7 +117,36 @@ def test_animatic_module_emits_previz_reel_with_scene_animatics(tmp_path: Path) 
 
     assert len(previz.scenes) == 2
     assert all(item.source_track_type == "animatics" for item in previz.scenes)
+    assert all(item.preview_provenance.mode == "annotated_symbolic" for item in previz.scenes)
     assert (seeded["project_dir"] / previz.reel_video.relative_path).exists()
+
+
+@pytest.mark.unit
+def test_animatic_module_supports_symbolic_fallback_mode(tmp_path: Path) -> None:
+    if _ffmpeg_missing():
+        pytest.skip("ffmpeg is required for animatic module tests")
+
+    seeded = seed_animatic_project(
+        tmp_path,
+        scene_count=1,
+        include_storyboards=True,
+        include_audio=False,
+    )
+    result = run_animatic_module(
+        inputs=seeded["inputs"],
+        params={"previz_mode": "symbolic"},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    animatic_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "animatic"
+    )
+    animatic = Animatic.model_validate(animatic_payload)
+
+    assert animatic.preview_provenance.mode == "symbolic"
+    assert animatic.preview_provenance.fidelity_intent == "symbolic_baseline"
 
 
 @pytest.mark.unit

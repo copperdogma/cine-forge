@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatPreviewMode, parsePreviewProvenance } from '@/components/preview-provenance'
 import { getAssetFileUrl } from '@/lib/api/assets'
 import { Clock, Film } from 'lucide-react'
 
@@ -47,6 +48,7 @@ export function PrevizReelViewer({ data, projectId }: PrevizReelViewerProps) {
         sourceTrackType: asString(record.source_track_type),
         durationSeconds: asNumber(record.duration_seconds),
         videoPath: asString(video?.relative_path),
+        previewProvenance: parsePreviewProvenance(record.preview_provenance),
       }
     })
     .filter(Boolean)
@@ -93,6 +95,9 @@ export function PrevizReelViewer({ data, projectId }: PrevizReelViewerProps) {
                 <Film className="h-4 w-4 text-muted-foreground" />
                 <span className="font-medium">{scene?.heading ?? scene?.sceneId ?? 'Scene'}</span>
                 {scene?.sourceTrackType && <Badge variant="secondary">{scene.sourceTrackType}</Badge>}
+                {formatPreviewMode(scene?.previewProvenance?.mode ?? null) && (
+                  <Badge variant="outline">{formatPreviewMode(scene?.previewProvenance?.mode ?? null)}</Badge>
+                )}
                 {scene?.durationSeconds !== null && (
                   <Badge variant="outline">{formatDuration(scene?.durationSeconds ?? null)}</Badge>
                 )}

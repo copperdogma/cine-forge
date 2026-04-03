@@ -1,4 +1,10 @@
 import { Clock, DollarSign, Film, Video } from 'lucide-react'
+import {
+  formatLatencyMs,
+  formatPreviewIntent,
+  formatPreviewMode,
+  parsePreviewProvenance,
+} from '@/components/preview-provenance'
 import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -36,6 +42,7 @@ type GeneratedVideoView = {
   notes: string[]
   resolvedInputs: RenderInputUsageView[]
   providerParams: Record<string, unknown>
+  previewProvenance: ReturnType<typeof parsePreviewProvenance>
 }
 
 function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView {
@@ -60,6 +67,7 @@ function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView 
       .map(parseRenderInputUsage)
       .filter((input): input is RenderInputUsageView => input !== null),
     providerParams,
+    previewProvenance: parsePreviewProvenance(data.preview_provenance),
   }
 }
 
@@ -85,6 +93,12 @@ export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerPr
               {render.targetProvider && (
                 <Badge variant="secondary">{formatToken(render.targetProvider)}</Badge>
               )}
+              {formatPreviewMode(render.previewProvenance?.mode ?? null) && (
+                <Badge variant="secondary">{formatPreviewMode(render.previewProvenance?.mode ?? null)}</Badge>
+              )}
+              {formatPreviewIntent(render.previewProvenance?.fidelityIntent ?? null) && (
+                <Badge variant="outline">{formatPreviewIntent(render.previewProvenance?.fidelityIntent ?? null)}</Badge>
+              )}
               {render.targetModel && <Badge variant="outline">{render.targetModel}</Badge>}
               {render.enginePackId && (
                 <Badge variant="outline" className="gap-1">
@@ -105,6 +119,9 @@ export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerPr
                   <DollarSign className="h-3 w-3" />
                   {formatMoney(render.estimatedCostUsd)}
                 </Badge>
+              )}
+              {formatLatencyMs(render.previewProvenance?.generationLatencyMs ?? null) && (
+                <Badge variant="outline">{formatLatencyMs(render.previewProvenance?.generationLatencyMs ?? null)}</Badge>
               )}
             </div>
           </div>
@@ -139,6 +156,12 @@ export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerPr
               ))}
             </div>
           )}
+
+          {render.previewProvenance?.upstreamInputs.length ? (
+            <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
+              Inputs: {render.previewProvenance.upstreamInputs.join(', ')}
+            </div>
+          ) : null}
 
           {Object.keys(render.providerParams).length > 0 && (
             <div className="rounded-lg border border-border bg-card/60 px-4 py-3">

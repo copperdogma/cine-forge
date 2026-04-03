@@ -6,7 +6,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from .animatic import MediaFile
+from .animatic import MediaFile, PreviewProvenance
 from .creative_brief import VisualCreativeBrief
 from .models import ArtifactRef, CostRecord
 
@@ -87,6 +87,7 @@ class CompiledRenderPrompt(BaseModel):
     prompt_sources_used: list[str] = Field(default_factory=list)
     creative_brief_preview: VisualCreativeBrief | None = None
     resolved_inputs: list[RenderResolvedInput] = Field(default_factory=list)
+    preview_provenance: PreviewProvenance | None = None
 
     @model_validator(mode="after")
     def _validate_duration(self) -> CompiledRenderPrompt:
@@ -120,6 +121,7 @@ class GeneratedVideoArtifact(BaseModel):
     cost: CostRecord
     resolved_inputs: list[RenderResolvedInput] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list)
+    preview_provenance: PreviewProvenance | None = None
 
 
 class EnginePackLimits(BaseModel):
