@@ -96,9 +96,6 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Spec: {spec refs}
 - Build Map: {category + substrate + phase}
 
-### Recommended Action
-- {one next action}
-
 ### Why
 - {2-3 strongest reasons}
 
@@ -113,7 +110,12 @@ When invoked with no scope, run a methodology-first orchestration pass:
 
 ### Health Flags
 - {blocker or "none"}
+
+### Recommended Next Step
+- Say "yes" to: {one concrete next action phrased so a plain "yes" clearly approves it}
 ```
+
+The recommendation must be the final section. Write it as an approval-ready handoff, not just a summary label. The user should be able to reply with a plain `"yes"` and unambiguously authorize the recommended next move.
 
 ## Guardrails
 
@@ -124,3 +126,4 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Never start from "what stories are ready?" Start from "what gap matters most?"
 - If the top gap has no story yet, recommend creating or promoting the right artifact instead of silently skipping it
 - Do not let inbox novelty, eval staleness, or small ready work outrank a larger live gap without an explicit explanation
+- Put the recommendation at the very end so the user can answer with a simple "yes"

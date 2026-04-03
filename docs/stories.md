@@ -2,7 +2,7 @@
 
 ## Current Execution Map (updated 2026-04-03, Story 137 done)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The creative conversation loop now includes conversational upstream canon editing, so the active backlog centers on operator-surface polish and trust-hardening around the existing generation workflow.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The creative conversation loop now includes conversational upstream canon editing, so the active backlog centers on operator-surface polish and trust-hardening around the existing generation workflow, plus a benchmark-first draft for the next AI-previz step.
 
 ### Pending — Ready To Build Now
 
@@ -28,6 +28,7 @@ No stories currently blocked.
 
 | Story | Why It Stays Draft |
 |---|---|
+| **143** AI-Generated Low-Fidelity Previz | The next product-facing previz step, but it needs a fresh engine/house-style benchmark first. Story 137's old shared-video candidate still loses to `annotated_symbolic`, and the repo's current Google pack is now stale. |
 | **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |
 | **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
 | **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
@@ -88,6 +89,7 @@ NOTES from Cam:
 | 026 | Storyboard Generation (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-026](stories/story-026-storyboard-generation.md) |
 | 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-027](stories/story-027-animatics-previz.md) |
 | 137 | Previz Fidelity Upgrade | 6 — Shot Planning & Viz | Low | Done | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
+| 143 | AI-Generated Low-Fidelity Previz | 6 — Shot Planning & Viz | High | Draft | [story-143](stories/story-143-ai-generated-low-fidelity-previz.md) |
 | 028 | Render Adapter Module | 7 — Generation | Low | Done | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
 | 030 | Generated Output QA | 7 — Generation | Medium | Done | [story-030](stories/story-030-generated-output-qa.md) |
