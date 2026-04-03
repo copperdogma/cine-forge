@@ -74,7 +74,9 @@ def test_build_schema_registry_includes_animatic_types() -> None:
 def test_build_schema_registry_includes_render_types() -> None:
     registry = build_schema_registry()
     assert registry.get("render_prompt") is not None
+    assert registry.get("ai_previz_prompt") is not None
     assert registry.get("generated_video") is not None
+    assert registry.get("ai_previz_video") is not None
     assert registry.get("media_validation") is not None
 
 

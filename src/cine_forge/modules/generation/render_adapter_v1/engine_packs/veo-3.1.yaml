@@ -2,8 +2,9 @@ pack_id: google_veo31
 provider: google
 target_model: veo-3.1-generate-preview
 description: >
-  Google Veo 3.1 pack for scene-level renders with native audio cues, optional
-  first/last-frame interpolation, and up to three reference images.
+  Google Veo 3.1 pack for scene-level renders with optional audio cues,
+  first/last-frame interpolation, and up to three reference images. The live
+  Google API still exposes the preview model id used here as of 2026-04-03.
 preferred_prompt_style: >
   Use explicit cinematic language with shot progression, subject action,
   ambience, and sound cues written directly into the prompt.
@@ -29,6 +30,10 @@ request_defaults:
   portrait_aspect_ratio: "9:16"
   reference_images_require_eight_seconds: true
   high_resolution_requires_eight_seconds: true
+  benchmark_cost_per_second_usd: 0.20
+  benchmark_default_duration_seconds: 4
+  benchmark_consistency_strategy: "prompt_only"
+  benchmark_generation_mode: "video_only"
 retry_policy:
   max_attempts: 2
   poll_interval_seconds: 10

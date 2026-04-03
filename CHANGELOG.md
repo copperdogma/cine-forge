@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-04-03-02] — AI previz planning surface and benchmark gate (Story 143)
+
+### Added
+- Added a dedicated `ai_previz_generation` recipe path plus `ai_previz_prompt` and `ai_previz_video` artifacts so operators can generate non-final AI previz without going through final-render flows
+- Added an explicit `Previz` Scene Workspace surface and dedicated AI-previz detail views so deterministic and AI lanes are reviewable side by side in-product
+- Added candidate-specific AI-previz benchmark lanes, refreshed Veo Fast/Lite engine packs, and a typed low-fidelity previz prompt contract for benchmark and runtime reuse
+
+### Changed
+- Changed previz taxonomy to remove stale `shared_video` / render-coupled semantics and keep AI previz clearly separate from final generated video
+- Changed the benchmark-backed default decision to keep `annotated_symbolic` as the recommended lane until an AI candidate clears the adoption guardrail with verified cost evidence
+
+### Fixed
+- Fixed AI previz generation so required locked media can degrade to prompt-only context for previz packs that do not accept image references, while final render stays strict
+- Fixed Google Veo request shaping so duration is sent with the provider's expected numeric contract instead of the broken string form
+
 ## [2026-04-03-01] — Previz fidelity benchmark and annotated upgrade (Story 137)
 
 ### Added

@@ -111,6 +111,7 @@ def test_track_registry_defaults_and_overrides() -> None:
         "shots",
         "storyboards",
         "animatics",
+        "ai_previz_video",
         "keyframes",
         "generated_video",
         "continuity_events",
@@ -171,6 +172,26 @@ def test_best_for_scene_applies_fallback_and_status_filters(tmp_path: Path) -> N
 
     resolved_shot = best_for_scene(manifest, scene_id="scene_001", shot_id="shot_001")
     assert resolved_shot["selected_track_type"] == "generated_video"
+
+    manifest = remove_track_entries(
+        manifest,
+        track_type="generated_video",
+        scene_id="scene_001",
+        shot_id="shot_001",
+    )
+    manifest = add_track_entry(
+        manifest,
+        TrackEntry(
+            track_type="ai_previz_video",
+            scene_id="scene_001",
+            shot_id="shot_001",
+            artifact_ref=scene_ref,
+            priority=125,
+            status="available",
+        ),
+    )
+    resolved_previz = best_for_scene(manifest, scene_id="scene_001", shot_id="shot_001")
+    assert resolved_previz["selected_track_type"] == "ai_previz_video"
 
 
 @pytest.mark.unit

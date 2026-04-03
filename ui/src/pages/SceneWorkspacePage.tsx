@@ -35,7 +35,7 @@ import { SceneIntentPanel } from '@/components/DirectionTab'
 import { RolePresenceIndicators } from '@/components/DirectionTab'
 import { SceneViewer } from '@/components/ArtifactViewers'
 import { ExportModal } from '@/components/ExportModal'
-import { AnimaticsPanel } from '@/components/AnimaticsPanel'
+import { PrevizPanel } from '@/components/PrevizPanel'
 import { GeneratedVideoPanel } from '@/components/GeneratedVideoPanel'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { StoryboardPanel } from '@/components/StoryboardPanel'
@@ -492,13 +492,19 @@ export default function SceneWorkspacePage() {
   const previzGroup = groups?.find(
     g => g.artifact_type === 'previz_reel',
   )
+  const aiPrevizPromptGroup = groups?.find(
+    g => g.artifact_type === 'ai_previz_prompt' && g.entity_id === entityId,
+  )
+  const aiPrevizGroup = groups?.find(
+    g => g.artifact_type === 'ai_previz_video' && g.entity_id === entityId,
+  )
   const renderPromptGroup = groups?.find(
     g => g.artifact_type === 'render_prompt' && g.entity_id === entityId,
   )
   const generatedVideoGroup = groups?.find(
     g => g.artifact_type === 'generated_video' && g.entity_id === entityId,
   )
-  const animaticLevel = getReadiness(groups, 'animatic', entityId)
+  const previzLevel = animaticGroup || aiPrevizGroup ? 'yellow' : 'red'
   const renderLevel = getReadiness(groups, 'generated_video', entityId)
 
   return (
@@ -586,9 +592,9 @@ export default function SceneWorkspacePage() {
             <ReadinessDot level={storyboardLevel} label="Storyboard" />
             Storyboard
           </TabsTrigger>
-          <TabsTrigger value="animatics" className="gap-1.5">
-            <ReadinessDot level={animaticLevel} label="Animatics" />
-            Animatics
+          <TabsTrigger value="previz" className="gap-1.5">
+            <ReadinessDot level={previzLevel} label="Previz" />
+            Previz
           </TabsTrigger>
           <TabsTrigger value="render" className="gap-1.5">
             <ReadinessDot level={renderLevel} label="Render" />
@@ -633,8 +639,8 @@ export default function SceneWorkspacePage() {
           />
         </TabsContent>
 
-        <TabsContent value="animatics" className="mt-4">
-          <AnimaticsPanel
+        <TabsContent value="previz" className="mt-4">
+          <PrevizPanel
             projectId={projectId}
             sceneId={entityId}
             sceneHeading={displayName}
@@ -643,6 +649,8 @@ export default function SceneWorkspacePage() {
             animaticGroup={animaticGroup}
             keyframeGroup={keyframeGroup}
             previzGroup={previzGroup}
+            aiPrevizGroup={aiPrevizGroup}
+            aiPrevizPromptGroup={aiPrevizPromptGroup}
           />
         </TabsContent>
 

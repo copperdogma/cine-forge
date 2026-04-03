@@ -1,5 +1,12 @@
 import { useRef } from 'react'
-import { Sparkles, Wand2 } from 'lucide-react'
+import { Sparkles, Timer, TriangleAlert, Wand2 } from 'lucide-react'
+import {
+  formatConsistencyStrategy,
+  formatLatencyMs,
+  formatPreviewIntent,
+  formatPreviewMode,
+  parsePreviewProvenance,
+} from '@/components/preview-provenance'
 import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
 import { SelectionChatButton } from '@/components/SelectionChatButton'
 import { Badge } from '@/components/ui/badge'
@@ -48,6 +55,7 @@ type RenderPromptView = {
   promptSourcesUsed: string[]
   resolvedInputs: RenderInputUsageView[]
   providerParams: Record<string, unknown>
+  previewProvenance: ReturnType<typeof parsePreviewProvenance>
 }
 
 function parseSection(value: unknown, index: number): RenderPromptSectionView | null {
@@ -90,6 +98,7 @@ function parseRenderPrompt(data: Record<string, unknown>): RenderPromptView {
       .map(parseRenderInputUsage)
       .filter((input): input is RenderInputUsageView => input !== null),
     providerParams,
+    previewProvenance: parsePreviewProvenance(data.preview_provenance),
   }
 }
 
@@ -141,8 +150,13 @@ function RenderPromptSectionCard({ section }: { section: RenderPromptSectionView
 
 export function RenderPromptViewer({ data }: RenderPromptViewerProps) {
   const prompt = parseRenderPrompt(data)
+  const isAiPrevizPrompt = prompt.previewProvenance?.mode === 'ai_previz'
   const sceneLabel =
-    prompt.sceneNumber !== null ? `Scene ${prompt.sceneNumber}` : 'Render Prompt'
+    prompt.sceneNumber !== null
+      ? `Scene ${prompt.sceneNumber}`
+      : isAiPrevizPrompt
+        ? 'AI Previz Prompt'
+        : 'Render Prompt'
   const providerParamsJson = JSON.stringify(prompt.providerParams, null, 2)
   const promptBodyRef = useRef<HTMLParagraphElement>(null)
 
@@ -154,10 +168,23 @@ export function RenderPromptViewer({ data }: RenderPromptViewerProps) {
             <div className="space-y-1">
               <CardTitle>{sceneLabel}</CardTitle>
               <CardDescription>
-                {prompt.sceneHeading ?? 'Compiled provider-ready render prompt'}
+                {prompt.sceneHeading
+                  ?? (isAiPrevizPrompt
+                    ? 'Compiled low-fidelity AI previz prompt'
+                    : 'Compiled provider-ready render prompt')}
               </CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
+              {formatPreviewMode(prompt.previewProvenance?.mode ?? null) && (
+                <Badge variant="secondary">
+                  {formatPreviewMode(prompt.previewProvenance?.mode ?? null)}
+                </Badge>
+              )}
+              {formatPreviewIntent(prompt.previewProvenance?.fidelityIntent ?? null) && (
+                <Badge variant="outline">
+                  {formatPreviewIntent(prompt.previewProvenance?.fidelityIntent ?? null)}
+                </Badge>
+              )}
               {prompt.targetProvider && (
                 <Badge variant="secondary">{formatToken(prompt.targetProvider)}</Badge>
               )}
@@ -179,19 +206,49 @@ export function RenderPromptViewer({ data }: RenderPromptViewerProps) {
               )}
               {prompt.resolution && <Badge variant="outline">{prompt.resolution}</Badge>}
               {prompt.aspectRatio && <Badge variant="outline">{prompt.aspectRatio}</Badge>}
+              {formatConsistencyStrategy(prompt.previewProvenance?.consistencyStrategy ?? null) && (
+                <Badge variant="outline">
+                  {formatConsistencyStrategy(prompt.previewProvenance?.consistencyStrategy ?? null)}
+                </Badge>
+              )}
+              {formatLatencyMs(prompt.previewProvenance?.generationLatencyMs ?? null) && (
+                <Badge variant="outline" className="gap-1">
+                  <Timer className="h-3 w-3" />
+                  {formatLatencyMs(prompt.previewProvenance?.generationLatencyMs ?? null)}
+                </Badge>
+              )}
+              {isAiPrevizPrompt && !prompt.previewProvenance?.estimatedCostUsd && (
+                <Badge variant="outline">Cost unverified</Badge>
+              )}
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          {isAiPrevizPrompt && (
+            <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-100">
+              <div className="flex items-start gap-2">
+                <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+                <p>
+                  This prompt is for low-fidelity previz, not final render output. Keep the result
+                  focused on camera placement, blocking, motion, pacing, and location readability.
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="rounded-xl border border-border bg-card/60 px-4 py-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                Final Prompt
+                {isAiPrevizPrompt ? 'Previz Prompt' : 'Final Prompt'}
               </p>
               {prompt.promptText && (
                 <SelectionChatButton
                   roleId="director"
-                  prompt="I'd like to discuss this compiled render prompt."
+                  prompt={
+                    isAiPrevizPrompt
+                      ? "I'd like to discuss this compiled AI previz prompt."
+                      : "I'd like to discuss this compiled render prompt."
+                  }
                   fallbackQuote={prompt.promptText}
                   selectionRootRef={promptBodyRef}
                   label="Discuss Prompt"

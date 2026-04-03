@@ -43,6 +43,7 @@ class TrackManifest(BaseModel):
     fallback_order: list[str] = Field(
         default_factory=lambda: [
             "generated_video",
+            "ai_previz_video",
             "animatics",
             "storyboards",
             "script",

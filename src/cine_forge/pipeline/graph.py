@@ -267,6 +267,16 @@ PIPELINE_NODES: list[PipelineNode] = [
         implemented=True,
     ),
     PipelineNode(
+        id="ai_previz",
+        label="AI Previz",
+        phase_id="storyboards",
+        artifact_types=["ai_previz_video"],
+        check_mode="entity",
+        dependencies=["shot_planning"],
+        nav_route="/scenes",
+        implemented=True,
+    ),
+    PipelineNode(
         id="keyframes",
         label="Keyframes",
         phase_id="storyboards",
@@ -338,7 +348,7 @@ PIPELINE_PHASES: list[PipelinePhase] = [
         id="storyboards",
         label="Storyboards",
         icon="LayoutGrid",
-        node_ids=["storyboard_gen", "animatics", "keyframes"],
+        node_ids=["storyboard_gen", "animatics", "ai_previz", "keyframes"],
     ),
     PipelinePhase(
         id="production",
@@ -370,6 +380,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "look_and_feel": "creative_direction",
     "sound_and_music": "creative_direction",
     "shot_planning": "shot_planning",
+    "ai_previz": "ai_previz_generation",
     "render": "render_generation",
 }
 

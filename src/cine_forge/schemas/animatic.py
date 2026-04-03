@@ -32,9 +32,14 @@ class AudioReference(BaseModel):
 PreviewMode = Literal[
     "symbolic",
     "annotated_symbolic",
-    "shared_video",
+    "ai_previz",
     "generated_render",
     "final_render",
+]
+PreviewConsistencyStrategy = Literal[
+    "prompt_only",
+    "optional_references",
+    "reference_guided",
 ]
 PreviewFidelityIntent = Literal[
     "symbolic_baseline",
@@ -52,7 +57,8 @@ class PreviewProvenance(BaseModel):
     fidelity_intent: PreviewFidelityIntent = "symbolic_baseline"
     intended_use: list[PreviewIntendedUse] = Field(default_factory=lambda: ["human_review"])
     upstream_inputs: list[str] = Field(default_factory=list)
-    estimated_cost_usd: float = Field(default=0.0, ge=0.0)
+    consistency_strategy: PreviewConsistencyStrategy | None = None
+    estimated_cost_usd: float | None = Field(default=None, ge=0.0)
     generation_latency_ms: int | None = Field(default=None, ge=0)
 
 

@@ -12,6 +12,7 @@ from cine_forge.services import InjectedAssetService
 
 DEFAULT_FALLBACK_ORDER = [
     "generated_video",
+    "ai_previz_video",
     "animatics",
     "storyboards",
     "script",
@@ -24,6 +25,7 @@ DEFAULT_TRACK_REGISTRY: dict[str, dict[str, Any]] = {
     "storyboards": {"priority": 200},
     "animatics": {"priority": 150},
     "keyframes": {"priority": 175},
+    "ai_previz_video": {"priority": 125},
     "generated_video": {"priority": 100},
     "continuity_events": {"priority": 500},
     "music_sfx": {"priority": 450},

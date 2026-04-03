@@ -1,0 +1,39 @@
+{
+  "clip_id": "quiet_bedside_vigil",
+  "title": "Quiet bedside vigil",
+  "source_type": "synthetic_previz",
+  "source_description": "Story 143 AI-previz candidate generated with openai_sora2 (sora-2).",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 8.0,
+  "resolution": "1280x720",
+  "fps": 8,
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": "A soft room tone with a faint heartbeat monitor and low piano.",
+  "tags": [
+    "quiet_emotion",
+    "interior"
+  ],
+  "anchor_subset": true,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "candidate_variant": "openai_sora2_previz",
+  "candidate_label": "Sora 2 Previz",
+  "engine_pack_id": "openai_sora2",
+  "target_model": "sora-2",
+  "generation_latency_ms": 106323,
+  "estimated_generation_cost_usd": 0.8,
+  "consistency_strategy": "prompt_only",
+  "style_profile_id": "cineforge_low_fidelity_previz_v1",
+  "style_profile_title": "CineForge Low-Fidelity Previz",
+  "style_profile_summary": "A production-readable schematic animation language for camera, blocking, motion, and prop/location staging review.",
+  "negative_prompt_terms": [
+    "photorealistic skin detail",
+    "ornate textures",
+    "beauty-lighting polish",
+    "hyper-detailed props",
+    "decorative camera flourishes",
+    "bokeh glamour shots",
+    "final-render finish"
+  ],
+  "prompt_contract_path": "prompt_contract.json"
+}

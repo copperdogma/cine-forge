@@ -1,13 +1,13 @@
-# Story 137 — Previz usefulness pilot
+# Story 143 — Previz usefulness candidate benchmark
 #
 # Usage:
 #   source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
 #   cd benchmarks
 #   python scripts/generate_previz_usefulness_dataset.py
 #   PROMPTFOO_PYTHON=python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
-#     --output results/previz-usefulness-pilot-2026-04-02.json
+#     --output results/previz-usefulness-story-143-2026-04-03.json
 
-description: "Previz usefulness — compare symbolic, annotated, and shared-video scene previews"
+description: "Previz usefulness — compare deterministic baselines against current low-fidelity AI-previz candidates"
 
 defaultTest:
   options:
@@ -26,7 +26,7 @@ providers:
       max_tokens: 1400
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v1
+      prompt_version: previz-usefulness-v2
       clip_root: ../previz_usefulness
       candidate_variant: symbolic
       pythonExecutable: python
@@ -41,14 +41,14 @@ providers:
       max_tokens: 1400
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v1
+      prompt_version: previz-usefulness-v2
       clip_root: ../previz_usefulness
       candidate_variant: annotated_symbolic
       pythonExecutable: python
       timeout: 300000
 
   - id: file://../providers/video_understanding_provider.py
-    label: "Shared Video"
+    label: "Sora 2 Previz"
     config:
       provider: openai
       model: gpt-5.4
@@ -56,9 +56,39 @@ providers:
       max_tokens: 1400
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v1
+      prompt_version: previz-usefulness-v2
       clip_root: ../previz_usefulness
-      candidate_variant: shared_video
+      candidate_variant: openai_sora2_previz
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Veo 3.1 Fast Previz"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: previz-usefulness-v2
+      clip_root: ../previz_usefulness
+      candidate_variant: google_veo31_fast_previz
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Veo 3.1 Lite Previz"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: previz-usefulness-v2
+      clip_root: ../previz_usefulness
+      candidate_variant: google_veo31_lite_previz
       pythonExecutable: python
       timeout: 300000
 
@@ -79,8 +109,10 @@ tests:
           {{target_markdown}}
 
           Reward outputs that preserve camera placement, blocking clarity, motion readability,
-          pacing, and audio cues from the reference scene. Penalize outputs that flatten spatial
-          relationships, miss the planned movement, or reduce the clip to generic summary.
+          pacing, prop/location legibility, and character distinctness from the reference scene.
+          Also reward outputs that still read like intentionally low-fidelity previs rather than
+          polished final imagery. Penalize outputs that flatten spatial relationships, miss the
+          planned movement, blur character identity, or imply decorative final-render detail.
 
   - vars:
       clip_id: quiet_bedside_vigil

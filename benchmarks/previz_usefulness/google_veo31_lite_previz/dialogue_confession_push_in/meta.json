@@ -1,0 +1,39 @@
+{
+  "clip_id": "dialogue_confession_push_in",
+  "title": "Dialogue confession push-in",
+  "source_type": "synthetic_previz",
+  "source_description": "Story 143 AI-previz candidate generated with google_veo31_lite (veo-3.1-lite-generate-preview).",
+  "rights": "Project-owned synthetic benchmark asset",
+  "duration_seconds": 4.0,
+  "resolution": "720p",
+  "fps": 8,
+  "has_audio": true,
+  "transcript": "I should have told you before the train left.",
+  "audio_description": "Soft piano under a single confession line.",
+  "tags": [
+    "dialogue",
+    "quiet_emotion"
+  ],
+  "anchor_subset": true,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "candidate_variant": "google_veo31_lite_previz",
+  "candidate_label": "Veo 3.1 Lite Previz",
+  "engine_pack_id": "google_veo31_lite",
+  "target_model": "veo-3.1-lite-generate-preview",
+  "generation_latency_ms": 42619,
+  "estimated_generation_cost_usd": null,
+  "consistency_strategy": "prompt_only",
+  "style_profile_id": "cineforge_low_fidelity_previz_v1",
+  "style_profile_title": "CineForge Low-Fidelity Previz",
+  "style_profile_summary": "A production-readable schematic animation language for camera, blocking, motion, and prop/location staging review.",
+  "negative_prompt_terms": [
+    "photorealistic skin detail",
+    "ornate textures",
+    "beauty-lighting polish",
+    "hyper-detailed props",
+    "decorative camera flourishes",
+    "bokeh glamour shots",
+    "final-render finish"
+  ],
+  "prompt_contract_path": "prompt_contract.json"
+}

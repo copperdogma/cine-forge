@@ -213,7 +213,7 @@ def _generate_video_google(
     if request.aspect_ratio:
         parameters["aspectRatio"] = request.aspect_ratio
     if request.duration_seconds:
-        parameters["durationSeconds"] = str(request.duration_seconds)
+        parameters["durationSeconds"] = request.duration_seconds
     for key, value in request.provider_params.items():
         if value is not None:
             parameters[key] = value

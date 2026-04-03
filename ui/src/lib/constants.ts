@@ -5,7 +5,8 @@ export const RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Logic',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
-  animatics_generation: 'Animatics',
+  animatics_generation: 'Deterministic Previz',
+  ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
 }
 
@@ -16,7 +17,8 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Analysis',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
-  animatics_generation: 'Animatics',
+  animatics_generation: 'Deterministic Previz',
+  ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
 }
 
@@ -43,7 +45,10 @@ export function getRunStartedMessage(recipeId: string | null | undefined): strin
     return 'Shot Planning started — building scene shot lists now...'
   }
   if (recipeId === 'animatics_generation') {
-    return 'Animatics started — building rough cuts and keyframes now...'
+    return 'Deterministic Previz started — building rough cuts and keyframes now...'
+  }
+  if (recipeId === 'ai_previz_generation') {
+    return 'AI Previz started — generating low-fidelity planning clips now...'
   }
   if (recipeId === 'render_generation') {
     return 'Scene Renders started — compiling prompts and generating scene video now...'
@@ -67,8 +72,13 @@ export function getRunCompletedMessage(
   }
   if (recipeId === 'animatics_generation') {
     return summary
-      ? `Animatics complete! I produced ${summary} for your project.`
-      : 'Animatics complete!'
+      ? `Deterministic Previz complete! I produced ${summary} for your project.`
+      : 'Deterministic Previz complete!'
+  }
+  if (recipeId === 'ai_previz_generation') {
+    return summary
+      ? `AI Previz complete! I produced ${summary} for your project.`
+      : 'AI Previz complete!'
   }
   if (recipeId === 'render_generation') {
     return summary
@@ -106,6 +116,8 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   shot_plan: ['shot plan', 'shot plans'],
   storyboard: ['storyboard', 'storyboards'],
   animatic: ['animatic', 'animatics'],
+  ai_previz_prompt: ['ai previz prompt', 'ai previz prompts'],
+  ai_previz_video: ['ai previz clip', 'ai previz clips'],
   keyframe: ['keyframe set', 'keyframe sets'],
   previz_reel: ['previz reel', 'previz reels'],
   render_prompt: ['render prompt', 'render prompts'],

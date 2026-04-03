@@ -13,6 +13,9 @@ from cine_forge.ai.video import (
     generate_video,
 )
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.modules.generation.render_adapter_v1.previz_prompting import (
+    compile_scene_previz_prompt,
+)
 from cine_forge.modules.generation.render_adapter_v1.prompting import (
     compile_render_prompt,
     prompt_sources_from_sections,
@@ -82,12 +85,17 @@ def run_module(
     track_manifest = _track_manifest(inputs)
     shot_plans = _shot_plans(inputs)
     runtime_params = _runtime_params(context)
+    output_contract = _output_contract(params=params, runtime_params=runtime_params)
 
     engine_pack_id = str(
-        params.get("engine_pack_id") or runtime_params.get("engine_pack_id") or "openai_sora2"
+        params.get("engine_pack_id")
+        or runtime_params.get("engine_pack_id")
+        or output_contract["default_engine_pack_id"]
     )
     compiler_model = str(
-        params.get("compiler_model") or runtime_params.get("compiler_model") or "gpt-5.4-mini"
+        params.get("compiler_model")
+        or runtime_params.get("compiler_model")
+        or output_contract["default_compiler_model"]
     )
     requested_duration_seconds = float(
         params.get("duration_seconds") or runtime_params.get("duration_seconds") or 8.0
@@ -118,21 +126,29 @@ def run_module(
             requested_duration_seconds=requested_duration_seconds,
             requested_resolution=requested_resolution,
             requested_aspect_ratio=requested_aspect_ratio,
+            output_contract=output_contract,
         )
         generated_refs[plan.scene_id] = anticipated_entity_ref(
-            store, "generated_video", plan.scene_id
+            store, output_contract["video_artifact_type"], plan.scene_id
         )
         artifacts.extend([prompt_artifact, video_artifact])
         _merge_cost(total_cost, cost)
-        print(f"[render_adapter] Compiled and rendered {plan.scene_id} with {engine_pack.pack_id}.")
+        print(
+            "[render_adapter] Compiled and rendered "
+            f"{plan.scene_id} as {output_contract['video_artifact_type']} "
+            f"with {engine_pack.pack_id}."
+        )
 
     track_manifest_ref = latest_project_ref(store, "track_manifest")
     if track_manifest_ref is None:
         raise ValueError("render_adapter_v1 could not resolve latest track_manifest artifact")
 
-    updated_manifest = _update_track_manifest_with_generated_video(
+    updated_manifest = _update_track_manifest_with_video_track(
         manifest=track_manifest,
         generated_video_refs=generated_refs,
+        track_type=output_contract["track_type"],
+        priority=output_contract["track_priority"],
+        notes=output_contract["track_note"],
     )
     artifacts.append(
         {
@@ -167,10 +183,15 @@ def _render_scene(
     requested_duration_seconds: float,
     requested_resolution: str | None,
     requested_aspect_ratio: str | None,
+    output_contract: dict[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     started = time.perf_counter()
-    prompt_ref = anticipated_entity_ref(store, "render_prompt", plan.scene_id)
-    video_ref = anticipated_entity_ref(store, "generated_video", plan.scene_id)
+    prompt_ref = anticipated_entity_ref(
+        store, output_contract["prompt_artifact_type"], plan.scene_id
+    )
+    video_ref = anticipated_entity_ref(
+        store, output_contract["video_artifact_type"], plan.scene_id
+    )
     shot_plan_ref = latest_entity_ref(store, "shot_plan", plan.scene_id)
     if shot_plan_ref is None:
         raise ValueError(f"render_adapter_v1 could not resolve shot_plan ref for {plan.scene_id}")
@@ -205,40 +226,68 @@ def _render_scene(
         duration_seconds=duration_seconds,
         resolution=resolution,
         aspect_ratio=aspect_ratio,
+        allow_prompt_only_required_media=output_contract["prompt_mode"] == "ai_previz",
     )
-    prompt_draft, compile_cost, required_categories = compile_render_prompt(
-        compiler_model=compiler_model,
-        engine_pack=engine_pack,
-        scene_block=_scene_block(scene=scene, plan=plan),
-        context_blocks=_context_blocks(
+    if output_contract["prompt_mode"] == "ai_previz":
+        previz_contract, sections, completeness, prompt_sources = compile_scene_previz_prompt(
             scene=scene,
             plan=plan,
             source_maps=source_maps,
             resolved_inputs=resolved_inputs,
-        ),
-        resolved_inputs=resolved_inputs,
-        target_provider=engine_pack.provider,
-        target_model=engine_pack.target_model,
-        duration_seconds=duration_seconds,
-        resolution=resolution,
-        aspect_ratio=aspect_ratio,
-    )
-    sections, completeness, prompt_sources = _finalize_prompt_sections(
-        prompt_draft=prompt_draft,
-        required_categories=required_categories,
-        resolved_inputs=resolved_inputs,
-        extra_source_artifact_types=creative_brief_source_artifact_types(
-            source_maps["creative_brief"]
-        ),
-        notes=[
-            note for note in (aspect_note, duration_note, resolution_note, *request_notes) if note
-        ],
-    )
-    if completeness.missing_categories:
-        raise ValueError(
-            f"render_adapter_v1 prompt for {plan.scene_id} is incomplete: "
-            f"{', '.join(completeness.missing_categories)}"
+            engine_pack=engine_pack,
+            consistency_strategy=output_contract["consistency_strategy"],
         )
+        prompt_text = previz_contract.prompt_text
+        completeness = completeness.model_copy(
+            update={
+                "notes": [
+                    *completeness.notes,
+                    *[
+                        note
+                        for note in (aspect_note, duration_note, resolution_note, *request_notes)
+                        if note
+                    ],
+                ]
+            }
+        )
+        compile_cost = _empty_cost(model="code")
+    else:
+        prompt_draft, compile_cost, required_categories = compile_render_prompt(
+            compiler_model=compiler_model,
+            engine_pack=engine_pack,
+            scene_block=_scene_block(scene=scene, plan=plan),
+            context_blocks=_context_blocks(
+                scene=scene,
+                plan=plan,
+                source_maps=source_maps,
+                resolved_inputs=resolved_inputs,
+            ),
+            resolved_inputs=resolved_inputs,
+            target_provider=engine_pack.provider,
+            target_model=engine_pack.target_model,
+            duration_seconds=duration_seconds,
+            resolution=resolution,
+            aspect_ratio=aspect_ratio,
+        )
+        sections, completeness, prompt_sources = _finalize_prompt_sections(
+            prompt_draft=prompt_draft,
+            required_categories=required_categories,
+            resolved_inputs=resolved_inputs,
+            extra_source_artifact_types=creative_brief_source_artifact_types(
+                source_maps["creative_brief"]
+            ),
+            notes=[
+                note
+                for note in (aspect_note, duration_note, resolution_note, *request_notes)
+                if note
+            ],
+        )
+        if completeness.missing_categories:
+            raise ValueError(
+                f"render_adapter_v1 prompt for {plan.scene_id} is incomplete: "
+                f"{', '.join(completeness.missing_categories)}"
+            )
+        prompt_text = prompt_draft.prompt_text
 
     scene_cost = _scene_cost(
         compile_cost=compile_cost,
@@ -261,27 +310,31 @@ def _render_scene(
         resolution=resolution,
         aspect_ratio=aspect_ratio,
         provider_params=request.provider_params,
-        prompt_text=prompt_draft.prompt_text,
+        prompt_text=prompt_text,
         sections=sections,
         completeness=completeness,
         prompt_sources_used=prompt_sources,
         creative_brief_preview=source_maps["creative_brief"],
         resolved_inputs=resolved_inputs,
         preview_provenance=PreviewProvenance(
-            mode="generated_render",
-            fidelity_intent="render_preview",
-            intended_use=["human_review", "ai_conditioning"],
+            mode=output_contract["preview_mode"],
+            fidelity_intent=output_contract["fidelity_intent"],
+            intended_use=list(output_contract["intended_use"]),
             upstream_inputs=_render_upstream_inputs(
                 prompt_sources=prompt_sources,
                 resolved_inputs=resolved_inputs,
             ),
-            estimated_cost_usd=float(scene_cost.get("estimated_cost_usd", 0.0) or 0.0),
+            consistency_strategy=output_contract["consistency_strategy"],
+            estimated_cost_usd=_preview_cost_value(
+                scene_cost=scene_cost,
+                output_contract=output_contract,
+            ),
             generation_latency_ms=None,
         ),
     )
 
     request = VideoGenerationRequest(
-        prompt=prompt_draft.prompt_text,
+        prompt=prompt_text,
         duration_seconds=request.duration_seconds,
         resolution=request.resolution,
         aspect_ratio=request.aspect_ratio,
@@ -297,9 +350,14 @@ def _render_scene(
     )
     scene_cost["request_id"] = result.request_id
 
-    media_dir = render_media_dir(store.project_dir, plan.scene_id, video_ref.version)
+    media_dir = render_media_dir(
+        store.project_dir,
+        plan.scene_id,
+        video_ref.version,
+        media_root=output_contract["media_root"],
+    )
     media_dir.mkdir(parents=True, exist_ok=True)
-    output_path = media_dir / "scene_render.mp4"
+    output_path = media_dir / output_contract["media_filename"]
     output_path.write_bytes(result.video_bytes)
     latency_ms = round((time.perf_counter() - started) * 1000)
 
@@ -311,6 +369,16 @@ def _render_scene(
         shot_plan_ref=shot_plan_ref,
         prompt_ref=prompt_ref,
         keyframe_ref=latest_entity_ref(store, "keyframe", plan.scene_id),
+        previz_baseline_ref=(
+            latest_entity_ref(store, "animatic", plan.scene_id)
+            if output_contract["prompt_mode"] == "ai_previz"
+            else None
+        ),
+        previz_reel_ref=(
+            latest_project_ref(store, "previz_reel")
+            if output_contract["prompt_mode"] == "ai_previz"
+            else None
+        ),
         video=MediaFile(
             relative_path=relative_path(store.project_dir, output_path),
             media_type=result.media_type,
@@ -333,24 +401,29 @@ def _render_scene(
         resolved_inputs=resolved_inputs,
         notes=completeness.notes,
         preview_provenance=PreviewProvenance(
-            mode="generated_render",
-            fidelity_intent="render_preview",
-            intended_use=["human_review", "ai_conditioning"],
+            mode=output_contract["preview_mode"],
+            fidelity_intent=output_contract["fidelity_intent"],
+            intended_use=list(output_contract["intended_use"]),
             upstream_inputs=_render_upstream_inputs(
                 prompt_sources=prompt_sources,
                 resolved_inputs=resolved_inputs,
             ),
-            estimated_cost_usd=float(scene_cost.get("estimated_cost_usd", 0.0) or 0.0),
+            consistency_strategy=output_contract["consistency_strategy"],
+            estimated_cost_usd=_preview_cost_value(
+                scene_cost=scene_cost,
+                output_contract=output_contract,
+            ),
             generation_latency_ms=latency_ms,
         ),
     )
     return (
-        _prompt_artifact_dict(prompt_artifact),
+        _prompt_artifact_dict(prompt_artifact, output_contract=output_contract),
         _video_artifact_dict(
             generated_video=generated_video,
             prompt_artifact=prompt_artifact,
             compile_cost=scene_cost,
             request_notes=request_notes,
+            output_contract=output_contract,
         ),
         scene_cost,
     )
@@ -366,6 +439,72 @@ def _project_dir(context: dict[str, Any]) -> Path:
 def _runtime_params(context: dict[str, Any]) -> dict[str, Any]:
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     return runtime_params if isinstance(runtime_params, dict) else {}
+
+
+def _output_contract(
+    *,
+    params: dict[str, Any],
+    runtime_params: dict[str, Any],
+) -> dict[str, Any]:
+    prompt_mode = _optional_string(
+        params.get("prompt_mode") or runtime_params.get("prompt_mode")
+    ) or "render"
+    if prompt_mode == "ai_previz":
+        return {
+            "prompt_mode": "ai_previz",
+            "prompt_artifact_type": "ai_previz_prompt",
+            "video_artifact_type": "ai_previz_video",
+            "track_type": "ai_previz_video",
+            "track_priority": 125,
+            "track_note": "Scene-level AI previz clip for blocking and camera review.",
+            "media_root": "ai_previz_video_media",
+            "media_filename": "ai_previz.mp4",
+            "preview_mode": "ai_previz",
+            "fidelity_intent": "blocking_review",
+            "intended_use": ["human_review"],
+            "consistency_strategy": _optional_string(
+                params.get("consistency_strategy") or runtime_params.get("consistency_strategy")
+            )
+            or "prompt_only",
+            "default_engine_pack_id": "google_veo31_lite",
+            "default_compiler_model": "code",
+            "prompt_intent": "Compiled low-fidelity AI previz prompt for scene blocking review.",
+            "prompt_rationale": (
+                "AI previz prompts stay reviewable so operators can inspect the non-final "
+                "house-style instructions CineForge sent downstream."
+            ),
+            "video_intent": "Scene-level AI previz clip for blocking, camera, and motion review.",
+            "video_rationale": (
+                "AI previz turns reviewed planning artifacts into a low-fidelity planning clip "
+                "without conflating previz with final render."
+            ),
+        }
+    return {
+        "prompt_mode": "render",
+        "prompt_artifact_type": "render_prompt",
+        "video_artifact_type": "generated_video",
+        "track_type": "generated_video",
+        "track_priority": 100,
+        "track_note": "Scene-level generated video render.",
+        "media_root": "generated_video_media",
+        "media_filename": "scene_render.mp4",
+        "preview_mode": "generated_render",
+        "fidelity_intent": "render_preview",
+        "intended_use": ["human_review", "ai_conditioning"],
+        "consistency_strategy": None,
+        "default_engine_pack_id": "openai_sora2",
+        "default_compiler_model": "gpt-5.4-mini",
+        "prompt_intent": "Compiled, provider-ready generation prompt for a scene render.",
+        "prompt_rationale": (
+            "Prompt artifacts stay immutable and reviewable so operators can inspect "
+            "what CineForge actually sent downstream."
+        ),
+        "video_intent": "Scene-level generated video derived from compiled upstream film intent.",
+        "video_rationale": (
+            "Render adapter turns reviewed planning artifacts into a playable high-fidelity "
+            "preview without mutating upstream creative intent."
+        ),
+    }
 
 
 def _track_manifest(inputs: dict[str, Any]) -> TrackManifest:
@@ -649,6 +788,7 @@ def _shape_generation_request(
     duration_seconds: int,
     resolution: str,
     aspect_ratio: str,
+    allow_prompt_only_required_media: bool = False,
 ) -> tuple[VideoGenerationRequest, list[RenderResolvedInput], list[str]]:
     updated = [item.model_copy(deep=True) for item in resolved_inputs]
     image_inputs = [item for item in updated if item.kind in _IMAGE_KINDS and item.relative_path]
@@ -666,7 +806,7 @@ def _shape_generation_request(
     if first_frame_item is not None:
         if engine_pack.limits.supports_first_frame:
             first_frame_item.used_as = "input_reference"
-        elif first_frame_item.required:
+        elif first_frame_item.required and not allow_prompt_only_required_media:
             raise ValueError(
                 f"{engine_pack.pack_id} does not support locked opening-frame guidance"
             )
@@ -677,7 +817,7 @@ def _shape_generation_request(
     if last_frame_item is not None:
         if engine_pack.limits.supports_last_frame:
             last_frame_item.used_as = "last_frame"
-        elif last_frame_item.required:
+        elif last_frame_item.required and not allow_prompt_only_required_media:
             raise ValueError(f"{engine_pack.pack_id} does not support locked last-frame guidance")
         else:
             last_frame_item.used_as = "prompt_context"
@@ -694,7 +834,7 @@ def _shape_generation_request(
     first_frame = _video_reference(project_dir, first_frame_item)
     last_frame = _video_reference(project_dir, last_frame_item)
     if first_frame_item is not None and first_frame is None:
-        if first_frame_item.required:
+        if first_frame_item.required and not allow_prompt_only_required_media:
             raise ValueError(
                 f"{first_frame_item.label} is not an uploadable raster image "
                 f"for {engine_pack.pack_id}"
@@ -705,7 +845,7 @@ def _shape_generation_request(
             "an uploadable raster image."
         )
     if last_frame_item is not None and last_frame is None:
-        if last_frame_item.required:
+        if last_frame_item.required and not allow_prompt_only_required_media:
             raise ValueError(
                 f"{last_frame_item.label} is not an uploadable raster image "
                 f"for {engine_pack.pack_id}"
@@ -732,7 +872,7 @@ def _shape_generation_request(
             if reference is not None:
                 reference_images.append(reference)
                 remaining_capacity -= 1
-            elif item.required:
+            elif item.required and not allow_prompt_only_required_media:
                 item.used_as = "unsupported"
                 required_overflow.append(item.label)
             else:
@@ -741,10 +881,11 @@ def _shape_generation_request(
                     f"{item.label} stayed prompt-only because it is not an uploadable raster image."
                 )
             continue
-        if item.required:
+        if item.required and not allow_prompt_only_required_media:
             item.used_as = "unsupported"
             required_overflow.append(item.label)
         else:
+            item.used_as = "prompt_context"
             notes.append(
                 f"{item.label} stayed prompt-only because "
                 f"{engine_pack.pack_id} ran out of image slots."
@@ -758,7 +899,7 @@ def _shape_generation_request(
     if audio_inputs:
         if not engine_pack.limits.supports_audio_upload:
             required_audio = [item.label for item in audio_inputs if item.required]
-            if required_audio:
+            if required_audio and not allow_prompt_only_required_media:
                 for item in audio_inputs:
                     if item.required:
                         item.used_as = "unsupported"
@@ -766,6 +907,8 @@ def _shape_generation_request(
                     f"{engine_pack.pack_id} does not support required audio uploads: "
                     f"{', '.join(required_audio)}"
                 )
+            for item in audio_inputs:
+                item.used_as = "prompt_context"
             if engine_pack.limits.supports_audio_cues:
                 notes.append("Audio references were kept as prompt-level sound cues.")
             else:
@@ -782,7 +925,7 @@ def _shape_generation_request(
                 for item in updated
                 if item.used_as == "reference_image" and item.required
             ]
-            if required_refs:
+            if required_refs and not allow_prompt_only_required_media:
                 raise ValueError(
                     f"{engine_pack.pack_id} requires 8-second renders for reference images: "
                     f"{', '.join(required_refs)}"
@@ -1100,9 +1243,13 @@ def _finalize_prompt_sections(
     return sections, completeness, prompt_sources
 
 
-def _prompt_artifact_dict(prompt_artifact: CompiledRenderPrompt) -> dict[str, Any]:
+def _prompt_artifact_dict(
+    prompt_artifact: CompiledRenderPrompt,
+    *,
+    output_contract: dict[str, Any],
+) -> dict[str, Any]:
     return {
-        "artifact_type": "render_prompt",
+        "artifact_type": output_contract["prompt_artifact_type"],
         "entity_id": prompt_artifact.scene_id,
         "data": prompt_artifact.model_dump(mode="json"),
         "exclude_upstream_lineage_types": ["track_manifest"],
@@ -1115,18 +1262,18 @@ def _prompt_artifact_dict(prompt_artifact: CompiledRenderPrompt) -> dict[str, An
                     *[item.source_ref for item in prompt_artifact.resolved_inputs],
                 ]
             ),
-            "intent": "Compiled, provider-ready generation prompt for a scene render.",
-            "rationale": (
-                "Prompt artifacts stay immutable and reviewable so operators can inspect "
-                "what CineForge actually sent downstream."
-            ),
+            "intent": output_contract["prompt_intent"],
+            "rationale": output_contract["prompt_rationale"],
             "confidence": 0.9 if not prompt_artifact.completeness.missing_categories else 0.55,
-            "source": "hybrid",
+            "source": "code" if output_contract["prompt_mode"] == "ai_previz" else "hybrid",
             "annotations": {
                 "engine_pack_id": prompt_artifact.engine_pack_id,
                 "target_provider": prompt_artifact.target_provider,
                 "target_model": prompt_artifact.target_model,
                 "compiler_model": prompt_artifact.compiler_model,
+                "preview_mode": prompt_artifact.preview_provenance.mode
+                if prompt_artifact.preview_provenance
+                else None,
                 "missing_categories": prompt_artifact.completeness.missing_categories,
             },
         },
@@ -1139,9 +1286,10 @@ def _video_artifact_dict(
     prompt_artifact: CompiledRenderPrompt,
     compile_cost: dict[str, Any],
     request_notes: list[str],
+    output_contract: dict[str, Any],
 ) -> dict[str, Any]:
     return {
-        "artifact_type": "generated_video",
+        "artifact_type": output_contract["video_artifact_type"],
         "entity_id": generated_video.scene_id,
         "data": generated_video.model_dump(mode="json"),
         "include_stage_lineage": True,
@@ -1155,11 +1303,8 @@ def _video_artifact_dict(
                     *[item.source_ref for item in generated_video.resolved_inputs],
                 ]
             ),
-            "intent": "Scene-level generated video derived from compiled upstream film intent.",
-            "rationale": (
-                "Render adapter turns reviewed planning artifacts into a playable high-fidelity "
-                "preview without mutating upstream creative intent."
-            ),
+            "intent": output_contract["video_intent"],
+            "rationale": output_contract["video_rationale"],
             "confidence": 0.84 if not prompt_artifact.completeness.missing_categories else 0.5,
             "source": "hybrid",
             "annotations": {
@@ -1176,30 +1321,33 @@ def _video_artifact_dict(
     }
 
 
-def _update_track_manifest_with_generated_video(
+def _update_track_manifest_with_video_track(
     *,
     manifest: TrackManifest,
     generated_video_refs: dict[str, ArtifactRef],
+    track_type: str,
+    priority: int,
+    notes: str,
 ) -> TrackManifest:
     scene_ids = set(generated_video_refs)
     kept_entries = [
         entry
         for entry in manifest.entries
-        if not (entry.track_type == "generated_video" and entry.scene_id in scene_ids)
+        if not (entry.track_type == track_type and entry.scene_id in scene_ids)
     ]
     new_entries = list(kept_entries)
     for scene_id in sorted(scene_ids):
         start_time, end_time = _scene_window_for_manifest(manifest, scene_id)
         new_entries.append(
             TrackEntry(
-                track_type="generated_video",
+                track_type=track_type,
                 scene_id=scene_id,
                 artifact_ref=generated_video_refs[scene_id],
                 start_time_seconds=start_time,
                 end_time_seconds=end_time,
-                priority=100,
+                priority=priority,
                 status="available",
-                notes="Scene-level generated video render.",
+                notes=notes,
             )
         )
     return manifest.model_copy(
@@ -1239,6 +1387,16 @@ def _scene_cost(
         "latency_seconds": compile_cost.get("latency_seconds"),
         "request_id": request_id or compile_cost.get("request_id"),
     }
+
+
+def _preview_cost_value(
+    *,
+    scene_cost: dict[str, Any],
+    output_contract: dict[str, Any],
+) -> float | None:
+    if output_contract["prompt_mode"] == "ai_previz":
+        return None
+    return float(scene_cost.get("estimated_cost_usd", 0.0) or 0.0)
 
 
 def _empty_cost(*, model: str) -> dict[str, Any]:

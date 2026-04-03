@@ -143,15 +143,17 @@ and optional keyframes linked to upstream direction.
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 025, 026, 027, 056, 119, 120, 121, 132, 137
+**Stories:** 025, 026, 027, 056, 119, 120, 121, 132, 137, 143
 **Spec:** spec:6 (spec:6.1 through spec:6.4)
 **ADR Refs:** ADR-003 (shot planning consumes concern-group artifacts)
 **Absorbs:** Shot Planning & Visualization (old 6)
 
 ### Phase Notes
 
-- Shot planning and storyboard generation exist, but animatics/previz/keyframe
-  coverage is still incomplete. This category is a true climb.
+- Shot planning, storyboard generation, deterministic previz, and the operator-facing
+  AI-previz surface now exist as real substrate. This category stays in `climb`
+  because the recommended/default lane is still benchmark-gated and broader
+  previz quality/consistency coverage remains unfinished.
 
 ## 7. Generation & Export                                                      `spec:7`
 
@@ -163,15 +165,15 @@ and origin-agnostic asset injection.
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 028, 029, 030, 058, 130, 140
+**Stories:** 028, 029, 030, 058, 130, 140, 143
 **Spec:** spec:7 (spec:7.1, spec:7.1.1, spec:7.1.2, spec:7.1.3, spec:7.2)
 **ADR Refs:** ADR-003 (real-world assets as first-class inputs)
 **Absorbs:** Generation & Export (old 7)
 
 ### Phase Notes
 
-- Render-adapter compilation, engine-pack knowledge, error handling, origin-agnostic asset injection, and runtime generated-video validation now exist as real substrate.
-- This category stays in `climb` because richer export fidelity and broader media-validation coverage remain unfinished, but the next work is quality/coverage follow-on rather than a missing render foundation.
+- Render-adapter compilation, engine-pack knowledge, error handling, origin-agnostic asset injection, runtime generated-video validation, and a dedicated non-final AI-previz generation path now exist as real substrate.
+- This category stays in `climb` because richer export fidelity, broader media-validation coverage, and the eventual AI-previz default-adoption decision remain unfinished, but the next work is quality/coverage follow-on rather than a missing render foundation.
 
 ### Compromise Progress
 

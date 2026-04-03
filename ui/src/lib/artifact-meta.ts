@@ -50,6 +50,8 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   shot_plan: { icon: Camera, label: 'Shot Plan', color: 'text-cyan-400' },
   storyboard: { icon: ImageIcon, label: 'Storyboard', color: 'text-fuchsia-400' },
   animatic: { icon: Clapperboard, label: 'Animatic', color: 'text-emerald-400' },
+  ai_previz_prompt: { icon: MessageSquare, label: 'AI Previz Prompt', color: 'text-sky-300' },
+  ai_previz_video: { icon: Film, label: 'AI Previz', color: 'text-sky-400' },
   keyframe: { icon: ImageIcon, label: 'Keyframes', color: 'text-amber-400' },
   previz_reel: { icon: Film, label: 'Previz Reel', color: 'text-sky-400' },
   render_prompt: { icon: MessageSquare, label: 'Render Prompt', color: 'text-slate-300' },

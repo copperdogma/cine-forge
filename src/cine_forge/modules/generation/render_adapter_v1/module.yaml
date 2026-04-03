@@ -1,9 +1,10 @@
 module_id: render_adapter_v1
 stage: generation
 description: >
-  Compiles scene-level render prompts from shot plans, concern-group artifacts,
+  Compiles scene-level prompts from shot plans, concern-group artifacts,
   keyframes, and injected references, then generates immutable scene video
-  artifacts and updates the shared generated-video track.
+  artifacts for either final render or low-fidelity AI previz and updates the
+  appropriate shared track.
 input_schemas:
   - shot_plan
   - track_manifest
@@ -19,9 +20,16 @@ input_schemas:
   - injected_asset_manifest
 output_schemas:
   - render_prompt
+  - ai_previz_prompt
   - generated_video
+  - ai_previz_video
   - track_manifest
 parameters:
+  prompt_mode:
+    type: string
+    required: false
+    default: "render"
+    description: "Output mode: render for final scene video, ai_previz for low-fidelity planning clips."
   engine_pack_id:
     type: string
     required: false
@@ -45,3 +53,7 @@ parameters:
     type: string
     required: false
     description: "Optional aspect-ratio override before engine-pack normalization."
+  consistency_strategy:
+    type: string
+    required: false
+    description: "Previz-only consistency strategy, for example prompt_only or optional_references."

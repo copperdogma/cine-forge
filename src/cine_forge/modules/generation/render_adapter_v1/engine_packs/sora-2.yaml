@@ -28,6 +28,10 @@ limits:
 request_defaults:
   landscape_size: "1280x720"
   portrait_size: "720x1280"
+  benchmark_cost_per_second_usd: 0.10
+  benchmark_default_duration_seconds: 8
+  benchmark_consistency_strategy: "prompt_only"
+  benchmark_generation_mode: "video_only"
 retry_policy:
   max_attempts: 2
   poll_interval_seconds: 10

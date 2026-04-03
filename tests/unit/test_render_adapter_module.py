@@ -8,19 +8,30 @@ from cine_forge.ai.video import VideoGenerationResult
 from cine_forge.modules.generation.render_adapter_v1.main import run_module
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
 from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
-from cine_forge.schemas import CompiledRenderPrompt, GeneratedVideoArtifact, TrackManifest
+from cine_forge.schemas import (
+    ArtifactMetadata,
+    CompiledRenderPrompt,
+    GeneratedVideoArtifact,
+    TrackManifest,
+)
 from tests.render_fixtures import seed_render_project
 
 
 @pytest.mark.unit
-def test_load_engine_pack_supports_initial_sora_and_veo_packs() -> None:
+def test_load_engine_pack_supports_story_143_previz_candidate_packs() -> None:
     sora = load_engine_pack("openai_sora2")
     veo = load_engine_pack("google_veo31")
+    veo_fast = load_engine_pack("google_veo31_fast")
+    veo_lite = load_engine_pack("google_veo31_lite")
 
     assert sora.provider == "openai"
     assert sora.target_model == "sora-2"
     assert veo.provider == "google"
     assert "1080p" in veo.limits.supported_resolutions
+    assert veo_fast.target_model == "veo-3.1-fast-generate-preview"
+    assert veo_fast.request_defaults["benchmark_cost_per_second_usd"] == 0.10
+    assert veo_lite.target_model == "veo-3.1-lite-generate-preview"
+    assert veo_lite.limits.max_reference_images == 0
 
 
 @pytest.mark.unit
@@ -205,6 +216,104 @@ def test_run_module_generates_prompt_video_and_track_entries(
     assert (
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
         == "generated_video"
+    )
+
+
+@pytest.mark.unit
+def test_run_module_generates_ai_previz_artifacts_and_track_entries(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
+    store = seeded["store"]
+    scene_id = seeded["scene_id"]
+
+    scene_ref = store.list_versions("scene", scene_id)[-1]
+    shot_plan_ref = store.list_versions("shot_plan", scene_id)[-1]
+    keyframe_ref = store.list_versions("keyframe", scene_id)[-1]
+    metadata = ArtifactMetadata(
+        lineage=[scene_ref, shot_plan_ref, keyframe_ref],
+        intent="seed previz references",
+        rationale="unit test seed",
+        confidence=1.0,
+        source="code",
+    )
+    store.save_artifact(
+        artifact_type="animatic",
+        entity_id=scene_id,
+        data={"scene_id": scene_id, "segments": [], "duration_seconds": 0.0},
+        metadata=metadata,
+    )
+    store.save_artifact(
+        artifact_type="previz_reel",
+        entity_id="project",
+        data={"scenes": [], "total_duration_seconds": 0.0},
+        metadata=metadata,
+    )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.compile_render_prompt",
+        lambda *args, **kwargs: pytest.fail(
+            "render prompt compilation should not run for ai_previz mode"
+        ),
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: VideoGenerationResult(
+            video_bytes=b"fake-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="previz-video-001",
+            provider_job_id="previz-job-001",
+        ),
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "prompt_mode": "ai_previz",
+            "engine_pack_id": "google_veo31_lite",
+            "duration_seconds": 8,
+            "resolution": "1280x720",
+            "consistency_strategy": "prompt_only",
+        },
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_prompt"
+    )
+    video_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_video"
+    )
+    manifest_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "track_manifest"
+    )
+
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+    generated_video = GeneratedVideoArtifact.model_validate(video_payload)
+    manifest = TrackManifest.model_validate(manifest_payload)
+
+    assert prompt_artifact.compiler_model == "code"
+    assert prompt_artifact.preview_provenance.mode == "ai_previz"
+    assert prompt_artifact.preview_provenance.consistency_strategy == "prompt_only"
+    assert "This is previs, not a final render." in prompt_artifact.prompt_text
+    assert generated_video.prompt_ref.artifact_type == "ai_previz_prompt"
+    assert generated_video.previz_baseline_ref is not None
+    assert generated_video.previz_baseline_ref.artifact_type == "animatic"
+    assert generated_video.previz_reel_ref is not None
+    assert generated_video.previz_reel_ref.artifact_type == "previz_reel"
+    assert generated_video.preview_provenance.mode == "ai_previz"
+    assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
+    assert (
+        best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
+        == "ai_previz_video"
     )
 
 

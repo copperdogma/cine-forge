@@ -9,6 +9,8 @@ from cine_forge.schemas import (
     GeneratedVideoArtifact,
     MediaFile,
     PreviewProvenance,
+    PrevizPromptContract,
+    PrevizStyleProfile,
     RenderCompletenessCheck,
     RenderPromptSection,
 )
@@ -38,6 +40,24 @@ def _prompt_ref() -> ArtifactRef:
         entity_id="scene_001",
         version=1,
         path="artifacts/render_prompt/scene_001/v1.json",
+    )
+
+
+def _animatic_ref() -> ArtifactRef:
+    return ArtifactRef(
+        artifact_type="animatic",
+        entity_id="scene_001",
+        version=1,
+        path="artifacts/animatic/scene_001/v1.json",
+    )
+
+
+def _previz_reel_ref() -> ArtifactRef:
+    return ArtifactRef(
+        artifact_type="previz_reel",
+        entity_id="project",
+        version=1,
+        path="artifacts/previz_reel/project/v1.json",
     )
 
 
@@ -122,3 +142,79 @@ def test_generated_video_artifact_requires_positive_duration() -> None:
             resolved_inputs=[],
             notes=[],
         )
+
+
+@pytest.mark.unit
+def test_previz_prompt_contract_round_trip() -> None:
+    contract = PrevizPromptContract(
+        target_engine_pack_id="google_veo31_fast",
+        consistency_strategy="prompt_only",
+        style_profile=PrevizStyleProfile(
+            profile_id="cineforge_low_fidelity_previz_v1",
+            title="CineForge Low-Fidelity Previz",
+            summary="Blocking-first, non-final previz house style.",
+            identity_strategy="Use silhouette and wardrobe color coding.",
+            location_strategy="Keep only staging-relevant environment detail.",
+            motion_priority="Prioritize camera path and body positions.",
+            detail_suppression=["photoreal texture", "beauty pass"],
+            prompt_guidance=["Keep the image schematic and readable."],
+        ),
+        prompt_text="Create a low-fidelity previz clip with readable blocking.",
+        negative_prompt_terms=["photoreal skin detail"],
+        notes=["prompt-only consistency"],
+    )
+
+    restored = PrevizPromptContract.model_validate_json(contract.model_dump_json())
+    assert restored == contract
+
+
+@pytest.mark.unit
+def test_generated_video_artifact_round_trip_supports_previz_refs() -> None:
+    artifact = GeneratedVideoArtifact(
+        scene_id="scene_001",
+        scene_number=1,
+        scene_heading="INT. CONTROL ROOM - NIGHT",
+        scene_ref=_scene_ref(),
+        shot_plan_ref=_shot_plan_ref(),
+        prompt_ref=ArtifactRef(
+            artifact_type="ai_previz_prompt",
+            entity_id="scene_001",
+            version=1,
+            path="artifacts/ai_previz_prompt/scene_001/v1.json",
+        ),
+        keyframe_ref=None,
+        previz_baseline_ref=_animatic_ref(),
+        previz_reel_ref=_previz_reel_ref(),
+        video=MediaFile(
+            relative_path="artifacts/ai_previz_video_media/scene_001/v1.mp4",
+            media_type="video/mp4",
+        ),
+        duration_seconds=8.0,
+        resolution="1280x720",
+        aspect_ratio="16:9",
+        generation_params={},
+        target_provider="google",
+        target_model="veo-3.1-lite-generate-preview",
+        engine_pack_id="google_veo31_lite",
+        request_id="video-001",
+        cost=CostRecord(
+            model="veo-3.1-lite-generate-preview",
+            input_tokens=0,
+            output_tokens=0,
+            estimated_cost_usd=0.0,
+        ),
+        resolved_inputs=[],
+        notes=[],
+        preview_provenance=PreviewProvenance(
+            mode="ai_previz",
+            fidelity_intent="blocking_review",
+            intended_use=["human_review"],
+            upstream_inputs=["shot_plan", "look_and_feel"],
+            consistency_strategy="prompt_only",
+            estimated_cost_usd=None,
+            generation_latency_ms=2400,
+        ),
+    )
+
+    restored = GeneratedVideoArtifact.model_validate_json(artifact.model_dump_json())
+    assert restored == artifact

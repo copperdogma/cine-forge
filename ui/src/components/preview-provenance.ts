@@ -3,6 +3,7 @@ export type PreviewProvenanceView = {
   fidelityIntent: string | null
   intendedUse: string[]
   upstreamInputs: string[]
+  consistencyStrategy: string | null
   estimatedCostUsd: number | null
   generationLatencyMs: number | null
 }
@@ -39,6 +40,7 @@ export function parsePreviewProvenance(value: unknown): PreviewProvenanceView | 
     fidelityIntent: asString(record.fidelity_intent),
     intendedUse: asStringArray(record.intended_use),
     upstreamInputs: asStringArray(record.upstream_inputs),
+    consistencyStrategy: asString(record.consistency_strategy),
     estimatedCostUsd: asNumber(record.estimated_cost_usd),
     generationLatencyMs: asNumber(record.generation_latency_ms),
   }
@@ -50,14 +52,27 @@ export function formatPreviewMode(mode: string | null): string | null {
       return 'Annotated symbolic'
     case 'symbolic':
       return 'Symbolic'
-    case 'shared_video':
-      return 'Shared video'
+    case 'ai_previz':
+      return 'AI previz'
     case 'generated_render':
       return 'Generated render'
     case 'final_render':
       return 'Final render'
     default:
       return mode
+  }
+}
+
+export function formatConsistencyStrategy(value: string | null): string | null {
+  switch (value) {
+    case 'prompt_only':
+      return 'Prompt-only consistency'
+    case 'optional_references':
+      return 'Optional references'
+    case 'reference_guided':
+      return 'Reference-guided'
+    default:
+      return value
   }
 }
 

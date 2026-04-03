@@ -67,8 +67,14 @@ def dedupe_refs(refs: list[ArtifactRef]) -> list[ArtifactRef]:
     return deduped
 
 
-def render_media_dir(project_dir: Path, scene_id: str, version: int) -> Path:
-    return project_dir / "artifacts" / "generated_video_media" / scene_id / f"v{version}"
+def render_media_dir(
+    project_dir: Path,
+    scene_id: str,
+    version: int,
+    *,
+    media_root: str = "generated_video_media",
+) -> Path:
+    return project_dir / "artifacts" / media_root / scene_id / f"v{version}"
 
 
 def relative_path(project_dir: Path, path: Path) -> str:

@@ -191,8 +191,12 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     done: 'Shot planning complete.',
   },
   animatics: {
-    start: 'Building playable scene animatics from the current shot plans...',
-    done: 'Animatics complete.',
+    start: 'Building deterministic previz from the current shot plans...',
+    done: 'Deterministic previz complete.',
+  },
+  ai_previz: {
+    start: 'Generating low-fidelity AI previz clips for blocking and camera review...',
+    done: 'AI previz complete.',
   },
   keyframes: {
     start: 'Deriving lockable start, mid, and end keyframes...',

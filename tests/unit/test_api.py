@@ -1008,6 +1008,45 @@ def test_edit_artifact_rejects_read_only_render_prompt(tmp_path: Path) -> None:
     assert len(versions.json()) == 1
 
 
+def test_edit_artifact_rejects_read_only_ai_previz_prompt(tmp_path: Path) -> None:
+    """AI previz prompts are review-only compiled artifacts."""
+    client = _make_client(tmp_path)
+    project_path = tmp_path / "project-edit-ai-previz-prompt"
+    project_id = _init_project(client, project_path)
+
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="initial",
+        rationale="Seed compiled AI previz prompt",
+        confidence=0.9,
+        source="ai",
+        producing_module="test.module",
+    )
+    store.save_artifact(
+        artifact_type="ai_previz_prompt",
+        entity_id="scene_001",
+        data={"prompt_text": "Original compiled AI previz prompt"},
+        metadata=metadata,
+    )
+
+    edit_response = client.post(
+        f"/api/projects/{project_id}/artifacts/ai_previz_prompt/scene_001/edit",
+        json={
+            "data": {"prompt_text": "Manual override"},
+            "rationale": "Trying to override a compiled AI previz prompt",
+        },
+    )
+
+    assert edit_response.status_code == 422
+    edit_payload = edit_response.json()
+    assert edit_payload["code"] == "artifact_read_only"
+    assert "review-only" in edit_payload["message"]
+
+    versions = client.get(f"/api/projects/{project_id}/artifacts/ai_previz_prompt/scene_001")
+    assert versions.status_code == 200
+    assert len(versions.json()) == 1
+
+
 def test_project_ui_preferences_persist(tmp_path: Path) -> None:
     """Test that UI preferences can be saved and retrieved via project settings."""
     client = _make_client(tmp_path)

@@ -35,6 +35,7 @@ import { getArtifactMeta } from '@/lib/artifact-meta'
 import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 import { ShotPlanViewer } from '@/components/ShotPlanViewer'
+import { AiPrevizViewer } from '@/components/AiPrevizViewer'
 import { AnimaticViewer } from '@/components/AnimaticViewer'
 import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
 import { KeyframeViewer } from '@/components/KeyframeViewer'
@@ -105,7 +106,7 @@ export default function ArtifactDetail() {
 
   const meta = getArtifactMeta(artifactType ?? '')
   const Icon = meta.icon
-  const canEditArtifact = !['render_prompt', 'media_validation'].includes(artifactType ?? '')
+  const canEditArtifact = !['render_prompt', 'ai_previz_prompt', 'media_validation'].includes(artifactType ?? '')
 
   // Loading state
   if (artifactLoading || versionsLoading) {
@@ -337,7 +338,11 @@ export default function ArtifactDetail() {
         return <PrevizReelViewer data={data} projectId={projectId ?? ''} />
 
       case 'render_prompt':
+      case 'ai_previz_prompt':
         return <RenderPromptViewer data={data} />
+
+      case 'ai_previz_video':
+        return <AiPrevizViewer data={data} projectId={projectId ?? ''} />
 
       case 'generated_video':
         return <GeneratedVideoViewer data={data} projectId={projectId ?? ''} />

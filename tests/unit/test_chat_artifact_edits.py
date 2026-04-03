@@ -32,6 +32,28 @@ def test_propose_artifact_edit_blocks_read_only_render_prompt() -> None:
 
 
 @pytest.mark.unit
+def test_propose_artifact_edit_blocks_read_only_ai_previz_prompt() -> None:
+    service = MagicMock()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "ai_previz_prompt",
+            "entity_id": "scene_001",
+            "changes": {"prompt_text": "Manual override"},
+            "rationale": "Try to edit compiled AI previz prompt",
+        },
+        service=service,
+        project_id="project-123",
+        role_id="assistant",
+    )
+
+    payload = json.loads(result.content)
+    assert "review-only" in payload["error"]
+    assert result.actions == []
+    service.list_artifact_groups.assert_not_called()
+
+
+@pytest.mark.unit
 def test_checkpoint_mode_builds_bible_manifest_confirmation_payload() -> None:
     service = MagicMock()
     service.role_catalog.can_propose_artifact.return_value = True

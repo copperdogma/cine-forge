@@ -11,6 +11,11 @@ from .creative_brief import VisualCreativeBrief
 from .models import ArtifactRef, CostRecord
 
 RenderProvider = Literal["openai", "google"]
+PrevizConsistencyStrategy = Literal[
+    "prompt_only",
+    "optional_references",
+    "reference_guided",
+]
 RenderPromptUsage = Literal[
     "input_reference",
     "reference_image",
@@ -62,6 +67,30 @@ class RenderCompletenessCheck(BaseModel):
     notes: list[str] = Field(default_factory=list)
 
 
+class PrevizStyleProfile(BaseModel):
+    """Named low-fidelity visual contract for AI-generated previz."""
+
+    profile_id: str = Field(min_length=1)
+    title: str = Field(min_length=1)
+    summary: str = Field(min_length=1)
+    identity_strategy: str = Field(min_length=1)
+    location_strategy: str = Field(min_length=1)
+    motion_priority: str = Field(min_length=1)
+    detail_suppression: list[str] = Field(default_factory=list)
+    prompt_guidance: list[str] = Field(default_factory=list)
+
+
+class PrevizPromptContract(BaseModel):
+    """Compiled prompt contract for low-fidelity AI previz experiments."""
+
+    target_engine_pack_id: str = Field(min_length=1)
+    consistency_strategy: PrevizConsistencyStrategy = "prompt_only"
+    style_profile: PrevizStyleProfile
+    prompt_text: str = Field(min_length=1)
+    negative_prompt_terms: list[str] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
 class CompiledRenderPrompt(BaseModel):
     """Persisted prompt artifact used to create a generated-video artifact."""
 
@@ -109,6 +138,8 @@ class GeneratedVideoArtifact(BaseModel):
     shot_plan_ref: ArtifactRef
     prompt_ref: ArtifactRef
     keyframe_ref: ArtifactRef | None = None
+    previz_baseline_ref: ArtifactRef | None = None
+    previz_reel_ref: ArtifactRef | None = None
     video: MediaFile
     duration_seconds: float = Field(ge=0.0)
     resolution: str = Field(min_length=1)

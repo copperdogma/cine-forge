@@ -12,6 +12,12 @@ _ARTIFACT_EDIT_RESTRICTIONS: dict[str, EditRestriction] = {
         "Change the creative inputs or other upstream artifacts so CineForge recompiles "
         "the prompt.",
     ),
+    "ai_previz_prompt": (
+        "AI previz prompts are review-only compiled artifacts. "
+        "Update upstream previz inputs instead.",
+        "Change the shot plan, direction inputs, or previz configuration so CineForge recompiles "
+        "the prompt.",
+    ),
     "media_validation": (
         "Validation artifacts are runtime evidence snapshots and cannot be edited directly.",
         "Re-run validation or update the validated media source instead of editing the report.",

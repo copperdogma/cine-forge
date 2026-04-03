@@ -1206,15 +1206,16 @@ evals:
     name: Previz Usefulness
     type: quality
     description: >
-      Compares three scene-level previz candidates on the same fixed fixture pack:
-      Story 027's symbolic baseline, a richer deterministic annotated animatic, and
-      the shared low-detail generated-video lane. Uses Story 030's frame-packet
+      Compares five scene-level previz candidates on the same fixed fixture pack:
+      Story 027's symbolic baseline, Story 137's richer deterministic annotated
+      animatic, and three candidate-specific low-fidelity AI-previz lanes
+      (`sora-2`, `veo-3.1-fast`, `veo-3.1-lite`). Uses Story 030's frame-packet
       video-understanding substrate with GPT-5.4 as the fixed analysis model and a
-      rubric centered on camera readability, blocking clarity, motion, and pacing
-      usefulness for human review.
+      rubric centered on camera readability, blocking clarity, motion, pacing,
+      staging legibility, and low-detail previz usefulness for human review.
     pipeline_stage: visualization
     runner: promptfoo
-    command: "cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-validation-2026-04-03-rerun.json"
+    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03"
     config: benchmarks/tasks/previz-usefulness.yaml
     scorer: benchmarks/scorers/video_understanding_scorer.py
     golden: benchmarks/previz_usefulness/manifest.json
@@ -1223,47 +1224,71 @@ evals:
     target:
       metric: overall
       value: 0.75
-      latency_ms_max: 12000
-      cost_usd_max: 0.015
-      note: "Adopt a richer default only if one candidate clears the first usefulness floor and leads the symbolic baseline by at least 0.03."
+      latency_ms_max: 180000
+      cost_usd_max: 0.80
+      note: "Adopt AI previz only if a low-cost AI lane beats Annotated Animatic by at least 0.03 and the cost/latency evidence is verified; otherwise keep the deterministic default."
 
     scores:
+      - model: "Veo 3.1 Lite Previz"
+        metrics:
+          overall: 0.828
+          python: 0.8293
+          rubric: 0.8267
+        latency_ms: 39273
+        cost_usd: null
+        cost_estimated: false
+        measured: 2026-04-03
+        git_sha: "d6ac336"
+        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
+        note: "Quality leader on the latest UI-backed validation rerun. Prompt-only consistency is still good enough for previs readability, but adoption remains on hold because Lite cost is still unverified and the lead over Annotated Animatic stays inside the 0.03 default-switch guardrail."
       - model: "Annotated Animatic"
         metrics:
-          overall: 0.8113
-          python: 0.8493
-          rubric: 0.7733
-        latency_ms: 7556
-        cost_usd: 0.010937
+          overall: 0.803
+          python: 0.8127
+          rubric: 0.7933
+        latency_ms: 0
+        cost_usd: 0.0
         cost_estimated: true
         measured: 2026-04-03
-        git_sha: "07379cf"
-        result_file: benchmarks/results/previz-usefulness-validation-2026-04-03-rerun.json
-        note: "Verified clean from scratch after fixing the dataset generator. Annotated Animatic still leads the full rerun and clears the usefulness floor for camera/blocking readability."
-      - model: "Shared Video"
+        git_sha: "d6ac336"
+        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
+        note: "Deterministic control and current product default. The latest validation rerun keeps it within the adoption guardrail against Lite while remaining fully cost-verified, so it still holds the safest default position."
+      - model: "Veo 3.1 Fast Previz"
         metrics:
-          overall: 0.7497
-          python: 0.836
-          rubric: 0.6633
-        latency_ms: 7946
-        cost_usd: 0.010393
+          overall: 0.778
+          python: 0.8093
+          rubric: 0.7467
+        latency_ms: 32366
+        cost_usd: 0.4
         cost_estimated: true
         measured: 2026-04-03
-        git_sha: "07379cf"
-        result_file: benchmarks/results/previz-usefulness-validation-2026-04-03-rerun.json
-        note: "Comparator only, non-runtime-blocking. The clean rerun improved this candidate overall, but it still trails Annotated Animatic and still misses radio_hold_tracking in a model-wrong way by flattening the lateral-track setup."
+        git_sha: "d6ac336"
+        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
+        note: "Runner-up AI lane, non-runtime-blocking. It stays below Annotated Animatic overall, and the latest rerun still shows a model-wrong dialogue_confession_push_in miss where the planned slow push reads as static."
       - model: "Symbolic Animatic"
         metrics:
-          overall: 0.6763
-          python: 0.756
-          rubric: 0.5967
-        latency_ms: 7364
-        cost_usd: 0.010452
+          overall: 0.6547
+          python: 0.736
+          rubric: 0.5733
+        latency_ms: 0
+        cost_usd: 0.0
         cost_estimated: true
         measured: 2026-04-03
-        git_sha: "07379cf"
-        result_file: benchmarks/results/previz-usefulness-validation-2026-04-03-rerun.json
-        note: "Baseline comparator, non-runtime-blocking. It remains the explicit fallback, and the remaining radio_hold_tracking miss is still ambiguous rather than golden drift because the candidate itself simplifies the planned lateral move."
+        git_sha: "d6ac336"
+        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
+        note: "Baseline comparator and explicit fallback, non-runtime-blocking. The latest rerun adds ambiguous simplification misses on quiet_bedside_vigil and radio_hold_tracking, reinforcing why this lane is fallback-only."
+      - model: "Sora 2 Previz"
+        metrics:
+          overall: 0.659
+          python: 0.4513
+          rubric: 0.8667
+        latency_ms: 106736
+        cost_usd: 0.8
+        cost_estimated: true
+        measured: 2026-04-03
+        git_sha: "d6ac336"
+        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
+        note: "Comparator only, non-runtime-blocking. The three hard_constraints failures remain ambiguous evidence_timestamp_range mismatches while the rubric stays strong, but the lane still loses badly on latency and cost."
 
     attempts:
       - date: 2026-04-03
@@ -1272,6 +1297,15 @@ evals:
       - date: 2026-04-03
         git_sha: "07379cf"
         note: "Post-fix clean rerun succeeded end to end after repairing the dataset generator. Final verified ranking: Annotated 0.8113, Shared 0.7497, Symbolic 0.6763. Remaining failures are non-runtime-blocking and classified: Shared Video on radio_hold_tracking is model-wrong, Symbolic Animatic on radio_hold_tracking is ambiguous."
+      - date: 2026-04-03
+        git_sha: "d6ac336"
+        note: "Story 143 replaced the single shared_video bucket with candidate-specific AI-previz lanes and a typed low-fidelity previz prompt contract. Full five-lane rerun ranked Veo 3.1 Lite at 0.9027, Annotated Animatic at 0.8130, Veo 3.1 Fast at 0.8003, Symbolic at 0.6787, and Sora 2 at 0.6598. Remaining misses were classified and non-runtime-blocking: Veo Fast on radio_hold_tracking is model-wrong, Symbolic on radio_hold_tracking is ambiguous, and Sora 2's three failures are ambiguous evidence_timestamp_range mismatches. Product decision: hold the deterministic default until Lite cost can be verified."
+      - date: 2026-04-03
+        git_sha: "d6ac336"
+        note: "Fresh `/validate` rerun regenerated the full dataset from scratch, reran promptfoo, and regenerated the report. Verified ranking: Veo 3.1 Lite 0.9303, Annotated Animatic 0.8563, Veo 3.1 Fast 0.8230, Symbolic 0.6863, Sora 2 0.6340. Remaining failures are classified and non-runtime-blocking: Sora 2's three failures remain ambiguous evidence_timestamp_range mismatches, and Symbolic Animatic on radio_hold_tracking remains ambiguous because the deterministic baseline flattens the planned lateral move. Veo Fast's earlier miss did not reproduce on the validation rerun. Product decision remains hold until Lite cost can be verified."
+      - date: 2026-04-03
+        git_sha: "d6ac336"
+        note: "UI-backed validation rerun rebuilt the dataset from scratch, but the first attempt hit a transient Sora moderation_blocked response during generation. An immediate clean retry succeeded end to end, and the fresh report landed at Veo 3.1 Lite 0.8280, Annotated Animatic 0.8030, Veo 3.1 Fast 0.7780, Sora 2 0.6590, and Symbolic 0.6547. Remaining failures are classified and non-runtime-blocking: Veo Fast on dialogue_confession_push_in is model-wrong, Sora 2's three failures remain ambiguous evidence_timestamp_range mismatches, Annotated Animatic on radio_hold_tracking is ambiguous on tone/emotion, and Symbolic Animatic remains ambiguous on quiet_bedside_vigil plus radio_hold_tracking simplification. Product decision remains hold because Lite cost is still unverified and its lead over Annotated stays below the 0.03 adoption margin."
 
   - id: runtime-media-validation
     name: Runtime Media Validation
