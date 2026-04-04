@@ -54,6 +54,7 @@ const ACTIVE_SURFACE_PATHS = [
   join(ROOT, "docs/setup-checklist.md"),
   join(ROOT, "docs/runbooks/setup-methodology.md"),
   join(ROOT, "docs/runbooks/triage.md"),
+  join(ROOT, "docs/runbooks/migrate-problem-first-triage-and-story-workflow.md"),
   join(ROOT, "docs/runbooks/triage-evals.md"),
   join(ROOT, "docs/runbooks/align.md"),
   join(ROOT, "docs/runbooks/create-eval.md"),
@@ -254,6 +255,31 @@ function findFirstNonEmptyLine(lines) {
   return null;
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function extractMarkdownSection(body, heading) {
+  const pattern = new RegExp(`(?:^|\\n)##\\s+${escapeRegExp(heading)}\\s*\\n([\\s\\S]*?)(?=\\n##\\s+|$)`);
+  const match = body.match(pattern);
+  return match ? match[1].trim() : null;
+}
+
+function normalizeOptionalSectionText(value) {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  if (!normalized) return null;
+  if (/^(?:n\/a|none|not applicable|not blocked|tbd|—|-)$/i.test(normalized)) return null;
+  return normalized;
+}
+
+function summarizeInlineText(value, maxLength = 96) {
+  if (!value) return "—";
+  const inline = value.replace(/\s+/g, " ").trim();
+  if (inline.length <= maxLength) return inline;
+  return `${inline.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
 function parseIdeal() {
   const lines = readUtf8(IDEAL_PATH).split(/\r?\n/);
   const requirements = [];
@@ -346,6 +372,9 @@ function parseStory(path) {
   const explicitCategoryRefs = frontmatterStringArray(parsed.frontmatter, "category_refs");
   const explicitCompromiseRefs = frontmatterStringArray(parsed.frontmatter, "compromise_refs");
   const explicitInputCoverageRefs = frontmatterStringArray(parsed.frontmatter, "input_coverage_refs");
+  const blockerSummary = normalizeOptionalSectionText(extractMarkdownSection(parsed.body, "Blocker Summary"));
+  const blockerEvidence = normalizeOptionalSectionText(extractMarkdownSection(parsed.body, "Blocker Evidence"));
+  const unblockCondition = normalizeOptionalSectionText(extractMarkdownSection(parsed.body, "Unblock Condition"));
   const missingFrontmatterKeys = parsed.hasFrontmatter
     ? REQUIRED_STORY_FRONTMATTER_KEYS.filter((key) => !(key in parsed.frontmatter))
     : REQUIRED_STORY_FRONTMATTER_KEYS.slice();
@@ -366,6 +395,9 @@ function parseStory(path) {
     architectureDomains: uniqueSorted(frontmatterStringArray(parsed.frontmatter, "architecture_domains")),
     roadmapTags: uniqueSorted(frontmatterStringArray(parsed.frontmatter, "roadmap_tags")),
     legacySystem: frontmatterString(parsed.frontmatter, "legacy_system") || "",
+    blockerSummary,
+    blockerEvidence,
+    unblockCondition,
     metadataSource: parsed.hasFrontmatter ? "frontmatter" : "legacy",
     missingFrontmatterKeys,
   };
@@ -538,11 +570,12 @@ function renderStoriesIndex(graph) {
   lines.push("# Project Stories — cine-forge", "");
   lines.push("> Generated from story metadata + `docs/methodology/state.yaml`. Do not edit manually.", "");
   lines.push("## Status Key", "");
-  lines.push("- **Draft** — Skeleton with goal + notes, not yet buildable");
-  lines.push("- **Pending** — Fully detailed, ready for `/build-story`");
+  lines.push("- **Draft** — Worth preserving, but still incomplete or substrate-unverified");
+  lines.push("- **Pending** — Fully detailed and honestly buildable now");
   lines.push("- **In Progress** — Active work");
-  lines.push("- **Blocked** — Waiting on a dependency or decision");
+  lines.push("- **Blocked** — Concrete enough to preserve, but blocked by a named evidence-backed blocker");
   lines.push("- **Deferred** — Intentionally parked");
+  lines.push("- **Cancelled** — Explicitly abandoned");
   lines.push("- **Done** — Complete and validated");
   lines.push("");
   lines.push("## Numbering Convention", "");
@@ -575,11 +608,12 @@ function renderStoriesIndex(graph) {
   lines.push("");
 
   const pushStoryTable = (stories) => {
-    lines.push("| ID | Title | Priority | Status | Categories | Depends On | Link |");
-    lines.push("|---|---|---|---|---|---|---|");
+    lines.push("| ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |");
+    lines.push("|---|---|---|---|---|---|---|---|");
     for (const story of stories) {
+      const blocker = story.status === "Blocked" ? summarizeInlineText(story.blockerSummary) : "—";
       lines.push(
-        `| ${story.id} | ${story.title.replaceAll("|", "\\|")} | ${story.priority} | ${story.status} | ${story.categoryRefs.join(", ") || "—"} | ${story.dependsOn.join(", ") || "—"} | [story-${story.id}](${story.path.replace(/^docs\//, "")}) |`,
+        `| ${story.id} | ${story.title.replaceAll("|", "\\|")} | ${story.priority} | ${story.status} | ${blocker.replaceAll("|", "\\|")} | ${story.categoryRefs.join(", ") || "—"} | ${story.dependsOn.join(", ") || "—"} | [story-${story.id}](${story.path.replace(/^docs\//, "")}) |`,
       );
     }
     lines.push("");
@@ -684,6 +718,13 @@ function validateGraph(state, spec, stories, adrs, evals) {
       errors.push(`story ${story.id} has no category_refs; explicit story category ownership is required`);
     }
     if (!VALID_STORY_STATUSES.has(story.status)) warnings.push(`story ${story.id} has non-standard status ${story.status}`);
+    if (story.status === "Blocked") {
+      if (!story.blockerSummary) errors.push(`story ${story.id} is Blocked but missing Blocker Summary`);
+      if (!story.blockerEvidence) errors.push(`story ${story.id} is Blocked but missing Blocker Evidence`);
+      if (!story.unblockCondition) errors.push(`story ${story.id} is Blocked but missing Unblock Condition`);
+    } else if (story.blockerSummary || story.blockerEvidence || story.unblockCondition) {
+      warnings.push(`story ${story.id} is ${story.status} but still carries blocker details; clear them or restore N/A when unblocked`);
+    }
     for (const dependency of story.dependsOn) {
       if (!storyIds.has(dependency)) errors.push(`story ${story.id} depends_on missing story ${dependency}`);
       if (dependency === story.id) errors.push(`story ${story.id} cannot depend on itself`);

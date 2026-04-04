@@ -25,13 +25,13 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - Goal: identify the highest-leverage live gap before reading candidate stories.
 
 2. **Read project state** — Load `docs/stories.md` (the full story index). Identify all stories by status:
-   - **Draft** — scoped but needs detailed ACs and tasks before building; it must be promoted to `Pending` before `/build-story` can execute it
-   - **Pending** — fully detailed, ready to build
+   - **Draft** — worth preserving, but still incomplete, underspecified, or not yet substrate-verified enough to claim build-readiness
+   - **Pending** — fully detailed and honestly buildable now
    - **In Progress** — currently being worked on
+   - **Blocked** — concrete enough to preserve, but currently blocked by a named blocker with explicit evidence and an unblock condition
    - **Done** — complete, validated
-   - **Blocked** — waiting on dependency or decision
 
-   **Both Draft and Pending** stories with met dependencies are candidates for recommendation. Do not treat Draft as a disqualifier for prioritization, but be explicit that a Draft story still needs scoping and promotion to `Pending` before `/build-story`.
+   Story existence is packaging context, not major priority by itself. A `Draft` or `Pending` shell does not outrank an active line merely because it exists.
 
 3. **Name the top 1-3 live gaps**
    - For each gap, state:
@@ -46,38 +46,39 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
      - isolated polish in `hold` when a bigger `climb` gap is still open
 
 4. **Read candidate stories as possible continuations of those gaps**
-   - Read the actual story files for every Draft or Pending story that plausibly advances one of the named gaps
+   - Read the actual story files for every In Progress, Pending, Draft, or Blocked story that plausibly advances one of the named gaps
    - Don't just go by titles
    - If a top gap has no matching story, say so explicitly instead of quietly ranking smaller unrelated work
+   - Ask whether the honest recommendation is to continue, reopen, expand, or consolidate an existing story line before recommending a different shell
 
 5. **Score and rank** — Evaluate each candidate story on these dimensions, in this order:
-   - **Gap fit**: Does this story directly advance the top methodology gap, or is it a side quest?
-   - **Spec / state leverage**: Does it close missing substrate in `climb`, execute a real `converge` step, or is it merely `hold` polish?
-   - **Dependency readiness**: Are all upstream stories Done? Does this unblock downstream stories?
-   - **Blocking power**: How many other stories depend on this one?
-   - **Simplification leverage**: Does this story remove scaffolding or unblock future deletion of a compromise?
-   - **Phase coherence**: Does it continue the category's current phase cleanly?
-   - **Momentum**: Does it build on recently completed work?
-   - **Complexity vs. payoff**: Is the effort proportional to the value delivered?
-   - **User impact**: Does it materially improve the product or execution experience?
+   - **Movement toward the Ideal**: Does this story directly advance the top methodology gap, or is it a side quest?
+   - **Real problem pressure**: Is this closing a live trust break, missing substrate, or overscaffolded compromise right now?
+   - **Leverage and unblock power**: Does it unlock downstream work, reduce fragmentation, or remove scaffolding?
+   - **Readiness**: Can this line honestly continue, reopen, expand, or unblock now?
+   - **Cost**: Is the effort proportional to the value delivered?
+   - **Continuity / momentum**: Does it build on active or recently advanced work with the same unresolved success surface?
 
-   A `Pending` story does **not** automatically outrank a `Draft` story if the draft is the clearer continuation of the highest-priority gap. In that case, recommend promoting or reshaping the draft.
+   Story-shell existence is packaging and tie-break context only. It does not create primary priority by itself.
 
 6. **Present recommendations** — Show the user a ranked top 3–5 with:
    - Story ID and title
-   - Draft or Pending label
+   - Recommended action: continue / reopen / expand / consolidate / promote
+   - Current status label
    - Which named gap it advances
-   - If Draft: a short note on what must be scoped before it can be built
+   - If Draft: a short note on whether it should stay `Draft` or be promoted once built
    - 2–3 sentence rationale covering the strongest scoring dimensions
    - Any caveats (e.g., "this is large — consider splitting first")
 
 7. **Flag concerns** — Surface any issues noticed during the scan:
    - Stories marked Pending that are actually blocked (missing dependency not recorded)
-   - Draft stories that should be promoted to Pending before build
+   - Draft stories that are already honest `Pending` candidates or should stay `Draft`
+   - Blocked stories missing blocker truth in the story artifact
    - Stories that appear stale or superseded
    - Dependency chains that are bottlenecked
    - Major methodology-category gaps that have no story coverage or only weak story coverage
    - Ready stories that are real but lower leverage than the top methodology gap
+   - Story lines that should be consolidated instead of extended as separate shells
 
 8. **User decides** — Wait for the user to pick a story or ask for more detail on any candidate. Do NOT start building — that's `/build-story`.
 
@@ -90,3 +91,4 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
 - If the user passes a story ID as an argument (see Arguments above), evaluate that specific story's readiness instead of doing a full scan
 - Never start from "what is easiest to build?" Start from "what gap does this story close?"
 - If no existing story advances the top gap, say that explicitly and recommend creating or promoting the right story
+- Prefer preserving continuity on an active or recently advanced work line over jumping tracks to an unrelated shell when leverage is comparable

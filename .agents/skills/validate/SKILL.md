@@ -101,6 +101,9 @@ Assess whether a story's implementation meets its requirements.
    - unmet acceptance criteria or failed checks
    - remaining implementation gaps separately from close-out bookkeeping owned by `/mark-story-done` or `/finish-and-push`
    - a single closure recommendation: `Close now`, `Rescope then close`, `Keep open`, or `Mark blocked`
+   - prefer `Keep open` when the remaining work still belongs to the same subsystem, validation boundary, and success surface
+   - use `Rescope then close` only when the remaining work is genuinely separate and already has a clear follow-up home
+   - use `Mark blocked` only for named blockers with explicit evidence and an unblock condition recorded in the story artifact
    - if recommending `Rescope then close`, the exact story edits needed before closure
    - recommended next step (`/mark-story-done` if clean, otherwise fix issues)
    - a short `Where to verify` note whenever there is a concrete path for the user to spot-check the result themselves
@@ -169,6 +172,7 @@ Assess whether a story's implementation meets its requirements.
 - If grade is below B, list specific remediation steps
 - When the story is not ready to close, never stop at "not done." Always recommend one disposition: `Rescope then close`, `Keep open`, or `Mark blocked`.
 - If implementation is complete and only close-out bookkeeping remains, prefer `Close now`
+- Never recommend `Rescope then close` for remaining work that still belongs to the same subsystem, validation boundary, and success surface
 - Never report a check as PASS/FAIL unless you reran it in this validation pass and inspected the output
 - **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` for code changes, even if you think only the backend was touched.
 - Prefer project-native checks over generic templates

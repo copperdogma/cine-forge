@@ -341,20 +341,24 @@ Every module default is backed by eval evidence. Selections use **value analysis
 
 ### Story Conventions
 
-**Story statuses:** Draft → Pending → In Progress → Done (or Deferred/Blocked)
+**Core story statuses:** Draft → Pending → In Progress → Blocked → Done
 
-- **Draft**: Scoped — has a Goal and rough notes, but lacks detailed Acceptance Criteria and Tasks. Created early when an idea crystallizes but isn't ready to build. MUST be promoted to Pending before `/build-story` can execute it.
-- **Pending**: Fully detailed — has complete ACs, Tasks, and enough context to build. Ready for implementation.
+- **Draft**: Worth preserving, but still incomplete, underspecified, or not yet substrate-verified enough to claim build-readiness. `/build-story` may keep it `Draft` if those gaps are still real, or promote it if the story is already detailed enough and the substrate check passes.
+- **Pending**: Fully detailed and honestly buildable now.
 - **In Progress**: Actively being worked on.
-- **Done**: All ACs met, checks pass, work log updated.
+- **Blocked**: Concrete enough to preserve, but cannot honestly proceed now because of a named blocker with explicit evidence and an unblock condition. Blocked-story truth belongs in the story artifact, not only in chat history.
+- **Done**: Built, validated, formally closed, and reflected in generated planning surfaces.
 
-Use Draft status liberally for future stories. It prevents premature execution of half-baked stories while still capturing the intent.
+`Deferred` and `Cancelled` remain valid parking/archive states, but they are outside the normal build progression above.
+
+Use `Draft` liberally for future stories, but do not leave honestly buildable work in `Draft`, and do not treat story-shell existence as priority by itself.
 
 ### Story Execution Protocol
 
 - `/build-story` owns implementation only. It MUST stop at the implementation handoff, leave the story `In Progress`, summarize the work, and recommend `/validate` as the next step.
-- `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean. If the story is not clean, it MUST recommend a single disposition: `Rescope then close`, `Keep open`, or `Mark blocked`.
-- `/mark-story-done` is the only skill that may mark a story `Done` or update the story index to `Done`. If the story is incomplete, it MUST still recommend a single disposition (`Rescope then close`, `Keep open`, or `Mark blocked`) instead of stopping at a blocker list.
+- `/build-story` may promote a buildable `Draft` to `Pending` before implementation starts, and it may mark the story `Blocked` if exploration or implementation proves a real named blocker with evidence.
+- `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean. If the story is not clean, it MUST recommend a single disposition: `Rescope then close`, `Keep open`, or `Mark blocked`. Prefer `Keep open` for remaining work that is still in the same subsystem, validation boundary, and success surface. Use `Rescope then close` only when the remaining work is genuinely separate.
+- `/mark-story-done` is the only skill that may mark a story `Done` or update the story index to `Done`. If the story is incomplete, it MUST still recommend a single disposition (`Rescope then close`, `Keep open`, or `Mark blocked`) instead of stopping at a blocker list, and it should keep same-surface work in the current story by default.
 - `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
 - `/finish-and-push` is the bundled close-out path when the user explicitly wants story closure plus validated check-in/landing in one request. It MUST run `/mark-story-done` before `/check-in-diff` and may only fix minor close-out issues inline.
 - Commit and push happen only when the user explicitly requests them.

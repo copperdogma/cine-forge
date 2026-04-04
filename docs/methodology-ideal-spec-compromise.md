@@ -185,6 +185,16 @@ views bridge abstract constraints and concrete system ownership.
 - Treat execution constraints as first-class. Story lifecycle, build-map upkeep,
   verification discipline, and agent tooling live in `spec:11`, not in an
   undocumented side channel.
+- Keep the core story workflow honest: `Draft`, `Pending`, `In Progress`,
+  `Blocked`, and `Done` are the active execution states; `create-story` chooses
+  the initial state from repo reality, `build-story` may promote buildable
+  drafts or mark real blockers, and blocked stories carry blocker summary,
+  blocker evidence, and unblock condition in the canonical story artifact.
+- Keep triage problem-first. Stories are packaging context and tie-breakers, not
+  the source of priority; continuity on an active unresolved work line is a
+  positive bias, not an accident.
+- Use the anti-fragmentation rule by default: if work remains in the same
+  subsystem, validation boundary, and success surface, keep it in one story.
 - Keep authored truth separate from generated views. Update
   `docs/methodology/state.yaml` or story/ADR metadata, then rerun
   `pnpm methodology:compile`; do not hand-edit generated dashboards.

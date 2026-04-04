@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-04-05] — Problem-first story workflow migration (Story 147)
+
+### Added
+- Added a cross-repo migration runbook plus targeted methodology-graph regression coverage for blocked-story metadata and evidence-backed blocked-state validation
+
+### Changed
+- Changed CineForge's story lifecycle contract across AGENTS, methodology docs, and lifecycle skills to use an honest five-status model with problem-first triage, anti-fragmentation defaults, and buildable-Draft promotion
+- Changed the methodology compiler and generated planning surfaces to surface blocker metadata explicitly and reflect Story 147 as the active spec:11 follow-on during implementation
+
+### Fixed
+- Fixed remaining post-migration drift where policy docs, lifecycle skills, and generated methodology surfaces still disagreed about blocked stories, close-out behavior, and the active methodology campaign
+
 ## [2026-04-04-04] — Mobile-friendly operator console (Story 044)
 
 ### Changed

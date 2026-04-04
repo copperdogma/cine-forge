@@ -51,14 +51,15 @@ This is the operational companion to `/triage`.
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
    - Architecture: `/triage-architecture scan`
-   - Goal: find which existing artifacts already advance the chosen gap
+   - Goal: find which existing artifacts already advance the chosen gap, especially active or recently advanced lines that should be continued, reopened, expanded, or consolidated before inventing a new shell
 
 6. **[judgment] Synthesize one next action**
    - Prefer:
-     - continuing the strongest existing story under the chosen gap
+     - continuing, reopening, expanding, or consolidating the strongest existing story line under the chosen gap
      - promoting or reshaping the draft that best advances the chosen gap
      - creating the missing story / ADR / spec update / eval if the gap has no home
    - Only fall back to smaller unrelated ready work when the larger gap is not actionable yet
+   - Story existence is packaging context and tie-breaker only; it should not outrank a more important live gap by itself
    - Good output: one recommended action, plus runner-ups, with an explicit reason the chosen gap won.
 
 ## Boundaries

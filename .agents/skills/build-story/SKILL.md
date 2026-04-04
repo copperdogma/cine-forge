@@ -10,7 +10,10 @@ Execute a development story end-to-end.
 
 ## Phase 1 — Explore (read-only, no file writes)
 
-1. **Resolve story** — Read `docs/stories/story-{NNN}-*.md` (or resolve from `docs/stories.md` if id/title/path is ambiguous). Verify status is Pending or In Progress. If status is **Draft**, STOP — it needs detailed acceptance criteria and tasks before it can be built. Tell the user to promote it to Pending first (or promote it inline if they approve).
+1. **Resolve story** — Read `docs/stories/story-{NNN}-*.md` (or resolve from `docs/stories.md` if id/title/path is ambiguous). Verify status is Draft, Pending, or In Progress.
+   - If status is **Draft**, do not stop yet. Continue through the required-section and substrate checks first.
+   - If the Draft story is still skeletal, underspecified, or substrate-unverified after those checks, STOP and recommend keeping it `Draft`.
+   - If the Draft story is already detailed enough and substrate-verified, record that it should be promoted and continue.
 
 2. **Verify required sections** — Ensure the story has usable:
    - Goal
@@ -46,6 +49,7 @@ Execute a development story end-to-end.
    - **Small, tightly coupled delta** → expand the current story inline. Update the story's acceptance criteria, tasks, and work log so the real scope is visible.
    - **Larger delta** → do not silently absorb it or silently split it out. Add it to the plan as a recommended scope expansion for user approval.
    - Prefer a follow-up story only when the new work is materially distinct, changes the story goal, adds major blast radius, or would make validation unclear.
+   - If exploration proves the story cannot honestly proceed because of a named blocker, record blocker summary, blocker evidence, and unblock condition in the story artifact and plan to mark it `Blocked` instead of pretending it is build-ready.
 
 6. **Record exploration findings** — Write a brief "Exploration Notes" entry in the work log:
    - Files that will change
@@ -98,14 +102,15 @@ Execute a development story end-to-end.
 ## Phase 3 — Implement
 
 12. **Implement** — Work through tasks in order. For each task:
-   - If the story status is `Pending`, set it to `In Progress` before
-     implementation starts, then run `pnpm methodology:compile`
+   - If the story status is `Draft` and exploration proved it honestly buildable, first promote it to `Pending` and run `pnpm methodology:compile` so the status matches repo reality.
+   - If the story status is `Pending`, set it to `In Progress` before implementation starts, then run `pnpm methodology:compile`
    - Mark task as in progress in the story file
    - Do the work
    - Run relevant project checks after meaningful changes (backend: unit tests + Ruff; UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`)
    - For significant UI changes, use browser tools during the build loop when possible (screenshot + console check), not only at the end
    - Run relevant tests
    - Mark task complete with brief evidence
+   - If implementation or deeper exploration proves a real blocker instead, record it, set the story to `Blocked`, regenerate the graph/index, and stop
 
 13a. **Static verification** — Run the project's full validation suite:
    - Backend: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`

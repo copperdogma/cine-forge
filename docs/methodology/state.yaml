@@ -239,7 +239,7 @@
       },
       {
         "target": "spec:11",
-        "reason": "The structural migration is complete; any remaining methodology work is now warning-debt cleanup and audit follow-through rather than substrate replacement."
+        "reason": "Story 147 is the active follow-on for spec:11, aligning problem-first triage, honest story-state transitions, and blocked-story inspectability after the graph+state migration."
       }
     ],
     "campaigns": [
@@ -248,6 +248,12 @@
         "status": "completed",
         "story_refs": ["145"],
         "notes": "Replaced hand-authored build-map/story-index planning surfaces with state, graph, generated views, and hard linting."
+      },
+      {
+        "id": "problem-first-story-workflow-repair",
+        "status": "active",
+        "story_refs": ["147"],
+        "notes": "Aligns problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation rules, and blocked-story metadata after the graph+state migration."
       }
     ]
   },
@@ -257,7 +263,7 @@
         "id": "current-execution-map",
         "title": "Current Execution Map",
         "lines": [
-          "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 143 and 144 together turned AI previz into an evidence-backed optional lane instead of a static experimental surface. Story 145 completed the methodology migration from authored planning dashboards to the graph+state package. The active backlog now centers on operator-surface polish and any optional follow-up cleanup of legacy methodology warning debt.",
+          "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 145 and 146 completed the graph+state migration plus legacy metadata backfill. Story 147 is the active methodology follow-on, repairing problem-first triage, honest story-state transitions, and blocked-story inspectability while the product-facing pending lane still centers on operator-surface polish.",
           "",
           "### Pending — Ready To Build Now",
           "",
@@ -269,7 +275,9 @@
           "",
           "### In Progress",
           "",
-          "No stories currently in progress.",
+          "| Story | Why |",
+          "|---|---|",
+          "| **147** Problem-First Triage and Story Workflow Migration | Active methodology follow-on to Stories 145 and 146. It aligns problem-first triage, honest Draft/Pending/Blocked semantics, anti-fragmentation defaults, and blocked-story truth across the skills, docs, compiler, and generated planning surfaces. |",
           "",
           "### Pending — Ready, But Sequence-Sensitive",
           "",
@@ -348,12 +356,12 @@
     "domains": {
       "methodology_tooling": {
         "last_audited_at": "2026-04-04",
-        "recent_story_refs": ["145", "146"],
+        "recent_story_refs": ["145", "146", "147"],
         "stories_since_audit": 0,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Stories 145 and 146 completed the graph+state migration and legacy metadata backfill. CineForge-owned story/ADR metadata now lives in explicit frontmatter, with legacy parser and category-override bridges retired."
+        "last_summary": "Stories 145 and 146 completed the graph+state migration and legacy metadata backfill. Story 147 then aligned the remaining workflow semantics: problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation defaults, and inspectable blocked-story metadata."
       },
       "driver_and_runtime": {
         "last_audited_at": "2026-03-02",

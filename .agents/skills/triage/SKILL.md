@@ -22,6 +22,11 @@ Stories, inbox items, evals, and architecture audits are **not** the source of
 priority. They are candidate continuations of the priority established by
 Ideal/spec/state reasoning.
 
+Story existence is packaging context and a tie-breaker, not a primary value
+signal. When the same subsystem, validation boundary, and success surface are
+still live, prefer continuing, reopening, expanding, or consolidating the
+existing story line before creating or prioritizing a new shell.
+
 Companion runbook: `docs/runbooks/triage.md`
 
 ## Routing
@@ -89,7 +94,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 
 5. **Choose one next action**
    Prefer this order:
-   - continue an in-flight or ready story that directly advances the chosen gap
+   - continue, reopen, expand, or consolidate an in-flight or recently advanced story that directly advances the chosen gap
    - promote or reshape an existing draft story that is the clearest continuation of the chosen gap
    - create the missing story / ADR / spec update / eval if the gap has no proper home yet
    - only fall back to a smaller unrelated ready story if the larger gap is genuinely not actionable yet, and explain why

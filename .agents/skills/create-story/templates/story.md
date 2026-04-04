@@ -78,6 +78,18 @@ legacy_system: ""
 - [ ] Validation complete or explicitly skipped by user
 - [ ] Story marked done via `/mark-story-done`
 
+## Blocker Summary
+
+N/A
+
+## Blocker Evidence
+
+N/A
+
+## Unblock Condition
+
+N/A
+
 ## Architectural Fit
 
 - **Owning class/module**: {What existing class or module owns this feature? If none, propose a new focused class — not an existing large one.}

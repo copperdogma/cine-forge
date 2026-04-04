@@ -38,10 +38,10 @@ Close a completed story after validation.
    - [ ] Doc update checkbox checked
 
 4. **Produce completion report** — List any remaining gaps and recommend a single disposition:
-   - `Close now` — story is complete and can be marked `Done`
-   - `Rescope then close` — a coherent slice shipped, the remaining gaps already live in follow-up work, and this story should be narrowed to match what landed
-   - `Keep open` — remaining work still belongs in this story
-   - `Mark blocked` — an external dependency or decision is preventing closure
+    - `Close now` — story is complete and can be marked `Done`
+    - `Rescope then close` — a coherent slice shipped, the remaining gaps are genuinely separate from this story's subsystem / validation boundary / success surface, already live in follow-up work, and this story should be narrowed to match what landed
+    - `Keep open` — remaining work still belongs in this story's current success surface
+    - `Mark blocked` — a named external dependency or decision is preventing closure, with blocker summary, blocker evidence, and unblock condition recorded in the story artifact
 
    If recommending `Rescope then close`, propose the exact story edits before closing:
    - Narrow the title, goal, acceptance criteria, and tasks to the shipped slice
@@ -95,4 +95,5 @@ If not complete, stop after reporting:
 - Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first
 - End with a concise summary, recommend `/check-in-diff` as the next step unless the user already approved later steps, and include a short `Where to verify` note whenever there is a concrete path for the user to inspect the result themselves
 - When incomplete, never end with "can't mark done" alone. Always include a firm recommendation: `Rescope then close`, `Keep open`, or `Mark blocked`.
+- Never recommend `Rescope then close` for remaining work that still shares the same subsystem, validation boundary, and success surface
 - If the user already explicitly approved `/check-in-diff`, commit, or push, continue without redundant confirmation unless a meaningful blocker appears

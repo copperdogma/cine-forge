@@ -18,11 +18,17 @@ is generated from story metadata; do not hand-edit it.
 - `spec_refs`: relevant spec.md sections or compromise numbers
 - `adr_refs`: relevant decision records in `docs/decisions/` or `docs/design/` (or `None found after search`)
 - `depends_on`: story IDs this depends on (if any)
-- `status`: Draft (default, skeleton with goal + notes, NOT ready to build) or Pending (fully detailed, ready to build)
+- `status`: Draft (default, worth preserving but not honestly build-ready yet), Pending (fully detailed and honestly buildable now), or Blocked (concrete enough to preserve, but already proven blocked)
 
 ## Steps
 
-1. **Run the bootstrap script:**
+1. **Check whether this should be a new story at all**:
+
+   - Read recent or related stories in the same subsystem.
+   - If the requested work still belongs to the same subsystem, validation boundary, and success surface as an existing story, STOP before bootstrapping a new ID.
+   - Return the existing story to expand or reopen instead of fragmenting the work into a serial micro-story chain.
+
+2. **Run the bootstrap script** only if a new story is still the honest move:
 
    ```bash
    .agents/skills/create-story/scripts/start-story.sh <slug> [priority]
@@ -30,7 +36,7 @@ is generated from story metadata; do not hand-edit it.
 
    This creates `docs/stories/story-NNN-<slug>.md` from the template with the next available number. It outputs the file path.
 
-2. **Fill in the story file** — Replace all placeholder text (`{...}`) with real content:
+3. **Fill in the story file** — Replace all placeholder text (`{...}`) with real content:
    - Title (replace the slug with the human-readable title)
    - Frontmatter references (`ideal_refs`, `spec_refs`, `adr_refs`,
      `depends_on`, `category_refs`, `compromise_refs`,
@@ -39,11 +45,16 @@ is generated from story metadata; do not hand-edit it.
    - Ideal refs, spec refs, ADR refs, and dependencies
    - Approach evaluation: simplification baseline, candidate approaches (AI-only, hybrid, code), repo constraints, existing patterns to reuse, and what eval distinguishes them
    - Workflow gates for build handoff, validation, and story closure
+   - Canonical blocker fields: `Blocker Summary`, `Blocker Evidence`, and `Unblock Condition`
    - Redundancy targets: old code or docs this story may make obsolete
    - UI verification work if the story touches the UI
    - If the feature is user-facing and requires both backend/API and UI to be usable, keep that end-to-end path in the same story by default. Split only when the scope is genuinely huge and independently deliverable.
+   - Choose the honest initial state:
+     - `Draft` when the story is still rough or missing verified substrate
+     - `Pending` when the story is concrete and honestly buildable now
+     - `Blocked` when the story is concrete enough to preserve and research already proves a real blocker
 
-3. **Refresh generated planning surfaces** — Run:
+4. **Refresh generated planning surfaces** — Run:
 
    ```bash
    pnpm methodology:compile
@@ -52,13 +63,14 @@ is generated from story metadata; do not hand-edit it.
    This rebuilds `docs/stories.md`, `docs/build-map.md`, and
    `docs/methodology/graph.json` from story metadata and methodology state.
 
-4. **Verify** — Confirm the file exists, numbering is consistent, and the
+5. **Verify** — Confirm the file exists, numbering is consistent, and the
    generated planning surfaces include the new story in the right order.
 
 ## Story Statuses
 
-- **Draft**: Skeleton with goal + notes but placeholder ACs and tasks. NOT ready to build. Accumulates research and design ideas over time. Promoted to Pending when ready.
-- **Pending**: Fully detailed ACs, tasks, files to modify. Ready for `/build-story`.
+- **Draft**: Worth preserving, but still incomplete, underspecified, or not yet substrate-verified enough to claim build-readiness.
+- **Pending**: Fully detailed ACs, tasks, files to modify, and honestly buildable now.
+- **Blocked**: Concrete enough to preserve, but cannot honestly proceed now because of a named blocker with explicit evidence and an unblock condition.
 - **In Progress**: Being built.
 - **Done**: Validated complete.
 
@@ -73,6 +85,7 @@ is generated from story metadata; do not hand-edit it.
 - If the story changes existing behavior, name likely redundancy / removal targets up front. New code that supersedes old code should not silently accumulate parallel paths.
 - If the story touches the UI, include explicit browser verification work in the task list. Static checks alone are not enough.
 - **End-to-end user feature rule**: If a feature needs backend/API plus UI to be usable by a user, keep them in the SAME story by default. Do not create an "API now, UI later" split for an ordinary feature. Only split backend and UI into separate stories when the scope is genuinely huge (`L`/`XL`), independently valuable, and the dependency boundary is explicit in the story text.
+- **Anti-fragmentation rule**: If the requested work still belongs to the same subsystem, validation boundary, and success surface as an existing story, expand or reopen that story instead of minting a new ID.
 - If the story changes agent tooling or project instructions, include `make skills-check` in the task list.
 - Always include the Workflow Gates section. These are not ordinary implementation tasks; they enforce the handoff chain: `/build-story` summary → `/validate` → `/mark-story-done`.
 - If the story will involve running evals (extraction/pipeline behavior, golden comparison), add a task: "Run `/improve-eval` or equivalent mismatch investigation after the eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores — raw scores do not determine story success."

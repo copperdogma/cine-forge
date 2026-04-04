@@ -1294,16 +1294,41 @@ It supports:
 
 ### spec:11.1 — Story Lifecycle and Handoff Chain
 
-Stories are tracked implementation artifacts with explicit states:
+Stories are tracked implementation artifacts with an honest core progression:
 - Draft
 - Pending
 - In Progress
+- Blocked
 - Done
 
+Those states mean:
+- `Draft` — worth preserving, but still incomplete, underspecified, or not yet
+  substrate-verified enough to claim build-readiness
+- `Pending` — fully fleshed out and honestly buildable now
+- `In Progress` — currently being built
+- `Blocked` — concrete enough to preserve, but cannot honestly proceed now
+  because of a named blocker with explicit evidence and an unblock condition
+- `Done` — built, validated, and formally closed
+
+`Deferred` and `Cancelled` remain valid parking/archive states, but they sit
+outside the normal build progression above.
+
 The lifecycle chain is:
-- `/build-story` owns implementation
+- `/create-story` chooses `Draft`, `Pending`, or `Blocked` based on repo reality
+- `/build-story` owns implementation and may promote a buildable `Draft` or
+  mark a real blocker instead of dead-ending on status paperwork
 - `/validate` owns validation
-- `/mark-story-done` owns closure
+- `/mark-story-done` owns closure and should only split remaining work when it
+  is genuinely separate
+
+Work should stay in one story while it remains in the same subsystem, the same
+validation boundary, and the same success surface. Split or rescope only when
+the remaining work becomes materially distinct, crosses a new runtime or
+ownership seam, or would make validation unclear.
+
+Blocked-story truth must live in the canonical story artifact via blocker
+summary, blocker evidence, and unblock condition fields. If compiled planning
+surfaces consume story truth, they must surface that blocked metadata too.
 
 Workflow gates exist because current AI still benefits from explicit handoff
 boundaries and evidence review before closing work.
@@ -1324,6 +1349,17 @@ Together they must make these visible:
 `/triage`, `/triage-stories`, `/triage-evals`, `/triage-architecture`, and
 related runbooks consume that state/dashboard layer to decide what should
 happen next.
+
+Triage is problem-first, not backlog-first. It should rank:
+- movement toward the Ideal
+- real problem pressure
+- leverage and unblock power
+- readiness
+- cost
+- continuity / momentum
+
+Story existence is packaging context and a tie-breaker, not a primary value
+signal by itself.
 
 ### spec:11.3 — Verification, Eval Classification, and Registry Discipline
 
