@@ -28,3 +28,8 @@ parameters:
     required: false
     default: 0
     description: "Sampling temperature for the semantic-review model call."
+  target_artifact_type:
+    type: string
+    required: false
+    default: "generated_video"
+    description: "Artifact type whose latest ref should be treated as the validation target (`generated_video` or `ai_previz_video`)."

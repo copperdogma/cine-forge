@@ -3,6 +3,7 @@ import {
   editArtifact,
   getArtifact,
   getPipelineGraph,
+  getPrevizAdoptionStatus,
   listArtifactGroups,
   listArtifactVersions,
   overrideArtifactHealth,
@@ -22,6 +23,7 @@ import type {
   ImpactPreviewRequest,
   ImpactPreviewResponse,
   PipelineGraphResponse,
+  PrevizAdoptionStatus,
 } from '../types'
 
 export function usePipelineGraph(projectId: string | undefined, activeRunId?: string | null) {
@@ -65,6 +67,14 @@ export function useArtifact(
     queryKey: ['projects', projectId, 'artifacts', artifactType, entityId, version],
     queryFn: () => getArtifact(projectId!, artifactType!, entityId!, version!),
     enabled: !!(projectId && artifactType && entityId && version !== undefined),
+  })
+}
+
+export function usePrevizAdoptionStatus(projectId: string | undefined) {
+  return useQuery<PrevizAdoptionStatus>({
+    queryKey: ['projects', projectId, 'previz-adoption'],
+    queryFn: () => getPrevizAdoptionStatus(projectId!),
+    enabled: !!projectId,
   })
 }
 

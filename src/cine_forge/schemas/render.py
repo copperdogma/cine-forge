@@ -11,6 +11,9 @@ from .creative_brief import VisualCreativeBrief
 from .models import ArtifactRef, CostRecord
 
 RenderProvider = Literal["openai", "google"]
+PrevizAdoptionState = Literal["default", "recommended_optional", "experimental_manual"]
+PrevizCostStatus = Literal["verified", "estimated", "blocked"]
+PrevizDefaultLane = Literal["annotated_animatic", "ai_previz"]
 PrevizConsistencyStrategy = Literal[
     "prompt_only",
     "optional_references",
@@ -89,6 +92,44 @@ class PrevizPromptContract(BaseModel):
     prompt_text: str = Field(min_length=1)
     negative_prompt_terms: list[str] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list)
+
+
+class PrevizCostEvidence(BaseModel):
+    """Cost evidence or blocker behind the current AI-previz lane."""
+
+    status: PrevizCostStatus = "blocked"
+    estimated_cost_usd: float | None = Field(default=None, ge=0.0)
+    reason: str | None = None
+
+
+class PrevizLaneStatus(BaseModel):
+    """Shared operator-facing status for one previz lane."""
+
+    lane_id: Literal["annotated_animatic", "ai_previz"]
+    label: str = Field(min_length=1)
+    candidate_label: str | None = None
+    adoption_state: PrevizAdoptionState = "experimental_manual"
+    reason: str = Field(min_length=1)
+    blocker_reasons: list[str] = Field(default_factory=list)
+    overall_score: float | None = Field(default=None, ge=0.0, le=1.0)
+    baseline_score: float | None = Field(default=None, ge=0.0, le=1.0)
+    score_margin: float | None = None
+    measured_at: str | None = None
+    latency_ms: int | None = Field(default=None, ge=0)
+    engine_pack_id: str | None = None
+    target_model: str | None = None
+    resolution: str | None = None
+    duration_seconds: float | None = Field(default=None, ge=0.0)
+    consistency_strategy: PrevizConsistencyStrategy | None = None
+    cost: PrevizCostEvidence = Field(default_factory=PrevizCostEvidence)
+    validation_stage_enabled: bool = False
+
+
+class PrevizAdoptionStatus(BaseModel):
+    """Shared backend policy object for previz default and AI-lane disclosure."""
+
+    default_lane: PrevizDefaultLane = "annotated_animatic"
+    ai_previz: PrevizLaneStatus
 
 
 class CompiledRenderPrompt(BaseModel):

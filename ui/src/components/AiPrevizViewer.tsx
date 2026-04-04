@@ -18,15 +18,19 @@ import {
   asString,
   asStringArray,
   formatDuration,
+  formatMoney,
   formatToken,
   parseRenderInputUsage,
   type RenderInputUsageView,
 } from '@/components/render-utils'
 import { getAssetFileUrl } from '@/lib/api/assets'
+import { usePrevizAdoptionStatus } from '@/lib/hooks'
+import type { ArtifactHealthDetails, PrevizLaneStatus } from '@/lib/types'
 
 type AiPrevizViewerProps = {
   data: Record<string, unknown>
   projectId: string
+  healthDetails?: ArtifactHealthDetails | null
 }
 
 type ArtifactLinkView = {
@@ -52,6 +56,28 @@ type AiPrevizView = {
   promptRef: ArtifactLinkView | null
   baselineRef: ArtifactLinkView | null
   previzReelRef: ArtifactLinkView | null
+}
+
+function formatAdoptionState(value: PrevizLaneStatus['adoption_state'] | null | undefined): string {
+  switch (value) {
+    case 'default':
+      return 'Default'
+    case 'recommended_optional':
+      return 'Recommended Optional'
+    case 'experimental_manual':
+      return 'Experimental / Manual'
+    default:
+      return 'Manual Lane'
+  }
+}
+
+function aiPrevizCostBadge(status: PrevizLaneStatus | null | undefined): string | null {
+  if (!status) return null
+  const amount = formatMoney(status.cost.estimated_cost_usd ?? null)
+  if (status.cost.status === 'verified' && amount) return amount
+  if (status.cost.status === 'estimated' && amount) return `Est. ${amount}`
+  if (status.cost.status === 'blocked') return 'Cost blocked'
+  return null
 }
 
 function parseArtifactLink(value: unknown): ArtifactLinkView | null {
@@ -95,13 +121,22 @@ function parseAiPreviz(data: Record<string, unknown>): AiPrevizView {
   }
 }
 
-export function AiPrevizViewer({ data, projectId }: AiPrevizViewerProps) {
+export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewerProps) {
   const previz = parseAiPreviz(data)
+  const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
+  const aiPrevizStatus = previzStatus?.ai_previz
   const sceneLabel = previz.sceneNumber !== null ? `Scene ${previz.sceneNumber}` : 'AI Previz'
   const videoUrl = previz.videoPath ? getAssetFileUrl(projectId, previz.videoPath) : null
   const promptHref = artifactHref(projectId, previz.promptRef)
   const baselineHref = artifactHref(projectId, previz.baselineRef)
   const reelHref = artifactHref(projectId, previz.previzReelRef)
+  const validationHref = healthDetails?.source_kind === 'media_validation'
+    ? artifactHref(projectId, parseArtifactLink(healthDetails.source_artifact_ref))
+    : null
+  const costBadge = aiPrevizCostBadge(aiPrevizStatus)
+  const extraBlockers = (aiPrevizStatus?.blocker_reasons ?? [])
+    .filter(blocker => blocker !== aiPrevizStatus?.reason)
+    .slice(0, 2)
 
   return (
     <div className="space-y-4">
@@ -115,7 +150,13 @@ export function AiPrevizViewer({ data, projectId }: AiPrevizViewerProps) {
               </CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">Experimental lane</Badge>
+              {aiPrevizStatus && (
+                <Badge
+                  variant={aiPrevizStatus.adoption_state === 'experimental_manual' ? 'outline' : 'secondary'}
+                >
+                  {formatAdoptionState(aiPrevizStatus.adoption_state)}
+                </Badge>
+              )}
               {formatPreviewMode(previz.previewProvenance?.mode ?? null) && (
                 <Badge variant="secondary">
                   {formatPreviewMode(previz.previewProvenance?.mode ?? null)}
@@ -155,9 +196,7 @@ export function AiPrevizViewer({ data, projectId }: AiPrevizViewerProps) {
                   {formatLatencyMs(previz.previewProvenance?.generationLatencyMs ?? null)}
                 </Badge>
               )}
-              {!previz.previewProvenance?.estimatedCostUsd && (
-                <Badge variant="outline">Cost unverified</Badge>
-              )}
+              {costBadge && <Badge variant="outline">{costBadge}</Badge>}
             </div>
           </div>
         </CardHeader>
@@ -171,6 +210,26 @@ export function AiPrevizViewer({ data, projectId }: AiPrevizViewerProps) {
               </p>
             </div>
           </div>
+
+          {aiPrevizStatus && (
+            <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
+              <div className="space-y-1">
+                <p>{aiPrevizStatus.reason}</p>
+                {aiPrevizStatus.cost.status === 'blocked' && aiPrevizStatus.cost.reason && (
+                  <p>Cost blocker: {aiPrevizStatus.cost.reason}</p>
+                )}
+                {aiPrevizStatus.cost.status === 'estimated' && (
+                  <p>
+                    Estimated cost for the active recipe defaults:{' '}
+                    {formatMoney(aiPrevizStatus.cost.estimated_cost_usd ?? null) ?? 'n/a'}.
+                  </p>
+                )}
+                {extraBlockers.map(blocker => (
+                  <p key={blocker}>{blocker}</p>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-2">
             {baselineHref && (
@@ -194,6 +253,14 @@ export function AiPrevizViewer({ data, projectId }: AiPrevizViewerProps) {
                 <Link to={reelHref}>
                   <ExternalLink className="h-3.5 w-3.5" />
                   Previz Reel
+                </Link>
+              </Button>
+            )}
+            {validationHref && (
+              <Button asChild variant="outline" size="sm">
+                <Link to={validationHref}>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  Validation Detail
                 </Link>
               </Button>
             )}

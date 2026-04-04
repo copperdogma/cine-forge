@@ -103,6 +103,44 @@ def test_artifact_manager_overlays_generated_video_health_from_validation(tmp_pa
 
 
 @pytest.mark.unit
+def test_artifact_manager_overlays_ai_previz_video_health_from_validation(tmp_path: Path) -> None:
+    seeded = seed_generated_video_project(tmp_path)
+    project_path = seeded["project_dir"]
+    store = ArtifactStore(project_dir=project_path)
+    ai_previz_ref = store.save_artifact(
+        artifact_type="ai_previz_video",
+        entity_id=seeded["scene_id"],
+        data=seeded["generated_video"].model_dump(mode="json"),
+        metadata=ArtifactMetadata(
+            lineage=[seeded["generated_video_ref"], seeded["prompt_ref"]],
+            intent="seed ai previz video",
+            rationale="seed overlay path",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.unit",
+        ),
+    )
+    _seed_validation(
+        store,
+        generated_video_ref=ai_previz_ref,
+        prompt_ref=seeded["prompt_ref"],
+        generated_video=seeded["generated_video"],
+        recommended_health=ArtifactHealth.NEEDS_REVIEW,
+    )
+
+    detail = _manager(project_path).read_artifact(
+        "project-id",
+        "ai_previz_video",
+        seeded["scene_id"],
+        ai_previz_ref.version,
+    )
+
+    assert detail["health"] == ArtifactHealth.NEEDS_REVIEW.value
+    assert detail["health_details"]["source_kind"] == "media_validation"
+    assert detail["health_details"]["source_artifact_ref"]["artifact_type"] == "media_validation"
+
+
+@pytest.mark.unit
 def test_artifact_manager_keeps_structural_stale_over_validation_overlay(tmp_path: Path) -> None:
     seeded = seed_generated_video_project(tmp_path)
     project_path = seeded["project_dir"]

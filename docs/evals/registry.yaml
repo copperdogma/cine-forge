@@ -1334,38 +1334,41 @@ evals:
           overall: 1.0
           semantic_cases: 1.0
           structural_cases: 1.0
-        latency_ms: 2547
-        cost_usd: 0.003530
+        latency_ms: 2281
+        cost_usd: 0.003313
         cost_estimated: true
-        measured: 2026-03-20
-        git_sha: "28dac8f"
-        result_file: benchmarks/results/runtime-media-validation-gpt54-2026-03-20.json
-        note: "Pilot leader. Cleared all 4 seeded runtime cases: review-only static packet, semantic continuity break, missing file, and corrupt decode."
+        measured: 2026-04-04
+        git_sha: "9598304"
+        result_file: benchmarks/results/runtime-media-validation-story-144-validate.json
+        note: "Validation rerun for Story 144. Hybrid remains the runtime-default leader and cleared all 4 seeded cases again after the `ai_previz_video` target-override changes landed in `media_validation_v1`. This eval still measures the shared generated-video fixture pack, so ai-previz-specific trust coverage also comes from targeted unit tests plus the seeded browser verification."
       - model: "Deterministic Only"
         metrics:
           overall: 0.75
           semantic_cases: 0.5
           structural_cases: 1.0
-        latency_ms: 428
+        latency_ms: 465
         cost_usd: 0.0
-        measured: 2026-03-20
-        git_sha: "28dac8f"
-        result_file: benchmarks/results/runtime-media-validation-gpt54-2026-03-20.json
-        note: "Ambiguous comparator miss, non-runtime-blocking: it correctly handles hard runtime failures but cannot escalate the prop continuity break beyond `needs_review` without semantic judgment."
+        measured: 2026-04-04
+        git_sha: "9598304"
+        result_file: benchmarks/results/runtime-media-validation-story-144-validate.json
+        note: "Comparator only, non-runtime-blocking. Fresh Story 144 validation rerun reproduced the single ambiguous prop-swap miss: deterministic probes still leave the semantic continuity break at `needs_review` because no semantic reviewer is present."
       - model: "AI-Only (GPT-5.4)"
         metrics:
           overall: 0.5
           semantic_cases: 1.0
           structural_cases: 0.0
-        latency_ms: 2594
-        cost_usd: 0.003478
+        latency_ms: 2736
+        cost_usd: 0.00352
         cost_estimated: true
-        measured: 2026-03-20
-        git_sha: "28dac8f"
-        result_file: benchmarks/results/runtime-media-validation-gpt54-2026-03-20.json
-        note: "Ambiguous comparator misses, non-runtime-blocking: it handles the sampled semantic cases, but missing/corrupt media collapse to `needs_review` because no sample packet exists."
+        measured: 2026-04-04
+        git_sha: "9598304"
+        result_file: benchmarks/results/runtime-media-validation-story-144-validate.json
+        note: "Comparator only, non-runtime-blocking. Fresh Story 144 validation rerun reproduced the two ambiguous structural misses: without deterministic hard-failure handling, missing and corrupt media still collapse to `needs_review` because no sample packet exists for the model-only path."
 
-    attempts: []
+    attempts:
+      - date: 2026-04-04
+        git_sha: "9598304"
+        note: "Story 144 validation reran the full runtime-media-validation benchmark after extending `media_validation_v1` to support `ai_previz_video` target refs. Hybrid stayed green at 1.000 overall and all remaining comparator-only mismatches were reverified as non-runtime-blocking and ambiguous."
 
   - id: entity-discovery
     name: Entity Discovery

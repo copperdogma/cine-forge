@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-04-04-01] — AI previz adoption gate and trust guardrails (Story 144)
+
+### Added
+- Added a shared previz-adoption policy service and API contract so Scene Workspace and artifact-detail surfaces can render one evidence-backed AI-previz status instead of drifting UI-local labels
+- Added `ai_previz_video` support to the existing `media_validation_v1` trust path, including recipe wiring, target-artifact-type handling, and focused regression coverage
+- Added fresh `runtime-media-validation` result artifacts for the Story 144 validation rerun and recorded the new evidence in `docs/evals/registry.yaml`
+
+### Changed
+- Changed the AI-previz operator surface to show measured latency, explicit pricing blockers, and `default` / `recommended optional` / `experimental manual` states from the shared backend policy
+- Changed artifact-health overlay resolution so AI previz can surface the same validation-backed trust semantics as generated render video
+
+### Fixed
+- Fixed stale `AI lane: experimental` and generic `cost unverified` copy persisting after Story 143 even when benchmark/runtime evidence already supported a more specific recommendation
+- Fixed AI-previz artifact detail pages lacking a consistent path to the underlying validation detail and trust rationale
+
 ## [2026-04-03-03] — Provider failure chat notifications (Story 128)
 
 ### Added

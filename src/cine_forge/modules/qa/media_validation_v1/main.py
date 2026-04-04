@@ -1,4 +1,4 @@
-"""Headless runtime validation for generated scene videos."""
+"""Headless runtime validation for generated or AI-previz scene videos."""
 
 from __future__ import annotations
 
@@ -32,11 +32,12 @@ from cine_forge.schemas import (
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
-    """Validate generated-video artifacts with deterministic probes plus optional review."""
+    """Validate scene-video artifacts with deterministic probes plus optional review."""
     project_dir = _project_dir(context)
     store = ArtifactStore(project_dir=project_dir)
     generated_videos = _generated_videos(inputs)
     runtime_params = _runtime_params(context)
+    target_artifact_type = _target_artifact_type(params)
 
     sample_count = max(int(params.get("sample_count") or DEFAULT_SAMPLE_COUNT), 0)
     semantic_review_model = _optional_string(
@@ -62,10 +63,11 @@ def run_module(
     }
 
     for generated_video in sorted(generated_videos, key=lambda item: item.scene_number):
-        target_ref = latest_entity_ref(store, "generated_video", generated_video.scene_id)
+        target_ref = latest_entity_ref(store, target_artifact_type, generated_video.scene_id)
         if target_ref is None:
             raise ValueError(
-                "media_validation_v1 could not resolve generated_video ref for "
+                "media_validation_v1 could not resolve "
+                f"{target_artifact_type} ref for "
                 f"{generated_video.scene_id}"
             )
         validation_ref = anticipated_entity_ref(
@@ -128,9 +130,9 @@ def run_module(
             total_cost["estimated_cost_usd"] += semantic_review.cost.estimated_cost_usd
         artifacts.append(
             {
-                "artifact_type": "media_validation",
-                "entity_id": generated_video.scene_id,
-                "data": artifact.model_dump(mode="json"),
+                    "artifact_type": "media_validation",
+                    "entity_id": generated_video.scene_id,
+                    "data": artifact.model_dump(mode="json"),
                 "metadata": {
                     "lineage": [
                         target_ref.model_dump(mode="json"),
@@ -140,7 +142,7 @@ def run_module(
                             else []
                         ),
                     ],
-                    "intent": "Runtime trust report for a generated scene video.",
+                    "intent": _validation_intent(target_artifact_type),
                     "rationale": (
                         "Validation artifacts make generated outputs inspectable without forcing "
                         "operators to scrub raw media or read run logs."
@@ -175,6 +177,18 @@ def _project_dir(context: dict[str, Any]) -> Path:
 def _runtime_params(context: dict[str, Any]) -> dict[str, Any]:
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     return runtime_params if isinstance(runtime_params, dict) else {}
+
+
+def _target_artifact_type(params: dict[str, Any]) -> str:
+    raw = params.get("target_artifact_type")
+    if raw in (None, ""):
+        return "generated_video"
+    if raw in {"generated_video", "ai_previz_video"}:
+        return str(raw)
+    raise ValueError(
+        "media_validation_v1 target_artifact_type must be 'generated_video' "
+        "or 'ai_previz_video'"
+    )
 
 
 def _generated_videos(inputs: dict[str, Any]) -> list[GeneratedVideoArtifact]:
@@ -220,3 +234,9 @@ def _optional_string(value: Any) -> str | None:
     if isinstance(value, str) and value.strip():
         return value.strip()
     return None
+
+
+def _validation_intent(target_artifact_type: str) -> str:
+    if target_artifact_type == "ai_previz_video":
+        return "Runtime trust report for an AI previz scene video."
+    return "Runtime trust report for a generated scene video."

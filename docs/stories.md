@@ -1,8 +1,8 @@
 # Project Stories — cine-forge
 
-## Current Execution Map (updated 2026-04-03, Stories 128, 137, and 143 done)
+## Current Execution Map (updated 2026-04-04, Story 144 done)
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for generated-video outputs. The creative conversation loop now includes conversational upstream canon editing, and Story 143 has now landed the explicit AI-previz operator surface while keeping `annotated_symbolic` as the benchmark-backed default. The active backlog centers on operator-surface polish, trust-hardening, and follow-on quality climbs around the existing generation workflow.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 143 and 144 together turned AI previz into an evidence-backed optional lane instead of a static experimental surface. The active backlog now centers on operator-surface polish and the next climb gaps beyond the initial AI-previz trust gate.
 
 ### Pending — Ready To Build Now
 
@@ -88,6 +88,7 @@ NOTES from Cam:
 | 027 | Animatics, Keyframes, and Previz (Optional) | 6 — Shot Planning & Viz | Low | Done | [story-027](stories/story-027-animatics-previz.md) |
 | 137 | Previz Fidelity Upgrade | 6 — Shot Planning & Viz | Low | Done | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
 | 143 | AI-Generated Low-Fidelity Previz | 6 — Shot Planning & Viz | High | Done | [story-143](stories/story-143-ai-generated-low-fidelity-previz.md) |
+| 144 | AI Previz Adoption Gate and Trust Guardrails | 6 — Shot Planning & Viz | High | Done | [story-144](stories/story-144-ai-previz-adoption-gate-and-trust-guardrails.md) |
 | 028 | Render Adapter Module | 7 — Generation | Low | Done | [story-028](stories/story-028-render-adapter.md) |
 | 029 | User Asset Injection | 7 — Generation | Medium | Done | [story-029](stories/story-029-user-asset-injection.md) |
 | 030 | Generated Output QA | 7 — Generation | Medium | Done | [story-030](stories/story-030-generated-output-qa.md) |

@@ -6,7 +6,12 @@ from pathlib import Path
 import pytest
 
 from cine_forge.modules.qa.media_validation_v1.main import run_module
-from cine_forge.schemas import ArtifactHealth, MediaValidationArtifact, SemanticMediaReview
+from cine_forge.schemas import (
+    ArtifactHealth,
+    ArtifactMetadata,
+    MediaValidationArtifact,
+    SemanticMediaReview,
+)
 from tests.render_fixtures import seed_generated_video_project
 
 
@@ -60,6 +65,35 @@ def test_run_module_can_mark_clean_clip_valid_when_semantic_review_passes(
     artifact = MediaValidationArtifact.model_validate(result["artifacts"][0]["data"])
     assert artifact.semantic_review.status == "pass"
     assert artifact.recommended_health == ArtifactHealth.VALID
+
+
+@pytest.mark.unit
+def test_run_module_can_target_ai_previz_video_refs(tmp_path: Path) -> None:
+    seeded = seed_generated_video_project(tmp_path)
+    store = seeded["store"]
+    ai_previz_ref = store.save_artifact(
+        artifact_type="ai_previz_video",
+        entity_id=seeded["scene_id"],
+        data=seeded["generated_video"].model_dump(mode="json"),
+        metadata=ArtifactMetadata(
+            lineage=[seeded["generated_video_ref"], seeded["prompt_ref"]],
+            intent="seed ai previz video",
+            rationale="target override coverage",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.unit",
+        ),
+    )
+
+    result = run_module(
+        inputs={"generated_video": [seeded["generated_video"].model_dump(mode="json")]},
+        params={"sample_count": 2, "target_artifact_type": "ai_previz_video"},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    artifact = MediaValidationArtifact.model_validate(result["artifacts"][0]["data"])
+    assert artifact.target_ref.artifact_type == "ai_previz_video"
+    assert artifact.target_ref.version == ai_previz_ref.version
 
 
 @pytest.mark.unit

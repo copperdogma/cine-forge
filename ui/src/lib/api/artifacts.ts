@@ -10,6 +10,7 @@ import type {
   ImpactAssessmentResponse,
   ImpactPreviewRequest,
   ImpactPreviewResponse,
+  PrevizAdoptionStatus,
 } from '../types'
 import { request } from './core'
 
@@ -36,6 +37,10 @@ export function getArtifact(
   return request<ArtifactDetailResponse>(
     `/api/projects/${projectId}/artifacts/${artifactType}/${entityId}/${version}`,
   )
+}
+
+export function getPrevizAdoptionStatus(projectId: string): Promise<PrevizAdoptionStatus> {
+  return request<PrevizAdoptionStatus>(`/api/projects/${projectId}/previz/adoption`)
 }
 
 export function editArtifact(

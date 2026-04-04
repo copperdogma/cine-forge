@@ -343,6 +343,38 @@ export type ArtifactDetailResponse = {
   bible_files?: Record<string, unknown>
 }
 
+export type PrevizCostEvidence = {
+  status: 'verified' | 'estimated' | 'blocked'
+  estimated_cost_usd?: number | null
+  reason?: string | null
+}
+
+export type PrevizLaneStatus = {
+  lane_id: 'annotated_animatic' | 'ai_previz'
+  label: string
+  candidate_label?: string | null
+  adoption_state: 'default' | 'recommended_optional' | 'experimental_manual'
+  reason: string
+  blocker_reasons: string[]
+  overall_score?: number | null
+  baseline_score?: number | null
+  score_margin?: number | null
+  measured_at?: string | null
+  latency_ms?: number | null
+  engine_pack_id?: string | null
+  target_model?: string | null
+  resolution?: string | null
+  duration_seconds?: number | null
+  consistency_strategy?: string | null
+  cost: PrevizCostEvidence
+  validation_stage_enabled: boolean
+}
+
+export type PrevizAdoptionStatus = {
+  default_lane: 'annotated_animatic' | 'ai_previz'
+  ai_previz: PrevizLaneStatus
+}
+
 export type ArtifactEditRequest = {
   data: Record<string, unknown>
   rationale: string

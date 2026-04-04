@@ -10,6 +10,7 @@ from .impact_assessment import (
 from .injected_assets import InjectedAssetError, InjectedAssetService
 from .memory import MemoryService
 from .preferences import PreferenceService
+from .previz_adoption import PrevizAdoptionService
 
 __all__ = [
     "DEFAULT_ASSESSING_ROLE",
@@ -21,4 +22,5 @@ __all__ = [
     "InjectedAssetService",
     "MemoryService",
     "PreferenceService",
+    "PrevizAdoptionService",
 ]

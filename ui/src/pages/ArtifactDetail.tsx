@@ -342,7 +342,13 @@ export default function ArtifactDetail() {
         return <RenderPromptViewer data={data} />
 
       case 'ai_previz_video':
-        return <AiPrevizViewer data={data} projectId={projectId ?? ''} />
+        return (
+          <AiPrevizViewer
+            data={data}
+            projectId={projectId ?? ''}
+            healthDetails={healthDetails}
+          />
+        )
 
       case 'generated_video':
         return <GeneratedVideoViewer data={data} projectId={projectId ?? ''} />

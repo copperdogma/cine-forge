@@ -487,7 +487,10 @@ class ArtifactManager:
         store: ArtifactStore,
         artifact_ref: ArtifactRef,
     ) -> dict[str, Any] | None:
-        if artifact_ref.artifact_type != "generated_video" or not artifact_ref.entity_id:
+        if (
+            artifact_ref.artifact_type not in {"generated_video", "ai_previz_video"}
+            or not artifact_ref.entity_id
+        ):
             return None
 
         validation_refs = store.list_versions("media_validation", artifact_ref.entity_id)

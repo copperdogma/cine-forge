@@ -31,3 +31,10 @@ stages:
       location_bible: location_bible
       keyframe: keyframe
       injected_asset_manifest: injected_asset_manifest
+  - id: validate_media
+    module: media_validation_v1
+    params:
+      target_artifact_type: ai_previz_video
+    after: [ai_previz]
+    store_inputs_all:
+      generated_video: ai_previz_video

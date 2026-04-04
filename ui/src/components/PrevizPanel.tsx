@@ -3,12 +3,23 @@ import { Clapperboard, ExternalLink, Film, Loader2, RefreshCw, TriangleAlert, Wa
 import { toast } from 'sonner'
 import { AiPrevizViewer } from '@/components/AiPrevizViewer'
 import { AnimaticViewer } from '@/components/AnimaticViewer'
+import { HealthBadge } from '@/components/HealthBadge'
+import { MediaValidationViewer } from '@/components/MediaValidationViewer'
+import { formatConsistencyStrategy, formatLatencyMs } from '@/components/preview-provenance'
+import { formatDuration, formatMoney } from '@/components/render-utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { isRunActive, useArtifact, useProjectInputs, useRunState, useStartRun } from '@/lib/hooks'
+import {
+  isRunActive,
+  useArtifact,
+  usePrevizAdoptionStatus,
+  useProjectInputs,
+  useRunState,
+  useStartRun,
+} from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
-import type { ArtifactGroupSummary } from '@/lib/types'
+import type { ArtifactGroupSummary, PrevizLaneStatus } from '@/lib/types'
 
 type PrevizPanelProps = {
   projectId: string
@@ -23,18 +34,53 @@ type PrevizPanelProps = {
   aiPrevizPromptGroup?: ArtifactGroupSummary
 }
 
-const AI_PREVIZ_CONFIG = {
-  enginePackLabel: 'google_veo31_lite',
-  modelLabel: 'veo-3.1-lite-generate-preview',
-  resolution: '1280x720',
-  duration: '8s',
-  consistency: 'Prompt-only consistency',
+function formatAdoptionState(value: PrevizLaneStatus['adoption_state'] | null | undefined): string {
+  switch (value) {
+    case 'default':
+      return 'Default'
+    case 'recommended_optional':
+      return 'Recommended Optional'
+    case 'experimental_manual':
+      return 'Experimental / Manual'
+    default:
+      return 'Manual Lane'
+  }
+}
+
+function defaultLaneLabel(defaultLane: 'annotated_animatic' | 'ai_previz' | undefined): string {
+  return defaultLane === 'ai_previz' ? 'AI Previz' : 'Annotated Animatic'
+}
+
+function previzDescription(
+  defaultLane: 'annotated_animatic' | 'ai_previz' | undefined,
+  aiPreviz: PrevizLaneStatus | null | undefined,
+): string {
+  const base =
+    'Previz is for camera placement, blocking, motion, pacing, and location readability.'
+  if (!aiPreviz) {
+    return `${base} Annotated animatic remains the current default while AI previz stays a separate low-fidelity lane. Final footage still lives in the Render tab.`
+  }
+  if (defaultLane === 'ai_previz') {
+    return `${base} AI previz currently clears the adoption gate and is the default lane. Annotated animatic remains available as a deterministic fallback. Final footage still lives in the Render tab.`
+  }
+  if (aiPreviz.adoption_state === 'recommended_optional') {
+    return `${base} Annotated animatic stays the default, but AI previz is now a recommended optional lane for fast motion and staging review. Final footage still lives in the Render tab.`
+  }
+  return `${base} Annotated animatic remains the default while AI previz stays manual until the remaining blockers clear. Final footage still lives in the Render tab.`
+}
+
+function aiPrevizCostBadge(status: PrevizLaneStatus | null | undefined): string | null {
+  if (!status) return null
+  const amount = formatMoney(status.cost.estimated_cost_usd ?? null)
+  if (status.cost.status === 'verified' && amount) return amount
+  if (status.cost.status === 'estimated' && amount) return `Est. ${amount}`
+  if (status.cost.status === 'blocked') return 'Cost blocked'
+  return null
 }
 
 export function PrevizPanel({
   projectId,
   sceneId,
-  sceneHeading,
   shotPlanGroup,
   storyboardGroup,
   animaticGroup,
@@ -55,6 +101,7 @@ export function PrevizPanel({
     sceneId,
     aiPrevizGroup?.latest_version,
   )
+  const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
   const { data: inputs } = useProjectInputs(projectId)
   const startRun = useStartRun()
   const activeRunId = useChatStore((store) => store.activeRunId?.[projectId] ?? null)
@@ -72,6 +119,11 @@ export function PrevizPanel({
 
   const animaticData = animaticArtifact?.payload?.data as Record<string, unknown> | undefined
   const aiPrevizData = aiPrevizArtifact?.payload?.data as Record<string, unknown> | undefined
+  const aiPrevizStatus = previzStatus?.ai_previz
+  const aiPrevizCostLabel = aiPrevizCostBadge(aiPrevizStatus)
+  const aiPrevizExtraBlockers = (aiPrevizStatus?.blocker_reasons ?? [])
+    .filter(blocker => blocker !== aiPrevizStatus?.reason)
+    .slice(0, 2)
   const animaticDetailHref = animaticGroup
     ? `/${projectId}/artifacts/animatic/${sceneId}/${animaticGroup.latest_version}`
     : null
@@ -86,6 +138,19 @@ export function PrevizPanel({
     : null
   const aiPrevizPromptHref = aiPrevizPromptGroup
     ? `/${projectId}/artifacts/ai_previz_prompt/${sceneId}/${aiPrevizPromptGroup.latest_version}`
+    : null
+  const validationRef = aiPrevizGroup?.health_details?.source_kind === 'media_validation'
+    ? aiPrevizGroup.health_details.source_artifact_ref
+    : null
+  const { data: validationArtifact, isLoading: validationLoading } = useArtifact(
+    projectId,
+    validationRef?.artifact_type,
+    validationRef?.entity_id ?? undefined,
+    validationRef?.version,
+  )
+  const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
+  const validationDetailHref = validationRef?.entity_id && validationRef.version
+    ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
     : null
 
   async function handleStartDeterministicPreviz() {
@@ -141,18 +206,22 @@ export function PrevizPanel({
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle>Previz</CardTitle>
                 <Badge variant="outline">Runs for all scenes</Badge>
-                <Badge variant="secondary">Default: Annotated Animatic</Badge>
-                <Badge variant="secondary">AI lane: experimental</Badge>
+                <Badge variant="secondary">
+                  Default: {defaultLaneLabel(previzStatus?.default_lane)}
+                </Badge>
+                {aiPrevizStatus && (
+                  <Badge
+                    variant={aiPrevizStatus.adoption_state === 'experimental_manual' ? 'outline' : 'secondary'}
+                  >
+                    AI lane: {formatAdoptionState(aiPrevizStatus.adoption_state)}
+                  </Badge>
+                )}
                 {shotPlanGroup && (
                   <Badge variant="secondary">From shot plan v{shotPlanGroup.latest_version}</Badge>
                 )}
               </div>
               <CardDescription className="max-w-3xl leading-relaxed">
-                Previz is for camera placement, blocking, motion, pacing, and location readability.
-                The deterministic annotated animatic remains the default because it is the most
-                trustworthy lane today. AI previz is available here as an explicit experimental
-                lane, not as a disguised final render. Final footage still lives in the separate
-                <span className="font-medium"> Render</span> tab for {sceneHeading}.
+                {previzDescription(previzStatus?.default_lane, aiPrevizStatus)}
               </CardDescription>
             </div>
           </div>
@@ -180,7 +249,9 @@ export function PrevizPanel({
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-lg">Annotated Animatic</CardTitle>
-                <Badge variant="secondary">Default</Badge>
+                <Badge variant="secondary">
+                  {previzStatus?.default_lane === 'annotated_animatic' ? 'Default' : 'Deterministic fallback'}
+                </Badge>
                 {storyboardGroup && <Badge variant="outline">Storyboard-informed</Badge>}
                 {animaticGroup && <Badge variant="outline">v{animaticGroup.latest_version}</Badge>}
                 {keyframeGroup && <Badge variant="outline">Keyframes ready</Badge>}
@@ -240,25 +311,80 @@ export function PrevizPanel({
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-lg">AI Previz</CardTitle>
-                <Badge variant="secondary">Experimental</Badge>
-                <Badge variant="outline">Best quality candidate: Veo Lite</Badge>
-                <Badge variant="outline">Cost unverified</Badge>
-                {aiPrevizGroup && <Badge variant="outline">v{aiPrevizGroup.latest_version}</Badge>}
+                {aiPrevizStatus && (
+                  <Badge
+                    variant={aiPrevizStatus.adoption_state === 'experimental_manual' ? 'outline' : 'secondary'}
+                  >
+                    {formatAdoptionState(aiPrevizStatus.adoption_state)}
+                  </Badge>
+                )}
+                {aiPrevizStatus?.candidate_label && (
+                  <Badge variant="outline">{aiPrevizStatus.candidate_label}</Badge>
+                )}
+                {aiPrevizCostLabel && (
+                  <Badge variant="outline">{aiPrevizCostLabel}</Badge>
+                )}
+                {aiPrevizStatus?.latency_ms && (
+                  <Badge variant="outline">Avg {formatLatencyMs(aiPrevizStatus.latency_ms)}</Badge>
+                )}
+                {aiPrevizGroup && (
+                  <>
+                    <Badge variant="outline">v{aiPrevizGroup.latest_version}</Badge>
+                    <HealthBadge
+                      health={aiPrevizGroup.health}
+                      details={aiPrevizGroup.health_details}
+                    />
+                  </>
+                )}
               </div>
               <CardDescription>
-                Low-fidelity AI video for planning review. This lane is manual on purpose: it gives
-                you motion and staging feedback without changing the default previz path.
+                {aiPrevizStatus?.reason
+                  ?? 'Low-fidelity AI video for planning review, separate from the final render path.'}
               </CardDescription>
               <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-100">
                 <div className="flex items-start gap-2">
                   <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
                   <div className="space-y-1">
                     <p>
-                      Preflight: {AI_PREVIZ_CONFIG.enginePackLabel} / {AI_PREVIZ_CONFIG.modelLabel}
+                      Preflight:{' '}
+                      {aiPrevizStatus?.engine_pack_id ?? 'ai_previz_generation'} /{' '}
+                      {aiPrevizStatus?.target_model ?? 'configured model'}
                     </p>
                     <p>
-                      {AI_PREVIZ_CONFIG.resolution}, {AI_PREVIZ_CONFIG.duration},{' '}
-                      {AI_PREVIZ_CONFIG.consistency}. Keep it blocking-first and non-final.
+                      {aiPrevizStatus?.resolution ?? 'Configured resolution'},{' '}
+                      {formatDuration(aiPrevizStatus?.duration_seconds ?? null) ?? 'configured duration'},{' '}
+                      {formatConsistencyStrategy(aiPrevizStatus?.consistency_strategy ?? null)
+                        ?? 'configured consistency'}.
+                    </p>
+                    <p>
+                      {aiPrevizStatus?.reason
+                        ?? 'Keep AI previz blocking-first, low-detail, and explicitly non-final.'}
+                    </p>
+                    {aiPrevizStatus?.validation_stage_enabled === false && (
+                      <p>Validation artifacts are not currently wired for this lane.</p>
+                    )}
+                    {aiPrevizStatus?.cost.status === 'estimated' && (
+                      <p>
+                        Estimated cost for the active recipe defaults:{' '}
+                        {formatMoney(aiPrevizStatus.cost.estimated_cost_usd ?? null) ?? 'n/a'}.
+                      </p>
+                    )}
+                    {aiPrevizStatus?.cost.status === 'blocked' && aiPrevizStatus.cost.reason && (
+                      <p>Cost blocker: {aiPrevizStatus.cost.reason}</p>
+                    )}
+                    {aiPrevizStatus?.cost.status === 'verified' && (
+                      <p>Current cost status: provider-backed runtime cost is available.</p>
+                    )}
+                    {aiPrevizExtraBlockers.length > 0 && (
+                      <ul className="list-disc space-y-1 pl-5">
+                        {aiPrevizExtraBlockers.map(blocker => (
+                          <li key={blocker}>{blocker}</li>
+                        ))}
+                      </ul>
+                    )}
+                    <p>
+                      Final footage still belongs in the Render tab. Keep this lane focused on
+                      motion, staging, and operator-readable planning feedback.
                     </p>
                   </div>
                 </div>
@@ -355,8 +481,19 @@ export function PrevizPanel({
       {aiPrevizLoading && aiPrevizGroup && !aiPrevizData && (
         <div className="h-80 rounded-xl border border-border bg-muted/20 animate-pulse" />
       )}
+      {validationLoading && validationRef && !validationArtifact && (
+        <div className="h-36 rounded-xl border border-border bg-muted/20 animate-pulse" />
+      )}
 
       {animaticData && <AnimaticViewer data={animaticData} projectId={projectId} />}
+      {validationData && (
+        <MediaValidationViewer
+          data={validationData}
+          projectId={projectId}
+          compact
+          detailHref={validationDetailHref}
+        />
+      )}
       {aiPrevizData && <AiPrevizViewer data={aiPrevizData} projectId={projectId} />}
     </div>
   )
