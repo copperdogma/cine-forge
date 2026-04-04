@@ -1,3 +1,27 @@
+---
+id: "013"
+title: "Track System and Always-Playable Rule"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:10.1"
+  - "spec:10.2"
+  - "spec:10.3"
+adr_refs: []
+depends_on:
+  - "011"
+  - "012"
+  - "050"
+category_refs:
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 013: Track System and Always-Playable Rule
 
 **Status**: Done

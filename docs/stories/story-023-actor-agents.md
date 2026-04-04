@@ -1,3 +1,27 @@
+---
+id: "023"
+title: "Character & Performance — Performance Direction"
+status: "Deferred"
+priority: "Unknown"
+ideal_refs:
+  - "R4 (creative conversation with characters), R7 (iterative refinement)"
+spec_refs:
+  - "spec:4.10.5"
+adr_refs: []
+depends_on:
+  - "005"
+  - "008"
+  - "010"
+  - "011"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 023: Character & Performance — Performance Direction
 
 **Status**: Deferred

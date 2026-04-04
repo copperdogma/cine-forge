@@ -1,3 +1,21 @@
+---
+id: "044"
+title: "Mobile-Friendly UI"
+status: "Pending"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI"
+---
+
 # Story 044 — Mobile-Friendly UI
 
 **Phase**: 2.5 — UI

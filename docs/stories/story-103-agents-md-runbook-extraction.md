@@ -1,3 +1,21 @@
+---
+id: "103"
+title: "AGENTS.md Runbook Extraction (300-Line Cap)"
+status: "Draft"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 103 — AGENTS.md Runbook Extraction (300-Line Cap)
 
 **Priority**: Medium

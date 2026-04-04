@@ -1,3 +1,27 @@
+---
+id: "015"
+title: "Director and Canon Guardians"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:4.1"
+  - "spec:4.6"
+  - "spec:5.3"
+adr_refs: []
+depends_on:
+  - "011"
+  - "014"
+category_refs:
+  - "spec:4"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 015: Director and Canon Guardians
 
 **Status**: Done

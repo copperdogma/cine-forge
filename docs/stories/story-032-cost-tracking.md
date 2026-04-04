@@ -1,3 +1,26 @@
+---
+id: "032"
+title: "Cost Tracking and Budget Management"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.6"
+  - "spec:8.1"
+adr_refs: []
+depends_on:
+  - "002"
+  - "014"
+category_refs:
+  - "spec:1"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 032: Cost Tracking and Budget Management
 
 **Status**: Done

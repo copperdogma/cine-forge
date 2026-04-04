@@ -1,3 +1,22 @@
+---
+id: "079"
+title: "Chat & Nav Bugs + Polish Bundle"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:5"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 079 — Chat & Nav Bugs + Polish Bundle
 
 **Priority**: Medium

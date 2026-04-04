@@ -1,3 +1,29 @@
+---
+id: "021"
+title: "Look & Feel — Visual Direction"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R7 (iterative refinement), R11 (production readiness), R12 (transparency)"
+spec_refs:
+  - "spec:4.10.2"
+  - "spec:4.7.2"
+adr_refs: []
+depends_on:
+  - "008"
+  - "009"
+  - "011"
+  - "014"
+  - "015"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 021: Look & Feel — Visual Direction
 
 **Status**: Done

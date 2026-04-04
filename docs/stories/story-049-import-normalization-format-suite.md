@@ -1,3 +1,22 @@
+---
+id: "049"
+title: "Import Normalization Format Suite"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:2"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "1 — MVP Pipeline"
+---
+
 # Story 049 — Import Normalization Format Suite
 
 **Phase**: 1 — MVP Pipeline

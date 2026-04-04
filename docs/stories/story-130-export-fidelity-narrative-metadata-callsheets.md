@@ -1,3 +1,32 @@
+---
+id: "130"
+title: "Export Fidelity: Narrative Metadata + Callsheets"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "Production Output and timeline interchange quality bars"
+spec_refs:
+  - "spec:6.1.4"
+  - "spec:7"
+  - "spec:10"
+adr_refs:
+  - "ADR-002"
+  - "ADR-003"
+depends_on:
+  - "012"
+  - "013"
+  - "058"
+category_refs:
+  - "spec:6"
+  - "spec:7"
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 130 — Export Fidelity: Narrative Metadata + Callsheets
 
 **Priority**: Medium

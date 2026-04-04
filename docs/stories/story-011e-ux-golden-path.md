@@ -1,3 +1,22 @@
+---
+id: "011e"
+title: "Operator Console — UX Golden Path"
+status: "Deferred"
+priority: "Unknown"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on:
+  - "011d"
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 011e: Operator Console — UX Golden Path
 
 **Status**: Deferred

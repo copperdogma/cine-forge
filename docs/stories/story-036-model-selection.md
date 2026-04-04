@@ -1,3 +1,21 @@
+---
+id: "036"
+title: "Model Selection and Eval Framework"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 036 — Model Selection and Eval Framework
 
 **Phase**: Cross-Cutting

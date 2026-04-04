@@ -1,3 +1,33 @@
+---
+id: "011b"
+title: "Operator Console — Research & Design Decisions"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.6"
+  - "spec:2"
+  - "spec:3"
+  - "spec:5.1"
+  - "spec:5.3"
+  - "spec:5.4"
+  - "spec:9.4"
+adr_refs: []
+depends_on:
+  - "011"
+category_refs:
+  - "spec:1"
+  - "spec:2"
+  - "spec:3"
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 011b: Operator Console — Research & Design Decisions
 
 **Status**: Done

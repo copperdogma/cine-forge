@@ -1,3 +1,21 @@
+---
+id: "123"
+title: "Anthropic Prompt Caching"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 123 — Anthropic Prompt Caching
 
 **Priority**: Medium

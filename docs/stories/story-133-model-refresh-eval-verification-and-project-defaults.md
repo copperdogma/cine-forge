@@ -1,3 +1,29 @@
+---
+id: "133"
+title: "Model Refresh, Eval Verification, and Project Model Defaults"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R1 (story understanding quality), R12 (AI decisions explainable and overridable), R14 (provenance and auditability)"
+spec_refs:
+  - "spec:2.4"
+  - "spec:8.1"
+  - "spec:8.2"
+  - "spec:8.3"
+adr_refs: []
+depends_on:
+  - "107"
+  - "124"
+category_refs:
+  - "spec:2"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 133 — Model Refresh, Eval Verification, and Project Model Defaults
 
 **Priority**: High

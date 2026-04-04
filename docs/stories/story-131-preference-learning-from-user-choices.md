@@ -1,3 +1,28 @@
+---
+id: "131"
+title: "Preference Learning from User Choices"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "R13 (learn from user choices)"
+spec_refs:
+  - "spec:1.6"
+  - "spec:4.5"
+  - "spec:9"
+adr_refs: []
+depends_on:
+  - "017"
+category_refs:
+  - "spec:1"
+  - "spec:4"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 131 — Preference Learning from User Choices
 
 **Priority**: Medium

@@ -1,3 +1,21 @@
+---
+id: "011c"
+title: "Resource-oriented Routing"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Phase 2.5 — UI"
+---
+
 # Story 011c: Resource-oriented Routing
 
 **Status**: Done

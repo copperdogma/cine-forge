@@ -1,3 +1,32 @@
+---
+id: "055"
+title: "LLM-First Entity Adjudication for Character, Location, and Prop"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:1.4"
+  - "spec:3.1"
+  - "spec:5.2"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "008"
+  - "009"
+  - "041"
+  - "054"
+category_refs:
+  - "spec:1"
+  - "spec:3"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 055 — LLM-First Entity Adjudication for Character, Location, and Prop
 
 **Phase**: Cross-Cutting

@@ -1,3 +1,32 @@
+---
+id: "008"
+title: "Bible Infrastructure and Character Bible"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.1"
+  - "spec:3.1"
+  - "spec:3.2"
+  - "spec:3.3"
+  - "spec:5.2"
+  - "spec:8.1"
+adr_refs: []
+depends_on:
+  - "002"
+  - "005"
+category_refs:
+  - "spec:1"
+  - "spec:3"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 008: Bible Infrastructure and Character Bible
 
 **Status**: Done

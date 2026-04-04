@@ -1,3 +1,32 @@
+---
+id: "097"
+title: "AI Artifact Editing"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R4 (creative conversation), R5 (full spectrum of involvement), R12 (transparency)"
+spec_refs:
+  - "spec:1.3"
+  - "spec:4.10.7"
+  - "spec:5.4"
+adr_refs:
+  - "ADR-003"
+depends_on:
+  - "014"
+  - "019"
+  - "031"
+  - "083"
+category_refs:
+  - "spec:1"
+  - "spec:4"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 097: AI Artifact Editing
 
 **Status**: Done

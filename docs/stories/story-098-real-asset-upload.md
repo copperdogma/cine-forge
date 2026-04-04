@@ -1,3 +1,24 @@
+---
+id: "098"
+title: "Real-World Asset Upload Pipeline"
+status: "Cancelled"
+priority: "Unknown"
+ideal_refs:
+  - "R17 (real-world assets as first-class inputs)"
+spec_refs:
+  - "spec:7.2"
+adr_refs: []
+depends_on:
+  - "029"
+category_refs:
+  - "spec:7"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 098: Real-World Asset Upload Pipeline
 
 **Status**: Cancelled — merged into Story 029 so asset upload ships as one end-to-end user feature instead of a backend/UI split.

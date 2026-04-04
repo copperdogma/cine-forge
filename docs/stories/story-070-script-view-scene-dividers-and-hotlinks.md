@@ -1,3 +1,24 @@
+---
+id: "070"
+title: "Script View Scene Dividers & Entity Hotlinks"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on:
+  - "045"
+category_refs:
+  - "spec:2"
+  - "spec:3"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI"
+---
+
 # Story 070 — Script View Scene Dividers & Entity Hotlinks
 
 **Priority**: Medium

@@ -1,3 +1,23 @@
+---
+id: "011f"
+title: "Operator Console — Conversational AI Chat"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on:
+  - "011e"
+category_refs:
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 011f: Operator Console — Conversational AI Chat
 
 **Status**: Done

@@ -1,3 +1,23 @@
+---
+id: "062"
+title: "3-Stage Ingestion: Intake, Breakdown, Analysis"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:2"
+adr_refs: []
+depends_on:
+  - "061"
+category_refs:
+  - "spec:2"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 062 — 3-Stage Ingestion: Intake, Breakdown, Analysis
 
 **Priority**: High

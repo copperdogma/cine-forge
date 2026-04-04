@@ -1,3 +1,16 @@
+---
+status: "DECIDED — Build standalone library (\"Dossier\")"
+spec_refs:
+  - "spec:3"
+  - "spec:8"
+ideal_refs: []
+story_refs: []
+compromise_refs: []
+related_adrs: []
+supersedes: []
+superseded_by: []
+---
+
 # ADR-001: Shared Entity Extraction Library
 
 **Status:** DECIDED — Build standalone library ("Dossier")

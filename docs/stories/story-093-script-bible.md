@@ -1,3 +1,26 @@
+---
+id: "093"
+title: "Script Bible Artifact"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R1 (story understanding), R8 (production artifacts)"
+spec_refs:
+  - "spec:2.5"
+  - "spec:2.6"
+adr_refs: []
+depends_on:
+  - "003"
+  - "004"
+category_refs:
+  - "spec:2"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 093: Script Bible Artifact
 
 **Status**: Done

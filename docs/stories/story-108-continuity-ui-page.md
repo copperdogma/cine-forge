@@ -1,3 +1,23 @@
+---
+id: "108"
+title: "Continuity UI Page"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R3 (perfect continuity tracking across narrative)"
+spec_refs:
+  - "spec:3.4"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:3"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 108 — Continuity UI Page
 
 **Priority**: High

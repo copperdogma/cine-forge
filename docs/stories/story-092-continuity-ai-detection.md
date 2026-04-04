@@ -1,3 +1,22 @@
+---
+id: "092"
+title: "Continuity AI Detection & Gap Analysis"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:3"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:3"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 092 — Continuity AI Detection & Gap Analysis
 
 **Priority**: Medium

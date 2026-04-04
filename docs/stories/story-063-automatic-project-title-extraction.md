@@ -1,3 +1,22 @@
+---
+id: "063"
+title: "Automatic Project Title Extraction from Script"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:2.4"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:2"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 063 — Automatic Project Title Extraction from Script
 
 **Priority**: High

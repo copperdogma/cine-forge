@@ -1,3 +1,25 @@
+---
+id: "129"
+title: "Entity Discovery Taxonomy Tightening"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "Story Understanding quality bar"
+spec_refs:
+  - "spec:3"
+adr_refs: []
+depends_on:
+  - "081"
+  - "124"
+category_refs:
+  - "spec:3"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 129 — Entity Discovery Taxonomy Tightening
 
 **Priority**: Medium

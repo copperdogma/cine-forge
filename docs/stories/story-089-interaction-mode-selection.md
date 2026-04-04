@@ -1,3 +1,23 @@
+---
+id: "089"
+title: "Interaction Mode Selection"
+status: "Done"
+priority: "Low"
+ideal_refs: []
+spec_refs: []
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "085"
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 089 — Interaction Mode Selection
 
 **Priority**: Low

@@ -1,3 +1,29 @@
+---
+id: "082"
+title: "Creative Direction UX"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:4.10.1"
+  - "spec:4.10.2"
+  - "spec:4.10.3"
+  - "spec:4.10.4"
+  - "spec:4.10.5"
+  - "spec:4.7.1"
+  - "spec:5.4"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:4"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 082 — Creative Direction UX
 
 **Priority**: High

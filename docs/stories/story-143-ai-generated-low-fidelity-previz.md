@@ -1,3 +1,40 @@
+---
+id: "143"
+title: "AI-Generated Low-Fidelity Previz"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R7 (generate -> react -> refine), R8 (professional-grade motion assets), R10 (playable assembly at every stage), R12 (transparency & control), R17 (real-world and partial-workflow inputs)"
+spec_refs:
+  - "spec:6.3"
+  - "spec:6.3.2"
+  - "spec:6.3.3"
+  - "spec:6.4"
+  - "spec:7.1"
+  - "spec:7.2"
+  - "spec:10.3"
+adr_refs:
+  - "ADR-002"
+  - "ADR-003"
+depends_on:
+  - "028"
+  - "029"
+  - "030"
+  - "056"
+  - "119"
+  - "137"
+  - "140"
+category_refs:
+  - "spec:6"
+  - "spec:7"
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 143 — AI-Generated Low-Fidelity Previz
 
 **Priority**: High

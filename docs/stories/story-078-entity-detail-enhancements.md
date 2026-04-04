@@ -1,3 +1,22 @@
+---
+id: "078"
+title: "Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:5"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 078 — Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata
 
 **Priority**: Medium

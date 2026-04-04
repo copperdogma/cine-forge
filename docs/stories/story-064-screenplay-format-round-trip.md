@@ -1,3 +1,22 @@
+---
+id: "064"
+title: "Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:2"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:2"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 064 — Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite
 
 **Priority**: Medium

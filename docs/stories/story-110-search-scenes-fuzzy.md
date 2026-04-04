@@ -1,3 +1,22 @@
+---
+id: "110"
+title: "Improve Search: Fuzzy Matching + Scene Shorthand"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "Easy, fun, and engaging — fast navigation is core to the feel"
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 110 — Improve Search: Fuzzy Matching + Scene Shorthand
 
 **Priority**: Medium

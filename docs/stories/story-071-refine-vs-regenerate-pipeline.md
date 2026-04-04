@@ -1,3 +1,23 @@
+---
+id: "071"
+title: "Refine vs. Regenerate Pipeline Modes"
+status: "Deferred"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:1.1"
+  - "spec:1.2"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 071 — Refine vs. Regenerate Pipeline Modes
 
 **Priority**: Medium

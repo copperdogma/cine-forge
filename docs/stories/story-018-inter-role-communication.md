@@ -1,3 +1,29 @@
+---
+id: "018"
+title: "Inter-Role Communication Protocol"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.6"
+  - "spec:4.6"
+  - "spec:9"
+adr_refs: []
+depends_on:
+  - "014"
+  - "015"
+  - "017"
+category_refs:
+  - "spec:1"
+  - "spec:4"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 018: Inter-Role Communication Protocol
 
 **Status**: Done

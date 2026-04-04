@@ -1,3 +1,24 @@
+---
+id: "109"
+title: "Golden Build Runbook"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "Eval infrastructure reliability"
+spec_refs:
+  - "spec:11.3"
+  - "spec:11.4"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 109 — Golden Build Runbook
 
 **Priority**: Medium

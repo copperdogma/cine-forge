@@ -1,3 +1,30 @@
+---
+id: "014"
+title: "Role System Foundation"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.4"
+  - "spec:4.1"
+  - "spec:4.2"
+  - "spec:4.3"
+  - "spec:5.2"
+adr_refs: []
+depends_on:
+  - "002"
+  - "006"
+category_refs:
+  - "spec:1"
+  - "spec:4"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 014: Role System Foundation
 
 **Status**: Done

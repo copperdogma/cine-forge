@@ -1,3 +1,24 @@
+---
+id: "139"
+title: "Historical Run Progress Cards Stop Polling Missing Runs"
+status: "Draft"
+priority: "Medium"
+ideal_refs:
+  - "R12 (radical transparency)"
+spec_refs:
+  - "spec:1.6"
+adr_refs: []
+depends_on:
+  - "127"
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 139 — Historical Run Progress Cards Stop Polling Missing Runs
 
 **Priority**: Medium

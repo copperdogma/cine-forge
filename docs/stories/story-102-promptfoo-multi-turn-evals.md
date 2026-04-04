@@ -1,3 +1,22 @@
+---
+id: "102"
+title: "Promptfoo Multi-Turn Conversational Evals"
+status: "Draft"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:8"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 102 — Promptfoo Multi-Turn Conversational Evals
 
 **Priority**: Medium

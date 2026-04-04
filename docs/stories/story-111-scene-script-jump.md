@@ -1,3 +1,22 @@
+---
+id: "111"
+title: "Fix \"View In Script\" Scroll-to-Scene"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "Easy, fun, and engaging — jumping to context should feel instant"
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 111 — Fix "View In Script" Scroll-to-Scene
 
 **Priority**: Medium

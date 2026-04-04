@@ -18,7 +18,7 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 001, 002, 004, 007, 007b, 007c, 008, 010, 011, 011b, 011d, 012, 014, 017, 018, 029, 031, 032, 055, 056, 071, 097, 113, 115, 116, 117, 118, 127, 128, 131, 139, 142
+**Stories:** 001, 002, 004, 007, 007b, 007c, 008, 010, 011, 011b, 011d, 012, 014, 017, 018, 029, 031, 032, 037, 038, 040, 050, 052, 055, 056, 071, 073, 074, 088, 097, 101, 105, 106, 113, 114, 115, 116, 117, 118, 127, 128, 131, 139, 142
 **ADR Refs:** ADR-002, ADR-003
 **Spec:** spec:1 (spec:1.1, spec:1.2, spec:1.3, spec:1.4, spec:1.5, spec:1.6)
 **Absorbs:** Foundation & Artifact Runtime (old 1)
@@ -35,7 +35,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 003, 003b, 004, 005, 006, 007b, 007c, 011b, 011d, 054, 061, 062, 063, 064, 072, 080, 081, 093, 119, 120, 121, 132, 133, 135, 142
+**Stories:** 003, 003b, 004, 005, 006, 007b, 007c, 011b, 011d, 048, 049, 054, 061, 062, 063, 064, 070, 072, 080, 081, 093, 119, 120, 121, 132, 133, 135, 142
 **ADR Refs:** ADR-003
 **Spec:** spec:2 (spec:2.1, spec:2.2, spec:2.3, spec:2.4, spec:2.5, spec:2.6, spec:2.7, spec:2.7.1, spec:2.7.2)
 **Absorbs:** Script Understanding Pipeline (old 2)
@@ -59,8 +59,8 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 008, 009, 010, 011, 011b, 011d, 016, 029, 054, 055, 056, 065, 077, 080, 081, 092, 108, 112, 129
-**ADR Refs:** ADR-002, ADR-003
+**Stories:** 008, 009, 010, 011, 011b, 011d, 016, 029, 041, 043, 045, 054, 055, 056, 057, 060, 065, 070, 077, 080, 081, 092, 108, 112, 124, 129
+**ADR Refs:** ADR-001, ADR-002, ADR-003
 **Spec:** spec:3 (spec:3.1, spec:3.2, spec:3.3, spec:3.4)
 **Absorbs:** World Building & Continuity (old 3)
 
@@ -76,7 +76,7 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 014, 015, 016, 017, 018, 020, 021, 022, 023, 024, 033, 034, 056, 082, 083, 084, 094, 095, 096, 097, 100, 121, 126, 131, 141
+**Stories:** 014, 015, 016, 017, 018, 020, 021, 022, 023, 024, 033, 034, 056, 082, 083, 084, 090, 094, 095, 096, 097, 100, 121, 126, 131, 141
 **ADR Refs:** ADR-002, ADR-003
 **Spec:** spec:4 (spec:4.1, spec:4.2, spec:4.3, spec:4.4, spec:4.5, spec:4.6, spec:4.7, spec:4.7.1, spec:4.7.2, spec:4.8, spec:4.8.1, spec:4.8.2, spec:4.9, spec:4.9.1, spec:4.9.2, spec:4.10, spec:4.10.1, spec:4.10.2, spec:4.10.3, spec:4.10.4, spec:4.10.5, spec:4.10.6, spec:4.10.7)
 **Absorbs:** Role System & Creative Direction (old 4)
@@ -100,7 +100,7 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 001, 002, 004, 005, 006, 007, 007b, 007c, 008, 009, 010, 011b, 011d, 012, 014, 015, 017, 019, 054, 055, 066, 072, 075, 076, 078, 079, 082, 083, 084, 097, 099, 111, 126, 132, 142, 144
+**Stories:** 001, 002, 004, 005, 006, 007, 007b, 007c, 008, 009, 010, 011b, 011c, 011d, 011e, 011f, 012, 014, 015, 017, 019, 042, 043, 044, 045, 046, 048, 051, 052, 054, 055, 057, 058, 059, 066, 067, 068, 069, 070, 072, 075, 076, 078, 079, 082, 083, 084, 085, 086, 087, 088, 089, 090, 097, 099, 101, 110, 111, 114, 126, 132, 142, 144
 **ADR Refs:** ADR-002, ADR-003
 **Spec:** spec:5 (spec:5.1, spec:5.2, spec:5.3, spec:5.4, spec:5.5)
 **Absorbs:** Operator Console & Interactive UX (old 5)
@@ -135,7 +135,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 028, 029, 030, 056, 098, 130, 137, 140, 141, 143, 144
+**Stories:** 028, 029, 030, 056, 058, 098, 130, 137, 140, 141, 143, 144
 **ADR Refs:** ADR-002, ADR-003
 **Spec:** spec:7 (spec:7.1, spec:7.1.1, spec:7.1.2, spec:7.1.3, spec:7.2)
 **Absorbs:** Generation & Export (old 7)
@@ -160,8 +160,8 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 001, 002, 004, 005, 006, 007, 007c, 008, 030, 031, 032, 054, 055, 065, 107, 113, 123, 133, 135, 136, 138, 140, 144
-**ADR Refs:** ADR-002, ADR-003
+**Stories:** 001, 002, 004, 005, 006, 007, 007c, 008, 030, 031, 032, 035, 036, 037, 038, 039, 040, 041, 047, 049, 050, 054, 055, 060, 065, 102, 104, 105, 106, 107, 113, 122, 123, 124, 133, 135, 136, 138, 140, 144
+**ADR Refs:** ADR-001, ADR-002, ADR-003
 **Spec:** spec:8 (spec:8.1, spec:8.2, spec:8.3)
 **Absorbs:** AI Platform, Model Selection & Validation (old 8)
 
@@ -192,7 +192,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 007b, 011b, 011d, 018, 019, 030, 033, 083, 126, 131
+**Stories:** 007b, 011b, 011d, 011f, 018, 019, 030, 033, 067, 069, 083, 086, 102, 126, 131
 **ADR Refs:** ADR-002, ADR-003
 **Spec:** spec:9 (spec:9.1, spec:9.2, spec:9.3, spec:9.4)
 **Absorbs:** Memory & Collaboration (old 9)
@@ -233,7 +233,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 066, 109, 115, 125, 134, 136, 145
+**Stories:** 053, 066, 103, 109, 115, 125, 134, 136, 145, 146
 **ADR Refs:** None found after search
 **Spec:** spec:11 (spec:11.1, spec:11.2, spec:11.3, spec:11.4)
 **Absorbs:** Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)

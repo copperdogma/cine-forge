@@ -1,3 +1,21 @@
+---
+id: "073"
+title: "Add `after:` ordering-only stage dependency to recipe DSL"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 073 — Add `after:` ordering-only stage dependency to recipe DSL
 
 **Priority**: Medium

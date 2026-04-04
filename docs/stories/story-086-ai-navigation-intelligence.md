@@ -1,3 +1,24 @@
+---
+id: "086"
+title: "AI Navigation Intelligence"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "085"
+category_refs:
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 086 — AI Navigation Intelligence
 
 **Priority**: High

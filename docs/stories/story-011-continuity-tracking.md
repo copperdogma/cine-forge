@@ -1,3 +1,28 @@
+---
+id: "011"
+title: "Asset State Tracking (Continuity)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.1"
+  - "spec:3.4"
+adr_refs: []
+depends_on:
+  - "005"
+  - "008"
+  - "009"
+  - "010"
+category_refs:
+  - "spec:1"
+  - "spec:3"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 011: Asset State Tracking (Continuity)
 
 **Status**: Done

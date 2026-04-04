@@ -1,3 +1,27 @@
+---
+id: "022"
+title: "Sound & Music — Sound Direction"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R7 (iterative refinement), R11 (production readiness), R12 (transparency)"
+spec_refs:
+  - "spec:4.10.3"
+  - "spec:4.9"
+adr_refs: []
+depends_on:
+  - "005"
+  - "014"
+  - "015"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 022: Sound & Music — Sound Direction
 
 **Status**: Done

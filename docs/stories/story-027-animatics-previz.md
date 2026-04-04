@@ -1,3 +1,29 @@
+---
+id: "027"
+title: "Animatics, Keyframes, and Previz (Optional)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:6.3"
+  - "spec:6.4"
+  - "spec:10.2"
+  - "spec:10.3"
+adr_refs: []
+depends_on:
+  - "013"
+  - "025"
+  - "026"
+category_refs:
+  - "spec:6"
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 027: Animatics, Keyframes, and Previz (Optional)
 
 **Status**: Done

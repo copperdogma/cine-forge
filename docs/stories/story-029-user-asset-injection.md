@@ -1,3 +1,31 @@
+---
+id: "029"
+title: "User Asset Injection"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R17 (real-world assets as first-class inputs)"
+spec_refs:
+  - "spec:1.1"
+  - "spec:3.3"
+  - "spec:7.2"
+adr_refs: []
+depends_on:
+  - "008"
+  - "009"
+  - "014"
+  - "017"
+category_refs:
+  - "spec:1"
+  - "spec:3"
+  - "spec:7"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 029: User Asset Injection
 
 **Status**: Done

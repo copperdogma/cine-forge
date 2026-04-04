@@ -1,3 +1,32 @@
+---
+id: "005"
+title: "Scene Extraction Module"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:2.3"
+  - "spec:2.7"
+  - "spec:2.7.1"
+  - "spec:2.7.2"
+  - "spec:5.2"
+  - "spec:8.1"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "002"
+  - "004"
+category_refs:
+  - "spec:2"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 005: Scene Extraction Module
 
 **Status**: Done

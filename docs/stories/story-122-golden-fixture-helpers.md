@@ -1,3 +1,21 @@
+---
+id: "122"
+title: "Golden Fixture Helpers"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 122 — Golden Fixture Helpers
 
 **Priority**: Medium

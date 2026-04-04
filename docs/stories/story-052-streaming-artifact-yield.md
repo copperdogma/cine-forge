@@ -1,3 +1,22 @@
+---
+id: "052"
+title: "Streaming Artifact Yield: Live Per-Entity Progress"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 052 — Streaming Artifact Yield: Live Per-Entity Progress
 
 **Phase**: Cross-Cutting

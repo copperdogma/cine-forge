@@ -1,3 +1,30 @@
+---
+id: "033"
+title: "Memory Model and Transcript Retention"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:4.6"
+  - "spec:9"
+  - "spec:9.1"
+  - "spec:9.2"
+  - "spec:9.3"
+  - "spec:9.4"
+adr_refs: []
+depends_on:
+  - "014"
+  - "018"
+category_refs:
+  - "spec:4"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 033: Memory Model and Transcript Retention
 
 **Status**: Done

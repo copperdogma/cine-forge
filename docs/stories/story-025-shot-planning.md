@@ -1,3 +1,33 @@
+---
+id: "025"
+title: "Shot Planning"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R7 (iterative refinement), R8 (production artifacts), R11 (production readiness)"
+spec_refs:
+  - "spec:6.1"
+  - "spec:6.1.1"
+  - "spec:6.1.2"
+  - "spec:6.1.3"
+  - "spec:6.1.4"
+adr_refs: []
+depends_on:
+  - "011"
+  - "012"
+  - "013"
+  - "020"
+  - "021"
+  - "022"
+category_refs:
+  - "spec:6"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 025: Shot Planning
 
 **Status**: Done

@@ -348,15 +348,12 @@
     "domains": {
       "methodology_tooling": {
         "last_audited_at": "2026-04-04",
-        "recent_story_refs": ["134", "136", "145"],
+        "recent_story_refs": ["145", "146"],
         "stories_since_audit": 0,
-        "open_findings": [
-          "Legacy story/ADR metadata still produces compiler warnings; normalize active backlog items in a follow-up pass.",
-          "Historic cancelled/unknown story statuses remain as documented warning debt until a targeted metadata cleanup resolves them."
-        ],
-        "manual_priority": "high",
-        "last_result": "follow-up-needed",
-        "last_summary": "Story 145 landed the graph+state substrate, generated dashboards, and architecture-audit lane. Remaining methodology-tooling debt is narrowed to legacy metadata normalization rather than active-surface authority drift."
+        "open_findings": [],
+        "manual_priority": "normal",
+        "last_result": "clean",
+        "last_summary": "Stories 145 and 146 completed the graph+state migration and legacy metadata backfill. CineForge-owned story/ADR metadata now lives in explicit frontmatter, with legacy parser and category-override bridges retired."
       },
       "driver_and_runtime": {
         "last_audited_at": "2026-03-02",
@@ -393,12 +390,6 @@
         "open_findings": [],
         "manual_priority": "normal"
       }
-    }
-  },
-  "story_overrides": {
-    "category_refs": {
-      "111": ["spec:5"],
-      "123": ["spec:8"]
     }
   }
 }

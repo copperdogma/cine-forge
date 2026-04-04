@@ -1,3 +1,28 @@
+---
+id: "119"
+title: "Design Study Prompt Compiler + Visual Reference Propagation"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:2.6"
+  - "spec:6.1"
+  - "spec:6.2"
+  - "spec:6.3"
+adr_refs: []
+depends_on:
+  - "056"
+  - "120"
+category_refs:
+  - "spec:2"
+  - "spec:6"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 119 — Design Study Prompt Compiler + Visual Reference Propagation
 
 **Priority**: Medium

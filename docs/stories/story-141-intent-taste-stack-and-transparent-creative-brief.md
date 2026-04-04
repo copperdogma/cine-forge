@@ -1,3 +1,32 @@
+---
+id: "141"
+title: "Intent Taste Stack and Transparent Creative Brief"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R6 (style and taste), R7 (iterative refinement), R12 (radical transparency), R17 (real-world assets as first-class inputs)"
+spec_refs:
+  - "spec:4.10.1"
+  - "spec:4.10.2"
+  - "spec:7.1"
+  - "spec:7.2"
+adr_refs:
+  - "ADR-003"
+depends_on:
+  - "029"
+  - "095"
+  - "119"
+  - "120"
+category_refs:
+  - "spec:4"
+  - "spec:7"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 141 — Intent Taste Stack and Transparent Creative Brief
 
 **Priority**: High

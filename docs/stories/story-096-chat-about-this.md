@@ -1,3 +1,29 @@
+---
+id: "096"
+title: "\"Chat About This\" Interaction Pattern"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "R4 (creative conversation), R7 (iterative refinement), R12 (transparency)"
+spec_refs:
+  - "spec:4.10.7"
+adr_refs:
+  - "ADR-002"
+  - "ADR-003"
+depends_on:
+  - "011f"
+  - "082"
+  - "099"
+  - "126"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 096: "Chat About This" Interaction Pattern
 
 **Priority**: Medium

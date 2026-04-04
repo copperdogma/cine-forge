@@ -1,3 +1,29 @@
+---
+id: "134"
+title: "Compromise Convergence Tooling Migration"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "Vision-level preference: easy, fun, and engaging"
+  - "R12 (every AI decision explainable and overridable)"
+  - "R14 (nothing is ever lost)"
+spec_refs:
+  - "spec:11.2"
+  - "spec:11.3"
+  - "spec:11.4"
+adr_refs: []
+depends_on:
+  - "053"
+  - "125"
+category_refs:
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 134 — Compromise Convergence Tooling Migration
 
 **Priority**: High

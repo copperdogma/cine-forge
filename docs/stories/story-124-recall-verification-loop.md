@@ -1,3 +1,22 @@
+---
+id: "124"
+title: "Recall Verification Loop for Entity Discovery"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:3"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 124 — Recall Verification Loop for Entity Discovery
 
 **Priority**: Medium

@@ -1,3 +1,27 @@
+---
+id: "100"
+title: "Motif Tracking System"
+status: "Draft"
+priority: "Unknown"
+ideal_refs:
+  - "R3 (continuity), R8 (production artifacts)"
+spec_refs:
+  - "spec:4.10.6"
+adr_refs: []
+depends_on:
+  - "008"
+  - "009"
+  - "011"
+  - "094"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 100: Motif Tracking System
 
 **Status**: Draft

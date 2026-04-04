@@ -1,3 +1,23 @@
+---
+id: "118"
+title: "Service Layer Decomposition"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:1"
+adr_refs: []
+depends_on:
+  - "116"
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 118 — Service Layer Decomposition
 
 **Priority**: Medium

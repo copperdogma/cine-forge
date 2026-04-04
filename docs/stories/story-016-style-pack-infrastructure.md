@@ -1,3 +1,26 @@
+---
+id: "016"
+title: "Style Pack Infrastructure"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:3.3"
+  - "spec:4.3"
+  - "spec:4.4"
+adr_refs: []
+depends_on:
+  - "014"
+category_refs:
+  - "spec:3"
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 016: Style Pack Infrastructure
 
 **Status**: Done

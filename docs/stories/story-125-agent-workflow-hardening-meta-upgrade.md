@@ -1,3 +1,27 @@
+---
+id: "125"
+title: "Agent Workflow Hardening Meta Upgrade"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "Vision-level preference: easy, fun, and engaging"
+  - "R12 (decisions explainable and overridable)"
+  - "R14 (process traceability)"
+spec_refs:
+  - "spec:11.1"
+  - "spec:11.3"
+  - "spec:11.4"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 125 — Agent Workflow Hardening Meta Upgrade
 
 **Priority**: High

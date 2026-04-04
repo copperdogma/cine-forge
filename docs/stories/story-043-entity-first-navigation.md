@@ -1,3 +1,22 @@
+---
+id: "043"
+title: "Entity-First Navigation"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:3"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI"
+---
+
 # Story 043 — Entity-First Navigation
 
 **Phase**: 2.5 — UI

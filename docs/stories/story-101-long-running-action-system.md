@@ -1,3 +1,23 @@
+---
+id: "101"
+title: "Centralized Long-Running Action System"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R11 (production readiness), R7 (iterative refinement)"
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 101: Centralized Long-Running Action System
 
 **Status**: Done

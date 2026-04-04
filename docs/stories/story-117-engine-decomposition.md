@@ -1,3 +1,23 @@
+---
+id: "117"
+title: "Engine Decomposition"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:1"
+adr_refs: []
+depends_on:
+  - "116"
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 117 — Engine Decomposition
 
 **Priority**: Medium

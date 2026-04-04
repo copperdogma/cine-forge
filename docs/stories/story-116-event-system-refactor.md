@@ -1,3 +1,23 @@
+---
+id: "116"
+title: "Event System Refactor"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:1"
+adr_refs: []
+depends_on:
+  - "115"
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 116 — Event System Refactor
 
 **Priority**: Medium

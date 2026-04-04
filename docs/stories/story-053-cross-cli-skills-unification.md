@@ -1,3 +1,21 @@
+---
+id: "053"
+title: "Cross-CLI Skills/Prompts Unification"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 053 — Cross-CLI Skills/Prompts Unification
 
 **Phase**: Cross-Cutting

@@ -1,3 +1,32 @@
+---
+id: "132"
+title: "Shot Planning UI and Shot List Exports"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R9 (professional exports), R11 (production readiness per scene), R7 (iterative refinement)"
+spec_refs:
+  - "spec:2.6"
+  - "spec:5.5"
+  - "spec:6.1"
+  - "spec:6.1.4"
+adr_refs: []
+depends_on:
+  - "025"
+  - "058"
+  - "099"
+  - "101"
+category_refs:
+  - "spec:2"
+  - "spec:5"
+  - "spec:6"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 132 — Shot Planning UI and Shot List Exports
 
 **Priority**: High

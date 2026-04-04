@@ -1,3 +1,27 @@
+---
+id: "120"
+title: "Production Format Setting"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:2.4"
+  - "spec:2.6"
+  - "spec:6.2"
+  - "spec:6.3"
+adr_refs: []
+depends_on:
+  - "056"
+category_refs:
+  - "spec:2"
+  - "spec:6"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 120 — Production Format Setting
 
 **Priority**: Medium

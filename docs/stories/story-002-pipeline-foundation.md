@@ -1,3 +1,34 @@
+---
+id: "002"
+title: "Pipeline Foundation (Driver, Artifact Store, Schemas)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.1"
+  - "spec:1.2"
+  - "spec:1.3"
+  - "spec:1.4"
+  - "spec:1.5"
+  - "spec:1.6"
+  - "spec:5.2"
+  - "spec:5.3"
+  - "spec:8.1"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "001"
+category_refs:
+  - "spec:1"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 002: Pipeline Foundation (Driver, Artifact Store, Schemas)
 
 **Status**: Done

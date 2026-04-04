@@ -1,3 +1,37 @@
+---
+id: "144"
+title: "AI Previz Adoption Gate and Trust Guardrails"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R7 (generate -> react -> refine), R10 (playable assembly at every stage), R11 (production readiness), R12 (transparency & control)"
+spec_refs:
+  - "spec:5.5"
+  - "spec:6.3"
+  - "spec:6.3.4"
+  - "spec:7.1"
+  - "spec:8.2"
+  - "spec:10.3"
+adr_refs:
+  - "ADR-002"
+  - "ADR-003"
+depends_on:
+  - "032"
+  - "140"
+  - "143"
+category_refs:
+  - "spec:5"
+  - "spec:6"
+  - "spec:7"
+  - "spec:8"
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 144 — AI Previz Adoption Gate and Trust Guardrails
 
 **Priority**: High

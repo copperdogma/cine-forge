@@ -1,3 +1,23 @@
+---
+id: "087"
+title: "Pre-flight Summary Cards"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "086"
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 087 — Pre-flight Summary Cards
 
 **Priority**: Medium

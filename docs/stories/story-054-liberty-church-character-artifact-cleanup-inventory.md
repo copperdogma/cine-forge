@@ -1,3 +1,30 @@
+---
+id: "054"
+title: "Liberty Church Character Artifact Cleanup Inventory"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:2.7"
+  - "spec:3.1"
+  - "spec:5.2"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "008"
+  - "041"
+category_refs:
+  - "spec:2"
+  - "spec:3"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 054 — Liberty Church Character Artifact Cleanup Inventory
 
 **Phase**: Cross-Cutting

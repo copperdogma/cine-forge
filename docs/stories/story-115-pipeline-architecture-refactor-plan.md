@@ -1,3 +1,25 @@
+---
+id: "115"
+title: "Pipeline Architecture Refactor Plan"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "All (architecture quality is a prerequisite for every Ideal requirement)"
+spec_refs:
+  - "spec:1"
+  - "spec:11"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 115 — Pipeline Architecture Refactor Plan
 
 **Priority**: Medium

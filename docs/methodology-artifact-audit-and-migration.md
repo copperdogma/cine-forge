@@ -60,7 +60,7 @@ The redesign must not create a parallel source that duplicates those truths.
 | `docs/build-map.md` | Hand-authored dashboard + mutable state | Category summaries, substrate state, category phase, live story coverage, ADR lookup surface, compromise-progress notes, human-readable planning dashboard | Replace as an authored source. Preserve as a generated dashboard view fed by state + graph. |
 | `docs/stories.md` | Manual index + mutable planning overlay | Full story index, status buckets, execution-map narrative, backlog highlighting, phase summary, spec coverage map | Replace with a generated index. Move custom narrative/overlay sections into structured state. |
 | `docs/setup-checklist.md` | Working checklist | Active methodology bootstrap state, currently teaches build-map/story-index truth | Keep as working copy, but rewrite around state/graph/generated views. |
-| Story files | Canonical authored source | Scope, acceptance criteria, ADR/spec linkage, dependency graph, work log, closure evidence | Keep canonical. Add strict frontmatter for new stories; support legacy headers during migration. |
+| Story files | Canonical authored source | Scope, acceptance criteria, ADR/spec linkage, dependency graph, work log, closure evidence | Keep canonical. Require strict frontmatter for CineForge-owned stories; legacy story-header parsing was retired after Story 146. |
 | `create-story` skill + template | Workflow substrate | Story numbering, metadata shape, story-index update contract | Update to emit frontmatter and rerun graph generation instead of editing `docs/stories.md` manually. |
 | `docs/evals/registry.yaml` | Canonical authored source | Eval IDs, targets, scores, retry conditions, compromise hooks | Keep canonical. Parse into the graph and lint unresolved refs. |
 | `setup-methodology` skill + runbook | Bootstrap surface | Teaches the repo's methodology package and checklist contract | Rewrite around `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated `docs/stories.md`, and generated `docs/build-map.md`. |
@@ -228,8 +228,9 @@ Required generated views:
 
 ## 5. Strong Metadata / Frontmatter
 
-New stories should use strict frontmatter while the compiler still tolerates
-legacy story headers during migration.
+Story metadata now lives in strict frontmatter. Legacy story and ADR header
+parsing was a temporary migration bridge and is no longer part of CineForge's
+live methodology contract.
 
 Minimum story metadata:
 
@@ -395,7 +396,8 @@ And teach:
 - [x] Add frontmatter support to the compiler
 - [x] Update story and ADR templates/tooling to emit strict frontmatter
 - [x] Migrate Story 145 and active methodology ADR/tooling artifacts first
-- [x] Leave broader story backlog migration as staged warning debt, not hidden debt
+- [x] Backfill the remaining legacy story and ADR artifacts in Story 146
+- [x] Retire CineForge-owned legacy story/ADR parsing and category-override fallback once explicit metadata exists
 
 ### Phase 3 — Rewire Workflow Consumers
 

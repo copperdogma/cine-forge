@@ -151,11 +151,23 @@
           "029",
           "031",
           "032",
+          "037",
+          "038",
+          "040",
+          "050",
+          "052",
           "055",
           "056",
           "071",
+          "073",
+          "074",
+          "088",
           "097",
+          "101",
+          "105",
+          "106",
           "113",
+          "114",
           "115",
           "116",
           "117",
@@ -240,11 +252,14 @@
           "007c",
           "011b",
           "011d",
+          "048",
+          "049",
           "054",
           "061",
           "062",
           "063",
           "064",
+          "070",
           "072",
           "080",
           "081",
@@ -309,19 +324,27 @@
           "011d",
           "016",
           "029",
+          "041",
+          "043",
+          "045",
           "054",
           "055",
           "056",
+          "057",
+          "060",
           "065",
+          "070",
           "077",
           "080",
           "081",
           "092",
           "108",
           "112",
+          "124",
           "129"
         ],
         "adrIds": [
+          "ADR-001",
           "ADR-002",
           "ADR-003"
         ],
@@ -461,6 +484,7 @@
           "082",
           "083",
           "084",
+          "090",
           "094",
           "095",
           "096",
@@ -532,15 +556,33 @@
           "009",
           "010",
           "011b",
+          "011c",
           "011d",
+          "011e",
+          "011f",
           "012",
           "014",
           "015",
           "017",
           "019",
+          "042",
+          "043",
+          "044",
+          "045",
+          "046",
+          "048",
+          "051",
+          "052",
           "054",
           "055",
+          "057",
+          "058",
+          "059",
           "066",
+          "067",
+          "068",
+          "069",
+          "070",
           "072",
           "075",
           "076",
@@ -549,9 +591,18 @@
           "082",
           "083",
           "084",
+          "085",
+          "086",
+          "087",
+          "088",
+          "089",
+          "090",
           "097",
           "099",
+          "101",
+          "110",
           "111",
+          "114",
           "126",
           "132",
           "142",
@@ -713,6 +764,7 @@
           "029",
           "030",
           "056",
+          "058",
           "098",
           "130",
           "137",
@@ -779,12 +831,29 @@
           "030",
           "031",
           "032",
+          "035",
+          "036",
+          "037",
+          "038",
+          "039",
+          "040",
+          "041",
+          "047",
+          "049",
+          "050",
           "054",
           "055",
+          "060",
           "065",
+          "102",
+          "104",
+          "105",
+          "106",
           "107",
           "113",
+          "122",
           "123",
+          "124",
           "133",
           "135",
           "136",
@@ -793,12 +862,14 @@
           "144"
         ],
         "adrIds": [
+          "ADR-001",
           "ADR-002",
           "ADR-003"
         ],
         "evalIds": [
           "compromise-C2-qa-validation",
           "compromise-C3-tiered-models",
+          "entity-discovery",
           "previz-usefulness",
           "runtime-media-validation",
           "video-understanding"
@@ -846,11 +917,16 @@
           "007b",
           "011b",
           "011d",
+          "011f",
           "018",
           "019",
           "030",
           "033",
+          "067",
+          "069",
           "083",
+          "086",
+          "102",
           "126",
           "131"
         ],
@@ -960,13 +1036,16 @@
           "B5"
         ],
         "storyIds": [
+          "053",
           "066",
+          "103",
           "109",
           "115",
           "125",
           "134",
           "136",
-          "145"
+          "145",
+          "146"
         ],
         "adrIds": [],
         "evalIds": []
@@ -1166,9 +1245,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1200,9 +1281,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1224,9 +1307,11 @@
       "categoryRefs": [
         "spec:2"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1248,9 +1333,11 @@
       "categoryRefs": [
         "spec:2"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1280,9 +1367,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1312,9 +1401,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1341,9 +1432,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1373,9 +1466,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1408,9 +1503,11 @@
         "spec:5",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1445,9 +1542,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1477,9 +1576,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1505,9 +1606,11 @@
         "spec:3",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1534,9 +1637,11 @@
         "spec:3",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1562,9 +1667,11 @@
         "spec:1",
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1595,9 +1702,11 @@
         "spec:5",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1611,10 +1720,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Phase 2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1646,9 +1759,11 @@
         "spec:5",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1664,10 +1779,14 @@
       "dependsOn": [
         "011d"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1683,10 +1802,15 @@
       "dependsOn": [
         "011e"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1715,9 +1839,11 @@
         "spec:5",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1742,9 +1868,11 @@
       "categoryRefs": [
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1772,9 +1900,11 @@
         "spec:4",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1799,9 +1929,11 @@
         "spec:4",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1825,9 +1957,11 @@
         "spec:3",
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1854,9 +1988,11 @@
         "spec:4",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1883,9 +2019,11 @@
         "spec:4",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1913,9 +2051,11 @@
         "spec:5",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1939,9 +2079,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1969,9 +2111,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -1997,9 +2141,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2025,16 +2171,18 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
       "id": "024",
       "title": "Direction Convergence and Review",
       "path": "docs/stories/story-024-direction-convergence.md",
-      "status": "Cancelled — Eliminated by ADR-003. The Intent/Mood layer handles cross-group coherence; a separate convergence step is unnecessary when elements are organized by creative concern rather than by role.",
+      "status": "Cancelled",
       "priority": "Unknown",
       "idealRefs": [],
       "specRefs": [
@@ -2052,9 +2200,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2086,9 +2236,11 @@
       "categoryRefs": [
         "spec:6"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2113,9 +2265,11 @@
         "spec:6",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2142,9 +2296,11 @@
         "spec:6",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2174,9 +2330,11 @@
         "spec:7",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2206,9 +2364,11 @@
         "spec:3",
         "spec:7"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2238,9 +2398,11 @@
         "spec:8",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2265,9 +2427,11 @@
         "spec:1",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2291,9 +2455,11 @@
         "spec:1",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2321,9 +2487,11 @@
         "spec:4",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2346,9 +2514,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2362,10 +2532,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "8 — Cross-Cutting Polish",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2379,10 +2553,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2396,10 +2574,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2413,10 +2596,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2430,10 +2618,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2447,10 +2639,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2464,10 +2661,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2481,10 +2683,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2498,10 +2704,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2515,10 +2726,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2532,10 +2747,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting (Pipeline + UI)",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2549,10 +2769,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2566,10 +2790,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2583,10 +2811,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI/API",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2600,10 +2833,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "1 — MVP Pipeline",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2617,27 +2855,36 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
       "id": "051",
       "title": "Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts",
       "path": "docs/stories/story-051-chat-ux-polish.md",
-      "status": "Unknown",
-      "priority": "Unknown",
+      "status": "Done",
+      "priority": "High",
       "idealRefs": [],
       "specRefs": [],
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2651,10 +2898,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2668,10 +2920,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2699,9 +2955,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2731,9 +2989,11 @@
         "spec:5",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2766,9 +3026,11 @@
         "spec:6",
         "spec:7"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2782,10 +3044,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2799,10 +3066,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:7"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2816,10 +3088,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2833,10 +3109,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2855,9 +3136,11 @@
       "categoryRefs": [
         "spec:2"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2878,9 +3161,11 @@
       "categoryRefs": [
         "spec:2"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2899,9 +3184,11 @@
       "categoryRefs": [
         "spec:2"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2920,9 +3207,11 @@
       "categoryRefs": [
         "spec:2"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2943,9 +3232,11 @@
         "spec:3",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2966,9 +3257,11 @@
         "spec:5",
         "spec:11"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2982,10 +3275,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -2999,10 +3297,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3016,10 +3318,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3035,10 +3342,16 @@
       "dependsOn": [
         "045"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "2.5 — UI",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3058,9 +3371,11 @@
       "categoryRefs": [
         "spec:1"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3083,9 +3398,11 @@
         "spec:2",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3099,10 +3416,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3116,10 +3437,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3138,9 +3463,11 @@
       "categoryRefs": [
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3159,9 +3486,11 @@
       "categoryRefs": [
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3181,9 +3510,11 @@
       "categoryRefs": [
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3202,9 +3533,11 @@
       "categoryRefs": [
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3223,9 +3556,11 @@
       "categoryRefs": [
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3246,9 +3581,11 @@
         "spec:2",
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3269,9 +3606,11 @@
         "spec:2",
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3297,9 +3636,11 @@
         "spec:4",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3322,9 +3663,11 @@
         "spec:5",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3345,9 +3688,11 @@
         "spec:4",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3358,7 +3703,9 @@
       "priority": "High",
       "idealRefs": [],
       "specRefs": [],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "002",
@@ -3366,10 +3713,14 @@
         "011f",
         "082"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3380,15 +3731,22 @@
       "priority": "High",
       "idealRefs": [],
       "specRefs": [],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "085"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3399,15 +3757,21 @@
       "priority": "Medium",
       "idealRefs": [],
       "specRefs": [],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "086"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3418,16 +3782,23 @@
       "priority": "Medium",
       "idealRefs": [],
       "specRefs": [],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "074",
         "086"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3438,35 +3809,48 @@
       "priority": "Low",
       "idealRefs": [],
       "specRefs": [],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "085"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
       "id": "090",
       "title": "Persona-Adaptive Workspaces",
       "path": "docs/stories/story-090-persona-adaptive-workspaces.md",
-      "status": "Cancelled — Superseded by the two-view architecture (Story Explorer + Scene Workspace) combined with interaction mode (Story 089). The four personas (Screenwriter, Director, Producer, Explorer) each find their home in one or both views. See ADR-003 for the element grouping that replaces the direction architecture.",
+      "status": "Cancelled",
       "priority": "Low",
       "idealRefs": [],
       "specRefs": [],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "085",
         "089"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3485,9 +3869,11 @@
       "categoryRefs": [
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3512,9 +3898,11 @@
       "categoryRefs": [
         "spec:2"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3539,9 +3927,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3565,14 +3955,16 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
       "id": "096",
-      "title": "\"Chat About This\" Interaction Pattern",
+      "title": "\\\"Chat About This\\\" Interaction Pattern",
       "path": "docs/stories/story-096-chat-about-this.md",
       "status": "Done",
       "priority": "Medium",
@@ -3596,9 +3988,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3630,16 +4024,18 @@
         "spec:4",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
       "id": "098",
       "title": "Real-World Asset Upload Pipeline",
       "path": "docs/stories/story-098-real-asset-upload.md",
-      "status": "Cancelled — merged into Story 029 so asset upload ships as one end-to-end user feature instead of a backend/UI split.",
+      "status": "Cancelled",
       "priority": "Unknown",
       "idealRefs": [
         "R17 (real-world assets as first-class inputs)"
@@ -3655,9 +4051,11 @@
       "categoryRefs": [
         "spec:7"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3682,9 +4080,11 @@
       "categoryRefs": [
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3710,9 +4110,11 @@
       "categoryRefs": [
         "spec:4"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3728,10 +4130,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3745,10 +4152,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3762,10 +4174,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3779,10 +4195,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3796,10 +4216,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3813,10 +4238,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3836,9 +4266,11 @@
       "categoryRefs": [
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3859,9 +4291,11 @@
       "categoryRefs": [
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3883,9 +4317,11 @@
       "categoryRefs": [
         "spec:11"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3901,15 +4337,19 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
       "id": "111",
-      "title": "Fix \"View In Script\" Scroll-to-Scene",
+      "title": "Fix \\\"View In Script\\\" Scroll-to-Scene",
       "path": "docs/stories/story-111-scene-script-jump.md",
       "status": "Done",
       "priority": "Medium",
@@ -3923,9 +4363,11 @@
       "categoryRefs": [
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3946,16 +4388,18 @@
       "categoryRefs": [
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
       "id": "113",
       "title": "Per-Provider LLM Circuit Breaker",
       "path": "docs/stories/story-113-llm-circuit-breaker.md",
-      "status": "Cancelled — Superseded by Story 050. Provider circuit breaker behavior already exists in `src/cine_forge/ai/llm.py`, so keeping this as active backlog would duplicate landed work.",
+      "status": "Cancelled",
       "priority": "Medium",
       "idealRefs": [],
       "specRefs": [
@@ -3971,9 +4415,11 @@
         "spec:1",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -3990,10 +4436,15 @@
         "115",
         "116"
       ],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4016,9 +4467,11 @@
         "spec:1",
         "spec:11"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4039,9 +4492,11 @@
       "categoryRefs": [
         "spec:1"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4062,9 +4517,11 @@
       "categoryRefs": [
         "spec:1"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4085,9 +4542,11 @@
       "categoryRefs": [
         "spec:1"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4113,9 +4572,11 @@
         "spec:2",
         "spec:6"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4140,9 +4601,11 @@
         "spec:2",
         "spec:6"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4170,9 +4633,11 @@
         "spec:4",
         "spec:6"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4186,10 +4651,14 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4206,9 +4675,11 @@
       "categoryRefs": [
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4222,10 +4693,15 @@
       "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [],
-      "categoryRefs": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4235,9 +4711,9 @@
       "status": "Done",
       "priority": "High",
       "idealRefs": [
-        "Vision-level preference: easy, fun, and engaging",
         "R12 (decisions explainable and overridable)",
-        "R14 (process traceability)"
+        "R14 (process traceability)",
+        "Vision-level preference: easy, fun, and engaging"
       ],
       "specRefs": [
         "spec:11.1",
@@ -4250,9 +4726,11 @@
       "categoryRefs": [
         "spec:11"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4262,10 +4740,10 @@
       "status": "Done",
       "priority": "High",
       "idealRefs": [
-        "Vision-level preference: easy, fun, and engaging",
-        "iterative by nature",
         "creative partnership",
-        "R12 (decisions explainable and overridable)"
+        "iterative by nature",
+        "R12 (decisions explainable and overridable)",
+        "Vision-level preference: easy, fun, and engaging"
       ],
       "specRefs": [
         "spec:4.6",
@@ -4281,9 +4759,11 @@
         "spec:5",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4311,9 +4791,11 @@
       "categoryRefs": [
         "spec:1"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4337,9 +4819,11 @@
       "categoryRefs": [
         "spec:1"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4363,9 +4847,11 @@
       "categoryRefs": [
         "spec:3"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4397,9 +4883,11 @@
         "spec:7",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4426,9 +4914,11 @@
         "spec:4",
         "spec:9"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4459,9 +4949,11 @@
         "spec:5",
         "spec:6"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4489,9 +4981,11 @@
         "spec:2",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4501,19 +4995,16 @@
       "status": "Done",
       "priority": "High",
       "idealRefs": [
-        "Vision-level preference: easy, fun, and engaging",
         "R12 (every AI decision explainable and overridable)",
-        "R14 (nothing is ever lost)"
+        "R14 (nothing is ever lost)",
+        "Vision-level preference: easy, fun, and engaging"
       ],
       "specRefs": [
         "spec:11.2",
         "spec:11.3",
         "spec:11.4"
       ],
-      "adrIds": [
-        "ADR-001",
-        "ADR-019"
-      ],
+      "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [
         "053",
@@ -4522,9 +5013,11 @@
       "categoryRefs": [
         "spec:11"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4551,9 +5044,11 @@
         "spec:2",
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4563,19 +5058,16 @@
       "status": "Done",
       "priority": "High",
       "idealRefs": [
-        "Vision-level preference: easy, fun, and engaging",
-        "radical transparency",
         "R12 (every AI decision explainable and overridable)",
-        "R14 (nothing is ever lost)"
+        "R14 (nothing is ever lost)",
+        "radical transparency",
+        "Vision-level preference: easy, fun, and engaging"
       ],
       "specRefs": [
         "spec:11",
         "spec:8"
       ],
-      "adrIds": [
-        "ADR-001",
-        "ADR-021"
-      ],
+      "adrIds": [],
       "compromiseIds": [],
       "dependsOn": [
         "134"
@@ -4584,9 +5076,11 @@
         "spec:8",
         "spec:11"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4621,9 +5115,11 @@
         "spec:7",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4647,9 +5143,11 @@
       "categoryRefs": [
         "spec:8"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4672,9 +5170,11 @@
       "categoryRefs": [
         "spec:1"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4707,9 +5207,11 @@
         "spec:8",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4741,9 +5243,11 @@
         "spec:4",
         "spec:7"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4775,9 +5279,11 @@
         "spec:2",
         "spec:5"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4817,9 +5323,11 @@
         "spec:7",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4856,9 +5364,11 @@
         "spec:8",
         "spec:10"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [],
       "roadmapTags": [],
-      "metadataSource": "legacy",
+      "legacySystem": "",
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
     {
@@ -4875,9 +5385,7 @@
       "specRefs": [
         "spec:11"
       ],
-      "adrIds": [
-        "ADR-001"
-      ],
+      "adrIds": [],
       "compromiseIds": [
         "B2",
         "B3",
@@ -4890,12 +5398,52 @@
       "categoryRefs": [
         "spec:11"
       ],
+      "inputCoverageRefs": [],
       "architectureDomains": [
         "methodology_tooling"
       ],
       "roadmapTags": [
         "campaign:methodology-graph-state-migration"
       ],
+      "legacySystem": "Cross-Cutting",
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "146",
+      "title": "Legacy Methodology Metadata Backfill",
+      "path": "docs/stories/story-146-legacy-methodology-metadata-backfill.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Execution Ideal",
+        "R14 (Nothing is ever lost)",
+        "radical transparency"
+      ],
+      "specRefs": [
+        "spec:11",
+        "spec:11.2",
+        "spec:11.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [
+        "B2",
+        "B5"
+      ],
+      "dependsOn": [
+        "145"
+      ],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "campaign:methodology-graph-state-migration"
+      ],
+      "legacySystem": "Cross-Cutting",
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     }
@@ -4905,22 +5453,34 @@
       "id": "ADR-001",
       "title": "Shared Entity Extraction Library",
       "path": "docs/decisions/adr-001-shared-entity-extraction/adr.md",
-      "status": "DECIDED — Build standalone library (\"Dossier\")",
-      "specRefs": [],
+      "status": "DECIDED — Build standalone library (\\\"Dossier\\\")",
+      "specRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "storyIds": [],
       "compromiseIds": [],
       "idealRefs": [],
       "relatedAdrIds": [],
-      "metadataSource": "legacy",
+      "supersedes": [],
+      "supersededBy": [],
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
-      "categoryRefs": []
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ]
     },
     {
       "id": "ADR-002",
       "title": "Goal-Oriented Project Navigation",
       "path": "docs/decisions/adr-002-goal-oriented-navigation/adr.md",
       "status": "DECIDED — Four-layer hybrid architecture (Pipeline Bar + AI Navigator + DAG View + Persona Workspaces)",
-      "specRefs": [],
+      "specRefs": [
+        "spec:4",
+        "spec:5",
+        "spec:9"
+      ],
       "storyIds": [
         "002",
         "011e",
@@ -4934,7 +5494,9 @@
       "compromiseIds": [],
       "idealRefs": [],
       "relatedAdrIds": [],
-      "metadataSource": "legacy",
+      "supersedes": [],
+      "supersededBy": [],
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "categoryRefs": [
         "spec:1",
@@ -4988,8 +5550,12 @@
       ],
       "compromiseIds": [],
       "idealRefs": [],
-      "relatedAdrIds": [],
-      "metadataSource": "legacy",
+      "relatedAdrIds": [
+        "ADR-002"
+      ],
+      "supersedes": [],
+      "supersededBy": [],
+      "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "categoryRefs": [
         "spec:1",
@@ -5131,7 +5697,8 @@
       ],
       "compromiseIds": [],
       "categoryRefs": [
-        "spec:3"
+        "spec:3",
+        "spec:8"
       ]
     },
     {
@@ -5660,18 +6227,14 @@
         "methodology_tooling": {
           "last_audited_at": "2026-04-04",
           "recent_story_refs": [
-            "134",
-            "136",
-            "145"
+            "145",
+            "146"
           ],
           "stories_since_audit": 0,
-          "open_findings": [
-            "Legacy story/ADR metadata still produces compiler warnings; normalize active backlog items in a follow-up pass.",
-            "Historic cancelled/unknown story statuses remain as documented warning debt until a targeted metadata cleanup resolves them."
-          ],
-          "manual_priority": "high",
-          "last_result": "follow-up-needed",
-          "last_summary": "Story 145 landed the graph+state substrate, generated dashboards, and architecture-audit lane. Remaining methodology-tooling debt is narrowed to legacy metadata normalization rather than active-surface authority drift."
+          "open_findings": [],
+          "manual_priority": "normal",
+          "last_result": "clean",
+          "last_summary": "Stories 145 and 146 completed the graph+state migration and legacy metadata backfill. CineForge-owned story/ADR metadata now lives in explicit frontmatter, with legacy parser and category-override bridges retired."
         },
         "driver_and_runtime": {
           "last_audited_at": "2026-03-02",
@@ -5730,32 +6293,10 @@
           "manual_priority": "normal"
         }
       }
-    },
-    "story_overrides": {
-      "category_refs": {
-        "111": [
-          "spec:5"
-        ],
-        "123": [
-          "spec:8"
-        ]
-      }
     }
   },
   "validation": {
     "errors": [],
-    "warnings": [
-      "story 024 has non-standard status Cancelled — Eliminated by ADR-003. The Intent/Mood layer handles cross-group coherence; a separate convergence step is unnecessary when elements are organized by creative concern rather than by role.",
-      "story 051 has non-standard status Unknown",
-      "story 090 has non-standard status Cancelled — Superseded by the two-view architecture (Story Explorer + Scene Workspace) combined with interaction mode (Story 089). The four personas (Screenwriter, Director, Producer, Explorer) each find their home in one or both views. See ADR-003 for the element grouping that replaces the direction architecture.",
-      "story 098 has non-standard status Cancelled — merged into Story 029 so asset upload ships as one end-to-end user feature instead of a backend/UI split.",
-      "story 113 has non-standard status Cancelled — Superseded by Story 050. Provider circuit breaker behavior already exists in `src/cine_forge/ai/llm.py`, so keeping this as active backlog would duplicate landed work.",
-      "story 134 references ADR with no local adr.md: ADR-019",
-      "story 136 references ADR with no local adr.md: ADR-021",
-      "Stories still on legacy metadata headers: 001, 002, 003 +148 more",
-      "Stories with no category refs: 011c, 011e, 011f +45 more",
-      "ADRs still on legacy metadata only: ADR-001, ADR-002, ADR-003",
-      "Architecture audit domains due or carrying open findings: methodology_tooling"
-    ]
+    "warnings": []
   }
 }

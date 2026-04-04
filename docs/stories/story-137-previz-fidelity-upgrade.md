@@ -1,3 +1,35 @@
+---
+id: "137"
+title: "Previz Fidelity Upgrade"
+status: "Done"
+priority: "Low"
+ideal_refs:
+  - "R8 (professional-grade motion assets), R10 (playable assembly at every stage), R17 (partial workflows and real-world asset support)"
+spec_refs:
+  - "spec:6.3"
+  - "spec:6.3.2"
+  - "spec:6.3.3"
+  - "spec:6.4"
+  - "spec:7.1"
+  - "spec:10.3"
+adr_refs:
+  - "ADR-002"
+  - "ADR-003"
+depends_on:
+  - "027"
+  - "028"
+  - "030"
+category_refs:
+  - "spec:6"
+  - "spec:7"
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 137 — Previz Fidelity Upgrade
 
 **Priority**: Low

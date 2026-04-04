@@ -1,3 +1,22 @@
+---
+id: "105"
+title: "Parallel Chunk Extraction via ThreadPoolExecutor"
+status: "Draft"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 105 — Parallel Chunk Extraction via ThreadPoolExecutor
 
 **Priority**: High

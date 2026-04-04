@@ -1,3 +1,32 @@
+---
+id: "028"
+title: "Render Adapter Module"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:7.1"
+  - "spec:7.1.1"
+  - "spec:7.1.2"
+  - "spec:7.1.3"
+  - "spec:10.2"
+adr_refs: []
+depends_on:
+  - "013"
+  - "022"
+  - "025"
+  - "027"
+  - "029"
+category_refs:
+  - "spec:7"
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 028: Render Adapter Module
 
 **Status**: Done

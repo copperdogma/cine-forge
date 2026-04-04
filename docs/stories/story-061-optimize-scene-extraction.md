@@ -1,3 +1,22 @@
+---
+id: "061"
+title: "Optimize Scene Extraction"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:2.7"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:2"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 061 — Optimize Scene Extraction
 
 **Priority**: High

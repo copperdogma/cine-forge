@@ -1,3 +1,29 @@
+---
+id: "010"
+title: "Entity Relationship Graph"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.1"
+  - "spec:3.2"
+  - "spec:5.2"
+adr_refs: []
+depends_on:
+  - "005"
+  - "008"
+  - "009"
+category_refs:
+  - "spec:1"
+  - "spec:3"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 010: Entity Relationship Graph
 
 **Status**: Done

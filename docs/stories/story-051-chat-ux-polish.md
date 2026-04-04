@@ -1,3 +1,21 @@
+---
+id: "051"
+title: "Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI"
+---
+
 # Story 051 — Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts
 
 **Status:** Done

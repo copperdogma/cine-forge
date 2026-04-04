@@ -1,3 +1,25 @@
+---
+id: "095"
+title: "Intent / Mood Layer"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R5 (full spectrum of involvement), R7 (iterative refinement), R11 (production readiness)"
+spec_refs:
+  - "spec:4.10.1"
+adr_refs: []
+depends_on:
+  - "014"
+  - "094"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 095: Intent / Mood Layer
 
 **Status**: Done

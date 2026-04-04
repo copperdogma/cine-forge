@@ -1,3 +1,30 @@
+---
+id: "001"
+title: "Project Setup and Scaffolding"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1"
+  - "spec:1.5"
+  - "spec:1.6"
+  - "spec:5.1"
+  - "spec:5.2"
+  - "spec:8.1"
+  - "spec:8.2"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 001: Project Setup and Scaffolding
 
 **Status**: Done

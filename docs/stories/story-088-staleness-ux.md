@@ -1,3 +1,25 @@
+---
+id: "088"
+title: "Staleness UX"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "074"
+  - "086"
+category_refs:
+  - "spec:1"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 088 — Staleness UX
 
 **Priority**: Medium

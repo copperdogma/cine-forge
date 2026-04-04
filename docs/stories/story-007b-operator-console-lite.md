@@ -1,3 +1,35 @@
+---
+id: "007b"
+title: "Operator Console Lite (GUI for Project Start, Open, Run, and Artifact Review)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.6"
+  - "spec:2"
+  - "spec:5.1"
+  - "spec:5.3"
+  - "spec:9.4"
+adr_refs: []
+depends_on:
+  - "002"
+  - "003"
+  - "004"
+  - "005"
+  - "006"
+  - "007"
+category_refs:
+  - "spec:1"
+  - "spec:2"
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 007b: Operator Console Lite (GUI for Project Start, Open, Run, and Artifact Review)
 
 **Status**: Done

@@ -1,3 +1,22 @@
+---
+id: "076"
+title: "Entity Detail: Cross-Reference Layout & Narrative Role Polish"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:5"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 076 — Entity Detail: Cross-Reference Layout & Narrative Role Polish
 
 **Priority**: High

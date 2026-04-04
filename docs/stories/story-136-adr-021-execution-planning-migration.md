@@ -1,3 +1,29 @@
+---
+id: "136"
+title: "ADR-021 Execution-Ideal and Phase-Governance Migration"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "Vision-level preference: easy, fun, and engaging"
+  - "radical transparency"
+  - "R12 (every AI decision explainable and overridable)"
+  - "R14 (nothing is ever lost)"
+spec_refs:
+  - "spec:8"
+  - "spec:11"
+adr_refs: []
+depends_on:
+  - "134"
+category_refs:
+  - "spec:8"
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 136 — ADR-021 Execution-Ideal and Phase-Governance Migration
 
 **Priority**: High

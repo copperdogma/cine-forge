@@ -1,3 +1,24 @@
+---
+id: "114"
+title: "Driver Progress Events"
+status: "Deferred"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on:
+  - "115"
+  - "116"
+category_refs:
+  - "spec:1"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 114 — Driver Progress Events
 
 **Priority**: Medium

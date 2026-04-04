@@ -1,3 +1,22 @@
+---
+id: "069"
+title: "Inbox Item Read/Complete State"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI"
+---
+
 # Story 069 — Inbox Item Read/Complete State
 
 **Priority**: High

@@ -1,3 +1,29 @@
+---
+id: "006"
+title: "Project Configuration (Auto-Initialized)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:2.4"
+  - "spec:5.1"
+  - "spec:8.1"
+adr_refs: []
+depends_on:
+  - "002"
+  - "004"
+  - "005"
+category_refs:
+  - "spec:2"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 006: Project Configuration (Auto-Initialized)
 
 **Status**: Done

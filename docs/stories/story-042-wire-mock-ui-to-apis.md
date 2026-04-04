@@ -1,3 +1,21 @@
+---
+id: "042"
+title: "Wire Mock UI to Real APIs"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI"
+---
+
 # Story 042 — Wire Mock UI to Real APIs
 
 **Phase**: 2.5 — UI

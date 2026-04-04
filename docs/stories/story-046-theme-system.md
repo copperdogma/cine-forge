@@ -1,3 +1,21 @@
+---
+id: "046"
+title: "Theme System (Light/Dark/Auto + Palettes)"
+status: "Pending"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI"
+---
+
 # Story 046 — Theme System (Light/Dark/Auto + Palettes)
 
 **Phase**: 2.5 — UI

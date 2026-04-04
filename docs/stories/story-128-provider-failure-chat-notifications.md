@@ -1,3 +1,25 @@
+---
+id: "128"
+title: "Provider Failure Chat Notifications"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "R12 (radical transparency)"
+spec_refs:
+  - "spec:1.6"
+adr_refs: []
+depends_on:
+  - "050"
+  - "083"
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 128 — Provider Failure Chat Notifications
 
 **Priority**: Medium

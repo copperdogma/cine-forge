@@ -1,3 +1,45 @@
+---
+status: "DECIDED — Option E (Three-Layer Director's Vision Model)"
+spec_refs:
+  - "spec:2.4"
+  - "spec:2.5"
+  - "spec:2.6"
+  - "spec:4.10.7"
+  - "spec:4.7"
+  - "spec:6.1"
+  - "spec:7.2"
+ideal_refs: []
+story_refs:
+  - "020"
+  - "021"
+  - "022"
+  - "023"
+  - "024"
+  - "025"
+  - "026"
+  - "027"
+  - "028"
+  - "029"
+  - "030"
+  - "056"
+  - "082"
+  - "084"
+  - "085"
+  - "093"
+  - "094"
+  - "095"
+  - "096"
+  - "097"
+  - "098"
+  - "099"
+  - "100"
+compromise_refs: []
+related_adrs:
+  - "ADR-002"
+supersedes: []
+superseded_by: []
+---
+
 # ADR-003: Film Elements — The Creative Gap Between Screenplay and Film
 
 **Status:** DECIDED — Option E (Three-Layer Director's Vision Model)

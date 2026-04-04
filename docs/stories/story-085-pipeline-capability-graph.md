@@ -1,3 +1,26 @@
+---
+id: "085"
+title: "Pipeline Capability Graph & Navigation Bar"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "002"
+  - "011e"
+  - "011f"
+  - "082"
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 085 — Pipeline Capability Graph & Navigation Bar
 
 **Priority**: High

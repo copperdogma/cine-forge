@@ -1,3 +1,35 @@
+---
+id: "056"
+title: "Entity Design Studies (Reference Image Generation Loop)"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:1.6"
+  - "spec:3.3"
+  - "spec:4.10.2"
+  - "spec:6.2"
+  - "spec:7.1"
+  - "spec:7.2"
+adr_refs: []
+depends_on:
+  - "008"
+  - "009"
+  - "011f"
+  - "029"
+category_refs:
+  - "spec:1"
+  - "spec:3"
+  - "spec:4"
+  - "spec:6"
+  - "spec:7"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 056 — Entity Design Studies (Reference Image Generation Loop)
 
 **Priority**: High

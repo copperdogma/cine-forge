@@ -1,3 +1,22 @@
+---
+id: "048"
+title: "PDF Input Preview Uses Binary Decode Instead of Text Extraction"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:2"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "2.5 — UI/API"
+---
+
 # Story 048 — PDF Input Preview Uses Binary Decode Instead of Text Extraction
 
 **Phase**: 2.5 — UI/API

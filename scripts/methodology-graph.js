@@ -33,10 +33,13 @@ const REQUIRED_STORY_FRONTMATTER_KEYS = [
   "depends_on",
   "category_refs",
   "compromise_refs",
+  "input_coverage_refs",
   "architecture_domains",
   "roadmap_tags",
+  "legacy_system",
 ];
 const REQUIRED_ADR_FRONTMATTER_KEYS = [
+  "status",
   "spec_refs",
   "ideal_refs",
   "story_refs",
@@ -147,14 +150,6 @@ function compareSpecRefs(a, b) {
 function categoryForSpecRef(specRef) {
   const match = String(specRef).match(/^(spec:\d+)/);
   return match ? match[1] : null;
-}
-
-function splitLooseRefs(value) {
-  if (!value) return [];
-  return value
-    .split(/\s*(?:\||;)\s*/)
-    .map((part) => part.trim())
-    .filter(Boolean);
 }
 
 function extractMatches(text, pattern) {
@@ -336,24 +331,6 @@ function parseStory(path) {
   const parsed = parseFrontmatterDocument(source, toRelative(path));
   const lines = parsed.body.split(/\r?\n/);
   const headingLine = findFirstNonEmptyLine(lines);
-  const fields = new Map();
-  let currentField = null;
-
-  for (const line of lines.slice((headingLine ? headingLine.index : -1) + 1)) {
-    if (line.startsWith("## ")) break;
-    const match = line.match(/^\*\*(.+?)\*\*:\s*(.*)$/);
-    if (match) {
-      currentField = match[1];
-      fields.set(currentField, match[2].trim());
-      continue;
-    }
-    if (currentField && line.trim()) {
-      const existing = fields.get(currentField) || "";
-      fields.set(currentField, `${existing} ${line.trim()}`.trim());
-      continue;
-    }
-    currentField = null;
-  }
 
   const fileId = basename(path).match(STORY_FILE_RE)?.[1];
   if (!fileId) throw new Error(`Unable to derive story id from ${toRelative(path)}`);
@@ -368,42 +345,27 @@ function parseStory(path) {
   const explicitDependsOn = frontmatterStringArray(parsed.frontmatter, "depends_on");
   const explicitCategoryRefs = frontmatterStringArray(parsed.frontmatter, "category_refs");
   const explicitCompromiseRefs = frontmatterStringArray(parsed.frontmatter, "compromise_refs");
+  const explicitInputCoverageRefs = frontmatterStringArray(parsed.frontmatter, "input_coverage_refs");
   const missingFrontmatterKeys = parsed.hasFrontmatter
     ? REQUIRED_STORY_FRONTMATTER_KEYS.filter((key) => !(key in parsed.frontmatter))
-    : [];
-  const legacyIdealRefs = fields.get("Ideal Refs") || "";
-  const legacySpecRefs = fields.get("Spec Refs") || "";
-  const legacyAdrRefs = fields.get("ADR Refs") || "";
-  const metadataRefs = [
-    explicitIdealRefs.join("\n"),
-    explicitSpecRefs.join("\n"),
-    explicitAdrRefs.join("\n"),
-    explicitCompromiseRefs.join("\n"),
-    legacyIdealRefs,
-    legacySpecRefs,
-    legacyAdrRefs,
-  ]
-    .filter(Boolean)
-    .join("\n");
+    : REQUIRED_STORY_FRONTMATTER_KEYS.slice();
 
   return {
     id: frontmatterString(parsed.frontmatter, "id") || fileId,
     title,
     path: toRelative(path),
-    status: frontmatterString(parsed.frontmatter, "status") || fields.get("Status") || "Unknown",
-    priority: frontmatterString(parsed.frontmatter, "priority") || fields.get("Priority") || "Unknown",
-    idealRefs: explicitIdealRefs.length > 0 ? uniqueSorted(explicitIdealRefs) : splitLooseRefs(legacyIdealRefs),
-    specRefs: explicitSpecRefs.length > 0 ? uniqueSorted(explicitSpecRefs) : extractMatches(legacySpecRefs, SPEC_REF_RE),
-    adrIds: explicitAdrRefs.length > 0 ? uniqueSorted(explicitAdrRefs) : extractMatches(legacyAdrRefs, ADR_ID_RE),
-    compromiseIds:
-      explicitCompromiseRefs.length > 0 ? uniqueSorted(explicitCompromiseRefs) : extractMatches(metadataRefs, COMPROMISE_ID_RE),
-    dependsOn:
-      explicitDependsOn.length > 0
-        ? uniqueSorted(explicitDependsOn, compareStoryIdStrings)
-        : uniqueSorted(extractStoryIds(fields.get("Depends On") || ""), compareStoryIdStrings),
-    categoryRefs: explicitCategoryRefs.length > 0 ? uniqueSorted(explicitCategoryRefs, compareSpecRefs) : [],
+    status: frontmatterString(parsed.frontmatter, "status") || "Unknown",
+    priority: frontmatterString(parsed.frontmatter, "priority") || "Unknown",
+    idealRefs: uniqueSorted(explicitIdealRefs),
+    specRefs: uniqueSorted(explicitSpecRefs),
+    adrIds: uniqueSorted(explicitAdrRefs),
+    compromiseIds: uniqueSorted(explicitCompromiseRefs),
+    dependsOn: uniqueSorted(explicitDependsOn, compareStoryIdStrings),
+    categoryRefs: uniqueSorted(explicitCategoryRefs, compareSpecRefs),
+    inputCoverageRefs: uniqueSorted(explicitInputCoverageRefs),
     architectureDomains: uniqueSorted(frontmatterStringArray(parsed.frontmatter, "architecture_domains")),
     roadmapTags: uniqueSorted(frontmatterStringArray(parsed.frontmatter, "roadmap_tags")),
+    legacySystem: frontmatterString(parsed.frontmatter, "legacy_system") || "",
     metadataSource: parsed.hasFrontmatter ? "frontmatter" : "legacy",
     missingFrontmatterKeys,
   };
@@ -423,31 +385,29 @@ function parseAdr(path) {
   const headingLine = findFirstNonEmptyLine(lines);
   const heading = headingLine ? headingLine.line.match(/^#\s+(ADR-\d{3}):\s+(.+)$/) : null;
   if (!heading) throw new Error(`Unable to parse ADR heading in ${toRelative(path)}`);
-  const bodyText = parsed.body;
   const explicitSpecRefs = frontmatterStringArray(parsed.frontmatter, "spec_refs");
   const explicitStoryRefs = frontmatterStringArray(parsed.frontmatter, "story_refs");
   const explicitCompromiseRefs = frontmatterStringArray(parsed.frontmatter, "compromise_refs");
+  const explicitIdealRefs = frontmatterStringArray(parsed.frontmatter, "ideal_refs");
+  const explicitRelatedAdrs = frontmatterStringArray(parsed.frontmatter, "related_adrs");
+  const explicitSupersedes = frontmatterStringArray(parsed.frontmatter, "supersedes");
+  const explicitSupersededBy = frontmatterStringArray(parsed.frontmatter, "superseded_by");
   const missingFrontmatterKeys = parsed.hasFrontmatter
     ? REQUIRED_ADR_FRONTMATTER_KEYS.filter((key) => !(key in parsed.frontmatter))
-    : [];
+    : REQUIRED_ADR_FRONTMATTER_KEYS.slice();
 
   return {
     id: heading[1],
     title: heading[2].trim(),
     path: toRelative(path),
-    status:
-      frontmatterString(parsed.frontmatter, "status") ||
-      (lines.find((line) => line.startsWith("**Status:**")) || "").replace("**Status:**", "").trim() ||
-      "UNKNOWN",
-    specRefs: explicitSpecRefs.length > 0 ? uniqueSorted(explicitSpecRefs) : extractMatches(bodyText, SPEC_REF_RE),
-    storyIds:
-      explicitStoryRefs.length > 0
-        ? uniqueSorted(explicitStoryRefs, compareStoryIdStrings)
-        : extractStoryIds(bodyText),
-    compromiseIds:
-      explicitCompromiseRefs.length > 0 ? uniqueSorted(explicitCompromiseRefs) : extractMatches(bodyText, COMPROMISE_ID_RE),
-    idealRefs: uniqueSorted(frontmatterStringArray(parsed.frontmatter, "ideal_refs")),
-    relatedAdrIds: uniqueSorted(frontmatterStringArray(parsed.frontmatter, "related_adrs")),
+    status: frontmatterString(parsed.frontmatter, "status") || "UNKNOWN",
+    specRefs: uniqueSorted(explicitSpecRefs),
+    storyIds: uniqueSorted(explicitStoryRefs, compareStoryIdStrings),
+    compromiseIds: uniqueSorted(explicitCompromiseRefs),
+    idealRefs: uniqueSorted(explicitIdealRefs),
+    relatedAdrIds: uniqueSorted(explicitRelatedAdrs),
+    supersedes: uniqueSorted(explicitSupersedes),
+    supersededBy: uniqueSorted(explicitSupersededBy),
     metadataSource: parsed.hasFrontmatter ? "frontmatter" : "legacy",
     missingFrontmatterKeys,
   };
@@ -705,7 +665,6 @@ function validateGraph(state, spec, stories, adrs, evals) {
   const campaignIds = new Set(((state.roadmap || {}).campaigns || []).map((campaign) => String(campaign.id || "")));
   const auditDomains = (((state.architecture_audits || {}).domains || {}));
   const auditDomainIds = new Set(Object.keys(auditDomains));
-  const storyOverrides = (((state.story_overrides || {}).category_refs || {}));
 
   for (const categoryId of Object.keys(state.categories || {})) {
     if (!categoryIds.has(categoryId)) errors.push(`state.categories.${categoryId} does not match any spec category`);
@@ -713,13 +672,16 @@ function validateGraph(state, spec, stories, adrs, evals) {
   for (const compromiseId of Object.keys(state.compromises || {})) {
     if (!compromiseIds.has(compromiseId)) errors.push(`state.compromises.${compromiseId} does not match any spec compromise`);
   }
-  for (const storyId of Object.keys(storyOverrides)) {
-    if (!storyIds.has(storyId)) errors.push(`state.story_overrides.category_refs includes missing story ${storyId}`);
-  }
 
   for (const story of stories) {
+    if (story.metadataSource !== "frontmatter") {
+      errors.push(`story ${story.id} is missing frontmatter; legacy story metadata parsing has been retired`);
+    }
     if (story.metadataSource === "frontmatter" && story.missingFrontmatterKeys.length > 0) {
       errors.push(`story ${story.id} frontmatter missing keys: ${story.missingFrontmatterKeys.join(", ")}`);
+    }
+    if (story.categoryRefs.length === 0) {
+      errors.push(`story ${story.id} has no category_refs; explicit story category ownership is required`);
     }
     if (!VALID_STORY_STATUSES.has(story.status)) warnings.push(`story ${story.id} has non-standard status ${story.status}`);
     for (const dependency of story.dependsOn) {
@@ -749,6 +711,9 @@ function validateGraph(state, spec, stories, adrs, evals) {
   }
 
   for (const adr of adrs) {
+    if (adr.metadataSource !== "frontmatter") {
+      errors.push(`ADR ${adr.id} is missing frontmatter; legacy ADR metadata parsing has been retired`);
+    }
     if (adr.metadataSource === "frontmatter" && adr.missingFrontmatterKeys.length > 0) {
       errors.push(`ADR ${adr.id} frontmatter missing keys: ${adr.missingFrontmatterKeys.join(", ")}`);
     }
@@ -795,21 +760,6 @@ function validateGraph(state, spec, stories, adrs, evals) {
     });
   }
 
-  const legacyStories = stories.filter((story) => story.metadataSource === "legacy").map((story) => story.id);
-  if (legacyStories.length > 0) {
-    warnings.push(`Stories still on legacy metadata headers: ${formatExampleList(legacyStories)}`);
-  }
-
-  const uncategorizedStories = stories.filter((story) => story.categoryRefs.length === 0).map((story) => story.id);
-  if (uncategorizedStories.length > 0) {
-    warnings.push(`Stories with no category refs: ${formatExampleList(uncategorizedStories)}`);
-  }
-
-  const legacyAdrs = adrs.filter((adr) => adr.metadataSource === "legacy").map((adr) => adr.id);
-  if (legacyAdrs.length > 0) {
-    warnings.push(`ADRs still on legacy metadata only: ${formatExampleList(legacyAdrs)}`);
-  }
-
   const overdueDomains = [];
   const cadence = (((state.architecture_audits || {}).cadence || {}));
   const targetInterval = Number.isFinite(cadence.target_story_interval) ? Number(cadence.target_story_interval) : null;
@@ -840,24 +790,9 @@ function buildGraph() {
   const adrs = parseAdrs();
   const evals = parseEvalRegistry();
   const compromiseById = new Map(spec.compromises.map((entry) => [entry.id, entry]));
-  const categoryOverrides = ((state.story_overrides || {}).category_refs || {});
 
   for (const story of stories) {
-    const categoryRefs = new Set(story.categoryRefs);
-    if (categoryRefs.size === 0) {
-      for (const specRef of story.specRefs) {
-        const categoryId = categoryForSpecRef(specRef);
-        if (categoryId) categoryRefs.add(categoryId);
-      }
-    }
-    for (const compromiseId of story.compromiseIds) {
-      const compromise = compromiseById.get(compromiseId);
-      if (compromise) categoryRefs.add(compromise.categoryId);
-    }
-    if (categoryRefs.size === 0 && Array.isArray(categoryOverrides[story.id])) {
-      for (const categoryId of categoryOverrides[story.id]) categoryRefs.add(String(categoryId));
-    }
-    story.categoryRefs = uniqueSorted(categoryRefs, compareSpecRefs);
+    story.categoryRefs = uniqueSorted(story.categoryRefs, compareSpecRefs);
   }
 
   const storyById = new Map(stories.map((story) => [story.id, story]));

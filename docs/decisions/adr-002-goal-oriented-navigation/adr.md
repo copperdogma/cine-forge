@@ -1,3 +1,25 @@
+---
+status: "DECIDED — Four-layer hybrid architecture (Pipeline Bar + AI Navigator + DAG View + Persona Workspaces)"
+spec_refs:
+  - "spec:4"
+  - "spec:5"
+  - "spec:9"
+ideal_refs: []
+story_refs:
+  - "002"
+  - "011e"
+  - "011f"
+  - "019"
+  - "024"
+  - "025"
+  - "056"
+  - "069"
+compromise_refs: []
+related_adrs: []
+supersedes: []
+superseded_by: []
+---
+
 # ADR-002: Goal-Oriented Project Navigation
 
 **Status:** DECIDED — Four-layer hybrid architecture (Pipeline Bar + AI Navigator + DAG View + Persona Workspaces)

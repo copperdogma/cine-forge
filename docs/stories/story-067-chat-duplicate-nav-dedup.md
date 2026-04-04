@@ -1,3 +1,22 @@
+---
+id: "067"
+title: "chat-duplicate-nav-dedup"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 067 — chat-duplicate-nav-dedup
 
 **Priority**: High

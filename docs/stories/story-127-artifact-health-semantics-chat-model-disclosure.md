@@ -1,3 +1,28 @@
+---
+id: "127"
+title: "Artifact Health Semantics + Chat Model Disclosure"
+status: "Done"
+priority: "Medium"
+ideal_refs:
+  - "R11 (readiness clarity), R12 (radical transparency)"
+spec_refs:
+  - "spec:1.3"
+  - "spec:1.6"
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "083"
+  - "088"
+  - "126"
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 127 — Artifact Health Semantics + Chat Model Disclosure
 
 **Priority**: Medium

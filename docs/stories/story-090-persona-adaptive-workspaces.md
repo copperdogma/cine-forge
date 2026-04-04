@@ -1,3 +1,25 @@
+---
+id: "090"
+title: "Persona-Adaptive Workspaces"
+status: "Cancelled"
+priority: "Low"
+ideal_refs: []
+spec_refs: []
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "085"
+  - "089"
+category_refs:
+  - "spec:4"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 090 — Persona-Adaptive Workspaces
 
 **Priority**: Low

@@ -1,3 +1,30 @@
+---
+id: "019"
+title: "Human Control Modes and Creative Sessions"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:5.1"
+  - "spec:5.4"
+  - "spec:9.4"
+adr_refs: []
+depends_on:
+  - "011b"
+  - "014"
+  - "015"
+  - "017"
+  - "018"
+category_refs:
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 019: Human Control Modes and Creative Sessions
 
 **Status**: Done

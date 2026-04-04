@@ -1,3 +1,24 @@
+---
+id: "003"
+title: "Story Ingestion Module"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:2.1"
+  - "spec:2.3"
+adr_refs: []
+depends_on:
+  - "002"
+category_refs:
+  - "spec:2"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 003: Story Ingestion Module
 
 **Status**: Done

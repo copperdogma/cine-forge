@@ -1,3 +1,21 @@
+---
+id: "047"
+title: "Benchmark Sonnet 4.6 Across All Evals"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: "Cross-Cutting"
+---
+
 # Story 047 — Benchmark Sonnet 4.6 Across All Evals
 
 **Phase**: Cross-Cutting

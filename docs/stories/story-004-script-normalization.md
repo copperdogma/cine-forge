@@ -1,3 +1,32 @@
+---
+id: "004"
+title: "Script Normalization Module"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.4"
+  - "spec:2.2"
+  - "spec:2.3"
+  - "spec:5.2"
+  - "spec:8.1"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "002"
+  - "003"
+category_refs:
+  - "spec:1"
+  - "spec:2"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 004: Script Normalization Module
 
 **Status**: Done

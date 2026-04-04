@@ -1,3 +1,25 @@
+---
+id: "113"
+title: "Per-Provider LLM Circuit Breaker"
+status: "Cancelled"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:1.4"
+  - "spec:8.3"
+adr_refs: []
+depends_on:
+  - "050"
+category_refs:
+  - "spec:1"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 113 — Per-Provider LLM Circuit Breaker
 
 **Priority**: Medium

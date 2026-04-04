@@ -1,3 +1,21 @@
+---
+id: "104"
+title: "Tiered Quality Metrics for Eval Scoring"
+status: "Draft"
+priority: "High"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 104 — Tiered Quality Metrics for Eval Scoring
 
 **Priority**: High

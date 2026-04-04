@@ -1,3 +1,26 @@
+---
+id: "099"
+title: "Scene Workspace"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R11 (production readiness per scene), R7 (iterative refinement)"
+spec_refs:
+  - "spec:5.5"
+adr_refs: []
+depends_on:
+  - "085"
+  - "094"
+  - "095"
+category_refs:
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 099: Scene Workspace
 
 **Status**: Done

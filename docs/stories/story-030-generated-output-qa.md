@@ -1,3 +1,32 @@
+---
+id: "030"
+title: "Generated Output QA (Video Understanding Benchmark)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:7"
+  - "spec:8.2"
+  - "spec:9"
+adr_refs: []
+depends_on:
+  - "005"
+  - "012"
+  - "021"
+  - "022"
+  - "028"
+  - "032"
+category_refs:
+  - "spec:7"
+  - "spec:8"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 030: Generated Output QA (Video Understanding Benchmark)
 
 **Status**: Done

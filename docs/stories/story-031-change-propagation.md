@@ -1,3 +1,27 @@
+---
+id: "031"
+title: "Change Propagation (Semantic Impact Layer)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.3"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "002"
+  - "010"
+  - "014"
+category_refs:
+  - "spec:1"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 031: Change Propagation (Semantic Impact Layer)
 
 **Status**: Done

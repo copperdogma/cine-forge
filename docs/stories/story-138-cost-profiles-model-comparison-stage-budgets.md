@@ -1,3 +1,25 @@
+---
+id: "138"
+title: "Cost Profiles, Model Comparison, and Stage Budget Controls"
+status: "Draft"
+priority: "Medium"
+ideal_refs:
+  - "R12 (Transparency & Control), vision-level preference: Radical transparency"
+spec_refs:
+  - "spec:8.1"
+  - "spec:8.3"
+adr_refs: []
+depends_on:
+  - "032"
+category_refs:
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 138 — Cost Profiles, Model Comparison, and Stage Budget Controls
 
 **Priority**: Medium

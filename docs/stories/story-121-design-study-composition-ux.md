@@ -1,3 +1,30 @@
+---
+id: "121"
+title: "Design Study Composition UX"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:2.6"
+  - "spec:4.10.2"
+  - "spec:6.2"
+  - "spec:6.3"
+adr_refs: []
+depends_on:
+  - "056"
+  - "119"
+  - "120"
+category_refs:
+  - "spec:2"
+  - "spec:4"
+  - "spec:6"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 121 — Design Study Composition UX
 
 **Priority**: Medium

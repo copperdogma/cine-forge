@@ -1,3 +1,31 @@
+---
+id: "012"
+title: "Timeline Data Artifact"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.1"
+  - "spec:5.3"
+  - "spec:10.1"
+  - "spec:10.3"
+adr_refs: []
+depends_on:
+  - "005"
+  - "011"
+  - "011c"
+  - "050"
+category_refs:
+  - "spec:1"
+  - "spec:5"
+  - "spec:10"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 012: Timeline Data Artifact
 
 **Status**: Done

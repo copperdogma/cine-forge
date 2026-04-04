@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-04-03] — Legacy methodology metadata backfill (Story 146)
+
+### Added
+- Added explicit frontmatter to the remaining legacy story files and local ADR-001 through ADR-003 so the methodology graph reads structured metadata directly from the authored artifacts
+
+### Changed
+- Changed the methodology migration/audit surfaces to record the metadata cleanup as completed repo-local backfill rather than open warning debt
+
+### Fixed
+- Fixed the remaining methodology warning classes caused by legacy story headers, missing `category_refs`, legacy ADR metadata, and repo-owned missing-local-ADR oddballs
+- Fixed the methodology compiler cleanup pass by deleting an unused helper left behind from the retired legacy parser path
+
 ## [2026-04-04-02] — Methodology graph and state migration (Story 145)
 
 ### Added

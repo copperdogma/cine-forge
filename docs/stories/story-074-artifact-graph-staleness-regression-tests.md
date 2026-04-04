@@ -1,3 +1,21 @@
+---
+id: "074"
+title: "Artifact graph staleness: regression tests + sibling cross-contamination fix"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:1"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 074 — Artifact graph staleness: regression tests + sibling cross-contamination fix
 
 **Priority**: Medium

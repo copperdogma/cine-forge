@@ -1,3 +1,25 @@
+---
+id: "072"
+title: "Live Entity Discovery Feedback"
+status: "Done"
+priority: "Medium"
+ideal_refs: []
+spec_refs:
+  - "spec:2"
+  - "spec:5"
+adr_refs: []
+depends_on:
+  - "062"
+category_refs:
+  - "spec:2"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 072 — Live Entity Discovery Feedback
 
 **Priority**: Medium

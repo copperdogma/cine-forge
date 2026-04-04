@@ -1,3 +1,28 @@
+---
+id: "135"
+title: "Brick & Steel PDF Normalization Regression"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R1 (story input understanding quality bar)"
+spec_refs:
+  - "spec:2.2"
+  - "spec:2.3"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "004"
+  - "064"
+category_refs:
+  - "spec:2"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 135: Brick & Steel PDF Normalization Regression
 
 **Priority**: High

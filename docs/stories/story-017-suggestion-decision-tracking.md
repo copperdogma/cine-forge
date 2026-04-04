@@ -1,3 +1,29 @@
+---
+id: "017"
+title: "Suggestion and Decision Tracking"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.6"
+  - "spec:4.5"
+  - "spec:4.6"
+  - "spec:5.2"
+adr_refs: []
+depends_on:
+  - "014"
+  - "015"
+category_refs:
+  - "spec:1"
+  - "spec:4"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 017: Suggestion and Decision Tracking
 
 **Status**: Done

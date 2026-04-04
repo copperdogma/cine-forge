@@ -1,3 +1,24 @@
+---
+id: "066"
+title: "UI Component Deduplication & Template Consolidation"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:5"
+  - "spec:11.4"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:5"
+  - "spec:11"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 066 — UI Component Deduplication & Template Consolidation
 
 **Priority**: High

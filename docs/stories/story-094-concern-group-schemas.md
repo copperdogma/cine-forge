@@ -1,3 +1,26 @@
+---
+id: "094"
+title: "Concern Group Artifact Schemas"
+status: "Done"
+priority: "Unknown"
+ideal_refs:
+  - "R8 (production artifacts), R11 (production readiness), R12 (transparency)"
+spec_refs:
+  - "spec:4.10"
+  - "spec:4.10.1"
+  - "spec:4.10.7"
+adr_refs: []
+depends_on:
+  - "002"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 094: Concern Group Artifact Schemas
 
 **Status**: Done

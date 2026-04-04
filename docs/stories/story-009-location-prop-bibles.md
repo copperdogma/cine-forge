@@ -1,3 +1,28 @@
+---
+id: "009"
+title: "Location and Prop Bibles"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:3.1"
+  - "spec:3.3"
+  - "spec:3.4"
+  - "spec:5.2"
+adr_refs: []
+depends_on:
+  - "005"
+  - "008"
+category_refs:
+  - "spec:3"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 009: Location and Prop Bibles
 
 **Status**: Done

@@ -1,3 +1,24 @@
+---
+id: "084"
+title: "Character Chat Agents & Story Agent Rename"
+status: "Done"
+priority: "High"
+ideal_refs: []
+spec_refs:
+  - "spec:4.6"
+  - "spec:5.4"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:4"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 084 — Character Chat Agents & Story Agent Rename
 
 **Priority**: High

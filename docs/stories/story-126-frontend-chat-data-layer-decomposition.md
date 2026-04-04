@@ -1,3 +1,31 @@
+---
+id: "126"
+title: "Frontend Chat and Data-Layer Decomposition"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "Vision-level preference: easy, fun, and engaging"
+  - "iterative by nature"
+  - "creative partnership"
+  - "R12 (decisions explainable and overridable)"
+spec_refs:
+  - "spec:4.6"
+  - "spec:5.3"
+  - "spec:5.4"
+  - "spec:9"
+adr_refs: []
+depends_on: []
+category_refs:
+  - "spec:4"
+  - "spec:5"
+  - "spec:9"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 126 — Frontend Chat and Data-Layer Decomposition
 
 **Priority**: High

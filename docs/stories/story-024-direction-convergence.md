@@ -1,3 +1,27 @@
+---
+id: "024"
+title: "Direction Convergence and Review"
+status: "Cancelled"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:4.10"
+adr_refs: []
+depends_on:
+  - "015"
+  - "020"
+  - "021"
+  - "022"
+  - "023"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 024: Direction Convergence and Review
 
 **Status**: Cancelled — Eliminated by ADR-003. The Intent/Mood layer handles cross-group coherence; a separate convergence step is unnecessary when elements are organized by creative concern rather than by role.

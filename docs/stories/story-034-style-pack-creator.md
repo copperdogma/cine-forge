@@ -1,3 +1,25 @@
+---
+id: "034"
+title: "In-App Style Pack Creator"
+status: "Pending"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:4.3"
+  - "spec:4.4"
+adr_refs: []
+depends_on:
+  - "011b"
+  - "016"
+category_refs:
+  - "spec:4"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 034: In-App Style Pack Creator
 
 **Status**: Pending

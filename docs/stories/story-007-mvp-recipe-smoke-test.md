@@ -1,3 +1,32 @@
+---
+id: "007"
+title: "MVP Recipe and End-to-End Smoke Test"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.5"
+  - "spec:5.3"
+  - "spec:8.1"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "002"
+  - "003"
+  - "004"
+  - "005"
+  - "006"
+category_refs:
+  - "spec:1"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 007: MVP Recipe and End-to-End Smoke Test
 
 **Status**: Done

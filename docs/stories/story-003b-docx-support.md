@@ -1,3 +1,24 @@
+---
+id: "003b"
+title: "DOCX Ingestion Support"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:2"
+adr_refs: []
+depends_on:
+  - "003"
+  - "007b"
+category_refs:
+  - "spec:2"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 003b: DOCX Ingestion Support
 
 **Status**: Done

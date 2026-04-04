@@ -1,3 +1,32 @@
+---
+id: "142"
+title: "Initial Intake Should Not Self-Stale"
+status: "Done"
+priority: "High"
+ideal_refs:
+  - "R1 (story understanding), R12 (radical transparency), R15 (intelligent change propagation)"
+spec_refs:
+  - "spec:1.3"
+  - "spec:2"
+  - "spec:5.3"
+  - "spec:5.5"
+adr_refs:
+  - "ADR-002"
+depends_on:
+  - "031"
+  - "062"
+  - "127"
+category_refs:
+  - "spec:1"
+  - "spec:2"
+  - "spec:5"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 142 — Initial Intake Should Not Self-Stale
 
 **Priority**: High

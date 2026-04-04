@@ -1,3 +1,37 @@
+---
+id: "007c"
+title: "MVP Reality Validation and Remediation (Post-UI Real-Run Findings)"
+status: "Done"
+priority: "Unknown"
+ideal_refs: []
+spec_refs:
+  - "spec:1.4"
+  - "spec:1.6"
+  - "spec:2"
+  - "spec:2.7"
+  - "spec:5.2"
+  - "spec:5.3"
+  - "spec:8.2"
+adr_refs: []
+depends_on:
+  - "003"
+  - "004"
+  - "005"
+  - "006"
+  - "007"
+  - "007b"
+category_refs:
+  - "spec:1"
+  - "spec:2"
+  - "spec:5"
+  - "spec:8"
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story 007c: MVP Reality Validation and Remediation (Post-UI Real-Run Findings)
 
 **Status**: Done
