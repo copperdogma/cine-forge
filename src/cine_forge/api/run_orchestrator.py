@@ -16,6 +16,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from cine_forge.api.exceptions import ServiceError
+from cine_forge.api.provider_failure_notifications import (
+    build_provider_failure_chat_message,
+)
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.schemas import ArtifactRef, RuntimeParams
@@ -553,71 +556,35 @@ class RunOrchestrator:
                 project_path=project_path,
                 run_id=run_id,
             )
-            self._handle_run_failure_chat_notification(project_id, project_path, run_id, exc)
+            self._handle_run_failure_chat_notification(project_path, run_id, exc)
         finally:
             with self._run_lock:
                 self._run_threads.pop(run_id, None)
 
     def _handle_run_failure_chat_notification(
-        self, project_id: str, project_path: Path, run_id: str, exc: Exception
+        self, project_path: Path, run_id: str, exc: Exception
     ) -> None:
-        """Detect specific errors (like low credits) and notify user in chat."""
-        msg = str(exc).lower()
-
+        """Detect user-fixable provider failures and notify the operator in chat."""
+        run_state = None
         try:
             state_path = self.workspace_root / "output" / "runs" / run_id / "run_state.json"
             if state_path.exists():
-                state_data = json.loads(state_path.read_text(encoding="utf-8"))
-                for stage in state_data.get("stages", {}).values():
-                    for attempt in stage.get("attempts", []):
-                        if attempt.get("error"):
-                            msg += " " + str(attempt["error"]).lower()
+                run_state = json.loads(state_path.read_text(encoding="utf-8"))
         except Exception:  # noqa: BLE001
             pass
 
-        friendly_message = ""
+        chat_msg = build_provider_failure_chat_message(
+            run_id=run_id,
+            exc=exc,
+            run_state=run_state,
+        )
+        if chat_msg is None:
+            return
 
-        if any(
-            token in msg
-            for token in (
-                "credit balance",
-                "insufficient_quota",
-                "insufficient quota",
-                "exceeded your current quota",
-                "billing",
-                "credits",
-                "top up",
-                "balance is too low",
-            )
-        ):
-            friendly_message = (
-                "⚠️ **AI Credit Balance Empty**\n\n"
-                "The pipeline run failed because your AI provider credit balance is too low. "
-                "Please top up your credits at "
-                "[Anthropic](https://console.anthropic.com/settings/billing) "
-                "or [OpenAI](https://platform.openai.com/account/billing) to continue."
-            )
-        elif any(
-            token in msg
-            for token in ("rate limit", "429", "overloaded", "capacity", "too many requests")
-        ):
-            friendly_message = (
-                "⚠️ **Rate Limit Exceeded**\n\n"
-                "The AI provider is currently rate-limiting requests or is overloaded. "
-                "Please wait a moment and try again."
-            )
-
-        if friendly_message:
-            chat_msg = {
-                "id": f"error_{run_id}_{uuid.uuid4().hex[:4]}",
-                "type": "ai_response",
-                "content": friendly_message,
-                "timestamp": time.time(),
-            }
-            try:
-                self._chat_store.append(project_path, chat_msg)
-            except Exception:
-                log.exception("Failed to append error message to chat")
+        try:
+            self._chat_store.append(project_path, chat_msg)
+        except Exception:
+            log.exception("Failed to append error message to chat")
 
     @staticmethod
     def _run_belongs_to_project(

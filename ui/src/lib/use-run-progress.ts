@@ -8,6 +8,7 @@ import { streamAutoInsight } from './api/chat'
 import { humanizeStageName } from './chat-messages'
 import { detectConcernGroupRun, countTotalScenes, getRunCompletedMessage } from './constants'
 import { useRunState, useRunEvents } from './hooks/runs'
+import { genericRunFailureMessageId, hasProviderFailureMessage } from './run-failure-messages'
 import type { StageState, ArtifactGroupSummary } from './types'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
@@ -118,6 +119,7 @@ export function useRunProgressChat(projectId: string | undefined) {
 
     const stages = runState.state.stages
     const store = useChatStore.getState()
+    const failureSummaryId = genericRunFailureMessageId(activeRunId)
 
     // --- Ensure a single progress card message exists for this run ---
     const progressMsgId = `run_progress_${activeRunId}`
@@ -310,23 +312,44 @@ export function useRunProgressChat(projectId: string | undefined) {
         )
 
         if (hasFailed) {
-          const failureMessage =
-            runState.background_error?.trim()
-            || 'Some stages failed. You can view the run details to see what went wrong.'
-          store.addMessage(projectId, {
-            id: `progress_${activeRunId}_failed`,
-            type: 'ai_suggestion',
-            content: failureMessage,
-            timestamp: Date.now(),
-            actions: [
-              {
-                id: 'view_run',
-                label: 'View Details',
-                variant: 'outline',
-                route: `runs/${activeRunId}`,
-              },
-            ],
-          })
+          void (async () => {
+            const currentMessages = useChatStore.getState().getMessages(projectId)
+            if (hasProviderFailureMessage(currentMessages, activeRunId)) {
+              useChatStore.getState().removeMessage(projectId, failureSummaryId)
+              return
+            }
+
+            await useChatStore.getState().syncMessages(projectId)
+
+            const refreshedStore = useChatStore.getState()
+            const refreshedMessages = refreshedStore.getMessages(projectId)
+            if (hasProviderFailureMessage(refreshedMessages, activeRunId)) {
+              refreshedStore.removeMessage(projectId, failureSummaryId)
+              return
+            }
+
+            if (refreshedMessages.some((message) => message.id === failureSummaryId)) {
+              return
+            }
+
+            const failureMessage =
+              runState.background_error?.trim()
+              || 'Some stages failed. You can view the run details to see what went wrong.'
+            refreshedStore.addMessage(projectId, {
+              id: failureSummaryId,
+              type: 'ai_suggestion',
+              content: failureMessage,
+              timestamp: Date.now(),
+              actions: [
+                {
+                  id: 'view_run',
+                  label: 'View Details',
+                  variant: 'outline',
+                  route: `runs/${activeRunId}`,
+                },
+              ],
+            })
+          })()
         } else {
           const summary = summarizeArtifacts(stages)
           const recipeId = runState.state.recipe_id

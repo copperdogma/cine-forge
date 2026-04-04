@@ -3,6 +3,7 @@
 
 import { create } from 'zustand'
 import { getChatMessages, postChatMessage } from './api/chat'
+import { dropShadowedGenericRunFailureMessages } from './run-failure-messages'
 import type { ChatAction, ChatMessage, ChatMessageType, PreflightData, ToolCallStatus } from './types'
 
 /** AI message types that should have an explicit speaker. */
@@ -52,15 +53,19 @@ function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
       return msg
     })
 
+  const withoutShadowedRunFailures = dropShadowedGenericRunFailureMessages(migrated)
+
   // Deduplicate activity messages: keep only the last one.
   let lastActivityIdx = -1
-  for (let i = migrated.length - 1; i >= 0; i--) {
-    if (migrated[i].type === 'activity') { lastActivityIdx = i; break }
+  for (let i = withoutShadowedRunFailures.length - 1; i >= 0; i--) {
+    if (withoutShadowedRunFailures[i].type === 'activity') { lastActivityIdx = i; break }
   }
   if (lastActivityIdx > 0) {
-    return migrated.filter((m, i) => m.type !== 'activity' || i === lastActivityIdx)
+    return withoutShadowedRunFailures.filter(
+      (m, i) => m.type !== 'activity' || i === lastActivityIdx,
+    )
   }
-  return migrated
+  return withoutShadowedRunFailures
 }
 
 export interface EntityContext {

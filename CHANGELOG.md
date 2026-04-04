@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-03-03] — Provider failure chat notifications (Story 128)
+
+### Added
+- Added deterministic provider-failure classification and message building from `run_state.json` attempt metadata so quota, auth-expiry, and rate-limit failures surface as actionable chat cards with direct run-detail navigation
+- Added focused regression coverage for top-level and attempt-only provider failure detection plus duplicate suppression
+
+### Changed
+- Changed run-failure chat handling to emit stable provider-specific suggestion messages instead of random generic error responses
+- Changed live run progress loading so provider-specific failure cards take precedence and the generic failed-run card is now a fallback only
+
+### Fixed
+- Fixed auth-expiry failures being silently buried outside the project chat surface
+- Fixed duplicate generic and provider-specific failure cards appearing for the same failed run
+
 ## [2026-04-03-02] — AI previz planning surface and benchmark gate (Story 143)
 
 ### Added
