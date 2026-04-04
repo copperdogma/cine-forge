@@ -42,3 +42,6 @@ Entries:
 2026-03-14T04:43:58Z | 14 | failed | unknown | Fly remote builder transport failure before image build: unable to upgrade to h2c, received 500
 2026-03-14T04:46:14Z | 12 | failed | unknown | Second remote deploy retry hit the same Fly builder h2c 500 before Docker build
 2026-03-14T04:50:33Z | 247 | success | no | Local-only deploy after remote builder failures; API smoke passed (health/recipes/projects/recent/changelog 200); UI HTTP fallback passed (title OK, bundle 200); browser unavailable in-session
+2026-04-03T22:55:16Z | 29 | failed | unknown | Remote Fly builder heartbeat failed before image build: failed to parse daemon host "unix:///var/run/docker.sock": missing hostname
+2026-04-03T23:34:26Z | 3 | failed | unknown | Local-only deploy hit Dockerfile parse error at line 30: unknown instruction ")" while parsing the multi-line CUTOFF RUN block
+2026-04-03T23:54:09Z | 186 | success | no | Local-only deploy after remote builder heartbeat failure, Dockerfile parse fix, and Docker builder cache prune; API smoke passed (health/recipes/projects/recent/changelog 200); UI HTTP fallback passed (title OK, bundle 200); browser unavailable in-session
