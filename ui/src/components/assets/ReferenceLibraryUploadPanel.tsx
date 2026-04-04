@@ -42,7 +42,7 @@ function UploadDropZoneHeader({
   onBrowse: () => void
 }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div className="flex items-start gap-3">
         <div className="rounded-xl border border-border/60 bg-background/80 p-2.5">
           <Upload className="h-5 w-5 text-sky-300" />
@@ -63,7 +63,7 @@ function UploadDropZoneHeader({
         onClick={onBrowse}
         disabled={isUploading}
         size="sm"
-        className="shrink-0"
+        className="w-full shrink-0 sm:w-auto"
       >
         {isUploading ? (
           <>
@@ -130,7 +130,7 @@ function UploadDefaultsSummary({
   onLockStatusChange: (value: AssetLockStatus) => void
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-border/70 bg-muted/15 p-4 sm:flex-row sm:items-start sm:justify-between">
+    <div className="flex flex-col items-start gap-3 rounded-2xl border border-border/70 bg-muted/15 p-4 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0 space-y-1">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           Next upload defaults
@@ -145,7 +145,7 @@ function UploadDefaultsSummary({
 
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" disabled={isUploading}>
+          <Button variant="outline" size="sm" disabled={isUploading} className="w-full sm:w-auto">
             Edit defaults
           </Button>
         </PopoverTrigger>

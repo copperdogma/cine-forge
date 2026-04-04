@@ -149,7 +149,7 @@ function itemAction(
     <Button
       variant="outline"
       size="sm"
-      className="text-xs gap-1.5"
+      className="w-full justify-center gap-1.5 text-xs sm:w-auto"
       aria-label={actionLabel}
       onClick={handleClick}
     >
@@ -369,7 +369,7 @@ export default function ProjectInbox() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="ml-auto text-xs text-muted-foreground"
+                className="w-full justify-start px-0 text-xs text-muted-foreground sm:ml-auto sm:w-auto sm:px-3"
                 onClick={markAllRead}
               >
                 Mark All Read
@@ -400,45 +400,47 @@ export default function ProjectInbox() {
                   const isRead = readIds.has(item.id)
                   return (
                     <div key={item.id}>
-                      <div className={`flex items-start gap-3 px-4 py-3 ${isRead ? 'opacity-60' : ''}`}>
-                        {/* Read/unread indicator */}
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                className="mt-1 shrink-0"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  if (isRead) {
-                                    // Toggle back to unread: remove from read set
-                                    persistReadIds([...readIds].filter(id => id !== item.id))
-                                  } else {
-                                    markRead(item.id)
-                                  }
-                                }}
-                                aria-label={isRead ? 'Mark as unread' : 'Mark as read'}
-                              >
-                                {isRead
-                                  ? <CheckCircle className="h-3.5 w-3.5 text-muted-foreground" />
-                                  : <Circle className="h-3.5 w-3.5 text-primary fill-primary" />}
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{isRead ? 'Mark as unread' : 'Mark as read'}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <div className="mt-0.5">{itemIcon(item)}</div>
-                        <div className="min-w-0 flex-1">
-                          <p className={`text-sm ${isRead ? 'font-normal' : 'font-medium'}`}>{item.title}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {item.description}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {item.timestamp > 0 ? timeAgo(item.timestamp) : 'Recently'}
-                          </p>
+                      <div className={`flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-start ${isRead ? 'opacity-60' : ''}`}>
+                        <div className="flex min-w-0 items-start gap-3">
+                          {/* Read/unread indicator */}
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className="mt-1 shrink-0"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    if (isRead) {
+                                      // Toggle back to unread: remove from read set
+                                      persistReadIds([...readIds].filter(id => id !== item.id))
+                                    } else {
+                                      markRead(item.id)
+                                    }
+                                  }}
+                                  aria-label={isRead ? 'Mark as unread' : 'Mark as read'}
+                                >
+                                  {isRead
+                                    ? <CheckCircle className="h-3.5 w-3.5 text-muted-foreground" />
+                                    : <Circle className="h-3.5 w-3.5 text-primary fill-primary" />}
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{isRead ? 'Mark as unread' : 'Mark as read'}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          <div className="mt-0.5 shrink-0">{itemIcon(item)}</div>
+                          <div className="min-w-0 flex-1">
+                            <p className={`text-sm ${isRead ? 'font-normal' : 'font-medium'}`}>{item.title}</p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">
+                              {item.description}
+                            </p>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {item.timestamp > 0 ? timeAgo(item.timestamp) : 'Recently'}
+                            </p>
+                          </div>
                         </div>
-                        <div className="shrink-0 mt-0.5">
+                        <div className="w-full sm:mt-0.5 sm:w-auto sm:shrink-0">
                           {itemAction(item, projectId, navigate, markRead)}
                         </div>
                       </div>

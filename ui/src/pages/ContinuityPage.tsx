@@ -154,7 +154,7 @@ export default function ContinuityPage() {
       {!isLoading && indexData && (
         <>
           {/* Stats overview */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Card>
               <CardContent className="pt-4 pb-4">
                 <p className="text-xs text-muted-foreground mb-1">Score</p>

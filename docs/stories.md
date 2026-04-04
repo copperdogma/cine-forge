@@ -203,7 +203,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|
-| 044 | Mobile-Friendly UI | Medium | Pending | spec:5 | — | [story-044](stories/story-044-mobile-friendly-ui.md) |
 | 046 | Theme System (Light/Dark/Auto + Palettes) | Medium | Pending | spec:5 | — | [story-046](stories/story-046-theme-system.md) |
 | 114 | Driver Progress Events | Medium | Deferred | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
@@ -221,6 +220,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 144 | AI Previz Adoption Gate and Trust Guardrails | High | Done | spec:5, spec:6, spec:7, spec:8, spec:10 | 032, 140, 143 | [story-144](stories/story-144-ai-previz-adoption-gate-and-trust-guardrails.md) |
 | 011c | Resource-oriented Routing | Medium | Done | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
+| 044 | Mobile-Friendly UI | Medium | Done | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |
 | 052 | Streaming Artifact Yield: Live Per-Entity Progress | Medium | Done | spec:1, spec:5 | — | [story-052](stories/story-052-streaming-artifact-yield.md) |
 | 078 | Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata | Medium | Done | spec:5 | — | [story-078](stories/story-078-entity-detail-enhancements.md) |
 | 079 | Chat & Nav Bugs + Polish Bundle | Medium | Done | spec:5 | — | [story-079](stories/story-079-chat-nav-bugs-and-polish.md) |

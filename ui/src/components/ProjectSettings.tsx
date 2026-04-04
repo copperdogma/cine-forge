@@ -219,7 +219,7 @@ export function ProjectSettings({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {children && <DialogTrigger asChild>{children}</DialogTrigger>}
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-h-[85vh] max-w-[calc(100vw-1rem)] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Settings className="size-5" />
@@ -231,7 +231,7 @@ export function ProjectSettings({
         </DialogHeader>
 
         <Tabs defaultValue="general" className="w-full">
-          <TabsList variant="line">
+          <TabsList variant="line" scrollable className="pb-1">
             <TabsTrigger value="general">
               <Settings className="size-4" />
               General

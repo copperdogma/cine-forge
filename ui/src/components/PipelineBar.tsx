@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   FileText,
@@ -15,10 +16,25 @@ import {
   Minus,
   RefreshCw,
 } from 'lucide-react'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useIsMobile } from '@/lib/use-mobile'
 import { cn } from '@/lib/utils'
 import { askChatQuestion } from '@/lib/glossary'
-import type { PipelineGraphPhase, PipelineGraphNode, PipelineNodeStatus, PipelinePhaseStatus } from '@/lib/types'
+import type {
+  PipelineGraphNode,
+  PipelineGraphPhase,
+  PipelineNodeStatus,
+  PipelinePhaseStatus,
+} from '@/lib/types'
 
 const NODE_STATUS_CONFIG: Record<PipelineNodeStatus, {
   icon: React.ComponentType<{ className?: string }>
@@ -46,6 +62,11 @@ type Props = {
   phases: PipelineGraphPhase[]
   nodes: PipelineGraphNode[]
   projectId: string
+}
+
+type PhaseNodeWithConfig = {
+  node: PipelineGraphNode
+  config: (typeof NODE_STATUS_CONFIG)[PipelineNodeStatus]
 }
 
 function statusColor(status: PipelinePhaseStatus): string {
@@ -78,135 +99,253 @@ function statusDot(status: PipelinePhaseStatus): string {
   }
 }
 
-function PhaseSegment({ phase, nodes, projectId }: {
+function PhaseDetails({
+  phase,
+  tooltipNodes,
+  isClickable,
+  onNavigate,
+  showTitle = true,
+}: {
+  phase: PipelineGraphPhase
+  tooltipNodes: PhaseNodeWithConfig[]
+  isClickable: boolean
+  onNavigate?: () => void
+  showTitle?: boolean
+}) {
+  return (
+    <div className="space-y-2 text-xs">
+      {showTitle && <div className="font-semibold">{phase.label}</div>}
+      <div className="space-y-1">
+        {tooltipNodes.map(({ node: n, config: cfg }) => {
+          const StatusIcon = cfg.icon
+          return (
+            <div key={n.id} className="space-y-0.5">
+              <div className="flex items-center gap-1.5">
+                <StatusIcon className={cn('h-3 w-3 shrink-0', cfg.className)} />
+                <span className={cn(n.status === 'not_implemented' && 'text-muted-foreground/50')}>
+                  {n.label}
+                </span>
+                {n.artifact_count > 0 && (
+                  <span className="text-muted-foreground">({n.artifact_count})</span>
+                )}
+                <span className="ml-auto text-[10px] text-muted-foreground/60">
+                  {cfg.label}
+                </span>
+              </div>
+              {n.status === 'stale' && (
+                <div className="space-y-0.5 pl-4.5">
+                  {n.stale_reason && (
+                    <div className="text-[10px] text-amber-400/70">
+                      {n.stale_reason}
+                    </div>
+                  )}
+                  {n.fix_recipe && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        askChatQuestion(`Rerun ${n.fix_recipe} to fix stale ${n.label.toLowerCase()} artifacts`)
+                      }}
+                      className="flex cursor-pointer items-center gap-1 text-[10px] text-blue-400 transition-colors hover:text-blue-300"
+                    >
+                      <RefreshCw className="h-2.5 w-2.5" />
+                      Fix with rerun
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+      {isClickable && onNavigate && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mt-1 h-8 w-full"
+          onClick={(e) => {
+            e.stopPropagation()
+            onNavigate()
+          }}
+        >
+          Open {phase.label}
+        </Button>
+      )}
+    </div>
+  )
+}
+
+function PhaseTrigger({
+  badge,
+  isClickable,
+  compact = false,
+  onClick,
+  phaseNodes,
+  phase,
+  status,
+}: {
+  badge: string | null
+  isClickable: boolean
+  compact?: boolean
+  onClick?: () => void
+  phaseNodes: PipelineGraphNode[]
+  phase: PipelineGraphPhase
+  status: PipelinePhaseStatus
+}) {
+  const Icon = PHASE_ICONS[phase.icon] ?? Film
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={!onClick && !isClickable}
+      aria-label={phase.label}
+      className={cn(
+        'flex items-center rounded-md text-xs font-medium transition-all',
+        compact ? 'gap-1 px-2 py-1.5' : 'gap-1.5 px-3 py-1.5',
+        isClickable ? 'cursor-pointer hover:bg-muted/50' : 'cursor-default',
+        statusColor(status),
+      )}
+    >
+      {compact ? (
+        <Icon className="h-3.5 w-3.5 shrink-0" />
+      ) : status === 'completed' ? (
+        <Check className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+      ) : status === 'partial' ? (
+        <Icon className="h-3.5 w-3.5 shrink-0" />
+      ) : status === 'not_started' && phase.implemented_count === 0 ? (
+        <Lock className="h-3.5 w-3.5 shrink-0" />
+      ) : (
+        <Icon className="h-3.5 w-3.5 shrink-0" />
+      )}
+      <span className="hidden sm:inline">{phase.label}</span>
+      {badge && !compact && (
+        <span
+          className={cn(
+            'rounded px-1 text-[10px]',
+            status === 'completed' ? 'bg-emerald-400/20' : 'bg-muted',
+          )}
+        >
+          {badge}
+        </span>
+      )}
+      {phaseNodes.some((n) => n.status === 'in_progress') && (
+        <Loader2 className="h-3 w-3 animate-spin text-blue-400" />
+      )}
+      <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full sm:hidden', statusDot(status))} />
+    </button>
+  )
+}
+
+function PhaseSegment({
+  phase,
+  nodes,
+  projectId,
+  isMobile,
+}: {
   phase: PipelineGraphPhase
   nodes: PipelineGraphNode[]
   projectId: string
+  isMobile: boolean
 }) {
   const navigate = useNavigate()
-  const Icon = PHASE_ICONS[phase.icon] ?? Film
-  const phaseNodes = nodes.filter(n => n.phase_id === phase.id)
+  const [isOpen, setIsOpen] = useState(false)
+  const phaseNodes = nodes.filter((n) => n.phase_id === phase.id)
   const isClickable = !!phase.nav_route
   const status = phase.status as PipelinePhaseStatus
 
-  const handleClick = () => {
+  const handleNavigate = () => {
     if (phase.nav_route) {
       navigate(`/${projectId}${phase.nav_route === '/' ? '' : phase.nav_route}`)
     }
   }
 
-  // Build tooltip node list with icons.
-  const tooltipNodes = phaseNodes.map(n => {
-    const cfg = NODE_STATUS_CONFIG[n.status as PipelineNodeStatus]
-    return { node: n, config: cfg }
-  })
+  const tooltipNodes = phaseNodes.map((n) => ({
+    node: n,
+    config: NODE_STATUS_CONFIG[n.status as PipelineNodeStatus],
+  }))
 
-  // Badge text: show completion count if any nodes completed.
   const badge = phase.completed_count > 0 && phase.implemented_count > 0
     ? `${phase.completed_count}/${phase.implemented_count}`
     : null
 
+  if (isMobile) {
+    return (
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <PhaseTrigger
+            badge={badge}
+            isClickable={isClickable}
+            compact
+            onClick={() => undefined}
+            phaseNodes={phaseNodes}
+            phase={phase}
+            status={status}
+          />
+        </SheetTrigger>
+        <SheetContent
+          side="bottom"
+          className="max-h-[70vh] gap-0 rounded-t-2xl px-0 pb-0"
+        >
+          <SheetHeader className="border-b pb-3">
+            <SheetTitle>{phase.label}</SheetTitle>
+            <SheetDescription>Phase modules and current status.</SheetDescription>
+          </SheetHeader>
+          <div className="overflow-y-auto px-4 pb-4">
+            <PhaseDetails
+              phase={phase}
+              tooltipNodes={tooltipNodes}
+              isClickable={isClickable}
+              onNavigate={() => {
+                setIsOpen(false)
+                handleNavigate()
+              }}
+              showTitle={false}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <button
-          onClick={handleClick}
-          disabled={!isClickable}
-          className={cn(
-            'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all',
-            isClickable ? 'cursor-pointer hover:bg-muted/50' : 'cursor-default',
-            statusColor(status),
-          )}
-        >
-          {status === 'completed' ? (
-            <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-          ) : status === 'partial' ? (
-            <Icon className="h-3.5 w-3.5 shrink-0" />
-          ) : status === 'not_started' && phase.implemented_count === 0 ? (
-            <Lock className="h-3.5 w-3.5 shrink-0" />
-          ) : (
-            <Icon className="h-3.5 w-3.5 shrink-0" />
-          )}
-          <span className="hidden sm:inline">{phase.label}</span>
-          {badge && (
-            <span className={cn(
-              'text-[10px] px-1 rounded',
-              status === 'completed' ? 'bg-emerald-400/20' : 'bg-muted',
-            )}>
-              {badge}
-            </span>
-          )}
-          {/* Animated pulse for in-progress phases */}
-          {phaseNodes.some(n => n.status === 'in_progress') && (
-            <Loader2 className="h-3 w-3 animate-spin text-blue-400" />
-          )}
-          {/* Status dot — visible on narrow screens where label is hidden */}
-          <span className={cn('sm:hidden h-1.5 w-1.5 rounded-full shrink-0', statusDot(status))} />
-        </button>
+        <PhaseTrigger
+          badge={badge}
+          isClickable={isClickable}
+          onClick={isClickable ? handleNavigate : undefined}
+          phaseNodes={phaseNodes}
+          phase={phase}
+          status={status}
+        />
       </TooltipTrigger>
-      <TooltipContent side="top" className="max-w-xs bg-popover text-popover-foreground border border-border shadow-lg [&>svg]:fill-popover [&>svg]:bg-popover">
-        <div className="text-xs space-y-1">
-          <div className="font-semibold mb-1.5">{phase.label}</div>
-          {tooltipNodes.map(({ node: n, config: cfg }) => {
-            const StatusIcon = cfg.icon
-            return (
-              <div key={n.id} className="space-y-0.5">
-                <div className="flex items-center gap-1.5">
-                  <StatusIcon className={cn('h-3 w-3 shrink-0', cfg.className)} />
-                  <span className={cn(
-                    n.status === 'not_implemented' && 'text-muted-foreground/50',
-                  )}>
-                    {n.label}
-                  </span>
-                  {n.artifact_count > 0 && (
-                    <span className="text-muted-foreground">({n.artifact_count})</span>
-                  )}
-                  <span className="text-muted-foreground/60 ml-auto text-[10px]">
-                    {cfg.label}
-                  </span>
-                </div>
-                {n.status === 'stale' && (
-                  <div className="pl-4.5 space-y-0.5">
-                    {n.stale_reason && (
-                      <div className="text-amber-400/70 text-[10px]">
-                        {n.stale_reason}
-                      </div>
-                    )}
-                    {n.fix_recipe && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          askChatQuestion(`Rerun ${n.fix_recipe} to fix stale ${n.label.toLowerCase()} artifacts`)
-                        }}
-                        className="flex items-center gap-1 text-[10px] text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
-                      >
-                        <RefreshCw className="h-2.5 w-2.5" />
-                        Fix with rerun
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
+      <TooltipContent
+        side="top"
+        className="max-w-xs border border-border bg-popover text-popover-foreground shadow-lg [&>svg]:bg-popover [&>svg]:fill-popover"
+      >
+        <PhaseDetails phase={phase} tooltipNodes={tooltipNodes} isClickable={false} />
       </TooltipContent>
     </Tooltip>
   )
 }
 
 export function PipelineBar({ phases, nodes, projectId }: Props) {
+  const isMobile = useIsMobile()
+
   return (
-    <div className="shrink-0 border-t border-border bg-card/50 px-2 py-1 flex items-center gap-0.5 overflow-x-auto">
+    <div className="flex shrink-0 items-center gap-0.5 overflow-x-auto border-t border-border bg-card/50 px-2 py-1">
       {phases.map((phase, i) => (
         <div key={phase.id} className="flex items-center">
           {i > 0 && (
-            <div className="h-3 w-px bg-border mx-0.5 shrink-0" />
+            <div className="mx-0.5 h-3 w-px shrink-0 bg-border" />
           )}
           <PhaseSegment
             phase={phase}
             nodes={nodes}
             projectId={projectId}
+            isMobile={isMobile}
           />
         </div>
       ))}

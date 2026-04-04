@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-04-04] — Mobile-friendly operator console (Story 044)
+
+### Changed
+- Changed the operator shell to present a mobile drawer and chat sheet below `md` while preserving the persistent sidebar and resizable right panel on tablet and desktop widths
+- Changed screenplay, scene, entity, inbox, artifact, settings, and direction surfaces to stack safely on mobile and keep dense tabs or toolbars operable without page-level horizontal overflow
+
+### Fixed
+- Fixed mobile-only overflow seams that left parts of the screenplay, character, scene, inbox, and artifact surfaces clipped or pushed sideways on narrow screens
+- Fixed remaining undersized mobile action controls so the validated nav, chat, export, send, and stop buttons now meet the story's `44×44` tap-target requirement
+
 ## [2026-04-04-03] — Legacy methodology metadata backfill (Story 146)
 
 ### Added

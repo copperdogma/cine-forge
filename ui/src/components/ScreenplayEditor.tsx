@@ -17,6 +17,10 @@ const screenplayTheme = EditorView.theme(
       color: 'oklch(0.985 0.002 247.86)',
       backgroundColor: 'oklch(0.145 0.014 285.82)',
       height: '100%',
+      width: '100%',
+      maxWidth: '100%',
+      boxSizing: 'border-box',
+      overflow: 'hidden',
       fontSize: '13px',
       fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
     },
@@ -49,6 +53,7 @@ const screenplayTheme = EditorView.theme(
     },
     '.cm-scroller': {
       overflow: 'auto',
+      maxWidth: '100%',
     },
     '.cm-line': {
       padding: '0',
@@ -108,6 +113,23 @@ const screenplayTheme = EditorView.theme(
     },
     '.cm-character-line:hover': {
       backgroundColor: 'oklch(0.21 0.018 254.32)',
+    },
+    '@media (max-width: 640px)': {
+      '&': {
+        fontSize: '12px',
+      },
+      '.cm-content': {
+        padding: '0.75rem',
+      },
+      '.cm-gutters': {
+        paddingRight: '0.5rem',
+      },
+      '.cm-lineNumbers .cm-gutterElement': {
+        minWidth: '2ch',
+      },
+      '.cm-scene-divider': {
+        padding: '0.2rem 0.75rem',
+      },
     },
   },
   { dark: true },
@@ -424,7 +446,7 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, ScreenplayEdi
     return (
       <div
         ref={editorRef}
-        className="screenplay-editor h-full overflow-hidden"
+        className="screenplay-editor h-full w-full min-w-0 overflow-hidden"
         onClick={(e) => {
           // Scene divider clicks bubble up here because WidgetType.ignoreEvent defaults true,
           // so CodeMirror never handles them — they fall through to the React wrapper naturally.

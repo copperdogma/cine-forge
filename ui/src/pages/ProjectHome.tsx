@@ -128,13 +128,13 @@ function EditableTitle({
   }
 
   return (
-    <h1
-      role="button"
-      tabIndex={0}
-      onClick={() => setEditing(true)}
-      onKeyDown={(e) => { if (e.key === 'Enter') setEditing(true) }}
-      className={cn(
-        'font-bold tracking-tight truncate cursor-pointer group flex items-center gap-2',
+      <h1
+        role="button"
+        tabIndex={0}
+        onClick={() => setEditing(true)}
+        onKeyDown={(e) => { if (e.key === 'Enter') setEditing(true) }}
+        className={cn(
+        'min-w-0 cursor-pointer group flex items-start gap-2 font-bold tracking-tight',
         className,
       )}
     >
@@ -377,14 +377,16 @@ function FreshImportView({ projectId }: { projectId: string }) {
       {/* Header */}
       <div className="shrink-0 space-y-2">
         <div className="flex items-start gap-3">
-          <FileText className="h-6 w-6 text-primary shrink-0 mt-1" />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
+          <FileText className="mt-1 h-6 w-6 shrink-0 text-primary" />
+          <div className="min-w-0 flex-1 space-y-2">
+            <div className="flex items-start gap-3">
               <EditableTitle
                 projectId={projectId}
                 displayName={project?.display_name ?? 'Your Screenplay'}
-                className="text-2xl"
+                className="flex-1 text-2xl leading-tight break-words"
               />
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
               {isNormalized ? (
                 <Badge variant="secondary" className="bg-green-500/10 text-green-400 border-green-500/20">
                   Canonical
@@ -394,6 +396,16 @@ function FreshImportView({ projectId }: { projectId: string }) {
                   Raw Import
                 </Badge>
               )}
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-11 w-11 shrink-0 rounded-full sm:hidden"
+                onClick={() => setIsExportOpen(true)}
+                aria-label="Export project"
+                title="Export project"
+              >
+                <Share className="h-4 w-4" />
+              </Button>
               {bible?.genre && (
                 <Badge variant="outline" className="text-indigo-400 border-indigo-500/30">
                   {bible.genre}
@@ -409,14 +421,18 @@ function FreshImportView({ projectId }: { projectId: string }) {
               )}
             </div>
             {bible?.logline ? (
-              <p className="text-sm text-muted-foreground italic">{bible.logline}</p>
+              <p className="break-words text-sm italic text-muted-foreground">{bible.logline}</p>
             ) : latestInput ? (
-              <p className="text-sm text-muted-foreground">
+              <p className="break-words text-sm text-muted-foreground">
                 {latestInput.original_name} — {(latestInput.size_bytes / 1024).toFixed(1)} KB
               </p>
             ) : null}
           </div>
-          <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+          <Button
+            variant="outline"
+            className="hidden shrink-0 sm:inline-flex"
+            onClick={() => setIsExportOpen(true)}
+          >
             <Share className="mr-2 h-4 w-4" />
             Export
           </Button>

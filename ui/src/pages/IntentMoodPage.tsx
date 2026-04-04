@@ -293,7 +293,7 @@ export default function IntentMoodPage() {
   // --- Deep breakdown gate UI ---
   if (!hasDeepBreakdown) {
     return (
-      <div className="space-y-8 max-w-4xl">
+      <div className="w-full min-w-0 max-w-4xl space-y-8">
         <PageHeader
           title="Intent & Mood"
           subtitle="Set the creative vision for your project. Pick a vibe, describe the feeling, and let AI propagate it across all concern groups."
@@ -325,7 +325,7 @@ export default function IntentMoodPage() {
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-3 pl-14">
+            <div className="flex flex-col items-start gap-3 pl-0 sm:flex-row sm:items-center sm:pl-14">
               <Button
                 onClick={async () => {
                   if (!latestInputPath) {
@@ -371,7 +371,7 @@ export default function IntentMoodPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-4xl">
+      <div className="w-full min-w-0 max-w-4xl space-y-8">
       <PageHeader
         title="Intent & Mood"
         subtitle="Set the creative vision for your project. Pick a vibe, describe the feeling, and let AI propagate it across all concern groups."
@@ -410,7 +410,7 @@ export default function IntentMoodPage() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3 pl-11">
+            <div className="flex flex-col items-start gap-3 pl-0 sm:flex-row sm:items-center sm:pl-11">
               <Button
                 onClick={() => suggestMutation.mutate()}
                 disabled={suggestMutation.isPending}
@@ -498,7 +498,7 @@ export default function IntentMoodPage() {
 
       {/* Action buttons */}
       <div className="space-y-2">
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <Button
             onClick={() => saveMutation.mutate()}
             disabled={saveMutation.isPending || (!hasChanges && !!currentIntent)}

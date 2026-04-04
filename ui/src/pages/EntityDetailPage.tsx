@@ -289,7 +289,7 @@ function CrossReferencesGrid({
   if (panels.length === 0) return null
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {panels.map(panel => (
         <Card key={panel.type}>
           <CardHeader className="pb-3">
@@ -518,7 +518,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
 
   if (isLoading) {
     return (
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="w-full max-w-5xl mx-auto space-y-6">
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-64 w-full" />
@@ -587,12 +587,12 @@ export default function EntityDetailPage({ section }: { section: string }) {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="w-full max-w-5xl mx-auto space-y-6">
       {/* Back navigation */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <BackButton section={config.backPath} projectId={projectId} />
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end">
           {/* Main sequence nav (respects current sort) */}
           <div className="flex items-center bg-card border border-border rounded-lg overflow-hidden h-9">
             <Button
@@ -652,7 +652,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
       </div>
 
       {/* Header */}
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-start">
         {thumbnailUrl ? (
           <img
             src={thumbnailUrl}
@@ -666,7 +666,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
           </div>
         )}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="mb-1 flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-bold tracking-tight truncate">{displayName}</h1>
             <HealthBadge health={group.health} details={group.health_details} />
             {section === 'characters' && (
@@ -707,7 +707,22 @@ export default function EntityDetailPage({ section }: { section: string }) {
             )}
           </div>
         </div>
-        <Button variant="outline" size="sm" onClick={() => setIsExportOpen(true)}>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-11 w-11 shrink-0 rounded-full sm:hidden"
+          onClick={() => setIsExportOpen(true)}
+          aria-label="Export entity"
+          title="Export entity"
+        >
+          <Share className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="hidden sm:inline-flex"
+          onClick={() => setIsExportOpen(true)}
+        >
           <Share className="mr-2 h-4 w-4" />
           Export
         </Button>
@@ -718,13 +733,13 @@ export default function EntityDetailPage({ section }: { section: string }) {
         <>
           {/* 1. Profile — most important: who/what this entity is */}
           <Card>
-            <CardHeader className="pb-3 flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-col gap-3 pb-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-sm font-semibold">{profileLabel}</h2>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowRawJson(!showRawJson)}
-                className="gap-1.5"
+                className="w-full justify-center gap-1.5 sm:w-auto"
               >
                 <Code className="h-3.5 w-3.5" />
                 {showRawJson ? 'View Formatted' : 'View Raw JSON'}
@@ -787,7 +802,7 @@ export default function EntityDetailPage({ section }: { section: string }) {
           <Button
             variant="outline"
             size="sm"
-            className="gap-1.5"
+            className="self-start gap-1.5"
             onClick={() => navigate(`/${projectId}#${encodeURIComponent(displayName)}`)}
           >
             <FileText className="h-3.5 w-3.5" />
@@ -799,20 +814,20 @@ export default function EntityDetailPage({ section }: { section: string }) {
 
           {/* 2. Tabbed content: Overview + Direction */}
           <Tabs defaultValue="overview">
-            <TabsList variant="line">
+            <TabsList variant="line" scrollable className="pb-1">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="direction">Direction</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview">
               <Card>
-                <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col gap-3 pb-3 sm:flex-row sm:items-center sm:justify-between">
                   <h2 className="text-sm font-semibold">{profileLabel}</h2>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowRawJson(!showRawJson)}
-                    className="gap-1.5"
+                    className="w-full justify-center gap-1.5 sm:w-auto"
                   >
                     <Code className="h-3.5 w-3.5" />
                     {showRawJson ? 'View Formatted' : 'View Raw JSON'}

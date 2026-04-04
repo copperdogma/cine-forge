@@ -626,11 +626,11 @@ export default function ProjectRun() {
           <CardContent>
             {uploadedFile ? (
               <div className="rounded-lg border border-border bg-muted/30 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex min-w-0 items-center gap-3">
                     <FileText className="h-5 w-5 text-primary shrink-0" />
-                    <div>
-                      <p className="text-sm font-medium">{uploadedFile.original_name}</p>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium">{uploadedFile.original_name}</p>
                       <p className="text-xs text-muted-foreground">
                         {(uploadedFile.size_bytes / 1024).toFixed(1)} KB
                       </p>
@@ -639,6 +639,7 @@ export default function ProjectRun() {
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="self-start sm:self-auto"
                     onClick={() => setUploadedFile(null)}
                     disabled={uploadMutation.isPending || startRunMutation.isPending}
                   >
@@ -783,7 +784,7 @@ export default function ProjectRun() {
           </CardHeader>
           {showAdvanced && (
             <CardContent id="advanced-settings-panel" className="pt-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="default-model" className="text-xs font-medium text-muted-foreground mb-1.5 block">
                     Default Model

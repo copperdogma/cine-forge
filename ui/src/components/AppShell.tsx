@@ -20,6 +20,7 @@ import {
   Settings,
   X,
   MessageSquare,
+  Menu,
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -29,6 +30,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { RightPanelProvider, useRightPanel } from '@/lib/right-panel'
 import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
@@ -51,6 +53,7 @@ import {
   READ_INBOX_KEY,
 } from '@/lib/inbox-utils'
 import { actionableHealthGroups, gateReviewGroups, reviewableBibleGroups } from '@/lib/health'
+import { useIsMobile } from '@/lib/use-mobile'
 
 /** Artifact type → nav route mapping for count badges. */
 const NAV_ARTIFACT_TYPES: Record<string, string[]> = {
@@ -108,7 +111,15 @@ function CountBadge({ count }: { count: number }) {
 /** Nav row with whole-row glow when count increases — soft teal fade over 3s.
  *  Uses an absolutely-positioned span with key={glowKey} to restart the animation
  *  on every increment without remounting the NavLink itself. */
-function NavItem({ item, count }: { item: (typeof mainNavBase)[number]; count: number }) {
+function NavItem({
+  item,
+  count,
+  onSelect,
+}: {
+  item: (typeof mainNavBase)[number]
+  count: number
+  onSelect?: () => void
+}) {
   const prevRef = useRef(count)
   const [glowKey, setGlowKey] = useState(0)
 
@@ -127,6 +138,7 @@ function NavItem({ item, count }: { item: (typeof mainNavBase)[number]; count: n
     <NavLink
       to={item.to}
       end={item.end}
+      onClick={onSelect}
       className={({ isActive }) =>
         cn(
           'relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors overflow-hidden',
@@ -159,11 +171,175 @@ const worldNavItems = [
   { to: 'world/continuity', label: 'Continuity', icon: Activity },
 ]
 
-function ShellInner() {
+type SidebarContentProps = {
+  navCounts: Record<string, number>
+  worldOpen: boolean
+  advancedOpen: boolean
+  isOnWorldPage: boolean
+  isOnAdvancedPage: boolean
+  onWorldOpenChange: (open: boolean) => void
+  onAdvancedOpenChange: (open: boolean) => void
+  onOpenSettings: () => void
+  onNavigate?: () => void
+  onOpenChangelog: () => void
+  version?: string
+}
+
+function SidebarContent({
+  navCounts,
+  worldOpen,
+  advancedOpen,
+  isOnWorldPage,
+  isOnAdvancedPage,
+  onWorldOpenChange,
+  onAdvancedOpenChange,
+  onOpenSettings,
+  onNavigate,
+  onOpenChangelog,
+  version,
+}: SidebarContentProps) {
+  return (
+    <>
+      <Link
+        to="/"
+        onClick={onNavigate}
+        className="flex items-center gap-2 px-4 py-3 hover:bg-accent/50 transition-colors"
+      >
+        <Film className="h-5 w-5 text-primary shrink-0" />
+        <span className="text-sm font-semibold">CineForge</span>
+      </Link>
+
+      <Separator />
+
+      <ScrollArea className="flex-1 py-2">
+        <nav aria-label="Project navigation" className="flex flex-col gap-0.5 px-2">
+          {mainNavBase.map(item => (
+            <NavItem
+              key={item.to}
+              item={item}
+              count={navCounts[item.to] ?? 0}
+              onSelect={onNavigate}
+            />
+          ))}
+
+          <Separator className="my-2" />
+          <Collapsible open={worldOpen || isOnWorldPage} onOpenChange={onWorldOpenChange}>
+            <CollapsibleTrigger className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors w-full cursor-pointer">
+              <ChevronDown className={cn(
+                'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
+                !(worldOpen || isOnWorldPage) && '-rotate-90',
+              )} />
+              <span className="truncate text-xs uppercase tracking-wider">World</span>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="flex flex-col gap-0.5 mt-0.5">
+                {worldNavItems.map(item => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={onNavigate}
+                    className={({ isActive }) =>
+                      cn(
+                        'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ml-2',
+                        isActive
+                          ? 'bg-accent text-accent-foreground'
+                          : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                      )
+                    }
+                  >
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{item.label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
+          <Separator className="my-2" />
+          <Collapsible open={advancedOpen || isOnAdvancedPage} onOpenChange={onAdvancedOpenChange}>
+            <CollapsibleTrigger className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors w-full cursor-pointer">
+              <ChevronDown className={cn(
+                'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
+                !(advancedOpen || isOnAdvancedPage) && '-rotate-90',
+              )} />
+              <span className="truncate text-xs uppercase tracking-wider">Advanced</span>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="flex flex-col gap-0.5 mt-0.5">
+                {advancedNavItems.map(item => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={onNavigate}
+                    className={({ isActive }) =>
+                      cn(
+                        'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ml-2',
+                        isActive
+                          ? 'bg-accent text-accent-foreground'
+                          : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                      )
+                    }
+                  >
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{item.label}</span>
+                  </NavLink>
+                ))}
+                <button
+                  onClick={onOpenSettings}
+                  className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors cursor-pointer ml-2"
+                >
+                  <Settings className="h-4 w-4 shrink-0" />
+                  <span className="truncate">Settings</span>
+                </button>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </nav>
+      </ScrollArea>
+
+      {version && (
+        <button
+          onClick={onOpenChangelog}
+          className="px-4 py-2 text-[10px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer border-t border-border"
+        >
+          v{version}
+        </button>
+      )}
+    </>
+  )
+}
+
+function RightPanelContent({ onClose }: { onClose: () => void }) {
+  return (
+    <>
+      <div className="flex items-center border-b border-border shrink-0 px-4 py-2.5">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+          <MessageSquare className="h-3.5 w-3.5" />
+          Chat
+        </div>
+        <div className="flex-1" />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-11 w-11 cursor-pointer md:h-6 md:w-6"
+          onClick={onClose}
+          aria-label="Close chat"
+        >
+          <X className="h-3.5 w-3.5" />
+        </Button>
+      </div>
+
+      <ChatPanel />
+    </>
+  )
+}
+
+function ShellInner({ isMobile }: { isMobile: boolean }) {
   const { projectId } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
-  const [navOpen, setNavOpen] = useState(true)
+  const [desktopNavOpen, setDesktopNavOpen] = useState(true)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [advancedOpen, setAdvancedOpen] = useState(false)
   const [worldOpen, setWorldOpen] = useState(false)
@@ -330,7 +506,7 @@ function ShellInner() {
 
   // Keyboard shortcuts
   useShortcuts([
-    { key: 'b', meta: true, action: () => setNavOpen(v => !v), label: 'Toggle sidebar' },
+    { key: 'b', meta: true, action: () => (isMobile ? setMobileNavOpen(v => !v) : setDesktopNavOpen(v => !v)), label: 'Toggle sidebar' },
     { key: 'i', meta: true, action: () => panel.toggle(), label: 'Toggle right panel' },
     { key: '0', meta: true, action: () => navigate(''), label: 'Go to Script' },
     { key: '1', meta: true, action: () => navigate('scenes'), label: 'Go to Scenes' },
@@ -401,7 +577,7 @@ function ShellInner() {
   return (
     <div className="fixed inset-0 flex overflow-hidden">
       <CommandPalette
-        onToggleSidebar={() => setNavOpen(v => !v)}
+        onToggleSidebar={() => (isMobile ? setMobileNavOpen(v => !v) : setDesktopNavOpen(v => !v))}
       />
       {/* Keyboard-triggered settings dialog */}
       <ProjectSettings
@@ -410,121 +586,58 @@ function ShellInner() {
         open={settingsOpen}
         onOpenChange={setSettingsOpen}
       />
-      {/* Left Navigator Panel */}
-      <aside
-        className={cn(
-          'flex flex-col border-r border-border bg-sidebar transition-all duration-200 overflow-hidden',
-          navOpen ? 'w-56' : 'w-0',
-        )}
-      >
-        {/* App branding — links to project list */}
-        <Link
-          to="/"
-          className="flex items-center gap-2 px-4 py-3 hover:bg-accent/50 transition-colors"
+      {!isMobile && (
+        <aside
+          className={cn(
+            'flex flex-col border-r border-border bg-sidebar transition-all duration-200 overflow-hidden',
+            desktopNavOpen ? 'w-56' : 'w-0',
+          )}
         >
-          <Film className="h-5 w-5 text-primary shrink-0" />
-          <span className="text-sm font-semibold">CineForge</span>
-        </Link>
+          <SidebarContent
+            navCounts={navCounts}
+            worldOpen={worldOpen}
+            advancedOpen={advancedOpen}
+            isOnWorldPage={isOnWorldPage}
+            isOnAdvancedPage={isOnAdvancedPage}
+            onWorldOpenChange={setWorldOpen}
+            onAdvancedOpenChange={setAdvancedOpen}
+            onOpenSettings={() => setSettingsOpen(true)}
+            onOpenChangelog={() => setChangelogOpen(true)}
+            version={healthData?.version}
+          />
+        </aside>
+      )}
 
-        <Separator />
-
-        {/* Navigation */}
-        <ScrollArea className="flex-1 py-2">
-          <nav aria-label="Project navigation" className="flex flex-col gap-0.5 px-2">
-            {/* Main entity navigation */}
-            {mainNavBase.map(item => (
-              <NavItem
-                key={item.to}
-                item={item}
-                count={navCounts[item.to] ?? 0}
-              />
-            ))}
-
-            {/* World section */}
-            <Separator className="my-2" />
-            <Collapsible open={worldOpen || isOnWorldPage} onOpenChange={setWorldOpen}>
-              <CollapsibleTrigger className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors w-full cursor-pointer">
-                <ChevronDown className={cn(
-                  'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
-                  !(worldOpen || isOnWorldPage) && '-rotate-90',
-                )} />
-                <span className="truncate text-xs uppercase tracking-wider">World</span>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="flex flex-col gap-0.5 mt-0.5">
-                  {worldNavItems.map(item => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className={({ isActive }) =>
-                        cn(
-                          'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ml-2',
-                          isActive
-                            ? 'bg-accent text-accent-foreground'
-                            : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-                        )
-                      }
-                    >
-                      <item.icon className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{item.label}</span>
-                    </NavLink>
-                  ))}
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Advanced section */}
-            <Separator className="my-2" />
-            <Collapsible open={advancedOpen || isOnAdvancedPage} onOpenChange={setAdvancedOpen}>
-              <CollapsibleTrigger className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors w-full cursor-pointer">
-                <ChevronDown className={cn(
-                  'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
-                  !(advancedOpen || isOnAdvancedPage) && '-rotate-90',
-                )} />
-                <span className="truncate text-xs uppercase tracking-wider">Advanced</span>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="flex flex-col gap-0.5 mt-0.5">
-                  {advancedNavItems.map(item => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className={({ isActive }) =>
-                        cn(
-                          'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ml-2',
-                          isActive
-                            ? 'bg-accent text-accent-foreground'
-                            : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-                        )
-                      }
-                    >
-                      <item.icon className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{item.label}</span>
-                    </NavLink>
-                  ))}
-                  <button
-                    onClick={() => setSettingsOpen(true)}
-                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors cursor-pointer ml-2"
-                  >
-                    <Settings className="h-4 w-4 shrink-0" />
-                    <span className="truncate">Settings</span>
-                  </button>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          </nav>
-        </ScrollArea>
-
-        {/* Version footer */}
-        {healthData?.version && (
-          <button
-            onClick={() => setChangelogOpen(true)}
-            className="px-4 py-2 text-[10px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer border-t border-border"
-          >
-            v{healthData.version}
-          </button>
-        )}
-      </aside>
+      <Sheet open={isMobile && mobileNavOpen} onOpenChange={setMobileNavOpen}>
+        <SheetContent
+          side="left"
+          showCloseButton={false}
+          className="w-[18rem] max-w-[calc(100vw-1rem)] p-0"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Project navigation</SheetTitle>
+            <SheetDescription>Browse project routes and open advanced operator tools.</SheetDescription>
+          </SheetHeader>
+          <div className="flex h-full min-h-0 flex-col bg-sidebar">
+            <SidebarContent
+              navCounts={navCounts}
+              worldOpen={worldOpen}
+              advancedOpen={advancedOpen}
+              isOnWorldPage={isOnWorldPage}
+              isOnAdvancedPage={isOnAdvancedPage}
+              onWorldOpenChange={setWorldOpen}
+              onAdvancedOpenChange={setAdvancedOpen}
+              onOpenSettings={() => {
+                setMobileNavOpen(false)
+                setSettingsOpen(true)
+              }}
+              onNavigate={() => setMobileNavOpen(false)}
+              onOpenChangelog={() => setChangelogOpen(true)}
+              version={healthData?.version}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
 
       <ChangelogDialog open={changelogOpen} onOpenChange={setChangelogOpen} version={healthData?.version} />
 
@@ -537,10 +650,13 @@ function ShellInner() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 cursor-pointer"
-                onClick={() => setNavOpen(v => !v)}
+                className="h-11 w-11 cursor-pointer md:h-8 md:w-8"
+                onClick={() => (isMobile ? setMobileNavOpen(v => !v) : setDesktopNavOpen(v => !v))}
+                aria-label={isMobile ? 'Open navigation' : (desktopNavOpen ? 'Hide sidebar' : 'Show sidebar')}
               >
-                {navOpen ? (
+                {isMobile ? (
+                  <Menu className="h-4 w-4" />
+                ) : desktopNavOpen ? (
                   <PanelLeftClose className="h-4 w-4" />
                 ) : (
                   <PanelLeftOpen className="h-4 w-4" />
@@ -548,31 +664,31 @@ function ShellInner() {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              {navOpen ? 'Hide sidebar' : 'Show sidebar'}
+              {isMobile ? 'Open navigation' : (desktopNavOpen ? 'Hide sidebar' : 'Show sidebar')}
             </TooltipContent>
           </Tooltip>
 
           {/* Breadcrumbs */}
           {projectId && (
-            <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm">
+            <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5 text-sm overflow-hidden">
               <Link
                 to={`/${projectId}`}
-                className="text-muted-foreground hover:text-foreground transition-colors truncate max-w-[200px]"
+                className="text-muted-foreground hover:text-foreground transition-colors truncate max-w-[120px] sm:max-w-[200px]"
               >
                 {displayName}
               </Link>
               {breadcrumbs.map((crumb, i) => (
-                <span key={i} className="flex items-center gap-1.5">
+                <span key={i} className="flex min-w-0 items-center gap-1.5 overflow-hidden">
                   <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
                   {crumb.path ? (
                     <Link
                       to={crumb.path}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground transition-colors truncate"
                     >
                       {crumb.label}
                     </Link>
                   ) : (
-                    <span className="text-foreground font-medium truncate max-w-[300px]">{crumb.label}</span>
+                    <span className="text-foreground font-medium truncate max-w-[140px] sm:max-w-[300px]">{crumb.label}</span>
                   )}
                 </span>
               ))}
@@ -595,10 +711,13 @@ function ShellInner() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 cursor-pointer"
+                className="h-11 w-11 cursor-pointer md:h-8 md:w-8"
                 onClick={() => panel.toggle()}
+                aria-label={isMobile ? (panel.state.open ? 'Close chat' : 'Open chat') : (panel.state.open ? 'Hide panel' : 'Show panel')}
               >
-                {panel.state.open ? (
+                {isMobile ? (
+                  <MessageSquare className="h-4 w-4" />
+                ) : panel.state.open ? (
                   <PanelRightClose className="h-4 w-4" />
                 ) : (
                   <PanelRightOpen className="h-4 w-4" />
@@ -606,7 +725,7 @@ function ShellInner() {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              {panel.state.open ? 'Hide panel' : 'Show panel'}
+              {isMobile ? (panel.state.open ? 'Close chat' : 'Open chat') : (panel.state.open ? 'Hide panel' : 'Show panel')}
             </TooltipContent>
           </Tooltip>
         </header>
@@ -627,15 +746,15 @@ function ShellInner() {
         <div className="flex flex-1 min-h-0">
           {/* Page content */}
           <div ref={mainScrollRef} className="flex-1 min-w-0 overflow-hidden">
-          <ScrollArea className="h-full w-full" orientation="both">
-            <div className="p-6 flex flex-col min-h-full min-w-full">
+          <ScrollArea className="h-full w-full">
+            <div className="flex min-h-full w-full min-w-0 flex-col p-4 sm:p-6">
               <Outlet />
             </div>
           </ScrollArea>
           </div>
 
           {/* Right Panel — Chat + Inspector tabs */}
-          {panel.state.open && (
+          {!isMobile && panel.state.open && (
             <aside role="complementary" aria-label="Chat panel" style={{ width: panelWidth }} className="border-l border-border bg-card shrink-0 flex flex-col min-h-0 relative">
               {/* Drag handle */}
               <div
@@ -644,41 +763,46 @@ function ShellInner() {
               >
                 <div className="h-8 w-1 rounded-full bg-border group-hover:bg-primary/50 transition-colors" />
               </div>
-              {/* Header */}
-              <div className="flex items-center border-b border-border shrink-0 px-4 py-2.5">
-                <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
-                  <MessageSquare className="h-3.5 w-3.5" />
-                  Chat
-                </div>
-                <div className="flex-1" />
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6 cursor-pointer"
-                      onClick={() => panel.close()}
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="left">Close panel</TooltipContent>
-                </Tooltip>
-              </div>
-
-              <ChatPanel />
+              <RightPanelContent onClose={() => panel.close()} />
             </aside>
           )}
         </div>
       </main>
+
+      <Sheet
+        open={isMobile && panel.state.open}
+        onOpenChange={(open) => {
+          if (open) {
+            panel.openChat()
+            return
+          }
+          panel.close()
+        }}
+      >
+        <SheetContent
+          side="right"
+          showCloseButton={false}
+          className="w-full max-w-none p-0"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Project chat</SheetTitle>
+            <SheetDescription>Chat about the current project without leaving the current route.</SheetDescription>
+          </SheetHeader>
+          <div className="flex h-full min-h-0 flex-col bg-card">
+            <RightPanelContent onClose={() => panel.close()} />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }
 
 export default function AppShell() {
+  const isMobile = useIsMobile()
+
   return (
-    <RightPanelProvider>
-      <ShellInner />
+    <RightPanelProvider initialOpen={!isMobile}>
+      <ShellInner isMobile={isMobile} />
     </RightPanelProvider>
   )
 }

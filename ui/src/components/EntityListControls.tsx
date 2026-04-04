@@ -54,10 +54,10 @@ export function EntityListControls({
   }
 
   return (
-    <div className="flex items-center justify-between gap-4">
-      <div className="flex items-center gap-2">
+    <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center">
         {/* Sort toggles */}
-        <div className="flex items-center gap-1 rounded-lg border border-border p-0.5">
+        <div className="flex flex-wrap items-center gap-1 rounded-lg border border-border p-0.5">
           {sortOptions.map(opt => {
             const Icon = opt.icon
             const isActive = sort === opt.value
@@ -83,7 +83,7 @@ export function EntityListControls({
 
         {/* Prominence filter — only for characters */}
         {filter !== undefined && onFilterChange && (
-          <div className="flex items-center gap-1 rounded-lg border border-border p-0.5">
+          <div className="flex flex-wrap items-center gap-1 rounded-lg border border-border p-0.5">
             {filterOptions.map(opt => {
               const Icon = opt.icon
               const isActive = filter === opt.value
@@ -108,7 +108,7 @@ export function EntityListControls({
       </div>
 
       {/* Density toggles */}
-      <div className="flex items-center gap-1 rounded-lg border border-border p-0.5">
+      <div className="flex self-start items-center gap-1 rounded-lg border border-border p-0.5 sm:self-auto">
         {densityOptions.map(opt => {
           const Icon = opt.icon
           return (

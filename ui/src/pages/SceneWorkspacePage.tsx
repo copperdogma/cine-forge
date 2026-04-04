@@ -512,14 +512,29 @@ export default function SceneWorkspacePage() {
       {/* Navigation row */}
       <div className="flex items-center justify-between">
         <BackNavigation projectId={projectId} nav={nav} goBack={goBack} />
-        <Button variant="outline" size="sm" onClick={() => setIsExportOpen(true)}>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-11 w-11 shrink-0 rounded-full sm:hidden"
+          onClick={() => setIsExportOpen(true)}
+          aria-label="Export scene"
+          title="Export scene"
+        >
+          <Share className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="hidden sm:inline-flex"
+          onClick={() => setIsExportOpen(true)}
+        >
           <Share className="mr-2 h-4 w-4" />
           Export
         </Button>
       </div>
 
       {/* Scene header */}
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-start">
         <div className="rounded-lg bg-card border border-border p-2.5 shrink-0">
           <Clapperboard className="h-6 w-6 text-violet-400" />
         </div>
@@ -529,7 +544,7 @@ export default function SceneWorkspacePage() {
             <HealthBadge health={group.health} details={group.health_details} />
             <RolePresenceIndicators groups={groups} entityId={entityId} />
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span>Scene</span>
             {typeof data?.scene_number === 'number' && (
               <>
@@ -542,7 +557,7 @@ export default function SceneWorkspacePage() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-1.5 shrink-0"
+          className="self-start gap-1.5 shrink-0"
           onClick={() => navigate(`/${projectId}#${encodeURIComponent(displayName)}`)}
         >
           <FileText className="h-3.5 w-3.5" />
@@ -570,7 +585,7 @@ export default function SceneWorkspacePage() {
 
       {/* Main workspace tabs */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList variant="line" className="w-full border-b border-border">
+        <TabsList variant="line" scrollable className="w-full border-b border-border pb-1">
           <TabsTrigger value="overview">
             Overview
           </TabsTrigger>

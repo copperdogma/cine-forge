@@ -535,8 +535,8 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
           <div className="flex items-center gap-2 mb-2">
             <Icon className={`h-6 w-6 ${config.color}`} />
             <h1 className="text-2xl font-semibold">{config.label}</h1>
@@ -548,7 +548,21 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
           </div>
           <p className="text-muted-foreground">{config.description}</p>
         </div>
-        <Button variant="outline" onClick={() => setIsExportOpen(true)}>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-11 w-11 shrink-0 rounded-full sm:hidden"
+          onClick={() => setIsExportOpen(true)}
+          aria-label={`Export ${config.label.toLowerCase()}`}
+          title={`Export ${config.label.toLowerCase()}`}
+        >
+          <Share className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          className="hidden shrink-0 sm:inline-flex"
+          onClick={() => setIsExportOpen(true)}
+        >
           <Share className="mr-2 h-4 w-4" />
           Export
         </Button>

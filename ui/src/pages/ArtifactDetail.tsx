@@ -377,18 +377,18 @@ export default function ArtifactDetail() {
           </Button>
         </div>
 
-        <div className="flex items-start gap-4">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-start">
           <div className={cn('rounded-lg bg-card border border-border p-2.5')}>
             <Icon className={cn('h-6 w-6', meta.color)} />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
+            <div className="mb-1 flex flex-wrap items-center gap-2">
               <h1 className="text-2xl font-bold tracking-tight truncate">
                 {displayName ?? entityId ?? meta.label}
               </h1>
               <HealthBadge health={health} details={healthDetails} />
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               <span>{meta.label}</span>
               {entityId && displayName && (
                 <>
@@ -408,7 +408,7 @@ export default function ArtifactDetail() {
               variant="outline"
               size="sm"
               onClick={enterEditMode}
-              className="gap-1.5"
+              className="self-start gap-1.5"
             >
               <Edit className="h-3.5 w-3.5" />
               Edit
@@ -417,9 +417,9 @@ export default function ArtifactDetail() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-4">
         {/* Version History Sidebar */}
-        <aside className="lg:col-span-1 space-y-4">
+        <aside className="min-w-0 space-y-4 lg:col-span-1">
           <div>
             <h2 className="text-sm font-semibold mb-3 flex items-center gap-1.5">
               <GitBranch className="h-4 w-4" />
@@ -436,13 +436,13 @@ export default function ArtifactDetail() {
                       aria-label={`Switch to version ${v.version}, health: ${v.health ?? 'unknown'}${v.version === versionNum ? ', currently selected' : ''}`}
                       onClick={() => switchVersion(v.version)}
                       className={cn(
-                        'w-full text-left rounded-md border p-2.5 transition-colors',
+                        'w-full min-w-0 rounded-md border p-2.5 text-left transition-colors',
                         v.version === versionNum
                           ? 'border-primary bg-primary/5'
                           : 'border-border hover:bg-accent/50',
                       )}
                     >
-                      <div className="mb-1 flex flex-wrap items-center gap-2">
+                      <div className="mb-1 flex min-w-0 flex-col items-start gap-2 sm:flex-row sm:flex-wrap sm:items-center">
                         <span className="text-sm font-medium">v{v.version}</span>
                         <HealthBadge
                           health={v.health}
@@ -466,7 +466,7 @@ export default function ArtifactDetail() {
         </aside>
 
         {/* Main Content */}
-        <main className="lg:col-span-3 space-y-4">
+        <main className="min-w-0 space-y-4 lg:col-span-3">
           {artifactRef && (
             <ImpactAssessmentCard
               projectId={projectId ?? ''}
@@ -547,7 +547,7 @@ export default function ArtifactDetail() {
 
           {/* Content Card */}
           <Card>
-            <CardHeader className="pb-3 flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-col gap-3 pb-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-sm font-semibold">
                 {isEditMode ? 'Edit Artifact Data' : 'Content'}
               </h2>
@@ -556,7 +556,7 @@ export default function ArtifactDetail() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowRawJson(!showRawJson)}
-                  className="gap-1.5"
+                  className="w-full justify-center gap-1.5 sm:w-auto"
                 >
                   <Code className="h-3.5 w-3.5" />
                   {showRawJson ? 'View Formatted' : 'View Raw JSON'}
@@ -588,7 +588,7 @@ export default function ArtifactDetail() {
                       placeholder="Explain why you are making this edit..."
                     />
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col gap-2 sm:flex-row">
                     <Button
                       onClick={saveEdit}
                       disabled={editMutation.isPending}

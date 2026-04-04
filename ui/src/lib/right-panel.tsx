@@ -17,9 +17,15 @@ interface RightPanelContextValue {
 
 const RightPanelContext = createContext<RightPanelContextValue | null>(null)
 
-export function RightPanelProvider({ children }: { children: ReactNode }) {
+export function RightPanelProvider({
+  children,
+  initialOpen = true,
+}: {
+  children: ReactNode
+  initialOpen?: boolean
+}) {
   const [state, setState] = useState<RightPanelState>({
-    open: true,
+    open: initialOpen,
     pendingIntent: null,
   })
 

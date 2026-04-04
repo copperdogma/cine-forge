@@ -23,7 +23,7 @@ export function ReferenceLibraryFilterBar({
       <div className="flex flex-wrap items-center gap-2">
         {hasAiItems && (
           <Tabs value={sourceFilter} onValueChange={(value) => onSourceFilterChange(value as SourceFilter)}>
-            <TabsList>
+            <TabsList scrollable className="w-full">
               <TabsTrigger value="all">All sources</TabsTrigger>
               <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
               <TabsTrigger value="ai">AI study</TabsTrigger>
@@ -33,7 +33,7 @@ export function ReferenceLibraryFilterBar({
       </div>
 
       <Tabs value={typeFilter} onValueChange={(value) => onTypeFilterChange(value as TypeFilter)}>
-        <TabsList variant="line">
+        <TabsList variant="line" scrollable className="w-full">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="visual">Visual</TabsTrigger>
           <TabsTrigger value="audio">Audio</TabsTrigger>

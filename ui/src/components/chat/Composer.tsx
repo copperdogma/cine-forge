@@ -313,7 +313,8 @@ export const Composer = forwardRef<ComposerHandle, ComposerProps>(function Compo
               size="icon"
               variant="destructive"
               onClick={onCancel}
-              className="absolute bottom-2 right-2 h-7 w-7 rounded-lg z-10"
+              className="absolute bottom-2 right-2 z-10 h-11 w-11 rounded-lg md:h-7 md:w-7"
+              aria-label="Stop response"
               title="Stop response"
             >
               <Square className="h-3 w-3 fill-current" />
@@ -323,7 +324,9 @@ export const Composer = forwardRef<ComposerHandle, ComposerProps>(function Compo
               size="icon"
               onClick={onSend}
               disabled={!inputText.trim()}
-              className="absolute bottom-2 right-2 h-7 w-7 rounded-lg z-10"
+              className="absolute bottom-2 right-2 z-10 h-11 w-11 rounded-lg md:h-7 md:w-7"
+              aria-label="Send message"
+              title="Send message"
             >
               <Send className="h-3.5 w-3.5" />
             </Button>

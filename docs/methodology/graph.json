@@ -2719,18 +2719,32 @@
       "id": "044",
       "title": "Mobile-Friendly UI",
       "path": "docs/stories/story-044-mobile-friendly-ui.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "Medium",
-      "idealRefs": [],
-      "specRefs": [],
-      "adrIds": [],
+      "idealRefs": [
+        "Accessible by default",
+        "Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5",
+        "spec:5.4",
+        "spec:5.5"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
       "compromiseIds": [],
-      "dependsOn": [],
+      "dependsOn": [
+        "043"
+      ],
       "categoryRefs": [
         "spec:5"
       ],
       "inputCoverageRefs": [],
-      "architectureDomains": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
       "roadmapTags": [],
       "legacySystem": "2.5 — UI",
       "metadataSource": "frontmatter",
