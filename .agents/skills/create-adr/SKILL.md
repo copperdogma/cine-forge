@@ -30,6 +30,8 @@ Create a new ADR with proper structure, research scaffolding, and setup.md track
 2. **Fill in the ADR file** — Replace all placeholder text with real content:
    - Title (human-readable, not the slug)
    - Context, ideal, options, research needed, legacy context, dependencies
+   - frontmatter references (`spec_refs`, `ideal_refs`, `story_refs`,
+     `compromise_refs`, `related_adrs`, `supersedes`, `superseded_by`)
 
 3. **Write the research prompt** — Fill in `research/research-prompt.md`:
    - Copy context from the ADR
@@ -43,7 +45,14 @@ Create a new ADR with proper structure, research scaffolding, and setup.md track
    - [x] Stub created: `docs/decisions/adr-NNN-name/adr.md`
    ```
 
-5. **Show the user** the created files for review.
+5. **Refresh generated planning surfaces when needed** — If the ADR metadata is
+   usable and should appear in methodology outputs, run:
+
+   ```bash
+   pnpm methodology:compile
+   ```
+
+6. **Show the user** the created files for review.
 
 ## Guardrails
 

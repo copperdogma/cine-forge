@@ -1,3 +1,20 @@
+---
+id: "NNN"
+title: "TITLE"
+status: "Draft"
+priority: "PRIORITY"
+ideal_refs: []
+spec_refs: []
+adr_refs: []
+depends_on: []
+category_refs: []
+compromise_refs: []
+input_coverage_refs: []
+architecture_domains: []
+roadmap_tags: []
+legacy_system: ""
+---
+
 # Story NNN — TITLE
 
 **Priority**: PRIORITY
@@ -43,6 +60,7 @@
   - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
   - [ ] UI (if touched): `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
 - [ ] If agent tooling or project instructions are touched: `make skills-check`
+- [ ] If story metadata, ADR metadata, or methodology state changes: `pnpm methodology:compile`
 - [ ] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
 - [ ] If UI is touched: verify the changed flow with browser tools when possible (screenshot + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
 - [ ] Search all docs and update any related to what we touched

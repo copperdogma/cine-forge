@@ -1,0 +1,404 @@
+{
+  "version": 1,
+  "format": "json-compatible-yaml",
+  "seeded_at": "2026-04-04",
+  "seeded_from": [
+    "docs/build-map.md",
+    "docs/stories.md",
+    "docs/methodology-artifact-audit-and-migration.md"
+  ],
+  "categories": {
+    "spec:1": {
+      "substrate": "exists",
+      "phase": "hold",
+      "story_coverage": "partial",
+      "product_need": "Artifacts, decisions, and runtime operations stay immutable, auditable, and safe to revise.",
+      "tech_need": "Snapshot versioning, dependency-aware invalidation, AI/runtime boundary discipline, and durable audit metadata.",
+      "absorbs": ["Foundation & Artifact Runtime (old 1)"],
+      "notes": [
+        "Core substrate exists. Current work here is mostly maintenance, decomposition, and verification hardening rather than a missing-system climb."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:2": {
+      "substrate": "exists",
+      "phase": "climb",
+      "story_coverage": "partial",
+      "product_need": "CineForge can accept story inputs in multiple formats and turn them into a coherent, browsable understanding quickly enough to start creative work.",
+      "tech_need": "Ingestion, normalization, canonical script handling, project configuration, script-bible extraction, and scene understanding.",
+      "absorbs": ["Script Understanding Pipeline (old 2)"],
+      "notes": [
+        "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:3": {
+      "substrate": "exists",
+      "phase": "hold",
+      "story_coverage": "partial",
+      "product_need": "Characters, locations, props, and continuity states persist as first-class world knowledge.",
+      "tech_need": "Bible folders, relationship edges, and state snapshots over story time.",
+      "absorbs": ["World Building & Continuity (old 3)"],
+      "notes": [
+        "Core substrate exists. Remaining work is mostly quality refinement, continuity detection depth, and better downstream reuse of the world model."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:4": {
+      "substrate": "exists",
+      "phase": "hold",
+      "story_coverage": "partial",
+      "product_need": "Creative roles and characters should feel like collaborators who understand the story deeply and shape it across disciplines.",
+      "tech_need": "Role hierarchy, style packs, transcripts, suggestion artifacts, and concern-group direction artifacts.",
+      "absorbs": ["Role System & Creative Direction (old 4)"],
+      "notes": [
+        "Capability gating remains an honest hold-state compromise until one broadly usable multimodal model removes the need for per-role modality declarations."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:5": {
+      "substrate": "exists",
+      "phase": "hold",
+      "story_coverage": "partial",
+      "product_need": "The operator should feel like they are working with their story, not administering a pipeline.",
+      "tech_need": "Control modes, explanation surfaces, stage-progression rules, interaction models, and readiness signals that keep the UI honest.",
+      "absorbs": ["Operator Console & Interactive UX (old 5)"],
+      "notes": [
+        "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:6": {
+      "substrate": "exists",
+      "phase": "climb",
+      "story_coverage": "partial",
+      "product_need": "Creative intent becomes concrete planning artifacts usable by humans and generation models.",
+      "tech_need": "Coverage strategy, shot definitions, storyboard and animatic assets, and optional keyframes linked to upstream direction.",
+      "absorbs": ["Shot Planning & Visualization (old 6)"],
+      "notes": [
+        "Shot planning, storyboard generation, deterministic previz, and the operator-facing AI-previz surface now exist as real substrate.",
+        "This category stays in climb because broader previz quality and consistency coverage remains unfinished."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:7": {
+      "substrate": "partial",
+      "phase": "climb",
+      "story_coverage": "partial",
+      "product_need": "CineForge can compile direction into generation requests and carry user-provided assets through the same pipeline.",
+      "tech_need": "Render-adapter compilation, engine-pack knowledge, error handling, and origin-agnostic asset injection.",
+      "absorbs": ["Generation & Export (old 7)"],
+      "notes": [
+        "Render-adapter compilation, engine-pack knowledge, error handling, origin-agnostic asset injection, runtime media validation, and AI-previz generation exist as real substrate.",
+        "This category stays in climb because richer export fidelity and broader media-validation coverage remain unfinished."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:8": {
+      "substrate": "exists",
+      "phase": "hold",
+      "story_coverage": "partial",
+      "product_need": "AI cost, quality, and model tradeoffs are visible enough that operators can trust the system.",
+      "tech_need": "Cost tracking, QA patterns, current eval registry discipline, and model-slot strategy.",
+      "absorbs": ["AI Platform, Model Selection & Validation (old 8)"],
+      "notes": [
+        "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:9": {
+      "substrate": "partial",
+      "phase": "climb",
+      "story_coverage": "partial",
+      "product_need": "Long-running collaboration should preserve context, transcripts, and operating-mode intent without losing provenance.",
+      "tech_need": "Canonical memory artifacts, working-memory summaries, and explicit operating-mode rules.",
+      "absorbs": ["Memory & Collaboration (old 9)"],
+      "notes": [
+        "The canonical vs working-memory split remains justified while context windows and memory persistence are still constrained."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:10": {
+      "substrate": "exists",
+      "phase": "hold",
+      "story_coverage": "partial",
+      "product_need": "Users can inspect pacing, order, and best-available playback throughout the pipeline.",
+      "tech_need": "Independent timeline artifacts, stacked tracks, and the always-playable fallback rule.",
+      "absorbs": ["None — new explicit category extracted from existing spec/stories"],
+      "notes": [
+        "Timeline substrate exists but still relies on continued trust/readiness work as generated-video and previz lanes evolve."
+      ],
+      "last_reviewed": "2026-04-04"
+    },
+    "spec:11": {
+      "substrate": "exists",
+      "phase": "climb",
+      "story_coverage": "partial",
+      "product_need": "CineForge still needs explicit planning scaffolding while current AI cannot yet build and verify large repo changes from the ideal in one shot.",
+      "tech_need": "Story lifecycle tracking, methodology state, compiled graph joins, generated planning views, triage skills, workflow gates, AGENTS instructions, runbooks, and verbose work logs.",
+      "absorbs": ["Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)"],
+      "notes": [
+        "Story 134 and Story 136 established the current authored build-map/spec stack.",
+        "Story 145 landed the graph+state migration, replacing the authored planning surface with structured state, compiled joins, generated views, and hard linting."
+      ],
+      "last_reviewed": "2026-04-04"
+    }
+  },
+  "compromises": {
+    "C1": {
+      "phase": "hold",
+      "current": "Per-call and per-run cost tracking still matters because model pricing and tradeoffs are material.",
+      "converge_signal": "Per-call cost tracking becomes unnecessary when inference is cheap enough to stop shaping operator behavior.",
+      "evidence": "No registry eval; detection remains pricing-watch based.",
+      "last_reviewed": "2026-04-04"
+    },
+    "C2": {
+      "phase": "hold",
+      "current": "Dedicated QA / verification remains the safest path for structured output quality.",
+      "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
+      "evidence": "`compromise-C2-qa-validation` does not justify deletion yet.",
+      "last_reviewed": "2026-04-04"
+    },
+    "C3": {
+      "phase": "hold",
+      "current": "Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.",
+      "converge_signal": "One model meets all current default-driving quality bars at acceptable latency and cost.",
+      "evidence": "`compromise-C3-tiered-models` still leaves the repo below the single-model bar.",
+      "last_reviewed": "2026-04-04"
+    },
+    "C4": {
+      "phase": "climb",
+      "current": "Structural scene breakdown lands quickly, while slower narrative enrichment remains separate and user-triggered.",
+      "converge_signal": "Single-pass scene understanding becomes both fast enough and good enough to replace the split.",
+      "evidence": "`compromise-C4-two-tier-scenes` still shows the best candidate below the quality/latency bar.",
+      "last_reviewed": "2026-04-04"
+    },
+    "C5": {
+      "phase": "hold",
+      "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
+      "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
+      "evidence": "`compromise-C5-role-modality` has no passing deletion signal.",
+      "last_reviewed": "2026-04-04"
+    },
+    "C6": {
+      "phase": "hold",
+      "current": "Heterogeneous video APIs still justify a render-adapter abstraction with model-specific engine-pack knowledge.",
+      "converge_signal": "A dominant standard API or one model cleanly handles all required generation inputs.",
+      "evidence": "No registry-backed deletion harness exists yet; this remains an ecosystem detector.",
+      "last_reviewed": "2026-04-04"
+    },
+    "C7": {
+      "phase": "hold",
+      "current": "Canonical memory plus working-memory caches remain necessary while context windows are finite and expensive.",
+      "converge_signal": "Persistent, effectively unbounded memory makes the split unnecessary.",
+      "evidence": "`compromise-C7-working-memory` has no deletion signal yet.",
+      "last_reviewed": "2026-04-04"
+    },
+    "B1": {
+      "phase": "hold",
+      "current": "Story files remain the safest way to preserve scope, acceptance criteria, and work-log context across sessions.",
+      "converge_signal": "Long-horizon planning continuity becomes reliable enough that explicit story slicing is optional.",
+      "evidence": "No automated harness; human capability detection remains the practical signal.",
+      "last_reviewed": "2026-04-04"
+    },
+    "B2": {
+      "phase": "climb",
+      "current": "Structured methodology state and generated planning views are still required so triage can reason about architecture readiness without guessing from repo shape alone.",
+      "converge_signal": "Architectural readiness and planning state become inferable directly from the repo and normal artifacts without an explicit state layer.",
+      "evidence": "Story 145 replaced the authored build-map with methodology state plus generated views rather than deleting the responsibility.",
+      "last_reviewed": "2026-04-04"
+    },
+    "B3": {
+      "phase": "hold",
+      "current": "Explicit routing and domain-specific triage logic still produce better next-step choices than monolithic generic planning.",
+      "converge_signal": "Repo-aware prioritization becomes reliable without procedural scaffolding.",
+      "evidence": "No automated harness; the detector is sustained autonomous prioritizer quality.",
+      "last_reviewed": "2026-04-04"
+    },
+    "B4": {
+      "phase": "hold",
+      "current": "`/build-story`, `/validate`, and `/mark-story-done` remain useful because human trust and AI self-verification are not yet strong enough to collapse the chain.",
+      "converge_signal": "The chain shrinks to the level of review the operator actually wants.",
+      "evidence": "Human trust plus repeated correct autonomous closure remains the practical detector.",
+      "last_reviewed": "2026-04-04"
+    },
+    "B5": {
+      "phase": "hold",
+      "current": "Explicit repo conventions, skills, and runbooks are still needed so future sessions do not re-learn the same rules from scratch.",
+      "converge_signal": "Project conventions become inferable from code and normal repo artifacts alone.",
+      "evidence": "No automated harness; use reliable convention inference across fresh sessions as the detector.",
+      "last_reviewed": "2026-04-04"
+    }
+  },
+  "roadmap": {
+    "active_focus": ["spec:11", "spec:5", "spec:6"],
+    "sequencing_bias": [
+      {
+        "target": "spec:5",
+        "reason": "Operator-surface polish remains the clearest product-facing follow-on once the planning substrate is stable."
+      },
+      {
+        "target": "spec:11",
+        "reason": "The structural migration is complete; any remaining methodology work is now warning-debt cleanup and audit follow-through rather than substrate replacement."
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "methodology-graph-state-migration",
+        "status": "completed",
+        "story_refs": ["145"],
+        "notes": "Replaced hand-authored build-map/story-index planning surfaces with state, graph, generated views, and hard linting."
+      }
+    ]
+  },
+  "stories_index": {
+    "sections": [
+      {
+        "id": "current-execution-map",
+        "title": "Current Execution Map",
+        "lines": [
+          "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 143 and 144 together turned AI previz into an evidence-backed optional lane instead of a static experimental surface. Story 145 completed the methodology migration from authored planning dashboards to the graph+state package. The active backlog now centers on operator-surface polish and any optional follow-up cleanup of legacy methodology warning debt.",
+          "",
+          "### Pending — Ready To Build Now",
+          "",
+          "| Story | Why |",
+          "|---|---|",
+          "| **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |",
+          "| **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |",
+          "| **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |",
+          "",
+          "### In Progress",
+          "",
+          "No stories currently in progress.",
+          "",
+          "### Pending — Ready, But Sequence-Sensitive",
+          "",
+          "No stories currently need the sequence-sensitive lane.",
+          "",
+          "### Blocked — Dependency Chain Not Ready Yet",
+          "",
+          "No stories currently blocked.",
+          "",
+          "### Draft — Scope Or Decision Needed First",
+          "",
+          "| Story | Why It Stays Draft |",
+          "|---|---|",
+          "| **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |",
+          "| **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |",
+          "| **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |",
+          "| **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |",
+          "| **102 / 104 / 105 / 106 / 112** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |",
+          "",
+          "### Deferred — Intentionally Parked",
+          "",
+          "| Story | Why It Is Parked |",
+          "|---|---|",
+          "| **023** Character & Performance | Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed. |"
+        ]
+      },
+      {
+        "id": "notes-from-cam",
+        "title": "Notes From Cam",
+        "lines": [
+          "- 20260212: Seeddance 2.0 released and it's insane: https://x.com/altryne/status/2021967972055842893?s=20",
+          "  - \"Takes a TEXT STORYBOARD image + character ref + scene ref + prop ref -> coherent 15-second film.\""
+        ]
+      },
+      {
+        "id": "phase-summary",
+        "title": "Phase Summary",
+        "lines": [
+          "- **Phase 0 — Foundation** (001–002): Project scaffolding and pipeline infrastructure. Artifact store with immutability, snapshot versioning, dependency graph, audit metadata, cost tracking hooks, and structural validation.",
+          "- **Phase 1 — MVP Pipeline** (003–007): First working pipeline: script in -> canonical script + scenes + project config out. End-to-end smoke test.",
+          "- **Phase 2 — World Building** (008–011): Folder-based bibles (characters, locations, props), entity relationship graph, continuity state tracking.",
+          "- **Phase 2.5 — UI** (011b–011c): Production-quality Operator Console and resource-oriented routing. Research-driven design, then build. Foundation for later UI surfaces.",
+          "- **Phase 3 — Timeline** (012–013): Timeline data artifact with scene/story ordering, stacked tracks, and always-playable rule.",
+          "- **Phase 4 — Role System** (014–019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, and human interaction modes.",
+          "- **Phase 5 — Creative Direction** (020–023, 093–097, 099–100): Intent-first director's vision model, concern groups, and scene workspace.",
+          "- **Phase 6 — Shot Planning & Visualization** (025–027, 137, 143, 144): Coverage strategy, storyboards, animatics, keyframes, and AI-previz.",
+          "- **Phase 7 — Generation** (028–030, 140): Render adapter, user asset injection, generated-output QA, and media validation.",
+          "- **Phase 8 — Cross-Cutting Polish** (031–034): Semantic impact assessment, cost dashboards and budget caps, memory model, and in-app style pack creator."
+        ]
+      },
+      {
+        "id": "spec-coverage-map",
+        "title": "Spec Coverage Map",
+        "lines": [
+          "| Spec Section | Phase |",
+          "|---|---|",
+          "| spec:1 Foundation & Artifact Runtime | 0 / Cross-Cutting |",
+          "| spec:2 Story Intake & Understanding | 1 |",
+          "| spec:3 World Building & Continuity | 2 |",
+          "| spec:4 Role System & Creative Direction | 4 / 5 |",
+          "| spec:5 Operator Console & Interactive UX | 2.5 |",
+          "| spec:6 Shot Planning & Visualization | 6 |",
+          "| spec:7 Generation & Export | 7 |",
+          "| spec:8 AI Platform, Evaluation & Model Strategy | Cross-Cutting |",
+          "| spec:9 Memory & Collaboration | Cross-Cutting |",
+          "| spec:10 Timeline & Playable Assembly | 3 |",
+          "| spec:11 Planning Infrastructure & Agent Tooling | Cross-Cutting |"
+        ]
+      }
+    ]
+  },
+  "architecture_audits": {
+    "cadence": {
+      "target_story_interval": 10
+    },
+    "domains": {
+      "methodology_tooling": {
+        "last_audited_at": "2026-04-04",
+        "recent_story_refs": ["134", "136", "145"],
+        "stories_since_audit": 0,
+        "open_findings": [
+          "Legacy story/ADR metadata still produces compiler warnings; normalize active backlog items in a follow-up pass.",
+          "Historic cancelled/unknown story statuses remain as documented warning debt until a targeted metadata cleanup resolves them."
+        ],
+        "manual_priority": "high",
+        "last_result": "follow-up-needed",
+        "last_summary": "Story 145 landed the graph+state substrate, generated dashboards, and architecture-audit lane. Remaining methodology-tooling debt is narrowed to legacy metadata normalization rather than active-surface authority drift."
+      },
+      "driver_and_runtime": {
+        "last_audited_at": "2026-03-02",
+        "recent_story_refs": ["115", "116", "117"],
+        "stories_since_audit": 1,
+        "open_findings": [],
+        "manual_priority": "normal"
+      },
+      "ingest_and_world_building": {
+        "last_audited_at": "2026-03-13",
+        "recent_story_refs": ["129", "135", "142"],
+        "stories_since_audit": 1,
+        "open_findings": [],
+        "manual_priority": "normal"
+      },
+      "api_service_and_operator_console": {
+        "last_audited_at": "2026-04-03",
+        "recent_story_refs": ["126", "127", "139", "142"],
+        "stories_since_audit": 1,
+        "open_findings": [],
+        "manual_priority": "normal"
+      },
+      "creative_direction_and_chat": {
+        "last_audited_at": "2026-03-31",
+        "recent_story_refs": ["141", "144"],
+        "stories_since_audit": 0,
+        "open_findings": [],
+        "manual_priority": "normal"
+      },
+      "generation_and_visualization": {
+        "last_audited_at": "2026-04-04",
+        "recent_story_refs": ["137", "140", "143", "144"],
+        "stories_since_audit": 0,
+        "open_findings": [],
+        "manual_priority": "normal"
+      }
+    }
+  },
+  "story_overrides": {
+    "category_refs": {
+      "111": ["spec:5"],
+      "123": ["spec:8"]
+    }
+  }
+}

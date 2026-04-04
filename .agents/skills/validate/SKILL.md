@@ -25,7 +25,11 @@ Assess whether a story's implementation meets its requirements.
    - Examples: story/status/index flips, changelog entries, commit/push/PR hygiene, or "Story marked done via /mark-story-done".
    - If implementation is complete and only that bookkeeping remains, treat the story as implementation-complete and recommend `Close now`.
 
-3. **Read architecture context** — Read `docs/ideal.md`, the story's spec refs, and all referenced ADRs. If the story touches architecture, workflows, schemas, or UX patterns and no ADR is cited, search `docs/decisions/` and `docs/design/` for relevant decision records before reviewing implementation quality.
+3. **Read architecture context** — Read `docs/ideal.md`, the story's spec refs,
+   the relevant state lane in `docs/methodology/state.yaml`, and all referenced
+   ADRs. If the story touches architecture, workflows, schemas, or UX patterns
+   and no ADR is cited, search `docs/decisions/` and `docs/design/` for
+   relevant decision records before reviewing implementation quality.
 
 4. **Run the full check suite**:
    - **Mandatory for all code changes** (regardless of perceived scope):
@@ -37,8 +41,10 @@ Assess whether a story's implementation meets its requirements.
        - `pnpm --dir ui run lint`
        - `cd ui && npx tsc -b`
        - If UI files changed: `pnpm --dir ui run build`
-     - **Agent/process surfaces**:
-       - If `AGENTS.md` or `.agents/skills/` changed: `./scripts/sync-agent-skills.sh --check`
+   - **Agent/process surfaces**:
+      - If `AGENTS.md` or `.agents/skills/` changed: `./scripts/sync-agent-skills.sh --check`
+      - If story metadata, ADR metadata, methodology state, runbooks, or other
+        methodology surfaces changed: `pnpm methodology:check`
    - **Rationale**: Strict linting (e.g., React 19 purity) and type-checking can flag issues that aren't immediately obvious in the IDE. Running these locally is the only way to ensure a green deployment gate.
    - If a command is unavailable (missing script/tool), report it explicitly.
 
@@ -80,6 +86,9 @@ Assess whether a story's implementation meets its requirements.
    - Check `Validation complete or explicitly skipped by user` when validation was actually run
    - Leave `Story marked done via /mark-story-done` unchecked
    - Add a work log note summarizing validation outcome and the recommended next step
+   - If validation surfaces medium/high architecture drift outside the current
+     shipping slice, map it to the best-fit `architecture_audits` domain and
+     recommend `/triage-architecture`
    - In that note and in the report, label results only from commands rerun in this validation pass; anything not rerun here must be called out as not freshly verified
 
 11. **Produce report** — Findings must explicitly call out:
@@ -87,6 +96,7 @@ Assess whether a story's implementation meets its requirements.
    - weak or unproven approach selection
    - redundant code left behind
    - explicit drift signals
+   - whether any drift signals should feed the architecture-audit lane
    - missing browser verification for UI work
    - unmet acceptance criteria or failed checks
    - remaining implementation gaps separately from close-out bookkeeping owned by `/mark-story-done` or `/finish-and-push`

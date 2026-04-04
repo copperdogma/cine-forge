@@ -6,7 +6,7 @@ user-invocable: true
 
 # /setup-methodology [greenfield|retrofit|refresh]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated graph surfaces under `docs/methodology/`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Use this skill as the **single public bootstrap entrypoint** for CineForge's
 methodology package. It replaces the old phased setup surface with one
@@ -20,8 +20,9 @@ reference at `.agents/skills/setup-methodology/references/modes.md`.
 
 ## What This Skill Owns
 
-- `docs/ideal.md` / `docs/spec.md` / `docs/build-map.md` alignment
+- `docs/ideal.md` / `docs/spec.md` / `docs/methodology/state.yaml` alignment
 - `docs/setup-checklist.md` working-copy generation from the bundled template
+- generated methodology surfaces (`docs/build-map.md`, `docs/stories.md`, `docs/methodology/graph.json`)
 - baseline golden + eval setup, including CineForge's sidequest benchmark lane
 - story / planning bootstrap guidance
 - `AGENTS.md` methodology wiring and canonical public surface
@@ -32,8 +33,8 @@ reference at `.agents/skills/setup-methodology/references/modes.md`.
 ### `greenfield`
 
 For a new repo or fresh skeleton. Install the full methodology package:
-ideal/spec/build-map/checklist, eval + golden baseline, story bootstrap, and
-canonical skill surface.
+ideal/spec/state/checklist, generated graph surfaces, eval + golden baseline,
+story bootstrap, and canonical skill surface.
 
 ### `retrofit`
 
@@ -51,9 +52,10 @@ redoing the entire methodology conversation.
 
 1. **Create or refresh the checklist first.** `docs/setup-checklist.md` is the
    active working copy for setup/migration/refresh passes.
-2. **Build-map-first operating rule:** planning and triage start from
-   `docs/build-map.md`. Implementation starts from the active story, but must
-   read the relevant build-map category and linked `spec:N` sections first.
+2. **State-first operating rule:** planning and triage start from
+   `docs/methodology/state.yaml`, then compile the generated dashboard views.
+   Implementation starts from the active story, but must read the relevant
+   `spec:N` category, state lane, and linked ADRs first.
 3. **Treat goldens and evals as baseline setup.** The methodology package is not
    fully installed until the repo has both the golden workspace and the eval
    registry / benchmark workflow.
@@ -73,7 +75,8 @@ redoing the entire methodology conversation.
 2. **Read the canonical references**
    - `docs/runbooks/setup-methodology.md`
    - `docs/methodology-ideal-spec-compromise.md`
-   - `docs/build-map.md`
+   - `docs/methodology/state.yaml`
+   - generated dashboards (`docs/build-map.md`, `docs/stories.md`) if present
    - `AGENTS.md`
    - relevant ADRs / design docs if the current drift involves workflow,
      architecture, schema, or UX decisions
@@ -86,8 +89,10 @@ redoing the entire methodology conversation.
    - Check items off as the run proceeds
 
 4. **Install or refresh the methodology package**
-   - Ensure `docs/ideal.md`, `docs/spec.md`, and `docs/build-map.md` describe
-     the same system
+   - Ensure `docs/ideal.md`, `docs/spec.md`, and `docs/methodology/state.yaml`
+     describe the same system
+   - Run `pnpm methodology:compile` after metadata changes so generated
+     dashboards stay current
    - Add or refresh `docs/runbooks/setup-methodology.md`
    - Update `AGENTS.md` so the repo teaches the current hierarchy and public
      skill surface
@@ -112,14 +117,15 @@ redoing the entire methodology conversation.
    - search for stale phased-setup language in AGENTS, runbooks, and active
      skills
    - confirm eval creation vs improvement paths are clearly separated
-   - perform a short alignment sweep across Ideal / Spec / Build Map / Stories /
-     Evals / AGENTS
+   - perform a short alignment sweep across Ideal / Spec / State / Generated
+     Dashboards / Stories / Evals / AGENTS
 
 ## Outputs
 
 - canonical setup skill surface installed
 - working copy of `docs/setup-checklist.md`
 - runbook + AGENTS docs aligned to the same package
+- generated methodology dashboards refreshed from the compiler
 - baseline golden/eval/story bootstrap included
 - cross-CLI wrappers regenerated and checked
 

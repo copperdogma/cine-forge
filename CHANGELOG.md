@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-04-02] — Methodology graph and state migration (Story 145)
+
+### Added
+- Added a canonical methodology state substrate, deterministic graph compiler, and generated planning views so mutable planning state no longer lives in hand-authored markdown dashboards
+- Added a bounded architecture-audit lane with state, skill, runbook, and synced Gemini wrapper coverage
+
+### Changed
+- Changed AGENTS, runbooks, skills, story tooling, and ADR tooling to treat `docs/methodology/state.yaml` plus compiled outputs as authority and to regenerate planning views instead of editing them manually
+- Changed Story 145 and the methodology audit artifact into the proof log for the migration and its certification loop
+
+### Fixed
+- Fixed active methodology surfaces still teaching manual `docs/stories.md` edits or authored build-map authority
+- Fixed the methodology certification contract so classified legacy warning debt is explicit instead of being mistaken for an unresolved structural failure
+
 ## [2026-04-04-01] — AI previz adoption gate and trust guardrails (Story 144)
 
 ### Added

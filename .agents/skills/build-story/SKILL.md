@@ -20,7 +20,12 @@ Execute a development story end-to-end.
    - Work Log
    If tasks or workflow gates are missing, add actionable checkboxes without discarding existing intent.
 
-3. **Read context** — Read `docs/ideal.md` first, then all spec refs, dependency stories, and referenced ADRs. If the story does not cite an ADR and the work affects architecture, workflow, schemas, or UX patterns, search `docs/decisions/` and `docs/design/` for relevant decision records instead of assuming none exist. Read the "Files to Modify" list if present.
+3. **Read context** — Read `docs/ideal.md` first, then all spec refs,
+   dependency stories, the relevant state lane in `docs/methodology/state.yaml`,
+   and referenced ADRs. If the story does not cite an ADR and the work affects
+   architecture, workflow, schemas, or UX patterns, search `docs/decisions/`
+   and `docs/design/` for relevant decision records instead of assuming none
+   exist. Read the "Files to Modify" list if present.
 
 4. **Ideal Alignment Gate** — Before exploring code, verify this story moves toward the Ideal:
    - Does this story close an Ideal gap? → proceed
@@ -93,7 +98,8 @@ Execute a development story end-to-end.
 ## Phase 3 — Implement
 
 12. **Implement** — Work through tasks in order. For each task:
-   - If the story status is `Pending`, set it to `In Progress` before implementation starts
+   - If the story status is `Pending`, set it to `In Progress` before
+     implementation starts, then run `pnpm methodology:compile`
    - Mark task as in progress in the story file
    - Do the work
    - Run relevant project checks after meaningful changes (backend: unit tests + Ruff; UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`)
@@ -105,6 +111,8 @@ Execute a development story end-to-end.
    - Backend: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`
    - UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`
    - `pnpm --dir ui run build` (catches errors typecheck misses)
+   - Methodology surfaces (if story metadata, ADR metadata, AGENTS, runbooks,
+     or skills changed): `pnpm methodology:check`
    - Review each acceptance criterion — is it met?
 
 13b. **Eval mismatch investigation** (if the story touched an AI module or eval):
@@ -124,7 +132,9 @@ Execute a development story end-to-end.
    - Record evidence in the work log: server startup output, curl response, screenshot description, console status, redundancy outcome
    - **Do not mark Done if this step was skipped** — static checks passing ≠ app works
 
-14. **Update docs** — Search all docs in the codebase and update any related to what we touched.
+14. **Update docs** — Search all docs in the codebase and update any related to
+   what we touched. If story metadata, ADR metadata, or methodology state
+   changed during the work, rerun `pnpm methodology:compile`.
 
 15. **Verify Central Tenets** — Check each tenet checkbox in the story:
    - Tenet 0: Could any user data be lost? Is capture-first preserved?

@@ -10,7 +10,8 @@ The methodology is an integrated package:
 
 - dual ideal (`docs/ideal.md`)
 - category-aligned spec (`docs/spec.md`)
-- build-map dashboard (`docs/build-map.md`)
+- canonical methodology state (`docs/methodology/state.yaml`)
+- compiled graph + generated dashboards (`docs/build-map.md`, `docs/stories.md`)
 - baseline golden + eval setup
 - story / planning bootstrap
 - AGENTS wiring and cross-CLI skill sync
@@ -23,7 +24,8 @@ and made the bootstrap surface harder to follow than the methodology itself.
 
 - Read `AGENTS.md`
 - Read `docs/methodology-ideal-spec-compromise.md`
-- Read `docs/build-map.md`
+- Read `docs/methodology/state.yaml`
+- Read generated dashboards if present (`docs/build-map.md`, `docs/stories.md`)
 - Read relevant ADRs / design docs if the current drift touches workflow,
   architecture, schema, or UX
 
@@ -62,8 +64,10 @@ them, use `/setup-methodology` instead.
    - Copy it to `docs/setup-checklist.md` if the current file is missing or stale
 
 3. `[judgment]` Align the methodology graph.
-   - `docs/ideal.md`, `docs/spec.md`, and `docs/build-map.md` should describe
-     the same system and hierarchy
+   - `docs/ideal.md`, `docs/spec.md`, and `docs/methodology/state.yaml` should
+     describe the same system and hierarchy
+   - `pnpm methodology:compile` should refresh the generated dashboards after
+     metadata or state changes
    - `AGENTS.md` should teach the same hierarchy and public surface
 
 4. `[judgment]` Confirm baseline evidence setup.
@@ -84,6 +88,7 @@ them, use `/setup-methodology` instead.
 7. `[script]` Audit for stale surface drift.
    - run `rg` across `AGENTS.md`, `docs/`, and `.agents/skills/` for the old
      phased setup names
+   - run `pnpm methodology:check` after rewiring active methodology surfaces
 
 ## Boundaries
 
@@ -92,6 +97,7 @@ them, use `/setup-methodology` instead.
 - Use `docs/setup-checklist.md` as the working copy
 - Treat evals and goldens as baseline setup, not optional later polish
 - Keep AGENTS, runbooks, and skills teaching the same public surface
+- Keep authored state separate from generated views
 
 ### Ask first
 
@@ -112,6 +118,9 @@ them, use `/setup-methodology` instead.
 - If stale setup references remain after sync, audit AGENTS, runbooks, and
   user-invocable skills first; historical scout docs and old story files may
   remain untouched.
+- If generated dashboards look wrong, fix canonical inputs first
+  (`state.yaml`, story metadata, ADR metadata) and rerun
+  `pnpm methodology:compile` instead of patching the generated files directly.
 
 ## Lessons Learned
 

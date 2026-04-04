@@ -8,8 +8,8 @@ user-invocable: true
 
 Bootstrap a new AI-coded project repo by extracting reusable patterns from one
 or more reference repos, then installing the **same methodology package** used
-here: ideal/spec/build-map, checklist, eval/golden baseline, AGENTS wiring, and
-canonical cross-CLI skill surface.
+here: ideal/spec/state, generated graph surfaces, checklist, eval/golden
+baseline, AGENTS wiring, and canonical cross-CLI skill surface.
 
 ## What It Does
 
@@ -33,9 +33,10 @@ canonical cross-CLI skill surface.
 
 2. **Extract the methodology package** — Preserve the durable package, not just
    isolated docs:
-   - dual ideal structure
-   - category-aligned spec + build map
-   - setup checklist flow
+- dual ideal structure
+- category-aligned spec + methodology state
+- generated planning dashboards (`docs/build-map.md`, `docs/stories.md`)
+- setup checklist flow
    - baseline eval + golden discipline, including registry/docs/templates and
      the golden fixture workspace
    - story / decomposition discipline
@@ -83,11 +84,12 @@ These patterns have been validated across multiple AI-coded projects. Include al
 
 - `ideal.md` holds both product and execution ideals
 - `spec.md` is category-aligned and contains product + build constraints
-- `build-map.md` is the central planning / triage dashboard
+- `docs/methodology/state.yaml` is the canonical planning / triage state
+- `build-map.md` and `stories.md` are generated dashboard views
 - `docs/setup-checklist.md` is the working copy used during bootstrap / refresh runs
 - goldens + evals are part of baseline setup, not an optional later add-on
-- planning starts from the build map; implementation starts from the story, but
-  must read the relevant build-map category and `spec:N` first
+- planning starts from methodology state; implementation starts from the story,
+  but must read the relevant `spec:N` category, state lane, and ADRs first
 
 ### Checkboxes Everywhere
 - All planning docs, stories, specs, work logs use checkboxes.
@@ -119,7 +121,9 @@ These patterns have been validated across multiple AI-coded projects. Include al
 - **docs/runbooks/promptfoo.md** — prompt-eval operating guide when the repo uses promptfoo
 - **docs/ideal.md** — north star
 - **docs/spec.md** — current constraints
-- **docs/build-map.md** — central dashboard and planning surface
+- **docs/methodology/state.yaml** — canonical planning state
+- **docs/build-map.md** — generated dashboard view
+- **docs/stories.md** — generated story index and roadmap view
 - **docs/stories/** — implementation slices
 - **docs/decisions/** — ADRs and research
 - **docs/evals/** — eval registry and attempt history
@@ -193,6 +197,9 @@ CHANGELOG.md
 docs/
   ideal.md
   spec.md
+  methodology/
+    state.yaml
+    graph.json
   build-map.md
   setup-checklist.md
   stories.md

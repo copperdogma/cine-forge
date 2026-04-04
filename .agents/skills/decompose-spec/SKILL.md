@@ -1,6 +1,6 @@
 ---
 name: decompose-spec
-description: Pipeline to decompose spec.md into tracked stories via build map and coverage matrix
+description: Pipeline to decompose spec.md into tracked stories via methodology state, generated dashboards, and a coverage matrix
 user-invocable: true
 ---
 
@@ -11,46 +11,49 @@ Run once to bootstrap, then maintain the coverage matrix as a living doc.
 
 ## Pipeline
 
-spec.md + ADRs → Build Map → Coverage Matrix → Stories
-                  (systems)   (line-by-line)    (vertical slices)
+spec.md + ADRs → Methodology State → Generated Dashboards → Coverage Matrix → Stories
+                  (categories)      (views)                 (line-by-line)    (vertical slices)
 
-## Key Concept: Systems Own Stories
+## Key Concept: Categories Own Stories
 
-The build map defines systems — technical umbrellas like "Screenplay Intake", "World Building",
-or "Operator Console". A system is NOT a story. Each system owns one or more stories,
-starting with an MVP slice and adding capability with follow-up stories.
+Methodology state defines category ownership — technical umbrellas like story
+intake, world building, or operator-console substrate. A category is NOT a
+story. Each category owns one or more stories, starting with an MVP slice and
+adding capability with follow-up stories.
 
-Build Map System (e.g., "Screenplay Intake")
+Methodology Category (e.g., `spec:2 Story Intake & Understanding`)
   ├── Story 001 — FDX/Fountain parsing (MVP slice: detect format → normalize → store)
   ├── Story 002 — PDF extraction & OCR
   └── Story 003 — Format validation & error recovery
 
 Small systems (auth, scaffold, spikes) may be a single story. Large systems should always be
-multiple stories. The build map checkbox means "ALL stories under this system are complete",
+multiple stories. The category checkbox means "ALL stories under this category are complete",
 not "one story exists."
 
 ## Steps
 
-1. Build the Build Map — Read `docs/ideal.md`, `docs/spec.md`, `docs/build-map.md` (if it exists), and all decided ADRs. Identify major
-   systems/components. Write to `docs/build-map.md`:
-   - Each system gets a section with: name, summary, spec sections covered, ADR refs,
-     dependencies on other systems
-   - Order by dependency (foundations first)
-   - Mark each system: MVP or Future
-   - Add checkboxes: [ ] = no stories yet, [x] = fully covered by stories
+1. Build or refresh methodology state — Read `docs/ideal.md`, `docs/spec.md`,
+   `docs/methodology/state.yaml` (if it exists), generated dashboards, and all
+   decided ADRs. Identify the owning categories/components. Update
+   `docs/methodology/state.yaml`:
+   - each category gets a state entry with summary, substrate, phase, and notes
+   - dependencies and roadmap overlays stay in state, not hand-authored
+     dashboards
+   - rerun `pnpm methodology:compile` after changes so the generated views stay
+     current
 
 2. Build the Coverage Matrix — For every actionable checkbox/requirement in spec.md, create
    a row in docs/coverage.md:
-   - Spec line number, item description, system it belongs to, story ID (or —), status
+   - Spec line number, item description, category it belongs to, story ID (or —), status
    - This is the "nothing missed" guarantee
    - Items explicitly marked "Future" or "NOT MVP" in spec get tagged but no story needed yet
 
-3. Create Story Skeletons — For each MVP system, create one or more vertical-slice stories
+3. Create Story Skeletons — For each active category, create one or more vertical-slice stories
    via /create-story:
 
-   The umbrella rule: A build map system is NOT a story. Systems own stories. Start each
-   system with its MVP slice — the smallest vertical cut that delivers demoable value for
-   that system. Larger systems get additional skeleton stories for follow-up slices.
+   The umbrella rule: A category is NOT a story. Categories own stories. Start each
+   category with its MVP slice — the smallest vertical cut that delivers demoable value for
+   that category. Larger categories get additional skeleton stories for follow-up slices.
 
    Story sizing: A story should be buildable in 1-2 AI sessions (~1-3 hours of focused work).
    If a story touches too many concerns, split it. Signs a story is too fat:
@@ -79,8 +82,10 @@ not "one story exists."
 
 ## Living Documents
 
-- docs/build-map.md — Updated when spec changes or new ADRs are decided. Systems checked
-  off when ALL their stories are complete.
+- `docs/methodology/state.yaml` — Updated when spec changes, new ADRs are
+  decided, or planning state changes.
+- `docs/build-map.md` / `docs/stories.md` — Generated views refreshed by
+  `pnpm methodology:compile`.
 - docs/coverage.md — Updated every time a story is created, modified, or completed. The
   single source of truth for "is every spec item tracked?"
 - Story skeletons — Accumulate notes over time (research findings, tech recommendations,
@@ -100,8 +105,8 @@ When ready to build a skeleton story:
 ## Guardrails
 
 - Never create stories without updating the coverage matrix
-- Never skip the build map — it prevents the "flat list" problem
-- A build map system ≠ a story. Systems are umbrellas; stories are vertical slices under them.
+- Never skip methodology state — it prevents the "flat list" problem
+- A category ≠ a story. Categories are umbrellas; stories are vertical slices under them.
 - One story = one demoable outcome. If you can't demo it in one sentence, split it.
 - Skeleton stories are real story files (same template) — just not fully detailed yet
 - The coverage matrix is append-only for spec items — don't remove rows, mark them Deferred or Cut

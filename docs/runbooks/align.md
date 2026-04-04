@@ -9,7 +9,9 @@ This is the operational companion to `/align`.
 ## Prerequisites
 
 - The triggering change is known, or you can infer it from recent work
-- [docs/ideal.md](../ideal.md), [docs/spec.md](../spec.md), and [docs/build-map.md](../build-map.md) are available
+- [docs/ideal.md](../ideal.md), [docs/spec.md](../spec.md),
+  [docs/methodology/state.yaml](../methodology/state.yaml), and generated
+  dashboards are available
 - You know whether any relevant ADRs or eval results changed
 
 ## Steps
@@ -23,6 +25,8 @@ This is the operational companion to `/align`.
     - `docs/ideal.md`
     - `docs/methodology-ideal-spec-compromise.md`
     - `docs/spec.md`
+    - `docs/methodology/state.yaml`
+    - `docs/methodology/graph.json`
     - `docs/build-map.md`
     - `docs/stories.md`
      - relevant ADRs under `docs/decisions/` and `docs/design/`
@@ -33,7 +37,8 @@ This is the operational companion to `/align`.
    - Ask:
      - Ideal: did the change reveal a new requirement or preference?
      - Spec: did it create, simplify, or delete a compromise?
-     - Build Map: did system scope, dependencies, or compromise progress change?
+     - Methodology state / generated dashboards: did substrate, phase,
+       ownership, dependencies, or compromise progress change?
      - Stories: are any Draft/Pending/In Progress stories now wrong, blocked, or unnecessary?
      - Evals: should any be re-run, added, or removed?
      - ADRs: does the change contradict an accepted decision or require a new one?
@@ -42,6 +47,7 @@ This is the operational companion to `/align`.
 4. **[judgment] Recommend concrete actions**
    - End with ordered actions such as:
      - update build map
+     - update methodology state and rerun `pnpm methodology:compile`
      - revise a story
      - add or rerun an eval
      - create or update an ADR
@@ -53,7 +59,8 @@ This is the operational companion to `/align`.
 ### Always do
 
 - Read the actual documents before calling something aligned or misaligned
-- Use the build map when the change affects system ownership or compromise progress
+- Use methodology state and the generated build map when the change affects
+  system ownership or compromise progress
 - Keep the report short and actionable
 
 ### Ask first
@@ -73,11 +80,13 @@ This is the operational companion to `/align`.
 - **The change is vague**
   - Fix: start from recent git history or ask the user what changed.
 
-- **Build map is missing or stale**
-  - Fix: note that explicitly and route the follow-up into the current implementation story.
+- **Methodology state or generated dashboard is missing or stale**
+  - Fix: note that explicitly and route the follow-up into the current
+    implementation story.
 
 - **A change seems to affect everything**
-  - Fix: focus on the strongest ripple first: spec, build map, and active stories.
+  - Fix: focus on the strongest ripple first: spec, methodology state, and
+    active stories.
 
 ## Lessons Learned
 

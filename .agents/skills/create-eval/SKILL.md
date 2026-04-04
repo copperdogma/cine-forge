@@ -1,12 +1,12 @@
 ---
 name: create-eval
-description: Scaffold a new CineForge eval in the registry and benchmark workspace, linked to the relevant story, spec compromise, and build-map category
+description: Scaffold a new CineForge eval in the registry and benchmark workspace, linked to the relevant story, spec compromise, and methodology category
 user-invocable: true
 ---
 
 # /create-eval [eval-id or short description]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Create a **new eval scaffold**. Baseline eval/golden setup belongs to
 `/setup-methodology`; once that package exists, `/create-eval` is the recurring
@@ -37,7 +37,7 @@ already fits.
 
 1. **Read context first**
    - `docs/ideal.md`
-   - relevant `spec:N` sections and build-map category
+   - relevant `spec:N` sections and methodology category
    - linked ADRs / design docs
    - `docs/evals/README.md`
    - `docs/runbooks/promptfoo.md` if the eval is prompt-based
@@ -74,7 +74,7 @@ already fits.
 7. **Link the eval to the methodology graph**
    - owning story or story draft
    - relevant `spec:N` or compromise ID
-   - relevant build-map category / phase
+   - relevant methodology category / phase
    - any fixture or golden IDs the eval depends on
 
 8. **Verify the scaffold**
@@ -85,7 +85,7 @@ already fits.
 ## Guardrails
 
 - Do not run the `/improve-eval` optimization loop here.
-- Do not create an eval with no story / spec / build-map anchor.
+- Do not create an eval with no story / spec / methodology-category anchor.
 - Do not invent a second eval layout when the sidequest benchmark workspace
   already fits the task.
 - Do not leave the registry entry partial; a new eval is not created until the

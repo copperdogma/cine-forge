@@ -1,12 +1,12 @@
 ---
 name: triage-stories
-description: Find which stories best advance the highest-leverage Ideal/spec/build-map gap
+description: Find which stories best advance the highest-leverage Ideal/spec/state gap
 user-invocable: true
 ---
 
 # /triage-stories [story-number]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Evaluate the story backlog as a **continuation surface** for methodology gaps. The backlog does not define priority by itself.
 
@@ -20,6 +20,7 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - `docs/ideal.md`
    - `docs/spec.md`
    - `docs/methodology-ideal-spec-compromise.md`
+   - `docs/methodology/state.yaml`
    - `docs/build-map.md`
    - Goal: identify the highest-leverage live gap before reading candidate stories.
 
@@ -36,7 +37,7 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - For each gap, state:
      - the unmet Ideal promise or overscaffolded compromise
      - the owning spec section(s)
-     - the build-map category, substrate, and phase
+     - the methodology category, substrate, and phase
    - Prefer:
      - missing or partial substrate in `climb`
      - credible `converge` opportunities
@@ -51,7 +52,7 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
 
 5. **Score and rank** — Evaluate each candidate story on these dimensions, in this order:
    - **Gap fit**: Does this story directly advance the top methodology gap, or is it a side quest?
-   - **Spec / build-map leverage**: Does it close missing substrate in `climb`, execute a real `converge` step, or is it merely `hold` polish?
+   - **Spec / state leverage**: Does it close missing substrate in `climb`, execute a real `converge` step, or is it merely `hold` polish?
    - **Dependency readiness**: Are all upstream stories Done? Does this unblock downstream stories?
    - **Blocking power**: How many other stories depend on this one?
    - **Simplification leverage**: Does this story remove scaffolding or unblock future deletion of a compromise?
@@ -75,7 +76,7 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - Draft stories that should be promoted to Pending before build
    - Stories that appear stale or superseded
    - Dependency chains that are bottlenecked
-   - Major build-map gaps that have no story coverage or only weak story coverage
+   - Major methodology-category gaps that have no story coverage or only weak story coverage
    - Ready stories that are real but lower leverage than the top methodology gap
 
 8. **User decides** — Wait for the user to pick a story or ask for more detail on any candidate. Do NOT start building — that's `/build-story`.

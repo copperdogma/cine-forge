@@ -21,12 +21,14 @@ This file is the project-wide source of truth for agent behavior and engineering
 > level you're working at.
 >
 > **Methodology stack**: `docs/methodology-ideal-spec-compromise.md` explains how
-> the dual ideals, category-aligned spec (`spec:1` through `spec:11`), build map,
-> stories, and evals fit together. `docs/build-map.md` is the central dashboard:
-> it tracks product need, tech need, substrate status, story coverage, ADR refs,
-> and phase governance (`climb`, `hold`, `converge`, `unplanned`). Read both when
-> work touches planning, methodology, or simplification decisions. Canonical
-> methodology bootstrap skill: `/setup-methodology`. Recurring companion skills:
+> the dual ideals, category-aligned spec (`spec:1` through `spec:11`),
+> `docs/methodology/state.yaml`, generated dashboard views, stories, and evals
+> fit together. `docs/methodology/state.yaml` is the canonical planning state.
+> `docs/build-map.md` is a generated dashboard view that tracks product need,
+> tech need, substrate status, story coverage, ADR refs, and phase governance
+> (`climb`, `hold`, `converge`, `unplanned`). Read both when work touches
+> planning, methodology, or simplification decisions. Canonical methodology
+> bootstrap skill: `/setup-methodology`. Recurring companion skills:
 > `/create-eval`, `/improve-eval`, and `/align`.
 
 ## Core Agent Mandates

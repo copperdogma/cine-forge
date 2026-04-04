@@ -1,12 +1,13 @@
 ---
 name: create-story
-description: Scaffold a numbered story file and update the story index
+description: Scaffold a numbered story file and refresh the generated planning surfaces
 user-invocable: true
 ---
 
 # /create-story [title]
 
-Create a new story in `docs/stories/` with consistent format.
+Create a new story in `docs/stories/` with consistent format. `docs/stories.md`
+is generated from story metadata; do not hand-edit it.
 
 ## Inputs
 
@@ -31,6 +32,9 @@ Create a new story in `docs/stories/` with consistent format.
 
 2. **Fill in the story file** — Replace all placeholder text (`{...}`) with real content:
    - Title (replace the slug with the human-readable title)
+   - Frontmatter references (`ideal_refs`, `spec_refs`, `adr_refs`,
+     `depends_on`, `category_refs`, `compromise_refs`,
+     `architecture_domains`, `roadmap_tags`, `legacy_system`)
    - Goal, acceptance criteria, out of scope, tasks, files to modify
    - Ideal refs, spec refs, ADR refs, and dependencies
    - Approach evaluation: simplification baseline, candidate approaches (AI-only, hybrid, code), repo constraints, existing patterns to reuse, and what eval distinguishes them
@@ -39,11 +43,17 @@ Create a new story in `docs/stories/` with consistent format.
    - UI verification work if the story touches the UI
    - If the feature is user-facing and requires both backend/API and UI to be usable, keep that end-to-end path in the same story by default. Split only when the scope is genuinely huge and independently deliverable.
 
-3. **Update story index** — Add a row to the table in `docs/stories.md`:
-   `| NNN | Title | Priority | Draft | [link](stories/story-NNN-slug.md) |`
-   Insert the row in System order (not at the bottom). IDs may be out of numeric order — that is expected and correct.
+3. **Refresh generated planning surfaces** — Run:
 
-4. **Verify** — Confirm the file exists, numbering is consistent, and the stories.md row is correct.
+   ```bash
+   pnpm methodology:compile
+   ```
+
+   This rebuilds `docs/stories.md`, `docs/build-map.md`, and
+   `docs/methodology/graph.json` from story metadata and methodology state.
+
+4. **Verify** — Confirm the file exists, numbering is consistent, and the
+   generated planning surfaces include the new story in the right order.
 
 ## Story Statuses
 
@@ -84,6 +94,7 @@ Create a new story in `docs/stories/` with consistent format.
 - Never commit or push without explicit user request
 - Verify numbering is sequential — no gaps, no duplicates
 - Do not leave ADR / decision references implicit for architecture-affecting stories
+- Do not remove the frontmatter block — the methodology compiler depends on it
 
 ## Work Log Entry Format
 

@@ -6,7 +6,7 @@ user-invocable: true
 
 # /finish-and-push [story-number] [--cleanup]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current build-map phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current state phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
 
 `/finish-and-push` is an orchestrator. It does not define a second close-out or
 landing workflow. It wraps the existing leaf skills in order:
@@ -48,8 +48,8 @@ appears.
    - If the story cannot be resolved unambiguously, stop and ask.
 
 2. **Run `/mark-story-done` first**
-   - Reuse that skill's workflow gates, validation requirements, `docs/stories.md`
-     update, and `CHANGELOG.md` behavior.
+   - Reuse that skill's workflow gates, validation requirements, generated
+     planning-surface refresh, and `CHANGELOG.md` behavior.
    - Do not skip it and jump straight to git check-in.
 
 3. **Triage issues from close-out**
@@ -81,6 +81,7 @@ appears.
 Treat these as **minor** unless they reveal a larger underlying problem:
 
 - missing workflow-gate checkbox or stale story status row
+- stale generated planning surfaces resolved by rerunning `pnpm methodology:compile`
 - missing or incomplete `CHANGELOG.md` entry
 - generated skill wrapper drift fixed by `scripts/sync-agent-skills.sh`
 - small doc or metadata mismatch caused by the current work

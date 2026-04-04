@@ -4,8 +4,9 @@ AI-Driven Film Reasoning, Pre-Production, and Generation Pipeline
 
 > **This spec is a set of active compromises against the Ideal (`docs/ideal.md`).**
 > It now covers both product constraints and execution constraints. Categories are
-> organized as `spec:1` through `spec:11`, matching `docs/build-map.md`. Each
-> category may contain product constraints, build constraints, or both.
+> organized as `spec:1` through `spec:11`, matching the methodology state and
+> generated planning dashboards. Each category may contain product constraints,
+> build constraints, or both.
 > Hierarchical section IDs (for example `spec:4.10.2`) are the stable
 > cross-reference surface across stories, ADRs, build-map entries, and triage
 > guidance.
@@ -1288,7 +1289,7 @@ It supports:
 > **Product need:** While current AI cannot yet build CineForge from the ideal in
 > one shot, the repo needs explicit planning artifacts that make work sequence,
 > validation, and handoff coherent.
-> **Tech substrate:** Story files, build-map substrate tracking, triage skills,
+> **Tech substrate:** Story files, methodology state, generated dashboards, triage skills,
 > workflow gates, AGENTS instructions, runbooks, and verbose work logs.
 
 ### spec:11.1 — Story Lifecycle and Handoff Chain
@@ -1307,11 +1308,12 @@ The lifecycle chain is:
 Workflow gates exist because current AI still benefits from explicit handoff
 boundaries and evidence review before closing work.
 
-### spec:11.2 — Build Map, Triage, and Substrate Tracking
+### spec:11.2 — Methodology State, Generated Dashboards, and Triage
 
-`docs/build-map.md` is the central dashboard for planning state.
+`docs/methodology/state.yaml` is the canonical planning-state substrate.
+`docs/build-map.md` and `docs/stories.md` are generated dashboard views.
 
-It must make these visible:
+Together they must make these visible:
 - product need
 - tech need
 - substrate status
@@ -1319,8 +1321,9 @@ It must make these visible:
 - story coverage
 - compromise progress
 
-`/triage`, `/triage-stories`, `/triage-evals`, and related runbooks consume that
-surface to decide what should happen next.
+`/triage`, `/triage-stories`, `/triage-evals`, `/triage-architecture`, and
+related runbooks consume that state/dashboard layer to decide what should
+happen next.
 
 ### spec:11.3 — Verification, Eval Classification, and Registry Discipline
 
@@ -1350,7 +1353,7 @@ to pick up a partially completed story safely from the recorded evidence.
 | ID | Process Element | Limitation | Residual | Detection | Resolves |
 |---|---|---|---|---|---|
 | B1 | Story files and tracked checklists | AI cannot yet hold large delivery state coherently across sessions | AI -> deletion | Reliable long-horizon planning and execution continuity without explicit task slicing | Story files collapse into optional provenance rather than managed build inputs |
-| B2 | Build map and substrate tracking | AI cannot reliably infer architectural readiness from repo state alone during triage | AI -> deletion | Reliable codebase architectural reasoning at triage time | `docs/build-map.md` becomes optional internal state or disappears |
+| B2 | Methodology state and substrate tracking | AI cannot reliably infer architectural readiness from repo state alone during triage | AI -> deletion | Reliable codebase architectural reasoning at triage time | Explicit methodology state becomes optional internal provenance or disappears |
 | B3 | Triage skills and routing runbooks | AI still benefits from explicit "what next?" orchestration | AI -> deletion | Reliable autonomous prioritization from repo state without scaffolding | `/triage*` skill scaffolding and companion runbooks disappear |
 | B4 | Workflow gates and story-closure chain | Humans still want optional review, and AI is not yet trustworthy enough to close work autonomously by default | Human -> preference | Human trust is high enough that review collapses to the operator's preferred involvement level | `/validate` and `/mark-story-done` shrink to optional review rather than mandatory gates |
 | B5 | `AGENTS.md`, skills, and runbooks | AI cannot yet infer project conventions and workflow rules from code plus docs alone | AI -> deletion | Reliable convention inference from the repository state itself | Session instructions and procedural runbooks shrink to lightweight provenance or disappear |

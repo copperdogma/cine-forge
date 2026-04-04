@@ -6,7 +6,7 @@ user-invocable: true
 
 # /triage-inbox [scan]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Go through accumulated inbox items together with the user.
 
@@ -18,7 +18,7 @@ Go through accumulated inbox items together with the user.
 ## Steps
 
 1. **Read the methodology frame first**
-   - Read `docs/ideal.md`, `docs/spec.md`, and `docs/build-map.md`
+   - Read `docs/ideal.md`, `docs/spec.md`, `docs/methodology/state.yaml`, and `docs/build-map.md`
    - Goal: identify the current live gaps before letting inbox novelty drive priority
 
 2. **Read inbox** — Load `docs/inbox.md`. List all untriaged items.
@@ -31,10 +31,10 @@ Go through accumulated inbox items together with the user.
    - Read the current story index (`docs/stories.md`) and recent project state to understand what's in flight
    - Group items by theme if natural clusters exist (e.g., "these 3 are all chat UI bugs").
    - Recommend a **top 3-5** to triage first, with a short "why" for each:
-     - What Ideal/spec/build-map gap does it address?
+     - What Ideal/spec/state gap does it address?
      - Does it advance the highest-leverage live gap or just a side issue?
      - Is it blocking current work?
-     - Does it fill missing or partial substrate in an active build-map category?
+     - Does it fill missing or partial substrate in an active methodology category?
      - Does it unlock other deferred items?
      - Is it time-sensitive (external API, model availability)?
    - Flag items that are probably **defer/discard** candidates so the user can batch-dismiss them.
@@ -53,7 +53,7 @@ Go through accumulated inbox items together with the user.
       - Does an existing story already cover this scope?
       - Would this naturally fit as a task or note within an existing story?
       - Is there a Draft story that could absorb this?
-      - Does the current build map reveal a larger gap that this item should be attached to rather than tracked as a standalone feature?
+      - Does the current methodology state reveal a larger gap that this item should be attached to rather than tracked as a standalone feature?
 
    c. **Propose disposition:**
       - **Fold into existing story** → Add as a note/task to that story's Notes section (preferred when a home exists)
@@ -78,4 +78,4 @@ Go through accumulated inbox items together with the user.
 - Prefer folding into existing stories over creating new ones — fight backlog inflation
 - Always ask "what if we don't do this?" before committing to a story
 - `scan` mode is read-only — never create artifacts or delete inbox items there
-- Do not let inbox novelty outrank a larger live Ideal/spec/build-map gap without saying why
+- Do not let inbox novelty outrank a larger live Ideal/spec/state gap without saying why

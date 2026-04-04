@@ -1,3 +1,14 @@
+---
+status: "PENDING — Needs deep research"
+spec_refs: []
+ideal_refs: []
+story_refs: []
+compromise_refs: []
+related_adrs: []
+supersedes: []
+superseded_by: []
+---
+
 # ADR-NNN: TITLE
 
 **Status:** PENDING — Needs deep research
@@ -42,7 +53,7 @@ Before marking this ADR as ACCEPTED, complete all applicable items:
 - [ ] Stories created or updated to implement the decision
 - [ ] `AGENTS.md` updated if the decision affects agent behavior
 - [ ] Other ADRs cross-referenced if dependencies exist
-- [ ] `docs/stories.md` index updated with new stories
+- [ ] `pnpm methodology:compile` rerun if ADR metadata affects generated planning surfaces
 
 ## Legacy Context
 

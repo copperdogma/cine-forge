@@ -30,7 +30,7 @@ existing close-out and landing workflows; it sequences them safely.
 
 2. **[script] Run `/mark-story-done` first**
    - Reuse the leaf skill's workflow-gate checks, validation requirements,
-     `docs/stories.md` update, and `CHANGELOG.md` behavior.
+     generated planning-surface refresh, and `CHANGELOG.md` behavior.
    - Do not jump straight to git check-in.
 
 3. **[judgment] Triage close-out findings**

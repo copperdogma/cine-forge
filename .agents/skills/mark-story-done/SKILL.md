@@ -55,7 +55,8 @@ If complete (or the user explicitly approves the closure recommendation and any 
 1. Set story file status to `Done`.
 2. Check `Story marked done via /mark-story-done`.
 3. If validation was explicitly skipped by the user, record that decision in the work log and check `Validation complete or explicitly skipped by user`.
-4. Update corresponding row in `docs/stories.md` to `Done`.
+4. Run `pnpm methodology:compile` to refresh generated planning surfaces after
+   the story status change. Do not modify the generated story index directly.
 5. Append completion note to story work log with date and evidence. End the note with the recommended next step: `/check-in-diff`.
 6. Update CHANGELOG.md:
    - Search CHANGELOG.md for the story number (e.g., `Story 001`)

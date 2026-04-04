@@ -17,6 +17,7 @@ This is the operational companion to `/triage-evals`.
 1. **[script] Read the methodology frame first**
    - Open `docs/ideal.md`
    - Open `docs/spec.md`
+   - Open `docs/methodology/state.yaml`
    - Open `docs/build-map.md`
    - Goal: identify the current live gap and whether it is even waiting on eval evidence
 

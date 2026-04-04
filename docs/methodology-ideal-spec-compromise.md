@@ -6,11 +6,13 @@ CineForge is built from the top down:
 
 1. **The Ideal** defines both the perfect product and the perfect execution experience.
 2. **The Spec** records the active constraints against those ideals in stable `spec:N` categories.
-3. **The Build Map** mirrors those categories and shows ownership, substrate status, story coverage, and phase.
-4. **ADRs, Stories, Evals, Skills, and Runbooks** turn those constraints into concrete decisions, implementation slices, and deletion gates.
+3. **Methodology state** stores mutable planning truth such as substrate, phase, roadmap focus, and architecture-audit cadence.
+4. **Compiled graph + generated dashboards** join authored canon into human-readable views such as `docs/build-map.md` and `docs/stories.md`.
+5. **ADRs, Stories, Evals, Skills, and Runbooks** turn those constraints into concrete decisions, implementation slices, and deletion gates.
 
-The spec should shrink over time. The build map makes that shrinkage visible. If
-AI capability changes enough to make parts of the methodology stack unnecessary,
+The spec should shrink over time. The generated dashboards make that shrinkage
+visible without turning mutable planning state into hand-edited prose. If AI
+capability changes enough to make parts of the methodology stack unnecessary,
 the methodology itself should simplify too.
 
 ## Core Artifacts
@@ -34,7 +36,8 @@ The Ideal answers:
 
 [docs/spec.md](spec.md) is the set of active constraints against the ideals.
 It is organized as `spec:1` through `spec:11`, and those IDs are the stable
-cross-reference surface for stories, ADRs, build-map rows, and agent guidance.
+cross-reference surface for stories, ADRs, methodology state, generated
+dashboards, and agent guidance.
 
 Each active compromise or execution constraint should name:
 - the Ideal behavior
@@ -43,20 +46,34 @@ Each active compromise or execution constraint should name:
 - the detection mechanism for when the limitation changes
 - what gets deleted or simplified when it resolves
 
-### The Build Map
+### Methodology State
 
-[docs/build-map.md](build-map.md) is the operational companion to the spec.
+[docs/methodology/state.yaml](methodology/state.yaml) is the canonical
+operational companion to the spec.
 
 It mirrors the spec categories 1:1 and answers:
 - What product need does this category serve?
 - What tech substrate must exist for it to work?
 - Is that substrate `exists`, `partial`, `missing`, or `unplanned`?
-- Which stories and ADRs currently own the work?
 - What phase is the live constraint in?
+- What roadmap focus, campaign state, or architecture-audit pressure exists?
 
-The build map exists because the spec alone cannot answer "where does this
-constraint live?" or "is the right next move a quality climb, a hold pass, or a
+State exists because the spec alone cannot answer "where does this constraint
+live right now?" or "is the right next move a quality climb, a hold pass, or a
 convergence deletion?"
+
+### Generated Dashboards
+
+[docs/build-map.md](build-map.md) and [docs/stories.md](stories.md) are
+generated views built from canonical sources plus methodology state.
+
+They answer:
+- Which stories and ADRs currently own the work?
+- How does category state look in one readable dashboard?
+- Which overlays, focus areas, and backlog summaries matter right now?
+
+Generated dashboards exist because the raw state and graph are precise but not
+pleasant to scan manually. They are views, not writable sources of truth.
 
 ## Limitation Types
 
@@ -74,7 +91,7 @@ The important distinction: **AI-capability compromises should usually have delet
 
 ## Substrate And Phase Governance
 
-Every build-map category declares both a substrate state and, when relevant, a
+Every methodology category declares both a substrate state and, when relevant, a
 phase.
 
 ### Substrate
@@ -100,8 +117,9 @@ Examples:
 - `hold` — cost reduction, UX simplification, keeping model defaults current
 - `converge` — delete a QA stage or routing layer once the detection eval truly passes
 
-The build map is where substrate and phase live side by side. It should make the
-correct next move legible without needing to reconstruct the whole repo from memory.
+`docs/methodology/state.yaml` is where substrate and phase live side by side.
+The generated build map should make the correct next move legible without
+needing to reconstruct the whole repo from memory.
 
 ## Meta-Skills
 
@@ -114,7 +132,7 @@ Proactive. Answers: "What is the highest-value next action?"
 It starts from the planning spine, in order:
 - Ideal
 - spec
-- build map
+- methodology state / generated dashboards
 - relevant ADRs
 
 Only after naming the primary live gap does it consult leaf triage outputs
@@ -123,7 +141,7 @@ Only after naming the primary live gap does it consult leaf triage outputs
 Stories, inbox items, and evals are not the source of priority. They are the
 execution surfaces that may or may not already advance the chosen gap.
 
-The build map matters here because a strong next step in a `climb` category is
+The state/dashboard layer matters here because a strong next step in a `climb` category is
 different from a strong next step in `hold` or `converge`.
 
 ### `/align`
@@ -145,7 +163,8 @@ It surfaces which artifacts now need attention across the methodology graph.
 Ideal (product + execution)
   ↓
 Spec (active product constraints + execution constraints)
-  ↔ Build Map (categories + substrate + phase)
+  ↔ Methodology State (categories + substrate + phase + roadmap + audit cadence)
+  ↔ Generated Dashboards (`docs/build-map.md`, `docs/stories.md`)
   ↔ ADRs (decisions that shape the constraints)
   ↓
 Stories (implementation slices)
@@ -155,8 +174,8 @@ Evals (quality measures + deletion gates)
 ```
 
 This is a graph, not a strict hierarchy. Stories can reveal Ideal gaps. ADRs can
-reshape the spec. Evals can delete compromises. The build map is the bridge
-between abstract constraints and concrete system ownership.
+reshape the spec. Evals can delete compromises. Methodology state plus compiled
+views bridge abstract constraints and concrete system ownership.
 
 ## CineForge-Specific Rules
 
@@ -166,12 +185,16 @@ between abstract constraints and concrete system ownership.
 - Treat execution constraints as first-class. Story lifecycle, build-map upkeep,
   verification discipline, and agent tooling live in `spec:11`, not in an
   undocumented side channel.
+- Keep authored truth separate from generated views. Update
+  `docs/methodology/state.yaml` or story/ADR metadata, then rerun
+  `pnpm methodology:compile`; do not hand-edit generated dashboards.
 - Keep Timeline / Playable Assembly explicit. It is a real product lane, not a
   footnote under another category.
 - Do not treat every red compromise eval as blocking. Capability-detector evals are often healthy while still red; use runtime-blocking vs non-runtime-blocking semantics.
 - Do not flatten leaf triage skills into a monolithic `/triage`. CineForge already has useful specialized logic, especially in `/triage-evals`.
-- Do not let the build map become a stale diagram. If the system structure,
-  substrate, or phase changes materially, update it as part of the same story.
+- Do not let the generated build map become a stale diagram. If the system
+  structure, substrate, or phase changes materially, update canonical inputs
+  and regenerate it as part of the same story.
 - Treat the methodology itself as a compromise when appropriate. If better AI or
   better tooling removes the need for a planning ritual, delete the ritual.
 

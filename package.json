@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "methodology:compile": "node scripts/methodology-graph.js build",
+    "methodology:check": "node scripts/methodology-graph.js check"
+  },
   "dependencies": {
     "afterwriting": "^1.17.3"
   }

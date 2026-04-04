@@ -6,7 +6,7 @@ user-invocable: true
 
 # /triage-evals [eval-id|compromise-id] [--stale-only]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Cheap, read-only eval diagnosis. Use this when the question is "does eval work deserve priority for the current methodology gap?" rather than "go improve this eval now."
 
@@ -15,9 +15,9 @@ Companion runbook: `docs/runbooks/triage-evals.md`
 ## Purpose
 
 - Identify the next eval, compromise gate, or stale score that deserves attention
-- Determine whether eval work is actually the right next move for the current Ideal/spec/build-map gap
+- Determine whether eval work is actually the right next move for the current Ideal/spec/state gap
 - Surface whether the right next action is `/improve-eval`, a fresh benchmark rerun, or no action
-- Respect build-map phase semantics:
+- Respect state phase semantics:
   - `climb` = quality/capability work
   - `hold` = efficiency, simplicity, latency, or cost work
   - `converge` = deletion work once the gate is truly green
@@ -33,6 +33,7 @@ Companion runbook: `docs/runbooks/triage-evals.md`
 1. **Read the methodology frame first**
    - Open `docs/ideal.md`
    - Open `docs/spec.md`
+   - Open `docs/methodology/state.yaml`
    - Open `docs/build-map.md`
    - Goal: identify which live gap or compromise eval work would actually serve
 
@@ -42,7 +43,7 @@ Companion runbook: `docs/runbooks/triage-evals.md`
    - latest `scores`
    - latest `git_sha`
    - prior `attempts`
-   - whether the item maps to a live build-map compromise
+   - whether the item maps to a live methodology compromise
 
 3. **Check current repo state**:
    - `git rev-parse --short HEAD`
@@ -91,7 +92,7 @@ If no id was passed:
    - What is the current state?
    - Why does it matter now?
    - What is the cheapest next step?
-   - Which build-map phase does it support?
+   - Which state phase does it support?
    - Is the problem likely model-wrong, golden-wrong, stale-measurement, or architecture-limited?
 
 3. Produce a ranked top 3-5 list unless `--stale-only` was passed.
@@ -114,7 +115,7 @@ Present the result as:
 
 ### Methodology Context
 - Primary gap: ...
-- Spec / Build Map: ...
+- Spec / State: ...
 - Why eval work does or does not deserve priority now: ...
 
 ### Registry Health

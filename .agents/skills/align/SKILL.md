@@ -1,6 +1,6 @@
 ---
 name: align
-description: Check alignment of the methodology graph after a change — Ideal, ADRs, Spec, Build Map, Stories, Evals — and propose corrections
+description: Check alignment of the methodology graph after a change — Ideal, ADRs, Spec, State, Generated Dashboards, Stories, Evals — and propose corrections
 user-invocable: true
 ---
 
@@ -19,7 +19,7 @@ Any time something changes that might ripple through the methodology graph:
 - an ADR is decided
 - the Ideal changes
 - the spec changes
-- the build map changes materially
+- methodology state or generated dashboards change materially
 - an eval or external model shift suggests a compromise might be deletable
 - a story lands and changes system structure
 - no specific trigger — you just want to check for drift
@@ -33,6 +33,8 @@ Any time something changes that might ripple through the methodology graph:
    - `docs/ideal.md`
    - `docs/methodology-ideal-spec-compromise.md`
    - `docs/spec.md`
+   - `docs/methodology/state.yaml`
+   - `docs/methodology/graph.json`
    - `docs/build-map.md`
    - `docs/stories.md`
    - relevant ADRs / decision docs
@@ -48,9 +50,9 @@ Any time something changes that might ripple through the methodology graph:
    - Does this create, simplify, or delete a compromise?
    - Does it change a limitation type or detection mechanism?
 
-   **Build map**
+   **Methodology state / generated dashboards**
    - Does system ownership or dependency order change?
-   - Does compromise progress need an update?
+   - Do substrate, phase, roadmap, or compromise-progress fields need an update?
 
    **Stories**
    - Are any Draft/Pending/In Progress stories now blocked, stale, or unnecessary?
@@ -75,7 +77,7 @@ Any time something changes that might ripple through the methodology graph:
 ### Spec
 - {impact or "Aligned"}
 
-### Build Map
+### State / Dashboards
 - {impact or "Aligned"}
 
 ### Stories
@@ -92,7 +94,7 @@ Any time something changes that might ripple through the methodology graph:
 ```
 
 5. **Suggest next steps**
-   - Build-map update → edit `docs/build-map.md`
+   - State update → edit `docs/methodology/state.yaml`, then rerun `pnpm methodology:compile`
    - Story realignment → `/triage stories`
    - Eval action → `/triage evals` or `/improve-eval`
    - New decision needed → create or update an ADR

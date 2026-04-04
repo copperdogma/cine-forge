@@ -19,13 +19,6 @@ fi
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../" && pwd)"
 SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STORIES_DIR="$ROOT/docs/stories"
-INDEX="$ROOT/docs/stories.md"
-
-# Bootstrap index if missing
-if [[ ! -f "$INDEX" ]]; then
-  cp "$SKILL_DIR/templates/stories-index.md" "$INDEX"
-  echo "Created $INDEX"
-fi
 
 # Bootstrap directory if missing
 mkdir -p "$STORIES_DIR"

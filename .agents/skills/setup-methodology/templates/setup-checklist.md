@@ -19,9 +19,10 @@
 ## Methodology Graph
 
 - [ ] `docs/ideal.md` contains both product and execution ideals
-- [ ] `docs/spec.md` is category-aligned and matches the build map
-- [ ] `docs/build-map.md` is the central planning / triage dashboard
-- [ ] Build-map-first operating rule is documented in `AGENTS.md`
+- [ ] `docs/spec.md` is category-aligned and seeded into `docs/methodology/state.yaml`
+- [ ] `docs/methodology/state.yaml` is the canonical planning / triage state
+- [ ] Generated surfaces (`docs/build-map.md`, `docs/stories.md`, `docs/methodology/graph.json`) are refreshed from the compiler
+- [ ] State-first operating rule is documented in `AGENTS.md`
 - [ ] Supporting docs reference the same hierarchy and public surface
 
 ## Baseline Evidence Setup
@@ -35,7 +36,7 @@
 
 ## Story / Planning Setup
 
-- [ ] Story framework is anchored to build-map + spec
+- [ ] Story framework is anchored to story metadata + methodology state + spec
 - [ ] Story/bootstrap guidance no longer teaches the stale phased setup model
 - [ ] `init-project` installs the same methodology package for new repos
 

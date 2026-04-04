@@ -20,9 +20,10 @@
 ## Methodology Graph
 
 - [x] `docs/ideal.md` contains both product and execution ideals
-- [x] `docs/spec.md` is category-aligned and matches the build map
-- [x] `docs/build-map.md` is the central planning / triage dashboard
-- [x] Build-map-first operating rule is documented in `AGENTS.md`
+- [x] `docs/spec.md` is category-aligned and seeded into `docs/methodology/state.yaml`
+- [x] `docs/methodology/state.yaml` exists as the canonical planning / triage state
+- [x] Generated surfaces (`docs/build-map.md`, `docs/stories.md`, `docs/methodology/graph.json`) are refreshed from the compiler
+- [x] State-first operating rule is documented in `AGENTS.md`
 - [x] Supporting docs reference the same hierarchy and public surface
 
 ## Baseline Evidence Setup
@@ -36,7 +37,7 @@
 
 ## Story / Planning Setup
 
-- [x] Story framework remains anchored to build-map + spec
+- [x] Story framework is anchored to story metadata + methodology state + spec
 - [x] Story/bootstrap guidance no longer teaches the stale phased setup model as the public surface
 - [x] `init-project` installs the same methodology package for new repos
 
@@ -120,7 +121,7 @@ preserved for provenance only; it is **not** the active setup checklist.
 
 #### P3 — Polish and ongoing
 
-- [ ] Update `docs/stories.md` with Ideal-alignment notes per story
+- [ ] Add Ideal-alignment notes to story metadata and generated story summaries
 - [ ] Create golden references for shot planning, export metadata, production readiness
 - [ ] Create evals for continuity detection, chat quality (after goldens exist)
 - [ ] Review and update Ideal annually or when fundamental capabilities shift

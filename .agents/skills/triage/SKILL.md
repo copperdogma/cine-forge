@@ -1,12 +1,12 @@
 ---
 name: triage
-description: Identify the highest-leverage Ideal/spec/build-map gap, then recommend the next action that best advances it
+description: Identify the highest-leverage Ideal/spec/state gap, then recommend the next action that best advances it
 user-invocable: true
 ---
 
 # /triage [stories|inbox|evals] [sub-arg]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current build-map phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current state phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
 
 `/triage` is the proactive meta-skill. Its job is to choose the **most important live methodology gap** before looking for convenient work.
 
@@ -14,11 +14,13 @@ The required order is:
 
 1. **Ideal** — what major user promise or simplification opportunity is most visibly unmet?
 2. **Spec** — which active constraint or requirement expresses that gap?
-3. **Build map** — which category owns it, and is the correct move `climb`, `hold`, `converge`, or `unplanned`?
+3. **Methodology state** — which category owns it, and is the correct move `climb`, `hold`, `converge`, or `unplanned`?
 4. **ADRs / design docs** — what decisions constrain the next move?
 5. **Existing work** — which stories, inbox items, or evals already advance that exact gap?
 
-Stories, inbox items, and evals are **not** the source of priority. They are candidate continuations of the priority established by Ideal/spec/build-map reasoning.
+Stories, inbox items, evals, and architecture audits are **not** the source of
+priority. They are candidate continuations of the priority established by
+Ideal/spec/state reasoning.
 
 Companion runbook: `docs/runbooks/triage.md`
 
@@ -33,6 +35,8 @@ Companion runbook: `docs/runbooks/triage.md`
 | `/triage inbox scan` | Delegate to `/triage-inbox scan` |
 | `/triage evals` | Delegate to `/triage-evals` |
 | `/triage evals C3` | Delegate to `/triage-evals C3` |
+| `/triage architecture` | Delegate to `/triage-architecture scan` |
+| `/triage architecture methodology_tooling` | Delegate to `/triage-architecture scan methodology_tooling` |
 
 When a scope is provided, hand off completely to the leaf skill. Do **not** keep a second implementation here.
 
@@ -41,6 +45,7 @@ When a scope is provided, hand off completely to the leaf skill. Do **not** keep
 - `/triage-stories` — backlog prioritization, dependency bottlenecks, story readiness
 - `/triage-inbox` — inbox processing, plus read-only `scan` mode for orchestration
 - `/triage-evals` — eval health, compromise leverage, rerun candidates
+- `/triage-architecture` — architecture-audit cadence, drift signals, simplification routing
 
 ## Full-Sweep Mode
 
@@ -50,6 +55,8 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - `docs/ideal.md`
    - `docs/methodology-ideal-spec-compromise.md`
    - `docs/spec.md`
+   - `docs/methodology/state.yaml`
+   - `docs/methodology/graph.json`
    - `docs/build-map.md`
    - recent `git log --oneline -20`
    - Goal: identify the biggest live gap or simplification opportunity before reading stories as a backlog.
@@ -57,7 +64,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 2. **Name the primary gap**
    - State the unmet Ideal promise or overscaffolded compromise in plain language
    - Map it to the owning spec section(s)
-   - Map it to the owning build-map category
+   - Map it to the owning methodology category
    - State why this gap wins right now:
      - missing or partial substrate
      - highest-value `climb`
@@ -75,6 +82,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - Stories: `/triage-stories`
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
+   - Architecture: `/triage-architecture scan`
    - But interpret each leaf through one question:
      - what already exists that advances the chosen gap?
    - Do **not** let a smaller ready story outrank the chosen gap just because it is easier to start
@@ -94,7 +102,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 ### Primary Gap
 - {Ideal promise or simplification opportunity}
 - Spec: {spec refs}
-- Build Map: {category + substrate + phase}
+- State: {category + substrate + phase}
 
 ### Recommended Action
 - {one next action}
@@ -110,6 +118,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Stories: {which stories do or do not advance the chosen gap}
 - Inbox: {which inbox items do or do not map to the chosen gap}
 - Evals: {which evals matter for the chosen gap, or why eval work is not the move}
+- Architecture: {which audit domains matter, or why architecture work is not the move}
 
 ### Health Flags
 - {blocker or "none"}

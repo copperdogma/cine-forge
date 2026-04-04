@@ -18,14 +18,15 @@ baseline methodology package already exists. It is separate from
 - `docs/evals/registry.yaml` exists
 - `docs/evals/README.md` exists
 - the benchmark workspace exists or its sidequest-worktree contract is documented
-- relevant story / spec / build-map context exists for the new eval
+- relevant story / spec / methodology-category context exists for the new eval
 
 ## Steps
 
 1. `[judgment]` Read the methodology context.
    - `docs/ideal.md`
    - relevant `spec:N` sections
-   - relevant build-map category
+   - relevant methodology category (`docs/methodology/state.yaml` or generated
+     dashboard view)
    - linked ADRs / design docs
 
 2. `[judgment]` Classify the eval.
@@ -55,7 +56,7 @@ baseline methodology package already exists. It is separate from
 
 ### Always do
 
-- Link every new eval to a story, `spec:N`, and build-map category
+- Link every new eval to a story, `spec:N`, and methodology category
 - Reuse the existing benchmark layout before inventing a new one
 - Keep registry entries complete from the start
 

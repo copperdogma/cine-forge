@@ -23,7 +23,7 @@ Optional colocated resources:
 
 1. Use frontmatter with `name`, `description`, and `user-invocable: true` (or `false` for scaffolds not yet ready).
 2. Keep instructions implementation-oriented and testable.
-3. Every project skill must include an alignment check telling the agent to consult `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/build-map.md`, and `docs/decisions/` / `docs/design/` when architecture, workflow, schema, or UX questions arise; if no ADR or build-map guidance applies, the skill should say to state that explicitly.
+3. Every project skill must include an alignment check telling the agent to consult `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and `docs/decisions/` / `docs/design/` when architecture, workflow, schema, or UX questions arise; if no ADR or methodology guidance applies, the skill should say to state that explicitly.
 4. Avoid tool-specific primary sources (`.cursor/commands`, `.claude/commands`) for skill content.
 5. After creating or changing skills, run: `scripts/sync-agent-skills.sh`
 6. Validate with: `scripts/sync-agent-skills.sh --check`

@@ -1,0 +1,5761 @@
+{
+  "version": 1,
+  "paths": {
+    "ideal": "docs/ideal.md",
+    "spec": "docs/spec.md",
+    "state": "docs/methodology/state.yaml",
+    "graph": "docs/methodology/graph.json",
+    "stories_index": "docs/stories.md",
+    "build_map": "docs/build-map.md",
+    "stories_dir": "docs/stories",
+    "adrs_dir": "docs/decisions",
+    "evals": "docs/evals/registry.yaml"
+  },
+  "ideal": {
+    "path": "docs/ideal.md",
+    "title": "CineForge — The Ideal",
+    "requirements": [
+      {
+        "id": "R1",
+        "label": "The system must accept any story input and understand it completely."
+      },
+      {
+        "id": "R2",
+        "label": "The system must understand characters as complete psychological entities, not name tags."
+      },
+      {
+        "id": "R3",
+        "label": "The system must maintain perfect continuity across the entire narrative."
+      },
+      {
+        "id": "R4",
+        "label": "The system must support natural, emotionally engaging conversation with AI creative roles and characters."
+      },
+      {
+        "id": "R5",
+        "label": "The system must support the full spectrum of human involvement."
+      },
+      {
+        "id": "R6",
+        "label": "The system must apply creative style and taste."
+      },
+      {
+        "id": "R7",
+        "label": "The system must support rapid iterative generation — the core creative loop."
+      },
+      {
+        "id": "R8",
+        "label": "The system must produce professional-grade production artifacts."
+      },
+      {
+        "id": "R9",
+        "label": "The system must export to professional formats with embedded narrative intelligence."
+      },
+      {
+        "id": "R10",
+        "label": "The system must show a playable assembly at every stage."
+      },
+      {
+        "id": "R11",
+        "label": "The system must show production readiness per scene."
+      },
+      {
+        "id": "R12",
+        "label": "Every AI decision must be explainable and overridable."
+      },
+      {
+        "id": "R13",
+        "label": "The system must learn from user choices."
+      },
+      {
+        "id": "R14",
+        "label": "Nothing is ever lost. No decision is final."
+      },
+      {
+        "id": "R15",
+        "label": "Changes propagate intelligently through the dependency graph."
+      },
+      {
+        "id": "R17",
+        "label": "The system must accept real-world production assets as first-class inputs at any point in the workflow."
+      },
+      {
+        "id": "R16",
+        "label": "The system must support multi-human collaboration."
+      }
+    ]
+  },
+  "spec": {
+    "path": "docs/spec.md",
+    "categories": [
+      {
+        "id": "spec:1",
+        "title": "Foundation & Artifact Runtime",
+        "sections": [
+          {
+            "id": "spec:1.1",
+            "title": "Artifact Immutability"
+          },
+          {
+            "id": "spec:1.2",
+            "title": "Version History (Snapshot Model)"
+          },
+          {
+            "id": "spec:1.3",
+            "title": "Revision and Change Propagation"
+          },
+          {
+            "id": "spec:1.4",
+            "title": "AI-Driven Runtime Boundary"
+          },
+          {
+            "id": "spec:1.5",
+            "title": "Pipeline Overview"
+          },
+          {
+            "id": "spec:1.6",
+            "title": "Metadata & Auditing"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "hold",
+          "story_coverage": "partial",
+          "product_need": "Artifacts, decisions, and runtime operations stay immutable, auditable, and safe to revise.",
+          "tech_need": "Snapshot versioning, dependency-aware invalidation, AI/runtime boundary discipline, and durable audit metadata.",
+          "absorbs": [
+            "Foundation & Artifact Runtime (old 1)"
+          ],
+          "notes": [
+            "Core substrate exists. Current work here is mostly maintenance, decomposition, and verification hardening rather than a missing-system climb."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [],
+        "storyIds": [
+          "001",
+          "002",
+          "004",
+          "007",
+          "007b",
+          "007c",
+          "008",
+          "010",
+          "011",
+          "011b",
+          "011d",
+          "012",
+          "014",
+          "017",
+          "018",
+          "029",
+          "031",
+          "032",
+          "055",
+          "056",
+          "071",
+          "097",
+          "113",
+          "115",
+          "116",
+          "117",
+          "118",
+          "127",
+          "128",
+          "131",
+          "139",
+          "142"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": []
+      },
+      {
+        "id": "spec:2",
+        "title": "Story Intake & Understanding",
+        "sections": [
+          {
+            "id": "spec:2.1",
+            "title": "Accepted Inputs"
+          },
+          {
+            "id": "spec:2.2",
+            "title": "Script Normalization (Required)"
+          },
+          {
+            "id": "spec:2.3",
+            "title": "Canonical Script Rule"
+          },
+          {
+            "id": "spec:2.4",
+            "title": "Project Configuration (Auto-Initialized)"
+          },
+          {
+            "id": "spec:2.5",
+            "title": "Script Bible (Story-Lane, Always Runs)"
+          },
+          {
+            "id": "spec:2.6",
+            "title": "Two-Lane Architecture"
+          },
+          {
+            "id": "spec:2.7",
+            "title": "Scene Breakdown & Analysis (Required)"
+          },
+          {
+            "id": "spec:2.7.1",
+            "title": "Scene Definition"
+          },
+          {
+            "id": "spec:2.7.2",
+            "title": "Creative Inference"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "climb",
+          "story_coverage": "partial",
+          "product_need": "CineForge can accept story inputs in multiple formats and turn them into a coherent, browsable understanding quickly enough to start creative work.",
+          "tech_need": "Ingestion, normalization, canonical script handling, project configuration, script-bible extraction, and scene understanding.",
+          "absorbs": [
+            "Script Understanding Pipeline (old 2)"
+          ],
+          "notes": [
+            "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [
+          "C4"
+        ],
+        "storyIds": [
+          "003",
+          "003b",
+          "004",
+          "005",
+          "006",
+          "007b",
+          "007c",
+          "011b",
+          "011d",
+          "054",
+          "061",
+          "062",
+          "063",
+          "064",
+          "072",
+          "080",
+          "081",
+          "093",
+          "119",
+          "120",
+          "121",
+          "132",
+          "133",
+          "135",
+          "142"
+        ],
+        "adrIds": [
+          "ADR-003"
+        ],
+        "evalIds": [
+          "compromise-C4-two-tier-scenes"
+        ]
+      },
+      {
+        "id": "spec:3",
+        "title": "World Building & Continuity",
+        "sections": [
+          {
+            "id": "spec:3.1",
+            "title": "Asset Masters"
+          },
+          {
+            "id": "spec:3.2",
+            "title": "Entity Graph (Relationships)"
+          },
+          {
+            "id": "spec:3.3",
+            "title": "Bible Artifact Structure"
+          },
+          {
+            "id": "spec:3.4",
+            "title": "Asset States (Continuity)"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "hold",
+          "story_coverage": "partial",
+          "product_need": "Characters, locations, props, and continuity states persist as first-class world knowledge.",
+          "tech_need": "Bible folders, relationship edges, and state snapshots over story time.",
+          "absorbs": [
+            "World Building & Continuity (old 3)"
+          ],
+          "notes": [
+            "Core substrate exists. Remaining work is mostly quality refinement, continuity detection depth, and better downstream reuse of the world model."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [],
+        "storyIds": [
+          "008",
+          "009",
+          "010",
+          "011",
+          "011b",
+          "011d",
+          "016",
+          "029",
+          "054",
+          "055",
+          "056",
+          "065",
+          "077",
+          "080",
+          "081",
+          "092",
+          "108",
+          "112",
+          "129"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": [
+          "continuity-extraction",
+          "entity-discovery"
+        ]
+      },
+      {
+        "id": "spec:4",
+        "title": "Role System & Creative Direction",
+        "sections": [
+          {
+            "id": "spec:4.1",
+            "title": "Role Hierarchy"
+          },
+          {
+            "id": "spec:4.2",
+            "title": "Capability Gating"
+          },
+          {
+            "id": "spec:4.3",
+            "title": "Style Packs"
+          },
+          {
+            "id": "spec:4.4",
+            "title": "Style Pack Creation"
+          },
+          {
+            "id": "spec:4.5",
+            "title": "Suggestion System"
+          },
+          {
+            "id": "spec:4.6",
+            "title": "Inter-Role Communication and Disagreement Protocol"
+          },
+          {
+            "id": "spec:4.7",
+            "title": "Combined Roles (Intentional Consolidation)"
+          },
+          {
+            "id": "spec:4.7.1",
+            "title": "Editorial Architect"
+          },
+          {
+            "id": "spec:4.7.2",
+            "title": "Visual Architect"
+          },
+          {
+            "id": "spec:4.8",
+            "title": "Performance System"
+          },
+          {
+            "id": "spec:4.8.1",
+            "title": "Actor Agents (Required)"
+          },
+          {
+            "id": "spec:4.8.2",
+            "title": "Governance"
+          },
+          {
+            "id": "spec:4.9",
+            "title": "Sound Design"
+          },
+          {
+            "id": "spec:4.9.1",
+            "title": "Early Sound Design (Required)"
+          },
+          {
+            "id": "spec:4.9.2",
+            "title": "Output"
+          },
+          {
+            "id": "spec:4.10",
+            "title": "Creative Direction — Concern Groups (Required)"
+          },
+          {
+            "id": "spec:4.10.1",
+            "title": "Intent / Mood Layer"
+          },
+          {
+            "id": "spec:4.10.2",
+            "title": "Look & Feel"
+          },
+          {
+            "id": "spec:4.10.3",
+            "title": "Sound & Music"
+          },
+          {
+            "id": "spec:4.10.4",
+            "title": "Rhythm & Flow"
+          },
+          {
+            "id": "spec:4.10.5",
+            "title": "Character & Performance"
+          },
+          {
+            "id": "spec:4.10.6",
+            "title": "Story World"
+          },
+          {
+            "id": "spec:4.10.7",
+            "title": "Prompt Compilation Model"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "hold",
+          "story_coverage": "partial",
+          "product_need": "Creative roles and characters should feel like collaborators who understand the story deeply and shape it across disciplines.",
+          "tech_need": "Role hierarchy, style packs, transcripts, suggestion artifacts, and concern-group direction artifacts.",
+          "absorbs": [
+            "Role System & Creative Direction (old 4)"
+          ],
+          "notes": [
+            "Capability gating remains an honest hold-state compromise until one broadly usable multimodal model removes the need for per-role modality declarations."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [
+          "C5"
+        ],
+        "storyIds": [
+          "014",
+          "015",
+          "016",
+          "017",
+          "018",
+          "020",
+          "021",
+          "022",
+          "023",
+          "024",
+          "033",
+          "034",
+          "056",
+          "082",
+          "083",
+          "084",
+          "094",
+          "095",
+          "096",
+          "097",
+          "100",
+          "121",
+          "126",
+          "131",
+          "141"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": [
+          "compromise-C5-role-modality"
+        ]
+      },
+      {
+        "id": "spec:5",
+        "title": "Operator Console & Interactive UX",
+        "sections": [
+          {
+            "id": "spec:5.1",
+            "title": "Human Control Is Optional and Configurable"
+          },
+          {
+            "id": "spec:5.2",
+            "title": "Explanation Is Mandatory"
+          },
+          {
+            "id": "spec:5.3",
+            "title": "Stage Progression (User-Controlled)"
+          },
+          {
+            "id": "spec:5.4",
+            "title": "Human Interaction Model"
+          },
+          {
+            "id": "spec:5.5",
+            "title": "Readiness Indicators"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "hold",
+          "story_coverage": "partial",
+          "product_need": "The operator should feel like they are working with their story, not administering a pipeline.",
+          "tech_need": "Control modes, explanation surfaces, stage-progression rules, interaction models, and readiness signals that keep the UI honest.",
+          "absorbs": [
+            "Operator Console & Interactive UX (old 5)"
+          ],
+          "notes": [
+            "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [],
+        "storyIds": [
+          "001",
+          "002",
+          "004",
+          "005",
+          "006",
+          "007",
+          "007b",
+          "007c",
+          "008",
+          "009",
+          "010",
+          "011b",
+          "011d",
+          "012",
+          "014",
+          "015",
+          "017",
+          "019",
+          "054",
+          "055",
+          "066",
+          "072",
+          "075",
+          "076",
+          "078",
+          "079",
+          "082",
+          "083",
+          "084",
+          "097",
+          "099",
+          "111",
+          "126",
+          "132",
+          "142",
+          "144"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": [
+          "runtime-media-validation"
+        ]
+      },
+      {
+        "id": "spec:6",
+        "title": "Shot Planning & Visualization",
+        "sections": [
+          {
+            "id": "spec:6.1",
+            "title": "Shot Planning (Required)"
+          },
+          {
+            "id": "spec:6.1.1",
+            "title": "Scene Coverage Strategy"
+          },
+          {
+            "id": "spec:6.1.2",
+            "title": "Individual Shot Definition"
+          },
+          {
+            "id": "spec:6.1.3",
+            "title": "Coverage Patterns (Reference)"
+          },
+          {
+            "id": "spec:6.1.4",
+            "title": "Export Compatibility"
+          },
+          {
+            "id": "spec:6.2",
+            "title": "Storyboards (Optional)"
+          },
+          {
+            "id": "spec:6.2.1",
+            "title": "Purpose"
+          },
+          {
+            "id": "spec:6.2.2",
+            "title": "Styles"
+          },
+          {
+            "id": "spec:6.3",
+            "title": "Animatics / Previz Video (Optional, Selective)"
+          },
+          {
+            "id": "spec:6.3.1",
+            "title": "Granularity"
+          },
+          {
+            "id": "spec:6.3.2",
+            "title": "Characteristics"
+          },
+          {
+            "id": "spec:6.3.3",
+            "title": "Previz Reel"
+          },
+          {
+            "id": "spec:6.3.4",
+            "title": "Serendipity Preservation"
+          },
+          {
+            "id": "spec:6.4",
+            "title": "Keyframes (Optional)"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "climb",
+          "story_coverage": "partial",
+          "product_need": "Creative intent becomes concrete planning artifacts usable by humans and generation models.",
+          "tech_need": "Coverage strategy, shot definitions, storyboard and animatic assets, and optional keyframes linked to upstream direction.",
+          "absorbs": [
+            "Shot Planning & Visualization (old 6)"
+          ],
+          "notes": [
+            "Shot planning, storyboard generation, deterministic previz, and the operator-facing AI-previz surface now exist as real substrate.",
+            "This category stays in climb because broader previz quality and consistency coverage remains unfinished."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [],
+        "storyIds": [
+          "025",
+          "026",
+          "027",
+          "056",
+          "119",
+          "120",
+          "121",
+          "130",
+          "132",
+          "137",
+          "143",
+          "144"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": [
+          "previz-usefulness",
+          "runtime-media-validation"
+        ]
+      },
+      {
+        "id": "spec:7",
+        "title": "Generation & Export",
+        "sections": [
+          {
+            "id": "spec:7.1",
+            "title": "Render Adapter Layer (Required for Generation)"
+          },
+          {
+            "id": "spec:7.1.1",
+            "title": "Two-Part Prompt Architecture"
+          },
+          {
+            "id": "spec:7.1.2",
+            "title": "Engine Packs"
+          },
+          {
+            "id": "spec:7.1.3",
+            "title": "Error Handling"
+          },
+          {
+            "id": "spec:7.2",
+            "title": "User Asset Injection (Required)"
+          }
+        ],
+        "state": {
+          "substrate": "partial",
+          "phase": "climb",
+          "story_coverage": "partial",
+          "product_need": "CineForge can compile direction into generation requests and carry user-provided assets through the same pipeline.",
+          "tech_need": "Render-adapter compilation, engine-pack knowledge, error handling, and origin-agnostic asset injection.",
+          "absorbs": [
+            "Generation & Export (old 7)"
+          ],
+          "notes": [
+            "Render-adapter compilation, engine-pack knowledge, error handling, origin-agnostic asset injection, runtime media validation, and AI-previz generation exist as real substrate.",
+            "This category stays in climb because richer export fidelity and broader media-validation coverage remain unfinished."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [
+          "C6"
+        ],
+        "storyIds": [
+          "028",
+          "029",
+          "030",
+          "056",
+          "098",
+          "130",
+          "137",
+          "140",
+          "141",
+          "143",
+          "144"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": [
+          "previz-usefulness",
+          "runtime-media-validation",
+          "video-understanding"
+        ]
+      },
+      {
+        "id": "spec:8",
+        "title": "AI Platform, Evaluation & Model Strategy",
+        "sections": [
+          {
+            "id": "spec:8.1",
+            "title": "Cost Transparency"
+          },
+          {
+            "id": "spec:8.2",
+            "title": "Quality Validation (QA)"
+          },
+          {
+            "id": "spec:8.3",
+            "title": "Subsumption-Based Model Strategy"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "hold",
+          "story_coverage": "partial",
+          "product_need": "AI cost, quality, and model tradeoffs are visible enough that operators can trust the system.",
+          "tech_need": "Cost tracking, QA patterns, current eval registry discipline, and model-slot strategy.",
+          "absorbs": [
+            "AI Platform, Model Selection & Validation (old 8)"
+          ],
+          "notes": [
+            "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "storyIds": [
+          "001",
+          "002",
+          "004",
+          "005",
+          "006",
+          "007",
+          "007c",
+          "008",
+          "030",
+          "031",
+          "032",
+          "054",
+          "055",
+          "065",
+          "107",
+          "113",
+          "123",
+          "133",
+          "135",
+          "136",
+          "138",
+          "140",
+          "144"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": [
+          "compromise-C2-qa-validation",
+          "compromise-C3-tiered-models",
+          "previz-usefulness",
+          "runtime-media-validation",
+          "video-understanding"
+        ]
+      },
+      {
+        "id": "spec:9",
+        "title": "Memory & Collaboration",
+        "sections": [
+          {
+            "id": "spec:9.1",
+            "title": "Canonical Memory"
+          },
+          {
+            "id": "spec:9.2",
+            "title": "Working Memory (Cached)"
+          },
+          {
+            "id": "spec:9.3",
+            "title": "Memory Rule"
+          },
+          {
+            "id": "spec:9.4",
+            "title": "Valid Operating Modes"
+          }
+        ],
+        "state": {
+          "substrate": "partial",
+          "phase": "climb",
+          "story_coverage": "partial",
+          "product_need": "Long-running collaboration should preserve context, transcripts, and operating-mode intent without losing provenance.",
+          "tech_need": "Canonical memory artifacts, working-memory summaries, and explicit operating-mode rules.",
+          "absorbs": [
+            "Memory & Collaboration (old 9)"
+          ],
+          "notes": [
+            "The canonical vs working-memory split remains justified while context windows and memory persistence are still constrained."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [
+          "C7"
+        ],
+        "storyIds": [
+          "007b",
+          "011b",
+          "011d",
+          "018",
+          "019",
+          "030",
+          "033",
+          "083",
+          "126",
+          "131"
+        ],
+        "adrIds": [
+          "ADR-002",
+          "ADR-003"
+        ],
+        "evalIds": [
+          "compromise-C7-working-memory",
+          "previz-usefulness",
+          "video-understanding"
+        ]
+      },
+      {
+        "id": "spec:10",
+        "title": "Timeline & Playable Assembly",
+        "sections": [
+          {
+            "id": "spec:10.1",
+            "title": "Timeline Artifact"
+          },
+          {
+            "id": "spec:10.2",
+            "title": "Tracks (Non-Exhaustive)"
+          },
+          {
+            "id": "spec:10.3",
+            "title": "Always-Playable Rule"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "hold",
+          "story_coverage": "partial",
+          "product_need": "Users can inspect pacing, order, and best-available playback throughout the pipeline.",
+          "tech_need": "Independent timeline artifacts, stacked tracks, and the always-playable fallback rule.",
+          "absorbs": [
+            "None — new explicit category extracted from existing spec/stories"
+          ],
+          "notes": [
+            "Timeline substrate exists but still relies on continued trust/readiness work as generated-video and previz lanes evolve."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [],
+        "storyIds": [
+          "012",
+          "013",
+          "026",
+          "027",
+          "028",
+          "130",
+          "137",
+          "140",
+          "143",
+          "144"
+        ],
+        "adrIds": [
+          "ADR-003"
+        ],
+        "evalIds": [
+          "previz-usefulness",
+          "runtime-media-validation"
+        ]
+      },
+      {
+        "id": "spec:11",
+        "title": "Planning Infrastructure & Agent Tooling",
+        "sections": [
+          {
+            "id": "spec:11.1",
+            "title": "Story Lifecycle and Handoff Chain"
+          },
+          {
+            "id": "spec:11.2",
+            "title": "Methodology State, Generated Dashboards, and Triage"
+          },
+          {
+            "id": "spec:11.3",
+            "title": "Verification, Eval Classification, and Registry Discipline"
+          },
+          {
+            "id": "spec:11.4",
+            "title": "Agent Instructions, Skills, and Runbooks"
+          }
+        ],
+        "state": {
+          "substrate": "exists",
+          "phase": "climb",
+          "story_coverage": "partial",
+          "product_need": "CineForge still needs explicit planning scaffolding while current AI cannot yet build and verify large repo changes from the ideal in one shot.",
+          "tech_need": "Story lifecycle tracking, methodology state, compiled graph joins, generated planning views, triage skills, workflow gates, AGENTS instructions, runbooks, and verbose work logs.",
+          "absorbs": [
+            "Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)"
+          ],
+          "notes": [
+            "Story 134 and Story 136 established the current authored build-map/spec stack.",
+            "Story 145 landed the graph+state migration, replacing the authored planning surface with structured state, compiled joins, generated views, and hard linting."
+          ],
+          "last_reviewed": "2026-04-04"
+        },
+        "compromiseIds": [
+          "B1",
+          "B2",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "storyIds": [
+          "066",
+          "109",
+          "115",
+          "125",
+          "134",
+          "136",
+          "145"
+        ],
+        "adrIds": [],
+        "evalIds": []
+      }
+    ],
+    "compromises": [
+      {
+        "id": "B1",
+        "title": "Story files and tracked checklists",
+        "categoryId": "spec:11",
+        "state": {
+          "phase": "hold",
+          "current": "Story files remain the safest way to preserve scope, acceptance criteria, and work-log context across sessions.",
+          "converge_signal": "Long-horizon planning continuity becomes reliable enough that explicit story slicing is optional.",
+          "evidence": "No automated harness; human capability detection remains the practical signal.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": []
+      },
+      {
+        "id": "B2",
+        "title": "Methodology state and substrate tracking",
+        "categoryId": "spec:11",
+        "state": {
+          "phase": "climb",
+          "current": "Structured methodology state and generated planning views are still required so triage can reason about architecture readiness without guessing from repo shape alone.",
+          "converge_signal": "Architectural readiness and planning state become inferable directly from the repo and normal artifacts without an explicit state layer.",
+          "evidence": "Story 145 replaced the authored build-map with methodology state plus generated views rather than deleting the responsibility.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": []
+      },
+      {
+        "id": "B3",
+        "title": "Triage skills and routing runbooks",
+        "categoryId": "spec:11",
+        "state": {
+          "phase": "hold",
+          "current": "Explicit routing and domain-specific triage logic still produce better next-step choices than monolithic generic planning.",
+          "converge_signal": "Repo-aware prioritization becomes reliable without procedural scaffolding.",
+          "evidence": "No automated harness; the detector is sustained autonomous prioritizer quality.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": []
+      },
+      {
+        "id": "B4",
+        "title": "Workflow gates and story-closure chain",
+        "categoryId": "spec:11",
+        "state": {
+          "phase": "hold",
+          "current": "`/build-story`, `/validate`, and `/mark-story-done` remain useful because human trust and AI self-verification are not yet strong enough to collapse the chain.",
+          "converge_signal": "The chain shrinks to the level of review the operator actually wants.",
+          "evidence": "Human trust plus repeated correct autonomous closure remains the practical detector.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": []
+      },
+      {
+        "id": "B5",
+        "title": "`AGENTS.md`, skills, and runbooks",
+        "categoryId": "spec:11",
+        "state": {
+          "phase": "hold",
+          "current": "Explicit repo conventions, skills, and runbooks are still needed so future sessions do not re-learn the same rules from scratch.",
+          "converge_signal": "Project conventions become inferable from code and normal repo artifacts alone.",
+          "evidence": "No automated harness; use reliable convention inference across fresh sessions as the detector.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": []
+      },
+      {
+        "id": "C1",
+        "title": "Cost Transparency",
+        "categoryId": "spec:8",
+        "state": {
+          "phase": "hold",
+          "current": "Per-call and per-run cost tracking still matters because model pricing and tradeoffs are material.",
+          "converge_signal": "Per-call cost tracking becomes unnecessary when inference is cheap enough to stop shaping operator behavior.",
+          "evidence": "No registry eval; detection remains pricing-watch based.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": []
+      },
+      {
+        "id": "C2",
+        "title": "Dedicated QA Validation Passes",
+        "categoryId": "spec:8",
+        "state": {
+          "phase": "hold",
+          "current": "Dedicated QA / verification remains the safest path for structured output quality.",
+          "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
+          "evidence": "`compromise-C2-qa-validation` does not justify deletion yet.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": [
+          "compromise-C2-qa-validation"
+        ]
+      },
+      {
+        "id": "C3",
+        "title": "Tiered Model Strategy",
+        "categoryId": "spec:8",
+        "state": {
+          "phase": "hold",
+          "current": "Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.",
+          "converge_signal": "One model meets all current default-driving quality bars at acceptable latency and cost.",
+          "evidence": "`compromise-C3-tiered-models` still leaves the repo below the single-model bar.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": [
+          "compromise-C3-tiered-models"
+        ]
+      },
+      {
+        "id": "C4",
+        "title": "Two-Tier Scene Architecture",
+        "categoryId": "spec:2",
+        "state": {
+          "phase": "climb",
+          "current": "Structural scene breakdown lands quickly, while slower narrative enrichment remains separate and user-triggered.",
+          "converge_signal": "Single-pass scene understanding becomes both fast enough and good enough to replace the split.",
+          "evidence": "`compromise-C4-two-tier-scenes` still shows the best candidate below the quality/latency bar.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": [
+          "compromise-C4-two-tier-scenes"
+        ]
+      },
+      {
+        "id": "C5",
+        "title": "Capability Gating",
+        "categoryId": "spec:4",
+        "state": {
+          "phase": "hold",
+          "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
+          "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
+          "evidence": "`compromise-C5-role-modality` has no passing deletion signal.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": [
+          "compromise-C5-role-modality"
+        ]
+      },
+      {
+        "id": "C6",
+        "title": "Render Adapter Engine Packs",
+        "categoryId": "spec:7",
+        "state": {
+          "phase": "hold",
+          "current": "Heterogeneous video APIs still justify a render-adapter abstraction with model-specific engine-pack knowledge.",
+          "converge_signal": "A dominant standard API or one model cleanly handles all required generation inputs.",
+          "evidence": "No registry-backed deletion harness exists yet; this remains an ecosystem detector.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": []
+      },
+      {
+        "id": "C7",
+        "title": "Working Memory Distinction",
+        "categoryId": "spec:9",
+        "state": {
+          "phase": "hold",
+          "current": "Canonical memory plus working-memory caches remain necessary while context windows are finite and expensive.",
+          "converge_signal": "Persistent, effectively unbounded memory makes the split unnecessary.",
+          "evidence": "`compromise-C7-working-memory` has no deletion signal yet.",
+          "last_reviewed": "2026-04-04"
+        },
+        "evalIds": [
+          "compromise-C7-working-memory"
+        ]
+      }
+    ]
+  },
+  "stories": [
+    {
+      "id": "001",
+      "title": "Project Setup and Scaffolding",
+      "path": "docs/stories/story-001-project-setup.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1",
+        "spec:1.5",
+        "spec:1.6",
+        "spec:5.1",
+        "spec:5.2",
+        "spec:8.1",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "002",
+      "title": "Pipeline Foundation (Driver, Artifact Store, Schemas)",
+      "path": "docs/stories/story-002-pipeline-foundation.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.1",
+        "spec:1.2",
+        "spec:1.3",
+        "spec:1.4",
+        "spec:1.5",
+        "spec:1.6",
+        "spec:5.2",
+        "spec:5.3",
+        "spec:8.1",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "001"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "003",
+      "title": "Story Ingestion Module",
+      "path": "docs/stories/story-003-story-ingestion.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.1",
+        "spec:2.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002"
+      ],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "003b",
+      "title": "DOCX Ingestion Support",
+      "path": "docs/stories/story-003b-docx-support.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "003",
+        "007b"
+      ],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "004",
+      "title": "Script Normalization Module",
+      "path": "docs/stories/story-004-script-normalization.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.4",
+        "spec:2.2",
+        "spec:2.3",
+        "spec:5.2",
+        "spec:8.1",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "003"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:2",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "005",
+      "title": "Scene Extraction Module",
+      "path": "docs/stories/story-005-scene-extraction.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.3",
+        "spec:2.7",
+        "spec:2.7.1",
+        "spec:2.7.2",
+        "spec:5.2",
+        "spec:8.1",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "004"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "006",
+      "title": "Project Configuration (Auto-Initialized)",
+      "path": "docs/stories/story-006-project-configuration.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.4",
+        "spec:5.1",
+        "spec:8.1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "004",
+        "005"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "007",
+      "title": "MVP Recipe and End-to-End Smoke Test",
+      "path": "docs/stories/story-007-mvp-recipe-smoke-test.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.5",
+        "spec:5.3",
+        "spec:8.1",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "003",
+        "004",
+        "005",
+        "006"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "007b",
+      "title": "Operator Console Lite (GUI for Project Start, Open, Run, and Artifact Review)",
+      "path": "docs/stories/story-007b-operator-console-lite.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.6",
+        "spec:2",
+        "spec:5.1",
+        "spec:5.3",
+        "spec:9.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:2",
+        "spec:5",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "007c",
+      "title": "MVP Reality Validation and Remediation (Post-UI Real-Run Findings)",
+      "path": "docs/stories/story-007c-mvp-reality-remediation.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.4",
+        "spec:1.6",
+        "spec:2",
+        "spec:2.7",
+        "spec:5.2",
+        "spec:5.3",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "007b"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:2",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "008",
+      "title": "Bible Infrastructure and Character Bible",
+      "path": "docs/stories/story-008-character-bible.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.1",
+        "spec:3.1",
+        "spec:3.2",
+        "spec:3.3",
+        "spec:5.2",
+        "spec:8.1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "005"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:3",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "009",
+      "title": "Location and Prop Bibles",
+      "path": "docs/stories/story-009-location-prop-bibles.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:3.1",
+        "spec:3.3",
+        "spec:3.4",
+        "spec:5.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "008"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "010",
+      "title": "Entity Relationship Graph",
+      "path": "docs/stories/story-010-entity-graph.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.1",
+        "spec:3.2",
+        "spec:5.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "008",
+        "009"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:3",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "011",
+      "title": "Asset State Tracking (Continuity)",
+      "path": "docs/stories/story-011-continuity-tracking.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.1",
+        "spec:3.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "008",
+        "009",
+        "010"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "011b",
+      "title": "Operator Console — Research & Design Decisions",
+      "path": "docs/stories/story-011b-operator-console.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.6",
+        "spec:2",
+        "spec:3",
+        "spec:5.1",
+        "spec:5.3",
+        "spec:5.4",
+        "spec:9.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:2",
+        "spec:3",
+        "spec:5",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "011c",
+      "title": "Resource-oriented Routing",
+      "path": "docs/stories/story-011c-resource-oriented-routing.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "011d",
+      "title": "Operator Console — Design & Build",
+      "path": "docs/stories/story-011d-operator-console-build.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.6",
+        "spec:2",
+        "spec:3",
+        "spec:5.1",
+        "spec:5.3",
+        "spec:5.4",
+        "spec:9.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011",
+        "011b"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:2",
+        "spec:3",
+        "spec:5",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "011e",
+      "title": "Operator Console — UX Golden Path",
+      "path": "docs/stories/story-011e-ux-golden-path.md",
+      "status": "Deferred",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011d"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "011f",
+      "title": "Operator Console — Conversational AI Chat",
+      "path": "docs/stories/story-011f-conversational-ai-chat.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011e"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "012",
+      "title": "Timeline Data Artifact",
+      "path": "docs/stories/story-012-timeline-artifact.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.1",
+        "spec:10.1",
+        "spec:10.3",
+        "spec:5.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "011",
+        "011c",
+        "050"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "013",
+      "title": "Track System and Always-Playable Rule",
+      "path": "docs/stories/story-013-track-system.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:10.1",
+        "spec:10.2",
+        "spec:10.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011",
+        "012",
+        "050"
+      ],
+      "categoryRefs": [
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "014",
+      "title": "Role System Foundation",
+      "path": "docs/stories/story-014-role-system-foundation.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.4",
+        "spec:4.1",
+        "spec:4.2",
+        "spec:4.3",
+        "spec:5.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "006"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:4",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "015",
+      "title": "Director and Canon Guardians",
+      "path": "docs/stories/story-015-director-canon-guardians.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.1",
+        "spec:4.6",
+        "spec:5.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011",
+        "014"
+      ],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "016",
+      "title": "Style Pack Infrastructure",
+      "path": "docs/stories/story-016-style-pack-infrastructure.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:3.3",
+        "spec:4.3",
+        "spec:4.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "014"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "017",
+      "title": "Suggestion and Decision Tracking",
+      "path": "docs/stories/story-017-suggestion-decision-tracking.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.6",
+        "spec:4.5",
+        "spec:4.6",
+        "spec:5.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "014",
+        "015"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:4",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "018",
+      "title": "Inter-Role Communication Protocol",
+      "path": "docs/stories/story-018-inter-role-communication.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.6",
+        "spec:4.6",
+        "spec:9"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "014",
+        "015",
+        "017"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:4",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "019",
+      "title": "Human Control Modes and Creative Sessions",
+      "path": "docs/stories/story-019-human-interaction.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:5.1",
+        "spec:5.4",
+        "spec:9.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011b",
+        "014",
+        "015",
+        "017",
+        "018"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "020",
+      "title": "Editorial Architect and Editorial Direction",
+      "path": "docs/stories/story-020-editorial-architect.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.10.4",
+        "spec:4.7.1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "014",
+        "015"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "021",
+      "title": "Look & Feel — Visual Direction",
+      "path": "docs/stories/story-021-visual-architect.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R7 (iterative refinement), R11 (production readiness), R12 (transparency)"
+      ],
+      "specRefs": [
+        "spec:4.10.2",
+        "spec:4.7.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "008",
+        "009",
+        "011",
+        "014",
+        "015"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "022",
+      "title": "Sound & Music — Sound Direction",
+      "path": "docs/stories/story-022-sound-designer.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R7 (iterative refinement), R11 (production readiness), R12 (transparency)"
+      ],
+      "specRefs": [
+        "spec:4.10.3",
+        "spec:4.9"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "014",
+        "015"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "023",
+      "title": "Character & Performance — Performance Direction",
+      "path": "docs/stories/story-023-actor-agents.md",
+      "status": "Deferred",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R4 (creative conversation with characters), R7 (iterative refinement)"
+      ],
+      "specRefs": [
+        "spec:4.10.5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "008",
+        "010",
+        "011"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "024",
+      "title": "Direction Convergence and Review",
+      "path": "docs/stories/story-024-direction-convergence.md",
+      "status": "Cancelled — Eliminated by ADR-003. The Intent/Mood layer handles cross-group coherence; a separate convergence step is unnecessary when elements are organized by creative concern rather than by role.",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.10"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "015",
+        "020",
+        "021",
+        "022",
+        "023"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "025",
+      "title": "Shot Planning",
+      "path": "docs/stories/story-025-shot-planning.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R7 (iterative refinement), R8 (production artifacts), R11 (production readiness)"
+      ],
+      "specRefs": [
+        "spec:6.1",
+        "spec:6.1.1",
+        "spec:6.1.2",
+        "spec:6.1.3",
+        "spec:6.1.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011",
+        "012",
+        "013",
+        "020",
+        "021",
+        "022"
+      ],
+      "categoryRefs": [
+        "spec:6"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "026",
+      "title": "Storyboard Generation (Optional)",
+      "path": "docs/stories/story-026-storyboard-generation.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:10.2",
+        "spec:10.3",
+        "spec:6.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "013",
+        "025"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "027",
+      "title": "Animatics, Keyframes, and Previz (Optional)",
+      "path": "docs/stories/story-027-animatics-previz.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:10.2",
+        "spec:10.3",
+        "spec:6.3",
+        "spec:6.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "013",
+        "025",
+        "026"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "028",
+      "title": "Render Adapter Module",
+      "path": "docs/stories/story-028-render-adapter.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:10.2",
+        "spec:7.1",
+        "spec:7.1.1",
+        "spec:7.1.2",
+        "spec:7.1.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "013",
+        "022",
+        "025",
+        "027",
+        "029"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "029",
+      "title": "User Asset Injection",
+      "path": "docs/stories/story-029-user-asset-injection.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R17 (real-world assets as first-class inputs)"
+      ],
+      "specRefs": [
+        "spec:1.1",
+        "spec:3.3",
+        "spec:7.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "008",
+        "009",
+        "014",
+        "017"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:3",
+        "spec:7"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "030",
+      "title": "Generated Output QA (Video Understanding Benchmark)",
+      "path": "docs/stories/story-030-generated-output-qa.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:7",
+        "spec:8.2",
+        "spec:9"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "005",
+        "012",
+        "021",
+        "022",
+        "028",
+        "032"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "031",
+      "title": "Change Propagation (Semantic Impact Layer)",
+      "path": "docs/stories/story-031-change-propagation.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.3",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "010",
+        "014"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "032",
+      "title": "Cost Tracking and Budget Management",
+      "path": "docs/stories/story-032-cost-tracking.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.6",
+        "spec:8.1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "014"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "033",
+      "title": "Memory Model and Transcript Retention",
+      "path": "docs/stories/story-033-memory-model.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.6",
+        "spec:9",
+        "spec:9.1",
+        "spec:9.2",
+        "spec:9.3",
+        "spec:9.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "014",
+        "018"
+      ],
+      "categoryRefs": [
+        "spec:4",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "034",
+      "title": "In-App Style Pack Creator",
+      "path": "docs/stories/story-034-style-pack-creator.md",
+      "status": "Pending",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.3",
+        "spec:4.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011b",
+        "016"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "035",
+      "title": "AI Model Benchmarking System",
+      "path": "docs/stories/story-035-model-benchmarking.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "036",
+      "title": "Model Selection and Eval Framework",
+      "path": "docs/stories/story-036-model-selection.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "037",
+      "title": "Production Deployment to cineforge.copper-dog.com",
+      "path": "docs/stories/story-037-production-deployment.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "038",
+      "title": "Multi-Provider LLM Transport",
+      "path": "docs/stories/story-038-multi-provider-transport.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "039",
+      "title": "Apply Model Selections to Production",
+      "path": "docs/stories/story-039-apply-model-selections.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "040",
+      "title": "Pipeline Performance Optimization",
+      "path": "docs/stories/story-040-pipeline-performance-optimization.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "041",
+      "title": "Artifact Quality Improvements",
+      "path": "docs/stories/story-041-artifact-quality-improvements.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "042",
+      "title": "Wire Mock UI to Real APIs",
+      "path": "docs/stories/story-042-wire-mock-ui-to-apis.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "043",
+      "title": "Entity-First Navigation",
+      "path": "docs/stories/story-043-entity-first-navigation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "044",
+      "title": "Mobile-Friendly UI",
+      "path": "docs/stories/story-044-mobile-friendly-ui.md",
+      "status": "Pending",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "045",
+      "title": "Entity Cross-Linking",
+      "path": "docs/stories/story-045-entity-cross-linking.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "046",
+      "title": "Theme System (Light/Dark/Auto + Palettes)",
+      "path": "docs/stories/story-046-theme-system.md",
+      "status": "Pending",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "047",
+      "title": "Benchmark Sonnet 4.6 Across All Evals",
+      "path": "docs/stories/story-047-sonnet-46-benchmarks.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "048",
+      "title": "PDF Input Preview Uses Binary Decode Instead of Text Extraction",
+      "path": "docs/stories/story-048-pdf-input-preview-decode.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "049",
+      "title": "Import Normalization Format Suite",
+      "path": "docs/stories/story-049-import-normalization-format-suite.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "050",
+      "title": "Provider Resilience: Retries, Fallbacks, and Stage Resume",
+      "path": "docs/stories/story-050-provider-resilience-retry-fallback.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "051",
+      "title": "Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts",
+      "path": "docs/stories/story-051-chat-ux-polish.md",
+      "status": "Unknown",
+      "priority": "Unknown",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "052",
+      "title": "Streaming Artifact Yield: Live Per-Entity Progress",
+      "path": "docs/stories/story-052-streaming-artifact-yield.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "053",
+      "title": "Cross-CLI Skills/Prompts Unification",
+      "path": "docs/stories/story-053-cross-cli-skills-unification.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "054",
+      "title": "Liberty Church Character Artifact Cleanup Inventory",
+      "path": "docs/stories/story-054-liberty-church-character-artifact-cleanup-inventory.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.7",
+        "spec:3.1",
+        "spec:5.2",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "008",
+        "041"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "055",
+      "title": "LLM-First Entity Adjudication for Character, Location, and Prop",
+      "path": "docs/stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.4",
+        "spec:3.1",
+        "spec:5.2",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "008",
+        "009",
+        "041",
+        "054"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:3",
+        "spec:5",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "056",
+      "title": "Entity Design Studies (Reference Image Generation Loop)",
+      "path": "docs/stories/story-056-entity-design-study-reference-images.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.6",
+        "spec:3.3",
+        "spec:4.10.2",
+        "spec:6.2",
+        "spec:7.1",
+        "spec:7.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "008",
+        "009",
+        "011f",
+        "029"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:3",
+        "spec:4",
+        "spec:6",
+        "spec:7"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "057",
+      "title": "Entity Prev/Next Navigation",
+      "path": "docs/stories/story-057-entity-prev-next-navigation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "058",
+      "title": "Comprehensive Export & Share",
+      "path": "docs/stories/story-058-comprehensive-export-share.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "059",
+      "title": "Pipeline UI Refinement",
+      "path": "docs/stories/story-059-pipeline-ui-refinement.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "060",
+      "title": "Entity Quality Regression",
+      "path": "docs/stories/story-060-entity-quality-regression.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "061",
+      "title": "Optimize Scene Extraction",
+      "path": "docs/stories/story-061-optimize-scene-extraction.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.7"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "062",
+      "title": "3-Stage Ingestion: Intake, Breakdown, Analysis",
+      "path": "docs/stories/story-062-refactor-ingestion-three-stage.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "061"
+      ],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "063",
+      "title": "Automatic Project Title Extraction from Script",
+      "path": "docs/stories/story-063-automatic-project-title-extraction.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "064",
+      "title": "Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite",
+      "path": "docs/stories/story-064-screenplay-format-round-trip.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "065",
+      "title": "Parallel Bible Extraction: Performance Optimization for Entity-Heavy Scripts",
+      "path": "docs/stories/story-065-parallel-bible-extraction.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:3",
+        "spec:8.1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "066",
+      "title": "UI Component Deduplication & Template Consolidation",
+      "path": "docs/stories/story-066-ui-component-deduplication.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:11.4",
+        "spec:5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:11"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "067",
+      "title": "chat-duplicate-nav-dedup",
+      "path": "docs/stories/story-067-chat-duplicate-nav-dedup.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "068",
+      "title": "History-Aware Back Button Navigation",
+      "path": "docs/stories/story-068-back-button-history-navigation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "069",
+      "title": "Inbox Item Read/Complete State",
+      "path": "docs/stories/story-069-inbox-read-state.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "070",
+      "title": "Script View Scene Dividers & Entity Hotlinks",
+      "path": "docs/stories/story-070-script-view-scene-dividers-and-hotlinks.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "045"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "071",
+      "title": "Refine vs. Regenerate Pipeline Modes",
+      "path": "docs/stories/story-071-refine-vs-regenerate-pipeline.md",
+      "status": "Deferred",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.1",
+        "spec:1.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "072",
+      "title": "Live Entity Discovery Feedback",
+      "path": "docs/stories/story-072-live-entity-discovery-feedback.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2",
+        "spec:5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "062"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "073",
+      "title": "Add `after:` ordering-only stage dependency to recipe DSL",
+      "path": "docs/stories/story-073-add-after-ordering-dependency.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "074",
+      "title": "Artifact graph staleness: regression tests + sibling cross-contamination fix",
+      "path": "docs/stories/story-074-artifact-graph-staleness-regression-tests.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "075",
+      "title": "Entity Detail Page Polish",
+      "path": "docs/stories/story-075-entity-detail-page-polish.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "076",
+      "title": "Entity Detail: Cross-Reference Layout & Narrative Role Polish",
+      "path": "docs/stories/story-076-entity-detail-cross-ref-layout.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "077",
+      "title": "Character Coverage & Prominence Tiers",
+      "path": "docs/stories/story-077-character-coverage-and-prominence-tiers.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:3.1",
+        "spec:3.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "078",
+      "title": "Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata",
+      "path": "docs/stories/story-078-entity-detail-enhancements.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "079",
+      "title": "Chat & Nav Bugs + Polish Bundle",
+      "path": "docs/stories/story-079-chat-nav-bugs-and-polish.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "080",
+      "title": "LLM-Powered Action Line Entity Extraction",
+      "path": "docs/stories/story-080-llm-action-line-entity-extraction.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.7",
+        "spec:3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "081",
+      "title": "Scene Index as Canonical Character Source",
+      "path": "docs/stories/story-081-scene-index-canonical-characters.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.7",
+        "spec:3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "082",
+      "title": "Creative Direction UX",
+      "path": "docs/stories/story-082-creative-direction-ux.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.10.1",
+        "spec:4.10.2",
+        "spec:4.10.3",
+        "spec:4.10.4",
+        "spec:4.10.5",
+        "spec:4.7.1",
+        "spec:5.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "083",
+      "title": "Group Chat Architecture",
+      "path": "docs/stories/story-083-group-chat-architecture.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.6",
+        "spec:5.4",
+        "spec:9"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "084",
+      "title": "Character Chat Agents & Story Agent Rename",
+      "path": "docs/stories/story-084-character-chat-agents.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:4.6",
+        "spec:5.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "085",
+      "title": "Pipeline Capability Graph & Navigation Bar",
+      "path": "docs/stories/story-085-pipeline-capability-graph.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002",
+        "011e",
+        "011f",
+        "082"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "086",
+      "title": "AI Navigation Intelligence",
+      "path": "docs/stories/story-086-ai-navigation-intelligence.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "085"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "087",
+      "title": "Pre-flight Summary Cards",
+      "path": "docs/stories/story-087-preflight-summary-cards.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "086"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "088",
+      "title": "Staleness UX",
+      "path": "docs/stories/story-088-staleness-ux.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "074",
+        "086"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "089",
+      "title": "Interaction Mode Selection",
+      "path": "docs/stories/story-089-interaction-mode-selection.md",
+      "status": "Done",
+      "priority": "Low",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "085"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "090",
+      "title": "Persona-Adaptive Workspaces",
+      "path": "docs/stories/story-090-persona-adaptive-workspaces.md",
+      "status": "Cancelled — Superseded by the two-view architecture (Story Explorer + Scene Workspace) combined with interaction mode (Story 089). The four personas (Screenwriter, Director, Producer, Explorer) each find their home in one or both views. See ADR-003 for the element grouping that replaces the direction architecture.",
+      "priority": "Low",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "085",
+        "089"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "092",
+      "title": "Continuity AI Detection & Gap Analysis",
+      "path": "docs/stories/story-092-continuity-ai-detection.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "093",
+      "title": "Script Bible Artifact",
+      "path": "docs/stories/story-093-script-bible.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R1 (story understanding), R8 (production artifacts)"
+      ],
+      "specRefs": [
+        "spec:2.5",
+        "spec:2.6"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "003",
+        "004"
+      ],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "094",
+      "title": "Concern Group Artifact Schemas",
+      "path": "docs/stories/story-094-concern-group-schemas.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R8 (production artifacts), R11 (production readiness), R12 (transparency)"
+      ],
+      "specRefs": [
+        "spec:4.10",
+        "spec:4.10.1",
+        "spec:4.10.7"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "002"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "095",
+      "title": "Intent / Mood Layer",
+      "path": "docs/stories/story-095-intent-mood-layer.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R5 (full spectrum of involvement), R7 (iterative refinement), R11 (production readiness)"
+      ],
+      "specRefs": [
+        "spec:4.10.1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "014",
+        "094"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "096",
+      "title": "\"Chat About This\" Interaction Pattern",
+      "path": "docs/stories/story-096-chat-about-this.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "R4 (creative conversation), R7 (iterative refinement), R12 (transparency)"
+      ],
+      "specRefs": [
+        "spec:4.10.7"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "011f",
+        "082",
+        "099",
+        "126"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "097",
+      "title": "AI Artifact Editing",
+      "path": "docs/stories/story-097-ai-artifact-editing.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R4 (creative conversation), R5 (full spectrum of involvement), R12 (transparency)"
+      ],
+      "specRefs": [
+        "spec:1.3",
+        "spec:4.10.7",
+        "spec:5.4"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "014",
+        "019",
+        "031",
+        "083"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:4",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "098",
+      "title": "Real-World Asset Upload Pipeline",
+      "path": "docs/stories/story-098-real-asset-upload.md",
+      "status": "Cancelled — merged into Story 029 so asset upload ships as one end-to-end user feature instead of a backend/UI split.",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R17 (real-world assets as first-class inputs)"
+      ],
+      "specRefs": [
+        "spec:7.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "029"
+      ],
+      "categoryRefs": [
+        "spec:7"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "099",
+      "title": "Scene Workspace",
+      "path": "docs/stories/story-099-scene-workspace.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R11 (production readiness per scene), R7 (iterative refinement)"
+      ],
+      "specRefs": [
+        "spec:5.5"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "085",
+        "094",
+        "095"
+      ],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "100",
+      "title": "Motif Tracking System",
+      "path": "docs/stories/story-100-motif-tracking.md",
+      "status": "Draft",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R3 (continuity), R8 (production artifacts)"
+      ],
+      "specRefs": [
+        "spec:4.10.6"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "008",
+        "009",
+        "011",
+        "094"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "101",
+      "title": "Centralized Long-Running Action System",
+      "path": "docs/stories/story-101-long-running-action-system.md",
+      "status": "Done",
+      "priority": "Unknown",
+      "idealRefs": [
+        "R11 (production readiness), R7 (iterative refinement)"
+      ],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "102",
+      "title": "Promptfoo Multi-Turn Conversational Evals",
+      "path": "docs/stories/story-102-promptfoo-multi-turn-evals.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "103",
+      "title": "AGENTS.md Runbook Extraction (300-Line Cap)",
+      "path": "docs/stories/story-103-agents-md-runbook-extraction.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "104",
+      "title": "Tiered Quality Metrics for Eval Scoring",
+      "path": "docs/stories/story-104-tiered-quality-metrics.md",
+      "status": "Draft",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "105",
+      "title": "Parallel Chunk Extraction via ThreadPoolExecutor",
+      "path": "docs/stories/story-105-parallel-extraction.md",
+      "status": "Draft",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "106",
+      "title": "Disk-Backed Chunk-Level Extraction Cache",
+      "path": "docs/stories/story-106-chunk-level-extraction-cache.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "107",
+      "title": "Value-Optimized Model Selection Across All Modules",
+      "path": "docs/stories/story-107-value-optimized-model-selection.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "108",
+      "title": "Continuity UI Page",
+      "path": "docs/stories/story-108-continuity-ui-page.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R3 (perfect continuity tracking across narrative)"
+      ],
+      "specRefs": [
+        "spec:3.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "109",
+      "title": "Golden Build Runbook",
+      "path": "docs/stories/story-109-golden-build-runbook.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "Eval infrastructure reliability"
+      ],
+      "specRefs": [
+        "spec:11.3",
+        "spec:11.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "110",
+      "title": "Improve Search: Fuzzy Matching + Scene Shorthand",
+      "path": "docs/stories/story-110-search-scenes-fuzzy.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "Easy, fun, and engaging — fast navigation is core to the feel"
+      ],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "111",
+      "title": "Fix \"View In Script\" Scroll-to-Scene",
+      "path": "docs/stories/story-111-scene-script-jump.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "Easy, fun, and engaging — jumping to context should feel instant"
+      ],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "112",
+      "title": "Continuity Tracking: First Principles Redesign",
+      "path": "docs/stories/story-112-continuity-redesign-first-principles.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R3 (perfect continuity tracking across narrative)"
+      ],
+      "specRefs": [
+        "spec:3.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "113",
+      "title": "Per-Provider LLM Circuit Breaker",
+      "path": "docs/stories/story-113-llm-circuit-breaker.md",
+      "status": "Cancelled — Superseded by Story 050. Provider circuit breaker behavior already exists in `src/cine_forge/ai/llm.py`, so keeping this as active backlog would duplicate landed work.",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1.4",
+        "spec:8.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "050"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "114",
+      "title": "Driver Progress Events",
+      "path": "docs/stories/story-114-driver-progress-events.md",
+      "status": "Deferred",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "115",
+        "116"
+      ],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "115",
+      "title": "Pipeline Architecture Refactor Plan",
+      "path": "docs/stories/story-115-pipeline-architecture-refactor-plan.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "All (architecture quality is a prerequisite for every Ideal requirement)"
+      ],
+      "specRefs": [
+        "spec:1",
+        "spec:11"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:11"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "116",
+      "title": "Event System Refactor",
+      "path": "docs/stories/story-116-event-system-refactor.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "115"
+      ],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "117",
+      "title": "Engine Decomposition",
+      "path": "docs/stories/story-117-engine-decomposition.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "116"
+      ],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "118",
+      "title": "Service Layer Decomposition",
+      "path": "docs/stories/story-118-service-decomposition.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:1"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "116"
+      ],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "119",
+      "title": "Design Study Prompt Compiler + Visual Reference Propagation",
+      "path": "docs/stories/story-119-design-study-prompt-compiler.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.6",
+        "spec:6.1",
+        "spec:6.2",
+        "spec:6.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "056",
+        "120"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:6"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "120",
+      "title": "Production Format Setting",
+      "path": "docs/stories/story-120-production-format-setting.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.4",
+        "spec:2.6",
+        "spec:6.2",
+        "spec:6.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "056"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:6"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "121",
+      "title": "Design Study Composition UX",
+      "path": "docs/stories/story-121-design-study-composition-ux.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:2.6",
+        "spec:4.10.2",
+        "spec:6.2",
+        "spec:6.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "056",
+        "119",
+        "120"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:4",
+        "spec:6"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "122",
+      "title": "Golden Fixture Helpers",
+      "path": "docs/stories/story-122-golden-fixture-helpers.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "123",
+      "title": "Anthropic Prompt Caching",
+      "path": "docs/stories/story-123-anthropic-prompt-caching.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "124",
+      "title": "Recall Verification Loop for Entity Discovery",
+      "path": "docs/stories/story-124-recall-verification-loop.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "125",
+      "title": "Agent Workflow Hardening Meta Upgrade",
+      "path": "docs/stories/story-125-agent-workflow-hardening-meta-upgrade.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Vision-level preference: easy, fun, and engaging",
+        "R12 (decisions explainable and overridable)",
+        "R14 (process traceability)"
+      ],
+      "specRefs": [
+        "spec:11.1",
+        "spec:11.3",
+        "spec:11.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "126",
+      "title": "Frontend Chat and Data-Layer Decomposition",
+      "path": "docs/stories/story-126-frontend-chat-data-layer-decomposition.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Vision-level preference: easy, fun, and engaging",
+        "iterative by nature",
+        "creative partnership",
+        "R12 (decisions explainable and overridable)"
+      ],
+      "specRefs": [
+        "spec:4.6",
+        "spec:5.3",
+        "spec:5.4",
+        "spec:9"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "127",
+      "title": "Artifact Health Semantics + Chat Model Disclosure",
+      "path": "docs/stories/story-127-artifact-health-semantics-chat-model-disclosure.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "R11 (readiness clarity), R12 (radical transparency)"
+      ],
+      "specRefs": [
+        "spec:1.3",
+        "spec:1.6"
+      ],
+      "adrIds": [
+        "ADR-002"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "083",
+        "088",
+        "126"
+      ],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "128",
+      "title": "Provider Failure Chat Notifications",
+      "path": "docs/stories/story-128-provider-failure-chat-notifications.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "R12 (radical transparency)"
+      ],
+      "specRefs": [
+        "spec:1.6"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "050",
+        "083"
+      ],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "129",
+      "title": "Entity Discovery Taxonomy Tightening",
+      "path": "docs/stories/story-129-entity-discovery-taxonomy-tightening.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "Story Understanding quality bar"
+      ],
+      "specRefs": [
+        "spec:3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "081",
+        "124"
+      ],
+      "categoryRefs": [
+        "spec:3"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "130",
+      "title": "Export Fidelity: Narrative Metadata + Callsheets",
+      "path": "docs/stories/story-130-export-fidelity-narrative-metadata-callsheets.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "Production Output and timeline interchange quality bars"
+      ],
+      "specRefs": [
+        "spec:10",
+        "spec:6.1.4",
+        "spec:7"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "012",
+        "013",
+        "058"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "131",
+      "title": "Preference Learning from User Choices",
+      "path": "docs/stories/story-131-preference-learning-from-user-choices.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "R13 (learn from user choices)"
+      ],
+      "specRefs": [
+        "spec:1.6",
+        "spec:4.5",
+        "spec:9"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "017"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:4",
+        "spec:9"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "132",
+      "title": "Shot Planning UI and Shot List Exports",
+      "path": "docs/stories/story-132-shot-planning-ui-and-shot-list-exports.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R9 (professional exports), R11 (production readiness per scene), R7 (iterative refinement)"
+      ],
+      "specRefs": [
+        "spec:2.6",
+        "spec:5.5",
+        "spec:6.1",
+        "spec:6.1.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "025",
+        "058",
+        "099",
+        "101"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:5",
+        "spec:6"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "133",
+      "title": "Model Refresh, Eval Verification, and Project Model Defaults",
+      "path": "docs/stories/story-133-model-refresh-eval-verification-and-project-defaults.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding quality), R12 (AI decisions explainable and overridable), R14 (provenance and auditability)"
+      ],
+      "specRefs": [
+        "spec:2.4",
+        "spec:8.1",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "107",
+        "124"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "134",
+      "title": "Compromise Convergence Tooling Migration",
+      "path": "docs/stories/story-134-compromise-convergence-tooling-migration.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Vision-level preference: easy, fun, and engaging",
+        "R12 (every AI decision explainable and overridable)",
+        "R14 (nothing is ever lost)"
+      ],
+      "specRefs": [
+        "spec:11.2",
+        "spec:11.3",
+        "spec:11.4"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-019"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "053",
+        "125"
+      ],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "135",
+      "title": "Brick & Steel PDF Normalization Regression",
+      "path": "docs/stories/story-135-screenplay-normalization-brick-steel-pdf-regression.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story input understanding quality bar)"
+      ],
+      "specRefs": [
+        "spec:2.2",
+        "spec:2.3",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "004",
+        "064"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "136",
+      "title": "ADR-021 Execution-Ideal and Phase-Governance Migration",
+      "path": "docs/stories/story-136-adr-021-execution-planning-migration.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Vision-level preference: easy, fun, and engaging",
+        "radical transparency",
+        "R12 (every AI decision explainable and overridable)",
+        "R14 (nothing is ever lost)"
+      ],
+      "specRefs": [
+        "spec:11",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-021"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "134"
+      ],
+      "categoryRefs": [
+        "spec:8",
+        "spec:11"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "137",
+      "title": "Previz Fidelity Upgrade",
+      "path": "docs/stories/story-137-previz-fidelity-upgrade.md",
+      "status": "Done",
+      "priority": "Low",
+      "idealRefs": [
+        "R8 (professional-grade motion assets), R10 (playable assembly at every stage), R17 (partial workflows and real-world asset support)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.3",
+        "spec:6.4",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "027",
+        "028",
+        "030"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "138",
+      "title": "Cost Profiles, Model Comparison, and Stage Budget Controls",
+      "path": "docs/stories/story-138-cost-profiles-model-comparison-stage-budgets.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R12 (Transparency & Control), vision-level preference: Radical transparency"
+      ],
+      "specRefs": [
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "032"
+      ],
+      "categoryRefs": [
+        "spec:8"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "139",
+      "title": "Historical Run Progress Cards Stop Polling Missing Runs",
+      "path": "docs/stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R12 (radical transparency)"
+      ],
+      "specRefs": [
+        "spec:1.6"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "127"
+      ],
+      "categoryRefs": [
+        "spec:1"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "140",
+      "title": "Agentic Media Validation Loop",
+      "path": "docs/stories/story-140-agentic-media-validation-loop.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R7 (generate -> react -> refine), R10 (playable assembly at every stage), R11 (production readiness), R12 (radical transparency)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:7",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "027",
+        "028",
+        "030",
+        "127"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "141",
+      "title": "Intent Taste Stack and Transparent Creative Brief",
+      "path": "docs/stories/story-141-intent-taste-stack-and-transparent-creative-brief.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R6 (style and taste), R7 (iterative refinement), R12 (radical transparency), R17 (real-world assets as first-class inputs)"
+      ],
+      "specRefs": [
+        "spec:4.10.1",
+        "spec:4.10.2",
+        "spec:7.1",
+        "spec:7.2"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "029",
+        "095",
+        "119",
+        "120"
+      ],
+      "categoryRefs": [
+        "spec:4",
+        "spec:7"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "142",
+      "title": "Initial Intake Should Not Self-Stale",
+      "path": "docs/stories/story-142-intake-onboarding-should-not-self-stale.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding), R12 (radical transparency), R15 (intelligent change propagation)"
+      ],
+      "specRefs": [
+        "spec:1.3",
+        "spec:2",
+        "spec:5.3",
+        "spec:5.5"
+      ],
+      "adrIds": [
+        "ADR-002"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "031",
+        "062",
+        "127"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:2",
+        "spec:5"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "143",
+      "title": "AI-Generated Low-Fidelity Previz",
+      "path": "docs/stories/story-143-ai-generated-low-fidelity-previz.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R7 (generate -> react -> refine), R8 (professional-grade motion assets), R10 (playable assembly at every stage), R12 (transparency & control), R17 (real-world and partial-workflow inputs)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.3",
+        "spec:6.4",
+        "spec:7.1",
+        "spec:7.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "028",
+        "029",
+        "030",
+        "056",
+        "119",
+        "137",
+        "140"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "144",
+      "title": "AI Previz Adoption Gate and Trust Guardrails",
+      "path": "docs/stories/story-144-ai-previz-adoption-gate-and-trust-guardrails.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R7 (generate -> react -> refine), R10 (playable assembly at every stage), R11 (production readiness), R12 (transparency & control)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.4",
+        "spec:7.1",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "032",
+        "140",
+        "143"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "architectureDomains": [],
+      "roadmapTags": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "145",
+      "title": "Methodology Graph + State Migration",
+      "path": "docs/stories/story-145-methodology-graph-state-migration.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Execution Ideal",
+        "R14 (Nothing is ever lost)",
+        "Radical transparency"
+      ],
+      "specRefs": [
+        "spec:11"
+      ],
+      "adrIds": [
+        "ADR-001"
+      ],
+      "compromiseIds": [
+        "B2",
+        "B3",
+        "B5"
+      ],
+      "dependsOn": [
+        "134",
+        "136"
+      ],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "campaign:methodology-graph-state-migration"
+      ],
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    }
+  ],
+  "adrs": [
+    {
+      "id": "ADR-001",
+      "title": "Shared Entity Extraction Library",
+      "path": "docs/decisions/adr-001-shared-entity-extraction/adr.md",
+      "status": "DECIDED — Build standalone library (\"Dossier\")",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "idealRefs": [],
+      "relatedAdrIds": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "ADR-002",
+      "title": "Goal-Oriented Project Navigation",
+      "path": "docs/decisions/adr-002-goal-oriented-navigation/adr.md",
+      "status": "DECIDED — Four-layer hybrid architecture (Pipeline Bar + AI Navigator + DAG View + Persona Workspaces)",
+      "specRefs": [],
+      "storyIds": [
+        "002",
+        "011e",
+        "011f",
+        "019",
+        "024",
+        "025",
+        "056",
+        "069"
+      ],
+      "compromiseIds": [],
+      "idealRefs": [],
+      "relatedAdrIds": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:3",
+        "spec:4",
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ]
+    },
+    {
+      "id": "ADR-003",
+      "title": "Film Elements — The Creative Gap Between Screenplay and Film",
+      "path": "docs/decisions/adr-003-film-elements/adr.md",
+      "status": "DECIDED — Option E (Three-Layer Director's Vision Model)",
+      "specRefs": [
+        "spec:2.4",
+        "spec:2.5",
+        "spec:2.6",
+        "spec:4.10.7",
+        "spec:4.7",
+        "spec:6.1",
+        "spec:7.2"
+      ],
+      "storyIds": [
+        "020",
+        "021",
+        "022",
+        "023",
+        "024",
+        "025",
+        "026",
+        "027",
+        "028",
+        "029",
+        "030",
+        "056",
+        "082",
+        "084",
+        "085",
+        "093",
+        "094",
+        "095",
+        "096",
+        "097",
+        "098",
+        "099",
+        "100"
+      ],
+      "compromiseIds": [],
+      "idealRefs": [],
+      "relatedAdrIds": [],
+      "metadataSource": "legacy",
+      "missingFrontmatterKeys": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:2",
+        "spec:3",
+        "spec:4",
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:9",
+        "spec:10"
+      ]
+    }
+  ],
+  "evals": [
+    {
+      "id": "character-extraction",
+      "name": "Character Extraction",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/character-extraction.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "compromise-C2-qa-validation",
+      "name": "Compromise C2: Dedicated QA Passes",
+      "type": "compromise",
+      "command": "null  # not yet implemented",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [
+        "C2"
+      ],
+      "categoryRefs": [
+        "spec:8"
+      ]
+    },
+    {
+      "id": "compromise-C3-tiered-models",
+      "name": "Compromise C3: Tiered Model Strategy",
+      "type": "compromise",
+      "command": "null  # scan registry.yaml programmatically",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [
+        "C3"
+      ],
+      "categoryRefs": [
+        "spec:8"
+      ]
+    },
+    {
+      "id": "compromise-C4-two-tier-scenes",
+      "name": "Compromise C4: Two-Tier Scene Architecture",
+      "type": "compromise",
+      "command": "null",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [
+        "C4"
+      ],
+      "categoryRefs": [
+        "spec:2"
+      ]
+    },
+    {
+      "id": "compromise-C5-role-modality",
+      "name": "Compromise C5: Role Capability Gating (Modality)",
+      "type": "compromise",
+      "command": "null",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [
+        "C5"
+      ],
+      "categoryRefs": [
+        "spec:4"
+      ]
+    },
+    {
+      "id": "compromise-C7-working-memory",
+      "name": "Compromise C7: Working Memory Distinction",
+      "type": "compromise",
+      "command": "null",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [
+        "C7"
+      ],
+      "categoryRefs": [
+        "spec:9"
+      ]
+    },
+    {
+      "id": "config-detection",
+      "name": "Config Detection",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/config-detection.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "continuity-extraction",
+      "name": "Continuity Extraction",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/continuity-extraction.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [
+        "092"
+      ],
+      "compromiseIds": [],
+      "categoryRefs": [
+        "spec:3"
+      ]
+    },
+    {
+      "id": "entity-discovery",
+      "name": "Entity Discovery",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/entity-discovery.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [
+        "124",
+        "129"
+      ],
+      "compromiseIds": [],
+      "categoryRefs": [
+        "spec:3"
+      ]
+    },
+    {
+      "id": "location-extraction",
+      "name": "Location Extraction",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/location-extraction.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "normalization",
+      "name": "Normalization",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/normalization.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "previz-usefulness",
+      "name": "Previz Usefulness",
+      "type": "quality",
+      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [
+        "027",
+        "030",
+        "137",
+        "143"
+      ],
+      "compromiseIds": [],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:9",
+        "spec:10"
+      ]
+    },
+    {
+      "id": "prop-extraction",
+      "name": "Prop Extraction",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/prop-extraction.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "qa-pass",
+      "name": "QA Pass",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "relationship-discovery",
+      "name": "Relationship Discovery",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/relationship-discovery.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "runtime-media-validation",
+      "name": "Runtime Media Validation",
+      "type": "quality",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/runtime_media_validation_eval.py --model gpt-5.4 --output-prefix benchmarks/results/runtime-media-validation-gpt54",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [
+        "144"
+      ],
+      "compromiseIds": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ]
+    },
+    {
+      "id": "scene-enrichment",
+      "name": "Scene Enrichment",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/scene-enrichment.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "scene-extraction",
+      "name": "Scene Extraction",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/scene-extraction.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "script-bible",
+      "name": "Script Bible",
+      "type": "quality",
+      "command": "cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [],
+      "compromiseIds": [],
+      "categoryRefs": []
+    },
+    {
+      "id": "video-understanding",
+      "name": "Video Understanding",
+      "type": "quality",
+      "command": "cd benchmarks && PROMPTFOO_PYTHON=python promptfoo eval -c tasks/video-understanding.yaml --no-cache --filter-first-n 6 -j 1",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [
+        "030"
+      ],
+      "compromiseIds": [],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ]
+    }
+  ],
+  "state": {
+    "version": 1,
+    "format": "json-compatible-yaml",
+    "seeded_at": "2026-04-04",
+    "seeded_from": [
+      "docs/build-map.md",
+      "docs/stories.md",
+      "docs/methodology-artifact-audit-and-migration.md"
+    ],
+    "categories": {
+      "spec:1": {
+        "substrate": "exists",
+        "phase": "hold",
+        "story_coverage": "partial",
+        "product_need": "Artifacts, decisions, and runtime operations stay immutable, auditable, and safe to revise.",
+        "tech_need": "Snapshot versioning, dependency-aware invalidation, AI/runtime boundary discipline, and durable audit metadata.",
+        "absorbs": [
+          "Foundation & Artifact Runtime (old 1)"
+        ],
+        "notes": [
+          "Core substrate exists. Current work here is mostly maintenance, decomposition, and verification hardening rather than a missing-system climb."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:2": {
+        "substrate": "exists",
+        "phase": "climb",
+        "story_coverage": "partial",
+        "product_need": "CineForge can accept story inputs in multiple formats and turn them into a coherent, browsable understanding quickly enough to start creative work.",
+        "tech_need": "Ingestion, normalization, canonical script handling, project configuration, script-bible extraction, and scene understanding.",
+        "absorbs": [
+          "Script Understanding Pipeline (old 2)"
+        ],
+        "notes": [
+          "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:3": {
+        "substrate": "exists",
+        "phase": "hold",
+        "story_coverage": "partial",
+        "product_need": "Characters, locations, props, and continuity states persist as first-class world knowledge.",
+        "tech_need": "Bible folders, relationship edges, and state snapshots over story time.",
+        "absorbs": [
+          "World Building & Continuity (old 3)"
+        ],
+        "notes": [
+          "Core substrate exists. Remaining work is mostly quality refinement, continuity detection depth, and better downstream reuse of the world model."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:4": {
+        "substrate": "exists",
+        "phase": "hold",
+        "story_coverage": "partial",
+        "product_need": "Creative roles and characters should feel like collaborators who understand the story deeply and shape it across disciplines.",
+        "tech_need": "Role hierarchy, style packs, transcripts, suggestion artifacts, and concern-group direction artifacts.",
+        "absorbs": [
+          "Role System & Creative Direction (old 4)"
+        ],
+        "notes": [
+          "Capability gating remains an honest hold-state compromise until one broadly usable multimodal model removes the need for per-role modality declarations."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:5": {
+        "substrate": "exists",
+        "phase": "hold",
+        "story_coverage": "partial",
+        "product_need": "The operator should feel like they are working with their story, not administering a pipeline.",
+        "tech_need": "Control modes, explanation surfaces, stage-progression rules, interaction models, and readiness signals that keep the UI honest.",
+        "absorbs": [
+          "Operator Console & Interactive UX (old 5)"
+        ],
+        "notes": [
+          "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:6": {
+        "substrate": "exists",
+        "phase": "climb",
+        "story_coverage": "partial",
+        "product_need": "Creative intent becomes concrete planning artifacts usable by humans and generation models.",
+        "tech_need": "Coverage strategy, shot definitions, storyboard and animatic assets, and optional keyframes linked to upstream direction.",
+        "absorbs": [
+          "Shot Planning & Visualization (old 6)"
+        ],
+        "notes": [
+          "Shot planning, storyboard generation, deterministic previz, and the operator-facing AI-previz surface now exist as real substrate.",
+          "This category stays in climb because broader previz quality and consistency coverage remains unfinished."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:7": {
+        "substrate": "partial",
+        "phase": "climb",
+        "story_coverage": "partial",
+        "product_need": "CineForge can compile direction into generation requests and carry user-provided assets through the same pipeline.",
+        "tech_need": "Render-adapter compilation, engine-pack knowledge, error handling, and origin-agnostic asset injection.",
+        "absorbs": [
+          "Generation & Export (old 7)"
+        ],
+        "notes": [
+          "Render-adapter compilation, engine-pack knowledge, error handling, origin-agnostic asset injection, runtime media validation, and AI-previz generation exist as real substrate.",
+          "This category stays in climb because richer export fidelity and broader media-validation coverage remain unfinished."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:8": {
+        "substrate": "exists",
+        "phase": "hold",
+        "story_coverage": "partial",
+        "product_need": "AI cost, quality, and model tradeoffs are visible enough that operators can trust the system.",
+        "tech_need": "Cost tracking, QA patterns, current eval registry discipline, and model-slot strategy.",
+        "absorbs": [
+          "AI Platform, Model Selection & Validation (old 8)"
+        ],
+        "notes": [
+          "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:9": {
+        "substrate": "partial",
+        "phase": "climb",
+        "story_coverage": "partial",
+        "product_need": "Long-running collaboration should preserve context, transcripts, and operating-mode intent without losing provenance.",
+        "tech_need": "Canonical memory artifacts, working-memory summaries, and explicit operating-mode rules.",
+        "absorbs": [
+          "Memory & Collaboration (old 9)"
+        ],
+        "notes": [
+          "The canonical vs working-memory split remains justified while context windows and memory persistence are still constrained."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:10": {
+        "substrate": "exists",
+        "phase": "hold",
+        "story_coverage": "partial",
+        "product_need": "Users can inspect pacing, order, and best-available playback throughout the pipeline.",
+        "tech_need": "Independent timeline artifacts, stacked tracks, and the always-playable fallback rule.",
+        "absorbs": [
+          "None — new explicit category extracted from existing spec/stories"
+        ],
+        "notes": [
+          "Timeline substrate exists but still relies on continued trust/readiness work as generated-video and previz lanes evolve."
+        ],
+        "last_reviewed": "2026-04-04"
+      },
+      "spec:11": {
+        "substrate": "exists",
+        "phase": "climb",
+        "story_coverage": "partial",
+        "product_need": "CineForge still needs explicit planning scaffolding while current AI cannot yet build and verify large repo changes from the ideal in one shot.",
+        "tech_need": "Story lifecycle tracking, methodology state, compiled graph joins, generated planning views, triage skills, workflow gates, AGENTS instructions, runbooks, and verbose work logs.",
+        "absorbs": [
+          "Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)"
+        ],
+        "notes": [
+          "Story 134 and Story 136 established the current authored build-map/spec stack.",
+          "Story 145 landed the graph+state migration, replacing the authored planning surface with structured state, compiled joins, generated views, and hard linting."
+        ],
+        "last_reviewed": "2026-04-04"
+      }
+    },
+    "compromises": {
+      "C1": {
+        "phase": "hold",
+        "current": "Per-call and per-run cost tracking still matters because model pricing and tradeoffs are material.",
+        "converge_signal": "Per-call cost tracking becomes unnecessary when inference is cheap enough to stop shaping operator behavior.",
+        "evidence": "No registry eval; detection remains pricing-watch based.",
+        "last_reviewed": "2026-04-04"
+      },
+      "C2": {
+        "phase": "hold",
+        "current": "Dedicated QA / verification remains the safest path for structured output quality.",
+        "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
+        "evidence": "`compromise-C2-qa-validation` does not justify deletion yet.",
+        "last_reviewed": "2026-04-04"
+      },
+      "C3": {
+        "phase": "hold",
+        "current": "Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.",
+        "converge_signal": "One model meets all current default-driving quality bars at acceptable latency and cost.",
+        "evidence": "`compromise-C3-tiered-models` still leaves the repo below the single-model bar.",
+        "last_reviewed": "2026-04-04"
+      },
+      "C4": {
+        "phase": "climb",
+        "current": "Structural scene breakdown lands quickly, while slower narrative enrichment remains separate and user-triggered.",
+        "converge_signal": "Single-pass scene understanding becomes both fast enough and good enough to replace the split.",
+        "evidence": "`compromise-C4-two-tier-scenes` still shows the best candidate below the quality/latency bar.",
+        "last_reviewed": "2026-04-04"
+      },
+      "C5": {
+        "phase": "hold",
+        "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
+        "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
+        "evidence": "`compromise-C5-role-modality` has no passing deletion signal.",
+        "last_reviewed": "2026-04-04"
+      },
+      "C6": {
+        "phase": "hold",
+        "current": "Heterogeneous video APIs still justify a render-adapter abstraction with model-specific engine-pack knowledge.",
+        "converge_signal": "A dominant standard API or one model cleanly handles all required generation inputs.",
+        "evidence": "No registry-backed deletion harness exists yet; this remains an ecosystem detector.",
+        "last_reviewed": "2026-04-04"
+      },
+      "C7": {
+        "phase": "hold",
+        "current": "Canonical memory plus working-memory caches remain necessary while context windows are finite and expensive.",
+        "converge_signal": "Persistent, effectively unbounded memory makes the split unnecessary.",
+        "evidence": "`compromise-C7-working-memory` has no deletion signal yet.",
+        "last_reviewed": "2026-04-04"
+      },
+      "B1": {
+        "phase": "hold",
+        "current": "Story files remain the safest way to preserve scope, acceptance criteria, and work-log context across sessions.",
+        "converge_signal": "Long-horizon planning continuity becomes reliable enough that explicit story slicing is optional.",
+        "evidence": "No automated harness; human capability detection remains the practical signal.",
+        "last_reviewed": "2026-04-04"
+      },
+      "B2": {
+        "phase": "climb",
+        "current": "Structured methodology state and generated planning views are still required so triage can reason about architecture readiness without guessing from repo shape alone.",
+        "converge_signal": "Architectural readiness and planning state become inferable directly from the repo and normal artifacts without an explicit state layer.",
+        "evidence": "Story 145 replaced the authored build-map with methodology state plus generated views rather than deleting the responsibility.",
+        "last_reviewed": "2026-04-04"
+      },
+      "B3": {
+        "phase": "hold",
+        "current": "Explicit routing and domain-specific triage logic still produce better next-step choices than monolithic generic planning.",
+        "converge_signal": "Repo-aware prioritization becomes reliable without procedural scaffolding.",
+        "evidence": "No automated harness; the detector is sustained autonomous prioritizer quality.",
+        "last_reviewed": "2026-04-04"
+      },
+      "B4": {
+        "phase": "hold",
+        "current": "`/build-story`, `/validate`, and `/mark-story-done` remain useful because human trust and AI self-verification are not yet strong enough to collapse the chain.",
+        "converge_signal": "The chain shrinks to the level of review the operator actually wants.",
+        "evidence": "Human trust plus repeated correct autonomous closure remains the practical detector.",
+        "last_reviewed": "2026-04-04"
+      },
+      "B5": {
+        "phase": "hold",
+        "current": "Explicit repo conventions, skills, and runbooks are still needed so future sessions do not re-learn the same rules from scratch.",
+        "converge_signal": "Project conventions become inferable from code and normal repo artifacts alone.",
+        "evidence": "No automated harness; use reliable convention inference across fresh sessions as the detector.",
+        "last_reviewed": "2026-04-04"
+      }
+    },
+    "roadmap": {
+      "active_focus": [
+        "spec:11",
+        "spec:5",
+        "spec:6"
+      ],
+      "sequencing_bias": [
+        {
+          "target": "spec:5",
+          "reason": "Operator-surface polish remains the clearest product-facing follow-on once the planning substrate is stable."
+        },
+        {
+          "target": "spec:11",
+          "reason": "The structural migration is complete; any remaining methodology work is now warning-debt cleanup and audit follow-through rather than substrate replacement."
+        }
+      ],
+      "campaigns": [
+        {
+          "id": "methodology-graph-state-migration",
+          "status": "completed",
+          "story_refs": [
+            "145"
+          ],
+          "notes": "Replaced hand-authored build-map/story-index planning surfaces with state, graph, generated views, and hard linting."
+        }
+      ]
+    },
+    "stories_index": {
+      "sections": [
+        {
+          "id": "current-execution-map",
+          "title": "Current Execution Map",
+          "lines": [
+            "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 143 and 144 together turned AI previz into an evidence-backed optional lane instead of a static experimental surface. Story 145 completed the methodology migration from authored planning dashboards to the graph+state package. The active backlog now centers on operator-surface polish and any optional follow-up cleanup of legacy methodology warning debt.",
+            "",
+            "### Pending — Ready To Build Now",
+            "",
+            "| Story | Why |",
+            "|---|---|",
+            "| **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |",
+            "| **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |",
+            "| **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |",
+            "",
+            "### In Progress",
+            "",
+            "No stories currently in progress.",
+            "",
+            "### Pending — Ready, But Sequence-Sensitive",
+            "",
+            "No stories currently need the sequence-sensitive lane.",
+            "",
+            "### Blocked — Dependency Chain Not Ready Yet",
+            "",
+            "No stories currently blocked.",
+            "",
+            "### Draft — Scope Or Decision Needed First",
+            "",
+            "| Story | Why It Stays Draft |",
+            "|---|---|",
+            "| **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |",
+            "| **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |",
+            "| **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |",
+            "| **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |",
+            "| **102 / 104 / 105 / 106 / 112** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |",
+            "",
+            "### Deferred — Intentionally Parked",
+            "",
+            "| Story | Why It Is Parked |",
+            "|---|---|",
+            "| **023** Character & Performance | Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed. |"
+          ]
+        },
+        {
+          "id": "notes-from-cam",
+          "title": "Notes From Cam",
+          "lines": [
+            "- 20260212: Seeddance 2.0 released and it's insane: https://x.com/altryne/status/2021967972055842893?s=20",
+            "  - \"Takes a TEXT STORYBOARD image + character ref + scene ref + prop ref -> coherent 15-second film.\""
+          ]
+        },
+        {
+          "id": "phase-summary",
+          "title": "Phase Summary",
+          "lines": [
+            "- **Phase 0 — Foundation** (001–002): Project scaffolding and pipeline infrastructure. Artifact store with immutability, snapshot versioning, dependency graph, audit metadata, cost tracking hooks, and structural validation.",
+            "- **Phase 1 — MVP Pipeline** (003–007): First working pipeline: script in -> canonical script + scenes + project config out. End-to-end smoke test.",
+            "- **Phase 2 — World Building** (008–011): Folder-based bibles (characters, locations, props), entity relationship graph, continuity state tracking.",
+            "- **Phase 2.5 — UI** (011b–011c): Production-quality Operator Console and resource-oriented routing. Research-driven design, then build. Foundation for later UI surfaces.",
+            "- **Phase 3 — Timeline** (012–013): Timeline data artifact with scene/story ordering, stacked tracks, and always-playable rule.",
+            "- **Phase 4 — Role System** (014–019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, and human interaction modes.",
+            "- **Phase 5 — Creative Direction** (020–023, 093–097, 099–100): Intent-first director's vision model, concern groups, and scene workspace.",
+            "- **Phase 6 — Shot Planning & Visualization** (025–027, 137, 143, 144): Coverage strategy, storyboards, animatics, keyframes, and AI-previz.",
+            "- **Phase 7 — Generation** (028–030, 140): Render adapter, user asset injection, generated-output QA, and media validation.",
+            "- **Phase 8 — Cross-Cutting Polish** (031–034): Semantic impact assessment, cost dashboards and budget caps, memory model, and in-app style pack creator."
+          ]
+        },
+        {
+          "id": "spec-coverage-map",
+          "title": "Spec Coverage Map",
+          "lines": [
+            "| Spec Section | Phase |",
+            "|---|---|",
+            "| spec:1 Foundation & Artifact Runtime | 0 / Cross-Cutting |",
+            "| spec:2 Story Intake & Understanding | 1 |",
+            "| spec:3 World Building & Continuity | 2 |",
+            "| spec:4 Role System & Creative Direction | 4 / 5 |",
+            "| spec:5 Operator Console & Interactive UX | 2.5 |",
+            "| spec:6 Shot Planning & Visualization | 6 |",
+            "| spec:7 Generation & Export | 7 |",
+            "| spec:8 AI Platform, Evaluation & Model Strategy | Cross-Cutting |",
+            "| spec:9 Memory & Collaboration | Cross-Cutting |",
+            "| spec:10 Timeline & Playable Assembly | 3 |",
+            "| spec:11 Planning Infrastructure & Agent Tooling | Cross-Cutting |"
+          ]
+        }
+      ]
+    },
+    "architecture_audits": {
+      "cadence": {
+        "target_story_interval": 10
+      },
+      "domains": {
+        "methodology_tooling": {
+          "last_audited_at": "2026-04-04",
+          "recent_story_refs": [
+            "134",
+            "136",
+            "145"
+          ],
+          "stories_since_audit": 0,
+          "open_findings": [
+            "Legacy story/ADR metadata still produces compiler warnings; normalize active backlog items in a follow-up pass.",
+            "Historic cancelled/unknown story statuses remain as documented warning debt until a targeted metadata cleanup resolves them."
+          ],
+          "manual_priority": "high",
+          "last_result": "follow-up-needed",
+          "last_summary": "Story 145 landed the graph+state substrate, generated dashboards, and architecture-audit lane. Remaining methodology-tooling debt is narrowed to legacy metadata normalization rather than active-surface authority drift."
+        },
+        "driver_and_runtime": {
+          "last_audited_at": "2026-03-02",
+          "recent_story_refs": [
+            "115",
+            "116",
+            "117"
+          ],
+          "stories_since_audit": 1,
+          "open_findings": [],
+          "manual_priority": "normal"
+        },
+        "ingest_and_world_building": {
+          "last_audited_at": "2026-03-13",
+          "recent_story_refs": [
+            "129",
+            "135",
+            "142"
+          ],
+          "stories_since_audit": 1,
+          "open_findings": [],
+          "manual_priority": "normal"
+        },
+        "api_service_and_operator_console": {
+          "last_audited_at": "2026-04-03",
+          "recent_story_refs": [
+            "126",
+            "127",
+            "139",
+            "142"
+          ],
+          "stories_since_audit": 1,
+          "open_findings": [],
+          "manual_priority": "normal"
+        },
+        "creative_direction_and_chat": {
+          "last_audited_at": "2026-03-31",
+          "recent_story_refs": [
+            "141",
+            "144"
+          ],
+          "stories_since_audit": 0,
+          "open_findings": [],
+          "manual_priority": "normal"
+        },
+        "generation_and_visualization": {
+          "last_audited_at": "2026-04-04",
+          "recent_story_refs": [
+            "137",
+            "140",
+            "143",
+            "144"
+          ],
+          "stories_since_audit": 0,
+          "open_findings": [],
+          "manual_priority": "normal"
+        }
+      }
+    },
+    "story_overrides": {
+      "category_refs": {
+        "111": [
+          "spec:5"
+        ],
+        "123": [
+          "spec:8"
+        ]
+      }
+    }
+  },
+  "validation": {
+    "errors": [],
+    "warnings": [
+      "story 024 has non-standard status Cancelled — Eliminated by ADR-003. The Intent/Mood layer handles cross-group coherence; a separate convergence step is unnecessary when elements are organized by creative concern rather than by role.",
+      "story 051 has non-standard status Unknown",
+      "story 090 has non-standard status Cancelled — Superseded by the two-view architecture (Story Explorer + Scene Workspace) combined with interaction mode (Story 089). The four personas (Screenwriter, Director, Producer, Explorer) each find their home in one or both views. See ADR-003 for the element grouping that replaces the direction architecture.",
+      "story 098 has non-standard status Cancelled — merged into Story 029 so asset upload ships as one end-to-end user feature instead of a backend/UI split.",
+      "story 113 has non-standard status Cancelled — Superseded by Story 050. Provider circuit breaker behavior already exists in `src/cine_forge/ai/llm.py`, so keeping this as active backlog would duplicate landed work.",
+      "story 134 references ADR with no local adr.md: ADR-019",
+      "story 136 references ADR with no local adr.md: ADR-021",
+      "Stories still on legacy metadata headers: 001, 002, 003 +148 more",
+      "Stories with no category refs: 011c, 011e, 011f +45 more",
+      "ADRs still on legacy metadata only: ADR-001, ADR-002, ADR-003",
+      "Architecture audit domains due or carrying open findings: methodology_tooling"
+    ]
+  }
+}

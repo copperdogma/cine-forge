@@ -12,13 +12,16 @@ This is the operational companion to `/triage`.
   - `/triage-stories`
   - `/triage-inbox`
   - `/triage-evals`
-- [docs/build-map.md](../build-map.md) exists or its absence is understood
-- You know whether the invocation is full-sweep or scoped (`stories`, `inbox`, `evals`)
+- `/triage-architecture`
+- [docs/methodology/state.yaml](../methodology/state.yaml) exists
+- generated dashboards such as [docs/build-map.md](../build-map.md) are current
+- You know whether the invocation is full-sweep or scoped (`stories`, `inbox`, `evals`, `architecture`)
 
 ## Steps
 
 1. **[script] Decide routing mode**
-   - If the user passed `stories`, `inbox`, or `evals`, route directly to the leaf skill and stop.
+   - If the user passed `stories`, `inbox`, `evals`, or `architecture`, route
+     directly to the leaf skill and stop.
    - If no scope was passed, continue with full-sweep mode.
 
 2. **[script] Read the shared frame**
@@ -26,6 +29,7 @@ This is the operational companion to `/triage`.
      - `docs/ideal.md`
      - `docs/methodology-ideal-spec-compromise.md`
      - `docs/spec.md`
+     - `docs/methodology/state.yaml`
      - `docs/build-map.md`
    - Optionally inspect recent `git log --oneline -20` for momentum context.
    - Goal: identify the highest-leverage live gap before looking at the backlog.
@@ -33,7 +37,7 @@ This is the operational companion to `/triage`.
 3. **[judgment] Name the primary gap**
    - State the unmet Ideal promise or overscaffolded compromise
    - Map it to the owning spec section(s)
-   - Map it to the owning build-map category, substrate, and phase
+   - Map it to the owning methodology category, substrate, and phase
    - Name 1-2 runner-up gaps
    - Goal: decide what actually matters before looking for convenient work
 
@@ -46,6 +50,7 @@ This is the operational companion to `/triage`.
    - Stories: `/triage-stories`
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
+   - Architecture: `/triage-architecture scan`
    - Goal: find which existing artifacts already advance the chosen gap
 
 6. **[judgment] Synthesize one next action**
@@ -63,7 +68,7 @@ This is the operational companion to `/triage`.
 - Keep full-sweep `/triage` read-only
 - Let leaf skills own their domain logic
 - End with one clear recommendation
-- Start from Ideal/spec/build-map gaps, not the backlog
+- Start from Ideal/spec/state gaps, not the backlog
 
 ### Ask first
 
@@ -85,10 +90,13 @@ This is the operational companion to `/triage`.
 - **A leaf skill is stale or missing**
   - Fix: call out the gap instead of pretending the full sweep is complete.
 
-- **Build map is thin**
-  - Fix: still use it, but downgrade confidence in convergence-based ranking.
+- **Generated dashboard is thin or stale**
+  - Fix: read `docs/methodology/state.yaml` directly, call out the freshness
+    problem, and downgrade confidence in convergence-based ranking.
 
 ## Lessons Learned
 
 - 2026-03-15 — `/triage` works best as an orchestrator. CineForge already had useful eval-triage logic; folding that into a monolith would have been a regression.
-- 2026-03-20 — Orchestration still has to be methodology-first. If triage starts from stories or eval queues, the backlog begins prioritizing itself instead of serving the Ideal/spec/build-map spine.
+- 2026-03-20 — Orchestration still has to be methodology-first. If triage
+  starts from stories or eval queues, the backlog begins prioritizing itself
+  instead of serving the Ideal/spec/state spine.
