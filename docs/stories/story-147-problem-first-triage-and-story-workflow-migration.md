@@ -117,6 +117,14 @@ artifacts, and keep user-facing work packaged as whole usable slices by default.
   - [x] `git diff --check`
   - [x] targeted methodology regression coverage for the new status and
         blocked-story behavior passes
+- [x] Generated planning surfaces cannot silently contradict canonical story
+      truth after close-out:
+  - [x] the Current Execution Map no longer relies on hand-authored status lanes
+        that can drift from story frontmatter
+  - [x] `scripts/methodology-graph.js` renders execution-map lanes from
+        structured state plus actual story status
+  - [x] methodology validation fails when execution-map or active-roadmap story
+        refs point only at terminal stories
 
 ## Out of Scope
 
@@ -220,6 +228,18 @@ artifacts, and keep user-facing work packaged as whole usable slices by default.
 - [x] Check whether the chosen implementation makes any skill wording, boilerplate
       status guidance, or promotion ceremony redundant; remove it or create a
       concrete follow-up.
+- [x] Remove the remaining planning-surface truth loophole after the initial
+      Story 147 close-out:
+  - [x] reopen Story 147 honestly instead of creating a duplicate follow-up
+        shell for the same methodology success surface
+  - [x] replace hand-authored Current Execution Map story lists in
+        `docs/methodology/state.yaml` with structured lane metadata that the
+        compiler can validate against actual story status
+  - [x] teach `scripts/methodology-graph.js` to render those lanes from
+        canonical story truth and fail when active roadmap items point only at
+        terminal stories
+  - [x] add targeted regression coverage for stale execution-map lane
+        membership and stale active-campaign refs
 - [x] Run required checks for touched scope:
   - [x] `pnpm methodology:compile`
   - [x] `pnpm methodology:check`
@@ -286,18 +306,13 @@ N/A
   `docs/build-map.md`). If blocked-story truth becomes inspectable in the
   graph, the compiler must derive it from canonical story files rather than a
   parallel registry.
-- **File sizes**: `make check-size` run on 2026-04-04. Likely touched large
-  files include `docs/spec.md` (`1434`), `AGENTS.md` (`679`), and
-  `scripts/methodology-graph.js` (`944`), so edits there must stay narrow and
-  explicit. Other likely surfaces are smaller: `docs/methodology/state.yaml`
-  (`395`), `docs/methodology-ideal-spec-compromise.md` (`208`),
-  `.agents/skills/build-story/SKILL.md` (`179`), `.agents/skills/validate/SKILL.md`
-  (`175`), `.agents/skills/triage/SKILL.md` (`135`),
-  `.agents/skills/create-story/templates/story.md` (`107`),
-  `.agents/skills/create-story/SKILL.md` (`103`),
-  `docs/runbooks/setup-methodology.md` (`130`),
-  `docs/runbooks/triage-architecture.md` (`130`), and
-  `docs/runbooks/triage.md` (`102`).
+- **File sizes**: `make check-size` and `wc -l` rerun on 2026-04-05 for the
+  reopened follow-on. The main touched logic file grew further and remains the
+  plan risk: `scripts/methodology-graph.js` (`1111`), so the compiler change
+  must stay narrow and well-covered. Other touched files are
+  `docs/stories/story-147-problem-first-triage-and-story-workflow-migration.md`
+  (`686`), `docs/methodology/state.yaml` (`423`), and
+  `tests/unit/test_methodology_graph.py` (`398`).
 - **Decision context**: Reviewed `docs/design/decisions.md`, local ADR-001..003
   directory inventory, Stories 145 and 146, the user-supplied migration
   runbook, and doc-web commit `eac7b3e1ac20f2d6a60e372219bcc189cf64ca90`. No
@@ -307,51 +322,25 @@ N/A
 ## Files to Modify
 
 - `docs/stories/story-147-problem-first-triage-and-story-workflow-migration.md` —
-  execution artifact, audit notes, certification matrix, and proof log (new)
-- `docs/spec.md` — update `spec:11.1` story-lifecycle semantics and any related
-  methodology wording (`1434`)
-- `AGENTS.md` — align repo policy with the repaired story workflow (`679`)
-- `.agents/skills/triage/SKILL.md` — problem-first weighting and continuity
-  guidance (`135`)
-- `.agents/skills/triage-stories/SKILL.md` — anti-fragmentation and same-line
-  continuation behavior (`92`)
-- `.agents/skills/create-story/SKILL.md` — honest initial status selection and
-  same-line story refusal (`103`)
-- `.agents/skills/create-story/templates/story.md` — blocker sections and
-  updated story-shape contract (`107`)
-- `.agents/skills/build-story/SKILL.md` — promote buildable `Draft` stories and
-  record real blockers (`179`)
-- `.agents/skills/validate/SKILL.md` — keep coherent same-surface work together
-  (`175`)
-- `.agents/skills/mark-story-done/SKILL.md` — limit `Rescope then close` to
-  genuinely separate follow-up work (`98`)
-- `docs/methodology-ideal-spec-compromise.md` — align the methodology doctrine
-  with the repaired workflow semantics (`208`)
-- `docs/runbooks/triage.md` — align the triage runbook with the new weighting
-  and continuity rules (`102`)
-- `docs/runbooks/migrate-problem-first-triage-and-story-workflow.md` —
-  cross-repo migration runbook for this workflow repair (new)
-- `scripts/methodology-graph.js` — surface blocked-story truth and keep status
-  legends or validation aligned with the canonical contract (`944`)
-- `tests/unit/test_methodology_graph.py` — targeted regression coverage for
-  blocked-story metadata and status behavior in the repo-native pytest surface
-  (new)
-- `docs/methodology/graph.json` — regenerated graph output (`6316`)
-- `docs/stories.md` — regenerated story index (`303`)
-- `docs/build-map.md` — regenerated build dashboard (`271`)
-- `docs/methodology/state.yaml` — roadmap or campaign notes only if the landed
-  behavior needs explicit state updates (`395`)
+  reopened execution artifact, narrowed plan, and fresh proof log (`686`)
+- `docs/methodology/state.yaml` — replace the hand-authored execution-map lane
+  text with structured lane metadata and refresh roadmap state (`423`)
+- `scripts/methodology-graph.js` — render the execution map from canonical
+  story truth and reject stale active-roadmap refs (`1111`)
+- `tests/unit/test_methodology_graph.py` — targeted regression coverage for the
+  new execution-map and roadmap validation (`398`)
+- `docs/methodology/graph.json` — regenerated graph output
+- `docs/stories.md` — regenerated story index and Current Execution Map
+- `docs/build-map.md` — regenerated build dashboard if roadmap state changes
 
 ## Redundancy / Removal Targets
 
-- Manual story-promotion ceremony that exists only because skills disagree
-  about what `Draft` or `Pending` means
-- Skill wording that treats story-shell existence as a primary priority signal
-  instead of packaging context
-- Close-out guidance that encourages fragmenting same-surface work into serial
-  micro-stories
-- Hidden blocked-story truth that lives only in prose or session memory instead
-  of inspectable canonical artifacts
+- Hand-authored Current Execution Map lane text that duplicates story status and
+  can drift after close-out
+- Active roadmap metadata that can keep pointing at only terminal stories
+  without failing methodology validation
+- Any compiler path that treats generated planning prose as authoritative over
+  story frontmatter
 
 ## Notes
 
@@ -381,7 +370,7 @@ N/A
 
 ### Baseline / Approach Gate
 
-- [ ] Baseline the current behavior before changing anything:
+- [x] Baseline the current behavior before changing anything:
   - Current checks already pass despite the workflow drift:
     `pnpm methodology:check`, `make skills-check`, and `make check-size`
     all came back green on 2026-04-04.
@@ -391,7 +380,7 @@ N/A
   - `scripts/methodology-graph.js` already accepts `Blocked`, but the consumer
     contract above it is still inconsistent, so compile success alone is not
     enough evidence.
-- [ ] Use the deterministic workflow-tooling path, not an AI-only experiment:
+- [x] Use the deterministic workflow-tooling path, not an AI-only experiment:
   - This story is orchestration, planning, compiler, and instruction plumbing.
     No live model selection or model benchmark is needed.
   - Doc-only is insufficient because the skills and compiler already disagree.
@@ -403,7 +392,7 @@ N/A
 
 ### Implementation Sequence
 
-- [ ] Task 1 — Lock the canonical story lifecycle in the written policy surface.
+- [x] Task 1 — Lock the canonical story lifecycle in the written policy surface.
   Files: `docs/spec.md`, `AGENTS.md`.
   Change: teach the honest five-status model (`Draft`, `Pending`, `In Progress`,
   `Blocked`, `Done`), define what each state means, clarify legal transitions,
@@ -415,7 +404,7 @@ N/A
   Done when: both docs describe the same lifecycle contract and explicitly
   reserve `Blocked` for named blockers with evidence plus an unblock condition.
 
-- [ ] Task 2 — Repair the lifecycle skills and story template so behavior matches
+- [x] Task 2 — Repair the lifecycle skills and story template so behavior matches
   the policy.
   Files: `.agents/skills/create-story/SKILL.md`,
   `.agents/skills/create-story/templates/story.md`,
@@ -436,7 +425,7 @@ N/A
   initial-state, promotion, blocking, and close-out behavior without fallback to
   the old four-status rules.
 
-- [ ] Task 3 — Make triage explicitly problem-first and continuity-biased without
+- [x] Task 3 — Make triage explicitly problem-first and continuity-biased without
   duplicating logic.
   Files: `.agents/skills/triage-stories/SKILL.md`,
   `.agents/skills/triage/SKILL.md`, `docs/runbooks/triage.md`.
@@ -452,7 +441,7 @@ N/A
   backlog-shell existence, and same-line continuation is an explicit allowed
   recommendation.
 
-- [ ] Task 4 — Surface blocked-story truth in the compiler and add the missing
+- [x] Task 4 — Surface blocked-story truth in the compiler and add the missing
   regression harness.
   Files: `scripts/methodology-graph.js`,
   `tests/unit/test_methodology_graph.py`.
@@ -467,7 +456,7 @@ N/A
   emits blocker metadata from story files, and `pnpm methodology:check` passes
   with the repaired contract.
 
-- [ ] Task 5 — Land the CineForge runbook, regenerate artifacts, and certify the
+- [x] Task 5 — Land the CineForge runbook, regenerate artifacts, and certify the
   behavior scenarios.
   Files: `docs/runbooks/migrate-problem-first-triage-and-story-workflow.md`,
   `docs/methodology-ideal-spec-compromise.md`,
@@ -487,7 +476,7 @@ N/A
 
 ### Repo-Fit / Optimality Evidence
 
-- [ ] The chosen approach matches CineForge better than the alternatives:
+- [x] The chosen approach matches CineForge better than the alternatives:
   - `docs/spec.md` still codifies a four-status lifecycle, while
     `scripts/methodology-graph.js` and generated `docs/stories.md` already know
     about `Blocked`. This is local proof that docs-only or compiler-only would
@@ -505,7 +494,7 @@ N/A
 
 ### Structural Health Check
 
-- [ ] File-size and contract findings recorded before implementation:
+- [x] File-size and contract findings recorded before implementation:
   - `docs/spec.md` is `1434` lines, `AGENTS.md` is `679`, and
     `scripts/methodology-graph.js` is `944`; edits there must stay surgical.
   - No new runtime schema or cross-layer Pydantic contract is expected because
@@ -518,7 +507,7 @@ N/A
 
 ### Redundancy Plan
 
-- [ ] Remove or overwrite the old workflow assumptions instead of layering new
+- [x] Remove or overwrite the old workflow assumptions instead of layering new
   wording beside them:
   - eliminate blanket "Draft must be promoted before build" language where the
     repaired contract now permits evidence-based promotion
@@ -531,7 +520,7 @@ N/A
 
 ### Scope Adjustments
 
-- [ ] Folded into this story as small, necessary scope corrections:
+- [x] Folded into this story as small, necessary scope corrections:
   - use `tests/unit/test_methodology_graph.py` as the regression surface instead
     of the earlier placeholder `tests/test_methodology_graph.py`
   - treat `.agents/skills/triage/SKILL.md` as a light-touch alignment pass,
@@ -541,28 +530,48 @@ N/A
 
 ### Verification Plan
 
-- [ ] Required checks after implementation:
+- [x] Required checks after implementation:
   - `pnpm methodology:compile`
   - `pnpm methodology:check`
   - `make skills-check`
   - targeted pytest for `tests/unit/test_methodology_graph.py`
   - `git diff --check`
-- [ ] Manual inspection targets after regeneration:
+- [x] Manual inspection targets after regeneration:
   - verify the story index and graph surfaces show the repaired status language
   - verify blocked-story metadata is inspectable in generated output, not trapped
     in prose
   - verify Story 147's certification matrix points to concrete local evidence
-- [ ] UI/browser verification: not expected for the current plan because this is
+- [x] UI/browser verification: not expected for the current plan because this is
   methodology tooling only. If implementation unexpectedly touches UI surfaces,
   add browser verification work before continuing.
 
 ### Human Approval / Blockers
 
-- [ ] No external blocker is known right now.
-- [ ] No new dependency, runtime schema change, public API change, or model
+- [x] No external blocker is known right now.
+- [x] No new dependency, runtime schema change, public API change, or model
   choice is planned.
-- [ ] Approval needed only to start implementation of the deterministic doc,
+- [x] Approval needed only to start implementation of the deterministic doc,
   skill, compiler, test, and generated-artifact pass above.
+
+### Reopen Scope — 2026-04-04
+
+- [x] Reopened continuation of the same methodology line:
+  - keep Story 147 as the owner instead of creating Story 148 for the same
+    `spec:11` trust surface
+  - reset story status and workflow gates to match active implementation reality
+- [x] Repo-fit approach for the follow-on:
+  - keep the fix deterministic and local to methodology tooling
+  - move Current Execution Map lane membership into structured state with
+    explicit story refs and per-story reasons
+  - let the compiler render those lanes only from actual matching story status
+  - fail validation when lane refs or active campaign refs drift to terminal
+    stories
+- [x] Verification for the reopened slice:
+  - `pnpm methodology:compile`
+  - `pnpm methodology:check`
+  - `.venv/bin/python -m pytest tests/unit/test_methodology_graph.py`
+  - `git diff --check`
+  - manual review of regenerated `docs/stories.md` and `docs/methodology/state.yaml`
 
 ## Work Log
 
@@ -654,3 +663,73 @@ complete; `pnpm methodology:compile` and `pnpm methodology:check` were rerun to
 refresh the generated planning surfaces after the status flip; the generated
 story index and current execution map now move Story 147 out of the active lane
 and preserve the repaired status contract and blocker surfacing. Next=`/check-in-diff`
+20260404-2354 — reopen + exploration: reopened Story 147 after `/triage`
+found that the generated planning surfaces still contradicted canonical story
+truth. Evidence=`docs/stories.md:21-35` still showed Story 147 as active and
+Story 044 as pending, while `docs/stories/story-147-*.md` and
+`docs/stories/story-044-*.md` both say `Done`; `docs/methodology/state.yaml`
+still carried those lane assignments as hand-authored lines; `pnpm
+methodology:check` still passed, proving the drift class was not validated.
+Decision=reopen the same story instead of minting a duplicate follow-up because
+this is the same `spec:11` subsystem, validation boundary, and success surface.
+Next=record the narrowed follow-on plan and patch the compiler/state pair
+directly.
+20260405-0002 — reopened plan: narrowed the follow-on to canonical planning
+truth only. Evidence=`make check-size` still flags `scripts/methodology-graph.js`
+as the only large touched logic file; `wc -l` confirmed likely touched files are
+`scripts/methodology-graph.js` (`985`), `tests/unit/test_methodology_graph.py`
+(`220`), `docs/methodology/state.yaml` (`403`), and this story (`656`). Repo-fit
+decision=stop hand-authoring Current Execution Map status lanes in
+`state.yaml`, render them from structured lane refs plus actual story status,
+and make validation fail when an execution-map lane or active roadmap campaign
+points only at terminal stories. Next=implement the compiler/state/test patch,
+then regenerate the planning outputs.
+20260405-0016 — implementation: replaced the hand-authored Current Execution
+Map prose block in `docs/methodology/state.yaml` with structured lane metadata,
+reopened Story 147 in the active roadmap refs, taught
+`scripts/methodology-graph.js` to render lane membership from canonical story
+status, and added hard validation for stale lane refs, stale sequencing-bias
+refs, and active campaigns that only reference terminal stories. Evidence=`pnpm
+methodology:compile` regenerated `docs/methodology/graph.json`,
+`docs/stories.md`, and `docs/build-map.md`; the regenerated
+`docs/stories.md:19-60` now omits closed Story 044 from the pending lane,
+keeps reopened Story 147 in progress, and preserves the other curated lanes
+without hand-authored status drift. New regression coverage in
+`tests/unit/test_methodology_graph.py` passed (`4 passed`). Next=run broader
+repo checks and update the story artifact with final implementation evidence.
+20260405-0025 — build verification: completed the reopened implementation pass
+and checked the full repo-facing verification surface for this methodology-only
+change. Evidence=`make test-unit PYTHON=.venv/bin/python` passed (`660 passed,
+148 deselected, 1 pre-existing warning`); `.venv/bin/python -m ruff check src/
+tests/` passed; `.venv/bin/python -m pytest tests/unit/test_methodology_graph.py`
+passed (`4 passed`); `pnpm methodology:compile` regenerated
+`docs/methodology/graph.json`, `docs/stories.md`, and `docs/build-map.md`;
+`pnpm methodology:check` passed; `git diff --check` passed; manual review
+confirmed `docs/stories.md` now renders the Current Execution Map from
+structured state and shows the active sequencing-bias story refs explicitly.
+Scope note=no UI, API, runtime-schema, or skill files changed in this reopened
+slice, so browser verification and `make skills-check` were not required.
+Next=`/validate`
+20260405-0041 — validation: reran the validation pass against the reopened
+Story 147 slice and found no implementation gaps. Evidence=`git status --short`
+shows only the methodology/story files plus unrelated `docs/deploy-log.md`;
+`git diff --stat` matches the focused methodology delta; `make test-unit
+PYTHON=.venv/bin/python` passed (`660 passed, 148 deselected, 1 pre-existing
+warning`); `.venv/bin/python -m ruff check src/ tests/` passed; `.venv/bin/python
+-m pytest tests/unit/test_methodology_graph.py` passed (`4 passed`);
+`pnpm --dir ui run lint` passed with 5 pre-existing fast-refresh warnings and no
+errors; `cd ui && npx tsc -b` passed; `pnpm methodology:check` passed after a
+fresh `pnpm methodology:compile`; `make skills-check` passed (`31 skills, 31
+gemini wrappers`); `git diff --check` passed. Review outcome=the structured
+Current Execution Map and stale-roadmap validation fully cover the reopened
+acceptance gap, no new drift signals or redundant compatibility shims were
+introduced, and only `/mark-story-done` bookkeeping remains. Next=`/mark-story-done`
+20260405-0046 — mark-story-done: reclosed Story 147 after the reopened
+planning-truth slice landed cleanly. Evidence=story status and workflow gates
+now reflect `Done`; `docs/methodology/state.yaml` no longer leaves Story 147 in
+the In Progress execution lane or active `spec:11` campaign refs; `pnpm
+methodology:compile` regenerated `docs/stories.md`, `docs/build-map.md`, and
+`docs/methodology/graph.json` from the repaired state; `pnpm methodology:check`
+passed with the new terminal-story guards active; `git diff --check` stayed
+clean; the existing Story 147 changelog entry was refreshed to mention the
+post-close-out planning-truth hardening. Next=`/check-in-diff`

@@ -231,15 +231,11 @@
     }
   },
   "roadmap": {
-    "active_focus": ["spec:11", "spec:5", "spec:6"],
+    "active_focus": ["spec:5", "spec:6"],
     "sequencing_bias": [
       {
         "target": "spec:5",
         "reason": "Operator-surface polish remains the clearest product-facing follow-on once the planning substrate is stable."
-      },
-      {
-        "target": "spec:11",
-        "reason": "Story 147 is the active follow-on for spec:11, aligning problem-first triage, honest story-state transitions, and blocked-story inspectability after the graph+state migration."
       }
     ],
     "campaigns": [
@@ -251,59 +247,76 @@
       },
       {
         "id": "problem-first-story-workflow-repair",
-        "status": "active",
+        "status": "completed",
         "story_refs": ["147"],
-        "notes": "Aligns problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation rules, and blocked-story metadata after the graph+state migration."
+        "notes": "Aligned problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation rules, blocked-story metadata, and post-close-out planning-truth validation after the graph+state migration."
       }
     ]
   },
   "stories_index": {
+    "current_execution_map": {
+      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 145 and 146 completed the graph+state migration plus legacy metadata backfill, and Story 147 then closed the remaining planning-surface truth loophole so generated execution-map lanes and active-roadmap refs stay aligned with canonical story status. The ready product-facing lane now returns to operator-surface polish via Stories 034 and 046.",
+      "lanes": [
+        {
+          "id": "pending-ready",
+          "title": "Pending — Ready To Build Now",
+          "statuses": ["Pending"],
+          "empty_message": "No stories currently fit this lane.",
+          "story_notes": {
+            "034": "Turns existing style-pack infrastructure into an in-app creation workflow.",
+            "046": "Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan."
+          }
+        },
+        {
+          "id": "in-progress",
+          "title": "In Progress",
+          "statuses": ["In Progress"],
+          "empty_message": "No stories currently in progress.",
+          "story_notes": {}
+        },
+        {
+          "id": "pending-sequence-sensitive",
+          "title": "Pending — Ready, But Sequence-Sensitive",
+          "statuses": ["Pending"],
+          "empty_message": "No stories currently need the sequence-sensitive lane.",
+          "story_notes": {}
+        },
+        {
+          "id": "blocked",
+          "title": "Blocked — Dependency Chain Not Ready Yet",
+          "statuses": ["Blocked"],
+          "empty_message": "No stories currently blocked.",
+          "story_notes": {}
+        },
+        {
+          "id": "draft",
+          "title": "Draft — Scope Or Decision Needed First",
+          "statuses": ["Draft"],
+          "empty_message": "No draft stories currently need review.",
+          "story_notes": {
+            "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed.",
+            "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
+            "100": "Valuable follow-on in the concern-group lane, but still only skeleton-scoped.",
+            "103": "Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog.",
+            "102": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
+            "104": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
+            "105": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
+            "106": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
+            "112": "Valuable redesign candidate, but it still needs tighter scope before it should leave Draft."
+          }
+        },
+        {
+          "id": "deferred",
+          "title": "Deferred — Intentionally Parked",
+          "statuses": ["Deferred"],
+          "empty_message": "No stories currently deferred.",
+          "story_notes": {
+            "023": "Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed."
+          }
+        }
+      ]
+    },
     "sections": [
-      {
-        "id": "current-execution-map",
-        "title": "Current Execution Map",
-        "lines": [
-          "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 145 and 146 completed the graph+state migration plus legacy metadata backfill. Story 147 is the active methodology follow-on, repairing problem-first triage, honest story-state transitions, and blocked-story inspectability while the product-facing pending lane still centers on operator-surface polish.",
-          "",
-          "### Pending — Ready To Build Now",
-          "",
-          "| Story | Why |",
-          "|---|---|",
-          "| **034** Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |",
-          "| **044** Mobile-Friendly UI | Responsive pass on the current Operator Console now that the primary UI architecture is stable. |",
-          "| **046** Theme System | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |",
-          "",
-          "### In Progress",
-          "",
-          "| Story | Why |",
-          "|---|---|",
-          "| **147** Problem-First Triage and Story Workflow Migration | Active methodology follow-on to Stories 145 and 146. It aligns problem-first triage, honest Draft/Pending/Blocked semantics, anti-fragmentation defaults, and blocked-story truth across the skills, docs, compiler, and generated planning surfaces. |",
-          "",
-          "### Pending — Ready, But Sequence-Sensitive",
-          "",
-          "No stories currently need the sequence-sensitive lane.",
-          "",
-          "### Blocked — Dependency Chain Not Ready Yet",
-          "",
-          "No stories currently blocked.",
-          "",
-          "### Draft — Scope Or Decision Needed First",
-          "",
-          "| Story | Why It Stays Draft |",
-          "|---|---|",
-          "| **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |",
-          "| **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |",
-          "| **100** Motif Tracking | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |",
-          "| **103** AGENTS.md Runbook Extraction | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |",
-          "| **102 / 104 / 105 / 106 / 112** Eval / infra / redesign drafts | Worth keeping visible, but none are as immediately executable as the pending lane above. |",
-          "",
-          "### Deferred — Intentionally Parked",
-          "",
-          "| Story | Why It Is Parked |",
-          "|---|---|",
-          "| **023** Character & Performance | Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed. |"
-        ]
-      },
       {
         "id": "notes-from-cam",
         "title": "Notes From Cam",

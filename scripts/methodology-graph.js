@@ -22,6 +22,7 @@ const SPEC_REF_RE = /\bspec:\d+(?:\.\d+)*\b/g;
 const ADR_ID_RE = /\bADR-\d{3}\b/g;
 const COMPROMISE_ID_RE = /\b(?:C|B)\d+\b/g;
 const VALID_STORY_STATUSES = new Set(["Draft", "Pending", "In Progress", "Done", "Deferred", "Blocked", "Cancelled"]);
+const TERMINAL_STORY_STATUSES = new Set(["Done", "Deferred", "Cancelled"]);
 const REQUIRED_STORY_FRONTMATTER_KEYS = [
   "id",
   "title",
@@ -514,6 +515,48 @@ function formatExampleList(values, limit = 3) {
   return `${values.slice(0, limit).join(", ")} +${values.length - limit} more`;
 }
 
+function renderCurrentExecutionMap(currentExecutionMap, stories) {
+  if (!currentExecutionMap || typeof currentExecutionMap !== "object") return null;
+
+  const lines = [];
+  const summary = typeof currentExecutionMap.summary === "string" ? currentExecutionMap.summary.trim() : "";
+  const lanes = Array.isArray(currentExecutionMap.lanes) ? currentExecutionMap.lanes : [];
+  const storyById = new Map(stories.map((story) => [story.id, story]));
+
+  if (summary) lines.push(summary, "");
+
+  for (const lane of lanes) {
+    const title = String(lane.title || "").trim();
+    if (!title) continue;
+
+    const statuses = new Set(Array.isArray(lane.statuses) ? lane.statuses.map(String) : []);
+    const emptyMessage = String(lane.empty_message || "No stories currently fit this lane.").trim();
+    const storyNotes =
+      lane.story_notes && typeof lane.story_notes === "object" && !Array.isArray(lane.story_notes)
+        ? lane.story_notes
+        : {};
+    const laneRows = Object.keys(storyNotes)
+      .sort(compareStoryIdStrings)
+      .map((storyId) => ({ storyId, story: storyById.get(storyId), reason: String(storyNotes[storyId] || "").trim() }))
+      .filter(({ story, reason }) => story && reason && (statuses.size === 0 || statuses.has(story.status)));
+
+    lines.push(`### ${title}`, "");
+    if (laneRows.length === 0) {
+      lines.push(emptyMessage, "");
+      continue;
+    }
+
+    lines.push("| Story | Why |");
+    lines.push("|---|---|");
+    for (const { story, reason } of laneRows) {
+      lines.push(`| **${story.id}** ${story.title.replaceAll("|", "\\|")} | ${reason.replaceAll("|", "\\|")} |`);
+    }
+    lines.push("");
+  }
+
+  return lines.join("\n").trim();
+}
+
 function renderStoriesIndex(graph) {
   const lines = [];
   const categoryOrder = new Map(graph.spec.categories.map((category, index) => [category.id, index]));
@@ -522,6 +565,7 @@ function renderStoriesIndex(graph) {
   const activeFocus = Array.isArray(roadmap.active_focus) ? roadmap.active_focus.map(String) : [];
   const sequencingBias = Array.isArray(roadmap.sequencing_bias) ? roadmap.sequencing_bias : [];
   const campaigns = Array.isArray(roadmap.campaigns) ? roadmap.campaigns.filter((entry) => entry.status === "active") : [];
+  const currentExecutionMap = (state.stories_index || {}).current_execution_map || null;
   const customSections = Array.isArray((state.stories_index || {}).sections) ? state.stories_index.sections : [];
   const statusRank = new Map([
     ["In Progress", 0],
@@ -582,6 +626,11 @@ function renderStoriesIndex(graph) {
   lines.push("Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b` and `011f` remain valid historical identifiers. New stories should continue using the next available plain numeric ID.");
   lines.push("");
 
+  const currentExecutionMapMarkdown = renderCurrentExecutionMap(currentExecutionMap, graph.stories);
+  if (currentExecutionMapMarkdown) {
+    lines.push("## Current Execution Map", "", currentExecutionMapMarkdown, "");
+  }
+
   for (const section of customSections) {
     const markdown = markdownFromSection(section);
     const title = String(section.title || "").trim();
@@ -593,7 +642,9 @@ function renderStoriesIndex(graph) {
     lines.push("## Active Focus", "");
     if (activeFocus.length > 0) lines.push(`- Active categories: ${activeFocus.map((entry) => `\`${entry}\``).join(", ")}`);
     for (const bias of sequencingBias) {
-      lines.push(`- Sequencing bias: \`${String(bias.target || "")}\` — ${String(bias.reason || "")}`);
+      const storyRefs = Array.isArray(bias.story_refs) ? bias.story_refs.map(String).sort(compareStoryIdStrings) : [];
+      const suffix = storyRefs.length > 0 ? ` (stories: ${storyRefs.join(", ")})` : "";
+      lines.push(`- Sequencing bias: \`${String(bias.target || "")}\`${suffix} — ${String(bias.reason || "")}`);
     }
     for (const campaign of campaigns) {
       const storyRefs = Array.isArray(campaign.story_refs) ? campaign.story_refs.map(String).sort(compareStoryIdStrings) : [];
@@ -695,6 +746,7 @@ function validateGraph(state, spec, stories, adrs, evals) {
   const validSpecRefs = new Set([...categoryIds, ...specSectionIds]);
   const compromiseIds = new Set(spec.compromises.map((entry) => entry.id));
   const storyIds = new Set(stories.map((entry) => entry.id));
+  const storyById = new Map(stories.map((entry) => [entry.id, entry]));
   const adrIds = new Set(adrs.map((entry) => entry.id));
   const campaignIds = new Set(((state.roadmap || {}).campaigns || []).map((campaign) => String(campaign.id || "")));
   const auditDomains = (((state.architecture_audits || {}).domains || {}));
@@ -706,6 +758,80 @@ function validateGraph(state, spec, stories, adrs, evals) {
   for (const compromiseId of Object.keys(state.compromises || {})) {
     if (!compromiseIds.has(compromiseId)) errors.push(`state.compromises.${compromiseId} does not match any spec compromise`);
   }
+
+  const customSections = Array.isArray((state.stories_index || {}).sections) ? state.stories_index.sections : [];
+  customSections.forEach((section, index) => {
+    if (String(section.id || "") === "current-execution-map") {
+      errors.push(`state.stories_index.sections[${index}] uses deprecated current-execution-map prose; use state.stories_index.current_execution_map instead`);
+    }
+  });
+
+  const currentExecutionMap = (state.stories_index || {}).current_execution_map || {};
+  const currentExecutionMapLanes = Array.isArray(currentExecutionMap.lanes) ? currentExecutionMap.lanes : [];
+  currentExecutionMapLanes.forEach((lane, index) => {
+    const laneLabel = String(lane.id || lane.title || index);
+    const statuses = Array.isArray(lane.statuses) ? lane.statuses.map(String) : [];
+    const storyNotes =
+      lane.story_notes && typeof lane.story_notes === "object" && !Array.isArray(lane.story_notes)
+        ? lane.story_notes
+        : {};
+    statuses.forEach((status) => {
+      if (!VALID_STORY_STATUSES.has(status)) {
+        errors.push(`state.stories_index.current_execution_map.lanes[${index}] (${laneLabel}) uses invalid status ${status}`);
+      }
+    });
+    Object.keys(storyNotes).forEach((storyRef) => {
+      if (!storyIds.has(storyRef)) {
+        errors.push(`state.stories_index.current_execution_map.lanes[${index}] (${laneLabel}) references missing story ${storyRef}`);
+        return;
+      }
+      const story = storyById.get(storyRef);
+      if (statuses.length > 0 && !statuses.includes(story.status)) {
+        errors.push(
+          `state.stories_index.current_execution_map.lanes[${index}] (${laneLabel}) references story ${storyRef} with status ${story.status}, expected ${statuses.join(" / ")}`,
+        );
+      }
+    });
+  });
+
+  const sequencingBiasEntries = Array.isArray((state.roadmap || {}).sequencing_bias) ? (state.roadmap || {}).sequencing_bias : [];
+  sequencingBiasEntries.forEach((entry, index) => {
+    const storyRefs = Array.isArray(entry.story_refs) ? entry.story_refs.map(String) : [];
+    storyRefs.forEach((storyRef) => {
+      if (!storyIds.has(storyRef)) {
+        errors.push(`state.roadmap.sequencing_bias[${index}] references missing story ${storyRef}`);
+      }
+    });
+    if (
+      storyRefs.length > 0 &&
+      storyRefs.every((storyRef) => {
+        const story = storyById.get(storyRef);
+        return story && TERMINAL_STORY_STATUSES.has(story.status);
+      })
+    ) {
+      errors.push(`state.roadmap.sequencing_bias[${index}] points only at terminal stories: ${storyRefs.join(", ")}`);
+    }
+  });
+
+  const campaigns = Array.isArray((state.roadmap || {}).campaigns) ? (state.roadmap || {}).campaigns : [];
+  campaigns.forEach((campaign, index) => {
+    const storyRefs = Array.isArray(campaign.story_refs) ? campaign.story_refs.map(String) : [];
+    storyRefs.forEach((storyRef) => {
+      if (!storyIds.has(storyRef)) {
+        errors.push(`state.roadmap.campaigns[${index}] (${String(campaign.id || index)}) references missing story ${storyRef}`);
+      }
+    });
+    if (
+      String(campaign.status || "") === "active" &&
+      storyRefs.length > 0 &&
+      storyRefs.every((storyRef) => {
+        const story = storyById.get(storyRef);
+        return story && TERMINAL_STORY_STATUSES.has(story.status);
+      })
+    ) {
+      errors.push(`state.roadmap.campaigns[${index}] (${String(campaign.id || index)}) is active but only references terminal stories: ${storyRefs.join(", ")}`);
+    }
+  });
 
   for (const story of stories) {
     if (story.metadataSource !== "frontmatter") {
