@@ -43,7 +43,12 @@ Companion runbook: `docs/runbooks/triage-evals.md`
    - latest `scores`
    - latest `git_sha`
    - prior `attempts`
+   - any `retry_status`, `retry_when`, or "What NOT to retry" signals on the
+     latest attempt
    - whether the item maps to a live methodology compromise
+
+   If an eval has attempt metadata that controls retryability, open the latest
+   referenced attempt file before calling it retry-ready.
 
 3. **Check current repo state**:
    - `git rev-parse --short HEAD`
@@ -70,6 +75,8 @@ If the user passed a specific eval or compromise id:
    - Is it missing attempt history?
    - Is it near target, badly below target, or already good enough?
    - Does it look blocked by golden quality, model choice, simple lack of recent measurement, or an architecture limitation?
+   - Is the latest retry trigger genuinely new, or is it already exhausted
+     until a materially new trigger appears?
    - If it is not the current highest-leverage gap, say so explicitly instead of pretending it is top priority
 2. Recommend the next action:
    - `/improve-eval`
@@ -79,7 +86,13 @@ If the user passed a specific eval or compromise id:
 
 If no id was passed:
 
-1. Rank candidates using this order:
+1. Eliminate false freshness before ranking:
+   - If the latest attempt marks the retry as exhausted-until-new-trigger, or
+     the same `retry_when` condition was already checked and nothing materially
+     changed, do **not** rank the eval as actionable yet
+   - Report those items under deferrals / health flags instead of recycling them
+
+2. Rank candidates using this order:
    - **Priority 1: evals or detectors attached to the highest-leverage live gap** — especially when they unblock a `climb` decision or a real `converge` deletion
    - **Priority 2: credible convergence detectors** — compromise gates where a passing or near-passing result would simplify the system materially
    - **Priority 3: stale default-driving evals that block decisions in the active category** — not every stale score matters equally
@@ -88,14 +101,14 @@ If no id was passed:
 
    If no current methodology gap is eval-led, say that explicitly and recommend story / ADR / spec work instead of forcing eval work to the top.
 
-2. For each top candidate, answer:
+3. For each top candidate, answer:
    - What is the current state?
    - Why does it matter now?
    - What is the cheapest next step?
    - Which state phase does it support?
    - Is the problem likely model-wrong, golden-wrong, stale-measurement, or architecture-limited?
 
-3. Produce a ranked top 3-5 list unless `--stale-only` was passed.
+4. Produce a ranked top 3-5 list unless `--stale-only` was passed.
 
 ## Phase 3 — Recommend
 
@@ -139,6 +152,8 @@ Present the result as:
 - This skill is **read-only diagnosis** by default — do not run promptfoo just to triage
 - If scores are clearly stale, say so instead of pretending the ranking is precise
 - Do not recommend the same failed approach again without new evidence from attempts, models, or goldens
+- Do not treat a consumed `retry_when` condition as newly actionable until a
+  materially new trigger actually appears
 - Do not treat every red compromise eval as blocking; use AGENTS expected-fail semantics
 - When a single model default depends on an eval, stale defaults matter, but they still do not outrank a bigger unrelated `climb` gap without explanation
 - Do not force eval work to the top if the current system bottleneck is product substrate rather than measurement

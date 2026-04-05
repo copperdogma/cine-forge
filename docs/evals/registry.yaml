@@ -25,6 +25,11 @@
 #   golden-fix           — Golden reference may be wrong or incomplete
 #   architecture-change  — Upstream pipeline needs to change first
 #   dependency-available — Waiting on a library/tool/API that doesn't exist yet
+#
+# retry_status values:
+#   open                         — actionable as soon as the named trigger is met
+#   exhausted-until-new-trigger  — same trigger already checked / consumed; stay dormant until something materially new appears
+#   retired                      — do not retry without rewriting the plan itself
 
 evals:
 
@@ -1198,9 +1203,10 @@ evals:
         score_after: 0.6523
         latency_before: 7617
         latency_after: 8706
+        retry_status: exhausted-until-new-trigger
         retry_when:
           - condition: new-approach
-            note: "Add a native-video Gemini provider path instead of the current sampled-frames harness."
+            note: "Only retry after a materially new native-video Gemini provider path exists; rerunning the current sampled-frames harness is exhausted."
 
   - id: previz-usefulness
     name: Previz Usefulness

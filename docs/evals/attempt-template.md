@@ -42,10 +42,14 @@ If this is the first attempt, write "First attempt on this eval."}
 
 **What NOT to retry:** {Approaches that made things worse or are definitively dead ends.}
 
+**Retry state:** {open | exhausted-until-new-trigger | retired}
+
 **Retry when:**
 {Structured conditions under which this should be retried. Use registry condition codes:
 new-worker-model, new-subject-model, cheaper-subject-model, new-approach,
 golden-fix, architecture-change, dependency-available}
+
+{Name the materially new trigger required. Do not leave this as a generic "retry later".}
 
 ---
 
@@ -57,7 +61,7 @@ golden-fix, architecture-change, dependency-available}
 - [ ] Updated `docs/evals/registry.yaml` — scores section with new measurements
 - [ ] Updated `docs/evals/registry.yaml` — attempts section with summary entry
 - [ ] If approach succeeded: verified improvement holds across multiple runs
-- [ ] If approach failed: classified the failure and set retry_when conditions
+- [ ] If follow-on work remains: set `retry_state` and `retry_when` honestly
 - [ ] Did NOT silently accept score regressions
 - [ ] Recorded latency_ms and cost_usd before/after in this file
 - [ ] Updated registry.yaml scores with latency_ms and cost_usd (run: python scripts/extract-eval-metrics.py --result-file <path>)

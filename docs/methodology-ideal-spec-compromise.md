@@ -193,6 +193,9 @@ views bridge abstract constraints and concrete system ownership.
 - Keep triage problem-first. Stories are packaging context and tie-breakers, not
   the source of priority; continuity on an active unresolved work line is a
   positive bias, not an accident.
+- Continuity bias stops at blocked-state truth. If a story is `Blocked` and its
+  unblock condition is still unmet, surface it as a health flag rather than the
+  recommended next move.
 - Use the anti-fragmentation rule by default: if work remains in the same
   subsystem, validation boundary, and success surface, keep it in one story.
 - Keep authored truth separate from generated views. Update
@@ -201,6 +204,10 @@ views bridge abstract constraints and concrete system ownership.
 - Keep Timeline / Playable Assembly explicit. It is a real product lane, not a
   footnote under another category.
 - Do not treat every red compromise eval as blocking. Capability-detector evals are often healthy while still red; use runtime-blocking vs non-runtime-blocking semantics.
+- Treat eval retry triggers as dormant detectors, not evergreen backlog items.
+  If the same `retry_when` condition has already been checked and nothing
+  materially changed, keep it exhausted until a genuinely new model, approach,
+  golden fix, architecture change, or dependency appears.
 - Do not flatten leaf triage skills into a monolithic `/triage`. CineForge already has useful specialized logic, especially in `/triage-evals`.
 - Do not let the generated build map become a stale diagram. If the system
   structure, substrate, or phase changes materially, update canonical inputs

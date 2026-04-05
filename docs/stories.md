@@ -35,10 +35,6 @@ No stories currently in progress.
 
 No stories currently need the sequence-sensitive lane.
 
-### Blocked — Dependency Chain Not Ready Yet
-
-No stories currently blocked.
-
 ### Draft — Scope Or Decision Needed First
 
 | Story | Why |
@@ -58,6 +54,12 @@ No stories currently blocked.
 | Story | Why |
 |---|---|
 | **023** Character & Performance — Performance Direction | Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed. |
+
+## Health Flags
+
+### Blocked — Dependency Chain Not Ready Yet
+
+No blocked lines currently need attention.
 
 ## Notes From Cam
 

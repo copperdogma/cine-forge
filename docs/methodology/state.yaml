@@ -139,7 +139,8 @@
       "absorbs": ["Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)"],
       "notes": [
         "Story 134 and Story 136 established the current authored build-map/spec stack.",
-        "Story 145 landed the graph+state migration, replacing the authored planning surface with structured state, compiled joins, generated views, and hard linting."
+        "Story 145 landed the graph+state migration, replacing the authored planning surface with structured state, compiled joins, generated views, and hard linting.",
+        "Blocked lines with unmet unblock conditions should surface as health flags rather than the recommended next move, and eval retry triggers stay dormant until materially new evidence appears."
       ],
       "last_reviewed": "2026-04-04"
     }
@@ -285,7 +286,8 @@
           "id": "blocked",
           "title": "Blocked — Dependency Chain Not Ready Yet",
           "statuses": ["Blocked"],
-          "empty_message": "No stories currently blocked.",
+          "health_flag": true,
+          "empty_message": "No blocked lines currently need attention.",
           "story_notes": {}
         },
         {

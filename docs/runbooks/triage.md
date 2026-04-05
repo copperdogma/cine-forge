@@ -52,6 +52,8 @@ This is the operational companion to `/triage`.
    - Evals: `/triage-evals`
    - Architecture: `/triage-architecture scan`
    - Goal: find which existing artifacts already advance the chosen gap, especially active or recently advanced lines that should be continued, reopened, expanded, or consolidated before inventing a new shell
+   - Filter blocked stories with unmet unblock conditions and eval retries whose
+     triggers remain exhausted into health flags before ranking candidates
 
 6. **[judgment] Synthesize one next action**
    - Prefer:
@@ -60,6 +62,8 @@ This is the operational companion to `/triage`.
      - creating the missing story / ADR / spec update / eval if the gap has no home
    - Only fall back to smaller unrelated ready work when the larger gap is not actionable yet
    - Story existence is packaging context and tie-breaker only; it should not outrank a more important live gap by itself
+   - A blocked line with an unmet unblock condition is not actionable even if it
+     is the most continuous recent work
    - Good output: one recommended action, plus runner-ups, with an explicit reason the chosen gap won.
 
 ## Boundaries
@@ -70,6 +74,8 @@ This is the operational companion to `/triage`.
 - Let leaf skills own their domain logic
 - End with one clear recommendation
 - Start from Ideal/spec/state gaps, not the backlog
+- Keep blocked stories with unmet unblock conditions and exhausted eval retry
+  triggers in health flags / deferrals instead of promoting them as the next move
 
 ### Ask first
 
@@ -82,6 +88,8 @@ This is the operational companion to `/triage`.
 - Never let full-sweep `/triage` modify inbox items or other files
 - Never return three equal-priority recommendations without choosing one
 - Never let "easy and ready" silently outrank "important and under-owned"
+- Never let continuity or recent commits override a recorded blocker or an
+  exhausted retry trigger
 
 ## Troubleshooting
 
@@ -95,9 +103,17 @@ This is the operational companion to `/triage`.
   - Fix: read `docs/methodology/state.yaml` directly, call out the freshness
     problem, and downgrade confidence in convergence-based ranking.
 
+- **The only active-looking line is blocked**
+  - Fix: surface it as a health flag, restate the unmet unblock condition, and
+    choose a different actionable next move unless the user explicitly wants the
+    unblock path.
+
 ## Lessons Learned
 
 - 2026-03-15 — `/triage` works best as an orchestrator. CineForge already had useful eval-triage logic; folding that into a monolith would have been a regression.
 - 2026-03-20 — Orchestration still has to be methodology-first. If triage
   starts from stories or eval queues, the backlog begins prioritizing itself
   instead of serving the Ideal/spec/state spine.
+- 2026-04-04 — Continuity is a positive bias only for actionable lines. A
+  blocked story or exhausted eval retry should stay visible as a health flag,
+  not become the default recommendation by process of elimination.

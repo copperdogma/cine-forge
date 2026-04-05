@@ -22,10 +22,14 @@
 - Changed CineForge's story lifecycle contract across AGENTS, methodology docs, and lifecycle skills to use an honest five-status model with problem-first triage, anti-fragmentation defaults, and buildable-Draft promotion
 - Changed the methodology compiler and generated planning surfaces to surface blocker metadata explicitly and reflect Story 147 as the active spec:11 follow-on during implementation
 - Changed the planning state and story index flow so the Current Execution Map is rendered from structured lane refs plus canonical story status, with roadmap refs validated against terminal-story drift
+- Changed triage and generated planning surfaces so blocked lines with unmet unblock conditions downgrade to health flags instead of winning the next-action slot through continuity alone
+- Changed eval retry guidance and registry semantics to carry explicit retry exhaustion state, so already-consumed retry triggers stay dormant until materially new evidence appears
 
 ### Fixed
 - Fixed remaining post-migration drift where policy docs, lifecycle skills, and generated methodology surfaces still disagreed about blocked stories, close-out behavior, and the active methodology campaign
 - Fixed the post-close-out loophole where Story 147 could be `Done` while the generated Current Execution Map and active roadmap refs still treated it as active work
+- Fixed the feedback loop where a blocked active line could keep resurfacing as the recommended next move just because it was the only categorized non-done lane
+- Fixed exhausted eval retry triggers being treated as freshly actionable work after the original retry path had already been consumed
 
 ## [2026-04-04-04] — Mobile-friendly operator console (Story 044)
 

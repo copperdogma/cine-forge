@@ -104,6 +104,12 @@ artifacts, and keep user-facing work packaged as whole usable slices by default.
 - [x] `docs/spec.md`, `AGENTS.md`, the relevant methodology docs, lifecycle
       skills, runbooks, and generated planning surfaces all teach one
       consistent story-lifecycle contract after the change.
+- [x] Blocked lines and exhausted eval retries cannot re-enter the recommended
+      next-action path without materially new truth:
+  - [x] a blocked active line with an unmet unblock condition is surfaced as a
+        health flag, not the recommended next move
+  - [x] a previously consumed eval retry trigger stays exhausted until a
+        materially new retry trigger appears
 - [x] A reusable migration runbook exists for other repos, is updated only with
       settled and landed changes during implementation, and captures the final
       porting steps without preserving false starts.
@@ -275,6 +281,8 @@ artifacts, and keep user-facing work packaged as whole usable slices by default.
 - [x] Validation keeps coherent work together
 - [x] Close-out only splits truly separate work
 - [x] Same-line request -> no new story ID
+- [x] Blocked active line -> health flag, not recommendation
+- [x] Consumed eval retry trigger -> exhausted until materially new trigger
 
 ## Workflow Gates
 
@@ -332,6 +340,9 @@ N/A
 - `docs/methodology/graph.json` — regenerated graph output
 - `docs/stories.md` — regenerated story index and Current Execution Map
 - `docs/build-map.md` — regenerated build dashboard if roadmap state changes
+- `AGENTS.md`, triage/eval skills + runbooks, and eval registry/docs — follow-on
+  loop-prevention slice for blocked-line health flags and exhausted retry
+  triggers
 
 ## Redundancy / Removal Targets
 
@@ -365,6 +376,11 @@ N/A
 - External reference material to adapt, not copy: the user-supplied migration
   runbook and doc-web commit `eac7b3e1ac20f2d6a60e372219bcc189cf64ca90`
   ("Repair story progression workflow").
+- Follow-on regression evidence on 2026-04-04: the framework still had one live
+  loop class where continuity and recent activity could keep resurfacing a
+  blocked line or already-consumed eval retry as if it were newly actionable.
+  The fix belongs here because it is still the same `spec:11`
+  planning-truth/triage contract, not a new product/runtime surface.
 
 ## Plan
 
@@ -573,6 +589,29 @@ N/A
   - `git diff --check`
   - manual review of regenerated `docs/stories.md` and `docs/methodology/state.yaml`
 
+### Reopen Scope — 2026-04-04 (Loop Prevention Follow-On)
+
+- [x] Reopened continuation of the same methodology line:
+  - keep Story 147 as the owner instead of minting another follow-up story for
+    the same `spec:11` triage-truth surface
+  - record the blocked-line/eval-retry resurfacing bug in the canonical story
+    artifact instead of leaving it implicit in chat
+- [x] Repo-fit approach for the follow-on:
+  - downgrade blocked lines with unmet unblock conditions to health flags in
+    the generated planning surfaces and triage guidance
+  - remove stale "proceed" text where blocker evidence now says "do not reopen"
+  - add explicit retry exhaustion semantics so triage-evals does not treat a
+    consumed retry trigger as fresh work
+  - update the cross-repo migration runbook and certification matrix so the fix
+    becomes framework doctrine rather than a one-off local patch
+- [x] Verification for the reopened slice:
+  - `pnpm methodology:compile`
+  - `pnpm methodology:check`
+  - `make skills-check`
+  - `.venv/bin/python -m pytest tests/unit/test_methodology_graph.py`
+  - `make test-unit PYTHON=.venv/bin/python`
+  - `git diff --check`
+
 ## Work Log
 
 20260404-1905 — story creation: created Story 147 as the honest follow-on to
@@ -733,3 +772,50 @@ methodology:compile` regenerated `docs/stories.md`, `docs/build-map.md`, and
 passed with the new terminal-story guards active; `git diff --check` stayed
 clean; the existing Story 147 changelog entry was refreshed to mention the
 post-close-out planning-truth hardening. Next=`/check-in-diff`
+20260404-2351 — reopen + feedback-loop audit: reopened Story 147 again after
+the doc-web regression case exposed one remaining planning-truth loop. Evidence=
+the current methodology surfaces could still let continuity bias beat
+blocked-state truth when a blocked line was the only categorized non-done lane;
+`.agents/skills/triage/SKILL.md` and `.agents/skills/triage-stories/SKILL.md`
+did not yet explicitly demote unmet unblock conditions to health flags; and
+`triage-evals` plus the eval docs still had `retry_when` guidance without a
+durable consumed-trigger state, so the `video-understanding` retry path could
+keep resurfacing as if it were new work. Decision=reopen Story 147 instead of
+minting a duplicate follow-up because this is still the same `spec:11`
+methodology/triage trust surface and cross-repo migration line. Next=patch the
+framework, refresh the generated surfaces, and add the missing certification
+coverage.
+20260404-2354 — implementation: patched the framework directly across
+`AGENTS.md`, `.agents/skills/triage*.md`, eval docs/registry surfaces,
+`docs/methodology/state.yaml`, `scripts/methodology-graph.js`, and
+`tests/unit/test_methodology_graph.py` so blocked lines with unmet unblock
+conditions render as health flags, stale eval retries carry explicit exhaustion
+semantics, and the migration runbook plus certification matrix cover this
+regression permanently. Evidence=`pnpm methodology:compile` regenerated
+`docs/methodology/graph.json`, `docs/stories.md`, and `docs/build-map.md`;
+`docs/stories.md` now renders blocked lines in `## Health Flags`;
+`docs/evals/registry.yaml` marks the consumed `video-understanding` retry as
+`exhausted-until-new-trigger`; and
+`docs/evals/attempts/002-video-understanding-google-max-output-budget.md`
+removes the stale retry-as-fresh implication. Next=`/validate`
+20260404-2355 — validation: reran the close-out validation suite against the
+final loop-prevention slice. Validation surfaced two narrow regression-harness
+issues first: a line-length fix briefly made the test fixture non-JSON and the
+assertion still expected the old note text. I fixed both inline and reran the
+affected checks before finalizing. Evidence=`pnpm methodology:check` passed
+after a fresh `pnpm methodology:compile`; `make skills-check` passed (`31
+skills, 31 gemini wrappers`); `.venv/bin/python -m pytest
+tests/unit/test_methodology_graph.py` passed (`5 passed`); `make test-unit
+PYTHON=.venv/bin/python` passed (`665 passed, 151 deselected, 1 pre-existing
+warning`); `.venv/bin/python -m ruff check src/ tests/` passed; `git diff
+--check` passed. Review outcome=the blocked line is now a health flag rather
+than the recommended next move, consumed eval retries stay exhausted until a
+materially new trigger appears, and no unrelated runtime or UI surfaces were
+touched. Next=`/mark-story-done`
+20260404-2356 — mark-story-done: reclosed Story 147 after the loop-prevention
+follow-on validated cleanly. Evidence=story status and workflow gates now
+reflect `Done`; `pnpm methodology:compile` will refresh the generated planning
+surfaces from the final closed state; the generated story surface keeps blocked
+lines under `## Health Flags` instead of the main execution lane; and the
+existing Story 147 changelog entry now covers the blocked-line and eval-retry
+loop-prevention hardening. Next=`/check-in-diff`

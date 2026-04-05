@@ -27,6 +27,16 @@ signal. When the same subsystem, validation boundary, and success surface are
 still live, prefer continuing, reopening, expanding, or consolidating the
 existing story line before creating or prioritizing a new shell.
 
+Continuity bias never overrides blocked-state truth. A `Blocked` story with an
+unmet unblock condition is not an actionable continuation; surface it under
+Health Flags unless the user is explicitly asking how to unblock it or the
+unblock condition is now materially satisfied.
+
+Eval retry metadata works the same way: a `retry_when` entry is a dormant
+detector, not a standing recommendation. If the same trigger was already
+checked and nothing materially changed, treat that eval follow-on as exhausted
+and report it as a health flag / deferral, not the next move.
+
 Companion runbook: `docs/runbooks/triage.md`
 
 ## Routing
@@ -91,8 +101,13 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - But interpret each leaf through one question:
      - what already exists that advances the chosen gap?
    - Do **not** let a smaller ready story outrank the chosen gap just because it is easier to start
+   - Do **not** let a blocked story or an exhausted eval retry masquerade as
+     actionable just because it is the most continuous existing line
 
 5. **Choose one next action**
+   Only rank actionable candidates here. Blocked stories with unmet unblock
+   conditions and eval retries whose triggers remain exhausted belong under
+   `Health Flags`, not `Recommended Action`.
    Prefer this order:
    - continue, reopen, expand, or consolidate an in-flight or recently advanced story that directly advances the chosen gap
    - promote or reshape an existing draft story that is the clearest continuation of the chosen gap
@@ -126,7 +141,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Architecture: {which audit domains matter, or why architecture work is not the move}
 
 ### Health Flags
-- {blocker or "none"}
+- {blocked story with unmet unblock condition, exhausted eval retry, or "none"}
 ```
 
 ## Guardrails
@@ -138,3 +153,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Never start from "what stories are ready?" Start from "what gap matters most?"
 - If the top gap has no story yet, recommend creating or promoting the right artifact instead of silently skipping it
 - Do not let inbox novelty, eval staleness, or small ready work outrank a larger live gap without an explicit explanation
+- Never recommend a blocked line just because continuity or recent commits make
+  it feel active; if the unblock condition is unmet, keep it in `Health Flags`
+- Never treat a previously consumed `retry_when` condition as fresh evidence
+  without a materially new trigger

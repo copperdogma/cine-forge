@@ -32,6 +32,8 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - **Done** — complete, validated
 
    Story existence is packaging context, not major priority by itself. A `Draft` or `Pending` shell does not outrank an active line merely because it exists.
+   A `Blocked` line can preserve continuity, but it is not actionable while its
+   unblock condition is unmet.
 
 3. **Name the top 1-3 live gaps**
    - For each gap, state:
@@ -50,6 +52,10 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - Don't just go by titles
    - If a top gap has no matching story, say so explicitly instead of quietly ranking smaller unrelated work
    - Ask whether the honest recommendation is to continue, reopen, expand, or consolidate an existing story line before recommending a different shell
+   - For `Blocked` stories, read `Blocker Summary`, `Blocker Evidence`, and
+     `Unblock Condition` plus the newest work-log guidance. If stale plan text
+     still says "proceed" but newer blocker evidence says otherwise, call that
+     out as artifact drift before you rank anything
 
 5. **Score and rank** — Evaluate each candidate story on these dimensions, in this order:
    - **Movement toward the Ideal**: Does this story directly advance the top methodology gap, or is it a side quest?
@@ -60,6 +66,8 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - **Continuity / momentum**: Does it build on active or recently advanced work with the same unresolved success surface?
 
    Story-shell existence is packaging and tie-break context only. It does not create primary priority by itself.
+   `Blocked` + unmet unblock condition means `Readiness = not actionable` no
+   matter how strong continuity or recent commit history looks.
 
 6. **Present recommendations** — Show the user a ranked top 3–5 with:
    - Story ID and title
@@ -69,11 +77,15 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - If Draft: a short note on whether it should stay `Draft` or be promoted once built
    - 2–3 sentence rationale covering the strongest scoring dimensions
    - Any caveats (e.g., "this is large — consider splitting first")
+   - Exclude blocked stories with unmet unblock conditions from this ranked
+     list; report them separately under concerns / health flags
 
 7. **Flag concerns** — Surface any issues noticed during the scan:
    - Stories marked Pending that are actually blocked (missing dependency not recorded)
    - Draft stories that are already honest `Pending` candidates or should stay `Draft`
    - Blocked stories missing blocker truth in the story artifact
+   - Blocked stories whose work log or plan text still says "proceed" even
+     though newer blocker evidence says "do not reopen yet"
    - Stories that appear stale or superseded
    - Dependency chains that are bottlenecked
    - Major methodology-category gaps that have no story coverage or only weak story coverage
@@ -92,3 +104,6 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
 - Never start from "what is easiest to build?" Start from "what gap does this story close?"
 - If no existing story advances the top gap, say that explicitly and recommend creating or promoting the right story
 - Prefer preserving continuity on an active or recently advanced work line over jumping tracks to an unrelated shell when leverage is comparable
+- Never recommend a `Blocked` story with an unmet unblock condition just
+  because it is the only active-looking line; keep it visible as a health flag
+  instead

@@ -242,6 +242,7 @@
 
 - Story 134 and Story 136 established the current authored build-map/spec stack.
 - Story 145 landed the graph+state migration, replacing the authored planning surface with structured state, compiled joins, generated views, and hard linting.
+- Blocked lines with unmet unblock conditions should surface as health flags rather than the recommended next move, and eval retry triggers stay dormant until materially new evidence appears.
 
 ### Compromise Progress
 

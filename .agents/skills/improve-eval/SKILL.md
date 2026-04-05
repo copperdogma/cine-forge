@@ -69,6 +69,11 @@ are now met:
 - `cheaper-subject-model`: Have pricing conditions changed?
 - `faster-subject-model`: Are there new fast models that might meet quality targets?
 
+Treat `retry_when` as a dormant detector, not an evergreen invitation. If the
+latest attempt marks the follow-on as exhausted-until-new-trigger, or the same
+condition was already checked and nothing materially changed, skip it until a
+real new trigger appears.
+
 ### Priority 2: Biggest quality gap to target
 For quality evals: `target.value - best_score` = gap. Rank by largest gap.
 

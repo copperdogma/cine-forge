@@ -26,6 +26,8 @@ This is the operational companion to `/triage-evals`.
    - Run `git rev-parse --short HEAD`
    - Run `git status --short`
    - Goal: know whether score entries are obviously stale relative to current code, which systems/compromises would benefit most from eval movement, and whether the right move is a `climb`, `hold`, or `converge` action
+   - If the latest attempt has `retry_when` or `retry_status` metadata, open the
+     referenced attempt file before calling the eval retry-ready
 
 3. **[script] Check compromise status**
    - Run `.venv/bin/python scripts/check-compromises.py` when possible
@@ -38,6 +40,11 @@ This is the operational companion to `/triage-evals`.
    - Goal: spot new SOTA or cheaper models that may invalidate older registry conclusions
 
 5. **[judgment] Classify candidate types**
+   - First remove false freshness:
+     - if the latest retry trigger is already marked exhausted-until-new-trigger
+     - or if the same `retry_when` condition was already checked and nothing
+       materially changed
+     - then the item is a deferral / health flag, not a top candidate
    - Separate candidates into:
      - evals directly attached to the highest-leverage live gap
      - converge detectors with real simplification leverage
@@ -69,6 +76,7 @@ This is the operational companion to `/triage-evals`.
 - Check `git_sha` staleness against current `HEAD`
 - Use `scripts/check-compromises.py` and `scripts/discover-models.py --summary` before claiming an eval is the highest leverage next step
 - End with a concrete next action per recommended item
+- Treat `retry_when` as dormant until a materially new trigger actually appears
 
 ### Ask first
 
@@ -81,6 +89,8 @@ This is the operational companion to `/triage-evals`.
 - Never run promptfoo by default just to answer a prioritization question
 - Never ignore stale scores when they materially weaken the recommendation
 - Never recommend repeating an approach that prior attempt history already disproved
+- Never treat an exhausted retry trigger as newly actionable because it still
+  exists in the registry
 - Never treat every red compromise gate as release-blocking
 - Never force eval work to the top when a larger uncovered `climb` gap is the real bottleneck
 
@@ -98,7 +108,16 @@ This is the operational companion to `/triage-evals`.
   - Result: likely a mismatch between registry freshness and current code
   - Fix: prefer "rerun benchmark first" over forcing a ranking
 
+- **The only obvious follow-up is a repeated retry trigger**
+  - Result: triage starts looping the same eval plan
+  - Fix: mark it as exhausted-until-new-trigger and keep it in deferrals until
+    a materially new model, approach, golden fix, architecture change, or
+    dependency actually appears
+
 ## Lessons Learned
 
 - 2026-03-13 — Cheap diagnosis is different from expensive verification: use registry data and helper scripts to choose the next eval target before spending promptfoo time on a full rerun.
 - 2026-03-20 — Eval triage is subordinate to the methodology spine. Staleness alone does not make an eval the highest-priority next action.
+- 2026-04-04 — `retry_when` is a detector, not a standing todo. Once the same
+  trigger has been checked and found unchanged, the item should stay exhausted
+  until a materially new trigger appears.

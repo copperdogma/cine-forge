@@ -515,7 +515,7 @@ function formatExampleList(values, limit = 3) {
   return `${values.slice(0, limit).join(", ")} +${values.length - limit} more`;
 }
 
-function renderCurrentExecutionMap(currentExecutionMap, stories) {
+function renderCurrentExecutionMap(currentExecutionMap, stories, { healthFlag = false } = {}) {
   if (!currentExecutionMap || typeof currentExecutionMap !== "object") return null;
 
   const lines = [];
@@ -523,9 +523,11 @@ function renderCurrentExecutionMap(currentExecutionMap, stories) {
   const lanes = Array.isArray(currentExecutionMap.lanes) ? currentExecutionMap.lanes : [];
   const storyById = new Map(stories.map((story) => [story.id, story]));
 
-  if (summary) lines.push(summary, "");
+  if (!healthFlag && summary) lines.push(summary, "");
 
   for (const lane of lanes) {
+    if (Boolean(lane.health_flag) !== healthFlag) continue;
+
     const title = String(lane.title || "").trim();
     if (!title) continue;
 
@@ -629,6 +631,10 @@ function renderStoriesIndex(graph) {
   const currentExecutionMapMarkdown = renderCurrentExecutionMap(currentExecutionMap, graph.stories);
   if (currentExecutionMapMarkdown) {
     lines.push("## Current Execution Map", "", currentExecutionMapMarkdown, "");
+  }
+  const healthFlagsMarkdown = renderCurrentExecutionMap(currentExecutionMap, graph.stories, { healthFlag: true });
+  if (healthFlagsMarkdown) {
+    lines.push("## Health Flags", "", healthFlagsMarkdown, "");
   }
 
   for (const section of customSections) {
@@ -771,6 +777,9 @@ function validateGraph(state, spec, stories, adrs, evals) {
   currentExecutionMapLanes.forEach((lane, index) => {
     const laneLabel = String(lane.id || lane.title || index);
     const statuses = Array.isArray(lane.statuses) ? lane.statuses.map(String) : [];
+    if (typeof lane.health_flag !== "undefined" && typeof lane.health_flag !== "boolean") {
+      errors.push(`state.stories_index.current_execution_map.lanes[${index}] (${laneLabel}) uses invalid health_flag value`);
+    }
     const storyNotes =
       lane.story_notes && typeof lane.story_notes === "object" && !Array.isArray(lane.story_notes)
         ? lane.story_notes

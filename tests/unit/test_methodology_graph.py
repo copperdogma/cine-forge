@@ -262,6 +262,7 @@ def test_methodology_graph_renders_structured_current_execution_map(
                   "id": "blocked",
                   "title": "Blocked",
                   "statuses": ["Blocked"],
+                  "health_flag": true,
                   "empty_message": "No stories currently blocked.",
                   "story_notes": {}
                 }
@@ -304,9 +305,91 @@ def test_methodology_graph_renders_structured_current_execution_map(
     assert "## Current Execution Map" in stories_index
     assert "Compiler-driven execution map summary." in stories_index
     assert "| **001** Honest blocked story | Active methodology follow-on. |" in stories_index
+    assert "## Health Flags" in stories_index
     assert "No stories currently blocked." in stories_index
     assert (
         "- Sequencing bias: `spec:11` (stories: 001) — Keep the methodology lane honest."
+        in stories_index
+    )
+
+
+def test_methodology_graph_renders_blocked_line_as_health_flag_not_execution_lane(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Blocked",
+        blocker_summary="Waiting on upstream substrate decision.",
+        blocker_evidence="Current compiler contract still disagrees with the skill surface.",
+        unblock_condition="Land the compiler and skill alignment patch.",
+    )
+    _write(
+        tmp_path / "docs" / "methodology" / "state.yaml",
+        """
+        {
+          "categories": {
+            "spec:11": {
+              "product_need": "Execution clarity",
+              "tech_need": "Methodology substrate",
+              "substrate": "exists",
+              "phase": "hold",
+              "story_coverage": "partial",
+              "notes": []
+            }
+          },
+          "compromises": {},
+          "stories_index": {
+            "current_execution_map": {
+              "summary": "Compiler-driven execution map summary.",
+              "lanes": [
+                {
+                  "id": "in-progress",
+                  "title": "In Progress",
+                  "statuses": ["In Progress"],
+                  "empty_message": "No stories currently in progress.",
+                  "story_notes": {}
+                },
+                {
+                  "id": "blocked",
+                  "title": "Blocked — Dependency Chain Not Ready Yet",
+                  "statuses": ["Blocked"],
+                  "health_flag": true,
+                  "empty_message": "No blocked lines currently need attention.",
+                  "story_notes": {
+                    "001": "Blocked until unblocked; keep visible, do not reopen."
+                  }
+                }
+              ]
+            },
+            "sections": []
+          },
+          "roadmap": {
+            "active_focus": [],
+            "sequencing_bias": [],
+            "campaigns": []
+          },
+          "architecture_audits": {
+            "cadence": {
+              "target_story_interval": 5
+            },
+            "domains": {}
+          }
+        }
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    stories_index = (tmp_path / "docs" / "stories.md").read_text(encoding="utf-8")
+    assert "## Current Execution Map" in stories_index
+    assert "### In Progress" in stories_index
+    assert "No stories currently in progress." in stories_index
+    assert "## Health Flags" in stories_index
+    assert "### Blocked — Dependency Chain Not Ready Yet" in stories_index
+    assert (
+        "| **001** Honest blocked story | "
+        "Blocked until unblocked; keep visible, do not reopen. |"
         in stories_index
     )
 

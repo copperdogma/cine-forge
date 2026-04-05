@@ -22,6 +22,10 @@ any of these failure modes:
 - `/build-story` dead-ends on paperwork for stories that are already detailed
   enough to build
 - `Draft` or `Pending` story existence gets treated as priority by itself
+- a blocked line keeps resurfacing as the "next move" because continuity bias
+  outweighs blocked-state truth
+- the same eval retry trigger keeps getting treated as fresh work even though
+  nothing materially changed
 - user-facing functionality gets planned as backend-only stories with no UI
   slice, leaving plumbing progress but no usable feature
 - `Rescope then close` pressure encourages premature story closure instead of
@@ -123,6 +127,15 @@ lines with an unresolved success surface.
 Example: if the repo is actively pushing one capability line, triage should
 prefer finishing that coherent line over random context switching unless a
 clearly higher-leverage problem overrides it.
+
+But continuity stops at blocked-state truth. If a story is `Blocked` and its
+unblock condition is still unmet, it should be surfaced as a health flag rather
+than the recommended next action.
+
+Eval retry triggers need the same honesty. A `retry_when` condition is a
+detector, not a standing backlog item; once the same trigger has already been
+checked and found unchanged, it stays exhausted until a materially new trigger
+appears.
 
 ### 7. Anti-fragmentation rule
 
@@ -228,6 +241,10 @@ Update both the story leaf and the meta-synthesizer:
   shell
 - `triage` should weight real leverage and continuity above mere backlog-shell
   existence
+- blocked stories with unmet unblock conditions should downgrade to health flags
+  instead of recommended next actions
+- exhausted eval retry triggers should stay deferred until materially new
+  evidence appears
 
 ### 7. Patch close-out
 
@@ -325,6 +342,19 @@ the behavior of the workflow against concrete scenarios.
     - Expected result: it stops before bootstrapping a new story and returns the
       existing story to expand or reopen instead
 
+11. Blocked line -> health flag, not recommendation
+    - Input: triage sees a blocked story with a named blocker and an unmet
+      unblock condition, plus recent commits or continuity on the same line
+    - Expected result: the story stays visible as a health flag, but triage does
+      not recommend reopening it as the next move
+
+12. Consumed eval retry trigger stays exhausted
+    - Input: the latest eval attempt records `retry_when`, but the same trigger
+      was already checked and no materially new model, approach, golden fix,
+      architecture change, or dependency exists
+    - Expected result: triage-evals reports the item as deferred / exhausted
+      instead of ranking it as newly actionable
+
 ### Evidence to record
 
 For each repo that lands this migration, record:
@@ -336,7 +366,8 @@ For each repo that lands this migration, record:
 
 ## CineForge Certification Evidence
 
-Story 147 certifies the ten required scenarios in CineForge with direct local
+Story 147 plus the blocked-line loop hardening follow-on certify the twelve
+required scenarios in CineForge with direct local
 evidence:
 
 - Rough idea -> `Draft`: `.agents/skills/create-story/SKILL.md`
@@ -359,6 +390,17 @@ evidence:
   `.agents/skills/mark-story-done/SKILL.md`
 - Same-line request avoids new story ID:
   `.agents/skills/create-story/SKILL.md`
+- Blocked line -> health flag, not recommendation:
+  `AGENTS.md`, `.agents/skills/triage/SKILL.md`,
+  `.agents/skills/triage-stories/SKILL.md`,
+  `docs/runbooks/triage.md`, `scripts/methodology-graph.js`,
+  `tests/unit/test_methodology_graph.py`, and generated `docs/stories.md`
+- Consumed eval retry trigger stays exhausted:
+  `.agents/skills/triage-evals/SKILL.md`,
+  `.agents/skills/improve-eval/SKILL.md`,
+  `docs/runbooks/triage-evals.md`, `docs/evals/README.md`,
+  `docs/evals/attempt-template.md`, `docs/evals/registry.yaml`, and
+  `docs/evals/attempts/002-video-understanding-google-max-output-budget.md`
 
 ## Porting Notes
 
@@ -367,6 +409,8 @@ evidence:
 - the five-status model
 - problem-first triage
 - continuity bias for active work lines
+- blocked lines as health flags until their unblock conditions are met
+- exhausted eval retry triggers until materially new evidence appears
 - blocked-story evidence requirements
 - anti-fragmentation defaults
 

@@ -62,10 +62,15 @@ multiple clips look like model failures when the real issue was a harness budget
 **What NOT to retry:** Do not use a low Gemini output cap on strict-JSON evals and then
 conclude the model is weak from truncated responses. Do not reason from visible completion
 tokens alone; inspect `totalTokenCount - promptTokenCount` across the whole provider suite.
+Do not keep rerunning the same sampled-frames Gemini path and pretend the
+follow-on is new work; that trigger is exhausted until the subject path itself changes.
+
+**Retry state:** exhausted-until-new-trigger
 
 **Retry when:**
-- `new-approach` — add a native-video Gemini provider path instead of the current sampled-frames
-  contract to see whether Google's video-first path closes the remaining gap versus GPT-5.4.
+- `new-approach` — only after a materially new native-video Gemini provider path
+  exists. Re-running the current sampled-frames harness without that contract
+  change is exhausted, not newly actionable.
 
 ---
 

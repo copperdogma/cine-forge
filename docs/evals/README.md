@@ -74,6 +74,7 @@ attempts:
     subject_model: "Sonnet 4.6"
     score_before: 0.880
     score_after: 0.865
+    retry_status: exhausted-until-new-trigger
     retry_when:
       - condition: new-worker-model
         note: "Approach is valid but needs smarter orchestrator"
@@ -91,6 +92,24 @@ attempts:
 | `golden-fix` | Golden reference may be wrong/incomplete | Manual review |
 | `architecture-change` | Upstream pipeline needs to change first | Pipeline refactor |
 | `dependency-available` | Waiting on a library/tool/API | Ecosystem changes |
+
+### Retry status
+
+`retry_when` names the kind of trigger that would justify another attempt. It
+does **not** mean the eval is automatically actionable every time triage reads
+the registry.
+
+Use `retry_status` on the latest attempt summary when the distinction matters:
+
+| Status | Meaning |
+|---|---|
+| omitted | No extra retry state recorded; inspect the notes manually |
+| `open` | The next retry is actionable as soon as the named condition is met |
+| `exhausted-until-new-trigger` | The same trigger was already checked or consumed; keep this dormant until something materially new appears |
+| `retired` | Do not retry this line without rewriting the plan itself |
+
+The note on each `retry_when` item should name the actual missing trigger, not a
+generic "try again later" placeholder.
 
 ## Compromise Evals
 

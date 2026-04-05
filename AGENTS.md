@@ -354,6 +354,10 @@ Every module default is backed by eval evidence. Selections use **value analysis
 
 Use `Draft` liberally for future stories, but do not leave honestly buildable work in `Draft`, and do not treat story-shell existence as priority by itself.
 
+Blocked lines with unmet unblock conditions are **health flags**, not default next actions. Triage may surface them to preserve truth, but it must not recommend reopening them because of continuity, recent commits, or lack of other options unless the unblock condition is now materially satisfied or the user explicitly asks how to unblock them.
+
+Eval `retry_when` conditions are also detectors, not evergreen invitations. If the same retry trigger has already been checked and nothing materially changed, treat that eval follow-on as exhausted until a genuinely new trigger appears.
+
 ### Story Execution Protocol
 
 - `/build-story` owns implementation only. It MUST stop at the implementation handoff, leave the story `In Progress`, summarize the work, and recommend `/validate` as the next step.
