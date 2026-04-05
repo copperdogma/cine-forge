@@ -12,6 +12,7 @@ import {
   AlertCircle,
   Play,
 } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { RunCostSummaryPanel } from '@/components/RunCostSummaryPanel'
@@ -20,7 +21,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { RunEventLog, type RunEvent } from '@/components/RunEventLog'
 import { ErrorState } from '@/components/StateViews'
 import { cn } from '@/lib/utils'
-import type { StageState } from '@/lib/types'
+import type { SceneActionPreflight, SceneExecutionScope, StageState } from '@/lib/types'
 import {
   useRetryFailedStage,
   useResumeRun,
@@ -28,14 +29,15 @@ import {
   useRunEvents,
   useRunState,
 } from '@/lib/hooks'
-import { RECIPE_NAMES } from '@/lib/constants'
+import { RECIPE_NAMES, getOrderedStageIds, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
 import { toast } from 'sonner'
 import { formatDuration } from '@/lib/format'
 import { StatusBadge, StatusIcon } from '@/components/StatusBadge'
 
 // Derive overall status from stage states
-function getOverallStatus(stages: Record<string, StageState>): string {
-  const stagesList = Object.values(stages)
+function getOverallStatus(stages: Record<string, StageState>, stageOrder?: string[]): string {
+  const stageIds = getOrderedStageIds(Object.keys(stages), stageOrder)
+  const stagesList = stageIds.map((stageId) => stages[stageId]).filter(Boolean)
   if (stagesList.some(s => s.status === 'failed')) return 'failed'
   if (stagesList.some(s => s.status === 'running')) return 'running'
   if (stagesList.every(s => s.status === 'done' || s.status === 'skipped_reused')) return 'done'
@@ -130,6 +132,53 @@ function mapApiEventsToRunEvents(apiEvents: Array<Record<string, unknown>>): Run
   })
 }
 
+function readSceneScope(value: unknown): SceneExecutionScope | null {
+  if (!value || typeof value !== 'object') return null
+  const maybeScope = value as Partial<SceneExecutionScope>
+  if (maybeScope.mode !== 'all_scenes' && maybeScope.mode !== 'current_scene') {
+    return null
+  }
+  return {
+    mode: maybeScope.mode,
+    scene_ids: Array.isArray(maybeScope.scene_ids)
+      ? maybeScope.scene_ids.filter((item): item is string => typeof item === 'string')
+      : [],
+  }
+}
+
+function readSceneActionPreflight(value: unknown): SceneActionPreflight | null {
+  if (!value || typeof value !== 'object') return null
+  const maybePreflight = value as Partial<SceneActionPreflight>
+  if (
+    maybePreflight.status !== 'ready'
+    && maybePreflight.status !== 'warn'
+    && maybePreflight.status !== 'soft_block'
+  ) {
+    return null
+  }
+  return {
+    recipe_id: typeof maybePreflight.recipe_id === 'string' ? maybePreflight.recipe_id : 'unknown',
+    recipe_name: typeof maybePreflight.recipe_name === 'string' ? maybePreflight.recipe_name : 'Scene Action',
+    start_from: typeof maybePreflight.start_from === 'string' ? maybePreflight.start_from : null,
+    end_at: typeof maybePreflight.end_at === 'string' ? maybePreflight.end_at : null,
+    scene_scope: readSceneScope(maybePreflight.scene_scope) ?? { mode: 'all_scenes', scene_ids: [] },
+    status: maybePreflight.status,
+    summary: typeof maybePreflight.summary === 'string' ? maybePreflight.summary : '',
+    items: Array.isArray(maybePreflight.items)
+      ? maybePreflight.items.filter(
+          (item): item is SceneActionPreflight['items'][number] =>
+            !!item
+            && typeof item === 'object'
+            && typeof (item as { label?: unknown }).label === 'string'
+            && typeof (item as { detail?: unknown }).detail === 'string'
+            && ['warning', 'auto_build', 'soft_block'].includes(
+              String((item as { kind?: unknown }).kind),
+            ),
+        )
+      : [],
+  }
+}
+
 export default function RunDetail() {
   const { projectId, runId } = useParams()
   const navigate = useNavigate()
@@ -143,7 +192,10 @@ export default function RunDetail() {
 
   // Derive running state (safe even when data is undefined)
   const overallStatus = runStateResponse
-    ? getOverallStatus(runStateResponse.state.stages)
+    ? getOverallStatus(
+        runStateResponse.state.stages,
+        runStateResponse.state.stage_order as string[] | undefined,
+      )
     : 'pending'
   const isRunning = overallStatus === 'running'
 
@@ -196,6 +248,10 @@ export default function RunDetail() {
 
   const { state } = runState
   const recipeName = state.recipe_id.replace('recipe-', '').replace(/-/g, ' ')
+  const sceneScope = readSceneScope(state.runtime_params.scene_scope)
+  const sceneActionPreflight = readSceneActionPreflight(state.runtime_params.scene_action_preflight)
+  const scopeLabel = getSceneScopeLabel(sceneScope)
+  const scopeTargetLabel = getSceneScopeTargetLabel(sceneScope)
 
   const duration = state.finished_at && state.started_at
     ? state.finished_at - state.started_at
@@ -203,7 +259,12 @@ export default function RunDetail() {
       ? now - state.started_at
       : 0
 
-  const stageEntries = Object.entries(state.stages).sort(([, a], [, b]) => {
+  const stageEntries = getOrderedStageIds(
+    Object.keys(state.stages),
+    state.stage_order as string[] | undefined,
+  )
+    .map((stageId) => [stageId, state.stages[stageId]] as const)
+    .sort(([, a], [, b]) => {
     // Sort by started_at ascending; stages that haven't started go last
     const aTime = a.started_at ?? Infinity
     const bTime = b.started_at ?? Infinity
@@ -376,6 +437,62 @@ export default function RunDetail() {
             }}
           />
         </div>
+      )}
+
+      {(sceneScope || sceneActionPreflight) && (
+        <Card className="mb-6">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Execution Scope</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Selected: {scopeLabel}</Badge>
+              {sceneActionPreflight && (
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    sceneActionPreflight.status === 'soft_block'
+                      ? 'border-red-500/30 bg-red-500/10 text-red-200'
+                      : sceneActionPreflight.status === 'warn'
+                        ? 'border-amber-500/30 bg-amber-500/10 text-amber-100'
+                        : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
+                  )}
+                >
+                  {sceneActionPreflight.status === 'soft_block'
+                    ? 'Soft Block'
+                    : sceneActionPreflight.status === 'warn'
+                      ? 'Warnings'
+                      : 'Ready'}
+                </Badge>
+              )}
+              {sceneScope?.mode === 'current_scene' && sceneScope.scene_ids.map((sceneId) => (
+                <Badge key={sceneId} variant="secondary">
+                  {sceneId}
+                </Badge>
+              ))}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {sceneActionPreflight?.summary
+                || `This run targeted ${scopeTargetLabel}.`}
+            </p>
+            {sceneActionPreflight && sceneActionPreflight.items.length > 0 && (
+              <div className="space-y-2">
+                {sceneActionPreflight.items.map((item, index) => (
+                  <div
+                    key={`${item.kind}-${item.label}-${index}`}
+                    className="rounded-lg border border-border/60 px-3 py-3"
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-medium">{item.label}</span>
+                      <Badge variant="outline">{item.kind.replace('_', ' ')}</Badge>
+                    </div>
+                    <p className="mt-1 text-sm text-muted-foreground">{item.detail}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       )}
 
       {/* Stage progress */}

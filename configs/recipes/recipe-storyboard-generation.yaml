@@ -4,10 +4,44 @@ description: >
   direction, then register them on the shared storyboard track.
 project: {}
 stages:
+  - id: timeline
+    module: timeline_build_v1
+    params: {}
+    needs: []
+    store_inputs:
+      scene_index: scene_index
+    store_inputs_optional:
+      continuity_index: continuity_index
+  - id: tracks
+    module: track_system_v1
+    params: {}
+    after: [timeline]
+    store_inputs:
+      timeline: timeline
+    store_inputs_optional:
+      continuity_index: continuity_index
+  - id: shot_planning
+    module: shot_plan_v1
+    params: {}
+    after: [tracks]
+    store_inputs:
+      normalize: canonical_script
+      scene_index: scene_index
+      timeline: timeline
+      track_manifest: track_manifest
+    store_inputs_optional:
+      continuity_index: continuity_index
+      intent_mood: intent_mood
+    store_inputs_all:
+      rhythm_and_flow: rhythm_and_flow
+      look_and_feel: look_and_feel
+      sound_and_music: sound_and_music
+      character_bible: character_bible
+      character_and_performance: character_and_performance
   - id: storyboards
     module: storyboard_v1
     params: {}
-    needs: []
+    after: [shot_planning]
     store_inputs:
       track_manifest: track_manifest
     store_inputs_optional:

@@ -132,6 +132,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 133 | Model Refresh, Eval Verification, and Project Model Defaults | High | Done | — | spec:2, spec:8 | 107, 124 | [story-133](stories/story-133-model-refresh-eval-verification-and-project-defaults.md) |
 | 135 | Brick & Steel PDF Normalization Regression | High | Done | — | spec:2, spec:8 | 004, 064 | [story-135](stories/story-135-screenplay-normalization-brick-steel-pdf-regression.md) |
 | 142 | Initial Intake Should Not Self-Stale | High | Done | — | spec:1, spec:2, spec:5 | 031, 062, 127 | [story-142](stories/story-142-intake-onboarding-should-not-self-stale.md) |
+| 148 | Scene-Scoped Planning and Honest Downstream Generation | High | Done | — | spec:2, spec:5, spec:6, spec:7, spec:10 | 025, 028, 099, 132, 143, 144 | [story-148](stories/story-148-scene-scoped-planning-and-honest-downstream-generation.md) |
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Medium | Done | — | spec:2 | — | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | Medium | Done | — | spec:2, spec:3, spec:5 | 045 | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 072 | Live Entity Discovery Feedback | Medium | Done | — | spec:2, spec:5 | 062 | [story-072](stories/story-072-live-entity-discovery-feedback.md) |
@@ -207,6 +208,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
 | 046 | Theme System (Light/Dark/Auto + Palettes) | Medium | Pending | — | spec:5 | — | [story-046](stories/story-046-theme-system.md) |
+| 149 | Fast Previz Lane and Latency Budget | High | Draft | — | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |

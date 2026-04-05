@@ -25,6 +25,16 @@ export function dropShadowedGenericRunFailureMessages(
   })
 }
 
+export function dropResolvedGenericRunFailureMessages(
+  messages: ChatMessage[],
+  resolvedRunIds: ReadonlySet<string>,
+): ChatMessage[] {
+  return messages.filter((message) => {
+    const runId = runIdFromGenericFailureMessageId(message.id)
+    return !runId || !resolvedRunIds.has(runId)
+  })
+}
+
 function runIdFromGenericFailureMessageId(messageId: string): string | null {
   if (!messageId.startsWith(GENERIC_RUN_FAILURE_PREFIX)) return null
   if (!messageId.endsWith(GENERIC_RUN_FAILURE_SUFFIX)) return null

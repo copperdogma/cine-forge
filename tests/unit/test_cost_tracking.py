@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from cine_forge.services.cost_tracking import CostTrackingService
+from cine_forge.services.cost_tracking import CostTrackingService, run_status_from_state
 
 
 def _write_project_settings(project_path: Path) -> None:
@@ -236,3 +236,17 @@ def test_build_project_summary_tracks_history_and_trend(tmp_path: Path) -> None:
     assert summary.trend.recent_average_usd == pytest.approx(5.0)
     assert summary.trend.previous_average_usd == pytest.approx(2.0)
     assert summary.trend.delta_usd == pytest.approx(3.0)
+
+
+@pytest.mark.unit
+def test_run_status_from_state_uses_stage_order_for_sliced_runs() -> None:
+    state = {
+        "stage_order": ["look_and_feel"],
+        "stages": {
+            "intent_mood": {"status": "pending"},
+            "look_and_feel": {"status": "done"},
+            "sound_and_music": {"status": "pending"},
+        },
+    }
+
+    assert run_status_from_state(state) == "done"

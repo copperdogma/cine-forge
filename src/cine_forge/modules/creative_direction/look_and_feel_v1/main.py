@@ -15,6 +15,8 @@ from pathlib import Path
 from typing import Any
 
 from cine_forge.ai.llm import call_llm
+from cine_forge.artifacts import ArtifactStore
+from cine_forge.pipeline.scene_actions import filter_scene_entries, load_latest_scene_payloads
 from cine_forge.schemas.concern_groups import (
     LookAndFeel,
     LookAndFeelIndex,
@@ -83,7 +85,8 @@ def run_module(
     skip_qa = bool(params.get("skip_qa", False))
     concurrency = int(params.get("concurrency") or runtime_params.get("concurrency") or 5)
 
-    entries = scene_index.get("entries", [])
+    all_entries = scene_index.get("entries", [])
+    entries = filter_scene_entries(all_entries, runtime_params)
     script_text = canonical_script.get("script_text", "")
     script_lines = script_text.splitlines()
 
@@ -91,6 +94,11 @@ def run_module(
     bible_context = _build_bible_context(inputs)
     intent_context = _build_intent_context(inputs)
     project_dir = context.get("project_dir")
+    store = (
+        ArtifactStore(Path(project_dir))
+        if isinstance(project_dir, str) and project_dir
+        else None
+    )
     asset_service = (
         InjectedAssetService(Path(project_dir))
         if isinstance(project_dir, str) and project_dir
@@ -149,9 +157,13 @@ def run_module(
     artifacts.sort(key=lambda a: a["entity_id"])
 
     # Generate project-level index
+    merged_directions = (
+        load_latest_scene_payloads(store, "look_and_feel") if store is not None else {}
+    )
+    merged_directions.update({str(a["entity_id"]): a["data"] for a in artifacts})
     index_artifact, index_cost = _build_index(
-        entries=entries,
-        directions=[a["data"] for a in artifacts],
+        entries=all_entries,
+        directions=list(merged_directions.values()),
         work_model=work_model,
     )
     artifacts.append(index_artifact)

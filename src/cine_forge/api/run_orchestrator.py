@@ -22,7 +22,7 @@ from cine_forge.api.provider_failure_notifications import (
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.schemas import ArtifactRef, RuntimeParams
-from cine_forge.services.cost_tracking import CostTrackingService
+from cine_forge.services.cost_tracking import CostTrackingService, run_status_from_state
 
 if TYPE_CHECKING:
     from cine_forge.api.chat_store import ChatStore
@@ -92,21 +92,10 @@ class RunOrchestrator:
                 run_state=state,
             ):
                 continue
-            statuses = {stage["status"] for stage in state.get("stages", {}).values()}
-            if "failed" in statuses:
-                status = "failed"
-            elif "running" in statuses:
-                status = "running"
-            elif "paused" in statuses:
-                status = "paused"
-            elif statuses and statuses <= {"done", "skipped_reused"}:
-                status = "done"
-            else:
-                status = "pending"
             runs.append(
                 {
                     "run_id": state.get("run_id", run_dir.name),
-                    "status": status,
+                    "status": run_status_from_state(state),
                     "recipe_id": state.get("recipe_id", "mvp_ingest"),
                     "started_at": state.get("started_at"),
                     "finished_at": state.get("finished_at"),
@@ -172,6 +161,8 @@ class RunOrchestrator:
             project_budget_limit_usd=project_budget_limit_usd,
             run_budget_limit_usd=run_budget_limit_usd,
             budget_warning_threshold_ratio=budget_warning_threshold_ratio,
+            scene_scope=request.get("scene_scope") or {},
+            scene_action_preflight=request.get("scene_action_preflight"),
         )
         runtime_params = params.model_dump(by_alias=True, exclude_none=True)
 

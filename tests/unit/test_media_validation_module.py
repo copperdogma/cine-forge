@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import copy
 import shutil
 from pathlib import Path
 
 import pytest
 
-from cine_forge.modules.qa.media_validation_v1.main import run_module
+from cine_forge.modules.qa.media_validation_v1.main import _generated_videos, run_module
 from cine_forge.schemas import (
     ArtifactHealth,
     ArtifactMetadata,
@@ -94,6 +95,23 @@ def test_run_module_can_target_ai_previz_video_refs(tmp_path: Path) -> None:
     artifact = MediaValidationArtifact.model_validate(result["artifacts"][0]["data"])
     assert artifact.target_ref.artifact_type == "ai_previz_video"
     assert artifact.target_ref.version == ai_previz_ref.version
+
+
+@pytest.mark.unit
+def test_generated_video_selection_respects_scene_scope(tmp_path: Path) -> None:
+    seeded = seed_generated_video_project(tmp_path)
+    scene_one = seeded["generated_video"].model_dump(mode="json")
+    scene_two = copy.deepcopy(scene_one)
+    scene_two["scene_id"] = "scene_002"
+    scene_two["scene_number"] = 2
+    scene_two["scene_heading"] = "EXT. ROOF - DAWN"
+
+    artifacts = _generated_videos(
+        {"generated_video": [scene_one, scene_two]},
+        runtime_params={"scene_scope": {"mode": "current_scene", "scene_ids": ["scene_002"]}},
+    )
+
+    assert [artifact.scene_id for artifact in artifacts] == ["scene_002"]
 
 
 @pytest.mark.unit

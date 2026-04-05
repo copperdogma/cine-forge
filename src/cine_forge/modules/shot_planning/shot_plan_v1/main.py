@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field
 from cine_forge.ai.llm import call_llm
 from cine_forge.ai.qa import qa_check
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.pipeline.scene_actions import filter_scene_entries
 from cine_forge.schemas import (
     ArtifactRef,
     ContinuityState,
@@ -138,7 +139,9 @@ def run_module(
     scene_index = _required_dict(inputs, "scene_index")
     timeline_payload = _required_dict(inputs, "timeline")
     track_manifest_payload = _required_dict(inputs, "track_manifest")
-    continuity_index = _required_dict(inputs, "continuity_index")
+    continuity_index = (
+        inputs.get("continuity_index") if isinstance(inputs.get("continuity_index"), dict) else {}
+    )
 
     store = ArtifactStore(project_dir=Path(project_dir))
     timeline = Timeline.model_validate(timeline_payload)
@@ -188,6 +191,7 @@ def run_module(
         inputs.get("character_and_performance", [])
     )
 
+    scene_entries = filter_scene_entries(scene_index.get("entries", []), runtime_params)
     contexts = [
         _build_scene_context(
             scene_entry=entry,
@@ -203,7 +207,7 @@ def run_module(
             perf_ref_map=perf_ref_map,
             continuity_index=continuity_index,
         )
-        for entry in scene_index.get("entries", [])
+        for entry in scene_entries
     ]
 
     if not contexts:
@@ -472,6 +476,7 @@ def _build_shot_plan_artifact(
         "entity_id": plan.scene_id,
         "data": plan.model_dump(mode="json"),
         "schema_name": "shot_plan",
+        "exclude_upstream_lineage_types": ["timeline", "track_manifest"],
         "metadata": {
             "lineage": [
                 ref.model_dump(mode="json") for ref in scene_context.upstream_artifact_refs
@@ -512,11 +517,9 @@ def _build_scene_context(
         raise ValueError("scene entry missing scene_id")
     scene_ref = _latest_entity_ref(store, "scene", scene_id)
     scene_artifact = store.load_artifact(scene_ref).data
-    rhythm = rhythm_by_scene.get(scene_id)
-    look = look_by_scene.get(scene_id)
-    sound = sound_by_scene.get(scene_id)
-    if not rhythm or not look or not sound:
-        raise ValueError(f"shot_plan_v1 missing concern group inputs for {scene_id}")
+    rhythm = rhythm_by_scene.get(scene_id) or {}
+    look = look_by_scene.get(scene_id) or {}
+    sound = sound_by_scene.get(scene_id) or {}
 
     character_ids = _scene_character_ids(scene_entry)
     character_bibles = []
@@ -533,11 +536,13 @@ def _build_scene_context(
     performance_entries = perf_by_scene.get(scene_id, [])
     performance_refs = perf_ref_map.get(scene_id, [])
 
-    concern_refs = [
-        _latest_entity_ref(store, "rhythm_and_flow", scene_id),
-        _latest_entity_ref(store, "look_and_feel", scene_id),
-        _latest_entity_ref(store, "sound_and_music", scene_id),
-    ]
+    concern_refs: list[ArtifactRef] = []
+    if scene_id in rhythm_by_scene:
+        concern_refs.append(_latest_entity_ref(store, "rhythm_and_flow", scene_id))
+    if scene_id in look_by_scene:
+        concern_refs.append(_latest_entity_ref(store, "look_and_feel", scene_id))
+    if scene_id in sound_by_scene:
+        concern_refs.append(_latest_entity_ref(store, "sound_and_music", scene_id))
     if intent_mood is not None:
         intent_ref = _latest_project_ref(store, "intent_mood")
         if intent_ref is not None:

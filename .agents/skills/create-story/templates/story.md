@@ -62,7 +62,7 @@ legacy_system: ""
 - [ ] If agent tooling or project instructions are touched: `make skills-check`
 - [ ] If story metadata, ADR metadata, or methodology state changes: `pnpm methodology:compile`
 - [ ] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
-- [ ] If UI is touched: verify the changed flow with browser tools when possible (screenshot + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
+- [ ] If UI is touched: verify the changed flow with browser tools in desktop and mobile views when possible (screenshots + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
 - [ ] Search all docs and update any related to what we touched
 - [ ] Verify adherence to Central Tenets (0-5):
   - [ ] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved?

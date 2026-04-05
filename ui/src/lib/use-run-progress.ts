@@ -6,7 +6,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
 import { streamAutoInsight } from './api/chat'
 import { humanizeStageName } from './chat-messages'
-import { detectConcernGroupRun, countTotalScenes, getRunCompletedMessage } from './constants'
+import {
+  detectConcernGroupRun,
+  countTotalScenes,
+  getRunCompletedMessage,
+  getSceneScopeTargetLabel,
+} from './constants'
 import { useRunState, useRunEvents } from './hooks/runs'
 import { genericRunFailureMessageId, hasProviderFailureMessage } from './run-failure-messages'
 import type { StageState, ArtifactGroupSummary } from './types'
@@ -137,11 +142,18 @@ export function useRunProgressChat(projectId: string | undefined) {
           ['projects', projectId, 'artifacts'],
         )
         const totalScenes = countTotalScenes(cachedGroups)
-        const scenePart = totalScenes > 0 ? `your ${totalScenes} scenes` : 'your scenes'
+        const scopeTarget = getSceneScopeTargetLabel(runState.state.runtime_params?.scene_scope)
+        const scenePart = scopeTarget === 'this scene'
+          ? 'this scene'
+          : totalScenes > 0
+            ? `your ${totalScenes} scenes`
+            : 'your scenes'
         store.addMessage(projectId, {
           id: `concern_intro_${activeRunId}`,
           type: 'ai_suggestion',
-          content: `Analyzing ${scenePart} and writing ${cg.label} direction for each one.`,
+          content: scopeTarget === 'this scene'
+            ? `Analyzing this scene and writing ${cg.label} direction for it.`
+            : `Analyzing ${scenePart} and writing ${cg.label} direction for each one.`,
           timestamp: Date.now(),
           speaker: cg.roleId,
         })
@@ -307,8 +319,13 @@ export function useRunProgressChat(projectId: string | undefined) {
 
         // A stage left 'pending' on a finished run means an unhandled exception
         // (e.g. missing upstream output) aborted the wave before stage_state was updated.
-        const hasFailed = Object.values(stages).some(
-          (s) => s.status === 'failed' || s.status === 'pending',
+        const executedStageOrder = (runState.state.stage_order as string[] | undefined)
+          ?? Object.keys(stages)
+        const executedStages = executedStageOrder
+          .map((stageId) => stages[stageId])
+          .filter((stage): stage is StageState => !!stage)
+        const hasFailed = executedStages.some(
+          (stage) => stage.status === 'failed' || stage.status === 'pending',
         )
 
         if (hasFailed) {
@@ -357,6 +374,7 @@ export function useRunProgressChat(projectId: string | undefined) {
           const cgComplete = detectConcernGroupRun(recipeId, completionStageOrder)
 
           if (recipeId === 'shot_planning') {
+            const scopeTarget = getSceneScopeTargetLabel(runState.state.runtime_params?.scene_scope)
             const shotPlanRefs = Object.values(stages)
               .flatMap((stage) => stage.artifact_refs)
               .filter((ref) => ref.artifact_type === 'shot_plan')
@@ -374,7 +392,9 @@ export function useRunProgressChat(projectId: string | undefined) {
               id: `progress_${activeRunId}_complete`,
               type: 'ai_suggestion',
               content: sceneCount > 0
-                ? `Shot planning complete. I generated shot plans for ${sceneCount} ${sceneCount === 1 ? 'scene' : 'scenes'}.`
+                ? scopeTarget === 'this scene'
+                  ? 'Shot planning complete. I generated a shot plan for this scene.'
+                  : `Shot planning complete. I generated shot plans for ${sceneCount} ${sceneCount === 1 ? 'scene' : 'scenes'}.`
                 : 'Shot planning complete.',
               timestamp: Date.now(),
               actions: [
@@ -408,12 +428,15 @@ export function useRunProgressChat(projectId: string | undefined) {
           const firstSceneId = sceneRefs
             .map((r) => String(r.entity_id))
             .sort()[0] ?? 'scene_001'
+          const scopeTarget = getSceneScopeTargetLabel(runState.state.runtime_params?.scene_scope)
 
           store.addMessage(projectId, {
             id: `progress_${activeRunId}_complete`,
             type: 'ai_suggestion',
             content: sceneCount > 0
-              ? `I've analyzed ${sceneCount === 1 ? '1 scene' : `all ${sceneCount} scenes`} and added ${cgComplete.label} direction to each Direction tab.`
+              ? scopeTarget === 'this scene'
+                ? `I've analyzed this scene and added ${cgComplete.label} direction to its Direction tab.`
+                : `I've analyzed ${sceneCount === 1 ? '1 scene' : `all ${sceneCount} scenes`} and added ${cgComplete.label} direction to each Direction tab.`
               : `${cgComplete.label} direction is ready.`,
             timestamp: Date.now(),
             speaker: cgComplete.roleId,

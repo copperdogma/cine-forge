@@ -47,7 +47,7 @@ is generated from story metadata; do not hand-edit it.
    - Workflow gates for build handoff, validation, and story closure
    - Canonical blocker fields: `Blocker Summary`, `Blocker Evidence`, and `Unblock Condition`
    - Redundancy targets: old code or docs this story may make obsolete
-   - UI verification work if the story touches the UI
+  - UI verification work if the story touches the UI, including desktop and mobile coverage
    - If the feature is user-facing and requires both backend/API and UI to be usable, keep that end-to-end path in the same story by default. Split only when the scope is genuinely huge and independently deliverable.
    - Choose the honest initial state:
      - `Draft` when the story is still rough or missing verified substrate
@@ -83,7 +83,7 @@ is generated from story metadata; do not hand-edit it.
 - **Simplification baseline gate**: Every story involving new logic must answer: "Can a single LLM call already do this?" If untested, the first task should be measuring that baseline.
 - Search `docs/decisions/` and `docs/design/` for relevant ADRs / decision records while drafting. If none apply, say so explicitly instead of leaving the field vague. If a scout doc or runbook materially constrains execution, cite it in Notes or Decision Context too.
 - If the story changes existing behavior, name likely redundancy / removal targets up front. New code that supersedes old code should not silently accumulate parallel paths.
-- If the story touches the UI, include explicit browser verification work in the task list. Static checks alone are not enough.
+- If the story touches the UI, include explicit browser verification work in the task list for both desktop and mobile views. Static checks alone are not enough.
 - **End-to-end user feature rule**: If a feature needs backend/API plus UI to be usable by a user, keep them in the SAME story by default. Do not create an "API now, UI later" split for an ordinary feature. Only split backend and UI into separate stories when the scope is genuinely huge (`L`/`XL`), independently valuable, and the dependency boundary is explicit in the story text.
 - **Anti-fragmentation rule**: If the requested work still belongs to the same subsystem, validation boundary, and success surface as an existing story, expand or reopen that story instead of minting a new ID.
 - If the story changes agent tooling or project instructions, include `make skills-check` in the task list.

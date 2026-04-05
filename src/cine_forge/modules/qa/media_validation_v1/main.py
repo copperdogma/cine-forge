@@ -19,6 +19,7 @@ from cine_forge.modules.qa.media_validation_v1.support import (
     review_sampled_frames,
     run_deterministic_probe,
 )
+from cine_forge.pipeline.scene_actions import filter_scene_payloads
 from cine_forge.schemas import (
     ArtifactHealth,
     CompiledRenderPrompt,
@@ -35,8 +36,8 @@ def run_module(
     """Validate scene-video artifacts with deterministic probes plus optional review."""
     project_dir = _project_dir(context)
     store = ArtifactStore(project_dir=project_dir)
-    generated_videos = _generated_videos(inputs)
     runtime_params = _runtime_params(context)
+    generated_videos = _generated_videos(inputs, runtime_params=runtime_params)
     target_artifact_type = _target_artifact_type(params)
 
     sample_count = max(int(params.get("sample_count") or DEFAULT_SAMPLE_COUNT), 0)
@@ -191,10 +192,15 @@ def _target_artifact_type(params: dict[str, Any]) -> str:
     )
 
 
-def _generated_videos(inputs: dict[str, Any]) -> list[GeneratedVideoArtifact]:
+def _generated_videos(
+    inputs: dict[str, Any],
+    *,
+    runtime_params: dict[str, Any] | None = None,
+) -> list[GeneratedVideoArtifact]:
     payloads = inputs.get("generated_video")
     if not isinstance(payloads, list) or not payloads:
         raise ValueError("media_validation_v1 requires one or more generated_video inputs")
+    payloads = filter_scene_payloads(payloads, runtime_params or {})
     artifacts = [
         GeneratedVideoArtifact.model_validate(item)
         for item in payloads

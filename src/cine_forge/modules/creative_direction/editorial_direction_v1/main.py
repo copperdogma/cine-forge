@@ -12,9 +12,12 @@ from __future__ import annotations
 
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 from typing import Any
 
 from cine_forge.ai.llm import call_llm
+from cine_forge.artifacts import ArtifactStore
+from cine_forge.pipeline.scene_actions import filter_scene_entries, load_latest_scene_payloads
 from cine_forge.schemas.concern_groups import (
     RhythmAndFlow,
     RhythmAndFlowIndex,
@@ -48,6 +51,12 @@ def run_module(
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     if not isinstance(runtime_params, dict):
         runtime_params = {}
+    project_dir = context.get("project_dir")
+    store = (
+        ArtifactStore(project_dir=Path(project_dir))
+        if isinstance(project_dir, str) and project_dir
+        else None
+    )
 
     work_model = (
         params.get("work_model")
@@ -73,7 +82,8 @@ def run_module(
     skip_qa = bool(params.get("skip_qa", False))
     concurrency = int(params.get("concurrency") or runtime_params.get("concurrency") or 5)
 
-    entries = scene_index.get("entries", [])
+    all_entries = scene_index.get("entries", [])
+    entries = filter_scene_entries(all_entries, runtime_params)
     script_text = canonical_script.get("script_text", "")
     script_lines = script_text.splitlines()
 
@@ -127,9 +137,13 @@ def run_module(
     artifacts.sort(key=lambda a: a["entity_id"])
 
     # Generate project-level index
+    merged_directions = (
+        load_latest_scene_payloads(store, "rhythm_and_flow") if store is not None else {}
+    )
+    merged_directions.update({str(a["entity_id"]): a["data"] for a in artifacts})
     index_artifact, index_cost = _build_index(
-        entries=entries,
-        directions=[a["data"] for a in artifacts],
+        entries=all_entries,
+        directions=list(merged_directions.values()),
         work_model=work_model,
     )
     artifacts.append(index_artifact)

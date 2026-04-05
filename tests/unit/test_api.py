@@ -11,6 +11,7 @@ from cine_forge.api.exceptions import ServiceError
 from cine_forge.api.service import OperatorConsoleService
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
+from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
 
 
 def _make_client(workspace_root: Path) -> TestClient:
@@ -280,6 +281,64 @@ def test_run_start_preserves_explicitly_cleared_optional_model_overrides(
     assert request["escalate_model"] == "claude-opus-4-6"
 
 
+def test_scene_action_preflight_endpoint_returns_typed_payload(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    client = _make_client(tmp_path)
+    project_id = _create_project(client, "scene-action-preflight", "Scene Action Preflight")
+    service = client.app.state.console_service
+
+    def _fake_preview_scene_action(
+        project_id_arg: str,
+        *,
+        recipe_id: str,
+        scene_scope: SceneExecutionScope,
+        start_from: str | None = None,
+        end_at: str | None = None,
+    ) -> SceneActionPreflight:
+        assert project_id_arg == project_id
+        assert recipe_id == "creative_direction"
+        assert scene_scope.mode == "current_scene"
+        assert scene_scope.scene_ids == ["scene_004"]
+        assert start_from == "look_and_feel"
+        assert end_at == "look_and_feel"
+        return SceneActionPreflight(
+            recipe_id=recipe_id,
+            recipe_name="Look & Feel",
+            start_from=start_from,
+            end_at=end_at,
+            scene_scope=scene_scope,
+            status="warn",
+            summary="Look & Feel can run for this scene with warnings.",
+            items=[],
+        )
+
+    monkeypatch.setattr(service, "preview_scene_action", _fake_preview_scene_action)
+
+    response = client.post(
+        f"/api/projects/{project_id}/scene-actions/preflight",
+        json={
+            "recipe_id": "creative_direction",
+            "start_from": "look_and_feel",
+            "end_at": "look_and_feel",
+            "scene_scope": {
+                "mode": "current_scene",
+                "scene_ids": ["scene_004"],
+            },
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["recipe_name"] == "Look & Feel"
+    assert payload["status"] == "warn"
+    assert payload["scene_scope"] == {
+        "mode": "current_scene",
+        "scene_ids": ["scene_004"],
+    }
+
+
 @pytest.mark.unit
 def test_retry_failed_stage_endpoint_returns_new_run_urls(tmp_path: Path, monkeypatch) -> None:
     client = _make_client(tmp_path)
@@ -297,6 +356,76 @@ def test_retry_failed_stage_endpoint_returns_new_run_urls(tmp_path: Path, monkey
     assert payload["run_id"] == "run-failed-1-retry-abcd"
     assert payload["state_url"] == "/api/runs/run-failed-1-retry-abcd/state"
     assert payload["events_url"] == "/api/runs/run-failed-1-retry-abcd/events"
+
+
+def test_service_start_run_persists_scene_scope_and_preflight_context(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_id = service.create_project_from_slug("scene-scope-run", "Scene Scope Run")
+    project_path = service.require_project_path(project_id)
+    (project_path / "inputs").mkdir(parents=True, exist_ok=True)
+    input_path = project_path / "inputs" / "script.fountain"
+    input_path.write_text("INT. LAB - NIGHT\nMARA\nGo.\n", encoding="utf-8")
+
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="seed",
+        rationale="test fixture",
+        confidence=1.0,
+        source="code",
+        producing_module="tests.unit",
+    )
+    store.save_artifact(
+        artifact_type="canonical_script",
+        entity_id="project",
+        data={"title": "Test", "script_text": input_path.read_text(encoding="utf-8")},
+        metadata=metadata,
+    )
+    store.save_artifact(
+        artifact_type="scene_index",
+        entity_id="project",
+        data={"entries": [{"scene_id": "scene_001", "scene_number": 1}]},
+        metadata=metadata,
+    )
+    store.save_artifact(
+        artifact_type="scene",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT"},
+        metadata=metadata,
+    )
+
+    captured: dict[str, object] = {}
+
+    def _fake_start_run(project_id_arg: str, request: dict[str, object]) -> str:
+        captured["project_id"] = project_id_arg
+        captured["request"] = request
+        return "run-scoped-scene"
+
+    monkeypatch.setattr(service._orchestrator, "start_run", _fake_start_run)
+
+    run_id = service.start_run(
+        project_id,
+        {
+            "input_file": str(input_path),
+            "default_model": "gpt-5.4-mini",
+            "recipe_id": "storyboard_generation",
+            "accept_config": True,
+            "scene_scope": {"mode": "current_scene", "scene_ids": ["scene_001"]},
+        },
+    )
+
+    assert run_id == "run-scoped-scene"
+    assert captured["project_id"] == project_id
+    request = captured["request"]
+    assert isinstance(request, dict)
+    assert request["scene_scope"] == {"mode": "current_scene", "scene_ids": ["scene_001"]}
+    assert isinstance(request["scene_action_preflight"], dict)
+    assert request["scene_action_preflight"]["scene_scope"] == {
+        "mode": "current_scene",
+        "scene_ids": ["scene_001"],
+    }
 
 
 @pytest.mark.unit

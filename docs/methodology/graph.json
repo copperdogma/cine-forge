@@ -270,7 +270,8 @@
           "132",
           "133",
           "135",
-          "142"
+          "142",
+          "148"
         ],
         "adrIds": [
           "ADR-003"
@@ -606,7 +607,9 @@
           "126",
           "132",
           "142",
-          "144"
+          "144",
+          "148",
+          "149"
         ],
         "adrIds": [
           "ADR-002",
@@ -705,7 +708,9 @@
           "132",
           "137",
           "143",
-          "144"
+          "144",
+          "148",
+          "149"
         ],
         "adrIds": [
           "ADR-002",
@@ -771,7 +776,9 @@
           "140",
           "141",
           "143",
-          "144"
+          "144",
+          "148",
+          "149"
         ],
         "adrIds": [
           "ADR-002",
@@ -982,7 +989,9 @@
           "137",
           "140",
           "143",
-          "144"
+          "144",
+          "148",
+          "149"
         ],
         "adrIds": [
           "ADR-003"
@@ -5960,6 +5969,116 @@
       ],
       "roadmapTags": [],
       "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "148",
+      "title": "Scene-Scoped Planning and Honest Downstream Generation",
+      "path": "docs/stories/story-148-scene-scoped-planning-and-honest-downstream-generation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R7 (generate -> react -> refine), R10 (playable assembly at every stage), R11 (production readiness per scene), R12 (transparency & control)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:2.6",
+        "spec:5.5",
+        "spec:6.1",
+        "spec:6.2",
+        "spec:6.3",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "025",
+        "028",
+        "099",
+        "132",
+        "143",
+        "144"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "creative_direction_and_chat",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "quick-path",
+        "scene-scoped"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "149",
+      "title": "Fast Previz Lane and Latency Budget",
+      "path": "docs/stories/story-149-previz-fast-lane-and-latency-budget.md",
+      "status": "Draft",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R17 (real-world and partial-workflow inputs)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.3",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "028",
+        "143",
+        "144",
+        "148"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "latency",
+        "previz",
+        "quick-path"
+      ],
+      "legacySystem": "",
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,

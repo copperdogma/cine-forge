@@ -217,7 +217,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="direction",
         artifact_types=["character_and_performance"],
         dependencies=["scene_extraction", "characters"],
-        implemented=True,
+        implemented=False,
     ),
     PipelineNode(
         id="story_world",
@@ -225,7 +225,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="direction",
         artifact_types=["story_world"],
         dependencies=["characters", "locations", "props"],
-        implemented=True,
+        implemented=False,
     ),
 
     # --- Shots phase (future) ---
@@ -235,7 +235,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="shots",
         artifact_types=["shot_plan"],
         check_mode="entity",
-        dependencies=["rhythm_and_flow", "look_and_feel", "sound_and_music"],
+        dependencies=["scene_extraction"],
         implemented=True,
     ),
     PipelineNode(
@@ -254,7 +254,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="storyboards",
         artifact_types=["storyboard"],
         check_mode="entity",
-        dependencies=["shot_planning"],
+        dependencies=["scene_extraction"],
         implemented=True,
     ),
     PipelineNode(
@@ -263,7 +263,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="storyboards",
         artifact_types=["animatic"],
         check_mode="entity",
-        dependencies=["shot_planning"],
+        dependencies=["scene_extraction"],
         implemented=True,
     ),
     PipelineNode(
@@ -272,7 +272,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="storyboards",
         artifact_types=["ai_previz_video"],
         check_mode="entity",
-        dependencies=["shot_planning"],
+        dependencies=["scene_extraction"],
         nav_route="/scenes",
         implemented=True,
     ),
@@ -282,7 +282,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="storyboards",
         artifact_types=["keyframe"],
         check_mode="entity",
-        dependencies=["animatics"],
+        dependencies=["scene_extraction"],
         implemented=True,
     ),
 
@@ -293,7 +293,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="production",
         artifact_types=["generated_video"],
         check_mode="entity",
-        dependencies=["shot_planning"],
+        dependencies=["scene_extraction"],
         nav_route="/scenes",
         implemented=True,
     ),

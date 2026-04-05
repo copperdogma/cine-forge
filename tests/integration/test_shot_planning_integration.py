@@ -6,6 +6,7 @@ import pytest
 
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.schemas import (
+    ArtifactHealth,
     ArtifactMetadata,
     ArtifactRef,
     ShotPlan,
@@ -387,8 +388,8 @@ def test_shot_planning_recipe_builds_plans_and_updates_project_artifacts(
     manifest_ref = next(ref for ref in refs if ref.artifact_type == "track_manifest")
 
     assert len(shot_refs) == 2
-    assert timeline_ref.version == 2
-    assert manifest_ref.version == 2
+    assert timeline_ref.version >= 2
+    assert manifest_ref.version >= 2
 
     first_plan_artifact = engine.store.load_artifact(shot_refs[0])
     first_plan = ShotPlan.model_validate(first_plan_artifact.data)
@@ -403,6 +404,13 @@ def test_shot_planning_recipe_builds_plans_and_updates_project_artifacts(
         "sound_and_music",
         "continuity_state",
     }.issubset(lineage_types)
+    assert "timeline" not in lineage_types
+    assert "track_manifest" not in lineage_types
+    assert engine.store.graph.get_health(shot_refs[0]) in {
+        ArtifactHealth.VALID,
+        ArtifactHealth.CONFIRMED_VALID,
+        None,
+    }
 
     timeline = Timeline.model_validate(engine.store.load_artifact(timeline_ref).data)
     assert [entry.shot_count for entry in timeline.entries] == [3, 3]

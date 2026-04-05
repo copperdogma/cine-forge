@@ -6,7 +6,7 @@
  * Story 099.
  */
 import { useState, useEffect, useMemo } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import {
   ArrowLeft,
   ChevronLeft,
@@ -27,6 +27,7 @@ import {
   Wrench,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
@@ -37,6 +38,7 @@ import { SceneViewer } from '@/components/ArtifactViewers'
 import { ExportModal } from '@/components/ExportModal'
 import { PrevizPanel } from '@/components/PrevizPanel'
 import { GeneratedVideoPanel } from '@/components/GeneratedVideoPanel'
+import { SceneActionControls } from '@/components/SceneActionControls'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { StoryboardPanel } from '@/components/StoryboardPanel'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
@@ -45,17 +47,21 @@ import { HealthBadge } from '@/components/HealthBadge'
 import { useHistoryBack } from '@/lib/use-history-back'
 import { cn, formatEntityName } from '@/lib/utils'
 import {
+  isRunActive,
   useArtifact,
   useArtifactGroups,
   useEntityNavigation,
   useEntityDetails,
   useEntityResolver,
+  useRunState,
+  useSceneActionPreflight,
   useStartRun,
   useProjectInputs,
   type ResolvedLink,
 } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
-import type { ArtifactGroupSummary } from '@/lib/types'
+import type { ArtifactGroupSummary, SceneScopeMode } from '@/lib/types'
+import { buildSceneScope, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
 
 // ---------------------------------------------------------------------------
 // Concern group config
@@ -116,6 +122,7 @@ const CONCERN_GROUPS: ConcernGroupDef[] = [
     icon: Globe,
     color: 'text-teal-400',
     projectScoped: true,
+    placeholder: true,
   },
 ]
 
@@ -273,7 +280,33 @@ function ConcernGroupTabContent({
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
   const startRun = useStartRun()
   const activeRunId = useChatStore(s => s.activeRunId?.[projectId] ?? null)
-  const runActive = !!activeRunId || startRun.isPending
+  const { data: runState } = useRunState(activeRunId ?? undefined)
+  const hasActiveRun = isRunActive(activeRunId, runState)
+  const runActive = hasActiveRun || startRun.isPending
+  const [scope, setScope] = useState<SceneScopeMode>('current_scene')
+  const sceneScope = buildSceneScope(scope, sceneId)
+  const configuredScopeLabel = getSceneScopeLabel(sceneScope)
+  const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
+  const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
+  const concernRunActive = hasActiveRun
+    && runState?.state.recipe_id === 'creative_direction'
+    && Array.isArray(runState.state.stage_order)
+    && runState.state.stage_order.length === 1
+    && runState.state.stage_order[0] === cg.id
+  const anotherRunActive = hasActiveRun && !concernRunActive
+  const { data: preflight } = useSceneActionPreflight(
+    projectId,
+    cg.placeholder
+      ? null
+      : {
+          recipe_id: 'creative_direction',
+          start_from: cg.id,
+          end_at: cg.id,
+          scene_scope: sceneScope,
+        },
+    !cg.placeholder,
+  )
+  const canGenerate = !!latestInputPath && !runActive && preflight?.status !== 'soft_block'
 
   const [isGenerating, setIsGenerating] = useState(false)
   if (!runActive && isGenerating) setIsGenerating(false)
@@ -292,24 +325,83 @@ function ConcernGroupTabContent({
         accept_config: true,
         skip_qa: true,
         force: !!existing,
+        scene_scope: sceneScope,
       })
       useChatStore.getState().setActiveRun(projectId, run_id)
+      setIsGenerating(false)
     } catch {
+      setIsGenerating(false)
       // Error handled by run tracking
     }
   }
 
   const Icon = cg.icon
+  const generateButtonLabel = scope === 'current_scene'
+    ? (existing ? `Regenerate ${cg.label} for Current Scene` : `Get ${cg.label} for Current Scene`)
+    : (existing ? `Regenerate ${cg.label} for All Scenes` : `Get ${cg.label} for All Scenes`)
 
-  // Placeholder state (character_and_performance / story_world without generation)
+  const generateBtn = (
+    <div className="space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="outline">Selected: {configuredScopeLabel}</Badge>
+          {existing && <Badge variant="secondary">v{existing.latest_version}</Badge>}
+        </div>
+        <Button
+          size="sm"
+          variant={existing ? 'outline' : 'default'}
+          className="gap-1.5"
+          disabled={!canGenerate}
+          onClick={handleGenerate}
+        >
+          {isGenerating ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <Icon className="h-3.5 w-3.5" />
+          )}
+          {generateButtonLabel}
+        </Button>
+      </div>
+      {!latestInputPath && (
+        <p className="text-sm text-muted-foreground">
+          No screenplay input is available for this project yet.
+        </p>
+      )}
+      {anotherRunActive && (
+        <p className="text-sm text-muted-foreground">
+          Another pipeline run is already in progress. Wait for it to finish before starting
+          {` ${cg.label.toLowerCase()}`} direction.
+        </p>
+      )}
+      {concernRunActive && (
+        <p className="text-sm text-muted-foreground">
+          {cg.label} direction is currently running for {activeRunScopeLabel.toLowerCase()}.
+        </p>
+      )}
+      <SceneActionControls
+        scope={scope}
+        onScopeChange={setScope}
+        preflight={preflight}
+        disabled={runActive}
+      />
+    </div>
+  )
+
   if (cg.placeholder) {
+    const placeholderMessage = cg.id === 'story_world'
+      ? 'Project-level story-world baselines are coming in a future update.'
+      : 'Per-character performance direction is coming in a future update.'
     return (
       <div className="rounded-lg border border-dashed border-border py-12 flex flex-col items-center gap-4">
         <Icon className={cn('h-10 w-10', cg.color)} />
         <div className="text-center space-y-1">
           <p className="text-sm font-medium">{cg.label} direction</p>
           <p className="text-xs text-muted-foreground">
-            Per-character performance direction is coming in a future update.
+            {placeholderMessage}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            This placeholder should warn, not block. You can keep moving into shots, previz, and
+            render without it.
           </p>
         </div>
       </div>
@@ -322,51 +414,34 @@ function ConcernGroupTabContent({
 
   const data = artifact?.payload?.data as Record<string, unknown> | undefined
 
-  const generateBtn = (
-    <div className="flex justify-end">
-      <Button
-        size="sm"
-        variant={existing ? 'outline' : 'default'}
-        className="gap-1.5"
-        disabled={runActive || !latestInputPath}
-        onClick={handleGenerate}
-      >
-        {isGenerating ? (
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-        ) : (
-          <Icon className="h-3.5 w-3.5" />
-        )}
-        {existing
-          ? `Regenerate ${cg.label}`
-          : `Get ${cg.label} Direction`}
-      </Button>
-    </div>
-  )
-
   if (!data) {
     return (
-      <div className="rounded-lg border border-dashed border-border py-12 flex flex-col items-center gap-4">
-        <Icon className={cn('h-10 w-10', cg.color)} />
-        <div className="text-center space-y-1">
-          <p className="text-sm font-medium text-foreground/80">No {cg.label} direction yet</p>
-          <p className="text-xs text-muted-foreground">
-            Have AI generate creative direction for this scene.
-          </p>
+      <div className="space-y-4">
+        {generateBtn}
+        <div className="rounded-lg border border-dashed border-border py-12 flex flex-col items-center gap-4">
+          <Icon className={cn('h-10 w-10', cg.color)} />
+          <div className="text-center space-y-1">
+            <p className="text-sm font-medium text-foreground/80">No {cg.label} direction yet</p>
+            <p className="text-xs text-muted-foreground">
+              Generate direction for {configuredScopeTarget} and this tab will resolve back to
+              {` ${sceneHeading}`}.
+            </p>
+          </div>
+          <Button
+            size="sm"
+            variant="default"
+            className="gap-1.5"
+            disabled={!canGenerate}
+            onClick={handleGenerate}
+          >
+            {isGenerating ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Icon className="h-3.5 w-3.5" />
+            )}
+            {generateButtonLabel}
+          </Button>
         </div>
-        <Button
-          size="sm"
-          variant="default"
-          className="gap-1.5"
-          disabled={runActive || !latestInputPath}
-          onClick={handleGenerate}
-        >
-          {isGenerating ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          ) : (
-            <Icon className="h-3.5 w-3.5" />
-          )}
-          Get {cg.label} Direction
-        </Button>
       </div>
     )
   }
@@ -390,6 +465,7 @@ function ConcernGroupTabContent({
 export default function SceneWorkspacePage() {
   const { projectId, entityId } = useParams()
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [isExportOpen, setIsExportOpen] = useState(false)
 
   const nav = useEntityNavigation(projectId, 'scenes', entityId)
@@ -506,6 +582,16 @@ export default function SceneWorkspacePage() {
   )
   const previzLevel = animaticGroup || aiPrevizGroup ? 'yellow' : 'red'
   const renderLevel = getReadiness(groups, 'generated_video', entityId)
+  const validTabs = new Set([
+    'overview',
+    ...CONCERN_GROUPS.map((cg) => cg.id),
+    'shots',
+    'storyboard',
+    'previz',
+    'render',
+  ])
+  const requestedTab = searchParams.get('tab')
+  const activeTab = requestedTab && validTabs.has(requestedTab) ? requestedTab : 'overview'
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -584,7 +670,19 @@ export default function SceneWorkspacePage() {
       <SceneIntentPanel projectId={projectId} entityId={entityId} />
 
       {/* Main workspace tabs */}
-      <Tabs defaultValue="overview" className="w-full">
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => {
+          const nextParams = new URLSearchParams(searchParams)
+          if (value === 'overview') {
+            nextParams.delete('tab')
+          } else {
+            nextParams.set('tab', value)
+          }
+          setSearchParams(nextParams, { replace: true })
+        }}
+        className="w-full"
+      >
         <TabsList variant="line" scrollable className="w-full border-b border-border pb-1">
           <TabsTrigger value="overview">
             Overview

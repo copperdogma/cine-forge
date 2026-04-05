@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from cine_forge.schemas import ArtifactRef, CostRecord, ImpactAssessment
 from cine_forge.schemas.models import ProductionFormat
+from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
 
 
 class ErrorPayload(BaseModel):
@@ -134,6 +135,7 @@ class RunStartRequest(BaseModel):
     force: bool = False
     start_from: str | None = None
     end_at: str | None = None
+    scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
     skip_qa: bool = False
     project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
     run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
@@ -147,6 +149,19 @@ class RunStartResponse(BaseModel):
     run_id: str
     state_url: str
     events_url: str
+
+
+class SceneActionPreflightRequest(BaseModel):
+    """Request payload for scene-action preflight checks."""
+
+    recipe_id: str = Field(min_length=1)
+    start_from: str | None = None
+    end_at: str | None = None
+    scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
+
+
+class SceneActionPreflightResponse(SceneActionPreflight):
+    """API response wrapper for scene-action preflight checks."""
 
 
 class UploadedInputResponse(BaseModel):

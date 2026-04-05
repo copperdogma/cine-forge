@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   FileText,
@@ -18,6 +18,11 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -25,7 +30,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useIsMobile } from '@/lib/use-mobile'
 import { cn } from '@/lib/utils'
 import { askChatQuestion } from '@/lib/glossary'
@@ -62,6 +66,7 @@ type Props = {
   phases: PipelineGraphPhase[]
   nodes: PipelineGraphNode[]
   projectId: string
+  defaultSceneId?: string | null
 }
 
 type PhaseNodeWithConfig = {
@@ -176,15 +181,7 @@ function PhaseDetails({
   )
 }
 
-function PhaseTrigger({
-  badge,
-  isClickable,
-  compact = false,
-  onClick,
-  phaseNodes,
-  phase,
-  status,
-}: {
+const PhaseTrigger = forwardRef<HTMLButtonElement, {
   badge: string | null
   isClickable: boolean
   compact?: boolean
@@ -192,11 +189,20 @@ function PhaseTrigger({
   phaseNodes: PipelineGraphNode[]
   phase: PipelineGraphPhase
   status: PipelinePhaseStatus
-}) {
+}>(function PhaseTrigger({
+  badge,
+  isClickable,
+  compact = false,
+  onClick,
+  phaseNodes,
+  phase,
+  status,
+}, ref) {
   const Icon = PHASE_ICONS[phase.icon] ?? Film
 
   return (
     <button
+      ref={ref}
       type="button"
       onClick={onClick}
       disabled={!onClick && !isClickable}
@@ -236,28 +242,46 @@ function PhaseTrigger({
       <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full sm:hidden', statusDot(status))} />
     </button>
   )
-}
+})
 
 function PhaseSegment({
   phase,
   nodes,
   projectId,
   isMobile,
+  defaultSceneId,
 }: {
   phase: PipelineGraphPhase
   nodes: PipelineGraphNode[]
   projectId: string
   isMobile: boolean
+  defaultSceneId?: string | null
 }) {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const phaseNodes = nodes.filter((n) => n.phase_id === phase.id)
-  const isClickable = !!phase.nav_route
+  const sceneWorkspaceTab =
+    phase.id === 'shots'
+      ? 'shots'
+      : phase.id === 'storyboards'
+        ? 'storyboard'
+        : phase.id === 'production'
+          ? 'render'
+          : null
+  const sceneWorkspaceRoute =
+    defaultSceneId && sceneWorkspaceTab
+      ? `/${projectId}/scenes/${defaultSceneId}?tab=${sceneWorkspaceTab}`
+      : null
+  const isClickable = !!phase.nav_route || !!sceneWorkspaceRoute
   const status = phase.status as PipelinePhaseStatus
 
   const handleNavigate = () => {
     if (phase.nav_route) {
       navigate(`/${projectId}${phase.nav_route === '/' ? '' : phase.nav_route}`)
+      return
+    }
+    if (sceneWorkspaceRoute) {
+      navigate(sceneWorkspaceRoute)
     }
   }
 
@@ -310,28 +334,44 @@ function PhaseSegment({
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <PhaseTrigger
-          badge={badge}
-          isClickable={isClickable}
-          onClick={isClickable ? handleNavigate : undefined}
-          phaseNodes={phaseNodes}
-          phase={phase}
-          status={status}
-        />
-      </TooltipTrigger>
-      <TooltipContent
-        side="top"
-        className="max-w-xs border border-border bg-popover text-popover-foreground shadow-lg [&>svg]:bg-popover [&>svg]:fill-popover"
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <div
+          className="relative"
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+          onFocusCapture={() => setIsOpen(true)}
+          onBlurCapture={(event) => {
+            const nextTarget = event.relatedTarget
+            if (!(nextTarget instanceof Node) || !event.currentTarget.contains(nextTarget)) {
+              setIsOpen(false)
+            }
+          }}
+        >
+          <PhaseTrigger
+            badge={badge}
+            isClickable={isClickable}
+            onClick={isClickable ? handleNavigate : undefined}
+            phaseNodes={phaseNodes}
+            phase={phase}
+            status={status}
+          />
+        </div>
+      </PopoverTrigger>
+      <PopoverContent
+        side="bottom"
+        align="center"
+        sideOffset={8}
+        className="w-[min(22rem,calc(100vw-2rem))] p-3"
+        onOpenAutoFocus={(event) => event.preventDefault()}
       >
         <PhaseDetails phase={phase} tooltipNodes={tooltipNodes} isClickable={false} />
-      </TooltipContent>
-    </Tooltip>
+      </PopoverContent>
+    </Popover>
   )
 }
 
-export function PipelineBar({ phases, nodes, projectId }: Props) {
+export function PipelineBar({ phases, nodes, projectId, defaultSceneId }: Props) {
   const isMobile = useIsMobile()
 
   return (
@@ -346,6 +386,7 @@ export function PipelineBar({ phases, nodes, projectId }: Props) {
             nodes={nodes}
             projectId={projectId}
             isMobile={isMobile}
+            defaultSceneId={defaultSceneId}
           />
         </div>
       ))}

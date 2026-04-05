@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ExternalLink, Film, Loader2, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
@@ -5,12 +6,21 @@ import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
 import { HealthBadge } from '@/components/HealthBadge'
 import { MediaValidationViewer } from '@/components/MediaValidationViewer'
 import { RenderPromptViewer } from '@/components/RenderPromptViewer'
+import { SceneActionControls } from '@/components/SceneActionControls'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { isRunActive, useArtifact, useProjectInputs, useRunState, useStartRun } from '@/lib/hooks'
+import {
+  isRunActive,
+  useArtifact,
+  useProjectInputs,
+  useRunState,
+  useSceneActionPreflight,
+  useStartRun,
+} from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
-import type { ArtifactGroupSummary } from '@/lib/types'
+import type { ArtifactGroupSummary, SceneScopeMode } from '@/lib/types'
+import { buildSceneScope, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
 
 type GeneratedVideoPanelProps = {
   projectId: string
@@ -56,13 +66,20 @@ export function GeneratedVideoPanel({
   const startRun = useStartRun()
   const activeRunId = useChatStore(store => store.activeRunId?.[projectId] ?? null)
   const { data: runState } = useRunState(activeRunId ?? undefined)
+  const [scope, setScope] = useState<SceneScopeMode>('current_scene')
+  const sceneScope = buildSceneScope(scope, sceneId)
+  const { data: preflight } = useSceneActionPreflight(projectId, {
+    recipe_id: 'render_generation',
+    scene_scope: sceneScope,
+  })
 
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
   const hasActiveRun = isRunActive(activeRunId, runState)
   const renderRunActive = hasActiveRun && runState?.state.recipe_id === 'render_generation'
   const anotherRunActive =
     hasActiveRun && !!runState && runState.state.recipe_id !== 'render_generation'
-  const canStartRender = !!latestInputPath && !!shotPlanGroup && !hasActiveRun
+  const runBlocked = startRun.isPending || hasActiveRun
+  const canStartRender = !!latestInputPath && !runBlocked && preflight?.status !== 'soft_block'
   const promptData = promptArtifact?.payload?.data as Record<string, unknown> | undefined
   const videoData = videoArtifact?.payload?.data as Record<string, unknown> | undefined
   const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
@@ -75,9 +92,12 @@ export function GeneratedVideoPanel({
   const validationDetailHref = validationRef?.entity_id && validationRef.version
     ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
     : null
+  const configuredScopeLabel = getSceneScopeLabel(sceneScope)
+  const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
+  const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
 
   async function handleStartRender() {
-    if (!latestInputPath || !shotPlanGroup) return
+    if (!latestInputPath) return
 
     try {
       const { run_id } = await startRun.mutateAsync({
@@ -87,22 +107,27 @@ export function GeneratedVideoPanel({
         recipe_id: 'render_generation',
         accept_config: true,
         force: !!generatedVideoGroup || !!renderPromptGroup,
+        scene_scope: sceneScope,
       })
 
       useChatStore.getState().setActiveRun(projectId, run_id)
       toast.success(
         generatedVideoGroup || renderPromptGroup
-          ? 'Refreshing scene renders for all scenes'
-          : 'Started scene render generation for all scenes',
+          ? `Refreshing scene renders for ${configuredScopeLabel.toLowerCase()}`
+          : `Started scene render generation for ${configuredScopeLabel.toLowerCase()}`,
       )
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to start scene render generation')
     }
   }
 
-  const actionLabel = generatedVideoGroup || renderPromptGroup
-    ? 'Refresh Scene Renders'
-    : 'Run Scene Renders'
+  const actionLabel = scope === 'current_scene'
+    ? (generatedVideoGroup || renderPromptGroup
+      ? 'Refresh Render for Current Scene'
+      : 'Run Render for Current Scene')
+    : (generatedVideoGroup || renderPromptGroup
+      ? 'Refresh Scene Renders for All Scenes'
+      : 'Run Scene Renders for All Scenes')
 
   return (
     <div className="space-y-4">
@@ -112,7 +137,7 @@ export function GeneratedVideoPanel({
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle>Render</CardTitle>
-                <Badge variant="outline">Runs for all scenes</Badge>
+                <Badge variant="outline">Selected: {configuredScopeLabel}</Badge>
                 {shotPlanGroup && (
                   <Badge variant="secondary">From shot plan v{shotPlanGroup.latest_version}</Badge>
                 )}
@@ -135,8 +160,9 @@ export function GeneratedVideoPanel({
               <CardDescription className="max-w-3xl leading-relaxed">
                 Render compiles the current shot plan, concern-group direction, keyframes, and
                 approved references into one provider-ready prompt, then generates a scene video.
-                The recipe runs across every scene in the project and resolves back to the latest
-                output for {sceneHeading}.
+                Stay depth-first on this scene when you want to test one moment quickly, or switch
+                to all scenes when you want a broader pass. This tab always resolves back to the
+                latest output for {sceneHeading}.
               </CardDescription>
             </div>
 
@@ -169,7 +195,7 @@ export function GeneratedVideoPanel({
                 size="sm"
                 className="sm:self-start"
                 onClick={handleStartRender}
-                disabled={!canStartRender || startRun.isPending}
+                disabled={!canStartRender}
               >
                 {startRun.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -178,19 +204,13 @@ export function GeneratedVideoPanel({
                 ) : (
                   <Film className="h-3.5 w-3.5" />
                 )}
-                {actionLabel} for All Scenes
+                {actionLabel}
               </Button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
           {!latestInputPath && <p>No screenplay input is available for this project yet.</p>}
-          {!shotPlanGroup && (
-            <p>
-              Render depends on shot planning. Open the <span className="font-medium">Shots</span>{' '}
-              tab first and generate coverage for this scene before starting scene renders.
-            </p>
-          )}
           {anotherRunActive && (
             <p>
               Another pipeline run is already in progress. Wait for it to finish before starting
@@ -199,10 +219,16 @@ export function GeneratedVideoPanel({
           )}
           {renderRunActive && (
             <p>
-              Scene render generation is currently running for all scenes. Stay here and this scene
-              will refresh when the new prompt and render land.
+              Scene render generation is currently running for {activeRunScopeLabel.toLowerCase()}.
+              Stay here and this scene will refresh when the new prompt and render land.
             </p>
           )}
+          <SceneActionControls
+            scope={scope}
+            onScopeChange={setScope}
+            preflight={preflight}
+            disabled={runBlocked}
+          />
         </CardContent>
       </Card>
 
@@ -211,7 +237,9 @@ export function GeneratedVideoPanel({
           <CardContent className="flex items-start gap-3 py-4">
             <Loader2 className="mt-0.5 h-4 w-4 animate-spin text-amber-400" />
             <div className="space-y-1">
-              <p className="text-sm font-medium">Refreshing scene renders for all scenes</p>
+              <p className="text-sm font-medium">
+                Refreshing scene renders for {activeRunScopeLabel.toLowerCase()}
+              </p>
               <p className="text-sm text-muted-foreground">
                 You can keep reviewing the current prompt and render while CineForge rebuilds the
                 next version in the background.
@@ -230,33 +258,15 @@ export function GeneratedVideoPanel({
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Scene render generation is running</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                CineForge is compiling render prompts and generating videos for every scene in the
-                project. When it finishes, this tab will load the latest result for {sceneHeading}.
+                CineForge is compiling render prompts and generating videos for {configuredScopeTarget}.
+                When it finishes, this tab will load the latest result for {sceneHeading}.
               </p>
             </div>
           </div>
         </div>
       )}
 
-      {!videoData && !promptData && !renderRunActive && !generatedVideoGroup && !renderPromptGroup && !videoLoading && !promptLoading && !shotPlanGroup && (
-        <div className="rounded-xl border border-dashed border-border bg-card/50 px-6 py-12 text-center">
-          <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
-            <div className="rounded-full bg-muted p-3">
-              <Film className="h-6 w-6 text-muted-foreground" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold">Render needs a shot plan first</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                This scene does not have a shot plan yet, so CineForge has no coverage plan to turn
-                into a render. Generate shots first, then come back here for the compiled prompt and
-                scene video.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {!videoData && !promptData && !renderRunActive && !generatedVideoGroup && !renderPromptGroup && !videoLoading && !promptLoading && !!shotPlanGroup && (
+      {!videoData && !promptData && !renderRunActive && !generatedVideoGroup && !renderPromptGroup && !videoLoading && !promptLoading && (
         <div className="rounded-xl border border-dashed border-border bg-card/50 px-6 py-12 text-center">
           <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
             <div className="rounded-full bg-muted p-3">
@@ -265,17 +275,18 @@ export function GeneratedVideoPanel({
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">No scene render for this scene yet</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Starting render here runs the current project-wide recipe, stores the compiled
-                provider-ready prompt for audit, and resolves back to the generated video for {sceneHeading}.
+                Render compiles the provider-ready prompt, stores it for audit, and generates the
+                scene video for {configuredScopeTarget}. Use the scope controls above to widen or
+                narrow the run.
               </p>
             </div>
-            <Button onClick={handleStartRender} disabled={!canStartRender || startRun.isPending}>
+            <Button onClick={handleStartRender} disabled={!canStartRender}>
               {startRun.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <Film className="h-4 w-4" />
               )}
-              {actionLabel} for All Scenes
+              {actionLabel}
             </Button>
           </div>
         </div>

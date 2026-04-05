@@ -69,9 +69,9 @@ Assess whether a story's implementation meets its requirements.
    - Are integration tests covering the boundaries?
 
 7. **Run browser verification for UI changes**:
-   - If UI files changed, use browser tools when possible to load the modified flow, capture a screenshot, and inspect browser console errors
+   - If UI files changed, use browser tools when possible to load the modified flow in both desktop and mobile views, capture screenshots, and inspect browser console errors
    - If browser tools are unavailable or failing, follow `docs/runbooks/browser-automation-and-mcp.md` and report the blocker explicitly
-   - Missing browser evidence for a UI-affecting story is a finding, not a footnote
+   - Missing desktop or mobile browser evidence for a UI-affecting story is a finding, not a footnote
 
 8. **Eval mismatch investigation** (if the story touched an AI module or eval):
    - Run relevant promptfoo evals or acceptance tests
@@ -120,7 +120,7 @@ Assess whether a story's implementation meets its requirements.
 - backend tests: PASS/FAIL
 - backend lint: PASS/FAIL
 - ui checks: PASS/FAIL/NOT RUN (with reason)
-- browser verification: PASS/FAIL/NOT RUN (with reason)
+- browser verification: PASS/FAIL/NOT RUN (with reason, including desktop + mobile status for UI work)
 - agent skill sync: PASS/FAIL/N/A
 - missing/unavailable checks: [list]
 
@@ -165,7 +165,7 @@ Assess whether a story's implementation meets its requirements.
 - Always report unmet criteria clearly
 - Always include evidence for "Met" ratings
 - Never mark a story `Done` from `/validate` — story closure belongs to `/mark-story-done`
-- Never give an A to a UI-affecting story without browser verification evidence
+- Never give an A to a UI-affecting story without browser verification evidence from both desktop and mobile views
 - Never ignore redundant code that the new implementation clearly supersedes
 - Never ignore explicit drift signals just because tests pass
 - Never treat close-out bookkeeping owned by `/mark-story-done` or `/finish-and-push` as an implementation failure by itself

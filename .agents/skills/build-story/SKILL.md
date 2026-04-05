@@ -90,7 +90,7 @@ Execute a development story end-to-end.
    - Repo-fit / optimality evidence (from step 8)
    - Structural health check findings (from step 9)
    - Redundancy plan: what old code, helper paths, or docs should be removed if the new path lands
-   - UI verification plan for UI-affecting work: browser tools to use, golden path to exercise, and fallback runbook if browser tooling is unavailable
+   - UI verification plan for UI-affecting work: browser tools to use, the desktop and mobile golden paths to exercise, and the fallback runbook if browser tooling is unavailable
    - Any human-approval blockers (new dependencies, schema changes, public API changes)
    - Any recommended scope adjustments discovered during exploration
    - What "done" looks like for each task
@@ -107,7 +107,7 @@ Execute a development story end-to-end.
    - Mark task as in progress in the story file
    - Do the work
    - Run relevant project checks after meaningful changes (backend: unit tests + Ruff; UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`)
-   - For significant UI changes, use browser tools during the build loop when possible (screenshot + console check), not only at the end
+   - For significant UI changes, use browser tools during the build loop when possible in both desktop and mobile views (screenshot + console check), not only at the end
    - Run relevant tests
    - Mark task complete with brief evidence
    - If implementation or deeper exploration proves a real blocker instead, record it, set the story to `Blocked`, regenerate the graph/index, and stop
@@ -130,7 +130,7 @@ Execute a development story end-to-end.
 13c. **Runtime smoke test** — Verify the app actually works end-to-end:
    - Start dev servers — confirm they start with no error output in logs
    - If backend changed: hit the health endpoint — confirm 200 with valid JSON
-   - If any frontend files changed: use browser tools when possible to capture a screenshot, exercise the changed UI path, and inspect JS console errors
+   - If any frontend files changed: use browser tools when possible to capture screenshots, exercise the changed UI path in desktop and mobile views, and inspect JS console errors
    - If browser tools are unavailable or failing: follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
    - If frontend→backend communication was added or changed: confirm the call succeeds and response is correct
    - Run a redundancy pass before closing: remove obsolete code paths if safe, otherwise record a concrete follow-up

@@ -36,6 +36,11 @@ from cine_forge.modules.visualization.animatic_v1.support import (
     storyboard_by_scene,
     track_counts,
 )
+from cine_forge.pipeline.scene_actions import (
+    filter_scene_payloads,
+    load_latest_scene_payloads,
+    load_latest_scene_refs,
+)
 from cine_forge.schemas import (
     Animatic,
     AnimaticSegment,
@@ -75,6 +80,10 @@ def run_module(
     shot_plan_payloads = inputs.get("shot_plan")
     if not isinstance(shot_plan_payloads, list) or not shot_plan_payloads:
         raise ValueError("animatic_v1 requires one or more shot_plan inputs")
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
+    shot_plan_payloads = filter_scene_payloads(shot_plan_payloads, runtime_params)
     shot_plans = [
         ShotPlan.model_validate(item) for item in shot_plan_payloads if isinstance(item, dict)
     ]
@@ -166,6 +175,24 @@ def run_module(
         }
     )
 
+    all_shot_plan_payloads = load_latest_scene_payloads(store, "shot_plan")
+    all_shot_plan_payloads.update({
+        plan.scene_id: plan.model_dump(mode="json")
+        for plan in shot_plans
+    })
+    all_shot_plans = [
+        ShotPlan.model_validate(item)
+        for item in all_shot_plan_payloads.values()
+        if isinstance(item, dict)
+    ]
+    all_animatic_refs = load_latest_scene_refs(store, "animatic")
+    all_animatic_refs.update(animatic_refs)
+    all_animatics_by_scene = {
+        scene_id: Animatic.model_validate(payload)
+        for scene_id, payload in load_latest_scene_payloads(store, "animatic").items()
+    }
+    all_animatics_by_scene.update(animatics_by_scene)
+
     previz_ref = anticipated_project_ref(store, "previz_reel")
     previz_reel = build_previz_reel(
         store=store,
@@ -173,9 +200,9 @@ def run_module(
         previz_ref=previz_ref,
         track_manifest_ref=anticipated_project_ref(store, "track_manifest"),
         timeline_ref=track_manifest.timeline_ref,
-        shot_plans=shot_plans,
-        animatics_by_scene=animatics_by_scene,
-        animatic_refs=animatic_refs,
+        shot_plans=all_shot_plans,
+        animatics_by_scene=all_animatics_by_scene,
+        animatic_refs=all_animatic_refs,
         fps=fps,
         width=width,
         height=height,

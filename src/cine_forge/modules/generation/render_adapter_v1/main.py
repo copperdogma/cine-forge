@@ -34,6 +34,7 @@ from cine_forge.modules.generation.render_adapter_v1.support import (
     render_media_dir,
     track_counts,
 )
+from cine_forge.pipeline.scene_actions import filter_scene_payloads
 from cine_forge.schemas import (
     ArtifactRef,
     CharacterAndPerformance,
@@ -83,8 +84,8 @@ def run_module(
     project_dir = _project_dir(context)
     store = ArtifactStore(project_dir=project_dir)
     track_manifest = _track_manifest(inputs)
-    shot_plans = _shot_plans(inputs)
     runtime_params = _runtime_params(context)
+    shot_plans = _shot_plans(inputs, runtime_params=runtime_params)
     output_contract = _output_contract(params=params, runtime_params=runtime_params)
 
     engine_pack_id = str(
@@ -514,10 +515,15 @@ def _track_manifest(inputs: dict[str, Any]) -> TrackManifest:
     return TrackManifest.model_validate(payload)
 
 
-def _shot_plans(inputs: dict[str, Any]) -> list[ShotPlan]:
+def _shot_plans(
+    inputs: dict[str, Any],
+    *,
+    runtime_params: dict[str, Any] | None = None,
+) -> list[ShotPlan]:
     payloads = inputs.get("shot_plan")
     if not isinstance(payloads, list) or not payloads:
         raise ValueError("render_adapter_v1 requires one or more shot_plan inputs")
+    payloads = filter_scene_payloads(payloads, runtime_params or {})
     plans = [ShotPlan.model_validate(item) for item in payloads if isinstance(item, dict)]
     if not plans:
         raise ValueError("render_adapter_v1 could not parse any shot_plan inputs")

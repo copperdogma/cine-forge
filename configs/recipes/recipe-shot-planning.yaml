@@ -4,17 +4,33 @@ description: >
   and the current timeline/track structure.
 project: {}
 stages:
+  - id: timeline
+    module: timeline_build_v1
+    params: {}
+    needs: []
+    store_inputs:
+      scene_index: scene_index
+    store_inputs_optional:
+      continuity_index: continuity_index
+  - id: tracks
+    module: track_system_v1
+    params: {}
+    after: [timeline]
+    store_inputs:
+      timeline: timeline
+    store_inputs_optional:
+      continuity_index: continuity_index
   - id: shot_planning
     module: shot_plan_v1
     params: {}
-    needs: []
+    after: [tracks]
     store_inputs:
       normalize: canonical_script
       scene_index: scene_index
       timeline: timeline
       track_manifest: track_manifest
-      continuity_index: continuity_index
     store_inputs_optional:
+      continuity_index: continuity_index
       intent_mood: intent_mood
     store_inputs_all:
       rhythm_and_flow: rhythm_and_flow

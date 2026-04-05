@@ -136,10 +136,24 @@ def calculate_budget_statuses(
 
 def run_status_from_state(state: dict[str, Any]) -> str:
     """Derive the same run status label used by the API layer."""
+    stage_map = state.get("stages", {})
+    if not isinstance(stage_map, dict):
+        return "pending"
+
+    raw_stage_order = state.get("stage_order")
+    if isinstance(raw_stage_order, list) and raw_stage_order:
+        stage_ids = [
+            str(stage_id)
+            for stage_id in raw_stage_order
+            if str(stage_id) in stage_map
+        ]
+    else:
+        stage_ids = list(stage_map.keys())
+
     statuses = {
-        str(stage.get("status", "pending"))
-        for stage in state.get("stages", {}).values()
-        if isinstance(stage, dict)
+        str(stage_map[stage_id].get("status", "pending"))
+        for stage_id in stage_ids
+        if isinstance(stage_map.get(stage_id), dict)
     }
     if "failed" in statuses:
         return "failed"

@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AlertCircle, Clapperboard, ExternalLink, Loader2, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
+import { SceneActionControls } from '@/components/SceneActionControls'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -8,14 +10,15 @@ import {
   isRunActive,
   runHasFailed,
   useArtifact,
-  useArtifactGroups,
+  useSceneActionPreflight,
   useProjectInputs,
   useRunState,
   useStartRun,
 } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
-import type { ArtifactGroupSummary } from '@/lib/types'
+import type { ArtifactGroupSummary, SceneScopeMode } from '@/lib/types'
 import { ShotPlanViewer } from '@/components/ShotPlanViewer'
+import { buildSceneScope, getSceneScopeLabel } from '@/lib/constants'
 
 type ShotPlanningPanelProps = {
   projectId: string
@@ -36,14 +39,18 @@ export function ShotPlanningPanel({
     sceneId,
     shotPlanGroup?.latest_version,
   )
-  const { data: artifactGroups } = useArtifactGroups(projectId)
   const { data: inputs } = useProjectInputs(projectId)
   const startRun = useStartRun()
   const activeRunId = useChatStore((store) => store.activeRunId?.[projectId] ?? null)
   const { data: runState } = useRunState(activeRunId ?? undefined)
+  const [scope, setScope] = useState<SceneScopeMode>('current_scene')
+  const sceneScope = buildSceneScope(scope, sceneId)
+  const { data: preflight } = useSceneActionPreflight(projectId, {
+    recipe_id: 'shot_planning',
+    scene_scope: sceneScope,
+  })
 
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
-  const hasTimeline = (artifactGroups ?? []).some((group) => group.artifact_type === 'timeline')
   const hasActiveRun = isRunActive(activeRunId, runState)
   const shotPlanningRunActive = hasActiveRun && runState?.state.recipe_id === 'shot_planning'
   const anotherRunActive = hasActiveRun && !!runState && runState.state.recipe_id !== 'shot_planning'
@@ -53,16 +60,18 @@ export function ShotPlanningPanel({
     ? runState?.background_error ?? 'Shot planning failed. Open run details for more information.'
     : null
   const runBlocked = startRun.isPending || hasActiveRun
-  const canStartShotPlanning = !!latestInputPath && hasTimeline && !runBlocked
+  const canStartShotPlanning = !!latestInputPath && !runBlocked && preflight?.status !== 'soft_block'
 
   const artifactData = shotPlanArtifact?.payload?.data as Record<string, unknown> | undefined
   const detailHref = shotPlanGroup
     ? `/${projectId}/artifacts/shot_plan/${sceneId}/${shotPlanGroup.latest_version}`
     : null
   const runDetailHref = activeRunId ? `/${projectId}/run/${activeRunId}` : null
+  const configuredScopeLabel = getSceneScopeLabel(sceneScope)
+  const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
 
   async function handleStartShotPlanning() {
-    if (!latestInputPath || !hasTimeline) return
+    if (!latestInputPath) return
 
     try {
       const { run_id } = await startRun.mutateAsync({
@@ -72,22 +81,23 @@ export function ShotPlanningPanel({
         recipe_id: 'shot_planning',
         accept_config: true,
         force: !!shotPlanGroup,
+        scene_scope: sceneScope,
       })
 
       useChatStore.getState().setActiveRun(projectId, run_id)
       toast.success(
         shotPlanGroup
-          ? 'Refreshing shot plans for all scenes'
-          : 'Started shot planning for all scenes',
+          ? `Refreshing shot plans for ${configuredScopeLabel.toLowerCase()}`
+          : `Started shot planning for ${configuredScopeLabel.toLowerCase()}`,
       )
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to start shot planning')
     }
   }
 
-  const actionLabel = shotPlanGroup
-    ? 'Refresh Shot Plans for All Scenes'
-    : 'Run Shot Planning for All Scenes'
+  const actionLabel = scope === 'current_scene'
+    ? (shotPlanGroup ? 'Refresh Shot Plan for Current Scene' : 'Run Shot Planning for Current Scene')
+    : (shotPlanGroup ? 'Refresh Shot Plans for All Scenes' : 'Run Shot Planning for All Scenes')
 
   return (
     <div className="space-y-4">
@@ -97,13 +107,13 @@ export function ShotPlanningPanel({
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle>Shot Planning</CardTitle>
-                <Badge variant="outline">Runs for all scenes</Badge>
+                <Badge variant="outline">Selected: {configuredScopeLabel}</Badge>
                 {shotPlanGroup && <Badge variant="secondary">v{shotPlanGroup.latest_version}</Badge>}
               </div>
               <CardDescription className="max-w-3xl leading-relaxed">
-                Shot planning turns the current film-lane direction into a cuttable shot list.
-                The existing recipe runs across every scene in the project, then this tab resolves
-                back to the latest result for {sceneHeading}.
+                Shot planning turns scene intent into a cuttable shot list. Run it for this scene
+                when you want a depth-first pass, or switch to all scenes when you want a broader
+                project sweep. This tab always resolves back to the latest result for {sceneHeading}.
               </CardDescription>
             </div>
 
@@ -138,12 +148,6 @@ export function ShotPlanningPanel({
           {!latestInputPath && (
             <p>No screenplay input is available for this project yet.</p>
           )}
-          {!hasTimeline && (
-            <p>
-              Shot planning depends on a project timeline. Run basic breakdown first so CineForge
-              has scene timing and edit-order context to plan against.
-            </p>
-          )}
           {anotherRunActive && (
             <p>
               Another pipeline run is already in progress. Wait for it to finish before starting
@@ -152,10 +156,16 @@ export function ShotPlanningPanel({
           )}
           {shotPlanningRunActive && (
             <p>
-              Shot planning is currently running for all scenes. Stay here and this scene will
-              refresh when the new shot plan lands.
+              Shot planning is currently running for {activeRunScopeLabel.toLowerCase()}. Stay
+              here and this scene will refresh when the new shot plan lands.
             </p>
           )}
+          <SceneActionControls
+            scope={scope}
+            onScopeChange={setScope}
+            preflight={preflight}
+            disabled={runBlocked}
+          />
         </CardContent>
       </Card>
 
@@ -188,7 +198,9 @@ export function ShotPlanningPanel({
           <CardContent className="flex items-start gap-3 py-4">
             <Loader2 className="mt-0.5 h-4 w-4 animate-spin text-amber-400" />
             <div className="space-y-1">
-              <p className="text-sm font-medium">Refreshing shot plans for all scenes</p>
+              <p className="text-sm font-medium">
+                Refreshing shot plans for {activeRunScopeLabel.toLowerCase()}
+              </p>
               <p className="text-sm text-muted-foreground">
                 You can keep reading this scene while the updated plan renders in place when the
                 run finishes.
@@ -207,8 +219,8 @@ export function ShotPlanningPanel({
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Shot planning is running</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                CineForge is building shot plans for every scene in the project. When it finishes,
-                this tab will load the result for {sceneHeading} automatically.
+                CineForge is building shot plans for {activeRunScopeLabel.toLowerCase()}. When it
+                finishes, this tab will load the result for {sceneHeading} automatically.
               </p>
             </div>
           </div>
@@ -225,8 +237,8 @@ export function ShotPlanningPanel({
               <h3 className="text-lg font-semibold">No shot plan for this scene yet</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Shot planning turns scene intent into ordered coverage, camera choices, and edit
-                intent. Starting it here runs the existing project-wide recipe, then this tab
-                resolves back to {sceneHeading}.
+                intent. Use the scope controls above to stay depth-first on this scene or expand
+                to all scenes when you want a wider pass.
               </p>
             </div>
             <Button onClick={handleStartShotPlanning} disabled={!canStartShotPlanning}>

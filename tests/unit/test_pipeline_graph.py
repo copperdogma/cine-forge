@@ -306,6 +306,15 @@ def test_compute_pipeline_graph_with_artifacts(tmp_path: Path) -> None:
     ed = next(n for n in graph["nodes"] if n["id"] == "entity_discovery")
     assert ed["status"] == "available"
 
+    # Film-lane recipes can bootstrap their own substrate now, so downstream entry
+    # points should be available after basic breakdown.
+    shot_planning = next(n for n in graph["nodes"] if n["id"] == "shot_planning")
+    storyboard_gen = next(n for n in graph["nodes"] if n["id"] == "storyboard_gen")
+    render = next(n for n in graph["nodes"] if n["id"] == "render")
+    assert shot_planning["status"] == "available"
+    assert storyboard_gen["status"] == "available"
+    assert render["status"] == "available"
+
 
 @pytest.mark.unit
 def test_active_run_marks_in_progress(tmp_path: Path) -> None:
@@ -472,15 +481,15 @@ def test_check_prerequisites_unknown_node(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
-def test_check_prerequisites_shot_planning_direction_deps(tmp_path: Path) -> None:
-    """shot_planning reports unmet direction prerequisites when store is empty."""
+def test_check_prerequisites_shot_planning_scene_extraction_dep(tmp_path: Path) -> None:
+    """shot_planning now gates on basic script breakdown, not optional direction runs."""
     store = ArtifactStore(project_dir=tmp_path / "project")
     graph = compute_pipeline_graph(store)
     prereqs = check_prerequisites("shot_planning", graph)
 
     assert prereqs["is_ready"] is False
     unmet_ids = [u["id"] for u in prereqs["unmet"]]
-    assert "look_and_feel" in unmet_ids
+    assert "scene_extraction" in unmet_ids
 
 
 # ---------------------------------------------------------------------------

@@ -416,6 +416,7 @@ def test_run_module_mock_updates_timeline_and_tracks(tmp_path: Path) -> None:
         plan = ShotPlan.model_validate(artifact["data"])
         assert plan.coverage_strategy.adequacy_check.verdict == "adequate"
         assert len(plan.shots) == 3
+        assert artifact["exclude_upstream_lineage_types"] == ["timeline", "track_manifest"]
         assert artifact["metadata"]["annotations"]["shot_count"] == 3
         for shot in plan.shots:
             assert shot.continuity_state_refs
@@ -438,6 +439,33 @@ def test_run_module_mock_updates_timeline_and_tracks(tmp_path: Path) -> None:
     assert len(shot_entries) == 6
     assert all(entry.shot_id for entry in shot_entries)
     assert manifest.track_fill_counts["shots"] == 6
+
+
+@pytest.mark.unit
+def test_run_module_mock_tolerates_missing_direction_inputs(tmp_path: Path) -> None:
+    project_dir, inputs = _seed_shot_planning_inputs(tmp_path, scene_count=1)
+    inputs = {
+        **inputs,
+        "rhythm_and_flow": [],
+        "look_and_feel": [],
+        "sound_and_music": [],
+    }
+
+    result = run_module(
+        inputs=inputs,
+        params={"work_model": "mock", "skip_qa": True, "concurrency": 1},
+        context={"project_dir": str(project_dir), "run_id": "r", "stage_id": "shot_planning"},
+    )
+
+    shot_plan_artifact = next(
+        artifact for artifact in result["artifacts"] if artifact["artifact_type"] == "shot_plan"
+    )
+    plan = ShotPlan.model_validate(shot_plan_artifact["data"])
+
+    assert plan.coverage_strategy.rhythm_and_flow_intent == "No explicit notes."
+    assert plan.coverage_strategy.look_and_feel_intent == "No explicit notes."
+    assert plan.coverage_strategy.sound_and_music_intent == "No explicit notes."
+    assert len(plan.shots) == 3
 
 
 @pytest.mark.unit

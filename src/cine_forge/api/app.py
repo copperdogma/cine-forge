@@ -53,6 +53,7 @@ from cine_forge.api.routers import (
     memory,
     preferences,
     previz,
+    scene_actions,
 )
 from cine_forge.api.service import OperatorConsoleService
 
@@ -99,6 +100,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     memory.set_service(service)
     preferences.set_service(service)
     previz.set_service(service)
+    scene_actions.set_service(service)
     app.include_router(assets.router, prefix="/api")
     app.include_router(costs.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
@@ -108,6 +110,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app.include_router(memory.router, prefix="/api")
     app.include_router(preferences.router, prefix="/api")
     app.include_router(previz.router, prefix="/api")
+    app.include_router(scene_actions.router, prefix="/api")
 
     app.add_middleware(
         CORSMiddleware,

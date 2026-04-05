@@ -101,6 +101,36 @@ export type UploadedInputResponse = {
   size_bytes: number
 }
 
+export type SceneScopeMode = 'all_scenes' | 'current_scene'
+
+export type SceneExecutionScope = {
+  mode: SceneScopeMode
+  scene_ids: string[]
+}
+
+export type SceneActionPreflightItem = {
+  kind: 'warning' | 'auto_build' | 'soft_block'
+  label: string
+  detail: string
+}
+
+export type SceneActionPreflight = {
+  recipe_id: string
+  recipe_name: string
+  start_from?: string | null
+  end_at?: string | null
+  scene_scope: SceneExecutionScope
+  status: 'ready' | 'warn' | 'soft_block'
+  summary: string
+  items: SceneActionPreflightItem[]
+}
+
+export type RunRuntimeParams = Record<string, unknown> & {
+  default_model?: string | null
+  scene_scope?: SceneExecutionScope
+  scene_action_preflight?: SceneActionPreflight | null
+}
+
 export type RunStartPayload = {
   project_id: string
   input_file: string
@@ -117,6 +147,7 @@ export type RunStartPayload = {
   force?: boolean
   start_from?: string
   end_at?: string
+  scene_scope?: SceneExecutionScope
   config_file?: string
   config_overrides?: Record<string, unknown>
   project_budget_limit_usd?: number | null
@@ -272,7 +303,7 @@ export type RunStateResponse = {
     finished_at?: number
     stages: Record<string, StageState>
     stage_order?: string[]
-    runtime_params: Record<string, unknown>
+    runtime_params: RunRuntimeParams
     total_cost_usd: number
   }
   background_error?: string | null

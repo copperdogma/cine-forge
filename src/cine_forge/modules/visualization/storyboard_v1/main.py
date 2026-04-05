@@ -26,6 +26,7 @@ from cine_forge.modules.visualization.storyboard_v1.support import (
     storyboard_confidence,
     track_counts,
 )
+from cine_forge.pipeline.scene_actions import filter_scene_payloads
 from cine_forge.schemas import (
     ArtifactRef,
     ProjectConfig,
@@ -53,6 +54,11 @@ def run_module(
     shot_plan_payloads = inputs.get("shot_plan")
     if not isinstance(shot_plan_payloads, list) or not shot_plan_payloads:
         raise ValueError("storyboard_v1 requires one or more shot_plan inputs")
+
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
+    shot_plan_payloads = filter_scene_payloads(shot_plan_payloads, runtime_params)
     shot_plans = [
         ShotPlan.model_validate(item)
         for item in shot_plan_payloads
@@ -60,10 +66,6 @@ def run_module(
     ]
     if not shot_plans:
         raise ValueError("storyboard_v1 could not parse any shot_plan inputs")
-
-    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
-    if not isinstance(runtime_params, dict):
-        runtime_params = {}
 
     project_config_data = (
         inputs.get("project_config") if isinstance(inputs.get("project_config"), dict) else None

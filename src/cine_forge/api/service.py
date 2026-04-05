@@ -21,8 +21,10 @@ from cine_forge.modules.ingest.story_ingest_v1.main import (
     SUPPORTED_FILE_FORMATS,
     read_source_text_with_diagnostics,
 )
+from cine_forge.pipeline.scene_actions import build_scene_action_preflight
 from cine_forge.roles.runtime import RoleCatalog, RoleContext
 from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
+from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
 
 log = logging.getLogger(__name__)
 
@@ -1042,6 +1044,24 @@ class OperatorConsoleService:
 
         return recipes
 
+    def preview_scene_action(
+        self,
+        project_id: str,
+        *,
+        recipe_id: str,
+        scene_scope: SceneExecutionScope,
+        start_from: str | None = None,
+        end_at: str | None = None,
+    ) -> SceneActionPreflight:
+        project_path = self.require_project_path(project_id)
+        return build_scene_action_preflight(
+            project_path=project_path,
+            recipe_id=recipe_id,
+            scene_scope=scene_scope,
+            start_from=start_from,
+            end_at=end_at,
+        )
+
     def start_run(self, project_id: str, request: dict[str, Any]) -> str:
         project_path = self.require_project_path(project_id)
         pj = self._read_project_json(project_path) or {}
@@ -1052,6 +1072,28 @@ class OperatorConsoleService:
                 merged_request[key] = pj[key]
         if "human_control_mode" not in merged_request and pj.get("human_control_mode"):
             merged_request["human_control_mode"] = pj["human_control_mode"]
+
+        scene_scope = SceneExecutionScope.model_validate(
+            merged_request.get("scene_scope") or {}
+        )
+        merged_request["scene_scope"] = scene_scope.model_dump(mode="json")
+        if scene_scope.is_scene_scoped:
+            preflight = self.preview_scene_action(
+                project_id,
+                recipe_id=str(merged_request.get("recipe_id") or "mvp_ingest"),
+                scene_scope=scene_scope,
+                start_from=merged_request.get("start_from"),
+                end_at=merged_request.get("end_at"),
+            )
+            if preflight.status == "soft_block":
+                first_issue = preflight.items[0] if preflight.items else None
+                raise ServiceError(
+                    code="scene_action_blocked",
+                    message=preflight.summary or "Scene action is blocked.",
+                    hint=first_issue.detail if first_issue else None,
+                    status_code=422,
+                )
+            merged_request["scene_action_preflight"] = preflight.model_dump(mode="json")
 
         return self._orchestrator.start_run(project_id, merged_request)
 

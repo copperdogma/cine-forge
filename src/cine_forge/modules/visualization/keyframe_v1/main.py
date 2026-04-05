@@ -24,6 +24,7 @@ from cine_forge.modules.visualization.animatic_v1.support import (
     storyboard_by_scene,
     track_counts,
 )
+from cine_forge.pipeline.scene_actions import filter_scene_payloads
 from cine_forge.schemas import (
     ArtifactRef,
     Keyframe,
@@ -57,9 +58,15 @@ def run_module(
     shot_plan_payloads = inputs.get("shot_plan")
     if not isinstance(shot_plan_payloads, list) or not shot_plan_payloads:
         raise ValueError("keyframe_v1 requires one or more shot_plan inputs")
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
+    shot_plan_payloads = filter_scene_payloads(shot_plan_payloads, runtime_params)
     shot_plans = [
         ShotPlan.model_validate(item) for item in shot_plan_payloads if isinstance(item, dict)
     ]
+    if not shot_plans:
+        raise ValueError("keyframe_v1 could not parse any shot_plan inputs")
 
     storyboard_map = storyboard_by_scene(inputs.get("storyboard"))
     animatic_map = animatics_by_scene(inputs.get("animatic"))

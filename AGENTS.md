@@ -52,9 +52,10 @@ This file is the project-wide source of truth for agent behavior and engineering
   1. Relevant tests pass (`make test-unit` minimum).
   2. Artifacts are produced and manually inspected for semantic correctness.
   3. Schema validation passes.
-  4. The active story's work log is updated with evidence and next actions.
-  5. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. For compromise or detection evals, record whether any remaining failures are **runtime-blocking** or **non-runtime-blocking**. Silently accepting mismatches as noise is a hard stop.
-  6. If you ran an eval (promptfoo, pytest acceptance, or any scored test): update `docs/evals/registry.yaml` with the new score, `git_sha`, and date. Stale scores are worse than no scores.
+  4. If the task touched the UI: browser verification covers both a desktop view and a mobile view, with screenshots or equivalent evidence and clean console output unless a documented environment blocker prevented it.
+  5. The active story's work log is updated with evidence and next actions.
+  6. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. For compromise or detection evals, record whether any remaining failures are **runtime-blocking** or **non-runtime-blocking**. Silently accepting mismatches as noise is a hard stop.
+  7. If you ran an eval (promptfoo, pytest acceptance, or any scored test): update `docs/evals/registry.yaml` with the new score, `git_sha`, and date. Stale scores are worse than no scores.
 
 ## General Agent Engineering Principles
 

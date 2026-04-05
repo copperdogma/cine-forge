@@ -47,6 +47,9 @@ def test_optional_field_defaults() -> None:
     assert params.config_file is None
     assert params.style_packs == {}
     assert params.resume_artifact_refs_by_stage == {}
+    assert params.scene_scope.mode == "all_scenes"
+    assert params.scene_scope.scene_ids == []
+    assert params.scene_action_preflight is None
 
 
 @pytest.mark.unit
@@ -70,14 +73,17 @@ def test_round_trip_preserves_types() -> None:
             accept_config=True,
             skip_qa=True,
             style_packs={"director": "kubrick"},
+            scene_scope={"mode": "current_scene", "scene_ids": ["scene_003"]},
         )
     )
     dumped = params.model_dump(by_alias=True)
     assert isinstance(dumped["accept_config"], bool)
     assert isinstance(dumped["skip_qa"], bool)
     assert isinstance(dumped["style_packs"], dict)
+    assert isinstance(dumped["scene_scope"], dict)
     assert dumped["work_model"] == "haiku"
     assert dumped["verify_model"] == "sonnet"
+    assert dumped["scene_scope"] == {"mode": "current_scene", "scene_ids": ["scene_003"]}
 
 
 @pytest.mark.unit

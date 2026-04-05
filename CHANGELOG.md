@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-04-06] — Scene-scoped planning and downstream generation (Story 148)
+
+### Added
+- Added a typed scene-scope contract plus shared scene-action preflight path so scene workspace actions and headless callers can choose `Current scene` or `All scenes` with consistent warn vs soft-block semantics
+
+### Changed
+- Changed concern-group, shots, storyboard, previz, and render flows to run in true scene scope when requested, while preserving honest project summaries and explicit scope metadata in run detail and progress surfaces
+- Changed the Scene Workspace previz experience into one consolidated panel with shared scope and preflight controls instead of competing lane and empty-state panels
+
+### Fixed
+- Fixed scene-level downstream actions being falsely blocked behind optional direction coverage or silently fanning back out into project-wide reruns
+- Fixed the restored Direction phase details affordance across desktop hover and mobile tap flows
+
 ## [2026-04-04-05] — Problem-first story workflow migration (Story 147)
 
 ### Added

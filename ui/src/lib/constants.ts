@@ -22,6 +22,36 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   render_generation: 'Scene Renders',
 }
 
+export function buildSceneScope(mode: 'current_scene' | 'all_scenes', sceneId: string) {
+  return {
+    mode,
+    scene_ids: mode === 'current_scene' ? [sceneId] : [],
+  } as const
+}
+
+export function getSceneScopeLabel(sceneScope: unknown): string {
+  if (
+    sceneScope
+    && typeof sceneScope === 'object'
+    && 'mode' in sceneScope
+    && (sceneScope as { mode?: unknown }).mode === 'current_scene'
+  ) {
+    const scopeWithIds = sceneScope as { scene_ids?: unknown }
+    const ids = Array.isArray(scopeWithIds.scene_ids)
+      ? scopeWithIds.scene_ids
+      : []
+    if (ids.length === 1 && typeof ids[0] === 'string') {
+      return 'Current scene'
+    }
+    return 'Selected scenes'
+  }
+  return 'All scenes'
+}
+
+export function getSceneScopeTargetLabel(sceneScope: unknown): string {
+  return getSceneScopeLabel(sceneScope) === 'Current scene' ? 'this scene' : 'all scenes'
+}
+
 export function getUserFacingRecipeName(recipeId: string | null | undefined): string {
   if (!recipeId) return 'Run'
   return USER_FACING_RECIPE_NAMES[recipeId] ?? RECIPE_NAMES[recipeId] ?? recipeId
@@ -188,7 +218,5 @@ export function countTotalScenes(groups: Array<{ artifact_type: string }> | unde
  */
 export function getOrderedStageIds(stageKeys: string[], stageOrder?: string[]): string[] {
   if (!stageOrder || stageOrder.length === 0) return stageKeys
-  const ordered = stageOrder.filter(id => stageKeys.includes(id))
-  const extras = stageKeys.filter(id => !stageOrder.includes(id))
-  return [...ordered, ...extras]
+  return stageOrder.filter(id => stageKeys.includes(id))
 }

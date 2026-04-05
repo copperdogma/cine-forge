@@ -10,6 +10,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
+
 
 class RuntimeParams(BaseModel):
     """All parameters that flow from the API service layer to the engine at run time."""
@@ -48,5 +50,9 @@ class RuntimeParams(BaseModel):
         default_factory=dict,
         serialization_alias="__resume_artifact_refs_by_stage",
     )
+
+    # --- Scene-oriented execution context ---
+    scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
+    scene_action_preflight: SceneActionPreflight | None = None
 
     model_config = {"populate_by_name": True}

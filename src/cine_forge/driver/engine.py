@@ -31,6 +31,10 @@ from cine_forge.driver.recipe import (
 from cine_forge.driver.retry_policy import RetryConfig, StageRetryPolicy
 from cine_forge.driver.schema_registry import build_schema_registry
 from cine_forge.driver.state import RunState
+from cine_forge.pipeline.scene_actions import (
+    scene_scope_from_runtime_params,
+    scene_scoped_entity_artifact_types,
+)
 from cine_forge.roles import RoleCatalog, RoleContext
 from cine_forge.schemas import (
     ArtifactHealth,
@@ -387,6 +391,7 @@ class DriverEngine:
             recipe=recipe,
             stage_id=stage_id,
             stage_outputs=stage_outputs,
+            runtime_params=resolved_runtime_params,
         )
         stage_fingerprint = self._build_stage_fingerprint(
             recipe_fingerprint=recipe_fingerprint,
@@ -790,6 +795,7 @@ class DriverEngine:
         recipe: Recipe,
         stage_id: str,
         stage_outputs: dict[str, list[dict[str, Any]]],
+        runtime_params: dict[str, Any],
     ) -> tuple[dict[str, Any], list[ArtifactRef]]:
         stage_by_id = {stage.id: stage for stage in recipe.stages}
         stage = stage_by_id[stage_id]
@@ -865,6 +871,9 @@ class DriverEngine:
             lineage.append(latest_ref)
 
         # Resolve store_inputs_all from artifact store
+        scene_scope = scene_scope_from_runtime_params(runtime_params)
+        selected_scene_ids = set(scene_scope.scene_ids)
+        scene_artifact_types = scene_scoped_entity_artifact_types()
         for input_key, artifact_type in stage.store_inputs_all.items():
             entities = self.store.list_entities(artifact_type=artifact_type)
             if not entities:
@@ -872,7 +881,13 @@ class DriverEngine:
                 # This allows "Refine Mode" to work on a fresh run (bootstrapping from nothing).
                 collected[input_key] = []
                 continue
-            
+
+            if scene_scope.is_scene_scoped and artifact_type in scene_artifact_types:
+                entities = [entity_id for entity_id in entities if entity_id in selected_scene_ids]
+                if not entities:
+                    collected[input_key] = []
+                    continue
+
             all_data = []
             for ent_id in entities:
                 versions = self.store.list_versions(artifact_type=artifact_type, entity_id=ent_id)
@@ -1103,6 +1118,7 @@ class DriverEngine:
                 recipe=recipe,
                 stage_id=stage_id,
                 stage_outputs=preloaded_outputs,
+                runtime_params=runtime_params,
             )
             stage_fingerprint = self._build_stage_fingerprint(
                 recipe_fingerprint=recipe_fingerprint,

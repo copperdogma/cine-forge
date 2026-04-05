@@ -43,6 +43,7 @@ import { fetchHealth } from '@/lib/api'
 import { useProject, useChatLoader, useArtifactGroups, useRuns, usePipelineGraph } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
 import { useRunProgressChat } from '@/lib/use-run-progress'
+import { dropResolvedGenericRunFailureMessages } from '@/lib/run-failure-messages'
 import { cn } from '@/lib/utils'
 import {
   artifactAttentionItemId,
@@ -393,6 +394,9 @@ function ShellInner({ isMobile }: { isMobile: boolean }) {
   // --- Live nav counts ---
   // Poll at 1.5s during an active run so entity counts tick up as bibles complete (story-072).
   const activeRunId = useChatStore(s => projectId ? s.activeRunId?.[projectId] ?? null : null)
+  const projectMessages = useChatStore(
+    (s) => (projectId ? s.messages[projectId] : undefined),
+  ) ?? []
   const { data: artifactGroups } = useArtifactGroups(projectId, activeRunId ? 750 : undefined)
   const { data: runs } = useRuns(projectId)
 
@@ -405,7 +409,30 @@ function ShellInner({ isMobile }: { isMobile: boolean }) {
       useChatStore.getState().setActiveRun(projectId, runningRun.run_id)
     }
   }, [projectId, runs, activeRunId])
+
+  useEffect(() => {
+    if (!projectId || !runs || projectMessages.length === 0) return
+    const resolvedRunIds = new Set(
+      runs
+        .filter((run) => run.status === 'done')
+        .map((run) => run.run_id),
+    )
+    if (resolvedRunIds.size === 0) return
+    const filtered = dropResolvedGenericRunFailureMessages(projectMessages, resolvedRunIds)
+    if (filtered.length !== projectMessages.length) {
+      useChatStore.getState().loadMessages(projectId, filtered)
+    }
+  }, [projectId, projectMessages, runs])
+
   const { data: pipelineGraph } = usePipelineGraph(projectId, activeRunId)
+  const defaultSceneId = useMemo(() => {
+    const sceneIds = (artifactGroups ?? [])
+      .filter((group) => group.artifact_type === 'scene')
+      .map((group) => group.entity_id)
+      .filter((entityId): entityId is string => typeof entityId === 'string' && entityId.startsWith('scene_'))
+      .sort()
+    return sceneIds[0] ?? null
+  }, [artifactGroups])
 
   const navCounts = useMemo(() => {
     const counts: Record<string, number> = {}
@@ -736,6 +763,7 @@ function ShellInner({ isMobile }: { isMobile: boolean }) {
             phases={pipelineGraph.phases}
             nodes={pipelineGraph.nodes}
             projectId={projectId}
+            defaultSceneId={defaultSceneId}
           />
         )}
 
