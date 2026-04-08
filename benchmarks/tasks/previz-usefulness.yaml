@@ -1,13 +1,14 @@
-# Story 143 — Previz usefulness candidate benchmark
+# Story 143 / 149 — Previz usefulness and fast-lane policy benchmark
 #
 # Usage:
 #   source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
 #   cd benchmarks
 #   python scripts/generate_previz_usefulness_dataset.py
+#   python scripts/generate_previz_usefulness_dataset.py --skip-ai --output-dir tmp/previz_fast_lane
 #   PROMPTFOO_PYTHON=python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
 #     --output results/previz-usefulness-story-143-2026-04-03.json
 
-description: "Previz usefulness — compare deterministic baselines against current low-fidelity AI-previz candidates"
+description: "Previz usefulness — compare Fast Previz against current low-fidelity AI-previz upgrade candidates"
 
 defaultTest:
   options:

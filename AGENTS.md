@@ -52,7 +52,7 @@ This file is the project-wide source of truth for agent behavior and engineering
   1. Relevant tests pass (`make test-unit` minimum).
   2. Artifacts are produced and manually inspected for semantic correctness.
   3. Schema validation passes.
-  4. If the task touched the UI: browser verification covers both a desktop view and a mobile view, with screenshots or equivalent evidence and clean console output unless a documented environment blocker prevented it.
+  4. If the task touched the UI: browser verification covers both a desktop view and a mobile view, with screenshots or equivalent evidence and clean console output unless a documented environment blocker prevented it. That verification must use a project state reachable through the normal API/driver pipeline for the feature under test, not a hand-seeded or impossible substrate combination, unless the artifact is explicitly labeled as a narrow non-evaluative smoke fixture.
   5. The active story's work log is updated with evidence and next actions.
   6. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. For compromise or detection evals, record whether any remaining failures are **runtime-blocking** or **non-runtime-blocking**. Silently accepting mismatches as noise is a hard stop.
   7. If you ran an eval (promptfoo, pytest acceptance, or any scored test): update `docs/evals/registry.yaml` with the new score, `git_sha`, and date. Stale scores are worse than no scores.
@@ -61,6 +61,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 
 - **Semantic Quality over Structural Validity**: A JSON that passes a schema but contains "UNKNOWN" or placeholder data is a failure. Assert semantic quality predicates in tests.
 - **Boundary Awareness**: Code that works in a unit test can fail in a long-running service (due to state, cache, or import-time definitions). Validate through the service layer or API boundary.
+- **Representative UI State Only**: For browser verification, UX judgment, and story acceptance, use project states produced through the normal project/API/driver workflow for the feature under test. Do not count manually copied artifacts, seeded impossible combinations, or bypassed substrate states as product evidence. Synthetic fixtures are allowed only for narrow mechanical smoke tests and must be labeled as non-representative.
 - **Package Init Boundaries**: Keep package `__init__.py` files import-light. Do not eagerly import FastAPI apps or other top-level stacks from packages reused by services/helpers; prefer lazy re-exports when package imports would otherwise create circular dependencies during test or driver import.
 - **Dynamic Module Loader Safety**: Internal helper containers inside driver-loaded modules should avoid annotation-dependent dataclass/Pydantic magic unless you confirm they survive dynamic import. Prefer plain classes for purely internal state carriers.
 - **Dynamic Module Loader Imports**: When splitting a driver-loaded module across helper files, use absolute package imports (`cine_forge...`) instead of relative imports. Driver entrypoints are loaded via `spec_from_file_location`, so absolute imports are the safe default.

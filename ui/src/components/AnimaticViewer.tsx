@@ -8,6 +8,7 @@ import {
   parsePreviewProvenance,
 } from '@/components/preview-provenance'
 import { getAssetFileUrl } from '@/lib/api/assets'
+import { usePrevizAdoptionStatus } from '@/lib/hooks'
 import { Clock, DollarSign, Film, Timer, Volume2 } from 'lucide-react'
 
 type AnimaticViewerProps = {
@@ -112,6 +113,9 @@ function parseAnimatic(data: Record<string, unknown>): AnimaticView {
 
 export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
   const animatic = parseAnimatic(data)
+  const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
+  const fastPrevizStatus = previzStatus?.fast_previz
+  const aiPrevizStatus = previzStatus?.ai_previz
   const sceneLabel =
     animatic.sceneNumber !== null ? `Scene ${animatic.sceneNumber}` : 'Scene Animatic'
   const videoUrl = animatic.videoPath ? getAssetFileUrl(projectId, animatic.videoPath) : null
@@ -136,6 +140,9 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
                 <Badge variant="secondary">
                   {formatPreviewMode(animatic.previewProvenance?.mode ?? null)}
                 </Badge>
+              )}
+              {previzStatus?.default_lane === 'annotated_animatic' && (
+                <Badge variant="secondary">Default quick lane</Badge>
               )}
               {formatPreviewIntent(animatic.previewProvenance?.fidelityIntent ?? null) && (
                 <Badge variant="outline">
@@ -190,6 +197,7 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
 
           {animatic.previewProvenance && (
             <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
+              {fastPrevizStatus && <p>{fastPrevizStatus.reason}</p>}
               <p>
                 Intended use: {animatic.previewProvenance.intendedUse.join(', ') || 'human review'}
               </p>
@@ -198,6 +206,7 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
                   Inputs: {animatic.previewProvenance.upstreamInputs.join(', ')}
                 </p>
               )}
+              {aiPrevizStatus?.reason && <p>AI upgrade: {aiPrevizStatus.reason}</p>}
             </div>
           )}
         </CardContent>

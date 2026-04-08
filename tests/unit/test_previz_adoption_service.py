@@ -142,14 +142,55 @@ def test_previz_adoption_service_marks_lite_as_recommended_optional_when_cost_is
     status = service.build_status()
 
     assert status.default_lane == "annotated_animatic"
+    assert status.fast_previz.label == "Fast Previz"
+    assert status.fast_previz.candidate_label == "Annotated Animatic"
+    assert status.fast_previz.adoption_state == "default"
+    assert status.fast_previz.upgrade_lane_id == "ai_previz"
     assert status.ai_previz.adoption_state == "recommended_optional"
     assert status.ai_previz.cost.status == "blocked"
     assert status.ai_previz.validation_stage_enabled is True
     assert any("0.03" in blocker for blocker in status.ai_previz.blocker_reasons)
     assert any("pricing" in blocker.lower() for blocker in status.ai_previz.blocker_reasons)
+    assert "slower optional generated pass" in status.policy_summary.lower()
 
 
 def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are_verified(
+    tmp_path: Path,
+) -> None:
+    recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(recipe_path, engine_pack_id="google_veo31_fast")
+    _write_registry(
+        registry_path,
+        candidate_label="Veo 3.1 Fast Previz",
+        candidate_overall=0.86,
+        baseline_overall=0.80,
+        latency_ms=3200,
+    )
+
+    service = PrevizAdoptionService(
+        recipe_path=recipe_path,
+        registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id="google_veo31_fast",
+            target_model="veo-3.1-fast-generate-preview",
+            cost_per_second=0.05,
+            pricing_note="Prompt-only fixture limitation.",
+        ),
+    )
+
+    status = service.build_status()
+
+    assert status.default_lane == "ai_previz"
+    assert status.ai_previz.adoption_state == "default"
+    assert status.ai_previz.cost.status == "estimated"
+    assert status.ai_previz.cost.estimated_cost_usd == 0.4
+    assert status.ai_previz.blocker_reasons == []
+    assert status.fast_previz.adoption_state == "recommended_optional"
+    assert "replace Fast Previz" in status.ai_previz.reason
+
+
+def test_previz_adoption_service_keeps_fast_previz_default_when_ai_lane_is_too_slow(
     tmp_path: Path,
 ) -> None:
     recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
@@ -176,8 +217,7 @@ def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are
 
     status = service.build_status()
 
-    assert status.default_lane == "ai_previz"
-    assert status.ai_previz.adoption_state == "default"
-    assert status.ai_previz.cost.status == "estimated"
-    assert status.ai_previz.cost.estimated_cost_usd == 0.4
-    assert status.ai_previz.blocker_reasons == []
+    assert status.default_lane == "annotated_animatic"
+    assert status.fast_previz.adoption_state == "default"
+    assert status.ai_previz.adoption_state == "recommended_optional"
+    assert "outside the 6000 ms Fast Previz budget" in status.ai_previz.reason

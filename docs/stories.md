@@ -208,7 +208,9 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 149 | Fast Previz Lane and Latency Budget | High | Draft | — | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
+| 150 | Fastest Real AI Previz Runtime Eval | High | In Progress | — | spec:5, spec:6, spec:7, spec:10 | 143, 144, 148, 149 | [story-150](stories/story-150-fastest-real-ai-previz-runtime-eval.md) |
+| 151 | Previz Shot Planning Compact Mode | High | In Progress | — | spec:5, spec:6, spec:7, spec:10 | 149, 150 | [story-151](stories/story-151-previz-shot-planning-compact-mode.md) |
+| 149 | Fast Previz Lane and Latency Budget | High | Blocked | Representative previz verification is honest again, but Story 149 is now blocked on real runtim… | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |
@@ -223,6 +225,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 085 | Pipeline Capability Graph & Navigation Bar | High | Done | — | spec:5 | 002, 011e, 011f, 082 | [story-085](stories/story-085-pipeline-capability-graph.md) |
 | 086 | AI Navigation Intelligence | High | Done | — | spec:5, spec:9 | 085 | [story-086](stories/story-086-ai-navigation-intelligence.md) |
 | 144 | AI Previz Adoption Gate and Trust Guardrails | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 032, 140, 143 | [story-144](stories/story-144-ai-previz-adoption-gate-and-trust-guardrails.md) |
+| 152 | Previz AI Regenerate Reuse Path | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 149, 150, 151 | [story-152](stories/story-152-previz-ai-regenerate-reuse-path.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

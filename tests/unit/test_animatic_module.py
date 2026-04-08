@@ -92,6 +92,46 @@ def test_animatic_module_includes_project_audio_refs(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
+def test_animatic_module_ignores_descriptive_sound_references_without_files(tmp_path: Path) -> None:
+    if _ffmpeg_missing():
+        pytest.skip("ffmpeg is required for animatic module tests")
+
+    seeded = seed_animatic_project(
+        tmp_path,
+        scene_count=1,
+        include_storyboards=True,
+        include_audio=False,
+    )
+    seeded["inputs"]["sound_and_music"] = [
+        {
+            "scene_id": "scene_001",
+            "reference_audio_assets": [
+                (
+                    "Tarkovsky_Stalker_Zone_ambient_reference — pressurised interior silence "
+                    "with sub-bass infrastructure hum."
+                )
+            ],
+        }
+    ]
+
+    result = run_animatic_module(
+        inputs=seeded["inputs"],
+        params={},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    animatic_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "animatic"
+    )
+    animatic = Animatic.model_validate(animatic_payload)
+
+    assert animatic.audio_refs == []
+    assert (seeded["project_dir"] / animatic.video.relative_path).exists()
+
+
+@pytest.mark.unit
 def test_animatic_module_emits_previz_reel_with_scene_animatics(tmp_path: Path) -> None:
     if _ffmpeg_missing():
         pytest.skip("ffmpeg is required for animatic module tests")

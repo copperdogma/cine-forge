@@ -70,6 +70,7 @@ Assess whether a story's implementation meets its requirements.
 
 7. **Run browser verification for UI changes**:
    - If UI files changed, use browser tools when possible to load the modified flow in both desktop and mobile views, capture screenshots, and inspect browser console errors
+   - Browser verification that counts toward acceptance must use a project state reachable through the normal API/driver pipeline for the feature under test. Hand-seeded artifacts, manually copied project dirs, or impossible substrate combinations may be used only for narrow smoke checks and must be labeled non-representative.
    - If browser tools are unavailable or failing, follow `docs/runbooks/browser-automation-and-mcp.md` and report the blocker explicitly
    - Missing desktop or mobile browser evidence for a UI-affecting story is a finding, not a footnote
 

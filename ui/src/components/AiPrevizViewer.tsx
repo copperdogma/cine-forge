@@ -124,6 +124,7 @@ function parseAiPreviz(data: Record<string, unknown>): AiPrevizView {
 export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewerProps) {
   const previz = parseAiPreviz(data)
   const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
+  const fastPrevizStatus = previzStatus?.fast_previz
   const aiPrevizStatus = previzStatus?.ai_previz
   const sceneLabel = previz.sceneNumber !== null ? `Scene ${previz.sceneNumber}` : 'AI Previz'
   const videoUrl = previz.videoPath ? getAssetFileUrl(projectId, previz.videoPath) : null
@@ -215,6 +216,7 @@ export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewe
             <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
               <div className="space-y-1">
                 <p>{aiPrevizStatus.reason}</p>
+                {fastPrevizStatus?.upgrade_description && <p>{fastPrevizStatus.upgrade_description}</p>}
                 {aiPrevizStatus.cost.status === 'blocked' && aiPrevizStatus.cost.reason && (
                   <p>Cost blocker: {aiPrevizStatus.cost.reason}</p>
                 )}
@@ -236,7 +238,7 @@ export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewe
               <Button asChild variant="outline" size="sm">
                 <Link to={baselineHref}>
                   <ExternalLink className="h-3.5 w-3.5" />
-                  Annotated Baseline
+                  Fast Previz Baseline
                 </Link>
               </Button>
             )}

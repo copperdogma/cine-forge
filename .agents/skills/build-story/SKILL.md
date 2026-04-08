@@ -131,6 +131,7 @@ Execute a development story end-to-end.
    - Start dev servers — confirm they start with no error output in logs
    - If backend changed: hit the health endpoint — confirm 200 with valid JSON
    - If any frontend files changed: use browser tools when possible to capture screenshots, exercise the changed UI path in desktop and mobile views, and inspect JS console errors
+   - For UI/product verification, use a project state that is reachable through the normal API/driver pipeline for the feature under test. Do not treat hand-seeded artifacts, manually copied project dirs, or impossible substrate combinations as acceptance evidence. Synthetic fixtures are allowed only for narrow mechanical smoke checks and must be called out explicitly as non-representative.
    - If browser tools are unavailable or failing: follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
    - If frontend→backend communication was added or changed: confirm the call succeeds and response is correct
    - Run a redundancy pass before closing: remove obsolete code paths if safe, otherwise record a concrete follow-up

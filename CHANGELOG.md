@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-08-01] — Previz runtime truthfulness and AI regenerate reuse (Story 152)
+
+### Added
+- Added a dedicated real-AI-previz runtime benchmark harness plus checked-in result artifacts to measure honest scene-ready latency, compact-planning improvements, and regenerate-path reuse evidence across the current previz runtime line
+
+### Changed
+- Changed Scene Workspace previz policy and UI to present Fast Previz versus AI Previz with explicit latency, fidelity, and trust disclosure instead of one ambiguous video-generation surface
+- Changed AI-previz regeneration to reuse the current healthy shot plan via `start_from=ai_previz` when preflight proves the substrate is safe, instead of silently replanning the same scene
+- Changed AI-previz shot planning to use a compact previz-specific prompt profile so the scene-scoped runtime path spends materially less time in planning before provider video generation
+
+### Fixed
+- Fixed animatic generation treating descriptive sound references like FFmpeg input files
+- Fixed test and validation guidance so impossible seeded project states are no longer treated as product-validation evidence
+
 ## [2026-04-07-01] — Shared theme system and appearance settings (Story 046)
 
 ### Added

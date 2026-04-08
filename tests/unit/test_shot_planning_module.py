@@ -8,7 +8,12 @@ import pytest
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.modules.shot_planning.shot_plan_v1.main import (
+    _build_scene_context,
+    _build_scene_prompt,
+    _character_bible_map,
+    _character_performance_map,
     _CoverageResponse,
+    _scene_map,
     _ScenePlanResponse,
     _ShotResponse,
     run_module,
@@ -396,6 +401,30 @@ def _seed_shot_planning_inputs(
     return project_dir, inputs
 
 
+def _scene_context_for_first_scene(tmp_path: Path):
+    project_dir, inputs = _seed_shot_planning_inputs(tmp_path, scene_count=1)
+    store = ArtifactStore(project_dir=project_dir)
+    timeline = Timeline.model_validate(inputs["timeline"])
+    perf_by_scene, perf_ref_map = _character_performance_map(
+        inputs["character_and_performance"]
+    )
+    scene_context = _build_scene_context(
+        scene_entry=inputs["scene_index"]["entries"][0],
+        canonical_script=inputs["normalize"],
+        timeline=timeline,
+        store=store,
+        rhythm_by_scene=_scene_map(inputs["rhythm_and_flow"]),
+        look_by_scene=_scene_map(inputs["look_and_feel"]),
+        sound_by_scene=_scene_map(inputs["sound_and_music"]),
+        intent_mood=inputs["intent_mood"],
+        char_bible_map=_character_bible_map(inputs["character_bible"]),
+        perf_by_scene=perf_by_scene,
+        perf_ref_map=perf_ref_map,
+        continuity_index=inputs["continuity_index"],
+    )
+    return scene_context
+
+
 @pytest.mark.unit
 def test_run_module_mock_updates_timeline_and_tracks(tmp_path: Path) -> None:
     project_dir, inputs = _seed_shot_planning_inputs(tmp_path, scene_count=2)
@@ -599,6 +628,149 @@ def test_run_module_preserves_adequacy_review_from_model_output(
     assert adequacy.missing_coverage_risks == ["Missing insert of the console activation."]
     assert plan.shots[-1].coverage_role == "Insert"
     assert plan.shots[-1].audit.intent == "Give the editor the missing decision detail."
+
+
+@pytest.mark.unit
+def test_previz_fast_prompt_profile_compacts_scene_prompt(tmp_path: Path) -> None:
+    scene_context = _scene_context_for_first_scene(tmp_path)
+    scene_context.rhythm_and_flow["coverage_priority"] = " ".join(
+        ["master plus sharp reactions and inserts around the console beat"] * 12
+    )
+    scene_context.look_and_feel["camera_personality"] = " ".join(
+        ["static, observational, patient camera with deliberate restrained pushes"] * 12
+    )
+    scene_context.sound_and_music["ambient_environment"] = " ".join(
+        ["electrical hum, rain on metal, and room tone carrying tension"] * 12
+    )
+    scene_context.intent_mood["natural_language_intent"] = " ".join(
+        ["hold pressure inside the room and let silence expose the cost of the choice"] * 12
+    )
+
+    full_prompt = _build_scene_prompt(scene_context)
+    previz_prompt = _build_scene_prompt(
+        scene_context,
+        prompt_profile="previz_fast",
+        max_shots=5,
+    )
+
+    assert "Create 3 to 8 shots only." in full_prompt
+    assert "Create 3 to 5 shots only." in previz_prompt
+    assert "Keep shot rationale and edit_intent to one short sentence." in previz_prompt
+    assert len(previz_prompt) < len(full_prompt)
+    assert len(previz_prompt) <= int(len(full_prompt) * 0.75)
+    assert "..." in previz_prompt
+
+
+@pytest.mark.unit
+def test_run_module_previz_fast_profile_passes_compact_prompt_and_max_tokens(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    project_dir, inputs = _seed_shot_planning_inputs(tmp_path, scene_count=1)
+    captured: dict[str, Any] = {}
+
+    def _fake_call_llm(**kwargs: Any) -> tuple[_ScenePlanResponse, dict[str, Any]]:
+        captured["prompt"] = kwargs["prompt"]
+        captured["max_tokens"] = kwargs["max_tokens"]
+        return (
+            _ScenePlanResponse(
+                coverage_strategy=_CoverageResponse(
+                    coverage_approach="Master plus a few selective singles.",
+                    rhythm_and_flow_intent="Measured escalation.",
+                    look_and_feel_intent="Observational, monitor-lit restraint.",
+                    sound_and_music_intent="Room tone and held silence.",
+                    character_and_performance_notes="Mara drives urgency; Owen resists.",
+                    coverage_patterns=["Master", "Single", "Insert"],
+                    adequacy_verdict="adequate",
+                    adequacy_rationale="Coverage remains cuttable with the core beats visible.",
+                    missing_coverage_risks=[],
+                    rationale="Compact previz coverage still preserves the scene turn.",
+                    alternatives_considered=[],
+                    confidence=0.84,
+                ),
+                shots=[
+                    _ShotResponse(
+                        shot_id="S001-A",
+                        shot_size="Wide",
+                        camera_angle="Eye level",
+                        camera_movement="Static",
+                        lens_focal_length="35mm",
+                        coverage_role="Master",
+                        characters_in_frame=["MARA", "OWEN"],
+                        blocking="Hold both characters at the console.",
+                        action_description="Establish the confrontation geography.",
+                        dialogue_lines=["We can still stop this.", "No. We let it run."],
+                        duration_estimate_seconds=10.0,
+                        edit_intent="Anchor the beat.",
+                        rationale="The cut needs clean geography first.",
+                        alternatives_considered=[],
+                        confidence=0.83,
+                    ),
+                    _ShotResponse(
+                        shot_id="S001-B",
+                        shot_size="Medium Close-Up",
+                        camera_angle="Eye level",
+                        camera_movement="Slow push",
+                        lens_focal_length="50mm",
+                        coverage_role="Single",
+                        characters_in_frame=["MARA"],
+                        blocking="Lean Mara toward the switch.",
+                        action_description="Push into her urgency.",
+                        dialogue_lines=["We can still stop this."],
+                        duration_estimate_seconds=6.0,
+                        edit_intent="Isolate urgency.",
+                        rationale="Her pressure shapes the turn.",
+                        alternatives_considered=[],
+                        confidence=0.82,
+                    ),
+                    _ShotResponse(
+                        shot_id="S001-C",
+                        shot_size="Insert",
+                        camera_angle="High",
+                        camera_movement="Static",
+                        lens_focal_length="85mm",
+                        coverage_role="Insert",
+                        characters_in_frame=[],
+                        blocking="Frame the switch and hovering hand.",
+                        action_description="Show the irreversible choice.",
+                        dialogue_lines=[],
+                        duration_estimate_seconds=3.0,
+                        edit_intent="Clarify the choice.",
+                        rationale="The action beat needs visible detail.",
+                        alternatives_considered=[],
+                        confidence=0.85,
+                    ),
+                ],
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 100,
+                "output_tokens": 200,
+                "estimated_cost_usd": 0.01,
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.shot_planning.shot_plan_v1.main.call_llm",
+        _fake_call_llm,
+    )
+
+    result = run_module(
+        inputs=inputs,
+        params={
+            "work_model": "fixture",
+            "skip_qa": True,
+            "concurrency": 1,
+            "prompt_profile": "previz_fast",
+            "max_tokens": 2200,
+        },
+        context={"project_dir": str(project_dir), "run_id": "r", "stage_id": "shot_planning"},
+    )
+
+    assert result["cost"]["model"] == "fixture"
+    assert captured["max_tokens"] == 2200
+    assert "Create 3 to 5 shots only." in captured["prompt"]
+    assert "Keep shot rationale and edit_intent to one short sentence." in captured["prompt"]
 
 
 @pytest.mark.unit

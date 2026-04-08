@@ -384,14 +384,18 @@ export type PrevizLaneStatus = {
   lane_id: 'annotated_animatic' | 'ai_previz'
   label: string
   candidate_label?: string | null
+  latency_class: 'fast' | 'slow'
   adoption_state: 'default' | 'recommended_optional' | 'experimental_manual'
   reason: string
+  intended_use: string
+  fidelity_disclosure: string
   blocker_reasons: string[]
   overall_score?: number | null
   baseline_score?: number | null
   score_margin?: number | null
   measured_at?: string | null
   latency_ms?: number | null
+  latency_budget_ms?: number | null
   engine_pack_id?: string | null
   target_model?: string | null
   resolution?: string | null
@@ -399,10 +403,15 @@ export type PrevizLaneStatus = {
   consistency_strategy?: string | null
   cost: PrevizCostEvidence
   validation_stage_enabled: boolean
+  upgrade_lane_id?: 'annotated_animatic' | 'ai_previz' | null
+  upgrade_label?: string | null
+  upgrade_description?: string | null
 }
 
 export type PrevizAdoptionStatus = {
   default_lane: 'annotated_animatic' | 'ai_previz'
+  policy_summary: string
+  fast_previz: PrevizLaneStatus
   ai_previz: PrevizLaneStatus
 }
 

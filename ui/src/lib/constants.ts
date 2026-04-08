@@ -5,7 +5,7 @@ export const RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Logic',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
-  animatics_generation: 'Deterministic Previz',
+  animatics_generation: 'Fast Previz',
   ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
 }
@@ -17,7 +17,7 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Analysis',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
-  animatics_generation: 'Deterministic Previz',
+  animatics_generation: 'Fast Previz',
   ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
 }
@@ -75,7 +75,7 @@ export function getRunStartedMessage(recipeId: string | null | undefined): strin
     return 'Shot Planning started — building scene shot lists now...'
   }
   if (recipeId === 'animatics_generation') {
-    return 'Deterministic Previz started — building rough cuts and keyframes now...'
+    return 'Fast Previz started — building the quick planning cut now...'
   }
   if (recipeId === 'ai_previz_generation') {
     return 'AI Previz started — generating low-fidelity planning clips now...'
@@ -102,8 +102,8 @@ export function getRunCompletedMessage(
   }
   if (recipeId === 'animatics_generation') {
     return summary
-      ? `Deterministic Previz complete! I produced ${summary} for your project.`
-      : 'Deterministic Previz complete!'
+      ? `Fast Previz complete! I produced ${summary} for your project.`
+      : 'Fast Previz complete!'
   }
   if (recipeId === 'ai_previz_generation') {
     return summary

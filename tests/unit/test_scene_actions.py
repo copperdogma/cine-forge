@@ -6,17 +6,18 @@ import pytest
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.pipeline.scene_actions import build_scene_action_preflight
-from cine_forge.schemas import ArtifactMetadata
+from cine_forge.schemas import ArtifactHealth, ArtifactMetadata
 from cine_forge.schemas.scene_scope import SceneExecutionScope
 
 
-def _metadata() -> ArtifactMetadata:
+def _metadata(*, health: ArtifactHealth = ArtifactHealth.VALID) -> ArtifactMetadata:
     return ArtifactMetadata(
         lineage=[],
         intent="test",
         rationale="test",
         confidence=1.0,
         source="code",
+        health=health,
     )
 
 
@@ -97,3 +98,57 @@ def test_placeholder_direction_preflight_soft_blocks_cleanly(tmp_path: Path) -> 
     assert preflight.status == "soft_block"
     assert preflight.items[0].label == "Capability not shipped"
     assert "coming-soon placeholder" in preflight.items[0].detail
+
+
+@pytest.mark.unit
+def test_ai_previz_preflight_reuses_existing_healthy_shot_plan(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="track_manifest",
+        entity_id="project",
+        data={"tracks": []},
+        metadata=_metadata(),
+    )
+    store.save_artifact(
+        artifact_type="shot_plan",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "shots": []},
+        metadata=_metadata(),
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="ai_previz_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from == "ai_previz"
+    assert all(item.label != "Shot planning" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_ai_previz_preflight_does_not_reuse_stale_shot_plan(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="track_manifest",
+        entity_id="project",
+        data={"tracks": []},
+        metadata=_metadata(),
+    )
+    store.save_artifact(
+        artifact_type="shot_plan",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "shots": []},
+        metadata=_metadata(health=ArtifactHealth.STALE),
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="ai_previz_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from is None
+    assert any(item.label == "Shot planning" for item in preflight.items)

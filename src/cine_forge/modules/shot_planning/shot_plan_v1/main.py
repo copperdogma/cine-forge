@@ -31,6 +31,11 @@ from cine_forge.schemas import (
 logger = logging.getLogger(__name__)
 
 _SLUG_RE = re.compile(r"[^a-z0-9]+")
+_PREVIZ_FAST_PROFILE = "previz_fast"
+_PREVIZ_FAST_MAX_SHOTS = 5
+_COMPACT_VALUE_CHARS = 180
+_COMPACT_LIST_ITEMS = 3
+_COMPACT_SCENE_SCRIPT_CHARS = 900
 
 _SHOT_PLANNER_PERSONA = """\
 You are CineForge's Shot Planner — the point where editorial, visual, sound, performance, \
@@ -179,6 +184,11 @@ def run_module(
     skip_qa = bool(params.get("skip_qa", False))
     concurrency = int(params.get("concurrency") or runtime_params.get("concurrency") or 4)
     max_tokens = int(params.get("max_tokens") or runtime_params.get("max_tokens") or 4800)
+    prompt_profile = str(params.get("prompt_profile") or "default").strip().lower() or "default"
+    max_shots = int(
+        params.get("max_shots")
+        or (_PREVIZ_FAST_MAX_SHOTS if prompt_profile == _PREVIZ_FAST_PROFILE else 8)
+    )
 
     announce = context.get("announce_artifact")
     intent_mood = inputs.get("intent_mood") if isinstance(inputs.get("intent_mood"), dict) else None
@@ -238,6 +248,8 @@ def run_module(
                 escalate_model=escalate_model,
                 skip_qa=skip_qa,
                 max_tokens=max_tokens,
+                prompt_profile=prompt_profile,
+                max_shots=max_shots,
             ): scene_context.scene_entry["scene_id"]
             for scene_context in contexts
         }
@@ -332,6 +344,8 @@ def _plan_scene(
     escalate_model: str,
     skip_qa: bool,
     max_tokens: int,
+    prompt_profile: str,
+    max_shots: int,
 ) -> tuple[dict[str, Any], ShotPlan, dict[str, Any]]:
     if work_model == "mock":
         plan = _mock_shot_plan(scene_context)
@@ -343,7 +357,11 @@ def _plan_scene(
             "estimated_cost_usd": 0.0,
         }
 
-    prompt = _build_scene_prompt(scene_context)
+    prompt = _build_scene_prompt(
+        scene_context,
+        prompt_profile=prompt_profile,
+        max_shots=max_shots,
+    )
     response, call_cost = call_llm(
         prompt=prompt,
         model=work_model,
@@ -374,7 +392,12 @@ def _plan_scene(
         _update_cost(cost, qa_cost)
         models_used.add(str(qa_cost.get("model", verify_model)))
         if not qa_result.passed:
-            escalate_prompt = _build_scene_prompt(scene_context, feedback=qa_result.summary)
+            escalate_prompt = _build_scene_prompt(
+                scene_context,
+                feedback=qa_result.summary,
+                prompt_profile=prompt_profile,
+                max_shots=max_shots,
+            )
             response, esc_cost = call_llm(
                 prompt=escalate_prompt,
                 model=escalate_model,
@@ -586,27 +609,44 @@ def _build_scene_context(
 def _build_scene_prompt(
     scene_context: _ScenePlanningContext,
     feedback: str = "",
+    *,
+    prompt_profile: str = "default",
+    max_shots: int = 8,
 ) -> str:
+    compact = prompt_profile == _PREVIZ_FAST_PROFILE
     feedback_block = f"\nQA FEEDBACK TO FIX:\n{feedback}\n" if feedback else ""
+    shot_range = f"3 to {max(3, max_shots)}"
+    compact_guidance = (
+        "- Keep coverage_strategy fields concise and operator-readable.\n"
+        "- Keep shot rationale and edit_intent to one short sentence.\n"
+        "- Leave alternatives_considered empty unless a tradeoff materially changes coverage.\n"
+        "- Cap coverage_patterns at 4 short items.\n"
+    ) if compact else ""
+    scene_script = (
+        _compact_text(scene_context.scene_text, max_chars=_COMPACT_SCENE_SCRIPT_CHARS)
+        if compact
+        else scene_context.scene_text
+    )
     return (
         f"{_SHOT_PLANNER_PERSONA}\n\n"
         "Return JSON only matching the provided schema.\n"
         "Hard requirements:\n"
         "- Populate EVERY required field in coverage_strategy and in every shot.\n"
-        "- Create 3 to 8 shots only.\n"
+        f"- Create {shot_range} shots only.\n"
         "- Use concrete, cuttable coverage patterns.\n"
         "- Do not invent characters, props, or events not supported by the scene.\n"
         "- Before responding, verify every required field is present and non-empty.\n"
+        f"{compact_guidance}"
         f"{feedback_block}\n"
         f"SCENE ID: {scene_context.scene_entry['scene_id']}\n"
         f"SCENE HEADING: {scene_context.scene_entry.get('heading', 'Unknown')}\n\n"
-        f"{_intent_block(scene_context.intent_mood)}"
-        f"RHYTHM & FLOW:\n{_format_payload(scene_context.rhythm_and_flow)}\n\n"
-        f"LOOK & FEEL:\n{_format_payload(scene_context.look_and_feel)}\n\n"
-        f"SOUND & MUSIC:\n{_format_payload(scene_context.sound_and_music)}\n\n"
-        f"CHARACTER CONTEXT:\n{_character_context(scene_context)}\n\n"
-        f"CONTINUITY STATES:\n{_continuity_context(scene_context)}\n\n"
-        f"SCENE SCRIPT:\n{scene_context.scene_text}\n"
+        f"{_intent_block(scene_context.intent_mood, compact=compact)}"
+        f"RHYTHM & FLOW:\n{_format_payload(scene_context.rhythm_and_flow, compact=compact)}\n\n"
+        f"LOOK & FEEL:\n{_format_payload(scene_context.look_and_feel, compact=compact)}\n\n"
+        f"SOUND & MUSIC:\n{_format_payload(scene_context.sound_and_music, compact=compact)}\n\n"
+        f"CHARACTER CONTEXT:\n{_character_context(scene_context, compact=compact)}\n\n"
+        f"CONTINUITY STATES:\n{_continuity_context(scene_context, compact=compact)}\n\n"
+        f"SCENE SCRIPT:\n{scene_script}\n"
     )
 
 
@@ -884,7 +924,7 @@ def _scene_character_names(scene_entry: dict[str, Any]) -> list[str]:
     return [str(name) for name in names if isinstance(name, str)]
 
 
-def _character_context(scene_context: _ScenePlanningContext) -> str:
+def _character_context(scene_context: _ScenePlanningContext, *, compact: bool = False) -> str:
     if not scene_context.character_bibles and not scene_context.character_performance:
         return "No character bible or performance notes available."
     lines: list[str] = []
@@ -906,29 +946,41 @@ def _character_context(scene_context: _ScenePlanningContext) -> str:
             f"subtext={perf.get('subtext', 'n/a')}; "
             f"blocking={perf.get('blocking_notes', 'n/a')}"
         )
+    if compact:
+        lines = [_compact_text(line, max_chars=_COMPACT_VALUE_CHARS) for line in lines[:4]]
     return "\n".join(lines)
 
 
-def _continuity_context(scene_context: _ScenePlanningContext) -> str:
+def _continuity_context(scene_context: _ScenePlanningContext, *, compact: bool = False) -> str:
     if not scene_context.continuity_states:
         return "No continuity states available."
     lines: list[str] = []
-    for ref, state in scene_context.continuity_states:
+    states = (
+        scene_context.continuity_states[:_COMPACT_LIST_ITEMS]
+        if compact
+        else scene_context.continuity_states
+    )
+    for ref, state in states:
         properties = ", ".join(
-            f"{prop.key}={prop.value}" for prop in state.properties[:4]
+            f"{prop.key}={prop.value}" for prop in state.properties[: (2 if compact else 4)]
         ) or "no explicit properties"
         lines.append(
             f"- {state.entity_type}:{state.entity_id} [{ref.entity_id}] -> {properties}"
         )
+    if compact:
+        lines = [_compact_text(line, max_chars=_COMPACT_VALUE_CHARS) for line in lines]
     return "\n".join(lines)
 
 
-def _intent_block(intent_mood: dict[str, Any] | None) -> str:
+def _intent_block(intent_mood: dict[str, Any] | None, *, compact: bool = False) -> str:
     if not intent_mood:
         return ""
-    moods = ", ".join(intent_mood.get("mood_descriptors", [])[:6])
-    refs = ", ".join(intent_mood.get("reference_films", [])[:4])
-    intent = intent_mood.get("natural_language_intent", "")
+    moods = ", ".join(intent_mood.get("mood_descriptors", [])[: (4 if compact else 6)])
+    refs = ", ".join(intent_mood.get("reference_films", [])[: (2 if compact else 4)])
+    intent = _compact_text(
+        intent_mood.get("natural_language_intent", ""),
+        max_chars=_COMPACT_VALUE_CHARS,
+    ) if compact else intent_mood.get("natural_language_intent", "")
     return (
         "INTENT & MOOD:\n"
         f"Moods: {moods or 'n/a'}\n"
@@ -937,18 +989,64 @@ def _intent_block(intent_mood: dict[str, Any] | None) -> str:
     )
 
 
-def _format_payload(payload: dict[str, Any]) -> str:
+def _format_payload(payload: dict[str, Any], *, compact: bool = False) -> str:
     lines = []
-    for key, value in payload.items():
+    items = list(payload.items())
+    if compact:
+        items = items[:5]
+    for key, value in items:
         if value in (None, "", [], {}):
             continue
         label = key.replace("_", " ")
-        if isinstance(value, list):
-            rendered = ", ".join(str(item) for item in value)
-        else:
-            rendered = str(value)
+        rendered = _render_prompt_value(value, compact=compact)
         lines.append(f"- {label}: {rendered}")
     return "\n".join(lines) or "- No explicit direction."
+
+
+def _render_prompt_value(value: Any, *, compact: bool) -> str:
+    if isinstance(value, list):
+        rendered_items: list[str] = []
+        limit = _COMPACT_LIST_ITEMS if compact else len(value)
+        for item in value[:limit]:
+            if isinstance(item, dict):
+                rendered_items.append(
+                    str(
+                        item.get("motif_name")
+                        or item.get("description")
+                        or item.get("entity_id")
+                        or item
+                    )
+                )
+            else:
+                rendered_items.append(str(item))
+        rendered = ", ".join(
+            _compact_text(item, max_chars=80 if compact else 180)
+            for item in rendered_items
+            if item.strip()
+        )
+        if compact and len(value) > limit:
+            rendered = f"{rendered}, ..."
+        return rendered
+    if isinstance(value, dict):
+        pieces = []
+        for key, item in list(value.items())[: (_COMPACT_LIST_ITEMS if compact else len(value))]:
+            if item in (None, "", [], {}):
+                continue
+            pieces.append(
+                f"{key}={_compact_text(str(item), max_chars=60 if compact else 140)}"
+            )
+        return ", ".join(pieces)
+    return _compact_text(str(value), max_chars=_COMPACT_VALUE_CHARS if compact else 2000)
+
+
+def _compact_text(value: str, *, max_chars: int) -> str:
+    normalized = " ".join(value.split())
+    if len(normalized) <= max_chars:
+        return normalized
+    clipped = normalized[: max_chars - 3].rstrip()
+    if " " in clipped:
+        clipped = clipped.rsplit(" ", 1)[0]
+    return f"{clipped}..."
 
 
 def _summary_text(payload: dict[str, Any]) -> str:

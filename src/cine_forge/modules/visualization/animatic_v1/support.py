@@ -100,13 +100,14 @@ def audio_references_for_scene(
 
     if isinstance(sound_and_music_data, dict):
         for rel_path in sound_and_music_data.get("reference_audio_assets") or []:
-            if isinstance(rel_path, str) and rel_path.strip():
+            project_relative_path = _existing_project_audio_path(project_dir, rel_path)
+            if project_relative_path is not None:
                 audio_refs.append(
                     AudioReference(
-                        relative_path=rel_path,
+                        relative_path=project_relative_path,
                         media_type="audio/wav",
                         source_kind="sound_and_music",
-                        label=Path(rel_path).name,
+                        label=Path(project_relative_path).name,
                     )
                 )
 
@@ -118,6 +119,18 @@ def audio_references_for_scene(
         seen.add(item.relative_path)
         deduped.append(item)
     return deduped
+
+
+def _existing_project_audio_path(project_dir: Path, raw_path: Any) -> str | None:
+    if not isinstance(raw_path, str):
+        return None
+    text = raw_path.strip()
+    if not text:
+        return None
+    candidate = project_dir / text
+    if not candidate.exists() or not candidate.is_file():
+        return None
+    return str(candidate.relative_to(project_dir))
 
 
 def choose_primary_audio(audio_refs: list[AudioReference]) -> AudioReference | None:

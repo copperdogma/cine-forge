@@ -49,7 +49,7 @@ export function parsePreviewProvenance(value: unknown): PreviewProvenanceView | 
 export function formatPreviewMode(mode: string | null): string | null {
   switch (mode) {
     case 'annotated_symbolic':
-      return 'Annotated symbolic'
+      return 'Fast previz'
     case 'symbolic':
       return 'Symbolic'
     case 'ai_previz':
@@ -65,6 +65,8 @@ export function formatPreviewMode(mode: string | null): string | null {
 
 export function formatConsistencyStrategy(value: string | null): string | null {
   switch (value) {
+    case 'deterministic':
+      return 'Deterministic'
     case 'prompt_only':
       return 'Prompt-only consistency'
     case 'optional_references':

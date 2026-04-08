@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
-from cine_forge.schemas import ArtifactRef
+from cine_forge.schemas import ArtifactHealth, ArtifactRef
 from cine_forge.schemas.scene_scope import (
     SceneActionPreflight,
     SceneActionPreflightItem,
@@ -196,6 +196,13 @@ def build_scene_action_preflight(
             recipe_id=recipe_id,
             scene_ids=scene_ids,
         )
+        if start_from is None and _can_reuse_generation_stage(
+            preflight=preflight,
+            store=store,
+            recipe_id=recipe_id,
+            scene_ids=scene_ids,
+        ):
+            preflight.start_from = _recommended_generation_start_stage(recipe_id)
 
     if any(item.kind == "soft_block" for item in preflight.items):
         preflight.status = "soft_block"
@@ -280,19 +287,19 @@ def _populate_generation_preflight(
     recipe_id: str,
     scene_ids: list[str],
 ) -> None:
-    if not _has_project_artifact(store, "timeline"):
+    if not _has_healthy_project_artifact(store, "timeline"):
         preflight.items.append(SceneActionPreflightItem(
             kind="auto_build",
             label="Timeline",
             detail="This run will build the project timeline first.",
         ))
-    if not _has_project_artifact(store, "track_manifest"):
+    if not _has_healthy_project_artifact(store, "track_manifest"):
         preflight.items.append(SceneActionPreflightItem(
             kind="auto_build",
             label="Track manifest",
             detail="This run will register baseline track rows before generating scene outputs.",
         ))
-    if not _has_project_artifact(store, "continuity_index"):
+    if not _has_healthy_project_artifact(store, "continuity_index"):
         preflight.items.append(SceneActionPreflightItem(
             kind="warning",
             label="Continuity tracking missing",
@@ -308,7 +315,7 @@ def _populate_generation_preflight(
         "ai_previz_generation",
         "render_generation",
     }:
-        missing_shot_plan = _missing_scene_artifact_count(
+        missing_shot_plan = _missing_or_unhealthy_scene_artifact_count(
             store,
             "shot_plan",
             scene_ids,
@@ -327,7 +334,7 @@ def _populate_generation_preflight(
             ))
 
     if recipe_id == "animatics_generation":
-        missing_storyboards = _missing_scene_artifact_count(
+        missing_storyboards = _missing_or_unhealthy_scene_artifact_count(
             store,
             "storyboard",
             scene_ids,
@@ -353,7 +360,7 @@ def _populate_generation_preflight(
         "render_generation",
     }:
         for artifact_type, label in _OPTIONAL_DIRECTION_ARTIFACTS:
-            missing = _missing_scene_artifact_count(
+            missing = _missing_or_unhealthy_scene_artifact_count(
                 store,
                 artifact_type,
                 scene_ids,
@@ -381,7 +388,7 @@ def _populate_generation_preflight(
             ))
 
     if recipe_id == "render_generation":
-        missing_keyframes = _missing_scene_artifact_count(
+        missing_keyframes = _missing_or_unhealthy_scene_artifact_count(
             store,
             "keyframe",
             scene_ids,
@@ -416,6 +423,13 @@ def _has_project_artifact(store: ArtifactStore, artifact_type: str) -> bool:
     return bool(store.list_versions(artifact_type=artifact_type, entity_id="project"))
 
 
+def _has_healthy_project_artifact(store: ArtifactStore, artifact_type: str) -> bool:
+    versions = store.list_versions(artifact_type=artifact_type, entity_id="project")
+    if not versions:
+        return False
+    return _ref_is_healthy(store, versions[-1])
+
+
 def _target_scene_ids(store: ArtifactStore, scene_scope: SceneExecutionScope) -> list[str]:
     if scene_scope.is_scene_scoped:
         available = set(store.list_entities("scene"))
@@ -423,7 +437,7 @@ def _target_scene_ids(store: ArtifactStore, scene_scope: SceneExecutionScope) ->
     return sorted(store.list_entities("scene"))
 
 
-def _missing_scene_artifact_count(
+def _missing_or_unhealthy_scene_artifact_count(
     store: ArtifactStore,
     artifact_type: str,
     scene_ids: list[str],
@@ -436,10 +450,48 @@ def _missing_scene_artifact_count(
     )
     if not target_scene_ids:
         return 0
-    return sum(
-        1 for scene_id in target_scene_ids
-        if not store.list_versions(artifact_type=artifact_type, entity_id=scene_id)
+    missing = 0
+    for scene_id in target_scene_ids:
+        versions = store.list_versions(artifact_type=artifact_type, entity_id=scene_id)
+        if not versions or not _ref_is_healthy(store, versions[-1]):
+            missing += 1
+    return missing
+
+
+def _ref_is_healthy(store: ArtifactStore, artifact_ref: ArtifactRef) -> bool:
+    try:
+        health = store.load_artifact(artifact_ref).metadata.health
+    except Exception:
+        health = store.graph.get_health(artifact_ref)
+    return health in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}
+
+
+def _can_reuse_generation_stage(
+    *,
+    preflight: SceneActionPreflight,
+    store: ArtifactStore,
+    recipe_id: str,
+    scene_ids: list[str],
+) -> bool:
+    if recipe_id != "ai_previz_generation":
+        return False
+    if not _has_healthy_project_artifact(store, "track_manifest"):
+        return False
+    return (
+        _missing_or_unhealthy_scene_artifact_count(
+            store,
+            "shot_plan",
+            scene_ids,
+            preflight.scene_scope,
+        )
+        == 0
     )
+
+
+def _recommended_generation_start_stage(recipe_id: str) -> str | None:
+    if recipe_id == "ai_previz_generation":
+        return "ai_previz"
+    return None
 
 
 def _scope_label(scene_scope: SceneExecutionScope) -> str:

@@ -17,6 +17,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCORERS_ROOT = REPO_ROOT / "benchmarks" / "scorers"
 DATASET_ROOT = REPO_ROOT / "benchmarks" / "previz_usefulness"
+FAST_PREVIZ_BUDGET_MS = 6_000
 if str(SCORERS_ROOT) not in sys.path:
     sys.path.insert(0, str(SCORERS_ROOT))
 
@@ -49,6 +50,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--result-file", action="append", required=True, type=Path)
     parser.add_argument("--output-prefix", type=Path)
+    parser.add_argument("--dataset-root", type=Path, default=DATASET_ROOT)
     args = parser.parse_args()
 
     result_files = [path.resolve() for path in args.result_file]
@@ -62,7 +64,7 @@ def main() -> None:
     for result_file in result_files:
         data = json.loads(result_file.read_text())
         results.extend(data.get("results", {}).get("results", []))
-    summary = build_summary(results)
+    summary = build_summary(results, dataset_root=args.dataset_root.resolve())
 
     json_path = output_prefix.with_name(output_prefix.name + "-report.json")
     md_path = output_prefix.with_name(output_prefix.name + "-report.md")
@@ -72,7 +74,8 @@ def main() -> None:
     print(md_path)
 
 
-def build_summary(results: list[dict]) -> dict:
+def build_summary(results: list[dict], dataset_root: Path | None = None) -> dict:
+    dataset_root = dataset_root or DATASET_ROOT
     providers: dict[str, dict[str, Any]] = defaultdict(
         lambda: {
             "python_scores": [],
@@ -85,6 +88,8 @@ def build_summary(results: list[dict]) -> dict:
             "dimension_scores": defaultdict(list),
             "calls": 0,
             "variants": set(),
+            "operator_lanes": set(),
+            "latency_budgets": set(),
             "engine_pack_ids": set(),
             "target_models": set(),
             "resolutions": set(),
@@ -104,7 +109,11 @@ def build_summary(results: list[dict]) -> dict:
             response_metadata.get("clip_id") or entry.get("vars", {}).get("clip_id") or ""
         )
         candidate_variant = str(response_metadata.get("candidate_variant") or "")
-        candidate_meta = _load_candidate_meta(candidate_variant=candidate_variant, clip_id=clip_id)
+        candidate_meta = _load_candidate_meta(
+            candidate_variant=candidate_variant,
+            clip_id=clip_id,
+            dataset_root=dataset_root,
+        )
         target_path = _resolve_target_path(entry.get("vars", {}).get("target_path", ""))
 
         python_score = _component_score(entry, "python")
@@ -145,6 +154,8 @@ def build_summary(results: list[dict]) -> dict:
             bucket["generation_costs"].append(candidate_meta["estimated_generation_cost_usd"])
         if candidate_variant:
             bucket["variants"].add(candidate_variant)
+        _maybe_add(bucket["operator_lanes"], candidate_meta.get("operator_lane"))
+        _maybe_add(bucket["latency_budgets"], candidate_meta.get("latency_budget_ms"))
         _maybe_add(bucket["engine_pack_ids"], candidate_meta.get("engine_pack_id"))
         _maybe_add(bucket["target_models"], candidate_meta.get("target_model"))
         _maybe_add(bucket["resolutions"], candidate_meta.get("resolution"))
@@ -159,11 +170,18 @@ def build_summary(results: list[dict]) -> dict:
     rows = []
     for label, bucket in providers.items():
         overall = round(mean(bucket["combined_scores"]), 4)
+        candidate_variant = _single_or_none(bucket["variants"])
+        operator_lane = _single_or_none(bucket["operator_lanes"])
+        latency_budget_ms = _single_or_none(bucket["latency_budgets"])
+        generation_latency_ms = (
+            round(mean(bucket["generation_latencies"])) if bucket["generation_latencies"] else None
+        )
         rows.append(
             {
                 "candidate": label,
-                "candidate_variant": _single_or_none(bucket["variants"]),
-                "candidate_class": _candidate_class(_single_or_none(bucket["variants"])),
+                "candidate_variant": candidate_variant,
+                "candidate_class": _candidate_class(candidate_variant, operator_lane),
+                "operator_lane": operator_lane,
                 "python_overall": round(mean(bucket["python_scores"]), 4),
                 "rubric_overall": round(mean(bucket["rubric_scores"]), 4)
                 if bucket["rubric_scores"]
@@ -175,12 +193,16 @@ def build_summary(results: list[dict]) -> dict:
                 "analysis_cost_usd": round(mean(bucket["analysis_costs"]), 6)
                 if bucket["analysis_costs"]
                 else None,
-                "generation_latency_ms": round(mean(bucket["generation_latencies"]))
-                if bucket["generation_latencies"]
-                else None,
+                "generation_latency_ms": generation_latency_ms,
                 "generation_cost_usd": round(mean(bucket["generation_costs"]), 4)
                 if bucket["generation_costs"]
                 else None,
+                "latency_budget_ms": latency_budget_ms,
+                "latency_budget_pass": (
+                    generation_latency_ms <= latency_budget_ms
+                    if generation_latency_ms is not None and latency_budget_ms is not None
+                    else None
+                ),
                 "resolution": _single_or_join(bucket["resolutions"]),
                 "duration_seconds": _single_or_join(bucket["durations"]),
                 "engine_pack_id": _single_or_join(bucket["engine_pack_ids"]),
@@ -214,15 +236,21 @@ def render_markdown(summary: dict) -> str:
         summary["recommendation"]["rationale"],
         "",
         (
-            "| Candidate | Overall | Gen Latency | Gen Cost | Resolution | Consistency | "
+            "| Candidate | Lane | Overall | Gen Latency | Budget | Gen Cost | "
+            "Resolution | Consistency | "
             "Analysis Latency | Analysis Cost |"
         ),
-        "|---|---:|---:|---:|---|---|---:|---:|",
+        "|---|---|---:|---:|---:|---:|---|---|---:|---:|",
     ]
     for row in summary["candidates"]:
         generation_latency = (
             f"{row['generation_latency_ms']} ms"
             if row["generation_latency_ms"] is not None
+            else "n/a"
+        )
+        latency_budget = (
+            f"{row['latency_budget_ms']} ms"
+            if row["latency_budget_ms"] is not None
             else "n/a"
         )
         generation_cost = (
@@ -237,7 +265,8 @@ def render_markdown(summary: dict) -> str:
             f"${row['analysis_cost_usd']:.5f}" if row["analysis_cost_usd"] is not None else "n/a"
         )
         lines.append(
-            f"| {row['candidate']} | {row['overall']:.3f} | {generation_latency} | "
+            f"| {row['candidate']} | {row['operator_lane'] or row['candidate_class']} | "
+            f"{row['overall']:.3f} | {generation_latency} | {latency_budget} | "
             f"{generation_cost} | {row['resolution'] or 'n/a'} | "
             f"{row['consistency_strategy'] or 'n/a'} | {analysis_latency} | {analysis_cost} |"
         )
@@ -245,7 +274,9 @@ def render_markdown(summary: dict) -> str:
     lines.extend(["", "## Candidate Notes", ""])
     for row in summary["candidates"]:
         lines.append(f"### {row['candidate']}")
+        lines.append(f"- lane: {row['operator_lane'] or row['candidate_class']}")
         lines.append(f"- variant: {row['candidate_variant'] or 'n/a'}")
+        lines.append(f"- latency budget: {row['latency_budget_ms'] or 'n/a'}")
         lines.append(f"- engine pack: {row['engine_pack_id'] or 'n/a'}")
         lines.append(f"- target model: {row['target_model'] or 'n/a'}")
         lines.append(
@@ -257,25 +288,73 @@ def render_markdown(summary: dict) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _recommend(rows: list[dict[str, Any]]) -> dict[str, str]:
+def _recommend(rows: list[dict[str, Any]]) -> dict[str, str | None]:
     if not rows:
-        return {"decision": "retest", "rationale": "No results were available."}
+        return {
+            "decision": "retest",
+            "default_lane": None,
+            "upgrade_lane": None,
+            "rationale": "No results were available.",
+        }
 
     annotated = next(
-        (row for row in rows if row.get("candidate_variant") == "annotated_symbolic"),
+        (
+            row
+            for row in rows
+            if row.get("candidate_variant") == "annotated_symbolic"
+            or row.get("candidate_class") == "fast_previz"
+        ),
         None,
     )
     ai_rows = [row for row in rows if row.get("candidate_class") == "ai_previz"]
+    if annotated is None:
+        return {
+            "decision": "retest",
+            "default_lane": None,
+            "upgrade_lane": None,
+            "rationale": (
+                "Fast Previz is missing from the dataset, so the default-lane policy cannot "
+                "be verified."
+            ),
+        }
+    if annotated["generation_latency_ms"] is None:
+        return {
+            "decision": "retest",
+            "default_lane": annotated["candidate"],
+            "upgrade_lane": None,
+            "rationale": (
+                "Fast Previz is missing a measured generation latency. Re-run the "
+                "deterministic dataset first."
+            ),
+        }
+    if annotated["generation_latency_ms"] > FAST_PREVIZ_BUDGET_MS:
+        return {
+            "decision": "block",
+            "default_lane": annotated["candidate"],
+            "upgrade_lane": None,
+            "rationale": (
+                f"Fast Previz measured {annotated['generation_latency_ms']} ms, above the "
+                f"{FAST_PREVIZ_BUDGET_MS} ms quick-loop budget. Fix the deterministic lane before "
+                "treating previz as interactive."
+            ),
+        }
     if not ai_rows:
         return {
-            "decision": "hold",
-            "rationale": "Only deterministic baseline candidates were present in the dataset.",
+            "decision": "keep_fast_default",
+            "default_lane": annotated["candidate"],
+            "upgrade_lane": None,
+            "rationale": (
+                f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside "
+                f"the {FAST_PREVIZ_BUDGET_MS} ms budget. No AI upgrade candidates were present."
+            ),
         }
 
     best_ai = max(ai_rows, key=lambda item: item["overall"])
     if best_ai["calls"] < 3:
         return {
             "decision": "retest",
+            "default_lane": annotated["candidate"],
+            "upgrade_lane": best_ai["candidate"],
             "rationale": (
                 "AI candidate coverage is incomplete. Run all selected scene packets "
                 "before making a default recommendation."
@@ -283,53 +362,68 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str]:
         }
     if best_ai["overall"] < 0.75:
         return {
-            "decision": "hold",
+            "decision": "keep_fast_default",
+            "default_lane": annotated["candidate"],
+            "upgrade_lane": None,
             "rationale": (
-                f"{best_ai['candidate']} is the best AI lane at {best_ai['overall']:.3f}, "
-                "but it still misses the first usefulness floor for camera/blocking readability."
+                f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside "
+                f"the {FAST_PREVIZ_BUDGET_MS} ms budget. {best_ai['candidate']} is the best AI "
+                f"lane at {best_ai['overall']:.3f}, but it still misses the first usefulness floor "
+                "for camera/blocking readability."
             ),
         }
-    if annotated is not None and best_ai["overall"] - annotated["overall"] < 0.03:
+    if (
+        best_ai["generation_cost_usd"] is not None
+        and best_ai["generation_latency_ms"] is not None
+        and best_ai["generation_latency_ms"] <= FAST_PREVIZ_BUDGET_MS
+        and best_ai["overall"] - annotated["overall"] >= 0.03
+    ):
         return {
-            "decision": "hold",
+            "decision": "promote_ai_default",
+            "default_lane": best_ai["candidate"],
+            "upgrade_lane": annotated["candidate"],
             "rationale": (
-                f"{best_ai['candidate']} is the best AI lane at {best_ai['overall']:.3f}, "
-                f"but Annotated Animatic still leads or remains within the noise band at "
-                f"{annotated['overall']:.3f}. Keep the deterministic default."
-            ),
-        }
-    if best_ai["generation_cost_usd"] is None:
-        return {
-            "decision": "hold",
-            "rationale": (
-                f"{best_ai['candidate']} cleared the quality bar, but generation cost could "
-                "not be verified from the candidate metadata. Keep the deterministic default "
-                "until cost evidence is available."
+                f"{best_ai['candidate']} beat Fast Previz by at least 0.03 overall and still "
+                f"measured {best_ai['generation_latency_ms']} ms, inside the "
+                f"{FAST_PREVIZ_BUDGET_MS} ms quick-loop budget. It can replace the deterministic "
+                "default."
             ),
         }
     if best_ai["generation_latency_ms"] is not None and best_ai["generation_latency_ms"] > 180000:
         return {
-            "decision": "hold",
+            "decision": "keep_fast_default",
+            "default_lane": annotated["candidate"],
+            "upgrade_lane": None,
             "rationale": (
-                f"{best_ai['candidate']} cleared the quality bar but averaged "
-                f"{best_ai['generation_latency_ms']} ms generation latency, which is outside the "
-                "current fast-previz envelope."
+                f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside "
+                f"the {FAST_PREVIZ_BUDGET_MS} ms budget. {best_ai['candidate']} clears the quality "
+                f"bar but averages {best_ai['generation_latency_ms']} ms generation latency, which "
+                "is outside the optional AI-previz envelope."
             ),
         }
     return {
-        "decision": "adopt",
+        "decision": "keep_fast_default",
+        "default_lane": annotated["candidate"],
+        "upgrade_lane": best_ai["candidate"],
         "rationale": (
-            f"{best_ai['candidate']} beat the deterministic baseline at {best_ai['overall']:.3f} "
-            f"overall while staying at {best_ai['resolution'] or 'the tested'} low-cost "
-            "settings. It is the strongest candidate for AI previz adoption."
+            f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside the "
+            f"{FAST_PREVIZ_BUDGET_MS} ms budget, so it should remain the default quick loop. "
+            f"{best_ai['candidate']} is the strongest slower AI upgrade at "
+            f"{best_ai['overall']:.3f} overall and "
+            f"{best_ai['generation_latency_ms']} ms generation latency."
         ),
     }
 
 
-def _load_candidate_meta(*, candidate_variant: str, clip_id: str) -> dict[str, Any]:
+def _load_candidate_meta(
+    *,
+    candidate_variant: str,
+    clip_id: str,
+    dataset_root: Path,
+) -> dict[str, Any]:
     if not candidate_variant or not clip_id:
         return {}
-    meta_path = DATASET_ROOT / candidate_variant / clip_id / "meta.json"
+    meta_path = dataset_root / candidate_variant / clip_id / "meta.json"
     if not meta_path.exists():
         return {}
     try:
@@ -339,7 +433,9 @@ def _load_candidate_meta(*, candidate_variant: str, clip_id: str) -> dict[str, A
     return payload if isinstance(payload, dict) else {}
 
 
-def _candidate_class(candidate_variant: str | None) -> str:
+def _candidate_class(candidate_variant: str | None, operator_lane: str | None) -> str:
+    if operator_lane == "fast_previz":
+        return "fast_previz"
     if candidate_variant in _AI_VARIANTS:
         return "ai_previz"
     return "baseline"

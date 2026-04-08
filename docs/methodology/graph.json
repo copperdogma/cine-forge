@@ -609,13 +609,18 @@
           "142",
           "144",
           "148",
-          "149"
+          "149",
+          "150",
+          "151",
+          "152"
         ],
         "adrIds": [
           "ADR-002",
           "ADR-003"
         ],
         "evalIds": [
+          "previz-usefulness",
+          "real-ai-previz-runtime",
           "runtime-media-validation"
         ]
       },
@@ -710,7 +715,10 @@
           "143",
           "144",
           "148",
-          "149"
+          "149",
+          "150",
+          "151",
+          "152"
         ],
         "adrIds": [
           "ADR-002",
@@ -718,6 +726,7 @@
         ],
         "evalIds": [
           "previz-usefulness",
+          "real-ai-previz-runtime",
           "runtime-media-validation"
         ]
       },
@@ -778,7 +787,10 @@
           "143",
           "144",
           "148",
-          "149"
+          "149",
+          "150",
+          "151",
+          "152"
         ],
         "adrIds": [
           "ADR-002",
@@ -786,6 +798,7 @@
         ],
         "evalIds": [
           "previz-usefulness",
+          "real-ai-previz-runtime",
           "runtime-media-validation",
           "video-understanding"
         ]
@@ -991,13 +1004,17 @@
           "143",
           "144",
           "148",
-          "149"
+          "149",
+          "150",
+          "151",
+          "152"
         ],
         "adrIds": [
           "ADR-003"
         ],
         "evalIds": [
           "previz-usefulness",
+          "real-ai-previz-runtime",
           "runtime-media-validation"
         ]
       },
@@ -6035,7 +6052,7 @@
       "id": "149",
       "title": "Fast Previz Lane and Latency Budget",
       "path": "docs/stories/story-149-previz-fast-lane-and-latency-budget.md",
-      "status": "Draft",
+      "status": "Blocked",
       "priority": "High",
       "idealRefs": [
         "R10 (playable assembly at every stage)",
@@ -6078,6 +6095,162 @@
         "latency",
         "previz",
         "quick-path"
+      ],
+      "legacySystem": "",
+      "blockerSummary": "Representative previz verification is honest again, but Story 149 is now blocked on real runtime. The seeded-fixture problem is resolved, the animatic audio-path failure is fixed, and a fresh API-driven project can produce both deterministic and AI-previz artifacts through the normal pipeline. The blocker is that the fastest honest AI-previz path is still about `299s` end to end for a single scene, with `shot_planning` alone taking `230.3s` even after pinning the previz recipes to a faster Haiku planning model. That remains far outside the intended generate -> react -> refine loop.",
+      "blockerEvidence": "- Fresh representative project: `story-149-real-ui-rerun`, created via `/api/projects/new` with the same single-scene screenplay uploaded through `/api/projects/{id}/inputs/upload`.\n- Honest prerequisite chain completed on the fresh project: `mvp_ingest` finished in `17.9s` (`run-b68ec8ca`) and `creative_direction` finished in `101.9s` (`run-219959ad`).\n- Fresh scene-scoped AI-previz run: `run-6305b0b5` completed successfully through the normal API path for `scene_001`. Measured breakdown: `shot_planning=230.3s` on `claude-haiku-4-5-20251001`, `ai_previz=63.3s`, `validate_media=5.2s`, `total=299.0s`, `total_cost_usd=0.0643432`.\n- The previz recipe routing fix materially improved the upstream planner cost but did not solve the product gap: the earlier honest baseline `story149-real-animatic` spent `455.2s` in `shot_planning`, so the Haiku-pinned rerun cut that stage roughly in half while still leaving the path too slow for interactive use.\n- The animatic failure itself is fixed: retry run `story149-real-animatic-retry-ccad` completed through the normal failed-stage path in `62.5s` total (`animatics=61.7s`, `keyframes=0.8s`) and wrote a valid `animatic` artifact whose `audio_refs` list is now empty instead of containing a bogus descriptive filesystem path.\n- Story 150's first runtime pilot (`benchmarks/results/real-ai-previz-runtime-story-150-pilot-2026-04-08.json`) reinforced the blocker instead of clearing it: the best honest scene-ready AI-previz case was the shipped Lite 8-second lane at `270922 ms` total, the 4-second Fast scene-ready variant was worse at `353687 ms`, and even the ingest-only Fast control still needed `124929 ms`.\n- Story 151's compact shot-planning rerun (`benchmarks/results/real-ai-previz-runtime-story-151-compact-pilot-2026-04-08.json`) materially improved the substrate without unblocking the product: shipped Lite scene-ready fell to `153528 ms`, Fast 4 scene-ready fell to `182138 ms`, and shipped Lite `shot_planning` itself fell from `109.3s` to `25.4s`. That is a real gain, but it still leaves the path far outside the intended quick-loop budget.",
+      "unblockCondition": "Unblock this story only when one of these is true:\n\n- a fastest-real-AI-previz eval identifies a materially faster reachable lane, settings profile, or caching strategy that lowers time to first `ai_previz_video` enough to support interactive review, or\n- the shared previz substrate is redesigned so `shot_planning` no longer dominates the critical path for scene-scoped previz runs.\n\nRepresentative browser verification can now use the honest API-driven project routes, but the story should not return to `In Progress` until the runtime blocker above has a credible fix path.",
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "150",
+      "title": "Fastest Real AI Previz Runtime Eval",
+      "path": "docs/stories/story-150-fastest-real-ai-previz-runtime-eval.md",
+      "status": "In Progress",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R17 (real-world and partial-workflow inputs)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "143",
+        "144",
+        "148",
+        "149"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "eval",
+        "previz",
+        "runtime"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "151",
+      "title": "Previz Shot Planning Compact Mode",
+      "path": "docs/stories/story-151-previz-shot-planning-compact-mode.md",
+      "status": "In Progress",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R17 (real-world and partial-workflow inputs)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "149",
+        "150"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "previz",
+        "runtime",
+        "substrate"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "152",
+      "title": "Previz AI Regenerate Reuse Path",
+      "path": "docs/stories/story-152-previz-ai-regenerate-reuse-path.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "149",
+        "150",
+        "151"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "previz",
+        "runtime",
+        "substrate"
       ],
       "legacySystem": "",
       "blockerSummary": null,
@@ -6373,10 +6546,12 @@
         "027",
         "030",
         "137",
-        "143"
+        "143",
+        "149"
       ],
       "compromiseIds": [],
       "categoryRefs": [
+        "spec:5",
         "spec:6",
         "spec:7",
         "spec:8",
@@ -6405,6 +6580,27 @@
       "storyIds": [],
       "compromiseIds": [],
       "categoryRefs": []
+    },
+    {
+      "id": "real-ai-previz-runtime",
+      "name": "Real AI Previz Runtime",
+      "type": "quality",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-pilot",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [],
+      "storyIds": [
+        "149",
+        "150",
+        "151",
+        "152"
+      ],
+      "compromiseIds": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ]
     },
     {
       "id": "relationship-discovery",

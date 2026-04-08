@@ -1,0 +1,56 @@
+{
+  "eval_id": "real-ai-previz-runtime",
+  "measured_at": "2026-04-08T19:13:49Z",
+  "story_id": "152",
+  "comparison_type": "mechanical_regenerate_reuse",
+  "baseline_project": "output/eval-real-ai-previz-fast_4_mvp_ingest_only-fe36ed",
+  "cases": [
+    {
+      "case_id": "full_regen_force_true",
+      "label": "Full AI-previz regeneration",
+      "project_dir": "output/tmp/previz-regen-baseline-full",
+      "run_id": "story152-regen-full-baseline",
+      "recipe_id": "ai_previz_generation",
+      "start_from": null,
+      "elapsed_ms": 81545,
+      "stage_order": [
+        "timeline",
+        "tracks",
+        "shot_planning",
+        "ai_previz",
+        "validate_media"
+      ],
+      "stage_durations_ms": {
+        "timeline": 5,
+        "tracks": 4,
+        "shot_planning": 20964,
+        "ai_previz": 53838,
+        "validate_media": 6704
+      }
+    },
+    {
+      "case_id": "regen_reuse_start_at_ai_previz",
+      "label": "AI-previz regeneration reusing planning",
+      "project_dir": "output/tmp/previz-regen-baseline-start",
+      "run_id": "story152-regen-start-baseline",
+      "recipe_id": "ai_previz_generation",
+      "start_from": "ai_previz",
+      "elapsed_ms": 75337,
+      "stage_order": [
+        "ai_previz",
+        "validate_media"
+      ],
+      "stage_durations_ms": {
+        "ai_previz": 53618,
+        "validate_media": 21693
+      }
+    }
+  ],
+  "summary": {
+    "full_regen_elapsed_ms": 81545,
+    "reuse_regen_elapsed_ms": 75337,
+    "delta_ms": 6208,
+    "shot_planning_removed_ms": 20964,
+    "note": "The reuse path removed shot_planning entirely, but the sampled wall-clock win was only 6208 ms because validate_media was noisier on the sliced run."
+  }
+}

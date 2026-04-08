@@ -18,7 +18,8 @@ from cine_forge.schemas import (
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 _DEFAULT_MARGIN = 0.03
 _QUALITY_FLOOR = 0.75
-_LATENCY_LIMIT_MS = 180_000
+_FAST_PREVIZ_BUDGET_MS = 6_000
+_AI_OPTIONAL_LATENCY_LIMIT_MS = 180_000
 _ANNOTATED_LABEL = "Annotated Animatic"
 _CANDIDATE_LABELS = {
     "google_veo31": "Veo 3.1 Previz",
@@ -63,6 +64,7 @@ class PrevizAdoptionService:
         cost = self._cost_evidence(params=params, engine_pack=engine_pack)
         overall_score = self._overall_score(score_entry)
         baseline_score = self._overall_score(baseline_entry)
+        baseline_latency_ms = self._latency_ms(baseline_entry)
         margin = (
             round(overall_score - baseline_score, 4)
             if overall_score is not None and baseline_score is not None
@@ -70,30 +72,92 @@ class PrevizAdoptionService:
         )
         default_lane = "annotated_animatic"
         adoption_state = "experimental_manual"
+        latency_ms = self._latency_ms(score_entry)
         if overall_score is not None:
             beats_baseline = baseline_score is None or overall_score > baseline_score
-            if not blockers and beats_baseline and overall_score >= _QUALITY_FLOOR:
+            can_replace_fast_lane = (
+                latency_ms is not None and latency_ms <= _FAST_PREVIZ_BUDGET_MS
+            )
+            if (
+                not blockers
+                and beats_baseline
+                and overall_score >= _QUALITY_FLOOR
+                and can_replace_fast_lane
+            ):
                 default_lane = "ai_previz"
                 adoption_state = "default"
             elif beats_baseline and overall_score >= _QUALITY_FLOOR:
                 adoption_state = "recommended_optional"
 
-        lane = PrevizLaneStatus(
+        fast_lane = PrevizLaneStatus(
+            lane_id="annotated_animatic",
+            label="Fast Previz",
+            candidate_label=_ANNOTATED_LABEL,
+            latency_class="fast",
+            adoption_state=(
+                "default"
+                if default_lane == "annotated_animatic"
+                else "recommended_optional"
+            ),
+            reason=self._fast_lane_reason(
+                default_lane=default_lane,
+                baseline_entry=baseline_entry,
+            ),
+            intended_use=(
+                "Immediate camera, blocking, pacing, and location-readability review in the "
+                "core generate -> react -> refine loop."
+            ),
+            fidelity_disclosure=(
+                "Deterministic annotated animatic for planning, not final render quality."
+            ),
+            blocker_reasons=self._fast_lane_blockers(baseline_entry),
+            overall_score=baseline_score,
+            measured_at=self._measured_at(baseline_entry),
+            latency_ms=baseline_latency_ms,
+            latency_budget_ms=_FAST_PREVIZ_BUDGET_MS,
+            consistency_strategy="deterministic",
+            cost=PrevizCostEvidence(
+                status="verified",
+                estimated_cost_usd=0.0,
+                reason=(
+                    "Deterministic fast-previz baseline generated locally without "
+                    "provider cost."
+                ),
+            ),
+            validation_stage_enabled=True,
+            upgrade_lane_id="ai_previz",
+            upgrade_label="Generate AI Previz",
+            upgrade_description=(
+                "Use AI Previz after Fast Previz when you want a generated motion pass and are "
+                "willing to trade latency, cost, and determinism for a low-fidelity clip."
+            ),
+        )
+        ai_lane = PrevizLaneStatus(
             lane_id="ai_previz",
             label="AI Previz",
             candidate_label=_CANDIDATE_LABELS.get(engine_pack_id),
+            latency_class="slow",
             adoption_state=adoption_state,
             reason=self._reason_for(
                 adoption_state=adoption_state,
                 engine_pack=engine_pack,
                 blockers=blockers,
+                latency_ms=latency_ms,
+            ),
+            intended_use=(
+                "Optional generated motion pass after Fast Previz when you want another take on "
+                "movement and staging before committing to final renders."
+            ),
+            fidelity_disclosure=(
+                "Low-fidelity AI planning clip. Slower than Fast Previz and explicitly non-final."
             ),
             blocker_reasons=blockers,
             overall_score=overall_score,
             baseline_score=baseline_score,
             score_margin=margin,
             measured_at=self._measured_at(score_entry),
-            latency_ms=self._latency_ms(score_entry),
+            latency_ms=latency_ms,
+            latency_budget_ms=_AI_OPTIONAL_LATENCY_LIMIT_MS,
             engine_pack_id=engine_pack.pack_id,
             target_model=engine_pack.target_model,
             resolution=self._resolution(params=params, engine_pack=engine_pack),
@@ -101,8 +165,24 @@ class PrevizAdoptionService:
             consistency_strategy=self._consistency_strategy(params=params),
             cost=cost,
             validation_stage_enabled=self._validation_stage_enabled(recipe),
+            upgrade_lane_id="annotated_animatic" if default_lane == "ai_previz" else None,
+            upgrade_label="Generate Fast Previz" if default_lane == "ai_previz" else None,
+            upgrade_description=(
+                "Fast Previz remains the quicker, cheaper, more deterministic planning lane."
+                if default_lane == "ai_previz"
+                else None
+            ),
         )
-        return PrevizAdoptionStatus(default_lane=default_lane, ai_previz=lane)
+        return PrevizAdoptionStatus(
+            default_lane=default_lane,
+            policy_summary=self._policy_summary(
+                default_lane=default_lane,
+                ai_lane=ai_lane,
+                fast_lane=fast_lane,
+            ),
+            fast_previz=fast_lane,
+            ai_previz=ai_lane,
+        )
 
     def _blockers_for(
         self,
@@ -141,10 +221,10 @@ class PrevizAdoptionService:
                 )
 
         latency_ms = self._latency_ms(score_entry)
-        if latency_ms is not None and latency_ms > _LATENCY_LIMIT_MS:
+        if latency_ms is not None and latency_ms > _AI_OPTIONAL_LATENCY_LIMIT_MS:
             blockers.append(
                 f"Measured AI previz latency is {latency_ms} ms, above the "
-                f"{_LATENCY_LIMIT_MS} ms fast-previz envelope."
+                f"{_AI_OPTIONAL_LATENCY_LIMIT_MS} ms optional-lane envelope."
             )
 
         cost = self._cost_evidence(params=params, engine_pack=engine_pack)
@@ -158,23 +238,110 @@ class PrevizAdoptionService:
         adoption_state: str,
         engine_pack: EnginePack,
         blockers: list[str],
+        latency_ms: int | None,
     ) -> str:
         if adoption_state == "default":
             return (
                 f"{_CANDIDATE_LABELS.get(engine_pack.pack_id, 'AI previz')} currently clears "
-                "the usefulness, latency, and cost gates, so AI previz can be the default lane."
+                "the usefulness, latency, and cost gates, so AI previz can replace Fast Previz "
+                "as the default lane."
             )
         if adoption_state == "recommended_optional":
+            if latency_ms is not None and latency_ms > _FAST_PREVIZ_BUDGET_MS:
+                return (
+                    f"{_CANDIDATE_LABELS.get(engine_pack.pack_id, 'AI previz')} is useful enough "
+                    f"to keep as an optional generated lane, but the latest measured latency is "
+                    f"{latency_ms} ms, outside the {_FAST_PREVIZ_BUDGET_MS} ms Fast Previz "
+                    "budget. Keep Fast Previz as the default and use AI previz only when the "
+                    "extra generated motion pass is worth the slower turnaround."
+                )
             return (
                 f"{_CANDIDATE_LABELS.get(engine_pack.pack_id, 'AI previz')} is strong enough to "
-                "recommend as an optional lane, but the deterministic default should stay in place "
-                "until the remaining blockers clear."
+                "recommend as an optional lane, but Fast Previz should stay in place until the "
+                "remaining blockers clear."
             )
         if blockers:
             return blockers[0]
         return (
             f"{_CANDIDATE_LABELS.get(engine_pack.pack_id, 'AI previz')} remains a manual lane "
-            "until the adoption evidence improves."
+            "until the usefulness, latency, and cost evidence improves."
+        )
+
+    def _fast_lane_blockers(self, entry: dict[str, Any] | None) -> list[str]:
+        blockers: list[str] = []
+        latency_ms = self._latency_ms(entry)
+        if latency_ms is None or latency_ms <= 0:
+            blockers.append(
+                "Fast-previz latency still needs a real measurement; the old 0 ms placeholder is "
+                "not honest enough for the operator budget."
+            )
+        elif latency_ms > _FAST_PREVIZ_BUDGET_MS:
+            blockers.append(
+                f"Measured Fast Previz latency is {latency_ms} ms, above the "
+                f"{_FAST_PREVIZ_BUDGET_MS} ms default-lane budget."
+            )
+        if self._overall_score(entry) is None:
+            blockers.append("Annotated Animatic is missing a current previz-usefulness score.")
+        return blockers
+
+    def _fast_lane_reason(
+        self,
+        *,
+        default_lane: str,
+        baseline_entry: dict[str, Any] | None,
+    ) -> str:
+        latency_ms = self._latency_ms(baseline_entry)
+        if default_lane != "annotated_animatic":
+            return (
+                "Fast Previz remains available as the quicker, cheaper, more deterministic lane "
+                "even though AI Previz currently clears the replacement gate."
+            )
+        if latency_ms is None or latency_ms <= 0:
+            return (
+                "Fast Previz stays the default because Annotated Animatic remains the always-"
+                "playable planning lane, but the deterministic latency budget still needs a real "
+                "measurement."
+            )
+        if latency_ms <= _FAST_PREVIZ_BUDGET_MS:
+            return (
+                f"Fast Previz stays the default quick-planning lane because Annotated Animatic "
+                f"measured {latency_ms} ms and remains inside the {_FAST_PREVIZ_BUDGET_MS} ms "
+                "budget."
+            )
+        return (
+            f"Fast Previz remains the default quick-planning lane, but the latest measured "
+            f"Annotated Animatic latency is {latency_ms} ms and needs improvement to honestly "
+            f"clear the {_FAST_PREVIZ_BUDGET_MS} ms budget."
+        )
+
+    def _policy_summary(
+        self,
+        *,
+        default_lane: str,
+        ai_lane: PrevizLaneStatus,
+        fast_lane: PrevizLaneStatus,
+    ) -> str:
+        if default_lane == "ai_previz":
+            return (
+                "AI Previz currently clears the fast-lane replacement gate, so it can be the "
+                "default. Fast Previz remains available as the quicker, cheaper, more "
+                "deterministic fallback."
+            )
+        if ai_lane.adoption_state == "recommended_optional":
+            return (
+                "Fast Previz is the default quick-planning lane. AI Previz remains the slower "
+                "optional generated pass when you want another motion take and can accept more "
+                "latency, cost, and less determinism."
+            )
+        if fast_lane.blocker_reasons:
+            return (
+                "Fast Previz is still the default planning lane, but its measured budget needs "
+                "attention. AI Previz remains separate so the product does not blur quick review "
+                "with slow generation."
+            )
+        return (
+            "Fast Previz is the default quick-planning lane. AI Previz stays experimental/manual "
+            "until the usefulness, latency, and cost evidence improves."
         )
 
     def _cost_evidence(

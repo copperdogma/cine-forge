@@ -25,7 +25,7 @@ def test_build_summary_prefers_annotated_when_best_ai_trails(
     dataset_root = tmp_path / "previz_usefulness"
     dataset_root.mkdir(parents=True, exist_ok=True)
     for variant, label, latency_ms, cost_usd in (
-        ("annotated_symbolic", "Annotated Animatic", 0, 0.0),
+        ("annotated_symbolic", "Annotated Animatic", 2200, 0.0),
         ("openai_sora2_previz", "Sora 2 Previz", 54000, 0.8),
     ):
         variant_dir = dataset_root / variant / "clip_1"
@@ -39,6 +39,10 @@ def test_build_summary_prefers_annotated_when_best_ai_trails(
                     "resolution": "720p",
                     "generation_latency_ms": latency_ms,
                     "estimated_generation_cost_usd": cost_usd,
+                    "operator_lane": (
+                        "fast_previz" if variant == "annotated_symbolic" else "ai_previz"
+                    ),
+                    "latency_budget_ms": 6000 if variant == "annotated_symbolic" else 180000,
                     "consistency_strategy": "prompt_only" if cost_usd else "deterministic",
                     "style_profile_id": "cineforge_low_fidelity_previz_v1",
                     "style_profile_title": "CineForge Low-Fidelity Previz",
@@ -88,8 +92,6 @@ def test_build_summary_prefers_annotated_when_best_ai_trails(
             }
         )
     )
-    monkeypatch.setattr(report, "DATASET_ROOT", dataset_root)
-
     summary = report.build_summary(
         [
             {
@@ -167,8 +169,11 @@ def test_build_summary_prefers_annotated_when_best_ai_trails(
                 "cost": 0.01,
             },
         ]
-        * 3
+        * 3,
+        dataset_root=dataset_root,
     )
 
-    assert summary["recommendation"]["decision"] == "hold"
-    assert "Annotated Animatic still leads" in summary["recommendation"]["rationale"]
+    assert summary["recommendation"]["decision"] == "keep_fast_default"
+    assert summary["recommendation"]["default_lane"] == "Annotated Animatic"
+    assert summary["recommendation"]["upgrade_lane"] == "Sora 2 Previz"
+    assert "Fast Previz measured 2200 ms" in summary["recommendation"]["rationale"]

@@ -14,7 +14,10 @@ RenderProvider = Literal["openai", "google"]
 PrevizAdoptionState = Literal["default", "recommended_optional", "experimental_manual"]
 PrevizCostStatus = Literal["verified", "estimated", "blocked"]
 PrevizDefaultLane = Literal["annotated_animatic", "ai_previz"]
+PrevizLaneId = Literal["annotated_animatic", "ai_previz"]
+PrevizLatencyClass = Literal["fast", "slow"]
 PrevizConsistencyStrategy = Literal[
+    "deterministic",
     "prompt_only",
     "optional_references",
     "reference_guided",
@@ -105,17 +108,21 @@ class PrevizCostEvidence(BaseModel):
 class PrevizLaneStatus(BaseModel):
     """Shared operator-facing status for one previz lane."""
 
-    lane_id: Literal["annotated_animatic", "ai_previz"]
+    lane_id: PrevizLaneId
     label: str = Field(min_length=1)
     candidate_label: str | None = None
+    latency_class: PrevizLatencyClass = "slow"
     adoption_state: PrevizAdoptionState = "experimental_manual"
     reason: str = Field(min_length=1)
+    intended_use: str = Field(min_length=1)
+    fidelity_disclosure: str = Field(min_length=1)
     blocker_reasons: list[str] = Field(default_factory=list)
     overall_score: float | None = Field(default=None, ge=0.0, le=1.0)
     baseline_score: float | None = Field(default=None, ge=0.0, le=1.0)
     score_margin: float | None = None
     measured_at: str | None = None
     latency_ms: int | None = Field(default=None, ge=0)
+    latency_budget_ms: int | None = Field(default=None, ge=0)
     engine_pack_id: str | None = None
     target_model: str | None = None
     resolution: str | None = None
@@ -123,12 +130,17 @@ class PrevizLaneStatus(BaseModel):
     consistency_strategy: PrevizConsistencyStrategy | None = None
     cost: PrevizCostEvidence = Field(default_factory=PrevizCostEvidence)
     validation_stage_enabled: bool = False
+    upgrade_lane_id: PrevizLaneId | None = None
+    upgrade_label: str | None = None
+    upgrade_description: str | None = None
 
 
 class PrevizAdoptionStatus(BaseModel):
     """Shared backend policy object for previz default and AI-lane disclosure."""
 
     default_lane: PrevizDefaultLane = "annotated_animatic"
+    policy_summary: str = Field(min_length=1)
+    fast_previz: PrevizLaneStatus
     ai_previz: PrevizLaneStatus
 
 

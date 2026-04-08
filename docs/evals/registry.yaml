@@ -1230,9 +1230,9 @@ evals:
     target:
       metric: overall
       value: 0.75
-      latency_ms_max: 180000
+      latency_ms_max: 6000
       cost_usd_max: 0.80
-      note: "Adopt AI previz only if a low-cost AI lane beats Annotated Animatic by at least 0.03 and the cost/latency evidence is verified; otherwise keep the deterministic default."
+      note: "Fast Previz must deliver a first playable deterministic planning artifact within <=6000 ms on the fixed pack. AI lanes are judged as slower optional upgrades unless they also beat Annotated Animatic by at least 0.03, clear cost verification, and fit inside the same budget."
 
     scores:
       - model: "Veo 3.1 Lite Previz"
@@ -1246,19 +1246,19 @@ evals:
         measured: 2026-04-03
         git_sha: "d6ac336"
         result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
-        note: "Quality leader on the latest UI-backed validation rerun. Prompt-only consistency is still good enough for previs readability, but adoption remains on hold because Lite cost is still unverified and the lead over Annotated Animatic stays inside the 0.03 default-switch guardrail."
+        note: "Strongest current AI upgrade lane. Prompt-only consistency is still good enough for previz readability, but it remains a slower optional upgrade because Lite cost is still unverified and the measured 39.3s latency is far outside the 6s Fast Previz budget."
       - model: "Annotated Animatic"
         metrics:
           overall: 0.803
           python: 0.8127
           rubric: 0.7933
-        latency_ms: 0
+        latency_ms: 606
         cost_usd: 0.0
         cost_estimated: true
-        measured: 2026-04-03
-        git_sha: "d6ac336"
-        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
-        note: "Deterministic control and current product default. The latest validation rerun keeps it within the adoption guardrail against Lite while remaining fully cost-verified, so it still holds the safest default position."
+        measured: 2026-04-08
+        git_sha: "80200d9"
+        result_file: benchmarks/results/previz-usefulness-story-149-fast-lane-2026-04-08-report.json
+        note: "Fast Previz default and deterministic control. Story 149 re-measured the deterministic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the 6s quick-loop budget while keeping the same validated 0.803 usefulness score."
       - model: "Veo 3.1 Fast Previz"
         metrics:
           overall: 0.778
@@ -1276,13 +1276,13 @@ evals:
           overall: 0.6547
           python: 0.736
           rubric: 0.5733
-        latency_ms: 0
+        latency_ms: 476
         cost_usd: 0.0
         cost_estimated: true
-        measured: 2026-04-03
-        git_sha: "d6ac336"
-        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
-        note: "Baseline comparator and explicit fallback, non-runtime-blocking. The latest rerun adds ambiguous simplification misses on quiet_bedside_vigil and radio_hold_tracking, reinforcing why this lane is fallback-only."
+        measured: 2026-04-08
+        git_sha: "80200d9"
+        result_file: benchmarks/results/previz-usefulness-story-149-fast-lane-2026-04-08-report.json
+        note: "Baseline comparator and explicit fallback, non-runtime-blocking. Story 149 re-measured the symbolic deterministic lane at 476 ms average; it is fast enough, but the usefulness score still reinforces why Annotated Animatic is the real Fast Previz default."
       - model: "Sora 2 Previz"
         metrics:
           overall: 0.659
@@ -1312,6 +1312,9 @@ evals:
       - date: 2026-04-03
         git_sha: "d6ac336"
         note: "UI-backed validation rerun rebuilt the dataset from scratch, but the first attempt hit a transient Sora moderation_blocked response during generation. An immediate clean retry succeeded end to end, and the fresh report landed at Veo 3.1 Lite 0.8280, Annotated Animatic 0.8030, Veo 3.1 Fast 0.7780, Sora 2 0.6590, and Symbolic 0.6547. Remaining failures are classified and non-runtime-blocking: Veo Fast on dialogue_confession_push_in is model-wrong, Sora 2's three failures remain ambiguous evidence_timestamp_range mismatches, Annotated Animatic on radio_hold_tracking is ambiguous on tone/emotion, and Symbolic Animatic remains ambiguous on quiet_bedside_vigil plus radio_hold_tracking simplification. Product decision remains hold because Lite cost is still unverified and its lead over Annotated stays below the 0.03 adoption margin."
+      - date: 2026-04-08
+        git_sha: "80200d9"
+        note: "Story 149 kept the validated 2026-04-03 UI-backed quality scores, but re-measured the deterministic lanes with the updated dataset generator and produced a fresh report. Annotated Animatic now records 606 ms average / 635 ms median generation latency, Symbolic Animatic records 476 ms average, and the policy shifts explicitly to Fast Previz default plus AI upgrade: Veo 3.1 Lite remains the strongest slower AI lane at 0.828 overall and 39273 ms."
 
   - id: runtime-media-validation
     name: Runtime Media Validation
@@ -1375,6 +1378,67 @@ evals:
       - date: 2026-04-04
         git_sha: "9598304"
         note: "Story 144 validation reran the full runtime-media-validation benchmark after extending `media_validation_v1` to support `ai_previz_video` target refs. Hybrid stayed green at 1.000 overall and all remaining comparator-only mismatches were reverified as non-runtime-blocking and ambiguous."
+
+  - id: real-ai-previz-runtime
+    name: Real AI Previz Runtime
+    type: quality
+    description: >
+      End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane.
+      Compares the shipped `ai_previz_generation` recipe against reachable 4-second
+      Veo pack variants and separates prerequisite overhead from `ai_previz_video`
+      generation time.
+    pipeline_stage: visualization
+    runner: custom
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-pilot"
+    script: benchmarks/scripts/real_ai_previz_runtime_eval.py
+    golden: benchmarks/fixtures/real_ai_previz_runtime_cases.json
+    test_cases: 8
+
+    target:
+      metric: overall
+      value: 1.0
+      latency_ms_max: 6000
+      note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful scene-ready case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
+
+    scores:
+      - model: "Compact Pilot (Lite 8s + Fast 4s)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 153528
+          fastest_total_ms: 143510
+        latency_ms: 153528
+        cost_usd: 0.048163
+        measured: 2026-04-08
+        git_sha: "80200d9"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-151-compact-pilot-2026-04-08.json
+        note: "Story 151 compacted the AI-previz shot-planning prompt/output path without changing the schema contract. The three-case rerun stayed runtime-blocking but materially improved the honest path: shipped Lite scene-ready dropped from 270922 ms to 153528 ms, Fast 4 scene-ready dropped from 353687 ms to 182138 ms, and shipped Lite shot_planning itself dropped from 109.3s to 25.4s with token volume falling from 14210/6212 to 6066/2605. The ingest-only control remained noisy because `project_config` spiked on the rerun, but its internal previz segment still improved."
+      - model: "Pilot Matrix (Lite 8s + Fast 4s)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 270922
+          fastest_total_ms: 124929
+        latency_ms: 270922
+        cost_usd: 0.067997
+        measured: 2026-04-08
+        git_sha: "80200d9"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-150-pilot-2026-04-08.json
+        note: "Story 150 pilot ran 3 real cases and then recovered the summary from completed run states after fixing a post-run fixture-path bug in the harness. All 3 cases succeeded, but none challenged the fast detector: shipped Lite 8s scene-ready was the best honest path at 270922 ms total (97846 ms prerequisites + 173076 ms ai-previz recipe), Fast 4s scene-ready was worse at 353687 ms, and Fast 4s ingest-only still needed 124929 ms. No semantic mismatches were present in the pilot subset; remaining failure is runtime-blocking."
+
+    attempts:
+      - date: 2026-04-08
+        git_sha: "80200d9"
+        note: "Story 150 created the first dedicated runtime detector for fastest-real-AI-previz after Story 149 proved the honest single-scene baseline was still about 299s. Harness and case matrix are scaffolded; first pilot run is pending."
+      - date: 2026-04-08
+        git_sha: "80200d9"
+        note: "Pilot run executed on 3 cases (`shipped_lite_8_scene_ready`, `fast_4_scene_ready`, `fast_4_mvp_ingest_only`). The first harness version crashed while writing the summary because it called `Path.relative_to()` on a relative fixture-manifest path and also scored only the ai-previz stage instead of the full scene-ready runtime. Both harness bugs were fixed, the completed run states were recovered into `benchmarks/results/real-ai-previz-runtime-story-150-pilot-2026-04-08.{json,md}`, and the pilot result is runtime-blocking rather than a model/golden mismatch."
+      - date: 2026-04-08
+        git_sha: "80200d9"
+        note: "Story 151 reran the same three pilot cases after adding a compact shot-planning profile for AI previz. The result remained runtime-blocking, but the dominant substrate got materially better: shipped Lite shot_planning fell from 109.3s to 25.4s, shipped scene-ready total fell to 153528 ms, and Fast 4 scene-ready fell to 182138 ms. Remaining failure is no longer 'pack choice'; it is the still-slow sum of prerequisites plus provider video generation."
+      - date: 2026-04-08
+        git_sha: "80200d9"
+        note: "Story 152 measured the regenerate/reuse path on a copied honest project state rather than the full raw-input detector. Using `start_from=ai_previz` removed `shot_planning` entirely and cut wall time from 81545 ms to 75337 ms on the sampled project, but the net improvement was only 6208 ms because `validate_media` was noisier on the sliced run. Result file: `benchmarks/results/real-ai-previz-runtime-story-152-reuse-baseline-2026-04-08.{json,md}`. This is useful substrate evidence for the iteration loop, but it remains runtime-blocking for Story 149."
 
   - id: entity-discovery
     name: Entity Discovery
