@@ -210,7 +210,8 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 |---|---|---|---|---|---|---|---|
 | 150 | Fastest Real AI Previz Runtime Eval | High | In Progress | — | spec:5, spec:6, spec:7, spec:10 | 143, 144, 148, 149 | [story-150](stories/story-150-fastest-real-ai-previz-runtime-eval.md) |
 | 151 | Previz Shot Planning Compact Mode | High | In Progress | — | spec:5, spec:6, spec:7, spec:10 | 149, 150 | [story-151](stories/story-151-previz-shot-planning-compact-mode.md) |
-| 149 | Fast Previz Lane and Latency Budget | High | Blocked | Representative previz verification is honest again, but Story 149 is now blocked on real runtim… | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
+| 149 | Fast Previz Lane and Latency Budget | High | Blocked | Representative previz verification is honest again, and Story 153 now has a tighter provider-fl… | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
+| 153 | Previz Minimal AI Clip Mode and Provider Floor | High | Blocked | Story 153 is blocked on provider-floor convergence, not on missing implementation. The current… | spec:5, spec:6, spec:7, spec:10 | 143, 149, 150, 151, 152 | [story-153](stories/story-153-previz-minimal-ai-clip-provider-floor.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |

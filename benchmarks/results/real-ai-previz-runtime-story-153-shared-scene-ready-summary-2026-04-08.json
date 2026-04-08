@@ -1,0 +1,193 @@
+{
+  "eval_id": "real-ai-previz-runtime",
+  "measured_at": "2026-04-08T21:47:44.243828+00:00",
+  "comparison_method": "shared_shot_planning_substrate_manual_repeats",
+  "passes": [
+    {
+      "label": "pass1_salvaged_from_run_state",
+      "source": "output/runs/*shared-1* plus *ai-previz-r1*",
+      "prerequisite_elapsed_ms": 169014,
+      "cost_usd": 0.06242,
+      "notes": "Recovered from completed run states after a direct repeat-count run later stalled on a provider-side hang in repeat 2.",
+      "cases": {
+        "shipped_lite_4_scene_ready": {
+          "ai_previz_elapsed_ms": 60536,
+          "total_elapsed_ms": 229550
+        },
+        "lite_8_scene_ready_control": {
+          "ai_previz_elapsed_ms": 59370,
+          "total_elapsed_ms": 228384
+        },
+        "fast_4_scene_ready": {
+          "ai_previz_elapsed_ms": 72490,
+          "total_elapsed_ms": 241504
+        },
+        "veo31_4_scene_ready": {
+          "ai_previz_elapsed_ms": 57623,
+          "total_elapsed_ms": 226637
+        }
+      }
+    },
+    {
+      "label": "pass2",
+      "source": "benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-pass2-2026-04-08.json",
+      "prerequisite_elapsed_ms": 92314,
+      "cost_usd": 0.06290658,
+      "notes": "Single-repeat shared-shot-planning comparison run.",
+      "cases": {
+        "fast_4_scene_ready": {
+          "ai_previz_elapsed_ms": 40196,
+          "total_elapsed_ms": 132510
+        },
+        "lite_8_scene_ready_control": {
+          "ai_previz_elapsed_ms": 63187,
+          "total_elapsed_ms": 155501
+        },
+        "shipped_lite_4_scene_ready": {
+          "ai_previz_elapsed_ms": 50320,
+          "total_elapsed_ms": 142634
+        },
+        "veo31_4_scene_ready": {
+          "ai_previz_elapsed_ms": 58533,
+          "total_elapsed_ms": 150847
+        }
+      }
+    },
+    {
+      "label": "pass3",
+      "source": "benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-pass3-2026-04-08.json",
+      "prerequisite_elapsed_ms": 88099,
+      "cost_usd": 0.06425813,
+      "notes": "Single-repeat shared-shot-planning comparison run.",
+      "cases": {
+        "fast_4_scene_ready": {
+          "ai_previz_elapsed_ms": 57186,
+          "total_elapsed_ms": 145285
+        },
+        "lite_8_scene_ready_control": {
+          "ai_previz_elapsed_ms": 60857,
+          "total_elapsed_ms": 148956
+        },
+        "shipped_lite_4_scene_ready": {
+          "ai_previz_elapsed_ms": 37615,
+          "total_elapsed_ms": 125714
+        },
+        "veo31_4_scene_ready": {
+          "ai_previz_elapsed_ms": 50828,
+          "total_elapsed_ms": 138927
+        }
+      }
+    }
+  ],
+  "summary": {
+    "recommended_shipped_case_id": "shipped_lite_4_scene_ready",
+    "recommended_shipped_label": "Shipped Veo 3.1 Lite 4s",
+    "median_fastest_total_ms": 142634,
+    "median_fastest_ai_previz_ms": 50320,
+    "shared_prerequisite_median_ms": 92314,
+    "total_eval_cost_usd": 0.18958471,
+    "note": "Three shared-shot-planning scene-ready passes keep Veo 3.1 Lite 4s as the best median runtime lane. A direct repeat-count run later stalled on a provider-side hang during repeat 2, so the repeated evidence is preserved as sequential one-repeat runs plus the salvaged first pass."
+  },
+  "cases": [
+    {
+      "case_id": "shipped_lite_4_scene_ready",
+      "label": "Shipped Veo 3.1 Lite 4s",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "usefulness_overall": 0.828,
+      "usefulness_note": "Existing previz-usefulness leader among current AI lanes.",
+      "median_ai_previz_elapsed_ms": 50320,
+      "median_total_elapsed_ms": 142634,
+      "min_ai_previz_elapsed_ms": 37615,
+      "max_ai_previz_elapsed_ms": 60536,
+      "min_total_elapsed_ms": 125714,
+      "max_total_elapsed_ms": 229550,
+      "all_ai_previz_elapsed_ms": [
+        60536,
+        50320,
+        37615
+      ],
+      "all_total_elapsed_ms": [
+        229550,
+        142634,
+        125714
+      ]
+    },
+    {
+      "case_id": "fast_4_scene_ready",
+      "label": "Fast 4s candidate",
+      "engine_pack_id": "google_veo31_fast",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "usefulness_overall": 0.778,
+      "usefulness_note": "Existing previz-usefulness runner-up among AI lanes.",
+      "median_ai_previz_elapsed_ms": 57186,
+      "median_total_elapsed_ms": 145285,
+      "min_ai_previz_elapsed_ms": 40196,
+      "max_ai_previz_elapsed_ms": 72490,
+      "min_total_elapsed_ms": 132510,
+      "max_total_elapsed_ms": 241504,
+      "all_ai_previz_elapsed_ms": [
+        72490,
+        40196,
+        57186
+      ],
+      "all_total_elapsed_ms": [
+        241504,
+        132510,
+        145285
+      ]
+    },
+    {
+      "case_id": "veo31_4_scene_ready",
+      "label": "Veo 3.1 4s control",
+      "engine_pack_id": "google_veo31",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "usefulness_overall": null,
+      "usefulness_note": "Runtime control only; no stronger usefulness case than Lite 4.",
+      "median_ai_previz_elapsed_ms": 57623,
+      "median_total_elapsed_ms": 150847,
+      "min_ai_previz_elapsed_ms": 50828,
+      "max_ai_previz_elapsed_ms": 58533,
+      "min_total_elapsed_ms": 138927,
+      "max_total_elapsed_ms": 226637,
+      "all_ai_previz_elapsed_ms": [
+        57623,
+        58533,
+        50828
+      ],
+      "all_total_elapsed_ms": [
+        226637,
+        150847,
+        138927
+      ]
+    },
+    {
+      "case_id": "lite_8_scene_ready_control",
+      "label": "Lite 8s control",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "usefulness_overall": null,
+      "usefulness_note": "Control only; same engine family as Lite 4 but slower.",
+      "median_ai_previz_elapsed_ms": 60857,
+      "median_total_elapsed_ms": 155501,
+      "min_ai_previz_elapsed_ms": 59370,
+      "max_ai_previz_elapsed_ms": 63187,
+      "min_total_elapsed_ms": 148956,
+      "max_total_elapsed_ms": 228384,
+      "all_ai_previz_elapsed_ms": [
+        59370,
+        63187,
+        60857
+      ],
+      "all_total_elapsed_ms": [
+        228384,
+        155501,
+        148956
+      ]
+    }
+  ]
+}

@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-08-02] — Previz provider-floor decision and blocked truth (Story 153)
+
+### Added
+- Added extracted shared support and decision-summary helpers for the real AI-previz runtime harness, plus checked-in provider-floor result artifacts covering the full matrix, shared-substrate repeats, and validation-decision evidence
+
+### Changed
+- Changed the shipped AI-previz recipe and runtime manifest to use Veo 3.1 Lite `4s / 720p` as the provisional slow-lane baseline while retaining the old Lite `8s / 1280x720` path as an explicit control in the runtime matrix
+- Changed Story 149, Story 150, Story 153, and the eval registry to record the current provider-floor conclusion honestly: Fast 4 is the runtime leader, Lite 4 is the usefulness leader, no dominant winner is proven, and the detector remains runtime-blocking
+- Changed the benchmark methodology surfaces to include Story 153 as a blocked follow-on with explicit blocker evidence and an unblock condition instead of leaving the provider-floor question implicit
+
 ## [2026-04-08-01] — Previz runtime truthfulness and AI regenerate reuse (Story 152)
 
 ### Added

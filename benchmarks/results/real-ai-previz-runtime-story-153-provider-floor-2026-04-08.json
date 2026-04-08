@@ -1,0 +1,957 @@
+{
+  "eval_id": "real-ai-previz-runtime",
+  "measured_at": "2026-04-08T20:21:19.474657+00:00",
+  "fixture_manifest": "benchmarks/fixtures/real_ai_previz_runtime_cases.json",
+  "target_fast_previz_ms": 6000,
+  "summary": {
+    "overall": 0.5,
+    "successful_cases": 8,
+    "total_cases": 8,
+    "successful_case_ratio": 1.0,
+    "fastest_scene_ready_case_id": "lite_4_scene_ready",
+    "fastest_scene_ready_ms": 146281,
+    "fastest_scene_ready_prerequisite_ms": 59734,
+    "fastest_scene_ready_ai_previz_ms": 86547,
+    "fastest_total_case_id": "lite_4_mvp_ingest_only",
+    "fastest_total_ms": 112143,
+    "target_fast_previz_ms": 6000
+  },
+  "cases": [
+    {
+      "case_id": "shipped_lite_8_scene_ready",
+      "label": "Shipped Veo 3.1 Lite 8s scene-ready baseline",
+      "prerequisite_mode": "scene_ready",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Current shipped recipe and honest scene-ready prerequisite chain.",
+      "project_dir": "output/eval-real-ai-previz-shipped_lite_8_scene_ready-024bb5",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 52551,
+      "ai_previz_elapsed_ms": 132375,
+      "total_elapsed_ms": 184926,
+      "prerequisite_runs": [
+        {
+          "run_id": "shipped_lite_8_scene_ready-recipe-mvp-ingest-e416",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 21338,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01033298,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 4,
+            "normalize": 13,
+            "breakdown_scenes": 5521,
+            "script_bible": 7219,
+            "project_config": 14039
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_002/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        },
+        {
+          "run_id": "shipped_lite_8_scene_ready-recipe-creative-direction-76fc",
+          "recipe_id": "creative_direction",
+          "elapsed_ms": 30981,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.032628,
+          "stage_statuses": {
+            "intent_mood": "done",
+            "rhythm_and_flow": "done",
+            "look_and_feel": "done",
+            "sound_and_music": "done"
+          },
+          "stage_durations_ms": {
+            "intent_mood": 3516,
+            "rhythm_and_flow": 11076,
+            "look_and_feel": 26105,
+            "sound_and_music": 27401
+          },
+          "artifact_counts": {
+            "intent_mood": 1,
+            "rhythm_and_flow": 1,
+            "rhythm_and_flow_index": 1,
+            "look_and_feel": 1,
+            "look_and_feel_index": 1,
+            "sound_and_music": 1,
+            "sound_and_music_index": 1
+          },
+          "artifact_paths": {
+            "intent_mood": "artifacts/intent_mood/project/v1.json",
+            "rhythm_and_flow": "artifacts/rhythm_and_flow/scene_001/v1.json",
+            "rhythm_and_flow_index": "artifacts/rhythm_and_flow_index/project/v1.json",
+            "look_and_feel": "artifacts/look_and_feel/scene_001/v1.json",
+            "look_and_feel_index": "artifacts/look_and_feel_index/project/v1.json",
+            "sound_and_music": "artifacts/sound_and_music/scene_001/v1.json",
+            "sound_and_music_index": "artifacts/sound_and_music_index/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "shipped_lite_8_scene_ready-ai-previz-5fab",
+        "recipe_id": "ai_previz_generation",
+        "elapsed_ms": 132375,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0162664,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 4,
+          "tracks": 3,
+          "shot_planning": 50399,
+          "ai_previz": 63323,
+          "validate_media": 18570
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "shipped_lite_8_mvp_ingest_only",
+      "label": "Shipped Veo 3.1 Lite 8s ingest-only baseline",
+      "prerequisite_mode": "mvp_ingest_only",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Separates creative-direction overhead from the shipped AI-previz runtime.",
+      "project_dir": "output/eval-real-ai-previz-shipped_lite_8_mvp_ingest_only-cd23ec",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 34239,
+      "ai_previz_elapsed_ms": 88963,
+      "total_elapsed_ms": 123202,
+      "prerequisite_runs": [
+        {
+          "run_id": "shipped_lite_8_mvp_ingest_only-recipe-mvp-ingest-0b47",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 34239,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01018783,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 4,
+            "normalize": 8,
+            "breakdown_scenes": 3046,
+            "script_bible": 7101,
+            "project_config": 27065
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_004/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "shipped_lite_8_mvp_ingest_only-ai-previz-f852",
+        "recipe_id": "ai_previz_generation",
+        "elapsed_ms": 88963,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0107248,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 3,
+          "tracks": 3,
+          "shot_planning": 17320,
+          "ai_previz": 52941,
+          "validate_media": 18621
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "lite_4_scene_ready",
+      "label": "Veo 3.1 Lite 4s scene-ready",
+      "prerequisite_mode": "scene_ready",
+      "recipe_mode": "patched",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Fastest reachable Lite settings while preserving the scene-ready path.",
+      "project_dir": "output/eval-real-ai-previz-lite_4_scene_ready-67866a",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 59734,
+      "ai_previz_elapsed_ms": 86547,
+      "total_elapsed_ms": 146281,
+      "prerequisite_runs": [
+        {
+          "run_id": "lite_4_scene_ready-recipe-mvp-ingest-eb4a",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 26743,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01031983,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 3,
+            "normalize": 8,
+            "breakdown_scenes": 3904,
+            "script_bible": 7180,
+            "project_config": 19486
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_004/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        },
+        {
+          "run_id": "lite_4_scene_ready-recipe-creative-direction-cea2",
+          "recipe_id": "creative_direction",
+          "elapsed_ms": 32991,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.0341144,
+          "stage_statuses": {
+            "intent_mood": "done",
+            "rhythm_and_flow": "done",
+            "look_and_feel": "done",
+            "sound_and_music": "done"
+          },
+          "stage_durations_ms": {
+            "intent_mood": 3702,
+            "rhythm_and_flow": 11987,
+            "look_and_feel": 29223,
+            "sound_and_music": 27106
+          },
+          "artifact_counts": {
+            "intent_mood": 1,
+            "rhythm_and_flow": 1,
+            "rhythm_and_flow_index": 1,
+            "look_and_feel": 1,
+            "look_and_feel_index": 1,
+            "sound_and_music": 1,
+            "sound_and_music_index": 1
+          },
+          "artifact_paths": {
+            "intent_mood": "artifacts/intent_mood/project/v1.json",
+            "rhythm_and_flow": "artifacts/rhythm_and_flow/scene_001/v1.json",
+            "rhythm_and_flow_index": "artifacts/rhythm_and_flow_index/project/v1.json",
+            "look_and_feel": "artifacts/look_and_feel/scene_001/v1.json",
+            "look_and_feel_index": "artifacts/look_and_feel_index/project/v1.json",
+            "sound_and_music": "artifacts/sound_and_music/scene_001/v1.json",
+            "sound_and_music_index": "artifacts/sound_and_music_index/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "lite_4_scene_ready-ai-previz-87ac",
+        "recipe_id": "ai_previz_generation_eval_lite_4_scene_ready",
+        "elapsed_ms": 86547,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0170112,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 4,
+          "tracks": 4,
+          "shot_planning": 28266,
+          "ai_previz": 53112,
+          "validate_media": 5092
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "lite_4_mvp_ingest_only",
+      "label": "Veo 3.1 Lite 4s ingest-only",
+      "prerequisite_mode": "mvp_ingest_only",
+      "recipe_mode": "patched",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Best-case Lite runtime with minimal prerequisites.",
+      "project_dir": "output/eval-real-ai-previz-lite_4_mvp_ingest_only-b31647",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 43709,
+      "ai_previz_elapsed_ms": 68434,
+      "total_elapsed_ms": 112143,
+      "prerequisite_runs": [
+        {
+          "run_id": "lite_4_mvp_ingest_only-recipe-mvp-ingest-f656",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 43709,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01019373,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 3,
+            "normalize": 8,
+            "breakdown_scenes": 5094,
+            "script_bible": 6980,
+            "project_config": 36655
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_007/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "lite_4_mvp_ingest_only-ai-previz-4ae3",
+        "recipe_id": "ai_previz_generation_eval_lite_4_mvp_ingest_only",
+        "elapsed_ms": 68434,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.011236,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 3,
+          "tracks": 3,
+          "shot_planning": 19336,
+          "ai_previz": 42700,
+          "validate_media": 6326
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "fast_4_scene_ready",
+      "label": "Veo 3.1 Fast 4s scene-ready",
+      "prerequisite_mode": "scene_ready",
+      "recipe_mode": "patched",
+      "engine_pack_id": "google_veo31_fast",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Low-latency Fast pack candidate on the honest scene-ready path.",
+      "project_dir": "output/eval-real-ai-previz-fast_4_scene_ready-5859db",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 59683,
+      "ai_previz_elapsed_ms": 123054,
+      "total_elapsed_ms": 182737,
+      "prerequisite_runs": [
+        {
+          "run_id": "fast_4_scene_ready-recipe-mvp-ingest-906a",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 25220,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01036133,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 3,
+            "normalize": 8,
+            "breakdown_scenes": 1798,
+            "script_bible": 7759,
+            "project_config": 17380
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_006/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        },
+        {
+          "run_id": "fast_4_scene_ready-recipe-creative-direction-7442",
+          "recipe_id": "creative_direction",
+          "elapsed_ms": 34464,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.0351328,
+          "stage_statuses": {
+            "intent_mood": "done",
+            "rhythm_and_flow": "done",
+            "look_and_feel": "done",
+            "sound_and_music": "done"
+          },
+          "stage_durations_ms": {
+            "intent_mood": 3177,
+            "rhythm_and_flow": 13940,
+            "look_and_feel": 28105,
+            "sound_and_music": 31220
+          },
+          "artifact_counts": {
+            "intent_mood": 1,
+            "rhythm_and_flow": 1,
+            "rhythm_and_flow_index": 1,
+            "look_and_feel": 1,
+            "look_and_feel_index": 1,
+            "sound_and_music": 1,
+            "sound_and_music_index": 1
+          },
+          "artifact_paths": {
+            "intent_mood": "artifacts/intent_mood/project/v1.json",
+            "rhythm_and_flow": "artifacts/rhythm_and_flow/scene_001/v1.json",
+            "rhythm_and_flow_index": "artifacts/rhythm_and_flow_index/project/v1.json",
+            "look_and_feel": "artifacts/look_and_feel/scene_001/v1.json",
+            "look_and_feel_index": "artifacts/look_and_feel_index/project/v1.json",
+            "sound_and_music": "artifacts/sound_and_music/scene_001/v1.json",
+            "sound_and_music_index": "artifacts/sound_and_music_index/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "fast_4_scene_ready-ai-previz-f921",
+        "recipe_id": "ai_previz_generation_eval_fast_4_scene_ready",
+        "elapsed_ms": 123053,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0186216,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 3,
+          "tracks": 4,
+          "shot_planning": 57923,
+          "ai_previz": 53038,
+          "validate_media": 12015
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "fast_4_mvp_ingest_only",
+      "label": "Veo 3.1 Fast 4s ingest-only",
+      "prerequisite_mode": "mvp_ingest_only",
+      "recipe_mode": "patched",
+      "engine_pack_id": "google_veo31_fast",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Best-case Fast runtime with minimal prerequisites.",
+      "project_dir": "output/eval-real-ai-previz-fast_4_mvp_ingest_only-1e6ee9",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 73934,
+      "ai_previz_elapsed_ms": 67118,
+      "total_elapsed_ms": 141052,
+      "prerequisite_runs": [
+        {
+          "run_id": "fast_4_mvp_ingest_only-recipe-mvp-ingest-483d",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 73934,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01033413,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 4,
+            "normalize": 7,
+            "breakdown_scenes": 1292,
+            "script_bible": 6994,
+            "project_config": 66869
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_002/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "fast_4_mvp_ingest_only-ai-previz-538d",
+        "recipe_id": "ai_previz_generation_eval_fast_4_mvp_ingest_only",
+        "elapsed_ms": 67118,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0147792,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 3,
+          "tracks": 3,
+          "shot_planning": 26854,
+          "ai_previz": 32365,
+          "validate_media": 7825
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "veo31_4_scene_ready",
+      "label": "Veo 3.1 4s scene-ready",
+      "prerequisite_mode": "scene_ready",
+      "recipe_mode": "patched",
+      "engine_pack_id": "google_veo31",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Full Veo pack retained as a control for reachability, not as the favored fast path.",
+      "project_dir": "output/eval-real-ai-previz-veo31_4_scene_ready-c6333f",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 108173,
+      "ai_previz_elapsed_ms": 83005,
+      "total_elapsed_ms": 191178,
+      "prerequisite_runs": [
+        {
+          "run_id": "veo31_4_scene_ready-recipe-mvp-ingest-080f",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 74155,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01016458,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 4,
+            "normalize": 8,
+            "breakdown_scenes": 1225,
+            "script_bible": 7295,
+            "project_config": 66789
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_004/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        },
+        {
+          "run_id": "veo31_4_scene_ready-recipe-creative-direction-84d4",
+          "recipe_id": "creative_direction",
+          "elapsed_ms": 34018,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.0351304,
+          "stage_statuses": {
+            "intent_mood": "done",
+            "rhythm_and_flow": "done",
+            "look_and_feel": "done",
+            "sound_and_music": "done"
+          },
+          "stage_durations_ms": {
+            "intent_mood": 3756,
+            "rhythm_and_flow": 11565,
+            "look_and_feel": 30198,
+            "sound_and_music": 27800
+          },
+          "artifact_counts": {
+            "intent_mood": 1,
+            "rhythm_and_flow": 1,
+            "rhythm_and_flow_index": 1,
+            "look_and_feel": 1,
+            "look_and_feel_index": 1,
+            "sound_and_music": 1,
+            "sound_and_music_index": 1
+          },
+          "artifact_paths": {
+            "intent_mood": "artifacts/intent_mood/project/v1.json",
+            "rhythm_and_flow": "artifacts/rhythm_and_flow/scene_001/v1.json",
+            "rhythm_and_flow_index": "artifacts/rhythm_and_flow_index/project/v1.json",
+            "look_and_feel": "artifacts/look_and_feel/scene_001/v1.json",
+            "look_and_feel_index": "artifacts/look_and_feel_index/project/v1.json",
+            "sound_and_music": "artifacts/sound_and_music/scene_001/v1.json",
+            "sound_and_music_index": "artifacts/sound_and_music_index/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "veo31_4_scene_ready-ai-previz-ac59",
+        "recipe_id": "ai_previz_generation_eval_veo31_4_scene_ready",
+        "elapsed_ms": 83005,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0157104,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 3,
+          "tracks": 3,
+          "shot_planning": 24995,
+          "ai_previz": 52968,
+          "validate_media": 4965
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "veo31_4_mvp_ingest_only",
+      "label": "Veo 3.1 4s ingest-only",
+      "prerequisite_mode": "mvp_ingest_only",
+      "recipe_mode": "patched",
+      "engine_pack_id": "google_veo31",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "notes": "Best-case full Veo runtime with minimal prerequisites.",
+      "project_dir": "output/eval-real-ai-previz-veo31_4_mvp_ingest_only-c00580",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 77152,
+      "ai_previz_elapsed_ms": 78340,
+      "total_elapsed_ms": 155492,
+      "prerequisite_runs": [
+        {
+          "run_id": "veo31_4_mvp_ingest_only-recipe-mvp-ingest-b204",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 77152,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.01013843,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 3,
+            "normalize": 8,
+            "breakdown_scenes": 1676,
+            "script_bible": 6373,
+            "project_config": 70710
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_002/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "veo31_4_mvp_ingest_only-ai-previz-f656",
+        "recipe_id": "ai_previz_generation_eval_veo31_4_mvp_ingest_only",
+        "elapsed_ms": 78340,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0120424,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 5,
+          "tracks": 3,
+          "shot_planning": 19270,
+          "ai_previz": 52835,
+          "validate_media": 6152
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    }
+  ]
+}

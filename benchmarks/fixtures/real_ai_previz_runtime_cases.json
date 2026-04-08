@@ -1,52 +1,52 @@
 {
   "cases": [
     {
-      "case_id": "shipped_lite_8_scene_ready",
-      "label": "Shipped Veo 3.1 Lite 8s scene-ready baseline",
+      "case_id": "shipped_lite_4_scene_ready",
+      "label": "Shipped Veo 3.1 Lite 4s scene-ready baseline",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
       "recipe_mode": "shipped",
-      "notes": "Current shipped recipe and honest scene-ready prerequisite chain."
+      "notes": "Current shipped recipe and honest scene-ready prerequisite chain after Story 153."
     },
     {
-      "case_id": "shipped_lite_8_mvp_ingest_only",
-      "label": "Shipped Veo 3.1 Lite 8s ingest-only baseline",
+      "case_id": "shipped_lite_4_mvp_ingest_only",
+      "label": "Shipped Veo 3.1 Lite 4s ingest-only baseline",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
       "recipe_mode": "shipped",
-      "notes": "Separates creative-direction overhead from the shipped AI-previz runtime."
+      "notes": "Separates creative-direction overhead from the shipped AI-previz runtime after Story 153."
     },
     {
-      "case_id": "lite_4_scene_ready",
-      "label": "Veo 3.1 Lite 4s scene-ready",
+      "case_id": "lite_8_scene_ready_control",
+      "label": "Veo 3.1 Lite 8s scene-ready control",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31_lite",
-        "duration_seconds": 4,
-        "resolution": "720p",
+        "duration_seconds": 8,
+        "resolution": "1280x720",
         "consistency_strategy": "prompt_only"
       },
-      "notes": "Fastest reachable Lite settings while preserving the scene-ready path."
+      "notes": "Pre-Story-153 shipped Lite control retained for regression comparison."
     },
     {
-      "case_id": "lite_4_mvp_ingest_only",
-      "label": "Veo 3.1 Lite 4s ingest-only",
+      "case_id": "lite_8_mvp_ingest_only_control",
+      "label": "Veo 3.1 Lite 8s ingest-only control",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31_lite",
-        "duration_seconds": 4,
-        "resolution": "720p",
+        "duration_seconds": 8,
+        "resolution": "1280x720",
         "consistency_strategy": "prompt_only"
       },
-      "notes": "Best-case Lite runtime with minimal prerequisites."
+      "notes": "Pre-Story-153 shipped Lite ingest-only control retained for regression comparison."
     },
     {
       "case_id": "fast_4_scene_ready",

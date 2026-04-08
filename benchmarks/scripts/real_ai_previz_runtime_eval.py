@@ -9,13 +9,11 @@ import shutil
 import sys
 import time
 import uuid
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Literal
 
 import yaml
-from pydantic import BaseModel, Field
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
@@ -23,6 +21,17 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
+
+from real_ai_previz_runtime_support import (  # noqa: E402
+    RecipeRunSummary,
+    RuntimeCaseResult,
+    RuntimeEvalCase,
+    RuntimeEvalManifest,
+    aggregate_attempts,
+    display_repo_relative_path,
+    render_runtime_markdown,
+    summarize_results,
+)
 
 DEFAULT_MANIFEST = (
     REPO_ROOT / "benchmarks" / "fixtures" / "real_ai_previz_runtime_cases.json"
@@ -39,64 +48,6 @@ PROJECT_WORK_MODEL = "claude-haiku-4-5-20251001"
 PROJECT_VERIFY_MODEL = "gpt-4.1-mini"
 PROJECT_ESCALATE_MODEL = "claude-opus-4-6"
 FAST_PREVIZ_TARGET_MS = 6000
-
-
-class AiPrevizStageOverride(BaseModel):
-    engine_pack_id: str = Field(min_length=1)
-    duration_seconds: int = Field(ge=1)
-    resolution: str = Field(min_length=1)
-    consistency_strategy: str = Field(default="prompt_only", min_length=1)
-
-
-class RuntimeEvalCase(BaseModel):
-    case_id: str = Field(min_length=1)
-    label: str = Field(min_length=1)
-    input_fixture: str = Field(min_length=1)
-    scene_id: str = Field(default="scene_001", min_length=1)
-    prerequisite_mode: Literal["mvp_ingest_only", "scene_ready"] = "scene_ready"
-    recipe_mode: Literal["shipped", "patched"] = "shipped"
-    ai_previz: AiPrevizStageOverride | None = None
-    notes: str | None = None
-
-
-class RuntimeEvalManifest(BaseModel):
-    cases: list[RuntimeEvalCase] = Field(min_length=1)
-
-
-class RecipeRunSummary(BaseModel):
-    run_id: str
-    recipe_id: str
-    elapsed_ms: int = Field(ge=0)
-    success: bool
-    error: str | None = None
-    total_cost_usd: float = Field(ge=0.0)
-    stage_statuses: dict[str, str] = Field(default_factory=dict)
-    stage_durations_ms: dict[str, int] = Field(default_factory=dict)
-    artifact_counts: dict[str, int] = Field(default_factory=dict)
-    artifact_paths: dict[str, str] = Field(default_factory=dict)
-
-
-class RuntimeCaseResult(BaseModel):
-    case_id: str
-    label: str
-    prerequisite_mode: str
-    recipe_mode: str
-    engine_pack_id: str
-    duration_seconds: int
-    resolution: str
-    scene_id: str
-    input_fixture: str
-    notes: str | None = None
-    project_dir: str
-    success: bool
-    error: str | None = None
-    prerequisite_elapsed_ms: int = Field(ge=0)
-    ai_previz_elapsed_ms: int = Field(ge=0)
-    total_elapsed_ms: int = Field(ge=0)
-    prerequisite_runs: list[RecipeRunSummary] = Field(default_factory=list)
-    ai_previz_run: RecipeRunSummary
-    ai_previz_artifact_path: str | None = None
-    media_validation_path: str | None = None
 
 
 def main() -> None:
@@ -124,7 +75,15 @@ def main() -> None:
         action="store_true",
         help="Keep seeded benchmark project directories under output/ for inspection.",
     )
+    parser.add_argument(
+        "--repeat-count",
+        type=int,
+        default=1,
+        help="Number of repeated comparisons to run for each selected case.",
+    )
     args = parser.parse_args()
+    if args.repeat_count < 1:
+        raise SystemExit("--repeat-count must be >= 1")
 
     fixture_manifest_path = args.fixture_manifest.resolve()
     manifest = RuntimeEvalManifest.model_validate_json(
@@ -139,18 +98,26 @@ def main() -> None:
     if not cases:
         raise SystemExit("No runtime eval cases selected.")
 
-    results = [
-        _run_case(case=case, keep_projects=args.keep_projects)
-        for case in cases
-    ]
-    summary = _summarize(results)
+    attempts = _run_attempts(
+        cases=cases,
+        repeat_count=args.repeat_count,
+        keep_projects=args.keep_projects,
+    )
+    case_aggregates = aggregate_attempts(attempts)
+    summary = summarize_results(
+        case_aggregates,
+        fast_previz_target_ms=FAST_PREVIZ_TARGET_MS,
+    )
     payload = {
         "eval_id": "real-ai-previz-runtime",
         "measured_at": datetime.now(UTC).isoformat(),
-        "fixture_manifest": _display_repo_relative_path(fixture_manifest_path),
+        "fixture_manifest": display_repo_relative_path(fixture_manifest_path, REPO_ROOT),
         "target_fast_previz_ms": FAST_PREVIZ_TARGET_MS,
+        "comparison_method": "shared_shot_planning_substrate",
+        "repeat_count": args.repeat_count,
         "summary": summary,
-        "cases": [result.model_dump(mode="json") for result in results],
+        "cases": [result.model_dump(mode="json") for result in case_aggregates],
+        "attempts": [result.model_dump(mode="json") for result in attempts],
     }
 
     output_prefix = args.output_prefix.resolve()
@@ -158,75 +125,172 @@ def main() -> None:
     md_path = output_prefix.with_suffix(".md")
     json_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    md_path.write_text(_render_markdown(payload), encoding="utf-8")
+    md_path.write_text(render_runtime_markdown(payload), encoding="utf-8")
     print(json_path)
     print(md_path)
 
 
-def _run_case(*, case: RuntimeEvalCase, keep_projects: bool) -> RuntimeCaseResult:
-    fixture_path = (REPO_ROOT / case.input_fixture).resolve()
-    if not fixture_path.exists():
-        raise FileNotFoundError(f"Fixture input missing for case {case.case_id}: {fixture_path}")
+def _run_attempts(
+    *,
+    cases: list[RuntimeEvalCase],
+    repeat_count: int,
+    keep_projects: bool,
+) -> list[RuntimeCaseResult]:
+    grouped_cases: dict[tuple[str, str, str], list[RuntimeEvalCase]] = defaultdict(list)
+    for case in cases:
+        grouped_cases[(case.input_fixture, case.scene_id, case.prerequisite_mode)].append(case)
 
-    project_slug = f"eval-real-ai-previz-{case.case_id}-{uuid.uuid4().hex[:6]}"
+    attempts: list[RuntimeCaseResult] = []
+    for attempt_index in range(1, repeat_count + 1):
+        for group_cases in grouped_cases.values():
+            shared = _prepare_shared_substrate(
+                seed_case=group_cases[0],
+                attempt_index=attempt_index,
+            )
+            try:
+                for case in group_cases:
+                    attempts.append(
+                        _run_case_attempt(
+                            case=case,
+                            attempt_index=attempt_index,
+                            shared=shared,
+                            keep_projects=keep_projects,
+                        )
+                    )
+            finally:
+                if not keep_projects and shared["success"]:
+                    shutil.rmtree(shared["project_dir"], ignore_errors=True)
+    return attempts
+
+
+def _prepare_shared_substrate(
+    *,
+    seed_case: RuntimeEvalCase,
+    attempt_index: int,
+) -> dict[str, object]:
+    fixture_path = (REPO_ROOT / seed_case.input_fixture).resolve()
+    if not fixture_path.exists():
+        raise FileNotFoundError(
+            f"Fixture input missing for case {seed_case.case_id}: {fixture_path}"
+        )
+
+    project_slug = (
+        f"eval-real-ai-previz-shared-{seed_case.prerequisite_mode}-"
+        f"{attempt_index}-{uuid.uuid4().hex[:6]}"
+    )
     project_dir = REPO_ROOT / "output" / project_slug
     if project_dir.exists():
         shutil.rmtree(project_dir)
     project_dir.mkdir(parents=True, exist_ok=True)
-    _write_project_json(project_dir=project_dir, slug=project_slug, display_name=case.label)
+    _write_project_json(
+        project_dir=project_dir,
+        slug=project_slug,
+        display_name=f"{seed_case.label} shared substrate",
+    )
     stored_input = _seed_input(project_dir=project_dir, source=fixture_path)
-
-    base_params = {
-        "input_file": str(stored_input),
-        "default_model": PROJECT_DEFAULT_MODEL,
-        "work_model": PROJECT_WORK_MODEL,
-        "verify_model": PROJECT_VERIFY_MODEL,
-        "qa_model": PROJECT_VERIFY_MODEL,
-        "escalate_model": PROJECT_ESCALATE_MODEL,
-        "accept_config": True,
-        "scene_scope": {"mode": "current_scene", "scene_ids": [case.scene_id]},
-    }
+    runtime_params = _build_runtime_params(
+        input_file=stored_input,
+        scene_id=seed_case.scene_id,
+    )
 
     prerequisite_runs: list[RecipeRunSummary] = []
     prereq_started = time.perf_counter()
     prerequisite_plan = [MVP_INGEST_RECIPE]
-    if case.prerequisite_mode == "scene_ready":
+    if seed_case.prerequisite_mode == "scene_ready":
         prerequisite_plan.append(CREATIVE_DIRECTION_RECIPE)
     for recipe_path in prerequisite_plan:
         prereq_run = _run_recipe(
             recipe_path=recipe_path,
             project_dir=project_dir,
-            run_id=f"{case.case_id}-{recipe_path.stem}-{uuid.uuid4().hex[:4]}",
-            runtime_params=base_params,
+            run_id=(
+                f"{seed_case.case_id}-shared-{attempt_index}-"
+                f"{recipe_path.stem}-{uuid.uuid4().hex[:4]}"
+            ),
+            runtime_params=runtime_params,
         )
         prerequisite_runs.append(prereq_run)
         if not prereq_run.success:
             break
-    prerequisite_elapsed_ms = round((time.perf_counter() - prereq_started) * 1000)
 
-    ai_recipe_path = _materialize_ai_previz_recipe(case)
-    try:
-        ai_started = time.perf_counter()
-        ai_previz_run = _run_recipe(
-            recipe_path=ai_recipe_path,
+    planning_run: RecipeRunSummary | None = None
+    if all(run.success for run in prerequisite_runs):
+        planning_run = _run_recipe(
+            recipe_path=AI_PREVIZ_RECIPE,
             project_dir=project_dir,
-            run_id=f"{case.case_id}-ai-previz-{uuid.uuid4().hex[:4]}",
-            runtime_params=base_params,
+            run_id=f"{seed_case.case_id}-shared-{attempt_index}-planning-{uuid.uuid4().hex[:4]}",
+            runtime_params=runtime_params,
+            end_at="shot_planning",
         )
-        ai_previz_elapsed_ms = round((time.perf_counter() - ai_started) * 1000)
-    finally:
-        if ai_recipe_path != AI_PREVIZ_RECIPE and ai_recipe_path.exists():
-            ai_recipe_path.unlink()
+        prerequisite_runs.append(planning_run)
 
-    success = all(run.success for run in prerequisite_runs) and ai_previz_run.success
-    total_elapsed_ms = prerequisite_elapsed_ms + ai_previz_elapsed_ms
-    ai_previz_artifact_path = ai_previz_run.artifact_paths.get("ai_previz_video")
-    media_validation_path = ai_previz_run.artifact_paths.get("media_validation")
-    error = next(
-        (run.error for run in [*prerequisite_runs, ai_previz_run] if run.error),
-        None,
+    prerequisite_elapsed_ms = round((time.perf_counter() - prereq_started) * 1000)
+    success = all(run.success for run in prerequisite_runs)
+    error = next((run.error for run in prerequisite_runs if run.error), None)
+    return {
+        "project_dir": project_dir,
+        "runtime_params": runtime_params,
+        "prerequisite_runs": prerequisite_runs,
+        "prerequisite_elapsed_ms": prerequisite_elapsed_ms,
+        "success": success,
+        "error": error,
+    }
+
+
+def _run_case_attempt(
+    *,
+    case: RuntimeEvalCase,
+    attempt_index: int,
+    shared: dict[str, object],
+    keep_projects: bool,
+) -> RuntimeCaseResult:
+    shared_project_dir = Path(str(shared["project_dir"]))
+    project_slug = (
+        f"eval-real-ai-previz-{case.case_id}-r{attempt_index}-"
+        f"{uuid.uuid4().hex[:6]}"
     )
+    project_dir = REPO_ROOT / "output" / project_slug
+    if project_dir.exists():
+        shutil.rmtree(project_dir)
 
+    prerequisite_runs = [
+        run.model_copy(deep=True) for run in shared["prerequisite_runs"]
+    ]
+    prerequisite_elapsed_ms = int(shared["prerequisite_elapsed_ms"])
+    base_success = bool(shared["success"])
+    base_error = shared["error"]
+    ai_previz_run: RecipeRunSummary | None = None
+    ai_previz_elapsed_ms = 0
+    error = str(base_error) if base_error else None
+    ai_previz_artifact_path: str | None = None
+    media_validation_path: str | None = None
+
+    if base_success:
+        shutil.copytree(shared_project_dir, project_dir)
+        ai_recipe_path = _materialize_ai_previz_recipe(case)
+        try:
+            ai_started = time.perf_counter()
+            ai_previz_run = _run_recipe(
+                recipe_path=ai_recipe_path,
+                project_dir=project_dir,
+                run_id=f"{case.case_id}-ai-previz-r{attempt_index}-{uuid.uuid4().hex[:4]}",
+                runtime_params=dict(shared["runtime_params"]),
+                start_from="ai_previz",
+            )
+            ai_previz_elapsed_ms = round((time.perf_counter() - ai_started) * 1000)
+        finally:
+            if ai_recipe_path != AI_PREVIZ_RECIPE and ai_recipe_path.exists():
+                ai_recipe_path.unlink()
+
+        if ai_previz_run is not None:
+            ai_previz_artifact_path = ai_previz_run.artifact_paths.get("ai_previz_video")
+            media_validation_path = ai_previz_run.artifact_paths.get("media_validation")
+            if ai_previz_run.error:
+                error = ai_previz_run.error
+    else:
+        project_dir.mkdir(parents=True, exist_ok=True)
+
+    success = base_success and ai_previz_run is not None and ai_previz_run.success
+    total_elapsed_ms = prerequisite_elapsed_ms + ai_previz_elapsed_ms
     result = RuntimeCaseResult(
         case_id=case.case_id,
         label=case.label,
@@ -249,6 +313,7 @@ def _run_case(*, case: RuntimeEvalCase, keep_projects: bool) -> RuntimeCaseResul
         ),
         scene_id=case.scene_id,
         input_fixture=case.input_fixture,
+        attempt_index=attempt_index,
         notes=case.notes,
         project_dir=str(project_dir.relative_to(REPO_ROOT)),
         success=success,
@@ -263,24 +328,29 @@ def _run_case(*, case: RuntimeEvalCase, keep_projects: bool) -> RuntimeCaseResul
     )
 
     if not keep_projects and success:
-        shutil.rmtree(project_dir)
+        shutil.rmtree(project_dir, ignore_errors=True)
     return result
 
 
-def _display_repo_relative_path(path: Path) -> str:
-    resolved = path.resolve()
-    try:
-        return str(resolved.relative_to(REPO_ROOT))
-    except ValueError:
-        return str(resolved)
-
-
+def _build_runtime_params(*, input_file: Path, scene_id: str) -> dict[str, object]:
+    return {
+        "input_file": str(input_file),
+        "default_model": PROJECT_DEFAULT_MODEL,
+        "work_model": PROJECT_WORK_MODEL,
+        "verify_model": PROJECT_VERIFY_MODEL,
+        "qa_model": PROJECT_VERIFY_MODEL,
+        "escalate_model": PROJECT_ESCALATE_MODEL,
+        "accept_config": True,
+        "scene_scope": {"mode": "current_scene", "scene_ids": [scene_id]},
+    }
 def _run_recipe(
     *,
     recipe_path: Path,
     project_dir: Path,
     run_id: str,
     runtime_params: dict[str, object],
+    start_from: str | None = None,
+    end_at: str | None = None,
 ) -> RecipeRunSummary:
     from cine_forge.driver.engine import DriverEngine
 
@@ -296,6 +366,8 @@ def _run_recipe(
             run_id=run_id,
             force=True,
             runtime_params=runtime_params,
+            start_from=start_from,
+            end_at=end_at,
         )
         success = _state_succeeded(state)
     except Exception as exc:  # noqa: BLE001
@@ -386,9 +458,10 @@ def _seed_input(*, project_dir: Path, source: Path) -> Path:
 def _state_succeeded(state: dict | None) -> bool:
     if not state:
         return False
+    stage_ids = list(state.get("stage_order") or state.get("stages", {}).keys())
     stage_statuses = {
-        str(stage_data.get("status", "unknown"))
-        for stage_data in state.get("stages", {}).values()
+        str(state.get("stages", {}).get(stage_id, {}).get("status", "unknown"))
+        for stage_id in stage_ids
     }
     if not stage_statuses:
         return False
@@ -403,89 +476,5 @@ def _shipped_ai_previz_defaults() -> dict[str, object]:
         if stage.get("id") == "ai_previz":
             return dict(stage.get("params", {}))
     raise ValueError("recipe-ai-previz-generation.yaml is missing the ai_previz stage.")
-
-
-def _summarize(results: list[RuntimeCaseResult]) -> dict[str, object]:
-    successful = [result for result in results if result.success]
-    scene_ready = [
-        result
-        for result in successful
-        if result.prerequisite_mode == "scene_ready"
-    ]
-    fastest_scene_ready = min(
-        scene_ready,
-        key=lambda result: result.total_elapsed_ms,
-        default=None,
-    )
-    fastest_total = min(
-        successful,
-        key=lambda result: result.total_elapsed_ms,
-        default=None,
-    )
-    overall = 0.0
-    if fastest_scene_ready is not None:
-        overall = 1.0 if fastest_scene_ready.total_elapsed_ms <= FAST_PREVIZ_TARGET_MS else 0.5
-
-    return {
-        "overall": overall,
-        "successful_cases": len(successful),
-        "total_cases": len(results),
-        "successful_case_ratio": round(len(successful) / len(results), 4),
-        "fastest_scene_ready_case_id": fastest_scene_ready.case_id if fastest_scene_ready else None,
-        "fastest_scene_ready_ms": (
-            fastest_scene_ready.total_elapsed_ms if fastest_scene_ready else None
-        ),
-        "fastest_scene_ready_prerequisite_ms": (
-            fastest_scene_ready.prerequisite_elapsed_ms if fastest_scene_ready else None
-        ),
-        "fastest_scene_ready_ai_previz_ms": (
-            fastest_scene_ready.ai_previz_elapsed_ms if fastest_scene_ready else None
-        ),
-        "fastest_total_case_id": fastest_total.case_id if fastest_total else None,
-        "fastest_total_ms": fastest_total.total_elapsed_ms if fastest_total else None,
-        "target_fast_previz_ms": FAST_PREVIZ_TARGET_MS,
-    }
-
-
-def _render_markdown(payload: dict[str, object]) -> str:
-    summary = payload["summary"]
-    cases = payload["cases"]
-    lines = [
-        "# Real AI Previz Runtime Eval",
-        "",
-        f"- Measured at: {payload['measured_at']}",
-        f"- Fixture manifest: `{payload['fixture_manifest']}`",
-        f"- Successful cases: {summary['successful_cases']} / {summary['total_cases']}",
-        f"- Fastest scene-ready case: `{summary['fastest_scene_ready_case_id']}`",
-        f"- Fastest scene-ready total runtime: {summary['fastest_scene_ready_ms']} ms",
-        f"- Fastest scene-ready prerequisites: {summary['fastest_scene_ready_prerequisite_ms']} ms",
-        f"- Fastest scene-ready AI-previz recipe: {summary['fastest_scene_ready_ai_previz_ms']} ms",
-        f"- Fastest total case: `{summary['fastest_total_case_id']}`",
-        f"- Fastest total elapsed: {summary['fastest_total_ms']} ms",
-        (
-            f"- Fast target: <= {summary['target_fast_previz_ms']} ms "
-            "to first real scene-ready `ai_previz_video`"
-        ),
-        "",
-        "## Cases",
-        "",
-        "| Case | Mode | Engine Pack | Prereqs | AI Previz ms | Total ms | Success | Notes |",
-        "| --- | --- | --- | --- | ---: | ---: | --- | --- |",
-    ]
-    for case in cases:
-        lines.append(
-            "| "
-            f"{case['case_id']} | "
-            f"{case['recipe_mode']} | "
-            f"{case['engine_pack_id']} / {case['duration_seconds']}s {case['resolution']} | "
-            f"{case['prerequisite_mode']} | "
-            f"{case['ai_previz_elapsed_ms']} | "
-            f"{case['total_elapsed_ms']} | "
-            f"{'yes' if case['success'] else 'no'} | "
-            f"{case.get('notes') or ''} |"
-        )
-    return "\n".join(lines) + "\n"
-
-
 if __name__ == "__main__":
     main()

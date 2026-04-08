@@ -1,0 +1,140 @@
+{
+  "generated_at": "2026-04-08T22:46:01.991733+00:00",
+  "base_summary_file": "/Users/cam/.codex/worktrees/7723/cine-forge/benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-summary-2026-04-08.json",
+  "source_result_files": [
+    "/Users/cam/.codex/worktrees/7723/cine-forge/benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.json"
+  ],
+  "summary": {
+    "current_shipped_case_id": "shipped_lite_4_scene_ready",
+    "runtime_winner_case_id": "fast_4_scene_ready",
+    "runtime_winner_total_ms": 164799,
+    "isolated_runtime_winner_case_id": "fast_4_scene_ready",
+    "isolated_runtime_winner_ai_previz_ms": 52196,
+    "usefulness_leader_case_id": "shipped_lite_4_scene_ready",
+    "usefulness_leader_overall": 0.828,
+    "leaders_diverge": true,
+    "note": "Runtime leader (fast_4_scene_ready) and usefulness leader (shipped_lite_4_scene_ready) diverge. Current shipped case is shipped_lite_4_scene_ready. No dominant winner is proven by the combined evidence alone."
+  },
+  "cases": [
+    {
+      "case_id": "fast_4_scene_ready",
+      "label": "Fast 4s candidate",
+      "engine_pack_id": "google_veo31_fast",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "usefulness_overall": 0.778,
+      "usefulness_note": "Existing previz-usefulness runner-up among AI lanes.",
+      "sample_count": 4,
+      "median_total_elapsed_ms": 164799,
+      "median_ai_previz_elapsed_ms": 52196,
+      "delta_vs_runtime_winner_total_ms": 0,
+      "delta_vs_runtime_winner_ai_previz_ms": 0,
+      "min_total_elapsed_ms": 132510,
+      "max_total_elapsed_ms": 241504,
+      "min_ai_previz_elapsed_ms": 40196,
+      "max_ai_previz_elapsed_ms": 72490,
+      "all_total_elapsed_ms": [
+        241504,
+        132510,
+        145285,
+        184313
+      ],
+      "all_ai_previz_elapsed_ms": [
+        72490,
+        40196,
+        57186,
+        47207
+      ]
+    },
+    {
+      "case_id": "veo31_4_scene_ready",
+      "label": "Veo 3.1 4s control",
+      "engine_pack_id": "google_veo31",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "usefulness_overall": null,
+      "usefulness_note": "Runtime control only; no stronger usefulness case than Lite 4.",
+      "sample_count": 4,
+      "median_total_elapsed_ms": 167958,
+      "median_ai_previz_elapsed_ms": 54226,
+      "delta_vs_runtime_winner_total_ms": 3159,
+      "delta_vs_runtime_winner_ai_previz_ms": 2030,
+      "min_total_elapsed_ms": 138927,
+      "max_total_elapsed_ms": 226637,
+      "min_ai_previz_elapsed_ms": 47964,
+      "max_ai_previz_elapsed_ms": 58533,
+      "all_total_elapsed_ms": [
+        226637,
+        150847,
+        138927,
+        185070
+      ],
+      "all_ai_previz_elapsed_ms": [
+        57623,
+        58533,
+        50828,
+        47964
+      ]
+    },
+    {
+      "case_id": "shipped_lite_4_scene_ready",
+      "label": "Shipped Veo 3.1 Lite 4s",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 4,
+      "resolution": "720p",
+      "usefulness_overall": 0.828,
+      "usefulness_note": "Existing previz-usefulness leader among current AI lanes.",
+      "sample_count": 4,
+      "median_total_elapsed_ms": 171007,
+      "median_ai_previz_elapsed_ms": 55428,
+      "delta_vs_runtime_winner_total_ms": 6208,
+      "delta_vs_runtime_winner_ai_previz_ms": 3232,
+      "min_total_elapsed_ms": 125714,
+      "max_total_elapsed_ms": 229550,
+      "min_ai_previz_elapsed_ms": 37615,
+      "max_ai_previz_elapsed_ms": 62274,
+      "all_total_elapsed_ms": [
+        229550,
+        142634,
+        125714,
+        199380
+      ],
+      "all_ai_previz_elapsed_ms": [
+        60536,
+        50320,
+        37615,
+        62274
+      ]
+    },
+    {
+      "case_id": "lite_8_scene_ready_control",
+      "label": "Lite 8s control",
+      "engine_pack_id": "google_veo31_lite",
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "usefulness_overall": null,
+      "usefulness_note": "Control only; same engine family as Lite 4 but slower.",
+      "sample_count": 4,
+      "median_total_elapsed_ms": 181813,
+      "median_ai_previz_elapsed_ms": 62022,
+      "delta_vs_runtime_winner_total_ms": 17014,
+      "delta_vs_runtime_winner_ai_previz_ms": 9826,
+      "min_total_elapsed_ms": 148956,
+      "max_total_elapsed_ms": 228384,
+      "min_ai_previz_elapsed_ms": 59370,
+      "max_ai_previz_elapsed_ms": 71019,
+      "all_total_elapsed_ms": [
+        228384,
+        155501,
+        148956,
+        208125
+      ],
+      "all_ai_previz_elapsed_ms": [
+        59370,
+        63187,
+        60857,
+        71019
+      ]
+    }
+  ]
+}

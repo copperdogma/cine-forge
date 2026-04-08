@@ -1384,12 +1384,12 @@ evals:
     type: quality
     description: >
       End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane.
-      Compares the shipped `ai_previz_generation` recipe against reachable 4-second
-      Veo pack variants and separates prerequisite overhead from `ai_previz_video`
-      generation time.
+      Compares the current shipped `ai_previz_generation` recipe, an explicit
+      Lite 8-second control, and reachable 4-second Veo pack variants while
+      separating prerequisite overhead from `ai_previz_video` generation time.
     pipeline_stage: visualization
     runner: custom
-    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-pilot"
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-current"
     script: benchmarks/scripts/real_ai_previz_runtime_eval.py
     golden: benchmarks/fixtures/real_ai_previz_runtime_cases.json
     test_cases: 8
@@ -1401,6 +1401,80 @@ evals:
       note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful scene-ready case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
 
     scores:
+      - model: "Validation Decision Summary (No Dominant Winner)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 164799
+          fastest_scene_ready_ai_previz_ms: 52196
+          usefulness_leader_overall: 0.828
+        latency_ms: 164799
+        cost_usd: 0.25147
+        measured: 2026-04-08
+        git_sha: "0d6d517"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.json
+        note: "Fresh `/validate` reran the combined decision-summary step on the current shared-scene-ready evidence. The result stayed unchanged: Fast 4 is the pure runtime median leader at 164799 ms total / 52196 ms isolated ai-previz, Lite 4 is still the usefulness leader at 0.828 vs 0.778, and no dominant winner is proven by the combined evidence alone. The detector remains runtime-blocking for Story 149."
+      - model: "Shared Decision Summary (No Dominant Winner)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 164799
+          fastest_scene_ready_ai_previz_ms: 52196
+          usefulness_leader_overall: 0.828
+        latency_ms: 164799
+        cost_usd: 0.25147
+        measured: 2026-04-08
+        git_sha: "0d6d517"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-decision-2026-04-08.json
+        note: "Story 153 combined the earlier three shared-substrate scene-ready passes with the fresh validation rerun into one decision summary. Fast 4 is now the median runtime leader at 164799 ms total / 52196 ms isolated ai-previz, but Lite 4 remains the usefulness leader at 0.828 vs Fast 4 at 0.778 and trails by only 6208 ms total / 3232 ms isolated ai-previz. No dominant winner is proven by the combined evidence alone, so Lite 4 stays the provisional shipped slow lane and the detector remains runtime-blocking."
+      - model: "Validation Shared Pass (Fast 4 Single-Pass Winner)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 184313
+          fastest_scene_ready_ai_previz_ms: 47207
+        latency_ms: 184313
+        cost_usd: 0.06189
+        measured: 2026-04-08
+        git_sha: "0d6d517"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.json
+        note: "Fresh `/validate` reran the four `scene_ready` pack candidates from shared `shot_planning` substrate once. All four succeeded, but this pass flipped back to `fast_4_scene_ready` as both the fastest total and the fastest isolated ai-previz case at 184313 ms total / 47207 ms isolated, while shipped Lite 4 landed at 199380 ms / 62274 ms. That does not overturn the earlier median-plus-usefulness argument for Lite 4, but it confirms pack ordering is still unstable enough that Story 153 should stay open."
+      - model: "Shared Scene-Ready Median (Lite 4 Still Wins)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 142634
+          fastest_scene_ready_ai_previz_ms: 50320
+        latency_ms: 142634
+        cost_usd: 0.18958
+        measured: 2026-04-08
+        git_sha: "0d6d517"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-summary-2026-04-08.json
+        note: "Story 153 tightened the comparison boundary after the noisy validation rerun by comparing the four `scene_ready` pack candidates from identical precomputed `shot_planning` state across three passes. Median result keeps shipped Lite 4 as the best current slower AI lane at 142634 ms total / 50320 ms isolated ai-previz, ahead of Fast 4 at 145285 ms / 57186 ms and ahead of the old Lite 8 control at 155501 ms / 60857 ms. Existing previz-usefulness evidence still favors Lite over Fast (0.828 vs 0.778). One direct `--repeat-count 3` attempt later stalled on a provider-side hang during `shipped_lite_4_scene_ready-ai-previz-r2-0443`, so the repeated evidence is preserved as sequential one-repeat passes plus the salvaged first pass."
+      - model: "Validation Matrix (Winner Not Stable Yet)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 166188
+          fastest_total_ms: 100956
+        latency_ms: 166188
+        cost_usd: 0.34043
+        measured: 2026-04-08
+        git_sha: "0d6d517"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-153-validation-2026-04-08.json
+        note: "Fresh `/validate` reran the full 8-case matrix after switching the shipped recipe to Lite 4 / 720p. The rerun stayed fully successful and runtime-blocking, but it did not confirm Lite 4 as the stable overall winner: Lite 4 still beat the Lite 8 controls, yet `veo31_4_scene_ready` was fastest overall at 166188 ms and `fast_4_scene_ready` had the quickest scene-ready ai-previz segment at 95434 ms. The provider-floor question is still noisy because prerequisite variance is large enough to reshuffle the winner, so Story 153 should stay open."
+      - model: "Provider Floor Full Matrix (Lite 4 Winner)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 146281
+          fastest_total_ms: 112143
+        latency_ms: 146281
+        cost_usd: 0.33543
+        measured: 2026-04-08
+        git_sha: "0d6d517"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-153-provider-floor-2026-04-08.json
+        note: "Story 153 completed the full 8-case provider-floor matrix and compared the pre-change shipped Lite 8s lane against Lite 4s, Fast 4s, and full Veo 4s candidates. Lite 4 scene-ready won at 146281 ms total (59734 ms prerequisites + 86547 ms ai-previz), improving the shipped Lite 8 baseline by 38645 ms overall and 45828 ms inside the ai-previz recipe. Existing previz-usefulness evidence already measures Veo 3.1 Lite at 4s / 720p, so Story 153 switched the shipped AI-previz recipe to that mode. Remaining detector failure is still runtime-blocking for Story 149."
       - model: "Compact Pilot (Lite 8s + Fast 4s)"
         metrics:
           overall: 0.5
@@ -1428,6 +1502,18 @@ evals:
 
     attempts:
       - date: 2026-04-08
+        git_sha: "0d6d517"
+        note: "Fresh `/validate` reran the decision-summary aggregation itself into `benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.{json,md}` after the harness extraction. Outcome was unchanged from the prior combined artifact: Fast 4 leads runtime, Lite 4 leads usefulness, and no dominant winner is proven."
+      - date: 2026-04-08
+        git_sha: "0d6d517"
+        note: "Story 153 extracted the shared-substrate runtime harness into support helpers and added a combined decision-summary step that folds the fresh validation pass into the earlier three shared-scene-ready runs. The combined artifact shows Fast 4 as the current pure runtime leader, Lite 4 as the usefulness leader, and no dominant winner proven by the available shared-substrate evidence. Result file: `benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-decision-2026-04-08.{json,md}`."
+      - date: 2026-04-08
+        git_sha: "0d6d517"
+        note: "Fresh `/validate` reran the four shared-substrate `scene_ready` pack candidates once more. The pass stayed fully successful and runtime-blocking, but the fastest pack flipped back to Fast 4 instead of reinforcing the earlier Lite 4 median winner. Result file: `benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.{json,md}`. Conclusion: the provider-floor comparison is more trustworthy than the pre-tightening harness, but the pack ordering is still noisy enough that Story 153 should stay open."
+      - date: 2026-04-08
+        git_sha: "0d6d517"
+        note: "Story 153 tightened the harness to compare pack variants from shared `shot_planning` substrate and then repeated the `scene_ready` pack race three times. A direct multi-repeat run hung provider-side during repeat 2, so the final summary records sequential one-repeat passes plus the salvaged first pass. Median outcome still favors shipped Lite 4 over Fast 4 and Lite 8 while keeping the detector runtime-blocking."
+      - date: 2026-04-08
         git_sha: "80200d9"
         note: "Story 150 created the first dedicated runtime detector for fastest-real-AI-previz after Story 149 proved the honest single-scene baseline was still about 299s. Harness and case matrix are scaffolded; first pilot run is pending."
       - date: 2026-04-08
@@ -1439,6 +1525,12 @@ evals:
       - date: 2026-04-08
         git_sha: "80200d9"
         note: "Story 152 measured the regenerate/reuse path on a copied honest project state rather than the full raw-input detector. Using `start_from=ai_previz` removed `shot_planning` entirely and cut wall time from 81545 ms to 75337 ms on the sampled project, but the net improvement was only 6208 ms because `validate_media` was noisier on the sliced run. Result file: `benchmarks/results/real-ai-previz-runtime-story-152-reuse-baseline-2026-04-08.{json,md}`. This is useful substrate evidence for the iteration loop, but it remains runtime-blocking for Story 149."
+      - date: 2026-04-08
+        git_sha: "0d6d517"
+        note: "Story 153 ran the full 8-case provider-floor matrix. Lite 4 beat the pre-change shipped Lite 8 lane and both Fast 4 and full Veo 4 on honest scene-ready total runtime, so the shipped AI-previz recipe was moved to Lite 4 / 720p and the fixture manifest was updated to reflect current shipped truth plus explicit Lite 8 controls. Even after that improvement, fastest scene-ready remains 146281 ms, so the detector stays runtime-blocking."
+      - date: 2026-04-08
+        git_sha: "0d6d517"
+        note: "Fresh validation reran the full matrix on the post-change manifest and produced a different winner ordering: Lite 4 remained better than the Lite 8 controls, but `veo31_4_scene_ready` became the fastest scene-ready case and `fast_4_scene_ready` had the quickest scene-ready ai-previz segment. The harness still proves runtime-blocking, but it does not yet isolate a stable shipped winner strongly enough to close Story 153."
 
   - id: entity-discovery
     name: Entity Discovery
