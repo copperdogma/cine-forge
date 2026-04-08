@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-07-01] — Shared theme system and appearance settings (Story 046)
+
+### Added
+- Added a shared app-level theme system with reusable palette definitions, a focused theme provider, and a focused appearance settings section for project-backed mode and palette control
+
+### Changed
+- Changed the operator console to support Light, Dark, and Auto modes plus Slate, Obsidian, Ember, and Noir palettes through the real Project Settings flow instead of a hardcoded dark-only shell
+- Changed the `/theme` showcase into a shared smoke surface backed by the same palette source as the live app, and moved pre-hydration theme restore into the app bootstrap to avoid a wrong-theme flash on reload
+
+### Fixed
+- Fixed Sonner toast theming so notifications follow the resolved theme, fixed the nested-button regression in the new palette cards, and fixed palette token contrast so all light/dark combinations meet the story's AA validation bar
+
 ## [2026-04-04-06] — Scene-scoped planning and downstream generation (Story 148)
 
 ### Added

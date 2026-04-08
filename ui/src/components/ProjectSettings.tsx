@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Settings, Cpu, Workflow, Fingerprint } from "lucide-react"
+import { Settings, Cpu, Workflow, Fingerprint, Palette } from "lucide-react"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -32,6 +32,7 @@ import {
   type BudgetSettingsFormState,
 } from "@/components/ProjectBudgetSettingsSection"
 import { ProjectPreferenceLearningSection } from "@/components/ProjectPreferenceLearningSection"
+import { ProjectAppearanceSection } from "@/components/ProjectAppearanceSection"
 import { updateProjectSettings } from "@/lib/api"
 import type { ProjectSummary } from "@/lib/types"
 import {
@@ -240,6 +241,10 @@ export function ProjectSettings({
               <Cpu className="size-4" />
               Models
             </TabsTrigger>
+            <TabsTrigger value="appearance">
+              <Palette className="size-4" />
+              Appearance
+            </TabsTrigger>
             <TabsTrigger value="pipeline">
               <Workflow className="size-4" />
               Pipeline
@@ -430,6 +435,10 @@ export function ProjectSettings({
                 {savingModels ? "Saving..." : "Save"}
               </Button>
             </div>
+          </TabsContent>
+
+          <TabsContent value="appearance" className="space-y-4 mt-4">
+            <ProjectAppearanceSection projectId={projectId} project={project} />
           </TabsContent>
 
           {/* Pipeline Tab */}

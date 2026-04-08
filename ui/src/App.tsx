@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { Toaster } from '@/components/ui/sonner'
+import { AppThemeProvider } from '@/components/AppThemeProvider'
 import AppShell from '@/components/AppShell'
 import Landing from '@/pages/Landing'
 import NewProject from '@/pages/NewProject'
@@ -33,47 +34,49 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <BrowserRouter>
-          <div className="dark min-h-screen bg-background text-foreground">
-            <Routes>
-              {/* Full-screen routes (no shell) */}
-              <Route path="/" element={<Landing />} />
-              <Route path="/new" element={<NewProject />} />
-              <Route path="/theme" element={<ThemeShowcase />} />
+          <AppThemeProvider>
+            <div className="min-h-screen bg-background text-foreground">
+              <Routes>
+                {/* Full-screen routes (no shell) */}
+                <Route path="/" element={<Landing />} />
+                <Route path="/new" element={<NewProject />} />
+                <Route path="/theme" element={<ThemeShowcase />} />
 
-              {/* Project-scoped routes (wrapped in AppShell) */}
-              <Route path="/:projectId" element={<AppShell />}>
-                <Route index element={<ProjectHome />} />
+                {/* Project-scoped routes (wrapped in AppShell) */}
+                <Route path="/:projectId" element={<AppShell />}>
+                  <Route index element={<ProjectHome />} />
 
-                {/* Intent & Mood */}
-                <Route path="intent" element={<IntentMoodPage />} />
+                  {/* Intent & Mood */}
+                  <Route path="intent" element={<IntentMoodPage />} />
 
-                {/* Entity-first navigation */}
-                <Route path="scenes" element={<EntityListPage section="scenes" />} />
-                <Route path="scenes/:entityId" element={<SceneWorkspacePage />} />
-                <Route path="characters" element={<EntityListPage section="characters" />} />
-                <Route path="characters/:entityId" element={<EntityDetailPage section="characters" />} />
-                <Route path="locations" element={<EntityListPage section="locations" />} />
-                <Route path="locations/:entityId" element={<EntityDetailPage section="locations" />} />
-                <Route path="props" element={<EntityListPage section="props" />} />
-                <Route path="props/:entityId" element={<EntityDetailPage section="props" />} />
+                  {/* Entity-first navigation */}
+                  <Route path="scenes" element={<EntityListPage section="scenes" />} />
+                  <Route path="scenes/:entityId" element={<SceneWorkspacePage />} />
+                  <Route path="characters" element={<EntityListPage section="characters" />} />
+                  <Route path="characters/:entityId" element={<EntityDetailPage section="characters" />} />
+                  <Route path="locations" element={<EntityListPage section="locations" />} />
+                  <Route path="locations/:entityId" element={<EntityDetailPage section="locations" />} />
+                  <Route path="props" element={<EntityListPage section="props" />} />
+                  <Route path="props/:entityId" element={<EntityDetailPage section="props" />} />
 
-                {/* World */}
-                <Route path="world/continuity" element={<ContinuityPage />} />
+                  {/* World */}
+                  <Route path="world/continuity" element={<ContinuityPage />} />
 
-                {/* Inbox */}
-                <Route path="inbox" element={<ProjectInbox />} />
+                  {/* Inbox */}
+                  <Route path="inbox" element={<ProjectInbox />} />
 
-                {/* Advanced: Pipeline & raw artifacts */}
-                <Route path="run" element={<ProjectRun />} />
-                <Route path="run/:runId" element={<ProjectRun />} />
-                <Route path="runs" element={<ProjectRuns />} />
-                <Route path="runs/:runId" element={<RunDetail />} />
-                <Route path="artifacts" element={<ProjectArtifacts />} />
-                <Route path="artifacts/:artifactType/:entityId/:version" element={<ArtifactDetail />} />
-              </Route>
-            </Routes>
-          </div>
-          <Toaster richColors position="bottom-right" />
+                  {/* Advanced: Pipeline & raw artifacts */}
+                  <Route path="run" element={<ProjectRun />} />
+                  <Route path="run/:runId" element={<ProjectRun />} />
+                  <Route path="runs" element={<ProjectRuns />} />
+                  <Route path="runs/:runId" element={<RunDetail />} />
+                  <Route path="artifacts" element={<ProjectArtifacts />} />
+                  <Route path="artifacts/:artifactType/:entityId/:version" element={<ArtifactDetail />} />
+                </Route>
+              </Routes>
+            </div>
+            <Toaster richColors position="bottom-right" />
+          </AppThemeProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

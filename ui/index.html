@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -9,6 +9,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#111111" />
     <title>CineForge</title>
+    <script>
+      (() => {
+        const modeKey = 'cineforge-mode'
+        const paletteKey = 'cineforge-palette'
+        const root = document.documentElement
+        let storedPalette = null
+        let storedMode = null
+
+        try {
+          storedPalette = localStorage.getItem(paletteKey)
+          storedMode = localStorage.getItem(modeKey)
+        } catch {
+          storedPalette = null
+          storedMode = null
+        }
+
+        const palette = ['obsidian', 'ember', 'slate', 'noir'].includes(storedPalette)
+          ? storedPalette
+          : 'slate'
+        const selectedMode = ['light', 'dark', 'system'].includes(storedMode)
+          ? storedMode
+          : 'system'
+        const systemMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        const resolvedMode = selectedMode === 'system' ? systemMode : selectedMode
+
+        root.classList.remove('light', 'dark')
+        root.classList.add(resolvedMode)
+        root.dataset.themePalette = palette
+        root.style.colorScheme = resolvedMode
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

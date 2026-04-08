@@ -18,14 +18,13 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 145 and 146 completed the graph+state migration plus legacy metadata backfill, and Story 147 then closed the remaining planning-surface truth loophole so generated execution-map lanes and active-roadmap refs stay aligned with canonical story status. The ready product-facing lane now returns to operator-surface polish via Stories 034 and 046.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 145 and 146 completed the graph+state migration plus legacy metadata backfill, and Story 147 then closed the remaining planning-surface truth loophole so generated execution-map lanes and active-roadmap refs stay aligned with canonical story status. Product-facing operator-surface polish just advanced through Story 046, and Story 034 now remains as the ready lane inside the same spec:5 focus.
 
 ### Pending — Ready To Build Now
 
 | Story | Why |
 |---|---|
 | **034** In-App Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
-| **046** Theme System (Light/Dark/Auto + Palettes) | Refreshed against the current `ui/` architecture. ThemeShowcase, project settings, and the existing `ui_preferences` path now give it a clean build plan. |
 
 ### In Progress
 
@@ -209,7 +208,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 046 | Theme System (Light/Dark/Auto + Palettes) | Medium | Pending | — | spec:5 | — | [story-046](stories/story-046-theme-system.md) |
 | 149 | Fast Previz Lane and Latency Budget | High | Draft | — | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
@@ -228,6 +226,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |
+| 046 | Theme System (Light/Dark/Auto + Palettes) | Medium | Done | — | spec:5 | — | [story-046](stories/story-046-theme-system.md) |
 | 052 | Streaming Artifact Yield: Live Per-Entity Progress | Medium | Done | — | spec:1, spec:5 | — | [story-052](stories/story-052-streaming-artifact-yield.md) |
 | 078 | Entity Detail: Scroll-to-Top, Cross-Ref Ordering & Props Metadata | Medium | Done | — | spec:5 | — | [story-078](stories/story-078-entity-detail-enhancements.md) |
 | 079 | Chat & Nav Bugs + Polish Bundle | Medium | Done | — | spec:5 | — | [story-079](stories/story-079-chat-nav-bugs-and-polish.md) |
