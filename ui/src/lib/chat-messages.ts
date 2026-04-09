@@ -1,6 +1,7 @@
 // State-driven chat message generator.
 // Produces initial messages for each project state with appropriate action buttons.
 
+import { getSceneScopeTargetLabel } from './constants'
 import type { ChatMessage, ProjectState, ProjectSummary } from './types'
 
 let nextId = 0
@@ -191,8 +192,8 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     done: 'Shot planning complete.',
   },
   animatics: {
-    start: 'Building fast previz from the current shot plans...',
-    done: 'Fast previz complete.',
+    start: 'Building the deterministic baseline from the current shot plans...',
+    done: 'Deterministic baseline complete.',
   },
   ai_previz: {
     start: 'Generating low-fidelity AI previz clips for blocking and camera review...',
@@ -214,7 +215,28 @@ export function humanizeStageName(name: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
-export function getStageStartMessage(stageName: string): string {
+export function getStageStartMessage(stageName: string, sceneScope?: unknown): string {
+  const scopeTarget = getSceneScopeTargetLabel(sceneScope)
+  if (stageName === 'shot_planning') {
+    return scopeTarget === 'this scene'
+      ? 'Planning coverage and shot list for this scene...'
+      : 'Planning coverage and shot lists across your scenes...'
+  }
+  if (stageName === 'storyboards') {
+    return scopeTarget === 'this scene'
+      ? 'Generating storyboard frames for this scene...'
+      : 'Generating storyboard frames across your scenes...'
+  }
+  if (stageName === 'animatics') {
+    return scopeTarget === 'this scene'
+      ? 'Building deterministic baseline for this scene...'
+      : 'Building deterministic baseline from the current shot plans...'
+  }
+  if (stageName === 'ai_previz') {
+    return scopeTarget === 'this scene'
+      ? 'Generating low-fidelity AI previz clip for this scene...'
+      : 'Generating low-fidelity AI previz clips for blocking and camera review...'
+  }
   return STAGE_DESCRIPTIONS[stageName]?.start ?? `Working on ${humanizeStageName(stageName)}...`
 }
 

@@ -196,13 +196,13 @@ def build_scene_action_preflight(
             recipe_id=recipe_id,
             scene_ids=scene_ids,
         )
-        if start_from is None and _can_reuse_generation_stage(
-            preflight=preflight,
-            store=store,
-            recipe_id=recipe_id,
-            scene_ids=scene_ids,
-        ):
-            preflight.start_from = _recommended_generation_start_stage(recipe_id)
+        if start_from is None:
+            preflight.start_from = _recommended_generation_start_stage(
+                preflight=preflight,
+                store=store,
+                recipe_id=recipe_id,
+                scene_ids=scene_ids,
+            )
 
     if any(item.kind == "soft_block" for item in preflight.items):
         preflight.status = "soft_block"
@@ -466,31 +466,39 @@ def _ref_is_healthy(store: ArtifactStore, artifact_ref: ArtifactRef) -> bool:
     return health in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}
 
 
-def _can_reuse_generation_stage(
+def _recommended_generation_start_stage(
     *,
     preflight: SceneActionPreflight,
     store: ArtifactStore,
     recipe_id: str,
     scene_ids: list[str],
-) -> bool:
-    if recipe_id != "ai_previz_generation":
-        return False
+) -> str | None:
     if not _has_healthy_project_artifact(store, "track_manifest"):
-        return False
-    return (
-        _missing_or_unhealthy_scene_artifact_count(
+        return None
+    if recipe_id == "ai_previz_generation":
+        missing_shot_plan = _missing_or_unhealthy_scene_artifact_count(
             store,
             "shot_plan",
             scene_ids,
             preflight.scene_scope,
         )
-        == 0
-    )
-
-
-def _recommended_generation_start_stage(recipe_id: str) -> str | None:
-    if recipe_id == "ai_previz_generation":
-        return "ai_previz"
+        return "ai_previz" if missing_shot_plan == 0 else None
+    if recipe_id == "animatics_generation":
+        missing_shot_plan = _missing_or_unhealthy_scene_artifact_count(
+            store,
+            "shot_plan",
+            scene_ids,
+            preflight.scene_scope,
+        )
+        if missing_shot_plan != 0:
+            return None
+        missing_storyboards = _missing_or_unhealthy_scene_artifact_count(
+            store,
+            "storyboard",
+            scene_ids,
+            preflight.scene_scope,
+        )
+        return "storyboards" if missing_storyboards else "animatics"
     return None
 
 

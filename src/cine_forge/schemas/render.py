@@ -10,11 +10,11 @@ from .animatic import MediaFile, PreviewProvenance
 from .creative_brief import VisualCreativeBrief
 from .models import ArtifactRef, CostRecord
 
-RenderProvider = Literal["openai", "google"]
+RenderProvider = Literal["openai", "google", "xai"]
 PrevizAdoptionState = Literal["default", "recommended_optional", "experimental_manual"]
 PrevizCostStatus = Literal["verified", "estimated", "blocked"]
-PrevizDefaultLane = Literal["annotated_animatic", "ai_previz"]
-PrevizLaneId = Literal["annotated_animatic", "ai_previz"]
+PrevizPrimaryLane = Literal["deterministic_previz", "ai_previz"]
+PrevizLaneId = Literal["deterministic_previz", "ai_previz"]
 PrevizLatencyClass = Literal["fast", "slow"]
 PrevizConsistencyStrategy = Literal[
     "deterministic",
@@ -136,11 +136,11 @@ class PrevizLaneStatus(BaseModel):
 
 
 class PrevizAdoptionStatus(BaseModel):
-    """Shared backend policy object for previz default and AI-lane disclosure."""
+    """Shared backend policy object for previz primary-lane and fallback disclosure."""
 
-    default_lane: PrevizDefaultLane = "annotated_animatic"
+    primary_lane: PrevizPrimaryLane = "ai_previz"
     policy_summary: str = Field(min_length=1)
-    fast_previz: PrevizLaneStatus
+    deterministic_previz: PrevizLaneStatus
     ai_previz: PrevizLaneStatus
 
 

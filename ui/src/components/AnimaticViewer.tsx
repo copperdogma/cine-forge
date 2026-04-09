@@ -9,7 +9,7 @@ import {
 } from '@/components/preview-provenance'
 import { getAssetFileUrl } from '@/lib/api/assets'
 import { usePrevizAdoptionStatus } from '@/lib/hooks'
-import { Clock, DollarSign, Film, Timer, Volume2 } from 'lucide-react'
+import { Clock, DollarSign, Film, Timer, TriangleAlert, Volume2 } from 'lucide-react'
 
 type AnimaticViewerProps = {
   data: Record<string, unknown>
@@ -114,11 +114,13 @@ function parseAnimatic(data: Record<string, unknown>): AnimaticView {
 export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
   const animatic = parseAnimatic(data)
   const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
-  const fastPrevizStatus = previzStatus?.fast_previz
+  const deterministicPrevizStatus = previzStatus?.deterministic_previz
   const aiPrevizStatus = previzStatus?.ai_previz
   const sceneLabel =
     animatic.sceneNumber !== null ? `Scene ${animatic.sceneNumber}` : 'Scene Animatic'
   const videoUrl = animatic.videoPath ? getAssetFileUrl(projectId, animatic.videoPath) : null
+  const hasPlaceholderSegments = animatic.sourceMix.includes('placeholder')
+    || animatic.segments.some(segment => segment.sourceKind === 'placeholder')
 
   return (
     <div className="space-y-4">
@@ -141,9 +143,8 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
                   {formatPreviewMode(animatic.previewProvenance?.mode ?? null)}
                 </Badge>
               )}
-              {previzStatus?.default_lane === 'annotated_animatic' && (
-                <Badge variant="secondary">Default quick lane</Badge>
-              )}
+              <Badge variant="outline">Deterministic animatic</Badge>
+              <Badge variant="secondary">Fallback / control</Badge>
               {formatPreviewIntent(animatic.previewProvenance?.fidelityIntent ?? null) && (
                 <Badge variant="outline">
                   {formatPreviewIntent(animatic.previewProvenance?.fidelityIntent ?? null)}
@@ -176,6 +177,26 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-100">
+            <div className="flex items-start gap-2">
+              <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+              <div className="space-y-1">
+                <p>
+                  This is the deterministic baseline: an annotated animatic assembled from shot
+                  plans and storyboard frames. It is intentionally not AI-generated video and is
+                  only a fallback/control surface.
+                </p>
+                {hasPlaceholderSegments && (
+                  <p>
+                    Placeholder frames are active in this clip, so some segments render as
+                    annotated cards with text and guide lines instead of generated imagery.
+                  </p>
+                )}
+                {aiPrevizStatus?.upgrade_description && <p>{aiPrevizStatus.upgrade_description}</p>}
+              </div>
+            </div>
+          </div>
+
           {videoUrl ? (
             <video
               controls
@@ -197,7 +218,7 @@ export function AnimaticViewer({ data, projectId }: AnimaticViewerProps) {
 
           {animatic.previewProvenance && (
             <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
-              {fastPrevizStatus && <p>{fastPrevizStatus.reason}</p>}
+              {deterministicPrevizStatus && <p>{deterministicPrevizStatus.reason}</p>}
               <p>
                 Intended use: {animatic.previewProvenance.intendedUse.join(', ') || 'human review'}
               </p>

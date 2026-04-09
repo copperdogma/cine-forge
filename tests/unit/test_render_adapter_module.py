@@ -23,6 +23,7 @@ def test_load_engine_pack_supports_story_143_previz_candidate_packs() -> None:
     veo = load_engine_pack("google_veo31")
     veo_fast = load_engine_pack("google_veo31_fast")
     veo_lite = load_engine_pack("google_veo31_lite")
+    grok = load_engine_pack("xai_grok_imagine_video")
 
     assert sora.provider == "openai"
     assert sora.target_model == "sora-2"
@@ -32,6 +33,9 @@ def test_load_engine_pack_supports_story_143_previz_candidate_packs() -> None:
     assert veo_fast.request_defaults["benchmark_cost_per_second_usd"] == 0.10
     assert veo_lite.target_model == "veo-3.1-lite-generate-preview"
     assert veo_lite.limits.max_reference_images == 0
+    assert grok.provider == "xai"
+    assert grok.target_model == "grok-imagine-video"
+    assert grok.request_defaults["default_resolution"] == "480p"
 
 
 @pytest.mark.unit

@@ -1,6 +1,10 @@
 import { CheckCircle2, Loader2, Circle, AlertCircle, SkipForward, PauseCircle } from 'lucide-react'
 import { useRunState, useArtifactGroups } from '@/lib/hooks'
-import { STAGE_DESCRIPTIONS, humanizeStageName } from '@/lib/chat-messages'
+import {
+  getStageCompleteMessage,
+  getStageStartMessage,
+  humanizeStageName,
+} from '@/lib/chat-messages'
 import type { StageState } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import {
@@ -57,11 +61,9 @@ function StageIcon({ status }: { status: string }) {
   }
 }
 
-function stageLabel(stageId: string, status: string): string {
-  const desc = STAGE_DESCRIPTIONS[stageId]
-  if (!desc) return humanizeStageName(stageId)
-  if (status === 'done' || status === 'skipped_reused') return desc.done
-  if (status === 'running') return desc.start
+function stageLabel(stageId: string, status: string, sceneScope?: unknown): string {
+  if (status === 'done' || status === 'skipped_reused') return getStageCompleteMessage(stageId)
+  if (status === 'running') return getStageStartMessage(stageId, sceneScope)
   if (status === 'paused') return "Paused for review"
   return humanizeStageName(stageId)
 }
@@ -88,6 +90,7 @@ export function RunProgressCard({ content }: { content: string }) {
   const stageIds = stageOrder && stageOrder.length > 0
     ? stageOrder.filter(id => id in stages)
     : getOrderedStageIds(Object.keys(stages), stageOrder)
+  const sceneScope = runState.state.runtime_params?.scene_scope
 
   return (
     <div className="space-y-0.5 py-1">
@@ -119,7 +122,7 @@ export function RunProgressCard({ content }: { content: string }) {
             )}
           >
             <StageIcon status={status} />
-            <span>{stageLabel(stageId, status)}{sceneProgress}</span>
+            <span>{stageLabel(stageId, status, sceneScope)}{sceneProgress}</span>
             {summary && (
               <span className="text-xs text-muted-foreground/50">— {summary}</span>
             )}

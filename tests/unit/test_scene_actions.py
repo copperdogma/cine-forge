@@ -152,3 +152,65 @@ def test_ai_previz_preflight_does_not_reuse_stale_shot_plan(tmp_path: Path) -> N
 
     assert preflight.start_from is None
     assert any(item.label == "Shot planning" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_animatics_preflight_reuses_existing_healthy_shot_plan(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="track_manifest",
+        entity_id="project",
+        data={"tracks": []},
+        metadata=_metadata(),
+    )
+    store.save_artifact(
+        artifact_type="shot_plan",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "shots": []},
+        metadata=_metadata(),
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="animatics_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from == "storyboards"
+    assert all(item.label != "Shot planning" for item in preflight.items)
+    assert any(item.label == "Storyboards" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_animatics_preflight_reuses_existing_storyboards_when_healthy(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="track_manifest",
+        entity_id="project",
+        data={"tracks": []},
+        metadata=_metadata(),
+    )
+    store.save_artifact(
+        artifact_type="shot_plan",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "shots": []},
+        metadata=_metadata(),
+    )
+    store.save_artifact(
+        artifact_type="storyboard",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "frames": []},
+        metadata=_metadata(),
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="animatics_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from == "animatics"
+    assert all(item.label != "Shot planning" for item in preflight.items)
+    assert all(item.label != "Storyboards" for item in preflight.items)

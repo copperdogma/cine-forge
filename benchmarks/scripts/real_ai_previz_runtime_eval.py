@@ -14,6 +14,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
@@ -21,6 +22,9 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
+
+load_dotenv(REPO_ROOT / ".env")
+load_dotenv(REPO_ROOT / ".env.local")
 
 from real_ai_previz_runtime_support import (  # noqa: E402
     RecipeRunSummary,

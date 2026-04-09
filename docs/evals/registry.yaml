@@ -1340,7 +1340,7 @@ evals:
       value: 0.75
       latency_ms_max: 6000
       cost_usd_max: 0.80
-      note: "Fast Previz must deliver a first playable deterministic planning artifact within <=6000 ms on the fixed pack. AI lanes are judged as slower optional upgrades unless they also beat Annotated Animatic by at least 0.03, clear cost verification, and fit inside the same budget."
+      note: "Operator-facing previz should eventually mean AI-generated motion within <=6000 ms on the fixed pack. Deterministic animatics remain fallback/control baselines and must stay clearly labeled as such until a real AI lane clears the target."
 
     scores:
       - model: "Veo 3.1 Lite Previz"
@@ -1354,7 +1354,7 @@ evals:
         measured: 2026-04-03
         git_sha: "d6ac336"
         result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
-        note: "Strongest current AI upgrade lane. Prompt-only consistency is still good enough for previz readability, but it remains a slower optional upgrade because Lite cost is still unverified and the measured 39.3s latency is far outside the 6s Fast Previz budget."
+        note: "Strongest current AI-previz candidate. Prompt-only consistency is still good enough for previz readability, but it remains runtime-blocking because Lite cost is still unverified and the measured 39.3s latency is far outside the 6s fast-AI-previz target."
       - model: "Annotated Animatic"
         metrics:
           overall: 0.803
@@ -1366,7 +1366,7 @@ evals:
         measured: 2026-04-08
         git_sha: "80200d9"
         result_file: benchmarks/results/previz-usefulness-story-149-fast-lane-2026-04-08-report.json
-        note: "Fast Previz default and deterministic control. Story 149 re-measured the deterministic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the 6s quick-loop budget while keeping the same validated 0.803 usefulness score."
+        note: "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement."
       - model: "Veo 3.1 Fast Previz"
         metrics:
           overall: 0.778
@@ -1390,7 +1390,7 @@ evals:
         measured: 2026-04-08
         git_sha: "80200d9"
         result_file: benchmarks/results/previz-usefulness-story-149-fast-lane-2026-04-08-report.json
-        note: "Baseline comparator and explicit fallback, non-runtime-blocking. Story 149 re-measured the symbolic deterministic lane at 476 ms average; it is fast enough, but the usefulness score still reinforces why Annotated Animatic is the real Fast Previz default."
+        note: "Baseline comparator and explicit fallback, non-runtime-blocking. Story 149 re-measured the symbolic deterministic lane at 476 ms average; it is fast enough for control use, but it does not change the blocked truth that real previz still means AI-generated motion."
       - model: "Sora 2 Previz"
         metrics:
           overall: 0.659
@@ -1422,7 +1422,7 @@ evals:
         note: "UI-backed validation rerun rebuilt the dataset from scratch, but the first attempt hit a transient Sora moderation_blocked response during generation. An immediate clean retry succeeded end to end, and the fresh report landed at Veo 3.1 Lite 0.8280, Annotated Animatic 0.8030, Veo 3.1 Fast 0.7780, Sora 2 0.6590, and Symbolic 0.6547. Remaining failures are classified and non-runtime-blocking: Veo Fast on dialogue_confession_push_in is model-wrong, Sora 2's three failures remain ambiguous evidence_timestamp_range mismatches, Annotated Animatic on radio_hold_tracking is ambiguous on tone/emotion, and Symbolic Animatic remains ambiguous on quiet_bedside_vigil plus radio_hold_tracking simplification. Product decision remains hold because Lite cost is still unverified and its lead over Annotated stays below the 0.03 adoption margin."
       - date: 2026-04-08
         git_sha: "80200d9"
-        note: "Story 149 kept the validated 2026-04-03 UI-backed quality scores, but re-measured the deterministic lanes with the updated dataset generator and produced a fresh report. Annotated Animatic now records 606 ms average / 635 ms median generation latency, Symbolic Animatic records 476 ms average, and the policy shifts explicitly to Fast Previz default plus AI upgrade: Veo 3.1 Lite remains the strongest slower AI lane at 0.828 overall and 39273 ms."
+        note: "Story 149 kept the validated 2026-04-03 UI-backed quality scores, but re-measured the deterministic lanes with the updated dataset generator and produced a fresh report. Annotated Animatic now records 606 ms average / 635 ms median generation latency, Symbolic Animatic records 476 ms average, and the corrected product truth is now explicit: deterministic lanes are fallback/control only, while Veo 3.1 Lite remains the strongest current AI-previz lane at 0.828 overall and 39273 ms."
 
   - id: runtime-media-validation
     name: Runtime Media Validation
@@ -1524,14 +1524,15 @@ evals:
     description: >
       End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane.
       Compares the current shipped `ai_previz_generation` recipe, an explicit
-      Lite 8-second control, and reachable 4-second Veo pack variants while
-      separating prerequisite overhead from `ai_previz_video` generation time.
+      Lite 8-second control, reachable 4-second Veo pack variants, and a
+      benchmark-first xAI Grok Imagine candidate while separating prerequisite
+      overhead from `ai_previz_video` generation time.
     pipeline_stage: visualization
     runner: custom
     command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-current"
     script: benchmarks/scripts/real_ai_previz_runtime_eval.py
     golden: benchmarks/fixtures/real_ai_previz_runtime_cases.json
-    test_cases: 8
+    test_cases: 10
 
     target:
       metric: overall
@@ -1540,6 +1541,19 @@ evals:
       note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful scene-ready case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
 
     scores:
+      - model: "xAI Dual Probe (Fastest Runtime, Still Runtime-Blocking)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 130399
+          fastest_scene_ready_ai_previz_ms: 22635
+          fastest_total_ms: 65552
+        latency_ms: 130399
+        cost_usd: 0.08365516
+        measured: 2026-04-09
+        git_sha: "2271ebc"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-151-xai-2026-04-08.json
+        note: "Story 151 widened the real runtime harness to include Grok Imagine, fixed the worktree dotenv/bootstrap mismatch, and added pack-local prompt budgeting for xAI's 4096-character prompt cap. The resulting two-case xAI probe is fully successful: `xai_4_480p_scene_ready` now lands at 130399 ms total / 22635 ms isolated ai-previz, and `xai_4_480p_mvp_ingest_only` lands at 65552 ms total / 21687 ms isolated ai-previz. This is the fastest measured AI-previz provider on pure runtime in the current harness shape, but it still fails Story 149's `<=6000 ms` detector by a wide margin, so the result remains runtime-blocking."
       - model: "Validation Decision Summary (No Dominant Winner)"
         metrics:
           overall: 0.5
@@ -1640,6 +1654,9 @@ evals:
         note: "Story 150 pilot ran 3 real cases and then recovered the summary from completed run states after fixing a post-run fixture-path bug in the harness. All 3 cases succeeded, but none challenged the fast detector: shipped Lite 8s scene-ready was the best honest path at 270922 ms total (97846 ms prerequisites + 173076 ms ai-previz recipe), Fast 4s scene-ready was worse at 353687 ms, and Fast 4s ingest-only still needed 124929 ms. No semantic mismatches were present in the pilot subset; remaining failure is runtime-blocking."
 
     attempts:
+      - date: 2026-04-09
+        git_sha: "2271ebc"
+        note: "Story 151 widened the harness to include xAI/Grok Imagine via `xai_grok_imagine_video`, fixed the worktree dotenv loading path, then added deterministic prompt budgeting after the first real xAI call exposed a 4096-character prompt cap. The final two-case xAI probe is fully successful and currently the fastest measured AI-previz runtime in this harness shape, but it remains runtime-blocking because scene-ready total is still 130399 ms and isolated ai-previz is still 22635 ms. Result file: `benchmarks/results/real-ai-previz-runtime-story-151-xai-2026-04-08.{json,md}`."
       - date: 2026-04-08
         git_sha: "0d6d517"
         note: "Fresh `/validate` reran the decision-summary aggregation itself into `benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.{json,md}` after the harness extraction. Outcome was unchanged from the prior combined artifact: Fast 4 leads runtime, Lite 4 leads usefulness, and no dominant winner is proven."

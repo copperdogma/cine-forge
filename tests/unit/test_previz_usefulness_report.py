@@ -18,7 +18,7 @@ report = importlib.import_module("previz_usefulness_report")
 
 
 @pytest.mark.unit
-def test_build_summary_prefers_annotated_when_best_ai_trails(
+def test_build_summary_holds_ai_primary_when_best_ai_trails_fast_target(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -40,7 +40,7 @@ def test_build_summary_prefers_annotated_when_best_ai_trails(
                     "generation_latency_ms": latency_ms,
                     "estimated_generation_cost_usd": cost_usd,
                     "operator_lane": (
-                        "fast_previz" if variant == "annotated_symbolic" else "ai_previz"
+                        "deterministic_baseline" if variant == "annotated_symbolic" else "ai_previz"
                     ),
                     "latency_budget_ms": 6000 if variant == "annotated_symbolic" else 180000,
                     "consistency_strategy": "prompt_only" if cost_usd else "deterministic",
@@ -173,7 +173,7 @@ def test_build_summary_prefers_annotated_when_best_ai_trails(
         dataset_root=dataset_root,
     )
 
-    assert summary["recommendation"]["decision"] == "keep_fast_default"
-    assert summary["recommendation"]["default_lane"] == "Annotated Animatic"
-    assert summary["recommendation"]["upgrade_lane"] == "Sora 2 Previz"
-    assert "Fast Previz measured 2200 ms" in summary["recommendation"]["rationale"]
+    assert summary["recommendation"]["decision"] == "hold_ai_primary_blocked"
+    assert summary["recommendation"]["primary_lane"] == "Sora 2 Previz"
+    assert summary["recommendation"]["fallback_lane"] == "Annotated Animatic"
+    assert "Deterministic baseline measured 2200 ms" in summary["recommendation"]["rationale"]

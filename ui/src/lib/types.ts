@@ -381,7 +381,7 @@ export type PrevizCostEvidence = {
 }
 
 export type PrevizLaneStatus = {
-  lane_id: 'annotated_animatic' | 'ai_previz'
+  lane_id: 'deterministic_previz' | 'ai_previz'
   label: string
   candidate_label?: string | null
   latency_class: 'fast' | 'slow'
@@ -403,15 +403,15 @@ export type PrevizLaneStatus = {
   consistency_strategy?: string | null
   cost: PrevizCostEvidence
   validation_stage_enabled: boolean
-  upgrade_lane_id?: 'annotated_animatic' | 'ai_previz' | null
+  upgrade_lane_id?: 'deterministic_previz' | 'ai_previz' | null
   upgrade_label?: string | null
   upgrade_description?: string | null
 }
 
 export type PrevizAdoptionStatus = {
-  default_lane: 'annotated_animatic' | 'ai_previz'
+  primary_lane: 'deterministic_previz' | 'ai_previz'
   policy_summary: string
-  fast_previz: PrevizLaneStatus
+  deterministic_previz: PrevizLaneStatus
   ai_previz: PrevizLaneStatus
 }
 

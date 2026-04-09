@@ -7,6 +7,7 @@ from cine_forge.ai.video import (
     VideoGenerationRequest,
     VideoGenerationResult,
     _generate_video_google,
+    _generate_video_xai,
     generate_video,
 )
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
@@ -105,3 +106,79 @@ def test_generate_video_google_sends_numeric_duration(monkeypatch: pytest.Monkey
 
     assert result.media_type == "video/mp4"
     assert payloads[0]["parameters"]["durationSeconds"] == 4
+
+
+@pytest.mark.unit
+def test_generate_video_xai_polls_until_done_and_downloads_bytes(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    pack = load_engine_pack("xai_grok_imagine_video")
+    request = VideoGenerationRequest(
+        prompt="Render a rough handheld hallway approach.",
+        duration_seconds=4,
+        resolution="480p",
+        aspect_ratio="16:9",
+    )
+    calls: list[tuple[str, str, dict | None]] = []
+
+    def _fake_request_json(*, url, method, headers, body=None, timeout=60):
+        payload = None
+        if body is not None:
+            payload = __import__("json").loads(body.decode("utf-8"))
+        calls.append((method, url, payload))
+        if method == "POST":
+            return {"request_id": "req-123"}
+        if len(calls) == 2:
+            return {"status": "pending", "progress": 42}
+        return {
+            "status": "done",
+            "model": "grok-imagine-video",
+            "video": {
+                "url": "https://vidgen.x.ai/test/video.mp4",
+                "duration": 4,
+                "respect_moderation": True,
+            },
+        }
+
+    monkeypatch.setenv("XAI_API_KEY", "test-key")
+    monkeypatch.setattr("cine_forge.ai.video._request_json", _fake_request_json)
+    monkeypatch.setattr("cine_forge.ai.video._request_bytes", lambda **_: b"xai-video")
+    monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+
+    result = _generate_video_xai(request=request, engine_pack=pack)
+
+    assert result.media_type == "video/mp4"
+    assert result.request_id == "req-123"
+    assert calls[0][2] == {
+        "model": "grok-imagine-video",
+        "prompt": "Render a rough handheld hallway approach.",
+        "duration": 4,
+        "aspect_ratio": "16:9",
+        "resolution": "480p",
+    }
+
+
+@pytest.mark.unit
+def test_generate_video_xai_raises_on_failed_status(monkeypatch: pytest.MonkeyPatch) -> None:
+    pack = load_engine_pack("xai_grok_imagine_video")
+    request = VideoGenerationRequest(
+        prompt="Render a blocked stairwell argument.",
+        duration_seconds=4,
+        resolution="480p",
+        aspect_ratio="16:9",
+    )
+
+    def _fake_request_json(*, url, method, headers, body=None, timeout=60):
+        if method == "POST":
+            return {"request_id": "req-456"}
+        return {
+            "status": "failed",
+            "error": {"message": "provider rejected prompt", "code": "safety_rejected"},
+        }
+
+    monkeypatch.setenv("XAI_API_KEY", "test-key")
+    monkeypatch.setattr("cine_forge.ai.video._request_json", _fake_request_json)
+    monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+
+    with pytest.raises(VideoGenerationError, match="provider rejected prompt"):
+        _generate_video_xai(request=request, engine_pack=pack)

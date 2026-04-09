@@ -13,6 +13,7 @@ spec_refs:
   - "spec:5.5"
   - "spec:6.3"
   - "spec:6.3.2"
+  - "spec:6.3.5"
   - "spec:7.1"
   - "spec:10.3"
 adr_refs:
@@ -47,20 +48,20 @@ legacy_system: ""
 **Priority**: High
 **Status**: Blocked
 **Ideal Refs**: R7 (generate -> react -> refine), R10 (playable assembly at every stage), R12 (transparency & control), R17 (real-world and partial-workflow inputs)
-**Spec Refs**: spec:5.3, spec:5.5, spec:6.3, spec:6.3.2, spec:7.1, spec:10.3
+**Spec Refs**: spec:5.3, spec:5.5, spec:6.3, spec:6.3.2, spec:6.3.5, spec:7.1, spec:10.3
 **ADR Refs**: ADR-002 (Goal-Oriented Navigation), ADR-003 (Film Elements / Scene Workspace / previz as planning surface)
 **Depends On**: Story 143, Story 149, Story 150, Story 151, Story 152
 
 ## Goal
 
-Find out whether the remaining AI-previz bottleneck is now mostly the provider-backed clip itself, and if so, whether CineForge can define and adopt a truly minimal AI clip mode that materially lowers runtime without collapsing usefulness. Story 151 cut the fastest honest scene-ready path from `270922 ms` to `153528 ms`, and Story 152 proved the forced regenerate path now starts at `ai_previz` when a healthy shot plan exists, but the fastest scene-ready AI-previz recipe still takes `98648 ms` and the forced regenerate loop still takes `75337 ms`. This story exists to stop guessing: compare the shortest reachable provider settings and a stripped minimal prompt contract, then either ship the winning AI clip mode with honest disclosure or record that the current provider floor is still too slow to matter.
+Find out whether the remaining AI-previz bottleneck is now mostly the provider-backed clip itself, and if so, whether CineForge can define and adopt a truly minimal AI clip mode that materially lowers runtime without collapsing usefulness. Story 151 cut the fastest honest scene-ready path from `270922 ms` to `153528 ms`, and Story 152 proved the forced regenerate path now starts at `ai_previz` when a healthy shot plan exists, but the fastest scene-ready AI-previz recipe still takes `98648 ms` and the forced regenerate loop still takes `75337 ms`. This story is now the primary product line for “real previz,” because deterministic animatics are fallback/control only. Compare the shortest reachable provider settings and a stripped minimal prompt contract, then either ship the winning AI clip mode with honest disclosure or record that the current provider floor is still too slow to matter.
 
 ## Acceptance Criteria
 
-- [x] Live model discovery and the existing runtime harness are rerun against the current provider surface before choosing a new default or minimal AI clip candidate.
+- [x] Live model discovery and the existing runtime harness are rerun against the current provider surface before choosing a new primary AI clip candidate.
 - [x] At least the shipped Lite lane plus the shortest reachable low-fidelity candidates (`google_veo31_lite`, `google_veo31_fast`, and `google_veo31`) are compared on the same real AI-previz runtime harness after Story 151/152, using the minimal honest settings each candidate supports.
 - [x] The comparison isolates provider/runtime-floor tradeoffs clearly enough to answer: does a minimal AI clip mode materially improve the current `ai_previz` stage or total scene-ready runtime, and does it remain useful enough for motion/blocking review?
-- [x] If a candidate materially wins, the shipped AI-previz recipe / engine-pack selection and any user-facing provenance or disclosure needed to keep the product honest are updated in the same story. If no dominant winner is proven, the story records the provider floor as a named blocker and labels any shipped lane as provisional rather than settled product truth.
+- [x] If a candidate materially wins, the shipped AI-previz recipe / engine-pack selection and any user-facing provenance or disclosure needed to keep the product honest are updated in the same story. If no dominant winner is proven, the story records the provider floor as a named blocker and labels the configured AI lane as provisional while deterministic previz remains fallback/control only.
 - [x] Story 149 and `docs/evals/registry.yaml` are updated with verified result paths, `git_sha`, dates, and an explicit runtime-blocking vs non-runtime-blocking classification for the remaining gap.
 
 ## Out of Scope
@@ -124,7 +125,7 @@ Story 153 is blocked on provider-floor convergence, not on missing implementatio
 - Shared-substrate reruns: `benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-summary-2026-04-08.{json,md}` kept Lite 4 as the median winner across three scene-ready passes, but one direct multi-repeat attempt hung provider-side.
 - Fresh shared-substrate validation pass: `benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.{json,md}` flipped back to Fast 4 on a single pass.
 - Combined decision summary: `benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.{json,md}` now states the actual conclusion directly: runtime leader and usefulness leader diverge, and no dominant winner is proven by the combined evidence alone.
-- Product consequence: [recipe-ai-previz-generation.yaml](/Users/cam/.codex/worktrees/7723/cine-forge/configs/recipes/recipe-ai-previz-generation.yaml) currently ships Lite 4 because it remains the best provisional lane when usefulness is considered, but that shipped default is still provisional and the detector remains runtime-blocking.
+- Product consequence: [recipe-ai-previz-generation.yaml](/Users/cam/.codex/worktrees/53fb/cine-forge/configs/recipes/recipe-ai-previz-generation.yaml) currently uses Lite 4 because it remains the best provisional AI lane when usefulness is considered, but that configured choice is still provisional and the detector remains runtime-blocking.
 
 ## Unblock Condition
 

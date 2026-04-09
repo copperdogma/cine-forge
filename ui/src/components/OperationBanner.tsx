@@ -30,7 +30,10 @@ function RunBannerContent({ projectId }: { projectId: string }) {
       .map((id) => [id, stages[id]] as const)
       .find(([, s]) => s.status === 'running')
     if (runningStage) {
-      statusText = getStageStartMessage(runningStage[0])
+      statusText = getStageStartMessage(
+        runningStage[0],
+        runState.state.runtime_params?.scene_scope,
+      )
     }
 
     // For single-stage concern group runs: show per-scene progress

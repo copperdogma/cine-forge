@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-04-09-01] — Compact previz planning and xAI runtime probe (Story 151)
+
+### Added
+- Added xAI / Grok Imagine provider coverage, engine-pack support, and checked-in runtime artifacts so the existing real AI-previz harness can measure the same scene-ready boundary across Google and xAI candidates
+
+### Changed
+- Changed AI-previz shot planning to use a compact previz-specific profile and lower output budget, materially reducing the scene-ready planning/runtime cost before provider video generation
+- Changed deterministic-baseline reuse and previz UI wording so current-scene reruns stay scene-scoped, AI previz remains the intended product lane, and the deterministic fallback/control surface is labeled honestly across the operator console
+
+### Fixed
+- Fixed direct runtime-harness dotenv loading in worktree execution and fixed xAI previz prompt compilation to stay inside Grok Imagine's 4096-character prompt limit
 ## [2026-04-08-04] — Methodology hardening follow-up sweep (Story 154)
 
 ### Added

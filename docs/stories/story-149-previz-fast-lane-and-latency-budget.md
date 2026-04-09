@@ -1,6 +1,6 @@
 ---
 id: "149"
-title: "Fast Previz Lane and Latency Budget"
+title: "Fast AI Previz and Latency Budget"
 status: "Blocked"
 priority: "High"
 ideal_refs:
@@ -14,6 +14,7 @@ spec_refs:
   - "spec:6.3"
   - "spec:6.3.2"
   - "spec:6.3.3"
+  - "spec:6.3.5"
   - "spec:7.1"
   - "spec:10.3"
 adr_refs:
@@ -41,27 +42,29 @@ roadmap_tags:
 legacy_system: ""
 ---
 
-# Story 149 — Fast Previz Lane and Latency Budget
+# Story 149 — Fast AI Previz and Latency Budget
 
 **Priority**: High
 **Status**: Blocked
 **Ideal Refs**: R7 (generate -> react -> refine), R10 (playable assembly at every stage), R12 (transparency & control), R17 (real-world and partial-workflow inputs)
-**Spec Refs**: spec:5.3 (Stage Progression), spec:5.5 (Readiness Indicators), spec:6.3 (Animatics / Previz Video), spec:6.3.2 (Characteristics), spec:6.3.3 (Previz Reel), spec:7.1 (Render Adapter Layer), spec:10.3 (Always-Playable Rule)
+**Spec Refs**: spec:5.3 (Stage Progression), spec:5.5 (Readiness Indicators), spec:6.3 (Animatics / Previz Video), spec:6.3.2 (Characteristics), spec:6.3.3 (Previz Reel), spec:6.3.5 (Product Truth), spec:7.1 (Render Adapter Layer), spec:10.3 (Always-Playable Rule)
 **ADR Refs**: ADR-002 (Goal-Oriented Navigation), ADR-003 (Film Elements / Scene Workspace / previz as planning surface)
 **Depends On**: Story 028 (Render Adapter), Story 143 (AI-Generated Low-Fidelity Previz), Story 144 (AI Previz Adoption Gate and Trust Guardrails), Story 148 (Scene-Scoped Planning and Honest Downstream Generation)
 
 ## Goal
 
-Make previz feel iterative again. Today the best current AI-previz lane is useful but slow enough to break the generate-react-refine loop: Story 143's latest validated measurements put `Veo 3.1 Lite Previz` at about 39.3 seconds, `Veo 3.1 Fast Previz` at about 32.4 seconds, and `Sora 2 Previz` at about 106.7 seconds on the fixed fixture pack. That is acceptable for an explicit slow lane, not for the main “show me motion now” operator experience. This story should define and ship an honest fast previz path with a measured latency budget in the low single-digit seconds when possible, explicit fidelity tradeoffs, and a clean separation between “quick planning preview” and slower full AI previz. The implemented shape is now clear: deterministic annotated animatic is the measured fast default, and AI previz is the slower richer upgrade.
+Make previz feel iterative again. Today the best current AI-previz lane is useful but slow enough to break the generate-react-refine loop: Story 143's latest validated measurements put `Veo 3.1 Lite Previz` at about 39.3 seconds, `Veo 3.1 Fast Previz` at about 32.4 seconds, and `Sora 2 Previz` at about 106.7 seconds on the fixed fixture pack. That is acceptable for an explicit slow lane, not for the main “show me motion now” operator experience. This story now exists to keep the product truth honest: operator-facing previz should mean AI-generated motion, with a measured latency budget in the low single-digit seconds when possible, while deterministic annotated animatics remain only fallback/control substrate. Story 149 is still blocked because no measured AI lane clears that target yet.
 
 ## Acceptance Criteria
 
-- [x] Scene Workspace exposes an explicit fast previz path distinct from the slower full AI-previz lane, with honest copy about expected latency, fidelity, and intended use. The UI must not imply that the fast lane is final render quality.
-- [x] The project has a measured previz latency budget with fixture-backed evidence. Current target: a first playable scene-level previz artifact within `<= 6000 ms` median on the fixed comparison pack for the fast lane. If that target proves impossible with current substrate, the story must record a named blocker or revised budget with provider evidence instead of pretending success.
-- [x] The chosen fast path remains scene-scoped, reuses or incrementally builds only the minimum required planning substrate for the selected scene, and never silently fans out to project-wide generation.
-- [x] If the fast lane is not itself the best-looking AI-video result, the product still supports an explicit upgrade path to the slower full AI-previz lane without blocking quick review. The relationship between the two lanes is visible in run metadata and artifact detail.
-- [x] The eval/benchmark surface records both usefulness and latency tradeoffs for the fast lane, and `docs/evals/registry.yaml` is updated with verified numbers and an explicit recommendation/default policy.
-- [x] Browser verification covers the changed previz workflow in both desktop and mobile views, including lane selection, latency/fidelity disclosure, and any quick-to-full upgrade affordance, with clean browser console output.
+- [x] Scene Workspace exposes AI previz as the intended primary lane and the deterministic animatic as explicit fallback/control, with honest copy about expected latency, fidelity, and intended use. The UI must not imply that the deterministic lane solves the product previz requirement.
+- [ ] The project has a measured fast-AI-previz latency budget with fixture-backed evidence. Current target: a first playable scene-level AI-previz artifact within `<= 6000 ms` median on the fixed comparison pack. If that target proves impossible with current substrate, the story must record a named blocker or revised budget with provider evidence instead of pretending success.
+- [x] Any fallback/control deterministic path remains scene-scoped, reuses or incrementally builds only the minimum required planning substrate for the selected scene, and never silently fans out to project-wide generation.
+- [x] The relationship between AI previz and deterministic fallback is visible in run metadata and artifact detail.
+- [x] The eval/benchmark surface records both usefulness and latency tradeoffs for the AI lane and the deterministic control arm, and `docs/evals/registry.yaml` reflects the blocked product truth explicitly.
+- [x] Browser verification covers the changed previz workflow in both desktop and mobile views, including lane positioning, latency/fidelity disclosure, and fallback/control framing, with clean browser console output.
+
+> Historical note: sections below retain the earlier deterministic-default exploration as implementation history, but that product conclusion is superseded. Current repo truth is AI-primary previz with deterministic fallback/control only.
 
 ## Out of Scope
 
@@ -396,17 +399,19 @@ relationship between them explicit in policy, UI copy, and artifact detail.
   Python `3.12`, the repo was installed in editable dev mode, and the required
   benchmark / validation scripts ran successfully.
 - The product risk remains real and intentional: current provider-backed AI
-  previz is still far outside the fast-lane budget, so the default policy must
-  stay deterministic until a future measured AI lane can clear the same budget
-  without losing usefulness.
+  previz is still far outside the fast-AI-previz budget, so the product remains
+  blocked. Deterministic baseline can stay available for fallback/control, but
+  it does not satisfy the previz requirement.
 
 ### Definition Of Done For This Build
 
 - Story 149 is promoted from `Draft` because the substrate is already real.
-- Shared previz policy exposes a real fast-lane contract and upgrade path.
-- The benchmark/report surface records deterministic fast-lane latency.
-- Scene Workspace and Artifact Detail clearly separate fast deterministic previz
-  from slower AI previz.
+- Shared previz policy exposes AI previz as the intended lane and deterministic
+  output as fallback/control only.
+- The benchmark/report surface records deterministic control latency and the
+  still-blocked AI-previz target separately.
+- Scene Workspace and Artifact Detail clearly separate deterministic fallback
+  from the primary AI-previz lane.
 - Required checks pass in a working Python/Node environment, or the exact
   environment blocker is documented in the work log.
 - Browser verification covers desktop and mobile `Previz` flow with clean
@@ -421,3 +426,5 @@ relationship between them explicit in policy, UI copy, and artifact detail.
 20260408-0955 — unblock pass: fixed the real animatic failure by making `animatic_v1` ignore non-file `sound_and_music.reference_audio_assets` entries during muxing instead of treating descriptive strings as project-relative audio files. Added unit coverage in `tests/unit/test_animatic_module.py`, reran the animatic-specific unit suite, and retried the failed honest run through `/api/runs/{run_id}/retry-failed-stage`. Evidence: retry run `story149-real-animatic-retry-ccad` completed in `62.5s` total (`animatics=61.7s`, `keyframes=0.8s`, `total_cost_usd=0.0`), and `/output/story-149-real-ui/artifacts/animatic/scene_001/v1.json` now carries `audio_refs=[]` instead of the bogus descriptive path that previously broke FFmpeg. Next step: rerun fresh AI previz on a normal project to measure whether the upstream model-routing fix materially changes time to first real AI previz artifact.
 20260408-0955 — representative rerun: created fresh project `story-149-real-ui-rerun` through the API, uploaded the screenplay normally, reran `mvp_ingest` (`17.9s`) and `creative_direction` (`101.9s`), then launched scene-scoped `ai_previz_generation` for `scene_001`. Pinned both previz recipes’ `shot_planning` stage to `claude-haiku-4-5-20251001` / `claude-haiku-4-5-20251001` / `claude-opus-4-6` so previz no longer inherits video-facing defaults for upstream planning. Evidence: fresh run `run-6305b0b5` used Haiku for `shot_planning`, improved that stage from the earlier `455.2s` honest baseline to `230.3s`, then spent `63.3s` in `ai_previz` and `5.2s` in `validate_media` for a `299.0s` end-to-end time to first real `ai_previz_video`. That is materially better than the earlier path but still far outside the intended interactive budget, so Story 149 is now honestly `Blocked` on real runtime rather than on fixture validity. Next step: create/run a fastest-real-AI-previz eval or redesign upstream previz substrate so `shot_planning` no longer dominates the path.
 20260408-1136 — validation: corrected the misleading fast-vs-AI copy before closeout instead of leaving the PR to imply that AI previz is simply “better except slower.” The shared policy and UI now describe AI previz as an optional generated motion pass that trades latency, cost, and determinism for a low-fidelity clip, and the Scene Workspace action labels now say `Generate` / `Regenerate` instead of ambiguous `Run` / `Refresh`. Fresh checks rerun in this validation pass: targeted previz pytest (`tests/unit/test_previz_adoption_service.py`, `tests/unit/test_animatic_module.py`, `tests/unit/test_previz_usefulness_report.py`), `make test-unit PYTHON=.venv/bin/python`, `.venv/bin/python -m ruff check src/ tests/`, `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, `pnpm --dir ui run build`, `./scripts/sync-agent-skills.sh --check`, and `pnpm methodology:check`. Browser verification was rerun after restarting the non-reloading API process so the UI reflected the final policy text: local Chromium Playwright passed on desktop Scene Workspace previz (`story-149-real-ui`), mobile Scene Workspace previz (`story-149-real-ui-rerun`), and AI previz detail (`story-149-real-ui-rerun`) with clean console output and screenshots saved under `/tmp/story149-*-final.png`. Outcome: implementation quality is validated, but the story remains correctly `Blocked` because the named runtime blocker still stands. Next step: follow the recorded unblock condition rather than trying to mark Story 149 done.
+20260409-0935 — product-truth-realignment: user feedback hardened the product requirement: deterministic previz is not a shipped answer, only fallback/control substrate. Updated the shared previz contract, UI labels, and methodology/spec/story surfaces so AI previz is treated as the intended primary lane even while it remains runtime-blocked, and deterministic annotated animatic is labeled as `Deterministic Baseline` instead of `Fast Previz`. Evidence: `src/cine_forge/services/previz_adoption.py`, `src/cine_forge/schemas/render.py`, `ui/src/components/PrevizPanel.tsx`, `ui/src/components/AnimaticViewer.tsx`, `ui/src/components/AiPrevizViewer.tsx`, `benchmarks/scripts/previz_usefulness_report.py`, and `docs/spec.md`. Next step: rerun full checks plus browser verification, then keep Story 149 blocked until a measured AI lane clears the fast-previz target.
+20260409-0946 — validation-after-realignment: reran the changed-scope validation suite after the AI-primary / deterministic-fallback correction and verified the same live previz route through a local Playwright fallback when the MCP browser transport stayed unavailable. Evidence: `.venv/bin/python -m pytest tests/unit/test_previz_adoption_service.py tests/unit/test_previz_usefulness_report.py -q` (pass), `make test-unit PYTHON=.venv/bin/python` (`675 passed, 158 deselected, 1 warning`), `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/` (pass), `pnpm --dir ui run lint` (0 errors, existing warnings only), `cd ui && npx tsc -b` (pass), `pnpm --dir ui run build` (pass), `pnpm methodology:compile && pnpm methodology:check` (pass), and browser artifacts `output/browser-verification/previz-desktop.png` plus `output/browser-verification/previz-mobile.png` with zero console/page errors in both viewports. DOM follow-up confirmed the current UI no longer renders `Generate/Regenerate Fast Previz`; the one remaining `Fast Previz complete` string comes from historical run/chat text, not the patched lane labels. Outcome: the copy/policy correction is validated, and Story 149 remains blocked only on real AI-previz runtime.

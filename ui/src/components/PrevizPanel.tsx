@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Clapperboard, ExternalLink, Film, Loader2, RefreshCw, Wand2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -6,9 +6,17 @@ import { AiPrevizViewer } from '@/components/AiPrevizViewer'
 import { AnimaticViewer } from '@/components/AnimaticViewer'
 import { HealthBadge } from '@/components/HealthBadge'
 import { MediaValidationViewer } from '@/components/MediaValidationViewer'
+import {
+  aiPrevizCostBadge,
+  primaryLaneLabel,
+  deterministicPrevizToastMessage,
+  deterministicReuseDescription,
+  formatAdoptionState,
+  previzDescription,
+} from '@/components/previz-panel-support'
 import { SceneActionControls } from '@/components/SceneActionControls'
 import { formatConsistencyStrategy, formatLatencyMs } from '@/components/preview-provenance'
-import { formatDuration, formatMoney } from '@/components/render-utils'
+import { formatDuration } from '@/components/render-utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -29,8 +37,6 @@ import {
 } from '@/lib/constants'
 import type {
   ArtifactGroupSummary,
-  PrevizAdoptionStatus,
-  PrevizLaneStatus,
   SceneActionPreflight,
   SceneActionPreflightItem,
   SceneScopeMode,
@@ -47,44 +53,6 @@ type PrevizPanelProps = {
   previzGroup?: ArtifactGroupSummary
   aiPrevizGroup?: ArtifactGroupSummary
   aiPrevizPromptGroup?: ArtifactGroupSummary
-}
-
-function formatAdoptionState(value: PrevizLaneStatus['adoption_state'] | null | undefined): string {
-  switch (value) {
-    case 'default':
-      return 'Default'
-    case 'recommended_optional':
-      return 'Recommended Optional'
-    case 'experimental_manual':
-      return 'Experimental / Manual'
-    default:
-      return 'Manual Lane'
-  }
-}
-
-function defaultLaneLabel(status: PrevizAdoptionStatus | null | undefined): string {
-  if (!status) return 'Fast Previz'
-  return status.default_lane === 'ai_previz'
-    ? status.ai_previz.label
-    : status.fast_previz.label
-}
-
-function previzDescription(status: PrevizAdoptionStatus | null | undefined): string {
-  const base =
-    'Previz is for camera placement, blocking, motion, pacing, and location readability.'
-  if (!status) {
-    return `${base} Fast Previz remains the quick default while AI Previz stays a separate slower low-fidelity lane. Final footage still lives in the Render tab.`
-  }
-  return `${base} ${status.policy_summary} Final footage still lives in the Render tab.`
-}
-
-function aiPrevizCostBadge(status: PrevizLaneStatus | null | undefined): string | null {
-  if (!status) return null
-  const amount = formatMoney(status.cost.estimated_cost_usd ?? null)
-  if (status.cost.status === 'verified' && amount) return amount
-  if (status.cost.status === 'estimated' && amount) return `Est. ${amount}`
-  if (status.cost.status === 'blocked') return 'Cost blocked'
-  return null
 }
 
 function mergePrevizPreflight(
@@ -181,17 +149,23 @@ export function PrevizPanel({
 
   const animaticData = animaticArtifact?.payload?.data as Record<string, unknown> | undefined
   const aiPrevizData = aiPrevizArtifact?.payload?.data as Record<string, unknown> | undefined
-  const fastPrevizStatus = previzStatus?.fast_previz
+  const deterministicPrevizStatus = previzStatus?.deterministic_previz
   const aiPrevizStatus = previzStatus?.ai_previz
   const aiPrevizCostLabel = aiPrevizCostBadge(aiPrevizStatus)
+  const deterministicStartFrom = deterministicPreflight?.start_from ?? undefined
   const aiPrevizStartFrom = aiPreflight?.start_from ?? undefined
+  const hasDeterministicArtifact = !!animaticGroup || !!keyframeGroup
   const aiPrevizReusesShotPlan = aiPrevizStartFrom === 'ai_previz'
   const configuredScopeLabel = getSceneScopeLabel(sceneScope)
   const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
   const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
-  const sharedPrevizPreflight = useMemo(
-    () => mergePrevizPreflight(sceneScope, [deterministicPreflight, aiPreflight]),
-    [aiPreflight, deterministicPreflight, sceneScope],
+  const deterministicReuseHint = deterministicReuseDescription(
+    deterministicStartFrom,
+    configuredScopeTarget,
+  )
+  const sharedPrevizPreflight = mergePrevizPreflight(
+    sceneScope,
+    [deterministicPreflight, aiPreflight],
   )
 
   const animaticDetailHref = animaticGroup
@@ -232,17 +206,18 @@ export function PrevizPanel({
         default_model: 'claude-sonnet-4-6',
         recipe_id: 'animatics_generation',
         accept_config: true,
-        force: !!animaticGroup || !!keyframeGroup,
+        force: hasDeterministicArtifact,
+        start_from: deterministicStartFrom,
         scene_scope: sceneScope,
       })
       useChatStore.getState().setActiveRun(projectId, run_id)
-      toast.success(
-        animaticGroup || keyframeGroup
-          ? `Refreshing fast previz for ${configuredScopeLabel.toLowerCase()}`
-          : `Started fast previz for ${configuredScopeLabel.toLowerCase()}`,
-      )
+      toast.success(deterministicPrevizToastMessage({
+        hasExisting: hasDeterministicArtifact,
+        scopeLabel: configuredScopeLabel,
+        startFrom: deterministicStartFrom,
+      }))
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to start fast previz')
+      toast.error(error instanceof Error ? error.message : 'Failed to start deterministic baseline')
     }
   }
 
@@ -284,14 +259,14 @@ export function PrevizPanel({
                 <CardTitle>Previz</CardTitle>
                 <Badge variant="outline">Selected: {configuredScopeLabel}</Badge>
                 <Badge variant="secondary">
-                  Default: {defaultLaneLabel(previzStatus)}
+                  Primary: {primaryLaneLabel(previzStatus)}
                 </Badge>
-                {fastPrevizStatus?.candidate_label && (
-                  <Badge variant="outline">Fast lane: {fastPrevizStatus.candidate_label}</Badge>
+                {deterministicPrevizStatus?.candidate_label && (
+                  <Badge variant="outline">Fallback: {deterministicPrevizStatus.candidate_label}</Badge>
                 )}
                 {aiPrevizStatus && (
                   <Badge
-                    variant={aiPrevizStatus.adoption_state === 'experimental_manual' ? 'outline' : 'secondary'}
+                    variant={aiPrevizStatus.blocker_reasons.length > 0 ? 'outline' : 'secondary'}
                   >
                     AI lane: {formatAdoptionState(aiPrevizStatus.adoption_state)}
                   </Badge>
@@ -317,7 +292,7 @@ export function PrevizPanel({
           {(deterministicRunActive || aiPrevizRunActive) && (
             <p>
               {deterministicRunActive
-                ? `Fast previz is currently running for ${activeRunScopeLabel.toLowerCase()}.`
+                ? `Deterministic baseline is currently running for ${activeRunScopeLabel.toLowerCase()}.`
                 : `AI previz is currently running for ${activeRunScopeLabel.toLowerCase()}.`}
             </p>
           )}
@@ -335,36 +310,36 @@ export function PrevizPanel({
           <CardHeader className="pb-4">
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2">
-                <CardTitle className="text-lg">{fastPrevizStatus?.label ?? 'Fast Previz'}</CardTitle>
-                <Badge variant="secondary">
-                  {previzStatus?.default_lane === 'annotated_animatic' ? 'Default quick lane' : 'Deterministic fallback'}
-                </Badge>
-                {fastPrevizStatus?.candidate_label && (
-                  <Badge variant="outline">{fastPrevizStatus.candidate_label}</Badge>
+                <CardTitle className="text-lg">{deterministicPrevizStatus?.label ?? 'Deterministic Baseline'}</CardTitle>
+                <Badge variant="secondary">Fallback / control</Badge>
+                <Badge variant="outline">Deterministic animatic</Badge>
+                {deterministicPrevizStatus?.candidate_label && (
+                  <Badge variant="outline">{deterministicPrevizStatus.candidate_label}</Badge>
                 )}
-                {fastPrevizStatus?.latency_ms !== null && fastPrevizStatus?.latency_ms !== undefined && (
-                  <Badge variant="outline">Measured {formatLatencyMs(fastPrevizStatus.latency_ms)}</Badge>
+                {deterministicPrevizStatus?.latency_ms !== null && deterministicPrevizStatus?.latency_ms !== undefined && (
+                  <Badge variant="outline">Measured {formatLatencyMs(deterministicPrevizStatus.latency_ms)}</Badge>
                 )}
-                {fastPrevizStatus?.latency_budget_ms && (
-                  <Badge variant="outline">Budget ≤ {formatLatencyMs(fastPrevizStatus.latency_budget_ms)}</Badge>
+                {deterministicPrevizStatus?.latency_budget_ms && (
+                  <Badge variant="outline">Control bar ≤ {formatLatencyMs(deterministicPrevizStatus.latency_budget_ms)}</Badge>
                 )}
                 {storyboardGroup && <Badge variant="outline">Storyboard-informed</Badge>}
                 {animaticGroup && <Badge variant="outline">v{animaticGroup.latest_version}</Badge>}
                 {keyframeGroup && <Badge variant="outline">Keyframes ready</Badge>}
               </div>
               <CardDescription>
-                {fastPrevizStatus?.fidelity_disclosure
-                  ?? 'Deterministic annotated animatic for planning, not final render quality.'}
+                {deterministicPrevizStatus?.fidelity_disclosure
+                  ?? 'Deterministic annotated animatic built from shot plans and storyboard frames. This lane is not AI video and not final render quality.'}
               </CardDescription>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {fastPrevizStatus && (
+            {deterministicPrevizStatus && (
               <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-4 py-3 text-sm text-foreground/90">
                 <div className="space-y-1">
-                  <p>{fastPrevizStatus.reason}</p>
-                  <p>{fastPrevizStatus.intended_use}</p>
-                  {fastPrevizStatus.upgrade_description && <p>{fastPrevizStatus.upgrade_description}</p>}
+                  <p>{deterministicPrevizStatus.reason}</p>
+                  <p>{deterministicPrevizStatus.intended_use}</p>
+                  {deterministicPrevizStatus.upgrade_description && <p>{deterministicPrevizStatus.upgrade_description}</p>}
+                  {deterministicReuseHint && <p>{deterministicReuseHint}</p>}
                 </div>
               </div>
             )}
@@ -407,17 +382,17 @@ export function PrevizPanel({
                 )}
                 {scope === 'current_scene'
                   ? animaticGroup || keyframeGroup
-                    ? 'Regenerate Fast Previz for Current Scene'
-                    : 'Generate Fast Previz for Current Scene'
+                    ? 'Regenerate Deterministic Baseline for Current Scene'
+                    : 'Generate Deterministic Baseline for Current Scene'
                   : animaticGroup || keyframeGroup
-                    ? 'Regenerate Fast Previz for All Scenes'
-                    : 'Generate Fast Previz for All Scenes'}
+                    ? 'Regenerate Deterministic Baseline for All Scenes'
+                    : 'Generate Deterministic Baseline for All Scenes'}
               </Button>
             </div>
 
             {animaticData && (
               <p className="text-sm text-muted-foreground">
-                Latest fast previz is ready for {sceneHeading}. The viewer appears below.
+                Latest deterministic baseline is ready for {sceneHeading}. The viewer appears below.
               </p>
             )}
             {!animaticData && !deterministicRunActive && !animaticLoading && (
@@ -427,10 +402,10 @@ export function PrevizPanel({
                     <Clapperboard className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="space-y-1">
-                    <p className="text-sm font-medium">No fast previz yet</p>
+                    <p className="text-sm font-medium">No deterministic baseline yet</p>
                     <p className="text-sm text-muted-foreground">
-                      Run fast previz for {configuredScopeTarget}. CineForge will build
-                      any missing storyboard or shot-planning substrate first when needed.
+                      Run the deterministic baseline for {configuredScopeTarget}. CineForge
+                      will build any missing storyboard or shot-planning substrate first when needed.
                     </p>
                   </div>
                 </div>
@@ -442,10 +417,10 @@ export function PrevizPanel({
                   <Loader2 className="mt-0.5 h-4 w-4 animate-spin text-amber-400" />
                   <div className="space-y-1">
                     <p className="text-sm font-medium">
-                      Fast previz is running for {activeRunScopeLabel.toLowerCase()}
+                      Deterministic baseline is running for {activeRunScopeLabel.toLowerCase()}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      This tab will resolve back to {sceneHeading} as soon as the updated fast-previz clip lands.
+                      This tab will resolve back to {sceneHeading} as soon as the updated fallback clip lands.
                     </p>
                   </div>
                 </div>
@@ -459,16 +434,15 @@ export function PrevizPanel({
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-lg">{aiPrevizStatus?.label ?? 'AI Previz'}</CardTitle>
-                {previzStatus?.default_lane !== 'ai_previz' && (
-                  <Badge variant="secondary">Slower upgrade</Badge>
-                )}
+                <Badge variant="secondary">Primary lane</Badge>
                 {aiPrevizStatus && (
                   <Badge
-                    variant={aiPrevizStatus.adoption_state === 'experimental_manual' ? 'outline' : 'secondary'}
+                    variant={aiPrevizStatus.blocker_reasons.length > 0 ? 'outline' : 'secondary'}
                   >
                     {formatAdoptionState(aiPrevizStatus.adoption_state)}
                   </Badge>
                 )}
+                <Badge variant="outline">AI video lane</Badge>
                 {aiPrevizStatus?.candidate_label && (
                   <Badge variant="outline">{aiPrevizStatus.candidate_label}</Badge>
                 )}
@@ -490,7 +464,7 @@ export function PrevizPanel({
               </div>
               <CardDescription>
                 {aiPrevizStatus?.fidelity_disclosure
-                  ?? 'Low-fidelity AI video for planning review, separate from the final render path.'}
+                  ?? 'Provider-generated low-fidelity AI video for planning review, separate from the deterministic fast lane and final render path.'}
               </CardDescription>
             </div>
           </CardHeader>
@@ -525,7 +499,7 @@ export function PrevizPanel({
                     generation plus media validation.
                   </p>
                 )}
-                {fastPrevizStatus?.upgrade_description && <p>{fastPrevizStatus.upgrade_description}</p>}
+                {deterministicPrevizStatus?.upgrade_description && <p>{deterministicPrevizStatus.upgrade_description}</p>}
               </div>
             </div>
 

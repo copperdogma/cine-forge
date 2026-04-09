@@ -20,6 +20,12 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+load_dotenv(REPO_ROOT / ".env")
+load_dotenv(REPO_ROOT / ".env.local")
+
 # httpx is a project dependency (pyproject.toml)
 try:
     import httpx

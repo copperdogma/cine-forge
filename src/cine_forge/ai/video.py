@@ -1,4 +1,4 @@
-"""Thin video-generation wrapper for OpenAI Sora and Google Veo."""
+"""Thin video-generation wrapper for OpenAI, Google, and xAI video APIs."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ from cine_forge.schemas import EnginePack
 
 OPENAI_BASE_URL = "https://api.openai.com/v1"
 GOOGLE_BASE_URL = "https://generativelanguage.googleapis.com/v1beta"
+XAI_BASE_URL = "https://api.x.ai/v1"
 
 
 class VideoGenerationError(RuntimeError):
@@ -85,6 +86,8 @@ def generate_video(
                 return _generate_video_openai(request=request, engine_pack=engine_pack)
             if engine_pack.provider == "google":
                 return _generate_video_google(request=request, engine_pack=engine_pack)
+            if engine_pack.provider == "xai":
+                return _generate_video_xai(request=request, engine_pack=engine_pack)
             raise VideoGenerationError(f"Unsupported video provider: {engine_pack.provider}")
         except VideoGenerationError as exc:
             last_error = exc
@@ -274,6 +277,89 @@ def _generate_video_google(
     )
 
 
+def _generate_video_xai(
+    *,
+    request: VideoGenerationRequest,
+    engine_pack: EnginePack,
+) -> VideoGenerationResult:
+    api_key = os.environ.get("XAI_API_KEY", "")
+    if not api_key:
+        raise VideoGenerationError("XAI_API_KEY environment variable is not set")
+
+    payload: dict[str, Any] = {
+        "model": engine_pack.target_model,
+        "prompt": request.prompt,
+        "duration": request.duration_seconds,
+    }
+    if request.aspect_ratio:
+        payload["aspect_ratio"] = request.aspect_ratio
+    if request.resolution:
+        payload["resolution"] = request.resolution
+    for key, value in request.provider_params.items():
+        if value is not None:
+            payload[key] = value
+
+    response = _request_json(
+        url=f"{XAI_BASE_URL}/videos/generations",
+        method="POST",
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        body=json.dumps(payload).encode("utf-8"),
+        timeout=120,
+    )
+    request_id = _read_string(response, "request_id")
+    if not request_id:
+        raise VideoGenerationError(f"xAI video response missing request_id: {response}")
+
+    status_payload = _request_json(
+        url=f"{XAI_BASE_URL}/videos/{urllib.parse.quote(request_id, safe='')}",
+        method="GET",
+        headers={"Authorization": f"Bearer {api_key}"},
+        timeout=60,
+    )
+    status = _read_string(status_payload, "status")
+    while status == "pending":
+        time.sleep(engine_pack.retry_policy.poll_interval_seconds)
+        status_payload = _request_json(
+            url=f"{XAI_BASE_URL}/videos/{urllib.parse.quote(request_id, safe='')}",
+            method="GET",
+            headers={"Authorization": f"Bearer {api_key}"},
+            timeout=60,
+        )
+        status = _read_string(status_payload, "status")
+
+    if status != "done":
+        error = status_payload.get("error") if isinstance(status_payload.get("error"), dict) else {}
+        message = _read_string(error, "message") or (
+            f"xAI video job ended with status={status or 'unknown'}"
+        )
+        code = _read_string(error, "code") or _read_string(error, "type")
+        raise VideoGenerationError(
+            f"{message}{f' ({code})' if code else ''}",
+            retryable=False,
+        )
+
+    video_url = _xai_video_url(status_payload)
+    if not video_url:
+        raise VideoGenerationError(f"xAI video result missing output URL: {status_payload}")
+
+    video_bytes = _request_bytes(
+        url=video_url,
+        method="GET",
+        headers={"Authorization": f"Bearer {api_key}"},
+        timeout=300,
+    )
+    return VideoGenerationResult(
+        video_bytes=video_bytes,
+        media_type="video/mp4",
+        model_used=_read_string(status_payload, "model") or engine_pack.target_model,
+        request_id=request_id,
+        provider_job_id=request_id,
+    )
+
+
 def _request_json(
     *,
     url: str,
@@ -402,6 +488,13 @@ def _google_video_uri(payload: dict[str, Any]) -> str | None:
                 return _read_string(video, "uri")
 
     return None
+
+
+def _xai_video_url(payload: dict[str, Any]) -> str | None:
+    video = payload.get("video")
+    if not isinstance(video, dict):
+        return None
+    return _read_string(video, "url")
 
 
 def _read_string(payload: dict[str, Any], key: str) -> str | None:

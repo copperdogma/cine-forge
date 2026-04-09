@@ -107,6 +107,36 @@
         "consistency_strategy": "prompt_only"
       },
       "notes": "Best-case full Veo runtime with minimal prerequisites."
+    },
+    {
+      "case_id": "xai_4_480p_scene_ready",
+      "label": "Grok Imagine 4s 480p scene-ready",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "scene_id": "scene_001",
+      "prerequisite_mode": "scene_ready",
+      "recipe_mode": "patched",
+      "ai_previz": {
+        "engine_pack_id": "xai_grok_imagine_video",
+        "duration_seconds": 4,
+        "resolution": "480p",
+        "consistency_strategy": "prompt_only"
+      },
+      "notes": "Benchmark-first xAI Grok Imagine candidate on the honest scene-ready path."
+    },
+    {
+      "case_id": "xai_4_480p_mvp_ingest_only",
+      "label": "Grok Imagine 4s 480p ingest-only",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "scene_id": "scene_001",
+      "prerequisite_mode": "mvp_ingest_only",
+      "recipe_mode": "patched",
+      "ai_previz": {
+        "engine_pack_id": "xai_grok_imagine_video",
+        "duration_seconds": 4,
+        "resolution": "480p",
+        "consistency_strategy": "prompt_only"
+      },
+      "notes": "Benchmark-first xAI Grok Imagine candidate with minimal prerequisites."
     }
   ]
 }

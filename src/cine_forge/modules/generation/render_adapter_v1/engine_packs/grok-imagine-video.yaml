@@ -1,0 +1,44 @@
+pack_id: xai_grok_imagine_video
+provider: xai
+target_model: grok-imagine-video
+description: >
+  xAI Grok Imagine video pack for benchmark-first AI-previz runtime measurement.
+  This CineForge integration intentionally stays prompt-only for the first
+  runtime comparison even though the provider API supports richer image-guided
+  modes.
+preferred_prompt_style: >
+  Use direct low-detail staging language with explicit camera path, blocking,
+  motion, and only enough environment detail to keep the scene readable.
+known_strengths:
+  - Supports configurable duration, aspect ratio, and 480p or 720p output.
+  - Gives CineForge a third provider candidate on the same real AI-previz runtime harness.
+  - Suitable for prompt-only blocking and camera experiments.
+known_limitations:
+  - xAI documents video generation as an asynchronous flow that can take several minutes.
+  - Returned video URLs are temporary and should be downloaded promptly.
+  - This first CineForge pack keeps the provider in prompt-only mode; image and reference-image API features are not yet exposed here.
+limits:
+  supported_durations_seconds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  supported_resolutions: ["480p", "720p"]
+  supported_aspect_ratios: ["1:1", "16:9", "9:16", "4:3", "3:4", "3:2", "2:3"]
+  max_reference_images: 0
+  supports_first_frame: false
+  supports_last_frame: false
+  supports_audio_upload: false
+  supports_audio_cues: true
+request_defaults:
+  default_resolution: "480p"
+  landscape_aspect_ratio: "16:9"
+  portrait_aspect_ratio: "9:16"
+  max_prompt_chars: 4096
+  benchmark_default_duration_seconds: 4
+  benchmark_consistency_strategy: "prompt_only"
+  benchmark_generation_mode: "video_only"
+retry_policy:
+  max_attempts: 2
+  poll_interval_seconds: 5
+  retryable_http_statuses: [408, 429, 500, 502, 503, 504]
+  retryable_error_substrings:
+    - "rate limit"
+    - "timeout"
+    - "temporarily unavailable"

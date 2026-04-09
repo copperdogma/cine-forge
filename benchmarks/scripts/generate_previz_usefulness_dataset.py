@@ -349,7 +349,7 @@ def _build_symbolic_candidate(
                 f"Story 143 {variant} baseline candidate derived from {meta['clip_id']}."
             ),
             "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
-            "operator_lane": "fast_previz" if annotated else "deterministic_baseline",
+            "operator_lane": "deterministic_baseline",
             "consistency_strategy": "deterministic",
             "style_profile_id": "cineforge_low_fidelity_previz_v1",
             "style_profile_title": "CineForge Low-Fidelity Previz",

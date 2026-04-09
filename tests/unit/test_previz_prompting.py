@@ -71,6 +71,58 @@ def test_compile_low_fidelity_previz_prompt_builds_non_final_house_style() -> No
 
 
 @pytest.mark.unit
+def test_compile_low_fidelity_previz_prompt_respects_engine_prompt_budget() -> None:
+    pack = load_engine_pack("xai_grok_imagine_video")
+    brief = shot_brief_from_target(
+        target={
+            "clip_id": "radio_hold_tracking",
+            "title": "Radio hold tracking",
+            "summary_reference": (
+                "INT. COMMUNITY RADIO STUDIO. Master-driven with character-specific close-ups "
+                "on hands and faces. Establish the studio space and three-person dynamic in a "
+                "wide shot, then isolate each character's preparation ritual in tight framings "
+                "that emphasize focus and vulnerability. "
+                + "Quiet competence and weather pressure should remain readable. " * 18
+            ),
+            "transcript": (
+                "JUNE: If this works, half the valley hears us. "
+                "NOAH: If this works, we hear them too. "
+                "ARIA: Then we stop talking and start listening. "
+            )
+            * 8,
+            "audio_description": (
+                "Cramped studio room tone with rain on skylight, old electrical hum, "
+                "floorboard creaks, and shrinking interior focus as the ON AIR light becomes "
+                "the emotional center. "
+            )
+            * 12,
+            "tone_tags": ["resilient", "intimate", "purposeful", "tender"],
+            "color_tags": [
+                "Cool-to-warm tension from skylight blue-greys against amber desk lamp glow"
+            ]
+            * 6,
+            "camera_tags": ["wide_master"],
+            "motion_tags": ["measured"],
+            "continuity_notes": [
+                "ARIA at tape machine frame left, NOAH at mixer frame center-right, JUNE entering "
+                "with mugs frame right; preserve geography and prop positions."
+            ]
+            * 4,
+            "clip_tags": ["procedural"],
+        },
+        meta={},
+        character_labels=["ARIA", "NOAH", "JUNE"],
+    )
+
+    contract = compile_low_fidelity_previz_prompt(brief=brief, engine_pack=pack)
+
+    assert len(contract.prompt_text) <= pack.request_defaults["max_prompt_chars"]
+    assert "This is previs, not a final render." in contract.prompt_text
+    assert "Characters to keep distinct: ARIA, NOAH, JUNE." in contract.prompt_text
+    assert "Engine guidance:" in contract.prompt_text
+
+
+@pytest.mark.unit
 def test_low_fidelity_profile_returns_copy() -> None:
     first = low_fidelity_previz_profile()
     second = low_fidelity_previz_profile()

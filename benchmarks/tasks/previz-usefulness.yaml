@@ -8,7 +8,7 @@
 #   PROMPTFOO_PYTHON=python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
 #     --output results/previz-usefulness-story-143-2026-04-03.json
 
-description: "Previz usefulness — compare Fast Previz against current low-fidelity AI-previz upgrade candidates"
+description: "Previz usefulness — compare deterministic fallback/control baselines against current low-fidelity AI-previz candidates"
 
 defaultTest:
   options:

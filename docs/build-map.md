@@ -119,13 +119,13 @@
 **Story coverage:** partial
 **Stories:** 025, 026, 027, 056, 119, 120, 121, 130, 132, 137, 143, 144, 148, 149, 150, 151, 152, 153
 **ADR Refs:** ADR-002, ADR-003
-**Spec:** spec:6 (spec:6.1, spec:6.1.1, spec:6.1.2, spec:6.1.3, spec:6.1.4, spec:6.2, spec:6.2.1, spec:6.2.2, spec:6.3, spec:6.3.1, spec:6.3.2, spec:6.3.3, spec:6.3.4, spec:6.4)
+**Spec:** spec:6 (spec:6.1, spec:6.1.1, spec:6.1.2, spec:6.1.3, spec:6.1.4, spec:6.2, spec:6.2.1, spec:6.2.2, spec:6.3, spec:6.3.1, spec:6.3.2, spec:6.3.3, spec:6.3.4, spec:6.3.5, spec:6.4)
 **Absorbs:** Shot Planning & Visualization (old 6)
 
 ### Phase Notes
 
-- Shot planning, storyboard generation, deterministic previz, and the operator-facing AI-previz surface now exist as real substrate.
-- This category stays in climb because broader previz quality and consistency coverage remains unfinished.
+- Shot planning, storyboard generation, deterministic previz baseline, and the operator-facing AI-previz surface now exist as real substrate.
+- This category stays in climb because deterministic previz is still only fallback/control while fast useful AI previz remains unfinished.
 
 ## spec:7 — Generation & Export
 

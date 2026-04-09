@@ -18,7 +18,7 @@
       "notes": [
         "Core substrate exists. Current work here is mostly maintenance, decomposition, and verification hardening rather than a missing-system climb."
       ],
-      "last_reviewed": "2026-04-04"
+      "last_reviewed": "2026-04-09"
     },
     "spec:2": {
       "substrate": "exists",
@@ -76,8 +76,8 @@
       "tech_need": "Coverage strategy, shot definitions, storyboard and animatic assets, and optional keyframes linked to upstream direction.",
       "absorbs": ["Shot Planning & Visualization (old 6)"],
       "notes": [
-        "Shot planning, storyboard generation, deterministic previz, and the operator-facing AI-previz surface now exist as real substrate.",
-        "This category stays in climb because broader previz quality and consistency coverage remains unfinished."
+        "Shot planning, storyboard generation, deterministic previz baseline, and the operator-facing AI-previz surface now exist as real substrate.",
+        "This category stays in climb because deterministic previz is still only fallback/control while fast useful AI previz remains unfinished."
       ],
       "last_reviewed": "2026-04-04"
     },

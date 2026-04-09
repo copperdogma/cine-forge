@@ -1017,6 +1017,17 @@ one or more shots.
 - director policy controls rigidity
 - divergence from previs explicitly allowed
 
+### spec:6.3.5 — Product Truth
+
+- When CineForge offers operator-facing previz video, the target is low-fidelity
+  AI-generated motion suitable for camera, blocking, pacing, and staging review.
+- Deterministic storyboard/animatic assemblies are valid baseline, fallback, and
+  control artifacts, but they do not satisfy the previz-video requirement by
+  themselves.
+- If current model/runtime limits keep AI previz slow, CineForge must say so
+  explicitly rather than presenting deterministic placeholder output as if the
+  previz problem were solved.
+
 ### spec:6.4 — Keyframes (Optional)
 
 - start / mid / end frames

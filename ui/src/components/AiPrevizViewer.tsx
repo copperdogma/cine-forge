@@ -7,6 +7,10 @@ import {
   formatPreviewMode,
   parsePreviewProvenance,
 } from '@/components/preview-provenance'
+import {
+  aiPrevizCostBadge,
+  formatAdoptionState,
+} from '@/components/previz-panel-support'
 import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -25,7 +29,7 @@ import {
 } from '@/components/render-utils'
 import { getAssetFileUrl } from '@/lib/api/assets'
 import { usePrevizAdoptionStatus } from '@/lib/hooks'
-import type { ArtifactHealthDetails, PrevizLaneStatus } from '@/lib/types'
+import type { ArtifactHealthDetails } from '@/lib/types'
 
 type AiPrevizViewerProps = {
   data: Record<string, unknown>
@@ -56,28 +60,6 @@ type AiPrevizView = {
   promptRef: ArtifactLinkView | null
   baselineRef: ArtifactLinkView | null
   previzReelRef: ArtifactLinkView | null
-}
-
-function formatAdoptionState(value: PrevizLaneStatus['adoption_state'] | null | undefined): string {
-  switch (value) {
-    case 'default':
-      return 'Default'
-    case 'recommended_optional':
-      return 'Recommended Optional'
-    case 'experimental_manual':
-      return 'Experimental / Manual'
-    default:
-      return 'Manual Lane'
-  }
-}
-
-function aiPrevizCostBadge(status: PrevizLaneStatus | null | undefined): string | null {
-  if (!status) return null
-  const amount = formatMoney(status.cost.estimated_cost_usd ?? null)
-  if (status.cost.status === 'verified' && amount) return amount
-  if (status.cost.status === 'estimated' && amount) return `Est. ${amount}`
-  if (status.cost.status === 'blocked') return 'Cost blocked'
-  return null
 }
 
 function parseArtifactLink(value: unknown): ArtifactLinkView | null {
@@ -124,7 +106,7 @@ function parseAiPreviz(data: Record<string, unknown>): AiPrevizView {
 export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewerProps) {
   const previz = parseAiPreviz(data)
   const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
-  const fastPrevizStatus = previzStatus?.fast_previz
+  const deterministicPrevizStatus = previzStatus?.deterministic_previz
   const aiPrevizStatus = previzStatus?.ai_previz
   const sceneLabel = previz.sceneNumber !== null ? `Scene ${previz.sceneNumber}` : 'AI Previz'
   const videoUrl = previz.videoPath ? getAssetFileUrl(projectId, previz.videoPath) : null
@@ -216,7 +198,7 @@ export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewe
             <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
               <div className="space-y-1">
                 <p>{aiPrevizStatus.reason}</p>
-                {fastPrevizStatus?.upgrade_description && <p>{fastPrevizStatus.upgrade_description}</p>}
+                {deterministicPrevizStatus?.upgrade_description && <p>{deterministicPrevizStatus.upgrade_description}</p>}
                 {aiPrevizStatus.cost.status === 'blocked' && aiPrevizStatus.cost.reason && (
                   <p>Cost blocker: {aiPrevizStatus.cost.reason}</p>
                 )}
@@ -238,7 +220,7 @@ export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewe
               <Button asChild variant="outline" size="sm">
                 <Link to={baselineHref}>
                   <ExternalLink className="h-3.5 w-3.5" />
-                  Fast Previz Baseline
+                  Deterministic Baseline
                 </Link>
               </Button>
             )}

@@ -114,7 +114,7 @@ def _engine_pack(
     )
 
 
-def test_previz_adoption_service_marks_lite_as_recommended_optional_when_cost_is_blocked(
+def test_previz_adoption_service_keeps_ai_previz_primary_when_cost_is_blocked(
     tmp_path: Path,
 ) -> None:
     recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
@@ -141,17 +141,20 @@ def test_previz_adoption_service_marks_lite_as_recommended_optional_when_cost_is
 
     status = service.build_status()
 
-    assert status.default_lane == "annotated_animatic"
-    assert status.fast_previz.label == "Fast Previz"
-    assert status.fast_previz.candidate_label == "Annotated Animatic"
-    assert status.fast_previz.adoption_state == "default"
-    assert status.fast_previz.upgrade_lane_id == "ai_previz"
-    assert status.ai_previz.adoption_state == "recommended_optional"
+    assert status.primary_lane == "ai_previz"
+    assert status.deterministic_previz.label == "Deterministic Baseline"
+    assert status.deterministic_previz.candidate_label == "Annotated Animatic"
+    assert status.deterministic_previz.adoption_state == "recommended_optional"
+    assert status.deterministic_previz.upgrade_lane_id == "ai_previz"
+    assert status.ai_previz.adoption_state == "default"
     assert status.ai_previz.cost.status == "blocked"
     assert status.ai_previz.validation_stage_enabled is True
-    assert any("0.03" in blocker for blocker in status.ai_previz.blocker_reasons)
+    assert any(
+        "outside the 6000 ms fast-previz target" in blocker
+        for blocker in status.ai_previz.blocker_reasons
+    )
     assert any("pricing" in blocker.lower() for blocker in status.ai_previz.blocker_reasons)
-    assert "slower optional generated pass" in status.policy_summary.lower()
+    assert "intended operator-facing lane" in status.policy_summary.lower()
 
 
 def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are_verified(
@@ -181,16 +184,16 @@ def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are
 
     status = service.build_status()
 
-    assert status.default_lane == "ai_previz"
+    assert status.primary_lane == "ai_previz"
     assert status.ai_previz.adoption_state == "default"
     assert status.ai_previz.cost.status == "estimated"
     assert status.ai_previz.cost.estimated_cost_usd == 0.4
     assert status.ai_previz.blocker_reasons == []
-    assert status.fast_previz.adoption_state == "recommended_optional"
-    assert "replace Fast Previz" in status.ai_previz.reason
+    assert status.deterministic_previz.adoption_state == "recommended_optional"
+    assert "honest operator-facing previz lane" in status.ai_previz.reason
 
 
-def test_previz_adoption_service_keeps_fast_previz_default_when_ai_lane_is_too_slow(
+def test_previz_adoption_service_keeps_ai_previz_primary_even_when_it_is_too_slow(
     tmp_path: Path,
 ) -> None:
     recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
@@ -217,7 +220,7 @@ def test_previz_adoption_service_keeps_fast_previz_default_when_ai_lane_is_too_s
 
     status = service.build_status()
 
-    assert status.default_lane == "annotated_animatic"
-    assert status.fast_previz.adoption_state == "default"
-    assert status.ai_previz.adoption_state == "recommended_optional"
-    assert "outside the 6000 ms Fast Previz budget" in status.ai_previz.reason
+    assert status.primary_lane == "ai_previz"
+    assert status.deterministic_previz.adoption_state == "recommended_optional"
+    assert status.ai_previz.adoption_state == "default"
+    assert "outside the 6000 ms fast-previz target" in status.ai_previz.reason

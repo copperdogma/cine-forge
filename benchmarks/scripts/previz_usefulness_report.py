@@ -292,8 +292,8 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str | None]:
     if not rows:
         return {
             "decision": "retest",
-            "default_lane": None,
-            "upgrade_lane": None,
+            "primary_lane": None,
+            "fallback_lane": None,
             "rationale": "No results were available.",
         }
 
@@ -302,7 +302,7 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str | None]:
             row
             for row in rows
             if row.get("candidate_variant") == "annotated_symbolic"
-            or row.get("candidate_class") == "fast_previz"
+            or row.get("candidate_class") == "deterministic_baseline"
         ),
         None,
     )
@@ -310,42 +310,44 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str | None]:
     if annotated is None:
         return {
             "decision": "retest",
-            "default_lane": None,
-            "upgrade_lane": None,
+            "primary_lane": None,
+            "fallback_lane": None,
             "rationale": (
-                "Fast Previz is missing from the dataset, so the default-lane policy cannot "
+                "The deterministic baseline is missing from the dataset, so the fallback/control "
+                "policy cannot "
                 "be verified."
             ),
         }
     if annotated["generation_latency_ms"] is None:
         return {
             "decision": "retest",
-            "default_lane": annotated["candidate"],
-            "upgrade_lane": None,
+            "primary_lane": None,
+            "fallback_lane": annotated["candidate"],
             "rationale": (
-                "Fast Previz is missing a measured generation latency. Re-run the "
+                "The deterministic baseline is missing a measured generation latency. Re-run the "
                 "deterministic dataset first."
             ),
         }
     if annotated["generation_latency_ms"] > FAST_PREVIZ_BUDGET_MS:
         return {
             "decision": "block",
-            "default_lane": annotated["candidate"],
-            "upgrade_lane": None,
+            "primary_lane": None,
+            "fallback_lane": annotated["candidate"],
             "rationale": (
-                f"Fast Previz measured {annotated['generation_latency_ms']} ms, above the "
-                f"{FAST_PREVIZ_BUDGET_MS} ms quick-loop budget. Fix the deterministic lane before "
-                "treating previz as interactive."
+                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms, above "
+                f"the {FAST_PREVIZ_BUDGET_MS} ms control-arm budget. Fix the fallback path before "
+                "using it as the non-AI comparator."
             ),
         }
     if not ai_rows:
         return {
-            "decision": "keep_fast_default",
-            "default_lane": annotated["candidate"],
-            "upgrade_lane": None,
+            "decision": "missing_ai_primary",
+            "primary_lane": None,
+            "fallback_lane": annotated["candidate"],
             "rationale": (
-                f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside "
-                f"the {FAST_PREVIZ_BUDGET_MS} ms budget. No AI upgrade candidates were present."
+                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and "
+                f"stays inside the {FAST_PREVIZ_BUDGET_MS} ms control bar, but no AI previz "
+                "candidate was present. The product previz requirement remains unmet."
             ),
         }
 
@@ -353,64 +355,65 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str | None]:
     if best_ai["calls"] < 3:
         return {
             "decision": "retest",
-            "default_lane": annotated["candidate"],
-            "upgrade_lane": best_ai["candidate"],
+            "primary_lane": best_ai["candidate"],
+            "fallback_lane": annotated["candidate"],
             "rationale": (
                 "AI candidate coverage is incomplete. Run all selected scene packets "
-                "before making a default recommendation."
+                "before making a primary-lane recommendation."
             ),
         }
     if best_ai["overall"] < 0.75:
         return {
-            "decision": "keep_fast_default",
-            "default_lane": annotated["candidate"],
-            "upgrade_lane": None,
+            "decision": "hold_ai_primary_blocked",
+            "primary_lane": None,
+            "fallback_lane": annotated["candidate"],
             "rationale": (
-                f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside "
-                f"the {FAST_PREVIZ_BUDGET_MS} ms budget. {best_ai['candidate']} is the best AI "
-                f"lane at {best_ai['overall']:.3f}, but it still misses the first usefulness floor "
-                "for camera/blocking readability."
+                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and "
+                f"stays inside the {FAST_PREVIZ_BUDGET_MS} ms control bar. {best_ai['candidate']} "
+                f"is the best AI lane at {best_ai['overall']:.3f}, but it still misses the first "
+                "usefulness floor for camera/blocking readability, so the product previz lane "
+                "remains blocked."
             ),
         }
     if (
         best_ai["generation_cost_usd"] is not None
         and best_ai["generation_latency_ms"] is not None
         and best_ai["generation_latency_ms"] <= FAST_PREVIZ_BUDGET_MS
-        and best_ai["overall"] - annotated["overall"] >= 0.03
     ):
         return {
-            "decision": "promote_ai_default",
-            "default_lane": best_ai["candidate"],
-            "upgrade_lane": annotated["candidate"],
+            "decision": "promote_ai_primary",
+            "primary_lane": best_ai["candidate"],
+            "fallback_lane": annotated["candidate"],
             "rationale": (
-                f"{best_ai['candidate']} beat Fast Previz by at least 0.03 overall and still "
-                f"measured {best_ai['generation_latency_ms']} ms, inside the "
-                f"{FAST_PREVIZ_BUDGET_MS} ms quick-loop budget. It can replace the deterministic "
-                "default."
+                f"{best_ai['candidate']} measured {best_ai['generation_latency_ms']} ms, inside "
+                f"the {FAST_PREVIZ_BUDGET_MS} ms fast-previz target, while clearing the quality "
+                "bar. It can serve as the honest AI-primary previz lane, with deterministic "
+                "baseline retained only as fallback/control."
             ),
         }
     if best_ai["generation_latency_ms"] is not None and best_ai["generation_latency_ms"] > 180000:
         return {
-            "decision": "keep_fast_default",
-            "default_lane": annotated["candidate"],
-            "upgrade_lane": None,
+            "decision": "hold_ai_primary_blocked",
+            "primary_lane": best_ai["candidate"],
+            "fallback_lane": annotated["candidate"],
             "rationale": (
-                f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside "
-                f"the {FAST_PREVIZ_BUDGET_MS} ms budget. {best_ai['candidate']} clears the quality "
-                f"bar but averages {best_ai['generation_latency_ms']} ms generation latency, which "
-                "is outside the optional AI-previz envelope."
+                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and "
+                f"stays inside the {FAST_PREVIZ_BUDGET_MS} ms control bar. {best_ai['candidate']} "
+                f"clears the quality bar but averages {best_ai['generation_latency_ms']} ms "
+                "generation latency, which is outside even the optional AI-previz envelope."
             ),
         }
     return {
-        "decision": "keep_fast_default",
-        "default_lane": annotated["candidate"],
-        "upgrade_lane": best_ai["candidate"],
+        "decision": "hold_ai_primary_blocked",
+        "primary_lane": best_ai["candidate"],
+        "fallback_lane": annotated["candidate"],
         "rationale": (
-            f"Fast Previz measured {annotated['generation_latency_ms']} ms and stays inside the "
-            f"{FAST_PREVIZ_BUDGET_MS} ms budget, so it should remain the default quick loop. "
-            f"{best_ai['candidate']} is the strongest slower AI upgrade at "
-            f"{best_ai['overall']:.3f} overall and "
-            f"{best_ai['generation_latency_ms']} ms generation latency."
+            f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and stays "
+            f"inside the {FAST_PREVIZ_BUDGET_MS} ms control bar, but it does not satisfy the "
+            "product previz requirement. "
+            f"{best_ai['candidate']} is the strongest current AI lane at {best_ai['overall']:.3f} "
+            f"overall and {best_ai['generation_latency_ms']} ms generation latency, so AI previz "
+            "remains the intended primary lane while runtime work stays blocked."
         ),
     }
 
@@ -434,8 +437,8 @@ def _load_candidate_meta(
 
 
 def _candidate_class(candidate_variant: str | None, operator_lane: str | None) -> str:
-    if operator_lane == "fast_previz":
-        return "fast_previz"
+    if operator_lane in {"fast_previz", "deterministic_baseline"}:
+        return "deterministic_baseline"
     if candidate_variant in _AI_VARIANTS:
         return "ai_previz"
     return "baseline"

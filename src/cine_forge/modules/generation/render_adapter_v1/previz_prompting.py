@@ -162,6 +162,10 @@ def compile_low_fidelity_previz_prompt(
         ),
         f"Engine guidance: {engine_line}",
     ]
+    prompt_text = _fit_prompt_lines_to_budget(
+        prompt_lines,
+        max_chars=_request_int(engine_pack, "max_prompt_chars"),
+    )
 
     notes = [
         f"consistency_strategy={consistency_strategy}",
@@ -177,7 +181,7 @@ def compile_low_fidelity_previz_prompt(
         target_engine_pack_id=engine_pack.pack_id,
         consistency_strategy=consistency_strategy,
         style_profile=_HOUSE_STYLE_PROFILE,
-        prompt_text="\n".join(prompt_lines),
+        prompt_text=prompt_text,
         negative_prompt_terms=list(_DEFAULT_NEGATIVE_TERMS),
         notes=notes,
     )
@@ -371,6 +375,104 @@ def _ordered_lines(tags: Sequence[str], mapping: dict[str, str]) -> list[str]:
         if line and line not in lines:
             lines.append(line)
     return lines or ["Keep the camera and motion readable without extra flourish."]
+
+
+def _fit_prompt_lines_to_budget(
+    prompt_lines: list[str],
+    *,
+    max_chars: int | None,
+) -> str:
+    prompt_text = "\n".join(prompt_lines)
+    if not max_chars or len(prompt_text) <= max_chars:
+        return prompt_text
+
+    adjusted = _apply_line_caps(
+        prompt_lines,
+        {
+            "Shot brief: ": 900,
+            "Color cue: ": 240,
+            "Continuity anchor: ": 240,
+            "Audio cue: ": 320,
+            "Dialogue cue: ": 220,
+        },
+    )
+    prompt_text = "\n".join(adjusted)
+    if len(prompt_text) <= max_chars:
+        return prompt_text
+
+    adjusted = _apply_line_caps(
+        adjusted,
+        {
+            "Shot brief: ": 720,
+            "Color cue: ": 180,
+            "Continuity anchor: ": 180,
+            "Audio cue: ": 220,
+            "Dialogue cue: ": 160,
+        },
+    )
+    prompt_text = "\n".join(adjusted)
+    if len(prompt_text) <= max_chars:
+        return prompt_text
+
+    overflow = len(prompt_text) - max_chars
+    for prefix in ("Shot brief: ", "Audio cue: ", "Color cue: ", "Dialogue cue: "):
+        adjusted, reduced = _trim_prefixed_line(adjusted, prefix=prefix, overflow=overflow)
+        if not reduced:
+            continue
+        prompt_text = "\n".join(adjusted)
+        if len(prompt_text) <= max_chars:
+            return prompt_text
+        overflow = len(prompt_text) - max_chars
+
+    return prompt_text[: max_chars - 3].rstrip() + "..."
+
+
+def _apply_line_caps(prompt_lines: list[str], caps: dict[str, int]) -> list[str]:
+    adjusted = list(prompt_lines)
+    for index, line in enumerate(adjusted):
+        for prefix, limit in caps.items():
+            if line.startswith(prefix):
+                adjusted[index] = prefix + _shorten_text(line[len(prefix) :], limit)
+                break
+    return adjusted
+
+
+def _trim_prefixed_line(
+    prompt_lines: list[str],
+    *,
+    prefix: str,
+    overflow: int,
+) -> tuple[list[str], bool]:
+    adjusted = list(prompt_lines)
+    for index, line in enumerate(adjusted):
+        if not line.startswith(prefix):
+            continue
+        trimmed = _shorten_text(
+            line[len(prefix) :],
+            max(120, len(line[len(prefix) :]) - overflow - 8),
+        )
+        adjusted[index] = prefix + trimmed
+        return adjusted, True
+    return adjusted, False
+
+
+def _shorten_text(text: str, max_chars: int) -> str:
+    if len(text) <= max_chars:
+        return text
+    trimmed = text[: max_chars - 3].rstrip(" ,;:.")
+    sentence_break = max(
+        trimmed.rfind(". "),
+        trimmed.rfind("; "),
+        trimmed.rfind(", "),
+    )
+    if sentence_break >= max_chars // 2:
+        trimmed = trimmed[:sentence_break].rstrip(" ,;:.")
+    return trimmed + "..."
+
+
+def _request_int(engine_pack: EnginePack, key: str) -> int | None:
+    value = engine_pack.request_defaults.get(key)
+    return value if isinstance(value, int) and value > 0 else None
 
 
 def _string_or_none(value: Any) -> str | None:
