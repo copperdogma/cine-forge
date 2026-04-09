@@ -236,7 +236,8 @@
     "sequencing_bias": [
       {
         "target": "spec:5",
-        "reason": "Operator-surface polish remains the clearest product-facing follow-on once the planning substrate is stable."
+        "reason": "Story 150 closed the detector-substrate hardening slice, so Story 034 is now the clearest ready lane while the remaining previz line is preserved honestly as blocked health flags pending materially new evidence.",
+        "story_refs": ["034"]
       }
     ],
     "campaigns": [
@@ -256,7 +257,7 @@
   },
   "stories_index": {
     "current_execution_map": {
-      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 145 and 146 completed the graph+state migration plus legacy metadata backfill, and Story 147 then closed the remaining planning-surface truth loophole so generated execution-map lanes and active-roadmap refs stay aligned with canonical story status. Product-facing operator-surface polish just advanced through Story 046, and Story 034 now remains as the ready lane inside the same spec:5 focus.",
+      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 150 has now closed the runtime-detector substrate hardening slice, while Stories 149 and 153 continue to preserve the blocked fast-useful-AI-previz product truth. Story 034 is the clearest ready lane while the previz line waits for materially new evidence or a new falsifiable hypothesis.",
       "lanes": [
         {
           "id": "pending-ready",
@@ -287,7 +288,10 @@
           "statuses": ["Blocked"],
           "health_flag": true,
           "empty_message": "No blocked lines currently need attention.",
-          "story_notes": {}
+          "story_notes": {
+            "149": "Blocked on the product truth itself: no measured AI lane clears the fast-previz target, and the current shipped Lite 4 lane is still only a provisional slow lane.",
+            "153": "Blocked on provider-floor convergence: runtime and usefulness leaders still diverge, so no dominant AI-previz winner is proven yet."
+          }
         },
         {
           "id": "draft",

@@ -1,0 +1,208 @@
+from __future__ import annotations
+
+import importlib
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+BENCHMARK_SCRIPT_ROOT = REPO_ROOT / "benchmarks" / "scripts"
+if str(BENCHMARK_SCRIPT_ROOT) not in sys.path:
+    sys.path.insert(0, str(BENCHMARK_SCRIPT_ROOT))
+
+runtime_support = importlib.import_module("real_ai_previz_runtime_support")
+
+
+def _case_result(
+    *,
+    case_id: str,
+    attempt_index: int,
+    success: bool,
+    prerequisite_elapsed_ms: int,
+    ai_previz_elapsed_ms: int,
+    total_elapsed_ms: int,
+    error: str | None = None,
+) -> object:
+    return runtime_support.RuntimeCaseResult(
+        case_id=case_id,
+        label=case_id,
+        prerequisite_mode="scene_ready",
+        recipe_mode="patched",
+        engine_pack_id="fixture_pack",
+        duration_seconds=4,
+        resolution="720p",
+        scene_id="scene_001",
+        input_fixture="tests/fixtures/sample_screenplay.fountain",
+        attempt_index=attempt_index,
+        project_dir=f"output/{case_id}-{attempt_index}",
+        success=success,
+        error=error,
+        prerequisite_elapsed_ms=prerequisite_elapsed_ms,
+        ai_previz_elapsed_ms=ai_previz_elapsed_ms,
+        total_elapsed_ms=total_elapsed_ms,
+    )
+
+
+@pytest.mark.unit
+def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
+    manifest = runtime_support.RuntimeEvalManifest.model_validate_json(
+        json.dumps(
+            {
+                "cases": [
+                    {
+                        "case_id": "shipped_lite_4_scene_ready",
+                        "label": "Shipped scene-ready",
+                        "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+                        "scene_id": "scene_001",
+                        "prerequisite_mode": "scene_ready",
+                        "recipe_mode": "shipped",
+                    },
+                    {
+                        "case_id": "xai_4_480p_mvp_ingest_only",
+                        "label": "xAI ingest-only",
+                        "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+                        "scene_id": "scene_001",
+                        "prerequisite_mode": "mvp_ingest_only",
+                        "recipe_mode": "patched",
+                        "ai_previz": {
+                            "engine_pack_id": "xai_grok_imagine_video",
+                            "duration_seconds": 4,
+                            "resolution": "480p",
+                            "consistency_strategy": "prompt_only",
+                        },
+                    },
+                ]
+            }
+        )
+    )
+
+    assert len(manifest.cases) == 2
+    assert manifest.cases[0].recipe_mode == "shipped"
+    assert manifest.cases[0].ai_previz is None
+    assert manifest.cases[1].prerequisite_mode == "mvp_ingest_only"
+    assert manifest.cases[1].ai_previz is not None
+    assert manifest.cases[1].ai_previz.engine_pack_id == "xai_grok_imagine_video"
+
+
+@pytest.mark.unit
+def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
+    attempts = [
+        _case_result(
+            case_id="fast_4_scene_ready",
+            attempt_index=1,
+            success=True,
+            prerequisite_elapsed_ms=111_000,
+            ai_previz_elapsed_ms=53_000,
+            total_elapsed_ms=164_000,
+        ),
+        _case_result(
+            case_id="fast_4_scene_ready",
+            attempt_index=2,
+            success=True,
+            prerequisite_elapsed_ms=109_000,
+            ai_previz_elapsed_ms=51_000,
+            total_elapsed_ms=160_000,
+        ),
+        _case_result(
+            case_id="lite_4_scene_ready",
+            attempt_index=1,
+            success=False,
+            prerequisite_elapsed_ms=120_000,
+            ai_previz_elapsed_ms=56_000,
+            total_elapsed_ms=176_000,
+            error="provider timeout",
+        ),
+        _case_result(
+            case_id="lite_4_scene_ready",
+            attempt_index=2,
+            success=True,
+            prerequisite_elapsed_ms=118_000,
+            ai_previz_elapsed_ms=55_000,
+            total_elapsed_ms=173_000,
+        ),
+    ]
+
+    aggregates = runtime_support.aggregate_attempts(attempts)
+    summary = runtime_support.summarize_results(
+        aggregates,
+        fast_previz_target_ms=6_000,
+    )
+
+    fast_case = next(case for case in aggregates if case.case_id == "fast_4_scene_ready")
+    lite_case = next(case for case in aggregates if case.case_id == "lite_4_scene_ready")
+
+    assert fast_case.success is True
+    assert fast_case.total_elapsed_ms == 162_000
+    assert fast_case.ai_previz_elapsed_ms == 52_000
+
+    assert lite_case.success is False
+    assert lite_case.successful_attempts == 1
+    assert lite_case.total_elapsed_ms == 173_000
+    assert lite_case.ai_previz_elapsed_ms == 55_000
+
+    assert summary["successful_cases"] == 1
+    assert summary["fully_successful_cases"] == 1
+    assert summary["fastest_scene_ready_case_id"] == "fast_4_scene_ready"
+    assert summary["fastest_scene_ready_ms"] == 162_000
+    assert summary["fastest_isolated_ai_previz_ms"] == 52_000
+    assert summary["overall"] == 0.5
+
+
+@pytest.mark.unit
+def test_summarize_results_falls_back_to_partial_success_when_needed() -> None:
+    aggregates = [
+        runtime_support.RuntimeCaseAggregate(
+            case_id="fast_partial",
+            label="Fast partial",
+            prerequisite_mode="scene_ready",
+            recipe_mode="patched",
+            engine_pack_id="fixture_fast",
+            duration_seconds=4,
+            resolution="720p",
+            scene_id="scene_001",
+            input_fixture="tests/fixtures/sample_screenplay.fountain",
+            repeat_count=2,
+            successful_attempts=1,
+            success=False,
+            prerequisite_elapsed_ms=100_000,
+            ai_previz_elapsed_ms=40_000,
+            total_elapsed_ms=140_000,
+            min_total_elapsed_ms=139_000,
+            max_total_elapsed_ms=141_000,
+            min_ai_previz_elapsed_ms=39_000,
+            max_ai_previz_elapsed_ms=41_000,
+        ),
+        runtime_support.RuntimeCaseAggregate(
+            case_id="slow_partial",
+            label="Slow partial",
+            prerequisite_mode="scene_ready",
+            recipe_mode="patched",
+            engine_pack_id="fixture_slow",
+            duration_seconds=4,
+            resolution="720p",
+            scene_id="scene_001",
+            input_fixture="tests/fixtures/sample_screenplay.fountain",
+            repeat_count=2,
+            successful_attempts=1,
+            success=False,
+            prerequisite_elapsed_ms=130_000,
+            ai_previz_elapsed_ms=60_000,
+            total_elapsed_ms=190_000,
+            min_total_elapsed_ms=189_000,
+            max_total_elapsed_ms=191_000,
+            min_ai_previz_elapsed_ms=59_000,
+            max_ai_previz_elapsed_ms=61_000,
+        ),
+    ]
+
+    summary = runtime_support.summarize_results(
+        aggregates,
+        fast_previz_target_ms=6_000,
+    )
+
+    assert summary["successful_cases"] == 2
+    assert summary["fully_successful_cases"] == 0
+    assert summary["fastest_scene_ready_case_id"] == "fast_partial"
+    assert summary["fastest_total_case_id"] == "fast_partial"

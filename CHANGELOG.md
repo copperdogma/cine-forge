@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-04-09-03] — Previz runtime detector hardening (Story 150)
+
+### Added
+- Added focused regression coverage for the real AI-previz runtime support and decision-summary helpers so manifest parsing, median aggregation, partial-success summary math, and divergence reporting fail locally before another paid rerun
+
+### Changed
+- Changed Story 150 close-out truth and the canonical methodology execution map so the detector substrate is recorded as complete while Stories 149 and 153 remain blocked health flags and Story 034 becomes the clearest ready lane
+
 ## [2026-04-09-02] — Blocked story lifecycle hardening
 
 ### Added

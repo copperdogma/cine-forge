@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Stories 145 and 146 completed the graph+state migration plus legacy metadata backfill, and Story 147 then closed the remaining planning-surface truth loophole so generated execution-map lanes and active-roadmap refs stay aligned with canonical story status. Product-facing operator-surface polish just advanced through Story 046, and Story 034 now remains as the ready lane inside the same spec:5 focus.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 150 has now closed the runtime-detector substrate hardening slice, while Stories 149 and 153 continue to preserve the blocked fast-useful-AI-previz product truth. Story 034 is the clearest ready lane while the previz line waits for materially new evidence or a new falsifiable hypothesis.
 
 ### Pending — Ready To Build Now
 
@@ -58,7 +58,10 @@ No stories currently need the sequence-sensitive lane.
 
 ### Blocked — Dependency Chain Not Ready Yet
 
-No blocked lines currently need attention.
+| Story | Why |
+|---|---|
+| **149** Fast AI Previz and Latency Budget | Blocked on the product truth itself: no measured AI lane clears the fast-previz target, and the current shipped Lite 4 lane is still only a provisional slow lane. |
+| **153** Previz Minimal AI Clip Mode and Provider Floor | Blocked on provider-floor convergence: runtime and usefulness leaders still diverge, so no dominant AI-previz winner is proven yet. |
 
 ## Notes From Cam
 
@@ -97,7 +100,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:5`, `spec:6`
-- Sequencing bias: `spec:5` — Operator-surface polish remains the clearest product-facing follow-on once the planning substrate is stable.
+- Sequencing bias: `spec:5` (stories: 034) — Story 150 closed the detector-substrate hardening slice, so Story 034 is now the clearest ready lane while the remaining previz line is preserved honestly as blocked health flags pending materially new evidence.
 
 ## Story Index
 
@@ -208,7 +211,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 150 | Fastest Real AI Previz Runtime Eval | High | In Progress | — | spec:5, spec:6, spec:7, spec:10 | 143, 144, 148, 149 | [story-150](stories/story-150-fastest-real-ai-previz-runtime-eval.md) |
 | 149 | Fast AI Previz and Latency Budget | High | Blocked | Representative previz verification is honest again, and Story 153 now has a tighter provider-fl… | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
 | 153 | Previz Minimal AI Clip Mode and Provider Floor | High | Blocked | Story 153 is blocked on provider-floor convergence, not on missing implementation. The current… | spec:5, spec:6, spec:7, spec:10 | 143, 149, 150, 151, 152 | [story-153](stories/story-153-previz-minimal-ai-clip-provider-floor.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
@@ -225,6 +227,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 085 | Pipeline Capability Graph & Navigation Bar | High | Done | — | spec:5 | 002, 011e, 011f, 082 | [story-085](stories/story-085-pipeline-capability-graph.md) |
 | 086 | AI Navigation Intelligence | High | Done | — | spec:5, spec:9 | 085 | [story-086](stories/story-086-ai-navigation-intelligence.md) |
 | 144 | AI Previz Adoption Gate and Trust Guardrails | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 032, 140, 143 | [story-144](stories/story-144-ai-previz-adoption-gate-and-trust-guardrails.md) |
+| 150 | Fastest Real AI Previz Runtime Eval | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 143, 144, 148, 149 | [story-150](stories/story-150-fastest-real-ai-previz-runtime-eval.md) |
 | 151 | Previz Shot Planning Compact Mode | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 149, 150 | [story-151](stories/story-151-previz-shot-planning-compact-mode.md) |
 | 152 | Previz AI Regenerate Reuse Path | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 149, 150, 151 | [story-152](stories/story-152-previz-ai-regenerate-reuse-path.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
