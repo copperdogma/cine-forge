@@ -1,7 +1,7 @@
 ---
 id: "153"
 title: "Previz Minimal AI Clip Mode and Provider Floor"
-status: "Blocked"
+status: "Done"
 priority: "High"
 ideal_refs:
   - "R7 (generate -> react -> refine)"
@@ -46,7 +46,7 @@ legacy_system: ""
 # Story 153 — Previz Minimal AI Clip Mode and Provider Floor
 
 **Priority**: High
-**Status**: Blocked
+**Status**: Done
 **Ideal Refs**: R7 (generate -> react -> refine), R10 (playable assembly at every stage), R12 (transparency & control), R17 (real-world and partial-workflow inputs)
 **Spec Refs**: spec:5.3, spec:5.5, spec:6.3, spec:6.3.2, spec:6.3.5, spec:7.1, spec:10.3
 **ADR Refs**: ADR-002 (Goal-Oriented Navigation), ADR-003 (Film Elements / Scene Workspace / previz as planning surface)
@@ -61,7 +61,7 @@ Find out whether the remaining AI-previz bottleneck is now mostly the provider-b
 - [x] Live model discovery and the existing runtime harness are rerun against the current provider surface before choosing a new primary AI clip candidate.
 - [x] At least the shipped Lite lane plus the shortest reachable low-fidelity candidates (`google_veo31_lite`, `google_veo31_fast`, and `google_veo31`) are compared on the same real AI-previz runtime harness after Story 151/152, using the minimal honest settings each candidate supports.
 - [x] The comparison isolates provider/runtime-floor tradeoffs clearly enough to answer: does a minimal AI clip mode materially improve the current `ai_previz` stage or total scene-ready runtime, and does it remain useful enough for motion/blocking review?
-- [x] If a candidate materially wins, the shipped AI-previz recipe / engine-pack selection and any user-facing provenance or disclosure needed to keep the product honest are updated in the same story. If no dominant winner is proven, the story records the provider floor as a named blocker and labels the configured AI lane as provisional while deterministic previz remains fallback/control only.
+- [x] If a candidate materially wins, the shipped AI-previz recipe / engine-pack selection and any user-facing provenance or disclosure needed to keep the product honest are updated in the same story. If no dominant winner is proven, the story records the provider-floor outcome explicitly and labels the configured AI lane as provisional while deterministic previz remains fallback/control only.
 - [x] Story 149 and `docs/evals/registry.yaml` are updated with verified result paths, `git_sha`, dates, and an explicit runtime-blocking vs non-runtime-blocking classification for the remaining gap.
 
 ## Out of Scope
@@ -78,7 +78,7 @@ Find out whether the remaining AI-previz bottleneck is now mostly the provider-b
 - **AI-only**: Wrong fit for the core decision. A model can suggest “try shorter clips” or “lower fidelity,” but the question here is a measurable provider/runtime floor and recipe/engine-pack behavior, not a reasoning gap.
 - **Hybrid**: Plausible if the winning path turns out to be “compile a smaller previz prompt contract plus the shortest reachable provider settings.” That keeps the AI judgment inside prompt compilation but leaves runtime/orchestration deterministic and measurable.
 - **Pure code**: Strong default candidate for the orchestration layer. Engine-pack settings, recipe params, benchmark harnesses, and product disclosure should remain code/config, not another AI planner.
-- **Repo constraints / ADRs**: ADR-002 requires honest warn/proceed behavior and no fake-ready product claims. ADR-003 keeps previz in Scene Workspace as a planning surface, not a disguised final-render lane. Story 149 remains blocked specifically on real runtime, so this story must not wander back into generic UX polish or placeholder deterministic output.
+- **Repo constraints / ADRs**: ADR-002 requires honest warn/proceed behavior and no fake-ready product claims. ADR-003 keeps previz in Scene Workspace as a planning surface, not a disguised final-render lane. Story 149 remains the owning product story for shipped AI-previz behavior, so this story must not wander back into generic UX polish or placeholder deterministic output.
 - **Existing patterns to reuse**: Reuse Story 150's `real_ai_previz_runtime_eval.py` harness, Story 151's compact shot-planning profile, Story 152's forced regenerate reuse path, Story 143's AI-previz engine-pack/contract/provenance substrate, and the current `PrevizPanel` disclosure path if product-facing labels need adjustment.
 - **Eval**: The existing `real-ai-previz-runtime` custom eval is the main detector. If a new minimal AI clip mode becomes a serious adoption candidate, rerun the relevant `previz-usefulness` comparison or a focused sibling usefulness check so runtime wins do not hide a quality collapse.
 
@@ -112,28 +112,28 @@ Find out whether the remaining AI-previz bottleneck is now mostly the provider-b
 
 - [x] Build complete: implementation finished, required checks run, and human summary shared
 - [x] Validation complete or explicitly skipped by user
-- [ ] Story marked done via `/mark-story-done`
+- [x] Story marked done via `/mark-story-done`
 
-## Blocker Summary
+## Outcome Summary
 
-Story 153 is blocked on provider-floor convergence, not on missing implementation. The current combined shared-substrate evidence says `fast_4_scene_ready` is the pure runtime median leader at `164799 ms` total / `52196 ms` isolated AI-previz, while `shipped_lite_4_scene_ready` remains the usefulness leader at `0.828` vs `0.778` and trails by only `6208 ms` total / `3232 ms` isolated AI-previz. That is enough to keep Lite 4 as the provisional shipped slow lane, but not enough to claim a dominant winner or close the provider-floor question.
+Story 153 completed the provider-floor comparison slice. The current combined shared-substrate evidence says `fast_4_scene_ready` is the pure runtime median leader at `164799 ms` total / `52196 ms` isolated AI-previz, while `shipped_lite_4_scene_ready` remains the usefulness leader at `0.828` vs `0.778` and trails by only `6208 ms` total / `3232 ms` isolated AI-previz. That is enough to keep Lite 4 as the provisional shipped slow lane, but not enough to claim a dominant winner. This is now climb evidence for Story 149, not an open blocker for closing Story 153.
 
-## Blocker Evidence
+## Outcome Evidence
 
 - Full provider-floor matrix: `benchmarks/results/real-ai-previz-runtime-story-153-provider-floor-2026-04-08.{json,md}` initially favored Lite 4 over the older Lite 8 baseline and over Fast 4.
 - Full post-change validation matrix: `benchmarks/results/real-ai-previz-runtime-story-153-validation-2026-04-08.{json,md}` did not preserve that ordering; `veo31_4_scene_ready` became fastest total and `fast_4_scene_ready` became fastest isolated AI-previz in that rerun.
 - Shared-substrate reruns: `benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-summary-2026-04-08.{json,md}` kept Lite 4 as the median winner across three scene-ready passes, but one direct multi-repeat attempt hung provider-side.
 - Fresh shared-substrate validation pass: `benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.{json,md}` flipped back to Fast 4 on a single pass.
 - Combined decision summary: `benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.{json,md}` now states the actual conclusion directly: runtime leader and usefulness leader diverge, and no dominant winner is proven by the combined evidence alone.
-- Product consequence: [recipe-ai-previz-generation.yaml](/Users/cam/.codex/worktrees/53fb/cine-forge/configs/recipes/recipe-ai-previz-generation.yaml) currently uses Lite 4 because it remains the best provisional AI lane when usefulness is considered, but that configured choice is still provisional and the detector remains runtime-blocking.
+- Product consequence: [recipe-ai-previz-generation.yaml](/Users/cam/.codex/worktrees/ba95/cine-forge/configs/recipes/recipe-ai-previz-generation.yaml) currently uses Lite 4 because it remains the best provisional AI lane when usefulness is considered, but that configured choice remains provisional and feeds Story 149's next climb slice.
 
-## Unblock Condition
+## Reopen Condition
 
-Unblock this story only when one of these is true:
+Reopen this story only when one of these is true:
 
 - a new shared-substrate runtime/usefulness comparison produces a dominant winner that remains stable across reruns, or
 - a new candidate materially beats both the current Fast 4 runtime median (`164799 ms` total / `52196 ms` isolated AI-previz) and the current Lite 4 usefulness lead (`0.828`) strongly enough to settle the tradeoff, or
-- the story is explicitly respecified to end at “best provisional shipped lane + blocker recorded” rather than “dominant provider-floor winner.”
+- the story is explicitly respecified to prove a new dominant provider-floor winner rather than preserve the current provisional-lane answer.
 
 ## Architectural Fit
 
@@ -274,4 +274,5 @@ Unblock this story only when one of these is true:
 
 20260408-1700 — blocker-formalized: converted Story 153 from an in-progress investigation artifact into an explicit blocked-story artifact. Evidence: frontmatter/header status now read `Blocked`, the blocker sections now capture the runtime-vs-usefulness split directly, the stale harness-size note was corrected to the extracted `480/260/229` file split, and the acceptance criterion around “winner ships or blocker recorded” now matches the provisional-lane outcome honestly. Result: the story artifact now says what the evidence already says: no dominant winner is proven, Lite 4 is only the provisional shipped slow lane, and provider-floor convergence is the named blocker. Next step: rerun methodology surfaces and `/validate` against this blocked-state framing.
 
-20260408-1702 — validation-blocked-state: `/validate` reran the combined decision-summary step and full local check suite against the blocked-story framing, then confirmed the artifact now reflects the actual conclusion. Evidence: `benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.{json,md}`, `python3 -m py_compile benchmarks/scripts/real_ai_previz_runtime_eval.py benchmarks/scripts/real_ai_previz_runtime_support.py benchmarks/scripts/real_ai_previz_runtime_decision.py` (pass), `make test-unit PYTHON=.venv/bin/python` (`670 passed, 152 deselected`), `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/real_ai_previz_runtime_eval.py benchmarks/scripts/real_ai_previz_runtime_support.py benchmarks/scripts/real_ai_previz_runtime_decision.py` (pass), `pnpm --dir ui run lint` (same 6 existing warnings, no errors), `cd ui && npx tsc -b` (pass), `pnpm --dir ui run build` (pass), and `pnpm methodology:compile && pnpm methodology:check` after this note update. Result: Story 153 now cleanly lands as `Blocked`, not ambiguously open; no dominant provider-floor winner is proven, Lite 4 remains the provisional shipped slow lane, and the unblock condition is explicit in the story artifact. Next step: either keep the provisional lane and close this story as blocked truth, or gather new shared-substrate evidence only if the goal is still to prove a dominant winner.
+20260408-1702 — validation-blocked-state: `/validate` reran the combined decision-summary step and full local check suite against the blocked-story framing, then confirmed the artifact now reflects the actual conclusion. Evidence: `benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.{json,md}`, `python3 -m py_compile benchmarks/scripts/real_ai_previz_runtime_eval.py benchmarks/scripts/real_ai_previz_runtime_support.py benchmarks/scripts/real_ai_previz_runtime_decision.py` (pass), `make test-unit PYTHON=.venv/bin/python` (`670 passed, 152 deselected`), `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/real_ai_previz_runtime_eval.py benchmarks/scripts/real_ai_previz_runtime_support.py benchmarks/scripts/real_ai_previz_runtime_decision.py` (pass), `pnpm --dir ui run lint` (same 6 existing warnings, no errors), `cd ui && npx tsc -b` (pass), `pnpm --dir ui run build` (pass), and `pnpm methodology:compile && pnpm methodology:check` after this note update. Result: Story 153 cleanly captured the provider-floor outcome: no dominant winner is proven, Lite 4 remains the provisional shipped slow lane, and the conditions for any future reopening are explicit in the story artifact. Next step: keep the provisional lane and continue product work in Story 149 unless a future slice specifically needs a fresh provider-floor comparison.
+20260409-1412 — user-clarification-closeout: user clarified that the `<= 6000 ms` target is a climb goal rather than a gate on continuing the real AI-previz product line. Reframed Story 153 from `Blocked` to `Done` because this story already completed its measurement/selection job: it compared the reachable AI lanes, moved the shipped recipe to the best current provisional choice, and recorded the runtime/usefulness divergence clearly enough for Story 149 to continue. Next step: do the next previz product slice in Story 149 and only reopen Story 153 if a future iteration truly needs another provider-floor comparison.

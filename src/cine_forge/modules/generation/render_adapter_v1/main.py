@@ -370,16 +370,6 @@ def _render_scene(
         shot_plan_ref=shot_plan_ref,
         prompt_ref=prompt_ref,
         keyframe_ref=latest_entity_ref(store, "keyframe", plan.scene_id),
-        previz_baseline_ref=(
-            latest_entity_ref(store, "animatic", plan.scene_id)
-            if output_contract["prompt_mode"] == "ai_previz"
-            else None
-        ),
-        previz_reel_ref=(
-            latest_project_ref(store, "previz_reel")
-            if output_contract["prompt_mode"] == "ai_previz"
-            else None
-        ),
         video=MediaFile(
             relative_path=relative_path(store.project_dir, output_path),
             media_type=result.media_type,

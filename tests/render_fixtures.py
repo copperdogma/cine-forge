@@ -84,7 +84,6 @@ def seed_render_project(
             scene_number=1,
             scene_heading="INT. LAB - NIGHT",
             shot_plan_ref=shot_plan_ref,
-            animatic_ref=None,
             storyboard_ref=None,
             keyframes=[
                 Keyframe(

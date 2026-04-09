@@ -43,24 +43,6 @@ def _prompt_ref() -> ArtifactRef:
     )
 
 
-def _animatic_ref() -> ArtifactRef:
-    return ArtifactRef(
-        artifact_type="animatic",
-        entity_id="scene_001",
-        version=1,
-        path="artifacts/animatic/scene_001/v1.json",
-    )
-
-
-def _previz_reel_ref() -> ArtifactRef:
-    return ArtifactRef(
-        artifact_type="previz_reel",
-        entity_id="project",
-        version=1,
-        path="artifacts/previz_reel/project/v1.json",
-    )
-
-
 @pytest.mark.unit
 def test_compiled_render_prompt_round_trip() -> None:
     prompt = CompiledRenderPrompt(
@@ -183,8 +165,6 @@ def test_generated_video_artifact_round_trip_supports_previz_refs() -> None:
             path="artifacts/ai_previz_prompt/scene_001/v1.json",
         ),
         keyframe_ref=None,
-        previz_baseline_ref=_animatic_ref(),
-        previz_reel_ref=_previz_reel_ref(),
         video=MediaFile(
             relative_path="artifacts/ai_previz_video_media/scene_001/v1.mp4",
             media_type="video/mp4",

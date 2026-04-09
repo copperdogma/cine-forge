@@ -258,15 +258,6 @@ PIPELINE_NODES: list[PipelineNode] = [
         implemented=True,
     ),
     PipelineNode(
-        id="animatics",
-        label="Animatics",
-        phase_id="storyboards",
-        artifact_types=["animatic"],
-        check_mode="entity",
-        dependencies=["scene_extraction"],
-        implemented=True,
-    ),
-    PipelineNode(
         id="ai_previz",
         label="AI Previz",
         phase_id="storyboards",
@@ -348,7 +339,7 @@ PIPELINE_PHASES: list[PipelinePhase] = [
         id="storyboards",
         label="Storyboards",
         icon="LayoutGrid",
-        node_ids=["storyboard_gen", "animatics", "ai_previz", "keyframes"],
+        node_ids=["storyboard_gen", "ai_previz", "keyframes"],
     ),
     PipelinePhase(
         id="production",

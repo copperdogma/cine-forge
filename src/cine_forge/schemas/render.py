@@ -6,15 +6,14 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from .animatic import MediaFile, PreviewProvenance
 from .creative_brief import VisualCreativeBrief
 from .models import ArtifactRef, CostRecord
+from .preview import MediaFile, PreviewProvenance
 
 RenderProvider = Literal["openai", "google", "xai"]
 PrevizAdoptionState = Literal["default", "recommended_optional", "experimental_manual"]
 PrevizCostStatus = Literal["verified", "estimated", "blocked"]
-PrevizPrimaryLane = Literal["deterministic_previz", "ai_previz"]
-PrevizLaneId = Literal["deterministic_previz", "ai_previz"]
+PrevizLaneId = Literal["ai_previz"]
 PrevizLatencyClass = Literal["fast", "slow"]
 PrevizConsistencyStrategy = Literal[
     "deterministic",
@@ -130,17 +129,12 @@ class PrevizLaneStatus(BaseModel):
     consistency_strategy: PrevizConsistencyStrategy | None = None
     cost: PrevizCostEvidence = Field(default_factory=PrevizCostEvidence)
     validation_stage_enabled: bool = False
-    upgrade_lane_id: PrevizLaneId | None = None
-    upgrade_label: str | None = None
-    upgrade_description: str | None = None
 
 
 class PrevizAdoptionStatus(BaseModel):
-    """Shared backend policy object for previz primary-lane and fallback disclosure."""
+    """Shared backend policy object for shipped AI-previz truth."""
 
-    primary_lane: PrevizPrimaryLane = "ai_previz"
     policy_summary: str = Field(min_length=1)
-    deterministic_previz: PrevizLaneStatus
     ai_previz: PrevizLaneStatus
 
 
@@ -191,8 +185,6 @@ class GeneratedVideoArtifact(BaseModel):
     shot_plan_ref: ArtifactRef
     prompt_ref: ArtifactRef
     keyframe_ref: ArtifactRef | None = None
-    previz_baseline_ref: ArtifactRef | None = None
-    previz_reel_ref: ArtifactRef | None = None
     video: MediaFile
     duration_seconds: float = Field(ge=0.0)
     resolution: str = Field(min_length=1)

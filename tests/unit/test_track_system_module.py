@@ -110,7 +110,6 @@ def test_track_registry_defaults_and_overrides() -> None:
         "dialogue_audio",
         "shots",
         "storyboards",
-        "animatics",
         "ai_previz_video",
         "keyframes",
         "generated_video",
@@ -146,7 +145,7 @@ def test_best_for_scene_applies_fallback_and_status_filters(tmp_path: Path) -> N
     manifest = add_track_entry(
         manifest,
         TrackEntry(
-            track_type="animatics",
+            track_type="keyframes",
             scene_id="scene_001",
             artifact_ref=scene_ref,
             priority=150,
@@ -216,22 +215,25 @@ def test_resolver_supports_mixed_fidelity_and_gap_reporting(tmp_path: Path) -> N
     manifest = add_track_entry(
         manifest,
         TrackEntry(
-            track_type="animatics",
+            track_type="ai_previz_video",
             scene_id="scene_002",
             artifact_ref=scene_002_ref,
-            priority=150,
+            priority=125,
             status="available",
         ),
     )
 
     assert best_for_scene(manifest, scene_id="scene_001")["selected_track_type"] == "storyboards"
-    assert best_for_scene(manifest, scene_id="scene_002")["selected_track_type"] == "animatics"
+    assert (
+        best_for_scene(manifest, scene_id="scene_002")["selected_track_type"]
+        == "ai_previz_video"
+    )
     assert best_for_scene(manifest, scene_id="scene_003")["selected_track_type"] == "script"
 
     summary = track_fill_summary(manifest, timeline=timeline)
     assert summary["track_counts"]["script"] == 3
     assert summary["track_counts"]["storyboards"] == 1
-    assert summary["track_counts"]["animatics"] == 1
+    assert summary["track_counts"]["ai_previz_video"] == 1
 
     gaps = unresolved_gaps_by_fallback_layer(manifest, timeline=timeline)
     assert gaps["unresolved_scenes"] == []

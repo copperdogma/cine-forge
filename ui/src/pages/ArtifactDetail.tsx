@@ -36,11 +36,9 @@ import { useArtifact, useArtifactVersions, useEditArtifact } from '@/lib/hooks'
 import { ErrorState } from '@/components/StateViews'
 import { ShotPlanViewer } from '@/components/ShotPlanViewer'
 import { AiPrevizViewer } from '@/components/AiPrevizViewer'
-import { AnimaticViewer } from '@/components/AnimaticViewer'
 import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
 import { KeyframeViewer } from '@/components/KeyframeViewer'
 import { MediaValidationViewer } from '@/components/MediaValidationViewer'
-import { PrevizReelViewer } from '@/components/PrevizReelViewer'
 import { RenderPromptViewer } from '@/components/RenderPromptViewer'
 import { StoryboardViewer } from '@/components/StoryboardViewer'
 
@@ -328,14 +326,8 @@ export default function ArtifactDetail() {
       case 'storyboard':
         return <StoryboardViewer data={data} projectId={projectId ?? ''} />
 
-      case 'animatic':
-        return <AnimaticViewer data={data} projectId={projectId ?? ''} />
-
       case 'keyframe':
         return <KeyframeViewer data={data} projectId={projectId ?? ''} />
-
-      case 'previz_reel':
-        return <PrevizReelViewer data={data} projectId={projectId ?? ''} />
 
       case 'render_prompt':
       case 'ai_previz_prompt':

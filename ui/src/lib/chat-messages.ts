@@ -191,10 +191,6 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Planning coverage and shot lists across your scenes...',
     done: 'Shot planning complete.',
   },
-  animatics: {
-    start: 'Building the deterministic baseline from the current shot plans...',
-    done: 'Deterministic baseline complete.',
-  },
   ai_previz: {
     start: 'Generating low-fidelity AI previz clips for blocking and camera review...',
     done: 'AI previz complete.',
@@ -226,11 +222,6 @@ export function getStageStartMessage(stageName: string, sceneScope?: unknown): s
     return scopeTarget === 'this scene'
       ? 'Generating storyboard frames for this scene...'
       : 'Generating storyboard frames across your scenes...'
-  }
-  if (stageName === 'animatics') {
-    return scopeTarget === 'this scene'
-      ? 'Building deterministic baseline for this scene...'
-      : 'Building deterministic baseline from the current shot plans...'
   }
   if (stageName === 'ai_previz') {
     return scopeTarget === 'this scene'

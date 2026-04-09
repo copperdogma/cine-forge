@@ -264,7 +264,7 @@ def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
     assert "edges" in graph
     assert len(graph["phases"]) == 6
     assert len(graph["nodes"]) == len(PIPELINE_NODES)
-    assert {node["id"] for node in graph["nodes"]} >= {"animatics", "keyframes"}
+    assert {node["id"] for node in graph["nodes"]} >= {"ai_previz", "keyframes"}
 
     # script_import should be available (no deps).
     si = next(n for n in graph["nodes"] if n["id"] == "script_import")

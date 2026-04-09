@@ -5,7 +5,6 @@ export const RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Logic',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
-  animatics_generation: 'Deterministic Baseline',
   ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
 }
@@ -17,7 +16,6 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   narrative_analysis: 'Narrative Analysis',
   creative_direction: 'Creative Direction',
   shot_planning: 'Shot Planning',
-  animatics_generation: 'Deterministic Baseline',
   ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
 }
@@ -74,9 +72,6 @@ export function getRunStartedMessage(recipeId: string | null | undefined): strin
   if (recipeId === 'shot_planning') {
     return 'Shot Planning started — building scene shot lists now...'
   }
-  if (recipeId === 'animatics_generation') {
-    return 'Deterministic Baseline started — building the fallback planning cut now...'
-  }
   if (recipeId === 'ai_previz_generation') {
     return 'AI Previz started — generating low-fidelity planning clips now...'
   }
@@ -99,11 +94,6 @@ export function getRunCompletedMessage(
     return summary
       ? `Deep Breakdown complete! I built ${summary} for your project.`
       : 'Deep Breakdown complete!'
-  }
-  if (recipeId === 'animatics_generation') {
-    return summary
-      ? `Deterministic Baseline complete! I produced ${summary} for your project.`
-      : 'Deterministic Baseline complete!'
   }
   if (recipeId === 'ai_previz_generation') {
     return summary
@@ -145,11 +135,9 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   story_world: ['story world', 'story world'],
   shot_plan: ['shot plan', 'shot plans'],
   storyboard: ['storyboard', 'storyboards'],
-  animatic: ['animatic', 'animatics'],
   ai_previz_prompt: ['ai previz prompt', 'ai previz prompts'],
   ai_previz_video: ['ai previz clip', 'ai previz clips'],
   keyframe: ['keyframe set', 'keyframe sets'],
-  previz_reel: ['previz reel', 'previz reels'],
   render_prompt: ['render prompt', 'render prompts'],
   generated_video: ['generated video', 'generated videos'],
   media_validation: ['media validation', 'media validation reports'],

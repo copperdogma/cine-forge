@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-09-04] — AI-only previz truth and animatic removal (Story 149)
+
+### Added
+- Added neutral preview/keyframe schema and helper ownership so live render, media-validation, and keyframe flows no longer depend on the deleted animatic module
+- Added a benchmark-only legacy previz helper so historical deterministic comparison evidence survives without keeping the old product substrate alive
+
+### Changed
+- Changed Scene Workspace previz, artifact detail, backend policy, and schema/registry contracts so AI Previz is the only shipped operator-facing previz lane
+- Changed Story 149, Story 153, and the generated methodology surfaces to reflect that the `<= 6000 ms` target is a climb goal while Story 149 closes the deterministic placeholder-removal slice
+
+### Fixed
+- Fixed the remaining repo-level drift where `animatic`, `previz_reel`, and `animatic_v1` still survived in viewers, schema registration, fixtures, and tests after the product lane had been removed
+
 ## [2026-04-09-03] — Previz runtime detector hardening (Story 150)
 
 ### Added

@@ -6,8 +6,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from .animatic import MediaFile
 from .models import ArtifactHealth, ArtifactRef, CostRecord
+from .preview import MediaFile
 
 MediaValidationSeverity = Literal["info", "warning", "error"]
 MediaValidationMode = Literal["deterministic_only", "hybrid"]

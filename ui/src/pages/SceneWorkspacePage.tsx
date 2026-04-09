@@ -559,14 +559,8 @@ export default function SceneWorkspacePage() {
     g => g.artifact_type === 'storyboard' && g.entity_id === entityId,
   )
   const storyboardLevel = getReadiness(groups, 'storyboard', entityId)
-  const animaticGroup = groups?.find(
-    g => g.artifact_type === 'animatic' && g.entity_id === entityId,
-  )
   const keyframeGroup = groups?.find(
     g => g.artifact_type === 'keyframe' && g.entity_id === entityId,
-  )
-  const previzGroup = groups?.find(
-    g => g.artifact_type === 'previz_reel',
   )
   const aiPrevizPromptGroup = groups?.find(
     g => g.artifact_type === 'ai_previz_prompt' && g.entity_id === entityId,
@@ -580,7 +574,7 @@ export default function SceneWorkspacePage() {
   const generatedVideoGroup = groups?.find(
     g => g.artifact_type === 'generated_video' && g.entity_id === entityId,
   )
-  const previzLevel = animaticGroup || aiPrevizGroup ? 'yellow' : 'red'
+  const previzLevel = aiPrevizGroup ? 'yellow' : 'red'
   const renderLevel = getReadiness(groups, 'generated_video', entityId)
   const validTabs = new Set([
     'overview',
@@ -758,10 +752,6 @@ export default function SceneWorkspacePage() {
             sceneId={entityId}
             sceneHeading={displayName}
             shotPlanGroup={shotPlanGroup}
-            storyboardGroup={storyboardGroup}
-            animaticGroup={animaticGroup}
-            keyframeGroup={keyframeGroup}
-            previzGroup={previzGroup}
             aiPrevizGroup={aiPrevizGroup}
             aiPrevizPromptGroup={aiPrevizPromptGroup}
           />

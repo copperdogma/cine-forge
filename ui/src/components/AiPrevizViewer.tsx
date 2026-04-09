@@ -58,8 +58,6 @@ type AiPrevizView = {
   resolvedInputs: RenderInputUsageView[]
   previewProvenance: ReturnType<typeof parsePreviewProvenance>
   promptRef: ArtifactLinkView | null
-  baselineRef: ArtifactLinkView | null
-  previzReelRef: ArtifactLinkView | null
 }
 
 function parseArtifactLink(value: unknown): ArtifactLinkView | null {
@@ -98,21 +96,16 @@ function parseAiPreviz(data: Record<string, unknown>): AiPrevizView {
       .filter((input): input is RenderInputUsageView => input !== null),
     previewProvenance: parsePreviewProvenance(data.preview_provenance),
     promptRef: parseArtifactLink(data.prompt_ref),
-    baselineRef: parseArtifactLink(data.previz_baseline_ref),
-    previzReelRef: parseArtifactLink(data.previz_reel_ref),
   }
 }
 
 export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewerProps) {
   const previz = parseAiPreviz(data)
   const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
-  const deterministicPrevizStatus = previzStatus?.deterministic_previz
   const aiPrevizStatus = previzStatus?.ai_previz
   const sceneLabel = previz.sceneNumber !== null ? `Scene ${previz.sceneNumber}` : 'AI Previz'
   const videoUrl = previz.videoPath ? getAssetFileUrl(projectId, previz.videoPath) : null
   const promptHref = artifactHref(projectId, previz.promptRef)
-  const baselineHref = artifactHref(projectId, previz.baselineRef)
-  const reelHref = artifactHref(projectId, previz.previzReelRef)
   const validationHref = healthDetails?.source_kind === 'media_validation'
     ? artifactHref(projectId, parseArtifactLink(healthDetails.source_artifact_ref))
     : null
@@ -198,7 +191,6 @@ export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewe
             <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
               <div className="space-y-1">
                 <p>{aiPrevizStatus.reason}</p>
-                {deterministicPrevizStatus?.upgrade_description && <p>{deterministicPrevizStatus.upgrade_description}</p>}
                 {aiPrevizStatus.cost.status === 'blocked' && aiPrevizStatus.cost.reason && (
                   <p>Cost blocker: {aiPrevizStatus.cost.reason}</p>
                 )}
@@ -216,27 +208,11 @@ export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewe
           )}
 
           <div className="flex flex-wrap gap-2">
-            {baselineHref && (
-              <Button asChild variant="outline" size="sm">
-                <Link to={baselineHref}>
-                  <ExternalLink className="h-3.5 w-3.5" />
-                  Deterministic Baseline
-                </Link>
-              </Button>
-            )}
             {promptHref && (
               <Button asChild variant="outline" size="sm">
                 <Link to={promptHref}>
                   <ExternalLink className="h-3.5 w-3.5" />
                   Prompt Detail
-                </Link>
-              </Button>
-            )}
-            {reelHref && (
-              <Button asChild variant="outline" size="sm">
-                <Link to={reelHref}>
-                  <ExternalLink className="h-3.5 w-3.5" />
-                  Previz Reel
                 </Link>
               </Button>
             )}

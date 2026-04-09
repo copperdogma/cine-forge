@@ -20,6 +20,13 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from legacy_previz_support import (  # noqa: E402
+    annotate_previz_frame,
+    compose_annotated_segment_video,
+    compose_segment_video,
+    render_motion_frame,
+)
+
 from cine_forge.ai.video import VideoGenerationRequest, generate_video  # noqa: E402
 from cine_forge.modules.generation.render_adapter_v1.previz_prompting import (  # noqa: E402
     compile_low_fidelity_previz_prompt,
@@ -28,14 +35,6 @@ from cine_forge.modules.generation.render_adapter_v1.previz_prompting import (  
 from cine_forge.modules.generation.render_adapter_v1.support import (  # noqa: E402
     load_engine_pack,
     normalize_duration_seconds,
-)
-from cine_forge.modules.visualization.animatic_v1.annotated import (  # noqa: E402
-    annotate_previz_frame,
-    compose_annotated_segment_video,
-)
-from cine_forge.modules.visualization.animatic_v1.support import (  # noqa: E402
-    compose_segment_video,
-    render_motion_frame,
 )
 
 SOURCE_ROOT = REPO_ROOT / "benchmarks" / "video_understanding"

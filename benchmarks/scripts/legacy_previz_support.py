@@ -1,18 +1,94 @@
-"""Helpers for richer deterministic annotated animatic output."""
+"""Benchmark-only helpers for historical deterministic previz comparisons."""
 
 from __future__ import annotations
 
+import subprocess
 import tempfile
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from cine_forge.modules.visualization.animatic_v1.support import (
-    normalized_duration,
-    render_motion_frame,
-    run_ffmpeg,
-)
+from cine_forge.modules.visualization.keyframe_v1.support import render_motion_frame
 from cine_forge.schemas import MediaFile
+
+
+def normalized_duration(seconds: float) -> float:
+    return max(float(seconds or 0.0), 0.5)
+
+
+def run_ffmpeg(command: list[str], *, timeout: int = 90) -> None:
+    process = subprocess.run(
+        command,
+        capture_output=True,
+        check=False,
+        timeout=timeout,
+        text=True,
+    )
+    if process.returncode != 0:
+        detail = process.stderr.strip() or process.stdout.strip()
+        raise ValueError(f"ffmpeg command failed: {detail}")
+
+
+def compose_segment_video(
+    *,
+    ffmpeg: str,
+    image_path: Path,
+    output_path: Path,
+    duration_seconds: float,
+    camera_movement: str,
+    width: int,
+    height: int,
+    fps: int,
+) -> MediaFile:
+    duration = normalized_duration(duration_seconds)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with Image.open(image_path) as opened_image:
+        source_image = opened_image.convert("RGB")
+
+    frame_count = max(int(round(duration * fps)), 2)
+    with tempfile.TemporaryDirectory(
+        prefix=f"{output_path.stem}_frames_",
+        dir=output_path.parent,
+    ) as temp_dir_raw:
+        temp_dir = Path(temp_dir_raw)
+        for frame_idx in range(frame_count):
+            progress = frame_idx / (frame_count - 1)
+            frame_image = render_motion_frame(
+                source_image,
+                progress=progress,
+                movement=camera_movement,
+                width=width,
+                height=height,
+            )
+            frame_image.save(
+                temp_dir / f"frame_{frame_idx:05d}.jpg",
+                format="JPEG",
+                quality=90,
+            )
+
+        run_ffmpeg(
+            [
+                ffmpeg,
+                "-v",
+                "error",
+                "-y",
+                "-framerate",
+                str(fps),
+                "-i",
+                str(temp_dir / "frame_%05d.jpg"),
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                "-an",
+                str(output_path),
+            ]
+        )
+    return MediaFile(
+        relative_path=str(output_path),
+        media_type="video/mp4",
+        duration_seconds=duration,
+    )
 
 
 def annotate_previz_frame(
@@ -27,7 +103,6 @@ def annotate_previz_frame(
     edit_intent: str,
     duration_seconds: float,
 ) -> Image.Image:
-    """Overlay a camera/blocking summary onto one preview frame."""
     canvas = image.convert("RGB").copy()
     draw = ImageDraw.Draw(canvas, "RGBA")
     title_font = ImageFont.load_default()
@@ -97,7 +172,6 @@ def compose_annotated_segment_video(
     characters: list[str],
     edit_intent: str,
 ) -> MediaFile:
-    """Compose one deterministic segment with static explanatory overlays."""
     duration = normalized_duration(duration_seconds)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(image_path) as opened_image:

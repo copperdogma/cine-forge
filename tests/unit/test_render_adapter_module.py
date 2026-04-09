@@ -9,7 +9,6 @@ from cine_forge.modules.generation.render_adapter_v1.main import run_module
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
 from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
 from cine_forge.schemas import (
-    ArtifactMetadata,
     CompiledRenderPrompt,
     GeneratedVideoArtifact,
     TrackManifest,
@@ -229,31 +228,6 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
-    store = seeded["store"]
-    scene_id = seeded["scene_id"]
-
-    scene_ref = store.list_versions("scene", scene_id)[-1]
-    shot_plan_ref = store.list_versions("shot_plan", scene_id)[-1]
-    keyframe_ref = store.list_versions("keyframe", scene_id)[-1]
-    metadata = ArtifactMetadata(
-        lineage=[scene_ref, shot_plan_ref, keyframe_ref],
-        intent="seed previz references",
-        rationale="unit test seed",
-        confidence=1.0,
-        source="code",
-    )
-    store.save_artifact(
-        artifact_type="animatic",
-        entity_id=scene_id,
-        data={"scene_id": scene_id, "segments": [], "duration_seconds": 0.0},
-        metadata=metadata,
-    )
-    store.save_artifact(
-        artifact_type="previz_reel",
-        entity_id="project",
-        data={"scenes": [], "total_duration_seconds": 0.0},
-        metadata=metadata,
-    )
 
     monkeypatch.setattr(
         "cine_forge.modules.generation.render_adapter_v1.main.compile_render_prompt",
@@ -309,10 +283,6 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
     assert prompt_artifact.preview_provenance.consistency_strategy == "prompt_only"
     assert "This is previs, not a final render." in prompt_artifact.prompt_text
     assert generated_video.prompt_ref.artifact_type == "ai_previz_prompt"
-    assert generated_video.previz_baseline_ref is not None
-    assert generated_video.previz_baseline_ref.artifact_type == "animatic"
-    assert generated_video.previz_reel_ref is not None
-    assert generated_video.previz_reel_ref.artifact_type == "previz_reel"
     assert generated_video.preview_provenance.mode == "ai_previz"
     assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
     assert (

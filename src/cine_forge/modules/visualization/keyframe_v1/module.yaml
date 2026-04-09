@@ -1,11 +1,10 @@
 module_id: keyframe_v1
 stage: visualization
 description: >
-  Produces per-scene lockable keyframe artifacts from storyboard or animatic
-  sources and updates the shared keyframe track.
+  Produces per-scene lockable keyframe artifacts from storyboard sources and
+  updates the shared keyframe track.
 input_schemas:
   - shot_plan
-  - animatic
   - storyboard
   - track_manifest
 output_schemas:

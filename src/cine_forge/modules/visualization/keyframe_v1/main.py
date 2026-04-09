@@ -1,4 +1,4 @@
-"""Keyframe extraction from storyboard and animatic sources."""
+"""Keyframe extraction from storyboard sources."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any
 from PIL import Image
 
 from cine_forge.artifacts import ArtifactStore
-from cine_forge.modules.visualization.animatic_v1.support import (
+from cine_forge.modules.visualization.keyframe_v1.support import (
     DEFAULT_FRAME_HEIGHT,
     DEFAULT_FRAME_WIDTH,
     anticipated_entity_ref,
@@ -69,7 +69,6 @@ def run_module(
         raise ValueError("keyframe_v1 could not parse any shot_plan inputs")
 
     storyboard_map = storyboard_by_scene(inputs.get("storyboard"))
-    animatic_map = animatics_by_scene(inputs.get("animatic"))
 
     keyframe_artifacts: list[dict[str, Any]] = []
     keyframes_by_scene: dict[str, KeyframeArtifact] = {}
@@ -85,7 +84,6 @@ def run_module(
             plan=plan,
             keyframe_ref=keyframe_ref,
             storyboard_data=storyboard_map.get(plan.scene_id),
-            animatic_data=animatic_map.get(plan.scene_id),
             width=width,
             height=height,
         )
@@ -103,13 +101,12 @@ def run_module(
                             store=store,
                             scene_id=plan.scene_id,
                             storyboard_present=plan.scene_id in storyboard_map,
-                            animatic_present=plan.scene_id in animatic_map,
                         )
                     ],
                     "intent": "Lockable start/mid/end frames for render constraints and review.",
                     "rationale": (
                         "Keyframes give the operator a stable visual constraint layer above"
-                        " storyboard and animatic review."
+                        " storyboard review."
                     ),
                     "confidence": 0.92,
                     "source": "hybrid",
@@ -154,19 +151,6 @@ def run_module(
     }
 
 
-def animatics_by_scene(payload: Any) -> dict[str, dict[str, Any]]:
-    if not isinstance(payload, list):
-        return {}
-    result: dict[str, dict[str, Any]] = {}
-    for item in payload:
-        if not isinstance(item, dict):
-            continue
-        scene_id = item.get("scene_id")
-        if isinstance(scene_id, str) and scene_id:
-            result[scene_id] = item
-    return result
-
-
 def build_keyframes_for_scene(
     *,
     store: ArtifactStore,
@@ -174,7 +158,6 @@ def build_keyframes_for_scene(
     plan: ShotPlan,
     keyframe_ref: ArtifactRef,
     storyboard_data: dict[str, Any] | None,
-    animatic_data: dict[str, Any] | None,
     width: int,
     height: int,
 ) -> KeyframeArtifact:
@@ -207,8 +190,7 @@ def build_keyframes_for_scene(
                 height=height,
             )
             source_image = Image.open(fallback_path).convert("RGB")
-            if not animatic_data:
-                source_kind = "placeholder"
+            source_kind = "placeholder"
 
         for position, fraction in (("start", 0.0), ("mid", 0.5), ("end", 0.99)):
             derived = derive_motion_crop(
@@ -233,8 +215,8 @@ def build_keyframes_for_scene(
                         relative_path=relative_path(store.project_dir, output_path),
                         media_type="image/jpeg",
                     ),
-                    source_kind="animatic" if animatic_data else source_kind,
-                    source_segment_id=find_segment_id(animatic_data, shot.shot_id),
+                    source_kind=source_kind,
+                    source_segment_id=None,
                     is_locked=False,
                     shot_size=shot.shot_size,
                     camera_angle=shot.camera_angle,
@@ -245,13 +227,11 @@ def build_keyframes_for_scene(
         elapsed_seconds += shot.duration_estimate_seconds
 
     storyboard_ref = latest_ref_or_none(store, "storyboard", plan.scene_id)
-    animatic_ref = latest_ref_or_none(store, "animatic", plan.scene_id)
     return KeyframeArtifact(
         scene_id=plan.scene_id,
         scene_number=plan.scene_number,
         scene_heading=plan.scene_heading,
         shot_plan_ref=latest_entity_ref(store, "shot_plan", plan.scene_id),
-        animatic_ref=animatic_ref,
         storyboard_ref=storyboard_ref,
         keyframes=keyframes,
     )
@@ -266,20 +246,6 @@ def extract_storyboard_image_path(frame_data: dict[str, Any] | None) -> str | No
     rel_path = image.get("relative_path")
     return rel_path if isinstance(rel_path, str) else None
 
-
-def find_segment_id(animatic_data: dict[str, Any] | None, shot_id: str) -> str | None:
-    if not isinstance(animatic_data, dict):
-        return None
-    segments = animatic_data.get("segments")
-    if not isinstance(segments, list):
-        return None
-    for segment in segments:
-        if isinstance(segment, dict) and segment.get("shot_id") == shot_id:
-            segment_id = segment.get("segment_id")
-            return segment_id if isinstance(segment_id, str) else None
-    return None
-
-
 def latest_ref_or_none(
     store: ArtifactStore, artifact_type: str, entity_id: str
 ) -> ArtifactRef | None:
@@ -292,17 +258,12 @@ def keyframe_lineage(
     store: ArtifactStore,
     scene_id: str,
     storyboard_present: bool,
-    animatic_present: bool,
 ) -> list[ArtifactRef]:
     refs: list[ArtifactRef] = [latest_entity_ref(store, "shot_plan", scene_id)]
     if storyboard_present:
         storyboard_ref = latest_ref_or_none(store, "storyboard", scene_id)
         if storyboard_ref is not None:
             refs.append(storyboard_ref)
-    if animatic_present:
-        animatic_ref = latest_ref_or_none(store, "animatic", scene_id)
-        if animatic_ref is not None:
-            refs.append(animatic_ref)
     return refs
 
 

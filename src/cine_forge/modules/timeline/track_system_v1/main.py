@@ -13,7 +13,6 @@ from cine_forge.services import InjectedAssetService
 DEFAULT_FALLBACK_ORDER = [
     "generated_video",
     "ai_previz_video",
-    "animatics",
     "storyboards",
     "script",
 ]
@@ -23,7 +22,6 @@ DEFAULT_TRACK_REGISTRY: dict[str, dict[str, Any]] = {
     "dialogue_audio": {"priority": 350},
     "shots": {"priority": 300},
     "storyboards": {"priority": 200},
-    "animatics": {"priority": 150},
     "keyframes": {"priority": 175},
     "ai_previz_video": {"priority": 125},
     "generated_video": {"priority": 100},
@@ -89,7 +87,7 @@ def run_module(
                     "intent": "Canonical project track state and always-playable fallback order.",
                     "rationale": (
                         "Track manifest is derived from the latest timeline plus available "
-                        "representation artifacts and deterministic fallback priorities."
+                        "representation artifacts and fallback priorities."
                     ),
                     "confidence": _coverage_confidence(manifest=manifest, timeline=timeline),
                     "source": "hybrid",

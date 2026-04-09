@@ -141,20 +141,17 @@ def test_previz_adoption_service_keeps_ai_previz_primary_when_cost_is_blocked(
 
     status = service.build_status()
 
-    assert status.primary_lane == "ai_previz"
-    assert status.deterministic_previz.label == "Deterministic Baseline"
-    assert status.deterministic_previz.candidate_label == "Annotated Animatic"
-    assert status.deterministic_previz.adoption_state == "recommended_optional"
-    assert status.deterministic_previz.upgrade_lane_id == "ai_previz"
     assert status.ai_previz.adoption_state == "default"
     assert status.ai_previz.cost.status == "blocked"
     assert status.ai_previz.validation_stage_enabled is True
+    assert status.ai_previz.baseline_score == 0.803
+    assert status.ai_previz.score_margin == 0.025
     assert any(
         "outside the 6000 ms fast-previz target" in blocker
         for blocker in status.ai_previz.blocker_reasons
     )
     assert any("pricing" in blocker.lower() for blocker in status.ai_previz.blocker_reasons)
-    assert "intended operator-facing lane" in status.policy_summary.lower()
+    assert "only shipped operator-facing lane" in status.policy_summary.lower()
 
 
 def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are_verified(
@@ -184,12 +181,10 @@ def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are
 
     status = service.build_status()
 
-    assert status.primary_lane == "ai_previz"
     assert status.ai_previz.adoption_state == "default"
     assert status.ai_previz.cost.status == "estimated"
     assert status.ai_previz.cost.estimated_cost_usd == 0.4
     assert status.ai_previz.blocker_reasons == []
-    assert status.deterministic_previz.adoption_state == "recommended_optional"
     assert "honest operator-facing previz lane" in status.ai_previz.reason
 
 
@@ -220,7 +215,5 @@ def test_previz_adoption_service_keeps_ai_previz_primary_even_when_it_is_too_slo
 
     status = service.build_status()
 
-    assert status.primary_lane == "ai_previz"
-    assert status.deterministic_previz.adoption_state == "recommended_optional"
     assert status.ai_previz.adoption_state == "default"
     assert "outside the 6000 ms fast-previz target" in status.ai_previz.reason

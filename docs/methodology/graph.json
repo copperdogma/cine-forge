@@ -6080,7 +6080,7 @@
       "id": "149",
       "title": "Fast AI Previz and Latency Budget",
       "path": "docs/stories/story-149-previz-fast-lane-and-latency-budget.md",
-      "status": "Blocked",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R10 (playable assembly at every stage)",
@@ -6126,9 +6126,9 @@
         "quick-path"
       ],
       "legacySystem": "",
-      "blockerSummary": "Representative previz verification is honest again, and Story 153 now has a tighter provider-floor answer: once the fresh validation pass is folded into the earlier shared-substrate runs, Fast 4 becomes the current pure runtime leader at `164799 ms` total / `52196 ms` isolated AI-previz, while Lite 4 remains the usefulness leader at `0.828` vs `0.778` and trails by only `6208 ms` total / `3232 ms` isolated AI-previz. Story 149 still stays blocked because no dominant AI-previz winner is proven, the overall path remains far outside the intended generate -> react -> refine loop, and provider jitter still reshuffles pack ordering. The current product truth is therefore “Lite 4 is the provisional shipped slow lane, but the runtime blocker is not solved.”",
-      "blockerEvidence": "- Fresh representative project: `story-149-real-ui-rerun`, created via `/api/projects/new` with the same single-scene screenplay uploaded through `/api/projects/{id}/inputs/upload`.\n- Honest prerequisite chain completed on the fresh project: `mvp_ingest` finished in `17.9s` (`run-b68ec8ca`) and `creative_direction` finished in `101.9s` (`run-219959ad`).\n- Fresh scene-scoped AI-previz run: `run-6305b0b5` completed successfully through the normal API path for `scene_001`. Measured breakdown: `shot_planning=230.3s` on `claude-haiku-4-5-20251001`, `ai_previz=63.3s`, `validate_media=5.2s`, `total=299.0s`, `total_cost_usd=0.0643432`.\n- The previz recipe routing fix materially improved the upstream planner cost but did not solve the product gap: the earlier honest baseline `story149-real-animatic` spent `455.2s` in `shot_planning`, so the Haiku-pinned rerun cut that stage roughly in half while still leaving the path too slow for interactive use.\n- The animatic failure itself is fixed: retry run `story149-real-animatic-retry-ccad` completed through the normal failed-stage path in `62.5s` total (`animatics=61.7s`, `keyframes=0.8s`) and wrote a valid `animatic` artifact whose `audio_refs` list is now empty instead of containing a bogus descriptive filesystem path.\n- Story 150's first runtime pilot (`benchmarks/results/real-ai-previz-runtime-story-150-pilot-2026-04-08.json`) reinforced the blocker instead of clearing it: the best honest scene-ready AI-previz case was the shipped Lite 8-second lane at `270922 ms` total, the 4-second Fast scene-ready variant was worse at `353687 ms`, and even the ingest-only Fast control still needed `124929 ms`.\n- Story 151's compact shot-planning rerun (`benchmarks/results/real-ai-previz-runtime-story-151-compact-pilot-2026-04-08.json`) materially improved the substrate without unblocking the product: shipped Lite scene-ready fell to `153528 ms`, Fast 4 scene-ready fell to `182138 ms`, and shipped Lite `shot_planning` itself fell from `109.3s` to `25.4s`. That is a real gain, but it still leaves the path far outside the intended quick-loop budget.\n- Story 153's build-time provider-floor matrix (`benchmarks/results/real-ai-previz-runtime-story-153-provider-floor-2026-04-08.json`) favored Lite 4 scene-ready at `146281 ms` total, beating the pre-change shipped Lite 8 baseline (`184926 ms`) and Fast 4 (`182737 ms`) while reusing the existing 4-second Veo Lite usefulness evidence.\n- Story 153's fresh validation rerun (`benchmarks/results/real-ai-previz-runtime-story-153-validation-2026-04-08.json`) did not confirm that winner as stable: `veo31_4_scene_ready` became the fastest scene-ready case at `166188 ms`, `fast_4_scene_ready` had the quickest scene-ready `ai_previz` segment at `95434 ms`, and Lite 4 still beat both Lite 8 control cases. The AI lane therefore improved but has not converged on a reproducible winner, and the whole comparison remains runtime-blocking for the fast-previz detector.\n- Story 153 then tightened the comparison boundary itself and reran the `scene_ready` pack race from identical precomputed `shot_planning` substrate across three passes (`benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-summary-2026-04-08.json`). Median result: shipped Lite 4 is currently best at `142634 ms` total / `50320 ms` isolated AI-previz, ahead of Fast 4 at `145285 ms` / `57186 ms`, ahead of full Veo 4 at `150847 ms` / `57623 ms`, and ahead of the old Lite 8 control at `155501 ms` / `60857 ms`. That keeps Lite 4 as the honest shipped slow lane, while the overall detector remains runtime-blocking.\n- Fresh `/validate` then reran that tighter shared-substrate comparison once more (`benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.json`) and the single pass flipped back to `fast_4_scene_ready` at `184313 ms` total / `47207 ms` isolated AI-previz, while shipped Lite 4 landed at `199380 ms` / `62274 ms`. That does not beat the repeated median/usefulness case for Lite 4, but it confirms pack ordering is still unstable enough that the shipped slow-lane choice should remain provisional.\n- Story 153's combined decision summary (`benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-decision-2026-04-08.json`) then folded that fresh validation pass into the earlier three shared-substrate runs. Combined result: `fast_4_scene_ready` is the current median runtime leader at `164799 ms` total / `52196 ms` isolated AI-previz, but `shipped_lite_4_scene_ready` remains the usefulness leader at `0.828` vs `0.778` and trails by only `6208 ms` total / `3232 ms` isolated AI-previz. The decision is therefore not “Fast 4 wins” or “Lite 4 wins”; it is “no dominant winner is proven, keep Lite 4 provisional, and keep the detector runtime-blocking.”",
-      "unblockCondition": "Unblock this story only when one of these is true:\n\n- a fastest-real-AI-previz eval identifies a materially faster reachable lane, settings profile, or caching strategy that lowers time to first `ai_previz_video` enough to support interactive review, or\n- a provider or substrate change materially beats the current repeated shared-substrate median of `142634 ms` scene-ready total / `50320 ms` isolated AI-previz time while remaining reproducible across reruns, or\n- the shared previz substrate is redesigned so `shot_planning` no longer dominates the critical path for scene-scoped previz runs.\n\nRepresentative browser verification can now use the honest API-driven project routes, but the story should not return to `In Progress` until the runtime blocker above has a credible fix path.",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
@@ -6292,7 +6292,7 @@
       "id": "153",
       "title": "Previz Minimal AI Clip Mode and Provider Floor",
       "path": "docs/stories/story-153-previz-minimal-ai-clip-provider-floor.md",
-      "status": "Blocked",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R10 (playable assembly at every stage)",
@@ -6339,9 +6339,9 @@
         "runtime"
       ],
       "legacySystem": "",
-      "blockerSummary": "Story 153 is blocked on provider-floor convergence, not on missing implementation. The current combined shared-substrate evidence says `fast_4_scene_ready` is the pure runtime median leader at `164799 ms` total / `52196 ms` isolated AI-previz, while `shipped_lite_4_scene_ready` remains the usefulness leader at `0.828` vs `0.778` and trails by only `6208 ms` total / `3232 ms` isolated AI-previz. That is enough to keep Lite 4 as the provisional shipped slow lane, but not enough to claim a dominant winner or close the provider-floor question.",
-      "blockerEvidence": "- Full provider-floor matrix: `benchmarks/results/real-ai-previz-runtime-story-153-provider-floor-2026-04-08.{json,md}` initially favored Lite 4 over the older Lite 8 baseline and over Fast 4.\n- Full post-change validation matrix: `benchmarks/results/real-ai-previz-runtime-story-153-validation-2026-04-08.{json,md}` did not preserve that ordering; `veo31_4_scene_ready` became fastest total and `fast_4_scene_ready` became fastest isolated AI-previz in that rerun.\n- Shared-substrate reruns: `benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-summary-2026-04-08.{json,md}` kept Lite 4 as the median winner across three scene-ready passes, but one direct multi-repeat attempt hung provider-side.\n- Fresh shared-substrate validation pass: `benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.{json,md}` flipped back to Fast 4 on a single pass.\n- Combined decision summary: `benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.{json,md}` now states the actual conclusion directly: runtime leader and usefulness leader diverge, and no dominant winner is proven by the combined evidence alone.\n- Product consequence: [recipe-ai-previz-generation.yaml](/Users/cam/.codex/worktrees/53fb/cine-forge/configs/recipes/recipe-ai-previz-generation.yaml) currently uses Lite 4 because it remains the best provisional AI lane when usefulness is considered, but that configured choice is still provisional and the detector remains runtime-blocking.",
-      "unblockCondition": "Unblock this story only when one of these is true:\n\n- a new shared-substrate runtime/usefulness comparison produces a dominant winner that remains stable across reruns, or\n- a new candidate materially beats both the current Fast 4 runtime median (`164799 ms` total / `52196 ms` isolated AI-previz) and the current Lite 4 usefulness lead (`0.828`) strongly enough to settle the tradeoff, or\n- the story is explicitly respecified to end at “best provisional shipped lane + blocker recorded” rather than “dominant provider-floor winner.”",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
     },
@@ -7518,13 +7518,13 @@
     },
     "roadmap": {
       "active_focus": [
-        "spec:5",
-        "spec:6"
+        "spec:4",
+        "spec:5"
       ],
       "sequencing_bias": [
         {
-          "target": "spec:5",
-          "reason": "Story 150 closed the detector-substrate hardening slice, so Story 034 is now the clearest ready lane while the remaining previz line is preserved honestly as blocked health flags pending materially new evidence.",
+          "target": "spec:4",
+          "reason": "Story 149 closed the AI-only previz truth correction, Story 153 closed the provider-floor measurement slice, and Story 150 closed the detector substrate. The previz runtime gap remains climb evidence rather than the next stop-ship lane, so Story 034 is again the clearest ready continuation.",
           "story_refs": [
             "034"
           ]
@@ -7551,7 +7551,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 150 has now closed the runtime-detector substrate hardening slice, while Stories 149 and 153 continue to preserve the blocked fast-useful-AI-previz product truth. Story 034 is the clearest ready lane while the previz line waits for materially new evidence or a new falsifiable hypothesis.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, and Story 153 closed the provider-floor measurement slice. The previz runtime gap remains climb evidence rather than the next stop-ship lane, so Story 034 is again the clearest ready continuation.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -7590,10 +7590,7 @@
             ],
             "health_flag": true,
             "empty_message": "No blocked lines currently need attention.",
-            "story_notes": {
-              "149": "Blocked on the product truth itself: no measured AI lane clears the fast-previz target, and the current shipped Lite 4 lane is still only a provisional slow lane.",
-              "153": "Blocked on provider-floor convergence: runtime and usefulness leaders still diverge, so no dominant AI-previz winner is proven yet."
-            }
+            "story_notes": {}
           },
           {
             "id": "draft",

@@ -1,16 +1,5 @@
 """Artifact schema package."""
 
-from .animatic import (
-    Animatic,
-    AnimaticSegment,
-    AudioReference,
-    Keyframe,
-    KeyframeArtifact,
-    MediaFile,
-    PreviewProvenance,
-    PrevizReel,
-    PrevizSceneSegment,
-)
 from .bible import (
     BibleFileEntry,
     BibleManifest,
@@ -140,6 +129,7 @@ from .preferences import (
     PreferenceProfile,
     PreferenceSignal,
 )
+from .preview import Keyframe, KeyframeArtifact, MediaFile, PreviewProvenance
 from .progress_event import EventType, ProgressEvent
 from .qa import QAIssue, QAResult
 from .readiness import ReadinessState, SceneReadiness, compute_scene_readiness
@@ -163,7 +153,6 @@ from .render import (
     PrevizLaneId,
     PrevizLaneStatus,
     PrevizLatencyClass,
-    PrevizPrimaryLane,
     PrevizPromptContract,
     PrevizStyleProfile,
     RenderCompletenessCheck,
@@ -230,9 +219,6 @@ __all__ = [
     "ArtifactHealth",
     "ArtifactMetadata",
     "ArtifactRef",
-    "Animatic",
-    "AnimaticSegment",
-    "AudioReference",
     "BibleFileEntry",
     "BibleManifest",
     "CharacterAndPerformance",
@@ -331,7 +317,6 @@ __all__ = [
     "PrevizConsistencyStrategy",
     "PrevizCostEvidence",
     "PrevizCostStatus",
-    "PrevizPrimaryLane",
     "PrevizLaneId",
     "PrevizLaneStatus",
     "PrevizLatencyClass",
@@ -390,8 +375,6 @@ __all__ = [
     "ShotDefinition",
     "ShotPlan",
     "StageCostSummary",
-    "PrevizReel",
-    "PrevizSceneSegment",
     "PreviewProvenance",
     "Storyboard",
     "StoryboardFrame",

@@ -29,7 +29,6 @@ _SCENE_ENTITY_ARTIFACT_TYPES = {
     "character_and_performance",
     "shot_plan",
     "storyboard",
-    "animatic",
     "keyframe",
     "ai_previz_prompt",
     "ai_previz_video",
@@ -182,6 +181,19 @@ def build_scene_action_preflight(
             detail="The requested scene is missing or no longer exists in the project.",
         ))
 
+    if recipe_id == "animatics_generation":
+        preflight.items.append(SceneActionPreflightItem(
+            kind="soft_block",
+            label="Deterministic baseline removed",
+            detail=(
+                "Animatics generation is no longer part of the shipped workflow. "
+                "Use Storyboards for still planning frames or AI Previz for generated motion."
+            ),
+        ))
+        preflight.status = "soft_block"
+        preflight.summary = f"{action_label} is no longer available for {scope_label}."
+        return preflight
+
     if recipe_id == "creative_direction":
         _populate_concern_group_preflight(
             preflight=preflight,
@@ -311,7 +323,6 @@ def _populate_generation_preflight(
 
     if recipe_id in {
         "storyboard_generation",
-        "animatics_generation",
         "ai_previz_generation",
         "render_generation",
     }:
@@ -333,29 +344,9 @@ def _populate_generation_preflight(
                 ),
             ))
 
-    if recipe_id == "animatics_generation":
-        missing_storyboards = _missing_or_unhealthy_scene_artifact_count(
-            store,
-            "storyboard",
-            scene_ids,
-            preflight.scene_scope,
-        )
-        if missing_storyboards:
-            preflight.items.append(SceneActionPreflightItem(
-                kind="auto_build",
-                label="Storyboards",
-                detail=_auto_build_detail(
-                    preflight.scene_scope,
-                    missing_storyboards,
-                    "This run will generate storyboard frames first.",
-                    "This run will generate storyboard frames for the missing scenes first.",
-                ),
-            ))
-
     if recipe_id in {
         "shot_planning",
         "storyboard_generation",
-        "animatics_generation",
         "ai_previz_generation",
         "render_generation",
     }:
@@ -483,22 +474,6 @@ def _recommended_generation_start_stage(
             preflight.scene_scope,
         )
         return "ai_previz" if missing_shot_plan == 0 else None
-    if recipe_id == "animatics_generation":
-        missing_shot_plan = _missing_or_unhealthy_scene_artifact_count(
-            store,
-            "shot_plan",
-            scene_ids,
-            preflight.scene_scope,
-        )
-        if missing_shot_plan != 0:
-            return None
-        missing_storyboards = _missing_or_unhealthy_scene_artifact_count(
-            store,
-            "storyboard",
-            scene_ids,
-            preflight.scene_scope,
-        )
-        return "storyboards" if missing_storyboards else "animatics"
     return None
 
 
@@ -516,7 +491,7 @@ def _action_label(*, recipe_id: str, start_from: str | None, end_at: str | None)
     labels = {
         "shot_planning": "Shot Planning",
         "storyboard_generation": "Storyboards",
-        "animatics_generation": "Deterministic Previz",
+        "animatics_generation": "Animatics",
         "ai_previz_generation": "AI Previz",
         "render_generation": "Render",
         "creative_direction": "Creative Direction",

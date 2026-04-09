@@ -44,7 +44,6 @@ class TrackManifest(BaseModel):
         default_factory=lambda: [
             "generated_video",
             "ai_previz_video",
-            "animatics",
             "storyboards",
             "script",
         ]
