@@ -46,8 +46,8 @@ This is the operational companion to `/align`.
 
 4. **[judgment] Recommend concrete actions**
    - End with ordered actions such as:
-     - update build map
      - update methodology state and rerun `pnpm methodology:compile`
+     - refresh generated planning surfaces after updating canonical inputs
      - revise a story
      - add or rerun an eval
      - create or update an ADR

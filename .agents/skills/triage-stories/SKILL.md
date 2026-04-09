@@ -6,7 +6,7 @@ user-invocable: true
 
 # /triage-stories [story-number]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Evaluate the story backlog as a **continuation surface** for methodology gaps. The backlog does not define priority by itself.
 
@@ -24,7 +24,7 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - `docs/build-map.md`
    - Goal: identify the highest-leverage live gap before reading candidate stories.
 
-2. **Read project state** — Load `docs/stories.md` (the full story index). Identify all stories by status:
+2. **Read project state** — Load `docs/stories.md` (the full generated story index). Identify all stories by status:
    - **Draft** — worth preserving, but still incomplete, underspecified, or not yet substrate-verified enough to claim build-readiness
    - **Pending** — fully detailed and honestly buildable now
    - **In Progress** — currently being worked on

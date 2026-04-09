@@ -6,7 +6,7 @@ user-invocable: true
 
 # /scout [source]
 
-> ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Research external sources for patterns, ideas, and approaches worth adopting. Produces a persistent scout document tracking what was found, what was adopted, and verification evidence.
 
@@ -29,7 +29,7 @@ an inspiration or a skip.
 
 ### Resolve ambiguous source references
 
-Before doing anything else, read `docs/scout.md` and the scout doc for each previous expedition to build a source registry. Users often give shorthand names ("dossier", "storybook") instead of full paths or URLs. When the input doesn't look like a path, URL, or file:
+Before doing anything else, read `docs/scout.md` and the source/date metadata in prior scout docs to build a source registry. Use prior scout history for source resolution and re-scout scoping only; do **not** treat old scout findings as current repo truth without rereading the live files you plan to rely on. Users often give shorthand names ("dossier", "storybook") instead of full paths or URLs. When the input doesn't look like a path, URL, or file:
 
 1. **Search scout history** for previous expeditions matching the name — check source paths, repo names, and topic slugs.
 2. **If found:** Use the same source path/URL from the previous expedition. This is a **re-scout** — automatically scope it to changes since the last scout date. Do not ask the user to confirm the path or the "since" date unless something looks wrong (e.g., the directory no longer exists).

@@ -262,8 +262,8 @@ Tracking everything updated (or needing update) as a result of this ADR.
 - [x] Story 099: Scene Workspace — R11 Layer 2 interface with five concern tabs per scene
 - [x] Story 100: Motif tracking — annotations at any scope (character, location, world-level)
 
-#### Stories Index
-- [x] Update `docs/stories.md` to reflect all cancellations, reshapes, and new stories
+#### Generated Story Index
+- [x] Refresh the generated `docs/stories.md` output so it reflects all cancellations, reshapes, and new stories
 
 #### Evals
 - No existing evals invalidated (eval catalog tests extraction, not direction)

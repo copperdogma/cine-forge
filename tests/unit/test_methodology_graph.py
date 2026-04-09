@@ -479,3 +479,232 @@ def test_methodology_graph_rejects_stale_execution_map_and_campaign_refs(
         "state.roadmap.campaigns[0] (workflow-repair) is active but only references "
         "terminal stories: 001" in result.stderr
     )
+
+
+def test_methodology_graph_rejects_eval_missing_explicit_lineage_fields(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: sample-eval
+            name: Sample Eval
+            type: quality
+            description: >
+              Minimal eval fixture without explicit lineage metadata.
+            runner: promptfoo
+            command: "echo sample"
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "print")
+
+    assert result.returncode == 1
+    assert (
+        "eval sample-eval is missing explicit lineage fields: spec_refs, "
+        "story_refs, category_refs, compromise_refs" in result.stderr
+    )
+    assert (
+        "eval sample-eval has no category_refs; explicit eval category ownership "
+        "is required" in result.stderr
+    )
+
+
+def test_methodology_graph_exports_explicit_eval_lineage(tmp_path: Path) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: sample-eval
+            name: Sample Eval
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:11
+            compromise_refs: []
+            description: >
+              Minimal eval fixture with explicit lineage metadata.
+            runner: promptfoo
+            command: "echo sample"
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    graph = json.loads(
+        (tmp_path / "docs" / "methodology" / "graph.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    eval_record = graph["evals"][0]
+    assert eval_record["id"] == "sample-eval"
+    assert eval_record["specRefs"] == ["spec:11"]
+    assert eval_record["storyIds"] == ["001"]
+    assert eval_record["categoryRefs"] == ["spec:11"]
+    assert eval_record["declaredCategoryRefs"] == ["spec:11"]
+    assert eval_record["derivedCategoryRefs"] == ["spec:11"]
+
+
+def test_methodology_graph_rejects_eval_category_refs_that_do_not_match_lineage(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: sample-eval
+            name: Sample Eval
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs: []
+            category_refs:
+              - spec:8
+            compromise_refs: []
+            description: >
+              Minimal eval fixture with mismatched category metadata.
+            runner: promptfoo
+            command: "echo sample"
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "print")
+
+    assert result.returncode == 1
+    assert (
+        "eval sample-eval category_refs mismatch derived lineage: declared spec:8 "
+        "vs derived spec:11" in result.stderr
+    )
+    assert "eval sample-eval references missing category spec:8" in result.stderr
+
+
+def test_methodology_graph_rejects_unrecognized_structured_state_keys(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "methodology" / "state.yaml",
+        """
+        {
+          "categories": {
+            "spec:11": {
+              "product_need": "Execution clarity",
+              "tech_need": "Methodology substrate",
+              "substrate": "exists",
+              "phase": "hold",
+              "story_coverage": "partial",
+              "notes": [],
+              "rogue_key": true
+            }
+          },
+          "compromises": {},
+          "stories_index": {
+            "sections": []
+          },
+          "roadmap": {
+            "active_focus": [],
+            "sequencing_bias": [],
+            "campaigns": []
+          },
+          "architecture_audits": {
+            "cadence": {
+              "target_story_interval": 5
+            },
+            "domains": {}
+          },
+          "unexpected_top_level": true
+        }
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "print")
+
+    assert result.returncode == 1
+    assert "state.unexpected_top_level is not a recognized structured state key" in result.stderr
+    assert (
+        "state.categories.spec:11.rogue_key is not a recognized structured state key"
+        in result.stderr
+    )
+
+
+def test_methodology_graph_lints_unqualified_story_index_wording_on_active_surfaces(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "README.md",
+        """
+        # Temp Repo
+
+        Use the story index to find the next task.
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "print")
+
+    assert result.returncode == 1
+    assert "README.md:3 still uses unqualified story-index wording" in result.stderr
+
+
+def test_methodology_graph_does_not_flag_hyphenated_setup_filenames_as_retired_setup_guidance(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "scout.md",
+        """
+        # Scout Index
+
+        | ID | Scout |
+        |---|---|
+        | 016 | [Storybook Playwright setup](docs/scout/scout-016-storybook-playwright-setup.md) |
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr

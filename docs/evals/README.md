@@ -38,6 +38,29 @@ existing registry data.
 | New compromise identified | Add compromise eval entry |
 | Score is stale (code changed since git_sha) | Re-run and update |
 
+### Required lineage metadata
+
+Every eval entry in `docs/evals/registry.yaml` must carry explicit methodology
+lineage. Do not rely on prose scraping or eval ID naming conventions.
+
+Required fields per eval entry:
+
+```yaml
+spec_refs:
+  - spec:2
+story_refs:
+  - "154"
+category_refs:
+  - spec:2
+  - spec:8
+compromise_refs: []
+```
+
+- `spec_refs` — exact owning `spec:N` refs or subsections
+- `story_refs` — story IDs that created or materially own this eval
+- `category_refs` — methodology categories this eval advances
+- `compromise_refs` — linked compromise IDs when this is a detector or deletion gate
+
 ### Staleness
 
 A score is **stale** if the codebase has changed significantly since `git_sha`. The `/improve-eval` skill checks this automatically. When in doubt, re-measure.
@@ -57,6 +80,9 @@ Use `/create-eval` when the registry needs a new entry, a new benchmark config
 or script needs to be scaffolded, or a new compromise gate is being introduced.
 
 Use `/improve-eval` only after the eval already exists.
+
+The registry entry is not complete until those explicit lineage fields are
+present.
 
 ### Attempt summary in registry
 

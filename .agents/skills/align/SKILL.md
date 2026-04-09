@@ -6,7 +6,7 @@ user-invocable: true
 
 # /align [what-changed | ADR-NNN]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known compromise in `docs/spec.md`, respect its limitation type and evolution path. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known compromise in `docs/spec.md`, respect its limitation type and evolution path. If none apply, say so explicitly.
 
 Check the methodology graph for misalignment after a change. Read-only and advisory — surfaces what needs attention, doesn't rewrite anything.
 

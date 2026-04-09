@@ -310,5 +310,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 145 | Methodology Graph + State Migration | High | Done | — | spec:11 | 134, 136 | [story-145](stories/story-145-methodology-graph-state-migration.md) |
 | 146 | Legacy Methodology Metadata Backfill | High | Done | — | spec:11 | 145 | [story-146](stories/story-146-legacy-methodology-metadata-backfill.md) |
 | 147 | Problem-First Triage and Story Workflow Migration | High | Done | — | spec:11 | 145, 146 | [story-147](stories/story-147-problem-first-triage-and-story-workflow-migration.md) |
+| 154 | Methodology Hardening Follow-up Sweep | High | Done | — | spec:11 | 145, 146, 147 | [story-154](stories/story-154-methodology-hardening-follow-up-sweep.md) |
 | 109 | Golden Build Runbook | Medium | Done | — | spec:11 | — | [story-109](stories/story-109-golden-build-runbook.md) |
 | 115 | Pipeline Architecture Refactor Plan | Medium | Done | — | spec:1, spec:11 | — | [story-115](stories/story-115-pipeline-architecture-refactor-plan.md) |

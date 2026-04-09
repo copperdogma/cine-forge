@@ -1,27 +1,29 @@
-# Methodology Artifact Audit and Migration Plan
+# Methodology Artifact Audit and Migration Record
 
-> CineForge graph+state migration audit artifact.
-> Purpose: capture what the current methodology surfaces actually own, define
-> the replacement model without losing responsibilities, and provide the phased
-> migration checklist for replacing hand-authored planning surfaces with
-> structured state, a compiled graph, generated views, and hard linting.
+> CineForge graph+state migration audit artifact and current contract record.
+> Purpose: preserve the original no-loss audit baseline, capture the current
+> state/graph/generated-view replacement model that is now live, and document
+> the lint/ownership contract that keeps the methodology package honest.
 
 ## Executive Summary
 
-CineForge's methodology is conceptually coherent but physically over-distributed.
-The repo currently relies on hand-authored markdown to carry both canonical
-design truth and mutable planning state:
+CineForge's methodology was conceptually coherent but physically
+over-distributed before Stories 145, 146, and 147. Those stories migrated the
+repo to structured state, a compiled methodology graph, generated dashboard
+views, honest story-workflow semantics, and a dedicated architecture-audit
+lane.
 
-- `docs/build-map.md` mixes category summaries with mutable substrate/phase
+Historical baseline that prompted the migration:
+
+- `docs/build-map.md` mixed category summaries with mutable substrate/phase
   state and live story coverage
-- `docs/stories.md` mixes the canonical story list with mutable execution-map
+- `docs/stories.md` mixed the canonical story list with mutable execution-map
   narrative and backlog highlighting
-- setup, triage, align, build, validate, closeout, and ADR tooling still teach
+- setup, triage, align, build, validate, closeout, and ADR tooling taught
   those hand-authored surfaces as active truth
-- there is no compiled methodology graph or structured state substrate yet
-- there is no dedicated architecture-audit lane for agentic drift control
 
-The migration target should not be "copy Storybook." CineForge already has
+The replacement model should not have been a blind Storybook copy. CineForge
+already had
 film-specific `spec:1` through `spec:11` categories, local compromise IDs
 (`C*`, `B*`), a large eval registry, and legacy suffixed story IDs such as
 `003b`, `007b`, and `011f`. The correct target is:
@@ -50,7 +52,7 @@ These remain canonical and hand-maintained:
 
 The redesign must not create a parallel source that duplicates those truths.
 
-## Current Responsibility Matrix
+## Historical Responsibility Matrix (Pre-Migration Baseline)
 
 | Artifact | Type Today | Responsibilities It Actually Own Today | Migration Outcome |
 |---|---|---|---|
@@ -58,18 +60,18 @@ The redesign must not create a parallel source that duplicates those truths.
 | `docs/methodology-ideal-spec-compromise.md` | Explanatory reference | Explains the dual-ideal methodology, build-map role, and triage/align responsibilities | Keep as explanatory reference. Rewrite for state/graph authority. |
 | `docs/spec.md` | Canonical authored source | Stable `spec:N` categories, compromise definitions, limitation types, deletion/evolution logic | Keep canonical. Parse IDs/compromise ownership into the graph. |
 | `docs/build-map.md` | Hand-authored dashboard + mutable state | Category summaries, substrate state, category phase, live story coverage, ADR lookup surface, compromise-progress notes, human-readable planning dashboard | Replace as an authored source. Preserve as a generated dashboard view fed by state + graph. |
-| `docs/stories.md` | Manual index + mutable planning overlay | Full story index, status buckets, execution-map narrative, backlog highlighting, phase summary, spec coverage map | Replace with a generated index. Move custom narrative/overlay sections into structured state. |
+| `docs/stories.md` | Manual index + mutable planning overlay | Full generated story index, status buckets, execution-map narrative, backlog highlighting, phase summary, spec coverage map | Replace with a generated index. Move custom narrative/overlay sections into structured state. |
 | `docs/setup-checklist.md` | Working checklist | Active methodology bootstrap state, currently teaches build-map/story-index truth | Keep as working copy, but rewrite around state/graph/generated views. |
 | Story files | Canonical authored source | Scope, acceptance criteria, ADR/spec linkage, dependency graph, work log, closure evidence | Keep canonical. Require strict frontmatter for CineForge-owned stories; legacy story-header parsing was retired after Story 146. |
-| `create-story` skill + template | Workflow substrate | Story numbering, metadata shape, story-index update contract | Update to emit frontmatter and rerun graph generation instead of editing `docs/stories.md` manually. |
+| `create-story` skill + template | Workflow substrate | Story numbering, metadata shape, generated-story-index refresh contract | Update to emit frontmatter and rerun graph generation instead of editing generated outputs manually. |
 | `docs/evals/registry.yaml` | Canonical authored source | Eval IDs, targets, scores, retry conditions, compromise hooks | Keep canonical. Parse into the graph and lint unresolved refs. |
 | `setup-methodology` skill + runbook | Bootstrap surface | Teaches the repo's methodology package and checklist contract | Rewrite around `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated `docs/stories.md`, and generated `docs/build-map.md`. |
-| `triage`, `align`, `build-story`, `validate`, `mark-story-done` | Workflow surface | Consume build-map/story-index truth, coordinate planning/build/validation/closure, teach manual story-index edits | Rewire to read compiled graph + state, and rerun generation instead of hand-editing output views. |
+| `triage`, `align`, `build-story`, `validate`, `mark-story-done` | Workflow surface | Consume build-map/generated-story-index truth, coordinate planning/build/validation/closure, teach output regeneration instead of hand edits | Rewire to read compiled graph + state, and rerun generation instead of hand-editing output views. |
 | `init-project` | Methodology package exporter | Teaches/install current package shape for new repos | Rewrite to export the graph+state package, or future repos will keep inheriting the old shape. |
-| ADR tooling (`create-adr` template/docs) | Workflow substrate | Integration checklist still assumes manual story index updates | Rewrite to reference state/graph regeneration and generated views. |
+| ADR tooling (`create-adr` template/docs) | Workflow substrate | Integration checklist still assumes generated story index refreshes happen through canonical-input regeneration | Rewrite to reference state/graph regeneration and generated views. |
 | `docs/retrofit-gaps.md` | Historical migration artifact | Archived evidence from the earlier execution-ideal/spec migration | Keep as historical context only. Do not treat as live planning state. |
 
-## Current Consumer Hotspots
+## Historical Consumer Hotspots
 
 These are the main migration-risk surfaces because they currently assume
 `docs/build-map.md` and/or `docs/stories.md` are hand-authored sources:
@@ -156,7 +158,7 @@ remembered mechanism for deciding:
 - which areas need structural simplification
 - which domains are overdue for audit
 
-The new methodology package should add that lane explicitly.
+The methodology package now includes that lane explicitly.
 
 ## Recommended Replacement Model
 
@@ -296,7 +298,7 @@ This is the recommended logical shape, not a locked schema:
       {
         "id": "current-execution-map",
         "title": "Current Execution Map",
-        "markdown": "Preserved narrative/overlay content from the former hand-authored story index."
+        "markdown": "Preserved narrative/overlay content from the former hand-authored generated stories dashboard."
       }
     ]
   },
@@ -326,15 +328,13 @@ This is the recommended logical shape, not a locked schema:
 - every state compromise entry resolves to a real compromise in `docs/spec.md`
 - generated `docs/stories.md`, generated `docs/build-map.md`, and
   `docs/methodology/graph.json` are current
-- no active methodology surface tells agents to hand-edit `docs/stories.md`
+- no active methodology surface tells agents to hand-edit generated planning outputs
 - no active methodology surface still teaches `docs/build-map.md` as the
   canonical planning state
-- no state key is ownerless or duplicated
+- no structured state key is unrecognized or silently orphaned
 
 ### Warning Lints
 
-- story files still on legacy headers only
-- uncategorized stories caused by missing metadata
 - category state older than recent linked story churn
 - compromise phase older than related eval freshness
 - architecture domains overdue for audit

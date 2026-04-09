@@ -6,6 +6,8 @@ user-invocable: false
 
 # /retrofit-ideal
 
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+
 Legacy setup leaf. `/setup-methodology` is the canonical public bootstrap
 entrypoint; use this only when that package explicitly dispatches here.
 
@@ -38,7 +40,7 @@ Read the project thoroughly before talking to the user:
 1. Read existing spec (`docs/spec.md` or equivalent)
 2. Read all ADRs (`docs/decisions/`)
 3. Read AGENTS.md for stated principles
-4. Read story index and skim all stories — note which are Done, In Progress, Pending, Draft
+4. Read the generated story index and skim all stories — note which are Done, In Progress, Pending, Draft
 5. Read the codebase structure — what pipeline stages, services, or components exist?
 6. Read existing tests and fixtures — are there golden references already?
 7. Read any existing evals

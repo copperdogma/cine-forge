@@ -277,7 +277,12 @@
           "ADR-003"
         ],
         "evalIds": [
-          "compromise-C4-two-tier-scenes"
+          "compromise-C4-two-tier-scenes",
+          "config-detection",
+          "normalization",
+          "scene-enrichment",
+          "scene-extraction",
+          "script-bible"
         ]
       },
       {
@@ -350,8 +355,12 @@
           "ADR-003"
         ],
         "evalIds": [
+          "character-extraction",
           "continuity-extraction",
-          "entity-discovery"
+          "entity-discovery",
+          "location-extraction",
+          "prop-extraction",
+          "relationship-discovery"
         ]
       },
       {
@@ -890,11 +899,22 @@
           "ADR-003"
         ],
         "evalIds": [
+          "character-extraction",
           "compromise-C2-qa-validation",
           "compromise-C3-tiered-models",
+          "config-detection",
+          "continuity-extraction",
           "entity-discovery",
+          "location-extraction",
+          "normalization",
           "previz-usefulness",
+          "prop-extraction",
+          "qa-pass",
+          "relationship-discovery",
           "runtime-media-validation",
+          "scene-enrichment",
+          "scene-extraction",
+          "script-bible",
           "video-understanding"
         ]
       },
@@ -959,7 +979,6 @@
         ],
         "evalIds": [
           "compromise-C7-working-memory",
-          "previz-usefulness",
           "video-understanding"
         ]
       },
@@ -1077,7 +1096,8 @@
           "136",
           "145",
           "146",
-          "147"
+          "147",
+          "154"
         ],
         "adrIds": [],
         "evalIds": []
@@ -6318,6 +6338,51 @@
       "unblockCondition": "Unblock this story only when one of these is true:\n\n- a new shared-substrate runtime/usefulness comparison produces a dominant winner that remains stable across reruns, or\n- a new candidate materially beats both the current Fast 4 runtime median (`164799 ms` total / `52196 ms` isolated AI-previz) and the current Lite 4 usefulness lead (`0.828`) strongly enough to settle the tradeoff, or\n- the story is explicitly respecified to end at “best provisional shipped lane + blocker recorded” rather than “dominant provider-floor winner.”",
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
+    },
+    {
+      "id": "154",
+      "title": "Methodology Hardening Follow-up Sweep",
+      "path": "docs/stories/story-154-methodology-hardening-follow-up-sweep.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Execution Ideal",
+        "R14 (Nothing is ever lost)",
+        "radical transparency"
+      ],
+      "specRefs": [
+        "spec:11",
+        "spec:11.2",
+        "spec:11.3",
+        "spec:11.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [
+        "B2",
+        "B3",
+        "B5"
+      ],
+      "dependsOn": [
+        "145",
+        "146",
+        "147"
+      ],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "campaign:methodology-graph-state-migration"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
     }
   ],
   "adrs": [
@@ -6450,10 +6515,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/character-extraction.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ]
     },
     {
       "id": "compromise-C2-qa-validation",
@@ -6461,12 +6547,28 @@
       "type": "compromise",
       "command": "null  # not yet implemented",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
       "compromiseIds": [
         "C2"
       ],
-      "categoryRefs": [
+      "declaredSpecRefs": [
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [
+        "C2"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:8"
       ]
     },
@@ -6476,12 +6578,28 @@
       "type": "compromise",
       "command": "null  # scan registry.yaml programmatically",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
       "compromiseIds": [
         "C3"
       ],
-      "categoryRefs": [
+      "declaredSpecRefs": [
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [
+        "C3"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:8"
       ]
     },
@@ -6491,12 +6609,28 @@
       "type": "compromise",
       "command": "null",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:2"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:2"
+      ],
       "compromiseIds": [
         "C4"
       ],
-      "categoryRefs": [
+      "declaredSpecRefs": [
+        "spec:2"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:2"
+      ],
+      "declaredCompromiseIds": [
+        "C4"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:2"
       ]
     },
@@ -6506,12 +6640,28 @@
       "type": "compromise",
       "command": "null",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:4"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:4"
+      ],
       "compromiseIds": [
         "C5"
       ],
-      "categoryRefs": [
+      "declaredSpecRefs": [
+        "spec:4"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:4"
+      ],
+      "declaredCompromiseIds": [
+        "C5"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:4"
       ]
     },
@@ -6521,12 +6671,28 @@
       "type": "compromise",
       "command": "null",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:9"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:9"
+      ],
       "compromiseIds": [
         "C7"
       ],
-      "categoryRefs": [
+      "declaredSpecRefs": [
+        "spec:9"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:9"
+      ],
+      "declaredCompromiseIds": [
+        "C7"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:9"
       ]
     },
@@ -6536,10 +6702,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/config-detection.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ]
     },
     {
       "id": "continuity-extraction",
@@ -6547,13 +6734,34 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/continuity-extraction.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "storyIds": [
         "092"
       ],
-      "compromiseIds": [],
       "categoryRefs": [
-        "spec:3"
+        "spec:3",
+        "spec:8"
+      ],
+      "compromiseIds": [],
+      "declaredSpecRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [
+        "092"
+      ],
+      "declaredCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:3",
+        "spec:8"
       ]
     },
     {
@@ -6562,13 +6770,34 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/entity-discovery.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "storyIds": [
         "124",
         "129"
       ],
-      "compromiseIds": [],
       "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "compromiseIds": [],
+      "declaredSpecRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [
+        "124",
+        "129"
+      ],
+      "declaredCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:3",
         "spec:8"
       ]
@@ -6579,10 +6808,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/location-extraction.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ]
     },
     {
       "id": "normalization",
@@ -6590,10 +6840,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/normalization.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ]
     },
     {
       "id": "previz-usefulness",
@@ -6601,21 +6872,54 @@
       "type": "quality",
       "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
       "storyIds": [
-        "027",
-        "030",
         "137",
         "143",
+        "144",
         "149"
       ],
-      "compromiseIds": [],
       "categoryRefs": [
         "spec:5",
         "spec:6",
         "spec:7",
         "spec:8",
-        "spec:9",
+        "spec:10"
+      ],
+      "compromiseIds": [],
+      "declaredSpecRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "declaredStoryIds": [
+        "137",
+        "143",
+        "144",
+        "149"
+      ],
+      "declaredCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
         "spec:10"
       ]
     },
@@ -6625,10 +6929,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/prop-extraction.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ]
     },
     {
       "id": "qa-pass",
@@ -6636,10 +6961,26 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:8"
+      ]
     },
     {
       "id": "real-ai-previz-runtime",
@@ -6647,7 +6988,12 @@
       "type": "quality",
       "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-current",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
       "storyIds": [
         "149",
         "150",
@@ -6655,8 +7001,35 @@
         "152",
         "153"
       ],
-      "compromiseIds": [],
       "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "compromiseIds": [],
+      "declaredSpecRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "declaredStoryIds": [
+        "149",
+        "150",
+        "151",
+        "152",
+        "153"
+      ],
+      "declaredCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:5",
         "spec:6",
         "spec:7",
@@ -6669,10 +7042,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/relationship-discovery.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:3",
+        "spec:8"
+      ]
     },
     {
       "id": "runtime-media-validation",
@@ -6680,12 +7074,42 @@
       "type": "quality",
       "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/runtime_media_validation_eval.py --model gpt-5.4 --output-prefix benchmarks/results/runtime-media-validation-gpt54",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
       "storyIds": [
+        "140",
         "144"
       ],
-      "compromiseIds": [],
       "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "compromiseIds": [],
+      "declaredSpecRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "declaredStoryIds": [
+        "140",
+        "144"
+      ],
+      "declaredCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:5",
         "spec:6",
         "spec:7",
@@ -6699,10 +7123,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/scene-enrichment.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ]
     },
     {
       "id": "scene-extraction",
@@ -6710,10 +7155,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/scene-extraction.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ]
     },
     {
       "id": "script-bible",
@@ -6721,10 +7187,31 @@
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "storyIds": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
       "compromiseIds": [],
-      "categoryRefs": []
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredStoryIds": [],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:8"
+      ]
     },
     {
       "id": "video-understanding",
@@ -6732,12 +7219,36 @@
       "type": "quality",
       "command": "cd benchmarks && PROMPTFOO_PYTHON=python promptfoo eval -c tasks/video-understanding.yaml --no-cache --filter-first-n 6 -j 1",
       "path": "docs/evals/registry.yaml",
-      "specRefs": [],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
       "storyIds": [
         "030"
       ],
-      "compromiseIds": [],
       "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "compromiseIds": [],
+      "declaredSpecRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "declaredStoryIds": [
+        "030"
+      ],
+      "declaredCategoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
         "spec:7",
         "spec:8",
         "spec:9"

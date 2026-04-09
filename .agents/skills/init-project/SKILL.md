@@ -6,6 +6,8 @@ user-invocable: true
 
 # /init-project [repo-path-or-url ...]
 
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+
 Bootstrap a new AI-coded project repo by extracting reusable patterns from one
 or more reference repos, then installing the **same methodology package** used
 here: ideal/spec/state, generated graph surfaces, checklist, eval/golden

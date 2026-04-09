@@ -6,11 +6,13 @@ user-invocable: true
 
 # /build-story [story-number]
 
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current state phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
+
 Execute a development story end-to-end.
 
 ## Phase 1 — Explore (read-only, no file writes)
 
-1. **Resolve story** — Read `docs/stories/story-{NNN}-*.md` (or resolve from `docs/stories.md` if id/title/path is ambiguous). Verify status is Draft, Pending, or In Progress.
+1. **Resolve story** — Read `docs/stories/story-{NNN}-*.md` (or resolve from the generated story index `docs/stories.md` if id/title/path is ambiguous). Verify status is Draft, Pending, or In Progress.
    - If status is **Draft**, do not stop yet. Continue through the required-section and substrate checks first.
    - If the Draft story is still skeletal, underspecified, or substrate-unverified after those checks, STOP and recommend keeping it `Draft`.
    - If the Draft story is already detailed enough and substrate-verified, record that it should be promoted and continue.

@@ -6,7 +6,9 @@ user-invocable: true
 
 # /create-adr <number> <short-name> "<title>"
 
-Create a new ADR with proper structure, research scaffolding, and setup.md tracking.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+
+Create a new ADR with proper structure, research scaffolding, and generated planning-surface integration.
 
 ## Example
 
@@ -38,21 +40,14 @@ Create a new ADR with proper structure, research scaffolding, and setup.md track
    - Break research into numbered sections with specific questions
    - Be concrete — tell the researcher exactly what to evaluate
 
-4. **Update setup.md** — Add the ADR to the ADR Bootstrap Sequence section:
-   ```
-   ### ADR-NNN: Title
-   - [ ] **Status: PENDING** — Needs deep research
-   - [x] Stub created: `docs/decisions/adr-NNN-name/adr.md`
-   ```
-
-5. **Refresh generated planning surfaces when needed** — If the ADR metadata is
+4. **Refresh generated planning surfaces when needed** — If the ADR metadata is
    usable and should appear in methodology outputs, run:
 
    ```bash
    pnpm methodology:compile
    ```
 
-6. **Show the user** the created files for review.
+5. **Show the user** the created files for review.
 
 ## Guardrails
 
@@ -66,5 +61,5 @@ Create a new ADR with proper structure, research scaffolding, and setup.md track
 - ADR numbers are sequential. Check existing ADRs before assigning.
 - The research prompt should be detailed enough that any AI model can produce useful output without additional context.
 - The synthesis prompt is generated automatically by `deep-research` — no template needed.
-- See `docs/runbooks/deep-research.md` for how to run the multi-provider research.
-- See `docs/runbooks/adr-creation.md` for the full ADR lifecycle.
+- See the `Deep Research` section in `AGENTS.md` for the repo's current multi-provider research workflow.
+- If the ADR metadata changes planning surfaces, rerun `pnpm methodology:compile` instead of trying to track it in a retired setup doc.

@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-08-04] — Methodology hardening follow-up sweep (Story 154)
+
+### Added
+- Added direct methodology-graph regression coverage for explicit eval lineage, structured-state key validation, active-surface wording checks, and the `-setup.md` false-positive case
+
+### Changed
+- Changed the methodology compiler to lint a wider active surface, require explicit eval lineage metadata, validate structured state keys directly, and reject stale generated-view and retired-setup guidance on live methodology docs
+- Changed the methodology registry, audit record, ADR guidance, and live skills/runbooks to align on state/graph/generated-dashboard authority instead of manual planning-surface upkeep
+
 ## [2026-04-08-03] — Scout 018 audit draft and deploy log carryover
 
 ### Added

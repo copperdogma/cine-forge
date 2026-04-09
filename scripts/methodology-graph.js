@@ -11,16 +11,13 @@ const BUILD_MAP_PATH = join(ROOT, "docs/build-map.md");
 const IDEAL_PATH = join(ROOT, "docs/ideal.md");
 const SPEC_PATH = join(ROOT, "docs/spec.md");
 const EVALS_PATH = join(ROOT, "docs/evals/registry.yaml");
+const README_PATH = join(ROOT, "README.md");
 const STORIES_DIR = join(ROOT, "docs/stories");
 const ADRS_DIR = join(ROOT, "docs/decisions");
 
 const STORY_ID_RE = "[0-9]{3}[a-z]?";
 const STORY_FILE_RE = new RegExp(`^story-(${STORY_ID_RE})-.+\\.md$`, "i");
 const STORY_HEADING_RE = new RegExp(`^#\\s+Story\\s+(${STORY_ID_RE})\\s*(?:[:\\u2014-])\\s+(.+)$`, "i");
-const STORY_ID_INLINE_RE = new RegExp(`\\b(?:Story\\s+|story[- ]?)(${STORY_ID_RE})\\b`, "gi");
-const SPEC_REF_RE = /\bspec:\d+(?:\.\d+)*\b/g;
-const ADR_ID_RE = /\bADR-\d{3}\b/g;
-const COMPROMISE_ID_RE = /\b(?:C|B)\d+\b/g;
 const VALID_STORY_STATUSES = new Set(["Draft", "Pending", "In Progress", "Done", "Deferred", "Blocked", "Cancelled"]);
 const TERMINAL_STORY_STATUSES = new Set(["Done", "Deferred", "Cancelled"]);
 const REQUIRED_STORY_FRONTMATTER_KEYS = [
@@ -49,8 +46,22 @@ const REQUIRED_ADR_FRONTMATTER_KEYS = [
   "supersedes",
   "superseded_by",
 ];
-const ACTIVE_SURFACE_PATHS = [
+const REQUIRED_EVAL_LINEAGE_KEYS = [
+  "spec_refs",
+  "story_refs",
+  "category_refs",
+  "compromise_refs",
+];
+const STATIC_ACTIVE_SURFACE_PATHS = [
   join(ROOT, "AGENTS.md"),
+  README_PATH,
+  IDEAL_PATH,
+  SPEC_PATH,
+  join(ROOT, "docs/scout.md"),
+  join(ROOT, "docs/inbox.md"),
+  join(ROOT, "docs/evals/README.md"),
+  join(ROOT, "docs/evals/attempt-template.md"),
+  join(ROOT, "docs/methodology-artifact-audit-and-migration.md"),
   join(ROOT, "docs/methodology-ideal-spec-compromise.md"),
   join(ROOT, "docs/setup-checklist.md"),
   join(ROOT, "docs/runbooks/setup-methodology.md"),
@@ -81,14 +92,102 @@ const ACTIVE_SURFACE_PATHS = [
   join(ROOT, ".agents/skills/decompose-spec/SKILL.md"),
   join(ROOT, ".agents/skills/create-adr/SKILL.md"),
   join(ROOT, ".agents/skills/create-adr/templates/adr.md"),
+  join(ROOT, ".agents/skills/retrofit-ideal/SKILL.md"),
   join(ROOT, ".agents/skills/triage-architecture/SKILL.md"),
 ];
+const ACTIVE_SURFACE_PATHS = collectActiveSurfacePaths();
 const MANUAL_STORIES_RE =
   /update.*docs\/stories\.md|append.*docs\/stories\.md|edit.*docs\/stories\.md|hand-authored story index|manual story index/i;
+const STORY_INDEX_FRAMING_RE = /\bstory index\b/i;
 const BUILD_MAP_AUTHORITY_RE =
-  /central planning\s*\/\s*triage dashboard|build-map-first|build map first|hand-authored build-map|build-map-centered|docs\/build-map\.md.*central/i;
+  /central planning\s*\/\s*triage dashboard|build-map-first|build map first|hand-authored build-map|build-map-centered|docs\/build-map\.md.*central|update build map|append.*docs\/build-map\.md|edit.*docs\/build-map\.md/i;
+const RETIRED_SETUP_PATH_RE = /(?:^|[^a-z0-9_./-])(?:docs\/)?setup\.md\b/i;
 const ALLOWED_LEGACY_CONTEXT_RE =
   /generated|state\.yaml|graph\.json|legacy|migration|historical|archive|archived|not authoritative|generated dashboard/i;
+const ALLOWED_STORIES_INDEX_CONTEXT_RE =
+  /generated story index|generated planning surfaces|generated dashboard|generated view|compiler|do not modify the generated story index/i;
+const VALID_STATE_TOP_LEVEL_KEYS = new Set([
+  "version",
+  "format",
+  "seeded_at",
+  "seeded_from",
+  "categories",
+  "compromises",
+  "stories_index",
+  "roadmap",
+  "architecture_audits",
+]);
+const VALID_STATE_CATEGORY_KEYS = new Set([
+  "substrate",
+  "phase",
+  "story_coverage",
+  "product_need",
+  "tech_need",
+  "absorbs",
+  "notes",
+  "last_reviewed",
+]);
+const VALID_STATE_COMPROMISE_KEYS = new Set([
+  "phase",
+  "current",
+  "converge_signal",
+  "evidence",
+  "last_reviewed",
+]);
+const VALID_STATE_STORIES_INDEX_KEYS = new Set([
+  "current_execution_map",
+  "sections",
+]);
+const VALID_STATE_SECTION_KEYS = new Set([
+  "id",
+  "title",
+  "lines",
+  "markdown",
+]);
+const VALID_STATE_CURRENT_EXECUTION_MAP_KEYS = new Set([
+  "summary",
+  "lanes",
+]);
+const VALID_STATE_EXECUTION_LANE_KEYS = new Set([
+  "id",
+  "title",
+  "statuses",
+  "empty_message",
+  "story_notes",
+  "health_flag",
+]);
+const VALID_STATE_ROADMAP_KEYS = new Set([
+  "active_focus",
+  "sequencing_bias",
+  "campaigns",
+]);
+const VALID_STATE_SEQUENCING_BIAS_KEYS = new Set([
+  "target",
+  "reason",
+  "story_refs",
+]);
+const VALID_STATE_CAMPAIGN_KEYS = new Set([
+  "id",
+  "status",
+  "notes",
+  "story_refs",
+]);
+const VALID_STATE_ARCHITECTURE_AUDIT_KEYS = new Set([
+  "cadence",
+  "domains",
+]);
+const VALID_STATE_AUDIT_CADENCE_KEYS = new Set([
+  "target_story_interval",
+]);
+const VALID_STATE_AUDIT_DOMAIN_KEYS = new Set([
+  "last_audited_at",
+  "recent_story_refs",
+  "stories_since_audit",
+  "open_findings",
+  "manual_priority",
+  "last_summary",
+  "last_result",
+]);
 
 function readUtf8(path) {
   return readFileSync(path, "utf8");
@@ -96,6 +195,30 @@ function readUtf8(path) {
 
 function toRelative(path) {
   return relative(ROOT, path).replaceAll("\\", "/");
+}
+
+function listFilesRecursively(rootDir, predicate) {
+  if (!existsSync(rootDir)) return [];
+  const output = [];
+  for (const entry of readdirSync(rootDir, { withFileTypes: true })) {
+    const fullPath = join(rootDir, entry.name);
+    if (entry.isDirectory()) {
+      output.push(...listFilesRecursively(fullPath, predicate));
+      continue;
+    }
+    if (predicate(fullPath, entry.name)) output.push(fullPath);
+  }
+  return output;
+}
+
+function collectActiveSurfacePaths() {
+  return uniqueSorted(
+    [
+      ...STATIC_ACTIVE_SURFACE_PATHS,
+      ...listFilesRecursively(ADRS_DIR, (_path, name) => name === "adr.md"),
+      ...listFilesRecursively(join(ROOT, ".gemini/commands"), (_path, name) => name.endsWith(".toml")),
+    ].filter((path) => existsSync(path)),
+  );
 }
 
 function stripQuotes(value) {
@@ -152,18 +275,6 @@ function compareSpecRefs(a, b) {
 function categoryForSpecRef(specRef) {
   const match = String(specRef).match(/^(spec:\d+)/);
   return match ? match[1] : null;
-}
-
-function extractMatches(text, pattern) {
-  return uniqueSorted(text.match(pattern) || []);
-}
-
-function extractStoryIds(text) {
-  const ids = [];
-  for (const match of text.matchAll(STORY_ID_INLINE_RE)) {
-    ids.push(match[1]);
-  }
-  return uniqueSorted(ids, compareStoryIdStrings);
 }
 
 function parseJsonCompatibleYaml(path) {
@@ -455,23 +566,18 @@ function parseAdrs() {
   return records;
 }
 
-function deriveEvalCompromiseIds(id, blockText) {
-  const ids = new Set(extractMatches(blockText, COMPROMISE_ID_RE));
-  const prefix = id.match(/^compromise-(c\d+|b\d+)/i);
-  if (prefix) ids.add(prefix[1].toUpperCase());
-  return Array.from(ids).sort();
-}
-
 function parseEvalRegistry() {
   const lines = readUtf8(EVALS_PATH).split(/\r?\n/);
   const records = [];
   let current = null;
-  let block = [];
+  let currentListField = null;
 
   const flush = () => {
     if (!current || !current.id) return;
-    const blockText = block.join("\n");
-    const specRefs = extractMatches(blockText, SPEC_REF_RE);
+    const specRefs = uniqueSorted(current.spec_refs || [], compareSpecRefs);
+    const storyIds = uniqueSorted(current.story_refs || [], compareStoryIdStrings);
+    const categoryRefs = uniqueSorted(current.category_refs || [], compareSpecRefs);
+    const compromiseIds = uniqueSorted(current.compromise_refs || []);
     records.push({
       id: current.id,
       name: current.name || current.id,
@@ -479,9 +585,14 @@ function parseEvalRegistry() {
       command: current.command || "",
       path: toRelative(EVALS_PATH),
       specRefs,
-      storyIds: extractStoryIds(blockText),
-      compromiseIds: deriveEvalCompromiseIds(current.id, blockText),
-      categoryRefs: [],
+      storyIds,
+      categoryRefs,
+      compromiseIds,
+      declaredSpecRefs: specRefs,
+      declaredStoryIds: storyIds,
+      declaredCategoryRefs: categoryRefs,
+      declaredCompromiseIds: compromiseIds,
+      missingLineageKeys: REQUIRED_EVAL_LINEAGE_KEYS.filter((key) => !current.seenLineageKeys.has(key)),
     });
   };
 
@@ -489,15 +600,48 @@ function parseEvalRegistry() {
     const idMatch = line.match(/^ {2}- id:\s+(.+)$/);
     if (idMatch) {
       flush();
-      current = { id: stripQuotes(idMatch[1]) };
-      block = [line];
+      current = {
+        id: stripQuotes(idMatch[1]),
+        spec_refs: [],
+        story_refs: [],
+        category_refs: [],
+        compromise_refs: [],
+        seenLineageKeys: new Set(),
+      };
+      currentListField = null;
       continue;
     }
-    if (current) {
-      block.push(line);
-      const fieldMatch = line.match(/^ {4}(name|type|command):\s+(.+)$/);
-      if (fieldMatch) current[fieldMatch[1]] = stripQuotes(fieldMatch[2]);
+    if (!current) continue;
+
+    const lineageMatch = line.match(/^ {4}(spec_refs|story_refs|category_refs|compromise_refs):(?:\s+(.*))?$/);
+    if (lineageMatch) {
+      const key = lineageMatch[1];
+      const rawValue = lineageMatch[2] ? lineageMatch[2].trim() : "";
+      current.seenLineageKeys.add(key);
+      currentListField = null;
+      if (!rawValue) {
+        current[key] = [];
+        currentListField = key;
+        continue;
+      }
+      if (rawValue === "[]") {
+        current[key] = [];
+        continue;
+      }
+      current[key] = [stripQuotes(rawValue)];
+      continue;
     }
+
+    const listItemMatch = line.match(/^ {6}-\s+(.+)$/);
+    if (listItemMatch && currentListField) {
+      current[currentListField].push(stripQuotes(listItemMatch[1]));
+      continue;
+    }
+
+    if (/^ {4}[a-z0-9_]+:/i.test(line)) currentListField = null;
+
+    const fieldMatch = line.match(/^ {4}(name|type|command):\s+(.+)$/);
+    if (fieldMatch) current[fieldMatch[1]] = stripQuotes(fieldMatch[2]);
   }
 
   flush();
@@ -513,6 +657,13 @@ function markdownFromSection(section) {
 function formatExampleList(values, limit = 3) {
   if (values.length <= limit) return values.join(", ");
   return `${values.slice(0, limit).join(", ")} +${values.length - limit} more`;
+}
+
+function pushUnexpectedKeys(errors, value, allowedKeys, label) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return;
+  for (const key of Object.keys(value)) {
+    if (!allowedKeys.has(key)) errors.push(`${label}.${key} is not a recognized structured state key`);
+  }
 }
 
 function renderCurrentExecutionMap(currentExecutionMap, stories, { healthFlag = false } = {}) {
@@ -758,23 +909,30 @@ function validateGraph(state, spec, stories, adrs, evals) {
   const auditDomains = (((state.architecture_audits || {}).domains || {}));
   const auditDomainIds = new Set(Object.keys(auditDomains));
 
+  pushUnexpectedKeys(errors, state, VALID_STATE_TOP_LEVEL_KEYS, "state");
   for (const categoryId of Object.keys(state.categories || {})) {
     if (!categoryIds.has(categoryId)) errors.push(`state.categories.${categoryId} does not match any spec category`);
+    pushUnexpectedKeys(errors, (state.categories || {})[categoryId], VALID_STATE_CATEGORY_KEYS, `state.categories.${categoryId}`);
   }
   for (const compromiseId of Object.keys(state.compromises || {})) {
     if (!compromiseIds.has(compromiseId)) errors.push(`state.compromises.${compromiseId} does not match any spec compromise`);
+    pushUnexpectedKeys(errors, (state.compromises || {})[compromiseId], VALID_STATE_COMPROMISE_KEYS, `state.compromises.${compromiseId}`);
   }
 
+  pushUnexpectedKeys(errors, state.stories_index || {}, VALID_STATE_STORIES_INDEX_KEYS, "state.stories_index");
   const customSections = Array.isArray((state.stories_index || {}).sections) ? state.stories_index.sections : [];
   customSections.forEach((section, index) => {
+    pushUnexpectedKeys(errors, section, VALID_STATE_SECTION_KEYS, `state.stories_index.sections[${index}]`);
     if (String(section.id || "") === "current-execution-map") {
       errors.push(`state.stories_index.sections[${index}] uses deprecated current-execution-map prose; use state.stories_index.current_execution_map instead`);
     }
   });
 
   const currentExecutionMap = (state.stories_index || {}).current_execution_map || {};
+  pushUnexpectedKeys(errors, currentExecutionMap, VALID_STATE_CURRENT_EXECUTION_MAP_KEYS, "state.stories_index.current_execution_map");
   const currentExecutionMapLanes = Array.isArray(currentExecutionMap.lanes) ? currentExecutionMap.lanes : [];
   currentExecutionMapLanes.forEach((lane, index) => {
+    pushUnexpectedKeys(errors, lane, VALID_STATE_EXECUTION_LANE_KEYS, `state.stories_index.current_execution_map.lanes[${index}]`);
     const laneLabel = String(lane.id || lane.title || index);
     const statuses = Array.isArray(lane.statuses) ? lane.statuses.map(String) : [];
     if (typeof lane.health_flag !== "undefined" && typeof lane.health_flag !== "boolean") {
@@ -803,8 +961,10 @@ function validateGraph(state, spec, stories, adrs, evals) {
     });
   });
 
+  pushUnexpectedKeys(errors, state.roadmap || {}, VALID_STATE_ROADMAP_KEYS, "state.roadmap");
   const sequencingBiasEntries = Array.isArray((state.roadmap || {}).sequencing_bias) ? (state.roadmap || {}).sequencing_bias : [];
   sequencingBiasEntries.forEach((entry, index) => {
+    pushUnexpectedKeys(errors, entry, VALID_STATE_SEQUENCING_BIAS_KEYS, `state.roadmap.sequencing_bias[${index}]`);
     const storyRefs = Array.isArray(entry.story_refs) ? entry.story_refs.map(String) : [];
     storyRefs.forEach((storyRef) => {
       if (!storyIds.has(storyRef)) {
@@ -824,6 +984,7 @@ function validateGraph(state, spec, stories, adrs, evals) {
 
   const campaigns = Array.isArray((state.roadmap || {}).campaigns) ? (state.roadmap || {}).campaigns : [];
   campaigns.forEach((campaign, index) => {
+    pushUnexpectedKeys(errors, campaign, VALID_STATE_CAMPAIGN_KEYS, `state.roadmap.campaigns[${index}]`);
     const storyRefs = Array.isArray(campaign.story_refs) ? campaign.story_refs.map(String) : [];
     storyRefs.forEach((storyRef) => {
       if (!storyIds.has(storyRef)) {
@@ -905,6 +1066,21 @@ function validateGraph(state, spec, stories, adrs, evals) {
   }
 
   for (const evalRecord of evals) {
+    if (evalRecord.missingLineageKeys.length > 0) {
+      errors.push(`eval ${evalRecord.id} is missing explicit lineage fields: ${evalRecord.missingLineageKeys.join(", ")}`);
+    }
+    if (evalRecord.declaredCategoryRefs.length === 0) {
+      errors.push(`eval ${evalRecord.id} has no category_refs; explicit eval category ownership is required`);
+    } else if (
+      (evalRecord.derivedCategoryRefs || []).join(", ") !== evalRecord.declaredCategoryRefs.join(", ")
+    ) {
+      errors.push(
+        `eval ${evalRecord.id} category_refs mismatch derived lineage: declared ${evalRecord.declaredCategoryRefs.join(", ") || "—"} vs derived ${(evalRecord.derivedCategoryRefs || []).join(", ") || "—"}`,
+      );
+    }
+    for (const categoryId of evalRecord.categoryRefs) {
+      if (!categoryIds.has(categoryId)) errors.push(`eval ${evalRecord.id} references missing category ${categoryId}`);
+    }
     for (const storyId of evalRecord.storyIds) {
       if (!storyIds.has(storyId)) errors.push(`eval ${evalRecord.id} references missing story ${storyId}`);
     }
@@ -916,7 +1092,10 @@ function validateGraph(state, spec, stories, adrs, evals) {
     }
   }
 
+  pushUnexpectedKeys(errors, state.architecture_audits || {}, VALID_STATE_ARCHITECTURE_AUDIT_KEYS, "state.architecture_audits");
+  pushUnexpectedKeys(errors, (state.architecture_audits || {}).cadence || {}, VALID_STATE_AUDIT_CADENCE_KEYS, "state.architecture_audits.cadence");
   for (const [domainId, domainValue] of Object.entries(auditDomains)) {
+    pushUnexpectedKeys(errors, domainValue, VALID_STATE_AUDIT_DOMAIN_KEYS, `state.architecture_audits.domains.${domainId}`);
     const storyRefs = Array.isArray(domainValue.recent_story_refs) ? domainValue.recent_story_refs.map(String) : [];
     for (const storyRef of storyRefs) {
       if (!storyIds.has(storyRef)) errors.push(`state.architecture_audits.domains.${domainId}.recent_story_refs includes missing story ${storyRef}`);
@@ -930,8 +1109,18 @@ function validateGraph(state, spec, stories, adrs, evals) {
       if (MANUAL_STORIES_RE.test(line) && !ALLOWED_LEGACY_CONTEXT_RE.test(line)) {
         errors.push(`${toRelative(activePath)}:${index + 1} still teaches manual docs/stories.md edits`);
       }
+      if (
+        STORY_INDEX_FRAMING_RE.test(line) &&
+        !ALLOWED_STORIES_INDEX_CONTEXT_RE.test(line) &&
+        !ALLOWED_LEGACY_CONTEXT_RE.test(line)
+      ) {
+        errors.push(`${toRelative(activePath)}:${index + 1} still uses unqualified story-index wording`);
+      }
       if (BUILD_MAP_AUTHORITY_RE.test(line) && !ALLOWED_LEGACY_CONTEXT_RE.test(line)) {
         errors.push(`${toRelative(activePath)}:${index + 1} still teaches authored build-map authority`);
+      }
+      if (RETIRED_SETUP_PATH_RE.test(line) && !ALLOWED_LEGACY_CONTEXT_RE.test(line)) {
+        errors.push(`${toRelative(activePath)}:${index + 1} still references retired setup.md guidance`);
       }
     });
   }
@@ -991,20 +1180,24 @@ function buildGraph() {
   }
 
   for (const evalRecord of evals) {
-    const categoryRefs = new Set();
+    const derivedCategoryRefs = new Set();
     for (const specRef of evalRecord.specRefs) {
       const categoryId = categoryForSpecRef(specRef);
-      if (categoryId) categoryRefs.add(categoryId);
+      if (categoryId) derivedCategoryRefs.add(categoryId);
     }
     for (const compromiseId of evalRecord.compromiseIds) {
       const compromise = compromiseById.get(compromiseId);
-      if (compromise) categoryRefs.add(compromise.categoryId);
+      if (compromise) derivedCategoryRefs.add(compromise.categoryId);
     }
     for (const storyId of evalRecord.storyIds) {
       const story = storyById.get(storyId);
-      if (story) story.categoryRefs.forEach((categoryId) => categoryRefs.add(categoryId));
+      if (story) story.categoryRefs.forEach((categoryId) => derivedCategoryRefs.add(categoryId));
     }
-    evalRecord.categoryRefs = uniqueSorted(categoryRefs, compareSpecRefs);
+    evalRecord.derivedCategoryRefs = uniqueSorted(derivedCategoryRefs, compareSpecRefs);
+    evalRecord.categoryRefs = uniqueSorted(
+      evalRecord.declaredCategoryRefs.length > 0 ? evalRecord.declaredCategoryRefs : evalRecord.derivedCategoryRefs,
+      compareSpecRefs,
+    );
   }
 
   const categories = spec.categories.map((category) => ({

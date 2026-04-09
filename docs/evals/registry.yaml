@@ -38,6 +38,14 @@ evals:
   - id: character-extraction
     name: Character Extraction
     type: quality
+    spec_refs:
+      - spec:3
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:3
+      - spec:8
+    compromise_refs: []
     description: >
       Structured character bible from screenplay — traits, arc,
       relationships, evidence grounding. Tests depth of character
@@ -164,6 +172,14 @@ evals:
   - id: location-extraction
     name: Location Extraction
     type: quality
+    spec_refs:
+      - spec:3
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:3
+      - spec:8
+    compromise_refs: []
     description: >
       Structured location bible — physical detail, narrative function,
       scene references. Tests spatial reasoning and thematic interpretation.
@@ -247,6 +263,14 @@ evals:
   - id: prop-extraction
     name: Prop Extraction
     type: quality
+    spec_refs:
+      - spec:3
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:3
+      - spec:8
+    compromise_refs: []
     description: >
       Structured prop bible — physical description, symbolism, plot function,
       scene appearances. Tests object-level narrative understanding.
@@ -329,6 +353,14 @@ evals:
   - id: relationship-discovery
     name: Relationship Discovery
     type: quality
+    spec_refs:
+      - spec:3
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:3
+      - spec:8
+    compromise_refs: []
     description: >
       Narrative relationships between all entity types — family, adversary,
       ownership edges. Tests cross-entity reasoning over full screenplay.
@@ -419,6 +451,14 @@ evals:
   - id: config-detection
     name: Config Detection
     type: quality
+    spec_refs:
+      - spec:2
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:2
+      - spec:8
+    compromise_refs: []
     description: >
       Auto-detect project metadata from screenplay: title, genre, tone,
       format, duration, cast size. Gemini 3 Flash is the production winner
@@ -546,6 +586,14 @@ evals:
   - id: scene-extraction
     name: Scene Extraction
     type: quality
+    spec_refs:
+      - spec:2
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:2
+      - spec:8
+    compromise_refs: []
     description: >
       Scene boundaries, headings, characters, summaries from full screenplay.
       Tests structural parsing combined with narrative understanding.
@@ -653,6 +701,14 @@ evals:
   - id: normalization
     name: Normalization
     type: quality
+    spec_refs:
+      - spec:2
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:2
+      - spec:8
+    compromise_refs: []
     description: >
       Convert prose narrative or broken Fountain to valid Fountain screenplay
       format. Tests format understanding and faithful content preservation.
@@ -768,6 +824,14 @@ evals:
   - id: scene-enrichment
     name: Scene Enrichment
     type: quality
+    spec_refs:
+      - spec:2
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:2
+      - spec:8
+    compromise_refs: []
     description: >
       Scene-level metadata enrichment — dramatic beats, tone shifts,
       character presence, location mapping. Tests nuanced scene analysis.
@@ -891,6 +955,12 @@ evals:
   - id: qa-pass
     name: QA Pass
     type: quality
+    spec_refs:
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:8
+    compromise_refs: []
     description: >
       QA gate — model judges whether an extraction is good or bad.
       Tests calibrated judgment (accept good work, reject bad work).
@@ -1005,6 +1075,15 @@ evals:
   - id: continuity-extraction
     name: Continuity Extraction
     type: quality
+    spec_refs:
+      - spec:3
+      - spec:8
+    story_refs:
+      - "092"
+    category_refs:
+      - spec:3
+      - spec:8
+    compromise_refs: []
     description: >
       Entity state tracking and continuity change detection between scenes.
       Tests temporal reasoning — what changed, what persisted, what's new.
@@ -1098,6 +1177,17 @@ evals:
   - id: video-understanding
     name: Video Understanding
     type: quality
+    spec_refs:
+      - spec:7
+      - spec:8
+      - spec:9
+    story_refs:
+      - "030"
+    category_refs:
+      - spec:7
+      - spec:8
+      - spec:9
+    compromise_refs: []
     description: >
       Director-facing QA of generated scene clips using a clip packet
       (mp4 + sampled frames + transcript/audio metadata). Measures tone,
@@ -1211,6 +1301,24 @@ evals:
   - id: previz-usefulness
     name: Previz Usefulness
     type: quality
+    spec_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:8
+      - spec:10
+    story_refs:
+      - "137"
+      - "143"
+      - "144"
+      - "149"
+    category_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:8
+      - spec:10
+    compromise_refs: []
     description: >
       Compares five scene-level previz candidates on the same fixed fixture pack:
       Story 027's symbolic baseline, Story 137's richer deterministic annotated
@@ -1319,6 +1427,20 @@ evals:
   - id: runtime-media-validation
     name: Runtime Media Validation
     type: quality
+    spec_refs:
+      - spec:7
+      - spec:8
+      - spec:10
+    story_refs:
+      - "140"
+      - "144"
+    category_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:8
+      - spec:10
+    compromise_refs: []
     description: >
       End-to-end runtime validation baseline for generated-video artifacts. Compares
       deterministic-only, AI-only, and hybrid validation on a fixed `generated_video`
@@ -1382,6 +1504,23 @@ evals:
   - id: real-ai-previz-runtime
     name: Real AI Previz Runtime
     type: quality
+    spec_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:10
+    story_refs:
+      - "149"
+      - "150"
+      - "151"
+      - "152"
+      - "153"
+    category_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:10
+    compromise_refs: []
     description: >
       End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane.
       Compares the current shipped `ai_previz_generation` recipe, an explicit
@@ -1535,6 +1674,16 @@ evals:
   - id: entity-discovery
     name: Entity Discovery
     type: quality
+    spec_refs:
+      - spec:3
+      - spec:8
+    story_refs:
+      - "124"
+      - "129"
+    category_refs:
+      - spec:3
+      - spec:8
+    compromise_refs: []
     description: >
       Recall-focused discovery of all named entities (characters, locations, props)
       from a full screenplay in a single pass. Missing an entity is worse than
@@ -1711,6 +1860,14 @@ evals:
   - id: script-bible
     name: Script Bible
     type: quality
+    spec_refs:
+      - spec:2
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:2
+      - spec:8
+    compromise_refs: []
     description: >
       Full script bible extraction from a complete screenplay — logline, synopsis,
       act structure, themes, protagonist journey, genre, tone, setting. Evaluated
@@ -1848,6 +2005,13 @@ evals:
   - id: compromise-C2-qa-validation
     name: "Compromise C2: Dedicated QA Passes"
     type: compromise
+    spec_refs:
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:8
+    compromise_refs:
+      - C2
     compromise_id: "C2"
     description: >
       Can we eliminate dedicated QA validation passes? Gate: 10 diverse
@@ -1867,6 +2031,13 @@ evals:
   - id: compromise-C3-tiered-models
     name: "Compromise C3: Tiered Model Strategy"
     type: compromise
+    spec_refs:
+      - spec:8
+    story_refs: []
+    category_refs:
+      - spec:8
+    compromise_refs:
+      - C3
     compromise_id: "C3"
     description: >
       Can we use a single model for everything? Gate: one model achieves
@@ -1888,6 +2059,13 @@ evals:
   - id: compromise-C4-two-tier-scenes
     name: "Compromise C4: Two-Tier Scene Architecture"
     type: compromise
+    spec_refs:
+      - spec:2
+    story_refs: []
+    category_refs:
+      - spec:2
+    compromise_refs:
+      - C4
     compromise_id: "C4"
     description: >
       Can we do full scene analysis in one pass? Gate: SOTA model returns
@@ -1907,6 +2085,13 @@ evals:
   - id: compromise-C5-role-modality
     name: "Compromise C5: Role Capability Gating (Modality)"
     type: compromise
+    spec_refs:
+      - spec:4
+    story_refs: []
+    category_refs:
+      - spec:4
+    compromise_refs:
+      - C5
     compromise_id: "C5"
     description: >
       Can roles process all modalities? Gate: SOTA model reliably handles
@@ -1924,6 +2109,13 @@ evals:
   - id: compromise-C7-working-memory
     name: "Compromise C7: Working Memory Distinction"
     type: compromise
+    spec_refs:
+      - spec:9
+    story_refs: []
+    category_refs:
+      - spec:9
+    compromise_refs:
+      - C7
     compromise_id: "C7"
     description: >
       Can we eliminate the working memory abstraction? Gate: context windows

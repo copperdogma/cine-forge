@@ -233,7 +233,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 053, 066, 103, 109, 115, 125, 134, 136, 145, 146, 147
+**Stories:** 053, 066, 103, 109, 115, 125, 134, 136, 145, 146, 147, 154
 **ADR Refs:** None found after search
 **Spec:** spec:11 (spec:11.1, spec:11.2, spec:11.3, spec:11.4)
 **Absorbs:** Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)
@@ -269,4 +269,4 @@
 
 ---
 
-*Last generated: 2026-04-08*
+*Last generated: 2026-04-09*

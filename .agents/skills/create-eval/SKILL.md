@@ -6,7 +6,7 @@ user-invocable: true
 
 # /create-eval [eval-id or short description]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
 
 Create a **new eval scaffold**. Baseline eval/golden setup belongs to
 `/setup-methodology`; once that package exists, `/create-eval` is the recurring
@@ -63,7 +63,8 @@ already fits.
 
 5. **Scaffold the registry entry**
    - Add a full entry in `docs/evals/registry.yaml`
-   - Include command, config/script path, target metric, and linkage notes
+   - Include command, config/script path, target metric, and explicit lineage metadata:
+     `spec_refs`, `story_refs`, `category_refs`, and `compromise_refs`
    - If the eval is a compromise gate, make the linked compromise explicit
 
 6. **Scaffold the implementation files**

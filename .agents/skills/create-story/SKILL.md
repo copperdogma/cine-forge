@@ -6,6 +6,8 @@ user-invocable: true
 
 # /create-story [title]
 
+> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current state phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
+
 Create a new story in `docs/stories/` with consistent format. `docs/stories.md`
 is generated from story metadata; do not hand-edit it.
 

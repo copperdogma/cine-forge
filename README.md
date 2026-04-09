@@ -14,7 +14,7 @@ forward immutable artifacts with full provenance.
 ## Repository Layout
 
 - `docs/spec.md`: product specification
-- `docs/stories.md`: story index
+- `docs/stories.md`: generated story index
 - `docs/stories/`: individual story files
 - `src/cine_forge/`: application code
 - `tests/`: unit, integration, smoke tests

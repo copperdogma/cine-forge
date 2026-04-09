@@ -364,7 +364,7 @@ Eval `retry_when` conditions are also detectors, not evergreen invitations. If t
 - `/build-story` owns implementation only. It MUST stop at the implementation handoff, leave the story `In Progress`, summarize the work, and recommend `/validate` as the next step.
 - `/build-story` may promote a buildable `Draft` to `Pending` before implementation starts, and it may mark the story `Blocked` if exploration or implementation proves a real named blocker with evidence.
 - `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean. If the story is not clean, it MUST recommend a single disposition: `Rescope then close`, `Keep open`, or `Mark blocked`. Prefer `Keep open` for remaining work that is still in the same subsystem, validation boundary, and success surface. Use `Rescope then close` only when the remaining work is genuinely separate.
-- `/mark-story-done` is the only skill that may mark a story `Done` or update the story index to `Done`. If the story is incomplete, it MUST still recommend a single disposition (`Rescope then close`, `Keep open`, or `Mark blocked`) instead of stopping at a blocker list, and it should keep same-surface work in the current story by default.
+- `/mark-story-done` is the only skill that may mark a story `Done` and refresh the generated planning surfaces for that status change. If the story is incomplete, it MUST still recommend a single disposition (`Rescope then close`, `Keep open`, or `Mark blocked`) instead of stopping at a blocker list, and it should keep same-surface work in the current story by default.
 - `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
 - `/finish-and-push` is the bundled close-out path when the user explicitly wants story closure plus validated check-in/landing in one request. It MUST run `/mark-story-done` before `/check-in-diff` and may only fix minor close-out issues inline.
 - Commit and push happen only when the user explicitly requests them.
@@ -387,7 +387,7 @@ Runbooks live in `docs/runbooks/`. Create a runbook when a process has 3+ steps,
 **Skill↔runbook rule:** Every runbook should have a corresponding skill. Every skill with 3+ procedural steps should have a runbook. Apply this going forward — don't retroactively create runbooks for existing skills.
 
 Current runbooks:
-- `align.md` — Methodology-graph drift check across Ideal/spec/build map/stories/evals (skill: `/align`)
+- `align.md` — Methodology-graph drift check across Ideal/spec/state/graph/generated dashboards/evals (skill: `/align`)
 - `check-in-worktree-landing.md` — Safe check-in and landing flow for task branches and worktrees (skill: `/check-in-diff`)
 - `codebase-improvement-scout.md` — Repo hygiene scan and cleanup triage flow (skill: `/codebase-improvement-scout`)
 - `create-eval.md` — Scaffold a new eval in the registry and benchmark workspace (skill: `/create-eval`)
