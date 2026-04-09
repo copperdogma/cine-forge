@@ -12,10 +12,12 @@ Execute a development story end-to-end.
 
 ## Phase 1 — Explore (read-only, no file writes)
 
-1. **Resolve story** — Read `docs/stories/story-{NNN}-*.md` (or resolve from the generated story index `docs/stories.md` if id/title/path is ambiguous). Verify status is Draft, Pending, or In Progress.
+1. **Resolve story** — Read `docs/stories/story-{NNN}-*.md` (or resolve from the generated story index `docs/stories.md` if id/title/path is ambiguous). Verify status is Draft, Pending, In Progress, or Blocked.
    - If status is **Draft**, do not stop yet. Continue through the required-section and substrate checks first.
    - If the Draft story is still skeletal, underspecified, or substrate-unverified after those checks, STOP and recommend keeping it `Draft`.
    - If the Draft story is already detailed enough and substrate-verified, record that it should be promoted and continue.
+   - If status is **Blocked**, read `Blocker Summary`, `Blocker Evidence`, `Unblock Condition`, the latest work log, and `## Plan` first. STOP unless the user explicitly asked to reassess the blocker.
+   - When reassessing a blocked story, continue only if there is fresh evidence that the unblock condition is now met. If it is still unmet, rewrite any stale plan text that still reads as "proceed" or "build now" so the story matches blocker truth, then stop and report the line as a health flag.
 
 2. **Verify required sections** — Ensure the story has usable:
    - Goal
@@ -52,6 +54,7 @@ Execute a development story end-to-end.
    - **Larger delta** → do not silently absorb it or silently split it out. Add it to the plan as a recommended scope expansion for user approval.
    - Prefer a follow-up story only when the new work is materially distinct, changes the story goal, adds major blast radius, or would make validation unclear.
    - If exploration proves the story cannot honestly proceed because of a named blocker, record blocker summary, blocker evidence, and unblock condition in the story artifact and plan to mark it `Blocked` instead of pretending it is build-ready.
+   - When a story becomes `Blocked`, clear or rewrite any stale `## Plan` text that still implies immediate implementation. The visible next move should be the unblock condition or reassessment path, not an invalidated build plan.
 
 6. **Record exploration findings** — Write a brief "Exploration Notes" entry in the work log:
    - Files that will change
@@ -112,7 +115,7 @@ Execute a development story end-to-end.
    - For significant UI changes, use browser tools during the build loop when possible in both desktop and mobile views (screenshot + console check), not only at the end
    - Run relevant tests
    - Mark task complete with brief evidence
-   - If implementation or deeper exploration proves a real blocker instead, record it, set the story to `Blocked`, regenerate the graph/index, and stop
+   - If implementation or deeper exploration proves a real blocker instead, record it, set the story to `Blocked`, rewrite stale `## Plan` text around the unblock path, regenerate the graph/index, and stop
 
 13a. **Static verification** — Run the project's full validation suite:
    - Backend: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`
@@ -175,6 +178,7 @@ Entries should be verbose. Capture decisions, failures, solutions, and learnings
 - Never write implementation code before the human gate (step 11) — exploration and planning are read-only
 - Never skip acceptance criteria verification
 - Never claim an approach is "optimal" without repo-specific evidence
+- Never trust or preserve stale blocked-story plan text that contradicts the current blocker evidence
 - Never leave obvious redundant code in place without either removing it or recording a concrete follow-up
 - Never mark a story `Done` from `/build-story` — story closure belongs to `/mark-story-done`
 - Never mark Done if any check fails

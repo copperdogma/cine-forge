@@ -47,7 +47,7 @@ is generated from story metadata; do not hand-edit it.
    - Ideal refs, spec refs, ADR refs, and dependencies
    - Approach evaluation: simplification baseline, candidate approaches (AI-only, hybrid, code), repo constraints, existing patterns to reuse, and what eval distinguishes them
    - Workflow gates for build handoff, validation, and story closure
-   - Canonical blocker fields: `Blocker Summary`, `Blocker Evidence`, and `Unblock Condition`
+   - Canonical blocker fields: `Blocker Summary`, `Blocker Evidence`, and `Unblock Condition`. CineForge's methodology compiler currently reads those body sections directly, so keep them concrete and truthful when the story is `Blocked`.
    - Redundancy targets: old code or docs this story may make obsolete
   - UI verification work if the story touches the UI, including desktop and mobile coverage
    - If the feature is user-facing and requires both backend/API and UI to be usable, keep that end-to-end path in the same story by default. Split only when the scope is genuinely huge and independently deliverable.
@@ -55,6 +55,7 @@ is generated from story metadata; do not hand-edit it.
      - `Draft` when the story is still rough or missing verified substrate
      - `Pending` when the story is concrete and honestly buildable now
      - `Blocked` when the story is concrete enough to preserve and research already proves a real blocker
+     - If the story starts `Blocked`, rewrite `## Plan` around the unblock path or blocker reassessment work. Do not leave stale implementation steps that assume the story can proceed immediately.
 
 4. **Refresh generated planning surfaces** — Run:
 
@@ -88,6 +89,8 @@ is generated from story metadata; do not hand-edit it.
 - If the story touches the UI, include explicit browser verification work in the task list for both desktop and mobile views. Static checks alone are not enough.
 - **End-to-end user feature rule**: If a feature needs backend/API plus UI to be usable by a user, keep them in the SAME story by default. Do not create an "API now, UI later" split for an ordinary feature. Only split backend and UI into separate stories when the scope is genuinely huge (`L`/`XL`), independently valuable, and the dependency boundary is explicit in the story text.
 - **Anti-fragmentation rule**: If the requested work still belongs to the same subsystem, validation boundary, and success surface as an existing story, expand or reopen that story instead of minting a new ID.
+- **Blocked-story truth must stay inspectable**: If a story starts `Blocked`, replace the template `N/A` values in `Blocker Summary`, `Blocker Evidence`, and `Unblock Condition` with concrete blocker truth. Do not hide blocker state only in Notes or the work log.
+- **Blocked-plan honesty**: If a story starts `Blocked`, the visible `## Plan` should describe the unblock path or blocker reassessment work, not stale "proceed now" implementation steps.
 - If the story changes agent tooling or project instructions, include `make skills-check` in the task list.
 - Always include the Workflow Gates section. These are not ordinary implementation tasks; they enforce the handoff chain: `/build-story` summary → `/validate` → `/mark-story-done`.
 - If the story will involve running evals (extraction/pipeline behavior, golden comparison), add a task: "Run `/improve-eval` or equivalent mismatch investigation after the eval — classify all mismatches, fix golden if needed, document verified scores. Re-assess acceptance criteria against verified scores — raw scores do not determine story success."

@@ -78,6 +78,8 @@ legacy_system: ""
 - [ ] Validation complete or explicitly skipped by user
 - [ ] Story marked done via `/mark-story-done`
 
+> If this story is `Blocked`, replace the `N/A` values below with concrete blocker truth and rewrite `## Plan` around the unblock path or blocker reassessment work instead of stale implementation steps.
+
 ## Blocker Summary
 
 N/A
@@ -112,7 +114,8 @@ N/A
 ## Plan
 
 {Written by build-story Phase 2 — per-task file changes, impact analysis, approval blockers,
-definition of done}
+definition of done. If the story is currently `Blocked`, replace stale "proceed now"
+language with the blocker truth and the unblock path instead.}
 
 ## Work Log
 

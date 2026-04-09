@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-04-09-02] — Blocked story lifecycle hardening
+
+### Added
+- Added Scout 019 documenting the Storybook lifecycle delta and the CineForge-specific adaptation to keep blocker truth in the canonical story body sections
+
+### Changed
+- Changed `/create-story`, `/build-story`, and the story template so blocked stories must carry concrete blocker truth and rewrite stale `## Plan` text around the unblock path instead of implying immediate implementation
+
 ## [2026-04-09-01] — Compact previz planning and xAI runtime probe (Story 151)
 
 ### Added
