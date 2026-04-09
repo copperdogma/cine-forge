@@ -45,3 +45,4 @@ Entries:
 2026-04-03T22:55:16Z | 29 | failed | unknown | Remote Fly builder heartbeat failed before image build: failed to parse daemon host "unix:///var/run/docker.sock": missing hostname
 2026-04-03T23:34:26Z | 3 | failed | unknown | Local-only deploy hit Dockerfile parse error at line 30: unknown instruction ")" while parsing the multi-line CUTOFF RUN block
 2026-04-03T23:54:09Z | 186 | success | no | Local-only deploy after remote builder heartbeat failure, Dockerfile parse fix, and Docker builder cache prune; API smoke passed (health/recipes/projects/recent/changelog 200); UI HTTP fallback passed (title OK, bundle 200); browser unavailable in-session
+2026-04-04T20:48:38Z | 168 | success | partial | Remote-builder deploy for Story 044 mobile operator console; health version 2026.04.04-04; API smoke passed (health/recipes/projects/recent/changelog 200); browser UI smoke passed (home + /the-mariner, screenshots captured, no console/page errors)

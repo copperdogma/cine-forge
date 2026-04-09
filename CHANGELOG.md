@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-04-08-03] — Scout 018 audit draft and deploy log carryover
+
+### Added
+- Added the initial Scout 018 Dossier hardening audit record and indexed it from the scout log
+
+### Changed
+- Changed the deploy log to record the successful remote-builder Story 044 deploy smoke pass from 2026-04-04
+
 ## [2026-04-08-02] — Previz provider-floor decision and blocked truth (Story 153)
 
 ### Added
