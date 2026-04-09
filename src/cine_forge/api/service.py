@@ -25,6 +25,7 @@ from cine_forge.pipeline.scene_actions import build_scene_action_preflight
 from cine_forge.roles.runtime import RoleCatalog, RoleContext
 from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
 from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
+from cine_forge.services.style_packs import StylePackService, StylePackServiceError
 
 log = logging.getLogger(__name__)
 
@@ -90,6 +91,7 @@ class OperatorConsoleService:
         )
         self.role_catalog = RoleCatalog()
         self.role_catalog.load_definitions()
+        self._style_pack_service = StylePackService(base_catalog=self.role_catalog)
         self._artifact_mgr = ArtifactManager(
             project_path_resolver=self.require_project_path,
             role_context_factory=self.get_role_context,
@@ -275,6 +277,8 @@ class OperatorConsoleService:
             config_updates["production_format"] = updates["production_format"]
         if "project_budget_limit_usd" in updates:
             config_updates["budget_cap_usd"] = updates["project_budget_limit_usd"]
+        if "style_packs" in updates and updates["style_packs"] is not None:
+            config_updates["style_packs"] = updates["style_packs"]
         if config_updates:
             self._sync_project_settings_to_config(project_id, config_updates)
 
@@ -408,16 +412,15 @@ class OperatorConsoleService:
         """Get a RoleContext for the specified project."""
         project_path = self.require_project_path(project_id)
         store = ArtifactStore(project_dir=project_path)
-        
-        # Load style pack selections from project.json
+
         pj = self._read_project_json(project_path) or {}
-        style_packs = pj.get("style_packs", {})
-        
+        style_packs = self.get_project_style_pack_selections(project_id)
+
         # Determine model resolver (could use project defaults)
         default_model = pj.get("default_model", "claude-sonnet-4-6")
-        
+
         return RoleContext(
-            catalog=self.role_catalog,
+            catalog=self.get_role_catalog(project_id),
             project_dir=project_path,
             store=store,
             model_resolver=lambda _role_id: default_model,
@@ -514,6 +517,7 @@ class OperatorConsoleService:
             "budget_warning_threshold_ratio": (pj or {}).get("budget_warning_threshold_ratio", 0.8),
             "preference_learning_enabled": preference_learning_enabled,
             "preference_learning_cleared_at": (pj or {}).get("preference_learning_cleared_at"),
+            "style_packs": self.get_project_style_pack_selections(project_id),
         }
 
     @staticmethod
@@ -657,6 +661,157 @@ class OperatorConsoleService:
             }
             for r in roles.values()
         ]
+
+    def get_role_catalog(self, project_id: str | None = None) -> RoleCatalog:
+        if project_id is None:
+            return self.role_catalog
+        project_path = self.require_project_path(project_id)
+        return self._style_pack_service.build_project_catalog(project_path)
+
+    def get_project_style_pack_selections(self, project_id: str) -> dict[str, str]:
+        project_path = self.require_project_path(project_id)
+        pj = self._read_project_json(project_path) or {}
+        raw = pj.get("style_packs", {})
+        if not isinstance(raw, dict):
+            return {}
+        selections: dict[str, str] = {}
+        for key, value in raw.items():
+            if isinstance(key, str) and key.strip() and isinstance(value, str) and value.strip():
+                selections[key] = value
+        return selections
+
+    def list_project_style_pack_library(self, project_id: str) -> dict[str, Any]:
+        project_path = self.require_project_path(project_id)
+        try:
+            return self._style_pack_service.list_library(
+                project_path=project_path,
+                style_pack_selections=self.get_project_style_pack_selections(project_id),
+            )
+        except StylePackServiceError as exc:
+            raise ServiceError(
+                code=exc.code,
+                message=exc.message,
+                hint=exc.hint,
+                status_code=exc.status_code,
+            ) from exc
+
+    def generate_style_pack_draft(
+        self,
+        project_id: str,
+        *,
+        role_id: str,
+        subject: str,
+        provider: str,
+    ) -> dict[str, Any]:
+        project_path = self.require_project_path(project_id)
+        try:
+            return self._style_pack_service.generate_draft(
+                project_path=project_path,
+                role_id=role_id,
+                subject=subject,
+                provider=provider,  # type: ignore[arg-type]
+            )
+        except StylePackServiceError as exc:
+            raise ServiceError(
+                code=exc.code,
+                message=exc.message,
+                hint=exc.hint,
+                status_code=exc.status_code,
+            ) from exc
+
+    def build_manual_style_pack_prompt(
+        self,
+        project_id: str,
+        *,
+        role_id: str,
+        subject: str,
+    ) -> dict[str, Any]:
+        self.require_project_path(project_id)
+        try:
+            return self._style_pack_service.build_manual_prompt(
+                role_id=role_id,
+                subject=subject,
+            )
+        except StylePackServiceError as exc:
+            raise ServiceError(
+                code=exc.code,
+                message=exc.message,
+                hint=exc.hint,
+                status_code=exc.status_code,
+            ) from exc
+
+    def import_manual_style_pack_draft(
+        self,
+        project_id: str,
+        *,
+        role_id: str,
+        subject: str,
+        raw_output: str,
+    ) -> dict[str, Any]:
+        self.require_project_path(project_id)
+        try:
+            return self._style_pack_service.import_draft(
+                role_id=role_id,
+                subject=subject,
+                raw_output=raw_output,
+            )
+        except StylePackServiceError as exc:
+            raise ServiceError(
+                code=exc.code,
+                message=exc.message,
+                hint=exc.hint,
+                status_code=exc.status_code,
+            ) from exc
+
+    def save_project_style_pack(
+        self,
+        project_id: str,
+        *,
+        role_id: str,
+        style_pack_id: str,
+        display_name: str,
+        summary: str,
+        prompt_injection: str,
+        style_markdown: str,
+        additional_files: list[dict[str, Any]],
+        assign_to_role: bool,
+    ) -> dict[str, Any]:
+        project_path = self.require_project_path(project_id)
+        try:
+            saved_pack = self._style_pack_service.save_draft(
+                project_path=project_path,
+                role_id=role_id,
+                style_pack_id=style_pack_id,
+                display_name=display_name,
+                summary=summary,
+                prompt_injection=prompt_injection,
+                style_markdown=style_markdown,
+                additional_files=additional_files,
+            )
+        except StylePackServiceError as exc:
+            raise ServiceError(
+                code=exc.code,
+                message=exc.message,
+                hint=exc.hint,
+                status_code=exc.status_code,
+            ) from exc
+
+        project_summary = self.project_summary(project_id)
+        assigned_style_pack_id: str | None = None
+        if assign_to_role:
+            next_selections = dict(self.get_project_style_pack_selections(project_id))
+            next_selections[role_id] = saved_pack["style_pack_id"]
+            project_summary = self.update_project_settings(
+                project_id,
+                {"style_packs": next_selections},
+            )
+            assigned_style_pack_id = saved_pack["style_pack_id"]
+
+        return {
+            "style_pack": saved_pack,
+            "assigned_style_pack_id": assigned_style_pack_id,
+            "project_summary": project_summary,
+        }
 
     def _discover_project_candidates(self) -> dict[str, Path]:
         """Discover all valid project directories (cheap — no project_summary calls)."""
@@ -1072,6 +1227,8 @@ class OperatorConsoleService:
                 merged_request[key] = pj[key]
         if "human_control_mode" not in merged_request and pj.get("human_control_mode"):
             merged_request["human_control_mode"] = pj["human_control_mode"]
+        if "style_packs" not in merged_request and pj.get("style_packs"):
+            merged_request["style_packs"] = pj["style_packs"]
 
         scene_scope = SceneExecutionScope.model_validate(
             merged_request.get("scene_scope") or {}

@@ -170,6 +170,8 @@ For multi-model research tasks, use the `deep-research` CLI tool (v0.3.3+).
   - `deep-research run` expects to be run from within the project directory (where `research-prompt.md` lives).
   - If a report file already exists (even an error file), `run` will prompt to overwrite — delete old files first.
   - `--agents N` flag on `init` controls how many blank agent placeholder files are created.
+  - In deep mode, do not hard-code `ai-agent-01.md`; the filled report filename is provider/model specific (for example `ai-anthropic-deep-research.md`), so resolve the populated report file instead of assuming a single name.
+  - `deep-research run --debug` emits `_debug-run.md` / provider debug JSON with token, latency, and estimated cost metadata. Useful for UI cost surfacing, but treat it as a CLI estimate rather than exact provider billing.
 
 ### Model Benchmarking (promptfoo)
 

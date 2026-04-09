@@ -328,13 +328,24 @@ def build_role_system_prompt(
 def build_system_prompt(
     project_summary: dict[str, Any],
     state_info: dict[str, Any],
+    *,
+    catalog: Any | None = None,
+    style_pack_selections: dict[str, str] | None = None,
 ) -> str:
     """Build assistant system prompt (backward-compat for insight endpoint)."""
     from cine_forge.roles.runtime import RoleCatalog
 
-    catalog = RoleCatalog()
-    catalog.load_definitions()
-    return build_role_system_prompt("assistant", project_summary, state_info, catalog)
+    resolved_catalog = catalog
+    if resolved_catalog is None:
+        resolved_catalog = RoleCatalog()
+        resolved_catalog.load_definitions()
+    return build_role_system_prompt(
+        "assistant",
+        project_summary,
+        state_info,
+        resolved_catalog,
+        style_pack_selections=style_pack_selections,
+    )
 
 
 # ---------------------------------------------------------------------------

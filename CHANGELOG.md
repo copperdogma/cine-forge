@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-09-05] — In-app style pack creation lands (Story 034)
+
+### Added
+- Added a project-local Style Packs workflow in Project Settings for browsing, generating, importing, reviewing, saving, and assigning per-role style packs inside the app
+- Added backend style-pack list/generate/save/manual-import APIs plus project-local pack storage under each project so saved packs immediately affect runtime role behavior
+
+### Changed
+- Changed style-pack generation to run through the existing `deep-research` CLI with provider selection, progress reporting, provider-specific report resolution, and CLI-estimated research cost metadata
+- Changed style-pack draft handling to preserve optional support files, including saved research notes, through review and save
+
+### Fixed
+- Fixed the remaining taste-authoring gap where users had to leave CineForge or edit files manually to create new style packs
+
 ## [2026-04-09-04] — AI-only previz truth and animatic removal (Story 149)
 
 ### Added

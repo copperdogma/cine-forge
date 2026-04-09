@@ -233,13 +233,7 @@
   },
   "roadmap": {
     "active_focus": ["spec:4", "spec:5"],
-    "sequencing_bias": [
-      {
-        "target": "spec:4",
-        "reason": "Story 149 closed the AI-only previz truth correction, Story 153 closed the provider-floor measurement slice, and Story 150 closed the detector substrate. The previz runtime gap remains climb evidence rather than the next stop-ship lane, so Story 034 is again the clearest ready continuation.",
-        "story_refs": ["034"]
-      }
-    ],
+    "sequencing_bias": [],
     "campaigns": [
       {
         "id": "methodology-graph-state-migration",
@@ -257,16 +251,14 @@
   },
   "stories_index": {
     "current_execution_map": {
-      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, and Story 153 closed the provider-floor measurement slice. The previz runtime gap remains climb evidence rather than the next stop-ship lane, so Story 034 is again the clearest ready continuation.",
+      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 034 closed the in-app style-pack creation lane. No story is currently in progress in this execution map.",
       "lanes": [
         {
           "id": "pending-ready",
           "title": "Pending — Ready To Build Now",
           "statuses": ["Pending"],
           "empty_message": "No stories currently fit this lane.",
-          "story_notes": {
-            "034": "Turns existing style-pack infrastructure into an in-app creation workflow."
-          }
+          "story_notes": {}
         },
         {
           "id": "in-progress",

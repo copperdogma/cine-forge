@@ -35,6 +35,81 @@ export type ProjectSummary = {
   budget_warning_threshold_ratio: number
   preference_learning_enabled: boolean
   preference_learning_cleared_at?: string | null
+  style_packs: Record<string, string>
+}
+
+export type StylePackProvider = 'openai' | 'anthropic' | 'google'
+
+export type StylePackProviderOption = {
+  provider: StylePackProvider
+  display_name: string
+  recommended: boolean
+}
+
+export type StylePackDraftFile = {
+  kind: 'description' | 'reference_image' | 'frame_grab' | 'palette' | 'notes' | 'audio_reference'
+  path: string
+  caption?: string | null
+  content: string
+}
+
+export type StylePackResearchCost = {
+  model: string
+  total_tokens: number
+  estimated_cost_usd?: number | null
+  latency_seconds?: number | null
+  request_id?: string | null
+  attribution: 'deep_research_cli_estimate' | 'provider_unavailable'
+  note?: string | null
+}
+
+export type StylePackLibraryItem = {
+  role_id: string
+  style_pack_id: string
+  display_name: string
+  summary: string
+  source: 'built_in' | 'project'
+}
+
+export type RoleStylePackLibrary = {
+  role_id: string
+  display_name: string
+  can_generate: boolean
+  selected_style_pack_id?: string | null
+  style_packs: StylePackLibraryItem[]
+}
+
+export type StylePackLibraryResponse = {
+  roles: RoleStylePackLibrary[]
+  providers: StylePackProviderOption[]
+}
+
+export type StylePackManualPromptResponse = {
+  role_id: string
+  role_display_name: string
+  subject: string
+  prompt: string
+}
+
+export type StylePackDraft = {
+  generation_mode: 'deep_research' | 'manual_import'
+  role_id: string
+  role_display_name: string
+  provider?: StylePackProvider | null
+  subject: string
+  style_pack_id: string
+  display_name: string
+  summary: string
+  prompt_injection: string
+  style_markdown: string
+  additional_files: StylePackDraftFile[]
+  research_cost?: StylePackResearchCost | null
+}
+
+export type StylePackSaveResponse = {
+  style_pack: StylePackLibraryItem
+  assigned_style_pack_id?: string | null
+  project_summary: ProjectSummary
 }
 
 export type PreferenceSignalPolarity = 'positive' | 'negative' | 'directional' | 'neutral'

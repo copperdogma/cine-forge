@@ -72,6 +72,7 @@ export function updateProjectSettings(
     budget_warning_threshold_ratio?: number | null
     preference_learning_enabled?: boolean
     preference_learning_cleared_at?: string | null
+    style_packs?: Record<string, string>
     ui_preferences?: Record<string, string>
   },
 ): Promise<ProjectSummary> {

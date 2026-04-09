@@ -54,6 +54,7 @@ from cine_forge.api.routers import (
     preferences,
     previz,
     scene_actions,
+    style_packs,
 )
 from cine_forge.api.service import OperatorConsoleService
 
@@ -101,6 +102,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     preferences.set_service(service)
     previz.set_service(service)
     scene_actions.set_service(service)
+    style_packs.set_service(service)
     app.include_router(assets.router, prefix="/api")
     app.include_router(costs.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
@@ -111,6 +113,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app.include_router(preferences.router, prefix="/api")
     app.include_router(previz.router, prefix="/api")
     app.include_router(scene_actions.router, prefix="/api")
+    app.include_router(style_packs.router, prefix="/api")
 
     app.add_middleware(
         CORSMiddleware,
@@ -511,8 +514,6 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             resolve_target_roles,
             stream_group_chat,
         )
-        from cine_forge.roles.runtime import RoleCatalog
-
         log = logging.getLogger("cine_forge.api.chat")
 
         # Assemble minimal context
@@ -531,9 +532,8 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
         state_info = compute_project_state(summary, groups, runs)
 
-        # Load role catalog for routing and prompt building
-        catalog = RoleCatalog()
-        catalog.load_definitions()
+        # Load a project-aware role catalog for routing and prompt building
+        catalog = service.get_role_catalog(project_id)
 
         # Build character handle list from bible_manifest artifacts
         character_ids = [
@@ -560,12 +560,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             )
 
         # Read style pack selections from project.json
-        try:
-            project_path = service.require_project_path(project_id)
-            pj = service._read_project_json(project_path) or {}
-            style_packs = pj.get("style_packs", {})
-        except Exception:
-            style_packs = {}
+        style_packs = service.get_project_style_pack_selections(project_id)
 
         # Build messages array — full conversation thread
         # Activity notes are mapped to user role with [Activity] prefix
@@ -670,7 +665,14 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
 
         state_info = compute_project_state(summary, groups, runs)
 
-        system_prompt = build_system_prompt(summary, state_info)
+        catalog = service.get_role_catalog(project_id)
+        style_pack_selections = service.get_project_style_pack_selections(project_id)
+        system_prompt = build_system_prompt(
+            summary,
+            state_info,
+            catalog=catalog,
+            style_pack_selections=style_pack_selections,
+        )
 
         # Build the insight prompt based on trigger
         insight_prompt = build_insight_prompt(request.trigger, request.context)

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Settings, Cpu, Workflow, Fingerprint, Palette } from "lucide-react"
+import { Settings, Cpu, Workflow, Fingerprint, Palette, Sparkles } from "lucide-react"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -33,6 +33,7 @@ import {
 } from "@/components/ProjectBudgetSettingsSection"
 import { ProjectPreferenceLearningSection } from "@/components/ProjectPreferenceLearningSection"
 import { ProjectAppearanceSection } from "@/components/ProjectAppearanceSection"
+import { ProjectStylePacksSection } from "@/components/ProjectStylePacksSection"
 import { updateProjectSettings } from "@/lib/api"
 import type { ProjectSummary } from "@/lib/types"
 import {
@@ -245,6 +246,10 @@ export function ProjectSettings({
               <Palette className="size-4" />
               Appearance
             </TabsTrigger>
+            <TabsTrigger value="style-packs">
+              <Sparkles className="size-4" />
+              Style Packs
+            </TabsTrigger>
             <TabsTrigger value="pipeline">
               <Workflow className="size-4" />
               Pipeline
@@ -439,6 +444,10 @@ export function ProjectSettings({
 
           <TabsContent value="appearance" className="space-y-4 mt-4">
             <ProjectAppearanceSection projectId={projectId} project={project} />
+          </TabsContent>
+
+          <TabsContent value="style-packs" className="space-y-4 mt-4">
+            <ProjectStylePacksSection projectId={projectId} project={project} />
           </TabsContent>
 
           {/* Pipeline Tab */}

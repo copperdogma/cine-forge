@@ -199,7 +199,7 @@ class DriverEngine:
         run_state["project_cost_baseline_usd"] = budget_guard.project_cost_baseline_usd
 
         # Initialize role system for gating and creative feedback
-        role_catalog = RoleCatalog()
+        role_catalog = RoleCatalog(style_pack_roots=[self.project_dir / "style_packs"])
         role_catalog.load_definitions()
         # Resolve style packs from recipe or project if available
         style_packs = resolved_runtime_params.get("style_packs", {})

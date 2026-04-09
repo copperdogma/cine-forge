@@ -73,8 +73,18 @@ class RoleRuntimeError(RuntimeError):
 class RoleCatalog:
     """Load role definitions and style packs from disk."""
 
-    def __init__(self, root: Path | None = None) -> None:
+    def __init__(
+        self,
+        root: Path | None = None,
+        *,
+        style_pack_roots: list[Path] | None = None,
+    ) -> None:
         self.root = root or Path(__file__).resolve().parent
+        built_in_style_root = self.root / "style_packs"
+        ordered_roots = list(style_pack_roots or [])
+        if built_in_style_root not in ordered_roots:
+            ordered_roots.append(built_in_style_root)
+        self.style_pack_roots = ordered_roots
         self._roles: dict[str, RoleDefinition] = {}
 
     def load_definitions(self) -> dict[str, RoleDefinition]:
@@ -144,50 +154,55 @@ class RoleCatalog:
         if role.style_pack_slot == StylePackSlot.FORBIDDEN:
             raise RoleRuntimeError(f"Role '{role_id}' does not accept style packs")
 
-        manifest_path = (
-            self.root
-            / "style_packs"
-            / role_id
-            / style_pack_id
-            / "manifest.yaml"
+        searched_paths: list[Path] = []
+        for style_root in self.style_pack_roots:
+            manifest_path = style_root / role_id / style_pack_id / "manifest.yaml"
+            searched_paths.append(manifest_path)
+            if not manifest_path.exists():
+                continue
+            payload = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                raise RoleRuntimeError(f"Invalid style pack manifest: {manifest_path}")
+            style_pack = StylePack.model_validate(payload)
+            if style_pack.role_id != role_id:
+                raise RoleRuntimeError(
+                    f"Style pack role mismatch for '{manifest_path}': expected {role_id}"
+                )
+            return style_pack
+
+        searched = ", ".join(str(path) for path in searched_paths)
+        raise RoleRuntimeError(
+            f"Missing style pack manifest for '{role_id}/{style_pack_id}': {searched}"
         )
-        if not manifest_path.exists():
-            raise RoleRuntimeError(f"Missing style pack manifest: {manifest_path}")
-        payload = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
-        if not isinstance(payload, dict):
-            raise RoleRuntimeError(f"Invalid style pack manifest: {manifest_path}")
-        style_pack = StylePack.model_validate(payload)
-        if style_pack.role_id != role_id:
-            raise RoleRuntimeError(
-                f"Style pack role mismatch for '{manifest_path}': expected {role_id}"
-            )
-        return style_pack
 
     def list_style_packs(self, role_id: str) -> list[StylePack]:
         role = self.get_role(role_id)
         if role.style_pack_slot == StylePackSlot.FORBIDDEN:
             return []
 
-        style_dir = self.root / "style_packs" / role_id
-        if not style_dir.exists():
-            return []
-
-        style_packs: list[StylePack] = []
-        for pack_dir in style_dir.iterdir():
-            if not pack_dir.is_dir():
+        style_packs_by_id: dict[str, StylePack] = {}
+        for style_root in self.style_pack_roots:
+            style_dir = style_root / role_id
+            if not style_dir.exists():
                 continue
-            manifest_path = pack_dir / "manifest.yaml"
-            if not manifest_path.exists():
-                continue
-            try:
-                payload = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
-                style_pack = StylePack.model_validate(payload)
-                if style_pack.role_id == role_id:
-                    style_packs.append(style_pack)
-            except Exception:
-                # Skip invalid manifests during listing to be robust
-                continue
-        return sorted(style_packs, key=lambda p: p.style_pack_id)
+            for pack_dir in style_dir.iterdir():
+                if not pack_dir.is_dir():
+                    continue
+                manifest_path = pack_dir / "manifest.yaml"
+                if not manifest_path.exists():
+                    continue
+                try:
+                    payload = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+                    style_pack = StylePack.model_validate(payload)
+                    if (
+                        style_pack.role_id == role_id
+                        and style_pack.style_pack_id not in style_packs_by_id
+                    ):
+                        style_packs_by_id[style_pack.style_pack_id] = style_pack
+                except Exception:
+                    # Skip invalid manifests during listing to be robust
+                    continue
+        return sorted(style_packs_by_id.values(), key=lambda p: p.style_pack_id)
 
 
 class RoleContext:

@@ -56,6 +56,7 @@ class ProjectSummary(BaseModel):
     budget_warning_threshold_ratio: float = Field(default=0.8, ge=0.0, le=1.0)
     preference_learning_enabled: bool = True
     preference_learning_cleared_at: str | None = None
+    style_packs: dict[str, str] = Field(default_factory=dict)
 
 
 class RecentProjectSummary(ProjectSummary):
@@ -335,6 +336,139 @@ class ProjectSettingsUpdate(BaseModel):
     preference_learning_cleared_at: str | None = None
     style_packs: dict[str, str] | None = None
     ui_preferences: dict[str, Any] | None = None
+
+
+class StylePackProviderOption(BaseModel):
+    """One available provider for style-pack draft generation."""
+
+    provider: Literal["openai", "anthropic", "google"]
+    display_name: str
+    recommended: bool = False
+
+
+class StylePackDraftFile(BaseModel):
+    """One draft file that can be reviewed before saving a style pack."""
+
+    kind: Literal[
+        "description",
+        "reference_image",
+        "frame_grab",
+        "palette",
+        "notes",
+        "audio_reference",
+    ]
+    path: str = Field(min_length=1)
+    caption: str | None = None
+    content: str = Field(min_length=1)
+
+
+class StylePackResearchCost(BaseModel):
+    """Reported or estimated research-call cost metadata for a generated draft."""
+
+    model: str = Field(min_length=1)
+    total_tokens: int = Field(ge=0)
+    estimated_cost_usd: float | None = Field(default=None, ge=0.0)
+    latency_seconds: float | None = Field(default=None, ge=0.0)
+    request_id: str | None = None
+    attribution: Literal["deep_research_cli_estimate", "provider_unavailable"]
+    note: str | None = None
+
+
+class StylePackLibraryItem(BaseModel):
+    """One style-pack option available to a specific role."""
+
+    role_id: str
+    style_pack_id: str
+    display_name: str
+    summary: str
+    source: Literal["built_in", "project"]
+
+
+class RoleStylePackLibrary(BaseModel):
+    """Style-pack catalog entry for one role."""
+
+    role_id: str
+    display_name: str
+    can_generate: bool = False
+    selected_style_pack_id: str | None = None
+    style_packs: list[StylePackLibraryItem] = Field(default_factory=list)
+
+
+class StylePackLibraryResponse(BaseModel):
+    """Project-local plus built-in style-pack library response."""
+
+    roles: list[RoleStylePackLibrary] = Field(default_factory=list)
+    providers: list[StylePackProviderOption] = Field(default_factory=list)
+
+
+class StylePackGenerateRequest(BaseModel):
+    """Request payload for draft generation via deep-research."""
+
+    role_id: str = Field(min_length=1)
+    subject: str = Field(min_length=2)
+    provider: Literal["openai", "anthropic", "google"] = "openai"
+
+
+class StylePackManualPromptRequest(BaseModel):
+    """Request payload for rendering a manual style-pack creation prompt."""
+
+    role_id: str = Field(min_length=1)
+    subject: str = Field(min_length=2)
+
+
+class StylePackManualPromptResponse(BaseModel):
+    """Rendered creation prompt for external/manual style-pack generation."""
+
+    role_id: str
+    role_display_name: str
+    subject: str
+    prompt: str = Field(min_length=20)
+
+
+class StylePackManualImportRequest(BaseModel):
+    """Request payload for parsing pasted external-model output into a draft."""
+
+    role_id: str = Field(min_length=1)
+    subject: str = Field(min_length=2)
+    raw_output: str = Field(min_length=20)
+
+
+class StylePackDraftResponse(BaseModel):
+    """Generated style-pack draft returned for user review/edit."""
+
+    generation_mode: Literal["deep_research", "manual_import"] = "deep_research"
+    role_id: str
+    role_display_name: str
+    provider: Literal["openai", "anthropic", "google"] | None = None
+    subject: str
+    style_pack_id: str = Field(min_length=1)
+    display_name: str = Field(min_length=2)
+    summary: str = Field(min_length=8)
+    prompt_injection: str = Field(min_length=8)
+    style_markdown: str = Field(min_length=20)
+    additional_files: list[StylePackDraftFile] = Field(default_factory=list)
+    research_cost: StylePackResearchCost | None = None
+
+
+class StylePackSaveRequest(BaseModel):
+    """Request payload for saving a reviewed style-pack draft."""
+
+    role_id: str = Field(min_length=1)
+    style_pack_id: str = Field(min_length=1)
+    display_name: str = Field(min_length=2)
+    summary: str = Field(min_length=8)
+    prompt_injection: str = Field(min_length=8)
+    style_markdown: str = Field(min_length=20)
+    additional_files: list[StylePackDraftFile] = Field(default_factory=list)
+    assign_to_role: bool = False
+
+
+class StylePackSaveResponse(BaseModel):
+    """Save result plus the refreshed project summary."""
+
+    style_pack: StylePackLibraryItem
+    assigned_style_pack_id: str | None = None
+    project_summary: ProjectSummary
 
 
 class ResumeRunRequest(BaseModel):

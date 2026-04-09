@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+import yaml
 
 from cine_forge.roles import RoleCatalog, RoleContext, RoleRuntimeError
 
@@ -87,3 +88,39 @@ def test_role_context_injects_prompt(real_catalog: RoleCatalog, tmp_path: Path) 
     # Verify Tarantino-specific keywords from the style pack are in the final prompt
     assert "Tarantino" in captured_prompt
     assert "non-linear" in captured_prompt
+
+
+@pytest.mark.unit
+def test_project_local_style_pack_overrides_builtin_pack(tmp_path: Path) -> None:
+    project_style_dir = tmp_path / "project" / "style_packs" / "director" / "generic"
+    project_style_dir.mkdir(parents=True)
+    (project_style_dir / "style.md").write_text(
+        "# Project Director Style\n\nFavor dream logic over baseline pragmatism.\n",
+        encoding="utf-8",
+    )
+    (project_style_dir / "manifest.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "style_pack_id": "generic",
+                "role_id": "director",
+                "display_name": "Project Director",
+                "summary": "Project-local override for the default director voice.",
+                "prompt_injection": (
+                    "Favor dream logic, elastic pacing, and subjective transitions."
+                ),
+                "files": [{"kind": "description", "path": "style.md"}],
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+
+    catalog = RoleCatalog(style_pack_roots=[tmp_path / "project" / "style_packs"])
+    catalog.load_definitions()
+
+    pack = catalog.load_style_pack("director", "generic")
+    assert pack.display_name == "Project Director"
+    assert "dream logic" in pack.prompt_injection
+
+    listed_ids = [item.style_pack_id for item in catalog.list_style_packs("director")]
+    assert listed_ids.count("generic") == 1

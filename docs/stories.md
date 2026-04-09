@@ -18,13 +18,11 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, and Story 153 closed the provider-floor measurement slice. The previz runtime gap remains climb evidence rather than the next stop-ship lane, so Story 034 is again the clearest ready continuation.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 034 closed the in-app style-pack creation lane. No story is currently in progress in this execution map.
 
 ### Pending — Ready To Build Now
 
-| Story | Why |
-|---|---|
-| **034** In-App Style Pack Creator | Turns existing style-pack infrastructure into an in-app creation workflow. |
+No stories currently fit this lane.
 
 ### In Progress
 
@@ -97,7 +95,6 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:4`, `spec:5`
-- Sequencing bias: `spec:4` (stories: 034) — Story 149 closed the AI-only previz truth correction, Story 153 closed the provider-floor measurement slice, and Story 150 closed the detector substrate. The previz runtime gap remains climb evidence rather than the next stop-ship lane, so Story 034 is again the clearest ready continuation.
 
 ## Story Index
 
@@ -180,7 +177,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 034 | In-App Style Pack Creator | Unknown | Pending | — | spec:4 | 011b, 016 | [story-034](stories/story-034-style-pack-creator.md) |
 | 100 | Motif Tracking System | Unknown | Draft | — | spec:4 | 008, 009, 011, 094 | [story-100](stories/story-100-motif-tracking.md) |
 | 023 | Character & Performance — Performance Direction | Unknown | Deferred | — | spec:4 | 005, 008, 010, 011 | [story-023](stories/story-023-actor-agents.md) |
 | 082 | Creative Direction UX | High | Done | — | spec:4, spec:5 | — | [story-082](stories/story-082-creative-direction-ux.md) |
@@ -198,6 +194,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 021 | Look & Feel — Visual Direction | Unknown | Done | — | spec:4 | 008, 009, 011, 014, 015 | [story-021](stories/story-021-visual-architect.md) |
 | 022 | Sound & Music — Sound Direction | Unknown | Done | — | spec:4 | 005, 014, 015 | [story-022](stories/story-022-sound-designer.md) |
 | 033 | Memory Model and Transcript Retention | Unknown | Done | — | spec:4, spec:9 | 014, 018 | [story-033](stories/story-033-memory-model.md) |
+| 034 | In-App Style Pack Creator | Unknown | Done | — | spec:4 | 011b, 016 | [story-034](stories/story-034-style-pack-creator.md) |
 | 094 | Concern Group Artifact Schemas | Unknown | Done | — | spec:4 | 002 | [story-094](stories/story-094-concern-group-schemas.md) |
 | 095 | Intent / Mood Layer | Unknown | Done | — | spec:4 | 014, 094 | [story-095](stories/story-095-intent-mood-layer.md) |
 | 097 | AI Artifact Editing | Unknown | Done | — | spec:1, spec:4, spec:5 | 014, 019, 031, 083 | [story-097](stories/story-097-ai-artifact-editing.md) |
