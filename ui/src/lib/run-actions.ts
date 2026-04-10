@@ -6,6 +6,7 @@ interface StartTrackedRunOptions {
   projectId: string
   payload: RunStartPayload
   actionLabel: string
+  resolvedMessageId?: string
   startRun: (payload: RunStartPayload) => Promise<{ run_id: string }>
 }
 
@@ -13,6 +14,7 @@ export async function startTrackedRun({
   projectId,
   payload,
   actionLabel,
+  resolvedMessageId,
   startRun,
 }: StartTrackedRunOptions): Promise<{ run_id: string }> {
   const store = useChatStore.getState()
@@ -22,6 +24,7 @@ export async function startTrackedRun({
     type: 'user_action',
     content: actionLabel,
     timestamp: Date.now(),
+    resolvedMessageId,
   })
 
   const result = await startRun(payload)

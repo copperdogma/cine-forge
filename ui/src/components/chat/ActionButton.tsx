@@ -153,6 +153,7 @@ export function ActionButton({
         await startTrackedRun({
           projectId,
           actionLabel: action.label,
+          resolvedMessageId: messageId,
           startRun: startRun.mutateAsync,
           payload: {
             project_id: projectId,

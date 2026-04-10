@@ -13,6 +13,7 @@ import {
   Users,
   Volume2,
 } from 'lucide-react'
+import { CHAT_RUN_ACTION_IDS } from '@/lib/chat-action-state'
 import type { InteractionMode } from '@/lib/types'
 
 export type RoleDisplayConfig = {
@@ -128,10 +129,7 @@ export function friendlyToolName(rawName: string): string {
   return TOOL_DISPLAY_NAMES[rawName] ?? rawName.replace(/_/g, ' ')
 }
 
-export const RUN_ACTION_IDS: Record<string, string> = {
-  start_analysis: 'mvp_ingest',
-  go_deeper: 'world_building',
-}
+export const RUN_ACTION_IDS: Record<string, string> = CHAT_RUN_ACTION_IDS
 
 export const SECTION_ICONS: Record<string, ElementType> = {
   characters: Users,

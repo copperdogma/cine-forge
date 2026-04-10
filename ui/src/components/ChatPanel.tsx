@@ -5,13 +5,14 @@ import { Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { postChatMessage, streamChatMessage } from '@/lib/api'
+import { getChatActionPresentation } from '@/lib/chat-action-state'
 import { useChatStore } from '@/lib/chat-store'
 import {
   CHAT_INTENT_EVENT,
   consumePendingChatIntent,
   type ChatIntent,
 } from '@/lib/chat-intents'
-import { useProjectCharacters, useProjectInputs, useStartRun } from '@/lib/hooks'
+import { useProjectCharacters, useProjectInputs, useProjectState, useStartRun } from '@/lib/hooks'
 import { useRightPanel } from '@/lib/right-panel'
 import type { ChatMessage } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -52,6 +53,7 @@ export function ChatPanel() {
   const startRun = useStartRun()
   const { data: inputs } = useProjectInputs(projectId)
   const { data: characters } = useProjectCharacters(projectId)
+  const projectState = useProjectState(projectId)
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
   const [inputText, setInputText] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
@@ -356,6 +358,13 @@ export function ChatPanel() {
             </div>
           ) : (
             messages.map((message, index) => {
+              const { actions: visibleActions, archivedActionLabels } = getChatActionPresentation(
+                message.actions,
+                projectState,
+              )
+              const displayMessage = visibleActions === message.actions
+                ? message
+                : { ...message, actions: visibleActions }
               const actionTaken = !!(
                 message.needsAction
                 && messages.slice(index + 1).some(
@@ -367,7 +376,8 @@ export function ChatPanel() {
               return (
                 <ChatMessageItem
                   key={message.id}
-                  message={message}
+                  message={displayMessage}
+                  archivedActionLabels={archivedActionLabels}
                   projectId={projectId ?? ''}
                   actionTaken={actionTaken}
                   startRun={startRun}

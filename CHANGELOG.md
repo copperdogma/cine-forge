@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-04-10-09] — Archive stale chat CTA paths (Story 157)
+
+### Added
+- Added a small shared chat-action truth helper and a focused Playwright smoke
+  script so completed-path CTA honesty is checked deterministically on the
+  canonical `open-frequency` project
+
+### Changed
+- Changed the shared chat render path to archive obsolete completed-path run
+  actions instead of presenting them as live next steps once the project state
+  has moved on
+- Changed tracked chat-launched runs to record `resolvedMessageId` so clicked
+  suggestions no longer remain visually unresolved in the journal
+
+### Fixed
+- Fixed stale `Break Down Script` / `Deep Breakdown` chat buttons continuing to
+  advertise completed paths on Home and scene routes after ingest and
+  world-building were already complete
+
 ## [2026-04-10-08] — Harden skill sync wrapper checks
 
 ### Changed

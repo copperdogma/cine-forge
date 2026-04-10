@@ -67,6 +67,7 @@ function MessageIcon({ type, speaker }: { type: ChatMessage['type']; speaker?: s
 
 type ChatMessageItemProps = {
   message: ChatMessage
+  archivedActionLabels?: string[]
   projectId: string
   actionTaken: boolean
   startRun: StartRunAction
@@ -74,8 +75,22 @@ type ChatMessageItemProps = {
   onRetry?: (text: string) => void
 }
 
+function ArchivedActionsNotice({ labels }: { labels: string[] }) {
+  if (labels.length === 0) return null
+
+  return (
+    <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/70">
+      <CheckCircle2 className="h-3 w-3 shrink-0" />
+      <span>
+        {labels.length === 1 ? 'Completed path archived:' : 'Completed paths archived:'} {labels.join(', ')}
+      </span>
+    </div>
+  )
+}
+
 export function ChatMessageItem({
   message,
+  archivedActionLabels = [],
   projectId,
   actionTaken,
   startRun,
@@ -211,6 +226,7 @@ export function ChatMessageItem({
               ))}
             </div>
           )}
+          <ArchivedActionsNotice labels={archivedActionLabels} />
         </div>
       </div>
     )
@@ -264,6 +280,7 @@ export function ChatMessageItem({
             ))}
           </div>
         )}
+        <ArchivedActionsNotice labels={archivedActionLabels} />
       </div>
     </div>
   )

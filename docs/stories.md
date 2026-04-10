@@ -206,7 +206,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 157 | Chat Suggestions Stop Advertising Completed Paths | Medium | Draft | — | spec:5 | — | [story-157](stories/story-157-chat-suggestions-stop-advertising-completed-paths.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |
@@ -238,6 +237,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 110 | Improve Search: Fuzzy Matching + Scene Shorthand | Medium | Done | — | spec:5 | — | [story-110](stories/story-110-search-scenes-fuzzy.md) |
 | 111 | Fix \"View In Script\" Scroll-to-Scene | Medium | Done | — | spec:5 | — | [story-111](stories/story-111-scene-script-jump.md) |
 | 156 | Full-Pipeline UI Acceptance Walkthrough | Medium | Done | — | spec:5, spec:11 | — | [story-156](stories/story-156-full-pipeline-ui-acceptance-walkthrough.md) |
+| 157 | Chat Suggestions Stop Advertising Completed Paths | Medium | Done | — | spec:5 | — | [story-157](stories/story-157-chat-suggestions-stop-advertising-completed-paths.md) |
 | 089 | Interaction Mode Selection | Low | Done | — | spec:5 | 085 | [story-089](stories/story-089-interaction-mode-selection.md) |
 | 001 | Project Setup and Scaffolding | Unknown | Done | — | spec:1, spec:5, spec:8 | — | [story-001](stories/story-001-project-setup.md) |
 | 002 | Pipeline Foundation (Driver, Artifact Store, Schemas) | Unknown | Done | — | spec:1, spec:5, spec:8 | 001 | [story-002](stories/story-002-pipeline-foundation.md) |
