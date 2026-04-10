@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import shutil
 import sys
 import time
@@ -10,7 +9,7 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError, sync_playwright
 
 DEFAULT_API_BASE = "http://127.0.0.1:8000/api"
 DEFAULT_UI_BASE = "http://127.0.0.1:5188"
@@ -122,7 +121,7 @@ def ensure_scene_character_performance(
 
 
 def tab_locator(page: Page, label: str):
-    return page.get_by_role("tab", name=re.compile(re.escape(label)))
+    return page.locator('[role="tab"]').filter(has_text=label).first
 
 
 def tab_dot_class(page: Page, label: str) -> str:
@@ -151,6 +150,19 @@ def click_tab(page: Page, label: str) -> None:
 
 def click_review_button(page: Page, label: str) -> None:
     page.get_by_role("button", name=label).click()
+
+
+def wait_for_workspace_ready(page: Page, label: str) -> None:
+    try:
+        page.wait_for_load_state("networkidle", timeout=10_000)
+    except PlaywrightTimeoutError:
+        pass
+    start = time.time()
+    while time.time() - start < 30:
+        if tab_locator(page, label).count():
+            return
+        time.sleep(0.2)
+    raise AssertionError(f"Tab {label!r} did not render")
 
 
 def assert_readiness(
@@ -190,7 +202,21 @@ def record_browser_errors(
     )
 
 
-def run_smoke(
+def open_representative_project(
+    *,
+    api_base: str,
+    source_project: Path,
+    project_copy: Path,
+    scene_id: str,
+) -> str:
+    prepare_project_copy(source_project, project_copy)
+    project = api_request(api_base, "POST", "/projects/open", {"project_path": str(project_copy)})
+    project_id = project["project_id"]
+    ensure_scene_character_performance(api_base, project_id, scene_id)
+    return project_id
+
+
+def run_desktop_smoke(
     *,
     api_base: str,
     ui_base: str,
@@ -199,14 +225,14 @@ def run_smoke(
     project_copy_name: str,
     scene_id: str,
     desktop_shot: Path,
-    mobile_shot: Path,
 ) -> None:
     project_copy = project_copy_root / project_copy_name
-    prepare_project_copy(source_project, project_copy)
-    project = api_request(api_base, "POST", "/projects/open", {"project_path": str(project_copy)})
-    project_id = project["project_id"]
-
-    ensure_scene_character_performance(api_base, project_id, scene_id)
+    project_id = open_representative_project(
+        api_base=api_base,
+        source_project=source_project,
+        project_copy=project_copy,
+        scene_id=scene_id,
+    )
 
     assert_readiness(
         api_base,
@@ -232,7 +258,7 @@ def run_smoke(
         desktop_page = desktop.new_page()
         record_browser_errors(desktop_page, console_errors, page_errors, response_errors, "desktop")
         desktop_page.goto(f"{ui_base}/{project_id}/scenes/{scene_id}")
-        desktop_page.wait_for_load_state("networkidle")
+        wait_for_workspace_ready(desktop_page, "Look & Feel")
 
         desktop_page.locator("text=Historical run details are unavailable.").first.wait_for(
             timeout=10_000
@@ -301,19 +327,7 @@ def run_smoke(
             },
         )
         desktop_page.screenshot(path=str(desktop_shot), full_page=True)
-
-        mobile = browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True)
-        mobile_page = mobile.new_page()
-        record_browser_errors(mobile_page, console_errors, page_errors, response_errors, "mobile")
-        mobile_page.goto(f"{ui_base}/{project_id}/scenes/{scene_id}?tab=story_world")
-        mobile_page.wait_for_load_state("networkidle")
-        wait_for_dot(mobile_page, "Story World", "bg-emerald-500")
-        click_tab(mobile_page, "Performance")
-        wait_for_dot(mobile_page, "Performance", "bg-emerald-500")
-        mobile_page.screenshot(path=str(mobile_shot), full_page=True)
-
         desktop.close()
-        mobile.close()
         browser.close()
 
     if console_errors or page_errors or response_errors:
@@ -323,6 +337,63 @@ def run_smoke(
         raise AssertionError("Browser/runtime errors detected")
 
     print(f"Desktop screenshot: {desktop_shot}")
+
+
+def run_mobile_smoke(
+    *,
+    api_base: str,
+    ui_base: str,
+    source_project: Path,
+    project_copy_root: Path,
+    project_copy_name: str,
+    scene_id: str,
+    mobile_shot: Path,
+) -> None:
+    project_copy = project_copy_root / f"{project_copy_name}-mobile"
+    project_id = open_representative_project(
+        api_base=api_base,
+        source_project=source_project,
+        project_copy=project_copy,
+        scene_id=scene_id,
+    )
+
+    assert_readiness(
+        api_base,
+        project_id,
+        scene_id,
+        {
+            "look_and_feel": "yellow",
+            "sound_and_music": "yellow",
+            "rhythm_and_flow": "yellow",
+            "character_and_performance": "yellow",
+            "story_world": "yellow",
+        },
+    )
+
+    console_errors: list[str] = []
+    page_errors: list[str] = []
+    response_errors: list[str] = []
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        mobile = browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True)
+        mobile_page = mobile.new_page()
+        record_browser_errors(mobile_page, console_errors, page_errors, response_errors, "mobile")
+        mobile_page.goto(f"{ui_base}/{project_id}/scenes/{scene_id}?tab=story_world")
+        wait_for_workspace_ready(mobile_page, "Story World")
+        wait_for_dot(mobile_page, "Story World", "bg-yellow-400")
+        click_tab(mobile_page, "Performance")
+        wait_for_dot(mobile_page, "Performance", "bg-yellow-400")
+        mobile_page.screenshot(path=str(mobile_shot), full_page=True)
+        mobile.close()
+        browser.close()
+
+    if console_errors or page_errors or response_errors:
+        print("console_errors=", json.dumps(console_errors, indent=2))
+        print("page_errors=", json.dumps(page_errors, indent=2))
+        print("response_errors=", json.dumps(response_errors, indent=2))
+        raise AssertionError("Browser/runtime errors detected")
+
     print(f"Mobile screenshot: {mobile_shot}")
 
 
@@ -339,6 +410,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source-project", type=Path, default=DEFAULT_SOURCE_PROJECT)
     parser.add_argument("--project-copy-root", type=Path, default=DEFAULT_PROJECT_COPY_ROOT)
     parser.add_argument("--project-copy-name", default=DEFAULT_PROJECT_COPY_NAME)
+    parser.add_argument("--mode", choices=("desktop", "mobile", "both"), default="both")
     parser.add_argument("--desktop-shot", type=Path, default=DEFAULT_DESKTOP_SHOT)
     parser.add_argument("--mobile-shot", type=Path, default=DEFAULT_MOBILE_SHOT)
     return parser.parse_args()
@@ -346,16 +418,26 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    run_smoke(
-        api_base=args.api_base,
-        ui_base=args.ui_base,
-        source_project=args.source_project,
-        project_copy_root=args.project_copy_root,
-        project_copy_name=args.project_copy_name,
-        scene_id=args.scene_id,
-        desktop_shot=args.desktop_shot,
-        mobile_shot=args.mobile_shot,
-    )
+    if args.mode in {"desktop", "both"}:
+        run_desktop_smoke(
+            api_base=args.api_base,
+            ui_base=args.ui_base,
+            source_project=args.source_project,
+            project_copy_root=args.project_copy_root,
+            project_copy_name=args.project_copy_name,
+            scene_id=args.scene_id,
+            desktop_shot=args.desktop_shot,
+        )
+    if args.mode in {"mobile", "both"}:
+        run_mobile_smoke(
+            api_base=args.api_base,
+            ui_base=args.ui_base,
+            source_project=args.source_project,
+            project_copy_root=args.project_copy_root,
+            project_copy_name=args.project_copy_name,
+            scene_id=args.scene_id,
+            mobile_shot=args.mobile_shot,
+        )
     return 0
 
 
