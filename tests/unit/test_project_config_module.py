@@ -314,6 +314,32 @@ def test_accept_config_runtime_flag_confirms_draft(
 
 
 @pytest.mark.unit
+def test_runtime_model_overrides_drive_project_config_mock_path(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    result = run_module(
+        inputs={
+            "normalize": _canonical_script("Original", "INT. ROOM - NIGHT\nMARA\nGo."),
+            "extract": _scene_index(8.0, ["MARA"], ["ROOM"], 8),
+        },
+        params={"accept_config": True},
+        context={
+            "run_id": "unit",
+            "stage_id": "config",
+            "runtime_params": {
+                "default_model": "mock",
+                "qa_model": "mock",
+                "accept_config": True,
+            },
+        },
+    )
+
+    assert result["artifacts"][0]["data"]["default_model"] == "mock"
+    assert result["artifacts"][0]["artifact_type"] == "project_config"
+
+
+@pytest.mark.unit
 def test_refresh_existing_only_skips_without_confirmed_latest_config(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

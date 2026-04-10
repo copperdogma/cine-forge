@@ -16,6 +16,7 @@
 ### Changed
 - Changed fresh run bootstrap so `start`, `resume`, and `retry_failed_stage` all create the run substrate and event-log file before returning a real run id, keeping `/api/runs/{id}/events` honest from the first poll
 - Changed bootstrap chat-state handling so fresh imported projects replace stale placeholder messages with the current Home CTA instead of persisting an outdated `Upload Screenplay` path
+- Changed `project_config_v1` to honor runtime `default_model` / `qa_model` overrides the same way the rest of the pipeline does, keeping start-run coverage deterministic instead of silently falling back to live default models
 - Changed the ui-scout and methodology planning lane to record FP1 as passing again after the clean rerun on the canonical fixture
 
 ### Fixed

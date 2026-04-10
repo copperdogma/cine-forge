@@ -551,3 +551,27 @@ active unresolved follow-up, and adds the Story 158 changelog entry. Evidence:
 fresh validation outputs in this story plus the clean scout report
 `docs/ui-scout/2026-04-10-open-frequency-local-validation.md`. Next step:
 `/check-in-diff`.
+20260410-1736 — check-in hardening: rebasing onto `origin/main` exposed a flaky
+targeted integration rerun in `tests/integration/test_api_integration.py`
+because `project_config_v1` ignored runtime `default_model` / `qa_model`
+overrides and silently fell back to live defaults. Tightened
+`src/cine_forge/modules/ingest/project_config_v1/main.py` so the module now
+honors runtime model aliases before defaulting, and added
+`test_runtime_model_overrides_drive_project_config_mock_path` to
+`tests/unit/test_project_config_module.py`. Fresh evidence on the rebased tip:
+`PYTHONPATH=src make test-unit PYTHON=/Users/cam/Documents/Projects/cine-forge/.venv/bin/python`
+passed (`694 passed, 159 deselected, 1` warning), `PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m ruff check src/ tests/`
+passed, targeted regressions for `tests/integration/test_api_integration.py`,
+`tests/integration/test_cost_budget_pause.py`, and
+`tests/unit/test_api.py -k retry_failed_stage_bootstraps_new_run_from_failed_stage`
+all passed, `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and
+`pnpm methodology:check` stayed green, and a fresh isolated browser smoke on
+`open-frequency-6` re-ran the honest `/new` path through `Break Down Script`
+and `Deep Breakdown` plus mobile Home/render spot-checks with screenshots at
+`/tmp/story158-finish-desktop-home.png`,
+`/tmp/story158-finish-desktop-mid.png`,
+`/tmp/story158-finish-desktop-end.png`,
+`/tmp/story158-finish-mobile-home.png`, and
+`/tmp/story158-finish-mobile-render.png`; browser capture was clean with
+`console_errors=[]`, `page_errors=[]`, and `response_errors=[]`. Next step:
+finish check-in, push the branch, and fast-forward `main`.
