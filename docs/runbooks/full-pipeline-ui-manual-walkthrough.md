@@ -35,31 +35,50 @@ Companion story: `docs/stories/story-156-full-pipeline-ui-acceptance-walkthrough
 - If the honest shipped boundary changes, update this runbook and the canonical
   fixture in the same diff
 
-## Minimum Path To Walk
+## Exact Surfaced Path To Walk Today
 
-1. Create a new project from `open_frequency_short.fountain`.
-   Pass if the project name is clean, the screenplay renders immediately, and
-   the first obvious action is clear without developer vocabulary.
-2. Start the default intake path from Home.
-   Fail if you need to reason about recipes, module names, or hidden pages to
-   continue the golden path.
-3. Let the first pass finish.
-   Pass if progress makes sense from the surfaced UI alone and "Run Details" is
-   optional rather than required to understand what happened.
-4. Continue via the surfaced "go deeper / next step" path.
-   Pass if the UI makes the next action obvious and honest.
-5. Review the primary story surfaces on the resulting project:
-   `Home/Script`, `Scenes`, `Characters`, `Locations`, `World/Intent`, and
-   `Inbox` if present.
-6. Open one representative scene workspace.
-   Pass if readiness, direction, and shot-planning surfaces are usable and the
-   state is honest about what is missing vs inferred.
-7. Continue to the furthest stable downstream surface the normal UI exposes
-   today: storyboard, previz, generation, export, or equivalent.
-   If a later stage is intentionally unavailable, the UI must say so honestly
-   and point to the real prerequisite instead of stranding the user.
-8. Spot-check the same project on mobile at minimum on Home and one
-   representative scene/downstream surface.
+Run this sequence exactly unless the shipped UI changes in the same diff.
+
+1. Start at `/`, then go to `/new`.
+   Pass if the New Project flow feels like the obvious first move rather than a
+   developer-only intake screen.
+2. Create a fresh project from `open_frequency_short.fountain`.
+   Expected result: project route resolves to `/open-frequency`, the screenplay
+   is visible immediately, and the first chat CTA is `Break Down Script`.
+3. From `/open-frequency`, click `Break Down Script`.
+   Pass if the UI can carry the whole `mvp_ingest` path without requiring
+   recipe/module reasoning or a detour into raw run details.
+4. Stay on `/open-frequency` until the script pass finishes.
+   Expected result: surfaced script/world progress updates make sense from Home,
+   and "Run Details" stays optional.
+5. From `/open-frequency`, click `Deep Breakdown`.
+   Pass if the next-step CTA is obvious and honest after the first pass.
+6. Stay on `/open-frequency` until the world-building pass finishes.
+   Expected result: Home acknowledges the project is current enough to keep
+   exploring, rather than pretending the next action is still initial intake.
+7. Visit the surfaced desktop routes in this order:
+   `/open-frequency`
+   `/open-frequency/intent`
+   `/open-frequency/scenes`
+   `/open-frequency/characters`
+   `/open-frequency/locations`
+   `/open-frequency/inbox`
+8. From `/open-frequency/scenes`, open `scene_001` and verify the scene
+   workspace plus the current downstream tabs:
+   `/open-frequency/scenes/scene_001`
+   `/open-frequency/scenes/scene_001?tab=shots`
+   `/open-frequency/scenes/scene_001?tab=storyboard`
+   `/open-frequency/scenes/scene_001?tab=render`
+   Pass if the scene workspace remains usable, the downstream tabs are reachable
+   through surfaced navigation, and each tab is honest about missing
+   prerequisites vs. what is already ready.
+9. Spot-check the same project on mobile at minimum on:
+   `/open-frequency`
+   `/open-frequency/scenes/scene_001?tab=render`
+10. Record the run in
+   `docs/reports/full-pipeline-ui-acceptance/<date>-<project>-<env>.md`.
+   If the honest boundary changes, update this runbook in the same diff as the
+   report.
 
 ## Pass / Fail Questions
 
@@ -73,9 +92,10 @@ Companion story: `docs/stories/story-156-full-pipeline-ui-acceptance-walkthrough
 
 ## Record The Result
 
-- Save screenshots for the start surface, a mid-pipeline surface, and the
-  furthest downstream surface reached
+- Save screenshots or equivalent evidence for the start surface, a
+  mid-pipeline surface, and the furthest downstream surface reached
 - Write down the exact blocker or quality failure, including whether it is
   primarily functional or polish/trust
-- Until a dedicated reporting home exists, append the result to Story 156's work
-  log or the active follow-up story that owns the discovered defect
+- Record the result in `docs/reports/full-pipeline-ui-acceptance/`
+- If a product defect is discovered, create or link the focused follow-up story
+  from the report instead of hiding the issue inside Story 156

@@ -632,7 +632,8 @@
           "151",
           "152",
           "153",
-          "156"
+          "156",
+          "157"
         ],
         "adrIds": [
           "ADR-002",
@@ -6494,7 +6495,7 @@
       "id": "156",
       "title": "Full-Pipeline UI Acceptance Walkthrough",
       "path": "docs/stories/story-156-full-pipeline-ui-acceptance-walkthrough.md",
-      "status": "Draft",
+      "status": "Done",
       "priority": "Medium",
       "idealRefs": [
         "R11 (production readiness per scene)",
@@ -6531,6 +6532,47 @@
         "manual-acceptance",
         "ux",
         "verification"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
+    },
+    {
+      "id": "157",
+      "title": "Chat Suggestions Stop Advertising Completed Paths",
+      "path": "docs/stories/story-157-chat-suggestions-stop-advertising-completed-paths.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R12 (radical transparency)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5",
+        "spec:5.3",
+        "spec:5.6"
+      ],
+      "adrIds": [
+        "ADR-002"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "chat",
+        "follow-up-from-156",
+        "state-honesty",
+        "ux"
       ],
       "legacySystem": "",
       "blockerSummary": null,
@@ -7679,13 +7721,6 @@
           "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
           "story_refs": [
             "155"
-          ]
-        },
-        {
-          "target": "full-pipeline-ui-acceptance",
-          "reason": "Important standing requirement: keep a canonical short screenplay and recurring manual walkthrough so end-to-end UI completeness and polish stay inspectable across the honest current full-pipeline boundary.",
-          "story_refs": [
-            "156"
           ]
         }
       ],

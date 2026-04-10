@@ -241,11 +241,6 @@
         "target": "pipeline-throughput-efficiency",
         "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
         "story_refs": ["155"]
-      },
-      {
-        "target": "full-pipeline-ui-acceptance",
-        "reason": "Important standing requirement: keep a canonical short screenplay and recurring manual walkthrough so end-to-end UI completeness and polish stay inspectable across the honest current full-pipeline boundary.",
-        "story_refs": ["156"]
       }
     ],
     "campaigns": [
