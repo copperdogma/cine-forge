@@ -45,6 +45,9 @@ appears.
 1. **Resolve the target**
    - Read the target story and current git context.
    - Confirm the worktree actually contains the intended story changes.
+   - If `docs/inbox.md` changed during the work, treat that as normal user
+     capture that should ride along with the landing by default, not as
+     unrelated drift.
    - If the story cannot be resolved unambiguously, stop and ask.
 
 2. **Run `/mark-story-done` first**
@@ -93,7 +96,8 @@ Treat these as **major** and stop before commit/push:
 - unmet acceptance criteria or unchecked substantive tasks
 - missing eval classification / registry updates required by the story scope
 - failing tests or lint with unclear root cause or broad blast radius
-- unrelated, risky, or suspicious git changes in the landing set
+- unrelated, risky, or suspicious git changes in the landing set, except for
+  `docs/inbox.md` edits that reflect normal user capture
 - secrets, credentials, large artifacts, or accidental generated output
 - integration conflicts that are not purely mechanical
 - anything that requires architecture changes, scope renegotiation, or user
@@ -105,5 +109,8 @@ Treat these as **major** and stop before commit/push:
 - Never push partial work just because only a small issue remains
 - After every inline fix, rerun the minimum required validation before continuing
 - Never weaken the guardrails from `/mark-story-done` or `/check-in-diff`
+- Never treat `docs/inbox.md` user-capture edits as a close-out blocker; they
+  should be included in the landing set by default unless the user says
+  otherwise
 - Never land onto `main` without the fast-forward-only rule
 - If you stop, explain whether the issue is minor-but-blocked or major and why

@@ -40,7 +40,13 @@ Companion runbook: `docs/runbooks/check-in-worktree-landing.md`
    - Changes outside the scope of the current story?
    - Schema changes without migrations?
    - Deleted tests or weakened assertions?
-   - Dirty worktree problems or unrelated changes that should not be included in the check-in?
+   - Treat `docs/inbox.md` edits as expected user capture, not as unrelated
+     drift; if `docs/inbox.md` changed while the work was in flight, include it
+     in the intended landing set unless the user explicitly says to leave it
+     out.
+   - Dirty worktree problems or unrelated changes that should not be included
+     in the check-in, aside from `docs/inbox.md` edits that reflect normal user
+     capture?
 
 3. **Check alignment:**
    - Do changes match the story's task list?
@@ -71,6 +77,9 @@ Companion runbook: `docs/runbooks/check-in-worktree-landing.md`
    - Which files to stage (specific files, not `git add .`)
    - Any files to exclude from this commit
    - Always include CHANGELOG.md
+   - When `docs/inbox.md` is modified, treat it as intended by default and
+     stage it with the rest of the validated landing set unless the user
+     explicitly excluded it
    - Suggest splitting into multiple commits if changes are unrelated
 
 7. **Stop here by default**:
@@ -147,5 +156,8 @@ Companion runbook: `docs/runbooks/check-in-worktree-landing.md`
 - NEVER resolve integration conflicts directly on `main`
 - NEVER push `main` before validation when using the main fallback path
 - NEVER fail just because the current branch is `main`; use the main fallback path instead
+- NEVER treat `docs/inbox.md` user-capture edits as dirty-worktree blockers
+  unless the user explicitly says those inbox changes should stay out of the
+  landing set
 - If the branch cannot be cleanly integrated and validated, stop and report
 - Flag any changes that look unintentional or outside current story scope
