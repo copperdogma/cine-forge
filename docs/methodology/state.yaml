@@ -28,9 +28,10 @@
       "tech_need": "Ingestion, normalization, canonical script handling, project configuration, script-bible extraction, and scene understanding.",
       "absorbs": ["Script Understanding Pipeline (old 2)"],
       "notes": [
-        "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar."
+        "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar.",
+        "Long-form screenplay throughput is a standing climb requirement: measure the honest story-lane boundary and use detector-backed stage budgets instead of anecdotal 'the pipeline feels slow' tuning."
       ],
-      "last_reviewed": "2026-04-04"
+      "last_reviewed": "2026-04-10"
     },
     "spec:3": {
       "substrate": "exists",
@@ -102,9 +103,10 @@
       "tech_need": "Cost tracking, QA patterns, current eval registry discipline, and model-slot strategy.",
       "absorbs": ["AI Platform, Model Selection & Validation (old 8)"],
       "notes": [
-        "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate."
+        "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
+        "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks."
       ],
-      "last_reviewed": "2026-04-04"
+      "last_reviewed": "2026-04-10"
     },
     "spec:9": {
       "substrate": "partial",
@@ -233,7 +235,13 @@
   },
   "roadmap": {
     "active_focus": ["spec:4", "spec:5"],
-    "sequencing_bias": [],
+    "sequencing_bias": [
+      {
+        "target": "pipeline-throughput-efficiency",
+        "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
+        "story_refs": ["155"]
+      }
+    ],
     "campaigns": [
       {
         "id": "methodology-graph-state-migration",
@@ -288,6 +296,7 @@
           "statuses": ["Draft"],
           "empty_message": "No draft stories currently need review.",
           "story_notes": {
+            "155": "Important secondary line: establish an honest screenplay-throughput detector and stage-efficiency budgets so future optimization work routes through measurement rather than anecdote.",
             "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed.",
             "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
             "103": "Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog.",

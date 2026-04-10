@@ -35,7 +35,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 003, 003b, 004, 005, 006, 007b, 007c, 011b, 011d, 048, 049, 054, 061, 062, 063, 064, 070, 072, 080, 081, 093, 119, 120, 121, 132, 133, 135, 142, 148
+**Stories:** 003, 003b, 004, 005, 006, 007b, 007c, 011b, 011d, 048, 049, 054, 061, 062, 063, 064, 070, 072, 080, 081, 093, 119, 120, 121, 132, 133, 135, 142, 148, 155
 **ADR Refs:** ADR-003
 **Spec:** spec:2 (spec:2.1, spec:2.2, spec:2.3, spec:2.4, spec:2.5, spec:2.6, spec:2.7, spec:2.7.1, spec:2.7.2)
 **Absorbs:** Script Understanding Pipeline (old 2)
@@ -43,6 +43,7 @@
 ### Phase Notes
 
 - The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar.
+- Long-form screenplay throughput is a standing climb requirement: measure the honest story-lane boundary and use detector-backed stage budgets instead of anecdotal 'the pipeline feels slow' tuning.
 
 ### Compromise Progress
 
@@ -160,7 +161,7 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 001, 002, 004, 005, 006, 007, 007c, 008, 030, 031, 032, 035, 036, 037, 038, 039, 040, 041, 047, 049, 050, 054, 055, 060, 065, 102, 104, 105, 106, 107, 113, 122, 123, 124, 133, 135, 136, 138, 140, 144
+**Stories:** 001, 002, 004, 005, 006, 007, 007c, 008, 030, 031, 032, 035, 036, 037, 038, 039, 040, 041, 047, 049, 050, 054, 055, 060, 065, 102, 104, 105, 106, 107, 113, 122, 123, 124, 133, 135, 136, 138, 140, 144, 155
 **ADR Refs:** ADR-001, ADR-002, ADR-003
 **Spec:** spec:8 (spec:8.1, spec:8.2, spec:8.3)
 **Absorbs:** AI Platform, Model Selection & Validation (old 8)
@@ -168,6 +169,7 @@
 ### Phase Notes
 
 - Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.
+- Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.
 
 ### Compromise Progress
 

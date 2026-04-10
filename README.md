@@ -14,13 +14,34 @@ forward immutable artifacts with full provenance.
 ## Repository Layout
 
 - `docs/spec.md`: product specification
+- `docs/methodology/state.yaml`: canonical planning state
+- `docs/methodology/graph.json`: compiled methodology graph
 - `docs/stories.md`: generated story index
 - `docs/stories/`: individual story files
+- `docs/evals/registry.yaml`: canonical eval and detector history
 - `src/cine_forge/`: application code
 - `tests/`: unit, integration, smoke tests
 - `configs/recipes/`: pipeline recipes
 - `skills/`: cross-agent reusable skills
 - `output/`: runtime artifacts (git-ignored)
+
+## Methodology Quick Map
+
+Use the graph-state workflow, not ad hoc notes:
+
+- `docs/ideal.md`: the north star
+- `docs/spec.md`: stable problem categories (`spec:1` ... `spec:11`)
+- `docs/methodology/state.yaml`: the central hub for current priority, category phase (`climb` / `hold` / `converge` / `unplanned`), substrate truth, active focus, and campaigns
+- `docs/build-map.md` and `docs/stories.md`: generated views, never the source of truth
+- `docs/stories/`: concrete execution slices
+- `docs/evals/registry.yaml`: metrics, runtime detectors, model comparisons, and compromise-deletion evidence
+
+Rule of thumb:
+
+- "Prioritize X" -> map `X` to the owning `spec` category, then update `docs/methodology/state.yaml` (`active_focus`, owning category phase/notes, and campaign if needed); create or update the owning story if execution work changed
+- "Build/fix X" -> create or update a story in `docs/stories/`
+- "Measure/benchmark/improve X" -> create or update an eval in `docs/evals/registry.yaml`
+- "Remove a workaround" -> check whether the relevant compromise detector is green first
 
 ## Setup
 

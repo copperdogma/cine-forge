@@ -44,6 +44,7 @@ No stories currently need the sequence-sensitive lane.
 | **112** Continuity Tracking: First Principles Redesign | Valuable redesign candidate, but it still needs tighter scope before it should leave Draft. |
 | **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
 | **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |
+| **155** End-to-End Throughput Detector and Stage Efficiency Budgets | Important secondary line: establish an honest screenplay-throughput detector and stage-efficiency budgets so future optimization work routes through measurement rather than anecdote. |
 
 ### Deferred — Intentionally Parked
 
@@ -92,6 +93,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:4`, `spec:5`
+- Sequencing bias: `pipeline-throughput-efficiency` (stories: 155) — Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.
 
 ## Story Index
 
@@ -115,6 +117,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 155 | End-to-End Throughput Detector and Stage Efficiency Budgets | Medium | Draft | — | spec:2, spec:8 | 032, 150 | [story-155](stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | High | Done | — | spec:2, spec:3, spec:5, spec:8 | 008, 041 | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |

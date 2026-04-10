@@ -235,9 +235,10 @@
             "Script Understanding Pipeline (old 2)"
           ],
           "notes": [
-            "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar."
+            "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar.",
+            "Long-form screenplay throughput is a standing climb requirement: measure the honest story-lane boundary and use detector-backed stage budgets instead of anecdotal 'the pipeline feels slow' tuning."
           ],
-          "last_reviewed": "2026-04-04"
+          "last_reviewed": "2026-04-10"
         },
         "compromiseIds": [
           "C4"
@@ -271,7 +272,8 @@
           "133",
           "135",
           "142",
-          "148"
+          "148",
+          "155"
         ],
         "adrIds": [
           "ADR-003"
@@ -847,9 +849,10 @@
             "AI Platform, Model Selection & Validation (old 8)"
           ],
           "notes": [
-            "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate."
+            "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
+            "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks."
           ],
-          "last_reviewed": "2026-04-04"
+          "last_reviewed": "2026-04-10"
         },
         "compromiseIds": [
           "C1",
@@ -896,7 +899,8 @@
           "136",
           "138",
           "140",
-          "144"
+          "144",
+          "155"
         ],
         "adrIds": [
           "ADR-001",
@@ -6405,6 +6409,60 @@
       "unblockCondition": null,
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
+    },
+    {
+      "id": "155",
+      "title": "End-to-End Throughput Detector and Stage Efficiency Budgets",
+      "path": "docs/stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging",
+        "vision-level preference: Radical transparency"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:2.5",
+        "spec:2.6",
+        "spec:2.7",
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "dependsOn": [
+        "032",
+        "150"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "driver_and_runtime",
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "latency",
+        "output-budget",
+        "runtime",
+        "throughput"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
     }
   ],
   "adrs": [
@@ -7311,9 +7369,10 @@
           "Script Understanding Pipeline (old 2)"
         ],
         "notes": [
-          "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar."
+          "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar.",
+          "Long-form screenplay throughput is a standing climb requirement: measure the honest story-lane boundary and use detector-backed stage budgets instead of anecdotal 'the pipeline feels slow' tuning."
         ],
-        "last_reviewed": "2026-04-04"
+        "last_reviewed": "2026-04-10"
       },
       "spec:3": {
         "substrate": "exists",
@@ -7397,9 +7456,10 @@
           "AI Platform, Model Selection & Validation (old 8)"
         ],
         "notes": [
-          "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate."
+          "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
+          "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks."
         ],
-        "last_reviewed": "2026-04-04"
+        "last_reviewed": "2026-04-10"
       },
       "spec:9": {
         "substrate": "partial",
@@ -7537,7 +7597,15 @@
         "spec:4",
         "spec:5"
       ],
-      "sequencing_bias": [],
+      "sequencing_bias": [
+        {
+          "target": "pipeline-throughput-efficiency",
+          "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
+          "story_refs": [
+            "155"
+          ]
+        }
+      ],
       "campaigns": [
         {
           "id": "methodology-graph-state-migration",
@@ -7613,7 +7681,8 @@
               "106": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "112": "Valuable redesign candidate, but it still needs tighter scope before it should leave Draft.",
               "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
-              "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed."
+              "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed.",
+              "155": "Important secondary line: establish an honest screenplay-throughput detector and stage-efficiency budgets so future optimization work routes through measurement rather than anecdote."
             }
           },
           {

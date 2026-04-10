@@ -30,6 +30,13 @@ This file is the project-wide source of truth for agent behavior and engineering
 > planning, methodology, or simplification decisions. Canonical methodology
 > bootstrap skill: `/setup-methodology`. Recurring companion skills:
 > `/create-eval`, `/improve-eval`, and `/align`.
+>
+> **Operational rule**:
+> - If the user says **"prioritize X"**, update or inspect `docs/methodology/state.yaml` first. That is where category ownership, current phase, `active_focus`, and campaigns live. If the priority changes execution, create or update the owning story too.
+> - If the user says **"build/fix X"**, the execution slice belongs in a story under `docs/stories/`.
+> - If the user says **"measure/benchmark/optimize X"**, the measurement belongs in `docs/evals/registry.yaml` and the implementation work belongs in one or more stories.
+> - `docs/build-map.md` and `docs/stories.md` are generated views. Never treat them as the writable source of truth.
+> - Performance work is not a free-floating concern. Attach it to the owning `spec` category and then decide whether the correct phase is `climb` (improve capability/runtime), `hold` (keep an existing workaround cheaper/faster/cleaner), or `converge` (delete the workaround because the detector is green).
 
 ## Core Agent Mandates
 

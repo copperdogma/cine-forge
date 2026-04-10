@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-10-05] — Clarify methodology routing and add throughput planning line
+
+### Added
+- Added a concise methodology quick map in the README and an operational rule in AGENTS so future sessions can route "prioritize", "build", and "measure" requests into the right planning artifacts without guesswork
+- Added Story 155 to preserve end-to-end screenplay throughput and stage-efficiency budgeting as an explicit detector-first planning line
+
+### Changed
+- Changed canonical methodology state to record screenplay-throughput optimization as an important secondary sequencing bias under `spec:2` and `spec:8` without displacing the active `spec:4` / `spec:5` focus
+- Changed generated methodology views to surface the new throughput requirement and story ownership consistently
+
 ## [2026-04-10-03] — Land inbox capture with validated close-out work
 
 ### Changed
