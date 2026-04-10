@@ -893,6 +893,34 @@ Red/yellow/green per concern group per scene:
 Summary dashboard: for each scene, five concern-group indicators showing exactly
 where attention is needed.
 
+### spec:5.6 — Full-Pipeline Manual Acceptance
+
+CineForge must keep a canonical, very short screenplay fixture for the current
+honest full-pipeline UI walkthrough. The fixture must be short enough that the
+team can run it manually now and then, but rich enough to exercise intake,
+story understanding, scene work, and the furthest stable downstream
+planning/visualization path the normal UI exposes.
+
+The repo must also keep a short manual walkthrough for that fixture. This is a
+recurring product requirement, not a one-off QA note. Running it must verify two
+things at once:
+
+- the surfaced path works from intake through the current honest downstream
+  boundary without dev-only escape hatches, contradictory state, or dead ends
+- the experience is polished: next actions are obvious, status is honest, copy
+  and layout feel elegant, and the user still feels like they are working with
+  their story rather than administering the pipeline
+
+When the honest shipped boundary moves, update the canonical fixture and the
+walkthrough in the same change. Do not quietly keep testing an obsolete path.
+
+**Additional compromise element:** A recurring human walkthrough remains
+necessary because today's automated checks and browser scripts can prove
+operability, but they cannot yet reliably judge clarity, elegance, and "would a
+real person know what to do next?" on representative project states. When those
+qualities are captured reliably by automated or agentic evaluation on the same
+canonical fixture, the manual cadence can shrink.
+
 ## spec:6 — Shot Planning & Visualization
 
 > **Product need:** CineForge must turn creative intent into concrete visual

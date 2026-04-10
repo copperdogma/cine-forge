@@ -94,6 +94,7 @@ No blocked lines currently need attention.
 
 - Active categories: `spec:4`, `spec:5`
 - Sequencing bias: `pipeline-throughput-efficiency` (stories: 155) — Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.
+- Sequencing bias: `full-pipeline-ui-acceptance` (stories: 156) — Important standing requirement: keep a canonical short screenplay and recurring manual walkthrough so end-to-end UI completeness and polish stay inspectable across the honest current full-pipeline boundary.
 
 ## Story Index
 
@@ -205,6 +206,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 156 | Full-Pipeline UI Acceptance Walkthrough | Medium | Draft | — | spec:5, spec:11 | — | [story-156](stories/story-156-full-pipeline-ui-acceptance-walkthrough.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |

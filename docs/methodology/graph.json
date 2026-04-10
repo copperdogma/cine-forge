@@ -538,6 +538,10 @@
           {
             "id": "spec:5.5",
             "title": "Readiness Indicators"
+          },
+          {
+            "id": "spec:5.6",
+            "title": "Full-Pipeline Manual Acceptance"
           }
         ],
         "state": {
@@ -550,9 +554,10 @@
             "Operator Console & Interactive UX (old 5)"
           ],
           "notes": [
-            "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes."
+            "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes.",
+            "A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough so UI completeness and polish stay inspectable on the honest current product path."
           ],
-          "last_reviewed": "2026-04-04"
+          "last_reviewed": "2026-04-10"
         },
         "compromiseIds": [],
         "storyIds": [
@@ -625,7 +630,8 @@
           "150",
           "151",
           "152",
-          "153"
+          "153",
+          "156"
         ],
         "adrIds": [
           "ADR-002",
@@ -1106,7 +1112,8 @@
           "145",
           "146",
           "147",
-          "154"
+          "154",
+          "156"
         ],
         "adrIds": [],
         "evalIds": []
@@ -6463,6 +6470,55 @@
       "unblockCondition": null,
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": []
+    },
+    {
+      "id": "156",
+      "title": "Full-Pipeline UI Acceptance Walkthrough",
+      "path": "docs/stories/story-156-full-pipeline-ui-acceptance-walkthrough.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R11 (production readiness per scene)",
+        "R5 (full spectrum of human involvement)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging",
+        "vision-level preference: Radical transparency"
+      ],
+      "specRefs": [
+        "spec:11",
+        "spec:5",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:5.6"
+      ],
+      "adrIds": [
+        "ADR-002"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5",
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization",
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "fixture",
+        "full-pipeline",
+        "manual-acceptance",
+        "ux",
+        "verification"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": []
     }
   ],
   "adrs": [
@@ -7412,9 +7468,10 @@
           "Operator Console & Interactive UX (old 5)"
         ],
         "notes": [
-          "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes."
+          "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes.",
+          "A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough so UI completeness and polish stay inspectable on the honest current product path."
         ],
-        "last_reviewed": "2026-04-04"
+        "last_reviewed": "2026-04-10"
       },
       "spec:6": {
         "substrate": "exists",
@@ -7603,6 +7660,13 @@
           "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
           "story_refs": [
             "155"
+          ]
+        },
+        {
+          "target": "full-pipeline-ui-acceptance",
+          "reason": "Important standing requirement: keep a canonical short screenplay and recurring manual walkthrough so end-to-end UI completeness and polish stay inspectable across the honest current full-pipeline boundary.",
+          "story_refs": [
+            "156"
           ]
         }
       ],

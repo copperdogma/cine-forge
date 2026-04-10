@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-10-06] — Add full-pipeline UI acceptance requirement
+
+### Added
+- Added a canonical very short screenplay fixture and a short recurring manual walkthrough runbook for full-pipeline UI acceptance checks
+- Added Story 156 to preserve the recurring UI completeness and polish requirement as an explicit planning line
+
+### Changed
+- Changed `spec:5` and methodology state to require a standing full-pipeline manual acceptance pass alongside the existing throughput-efficiency planning line
+- Changed generated methodology views to surface the new UI-acceptance sequencing bias and story ownership consistently
+
 ## [2026-04-10-05] — Clarify methodology routing and add throughput planning line
 
 ### Added

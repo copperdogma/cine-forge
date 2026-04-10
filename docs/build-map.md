@@ -101,14 +101,15 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 001, 002, 004, 005, 006, 007, 007b, 007c, 008, 009, 010, 011b, 011c, 011d, 011e, 011f, 012, 014, 015, 017, 019, 023, 042, 043, 044, 045, 046, 048, 051, 052, 054, 055, 057, 058, 059, 066, 067, 068, 069, 070, 072, 075, 076, 078, 079, 082, 083, 084, 085, 086, 087, 088, 089, 090, 097, 099, 101, 110, 111, 114, 126, 132, 142, 144, 148, 149, 150, 151, 152, 153
+**Stories:** 001, 002, 004, 005, 006, 007, 007b, 007c, 008, 009, 010, 011b, 011c, 011d, 011e, 011f, 012, 014, 015, 017, 019, 023, 042, 043, 044, 045, 046, 048, 051, 052, 054, 055, 057, 058, 059, 066, 067, 068, 069, 070, 072, 075, 076, 078, 079, 082, 083, 084, 085, 086, 087, 088, 089, 090, 097, 099, 101, 110, 111, 114, 126, 132, 142, 144, 148, 149, 150, 151, 152, 153, 156
 **ADR Refs:** ADR-002, ADR-003
-**Spec:** spec:5 (spec:5.1, spec:5.2, spec:5.3, spec:5.4, spec:5.5)
+**Spec:** spec:5 (spec:5.1, spec:5.2, spec:5.3, spec:5.4, spec:5.5, spec:5.6)
 **Absorbs:** Operator Console & Interactive UX (old 5)
 
 ### Phase Notes
 
 - The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes.
+- A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough so UI completeness and polish stay inspectable on the honest current product path.
 
 ## spec:6 — Shot Planning & Visualization
 
@@ -235,7 +236,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 053, 066, 103, 109, 115, 125, 134, 136, 145, 146, 147, 154
+**Stories:** 053, 066, 103, 109, 115, 125, 134, 136, 145, 146, 147, 154, 156
 **ADR Refs:** None found after search
 **Spec:** spec:11 (spec:11.1, spec:11.2, spec:11.3, spec:11.4)
 **Absorbs:** Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)

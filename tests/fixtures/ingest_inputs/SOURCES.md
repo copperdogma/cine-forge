@@ -16,6 +16,14 @@ These fixtures were downloaded from publicly accessible free sources for ingesti
   - Work: *Run Like Hell* teaser sample script by Stu Maschwitz
   - Notes: Publicly posted Fountain sample for download on Slugline's samples page.
 
+- `open_frequency_short.fountain`
+  - Source: Repo-authored fixture
+  - Work: *Open Frequency*
+  - Notes: Canonical very short screenplay for the recurring full-pipeline UI
+    manual walkthrough. Intentionally short enough for occasional end-to-end
+    manual runs, but rich enough to exercise intake, world understanding, scene
+    workspace, and downstream planning/visualization surfaces.
+
 - `pit_and_pendulum.pdf`
   - URL: `https://ibiblio.org/ebooks/Poe/Pit_Pendulum.pdf`
   - Work: *The Pit and the Pendulum* by Edgar Allan Poe
