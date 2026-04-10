@@ -109,7 +109,7 @@
 ### Phase Notes
 
 - The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes.
-- A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough so UI completeness and polish stay inspectable on the honest current product path.
+- A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough in the dedicated internal ui-scout lane so UI completeness and polish stay inspectable on the honest current product path.
 
 ## spec:6 — Shot Planning & Visualization
 

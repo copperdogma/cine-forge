@@ -1,8 +1,10 @@
-# Full-Pipeline UI Acceptance — 2026-04-10 — `open-frequency` — Local
+# UI Scout — 2026-04-10 — `open-frequency` — Local
 
+**Scenario:** `FP1`
 **Date:** 2026-04-10
 **Operator:** Codex
 **Story:** 156
+**Trigger:** First canonical full-pipeline UI product-truth walkthrough
 **Fixture:** `tests/fixtures/ingest_inputs/open_frequency_short.fountain`
 **Project:** `open-frequency` created fresh through the normal `/new` flow
 **Environment:** local backend on `http://127.0.0.1:8000`, local UI on `http://127.0.0.1:5174`
@@ -57,29 +59,43 @@ output.
 
 ### 1. State-honesty failure in the chat panel
 
-- Home showed `Script 5/5`, `World 6/6`, and `All 67 artifacts are current`
-  after the world-building pass finished.
-- Despite that, the chat panel still surfaced stale `Break Down Script` /
-  `Deep Breakdown` suggestions on the already-built project. The captured Home
-  screenshot explicitly showed `Deep Breakdown` still presented as a live CTA.
-- This is not a route-reachability bug; it is a trust/polish bug. The UI had
+- Type: Trust
+- What happened:
+  Home showed `Script 5/5`, `World 6/6`, and `All 67 artifacts are current`
+  after the world-building pass finished, but the chat panel still surfaced
+  stale `Break Down Script` / `Deep Breakdown` suggestions on the already-built
+  project.
+- Why it matters:
+  This is not a route-reachability bug; it is a trust/polish bug. The UI had
   already moved on, but the chat surface still advertised earlier-path work as
   if it were current.
-- Follow-up: `docs/stories/story-157-chat-suggestions-stop-advertising-completed-paths.md`
+- Follow-up:
+  `docs/stories/story-157-chat-suggestions-stop-advertising-completed-paths.md`
 
 ### 2. No console or page-error noise on the walked path
 
-- Desktop route probe: `consoleErrors=[]`, `pageErrors=[]`
-- Scene-tab probe: `consoleErrors=[]`, `pageErrors=[]`
-- Mobile probe: `consoleErrors=[]`, `pageErrors=[]`
+- Type: Functional
+- What happened:
+  Desktop route probe reported `consoleErrors=[]`, `pageErrors=[]`; scene-tab
+  probe reported `consoleErrors=[]`, `pageErrors=[]`; and the mobile probe
+  reported `consoleErrors=[]`, `pageErrors=[]`.
+- Why it matters:
+  The canonical surfaced route stayed technically clean while the trust defect
+  was reproduced.
+- Follow-up:
+  None.
 
 ### 3. No functional dead ends on the surfaced route sequence
 
-- The run never needed dev-only escape hatches
-- The main nav and scene-tab bar were enough to reach the honest current
-  boundary
-- Current downstream tabs surfaced real prerequisites instead of stranding the
-  operator behind a blank or contradictory screen
+- Type: Functional
+- What happened:
+  The run never needed dev-only escape hatches, and the main nav plus scene-tab
+  bar were enough to reach the honest current boundary.
+- Why it matters:
+  The product currently fails on polish/trust rather than path reachability,
+  which keeps the follow-up narrow and falsifiable.
+- Follow-up:
+  None.
 
 ## Evidence Summary
 
@@ -91,5 +107,6 @@ output.
 
 ## Next Action
 
-- Keep Story 156 focused on the standing walkthrough/reporting lane
-- Build Story 157 to remove stale completed-path CTAs from the chat surface
+- Keep the UI-scout lane focused on recurring product-truth reporting
+- Rerun `FP1` now that Story 157 has landed so `state.ui_scout` can move off
+  `recheck_due`

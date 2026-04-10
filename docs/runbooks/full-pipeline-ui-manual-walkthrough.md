@@ -7,6 +7,10 @@ does the UI still feel polished and obvious while they do it?"
 
 Companion requirement: `docs/spec.md#spec56--full-pipeline-manual-acceptance`
 Companion story: `docs/stories/story-156-full-pipeline-ui-acceptance-walkthrough.md`
+Companion history lane: `docs/ui-scout.md` and `docs/ui-scout/`
+
+This lane is intentionally separate from `docs/scout/`, which is reserved for
+external-source research.
 
 ## Canonical Fixture
 
@@ -32,6 +36,10 @@ Companion story: `docs/stories/story-156-full-pipeline-ui-acceptance-walkthrough
 - Run the full walkthrough on desktop
 - Reuse the same project for a mobile spot-check of Home plus one representative
   scene/downstream surface
+- Every run must produce a dated report in `docs/ui-scout/` and update
+  `docs/ui-scout.md`
+- Every run must also update `docs/methodology/state.yaml` `ui_scout` so
+  compile-time freshness stays honest
 - If the honest shipped boundary changes, update this runbook and the canonical
   fixture in the same diff
 
@@ -75,10 +83,11 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
 9. Spot-check the same project on mobile at minimum on:
    `/open-frequency`
    `/open-frequency/scenes/scene_001?tab=render`
-10. Record the run in
-   `docs/reports/full-pipeline-ui-acceptance/<date>-<project>-<env>.md`.
-   If the honest boundary changes, update this runbook in the same diff as the
-   report.
+10. Record the run in `docs/ui-scout/<date>-<project>-<env>.md`, update
+    `docs/ui-scout.md`, update `docs/methodology/state.yaml` `ui_scout`, and
+    rerun `pnpm methodology:compile`.
+    If the honest boundary changes, update this runbook in the same diff as the
+    report.
 
 ## Pass / Fail Questions
 
@@ -96,6 +105,6 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
   mid-pipeline surface, and the furthest downstream surface reached
 - Write down the exact blocker or quality failure, including whether it is
   primarily functional or polish/trust
-- Record the result in `docs/reports/full-pipeline-ui-acceptance/`
+- Record the result in `docs/ui-scout/` and update `docs/ui-scout.md`
 - If a product defect is discovered, create or link the focused follow-up story
   from the report instead of hiding the issue inside Story 156

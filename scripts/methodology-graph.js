@@ -11,6 +11,10 @@ const BUILD_MAP_PATH = join(ROOT, "docs/build-map.md");
 const IDEAL_PATH = join(ROOT, "docs/ideal.md");
 const SPEC_PATH = join(ROOT, "docs/spec.md");
 const EVALS_PATH = join(ROOT, "docs/evals/registry.yaml");
+const UI_SCOUT_INDEX_PATH = join(ROOT, "docs/ui-scout.md");
+const UI_SCOUT_DIR = join(ROOT, "docs/ui-scout");
+const UI_SCOUT_TEMPLATE_PATH = join(ROOT, "docs/ui-scout/_template.md");
+const UI_SCOUT_RUNBOOK_PATH = join(ROOT, "docs/runbooks/full-pipeline-ui-manual-walkthrough.md");
 const README_PATH = join(ROOT, "README.md");
 const STORIES_DIR = join(ROOT, "docs/stories");
 const ADRS_DIR = join(ROOT, "docs/decisions");
@@ -58,6 +62,8 @@ const STATIC_ACTIVE_SURFACE_PATHS = [
   IDEAL_PATH,
   SPEC_PATH,
   join(ROOT, "docs/scout.md"),
+  UI_SCOUT_INDEX_PATH,
+  UI_SCOUT_TEMPLATE_PATH,
   join(ROOT, "docs/inbox.md"),
   join(ROOT, "docs/evals/README.md"),
   join(ROOT, "docs/evals/attempt-template.md"),
@@ -66,6 +72,7 @@ const STATIC_ACTIVE_SURFACE_PATHS = [
   join(ROOT, "docs/setup-checklist.md"),
   join(ROOT, "docs/runbooks/setup-methodology.md"),
   join(ROOT, "docs/runbooks/triage.md"),
+  UI_SCOUT_RUNBOOK_PATH,
   join(ROOT, "docs/runbooks/migrate-problem-first-triage-and-story-workflow.md"),
   join(ROOT, "docs/runbooks/triage-evals.md"),
   join(ROOT, "docs/runbooks/align.md"),
@@ -115,6 +122,7 @@ const VALID_STATE_TOP_LEVEL_KEYS = new Set([
   "compromises",
   "stories_index",
   "roadmap",
+  "ui_scout",
   "architecture_audits",
 ]);
 const VALID_STATE_CATEGORY_KEYS = new Set([
@@ -175,6 +183,28 @@ const VALID_STATE_CAMPAIGN_KEYS = new Set([
 const VALID_STATE_ARCHITECTURE_AUDIT_KEYS = new Set([
   "cadence",
   "domains",
+]);
+const VALID_STATE_UI_SCOUT_KEYS = new Set([
+  "cadence",
+  "last_run_at",
+  "last_run_story_id",
+  "scenarios",
+]);
+const VALID_STATE_UI_SCOUT_CADENCE_KEYS = new Set([
+  "max_days_without_run",
+]);
+const VALID_STATE_UI_SCOUT_SCENARIO_KEYS = new Set([
+  "label",
+  "last_checked",
+  "latest_report",
+  "status",
+  "follow_up_story_refs",
+]);
+const VALID_UI_SCOUT_SCENARIO_STATUSES = new Set([
+  "pass",
+  "issues_found",
+  "recheck_due",
+  "never",
 ]);
 const VALID_STATE_AUDIT_CADENCE_KEYS = new Set([
   "target_story_interval",
@@ -283,6 +313,100 @@ function parseJsonCompatibleYaml(path) {
   } catch (error) {
     throw new Error(`${toRelative(path)} must currently be JSON-compatible YAML: ${error.message}`);
   }
+}
+
+function parseDateOnlyUtc(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    Number.isNaN(date.getTime()) ||
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return date;
+}
+
+function diffDateOnlyDays(start, end) {
+  return Math.round((end.getTime() - start.getTime()) / 86_400_000);
+}
+
+function collectUiScoutReportIds() {
+  return new Set(
+    listFilesRecursively(UI_SCOUT_DIR, (_path, name) => name.endsWith(".md") && name !== "_template.md")
+      .map((path) => basename(path, ".md")),
+  );
+}
+
+function analyzeUiScoutFreshness(uiScout) {
+  if (!uiScout || typeof uiScout !== "object" || Array.isArray(uiScout)) {
+    return {
+      needsAttention: true,
+      summary: "attention needed — ui_scout state is missing",
+    };
+  }
+
+  const attentionReasons = [];
+  const cadence = uiScout.cadence && typeof uiScout.cadence === "object" && !Array.isArray(uiScout.cadence)
+    ? uiScout.cadence
+    : {};
+  const maxDaysWithoutRun = Number.isFinite(cadence.max_days_without_run)
+    ? Number(cadence.max_days_without_run)
+    : null;
+  const lastRunAt = typeof uiScout.last_run_at === "string" ? uiScout.last_run_at : null;
+  const lastRunDate = parseDateOnlyUtc(lastRunAt);
+  if (!lastRunAt) {
+    attentionReasons.push("last run date is missing");
+  } else if (!lastRunDate) {
+    attentionReasons.push(`last run date ${lastRunAt} is invalid`);
+  }
+  if (maxDaysWithoutRun != null && lastRunDate) {
+    const today = new Date();
+    const todayUtc = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+    const daysSinceRun = diffDateOnlyDays(lastRunDate, todayUtc);
+    if (daysSinceRun > maxDaysWithoutRun) {
+      attentionReasons.push(`last run ${lastRunAt} is ${daysSinceRun} days old against a ${maxDaysWithoutRun}-day cadence`);
+    }
+  }
+
+  const scenarios = uiScout.scenarios && typeof uiScout.scenarios === "object" && !Array.isArray(uiScout.scenarios)
+    ? uiScout.scenarios
+    : {};
+  if (Object.keys(scenarios).length === 0) {
+    attentionReasons.push("no UI scout scenarios are defined");
+  }
+  for (const [scenarioId, scenarioValue] of Object.entries(scenarios)) {
+    const label = String(scenarioValue.label || scenarioId).trim() || scenarioId;
+    const status = String(scenarioValue.status || "").trim();
+    const followUpStoryRefs = Array.isArray(scenarioValue.follow_up_story_refs)
+      ? scenarioValue.follow_up_story_refs.map(String).sort(compareStoryIdStrings)
+      : [];
+    const followUpSuffix = followUpStoryRefs.length > 0 ? ` (follow-up stories: ${followUpStoryRefs.join(", ")})` : "";
+    if (status === "never") {
+      attentionReasons.push(`${scenarioId} (${label}) has never been checked`);
+    } else if (status === "issues_found") {
+      attentionReasons.push(`${scenarioId} (${label}) still has unresolved issues${followUpSuffix}`);
+    } else if (status === "recheck_due") {
+      attentionReasons.push(`${scenarioId} (${label}) is awaiting recheck${followUpSuffix}`);
+    }
+  }
+
+  if (attentionReasons.length > 0) {
+    const firstReason = attentionReasons[0];
+    const suffix = attentionReasons.length > 1 ? `; +${attentionReasons.length - 1} more` : "";
+    return {
+      needsAttention: true,
+      summary: `attention needed — ${firstReason}${suffix}`,
+    };
+  }
+
+  return {
+    needsAttention: false,
+    summary: `fresh — last run ${lastRunAt || "unknown"}`,
+  };
 }
 
 function parseFrontmatterDocument(text, path) {
@@ -720,6 +844,7 @@ function renderStoriesIndex(graph) {
   const campaigns = Array.isArray(roadmap.campaigns) ? roadmap.campaigns.filter((entry) => entry.status === "active") : [];
   const currentExecutionMap = (state.stories_index || {}).current_execution_map || null;
   const customSections = Array.isArray((state.stories_index || {}).sections) ? state.stories_index.sections : [];
+  const uiScoutFreshness = analyzeUiScoutFreshness(state.ui_scout);
   const statusRank = new Map([
     ["In Progress", 0],
     ["Pending", 1],
@@ -795,9 +920,10 @@ function renderStoriesIndex(graph) {
     lines.push(`## ${title}`, "", markdown, "");
   }
 
-  if (activeFocus.length > 0 || sequencingBias.length > 0 || campaigns.length > 0) {
+  if (activeFocus.length > 0 || sequencingBias.length > 0 || campaigns.length > 0 || uiScoutFreshness) {
     lines.push("## Active Focus", "");
     if (activeFocus.length > 0) lines.push(`- Active categories: ${activeFocus.map((entry) => `\`${entry}\``).join(", ")}`);
+    if (uiScoutFreshness) lines.push(`- UI scout freshness: ${uiScoutFreshness.summary}`);
     for (const bias of sequencingBias) {
       const storyRefs = Array.isArray(bias.story_refs) ? bias.story_refs.map(String).sort(compareStoryIdStrings) : [];
       const suffix = storyRefs.length > 0 ? ` (stories: ${storyRefs.join(", ")})` : "";
@@ -908,6 +1034,8 @@ function validateGraph(state, spec, stories, adrs, evals) {
   const campaignIds = new Set(((state.roadmap || {}).campaigns || []).map((campaign) => String(campaign.id || "")));
   const auditDomains = (((state.architecture_audits || {}).domains || {}));
   const auditDomainIds = new Set(Object.keys(auditDomains));
+  const uiScoutReportIds = collectUiScoutReportIds();
+  const uiScout = state.ui_scout || {};
 
   pushUnexpectedKeys(errors, state, VALID_STATE_TOP_LEVEL_KEYS, "state");
   for (const categoryId of Object.keys(state.categories || {})) {
@@ -1002,6 +1130,57 @@ function validateGraph(state, spec, stories, adrs, evals) {
       errors.push(`state.roadmap.campaigns[${index}] (${String(campaign.id || index)}) is active but only references terminal stories: ${storyRefs.join(", ")}`);
     }
   });
+
+  if (typeof state.ui_scout === "undefined") {
+    errors.push("state.ui_scout is required for the canonical UI product-truth lane");
+  } else if (!state.ui_scout || typeof state.ui_scout !== "object" || Array.isArray(state.ui_scout)) {
+    errors.push("state.ui_scout must be an object");
+  }
+  pushUnexpectedKeys(errors, uiScout, VALID_STATE_UI_SCOUT_KEYS, "state.ui_scout");
+  pushUnexpectedKeys(errors, (uiScout || {}).cadence || {}, VALID_STATE_UI_SCOUT_CADENCE_KEYS, "state.ui_scout.cadence");
+  if (typeof uiScout.last_run_at !== "undefined" && !parseDateOnlyUtc(uiScout.last_run_at)) {
+    errors.push("state.ui_scout.last_run_at must use YYYY-MM-DD");
+  }
+  if (typeof uiScout.last_run_story_id !== "undefined" && !storyIds.has(String(uiScout.last_run_story_id))) {
+    errors.push(`state.ui_scout.last_run_story_id references missing story ${String(uiScout.last_run_story_id)}`);
+  }
+  if (
+    typeof ((uiScout || {}).cadence || {}).max_days_without_run !== "undefined" &&
+    (!Number.isInteger(uiScout.cadence.max_days_without_run) || uiScout.cadence.max_days_without_run < 1)
+  ) {
+    errors.push("state.ui_scout.cadence.max_days_without_run must be a positive integer");
+  }
+  const uiScoutScenarios =
+    uiScout.scenarios && typeof uiScout.scenarios === "object" && !Array.isArray(uiScout.scenarios)
+      ? uiScout.scenarios
+      : {};
+  if (typeof uiScout.scenarios !== "undefined" && (!uiScout.scenarios || typeof uiScout.scenarios !== "object" || Array.isArray(uiScout.scenarios))) {
+    errors.push("state.ui_scout.scenarios must be an object keyed by scenario id");
+  }
+  for (const [scenarioId, scenarioValue] of Object.entries(uiScoutScenarios)) {
+    pushUnexpectedKeys(errors, scenarioValue, VALID_STATE_UI_SCOUT_SCENARIO_KEYS, `state.ui_scout.scenarios.${scenarioId}`);
+    const status = String(scenarioValue.status || "");
+    if (status && !VALID_UI_SCOUT_SCENARIO_STATUSES.has(status)) {
+      errors.push(`state.ui_scout.scenarios.${scenarioId}.status uses invalid value ${status}`);
+    }
+    if (typeof scenarioValue.last_checked !== "undefined" && !parseDateOnlyUtc(scenarioValue.last_checked)) {
+      errors.push(`state.ui_scout.scenarios.${scenarioId}.last_checked must use YYYY-MM-DD`);
+    }
+    if (
+      typeof scenarioValue.latest_report !== "undefined" &&
+      !uiScoutReportIds.has(String(scenarioValue.latest_report))
+    ) {
+      errors.push(`state.ui_scout.scenarios.${scenarioId}.latest_report references missing docs/ui-scout report ${String(scenarioValue.latest_report)}`);
+    }
+    const followUpStoryRefs = Array.isArray(scenarioValue.follow_up_story_refs)
+      ? scenarioValue.follow_up_story_refs.map(String)
+      : [];
+    for (const storyRef of followUpStoryRefs) {
+      if (!storyIds.has(storyRef)) {
+        errors.push(`state.ui_scout.scenarios.${scenarioId}.follow_up_story_refs includes missing story ${storyRef}`);
+      }
+    }
+  }
 
   for (const story of stories) {
     if (story.metadataSource !== "frontmatter") {
@@ -1144,6 +1323,11 @@ function validateGraph(state, spec, stories, adrs, evals) {
     warnings.push(`Architecture audit domains due or carrying open findings: ${formatExampleList(overdueDomains)}`);
   }
 
+  const uiScoutFreshness = analyzeUiScoutFreshness(uiScout);
+  if (uiScoutFreshness && uiScoutFreshness.needsAttention) {
+    warnings.push(`UI scout freshness due: ${uiScoutFreshness.summary}`);
+  }
+
   return { errors, warnings };
 }
 
@@ -1228,6 +1412,8 @@ function buildGraph() {
       graph: toRelative(GRAPH_PATH),
       stories_index: toRelative(STORIES_INDEX_PATH),
       build_map: toRelative(BUILD_MAP_PATH),
+      ui_scout_index: toRelative(UI_SCOUT_INDEX_PATH),
+      ui_scout_dir: toRelative(UI_SCOUT_DIR),
       stories_dir: toRelative(STORIES_DIR),
       adrs_dir: toRelative(ADRS_DIR),
       evals: toRelative(EVALS_PATH),

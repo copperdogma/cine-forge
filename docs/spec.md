@@ -911,6 +911,12 @@ things at once:
   and layout feel elegant, and the user still feels like they are working with
   their story rather than administering the pipeline
 
+This is internal UI-scouting, not the external-source `docs/scout/` lane. The
+history for these runs lives in `docs/ui-scout.md` and `docs/ui-scout/`, and
+machine-readable freshness lives in `docs/methodology/state.yaml` `ui_scout` so
+triage and generated planning surfaces can tell when the canonical path is
+stale or awaiting recheck.
+
 When the honest shipped boundary moves, update the canonical fixture and the
 walkthrough in the same change. Do not quietly keep testing an obsolete path.
 

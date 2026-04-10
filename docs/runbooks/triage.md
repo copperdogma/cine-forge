@@ -51,6 +51,11 @@ This is the operational companion to `/triage`.
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
    - Architecture: `/triage-architecture scan`
+   - UI product-truth freshness: always inspect `docs/methodology/state.yaml`
+     `ui_scout`; if the lane is overdue, the canonical scenario is still
+     `never`, or the latest report is marked `issues_found` / `recheck_due`,
+     inspect `docs/ui-scout.md` and the latest relevant report under
+     `docs/ui-scout/` before finalizing the recommendation
    - Goal: find which existing artifacts already advance the chosen gap, especially active or recently advanced lines that should be continued, reopened, expanded, or consolidated before inventing a new shell
    - Filter blocked stories with unmet unblock conditions and eval retries whose
      triggers remain exhausted into health flags before ranking candidates
@@ -60,6 +65,8 @@ This is the operational companion to `/triage`.
      - continuing, reopening, expanding, or consolidating the strongest existing story line under the chosen gap
      - promoting or reshaping the draft that best advances the chosen gap
      - creating the missing story / ADR / spec update / eval if the gap has no home
+   - Do not silently outrank overdue UI-scout freshness with smaller unrelated
+     ready work unless the stronger line is genuinely not actionable yet
    - Only fall back to smaller unrelated ready work when the larger gap is not actionable yet
    - Story existence is packaging context and tie-breaker only; it should not outrank a more important live gap by itself
    - A blocked line with an unmet unblock condition is not actionable even if it

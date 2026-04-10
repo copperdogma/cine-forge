@@ -56,6 +56,15 @@ No stories currently deferred.
 
 No blocked lines currently need attention.
 
+## UI Product Truth Scouting
+
+> CineForge now keeps a dedicated internal UI-scout lane in `docs/ui-scout.md` and `docs/ui-scout/`.
+> This is separate from external-source scouting in `docs/scout/`.
+>
+> The job of this lane is simple: periodically walk the canonical full-pipeline fixture through the real surfaced UI, record whether it still feels story-centric, polished, and honest, and spawn focused follow-up stories when it does not.
+>
+> During triage, stale or awaiting-recheck coverage here is a real methodology signal, not an optional polish note.
+
 ## Notes From Cam
 
 - 20260212: Seeddance 2.0 released and it's insane: https://x.com/altryne/status/2021967972055842893?s=20
@@ -93,7 +102,10 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:4`, `spec:5`
+- UI scout freshness: attention needed — FP1 (Full Pipeline Canonical Fixture) is awaiting recheck (follow-up stories: 157)
 - Sequencing bias: `pipeline-throughput-efficiency` (stories: 155) — Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.
+- Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
+- Active campaign `ui-product-truth-scouting`: Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage.
 
 ## Story Index
 

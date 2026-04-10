@@ -98,6 +98,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
    - Architecture: `/triage-architecture scan`
+   - UI product-truth freshness: always inspect `state.ui_scout`; if the lane
+     is overdue, the canonical scenario is still `never`, or the latest report
+     is marked `issues_found` / `recheck_due`, inspect `docs/ui-scout.md` and
+     the latest relevant report in `docs/ui-scout/` before deciding whether the
+     right next action is a fresh scout run or the follow-up story line
    - But interpret each leaf through one question:
      - what already exists that advances the chosen gap?
    - Do **not** let a smaller ready story outrank the chosen gap just because it is easier to start
@@ -112,6 +117,8 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - continue, reopen, expand, or consolidate an in-flight or recently advanced story that directly advances the chosen gap
    - promote or reshape an existing draft story that is the clearest continuation of the chosen gap
    - create the missing story / ADR / spec update / eval if the gap has no proper home yet
+   - do not silently outrank overdue UI-scout freshness with smaller unrelated
+     ready work unless the stronger line is genuinely not actionable yet
    - only fall back to a smaller unrelated ready story if the larger gap is genuinely not actionable yet, and explain why
 
 6. **Return a short report**

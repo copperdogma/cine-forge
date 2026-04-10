@@ -294,7 +294,7 @@ N/A
      - `cd ui && npx tsc -b`
      - `pnpm --dir ui run build`
    - Runtime/browser verification:
-     - Desktop: [Home](/Users/cam/.codex/worktrees/55bb/cine-forge/docs/reports/full-pipeline-ui-acceptance/2026-04-10-open-frequency-local.md#L21) equivalent route `http://127.0.0.1:5174/open-frequency`
+     - Desktop: [Home](/Users/cam/.codex/worktrees/3683/cine-forge/docs/ui-scout/2026-04-10-open-frequency-local.md#L29) equivalent route `http://127.0.0.1:5174/open-frequency`
      - Representative downstream route: `http://127.0.0.1:5174/open-frequency/scenes/scene_001?tab=render`
      - Mobile rerun on the same two routes
      - Capture screenshots plus `consoleErrors=[]` / `pageErrors=[]`

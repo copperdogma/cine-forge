@@ -199,11 +199,12 @@ N/A
   the requirement as a story-level execution slice (`246` lines)
 - `docs/runbooks/full-pipeline-ui-manual-walkthrough.md` — short recurring
   operator walkthrough (`81` lines)
-- `docs/reports/full-pipeline-ui-acceptance/README.md` — canonical reporting
-  home and report format for recurring walkthrough runs (`new`)
-- `docs/reports/full-pipeline-ui-acceptance/2026-04-10-open-frequency-local.md`
-  — first recorded local walkthrough result against the canonical fixture
+- `docs/ui-scout.md` — dedicated internal index for recurring UI product-truth
+  runs (`new`)
+- `docs/ui-scout/_template.md` — report template for recurring UI-scout runs
   (`new`)
+- `docs/ui-scout/2026-04-10-open-frequency-local.md` — first recorded local
+  walkthrough result against the canonical fixture (`new`)
 - `tests/fixtures/ingest_inputs/open_frequency_short.fountain` — canonical very
   short screenplay for the walkthrough (`122` lines)
 - `tests/fixtures/ingest_inputs/SOURCES.md` — document provenance and intent for
@@ -238,10 +239,11 @@ N/A
   - `docs/runbooks/full-pipeline-ui-manual-walkthrough.md` — replace the
     current minimum-path wording with the exact surfaced routes and actions
     verified in the live run.
-  - `docs/reports/full-pipeline-ui-acceptance/README.md` — define the canonical
-    recurring reporting home and report format.
-  - `docs/reports/full-pipeline-ui-acceptance/2026-04-10-open-frequency-local.md`
-    — first recorded walkthrough result.
+  - `docs/ui-scout.md` — define the dedicated internal UI-scout index and
+    current scenario coverage.
+  - `docs/ui-scout/_template.md` — define the recurring report shape.
+  - `docs/ui-scout/2026-04-10-open-frequency-local.md` — first recorded
+    walkthrough result.
   - `docs/stories.md` — generated status/index view after story-status changes.
 - **Files at risk of breaking**
   - No product-runtime files are planned for this slice. The live verification
@@ -258,7 +260,8 @@ N/A
 - **Patterns to follow**
   - Story-local work-log evidence format used in recent UI stories such as Story
     023 and Story 044.
-  - `docs/reports/` as the canonical home for durable non-registry reports.
+  - `docs/ui-scout.md` plus `docs/ui-scout/` as the canonical home for durable
+    UI product-truth reports.
   - `docs/runbooks/browser-automation-and-mcp.md` plus the `webapp-testing`
     skill for local Playwright verification.
 - **Potential redundant code / cleanup targets**
@@ -298,9 +301,10 @@ N/A
 - `ADR-002` and the UI design docs require obvious next actions, hidden pipeline
   plumbing, and story-centric navigation. A real walkthrough report is the only
   honest way to verify those claims today.
-- `docs/reports/` is a better reporting home than `docs/evals/registry.yaml` for
-  this slice because the output is qualitative product-truth evidence with
-  screenshots/routes, not a scored eval or compromise detector.
+- `docs/ui-scout.md` plus `docs/ui-scout/` is a better reporting home than
+  `docs/evals/registry.yaml` for this slice because the output is qualitative
+  product-truth evidence with screenshots/routes, not a scored eval or
+  compromise detector.
 - Rejected alternatives:
   - storing recurring results only in Story 156's work log would keep the story
     as a bottleneck instead of creating a reusable reporting lane
@@ -331,9 +335,9 @@ N/A
 
 1. Promote the story from `Draft` once the plan is recorded and rerun
    `pnpm methodology:compile`.
-2. Create `docs/reports/full-pipeline-ui-acceptance/` with a lightweight
-   `README.md` that defines naming, required fields, and screenshot/log
-   expectations for recurring runs.
+2. Create a dedicated internal UI-scout lane with `docs/ui-scout.md`,
+   `docs/ui-scout/_template.md`, and a first dated run report so recurring
+   product-truth evidence lives separately from external-source scouting.
 3. Start local API + UI servers, then execute the canonical walkthrough through
    the surfaced UI on desktop and mobile using browser automation plus manual
    inspection of the captured evidence.
@@ -364,10 +368,9 @@ N/A
   `docs/design/principles.md`, the `webapp-testing` skill, and the browser
   automation runbook; `make check-size` confirms this slice can stay in docs and
   reports rather than growing existing oversized runtime files. Decision:
-  promote Story 156, add a dedicated `docs/reports/full-pipeline-ui-acceptance/`
-  home, then run the first local desktop/mobile walkthrough against the
-  canonical fixture. Next step: promote the story and execute the live
-  verification pass.
+  promote Story 156, add a dedicated internal `docs/ui-scout*` home, then run
+  the first local desktop/mobile walkthrough against the canonical fixture.
+  Next step: promote the story and execute the live verification pass.
 - 20260410-1953 — status: promoted Story 156 from `Draft` to `Pending` after
   exploration proved the story already had usable acceptance criteria, tasks,
   workflow gates, and a concrete implementation path. Evidence: updated status
@@ -395,10 +398,10 @@ N/A
   `World 6/6`, and `All 67 artifacts are current` while the chat surface kept
   advertising stale `Break Down Script` / `Deep Breakdown` CTAs. Created
   follow-up Story 157 for that defect, rewrote the runbook to the exact walked
-  route sequence, and established `docs/reports/full-pipeline-ui-acceptance/`
-  as the durable report lane with the first dated report. Next step: rerun
-  methodology compile/check, then hand Story 156 off for `/validate` while
-  Story 157 carries the discovered product fix.
+  route sequence, and established the dedicated internal UI-scout lane with the
+  first dated report. Next step: rerun methodology compile/check, then hand
+  Story 156 off for `/validate` while Story 157 carries the discovered product
+  fix.
 - 20260410-2117 — checks: regenerated the methodology outputs after adding the
   report lane and Story 157, then reran the checker sequentially to avoid a
   compile-vs-check race. Evidence: `pnpm methodology:compile` rewrote
@@ -445,3 +448,20 @@ N/A
   now-terminal `full-pipeline-ui-acceptance` sequencing-bias entry from
   `docs/methodology/state.yaml` so methodology compile no longer fails after
   Story 156 becomes `Done`. Next step: `/check-in-diff`.
+- 20260410-2338 — validation-rerun: audited the Storybook-inspired UI-scout
+  framework migration against Story 156's reporting-lane contract. Evidence:
+  reran `pnpm methodology:compile`, `pnpm methodology:check`,
+  `make test-unit PYTHON=/Users/cam/Documents/Projects/cine-forge/.venv/bin/python`
+  (`693 passed, 157 deselected`), `/Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m ruff check src/ tests/`,
+  `pnpm --dir ui run lint` (warnings only, no errors), `cd ui && npx tsc -b`,
+  `pnpm --dir ui run build`, `./scripts/sync-agent-skills.sh --check`, and
+  `git diff --check`; repo-wide grep for the retired report path is now clean.
+  Follow-up fix during validation: tightened `scripts/methodology-graph.js` so
+  missing `ui_scout` state is an explicit validation failure instead of reading
+  as "fresh unknown." Browser verification was not rerun in this pass because
+  the migration changed docs/methodology/compiler surfaces rather than runtime
+  UI files; Story 156's prior desktop/mobile evidence remains in the existing
+  report but was not refreshed here. Decision: Story 156 still closes cleanly,
+  the migration does not require reopening it, and the remaining live action is
+  a fresh FP1 UI-scout rerun after Story 157. Next step: rerun the canonical
+  walkthrough when ready so `state.ui_scout` can move off `recheck_due`.

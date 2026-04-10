@@ -66,7 +66,7 @@
       "absorbs": ["Operator Console & Interactive UX (old 5)"],
       "notes": [
         "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes.",
-        "A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough so UI completeness and polish stay inspectable on the honest current product path."
+        "A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough in the dedicated internal ui-scout lane so UI completeness and polish stay inspectable on the honest current product path."
       ],
       "last_reviewed": "2026-04-10"
     },
@@ -241,6 +241,10 @@
         "target": "pipeline-throughput-efficiency",
         "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
         "story_refs": ["155"]
+      },
+      {
+        "target": "ui-product-truth-scouting",
+        "reason": "If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent."
       }
     ],
     "campaigns": [
@@ -255,6 +259,12 @@
         "status": "completed",
         "story_refs": ["147"],
         "notes": "Aligned problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation rules, blocked-story metadata, and post-close-out planning-truth validation after the graph+state migration."
+      },
+      {
+        "id": "ui-product-truth-scouting",
+        "status": "active",
+        "story_refs": [],
+        "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage."
       }
     ]
   },
@@ -319,6 +329,11 @@
     },
     "sections": [
       {
+        "id": "ui-product-truth-scouting",
+        "title": "UI Product Truth Scouting",
+        "markdown": "> CineForge now keeps a dedicated internal UI-scout lane in `docs/ui-scout.md` and `docs/ui-scout/`.\n> This is separate from external-source scouting in `docs/scout/`.\n>\n> The job of this lane is simple: periodically walk the canonical full-pipeline fixture through the real surfaced UI, record whether it still feels story-centric, polished, and honest, and spawn focused follow-up stories when it does not.\n>\n> During triage, stale or awaiting-recheck coverage here is a real methodology signal, not an optional polish note."
+      },
+      {
         "id": "notes-from-cam",
         "title": "Notes From Cam",
         "lines": [
@@ -362,6 +377,22 @@
         ]
       }
     ]
+  },
+  "ui_scout": {
+    "cadence": {
+      "max_days_without_run": 14
+    },
+    "last_run_at": "2026-04-10",
+    "last_run_story_id": "156",
+    "scenarios": {
+      "FP1": {
+        "label": "Full Pipeline Canonical Fixture",
+        "last_checked": "2026-04-10",
+        "latest_report": "2026-04-10-open-frequency-local",
+        "status": "recheck_due",
+        "follow_up_story_refs": ["157"]
+      }
+    }
   },
   "architecture_audits": {
     "cadence": {

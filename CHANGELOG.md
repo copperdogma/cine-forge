@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-10-10] — Harden UI-scout planning lane (Story 156)
+
+### Added
+- Added a dedicated internal UI-scout lane with canonical index and template files so recurring product-truth walkthroughs now live separately from external-source scouting
+
+### Changed
+- Changed `spec:5.6`, methodology state, generated planning surfaces, triage guidance, and the full-pipeline walkthrough runbook to route recurring UI truth checks through the new `docs/ui-scout*` lane
+- Changed the methodology compiler to validate `ui_scout` state and surface freshness warnings directly in generated planning output
+
+### Fixed
+- Fixed stale Story 156 and Story 157 references that still pointed at the retired full-pipeline acceptance report path
+- Fixed compiler behavior so missing `ui_scout` state is treated as an explicit validation failure instead of reading as implicitly fresh
+
 ## [2026-04-10-09] — Archive stale chat CTA paths (Story 157)
 
 ### Added
