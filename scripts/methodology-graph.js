@@ -22,6 +22,7 @@ const ADRS_DIR = join(ROOT, "docs/decisions");
 const STORY_ID_RE = "[0-9]{3}[a-z]?";
 const STORY_FILE_RE = new RegExp(`^story-(${STORY_ID_RE})-.+\\.md$`, "i");
 const STORY_HEADING_RE = new RegExp(`^#\\s+Story\\s+(${STORY_ID_RE})\\s*(?:[:\\u2014-])\\s+(.+)$`, "i");
+const WORK_LOG_ENTRY_RE = /^(?<stamp>\d{8}-\d{4})\s+—\s+(?<summary>.+)$/;
 const VALID_STORY_STATUSES = new Set(["Draft", "Pending", "In Progress", "Done", "Deferred", "Blocked", "Cancelled"]);
 const TERMINAL_STORY_STATUSES = new Set(["Done", "Deferred", "Cancelled"]);
 const REQUIRED_STORY_FRONTMATTER_KEYS = [
@@ -273,6 +274,15 @@ function uniqueSorted(values, compare) {
   return output.sort(compare || ((a, b) => String(a).localeCompare(String(b))));
 }
 
+function leadingSpaces(line) {
+  return line.length - line.trimStart().length;
+}
+
+function stripInlineComment(value) {
+  const hash = value.indexOf("#");
+  return (hash >= 0 ? value.slice(0, hash) : value).trim();
+}
+
 function storyIdParts(id) {
   const match = String(id).match(/^(\d+)([a-z]?)$/i);
   if (!match) return { number: Number.POSITIVE_INFINITY, suffix: String(id) };
@@ -516,6 +526,276 @@ function summarizeInlineText(value, maxLength = 96) {
   return `${inline.slice(0, maxLength - 1).trimEnd()}…`;
 }
 
+function compactDateToIso(value) {
+  return `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}`;
+}
+
+function summarizeText(value, maxLength = 220) {
+  if (!value) return "";
+  const inline = String(value).replace(/\s+/g, " ").trim();
+  if (!inline) return "";
+  if (inline.length <= maxLength) return inline;
+  return `${inline.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
+function extractLastWorkLogEntry(workLog) {
+  if (!workLog) return null;
+  const matches = workLog
+    .split(/\r?\n/)
+    .map((line) => line.trim().match(WORK_LOG_ENTRY_RE))
+    .filter(Boolean);
+  if (matches.length === 0) return null;
+  const last = matches[matches.length - 1];
+  const timestamp = last.groups?.stamp || last[1];
+  return {
+    timestamp,
+    date: compactDateToIso(timestamp.slice(0, 8)),
+    summary: summarizeText(last.groups?.summary || last[2]),
+  };
+}
+
+function collectSectionLines(blockLines, key, indent) {
+  const marker = `${" ".repeat(indent)}${key}:`;
+  const start = blockLines.findIndex((line) => line.startsWith(marker));
+  if (start === -1) return [];
+  const collected = [];
+  for (let index = start + 1; index < blockLines.length; index += 1) {
+    const line = blockLines[index];
+    if (line.trim() && leadingSpaces(line) <= indent) break;
+    collected.push(line);
+  }
+  return collected;
+}
+
+function parseMappingListSection(sectionLines, itemIndent, fieldIndent, listFieldNames = new Set()) {
+  const items = [];
+  let current = null;
+  let currentField = null;
+  let currentListField = null;
+
+  for (const line of sectionLines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    const indent = leadingSpaces(line);
+
+    if (indent === itemIndent && trimmed.startsWith("- ")) {
+      if (current) items.push(current);
+      current = {};
+      currentField = null;
+      currentListField = null;
+      const rest = trimmed.slice(2);
+      const match = rest.match(/^([a-z_]+):(?:\s*(.*))?$/);
+      if (match) {
+        const key = match[1];
+        const rawValue = match[2] ?? "";
+        if (listFieldNames.has(key) && !rawValue) {
+          current[key] = [];
+          currentListField = key;
+        } else {
+          current[key] = stripQuotes(stripInlineComment(rawValue));
+          currentField = key;
+        }
+      }
+      continue;
+    }
+
+    if (!current) continue;
+
+    if (currentListField && indent === fieldIndent + 2 && trimmed.startsWith("- ")) {
+      const rest = trimmed.slice(2);
+      const conditionMatch = rest.match(/^condition:\s*(.+)$/);
+      const value = stripQuotes(stripInlineComment(conditionMatch ? conditionMatch[1] : rest));
+      current[currentListField].push(value);
+      continue;
+    }
+
+    if (indent === fieldIndent) {
+      const match = trimmed.match(/^([a-z_]+):(?:\s*(.*))?$/);
+      if (match) {
+        const key = match[1];
+        const rawValue = match[2] ?? "";
+        currentListField = null;
+        if (listFieldNames.has(key) && !rawValue) {
+          current[key] = [];
+          currentListField = key;
+          currentField = null;
+        } else {
+          current[key] = stripQuotes(stripInlineComment(rawValue === ">" ? "" : rawValue));
+          currentField = key;
+        }
+        continue;
+      }
+    }
+
+    if (indent > fieldIndent && currentField && !currentListField) {
+      const existing = typeof current[currentField] === "string" ? current[currentField] : "";
+      current[currentField] = `${existing} ${trimmed}`.trim();
+    }
+  }
+
+  if (current) items.push(current);
+  return items;
+}
+
+function parseRetryWhenSection(sectionLines) {
+  return uniqueSorted(
+    sectionLines
+      .map((line) => {
+        const trimmed = line.trim();
+        if (leadingSpaces(line) !== 6 || !trimmed.startsWith("- ")) return "";
+        const rest = trimmed.slice(2);
+        const match = rest.match(/^condition:\s*(.+)$/);
+        return stripQuotes(stripInlineComment(match ? match[1] : rest));
+      })
+      .filter(Boolean),
+  );
+}
+
+function parseAttemptSection(sectionLines) {
+  return parseMappingListSection(sectionLines, 6, 8, new Set(["retry_when"]))
+    .map((item) => ({
+      id: String(item.id || "").trim(),
+      date: String(item.date || "").trim(),
+      approach: summarizeText(String(item.approach || "").trim(), 400),
+      note: summarizeText(String(item.note || "").trim(), 400),
+      retryStatus: String(item.retry_status || "").trim(),
+      retryWhen: uniqueSorted(Array.isArray(item.retry_when) ? item.retry_when.map(String).filter(Boolean) : []),
+    }))
+    .filter((item) => item.id);
+}
+
+function parseScoreSection(sectionLines) {
+  return parseMappingListSection(sectionLines, 6, 8)
+    .map((item) => ({
+      model: String(item.model || "").trim(),
+      measured: String(item.measured || "").trim(),
+      note: summarizeText(String(item.note || "").trim(), 400),
+    }))
+    .filter((item) => item.model || item.measured || item.note);
+}
+
+function latestItem(items, dateKey, fallbackKey) {
+  if (!items.length) return null;
+  return items
+    .slice()
+    .sort(
+      (a, b) =>
+        String(a[dateKey] || "").localeCompare(String(b[dateKey] || "")) ||
+        String(a[fallbackKey] || "").localeCompare(String(b[fallbackKey] || "")),
+    )
+    .at(-1);
+}
+
+function summarizeStoryActionability(story) {
+  const postureMap = {
+    "In Progress": "in-progress",
+    Pending: "ready-now",
+    Blocked: "blocked",
+    Draft: "draft",
+    Done: "completed",
+    Deferred: "completed",
+    Cancelled: "completed",
+  };
+  const posture = postureMap[story.status] || "unknown";
+  return {
+    sourceKind: "story",
+    sourceId: story.id,
+    sourcePath: story.path,
+    recommendedNow: posture === "in-progress" || posture === "ready-now",
+    posture,
+    whyNow: summarizeText(story.lastWorkLogEntry?.summary),
+    lastRelevantAction: {
+      date: story.lastWorkLogEntry?.date || null,
+      sourceType: story.lastWorkLogEntry ? "story-work-log" : "story-status",
+      source: story.path,
+      summary: story.lastWorkLogEntry?.summary || "",
+    },
+  };
+}
+
+function summarizeEvalActionability(evalRecord) {
+  const latestAttempt = latestItem(evalRecord.attempts, "date", "id");
+  const latestScore = evalRecord.latestScore;
+  const retryWhen = latestAttempt?.retryWhen?.length ? latestAttempt.retryWhen.slice() : evalRecord.retryWhen.slice();
+  const retryTriggerStatus =
+    latestAttempt?.retryStatus === "exhausted-until-new-trigger"
+      ? "exhausted"
+      : retryWhen.length > 0
+        ? "waiting"
+        : "none";
+  const postureMap = {
+    waiting: "wait-for-trigger",
+    exhausted: "trigger-exhausted",
+    none: "no-trigger-recorded",
+  };
+  return {
+    sourceKind: "eval",
+    sourceId: evalRecord.id,
+    sourcePath: evalRecord.path,
+    recommendedNow: false,
+    posture: postureMap[retryTriggerStatus],
+    whyNow: latestAttempt?.note || latestScore?.note || "",
+    retryTriggerStatus,
+    retryWhen,
+    lastRelevantAction: latestAttempt
+      ? {
+          date: latestAttempt.date || null,
+          sourceType: "eval-attempt",
+          source: evalRecord.path,
+          sourceId: latestAttempt.id,
+          summary: latestAttempt.note || latestAttempt.approach,
+        }
+      : {
+          date: latestScore?.measured || null,
+          sourceType: "eval-score",
+          source: evalRecord.path,
+          summary: latestScore?.note || "",
+        },
+  };
+}
+
+function selectStoryByPosture(stories, postureRank) {
+  return stories
+    .slice()
+    .sort((a, b) => {
+      const aRank = postureRank[a.actionability?.posture || "unknown"] ?? 99;
+      const bRank = postureRank[b.actionability?.posture || "unknown"] ?? 99;
+      const rankDelta = aRank - bRank;
+      if (rankDelta !== 0) return rankDelta;
+      const aDate = a.actionability?.lastRelevantAction.date || "";
+      const bDate = b.actionability?.lastRelevantAction.date || "";
+      return bDate.localeCompare(aDate) || compareStoryIdStrings(a.id, b.id);
+    })[0];
+}
+
+function selectCompromiseActionability(stories, evals) {
+  const actionableStories = stories.filter((story) => story.actionability?.recommendedNow);
+  let selected = null;
+  if (actionableStories.length > 0) {
+    selected = { ...selectStoryByPosture(actionableStories, { "in-progress": 0, "ready-now": 1 }).actionability };
+  } else if (evals.length > 0) {
+    selected = {
+      ...evals
+        .slice()
+        .sort((a, b) => {
+          const aExhausted = a.actionability?.retryTriggerStatus === "exhausted" ? 1 : 0;
+          const bExhausted = b.actionability?.retryTriggerStatus === "exhausted" ? 1 : 0;
+          const exhaustedDelta = aExhausted - bExhausted;
+          if (exhaustedDelta !== 0) return exhaustedDelta;
+          const aDate = a.actionability?.lastRelevantAction.date || "";
+          const bDate = b.actionability?.lastRelevantAction.date || "";
+          return bDate.localeCompare(aDate) || a.id.localeCompare(b.id);
+        })[0].actionability,
+    };
+  } else if (stories.length > 0) {
+    selected = { ...selectStoryByPosture(stories, { blocked: 0, draft: 1, completed: 2, unknown: 3 }).actionability };
+  }
+  if (!selected) return null;
+  selected.storyIds = stories.map((story) => story.id);
+  selected.evalIds = evals.map((entry) => entry.id);
+  return selected;
+}
+
 function parseIdeal() {
   const lines = readUtf8(IDEAL_PATH).split(/\r?\n/);
   const requirements = [];
@@ -611,6 +891,7 @@ function parseStory(path) {
   const blockerSummary = normalizeOptionalSectionText(extractMarkdownSection(parsed.body, "Blocker Summary"));
   const blockerEvidence = normalizeOptionalSectionText(extractMarkdownSection(parsed.body, "Blocker Evidence"));
   const unblockCondition = normalizeOptionalSectionText(extractMarkdownSection(parsed.body, "Unblock Condition"));
+  const lastWorkLogEntry = extractLastWorkLogEntry(extractMarkdownSection(parsed.body, "Work Log"));
   const missingFrontmatterKeys = parsed.hasFrontmatter
     ? REQUIRED_STORY_FRONTMATTER_KEYS.filter((key) => !(key in parsed.frontmatter))
     : REQUIRED_STORY_FRONTMATTER_KEYS.slice();
@@ -634,6 +915,7 @@ function parseStory(path) {
     blockerSummary,
     blockerEvidence,
     unblockCondition,
+    lastWorkLogEntry,
     metadataSource: parsed.hasFrontmatter ? "frontmatter" : "legacy",
     missingFrontmatterKeys,
   };
@@ -695,9 +977,14 @@ function parseEvalRegistry() {
   const records = [];
   let current = null;
   let currentListField = null;
+  let currentTextField = null;
+  let block = [];
 
   const flush = () => {
     if (!current || !current.id) return;
+    const topLevelRetryWhen = parseRetryWhenSection(collectSectionLines(block, "retry_when", 4));
+    const attempts = parseAttemptSection(collectSectionLines(block, "attempts", 4));
+    const latestScore = latestItem(parseScoreSection(collectSectionLines(block, "scores", 4)), "measured", "model") || null;
     const specRefs = uniqueSorted(current.spec_refs || [], compareSpecRefs);
     const storyIds = uniqueSorted(current.story_refs || [], compareStoryIdStrings);
     const categoryRefs = uniqueSorted(current.category_refs || [], compareSpecRefs);
@@ -707,11 +994,15 @@ function parseEvalRegistry() {
       name: current.name || current.id,
       type: current.type || "unknown",
       command: current.command || "",
+      description: summarizeText(current.description || "", 500),
       path: toRelative(EVALS_PATH),
       specRefs,
       storyIds,
       categoryRefs,
       compromiseIds,
+      retryWhen: topLevelRetryWhen,
+      attempts,
+      latestScore,
       declaredSpecRefs: specRefs,
       declaredStoryIds: storyIds,
       declaredCategoryRefs: categoryRefs,
@@ -732,10 +1023,13 @@ function parseEvalRegistry() {
         compromise_refs: [],
         seenLineageKeys: new Set(),
       };
+      block = [line];
       currentListField = null;
+      currentTextField = null;
       continue;
     }
     if (!current) continue;
+    block.push(line);
 
     const lineageMatch = line.match(/^ {4}(spec_refs|story_refs|category_refs|compromise_refs):(?:\s+(.*))?$/);
     if (lineageMatch) {
@@ -743,6 +1037,7 @@ function parseEvalRegistry() {
       const rawValue = lineageMatch[2] ? lineageMatch[2].trim() : "";
       current.seenLineageKeys.add(key);
       currentListField = null;
+      currentTextField = null;
       if (!rawValue) {
         current[key] = [];
         currentListField = key;
@@ -762,10 +1057,24 @@ function parseEvalRegistry() {
       continue;
     }
 
-    if (/^ {4}[a-z0-9_]+:/i.test(line)) currentListField = null;
+    if (/^ {4}[a-z0-9_]+:/i.test(line)) {
+      currentListField = null;
+      currentTextField = null;
+    }
 
-    const fieldMatch = line.match(/^ {4}(name|type|command):\s+(.+)$/);
-    if (fieldMatch) current[fieldMatch[1]] = stripQuotes(fieldMatch[2]);
+    const fieldMatch = line.match(/^ {4}(name|type|command|description):(?:\s+(.*))?$/);
+    if (fieldMatch) {
+      const key = fieldMatch[1];
+      const rawValue = fieldMatch[2] ? fieldMatch[2].trim() : "";
+      current[key] = stripQuotes(rawValue === ">" ? "" : rawValue);
+      currentTextField = key;
+      continue;
+    }
+
+    if (leadingSpaces(line) > 4 && currentTextField && !currentListField) {
+      const existing = typeof current[currentTextField] === "string" ? current[currentTextField] : "";
+      current[currentTextField] = summarizeText(`${existing} ${line.trim()}`.trim(), 500);
+    }
   }
 
   flush();
@@ -1342,6 +1651,7 @@ function buildGraph() {
 
   for (const story of stories) {
     story.categoryRefs = uniqueSorted(story.categoryRefs, compareSpecRefs);
+    story.actionability = summarizeStoryActionability(story);
   }
 
   const storyById = new Map(stories.map((story) => [story.id, story]));
@@ -1382,6 +1692,7 @@ function buildGraph() {
       evalRecord.declaredCategoryRefs.length > 0 ? evalRecord.declaredCategoryRefs : evalRecord.derivedCategoryRefs,
       compareSpecRefs,
     );
+    evalRecord.actionability = summarizeEvalActionability(evalRecord);
   }
 
   const categories = spec.categories.map((category) => ({
@@ -1398,7 +1709,12 @@ function buildGraph() {
   const compromises = spec.compromises.map((entry) => ({
     ...entry,
     state: (state.compromises || {})[entry.id] || null,
+    storyIds: stories.filter((story) => story.compromiseIds.includes(entry.id)).map((story) => story.id).sort(compareStoryIdStrings),
     evalIds: evals.filter((evalRecord) => evalRecord.compromiseIds.includes(entry.id)).map((evalRecord) => evalRecord.id).sort(),
+    actionability: selectCompromiseActionability(
+      stories.filter((story) => story.compromiseIds.includes(entry.id)),
+      evals.filter((evalRecord) => evalRecord.compromiseIds.includes(entry.id)),
+    ),
   }));
 
   const validation = validateGraph(state, spec, stories, adrs, evals);

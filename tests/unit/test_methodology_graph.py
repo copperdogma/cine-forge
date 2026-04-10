@@ -72,8 +72,32 @@ def _seed_methodology_repo(
               "target_story_interval": 5
             },
             "domains": {}
+          },
+          "ui_scout": {
+            "cadence": {
+              "max_days_without_run": 7
+            },
+            "last_run_at": "2026-04-04",
+            "last_run_story_id": "001",
+            "scenarios": {
+              "FP1": {
+                "label": "Canonical fixture",
+                "last_checked": "2026-04-04",
+                "latest_report": "report-001",
+                "status": "pass",
+                "follow_up_story_refs": []
+              }
+            }
           }
         }
+        """,
+    )
+    _write(
+        tmp_path / "docs" / "ui-scout" / "report-001.md",
+        """
+        # UI Scout Report 001
+
+        Fixture report for methodology graph tests.
         """,
     )
     _write(tmp_path / "docs" / "evals" / "registry.yaml", "")
@@ -189,6 +213,8 @@ def test_methodology_graph_exports_blocker_metadata_for_blocked_story(tmp_path: 
         == "Current compiler contract still disagrees with the skill surface."
     )
     assert story["unblockCondition"] == "Land the compiler and skill alignment patch."
+    assert story["lastWorkLogEntry"]["date"] == "2026-04-04"
+    assert story["actionability"]["posture"] == "blocked"
 
     stories_index = (tmp_path / "docs" / "stories.md").read_text(encoding="utf-8")
     assert (
@@ -218,6 +244,107 @@ def test_methodology_graph_rejects_blocked_story_with_placeholder_blocker_fields
     assert "story 001 is Blocked but missing Blocker Summary" in result.stderr
     assert "story 001 is Blocked but missing Blocker Evidence" in result.stderr
     assert "story 001 is Blocked but missing Unblock Condition" in result.stderr
+
+
+def test_methodology_graph_exports_eval_actionability(tmp_path: Path) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Pending",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: sample-detector
+            name: Sample Detector
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:11
+            compromise_refs: []
+            scores:
+              - model: "Gemini 2.5 Flash"
+                measured: 2026-04-04
+                note: "Current detector is still below the target."
+            attempts:
+              - id: "001"
+                date: 2026-04-04
+                status: partial
+                approach: "Ran the bounded detector once."
+                note: "Same harness still misses the edge case."
+                retry_status: exhausted-until-new-trigger
+                retry_when:
+                  - condition: new-approach
+                    note: "Only retry after a materially new substrate appears."
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    graph = json.loads(
+        (tmp_path / "docs" / "methodology" / "graph.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    eval_record = graph["evals"][0]
+    assert eval_record["actionability"]["retryTriggerStatus"] == "exhausted"
+    assert eval_record["actionability"]["retryWhen"] == ["new-approach"]
+    assert eval_record["actionability"]["lastRelevantAction"]["date"] == "2026-04-04"
+
+
+def test_methodology_graph_preserves_eval_description_and_top_level_retry_when(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Pending",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: sample-eval
+            name: Sample Eval
+            type: quality
+            description: >
+              Sample eval description that should survive graph compilation.
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:11
+            compromise_refs: []
+            retry_when:
+              - golden-fix
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    graph = json.loads(
+        (tmp_path / "docs" / "methodology" / "graph.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    eval_record = graph["evals"][0]
+    assert (
+        eval_record["description"]
+        == "Sample eval description that should survive graph compilation."
+    )
+    assert eval_record["actionability"]["retryWhen"] == ["golden-fix"]
+    assert eval_record["actionability"]["retryTriggerStatus"] == "waiting"
 
 
 def test_methodology_graph_renders_structured_current_execution_map(
@@ -293,6 +420,22 @@ def test_methodology_graph_renders_structured_current_execution_map(
               "target_story_interval": 5
             },
             "domains": {}
+          },
+          "ui_scout": {
+            "cadence": {
+              "max_days_without_run": 7
+            },
+            "last_run_at": "2026-04-04",
+            "last_run_story_id": "001",
+            "scenarios": {
+              "FP1": {
+                "label": "Canonical fixture",
+                "last_checked": "2026-04-04",
+                "latest_report": "report-001",
+                "status": "pass",
+                "follow_up_story_refs": []
+              }
+            }
           }
         }
         """,
@@ -373,6 +516,22 @@ def test_methodology_graph_renders_blocked_line_as_health_flag_not_execution_lan
               "target_story_interval": 5
             },
             "domains": {}
+          },
+          "ui_scout": {
+            "cadence": {
+              "max_days_without_run": 7
+            },
+            "last_run_at": "2026-04-04",
+            "last_run_story_id": "001",
+            "scenarios": {
+              "FP1": {
+                "label": "Canonical fixture",
+                "last_checked": "2026-04-04",
+                "latest_report": "report-001",
+                "status": "pass",
+                "follow_up_story_refs": []
+              }
+            }
           }
         }
         """,
@@ -459,6 +618,22 @@ def test_methodology_graph_rejects_stale_execution_map_and_campaign_refs(
               "target_story_interval": 5
             },
             "domains": {}
+          },
+          "ui_scout": {
+            "cadence": {
+              "max_days_without_run": 7
+            },
+            "last_run_at": "2026-04-04",
+            "last_run_story_id": "001",
+            "scenarios": {
+              "FP1": {
+                "label": "Canonical fixture",
+                "last_checked": "2026-04-04",
+                "latest_report": "report-001",
+                "status": "pass",
+                "follow_up_story_refs": []
+              }
+            }
           }
         }
         """,
@@ -643,6 +818,22 @@ def test_methodology_graph_rejects_unrecognized_structured_state_keys(
               "target_story_interval": 5
             },
             "domains": {}
+          },
+          "ui_scout": {
+            "cadence": {
+              "max_days_without_run": 7
+            },
+            "last_run_at": "2026-04-04",
+            "last_run_story_id": "001",
+            "scenarios": {
+              "FP1": {
+                "label": "Canonical fixture",
+                "last_checked": "2026-04-04",
+                "latest_report": "report-001",
+                "status": "pass",
+                "follow_up_story_refs": []
+              }
+            }
           },
           "unexpected_top_level": true
         }

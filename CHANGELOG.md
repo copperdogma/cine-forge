@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-10-11] — Compile triage actionability into methodology graph
+
+### Added
+- Added methodology-graph regression coverage that proves eval descriptions and top-level `retry_when` metadata survive CineForge's compiled methodology graph output.
+
+### Changed
+- Changed triage guidance, triage-evals guidance, and methodology runbooks to use compiled actionability metadata when deciding whether a line should be retried now.
+- Changed the methodology graph compiler and generated graph so stories, evals, and compromises now publish reusable actionability summaries and retry posture for triage.
+
+### Fixed
+- Fixed a compiler carry-through gap where eval descriptions and top-level retry conditions could be dropped from the generated methodology graph.
+
 ## [2026-04-10-10] — Harden UI-scout planning lane (Story 156)
 
 ### Added

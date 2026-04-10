@@ -18,13 +18,19 @@ This is the operational companion to `/triage-evals`.
    - Open `docs/ideal.md`
    - Open `docs/spec.md`
    - Open `docs/methodology/state.yaml`
+   - Open `docs/methodology/graph.json`
    - Open `docs/build-map.md`
+   - Prefer the compiled eval/compromise actionability fields in `graph.json`
+     for last-action and retry-posture reads before reconstructing them
+     manually from registry prose.
    - Goal: identify the current live gap and whether it is even waiting on eval evidence
 
 2. **[script] Read the current registry and repo state**
    - Open `docs/evals/registry.yaml`
    - Run `git rev-parse --short HEAD`
    - Run `git status --short`
+   - Capture the last meaningful action date and artifact for the line you are
+     considering.
    - Goal: know whether score entries are obviously stale relative to current code, which systems/compromises would benefit most from eval movement, and whether the right move is a `climb`, `hold`, or `converge` action
    - If the latest attempt has `retry_when` or `retry_status` metadata, open the
      referenced attempt file before calling the eval retry-ready
@@ -77,6 +83,8 @@ This is the operational companion to `/triage-evals`.
 - Use `scripts/check-compromises.py` and `scripts/discover-models.py --summary` before claiming an eval is the highest leverage next step
 - End with a concrete next action per recommended item
 - Treat `retry_when` as dormant until a materially new trigger actually appears
+- Name the last meaningful action and the current why-now trigger before
+  recommending any rerun
 
 ### Ask first
 
@@ -121,3 +129,6 @@ This is the operational companion to `/triage-evals`.
 - 2026-04-04 — `retry_when` is a detector, not a standing todo. Once the same
   trigger has been checked and found unchanged, the item should stay exhausted
   until a materially new trigger appears.
+- 2026-04-10 — "Still red" and "still important" are not enough. Eval triage
+  should explain what changed since the last meaningful action or keep the line
+  in deferrals/health flags.

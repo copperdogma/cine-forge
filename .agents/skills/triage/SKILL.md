@@ -8,7 +8,16 @@ user-invocable: true
 
 > Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current state phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
 
-`/triage` is the proactive meta-skill. Its job is to choose the **most important live methodology gap** before looking for convenient work.
+`/triage` is the proactive meta-skill. Its job is to choose the **most important live methodology gap** before looking for convenient work, then recommend the highest-leverage actionable move under current repo reality.
+
+Important is not enough by itself. `/triage` must answer both:
+
+- what gap matters most?
+- why is this the right thing to do now?
+
+A primary gap can stay primary while still be the wrong recommended action if
+nothing materially changed since the last attempt, recommendation, or
+measurement pass.
 
 The required order is:
 
@@ -72,6 +81,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - `docs/spec.md`
    - `docs/methodology/state.yaml`
    - `docs/methodology/graph.json`
+   - Prefer the compiled actionability surfaces in
+     `graph["spec"]["compromises"][*]["actionability"]`,
+     `graph["stories"][*]["actionability"]`, and
+     `graph["evals"][*]["actionability"]` before reconstructing retry posture
+     or recency manually from story/eval prose.
    - `docs/build-map.md`
    - recent `git log --oneline -20`
    - Goal: identify the biggest live gap or simplification opportunity before reading stories as a backlog.
@@ -88,12 +102,22 @@ When invoked with no scope, run a methodology-first orchestration pass:
      - simplification leverage
    - Also name 1-2 runner-up gaps
 
-3. **Read decision constraints for that gap**
+3. **Run the why-now / actionability gate**
+   - Before recommending work under the primary gap, answer:
+     - what was the last meaningful action on this line?
+     - on what date did it happen?
+     - what artifact, story, eval, or recommendation proves that?
+     - what materially changed since then?
+   - If the gap has no live trigger and no genuinely new question, keep it as
+     the primary gap or a health flag, but do not recommend repeating that
+     line just because it is still important.
+
+4. **Read decision constraints for that gap**
    - Open the relevant ADRs / design docs for the chosen gap
    - If none apply, say so explicitly
    - Goal: avoid picking a next action that fights a settled architecture decision
 
-4. **Query the existing work under that gap**
+5. **Query the existing work under that gap**
    - Stories: `/triage-stories`
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
@@ -109,7 +133,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - Do **not** let a blocked story or an exhausted eval retry masquerade as
      actionable just because it is the most continuous existing line
 
-5. **Choose one next action**
+6. **Choose one next action**
    Only rank actionable candidates here. Blocked stories with unmet unblock
    conditions and eval retries whose triggers remain exhausted belong under
    `Health Flags`, not `Recommended Action`.
@@ -121,7 +145,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
      ready work unless the stronger line is genuinely not actionable yet
    - only fall back to a smaller unrelated ready story if the larger gap is genuinely not actionable yet, and explain why
 
-6. **Return a short report**
+7. **Return a short report**
 
 ```markdown
 ## Triage
@@ -130,6 +154,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - {Ideal promise or simplification opportunity}
 - Spec: {spec refs}
 - State: {category + substrate + phase}
+
+### Actionability
+- Last relevant action: {date + story/eval/artifact}
+- Why now: {materially new trigger or "none"}
+- If "none": {why the primary gap is not the recommended action today}
 
 ### Recommended Action
 - {one next action}
@@ -164,3 +193,5 @@ When invoked with no scope, run a methodology-first orchestration pass:
   it feel active; if the unblock condition is unmet, keep it in `Health Flags`
 - Never treat a previously consumed `retry_when` condition as fresh evidence
   without a materially new trigger
+- Never recommend repeating a line just because it is still the biggest open
+  gap; cite the last attempt and the current why-now trigger explicitly

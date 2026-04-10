@@ -10,6 +10,10 @@ user-invocable: true
 
 Cheap, read-only eval diagnosis. Use this when the question is "does eval work deserve priority for the current methodology gap?" rather than "go improve this eval now."
 
+The core filter is actionability, not abstract importance. A red or stale eval
+line is not recommendable unless the diagnosis can name why that line should be
+revisited now.
+
 Companion runbook: `docs/runbooks/triage-evals.md`
 
 ## Purpose
@@ -34,7 +38,11 @@ Companion runbook: `docs/runbooks/triage-evals.md`
    - Open `docs/ideal.md`
    - Open `docs/spec.md`
    - Open `docs/methodology/state.yaml`
+   - Open `docs/methodology/graph.json`
    - Open `docs/build-map.md`
+   - Prefer `graph["evals"][*]["actionability"]` and
+     `graph["spec"]["compromises"][*]["actionability"]` for last-action and
+     retry-posture reads before reconstructing them manually.
    - Goal: identify which live gap or compromise eval work would actually serve
 
 2. **Read the registry** — open `docs/evals/registry.yaml` and note:
@@ -103,7 +111,9 @@ If no id was passed:
 
 3. For each top candidate, answer:
    - What is the current state?
+   - What was the last meaningful action, and on what date?
    - Why does it matter now?
+   - What specifically changed since the last action?
    - What is the cheapest next step?
    - Which state phase does it support?
    - Is the problem likely model-wrong, golden-wrong, stale-measurement, or architecture-limited?
@@ -154,6 +164,8 @@ Present the result as:
 - Do not recommend the same failed approach again without new evidence from attempts, models, or goldens
 - Do not treat a consumed `retry_when` condition as newly actionable until a
   materially new trigger actually appears
+- Do not convert "big gap" or "red line" into "do this now" without naming a
+  concrete why-now trigger or a genuinely new unanswered question
 - Do not treat every red compromise eval as blocking; use AGENTS expected-fail semantics
 - When a single model default depends on an eval, stale defaults matter, but they still do not outrank a bigger unrelated `climb` gap without explanation
 - Do not force eval work to the top if the current system bottleneck is product substrate rather than measurement

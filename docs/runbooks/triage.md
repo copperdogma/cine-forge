@@ -30,7 +30,10 @@ This is the operational companion to `/triage`.
      - `docs/methodology-ideal-spec-compromise.md`
      - `docs/spec.md`
      - `docs/methodology/state.yaml`
+     - `docs/methodology/graph.json`
      - `docs/build-map.md`
+   - Prefer the compiled actionability surfaces in `graph.json` before
+     reconstructing retry posture or recency manually from story/eval prose.
    - Optionally inspect recent `git log --oneline -20` for momentum context.
    - Goal: identify the highest-leverage live gap before looking at the backlog.
 
@@ -41,12 +44,21 @@ This is the operational companion to `/triage`.
    - Name 1-2 runner-up gaps
    - Goal: decide what actually matters before looking for convenient work
 
-4. **[script] Read decision constraints for that gap**
+4. **[judgment] Run the why-now / actionability gate**
+   - Before recommending work under the primary gap, answer:
+     - what was the last meaningful action on this line?
+     - on what date did it happen?
+     - what artifact, story, eval, or recommendation proves that?
+     - what materially changed since then?
+   - A primary gap with no live trigger can stay primary, but it should not
+     automatically become the recommended action.
+
+5. **[script] Read decision constraints for that gap**
    - Open the relevant ADRs / design docs
    - If none apply, say so explicitly
    - Goal: make sure the next move fits the chosen architecture
 
-5. **[script] Query existing work under that gap**
+6. **[script] Query existing work under that gap**
    - Stories: `/triage-stories`
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
@@ -60,7 +72,7 @@ This is the operational companion to `/triage`.
    - Filter blocked stories with unmet unblock conditions and eval retries whose
      triggers remain exhausted into health flags before ranking candidates
 
-6. **[judgment] Synthesize one next action**
+7. **[judgment] Synthesize one next action**
    - Prefer:
      - continuing, reopening, expanding, or consolidating the strongest existing story line under the chosen gap
      - promoting or reshaping the draft that best advances the chosen gap
@@ -124,3 +136,7 @@ This is the operational companion to `/triage`.
 - 2026-04-04 — Continuity is a positive bias only for actionable lines. A
   blocked story or exhausted eval retry should stay visible as a health flag,
   not become the default recommendation by process of elimination.
+- 2026-04-10 — The methodology graph should carry actionability, not just
+  priority. If triage cannot say what changed since the last meaningful
+  action, it should usually keep the line in context or health flags rather
+  than making it the default next move.
