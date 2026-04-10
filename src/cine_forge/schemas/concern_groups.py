@@ -30,13 +30,16 @@ class MotifAnnotation(BaseModel):
 
     motif_name: str = Field(description="Short name, e.g. 'Red Door', 'Clock Ticking'")
     description: str = Field(description="What this motif represents thematically")
-    scope: Literal["world", "character", "location"] = Field(
+    scope: Literal["world", "character", "location", "prop", "scene"] = Field(
         default="world",
         description="Whether this motif is global or tied to a specific entity",
     )
     entity_id: str | None = Field(
         default=None,
-        description="Entity this motif is attached to (when scope is character/location)",
+        description=(
+            "Entity or scene this motif is attached to when scope is character, "
+            "location, prop, or scene"
+        ),
     )
     scene_refs: list[str] = Field(
         default_factory=list,

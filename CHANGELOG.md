@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-10-01] — Story World motif tracking lands (Story 100)
+
+### Added
+- Added a real `story_world_v1` creative-direction stage and project-scoped Story World artifact surface so recurring motifs exist as a first-class editable concern group
+
+### Changed
+- Changed Scene Workspace and downstream look-and-feel, sound, and shot-planning prompt assembly to consume Story World motif context instead of relying on a placeholder-only lane
+
+### Fixed
+- Fixed artifact edit refresh and numeric artifact version ordering so manual Story World edits resolve the actual latest artifact immediately
 ## [2026-04-09-05] — In-app style pack creation lands (Story 034)
 
 ### Added

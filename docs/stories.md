@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 034 closed the in-app style-pack creation lane. No story is currently in progress in this execution map.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. No story is currently in progress on the next active `spec:4` / `spec:5` lane.
 
 ### Pending — Ready To Build Now
 
@@ -36,7 +36,6 @@ No stories currently need the sequence-sensitive lane.
 
 | Story | Why |
 |---|---|
-| **100** Motif Tracking System | Valuable follow-on in the concern-group lane, but still only skeleton-scoped. |
 | **102** Promptfoo Multi-Turn Conversational Evals | Worth keeping visible, but it is less immediately executable than the current product-facing pending lane. |
 | **103** AGENTS.md Runbook Extraction (300-Line Cap) | Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog. |
 | **104** Tiered Quality Metrics for Eval Scoring | Worth keeping visible, but it is less immediately executable than the current product-facing pending lane. |
@@ -177,11 +176,11 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 100 | Motif Tracking System | Unknown | Draft | — | spec:4 | 008, 009, 011, 094 | [story-100](stories/story-100-motif-tracking.md) |
 | 023 | Character & Performance — Performance Direction | Unknown | Deferred | — | spec:4 | 005, 008, 010, 011 | [story-023](stories/story-023-actor-agents.md) |
 | 082 | Creative Direction UX | High | Done | — | spec:4, spec:5 | — | [story-082](stories/story-082-creative-direction-ux.md) |
 | 083 | Group Chat Architecture | High | Done | — | spec:4, spec:5, spec:9 | — | [story-083](stories/story-083-group-chat-architecture.md) |
 | 084 | Character Chat Agents & Story Agent Rename | High | Done | — | spec:4, spec:5 | — | [story-084](stories/story-084-character-chat-agents.md) |
+| 100 | Story World Motif Tracking | High | Done | — | spec:4 | 008, 009, 011, 094 | [story-100](stories/story-100-motif-tracking.md) |
 | 126 | Frontend Chat and Data-Layer Decomposition | High | Done | — | spec:4, spec:5, spec:9 | — | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
 | 141 | Intent Taste Stack and Transparent Creative Brief | High | Done | — | spec:4, spec:7 | 029, 095, 119, 120 | [story-141](stories/story-141-intent-taste-stack-and-transparent-creative-brief.md) |
 | 096 | \"Chat About This\" Interaction Pattern | Medium | Done | — | spec:4 | 011f, 082, 099, 126 | [story-096](stories/story-096-chat-about-this.md) |

@@ -101,6 +101,27 @@ def test_placeholder_direction_preflight_soft_blocks_cleanly(tmp_path: Path) -> 
 
 
 @pytest.mark.unit
+def test_story_world_preflight_warns_but_does_not_soft_block(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="creative_direction",
+        start_from="story_world",
+        end_at="story_world",
+        scene_scope=SceneExecutionScope(mode="all_scenes", scene_ids=[]),
+    )
+
+    assert preflight.status == "warn"
+    labels = {item.label for item in preflight.items}
+    assert "Intent & Mood missing" in labels
+    assert "Character bibles missing" in labels
+    assert "Location bibles missing" in labels
+    assert "Prop bibles missing" in labels
+    assert all(item.label != "Capability not shipped" for item in preflight.items)
+
+
+@pytest.mark.unit
 def test_ai_previz_preflight_reuses_existing_healthy_shot_plan(tmp_path: Path) -> None:
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)

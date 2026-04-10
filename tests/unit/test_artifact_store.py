@@ -46,6 +46,25 @@ def test_artifact_store_save_load_list_and_diff(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
+def test_artifact_store_list_versions_sorts_by_numeric_version(tmp_path: Path) -> None:
+    store = ArtifactStore(project_dir=tmp_path / "project")
+    for _ in range(11):
+        store.save_artifact(
+            artifact_type="story_world",
+            entity_id="project",
+            data={"value": "test"},
+            metadata=_metadata(),
+        )
+
+    versions = store.list_versions(artifact_type="story_world", entity_id="project")
+    latest = store.latest_ref(artifact_type="story_world", entity_id="project")
+
+    assert [ref.version for ref in versions] == list(range(1, 12))
+    assert latest is not None
+    assert latest.version == 11
+
+
+@pytest.mark.unit
 def test_artifact_store_immutability_enforced(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

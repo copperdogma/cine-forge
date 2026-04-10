@@ -12,6 +12,7 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.modules.creative_direction.sound_and_music_v1.main import (
     _build_intent_context,
     _build_scene_window,
+    _build_story_world_context,
     _mock_direction,
     run_module,
 )
@@ -100,6 +101,32 @@ def _intent_mood_payload() -> dict[str, Any]:
         "reference_films": ["No Country for Old Men (2007)", "A Quiet Place (2018)"],
         "natural_language_intent": "Stark, minimal soundscapes with deliberate silence",
         "style_preset_id": "minimalist",
+    }
+
+
+def _story_world_payload() -> dict[str, Any]:
+    return {
+        "visual_motif_annotations": [
+            {
+                "motif_name": "Cold Horizon",
+                "description": (
+                    "The exposed skyline appears whenever characters confront the truth."
+                ),
+                "scope": "world",
+                "scene_refs": ["scene_002"],
+            }
+        ],
+        "audio_motif_annotations": [
+            {
+                "motif_name": "Rail Hum",
+                "description": "A distant metallic hum returns when pressure becomes inescapable.",
+                "scope": "world",
+                "scene_refs": ["scene_001", "scene_002"],
+            }
+        ],
+        "narrative_rhythm_notes": (
+            "The world should strip back toward silence as the scenes progress."
+        ),
     }
 
 
@@ -212,11 +239,20 @@ def test_scene_window_last_scene() -> None:
 
 
 @pytest.mark.unit
+def test_story_world_context_surfaces_audio_motifs() -> None:
+    context = _build_story_world_context({"story_world": _story_world_payload()})
+    assert "PROJECT STORY WORLD" in context
+    assert "Rail Hum" in context
+    assert "Cold Horizon" in context
+
+
+@pytest.mark.unit
 def test_run_module_mock_mode() -> None:
     """Full module run with mock model produces valid artifacts."""
     inputs = {
         "normalize": _canonical_payload(),
         "enriched_scene_index": _scene_index_payload(),
+        "story_world": _story_world_payload(),
     }
     params = {"work_model": "mock", "skip_qa": True}
     context = {"runtime_params": {}, "run_id": "test-001", "stage_id": "sound_and_music"}

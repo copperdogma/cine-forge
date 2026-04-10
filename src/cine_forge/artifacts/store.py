@@ -97,12 +97,23 @@ class ArtifactStore:
         if not artifact_dir.exists():
             return []
         refs: list[ArtifactRef] = []
-        
+
         pattern = "manifest_v*.json" if artifact_type == "bible_manifest" else "v*.json"
         prefix = "manifest_v" if artifact_type == "bible_manifest" else "v"
-        
-        for file_path in sorted(artifact_dir.glob(pattern)):
-            version = int(file_path.stem.removeprefix(prefix))
+
+        versioned_files = sorted(
+            (
+                (
+                    int(file_path.stem.removeprefix(prefix)),
+                    file_path,
+                )
+                for file_path in artifact_dir.glob(pattern)
+                if file_path.stem.removeprefix(prefix).isdigit()
+            ),
+            key=lambda item: item[0],
+        )
+
+        for version, file_path in versioned_files:
             refs.append(
                 ArtifactRef(
                     artifact_type=artifact_type,

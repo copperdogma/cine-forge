@@ -97,6 +97,15 @@ export function useEditArtifact() {
         queryKey: ['projects', variables.projectId, 'artifacts'],
       })
       queryClient.invalidateQueries({
+        queryKey: [
+          'projects',
+          variables.projectId,
+          'artifacts',
+          variables.artifactType,
+          variables.entityId,
+        ],
+      })
+      queryClient.invalidateQueries({
         queryKey: ['projects', variables.projectId, 'pipeline-graph'],
       })
       queryClient.invalidateQueries({ queryKey: ['projects', variables.projectId] })

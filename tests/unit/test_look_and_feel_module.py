@@ -12,6 +12,7 @@ from cine_forge.modules.creative_direction.look_and_feel_v1.main import (
     _build_bible_context,
     _build_intent_context,
     _build_scene_window,
+    _build_story_world_context,
     _mock_direction,
     run_module,
 )
@@ -120,6 +121,30 @@ def _character_bible_payload() -> dict[str, Any]:
     }
 
 
+def _story_world_payload() -> dict[str, Any]:
+    return {
+        "character_design_baselines": ["aria"],
+        "location_design_baselines": ["roof"],
+        "visual_motif_annotations": [
+            {
+                "motif_name": "Window Reflection",
+                "description": "Glass reflections recur when Aria conceals what she knows.",
+                "scope": "character",
+                "entity_id": "aria",
+                "scene_refs": ["scene_001", "scene_003"],
+            }
+        ],
+        "audio_motif_annotations": [
+            {
+                "motif_name": "Air Duct Hum",
+                "description": "A low mechanical hum marks the cost of surveillance.",
+                "scope": "world",
+                "scene_refs": ["scene_001"],
+            }
+        ],
+    }
+
+
 def _seed_character_bible(project_dir, character_id: str = "aria") -> None:
     store = ArtifactStore(project_dir=project_dir)
     store.save_bible_entry(
@@ -203,11 +228,20 @@ def test_scene_window_last_scene() -> None:
 
 
 @pytest.mark.unit
+def test_story_world_context_includes_motifs() -> None:
+    context = _build_story_world_context({"story_world": _story_world_payload()})
+    assert "PROJECT STORY WORLD" in context
+    assert "Window Reflection" in context
+    assert "Air Duct Hum" in context
+
+
+@pytest.mark.unit
 def test_run_module_mock_mode() -> None:
     """Full module run with mock model produces valid artifacts."""
     inputs = {
         "normalize": _canonical_payload(),
         "enriched_scene_index": _scene_index_payload(),
+        "story_world": _story_world_payload(),
     }
     params = {"work_model": "mock", "skip_qa": True}
     context = {"runtime_params": {}, "run_id": "test-001", "stage_id": "look_and_feel"}

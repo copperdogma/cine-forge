@@ -208,6 +208,31 @@ def _seed_shot_planning_inputs(
         "user_approved": False,
     }
     _save(store, "intent_mood", "project", intent_mood)
+    story_world = {
+        "character_design_baselines": ["mara", "owen"],
+        "location_design_baselines": ["lab", "roof"],
+        "visual_motif_annotations": [
+            {
+                "motif_name": "Threshold Glass",
+                "description": (
+                    "Transparent barriers mark the line between control and consequence."
+                ),
+                "scope": "location",
+                "entity_id": "lab",
+                "scene_refs": ["scene_001"],
+            }
+        ],
+        "audio_motif_annotations": [
+            {
+                "motif_name": "Held Silence",
+                "description": "Silence lands once the moral price is undeniable.",
+                "scope": "scene",
+                "entity_id": "scene_002",
+                "scene_refs": ["scene_002"],
+            }
+        ],
+    }
+    _save(store, "story_world", "project", story_world)
 
     continuity_states = [
         {
@@ -397,6 +422,7 @@ def _seed_shot_planning_inputs(
         ],
         "character_and_performance": [],
         "intent_mood": intent_mood,
+        "story_world": story_world,
     }
     return project_dir, inputs
 
@@ -416,6 +442,7 @@ def _scene_context_for_first_scene(tmp_path: Path):
         rhythm_by_scene=_scene_map(inputs["rhythm_and_flow"]),
         look_by_scene=_scene_map(inputs["look_and_feel"]),
         sound_by_scene=_scene_map(inputs["sound_and_music"]),
+        story_world=inputs["story_world"],
         intent_mood=inputs["intent_mood"],
         char_bible_map=_character_bible_map(inputs["character_bible"]),
         perf_by_scene=perf_by_scene,
@@ -659,6 +686,16 @@ def test_previz_fast_prompt_profile_compacts_scene_prompt(tmp_path: Path) -> Non
     assert len(previz_prompt) < len(full_prompt)
     assert len(previz_prompt) <= int(len(full_prompt) * 0.75)
     assert "..." in previz_prompt
+
+
+@pytest.mark.unit
+def test_scene_prompt_includes_story_world_context(tmp_path: Path) -> None:
+    scene_context = _scene_context_for_first_scene(tmp_path)
+    prompt = _build_scene_prompt(scene_context)
+
+    assert "STORY WORLD:" in prompt
+    assert "Threshold Glass" in prompt
+    assert "Held Silence" in prompt
 
 
 @pytest.mark.unit

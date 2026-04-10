@@ -41,6 +41,7 @@ import { GeneratedVideoPanel } from '@/components/GeneratedVideoPanel'
 import { SceneActionControls } from '@/components/SceneActionControls'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { StoryboardPanel } from '@/components/StoryboardPanel'
+import { StoryWorldPanel } from '@/components/StoryWorldPanel'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import { EmptyState, ErrorState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
@@ -74,7 +75,7 @@ type ConcernGroupDef = {
   label: string
   icon: typeof Scissors
   color: string
-  /** true = artifact entity_id is projectId (project-scoped), false = sceneId */
+  /** true = artifact entity_id is "project" (project-scoped), false = sceneId */
   projectScoped?: boolean
   /** true = generation is not yet implemented */
   placeholder?: boolean
@@ -122,7 +123,6 @@ const CONCERN_GROUPS: ConcernGroupDef[] = [
     icon: Globe,
     color: 'text-teal-400',
     projectScoped: true,
-    placeholder: true,
   },
 ]
 
@@ -264,15 +264,15 @@ function ConcernGroupTabContent({
   cg: ConcernGroupDef
   groups: ArtifactGroupSummary[] | undefined
 }) {
-  const entityId = cg.projectScoped ? projectId : sceneId
+  const artifactEntityId = cg.projectScoped ? 'project' : sceneId
   const existing = groups?.find(
-    g => g.artifact_type === cg.artifactType && g.entity_id === entityId,
+    g => g.artifact_type === cg.artifactType && g.entity_id === artifactEntityId,
   )
 
   const { data: artifact, isLoading } = useArtifact(
     projectId,
     cg.artifactType,
-    entityId,
+    artifactEntityId,
     existing?.latest_version,
   )
 
@@ -284,9 +284,10 @@ function ConcernGroupTabContent({
   const hasActiveRun = isRunActive(activeRunId, runState)
   const runActive = hasActiveRun || startRun.isPending
   const [scope, setScope] = useState<SceneScopeMode>('current_scene')
-  const sceneScope = buildSceneScope(scope, sceneId)
-  const configuredScopeLabel = getSceneScopeLabel(sceneScope)
-  const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
+  const effectiveScope: SceneScopeMode = cg.projectScoped ? 'all_scenes' : scope
+  const sceneScope = buildSceneScope(effectiveScope, sceneId)
+  const configuredScopeLabel = cg.projectScoped ? 'Project-wide' : getSceneScopeLabel(sceneScope)
+  const configuredScopeTarget = cg.projectScoped ? 'the whole project' : getSceneScopeTargetLabel(sceneScope)
   const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
   const concernRunActive = hasActiveRun
     && runState?.state.recipe_id === 'creative_direction'
@@ -339,6 +340,9 @@ function ConcernGroupTabContent({
   const generateButtonLabel = scope === 'current_scene'
     ? (existing ? `Regenerate ${cg.label} for Current Scene` : `Get ${cg.label} for Current Scene`)
     : (existing ? `Regenerate ${cg.label} for All Scenes` : `Get ${cg.label} for All Scenes`)
+  const effectiveGenerateButtonLabel = cg.projectScoped
+    ? (existing ? `Regenerate ${cg.label}` : `Generate ${cg.label}`)
+    : generateButtonLabel
 
   const generateBtn = (
     <div className="space-y-3">
@@ -359,7 +363,7 @@ function ConcernGroupTabContent({
           ) : (
             <Icon className="h-3.5 w-3.5" />
           )}
-          {generateButtonLabel}
+          {effectiveGenerateButtonLabel}
         </Button>
       </div>
       {!latestInputPath && (
@@ -375,29 +379,30 @@ function ConcernGroupTabContent({
       )}
       {concernRunActive && (
         <p className="text-sm text-muted-foreground">
-          {cg.label} direction is currently running for {activeRunScopeLabel.toLowerCase()}.
+          {cg.projectScoped
+            ? `${cg.label} direction is currently running project-wide.`
+            : `${cg.label} direction is currently running for ${activeRunScopeLabel.toLowerCase()}.`}
         </p>
       )}
-      <SceneActionControls
-        scope={scope}
-        onScopeChange={setScope}
-        preflight={preflight}
-        disabled={runActive}
-      />
+      {!cg.projectScoped && (
+        <SceneActionControls
+          scope={scope}
+          onScopeChange={setScope}
+          preflight={preflight}
+          disabled={runActive}
+        />
+      )}
     </div>
   )
 
   if (cg.placeholder) {
-    const placeholderMessage = cg.id === 'story_world'
-      ? 'Project-level story-world baselines are coming in a future update.'
-      : 'Per-character performance direction is coming in a future update.'
     return (
       <div className="rounded-lg border border-dashed border-border py-12 flex flex-col items-center gap-4">
         <Icon className={cn('h-10 w-10', cg.color)} />
         <div className="text-center space-y-1">
           <p className="text-sm font-medium">{cg.label} direction</p>
           <p className="text-xs text-muted-foreground">
-            {placeholderMessage}
+            Per-character performance direction is coming in a future update.
           </p>
           <p className="text-xs text-muted-foreground">
             This placeholder should warn, not block. You can keep moving into shots, previz, and
@@ -423,8 +428,9 @@ function ConcernGroupTabContent({
           <div className="text-center space-y-1">
             <p className="text-sm font-medium text-foreground/80">No {cg.label} direction yet</p>
             <p className="text-xs text-muted-foreground">
-              Generate direction for {configuredScopeTarget} and this tab will resolve back to
-              {` ${sceneHeading}`}.
+              {cg.projectScoped
+                ? `Generate direction for ${configuredScopeTarget} and this tab will load the shared Story World.`
+                : `Generate direction for ${configuredScopeTarget} and this tab will resolve back to ${sceneHeading}.`}
             </p>
           </div>
           <Button
@@ -439,7 +445,7 @@ function ConcernGroupTabContent({
             ) : (
               <Icon className="h-3.5 w-3.5" />
             )}
-            {generateButtonLabel}
+            {effectiveGenerateButtonLabel}
           </Button>
         </div>
       </div>
@@ -449,11 +455,19 @@ function ConcernGroupTabContent({
   return (
     <div className="space-y-4">
       {generateBtn}
-      <DirectionAnnotation
-        concernGroup={cg.concernGroup}
-        data={data}
-        sceneHeading={sceneHeading}
-      />
+      {cg.id === 'story_world' ? (
+        <StoryWorldPanel
+          data={data}
+          projectId={projectId}
+          entityId={artifactEntityId}
+        />
+      ) : (
+        <DirectionAnnotation
+          concernGroup={cg.concernGroup}
+          data={data}
+          sceneHeading={sceneHeading}
+        />
+      )}
     </div>
   )
 }
@@ -682,7 +696,7 @@ export default function SceneWorkspacePage() {
             Overview
           </TabsTrigger>
           {CONCERN_GROUPS.map(cg => {
-            const entityId2 = cg.projectScoped ? projectId : entityId
+            const entityId2 = cg.projectScoped ? 'project' : entityId
             const level = getReadiness(groups, cg.artifactType, entityId2)
             return (
               <TabsTrigger key={cg.id} value={cg.id} className="gap-1.5">

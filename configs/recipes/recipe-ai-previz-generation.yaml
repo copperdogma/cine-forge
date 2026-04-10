@@ -37,6 +37,7 @@ stages:
     store_inputs_optional:
       continuity_index: continuity_index
       intent_mood: intent_mood
+      story_world: story_world
     store_inputs_all:
       rhythm_and_flow: rhythm_and_flow
       look_and_feel: look_and_feel

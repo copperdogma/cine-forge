@@ -113,6 +113,7 @@ def run_module(
 
     # Optional enrichment input
     intent_context = _build_intent_context(inputs)
+    story_world_context = _build_story_world_context(inputs)
 
     print(f"[sound_and_music] Analysing {len(entries)} scenes (concurrency={concurrency}).")
 
@@ -135,6 +136,7 @@ def run_module(
                 entry=entry,
                 window=window,
                 intent_context=intent_context,
+                story_world_context=story_world_context,
                 work_model=work_model,
                 verify_model=verify_model,
                 escalate_model=escalate_model,
@@ -220,6 +222,60 @@ def _build_intent_context(inputs: dict[str, Any]) -> str:
     return ""
 
 
+def _build_story_world_context(inputs: dict[str, Any]) -> str:
+    """Extract project-level Story World notes and motifs when available."""
+    for payload in inputs.values():
+        if not isinstance(payload, dict):
+            continue
+        if not any(
+            key in payload
+            for key in (
+                "visual_motif_annotations",
+                "audio_motif_annotations",
+                "character_behavioral_consistency_notes",
+                "narrative_rhythm_notes",
+            )
+        ):
+            continue
+
+        parts: list[str] = []
+        audio_motifs = payload.get("audio_motif_annotations", [])
+        if isinstance(audio_motifs, list) and audio_motifs:
+            rendered = []
+            for item in audio_motifs[:4]:
+                if not isinstance(item, dict):
+                    continue
+                motif_name = item.get("motif_name", "Unnamed motif")
+                description = item.get("description", "")
+                rendered.append(f"{motif_name}: {description}")
+            if rendered:
+                parts.append("Audio motifs: " + " | ".join(rendered))
+
+        visual_motifs = payload.get("visual_motif_annotations", [])
+        if isinstance(visual_motifs, list) and visual_motifs:
+            rendered = []
+            for item in visual_motifs[:3]:
+                if not isinstance(item, dict):
+                    continue
+                motif_name = item.get("motif_name", "Unnamed motif")
+                description = item.get("description", "")
+                rendered.append(f"{motif_name}: {description}")
+            if rendered:
+                parts.append("Visual motif context: " + " | ".join(rendered))
+
+        consistency_notes = payload.get("character_behavioral_consistency_notes")
+        if consistency_notes:
+            parts.append(f"Behavioral continuity: {consistency_notes}")
+
+        rhythm_notes = payload.get("narrative_rhythm_notes")
+        if rhythm_notes:
+            parts.append(f"World rhythm: {rhythm_notes}")
+
+        if parts:
+            return "PROJECT STORY WORLD:\n" + "\n".join(parts)
+    return ""
+
+
 # ---------------------------------------------------------------------------
 # Scene window construction
 # ---------------------------------------------------------------------------
@@ -261,6 +317,7 @@ def _analyze_scene(
     entry: dict[str, Any],
     window: dict[str, str | None],
     intent_context: str,
+    story_world_context: str,
     work_model: str,
     verify_model: str,
     escalate_model: str,
@@ -276,7 +333,7 @@ def _analyze_scene(
             "model": "mock", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0,
         }
 
-    prompt = _build_scene_prompt(entry, window, intent_context)
+    prompt = _build_scene_prompt(entry, window, intent_context, story_world_context)
     direction, call_cost = call_llm(
         prompt=prompt,
         model=work_model,
@@ -308,7 +365,11 @@ def _analyze_scene(
 
         if not qa_result.passed:
             escalate_prompt = _build_scene_prompt(
-                entry, window, intent_context, feedback=qa_result.summary,
+                entry,
+                window,
+                intent_context,
+                story_world_context,
+                feedback=qa_result.summary,
             )
             direction, esc_cost = call_llm(
                 prompt=escalate_prompt,
@@ -331,6 +392,7 @@ def _build_scene_prompt(
     entry: dict[str, Any],
     window: dict[str, str | None],
     intent_context: str,
+    story_world_context: str,
     feedback: str = "",
 ) -> str:
     """Construct the audio analysis prompt with 3-scene context and intent enrichment."""
@@ -358,6 +420,7 @@ NEXT SCENE ({window['next_heading']}):
 
     feedback_block = f"\nQA FEEDBACK TO ADDRESS:\n{feedback}\n" if feedback else ""
     intent_block = f"\n{intent_context}\n" if intent_context else ""
+    story_world_block = f"\n{story_world_context}\n" if story_world_context else ""
 
     return f"""{_SOUND_DESIGNER_PERSONA}
 
@@ -367,6 +430,7 @@ IMPORTANT: Consider the adjacent scenes for audio continuity across cuts.
 A jarring sound shift between scenes should be intentional, not accidental.
 Design audio transitions (bridges, stingers) that connect scene boundaries.
 Reference the Intent/Mood settings as the director's global vision.
+Reference Story World motifs when deciding recurring sonic signatures and silence beats.
 
 CRITICAL — SILENCE MANDATE: You MUST actively evaluate every scene for silence
 opportunities. Silence is a first-class creative element, not the absence of
@@ -378,7 +442,7 @@ empty without consideration.
 Be specific and cinematic — not "ambient noise" but "distant harbour foghorns
 layered under a close-mic dripping tap, low-frequency engine hum from the
 building's ventilation, punctuated by a single seagull cry."
-{feedback_block}{intent_block}
+{feedback_block}{intent_block}{story_world_block}
 SCENE METADATA:
 - Scene ID: {scene_id}
 - Scene Number: {scene_number}

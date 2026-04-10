@@ -235,7 +235,7 @@ def _populate_concern_group_preflight(
     scene_ids: list[str],
     stage_id: str | None,
 ) -> None:
-    if stage_id in {"character_and_performance", "story_world"}:
+    if stage_id == "character_and_performance":
         preflight.items.append(SceneActionPreflightItem(
             kind="soft_block",
             label="Capability not shipped",
@@ -283,6 +283,43 @@ def _populate_concern_group_preflight(
                 "scene text than project-level intent."
             ),
         ))
+    if stage_id == "story_world":
+        if not _has_project_artifact(store, "intent_mood"):
+            preflight.items.append(SceneActionPreflightItem(
+                kind="warning",
+                label="Intent & Mood missing",
+                detail=(
+                    "Story World can still run, but motif suggestions will lean more on "
+                    "script text than explicit project taste inputs."
+                ),
+            ))
+        if not store.list_entities("character_bible"):
+            preflight.items.append(SceneActionPreflightItem(
+                kind="warning",
+                label="Character bibles missing",
+                detail=(
+                    "Story World can still run, but character-linked motifs and design "
+                    "baselines will have less structured grounding."
+                ),
+            ))
+        if not store.list_entities("location_bible"):
+            preflight.items.append(SceneActionPreflightItem(
+                kind="warning",
+                label="Location bibles missing",
+                detail=(
+                    "Story World can still run, but location-linked motifs and baseline "
+                    "references will rely more on the scene text alone."
+                ),
+            ))
+        if not store.list_entities("prop_bible"):
+            preflight.items.append(SceneActionPreflightItem(
+                kind="warning",
+                label="Prop bibles missing",
+                detail=(
+                    "Story World can still run, but prop-linked motifs and baseline "
+                    "references will be limited until prop bibles exist."
+                ),
+            ))
 
     if preflight.scene_scope.is_scene_scoped and not scene_ids:
         preflight.items.append(SceneActionPreflightItem(

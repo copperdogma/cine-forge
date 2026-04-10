@@ -93,6 +93,7 @@ def run_module(
     # Optional enrichment inputs (loaded via store_inputs_optional in the recipe)
     bible_context = _build_bible_context(inputs)
     intent_context = _build_intent_context(inputs)
+    story_world_context = _build_story_world_context(inputs)
     project_dir = context.get("project_dir")
     store = (
         ArtifactStore(Path(project_dir))
@@ -127,6 +128,7 @@ def run_module(
                 window=window,
                 bible_context=bible_context,
                 intent_context=intent_context,
+                story_world_context=story_world_context,
                 work_model=work_model,
                 verify_model=verify_model,
                 escalate_model=escalate_model,
@@ -261,6 +263,67 @@ def _build_intent_context(inputs: dict[str, Any]) -> str:
     return ""
 
 
+def _build_story_world_context(inputs: dict[str, Any]) -> str:
+    """Extract project-level Story World motif context when available."""
+    for payload in inputs.values():
+        if not isinstance(payload, dict):
+            continue
+        if not any(
+            key in payload
+            for key in (
+                "character_design_baselines",
+                "location_design_baselines",
+                "prop_design_baselines",
+                "visual_motif_annotations",
+                "audio_motif_annotations",
+            )
+        ):
+            continue
+
+        parts: list[str] = []
+        character_refs = payload.get("character_design_baselines", [])
+        if character_refs:
+            parts.append(f"Character baselines: {', '.join(character_refs[:8])}")
+        location_refs = payload.get("location_design_baselines", [])
+        if location_refs:
+            parts.append(f"Location baselines: {', '.join(location_refs[:8])}")
+        prop_refs = payload.get("prop_design_baselines", [])
+        if prop_refs:
+            parts.append(f"Prop baselines: {', '.join(prop_refs[:8])}")
+
+        visual_motifs = payload.get("visual_motif_annotations", [])
+        if isinstance(visual_motifs, list) and visual_motifs:
+            rendered = []
+            for item in visual_motifs[:4]:
+                if not isinstance(item, dict):
+                    continue
+                motif_name = item.get("motif_name", "Unnamed motif")
+                description = item.get("description", "")
+                rendered.append(f"{motif_name}: {description}")
+            if rendered:
+                parts.append("Visual motifs: " + " | ".join(rendered))
+
+        audio_motifs = payload.get("audio_motif_annotations", [])
+        if isinstance(audio_motifs, list) and audio_motifs:
+            rendered = []
+            for item in audio_motifs[:3]:
+                if not isinstance(item, dict):
+                    continue
+                motif_name = item.get("motif_name", "Unnamed motif")
+                description = item.get("description", "")
+                rendered.append(f"{motif_name}: {description}")
+            if rendered:
+                parts.append("Audio motif carry-over: " + " | ".join(rendered))
+
+        continuity_notes = payload.get("continuity_override_notes")
+        if continuity_notes:
+            parts.append(f"Continuity overrides: {continuity_notes}")
+
+        if parts:
+            return "PROJECT STORY WORLD:\n" + "\n".join(parts)
+    return ""
+
+
 # ---------------------------------------------------------------------------
 # Scene window construction
 # ---------------------------------------------------------------------------
@@ -303,6 +366,7 @@ def _analyze_scene(
     window: dict[str, str | None],
     bible_context: str,
     intent_context: str,
+    story_world_context: str,
     work_model: str,
     verify_model: str,
     escalate_model: str,
@@ -318,7 +382,13 @@ def _analyze_scene(
             "model": "mock", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0,
         }
 
-    prompt = _build_scene_prompt(entry, window, bible_context, intent_context)
+    prompt = _build_scene_prompt(
+        entry,
+        window,
+        bible_context,
+        intent_context,
+        story_world_context,
+    )
     direction, call_cost = call_llm(
         prompt=prompt,
         model=work_model,
@@ -351,7 +421,12 @@ def _analyze_scene(
         if not qa_result.passed:
             # Escalate with feedback
             escalate_prompt = _build_scene_prompt(
-                entry, window, bible_context, intent_context, feedback=qa_result.summary,
+                entry,
+                window,
+                bible_context,
+                intent_context,
+                story_world_context,
+                feedback=qa_result.summary,
             )
             direction, esc_cost = call_llm(
                 prompt=escalate_prompt,
@@ -375,6 +450,7 @@ def _build_scene_prompt(
     window: dict[str, str | None],
     bible_context: str,
     intent_context: str,
+    story_world_context: str,
     feedback: str = "",
 ) -> str:
     """Construct the visual analysis prompt with 3-scene context and bible/intent enrichment."""
@@ -405,6 +481,7 @@ NEXT SCENE ({window['next_heading']}):
 
     intent_block = f"\n{intent_context}\n" if intent_context else ""
     bible_block = f"\n{bible_context}\n" if bible_context else ""
+    story_world_block = f"\n{story_world_context}\n" if story_world_context else ""
 
     return f"""{_VISUAL_ARCHITECT_PERSONA}
 
@@ -414,9 +491,10 @@ IMPORTANT: Consider the adjacent scenes for visual continuity across cuts.
 A jarring colour shift or lighting change between scenes should be intentional, not accidental.
 Reference the Intent/Mood settings as the director's global vision.
 Reference character and location bibles for appearance consistency.
+Reference Story World motifs and continuity baselines when they are relevant.
 Be specific and cinematic — not "warm lighting" but "late afternoon practicals through
 venetian blinds, warm amber, hard light, half his expression in shadow."
-{feedback_block}{intent_block}{bible_block}
+{feedback_block}{intent_block}{bible_block}{story_world_block}
 SCENE METADATA:
 - Scene ID: {scene_id}
 - Scene Number: {scene_number}

@@ -4480,17 +4480,21 @@
     },
     {
       "id": "100",
-      "title": "Motif Tracking System",
+      "title": "Story World Motif Tracking",
       "path": "docs/stories/story-100-motif-tracking.md",
-      "status": "Draft",
-      "priority": "Unknown",
+      "status": "Done",
+      "priority": "High",
       "idealRefs": [
         "R3 (continuity), R8 (production artifacts)"
       ],
       "specRefs": [
+        "spec:4.10.2",
+        "spec:4.10.3",
         "spec:4.10.6"
       ],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-003"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "008",
@@ -7546,7 +7550,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 034 closed the in-app style-pack creation lane. No story is currently in progress in this execution map.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. No story is currently in progress on the next active `spec:4` / `spec:5` lane.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -7593,7 +7597,6 @@
             ],
             "empty_message": "No draft stories currently need review.",
             "story_notes": {
-              "100": "Valuable follow-on in the concern-group lane, but still only skeleton-scoped.",
               "102": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "103": "Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog.",
               "104": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",

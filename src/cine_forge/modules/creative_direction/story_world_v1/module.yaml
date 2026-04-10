@@ -1,0 +1,17 @@
+module_id: story_world_v1
+stage: story_world
+description: >
+  Produces a single project-level Story World artifact: baseline character,
+  location, and prop design references plus recurring visual/audio motifs and
+  continuity notes that should persist across the production pipeline.
+input_schemas:
+  - scene_index
+  - canonical_script
+output_schemas:
+  - story_world
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Primary model for Story World motif authoring."

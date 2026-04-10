@@ -27,11 +27,10 @@ stages:
       enriched_scene_index: scene_index
     store_inputs_optional:
       project_config: project_config
-  - id: look_and_feel
-    module: look_and_feel_v1
+  - id: story_world
+    module: story_world_v1
     params:
-      skip_qa: true
-      concurrency: 5
+      work_model: claude-sonnet-4-6
     needs: []
     after: [intent_mood]
     store_inputs:
@@ -39,6 +38,24 @@ stages:
       enriched_scene_index: scene_index
     store_inputs_optional:
       intent_mood: intent_mood
+      script_bible: script_bible
+    store_inputs_all:
+      character_bible: character_bible
+      location_bible: location_bible
+      prop_bible: prop_bible
+  - id: look_and_feel
+    module: look_and_feel_v1
+    params:
+      skip_qa: true
+      concurrency: 5
+    needs: []
+    after: [intent_mood, story_world]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+    store_inputs_optional:
+      intent_mood: intent_mood
+      story_world: story_world
       character_bibles: character_bible
       location_bibles: location_bible
   - id: sound_and_music
@@ -47,9 +64,10 @@ stages:
       skip_qa: true
       concurrency: 5
     needs: []
-    after: [intent_mood]
+    after: [intent_mood, story_world]
     store_inputs:
       normalize: canonical_script
       enriched_scene_index: scene_index
     store_inputs_optional:
       intent_mood: intent_mood
+      story_world: story_world

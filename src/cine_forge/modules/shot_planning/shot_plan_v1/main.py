@@ -107,6 +107,7 @@ class _ScenePlanningContext:
         rhythm_and_flow: dict[str, Any],
         look_and_feel: dict[str, Any],
         sound_and_music: dict[str, Any],
+        story_world: dict[str, Any] | None,
         intent_mood: dict[str, Any] | None,
         character_bibles: list[dict[str, Any]],
         character_bible_refs: list[ArtifactRef],
@@ -123,6 +124,7 @@ class _ScenePlanningContext:
         self.rhythm_and_flow = rhythm_and_flow
         self.look_and_feel = look_and_feel
         self.sound_and_music = sound_and_music
+        self.story_world = story_world
         self.intent_mood = intent_mood
         self.character_bibles = character_bibles
         self.character_bible_refs = character_bible_refs
@@ -192,6 +194,7 @@ def run_module(
 
     announce = context.get("announce_artifact")
     intent_mood = inputs.get("intent_mood") if isinstance(inputs.get("intent_mood"), dict) else None
+    story_world = inputs.get("story_world") if isinstance(inputs.get("story_world"), dict) else None
 
     rhythm_by_scene = _scene_map(inputs.get("rhythm_and_flow", []))
     look_by_scene = _scene_map(inputs.get("look_and_feel", []))
@@ -211,6 +214,7 @@ def run_module(
             rhythm_by_scene=rhythm_by_scene,
             look_by_scene=look_by_scene,
             sound_by_scene=sound_by_scene,
+            story_world=story_world,
             intent_mood=intent_mood,
             char_bible_map=char_bible_map,
             perf_by_scene=perf_by_scene,
@@ -529,6 +533,7 @@ def _build_scene_context(
     rhythm_by_scene: dict[str, dict[str, Any]],
     look_by_scene: dict[str, dict[str, Any]],
     sound_by_scene: dict[str, dict[str, Any]],
+    story_world: dict[str, Any] | None,
     intent_mood: dict[str, Any] | None,
     char_bible_map: dict[str, dict[str, Any]],
     perf_by_scene: dict[str, list[dict[str, Any]]],
@@ -566,6 +571,10 @@ def _build_scene_context(
         concern_refs.append(_latest_entity_ref(store, "look_and_feel", scene_id))
     if scene_id in sound_by_scene:
         concern_refs.append(_latest_entity_ref(store, "sound_and_music", scene_id))
+    if story_world is not None:
+        story_world_ref = _latest_project_ref(store, "story_world")
+        if story_world_ref is not None:
+            concern_refs.append(story_world_ref)
     if intent_mood is not None:
         intent_ref = _latest_project_ref(store, "intent_mood")
         if intent_ref is not None:
@@ -596,6 +605,7 @@ def _build_scene_context(
         rhythm_and_flow=rhythm,
         look_and_feel=look,
         sound_and_music=sound,
+        story_world=story_world,
         intent_mood=intent_mood,
         character_bibles=character_bibles,
         character_bible_refs=character_bible_refs,
@@ -644,6 +654,7 @@ def _build_scene_prompt(
         f"RHYTHM & FLOW:\n{_format_payload(scene_context.rhythm_and_flow, compact=compact)}\n\n"
         f"LOOK & FEEL:\n{_format_payload(scene_context.look_and_feel, compact=compact)}\n\n"
         f"SOUND & MUSIC:\n{_format_payload(scene_context.sound_and_music, compact=compact)}\n\n"
+        f"STORY WORLD:\n{_format_payload(scene_context.story_world or {}, compact=compact)}\n\n"
         f"CHARACTER CONTEXT:\n{_character_context(scene_context, compact=compact)}\n\n"
         f"CONTINUITY STATES:\n{_continuity_context(scene_context, compact=compact)}\n\n"
         f"SCENE SCRIPT:\n{scene_script}\n"
