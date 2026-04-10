@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-04-10-02] — Final-render Veo reference note captured
+
+### Added
+- Added an inbox note that Veo 3.1 Fast and Veo 3.1 accept multiple reference images, preserving that capability for future final-render eval triage
+
 ## [2026-04-10-01] — Story World motif tracking lands (Story 100)
 
 ### Added

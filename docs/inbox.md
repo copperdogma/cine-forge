@@ -3,4 +3,4 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 ## Untriaged
 
-Nothing queued right now.
+- Veo 3.1 Fast and Veo 3.1 both take multiple input images as reference, which will be useful when we start eval'ing final video models for final render.
