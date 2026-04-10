@@ -9735,9 +9735,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260410-1742",
+        "timestamp": "20260410-1736",
         "date": "2026-04-10",
-        "summary": "close-out: marked Story 158 `Done` after the fresh validation"
+        "summary": "check-in hardening: rebasing onto `origin/main` exposed a flaky"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -9747,12 +9747,12 @@
         "sourcePath": "docs/stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "close-out: marked Story 158 `Done` after the fresh validation",
+        "whyNow": "check-in hardening: rebasing onto `origin/main` exposed a flaky",
         "lastRelevantAction": {
           "date": "2026-04-10",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md",
-          "summary": "close-out: marked Story 158 `Done` after the fresh validation"
+          "summary": "check-in hardening: rebasing onto `origin/main` exposed a flaky"
         }
       }
     }
