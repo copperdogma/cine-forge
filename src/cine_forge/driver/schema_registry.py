@@ -5,7 +5,6 @@ from __future__ import annotations
 from cine_forge.schemas import (
     BibleManifest,
     CanonicalScript,
-    CharacterAndPerformance,
     CharacterBible,
     CompiledRenderPrompt,
     ContinuityIndex,
@@ -100,8 +99,7 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("sound_and_music_index", SoundAndMusicIndex)
     registry.register("rhythm_and_flow", RhythmAndFlow)
     registry.register("rhythm_and_flow_index", RhythmAndFlowIndex)
-    registry.register("character_and_performance", CharacterAndPerformance)
-    registry.register("scene_character_performance", SceneCharacterPerformance)
+    registry.register("character_and_performance", SceneCharacterPerformance)
     registry.register("story_world", StoryWorld)
     registry.register("script_bible", ScriptBible)
     registry.register("shot_plan", ShotPlan)

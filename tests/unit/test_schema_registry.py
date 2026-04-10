@@ -97,3 +97,23 @@ def test_build_schema_registry_includes_video_analysis_types() -> None:
 def test_build_schema_registry_rejects_unknown_type() -> None:
     registry = build_schema_registry()
     assert not registry.has("nonexistent_type")
+
+
+@pytest.mark.unit
+def test_character_and_performance_registry_accepts_scene_container() -> None:
+    registry = build_schema_registry()
+    validation = registry.validate(
+        "character_and_performance",
+        {
+            "scene_id": "scene_001",
+            "entries": [
+                {
+                    "scene_id": "scene_001",
+                    "character_id": "mara",
+                    "motivation": "Get an answer before the window closes.",
+                }
+            ],
+            "user_approved": False,
+        },
+    )
+    assert validation.valid is True

@@ -429,6 +429,7 @@ class SceneCharacterPerformance(BaseModel):
         default_factory=list,
         description="One entry per character in the scene",
     )
+    user_approved: bool = Field(default=False)
 
 
 # ---------------------------------------------------------------------------

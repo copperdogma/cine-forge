@@ -216,8 +216,9 @@ PIPELINE_NODES: list[PipelineNode] = [
         label="Character & Performance",
         phase_id="direction",
         artifact_types=["character_and_performance"],
+        check_mode="entity",
         dependencies=["scene_extraction", "characters"],
-        implemented=False,
+        implemented=True,
     ),
     PipelineNode(
         id="story_world",
@@ -225,7 +226,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="direction",
         artifact_types=["story_world"],
         dependencies=["characters", "locations", "props"],
-        implemented=False,
+        implemented=True,
     ),
 
     # --- Shots phase (future) ---
@@ -370,6 +371,8 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "rhythm_and_flow": "creative_direction",
     "look_and_feel": "creative_direction",
     "sound_and_music": "creative_direction",
+    "character_and_performance": "creative_direction",
+    "story_world": "creative_direction",
     "shot_planning": "shot_planning",
     "ai_previz": "ai_previz_generation",
     "render": "render_generation",

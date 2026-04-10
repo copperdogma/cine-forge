@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. No story is currently in progress on the next active `spec:4` / `spec:5` lane.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. Story 023 has now closed the first shipped Character & Performance slice on the active `spec:4` / `spec:5` lane.
 
 ### Pending — Ready To Build Now
 
@@ -47,9 +47,7 @@ No stories currently need the sequence-sensitive lane.
 
 ### Deferred — Intentionally Parked
 
-| Story | Why |
-|---|---|
-| **023** Character & Performance — Performance Direction | Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed. |
+No stories currently deferred.
 
 ## Health Flags
 
@@ -176,7 +174,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 023 | Character & Performance — Performance Direction | Unknown | Deferred | — | spec:4 | 005, 008, 010, 011 | [story-023](stories/story-023-actor-agents.md) |
+| 023 | Character & Performance — First Shipped Slice | High | Done | — | spec:4, spec:5 | 005, 008, 010, 011, 084, 094, 097 | [story-023](stories/story-023-actor-agents.md) |
 | 082 | Creative Direction UX | High | Done | — | spec:4, spec:5 | — | [story-082](stories/story-082-creative-direction-ux.md) |
 | 083 | Group Chat Architecture | High | Done | — | spec:4, spec:5, spec:9 | — | [story-083](stories/story-083-group-chat-architecture.md) |
 | 084 | Character Chat Agents & Story Agent Rename | High | Done | — | spec:4, spec:5 | — | [story-084](stories/story-084-character-chat-agents.md) |

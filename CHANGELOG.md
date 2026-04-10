@@ -8,6 +8,19 @@
 - Changed `/finish-and-push` so normal inbox capture rides along with the
   validated landing set by default unless the user explicitly excludes it
 
+## [2026-04-10-04] — Character & Performance first slice lands (Story 023)
+
+### Added
+- Added a real `character_and_performance_v1` creative-direction stage that produces scene-scoped Character & Performance artifacts through the normal recipe, driver, and API flow
+- Added a dedicated Scene Workspace Character & Performance panel for viewing, editing, and reviewing scene-level performance entries
+
+### Changed
+- Changed the canonical `character_and_performance` contract to use the scene-scoped `SceneCharacterPerformance` payload across schema registration, UI loading, and downstream shot-planning/render consumption
+- Changed the methodology/story surfaces to record Story 023 as the shipped first Character & Performance slice instead of a deferred placeholder
+
+### Fixed
+- Fixed the remaining Character & Performance placeholder path by removing the coming-soon scene-action soft block and marking the pipeline graph/readiness surface honestly
+- Fixed stale graph truth for the adjacent Story World concern-group node while touching the same shipped-capability area
 ## [2026-04-10-02] — Final-render Veo reference note captured
 
 ### Added

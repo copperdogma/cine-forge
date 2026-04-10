@@ -575,6 +575,7 @@
           "015",
           "017",
           "019",
+          "023",
           "042",
           "043",
           "044",
@@ -2296,26 +2297,34 @@
     },
     {
       "id": "023",
-      "title": "Character & Performance — Performance Direction",
+      "title": "Character & Performance — First Shipped Slice",
       "path": "docs/stories/story-023-actor-agents.md",
-      "status": "Deferred",
-      "priority": "Unknown",
+      "status": "Done",
+      "priority": "High",
       "idealRefs": [
-        "R4 (creative conversation with characters), R7 (iterative refinement)"
+        "R4 (creative conversation with characters), R7 (iterative refinement), R8 (production artifacts)"
       ],
       "specRefs": [
-        "spec:4.10.5"
+        "spec:4.10.5",
+        "spec:5.4",
+        "spec:5.5"
       ],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-003"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "005",
         "008",
         "010",
-        "011"
+        "011",
+        "084",
+        "094",
+        "097"
       ],
       "categoryRefs": [
-        "spec:4"
+        "spec:4",
+        "spec:5"
       ],
       "inputCoverageRefs": [],
       "architectureDomains": [],
@@ -7550,7 +7559,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. No story is currently in progress on the next active `spec:4` / `spec:5` lane.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. Story 023 has now closed the first shipped Character & Performance slice on the active `spec:4` / `spec:5` lane.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -7614,9 +7623,7 @@
               "Deferred"
             ],
             "empty_message": "No stories currently deferred.",
-            "story_notes": {
-              "023": "Story 025 confirmed shot planning can fall back to character bibles + scene context. Revisit only if storyboard/render work proves a formal Character & Performance artifact is still needed."
-            }
+            "story_notes": {}
           }
         ]
       },

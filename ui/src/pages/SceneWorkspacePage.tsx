@@ -41,6 +41,7 @@ import { GeneratedVideoPanel } from '@/components/GeneratedVideoPanel'
 import { SceneActionControls } from '@/components/SceneActionControls'
 import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { StoryboardPanel } from '@/components/StoryboardPanel'
+import { CharacterPerformancePanel } from '@/components/CharacterPerformancePanel'
 import { StoryWorldPanel } from '@/components/StoryWorldPanel'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import { EmptyState, ErrorState } from '@/components/StateViews'
@@ -113,7 +114,6 @@ const CONCERN_GROUPS: ConcernGroupDef[] = [
     label: 'Performance',
     icon: Drama,
     color: 'text-amber-400',
-    placeholder: true,
   },
   {
     id: 'story_world',
@@ -460,6 +460,13 @@ function ConcernGroupTabContent({
           data={data}
           projectId={projectId}
           entityId={artifactEntityId}
+        />
+      ) : cg.id === 'character_and_performance' ? (
+        <CharacterPerformancePanel
+          data={data}
+          projectId={projectId}
+          entityId={artifactEntityId}
+          sceneHeading={sceneHeading}
         />
       ) : (
         <DirectionAnnotation

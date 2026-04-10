@@ -163,6 +163,7 @@ def test_scene_character_performance_container() -> None:
     )
     assert len(scp.entries) == 2
     assert scp.entries[0].motivation == "Survive the storm"
+    assert scp.user_approved is False
 
 
 @pytest.mark.unit

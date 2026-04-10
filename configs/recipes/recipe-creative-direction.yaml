@@ -43,6 +43,20 @@ stages:
       character_bible: character_bible
       location_bible: location_bible
       prop_bible: prop_bible
+  - id: character_and_performance
+    module: character_and_performance_v1
+    params:
+      concurrency: 5
+    needs: []
+    after: [intent_mood, story_world]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+    store_inputs_optional:
+      intent_mood: intent_mood
+      story_world: story_world
+    store_inputs_all:
+      character_bible: character_bible
   - id: look_and_feel
     module: look_and_feel_v1
     params:

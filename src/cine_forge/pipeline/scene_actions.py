@@ -236,15 +236,24 @@ def _populate_concern_group_preflight(
     stage_id: str | None,
 ) -> None:
     if stage_id == "character_and_performance":
-        preflight.items.append(SceneActionPreflightItem(
-            kind="soft_block",
-            label="Capability not shipped",
-            detail=(
-                f"{_CONCERN_GROUP_LABELS.get(stage_id, stage_id)} is still a "
-                "coming-soon placeholder."
-            ),
-        ))
-        return
+        if not store.list_entities("character_bible"):
+            preflight.items.append(SceneActionPreflightItem(
+                kind="warning",
+                label="Character bibles missing",
+                detail=(
+                    "Character & Performance can still run, but motivations and subtext "
+                    "will lean more on scene text than structured character grounding."
+                ),
+            ))
+        if not _has_project_artifact(store, "intent_mood"):
+            preflight.items.append(SceneActionPreflightItem(
+                kind="warning",
+                label="Intent & Mood missing",
+                detail=(
+                    "Character & Performance can still run, but tonal alignment will rely "
+                    "more on the current scene than project-level creative intent."
+                ),
+            ))
 
     if stage_id == "look_and_feel":
         if not store.list_entities("character_bible"):

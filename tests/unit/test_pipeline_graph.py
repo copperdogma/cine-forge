@@ -147,6 +147,39 @@ def test_node_completed_when_artifact_exists(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
+def test_character_and_performance_node_completed_when_scene_artifact_exists(
+    tmp_path: Path,
+) -> None:
+    project_dir = tmp_path / "project"
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="character_and_performance",
+        entity_id="scene_001",
+        data={
+            "scene_id": "scene_001",
+            "entries": [
+                {
+                    "scene_id": "scene_001",
+                    "character_id": "mara",
+                    "motivation": "Force the truth out into the open.",
+                }
+            ],
+            "user_approved": False,
+        },
+        metadata=_metadata(),
+    )
+    node = _NODE_MAP["character_and_performance"]
+    resolved = {
+        "scene_extraction": NodeStatus.COMPLETED,
+        "characters": NodeStatus.COMPLETED,
+    }
+    status, count = compute_node_status(node, store, resolved)
+    assert node.implemented is True
+    assert status == NodeStatus.COMPLETED
+    assert count == 1
+
+
+@pytest.mark.unit
 def test_bible_node_completed_when_entries_exist(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
     store = ArtifactStore(project_dir=project_dir)

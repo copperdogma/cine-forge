@@ -84,7 +84,7 @@ def test_storyboard_preflight_warns_and_auto_builds_for_current_scene(tmp_path: 
 
 
 @pytest.mark.unit
-def test_placeholder_direction_preflight_soft_blocks_cleanly(tmp_path: Path) -> None:
+def test_character_and_performance_preflight_warns_but_does_not_soft_block(tmp_path: Path) -> None:
     project_dir = _seed_scene_action_project(tmp_path)
 
     preflight = build_scene_action_preflight(
@@ -95,9 +95,11 @@ def test_placeholder_direction_preflight_soft_blocks_cleanly(tmp_path: Path) -> 
         scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
     )
 
-    assert preflight.status == "soft_block"
-    assert preflight.items[0].label == "Capability not shipped"
-    assert "coming-soon placeholder" in preflight.items[0].detail
+    assert preflight.status == "warn"
+    labels = {item.label for item in preflight.items}
+    assert "Character bibles missing" in labels
+    assert "Intent & Mood missing" in labels
+    assert all(item.label != "Capability not shipped" for item in preflight.items)
 
 
 @pytest.mark.unit

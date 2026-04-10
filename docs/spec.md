@@ -744,11 +744,11 @@ non-filmmakers. Primary contributor: Editorial Architect role.
 ### spec:4.10.5 — Character & Performance
 
 Everything about how characters inhabit the scene. Contributors: Actor Agents per
-character, reviewed by Director.
-
-Note: Story 023 defers formal `PerformanceDirection` artifacts pending proof of
-need from downstream consumers. Character bibles plus interactive character chat
-may cover this concern group adequately. If structured artifacts are needed:
+character, reviewed by Director. The shipped product path is a scene-scoped
+`character_and_performance` artifact containing one structured entry per
+character present in the scene. Character bibles and interactive character chat
+remain upstream grounding and collaboration surfaces, not replacements for the
+artifact when this concern group is authored.
 
 - emotional state entering the scene
 - arc through the scene

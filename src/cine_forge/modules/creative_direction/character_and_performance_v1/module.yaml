@@ -1,0 +1,22 @@
+module_id: character_and_performance_v1
+stage: character_and_performance
+description: >
+  Produces one scene-scoped Character & Performance artifact per targeted scene:
+  structured emotional, subtext, blocking, and delivery notes for the characters
+  present in that scene.
+input_schemas:
+  - scene_index
+  - canonical_script
+output_schemas:
+  - character_and_performance
+parameters:
+  work_model:
+    type: string
+    required: false
+    default: "claude-sonnet-4-6"
+    description: "Primary model for scene-level Character & Performance authoring."
+  concurrency:
+    type: integer
+    required: false
+    default: 5
+    description: "How many scenes to author in parallel."
