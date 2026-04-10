@@ -182,6 +182,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 082 | Creative Direction UX | High | Done | — | spec:4, spec:5 | — | [story-082](stories/story-082-creative-direction-ux.md) |
 | 083 | Group Chat Architecture | High | Done | — | spec:4, spec:5, spec:9 | — | [story-083](stories/story-083-group-chat-architecture.md) |
 | 084 | Character Chat Agents & Story Agent Rename | High | Done | — | spec:4, spec:5 | — | [story-084](stories/story-084-character-chat-agents.md) |
+| 099 | Scene Workspace — Readiness Honesty | High | Done | — | spec:4, spec:5 | 023, 085, 094, 095, 097, 144 | [story-099](stories/story-099-scene-workspace.md) |
 | 100 | Story World Motif Tracking | High | Done | — | spec:4 | 008, 009, 011, 094 | [story-100](stories/story-100-motif-tracking.md) |
 | 126 | Frontend Chat and Data-Layer Decomposition | High | Done | — | spec:4, spec:5, spec:9 | — | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
 | 141 | Intent Taste Stack and Transparent Creative Brief | High | Done | — | spec:4, spec:7 | 029, 095, 119, 120 | [story-141](stories/story-141-intent-taste-stack-and-transparent-creative-brief.md) |
@@ -244,7 +245,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 011f | Operator Console — Conversational AI Chat | Unknown | Done | — | spec:5, spec:9 | 011e | [story-011f](stories/story-011f-conversational-ai-chat.md) |
 | 012 | Timeline Data Artifact | Unknown | Done | — | spec:1, spec:5, spec:10 | 005, 011, 011c, 050 | [story-012](stories/story-012-timeline-artifact.md) |
 | 019 | Human Control Modes and Creative Sessions | Unknown | Done | — | spec:5, spec:9 | 011b, 014, 015, 017, 018 | [story-019](stories/story-019-human-interaction.md) |
-| 099 | Scene Workspace | Unknown | Done | — | spec:5 | 085, 094, 095 | [story-099](stories/story-099-scene-workspace.md) |
 | 101 | Centralized Long-Running Action System | Unknown | Done | — | spec:1, spec:5 | — | [story-101](stories/story-101-long-running-action-system.md) |
 
 ### spec:6 — Shot Planning & Visualization

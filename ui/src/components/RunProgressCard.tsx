@@ -1,5 +1,5 @@
 import { CheckCircle2, Loader2, Circle, AlertCircle, SkipForward, PauseCircle } from 'lucide-react'
-import { useRunState, useArtifactGroups } from '@/lib/hooks'
+import { useRunState, useArtifactGroups, useRuns, isMissingRunError } from '@/lib/hooks'
 import {
   getStageCompleteMessage,
   getStageStartMessage,
@@ -13,16 +13,16 @@ import {
 } from '@/lib/constants'
 
 /** Parse the content prop: new format is JSON with runId + projectId, old format is plain runId string. */
-function parseContent(content: string): { runId: string; projectId: string | null } {
+function parseContent(content: string): { runId: string; embeddedProjectId: string | null } {
   try {
     const parsed = JSON.parse(content)
     if (parsed && typeof parsed.runId === 'string') {
-      return { runId: parsed.runId, projectId: parsed.projectId ?? null }
+      return { runId: parsed.runId, embeddedProjectId: parsed.projectId ?? null }
     }
   } catch {
     // plain string (backwards compat)
   }
-  return { runId: content, projectId: null }
+  return { runId: content, embeddedProjectId: null }
 }
 
 /** Summarize artifact counts from a completed stage's refs. */
@@ -68,11 +68,38 @@ function stageLabel(stageId: string, status: string, sceneScope?: unknown): stri
   return humanizeStageName(stageId)
 }
 
-export function RunProgressCard({ content }: { content: string }) {
-  const { runId, projectId } = parseContent(content)
-  const { data: runState } = useRunState(runId)
-  const { data: artifactGroups } = useArtifactGroups(projectId ?? undefined)
+export function RunProgressCard({
+  content,
+  projectId,
+}: {
+  content: string
+  projectId: string
+}) {
+  const { runId, embeddedProjectId } = parseContent(content)
+  const artifactProjectId = projectId || embeddedProjectId || undefined
+  const { data: runs } = useRuns(artifactProjectId)
+  const runExists = runs == null || runs.some((run) => run.run_id === runId)
+  const { data: runState, error } = useRunState(runExists ? runId : undefined)
+  const { data: artifactGroups } = useArtifactGroups(artifactProjectId)
   const totalScenes = countTotalScenes(artifactGroups)
+
+  if (runs && !runExists) {
+    return (
+      <div className="flex items-center gap-2 text-sm text-muted-foreground py-1">
+        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+        <span>Historical run details are unavailable.</span>
+      </div>
+    )
+  }
+
+  if (isMissingRunError(error)) {
+    return (
+      <div className="flex items-center gap-2 text-sm text-muted-foreground py-1">
+        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+        <span>Historical run details are unavailable.</span>
+      </div>
+    )
+  }
 
   if (!runState) {
     return (

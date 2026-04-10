@@ -501,6 +501,7 @@
           "095",
           "096",
           "097",
+          "099",
           "100",
           "121",
           "126",
@@ -4468,29 +4469,47 @@
     },
     {
       "id": "099",
-      "title": "Scene Workspace",
+      "title": "Scene Workspace — Readiness Honesty",
       "path": "docs/stories/story-099-scene-workspace.md",
       "status": "Done",
-      "priority": "Unknown",
+      "priority": "High",
       "idealRefs": [
-        "R11 (production readiness per scene), R7 (iterative refinement)"
+        "R11 (production readiness per scene)",
+        "R12 (transparency and control)",
+        "R7 (iterative refinement)"
       ],
       "specRefs": [
+        "spec:4.10",
+        "spec:5.2",
+        "spec:5.4",
         "spec:5.5"
       ],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
       "compromiseIds": [],
       "dependsOn": [
+        "023",
         "085",
         "094",
-        "095"
+        "095",
+        "097",
+        "144"
       ],
       "categoryRefs": [
+        "spec:4",
         "spec:5"
       ],
       "inputCoverageRefs": [],
-      "architectureDomains": [],
-      "roadmapTags": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "readiness",
+        "review-loop",
+        "scene-workspace"
+      ],
       "legacySystem": "",
       "blockerSummary": null,
       "blockerEvidence": null,

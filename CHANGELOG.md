@@ -10,6 +10,20 @@
 - Changed `spec:5` and methodology state to require a standing full-pipeline manual acceptance pass alongside the existing throughput-efficiency planning line
 - Changed generated methodology views to surface the new UI-acceptance sequencing bias and story ownership consistently
 
+## [2026-04-10-07] — Scene Workspace readiness honesty lands (Story 099)
+
+### Added
+- Added a typed scene-readiness API/service seam plus a reusable review-control component so Scene Workspace can reuse the canonical red/yellow/green readiness contract across all five concern groups
+- Added focused readiness API coverage and a committed representative browser smoke script for the Scene Workspace review loop
+
+### Changed
+- Changed Scene Workspace summary dots and concern-group tabs to consume canonical readiness instead of a page-local artifact-existence heuristic
+- Changed Story World and Character & Performance review surfaces to share the same immutable Draft/Reviewed control path as the other concern groups
+
+### Fixed
+- Fixed false-red readiness cases for Story World note-only drafts and no-character Character & Performance scene artifacts
+- Fixed stale historical run progress cards so copied or missing runs stop polling dead run-state endpoints and render a stable unavailable fallback instead
+
 ## [2026-04-10-05] — Clarify methodology routing and add throughput planning line
 
 ### Added

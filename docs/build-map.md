@@ -77,7 +77,7 @@
 **Phase:** hold
 
 **Story coverage:** partial
-**Stories:** 014, 015, 016, 017, 018, 020, 021, 022, 023, 024, 033, 034, 056, 082, 083, 084, 090, 094, 095, 096, 097, 100, 121, 126, 131, 141
+**Stories:** 014, 015, 016, 017, 018, 020, 021, 022, 023, 024, 033, 034, 056, 082, 083, 084, 090, 094, 095, 096, 097, 099, 100, 121, 126, 131, 141
 **ADR Refs:** ADR-002, ADR-003
 **Spec:** spec:4 (spec:4.1, spec:4.2, spec:4.3, spec:4.4, spec:4.5, spec:4.6, spec:4.7, spec:4.7.1, spec:4.7.2, spec:4.8, spec:4.8.1, spec:4.8.2, spec:4.9, spec:4.9.1, spec:4.9.2, spec:4.10, spec:4.10.1, spec:4.10.2, spec:4.10.3, spec:4.10.4, spec:4.10.5, spec:4.10.6, spec:4.10.7)
 **Absorbs:** Role System & Creative Direction (old 4)

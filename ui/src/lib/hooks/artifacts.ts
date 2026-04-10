@@ -4,6 +4,7 @@ import {
   getArtifact,
   getPipelineGraph,
   getPrevizAdoptionStatus,
+  getSceneReadiness,
   listArtifactGroups,
   listArtifactVersions,
   overrideArtifactHealth,
@@ -24,6 +25,7 @@ import type {
   ImpactPreviewResponse,
   PipelineGraphResponse,
   PrevizAdoptionStatus,
+  SceneReadiness,
 } from '../types'
 
 export function usePipelineGraph(projectId: string | undefined, activeRunId?: string | null) {
@@ -78,6 +80,17 @@ export function usePrevizAdoptionStatus(projectId: string | undefined) {
   })
 }
 
+export function useSceneReadiness(
+  projectId: string | undefined,
+  sceneId: string | undefined,
+) {
+  return useQuery<SceneReadiness>({
+    queryKey: ['projects', projectId, 'scene-readiness', sceneId],
+    queryFn: () => getSceneReadiness(projectId!, sceneId!),
+    enabled: !!(projectId && sceneId),
+  })
+}
+
 export function useEditArtifact() {
   const queryClient = useQueryClient()
   return useMutation<
@@ -107,6 +120,9 @@ export function useEditArtifact() {
       })
       queryClient.invalidateQueries({
         queryKey: ['projects', variables.projectId, 'pipeline-graph'],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['projects', variables.projectId, 'scene-readiness'],
       })
       queryClient.invalidateQueries({ queryKey: ['projects', variables.projectId] })
     },

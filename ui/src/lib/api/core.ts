@@ -4,11 +4,13 @@ export const API_BASE = import.meta.env.VITE_API_BASE ?? ''
 
 export class ApiRequestError extends Error {
   hint?: string
+  status?: number
 
-  constructor(message: string, hint?: string) {
+  constructor(message: string, hint?: string, status?: number) {
     super(message)
     this.name = 'ApiRequestError'
     this.hint = hint
+    this.status = status
   }
 }
 
@@ -18,7 +20,7 @@ async function fetchResponse(path: string, init?: RequestInit): Promise<Response
   } catch (error) {
     if (error instanceof TypeError) {
       throw new ApiRequestError(
-        `Cannot reach API at ${API_BASE}. Start the backend with: PYTHONPATH=src python -m cine_forge.api`
+        `Cannot reach API at ${API_BASE}. Start the backend with: PYTHONPATH=src python -m cine_forge.api`,
       )
     }
     throw error
@@ -36,7 +38,7 @@ async function readErrorPayload(response: Response): Promise<ApiError | null> {
 async function throwRequestError(response: Response, fallbackMessage: string): Promise<never> {
   const payload = await readErrorPayload(response)
   const message = payload?.message ?? fallbackMessage
-  throw new ApiRequestError(message, payload?.hint ?? undefined)
+  throw new ApiRequestError(message, payload?.hint ?? undefined, response.status)
 }
 
 export async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -55,7 +57,7 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
 export async function requestText(path: string, init?: RequestInit): Promise<string> {
   const response = await fetchResponse(path, init)
   if (!response.ok) {
-    throw new ApiRequestError(`Request failed (${response.status})`)
+    throw new ApiRequestError(`Request failed (${response.status})`, undefined, response.status)
   }
   return response.text()
 }

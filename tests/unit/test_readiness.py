@@ -111,10 +111,33 @@ def test_yellow_character_and_performance() -> None:
 
 
 @pytest.mark.unit
+def test_yellow_character_and_performance_with_empty_scene_artifact() -> None:
+    """A no-characters scene artifact is still a meaningful draft outcome."""
+    result = compute_scene_readiness("scene_001", {
+        "character_and_performance": {
+            "scene_id": "scene_001",
+            "entries": [],
+            "user_approved": False,
+        },
+    })
+    assert result.character_and_performance == ReadinessState.YELLOW
+
+
+@pytest.mark.unit
 def test_yellow_story_world() -> None:
     result = compute_scene_readiness("scene_001", {
         "story_world": {
             "character_design_baselines": ["mariner", "helen"],
+        },
+    })
+    assert result.story_world == ReadinessState.YELLOW
+
+
+@pytest.mark.unit
+def test_yellow_story_world_with_rhythm_notes() -> None:
+    result = compute_scene_readiness("scene_001", {
+        "story_world": {
+            "narrative_rhythm_notes": "Hold the reveal until the final act.",
         },
     })
     assert result.story_world == ReadinessState.YELLOW

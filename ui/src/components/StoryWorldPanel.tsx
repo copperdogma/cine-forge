@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArtifactReviewControls } from '@/components/ArtifactReviewControls'
 import {
   Dialog,
   DialogContent,
@@ -254,7 +255,6 @@ export function StoryWorldPanel({
     continuityOverrideNotes: asString(data.continuity_override_notes),
     characterBehavioralConsistencyNotes: asString(data.character_behavioral_consistency_notes),
     narrativeRhythmNotes: asString(data.narrative_rhythm_notes),
-    userApproved: Boolean(data.user_approved),
   }), [data])
 
   const visualMotifs = useMemo(
@@ -391,15 +391,20 @@ export function StoryWorldPanel({
                 shot-planning passes should keep carrying forward.
               </CardDescription>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={storyWorld.userApproved ? 'default' : 'outline'}>
-                {storyWorld.userApproved ? 'Approved' : 'Draft'}
-              </Badge>
-              <Badge variant="outline">
-                {visualMotifs.length + audioMotifs.length} tracked motif
-                {visualMotifs.length + audioMotifs.length === 1 ? '' : 's'}
-              </Badge>
-            </div>
+            <ArtifactReviewControls
+              projectId={projectId}
+              artifactType="story_world"
+              entityId={entityId}
+              data={data}
+              label="Story World"
+              editable={editable}
+              extraBadges={(
+                <Badge variant="outline">
+                  {visualMotifs.length + audioMotifs.length} tracked motif
+                  {visualMotifs.length + audioMotifs.length === 1 ? '' : 's'}
+                </Badge>
+              )}
+            />
           </div>
         </CardHeader>
         <CardContent className="space-y-4">

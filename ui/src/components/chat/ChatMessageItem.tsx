@@ -93,7 +93,7 @@ export function ChatMessageItem({
   if (message.type === 'ai_progress') {
     return (
       <div className="py-1">
-        <RunProgressCard content={message.content} />
+        <RunProgressCard content={message.content} projectId={projectId} />
       </div>
     )
   }

@@ -100,10 +100,19 @@ def compute_scene_readiness(
         ),
         character_and_performance=_compute_group_readiness(
             artifacts.get("character_and_performance"),
-            ["entries"],
+            ["entries", "scene_id"],
         ),
         story_world=_compute_group_readiness(
             artifacts.get("story_world"),
-            ["character_design_baselines", "location_design_baselines", "visual_motif_annotations"],
+            [
+                "character_design_baselines",
+                "location_design_baselines",
+                "prop_design_baselines",
+                "continuity_override_notes",
+                "character_behavioral_consistency_notes",
+                "narrative_rhythm_notes",
+                "visual_motif_annotations",
+                "audio_motif_annotations",
+            ],
         ),
     )

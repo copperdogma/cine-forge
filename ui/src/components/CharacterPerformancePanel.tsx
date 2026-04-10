@@ -13,8 +13,9 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { ArtifactReviewControls } from '@/components/ArtifactReviewControls'
 import { useEditArtifact } from '@/lib/hooks'
-import { CheckCircle2, Drama, Pencil, Plus, Trash2 } from 'lucide-react'
+import { Drama, Pencil, Plus, Trash2 } from 'lucide-react'
 
 type CharacterPerformancePanelProps = {
   data: Record<string, unknown>
@@ -299,21 +300,6 @@ export function CharacterPerformancePanel({
     }
   }
 
-  async function handleApprovalToggle() {
-    try {
-      await persist(
-        entries.map((entry) => toPayloadEntry(toFormState(entry), sceneId)),
-        userApproved
-          ? 'Return Character & Performance to draft state'
-          : 'Mark Character & Performance as reviewed',
-        !userApproved,
-      )
-      toast.success(userApproved ? 'Marked as draft' : 'Marked as reviewed')
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to update review state')
-    }
-  }
-
   const canSave = form.character_id.trim().length > 0
 
   return (
@@ -332,26 +318,19 @@ export function CharacterPerformancePanel({
                   : 'Scene-level playable direction for the current scene.'}
               </CardDescription>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={userApproved ? 'default' : 'outline'}>
-                {userApproved ? 'Reviewed' : 'Draft'}
-              </Badge>
-              <Badge variant="outline">
-                {entries.length} character entr{entries.length === 1 ? 'y' : 'ies'}
-              </Badge>
-              {editable && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-1.5"
-                  onClick={handleApprovalToggle}
-                  disabled={editArtifact.isPending}
-                >
-                  <CheckCircle2 className="h-3.5 w-3.5" />
-                  {userApproved ? 'Mark Draft' : 'Mark Reviewed'}
-                </Button>
+            <ArtifactReviewControls
+              projectId={projectId}
+              artifactType="character_and_performance"
+              entityId={entityId}
+              data={data}
+              label="Character & Performance"
+              editable={editable}
+              extraBadges={(
+                <Badge variant="outline">
+                  {entries.length} character entr{entries.length === 1 ? 'y' : 'ies'}
+                </Badge>
               )}
-            </div>
+            />
           </div>
         </CardHeader>
         <CardContent className="space-y-3">

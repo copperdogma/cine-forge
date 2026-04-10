@@ -53,6 +53,7 @@ from cine_forge.api.routers import (
     memory,
     preferences,
     previz,
+    readiness,
     scene_actions,
     style_packs,
 )
@@ -101,6 +102,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     memory.set_service(service)
     preferences.set_service(service)
     previz.set_service(service)
+    readiness.set_service(service)
     scene_actions.set_service(service)
     style_packs.set_service(service)
     app.include_router(assets.router, prefix="/api")
@@ -112,6 +114,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app.include_router(memory.router, prefix="/api")
     app.include_router(preferences.router, prefix="/api")
     app.include_router(previz.router, prefix="/api")
+    app.include_router(readiness.router, prefix="/api")
     app.include_router(scene_actions.router, prefix="/api")
     app.include_router(style_packs.router, prefix="/api")
 

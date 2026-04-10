@@ -427,6 +427,18 @@ export type ArtifactGroupSummary = {
   health_details?: ArtifactHealthDetails | null
 }
 
+export type ReadinessState = 'red' | 'yellow' | 'green'
+
+export type SceneReadiness = {
+  scene_id: string
+  intent_mood: ReadinessState
+  look_and_feel: ReadinessState
+  sound_and_music: ReadinessState
+  rhythm_and_flow: ReadinessState
+  character_and_performance: ReadinessState
+  story_world: ReadinessState
+}
+
 export type ArtifactVersionSummary = {
   artifact_type: string
   entity_id: string | null

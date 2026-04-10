@@ -11,6 +11,7 @@ import type {
   ImpactPreviewRequest,
   ImpactPreviewResponse,
   PrevizAdoptionStatus,
+  SceneReadiness,
 } from '../types'
 import { request } from './core'
 
@@ -41,6 +42,13 @@ export function getArtifact(
 
 export function getPrevizAdoptionStatus(projectId: string): Promise<PrevizAdoptionStatus> {
   return request<PrevizAdoptionStatus>(`/api/projects/${projectId}/previz/adoption`)
+}
+
+export function getSceneReadiness(
+  projectId: string,
+  sceneId: string,
+): Promise<SceneReadiness> {
+  return request<SceneReadiness>(`/api/projects/${projectId}/scenes/${sceneId}/readiness`)
 }
 
 export function editArtifact(

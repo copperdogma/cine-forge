@@ -10,6 +10,7 @@ import {
   retryFailedStage,
   startRun,
 } from '../api'
+import { ApiRequestError } from '../api/core'
 import { useChatStore } from '../chat-store'
 import type {
   ArtifactEditResponse,
@@ -20,6 +21,10 @@ import type {
   RunStateResponse,
   RunSummary,
 } from '../types'
+
+export function isMissingRunError(error: unknown): boolean {
+  return error instanceof ApiRequestError && error.status === 404
+}
 
 export function runHasFailed(runState: RunStateResponse | undefined | null): boolean {
   if (!runState) return false
@@ -131,7 +136,11 @@ export function useRunState(runId: string | undefined) {
     queryKey: ['runs', runId, 'state'],
     queryFn: () => getRunState(runId!),
     enabled: !!runId,
+    retry: (_failureCount, error) => !isMissingRunError(error),
     refetchInterval: (query) => {
+      if (isMissingRunError(query.state.error)) {
+        return false
+      }
       const data = query.state.data
       return isRunStateTerminal(data) ? false : 2000
     },
@@ -174,9 +183,9 @@ export function useProjectCosts(projectId: string | undefined) {
 
 export function useActiveProjectRun(projectId: string | undefined) {
   const activeRunId = useChatStore((store) => (projectId ? store.activeRunId?.[projectId] ?? null : null))
-  const { data: runState } = useRunState(activeRunId ?? undefined)
+  const { data: runState, error } = useRunState(activeRunId ?? undefined)
   const recipeId = runState?.state.recipe_id ?? null
-  const isRunning = isRunActive(activeRunId, runState)
+  const isRunning = !isMissingRunError(error) && isRunActive(activeRunId, runState)
 
   return {
     activeRunId,

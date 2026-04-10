@@ -43,6 +43,7 @@ import { ShotPlanningPanel } from '@/components/ShotPlanningPanel'
 import { StoryboardPanel } from '@/components/StoryboardPanel'
 import { CharacterPerformancePanel } from '@/components/CharacterPerformancePanel'
 import { StoryWorldPanel } from '@/components/StoryWorldPanel'
+import { ArtifactReviewControls } from '@/components/ArtifactReviewControls'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import { EmptyState, ErrorState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
@@ -59,18 +60,31 @@ import {
   useSceneActionPreflight,
   useStartRun,
   useProjectInputs,
+  useSceneReadiness,
   type ResolvedLink,
 } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
-import type { ArtifactGroupSummary, SceneScopeMode } from '@/lib/types'
+import type {
+  ArtifactGroupSummary,
+  ReadinessState,
+  SceneReadiness,
+  SceneScopeMode,
+} from '@/lib/types'
 import { buildSceneScope, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
 
 // ---------------------------------------------------------------------------
 // Concern group config
 // ---------------------------------------------------------------------------
 
+type ConcernGroupId =
+  | 'look_and_feel'
+  | 'sound_and_music'
+  | 'rhythm_and_flow'
+  | 'character_and_performance'
+  | 'story_world'
+
 type ConcernGroupDef = {
-  id: string
+  id: ConcernGroupId
   concernGroup: ConcernGroupType
   artifactType: string
   label: string
@@ -130,32 +144,67 @@ const CONCERN_GROUPS: ConcernGroupDef[] = [
 // Readiness indicator
 // ---------------------------------------------------------------------------
 
-type ReadinessLevel = 'red' | 'yellow'
+type ReadinessLevel = ReadinessState | 'loading'
 
-function getReadiness(
+function getArtifactPresenceLevel(
   groups: ArtifactGroupSummary[] | undefined,
   artifactType: string,
   entityId: string,
-): ReadinessLevel {
+): Exclude<ReadinessLevel, 'green' | 'loading'> {
   const match = groups?.find(
     g => g.artifact_type === artifactType && g.entity_id === entityId,
   )
   return match ? 'yellow' : 'red'
 }
 
+function getConcernGroupReadinessLevel(
+  readiness: SceneReadiness | undefined,
+  concernGroupId: ConcernGroupDef['id'],
+  isLoading: boolean,
+): ReadinessLevel {
+  if (isLoading || !readiness) return 'loading'
+  switch (concernGroupId) {
+    case 'look_and_feel':
+      return readiness.look_and_feel
+    case 'sound_and_music':
+      return readiness.sound_and_music
+    case 'rhythm_and_flow':
+      return readiness.rhythm_and_flow
+    case 'character_and_performance':
+      return readiness.character_and_performance
+    case 'story_world':
+      return readiness.story_world
+  }
+}
+
 function ReadinessDot({ level, label }: { level: ReadinessLevel; label: string }) {
+  const tooltipLabel = (
+    level === 'green'
+      ? 'Reviewed'
+      : level === 'yellow'
+        ? 'AI draft'
+        : level === 'loading'
+          ? 'Loading'
+          : 'Not started'
+  )
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <div
           className={cn(
             'h-2.5 w-2.5 rounded-full shrink-0',
-            level === 'yellow' ? 'bg-yellow-400' : 'bg-red-500/70',
+            level === 'green'
+              ? 'bg-emerald-500'
+              : level === 'yellow'
+                ? 'bg-yellow-400'
+                : level === 'loading'
+                  ? 'bg-muted-foreground/40'
+                  : 'bg-red-500/70',
           )}
         />
       </TooltipTrigger>
       <TooltipContent>
-        {label}: {level === 'yellow' ? 'AI draft' : 'Not started'}
+        {label}: {tooltipLabel}
       </TooltipContent>
     </Tooltip>
   )
@@ -469,11 +518,20 @@ function ConcernGroupTabContent({
           sceneHeading={sceneHeading}
         />
       ) : (
-        <DirectionAnnotation
-          concernGroup={cg.concernGroup}
-          data={data}
-          sceneHeading={sceneHeading}
-        />
+        <>
+          <ArtifactReviewControls
+            projectId={projectId}
+            artifactType={cg.artifactType}
+            entityId={artifactEntityId}
+            data={data}
+            label={cg.label}
+          />
+          <DirectionAnnotation
+            concernGroup={cg.concernGroup}
+            data={data}
+            sceneHeading={sceneHeading}
+          />
+        </>
       )}
     </div>
   )
@@ -504,6 +562,10 @@ export default function SceneWorkspacePage() {
 
   const { resolve } = useEntityResolver(projectId)
   const { data: groups, isLoading: groupsLoading } = useArtifactGroups(projectId)
+  const {
+    data: readiness,
+    isLoading: readinessLoading,
+  } = useSceneReadiness(projectId, entityId)
 
   // Find the scene artifact
   const group = groups?.find(
@@ -575,11 +637,11 @@ export default function SceneWorkspacePage() {
   const shotPlanGroup = groups?.find(
     g => g.artifact_type === 'shot_plan' && g.entity_id === entityId,
   )
-  const shotPlanLevel = getReadiness(groups, 'shot_plan', entityId)
+  const shotPlanLevel = getArtifactPresenceLevel(groups, 'shot_plan', entityId)
   const storyboardGroup = groups?.find(
     g => g.artifact_type === 'storyboard' && g.entity_id === entityId,
   )
-  const storyboardLevel = getReadiness(groups, 'storyboard', entityId)
+  const storyboardLevel = getArtifactPresenceLevel(groups, 'storyboard', entityId)
   const keyframeGroup = groups?.find(
     g => g.artifact_type === 'keyframe' && g.entity_id === entityId,
   )
@@ -596,7 +658,7 @@ export default function SceneWorkspacePage() {
     g => g.artifact_type === 'generated_video' && g.entity_id === entityId,
   )
   const previzLevel = aiPrevizGroup ? 'yellow' : 'red'
-  const renderLevel = getReadiness(groups, 'generated_video', entityId)
+  const renderLevel = getArtifactPresenceLevel(groups, 'generated_video', entityId)
   const validTabs = new Set([
     'overview',
     ...CONCERN_GROUPS.map((cg) => cg.id),
@@ -703,8 +765,7 @@ export default function SceneWorkspacePage() {
             Overview
           </TabsTrigger>
           {CONCERN_GROUPS.map(cg => {
-            const entityId2 = cg.projectScoped ? 'project' : entityId
-            const level = getReadiness(groups, cg.artifactType, entityId2)
+            const level = getConcernGroupReadinessLevel(readiness, cg.id, readinessLoading)
             return (
               <TabsTrigger key={cg.id} value={cg.id} className="gap-1.5">
                 <ReadinessDot level={level} label={cg.label} />
