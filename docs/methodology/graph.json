@@ -635,7 +635,8 @@
           "152",
           "153",
           "156",
-          "157"
+          "157",
+          "158"
         ],
         "adrIds": [
           "ADR-002",
@@ -9695,6 +9696,65 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "158",
+      "title": "Fresh Run Event Polling Stops Racing Missing Event Logs",
+      "path": "docs/stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "R12 (radical transparency)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5",
+        "spec:5.6"
+      ],
+      "adrIds": [
+        "ADR-002"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:5"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "console-cleanliness",
+        "follow-up-from-157",
+        "run-progress",
+        "ux"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260410-1742",
+        "date": "2026-04-10",
+        "summary": "close-out: marked Story 158 `Done` after the fresh validation"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "158",
+        "sourcePath": "docs/stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "close-out: marked Story 158 `Done` after the fresh validation",
+        "lastRelevantAction": {
+          "date": "2026-04-10",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md",
+          "summary": "close-out: marked Story 158 `Done` after the fresh validation"
+        }
+      }
     }
   ],
   "adrs": [
@@ -11503,16 +11563,14 @@
         "max_days_without_run": 14
       },
       "last_run_at": "2026-04-10",
-      "last_run_story_id": "156",
+      "last_run_story_id": "158",
       "scenarios": {
         "FP1": {
           "label": "Full Pipeline Canonical Fixture",
           "last_checked": "2026-04-10",
-          "latest_report": "2026-04-10-open-frequency-local",
-          "status": "recheck_due",
-          "follow_up_story_refs": [
-            "157"
-          ]
+          "latest_report": "2026-04-10-open-frequency-local-validation",
+          "status": "pass",
+          "follow_up_story_refs": []
         }
       }
     },
@@ -11595,8 +11653,6 @@
   },
   "validation": {
     "errors": [],
-    "warnings": [
-      "UI scout freshness due: attention needed — FP1 (Full Pipeline Canonical Fixture) is awaiting recheck (follow-up stories: 157)"
-    ]
+    "warnings": []
   }
 }

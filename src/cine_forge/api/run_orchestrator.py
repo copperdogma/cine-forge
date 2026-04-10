@@ -167,8 +167,7 @@ class RunOrchestrator:
         runtime_params = params.model_dump(by_alias=True, exclude_none=True)
 
         run_dir = self.workspace_root / "output" / "runs" / run_id
-        run_dir.mkdir(parents=True, exist_ok=True)
-        self._write_run_meta(
+        self._bootstrap_run_dir(
             run_dir=run_dir,
             project_id=project_id,
             project_path=project_path,
@@ -242,8 +241,11 @@ class RunOrchestrator:
 
         new_run_id = f"{run_id}-resume-{uuid.uuid4().hex[:4]}"
         resume_run_dir = self.workspace_root / "output" / "runs" / new_run_id
-        resume_run_dir.mkdir(parents=True, exist_ok=True)
-        self._write_run_meta(resume_run_dir, project_id, project_path)
+        self._bootstrap_run_dir(
+            run_dir=resume_run_dir,
+            project_id=project_id,
+            project_path=project_path,
+        )
 
         base_params = dict(state.get("runtime_params", {}))
         base_params["human_control_mode"] = mode
@@ -367,8 +369,7 @@ class RunOrchestrator:
 
         new_run_id = f"{run_id}-retry-{uuid.uuid4().hex[:4]}"
         retry_run_dir = self.workspace_root / "output" / "runs" / new_run_id
-        retry_run_dir.mkdir(parents=True, exist_ok=True)
-        self._write_run_meta(
+        self._bootstrap_run_dir(
             run_dir=retry_run_dir,
             project_id=project_id,
             project_path=project_path,
@@ -602,6 +603,23 @@ class RunOrchestrator:
             json.dumps(payload, indent=2, sort_keys=True),
             encoding="utf-8",
         )
+
+    @classmethod
+    def _bootstrap_run_dir(cls, run_dir: Path, project_id: str, project_path: Path) -> None:
+        """Create the minimum on-disk run substrate before returning a run id.
+
+        Real run ids should never begin life in a state where UI pollers can
+        immediately 404 on `/events` just because the worker thread has not
+        emitted the first event yet.
+        """
+
+        run_dir.mkdir(parents=True, exist_ok=True)
+        cls._write_run_meta(
+            run_dir=run_dir,
+            project_id=project_id,
+            project_path=project_path,
+        )
+        (run_dir / "pipeline_events.jsonl").touch(exist_ok=True)
 
     @staticmethod
     def _has_non_empty_raw_input(stage_state: dict[str, Any], store: ArtifactStore) -> bool:

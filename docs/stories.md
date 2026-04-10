@@ -102,7 +102,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:4`, `spec:5`
-- UI scout freshness: attention needed — FP1 (Full Pipeline Canonical Fixture) is awaiting recheck (follow-up stories: 157)
+- UI scout freshness: fresh — last run 2026-04-10
 - Sequencing bias: `pipeline-throughput-efficiency` (stories: 155) — Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
 - Active campaign `ui-product-truth-scouting`: Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage.
@@ -250,6 +250,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 111 | Fix \"View In Script\" Scroll-to-Scene | Medium | Done | — | spec:5 | — | [story-111](stories/story-111-scene-script-jump.md) |
 | 156 | Full-Pipeline UI Acceptance Walkthrough | Medium | Done | — | spec:5, spec:11 | — | [story-156](stories/story-156-full-pipeline-ui-acceptance-walkthrough.md) |
 | 157 | Chat Suggestions Stop Advertising Completed Paths | Medium | Done | — | spec:5 | — | [story-157](stories/story-157-chat-suggestions-stop-advertising-completed-paths.md) |
+| 158 | Fresh Run Event Polling Stops Racing Missing Event Logs | Medium | Done | — | spec:5 | — | [story-158](stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md) |
 | 089 | Interaction Mode Selection | Low | Done | — | spec:5 | 085 | [story-089](stories/story-089-interaction-mode-selection.md) |
 | 001 | Project Setup and Scaffolding | Unknown | Done | — | spec:1, spec:5, spec:8 | — | [story-001](stories/story-001-project-setup.md) |
 | 002 | Pipeline Foundation (Driver, Artifact Store, Schemas) | Unknown | Done | — | spec:1, spec:5, spec:8 | 001 | [story-002](stories/story-002-pipeline-foundation.md) |

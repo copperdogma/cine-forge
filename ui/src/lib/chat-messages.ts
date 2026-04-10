@@ -4,9 +4,129 @@
 import { getSceneScopeTargetLabel } from './constants'
 import type { ChatMessage, ProjectState, ProjectSummary } from './types'
 
-let nextId = 0
-function msgId(): string {
-  return `msg_${Date.now()}_${nextId++}`
+const BOOTSTRAP_WELCOME_ID = 'bootstrap_welcome'
+const BOOTSTRAP_SUGGESTION_ID = 'bootstrap_suggestion'
+
+const BOOTSTRAP_ACTION_IDS = new Set([
+  'upload',
+  'start_analysis',
+  'just_read',
+  'go_deeper',
+  'review',
+  'scenes',
+  'inbox',
+])
+
+const LEGACY_BOOTSTRAP_CONTENTS = {
+  welcome: [
+    'Welcome to CineForge! Upload a screenplay to get started.',
+    'Your screenplay is loaded',
+    'Your screenplay has been broken down',
+    'Your story world is built.',
+  ],
+  suggestion: [
+    "I'll break your screenplay into individual scenes",
+    'Ready for a deep breakdown?',
+    "Here's what you can do next:",
+  ],
+  status: [
+    'Reading your screenplay and extracting story elements...',
+  ],
+} as const
+
+function isBootstrapContent(message: ChatMessage): boolean {
+  if (message.type === 'ai_welcome') {
+    return LEGACY_BOOTSTRAP_CONTENTS.welcome.some(prefix => message.content.startsWith(prefix))
+  }
+  if (message.type === 'ai_suggestion') {
+    return LEGACY_BOOTSTRAP_CONTENTS.suggestion.some(prefix => message.content.startsWith(prefix))
+  }
+  if (message.type === 'ai_status') {
+    return LEGACY_BOOTSTRAP_CONTENTS.status.some(prefix => message.content.startsWith(prefix))
+  }
+  return false
+}
+
+function hasOnlyBootstrapActions(message: ChatMessage): boolean {
+  const actions = message.actions ?? []
+  return actions.every(action => BOOTSTRAP_ACTION_IDS.has(action.id))
+}
+
+function serializeBootstrapShape(message: ChatMessage) {
+  return {
+    id: message.id,
+    type: message.type,
+    content: message.content,
+    actions: (message.actions ?? []).map(action => ({
+      id: action.id,
+      label: action.label,
+      variant: action.variant,
+      route: action.route,
+    })),
+  }
+}
+
+export function isBootstrapChatMessage(message: ChatMessage): boolean {
+  if (message.id === BOOTSTRAP_WELCOME_ID || message.id === BOOTSTRAP_SUGGESTION_ID) {
+    return true
+  }
+
+  if (!isBootstrapContent(message)) {
+    return false
+  }
+
+  if (
+    message.speaker
+    || message.model
+    || message.streaming
+    || message.toolCalls?.length
+    || message.route
+    || message.pageContext
+    || message.injectedContent
+    || message.preflightData
+    || message.resolvedMessageId
+  ) {
+    return false
+  }
+
+  return hasOnlyBootstrapActions(message)
+}
+
+export function hasOnlyBootstrapMessages(messages: ChatMessage[]): boolean {
+  return messages.length > 0 && messages.every(isBootstrapChatMessage)
+}
+
+export function dropLegacyBootstrapMessages(messages: ChatMessage[]): ChatMessage[] {
+  const hasStableBootstrap = messages.some(
+    message => message.id === BOOTSTRAP_WELCOME_ID || message.id === BOOTSTRAP_SUGGESTION_ID,
+  )
+  if (!hasStableBootstrap) {
+    return messages
+  }
+
+  return messages.filter((message) => {
+    if (message.id === BOOTSTRAP_WELCOME_ID || message.id === BOOTSTRAP_SUGGESTION_ID) {
+      return true
+    }
+    return !isBootstrapChatMessage(message)
+  })
+}
+
+export function areBootstrapMessagesCurrent(
+  messages: ChatMessage[],
+  projectState: ProjectState,
+  project?: ProjectSummary,
+): boolean {
+  const expected = getWelcomeMessages(projectState, project)
+  const actual = dropLegacyBootstrapMessages(messages).filter(isBootstrapChatMessage)
+  if (actual.length !== expected.length) {
+    return false
+  }
+
+  return actual.every((message, index) => {
+    const expectedMessage = expected[index]
+    return JSON.stringify(serializeBootstrapShape(message)) === JSON.stringify(serializeBootstrapShape(expectedMessage))
+  })
 }
 
 export function getWelcomeMessages(
@@ -19,7 +139,7 @@ export function getWelcomeMessages(
     case 'empty':
       return [
         {
-          id: msgId(),
+          id: BOOTSTRAP_WELCOME_ID,
           type: 'ai_welcome',
           content: 'Welcome to CineForge! Upload a screenplay to get started.',
           timestamp: now,
@@ -32,13 +152,13 @@ export function getWelcomeMessages(
     case 'fresh_import':
       return [
         {
-          id: msgId(),
+          id: BOOTSTRAP_WELCOME_ID,
           type: 'ai_welcome',
           content: `Your screenplay is loaded${project?.input_files?.[0] ? ` — *${cleanFilename(project.input_files[0])}*` : ''}. Ready to bring your story to life?`,
           timestamp: now,
         },
         {
-          id: msgId(),
+          id: BOOTSTRAP_SUGGESTION_ID,
           type: 'ai_suggestion',
           content: "I'll break your screenplay into individual scenes and identify all the characters and locations. Takes about a minute.",
           timestamp: now + 1,
@@ -53,7 +173,7 @@ export function getWelcomeMessages(
     case 'processing':
       return [
         {
-          id: msgId(),
+          id: BOOTSTRAP_WELCOME_ID,
           type: 'ai_status',
           content: 'Reading your screenplay and extracting story elements...',
           timestamp: now,
@@ -64,13 +184,13 @@ export function getWelcomeMessages(
       const artifactCount = project?.artifact_groups ?? 0
       return [
         {
-          id: msgId(),
+          id: BOOTSTRAP_WELCOME_ID,
           type: 'ai_welcome',
           content: `Your screenplay has been broken down — ${artifactCount} story elements found.`,
           timestamp: now,
         },
         {
-          id: msgId(),
+          id: BOOTSTRAP_SUGGESTION_ID,
           type: 'ai_suggestion',
           content: 'Ready for a deep breakdown? I\'ll extract detailed character profiles, location guides, and map every relationship in your story.',
           timestamp: now + 1,
@@ -86,13 +206,13 @@ export function getWelcomeMessages(
     case 'complete':
       return [
         {
-          id: msgId(),
+          id: BOOTSTRAP_WELCOME_ID,
           type: 'ai_welcome',
           content: 'Your story world is built. Explore your scenes, characters, and creative bibles.',
           timestamp: now,
         },
         {
-          id: msgId(),
+          id: BOOTSTRAP_SUGGESTION_ID,
           type: 'ai_suggestion',
           content: "Here's what you can do next:",
           timestamp: now + 1,

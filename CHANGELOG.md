@@ -11,6 +11,17 @@
 
 ### Fixed
 - Fixed a compiler carry-through gap where eval descriptions and top-level retry conditions could be dropped from the generated methodology graph.
+## [2026-04-10-12] — Clean fresh-run startup path and chat truth (Story 158)
+
+### Changed
+- Changed fresh run bootstrap so `start`, `resume`, and `retry_failed_stage` all create the run substrate and event-log file before returning a real run id, keeping `/api/runs/{id}/events` honest from the first poll
+- Changed bootstrap chat-state handling so fresh imported projects replace stale placeholder messages with the current Home CTA instead of persisting an outdated `Upload Screenplay` path
+- Changed the ui-scout and methodology planning lane to record FP1 as passing again after the clean rerun on the canonical fixture
+
+### Fixed
+- Fixed one `/api/runs/{id}/events` startup 404 per fresh started run on the surfaced Home/chat path
+- Fixed stale fresh-import chat bootstrap messages continuing to advertise `Upload Screenplay` after the screenplay had already been imported
+- Fixed Story 158 close-out truth so the active follow-up lane no longer claims FP1 is unresolved after the passing validation rerun
 
 ## [2026-04-10-10] — Harden UI-scout planning lane (Story 156)
 

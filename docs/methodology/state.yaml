@@ -383,14 +383,14 @@
       "max_days_without_run": 14
     },
     "last_run_at": "2026-04-10",
-    "last_run_story_id": "156",
+    "last_run_story_id": "158",
     "scenarios": {
       "FP1": {
         "label": "Full Pipeline Canonical Fixture",
         "last_checked": "2026-04-10",
-        "latest_report": "2026-04-10-open-frequency-local",
-        "status": "recheck_due",
-        "follow_up_story_refs": ["157"]
+        "latest_report": "2026-04-10-open-frequency-local-validation",
+        "status": "pass",
+        "follow_up_story_refs": []
       }
     }
   },

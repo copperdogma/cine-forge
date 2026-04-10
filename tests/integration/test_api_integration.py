@@ -86,6 +86,12 @@ def test_operator_console_new_open_run_events_and_artifacts_flow(tmp_path: Path)
     assert started.status_code == 200
     assert started.json()["run_id"] == run_id
 
+    immediate_events = client.get(f"/api/runs/{run_id}/events")
+    assert immediate_events.status_code == 200
+    immediate_payload = immediate_events.json()
+    assert immediate_payload["run_id"] == run_id
+    assert isinstance(immediate_payload["events"], list)
+
     state = _await_run_done(client, run_id)
     assert state["state"]["stages"]["project_config"]["status"] in {"done", "skipped_reused"}
 

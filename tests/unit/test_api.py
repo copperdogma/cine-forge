@@ -546,6 +546,7 @@ def test_service_retry_failed_stage_bootstraps_new_run_from_failed_stage(
 
     new_run_dir = tmp_path / "output" / "runs" / new_run_id
     assert (new_run_dir / "run_meta.json").exists()
+    assert (new_run_dir / "pipeline_events.jsonl").exists()
     assert service.require_project_path("resume-project") == project_path
 
 

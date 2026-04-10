@@ -3,6 +3,7 @@
 
 import { create } from 'zustand'
 import { getChatMessages, postChatMessage } from './api/chat'
+import { dropLegacyBootstrapMessages } from './chat-messages'
 import { dropShadowedGenericRunFailureMessages } from './run-failure-messages'
 import type { ChatAction, ChatMessage, ChatMessageType, PreflightData, ToolCallStatus } from './types'
 
@@ -54,18 +55,19 @@ function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
     })
 
   const withoutShadowedRunFailures = dropShadowedGenericRunFailureMessages(migrated)
+  const normalizedBootstrapHistory = dropLegacyBootstrapMessages(withoutShadowedRunFailures)
 
   // Deduplicate activity messages: keep only the last one.
   let lastActivityIdx = -1
-  for (let i = withoutShadowedRunFailures.length - 1; i >= 0; i--) {
-    if (withoutShadowedRunFailures[i].type === 'activity') { lastActivityIdx = i; break }
+  for (let i = normalizedBootstrapHistory.length - 1; i >= 0; i--) {
+    if (normalizedBootstrapHistory[i].type === 'activity') { lastActivityIdx = i; break }
   }
   if (lastActivityIdx > 0) {
-    return withoutShadowedRunFailures.filter(
+    return normalizedBootstrapHistory.filter(
       (m, i) => m.type !== 'activity' || i === lastActivityIdx,
     )
   }
-  return withoutShadowedRunFailures
+  return normalizedBootstrapHistory
 }
 
 export interface EntityContext {

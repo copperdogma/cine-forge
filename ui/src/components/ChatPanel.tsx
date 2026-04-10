@@ -5,6 +5,7 @@ import { Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { postChatMessage, streamChatMessage } from '@/lib/api'
+import { dropLegacyBootstrapMessages } from '@/lib/chat-messages'
 import { getChatActionPresentation } from '@/lib/chat-action-state'
 import { useChatStore } from '@/lib/chat-store'
 import {
@@ -55,6 +56,7 @@ export function ChatPanel() {
   const { data: characters } = useProjectCharacters(projectId)
   const projectState = useProjectState(projectId)
   const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
+  const visibleMessages = dropLegacyBootstrapMessages(messages)
   const [inputText, setInputText] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
   const [stickyRole, setStickyRole] = useState<string | null>(null)
@@ -349,7 +351,7 @@ export function ChatPanel() {
           )
         })()}
         <div className="px-3 pr-4 py-3 space-y-1 w-0 min-w-full">
-          {messages.length === 0 ? (
+          {visibleMessages.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-center">
               <Sparkles className="h-8 w-8 text-muted-foreground/50 mb-3" />
               <p className="text-sm text-muted-foreground">
@@ -357,7 +359,7 @@ export function ChatPanel() {
               </p>
             </div>
           ) : (
-            messages.map((message, index) => {
+            visibleMessages.map((message, index) => {
               const { actions: visibleActions, archivedActionLabels } = getChatActionPresentation(
                 message.actions,
                 projectState,
@@ -367,7 +369,7 @@ export function ChatPanel() {
                 : { ...message, actions: visibleActions }
               const actionTaken = !!(
                 message.needsAction
-                && messages.slice(index + 1).some(
+                && visibleMessages.slice(index + 1).some(
                   (nextMessage) =>
                     nextMessage.type === 'user_action'
                     && nextMessage.resolvedMessageId === message.id,

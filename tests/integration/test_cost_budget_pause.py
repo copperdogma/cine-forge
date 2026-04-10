@@ -207,6 +207,12 @@ def test_paused_budget_run_can_resume_with_higher_budget_via_api(tmp_path: Path)
     resumed_run_id = resume.json()["run_id"]
     assert resumed_run_id != run_id
 
+    resumed_events_immediate = client.get(f"/api/runs/{resumed_run_id}/events")
+    assert resumed_events_immediate.status_code == 200
+    resumed_immediate_payload = resumed_events_immediate.json()
+    assert resumed_immediate_payload["run_id"] == resumed_run_id
+    assert isinstance(resumed_immediate_payload["events"], list)
+
     resumed_payload = _await_run_terminal_state(client, resumed_run_id)
     resumed_stages = resumed_payload["state"]["stages"]
     assert resumed_stages["spend"]["status"] == "skipped_reused"
