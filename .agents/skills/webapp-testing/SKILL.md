@@ -1,6 +1,7 @@
 ---
 name: webapp-testing
 description: Toolkit for testing web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing screenshots, and viewing browser logs.
+user-invocable: true
 ---
 
 # Web Application Testing

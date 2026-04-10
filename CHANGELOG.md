@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-10-08] — Harden skill sync wrapper checks
+
+### Changed
+- Tightened `scripts/sync-agent-skills.sh` so wrapper sync now fails on missing
+  `user-invocable` frontmatter, mismatched Gemini wrapper content, or stale
+  extra wrappers instead of only checking wrapper presence
+- Declared `webapp-testing` as an explicit invocable skill so the shared
+  wrapper-generation contract now matches the checked-in skill surface
+
 ## [2026-04-10-06] — Add full-pipeline UI acceptance requirement
 
 ### Added
