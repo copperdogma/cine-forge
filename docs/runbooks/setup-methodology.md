@@ -45,6 +45,9 @@ Modes:
 - `/create-eval` — scaffold a new eval
 - `/improve-eval` — iterate on an existing eval
 - `/align` — sweep the methodology graph for drift
+- UI product-truth scouting via `docs/ui-scout.md` +
+  `docs/runbooks/full-pipeline-ui-manual-walkthrough.md` when `state.ui_scout`
+  is part of the package
 - the normal story / build / validate / close-out skills
 
 ### Removed Old Surface
@@ -76,16 +79,22 @@ them, use `/setup-methodology` instead.
    - promptfoo workflow is documented if the repo uses it
    - `/create-eval` and `/improve-eval` split creation vs iteration cleanly
 
-5. `[judgment]` Normalize the setup surface.
+5. `[judgment]` Keep optional recurring lanes honest.
+   - If `state.ui_scout` exists, `docs/ui-scout.md`,
+     `docs/runbooks/full-pipeline-ui-manual-walkthrough.md`, and the AGENTS
+     routing should stay aligned with that lane
+   - Do not add UI-scout boilerplate to repos that do not use the lane
+
+6. `[judgment]` Normalize the setup surface.
    - `/setup-methodology` is the advertised setup entrypoint
    - phased setup skills are removed rather than kept as hidden aliases
    - `init-project` installs the same package
 
-6. `[script]` Sync the skill wrappers.
+7. `[script]` Sync the skill wrappers.
    - `./scripts/sync-agent-skills.sh`
    - `./scripts/sync-agent-skills.sh --check`
 
-7. `[script]` Audit for stale surface drift.
+8. `[script]` Audit for stale surface drift.
    - run `rg` across `AGENTS.md`, `docs/`, and `.agents/skills/` for the old
      phased setup names
    - run `pnpm methodology:check` after rewiring active methodology surfaces
@@ -97,6 +106,8 @@ them, use `/setup-methodology` instead.
 - Use `docs/setup-checklist.md` as the working copy
 - Treat evals and goldens as baseline setup, not optional later polish
 - Keep AGENTS, runbooks, and skills teaching the same public surface
+- Keep optional recurring lanes such as `ui_scout` aligned when the repo uses
+  them
 - Keep authored state separate from generated views
 
 ### Ask first

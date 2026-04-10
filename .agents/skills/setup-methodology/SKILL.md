@@ -25,6 +25,8 @@ reference at `.agents/skills/setup-methodology/references/modes.md`.
 - generated methodology surfaces (`docs/build-map.md`, `docs/stories.md`, `docs/methodology/graph.json`)
 - baseline golden + eval setup, including CineForge's sidequest benchmark lane
 - story / planning bootstrap guidance
+- optional recurring methodology lanes already encoded in the package, such as
+  `ui_scout` plus its history and runbook surfaces
 - `AGENTS.md` methodology wiring and canonical public surface
 - cross-CLI skill sync via `scripts/sync-agent-skills.sh`
 
@@ -60,7 +62,8 @@ redoing the entire methodology conversation.
    fully installed until the repo has both the golden workspace and the eval
    registry / benchmark workflow.
 4. **Keep recurring work separate.** After the package exists, ongoing eval work
-   should flow through `/create-eval`, `/improve-eval`, `/align`, and the normal
+   should flow through `/create-eval`, `/improve-eval`, `/align`, the local
+   `ui-scout` lane when `state.ui_scout` exists, and the normal
    story/build/validate/close-out skills.
 5. **Canonical public surface only.** AGENTS/docs should advertise
    `/setup-methodology` as the setup front door. Remove deprecated phased setup
@@ -94,6 +97,9 @@ redoing the entire methodology conversation.
    - Run `pnpm methodology:compile` after metadata changes so generated
      dashboards stay current
    - Add or refresh `docs/runbooks/setup-methodology.md`
+   - When `state.ui_scout` exists, keep `docs/ui-scout.md`,
+     `docs/runbooks/full-pipeline-ui-manual-walkthrough.md`, and the AGENTS
+     routing aligned with the package
    - Update `AGENTS.md` so the repo teaches the current hierarchy and public
      skill surface
 
@@ -109,6 +115,8 @@ redoing the entire methodology conversation.
 6. **Normalize the public setup surface**
    - `/setup-methodology` is the advertised setup entrypoint
    - deprecated phased setup skills are removed from the repo
+   - `ui_scout` is documented only when the package includes the UI
+     product-truth lane
    - `init-project` installs the same package for new repos
    - run `scripts/sync-agent-skills.sh`
    - validate with `scripts/sync-agent-skills.sh --check`

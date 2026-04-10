@@ -39,6 +39,7 @@
 
 - [x] Story framework is anchored to story metadata + methodology state + spec
 - [x] Story/bootstrap guidance no longer teaches the stale phased setup model as the public surface
+- [x] UI-scout lane exists (`state.yaml` `ui_scout` + `docs/ui-scout.md` + companion runbook) when the repo uses UI product-truth scouting, or is explicitly absent
 - [x] `init-project` installs the same methodology package for new repos
 
 ## Validation
