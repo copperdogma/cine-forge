@@ -112,12 +112,29 @@ When invoked with no scope, run a methodology-first orchestration pass:
      the primary gap or a health flag, but do not recommend repeating that
      line just because it is still important.
 
-4. **Read decision constraints for that gap**
+4. **Apply phase-pressure defaults**
+   Phase is not tie-break metadata. It creates default pressure to keep moving
+   the repo toward the Ideal:
+   - `converge` -> prefer the smallest honest deletion, simplification, or
+     residue-removal move that could retire the compromise or prove why it
+     cannot be retired yet
+   - `climb` -> prefer the strongest bounded improvement move that could
+     advance the line toward `hold` (quality, proof widening, substrate
+     hardening, or a more capable approach)
+   - `hold` -> prefer thinner / cheaper / faster / simpler / easier-to-operate
+     work when no stronger actionable `converge` or `climb` line wins
+
+   A line does not need a new bug report, inbox item, or external prompt to be
+   actionable. If phase plus current repo evidence suggests a bounded,
+   falsifiable next move, that is enough unless recent evidence says the same
+   move is currently blocked, exhausted, or not worth repeating.
+
+5. **Read decision constraints for that gap**
    - Open the relevant ADRs / design docs for the chosen gap
    - If none apply, say so explicitly
    - Goal: avoid picking a next action that fights a settled architecture decision
 
-5. **Query the existing work under that gap**
+6. **Query the existing work under that gap**
    - Stories: `/triage-stories`
    - Inbox: `/triage-inbox scan`
    - Evals: `/triage-evals`
@@ -133,7 +150,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - Do **not** let a blocked story or an exhausted eval retry masquerade as
      actionable just because it is the most continuous existing line
 
-6. **Choose one next action**
+7. **Choose one next action**
    Only rank actionable candidates here. Blocked stories with unmet unblock
    conditions and eval retries whose triggers remain exhausted belong under
    `Health Flags`, not `Recommended Action`.
@@ -145,7 +162,21 @@ When invoked with no scope, run a methodology-first orchestration pass:
      ready work unless the stronger line is genuinely not actionable yet
    - only fall back to a smaller unrelated ready story if the larger gap is genuinely not actionable yet, and explain why
 
-7. **Return a short report**
+   Choose among those options with the strongest combined signal across:
+   - movement toward the Ideal
+   - real problem pressure
+   - phase pressure (`converge` > actionable `climb` > actionable `hold`,
+     unless blocker or recency evidence says otherwise)
+   - blocking power / dependency leverage
+   - simplification leverage
+   - continuity from active unresolved work lines
+
+   `No-op` is the last resort, not the default safe answer. It is only honest
+   when every plausible phase-aligned move is blocked by missing external
+   capability, was just retried on the same premise without a new trigger, or
+   lacks a bounded falsifiable next step.
+
+8. **Return a short report**
 
 ```markdown
 ## Triage
@@ -195,3 +226,10 @@ When invoked with no scope, run a methodology-first orchestration pass:
   without a materially new trigger
 - Never recommend repeating a line just because it is still the biggest open
   gap; cite the last attempt and the current why-now trigger explicitly
+- Do not treat lack of a fresh external trigger as sufficient reason for
+  `no-op` when a bounded phase-aligned improvement move still exists
+- Prefer recommending the best next attempt, simplification, or new story shell
+  over `no-op` unless the repo is genuinely out of actionable phase-aligned
+  moves
+- `Converge` means "try to delete or collapse residue," not "wait until
+  something else happens."

@@ -73,6 +73,20 @@ Companion runbook: `docs/runbooks/triage-evals.md`
    - If `.venv` is unavailable, try an equivalent local Python if dependencies exist
    - If the summary cannot run, say so explicitly and fall back to registry-only diagnosis
 
+6. **Apply phase-aware defaults**
+   - `converge` -> default pressure to prove the compromise can be deleted or
+     to remove the smallest remaining residue
+   - `climb` -> default pressure to improve quality, widen proof, or test the
+     next credible stronger approach until the line can move toward `hold`
+   - `hold` -> lower but real pressure to make the current line cheaper,
+     faster, thinner, or easier to operate when higher-pressure lines are not
+     actionable
+
+   Phase plus current repo evidence is enough to justify an eval
+   recommendation when there is a bounded, falsifiable next move. A line does
+   not need a new external announcement or a fresh inbox item before it
+   becomes worth improving again.
+
 ## Phase 2 — Diagnose
 
 If the user passed a specific eval or compromise id:
@@ -129,6 +143,11 @@ For each recommended item, end with one concrete next action:
 - **Skip for now** — when the eval is healthy enough or the compromise is not actionable yet
 - **Do story / ADR / spec work first** — when the bigger gap is not actually waiting on eval evidence
 
+Prefer a concrete next move over `no action` whenever a phase-aligned,
+bounded experiment or proof refresh still exists. Reserve `no action` for lines
+that are truly blocked on external capability, just retried on the same
+premise, or missing a falsifiable next experiment.
+
 ## Output Format
 
 Present the result as:
@@ -166,6 +185,11 @@ Present the result as:
   materially new trigger actually appears
 - Do not convert "big gap" or "red line" into "do this now" without naming a
   concrete why-now trigger or a genuinely new unanswered question
+- Do not treat "no newly released model" as sufficient reason for no action
+  when a bounded prompt, golden, proof-refresh, or architecture-linked eval
+  move still exists
+- If a `converge` or `climb` line still has a bounded falsifiable next move,
+  prefer recommending it over `no action`
 - Do not treat every red compromise eval as blocking; use AGENTS expected-fail semantics
 - When a single model default depends on an eval, stale defaults matter, but they still do not outrank a bigger unrelated `climb` gap without explanation
 - Do not force eval work to the top if the current system bottleneck is product substrate rather than measurement

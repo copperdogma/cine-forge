@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-10-12] — Make triage phase-driven by default
+
+### Changed
+- Changed `/triage`, `/triage-stories`, and `/triage-evals` so methodology phase now creates default action pressure instead of treating missing novelty as a reason to stall.
+- Changed story-triage guidance to recommend creating a story shell when a pressured methodology line still lacks packaging, while preserving CineForge's local architecture and expected-fail eval framing.
+
+### Fixed
+- Fixed planning guidance so bounded phase-aligned story and eval moves no longer degrade to false `no-op` or `no action` recommendations.
+
 ## [2026-04-10-11] — Compile triage actionability into methodology graph
 
 ### Added

@@ -35,6 +35,11 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    A `Blocked` line can preserve continuity, but it is not actionable while its
    unblock condition is unmet.
 
+   If the backlog shells are quiet but the methodology state still has active
+   `converge`, `climb`, or meaningful `hold` pressure, do not stop at "no open
+   stories." Identify the strongest problem line and consider whether the
+   honest recommendation is to create a new story shell for it.
+
 3. **Name the top 1-3 live gaps**
    - For each gap, state:
      - the unmet Ideal promise or overscaffolded compromise
@@ -61,6 +66,15 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
    - **Movement toward the Ideal**: Does this story directly advance the top methodology gap, or is it a side quest?
    - **Real problem pressure**: Is this closing a live trust break, missing substrate, or overscaffolded compromise right now?
    - **Leverage and unblock power**: Does it unlock downstream work, reduce fragmentation, or remove scaffolding?
+   - **Phase coherence**:
+     - `converge`: default pressure to delete, simplify, or collapse residue
+     - `climb`: default pressure to improve quality, widen proof, or land the
+       next advancement toward `hold`
+     - `hold`: lower but still real pressure for efficiency, simplification,
+       thinner ownership, or operational hardening when stronger lines are not
+       actionable
+     - Work that fights the phase is lower priority
+     - Lack of a fresh bug report does not zero out a phase-aligned candidate
    - **Readiness**: Can this line honestly continue, reopen, expand, or unblock now?
    - **Cost**: Is the effort proportional to the value delivered?
    - **Continuity / momentum**: Does it build on active or recently advanced work with the same unresolved success surface?
@@ -107,3 +121,9 @@ Evaluate the story backlog as a **continuation surface** for methodology gaps. T
 - Never recommend a `Blocked` story with an unmet unblock condition just
   because it is the only active-looking line; keep it visible as a health flag
   instead
+- Do not say the backlog is effectively empty when the methodology state still
+  shows a bounded actionable `converge`/`climb` pressure line that simply lacks
+  a story shell; recommend creating the story instead.
+- `No actionable story` is only honest when every plausible phase-aligned move
+  is blocked, exhausted, or not yet specific enough to package as a bounded
+  story.
