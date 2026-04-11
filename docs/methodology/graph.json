@@ -275,7 +275,8 @@
           "135",
           "142",
           "148",
-          "155"
+          "155",
+          "161"
         ],
         "adrIds": [
           "ADR-003"
@@ -283,6 +284,7 @@
         "evalIds": [
           "compromise-C4-two-tier-scenes",
           "config-detection",
+          "full-script-throughput",
           "normalization",
           "scene-enrichment",
           "scene-extraction",
@@ -351,7 +353,9 @@
           "108",
           "112",
           "124",
-          "129"
+          "129",
+          "159",
+          "160"
         ],
         "adrIds": [
           "ADR-001",
@@ -362,6 +366,7 @@
           "character-extraction",
           "continuity-extraction",
           "entity-discovery",
+          "full-script-throughput",
           "location-extraction",
           "prop-extraction",
           "relationship-discovery"
@@ -911,7 +916,10 @@
           "138",
           "140",
           "144",
-          "155"
+          "155",
+          "159",
+          "160",
+          "161"
         ],
         "adrIds": [
           "ADR-001",
@@ -925,6 +933,7 @@
           "config-detection",
           "continuity-extraction",
           "entity-discovery",
+          "full-script-throughput",
           "location-extraction",
           "normalization",
           "previz-usefulness",
@@ -1323,26 +1332,38 @@
           "last_reviewed": "2026-04-04"
         },
         "storyIds": [
-          "155"
+          "155",
+          "159",
+          "160",
+          "161"
         ],
-        "evalIds": [],
+        "evalIds": [
+          "full-script-throughput"
+        ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "155",
-          "sourcePath": "docs/stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md",
+          "sourceKind": "eval",
+          "sourceId": "full-script-throughput",
+          "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
-          "posture": "draft",
-          "whyNow": "",
+          "posture": "no-trigger-recorded",
+          "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
+          "retryTriggerStatus": "none",
+          "retryWhen": [],
           "lastRelevantAction": {
-            "date": null,
-            "sourceType": "story-status",
-            "source": "docs/stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md",
-            "summary": ""
+            "date": "2026-04-10",
+            "sourceType": "eval-score",
+            "source": "docs/evals/registry.yaml",
+            "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
           },
           "storyIds": [
-            "155"
+            "155",
+            "159",
+            "160",
+            "161"
           ],
-          "evalIds": []
+          "evalIds": [
+            "full-script-throughput"
+          ]
         }
       },
       {
@@ -1393,30 +1414,38 @@
           "last_reviewed": "2026-04-04"
         },
         "storyIds": [
-          "155"
+          "155",
+          "159",
+          "160",
+          "161"
         ],
         "evalIds": [
-          "compromise-C3-tiered-models"
+          "compromise-C3-tiered-models",
+          "full-script-throughput"
         ],
         "actionability": {
           "sourceKind": "eval",
-          "sourceId": "compromise-C3-tiered-models",
+          "sourceId": "full-script-throughput",
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "",
+          "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": null,
+            "date": "2026-04-10",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": ""
+            "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
           },
           "storyIds": [
-            "155"
+            "155",
+            "159",
+            "160",
+            "161"
           ],
           "evalIds": [
+            "full-script-throughput",
             "compromise-C3-tiered-models"
           ]
         }
@@ -1433,30 +1462,34 @@
           "last_reviewed": "2026-04-04"
         },
         "storyIds": [
-          "155"
+          "155",
+          "161"
         ],
         "evalIds": [
-          "compromise-C4-two-tier-scenes"
+          "compromise-C4-two-tier-scenes",
+          "full-script-throughput"
         ],
         "actionability": {
           "sourceKind": "eval",
-          "sourceId": "compromise-C4-two-tier-scenes",
+          "sourceId": "full-script-throughput",
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "",
+          "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": null,
+            "date": "2026-04-10",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": ""
+            "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
           },
           "storyIds": [
-            "155"
+            "155",
+            "161"
           ],
           "evalIds": [
+            "full-script-throughput",
             "compromise-C4-two-tier-scenes"
           ]
         }
@@ -9512,7 +9545,7 @@
       "id": "155",
       "title": "End-to-End Throughput Detector and Stage Efficiency Budgets",
       "path": "docs/stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md",
-      "status": "Draft",
+      "status": "Done",
       "priority": "Medium",
       "idealRefs": [
         "R1 (story understanding)",
@@ -9567,7 +9600,7 @@
         "sourceId": "155",
         "sourcePath": "docs/stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md",
         "recommendedNow": false,
-        "posture": "draft",
+        "posture": "completed",
         "whyNow": "",
         "lastRelevantAction": {
           "date": null,
@@ -9753,6 +9786,200 @@
           "sourceType": "story-work-log",
           "source": "docs/stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md",
           "summary": "check-in hardening: rebasing onto `origin/main` exposed a flaky"
+        }
+      }
+    },
+    {
+      "id": "159",
+      "title": "Continuity Tracking Throughput and Output Budget Reduction",
+      "path": "docs/stories/story-159-continuity-tracking-throughput-and-output-budget-reduction.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Radical transparency"
+      ],
+      "specRefs": [
+        "spec:3",
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3"
+      ],
+      "dependsOn": [
+        "011",
+        "032",
+        "155"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "continuity",
+        "follow-up-from-155",
+        "output-budget",
+        "throughput"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "159",
+        "sourcePath": "docs/stories/story-159-continuity-tracking-throughput-and-output-budget-reduction.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-159-continuity-tracking-throughput-and-output-budget-reduction.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "160",
+      "title": "Long-Form Character and Location Bible Output Budget Recovery",
+      "path": "docs/stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Radical transparency"
+      ],
+      "specRefs": [
+        "spec:3",
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3"
+      ],
+      "dependsOn": [
+        "008",
+        "009",
+        "129",
+        "155"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "follow-up-from-155",
+        "long-form",
+        "output-budget",
+        "throughput"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "160",
+        "sourcePath": "docs/stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "161",
+      "title": "Long-Form Scene Analysis Throughput Reduction",
+      "path": "docs/stories/story-161-long-form-scene-analysis-throughput-reduction.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:2.7",
+        "spec:2.7.2",
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "dependsOn": [
+        "040",
+        "155"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "follow-up-from-155",
+        "long-form",
+        "scene-analysis",
+        "throughput"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "161",
+        "sourcePath": "docs/stories/story-161-long-form-scene-analysis-throughput-reduction.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-161-long-form-scene-analysis-throughput-reduction.md",
+          "summary": ""
         }
       }
     }
@@ -10377,6 +10604,85 @@
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
           "summary": "Failed the recall gate by missing required character DAD despite otherwise broad coverage."
+        }
+      }
+    },
+    {
+      "id": "full-script-throughput",
+      "name": "Full Script Throughput",
+      "type": "quality",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/full_script_throughput_eval.py --fixture-manifest benchmarks/fixtures/full_script_throughput_cases.json --output-prefix benchmarks/results/full-script-throughput-current",
+      "description": "Honest story-lane throughput detector for screenplay understanding. Measures the currently surfaced `mvp_ingest` -> `world_building` path on checked-in short, medium, and long screenplay fixtures; records per-stage runtime, cost, token volume, artifact-backed output volume, and normalized stage budgets.",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "storyIds": [
+        "155",
+        "159",
+        "160",
+        "161"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "retryWhen": [],
+      "attempts": [],
+      "latestScore": {
+        "model": "Story-Lane Baseline (Short+Medium Green, Long Runtime-Blocking)",
+        "measured": "2026-04-10",
+        "note": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
+      },
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [
+        "155",
+        "159",
+        "160",
+        "161"
+      ],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "actionability": {
+        "sourceKind": "eval",
+        "sourceId": "full-script-throughput",
+        "sourcePath": "docs/evals/registry.yaml",
+        "recommendedNow": false,
+        "posture": "no-trigger-recorded",
+        "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
+        "lastRelevantAction": {
+          "date": "2026-04-10",
+          "sourceType": "eval-score",
+          "source": "docs/evals/registry.yaml",
+          "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
         }
       }
     },
@@ -11401,9 +11707,11 @@
       "sequencing_bias": [
         {
           "target": "pipeline-throughput-efficiency",
-          "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
+          "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. The honest detector now exists, so follow-up optimization should route into the measured hotspot stories rather than reopen the detector slice.",
           "story_refs": [
-            "155"
+            "159",
+            "160",
+            "161"
           ]
         },
         {
@@ -11492,8 +11800,7 @@
               "106": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "112": "Valuable redesign candidate, but it still needs tighter scope before it should leave Draft.",
               "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
-              "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed.",
-              "155": "Important secondary line: establish an honest screenplay-throughput detector and stage-efficiency budgets so future optimization work routes through measurement rather than anecdote."
+              "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed."
             }
           },
           {

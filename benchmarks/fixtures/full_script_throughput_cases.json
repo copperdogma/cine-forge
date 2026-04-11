@@ -1,0 +1,39 @@
+{
+  "boundary_id": "story_lane_workspace_ready",
+  "boundary_label": "Break Down Script -> Deep Breakdown",
+  "honest_scope": "Current surfaced story-lane path only: run `mvp_ingest` (Break Down Script) followed by `world_building` (Deep Breakdown) on a fresh screenplay project. Excludes unfinished film-lane generation, export, and any pretend full-pipeline runtime claim.",
+  "recipes": [
+    {
+      "recipe_id": "mvp_ingest",
+      "recipe_path": "configs/recipes/recipe-mvp-ingest.yaml",
+      "ui_label": "Break Down Script",
+      "notes": "Tier 1 story-lane ingest: canonical script, scene breakdown, script bible, project config."
+    },
+    {
+      "recipe_id": "world_building",
+      "recipe_path": "configs/recipes/recipe-world-building.yaml",
+      "ui_label": "Deep Breakdown",
+      "notes": "Tier 2 story-lane enrichment: scene analysis, entity bibles, continuity, and graph."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "open_frequency_short",
+      "label": "Short control screenplay",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Short control to expose fixed overhead and avoid inferring budgets from long-form scripts alone."
+    },
+    {
+      "case_id": "last_birthday_card_medium",
+      "label": "Medium screenplay",
+      "input_fixture": "tests/fixtures/round_trip/the-last-birthday-card/The-Last-Birthday-Card.fountain",
+      "notes": "Medium-length screenplay to anchor realistic story-lane throughput between trivial and full-length extremes."
+    },
+    {
+      "case_id": "big_fish_long",
+      "label": "Long screenplay",
+      "input_fixture": "tests/fixtures/round_trip/big-fish/Big-Fish.fountain",
+      "notes": "Long screenplay case to expose stage scaling, output-volume drift, and honest story-lane wall-clock cost."
+    }
+  ]
+}

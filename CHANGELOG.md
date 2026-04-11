@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-10-13] — Add full-script throughput detector (Story 155)
+
+### Added
+- Added a checked-in full-script throughput benchmark harness, fixture manifest, and baseline result artifacts for the honest `mvp_ingest` -> `world_building` story-lane boundary
+- Added follow-up stories for the measured throughput hotspots: continuity tracking runtime/output budgets, long-form bible truncation recovery, and long-form scene-analysis reduction
+
+### Changed
+- Changed methodology state, generated planning views, and eval registry tracking so screenplay-throughput work now routes through the landed detector and its measured follow-up stories
+
+### Fixed
+- Fixed Fountain normalization for blank metadata headers with indented continuation lines so representative medium/long screenplay title pages no longer crash before throughput measurement
+
 ## [2026-04-10-12] — Make triage phase-driven by default
 
 ### Changed

@@ -1688,6 +1688,61 @@ evals:
         git_sha: "0d6d517"
         note: "Fresh validation reran the full matrix on the post-change manifest and produced a different winner ordering: Lite 4 remained better than the Lite 8 controls, but `veo31_4_scene_ready` became the fastest scene-ready case and `fast_4_scene_ready` had the quickest scene-ready ai-previz segment. The harness still proves runtime-blocking, but it does not yet isolate a stable shipped winner strongly enough to close Story 153."
 
+  - id: full-script-throughput
+    name: Full Script Throughput
+    type: quality
+    spec_refs:
+      - spec:2
+      - spec:3
+      - spec:8
+    story_refs:
+      - "155"
+      - "159"
+      - "160"
+      - "161"
+    category_refs:
+      - spec:2
+      - spec:3
+      - spec:8
+    compromise_refs:
+      - "C1"
+      - "C3"
+      - "C4"
+    description: >
+      Honest story-lane throughput detector for screenplay understanding.
+      Measures the currently surfaced `mvp_ingest` -> `world_building` path on
+      checked-in short, medium, and long screenplay fixtures; records per-stage
+      runtime, cost, token volume, artifact-backed output volume, and normalized
+      stage budgets.
+    pipeline_stage: story_lane
+    runner: custom
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/full_script_throughput_eval.py --fixture-manifest benchmarks/fixtures/full_script_throughput_cases.json --output-prefix benchmarks/results/full-script-throughput-current"
+    script: benchmarks/scripts/full_script_throughput_eval.py
+    golden: benchmarks/fixtures/full_script_throughput_cases.json
+    test_cases: 3
+
+    target:
+      metric: overall
+      value: 1.0
+      note: "Overall reaches 1.0 only when the detector runs on the honest short/medium/long fixture pack and every case completes the current surfaced story-lane boundary. Stage budget rows are climb aids, not stop-ship thresholds, but any long-form failure remains runtime-blocking for screenplay-understanding throughput."
+
+    scores:
+      - model: "Story-Lane Baseline (Short+Medium Green, Long Runtime-Blocking)"
+        metrics:
+          overall: 0.6667
+          successful_case_ratio: 0.6667
+          median_total_elapsed_ms: 255740
+          boundary_current_budget_duration_ms_per_1k_words: 167345.94
+          top_runtime_hotspot_current_duration_ms_per_1k_words: 72295.372
+        latency_ms: 255740
+        cost_usd: 0.361117
+        measured: 2026-04-10
+        git_sha: "96afaa6"
+        result_file: benchmarks/results/full-script-throughput-story-155-baseline-2026-04-10.json
+        note: "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_frequency_short` succeeded at `142628 ms` / `$0.1741`, `last_birthday_card_medium` succeeded at `368853 ms` / `$0.5481`, and `big_fish_long` failed at `1087301 ms` / `$1.2844` after `analyze_scenes` alone consumed `888.476s` and `character_bible` plus `location_bible` then hit `LLM output truncated due to max token limit`. Classification: the long-form failure is **ambiguous** but **runtime-blocking** because the current modules do not yet prove whether the blocker is model weakness, prompt/output-budget configuration, or upstream candidate-volume inflation. Measured follow-up stories split cleanly: Story 159 for `continuity_tracking` runtime/output budgets, Story 160 for long-form bible truncation recovery, and Story 161 for long-form `analyze_scenes` scale."
+
+    attempts: []
+
   - id: entity-discovery
     name: Entity Discovery
     type: quality

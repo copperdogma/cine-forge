@@ -239,8 +239,8 @@
     "sequencing_bias": [
       {
         "target": "pipeline-throughput-efficiency",
-        "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.",
-        "story_refs": ["155"]
+        "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. The honest detector now exists, so follow-up optimization should route into the measured hotspot stories rather than reopen the detector slice.",
+        "story_refs": ["159", "160", "161"]
       },
       {
         "target": "ui-product-truth-scouting",
@@ -307,7 +307,6 @@
           "statuses": ["Draft"],
           "empty_message": "No draft stories currently need review.",
           "story_notes": {
-            "155": "Important secondary line: establish an honest screenplay-throughput detector and stage-efficiency budgets so future optimization work routes through measurement rather than anecdote.",
             "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed.",
             "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
             "103": "Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog.",

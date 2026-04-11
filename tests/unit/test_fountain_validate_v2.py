@@ -150,3 +150,45 @@ def test_clean_screenplay_passes_lint() -> None:
     )
     lint = lint_fountain_text(text)
     assert lint.valid is True, f"Unexpected issues: {lint.issues}"
+
+
+@pytest.mark.unit
+def test_normalize_preserves_empty_value_metadata_keys_with_indented_lines() -> None:
+    text = (
+        "Title:\t**THE LAST BIRTHDAY CARD**\n"
+        "Credit:\tWritten by\n"
+        "Author:\tStu Maschwitz\n"
+        "Draft date:\t7/8/1998\n"
+        "Contact:\n"
+        "\tPO Box 10031\n"
+        "\tSan Rafael CA 94912\n\n"
+        "INT. APARTMENT - DAY\n\n"
+        "SCOTT\n"
+        "Hello.\n"
+    )
+
+    normalized = normalize_fountain_text(text)
+
+    assert "Draft date: 7/8/1998" in normalized
+    assert "Contact: PO Box 10031" in normalized
+    assert "    San Rafael CA 94912" in normalized
+    assert "INT. APARTMENT - DAY" in normalized
+
+
+@pytest.mark.unit
+def test_normalize_preserves_notes_block_with_blank_header_value() -> None:
+    text = (
+        "Title: Big Fish\n"
+        "Notes:\n"
+        "\tFINAL PRODUCTION DRAFT\n"
+        "\tincludes post-production dialogue\n\n"
+        "INT. RIVER - DAY\n\n"
+        "EDWARD\n"
+        "There are some fish.\n"
+    )
+
+    normalized = normalize_fountain_text(text)
+
+    assert "Notes: FINAL PRODUCTION DRAFT" in normalized
+    assert "    includes post-production dialogue" in normalized
+    assert "INT. RIVER - DAY" in normalized

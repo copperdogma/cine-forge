@@ -6,6 +6,16 @@ import re
 from dataclasses import dataclass, field
 
 SCENE_PREFIXES = ("INT.", "EXT.", "INT/EXT.", "EST.")
+STANDARD_METADATA_KEYS = {
+    "title": "Title",
+    "author": "Author",
+    "authors": "Authors",
+    "source": "Source",
+    "credit": "Credit",
+    "draft date": "Draft date",
+    "contact": "Contact",
+    "notes": "Notes",
+}
 
 
 @dataclass(frozen=True)
@@ -147,38 +157,42 @@ def clean_fountain_metadata(lines: list[str]) -> list[str]:
         return []
         
     metadata_map: dict[str, list[str]] = {}
-    # Strict whitelist of standard Fountain keys supported by renderers
-    standard_keys = {
-        "Title", "Author", "Authors", "Source", "Credit", "Draft date", 
-        "Contact", "Notes"
-    }
     
     # definitive body markers (usually on their own line)
     body_markers = {"TEASER", "FADE IN", "ACT ONE"}
     
     collected_metadata_lines: list[str] = []
     body_start_idx = 0
+    current_standard_key: str | None = None
     
     # 1. Identify definitive script body start
     for idx, line in enumerate(lines):
         stripped = line.strip()
         if not stripped:
             continue
-            
+        key_match = re.match(r"^([A-Za-z ]{1,25}):\s*(.*)", stripped)
+        normalized_key = key_match.group(1).strip().lower() if key_match else None
+        is_standard_key = normalized_key in STANDARD_METADATA_KEYS
+        is_indented_continuation = bool(re.match(r"^[ \t]+", line)) and current_standard_key
+
         upper = stripped.upper().rstrip(":")
         # It's a body element if it's a heading, a character cue, or a standalone marker
         is_body = (
-            _is_scene_heading(stripped) 
-            or _looks_like_character_candidate(stripped, lines, idx)
-            or upper in body_markers
+            not is_indented_continuation
+            and (
+                _is_scene_heading(stripped)
+                or _looks_like_character_candidate(stripped, lines, idx)
+                or upper in body_markers
+            )
         )
-        
+
         if is_body:
             body_start_idx = idx
             break
-        else:
-            collected_metadata_lines.append(line)
-            body_start_idx = idx + 1
+        collected_metadata_lines.append(line)
+        body_start_idx = idx + 1
+        if is_standard_key:
+            current_standard_key = STANDARD_METADATA_KEYS[str(normalized_key)]
             
     if not collected_metadata_lines:
         return lines
@@ -192,8 +206,9 @@ def clean_fountain_metadata(lines: list[str]) -> list[str]:
             
         # Match 'Key: Value'. Only accept standard keys to avoid misidentifying titles.
         match = re.match(r"^([A-Za-z ]{1,25}):\s*(.*)", stripped)
-        if match and match.group(1).strip().title() in standard_keys:
-            key = match.group(1).strip().title()
+        normalized_key = match.group(1).strip().lower() if match else None
+        if match and normalized_key in STANDARD_METADATA_KEYS:
+            key = STANDARD_METADATA_KEYS[str(normalized_key)]
             value = match.group(2).strip()
             if key not in metadata_map:
                 metadata_map[key] = []
@@ -220,7 +235,9 @@ def clean_fountain_metadata(lines: list[str]) -> list[str]:
     for k in order:
         if k in metadata_map:
             vals = metadata_map[k]
-            if len(vals) == 1:
+            if not vals:
+                output_lines.append(f"{k}:")
+            elif len(vals) == 1:
                 output_lines.append(f"{k}: {vals[0]}")
             else:
                 # Put first value on same line as key, subsequent lines indented

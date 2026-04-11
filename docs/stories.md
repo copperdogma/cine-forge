@@ -44,7 +44,6 @@ No stories currently need the sequence-sensitive lane.
 | **112** Continuity Tracking: First Principles Redesign | Valuable redesign candidate, but it still needs tighter scope before it should leave Draft. |
 | **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
 | **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |
-| **155** End-to-End Throughput Detector and Stage Efficiency Budgets | Important secondary line: establish an honest screenplay-throughput detector and stage-efficiency budgets so future optimization work routes through measurement rather than anecdote. |
 
 ### Deferred — Intentionally Parked
 
@@ -103,7 +102,7 @@ No blocked lines currently need attention.
 
 - Active categories: `spec:4`, `spec:5`
 - UI scout freshness: fresh — last run 2026-04-10
-- Sequencing bias: `pipeline-throughput-efficiency` (stories: 155) — Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. Detector-first before optimization.
+- Sequencing bias: `pipeline-throughput-efficiency` (stories: 159, 160, 161) — Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. The honest detector now exists, so follow-up optimization should route into the measured hotspot stories rather than reopen the detector slice.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
 - Active campaign `ui-product-truth-scouting`: Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage.
 
@@ -129,7 +128,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 155 | End-to-End Throughput Detector and Stage Efficiency Budgets | Medium | Draft | — | spec:2, spec:8 | 032, 150 | [story-155](stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md) |
+| 161 | Long-Form Scene Analysis Throughput Reduction | Medium | Draft | — | spec:2, spec:8 | 040, 155 | [story-161](stories/story-161-long-form-scene-analysis-throughput-reduction.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | High | Done | — | spec:2, spec:3, spec:5, spec:8 | 008, 041 | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
@@ -149,6 +148,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 119 | Design Study Prompt Compiler + Visual Reference Propagation | Medium | Done | — | spec:2, spec:6 | 056, 120 | [story-119](stories/story-119-design-study-prompt-compiler.md) |
 | 120 | Production Format Setting | Medium | Done | — | spec:2, spec:6 | 056 | [story-120](stories/story-120-production-format-setting.md) |
 | 121 | Design Study Composition UX | Medium | Done | — | spec:2, spec:4, spec:6 | 056, 119, 120 | [story-121](stories/story-121-design-study-composition-ux.md) |
+| 155 | End-to-End Throughput Detector and Stage Efficiency Budgets | Medium | Done | — | spec:2, spec:8 | 032, 150 | [story-155](stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md) |
 | 003 | Story Ingestion Module | Unknown | Done | — | spec:2 | 002 | [story-003](stories/story-003-story-ingestion.md) |
 | 003b | DOCX Ingestion Support | Unknown | Done | — | spec:2 | 003, 007b | [story-003b](stories/story-003b-docx-support.md) |
 | 004 | Script Normalization Module | Unknown | Done | — | spec:1, spec:2, spec:5, spec:8 | 002, 003 | [story-004](stories/story-004-script-normalization.md) |
@@ -165,6 +165,8 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
 | 112 | Continuity Tracking: First Principles Redesign | Medium | Draft | — | spec:3 | — | [story-112](stories/story-112-continuity-redesign-first-principles.md) |
+| 159 | Continuity Tracking Throughput and Output Budget Reduction | Medium | Draft | — | spec:3, spec:8 | 011, 032, 155 | [story-159](stories/story-159-continuity-tracking-throughput-and-output-budget-reduction.md) |
+| 160 | Long-Form Character and Location Bible Output Budget Recovery | Medium | Draft | — | spec:3, spec:8 | 008, 009, 129, 155 | [story-160](stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md) |
 | 043 | Entity-First Navigation | High | Done | — | spec:3, spec:5 | — | [story-043](stories/story-043-entity-first-navigation.md) |
 | 045 | Entity Cross-Linking | High | Done | — | spec:3, spec:5 | — | [story-045](stories/story-045-entity-cross-linking.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | High | Done | — | spec:1, spec:3, spec:5, spec:8 | 008, 009, 041, 054 | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
