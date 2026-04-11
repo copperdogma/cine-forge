@@ -12,6 +12,7 @@ from cine_forge.modules.world_building.continuity_tracking_v1.prompting import (
     _extract_scene_continuity,
 )
 from cine_forge.schemas import (
+    ArtifactHealth,
     ContinuityEvent,
     ContinuityIndex,
     ContinuityState,
@@ -22,6 +23,7 @@ from cine_forge.schemas import (
 logger = logging.getLogger(__name__)
 
 GAP_CONFIDENCE_THRESHOLD = 0.4
+ArtifactAnnouncer = Callable[[dict[str, Any]], None]
 
 
 def _collect_module_inputs(
@@ -127,6 +129,7 @@ def _process_scene_entries(
     entities: dict[str, dict[str, Any]],
     work_model: str,
     llm_callable: Callable[..., Any],
+    announce_artifact: ArtifactAnnouncer | None,
 ) -> tuple[
     list[dict[str, Any]],
     dict[str, EntityTimeline],
@@ -148,6 +151,11 @@ def _process_scene_entries(
     current_states: dict[str, dict[str, StateProperty]] = {}
     throughput = {
         "scene_calls": 0,
+        "scene_successes": 0,
+        "scene_failures": 0,
+        "scene_retry_attempts": 0,
+        "timeout_failures": 0,
+        "announced_states": 0,
         "observed_properties": 0,
         "carried_forward_properties": 0,
         "change_event_count": 0,
@@ -170,6 +178,7 @@ def _process_scene_entries(
                 timelines=timelines,
                 current_states=current_states,
                 throughput=throughput,
+                announce_artifact=announce_artifact,
             )
             continue
 
@@ -187,6 +196,7 @@ def _process_scene_entries(
             all_artifacts=all_artifacts,
             all_states=all_states,
             timelines=timelines,
+            announce_artifact=announce_artifact,
         )
 
     return all_artifacts, timelines, all_states, total_cost, throughput
@@ -207,30 +217,49 @@ def _process_ai_scene(
     all_artifacts: list[dict[str, Any]],
     all_states: dict[str, ContinuityState],
     timelines: dict[str, EntityTimeline],
+    announce_artifact: ArtifactAnnouncer | None,
 ) -> None:
     """Process one scene through the real LLM continuity path."""
     scene_id = scene_entry["scene_id"]
     scene_text = _extract_scene_text(script_lines, scene_entry)
+    scene_result: dict[str, Any] | None = None
+    extraction_map: dict[str, EntityStateExtraction] = {}
+
     if not scene_text.strip():
-        logger.warning("[continuity] Empty scene text for %s, skipping AI call", scene_id)
-        return
+        logger.warning("[continuity] Empty scene text for %s; emitting explicit fallback", scene_id)
+        scene_result = {
+            "scene_result_status": "failed",
+            "scene_result_reason": "empty_scene_text",
+            "scene_result_error": "No scene text extracted for source_span",
+            "attempt_count": 0,
+            "retry_count": 0,
+        }
+        throughput["scene_failures"] += 1
+    else:
+        throughput["scene_calls"] += 1
+        extraction, call_cost = _extract_scene_continuity(
+            scene_entry=scene_entry,
+            scene_text=scene_text,
+            present_entities=present_entities,
+            entities=entities,
+            current_states=current_states,
+            model=model,
+            llm_callable=llm_callable,
+        )
+        _update_total_cost(total_cost, call_cost)
+        throughput["scene_retry_attempts"] += int(call_cost.get("retry_count", 0) or 0)
+        if call_cost.get("scene_result_status") == "failed":
+            scene_result = call_cost
+            throughput["scene_failures"] += 1
+            if call_cost.get("scene_result_reason") == "timeout":
+                throughput["timeout_failures"] += 1
+        else:
+            throughput["scene_successes"] += 1
+            extraction_map = {
+                entity_state.entity_key: entity_state
+                for entity_state in extraction.entity_states
+            }
 
-    throughput["scene_calls"] += 1
-    extraction, call_cost = _extract_scene_continuity(
-        scene_entry=scene_entry,
-        scene_text=scene_text,
-        present_entities=present_entities,
-        entities=entities,
-        current_states=current_states,
-        model=model,
-        llm_callable=llm_callable,
-    )
-    _update_total_cost(total_cost, call_cost)
-
-    extraction_map = {
-        entity_state.entity_key: entity_state
-        for entity_state in extraction.entity_states
-    }
     for entity_key in present_entities:
         ent_info = entities[entity_key]
         state_data, observed_count, carried_forward_count, change_event_count = (
@@ -248,7 +277,7 @@ def _process_ai_scene(
         throughput["change_event_count"] += change_event_count
 
         artifact_id = f"{entity_key.replace(':', '_')}_{scene_id}"
-        _record_state(
+        announced = _record_state(
             state_data=state_data,
             artifact_id=artifact_id,
             entity_key=entity_key,
@@ -257,7 +286,11 @@ def _process_ai_scene(
             all_states=all_states,
             timelines=timelines,
             current_states=current_states,
+            scene_result=scene_result,
+            announce_artifact=announce_artifact,
         )
+        if announced:
+            throughput["announced_states"] += 1
 
 
 def _process_mock_scene(
@@ -271,6 +304,7 @@ def _process_mock_scene(
     timelines: dict[str, EntityTimeline],
     current_states: dict[str, dict[str, StateProperty]],
     throughput: dict[str, int],
+    announce_artifact: ArtifactAnnouncer | None,
 ) -> None:
     """Produce deterministic continuity states for the mock model path."""
     for entity_key in present_entities:
@@ -283,7 +317,7 @@ def _process_mock_scene(
         )
         throughput["observed_properties"] += len(state_data.properties)
         artifact_id = f"{entity_key.replace(':', '_')}_{scene_id}"
-        _record_state(
+        announced = _record_state(
             state_data=state_data,
             artifact_id=artifact_id,
             entity_key=entity_key,
@@ -292,7 +326,10 @@ def _process_mock_scene(
             all_states=all_states,
             timelines=timelines,
             current_states=current_states,
+            announce_artifact=announce_artifact,
         )
+        if announced:
+            throughput["announced_states"] += 1
 
 
 def _build_index_artifact(
@@ -478,21 +515,45 @@ def _record_state(
     all_states: dict[str, ContinuityState],
     timelines: dict[str, EntityTimeline],
     current_states: dict[str, dict[str, StateProperty]],
-) -> None:
+    scene_result: dict[str, Any] | None = None,
+    announce_artifact: ArtifactAnnouncer | None = None,
+) -> bool:
     """Record a state snapshot as an artifact and update tracking structures."""
-    all_artifacts.append(
-        {
-            "artifact_type": "continuity_state",
-            "entity_id": artifact_id,
-            "data": state_data.model_dump(mode="json"),
-            "metadata": {
-                "intent": f"Continuity snapshot for {entity_key} in scene {state_data.scene_id}",
-                "rationale": "Automated state tracking based on scene progression.",
-                "confidence": state_data.overall_confidence,
-                "source": "ai",
-            },
-        }
-    )
+    metadata: dict[str, Any] = {
+        "intent": f"Continuity snapshot for {entity_key} in scene {state_data.scene_id}",
+        "rationale": "Automated state tracking based on scene progression.",
+        "confidence": state_data.overall_confidence,
+        "source": "ai",
+    }
+    if scene_result is not None:
+        metadata.update(
+            {
+                "rationale": (
+                    "Scene-level continuity extraction failed; emitted an explicit "
+                    "low-confidence fallback snapshot instead of silently dropping the scene."
+                ),
+                "source": "hybrid",
+                "health": ArtifactHealth.NEEDS_REVIEW.value,
+                "annotations": {
+                    "scene_result_status": scene_result.get("scene_result_status"),
+                    "scene_result_reason": scene_result.get("scene_result_reason"),
+                    "scene_result_error": scene_result.get("scene_result_error"),
+                    "scene_result_attempt_count": scene_result.get("attempt_count"),
+                    "scene_result_retry_count": scene_result.get("retry_count"),
+                },
+            }
+        )
+
+    artifact = {
+        "artifact_type": "continuity_state",
+        "entity_id": artifact_id,
+        "data": state_data.model_dump(mode="json"),
+        "metadata": metadata,
+    }
+    all_artifacts.append(artifact)
+    if announce_artifact is not None:
+        announce_artifact(artifact)
+
     all_states[artifact_id] = state_data
 
     timeline = timelines.setdefault(
@@ -506,6 +567,7 @@ def _record_state(
     current_states[entity_key] = {
         prop.key: prop.model_copy(deep=True) for prop in state_data.properties
     }
+    return announce_artifact is not None
 
 
 def _detect_and_record_gaps(

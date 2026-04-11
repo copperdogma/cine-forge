@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from collections.abc import Callable
 from typing import Any
 
@@ -13,6 +14,10 @@ from cine_forge.schemas import ContinuityEvent, StateProperty
 logger = logging.getLogger(__name__)
 
 SCENE_CONTINUITY_MAX_TOKENS = 2400
+SCENE_CONTINUITY_MAX_ATTEMPTS = 2
+SCENE_CONTINUITY_REQUEST_TIMEOUT_SECONDS = 45.0
+SCENE_CONTINUITY_RETRY_DELAY_SECONDS = 1.0
+SCENE_CONTINUITY_ERROR_MAX_CHARS = 240
 PROMPT_STATE_VALUE_MAX_CHARS = 120
 
 
@@ -51,32 +56,112 @@ def _extract_scene_continuity(
         current_states=current_states,
     )
 
-    try:
-        result, metadata = llm_callable(
-            prompt=prompt,
-            model=model,
-            response_schema=SceneContinuityExtraction,
-            max_tokens=SCENE_CONTINUITY_MAX_TOKENS,
-            temperature=0.0,
-            fail_on_truncation=True,
-            enable_caching=True,
-        )
-        return result, {
-            "model": metadata.get("model", model),
-            "input_tokens": metadata.get("input_tokens", 0),
-            "output_tokens": metadata.get("output_tokens", 0),
-            "estimated_cost_usd": metadata.get("estimated_cost_usd", 0.0),
-        }
-    except Exception as exc:  # noqa: BLE001
-        logger.warning(
-            "[continuity] LLM call failed for scene %s: %s",
-            scene_entry.get("scene_id", "?"),
-            exc,
-        )
-        return SceneContinuityExtraction(
-            scene_id=scene_entry.get("scene_id", "unknown"),
-            entity_states=[],
-        ), {"input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.0}
+    scene_id = scene_entry.get("scene_id", "unknown")
+    last_exc: Exception | None = None
+    last_reason = "unknown_error"
+    attempts_used = 0
+
+    for attempt in range(1, SCENE_CONTINUITY_MAX_ATTEMPTS + 1):
+        attempts_used = attempt
+        try:
+            result, metadata = llm_callable(
+                prompt=prompt,
+                model=model,
+                response_schema=SceneContinuityExtraction,
+                max_retries=0,
+                max_tokens=SCENE_CONTINUITY_MAX_TOKENS,
+                temperature=0.0,
+                fail_on_truncation=True,
+                enable_caching=True,
+                request_timeout_seconds=SCENE_CONTINUITY_REQUEST_TIMEOUT_SECONDS,
+            )
+            return result, {
+                "model": metadata.get("model", model),
+                "input_tokens": metadata.get("input_tokens", 0),
+                "output_tokens": metadata.get("output_tokens", 0),
+                "estimated_cost_usd": metadata.get("estimated_cost_usd", 0.0),
+                "scene_result_status": "success",
+                "scene_result_reason": "completed",
+                "scene_result_error": None,
+                "attempt_count": attempt,
+                "retry_count": attempt - 1,
+            }
+        except Exception as exc:  # noqa: BLE001
+            last_exc = exc
+            last_reason = _classify_scene_failure(exc)
+            if attempt < SCENE_CONTINUITY_MAX_ATTEMPTS and _scene_failure_is_retryable(
+                last_reason
+            ):
+                logger.warning(
+                    "[continuity] Scene %s attempt %s/%s failed (%s); retrying: %s",
+                    scene_id,
+                    attempt,
+                    SCENE_CONTINUITY_MAX_ATTEMPTS,
+                    last_reason,
+                    exc,
+                )
+                time.sleep(SCENE_CONTINUITY_RETRY_DELAY_SECONDS)
+                continue
+            logger.warning(
+                "[continuity] Scene %s failed after %s attempt(s) (%s): %s",
+                scene_id,
+                attempt,
+                last_reason,
+                exc,
+            )
+            break
+
+    return SceneContinuityExtraction(
+        scene_id=scene_id,
+        entity_states=[],
+    ), {
+        "model": model,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+        "scene_result_status": "failed",
+        "scene_result_reason": last_reason,
+        "scene_result_error": _clip_scene_error(str(last_exc) if last_exc else None),
+        "attempt_count": attempts_used,
+        "retry_count": max(attempts_used - 1, 0),
+    }
+
+
+def _scene_failure_is_retryable(reason: str) -> bool:
+    return reason in {
+        "invalid_json",
+        "overloaded",
+        "rate_limited",
+        "timeout",
+        "transport_error",
+        "truncated",
+    }
+
+
+def _classify_scene_failure(exc: Exception) -> str:
+    message = str(exc).lower()
+    if "timed out" in message or "timeout" in message:
+        return "timeout"
+    if "rate limit" in message or "http error 429" in message:
+        return "rate_limited"
+    if "overloaded" in message or "http error 529" in message:
+        return "overloaded"
+    if "valid json" in message:
+        return "invalid_json"
+    if "truncated" in message or "max token limit" in message:
+        return "truncated"
+    if "request failed" in message or "temporarily unavailable" in message:
+        return "transport_error"
+    return "llm_error"
+
+
+def _clip_scene_error(error: str | None) -> str | None:
+    if error is None:
+        return None
+    normalized = " ".join(error.split())
+    if len(normalized) <= SCENE_CONTINUITY_ERROR_MAX_CHARS:
+        return normalized
+    return normalized[: SCENE_CONTINUITY_ERROR_MAX_CHARS - 3].rstrip() + "..."
 
 
 def _build_continuity_prompt(

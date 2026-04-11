@@ -180,6 +180,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 129 | Entity Discovery Taxonomy Tightening | Medium | Done | — | spec:3 | 081, 124 | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
 | 159 | Continuity Tracking Throughput and Output Budget Reduction | Medium | Done | — | spec:3, spec:8 | 011, 032, 155 | [story-159](stories/story-159-continuity-tracking-throughput-and-output-budget-reduction.md) |
 | 160 | Long-Form Character and Location Bible Output Budget Recovery | Medium | Done | — | spec:3, spec:8 | 008, 009, 129, 155 | [story-160](stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md) |
+| 162 | Long-Form Continuity Tracking Stall Recovery | Medium | Done | — | spec:3, spec:8 | 011, 155, 159, 160 | [story-162](stories/story-162-long-form-continuity-tracking-stall-recovery.md) |
 | 008 | Bible Infrastructure and Character Bible | Unknown | Done | — | spec:1, spec:3, spec:5, spec:8 | 002, 005 | [story-008](stories/story-008-character-bible.md) |
 | 009 | Location and Prop Bibles | Unknown | Done | — | spec:3, spec:5 | 005, 008 | [story-009](stories/story-009-location-prop-bibles.md) |
 | 010 | Entity Relationship Graph | Unknown | Done | — | spec:1, spec:3, spec:5 | 005, 008, 009 | [story-010](stories/story-010-entity-graph.md) |

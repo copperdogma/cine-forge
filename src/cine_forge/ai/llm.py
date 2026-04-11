@@ -11,6 +11,7 @@ import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -83,6 +84,7 @@ def call_llm(
     retry_base_delay_seconds: float = 0.5,
     retry_jitter_ratio: float = 0.25,
     enable_caching: bool = False,
+    request_timeout_seconds: float | None = None,
 ) -> tuple[str | BaseModel, dict[str, Any]]:
     """Call an LLM and return text (or parsed schema) with call metadata."""
     if max_retries < 0:
@@ -108,13 +110,22 @@ def call_llm(
         sender = transport
         normalizer = None
     elif provider == PROVIDER_ANTHROPIC:
-        sender = _anthropic_transport
+        sender = partial(
+            _anthropic_transport,
+            request_timeout_seconds=request_timeout_seconds,
+        )
         normalizer = _normalize_anthropic_response
     elif provider == PROVIDER_GOOGLE:
-        sender = _gemini_transport
+        sender = partial(
+            _gemini_transport,
+            request_timeout_seconds=request_timeout_seconds,
+        )
         normalizer = _normalize_gemini_response
     else:
-        sender = _openai_transport
+        sender = partial(
+            _openai_transport,
+            request_timeout_seconds=request_timeout_seconds,
+        )
         normalizer = None  # OpenAI is the canonical format
 
     last_error: Exception | None = None
@@ -329,7 +340,11 @@ def _parse_response(
     return response_schema.model_validate(payload), metadata
 
 
-def _openai_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
+def _openai_transport(
+    request_payload: dict[str, Any],
+    *,
+    request_timeout_seconds: float | None = None,
+) -> dict[str, Any]:
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise LLMCallError("OPENAI_API_KEY is required for OpenAI transport")
@@ -345,7 +360,10 @@ def _openai_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=300) as response:  # noqa: S310
+        with urllib.request.urlopen(
+            request,
+            timeout=_resolve_request_timeout(request_timeout_seconds),
+        ) as response:  # noqa: S310
             body = response.read().decode("utf-8")
             return json.loads(body)
     except urllib.error.HTTPError as exc:
@@ -444,7 +462,11 @@ def _normalize_anthropic_response(raw: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _anthropic_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
+def _anthropic_transport(
+    request_payload: dict[str, Any],
+    *,
+    request_timeout_seconds: float | None = None,
+) -> dict[str, Any]:
     """Send request to Anthropic Messages API."""
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
@@ -463,7 +485,10 @@ def _anthropic_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=300) as response:  # noqa: S310
+        with urllib.request.urlopen(
+            request,
+            timeout=_resolve_request_timeout(request_timeout_seconds),
+        ) as response:  # noqa: S310
             body = response.read().decode("utf-8")
             return json.loads(body)
     except urllib.error.HTTPError as exc:
@@ -599,7 +624,11 @@ def _normalize_gemini_response(raw: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _gemini_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
+def _gemini_transport(
+    request_payload: dict[str, Any],
+    *,
+    request_timeout_seconds: float | None = None,
+) -> dict[str, Any]:
     """Send request to Gemini generateContent API."""
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
@@ -615,7 +644,10 @@ def _gemini_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=300) as response:  # noqa: S310
+        with urllib.request.urlopen(
+            request,
+            timeout=_resolve_request_timeout(request_timeout_seconds),
+        ) as response:  # noqa: S310
             body = response.read().decode("utf-8")
             return json.loads(body)
     except urllib.error.HTTPError as exc:
@@ -623,6 +655,14 @@ def _gemini_transport(request_payload: dict[str, Any]) -> dict[str, Any]:
         raise LLMCallError(f"Gemini HTTP error {exc.code}: {detail}") from exc
     except urllib.error.URLError as exc:
         raise LLMCallError(f"Gemini request failed: {exc.reason}") from exc
+
+
+def _resolve_request_timeout(request_timeout_seconds: float | None) -> float:
+    if request_timeout_seconds is None:
+        return 300.0
+    if request_timeout_seconds <= 0:
+        raise ValueError("request_timeout_seconds must be > 0")
+    return request_timeout_seconds
 
 
 def _retry_delay_seconds(

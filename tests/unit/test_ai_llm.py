@@ -229,6 +229,36 @@ def test_call_llm_detects_truncation_when_fail_on_truncation() -> None:
         )
 
 
+@pytest.mark.unit
+def test_call_llm_passes_request_timeout_to_provider_transport(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seen: dict[str, float | None] = {"timeout": None}
+
+    def fake_openai_transport(
+        _payload: dict[str, Any],
+        *,
+        request_timeout_seconds: float | None = None,
+    ) -> dict[str, Any]:
+        seen["timeout"] = request_timeout_seconds
+        return {
+            "id": "req_timeout",
+            "choices": [{"message": {"content": "ok"}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+        }
+
+    monkeypatch.setattr("cine_forge.ai.llm._openai_transport", fake_openai_transport)
+
+    result, _metadata = call_llm(
+        prompt="normalize",
+        model="gpt-4o-mini",
+        request_timeout_seconds=12.5,
+    )
+
+    assert result == "ok"
+    assert seen["timeout"] == 12.5
+
+
 # --- Provider Parsing ---
 
 

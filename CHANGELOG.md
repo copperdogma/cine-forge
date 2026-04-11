@@ -8,6 +8,18 @@
 ### Changed
 - Changed the synced Gemini command wrapper surface so `loop-verify` is available with CineForge's other invocable local skills
 
+## [2026-04-11-05] — Recover long-form continuity stall honesty (Story 162)
+
+### Added
+- Added focused long-form continuity guardrail coverage for bounded scene-call budgets, incremental `continuity_state` announcements, and explicit timeout fallback annotations
+
+### Changed
+- Changed continuity tracking to bound per-scene LLM timeout and retry posture locally while surfacing final scene states incrementally through the existing artifact-announcement seam
+- Changed Story 155, Story 162, and the eval registry to record the fresh `big_fish_long` rerun truth and classify the remaining truncation issue as non-runtime-blocking quality drift
+
+### Fixed
+- Fixed the long-form continuity path so a single bad scene no longer disappears into a 14.9-minute silent window before degrading ambiguously
+
 ## [2026-04-11-03] — Tighten continuity tracking throughput budgets (Story 159)
 
 ### Added

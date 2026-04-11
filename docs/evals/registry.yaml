@@ -1804,6 +1804,23 @@ evals:
         git_sha: "4699b91"
         result_file: output/runs/big_fish_long-world_building-06d8/run_state.json
         note: "Targeted `--filter-case big_fish_long --keep-projects` rerun for Story 159 on the current continuity code. `analyze_scenes` completed in `847.0068s`, `character_bible` in `144.4212s`, `location_bible` in `102.0051s`, `prop_bible` in `29.2672s`, and `entity_graph` in `11.2613s`, re-confirming that the old bible truncation blocker is cleared. `continuity_tracking` then started but produced no new `run_state.json`, `pipeline_events.jsonl`, or continuity artifacts for about `14.9` minutes while the process held an open provider HTTPS connection, so the operator terminated the rerun. The earlier `entity_states.*.change_events.*.new_value = null` schema validation failure did not recur before termination, so the remaining long-case blocker stays **ambiguous** but **runtime-blocking** as a renewed continuity-stage stall with no stage-heartbeat visibility."
+      - model: "Story 162 Targeted Big Fish Rerun (Continuity honest, fallbacks explicit)"
+        metrics:
+          overall: 1.0
+          successful_case_ratio: 1.0
+          long_case_continuity_completed: 1.0
+          long_case_total_elapsed_ms: 2903127
+          long_case_continuity_elapsed_ms: 1748481.3
+          long_case_continuity_fallback_scene_count: 10
+          long_case_continuity_needs_review_state_count: 77
+          top_runtime_hotspot_current_duration_ms_per_1k_words: 67257.03
+          top_output_hotspot_current_output_tokens_per_1k_words: 8170.866
+        latency_ms: 2903127
+        cost_usd: 3.30182558
+        measured: 2026-04-11
+        git_sha: "f9dc74d"
+        result_file: benchmarks/results/full-script-throughput-story-162-big-fish-2026-04-11.json
+        note: "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead completed in `1748.4813s` while continuously emitting `continuity_state` `artifact_saved` events. Remaining long-form issue changed shape: `10` scenes (`026`, `048`, `064`, `093`, `171`, `177`, `183`, `185`, `191`, `192`) exhausted the new bounded scene budget with `LLM output truncated due to max token limit`, producing `77` `needs_review` fallback states. Classification: the old continuity stall is resolved, so the long-form continuity problem is now **non-runtime-blocking** quality/output-budget drift rather than a runtime blocker."
 
     attempts: []
 

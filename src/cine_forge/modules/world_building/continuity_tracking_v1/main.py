@@ -65,12 +65,16 @@ def run_module(
     work_model = _resolve_work_model(params, context)
     entities = _build_entity_catalog(character_bibles, location_bibles, prop_bibles)
     scene_entries = scene_index.get("entries", [])
+    announce_artifact = context.get("announce_artifact")
+    if not callable(announce_artifact):
+        announce_artifact = None
     all_artifacts, timelines, all_states, total_cost, throughput = _process_scene_entries(
         scene_entries=scene_entries,
         script_text=script_text,
         entities=entities,
         work_model=work_model,
         llm_callable=call_llm,
+        announce_artifact=announce_artifact,
     )
     _detect_and_record_gaps(timelines, all_states)
     _build_index_artifact(

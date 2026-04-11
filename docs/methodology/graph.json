@@ -355,7 +355,8 @@
           "124",
           "129",
           "159",
-          "160"
+          "160",
+          "162"
         ],
         "adrIds": [
           "ADR-001",
@@ -919,7 +920,8 @@
           "155",
           "159",
           "160",
-          "161"
+          "161",
+          "162"
         ],
         "adrIds": [
           "ADR-001",
@@ -1335,7 +1337,8 @@
           "155",
           "159",
           "160",
-          "161"
+          "161",
+          "162"
         ],
         "evalIds": [
           "full-script-throughput"
@@ -1346,20 +1349,21 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
+          "whyNow": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
             "date": "2026-04-11",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
+            "summary": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…"
           },
           "storyIds": [
             "155",
             "159",
             "160",
-            "161"
+            "161",
+            "162"
           ],
           "evalIds": [
             "full-script-throughput"
@@ -1417,7 +1421,8 @@
           "155",
           "159",
           "160",
-          "161"
+          "161",
+          "162"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1429,20 +1434,21 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
+          "whyNow": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
             "date": "2026-04-11",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
+            "summary": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…"
           },
           "storyIds": [
             "155",
             "159",
             "160",
-            "161"
+            "161",
+            "162"
           ],
           "evalIds": [
             "full-script-throughput",
@@ -1475,14 +1481,14 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
+          "whyNow": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
             "date": "2026-04-11",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
+            "summary": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…"
           },
           "storyIds": [
             "155",
@@ -9982,6 +9988,80 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "162",
+      "title": "Long-Form Continuity Tracking Stall Recovery",
+      "path": "docs/stories/story-162-long-form-continuity-tracking-stall-recovery.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R3 (perfect continuity)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging",
+        "vision-level preference: Radical transparency"
+      ],
+      "specRefs": [
+        "spec:1.6",
+        "spec:2.6",
+        "spec:3.4",
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3"
+      ],
+      "dependsOn": [
+        "011",
+        "155",
+        "159",
+        "160"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "continuity",
+        "follow-up-from-159",
+        "long-form",
+        "stall-recovery",
+        "throughput"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260411-2241",
+        "date": "2026-04-11",
+        "summary": "story-closed: resolved the close-out-only environment gap, marked Story 162 done, and prepared the landing handoff. Evidence: installed the local `ui` toolchain with `pnpm --dir ui install --frozen-lockfile`, then reran…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "162",
+        "sourcePath": "docs/stories/story-162-long-form-continuity-tracking-stall-recovery.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "story-closed: resolved the close-out-only environment gap, marked Story 162 done, and prepared the landing handoff. Evidence: installed the local `ui` toolchain with `pnpm --dir ui install --frozen-lockfile`, then reran…",
+        "lastRelevantAction": {
+          "date": "2026-04-11",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-162-long-form-continuity-tracking-stall-recovery.md",
+          "summary": "story-closed: resolved the close-out-only environment gap, marked Story 162 done, and prepared the landing handoff. Evidence: installed the local `ui` toolchain with `pnpm --dir ui install --frozen-lockfile`, then reran…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -10638,9 +10718,9 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story 160 Validation Big Fish Rerun (Bibles green, continuity stalled)",
+        "model": "Story 162 Targeted Big Fish Rerun (Continuity honest, fallbacks explicit)",
         "measured": "2026-04-11",
-        "note": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
+        "note": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…"
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -10675,14 +10755,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
+        "whyNow": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-11",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
+          "summary": "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead compl…"
         }
       }
     },
