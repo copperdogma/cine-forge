@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-04-11-04] — Add loop-verify coordination skill
+
+### Added
+- Added a shared `/loop-verify` skill for bounded parallel verify-and-fix loops that rerun the full scope until an entire round returns no more real issues
+
+### Changed
+- Changed the synced Gemini command wrapper surface so `loop-verify` is available with CineForge's other invocable local skills
+
 ## [2026-04-11-03] — Tighten continuity tracking throughput budgets (Story 159)
 
 ### Added
