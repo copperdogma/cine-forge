@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-04-11-02] — Record deferred media-automation scout handoff
+
+### Added
+- Added a Conductor-scout inbox note capturing the narrow future CineForge references from the deferred media-automation bundle: `VOID`-style cleanup, OpenClaw-style long-running media orchestration, and MultiMedia-Agent-style plan/tool decomposition
+
+### Changed
+- Changed `docs/inbox.md` to record that these leads remain future design references only and do not change the current previz-runtime bottleneck truth
+
 ## [2026-04-11-01] — Recover long-form bible throughput honesty (Story 160)
 
 ### Added
