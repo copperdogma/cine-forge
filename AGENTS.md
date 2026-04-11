@@ -427,6 +427,12 @@ When building or substantially redesigning a UI, follow this process:
 - Generate 3–4 theme variations as CSS variable configs. Each theme is a set of `oklch()` color values for the shadcn/ui CSS variables (`--background`, `--foreground`, `--primary`, `--card`, `--muted`, `--border`, etc.).
 - The showcase page should render: typography scale, color swatches, buttons (all variants), cards, badges (status states), input fields, a sample layout skeleton with the planned panel arrangement.
 - Add a theme switcher at the top so the user can toggle between variations instantly.
+- For visually led work, gather references early: screenshots, mood boards, stills, or other uploaded images are first-class inputs and should guide the initial direction instead of leaving the model to improvise taste in a vacuum.
+- Before building a substantial screen, write three things:
+  - visual thesis: one sentence on mood, material, and energy
+  - content plan: the section narrative or workspace information hierarchy
+  - interaction thesis: 2-3 motions or state transitions that shape the feel of the surface
+- Default to low or medium reasoning for front-end generation. Raise reasoning only when workflow complexity, state coordination, or unusual interaction logic actually demands it.
 - **Checkpoint with user**: They pick a direction. Iterate if needed. Once chosen, lock in design tokens.
 
 #### 3. Build Loop (screenshot-verified)
@@ -446,6 +452,9 @@ When building or substantially redesigning a UI, follow this process:
 #### Key Principles
 - **Design tokens are the source of truth** for visual consistency. All colors, spacing, and typography come from CSS variables defined once and referenced everywhere via Tailwind.
 - **shadcn/ui components are copied into the codebase** (not imported from a package). This means they can be customized freely.
+- **Composition first, components second**. For landing pages, showcases, and other visually led surfaces, start from one dominant composition, a real visual anchor, sparse copy, and cardless defaults before reaching for more UI chrome. Treat the first viewport like a poster, not a dashboard.
+- **Utility surfaces stay operational**. For production workspaces, admin tools, and dense app views, prefer calm hierarchy, utility copy, and restrained chrome over decorative hero treatments or marketing language.
+- **Ground the UI in real content**. Provide the model with real product context, actual task language, and concrete user goals so it can make stronger hierarchy and copy decisions than placeholder-first prompting allows.
 - **Resource-oriented URLs**: Project/Run/Artifact identity belongs in the URL path, not search params or localStorage. Makes the UI stateless, shareable, and multi-tab friendly.
 - **v0.dev for exploration**: When unsure what a component should look like, generate variations in v0, copy the code into the codebase, and adapt to real data. Code transfers directly since v0 uses the same React + shadcn/ui + Tailwind stack.
 
