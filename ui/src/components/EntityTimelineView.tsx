@@ -26,7 +26,7 @@ interface StateProperty {
 interface ContinuityEvent {
   property_key: string
   previous_value: string | null
-  new_value: string
+  new_value: string | null
   reason: string
   evidence: string
   is_explicit: boolean
@@ -197,7 +197,9 @@ function SceneStateCard({
                             <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />
                           </>
                         )}
-                        <span className="text-foreground font-medium text-xs">{evt.new_value}</span>
+                        <span className="text-foreground font-medium text-xs">
+                          {evt.new_value ?? 'cleared'}
+                        </span>
                         {evt.is_explicit ? (
                           <Badge variant="outline" className="text-[10px] py-0 text-emerald-400 border-emerald-400/30">explicit</Badge>
                         ) : (

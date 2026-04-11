@@ -165,7 +165,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
 | 112 | Continuity Tracking: First Principles Redesign | Medium | Draft | — | spec:3 | — | [story-112](stories/story-112-continuity-redesign-first-principles.md) |
-| 159 | Continuity Tracking Throughput and Output Budget Reduction | Medium | Draft | — | spec:3, spec:8 | 011, 032, 155 | [story-159](stories/story-159-continuity-tracking-throughput-and-output-budget-reduction.md) |
 | 043 | Entity-First Navigation | High | Done | — | spec:3, spec:5 | — | [story-043](stories/story-043-entity-first-navigation.md) |
 | 045 | Entity Cross-Linking | High | Done | — | spec:3, spec:5 | — | [story-045](stories/story-045-entity-cross-linking.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | High | Done | — | spec:1, spec:3, spec:5, spec:8 | 008, 009, 041, 054 | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
@@ -179,6 +178,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 092 | Continuity AI Detection & Gap Analysis | Medium | Done | — | spec:3 | — | [story-092](stories/story-092-continuity-ai-detection.md) |
 | 124 | Recall Verification Loop for Entity Discovery | Medium | Done | — | spec:3, spec:8 | — | [story-124](stories/story-124-recall-verification-loop.md) |
 | 129 | Entity Discovery Taxonomy Tightening | Medium | Done | — | spec:3 | 081, 124 | [story-129](stories/story-129-entity-discovery-taxonomy-tightening.md) |
+| 159 | Continuity Tracking Throughput and Output Budget Reduction | Medium | Done | — | spec:3, spec:8 | 011, 032, 155 | [story-159](stories/story-159-continuity-tracking-throughput-and-output-budget-reduction.md) |
 | 160 | Long-Form Character and Location Bible Output Budget Recovery | Medium | Done | — | spec:3, spec:8 | 008, 009, 129, 155 | [story-160](stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md) |
 | 008 | Bible Infrastructure and Character Bible | Unknown | Done | — | spec:1, spec:3, spec:5, spec:8 | 002, 005 | [story-008](stories/story-008-character-bible.md) |
 | 009 | Location and Prop Bibles | Unknown | Done | — | spec:3, spec:5 | 005, 008 | [story-009](stories/story-009-location-prop-bibles.md) |

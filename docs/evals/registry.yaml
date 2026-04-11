@@ -1770,6 +1770,40 @@ evals:
         git_sha: "7b943fd"
         result_file: output/runs/big_fish_long-world_building-2dfa/run_state.json
         note: "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating at `2026-04-11 09:49:05 MDT`; after roughly 14 minutes with no new stdout or artifact events, the operator terminated the stalled rerun. The specific prior `entity_states.*.change_events.*.new_value = null` log did not reappear before termination, so the remaining long-case blocker stays **ambiguous** but **runtime-blocking** in downstream continuity tracking, owned by Story 159 rather than Story 160."
+      - model: "Story 159 Short+Medium Rerun (Continuity tighter, still dominant)"
+        metrics:
+          overall: 1.0
+          successful_case_ratio: 1.0
+          median_total_elapsed_ms: 239590
+          boundary_current_budget_duration_ms_per_1k_words: 155193.329
+          top_runtime_hotspot_current_duration_ms_per_1k_words: 65442.187
+          top_output_hotspot_current_output_tokens_per_1k_words: 8428.378
+          short_case_continuity_elapsed_ms: 54800
+          medium_case_continuity_elapsed_ms: 150395
+        latency_ms: 239590
+        cost_usd: 0.347225
+        measured: 2026-04-11
+        git_sha: "4699b91"
+        result_file: benchmarks/results/full-script-throughput-story-159-short-medium-2026-04-11.json
+        note: "Story 159 reran the short/medium detector subset after tightening the continuity prompt/output contract, clipping carried-forward prompt context, enabling `fail_on_truncation=True`, lowering `max_tokens`, and hardening nullable `new_value` handling. Both cases completed successfully. Continuity remained the top normalized successful-case hotspot, but its measured budget improved from `72295.372 -> 65442.187 ms / 1k words` (`-9.5%`) and `9510.535 -> 8428.378 output tok / 1k words` (`-11.4%`). Per-case continuity deltas: `open_frequency_short` `61.988s -> 54.800s` and `7535 -> 6784` output tokens; `last_birthday_card_medium` `157.010s -> 150.395s` and `24560 -> 21095` output tokens. Persisted continuity artifact bytes increased because the module now stores merged carried-forward state snapshots, so the successful-case result is **non-runtime-blocking** but not converged: continuity is still the dominant hotspot and state-storage volume is now an explicit tradeoff instead of a hidden one."
+      - model: "Story 159 Targeted Big Fish Rerun (Continuity stall renewed)"
+        metrics:
+          overall: 0.0
+          successful_case_ratio: 0.0
+          long_case_analyze_scenes_completed: 1.0
+          long_case_character_bible_completed: 1.0
+          long_case_location_bible_completed: 1.0
+          long_case_continuity_started: 1.0
+          long_case_analyze_scenes_elapsed_ms: 847006.8
+          long_case_character_bible_elapsed_ms: 144421.2
+          long_case_location_bible_elapsed_ms: 102005.1
+          continuity_no_progress_window_ms: 895300
+        latency_ms: 1126063.1
+        cost_usd: 0.0
+        measured: 2026-04-11
+        git_sha: "4699b91"
+        result_file: output/runs/big_fish_long-world_building-06d8/run_state.json
+        note: "Targeted `--filter-case big_fish_long --keep-projects` rerun for Story 159 on the current continuity code. `analyze_scenes` completed in `847.0068s`, `character_bible` in `144.4212s`, `location_bible` in `102.0051s`, `prop_bible` in `29.2672s`, and `entity_graph` in `11.2613s`, re-confirming that the old bible truncation blocker is cleared. `continuity_tracking` then started but produced no new `run_state.json`, `pipeline_events.jsonl`, or continuity artifacts for about `14.9` minutes while the process held an open provider HTTPS connection, so the operator terminated the rerun. The earlier `entity_states.*.change_events.*.new_value = null` schema validation failure did not recur before termination, so the remaining long-case blocker stays **ambiguous** but **runtime-blocking** as a renewed continuity-stage stall with no stage-heartbeat visibility."
 
     attempts: []
 

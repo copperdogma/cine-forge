@@ -20,7 +20,7 @@ class ContinuityEvent(BaseModel):
 
     property_key: str
     previous_value: str | None = None
-    new_value: str
+    new_value: str | None = None
     reason: str
     evidence: str
     is_explicit: bool

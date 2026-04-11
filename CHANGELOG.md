@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-11-03] — Tighten continuity tracking throughput budgets (Story 159)
+
+### Added
+- Added focused continuity-throughput regression coverage and artifact metadata that expose scene-call, property, and change-event budget shape
+
+### Changed
+- Changed continuity tracking to use extracted runtime/prompting helpers, a tighter scene prompt contract, explicit truncation surfacing, and smaller per-scene output budgets
+- Changed methodology and eval tracking to record the measured short/medium continuity improvements and the remaining long-form continuity stall truth
+
+### Fixed
+- Fixed continuity event handling so `new_value = null` is preserved through the schema and continuity timeline UI as an explicit cleared state
+
 ## [2026-04-11-02] — Record deferred media-automation scout handoff
 
 ### Added
