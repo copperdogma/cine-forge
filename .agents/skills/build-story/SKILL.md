@@ -161,8 +161,9 @@ Execute a development story end-to-end.
    - Check the `Build complete` workflow gate
    - Leave `Validation complete or explicitly skipped by user` and `Story marked done via /mark-story-done` unchecked
    - Leave the story status as `In Progress`
-   - Give the user a concise implementation summary, highlight any residual risks, recommend `/validate` as the next step, and include a short `Where to verify` note whenever there is a concrete way for the user to inspect the result themselves
+   - Give the user a concise implementation summary, briefly explain the practical impact in plain language (what improved, what the operator or end user should notice, or what risk got smaller), highlight any residual risks, recommend `/validate` as the next step, and include a short `Where to verify` note whenever there is a concrete way for the user to inspect the result themselves
    - `Where to verify` should be specific and optional: UI work should name the route/screen plus 1-3 interactions; CLI/backend work should name the command, endpoint, or file to inspect
+   - Phrase the recommended next step so the user can approve it with a simple `yes`. Prefer the explicit form: Reply `yes` to proceed with: `/validate <story-id>` when that is the one clear next move.
    - By default, stop here. If the user already explicitly approved the next step(s), continue to `/validate` inline instead of asking again
 
 ## Work Log Format

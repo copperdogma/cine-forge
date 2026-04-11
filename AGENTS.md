@@ -87,7 +87,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 ## Working Norms
 
 - **Keep the work log live**: Update the active story's work log for every meaningful implementation, investigation, validation, or scope decision.
-- **Report impact first**: For substantive progress notes or work-log entries, say what changed, what it improved or failed to improve, what evidence you checked, and what the next falsifiable step is.
+- **Report impact first**: For substantive progress notes or work-log entries, say what changed, what it improved or failed to improve, what evidence you checked, and what the next falsifiable step is. When the work is technical, add 1-2 plain-language lines on what the operator or end user should notice, or what practical risk/annoyance got smaller.
 - **Debug from artifacts first**: Inspect actual outputs, JSON, eval results, screenshots, and intermediate files before changing code. Prefer evidence-driven diagnosis over guess-and-edit loops.
 - **Reuse proven patterns first**: Before inventing a new helper, prompt shape, or workflow, find a working local pattern and adapt it with the smallest change that fits.
 
@@ -378,7 +378,7 @@ Eval `retry_when` conditions are also detectors, not evergreen invitations. If t
 - `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
 - `/finish-and-push` is the bundled close-out path when the user explicitly wants story closure plus validated check-in/landing in one request. It MUST run `/mark-story-done` before `/check-in-diff` and may only fix minor close-out issues inline.
 - Commit and push happen only when the user explicitly requests them.
-- Each step should end with a concise summary and a recommended next step the user can approve with a simple "yes".
+- Each step should end with a concise summary and a recommended next step the user can approve with a simple "yes". Prefer the explicit form: Reply `yes` to proceed with: ... when there is one clear next move.
 - When there is a concrete verification path, include a short `Where to verify` note so the user can spot-check the result themselves without reverse-engineering the change.
 - If the user already authorized later steps in the chain, continue without redundant confirmation unless a meaningful blocker or risk appears.
 

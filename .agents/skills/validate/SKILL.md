@@ -108,7 +108,9 @@ Assess whether a story's implementation meets its requirements.
    - use `Rescope then close` only when the remaining work is genuinely separate and already has a clear follow-up home
    - use `Mark blocked` only for named blockers with explicit evidence and an unblock condition recorded in the story artifact
    - if recommending `Rescope then close`, the exact story edits needed before closure
+   - a short `Impact` note for technical work: what improved for the operator or end user, what practical issue got smaller, or what they should notice now
    - recommended next step (`/mark-story-done` if clean, otherwise fix issues)
+   - phrase the recommended next step so the user can approve it with a simple `yes`; prefer the explicit form: Reply `yes` to proceed with: ... when there is one clear next move
    - a short `Where to verify` note whenever there is a concrete path for the user to spot-check the result themselves
    - `Where to verify` should be concise and optional: UI work should name the route/screen plus 1-3 interactions; CLI/backend work should name the command, endpoint, or file to inspect
    - By default, stop after the report. If the user already explicitly approved the next step(s) and validation is clean enough to proceed, continue to `/mark-story-done` inline instead of asking again
@@ -153,13 +155,16 @@ Assess whether a story's implementation meets its requirements.
 - Moves toward Ideal: yes/no/partial
 - New compromises introduced: [list, with detection eval status]
 
+### Impact
+- plain-language effect: [what improved for the operator or end user, what practical issue got smaller, or what they should notice now]
+
 ### Grade: A/B/C/D/F
 
 ### Closure Recommendation
 - Close now / Rescope then close / Keep open / Mark blocked — [reason]
 
 ### Next Steps
-- [what needs to happen before this can be marked Done]
+- [one recommended next step or short sequence phrased so the user can approve it by replying `yes`]
 ```
 
 ## Guardrails
