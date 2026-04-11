@@ -1346,14 +1346,14 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
+          "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": "2026-04-10",
+            "date": "2026-04-11",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
+            "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
           },
           "storyIds": [
             "155",
@@ -1429,14 +1429,14 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
+          "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": "2026-04-10",
+            "date": "2026-04-11",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
+            "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
           },
           "storyIds": [
             "155",
@@ -1475,14 +1475,14 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
+          "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": "2026-04-10",
+            "date": "2026-04-11",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
+            "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
           },
           "storyIds": [
             "155",
@@ -9857,7 +9857,7 @@
       "id": "160",
       "title": "Long-Form Character and Location Bible Output Budget Recovery",
       "path": "docs/stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md",
-      "status": "Draft",
+      "status": "Done",
       "priority": "Medium",
       "idealRefs": [
         "R1 (story understanding)",
@@ -9908,7 +9908,7 @@
         "sourceId": "160",
         "sourcePath": "docs/stories/story-160-long-form-character-and-location-bible-output-budget-recovery.md",
         "recommendedNow": false,
-        "posture": "draft",
+        "posture": "completed",
         "whyNow": "",
         "lastRelevantAction": {
           "date": null,
@@ -10638,9 +10638,9 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story-Lane Baseline (Short+Medium Green, Long Runtime-Blocking)",
-        "measured": "2026-04-10",
-        "note": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
+        "model": "Story 160 Validation Big Fish Rerun (Bibles green, continuity stalled)",
+        "measured": "2026-04-11",
+        "note": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -10675,14 +10675,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…",
+        "whyNow": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-10",
+          "date": "2026-04-11",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_…"
+          "summary": "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating…"
         }
       }
     },

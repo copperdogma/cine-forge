@@ -18,92 +18,39 @@ from cine_forge.schemas import (
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_LOCATION_BIBLE_MAX_TOKENS = 4096
+LOCATION_TIME_SUFFIXES = (
+    "DAY",
+    "NIGHT",
+    "MORNING",
+    "EVENING",
+    "DUSK",
+    "DAWN",
+    "CONTINUOUS",
+    "LATER",
+    "MOMENTS LATER",
+)
+LOCATION_TIME_SUFFIX_PATTERN = "|".join(LOCATION_TIME_SUFFIXES)
+
 
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
     """Execute location bible extraction."""
     canonical_script, scene_index, discovery_results = _extract_inputs(inputs)
-    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
-    if not isinstance(runtime_params, dict):
-        runtime_params = {}
-
-    # Tiered Model Strategy (Subsumption)
-    work_model = (
-        params.get("work_model")
-        or params.get("model")
-        or params.get("default_model")
-        or runtime_params.get("work_model")
-        or runtime_params.get("default_model")
-        or runtime_params.get("model")
-        or "claude-sonnet-4-6"
-    )
-    verify_model = (
-        params.get("verify_model")
-        or params.get("qa_model")
-        or params.get("utility_model")
-        or runtime_params.get("verify_model")
-        or runtime_params.get("qa_model")
-        or runtime_params.get("utility_model")
-        or "claude-haiku-4-5-20251001"
-    )
-    escalate_model = (
-        params.get("escalate_model")
-        or params.get("sota_model")
-        or runtime_params.get("escalate_model")
-        or runtime_params.get("sota_model")
-        or "claude-opus-4-6"
-    )
-    skip_qa = bool(params.get("skip_qa", False))
-    concurrency = int(
-        params.get("concurrency")
-        or runtime_params.get("concurrency")
-        or 5
-    )
-
-    # Higher default for bibles to avoid noise pollution
-    min_appearances = int(params.get("min_scene_appearances", 1))
-
-    # 1. Aggregate and Filter
-    if discovery_results and discovery_results.get("locations"):
-        # Normalize discovery locations: strip INT./EXT. prefix and time-of-day suffix
-        # so "EXT. CITY CENTRE - NIGHT" → "CITY CENTRE" matches "City Centre" from scene_index.
-        _time_suffixes = (
-            "DAY", "NIGHT", "MORNING", "EVENING", "DUSK",
-            "DAWN", "CONTINUOUS", "LATER", "MOMENTS LATER",
-        )
-        _time_pat = "|".join(_time_suffixes)
-
-        def _norm(s: str) -> str:
-            s = re.sub(r"^(INT\.|EXT\.)\s*", "", s.upper())
-            s = re.sub(rf"\s*-\s*({_time_pat}).*$", "", s)
-            return s.strip()
-
-        approved_locations = {_norm(n) for n in discovery_results["locations"]}
-        print(f"[location_bible] Using {len(approved_locations)} locations from discovery results.")
-        all_locs = _aggregate_locations(scene_index)
-        ranked = _rank_locations(all_locs, scene_index)
-        candidates = [loc for loc in ranked if _norm(loc["name"]) in approved_locations]
-        if not candidates:
-            # Normalization still didn't match (unusual format) — fall back to all locations
-            print("[location_bible] No approved matches; falling back to all scene_index locations.")  # noqa: E501
-            candidates = ranked
-    else:
-        locations = _aggregate_locations(scene_index)
-        ranked = _rank_locations(locations, scene_index)
-
-        candidates = [
-            loc for loc in ranked if loc["scene_count"] >= min_appearances
-        ]
+    options = _resolve_execution_options(params=params, context=context)
     (
+        ranked,
         candidates,
         adjudication_rejections,
         adjudication_decisions,
         adjudication_cost,
-    ) = _adjudicate_candidates(
-        candidates=candidates,
-        script_text=canonical_script["script_text"],
-        model=work_model,
+    ) = _prepare_location_candidates(
+        canonical_script=canonical_script,
+        scene_index=scene_index,
+        discovery_results=discovery_results,
+        min_appearances=options["min_appearances"],
+        model=options["work_model"],
     )
 
     models_seen: set[str] = set()
@@ -113,14 +60,175 @@ def run_module(
         "estimated_cost_usd": 0.0,
     }
     _update_total_cost(total_cost, adjudication_cost)
-    if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
-        models_seen.add(str(adjudication_cost["model"]))
+    _record_models(models_seen, adjudication_cost.get("model"))
 
     # 2. Extract for each candidate in parallel; announce each entity as it completes
     # so the engine can save mid-stage and the sidebar count ticks up live (story-072).
-    print(f"[location_bible] Extracting {len(candidates)} locations (concurrency={concurrency}).")
-    announce = context.get("announce_artifact")
+    print(
+        f"[location_bible] Extracting {len(candidates)} locations "
+        f"(concurrency={options['concurrency']})."
+    )
+    artifacts, extraction_cost, extraction_models = _extract_location_artifacts(
+        candidates=candidates,
+        canonical_script=canonical_script,
+        scene_index=scene_index,
+        ranked=ranked,
+        adjudication_rejections=adjudication_rejections,
+        adjudication_decisions=adjudication_decisions,
+        work_model=options["work_model"],
+        verify_model=options["verify_model"],
+        escalate_model=options["escalate_model"],
+        skip_qa=options["skip_qa"],
+        concurrency=options["concurrency"],
+        location_bible_max_tokens=options["location_bible_max_tokens"],
+        announce=context.get("announce_artifact") if isinstance(context, dict) else None,
+    )
+    _update_total_cost(total_cost, extraction_cost)
+    models_seen.update(extraction_models)
+
+    # Stable output order
+    artifacts.sort(key=lambda a: a["entity_id"])
+
+    model_label = "+".join(sorted(models_seen)) if models_seen else "code"
+    total_cost["model"] = model_label
+
+    return {
+        "artifacts": artifacts,
+        "cost": total_cost,
+    }
+
+
+def _resolve_execution_options(
+    params: dict[str, Any], context: dict[str, Any]
+) -> dict[str, Any]:
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
+
+    return {
+        "work_model": (
+            params.get("work_model")
+            or params.get("model")
+            or params.get("default_model")
+            or runtime_params.get("work_model")
+            or runtime_params.get("default_model")
+            or runtime_params.get("model")
+            or "claude-sonnet-4-6"
+        ),
+        "verify_model": (
+            params.get("verify_model")
+            or params.get("qa_model")
+            or params.get("utility_model")
+            or runtime_params.get("verify_model")
+            or runtime_params.get("qa_model")
+            or runtime_params.get("utility_model")
+            or "claude-haiku-4-5-20251001"
+        ),
+        "escalate_model": (
+            params.get("escalate_model")
+            or params.get("sota_model")
+            or runtime_params.get("escalate_model")
+            or runtime_params.get("sota_model")
+            or "claude-opus-4-6"
+        ),
+        "skip_qa": bool(params.get("skip_qa", False)),
+        "concurrency": int(params.get("concurrency") or runtime_params.get("concurrency") or 5),
+        "min_appearances": int(params.get("min_scene_appearances", 1)),
+        "location_bible_max_tokens": int(
+            params.get("location_bible_max_tokens")
+            or runtime_params.get("location_bible_max_tokens")
+            or DEFAULT_LOCATION_BIBLE_MAX_TOKENS
+        ),
+    }
+
+
+def _prepare_location_candidates(
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    discovery_results: dict[str, Any] | None,
+    min_appearances: int,
+    model: str,
+) -> tuple[
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    dict[str, Any],
+]:
+    if discovery_results and discovery_results.get("locations"):
+        ranked, candidates, should_adjudicate = _build_discovery_location_candidates(
+            scene_index=scene_index,
+            discovery_results=discovery_results,
+        )
+        if not should_adjudicate:
+            print(
+                "[location_bible] Skipping second-pass adjudication for "
+                "discovery-backed candidates."
+            )
+            return ranked, candidates, [], [], _empty_cost(model)
+    else:
+        locations = _aggregate_locations(scene_index)
+        ranked = _rank_locations(locations, scene_index)
+        candidates = [
+            candidate for candidate in ranked if candidate["scene_count"] >= min_appearances
+        ]
+
+    candidates, rejected, decisions, cost = _adjudicate_candidates(
+        candidates=candidates,
+        script_text=canonical_script["script_text"],
+        model=model,
+    )
+    return ranked, candidates, rejected, decisions, cost
+
+
+def _build_discovery_location_candidates(
+    scene_index: dict[str, Any],
+    discovery_results: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:
+    approved_locations = {
+        _normalize_location_name(name)
+        for name in discovery_results["locations"]
+        if _normalize_location_name(name)
+    }
+    print(f"[location_bible] Using {len(approved_locations)} locations from discovery results.")
+    all_locations = _aggregate_locations(scene_index)
+    ranked = _rank_locations(all_locations, scene_index)
+    candidates = [
+        candidate
+        for candidate in ranked
+        if _normalize_location_name(candidate["name"]) in approved_locations
+    ]
+    if candidates:
+        return ranked, candidates, False
+
+    # Normalization still didn't match (unusual format) — fall back to all locations.
+    print("[location_bible] No approved matches; falling back to all scene_index locations.")
+    return ranked, ranked, True
+
+
+def _extract_location_artifacts(
+    *,
+    candidates: list[dict[str, Any]],
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    ranked: list[dict[str, Any]],
+    adjudication_rejections: list[dict[str, Any]],
+    adjudication_decisions: list[dict[str, Any]],
+    work_model: str,
+    verify_model: str,
+    escalate_model: str,
+    skip_qa: bool,
+    concurrency: int,
+    location_bible_max_tokens: int,
+    announce: Any | None,
+) -> tuple[list[dict[str, Any]], dict[str, Any], set[str]]:
     artifacts: list[dict[str, Any]] = []
+    total_cost = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
+    models_seen: set[str] = set()
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
         future_to_entry = {
             executor.submit(
@@ -136,6 +244,7 @@ def run_module(
                 verify_model=verify_model,
                 escalate_model=escalate_model,
                 skip_qa=skip_qa,
+                max_tokens=location_bible_max_tokens,
             ): entry
             for entry in candidates
         }
@@ -144,29 +253,17 @@ def run_module(
             try:
                 entity_artifacts, entity_cost = future.result()
                 if announce:
-                    for a in entity_artifacts:
-                        if a.get("artifact_type") == "location_bible":
-                            announce(a)
+                    for artifact in entity_artifacts:
+                        if artifact.get("artifact_type") == "location_bible":
+                            announce(artifact)
                 artifacts.extend(entity_artifacts)
                 _update_total_cost(total_cost, entity_cost)
-                m = entity_cost.get("model", "code")
-                if m and m != "code":
-                    models_seen.update(m.split("+"))
+                _record_models(models_seen, entity_cost.get("model"))
             except Exception as exc:
                 logger.warning(
                     "[location_bible] Failed to extract '%s': %s", entry["name"], exc
                 )
-
-    # Stable output order
-    artifacts.sort(key=lambda a: a["entity_id"])
-
-    model_label = "+".join(sorted(models_seen)) if models_seen else "code"
-    total_cost["model"] = model_label
-
-    return {
-        "artifacts": artifacts,
-        "cost": total_cost,
-    }
+    return artifacts, total_cost, models_seen
 
 
 def _process_location(
@@ -181,6 +278,7 @@ def _process_location(
     verify_model: str,
     escalate_model: str,
     skip_qa: bool,
+    max_tokens: int,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Extract bible for a single location; returns (artifacts, cost)."""
     loc_name = entry["name"]
@@ -195,6 +293,7 @@ def _process_location(
         canonical_script=canonical_script,
         scene_index=scene_index,
         model=work_model,
+        max_tokens=max_tokens,
     )
     # Override AI-generated location_id with canonical slug so the data field
     # always matches the artifact entity_id (AI often writes "loc_xxx" etc.)
@@ -224,6 +323,7 @@ def _process_location(
                 scene_index=scene_index,
                 model=escalate_model,
                 feedback=qa_result.summary,
+                max_tokens=max_tokens,
             )
             _update_total_cost(entity_cost, esc_cost)
             if esc_cost.get("model") and esc_cost["model"] != "code":
@@ -292,6 +392,12 @@ def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None
     total["estimated_cost_usd"] += call_cost.get("estimated_cost_usd", 0.0)
 
 
+def _record_models(models_seen: set[str], model_label: Any) -> None:
+    if not model_label or model_label == "code":
+        return
+    models_seen.update(str(model_label).split("+"))
+
+
 def _extract_inputs(
     inputs: dict[str, Any]
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any] | None]:
@@ -335,6 +441,12 @@ def _rank_locations(names: list[str], index: dict[str, Any]) -> list[dict[str, A
     return results
 
 
+def _normalize_location_name(value: str) -> str:
+    normalized = re.sub(r"^(INT\.|EXT\.)\s*", "", value.upper())
+    normalized = re.sub(rf"\s*-\s*({LOCATION_TIME_SUFFIX_PATTERN}).*$", "", normalized)
+    return normalized.strip()
+
+
 def _extract_location_definition(
     loc_name: str,
     entry: dict[str, Any],
@@ -342,6 +454,7 @@ def _extract_location_definition(
     scene_index: dict[str, Any],
     model: str,
     feedback: str = "",
+    max_tokens: int = DEFAULT_LOCATION_BIBLE_MAX_TOKENS,
 ) -> tuple[LocationBible, dict[str, Any]]:
     if model == "mock":
         return _mock_extract(loc_name, entry), {
@@ -356,6 +469,8 @@ def _extract_location_definition(
         prompt=prompt,
         model=model,
         response_schema=LocationBible,
+        max_tokens=max_tokens,
+        fail_on_truncation=True,
         enable_caching=True,
     )
     return definition, cost

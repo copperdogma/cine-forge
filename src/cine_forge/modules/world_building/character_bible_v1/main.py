@@ -18,6 +18,9 @@ from cine_forge.schemas import (
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_CHARACTER_BIBLE_MAX_TOKENS = 8192
+DEFAULT_MINOR_CHARACTER_BIBLE_MAX_TOKENS = 4096
+
 CHARACTER_STOPWORDS = {
     "A",
     "AN",
@@ -82,90 +85,19 @@ def run_module(
 ) -> dict[str, Any]:
     """Execute character bible extraction."""
     canonical_script, scene_index, discovery_results = _extract_inputs(inputs)
-    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
-    if not isinstance(runtime_params, dict):
-        runtime_params = {}
-
-    # Tiered Model Strategy (Subsumption)
-    work_model = (
-        params.get("work_model")
-        or params.get("model")
-        or params.get("default_model")
-        or runtime_params.get("work_model")
-        or runtime_params.get("default_model")
-        or runtime_params.get("model")
-        or "claude-sonnet-4-6"
-    )
-    verify_model = (
-        params.get("verify_model")
-        or params.get("qa_model")
-        or params.get("utility_model")
-        or runtime_params.get("verify_model")
-        or runtime_params.get("qa_model")
-        or runtime_params.get("utility_model")
-        or "claude-haiku-4-5-20251001"
-    )
-    escalate_model = (
-        params.get("escalate_model")
-        or params.get("sota_model")
-        or runtime_params.get("escalate_model")
-        or runtime_params.get("sota_model")
-        or "claude-opus-4-6"
-    )
-    skip_qa = bool(params.get("skip_qa", False))
-    concurrency = int(
-        params.get("concurrency")
-        or runtime_params.get("concurrency")
-        or 5
-    )
-
-    # Higher default for bibles to avoid noise pollution
-    min_appearances = int(params.get("min_scene_appearances", 3))
-
-    # 1. Aggregate and Filter
-    if discovery_results and discovery_results.get("characters"):
-        approved_names = {n.upper() for n in discovery_results["characters"]}
-        print(f"[character_bible] Using {len(approved_names)} characters from discovery results.")
-        all_chars = _aggregate_characters(scene_index)
-        ranked = _rank_characters(all_chars, canonical_script, scene_index)
-        # Entity discovery already LLM-curated — keep all approved candidates
-        # regardless of scene count so minor walk-ons get bibles too.
-        candidates = [c for c in ranked if c["name"].upper() in approved_names]
-        # Discovery may contain characters the scene parser normalized differently
-        # (e.g. "THUG 1"/"THUG 2" collapsed to "THUG", "YOUNG MARINER" to "MARINER").
-        # Create stub entries so they still get extracted.
-        matched_names = {c["name"].upper() for c in candidates}
-        for name in sorted(approved_names - matched_names):
-            candidates.append({
-                "name": name,
-                "scene_count": 0,
-                "dialogue_count": 0,
-                "score": 0,
-                "scene_presence": [],
-            })
-    else:
-        characters = _aggregate_characters(scene_index)
-        ranked = _rank_characters(characters, canonical_script, scene_index)
-
-        # Filter: keep characters with enough appearances OR any dialogue.
-        # min_appearances gates non-speaking characters to avoid noise;
-        # any character with dialogue is worth extracting.
-        candidates = [
-            c
-            for c in ranked
-            if (c["scene_count"] >= min_appearances) or (c["dialogue_count"] >= 1)
-        ]
-    # Final sanity check: skip anything that is JUST stopwords after filtering
-    candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
+    options = _resolve_execution_options(params=params, context=context)
     (
+        ranked,
         candidates,
         adjudication_rejections,
         adjudication_decisions,
         adjudication_cost,
-    ) = _adjudicate_candidates(
-        candidates=candidates,
-        script_text=canonical_script["script_text"],
-        model=work_model,
+    ) = _prepare_character_candidates(
+        canonical_script=canonical_script,
+        scene_index=scene_index,
+        discovery_results=discovery_results,
+        min_appearances=options["min_appearances"],
+        model=options["work_model"],
     )
 
     models_seen: set[str] = set()
@@ -175,68 +107,42 @@ def run_module(
         "estimated_cost_usd": 0.0,
     }
     _update_total_cost(total_cost, adjudication_cost)
-    if adjudication_cost.get("model") and adjudication_cost["model"] != "code":
-        models_seen.add(str(adjudication_cost["model"]))
+    _record_models(models_seen, adjudication_cost.get("model"))
 
     # 2. Split candidates into full (primary/secondary) vs lightweight (minor) extraction
     # paths. Characters with score >= 4 (2+ scenes or 1 scene + 2 dialogue) get a deep
     # extraction; lower-scoring candidates get a stripped-down minor-character extraction
     # that's ~80% cheaper per character. Both produce valid CharacterBible artifacts.
-    minor_score_threshold = int(params.get("minor_score_threshold", 4))
-    full_candidates = [c for c in candidates if c["score"] >= minor_score_threshold]
-    minor_candidates = [c for c in candidates if c["score"] < minor_score_threshold]
+    full_candidates = [
+        c for c in candidates if c["score"] >= options["minor_score_threshold"]
+    ]
+    minor_candidates = [
+        c for c in candidates if c["score"] < options["minor_score_threshold"]
+    ]
     print(
         f"[character_bible] Extracting {len(full_candidates)} full + "
-        f"{len(minor_candidates)} minor characters (concurrency={concurrency})."
+        f"{len(minor_candidates)} minor characters (concurrency={options['concurrency']})."
     )
-    announce = context.get("announce_artifact")
-    artifacts: list[dict[str, Any]] = []
-    with ThreadPoolExecutor(max_workers=concurrency) as executor:
-        future_to_entry: dict[Any, dict[str, Any]] = {}
-        for entry in full_candidates:
-            future_to_entry[executor.submit(
-                _process_character,
-                entry=entry,
-                canonical_script=canonical_script,
-                scene_index=scene_index,
-                ranked=ranked,
-                candidates=candidates,
-                adjudication_rejections=adjudication_rejections,
-                adjudication_decisions=adjudication_decisions,
-                work_model=work_model,
-                verify_model=verify_model,
-                escalate_model=escalate_model,
-                skip_qa=skip_qa,
-            )] = entry
-        for entry in minor_candidates:
-            future_to_entry[executor.submit(
-                _process_minor_character,
-                entry=entry,
-                canonical_script=canonical_script,
-                scene_index=scene_index,
-                ranked=ranked,
-                candidates=candidates,
-                adjudication_rejections=adjudication_rejections,
-                adjudication_decisions=adjudication_decisions,
-                model=work_model,
-            )] = entry
-        for future in as_completed(future_to_entry):
-            entry = future_to_entry[future]
-            try:
-                entity_artifacts, entity_cost = future.result()
-                if announce:
-                    for a in entity_artifacts:
-                        if a.get("artifact_type") == "character_bible":
-                            announce(a)
-                artifacts.extend(entity_artifacts)
-                _update_total_cost(total_cost, entity_cost)
-                m = entity_cost.get("model", "code")
-                if m and m != "code":
-                    models_seen.update(m.split("+"))
-            except Exception as exc:
-                logger.warning(
-                    "[character_bible] Failed to extract '%s': %s", entry["name"], exc
-                )
+    artifacts, extraction_cost, extraction_models = _extract_character_artifacts(
+        full_candidates=full_candidates,
+        minor_candidates=minor_candidates,
+        canonical_script=canonical_script,
+        scene_index=scene_index,
+        ranked=ranked,
+        candidates=candidates,
+        adjudication_rejections=adjudication_rejections,
+        adjudication_decisions=adjudication_decisions,
+        work_model=options["work_model"],
+        verify_model=options["verify_model"],
+        escalate_model=options["escalate_model"],
+        skip_qa=options["skip_qa"],
+        concurrency=options["concurrency"],
+        character_bible_max_tokens=options["character_bible_max_tokens"],
+        minor_character_bible_max_tokens=options["minor_character_bible_max_tokens"],
+        announce=context.get("announce_artifact") if isinstance(context, dict) else None,
+    )
+    _update_total_cost(total_cost, extraction_cost)
+    models_seen.update(extraction_models)
 
     # Stable output order
     artifacts.sort(key=lambda a: a["entity_id"])
@@ -248,6 +154,215 @@ def run_module(
         "artifacts": artifacts,
         "cost": total_cost,
     }
+
+
+def _resolve_execution_options(
+    params: dict[str, Any], context: dict[str, Any]
+) -> dict[str, Any]:
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
+
+    return {
+        "work_model": (
+            params.get("work_model")
+            or params.get("model")
+            or params.get("default_model")
+            or runtime_params.get("work_model")
+            or runtime_params.get("default_model")
+            or runtime_params.get("model")
+            or "claude-sonnet-4-6"
+        ),
+        "verify_model": (
+            params.get("verify_model")
+            or params.get("qa_model")
+            or params.get("utility_model")
+            or runtime_params.get("verify_model")
+            or runtime_params.get("qa_model")
+            or runtime_params.get("utility_model")
+            or "claude-haiku-4-5-20251001"
+        ),
+        "escalate_model": (
+            params.get("escalate_model")
+            or params.get("sota_model")
+            or runtime_params.get("escalate_model")
+            or runtime_params.get("sota_model")
+            or "claude-opus-4-6"
+        ),
+        "skip_qa": bool(params.get("skip_qa", False)),
+        "concurrency": int(params.get("concurrency") or runtime_params.get("concurrency") or 5),
+        "min_appearances": int(params.get("min_scene_appearances", 3)),
+        "minor_score_threshold": int(
+            params.get("minor_score_threshold")
+            or runtime_params.get("minor_score_threshold")
+            or 4
+        ),
+        "character_bible_max_tokens": int(
+            params.get("character_bible_max_tokens")
+            or runtime_params.get("character_bible_max_tokens")
+            or DEFAULT_CHARACTER_BIBLE_MAX_TOKENS
+        ),
+        "minor_character_bible_max_tokens": int(
+            params.get("minor_character_bible_max_tokens")
+            or runtime_params.get("minor_character_bible_max_tokens")
+            or DEFAULT_MINOR_CHARACTER_BIBLE_MAX_TOKENS
+        ),
+    }
+
+
+def _prepare_character_candidates(
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    discovery_results: dict[str, Any] | None,
+    min_appearances: int,
+    model: str,
+) -> tuple[
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    dict[str, Any],
+]:
+    if discovery_results and discovery_results.get("characters"):
+        ranked, candidates = _build_discovery_character_candidates(
+            canonical_script=canonical_script,
+            scene_index=scene_index,
+            discovery_results=discovery_results,
+        )
+        candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
+        print(
+            "[character_bible] Skipping second-pass adjudication for discovery-backed candidates."
+        )
+        return ranked, candidates, [], [], _empty_cost(model)
+
+    characters = _aggregate_characters(scene_index)
+    ranked = _rank_characters(characters, canonical_script, scene_index)
+    candidates = [
+        candidate
+        for candidate in ranked
+        if (candidate["scene_count"] >= min_appearances) or (candidate["dialogue_count"] >= 1)
+    ]
+    candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
+    candidates, rejected, decisions, cost = _adjudicate_candidates(
+        candidates=candidates,
+        script_text=canonical_script["script_text"],
+        model=model,
+    )
+    return ranked, candidates, rejected, decisions, cost
+
+
+def _build_discovery_character_candidates(
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    discovery_results: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    approved_names: set[str] = set()
+    for name in discovery_results["characters"]:
+        normalized = _normalize_character_name(name)
+        if normalized:
+            approved_names.add(normalized)
+
+    print(f"[character_bible] Using {len(approved_names)} characters from discovery results.")
+    all_chars = _aggregate_characters(scene_index)
+    ranked = _rank_characters(all_chars, canonical_script, scene_index)
+    candidates = [candidate for candidate in ranked if candidate["name"] in approved_names]
+
+    # Discovery may contain characters the scene parser normalized differently
+    # (e.g. "THUG 1"/"THUG 2" collapsed to "THUG", "YOUNG MARINER" to "MARINER").
+    # Create stub entries so they still get extracted.
+    matched_names = {candidate["name"] for candidate in candidates}
+    for name in sorted(approved_names - matched_names):
+        candidates.append(
+            {
+                "name": name,
+                "scene_count": 0,
+                "dialogue_count": 0,
+                "score": 0,
+                "scene_presence": [],
+            }
+        )
+
+    candidates.sort(key=lambda item: item["score"], reverse=True)
+    return ranked, candidates
+
+
+def _extract_character_artifacts(
+    *,
+    full_candidates: list[dict[str, Any]],
+    minor_candidates: list[dict[str, Any]],
+    canonical_script: dict[str, Any],
+    scene_index: dict[str, Any],
+    ranked: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+    adjudication_rejections: list[dict[str, Any]],
+    adjudication_decisions: list[dict[str, Any]],
+    work_model: str,
+    verify_model: str,
+    escalate_model: str,
+    skip_qa: bool,
+    concurrency: int,
+    character_bible_max_tokens: int,
+    minor_character_bible_max_tokens: int,
+    announce: Any | None,
+) -> tuple[list[dict[str, Any]], dict[str, Any], set[str]]:
+    artifacts: list[dict[str, Any]] = []
+    total_cost = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 0.0,
+    }
+    models_seen: set[str] = set()
+    with ThreadPoolExecutor(max_workers=concurrency) as executor:
+        future_to_entry: dict[Any, dict[str, Any]] = {}
+        for entry in full_candidates:
+            future_to_entry[
+                executor.submit(
+                    _process_character,
+                    entry=entry,
+                    canonical_script=canonical_script,
+                    scene_index=scene_index,
+                    ranked=ranked,
+                    candidates=candidates,
+                    adjudication_rejections=adjudication_rejections,
+                    adjudication_decisions=adjudication_decisions,
+                    work_model=work_model,
+                    verify_model=verify_model,
+                    escalate_model=escalate_model,
+                    skip_qa=skip_qa,
+                    max_tokens=character_bible_max_tokens,
+                )
+            ] = entry
+        for entry in minor_candidates:
+            future_to_entry[
+                executor.submit(
+                    _process_minor_character,
+                    entry=entry,
+                    canonical_script=canonical_script,
+                    scene_index=scene_index,
+                    ranked=ranked,
+                    candidates=candidates,
+                    adjudication_rejections=adjudication_rejections,
+                    adjudication_decisions=adjudication_decisions,
+                    model=work_model,
+                    max_tokens=minor_character_bible_max_tokens,
+                )
+            ] = entry
+        for future in as_completed(future_to_entry):
+            entry = future_to_entry[future]
+            try:
+                entity_artifacts, entity_cost = future.result()
+                if announce:
+                    for artifact in entity_artifacts:
+                        if artifact.get("artifact_type") == "character_bible":
+                            announce(artifact)
+                artifacts.extend(entity_artifacts)
+                _update_total_cost(total_cost, entity_cost)
+                _record_models(models_seen, entity_cost.get("model"))
+            except Exception as exc:
+                logger.warning(
+                    "[character_bible] Failed to extract '%s': %s", entry["name"], exc
+                )
+    return artifacts, total_cost, models_seen
 
 
 def _process_character(
@@ -262,6 +377,7 @@ def _process_character(
     verify_model: str,
     escalate_model: str,
     skip_qa: bool,
+    max_tokens: int,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Extract bible for a single character; returns (artifacts, cost)."""
     char_name = entry["name"]
@@ -276,6 +392,7 @@ def _process_character(
         canonical_script=canonical_script,
         scene_index=scene_index,
         model=work_model,
+        max_tokens=max_tokens,
     )
     # Override AI-generated character_id with canonical slug so the data field
     # always matches the artifact entity_id (AI often writes "mariner_001" etc.)
@@ -305,6 +422,7 @@ def _process_character(
                 scene_index=scene_index,
                 model=escalate_model,
                 feedback=qa_result.summary,
+                max_tokens=max_tokens,
             )
             _update_total_cost(entity_cost, esc_cost)
             if esc_cost.get("model") and esc_cost["model"] != "code":
@@ -378,6 +496,7 @@ def _process_minor_character(
     adjudication_rejections: list[dict[str, Any]],
     adjudication_decisions: list[dict[str, Any]],
     model: str,
+    max_tokens: int,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Lightweight extraction for minor characters (walk-ons, thugs, guards).
 
@@ -398,6 +517,7 @@ def _process_minor_character(
         canonical_script=canonical_script,
         scene_index=scene_index,
         model=model,
+        max_tokens=max_tokens,
     )
     definition = definition.model_copy(update={"character_id": slug})
     _update_total_cost(entity_cost, cost)
@@ -462,6 +582,12 @@ def _update_total_cost(total: dict[str, Any], call_cost: dict[str, Any]) -> None
     total["input_tokens"] += call_cost.get("input_tokens", 0)
     total["output_tokens"] += call_cost.get("output_tokens", 0)
     total["estimated_cost_usd"] += call_cost.get("estimated_cost_usd", 0.0)
+
+
+def _record_models(models_seen: set[str], model_label: Any) -> None:
+    if not model_label or model_label == "code":
+        return
+    models_seen.update(str(model_label).split("+"))
 
 
 def _extract_inputs(
@@ -538,6 +664,7 @@ def _extract_character_definition(
     scene_index: dict[str, Any],
     model: str,
     feedback: str = "",
+    max_tokens: int = DEFAULT_CHARACTER_BIBLE_MAX_TOKENS,
 ) -> tuple[CharacterBible, dict[str, Any]]:
     if model == "mock":
         return _mock_extract(char_name, entry), {
@@ -552,6 +679,8 @@ def _extract_character_definition(
         prompt=prompt,
         model=model,
         response_schema=CharacterBible,
+        max_tokens=max_tokens,
+        fail_on_truncation=True,
         enable_caching=True,
     )
     return definition, cost
@@ -563,6 +692,7 @@ def _extract_minor_character_definition(
     canonical_script: dict[str, Any],
     scene_index: dict[str, Any],
     model: str,
+    max_tokens: int = DEFAULT_MINOR_CHARACTER_BIBLE_MAX_TOKENS,
 ) -> tuple[CharacterBible, dict[str, Any]]:
     """Lightweight extraction for minor characters — cheaper than full extraction."""
     if model == "mock":
@@ -578,6 +708,8 @@ def _extract_minor_character_definition(
         prompt=prompt,
         model=model,
         response_schema=CharacterBible,
+        max_tokens=max_tokens,
+        fail_on_truncation=True,
         enable_caching=True,
     )
     return definition, cost

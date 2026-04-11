@@ -1740,6 +1740,36 @@ evals:
         git_sha: "96afaa6"
         result_file: benchmarks/results/full-script-throughput-story-155-baseline-2026-04-10.json
         note: "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_frequency_short` succeeded at `142628 ms` / `$0.1741`, `last_birthday_card_medium` succeeded at `368853 ms` / `$0.5481`, and `big_fish_long` failed at `1087301 ms` / `$1.2844` after `analyze_scenes` alone consumed `888.476s` and `character_bible` plus `location_bible` then hit `LLM output truncated due to max token limit`. Classification: the long-form failure is **ambiguous** but **runtime-blocking** because the current modules do not yet prove whether the blocker is model weakness, prompt/output-budget configuration, or upstream candidate-volume inflation. Measured follow-up stories split cleanly: Story 159 for `continuity_tracking` runtime/output budgets, Story 160 for long-form bible truncation recovery, and Story 161 for long-form `analyze_scenes` scale."
+      - model: "Story 160 Targeted Big Fish Rerun (Bible blocker cleared, continuity hung)"
+        metrics:
+          overall: 0.0
+          successful_case_ratio: 0.0
+          long_case_character_bible_completed: 1.0
+          long_case_location_bible_completed: 1.0
+          long_case_character_bible_elapsed_ms: 149690.5
+          long_case_location_bible_elapsed_ms: 103018.5
+          observed_elapsed_to_last_finished_stage_ms: 1172661
+        latency_ms: 1172661
+        cost_usd: 2.15077
+        measured: 2026-04-11
+        git_sha: "7b943fd"
+        result_file: output/runs/big_fish_long-world_building-1a9d/run_state.json
+        note: "Targeted `--filter-case big_fish_long` rerun for Story 160, measured on a dirty worktree containing the uncommitted bible-recovery changes. `character_bible` and `location_bible` both completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, clearing the previous runtime-blocking truncation failure. The case then moved into `continuity_tracking`, logged a schema validation issue (`entity_states.*.change_events.*.new_value = null` where the schema expects `str`), and produced no new `run_state.json` / `pipeline_events.jsonl` updates for roughly 26 minutes before the operator stopped the stuck rerun. Classification: the old bible failure is resolved; the remaining long-case blocker is **ambiguous** but **runtime-blocking** in downstream continuity tracking, owned by Story 159 rather than Story 160."
+      - model: "Story 160 Validation Big Fish Rerun (Bibles green, continuity stalled)"
+        metrics:
+          overall: 0.0
+          successful_case_ratio: 0.0
+          long_case_character_bible_completed: 1.0
+          long_case_location_bible_completed: 1.0
+          long_case_character_bible_elapsed_ms: 152601.3
+          long_case_location_bible_elapsed_ms: 107068.7
+          observed_elapsed_to_last_finished_stage_ms: 1124649.5
+        latency_ms: 1124649.5
+        cost_usd: 1.88295617
+        measured: 2026-04-11
+        git_sha: "7b943fd"
+        result_file: output/runs/big_fish_long-world_building-2dfa/run_state.json
+        note: "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating at `2026-04-11 09:49:05 MDT`; after roughly 14 minutes with no new stdout or artifact events, the operator terminated the stalled rerun. The specific prior `entity_states.*.change_events.*.new_value = null` log did not reappear before termination, so the remaining long-case blocker stays **ambiguous** but **runtime-blocking** in downstream continuity tracking, owned by Story 159 rather than Story 160."
 
     attempts: []
 

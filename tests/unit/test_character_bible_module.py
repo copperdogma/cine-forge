@@ -6,9 +6,15 @@ import pytest
 
 from cine_forge.modules.world_building.character_bible_v1.main import (
     _aggregate_characters,
+    _extract_character_definition,
+    _extract_minor_character_definition,
     _is_plausible_character_name,
+    _mock_minor_extract,
     _rank_characters,
     run_module,
+)
+from cine_forge.modules.world_building.character_bible_v1.main import (
+    _mock_extract as _mock_character_extract,
 )
 from cine_forge.schemas import EntityAdjudicationDecision
 
@@ -472,3 +478,106 @@ def test_discovery_only_characters_still_extracted() -> None:
     assert "aria" in bible_ids
     assert "thug_1" in bible_ids, f"THUG 1 missing from bibles: {bible_ids}"
     assert "thug_2" in bible_ids, f"THUG 2 missing from bibles: {bible_ids}"
+
+
+@pytest.mark.unit
+def test_discovery_backed_candidates_skip_second_pass_adjudication(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def _unexpected_adjudication(
+        **_: Any,
+    ) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
+        raise AssertionError("discovery-backed candidates should not be re-adjudicated")
+
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
+        _unexpected_adjudication,
+    )
+
+    result = run_module(
+        inputs={
+            "scene_index": _scene_index_with_minor_characters(),
+            "canonical_script": _canonical_payload_with_thugs(),
+            "discovery_results": {
+                "characters": ["ARIA", "NOAH", "THUG 1", "THUG 2"],
+                "locations": [],
+                "props": [],
+                "script_title": "Test",
+                "processing_metadata": {},
+            },
+        },
+        params={"model": "mock"},
+        context={"run_id": "unit", "stage_id": "world_building"},
+    )
+
+    bible_ids = {
+        artifact["entity_id"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "character_bible"
+    }
+    assert {"aria", "noah", "thug_1", "thug_2"} <= bible_ids
+
+
+@pytest.mark.unit
+def test_character_extraction_helpers_forward_output_budgets(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list[dict[str, Any]] = []
+    entry = {
+        "name": "ARIA",
+        "scene_count": 3,
+        "dialogue_count": 2,
+        "scene_presence": ["scene_001"],
+        "score": 8,
+    }
+
+    def _fake_call_llm(**kwargs: Any) -> tuple[Any, dict[str, Any]]:
+        calls.append(kwargs)
+        if len(calls) == 1:
+            return _mock_character_extract("ARIA", entry), {
+                "model": "fixture",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "estimated_cost_usd": 0.0,
+            }
+        return _mock_minor_extract("ARIA", entry), {
+            "model": "fixture",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main._build_extraction_prompt",
+        lambda *args, **kwargs: "full-prompt",
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main._build_lightweight_prompt",
+        lambda *args, **kwargs: "minor-prompt",
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main.call_llm",
+        _fake_call_llm,
+    )
+
+    _extract_character_definition(
+        char_name="ARIA",
+        entry=entry,
+        canonical_script=_canonical_payload(),
+        scene_index=_scene_index_payload(),
+        model="claude-sonnet-4-6",
+        max_tokens=5555,
+    )
+    _extract_minor_character_definition(
+        char_name="ARIA",
+        entry=entry,
+        canonical_script=_canonical_payload(),
+        scene_index=_scene_index_payload(),
+        model="claude-sonnet-4-6",
+        max_tokens=2222,
+    )
+
+    assert calls[0]["max_tokens"] == 5555
+    assert calls[0]["fail_on_truncation"] is True
+    assert calls[1]["max_tokens"] == 2222
+    assert calls[1]["fail_on_truncation"] is True

@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-11-01] — Recover long-form bible throughput honesty (Story 160)
+
+### Added
+- Added focused long-form bible regression coverage for discovery-backed adjudication bypass and explicit output-budget forwarding
+
+### Changed
+- Changed character and location bible extraction to reuse discovery-backed candidate sets directly on the normal long-form path and to pass explicit truncation-aware output budgets
+- Changed Story 160 methodology and eval tracking to record the fresh validation rerun and the downstream continuity blocker handoff to Story 159
+
+### Fixed
+- Fixed the runtime-blocking `big_fish_long` failure where `character_bible` and `location_bible` truncated before producing usable story-lane artifacts
+
 ## [2026-04-10-13] — Add full-script throughput detector (Story 155)
 
 ### Added
