@@ -149,6 +149,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 121 | Design Study Composition UX | Medium | Done | — | spec:2, spec:4, spec:6 | 056, 119, 120 | [story-121](stories/story-121-design-study-composition-ux.md) |
 | 155 | End-to-End Throughput Detector and Stage Efficiency Budgets | Medium | Done | — | spec:2, spec:8 | 032, 150 | [story-155](stories/story-155-end-to-end-throughput-detector-and-stage-efficiency-budgets.md) |
 | 161 | Long-Form Scene Analysis Throughput Reduction | Medium | Done | — | spec:2, spec:8 | 040, 155 | [story-161](stories/story-161-long-form-scene-analysis-throughput-reduction.md) |
+| 163 | Scene Analysis Ownership Decomposition | Medium | Done | — | spec:2 | 161 | [story-163](stories/story-163-scene-analysis-ownership-decomposition.md) |
 | 003 | Story Ingestion Module | Unknown | Done | — | spec:2 | 002 | [story-003](stories/story-003-story-ingestion.md) |
 | 003b | DOCX Ingestion Support | Unknown | Done | — | spec:2 | 003, 007b | [story-003b](stories/story-003b-docx-support.md) |
 | 004 | Script Normalization Module | Unknown | Done | — | spec:1, spec:2, spec:5, spec:8 | 002, 003 | [story-004](stories/story-004-script-normalization.md) |

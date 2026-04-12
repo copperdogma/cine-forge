@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-12-01] — Decompose scene-analysis ownership seams (Story 163)
+
+### Added
+- Added focused `scene_analysis_v1` execution and output helpers plus narrow regression coverage for retry, QA, merge, and artifact assembly seams
+- Added a recorded `scene-enrichment` improvement attempt that restores the default Sonnet 4.6 path above target with explicit tonal-contrast and flashback framing guidance
+
+### Changed
+- Changed `scene_analysis_v1/main.py` into a thin entrypoint while preserving the shipped scene-index and artifact contract
+- Changed the scene-enrichment prompt contract in both benchmark and runtime paths to name soundtrack-backed tonal contradictions and formative-memory framing explicitly
+- Changed the operator-console right-panel hook seam so AppShell and mobile sheets stay lint-clean without changing the route behavior
+
+### Fixed
+- Fixed the close-out validation gaps around UI toolchain checks, browser verification, and the regressed `scene-enrichment` score
+
 ## [2026-04-11-06] — Reduce long-form scene-analysis wait cliff (Story 161)
 
 ### Added

@@ -1,7 +1,7 @@
 import { HelpCircle } from 'lucide-react'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { FILM_GLOSSARY, askChatQuestion } from '@/lib/glossary'
-import { useRightPanel } from '@/lib/right-panel'
+import { useRightPanel } from '@/lib/use-right-panel'
 
 /**
  * GlossaryTerm — wraps text with a dotted underline and hover tooltip.

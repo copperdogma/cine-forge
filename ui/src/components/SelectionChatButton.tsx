@@ -2,7 +2,7 @@ import type { MouseEvent, RefObject } from 'react'
 import { MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { buildQuotedChatDraft, insertChatDraft } from '@/lib/chat-intents'
-import { useRightPanel } from '@/lib/right-panel'
+import { useRightPanel } from '@/lib/use-right-panel'
 
 type SelectionChatButtonProps = {
   roleId: string

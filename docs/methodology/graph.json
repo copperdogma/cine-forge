@@ -276,7 +276,8 @@
           "142",
           "148",
           "155",
-          "161"
+          "161",
+          "163"
         ],
         "adrIds": [
           "ADR-003"
@@ -10062,6 +10063,65 @@
           "summary": "story-closed: resolved the close-out-only environment gap, marked Story 162 done, and prepared the landing handoff. Evidence: installed the local `ui` toolchain with `pnpm --dir ui install --frozen-lockfile`, then reran…"
         }
       }
+    },
+    {
+      "id": "163",
+      "title": "Scene Analysis Ownership Decomposition",
+      "path": "docs/stories/story-163-scene-analysis-ownership-decomposition.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "Execution Ideal (AI should not need oversized ownership seams to extend the repo)",
+        "R1 (story understanding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:2.6",
+        "spec:2.7"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "161"
+      ],
+      "categoryRefs": [
+        "spec:2"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "architecture",
+        "decomposition",
+        "follow-up-from-161",
+        "scene-analysis"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260412-0148",
+        "date": "2026-04-12",
+        "summary": "completion: ran the final close-out checks on the current tree"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "163",
+        "sourcePath": "docs/stories/story-163-scene-analysis-ownership-decomposition.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: ran the final close-out checks on the current tree",
+        "lastRelevantAction": {
+          "date": "2026-04-12",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-163-scene-analysis-ownership-decomposition.md",
+          "summary": "completion: ran the final close-out checks on the current tree"
+        }
+      }
     }
   ],
   "adrs": [
@@ -11291,11 +11351,20 @@
       ],
       "compromiseIds": [],
       "retryWhen": [],
-      "attempts": [],
+      "attempts": [
+        {
+          "id": "003",
+          "date": "2026-04-12",
+          "approach": "Reinforced benchmark and runtime prompts to explicitly name tonal contradiction cues and flashback/memory framing, then verified with repeated bounded Sonnet 4.6 reruns.",
+          "note": "",
+          "retryStatus": "retired",
+          "retryWhen": []
+        }
+      ],
       "latestScore": {
-        "model": "Grok 4.1 Fast Reasoning",
-        "measured": "2026-03-14",
-        "note": "Passed elevator, failed flashback. Still well below the current leaders on nuanced scene analysis."
+        "model": "Sonnet 4.6",
+        "measured": "2026-04-12",
+        "note": "Story 163 validation rerun against the current default model only. Both fixtures passed, but the Opus judge penalized the elevator case for missing the muzak-vs-violence tonal juxtaposition, so the aggregate landed below the 0.93 target."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -11318,14 +11387,15 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Passed elevator, failed flashback. Still well below the current leaders on nuanced scene analysis.",
+        "whyNow": "Story 163 validation rerun against the current default model only. Both fixtures passed, but the Opus judge penalized the elevator case for missing the muzak-vs-violence tonal juxtaposition, so the aggregate landed below the 0.93 target.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-14",
-          "sourceType": "eval-score",
+          "date": "2026-04-12",
+          "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "summary": "Passed elevator, failed flashback. Still well below the current leaders on nuanced scene analysis."
+          "sourceId": "003",
+          "summary": "Reinforced benchmark and runtime prompts to explicitly name tonal contradiction cues and flashback/memory framing, then verified with repeated bounded Sonnet 4.6 reruns."
         }
       }
     },

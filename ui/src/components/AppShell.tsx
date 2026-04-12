@@ -31,7 +31,8 @@ import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { RightPanelProvider, useRightPanel } from '@/lib/right-panel'
+import { RightPanelProvider } from '@/lib/right-panel'
+import { useRightPanel } from '@/lib/use-right-panel'
 import { CommandPalette } from '@/components/CommandPalette'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
@@ -396,7 +397,7 @@ function ShellInner({ isMobile }: { isMobile: boolean }) {
   const activeRunId = useChatStore(s => projectId ? s.activeRunId?.[projectId] ?? null : null)
   const projectMessages = useChatStore(
     (s) => (projectId ? s.messages[projectId] : undefined),
-  ) ?? []
+  )
   const { data: artifactGroups } = useArtifactGroups(projectId, activeRunId ? 750 : undefined)
   const { data: runs } = useRuns(projectId)
 
@@ -411,15 +412,16 @@ function ShellInner({ isMobile }: { isMobile: boolean }) {
   }, [projectId, runs, activeRunId])
 
   useEffect(() => {
-    if (!projectId || !runs || projectMessages.length === 0) return
+    const currentProjectMessages = projectMessages ?? []
+    if (!projectId || !runs || currentProjectMessages.length === 0) return
     const resolvedRunIds = new Set(
       runs
         .filter((run) => run.status === 'done')
         .map((run) => run.run_id),
     )
     if (resolvedRunIds.size === 0) return
-    const filtered = dropResolvedGenericRunFailureMessages(projectMessages, resolvedRunIds)
-    if (filtered.length !== projectMessages.length) {
+    const filtered = dropResolvedGenericRunFailureMessages(currentProjectMessages, resolvedRunIds)
+    if (filtered.length !== currentProjectMessages.length) {
       useChatStore.getState().loadMessages(projectId, filtered)
     }
   }, [projectId, projectMessages, runs])

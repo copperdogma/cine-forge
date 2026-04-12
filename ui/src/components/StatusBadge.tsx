@@ -1,8 +1,4 @@
-/**
- * Shared pipeline status badge and icon — single source of truth.
- * Consolidates statusBadge(), statusIcon(), and getStatusConfig() from
- * ProjectRuns, RunDetail, and ProjectHome.
- */
+/** Shared pipeline status badge and icon — single source of truth. */
 import {
   CheckCircle2,
   XCircle,
@@ -70,41 +66,4 @@ export function StatusBadge({ status }: { status: string }) {
       {status}
     </Badge>
   )
-}
-
-/** Config object for status — icon, label, className. Used by ProjectHome. */
-export function getStatusConfig(status: string) {
-  switch (status) {
-    case 'done':
-    case 'skipped_reused':
-      return {
-        icon: CheckCircle2,
-        label: status === 'done' ? 'Done' : 'Reused',
-        className: 'bg-green-500/20 text-green-400 border-green-500/30',
-      }
-    case 'failed':
-      return {
-        icon: XCircle,
-        label: 'Failed',
-        className: 'bg-red-500/20 text-red-400 border-red-500/30',
-      }
-    case 'running':
-      return {
-        icon: Loader2,
-        label: 'Running',
-        className: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      }
-    case 'paused':
-      return {
-        icon: PauseCircle,
-        label: 'Paused',
-        className: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-      }
-    default:
-      return {
-        icon: Clock,
-        label: 'Pending',
-        className: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
-      }
-  }
 }

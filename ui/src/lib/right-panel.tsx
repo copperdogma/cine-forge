@@ -1,21 +1,6 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import type { ChatIntent } from '@/lib/chat-intents'
-
-interface RightPanelState {
-  open: boolean
-  pendingIntent: ChatIntent | null
-}
-
-interface RightPanelContextValue {
-  state: RightPanelState
-  openChat: () => void
-  openChatWithIntent: (intent: ChatIntent) => void
-  consumePendingIntent: () => void
-  close: () => void
-  toggle: () => void
-}
-
-const RightPanelContext = createContext<RightPanelContextValue | null>(null)
+import { RightPanelContext, type RightPanelState } from '@/lib/right-panel-context'
 
 export function RightPanelProvider({
   children,
@@ -60,10 +45,4 @@ export function RightPanelProvider({
       {children}
     </RightPanelContext.Provider>
   )
-}
-
-export function useRightPanel() {
-  const ctx = useContext(RightPanelContext)
-  if (!ctx) throw new Error('useRightPanel must be used within RightPanelProvider')
-  return ctx
 }

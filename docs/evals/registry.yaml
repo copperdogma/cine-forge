@@ -852,6 +852,26 @@ evals:
     scores:
       - model: "Sonnet 4.6"
         metrics:
+          overall: 0.959
+        latency_ms: 12659
+        cost_usd: 0.0124
+        cost_estimated: true
+        measured: 2026-04-12
+        git_sha: "fa61109"
+        result_file: benchmarks/results/scene-enrichment-attempt-003-run4.json
+        note: "Verified across two no-cache reruns after reinforcing prompt instructions to name tonal contradictions and flashback/memory framing explicitly. Latest verified run stayed above target on both fixtures."
+      - model: "Sonnet 4.6"
+        metrics:
+          overall: 0.913
+        latency_ms: 11146
+        cost_usd: 0.0109
+        cost_estimated: true
+        measured: 2026-04-12
+        git_sha: "fa61109"
+        result_file: benchmarks/results/scene-enrichment-validate-story-163-2026-04-12.json
+        note: "Story 163 validation rerun against the current default model only. Both fixtures passed, but the Opus judge penalized the elevator case for missing the muzak-vs-violence tonal juxtaposition, so the aggregate landed below the 0.93 target."
+      - model: "Sonnet 4.6"
+        metrics:
           overall: 0.963
         latency_ms: 10558
         cost_usd: 0.0103
@@ -950,7 +970,20 @@ evals:
         result_file: benchmarks/results/model-scout-scene-enrichment-grok-4-1-fast-reasoning-full.json
         note: "Passed elevator, failed flashback. Still well below the current leaders on nuanced scene analysis."
 
-    attempts: []
+    attempts:
+      - id: "003"
+        story: attempts/003-scene-enrichment-tonal-contrast-prompt.md
+        date: 2026-04-12
+        status: succeeded
+        approach: "Reinforced benchmark and runtime prompts to explicitly name tonal contradiction cues and flashback/memory framing, then verified with repeated bounded Sonnet 4.6 reruns."
+        worker_model: "GPT-5.4"
+        worker_model_date: 2026-04-12
+        subject_model: "Sonnet 4.6"
+        score_before: 0.913
+        score_after: 0.959
+        latency_before: 11146
+        latency_after: 12659
+        retry_status: retired
 
   - id: qa-pass
     name: QA Pass

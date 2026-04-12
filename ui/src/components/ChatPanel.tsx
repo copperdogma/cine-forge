@@ -14,7 +14,7 @@ import {
   type ChatIntent,
 } from '@/lib/chat-intents'
 import { useProjectCharacters, useProjectInputs, useProjectState, useStartRun } from '@/lib/hooks'
-import { useRightPanel } from '@/lib/right-panel'
+import { useRightPanel } from '@/lib/use-right-panel'
 import type { ChatMessage } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { ChatMessageItem } from './chat/ChatMessageItem'

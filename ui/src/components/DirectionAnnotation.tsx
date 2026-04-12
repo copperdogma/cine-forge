@@ -16,7 +16,7 @@ import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { ChatAboutButton } from '@/components/ChatAboutButton'
 import { buildQuotedChatDraft, insertChatDraft } from '@/lib/chat-intents'
-import { useRightPanel } from '@/lib/right-panel'
+import { useRightPanel } from '@/lib/use-right-panel'
 
 // --- Concern group config ---
 

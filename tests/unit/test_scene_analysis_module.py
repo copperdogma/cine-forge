@@ -8,14 +8,11 @@ from cine_forge.modules.ingest.scene_analysis_v1.batching import (
     create_batches as _create_batches,
 )
 from cine_forge.modules.ingest.scene_analysis_v1.main import (
-    _build_enriched_scene,
     _extract_scene_texts,
-    _mock_enrichments,
     _resolve_inputs,
-    _SceneEnrichment,
     run_module,
 )
-from cine_forge.schemas import NarrativeBeat, SceneIndexEntry
+from cine_forge.schemas import SceneIndexEntry
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -182,100 +179,6 @@ def test_create_batches_single_batch() -> None:
     ]
     batches = _create_batches(entries, batch_size=5)
     assert len(batches) == 1
-
-
-# ---------------------------------------------------------------------------
-# Mock enrichments
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.unit
-def test_mock_enrichments_produces_neutral_defaults() -> None:
-    entries = [
-        SceneIndexEntry.model_validate(
-            {
-                "scene_id": f"scene_{i:03d}",
-                "scene_number": i,
-                "heading": f"SCENE {i}",
-                "location": "LOC",
-                "time_of_day": "NIGHT",
-                "characters_present": [],
-                "source_span": {"start_line": 1, "end_line": 5},
-                "tone_mood": "neutral",
-            }
-        )
-        for i in range(1, 4)
-    ]
-    enrichments = _mock_enrichments(entries)
-    assert len(enrichments) == 3
-    for e in enrichments:
-        assert e.tone_mood == "neutral"
-        assert e.narrative_beats == []
-
-
-# ---------------------------------------------------------------------------
-# Scene enrichment merge
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.unit
-def test_build_enriched_scene_applies_gap_fills() -> None:
-    entry = SceneIndexEntry.model_validate(
-        {
-            "scene_id": "scene_001",
-            "scene_number": 1,
-            "heading": "INT. ??? - NIGHT",
-            "location": "UNKNOWN",
-            "time_of_day": "NIGHT",
-            "characters_present": ["MARA"],
-            "source_span": {"start_line": 1, "end_line": 10},
-            "tone_mood": "neutral",
-        }
-    )
-    enrichment = _SceneEnrichment(
-        scene_id="scene_001",
-        narrative_beats=[
-            NarrativeBeat(
-                beat_type="conflict",
-                description="Rising tension",
-                approximate_location="middle",
-                confidence=0.85,
-            )
-        ],
-        tone_mood="tense",
-        tone_shifts=["calm to tense"],
-        location="Control Room",
-        characters_present=["MARA", "JACK"],
-    )
-    result = _build_enriched_scene(entry, enrichment)
-    assert result["location"] == "Control Room"
-    assert result["tone_mood"] == "tense"
-    assert len(result["narrative_beats"]) == 1
-    assert "JACK" in result["characters_present"]
-    assert "MARA" in result["characters_present"]
-
-
-@pytest.mark.unit
-def test_build_enriched_scene_preserves_known_location() -> None:
-    entry = SceneIndexEntry.model_validate(
-        {
-            "scene_id": "scene_001",
-            "scene_number": 1,
-            "heading": "INT. OFFICE - DAY",
-            "location": "Office",
-            "time_of_day": "DAY",
-            "characters_present": [],
-            "source_span": {"start_line": 1, "end_line": 5},
-            "tone_mood": "neutral",
-        }
-    )
-    enrichment = _SceneEnrichment(
-        scene_id="scene_001",
-        tone_mood="professional",
-        location="Conference Room",  # Should NOT override known location
-    )
-    result = _build_enriched_scene(entry, enrichment)
-    assert result["location"] == "Office"  # Preserved, not overwritten
 
 
 # ---------------------------------------------------------------------------
