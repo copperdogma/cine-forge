@@ -202,6 +202,8 @@ export type SceneActionPreflight = {
 
 export type RunRuntimeParams = Record<string, unknown> & {
   default_model?: string | null
+  start_from?: string | null
+  end_at?: string | null
   scene_scope?: SceneExecutionScope
   scene_action_preflight?: SceneActionPreflight | null
 }

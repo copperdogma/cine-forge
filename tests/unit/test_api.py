@@ -536,6 +536,7 @@ def test_service_retry_failed_stage_bootstraps_new_run_from_failed_stage(
     assert worker_kwargs["start_from"] == "normalize"
     assert worker_kwargs["runtime_params"]["input_file"] == "x.fountain"
     assert worker_kwargs["runtime_params"]["default_model"] == "fixture"
+    assert worker_kwargs["runtime_params"]["start_from"] == "normalize"
     assert worker_kwargs["runtime_params"]["__resume_artifact_refs_by_stage"] == {
         "ingest": [raw_ref.model_dump(mode="json")],
         "normalize": [],
@@ -621,6 +622,61 @@ def test_service_retry_failed_stage_steps_back_to_ingest_for_empty_raw_input(
     worker_kwargs = captured["kwargs"]
     assert isinstance(worker_kwargs, dict)
     assert worker_kwargs["start_from"] == "ingest"
+    assert worker_kwargs["runtime_params"]["start_from"] == "ingest"
+    assert worker_kwargs["recipe_path"] == recipe_path
+
+
+@pytest.mark.unit
+def test_orchestrator_start_run_persists_start_from_in_runtime_params(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_id = service.create_project_from_slug("render-start-from", "Render Start From")
+    recipe_dir = tmp_path / "configs" / "recipes"
+    recipe_dir.mkdir(parents=True, exist_ok=True)
+    recipe_path = recipe_dir / "recipe-render-generation.yaml"
+    recipe_path.write_text(
+        "recipe_id: render_generation\ndescription: test\nstages: []\n",
+        encoding="utf-8",
+    )
+
+    captured: dict[str, object] = {}
+
+    class _FakeThread:
+        def __init__(self, *, target, kwargs, daemon):  # type: ignore[no-untyped-def]
+            captured["target"] = target
+            captured["kwargs"] = kwargs
+            captured["daemon"] = daemon
+            captured["started"] = False
+
+        def start(self) -> None:
+            captured["started"] = True
+
+    monkeypatch.setattr("cine_forge.api.run_orchestrator.threading.Thread", _FakeThread)
+
+    run_id = service._orchestrator.start_run(
+        project_id,
+        {
+            "input_file": "tests/fixtures/sample_screenplay.fountain",
+            "default_model": "fixture",
+            "recipe_id": "render_generation",
+            "accept_config": True,
+            "scene_scope": {"mode": "current_scene", "scene_ids": ["scene_004"]},
+            "start_from": "render",
+        },
+    )
+
+    assert run_id.startswith("run-")
+    assert captured["started"] is True
+    worker_kwargs = captured["kwargs"]
+    assert isinstance(worker_kwargs, dict)
+    assert worker_kwargs["start_from"] == "render"
+    assert worker_kwargs["runtime_params"]["start_from"] == "render"
+    assert worker_kwargs["runtime_params"]["scene_scope"] == {
+        "mode": "current_scene",
+        "scene_ids": ["scene_004"],
+    }
     assert worker_kwargs["recipe_path"] == recipe_path
 
 

@@ -161,6 +161,8 @@ class RunOrchestrator:
             project_budget_limit_usd=project_budget_limit_usd,
             run_budget_limit_usd=run_budget_limit_usd,
             budget_warning_threshold_ratio=budget_warning_threshold_ratio,
+            start_from=request.get("start_from"),
+            end_at=request.get("end_at"),
             scene_scope=request.get("scene_scope") or {},
             scene_action_preflight=request.get("scene_action_preflight"),
         )
@@ -264,6 +266,7 @@ class RunOrchestrator:
         }
         base_params.pop("__resume_artifact_refs_by_stage", None)
         runtime_params = _build_runtime_params_dict(base_params)
+        runtime_params["start_from"] = paused_stage_id
 
         recipe_id = state.get("recipe_id")
         recipe_filename = f"recipe-{str(recipe_id).replace('_', '-')}.yaml"
@@ -383,6 +386,7 @@ class RunOrchestrator:
         }
         retry_base.pop("__resume_artifact_refs_by_stage", None)
         retry_runtime = _build_runtime_params_dict(retry_base)
+        retry_runtime["start_from"] = effective_start_from
 
         worker = threading.Thread(
             target=self._run_pipeline,

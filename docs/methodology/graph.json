@@ -644,7 +644,8 @@
           "156",
           "157",
           "158",
-          "164"
+          "164",
+          "165"
         ],
         "adrIds": [
           "ADR-002",
@@ -756,7 +757,8 @@
           "151",
           "152",
           "153",
-          "164"
+          "164",
+          "165"
         ],
         "adrIds": [
           "ADR-002",
@@ -830,7 +832,8 @@
           "151",
           "152",
           "153",
-          "164"
+          "164",
+          "165"
         ],
         "adrIds": [
           "ADR-002",
@@ -1066,7 +1069,8 @@
           "151",
           "152",
           "153",
-          "164"
+          "164",
+          "165"
         ],
         "adrIds": [
           "ADR-003"
@@ -10196,6 +10200,75 @@
           "sourceType": "story-work-log",
           "source": "docs/stories/story-164-real-scene-generation-product-truth.md",
           "summary": "story-done: closed Story 164 after the fresh validation pass confirmed the surfaced route, artifacts, and trust surfaces all hold on representative state. Evidence: story metadata now reflects `Done`, acceptance criteri…"
+        }
+      }
+    },
+    {
+      "id": "165",
+      "title": "Scene Render Refresh Reuse Path",
+      "path": "docs/stories/story-165-scene-render-refresh-reuse-path.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.1",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "164"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "feature-completeness",
+        "render",
+        "runtime",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260412-2138",
+        "date": "2026-04-12",
+        "summary": "close-out: marked Story 165 `Done` after verifying all acceptance criteria against the landed implementation and fresh evidence already recorded above. Closure evidence remains the same clean validation set: `make test-…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "165",
+        "sourcePath": "docs/stories/story-165-scene-render-refresh-reuse-path.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "close-out: marked Story 165 `Done` after verifying all acceptance criteria against the landed implementation and fresh evidence already recorded above. Closure evidence remains the same clean validation set: `make test-…",
+        "lastRelevantAction": {
+          "date": "2026-04-12",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-165-scene-render-refresh-reuse-path.md",
+          "summary": "close-out: marked Story 165 `Done` after verifying all acceptance criteria against the landed implementation and fresh evidence already recorded above. Closure evidence remains the same clean validation set: `make test-…"
         }
       }
     }

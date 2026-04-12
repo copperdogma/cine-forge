@@ -52,6 +52,8 @@ class RuntimeParams(BaseModel):
     )
 
     # --- Scene-oriented execution context ---
+    start_from: str | None = None
+    end_at: str | None = None
     scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
     scene_action_preflight: SceneActionPreflight | None = None
 

@@ -6,13 +6,17 @@ import pytest
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.pipeline.scene_actions import build_scene_action_preflight
-from cine_forge.schemas import ArtifactHealth, ArtifactMetadata
+from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
 from cine_forge.schemas.scene_scope import SceneExecutionScope
 
 
-def _metadata(*, health: ArtifactHealth = ArtifactHealth.VALID) -> ArtifactMetadata:
+def _metadata(
+    *,
+    health: ArtifactHealth = ArtifactHealth.VALID,
+    lineage: list[ArtifactRef] | None = None,
+) -> ArtifactMetadata:
     return ArtifactMetadata(
-        lineage=[],
+        lineage=lineage or [],
         intent="test",
         rationale="test",
         confidence=1.0,
@@ -61,6 +65,37 @@ def _seed_scene_action_project(tmp_path: Path) -> Path:
         metadata=_metadata(),
     )
     return project_dir
+
+
+def _save_project_artifact(
+    store: ArtifactStore,
+    artifact_type: str,
+    data: dict[str, object],
+    *,
+    health: ArtifactHealth = ArtifactHealth.VALID,
+) -> None:
+    store.save_artifact(
+        artifact_type=artifact_type,
+        entity_id="project",
+        data=data,
+        metadata=_metadata(health=health),
+    )
+
+
+def _save_scene_artifact(
+    store: ArtifactStore,
+    artifact_type: str,
+    scene_id: str,
+    data: dict[str, object],
+    *,
+    health: ArtifactHealth = ArtifactHealth.VALID,
+) -> None:
+    store.save_artifact(
+        artifact_type=artifact_type,
+        entity_id=scene_id,
+        data=data,
+        metadata=_metadata(health=health),
+    )
 
 
 @pytest.mark.unit
@@ -127,18 +162,8 @@ def test_story_world_preflight_warns_but_does_not_soft_block(tmp_path: Path) -> 
 def test_ai_previz_preflight_reuses_existing_healthy_shot_plan(tmp_path: Path) -> None:
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
-    store.save_artifact(
-        artifact_type="track_manifest",
-        entity_id="project",
-        data={"tracks": []},
-        metadata=_metadata(),
-    )
-    store.save_artifact(
-        artifact_type="shot_plan",
-        entity_id="scene_001",
-        data={"scene_id": "scene_001", "shots": []},
-        metadata=_metadata(),
-    )
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(store, "shot_plan", "scene_001", {"scene_id": "scene_001", "shots": []})
 
     preflight = build_scene_action_preflight(
         project_path=project_dir,
@@ -154,22 +179,134 @@ def test_ai_previz_preflight_reuses_existing_healthy_shot_plan(tmp_path: Path) -
 def test_ai_previz_preflight_does_not_reuse_stale_shot_plan(tmp_path: Path) -> None:
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
-    store.save_artifact(
-        artifact_type="track_manifest",
-        entity_id="project",
-        data={"tracks": []},
-        metadata=_metadata(),
-    )
-    store.save_artifact(
-        artifact_type="shot_plan",
-        entity_id="scene_001",
-        data={"scene_id": "scene_001", "shots": []},
-        metadata=_metadata(health=ArtifactHealth.STALE),
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(
+        store,
+        "shot_plan",
+        "scene_001",
+        {"scene_id": "scene_001", "shots": []},
+        health=ArtifactHealth.STALE,
     )
 
     preflight = build_scene_action_preflight(
         project_path=project_dir,
         recipe_id="ai_previz_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from is None
+    assert any(item.label == "Shot planning" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_render_preflight_reuses_existing_healthy_shot_plan_for_current_scene(
+    tmp_path: Path,
+) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(store, "shot_plan", "scene_001", {"scene_id": "scene_001", "shots": []})
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from == "render"
+    labels = {item.label for item in preflight.items}
+    assert "Timeline" in labels
+    assert "Shot planning" not in labels
+
+
+@pytest.mark.unit
+def test_render_preflight_reuses_existing_healthy_shot_plan_for_all_scenes(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(store, "shot_plan", "scene_001", {"scene_id": "scene_001", "shots": []})
+    _save_scene_artifact(
+        store,
+        "scene",
+        "scene_002",
+        {"scene_id": "scene_002", "scene_number": 2, "heading": "EXT. STREET - DAY"},
+    )
+    _save_scene_artifact(store, "shot_plan", "scene_002", {"scene_id": "scene_002", "shots": []})
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="all_scenes", scene_ids=[]),
+    )
+
+    assert preflight.start_from == "render"
+    assert all(item.label != "Shot planning" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_render_preflight_does_not_reuse_stale_shot_plan(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(
+        store,
+        "shot_plan",
+        "scene_001",
+        {"scene_id": "scene_001", "shots": []},
+        health=ArtifactHealth.STALE,
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from is None
+    assert any(item.label == "Shot planning" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_render_preflight_does_not_reuse_without_track_manifest(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    _save_scene_artifact(store, "shot_plan", "scene_001", {"scene_id": "scene_001", "shots": []})
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from is None
+    assert any(item.label == "Track manifest" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_render_preflight_does_not_reuse_graph_stale_shot_plan(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    canonical_ref = store.latest_ref("canonical_script", "project")
+    assert canonical_ref is not None
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    shot_plan_ref = store.save_artifact(
+        artifact_type="shot_plan",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "shots": []},
+        metadata=_metadata(lineage=[canonical_ref]),
+    )
+    store.save_artifact(
+        artifact_type="canonical_script",
+        entity_id="project",
+        data={"title": "Test v2", "script_text": "INT. LAB - NIGHT\nMARA\nGo faster.\n"},
+        metadata=_metadata(lineage=[canonical_ref]),
+    )
+
+    assert store.graph.get_health(shot_plan_ref) == ArtifactHealth.STALE
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
         scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
     )
 

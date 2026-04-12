@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-12-03] — Reuse scene render refresh path (Story 165)
+
+### Added
+- Added persisted `start_from` / `end_at` runtime metadata and Run Detail execution-scope copy that make sliced render-refresh runs inspectable after launch
+
+### Changed
+- Changed Scene Workspace render refresh to reuse healthy shot-planning substrate by forwarding backend-recommended `start_from=render` when the selected scene scope is safe to rerender without replanning
+- Changed Story 165 evidence from a proxy timing estimate to a fresh paired full-refresh versus reuse benchmark on copied real project state
+
+### Fixed
+- Fixed the surfaced render-refresh path so stale shot-planning substrate no longer appears reusable when graph health says the plan is no longer safe to trust
+- Fixed the close-out visibility gap where operators could trigger render reuse but could not verify the sliced execution boundary in Run Detail
 ## [2026-04-12-02] — Make surfaced scene render path real (Story 164)
 
 ### Added

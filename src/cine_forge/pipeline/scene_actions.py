@@ -496,10 +496,13 @@ def _missing_or_unhealthy_scene_artifact_count(
 
 
 def _ref_is_healthy(store: ArtifactStore, artifact_ref: ArtifactRef) -> bool:
+    graph_health = store.graph.get_health(artifact_ref)
+    if graph_health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
+        return False
     try:
         health = store.load_artifact(artifact_ref).metadata.health
     except Exception:
-        health = store.graph.get_health(artifact_ref)
+        health = graph_health
     return health in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}
 
 
@@ -512,14 +515,19 @@ def _recommended_generation_start_stage(
 ) -> str | None:
     if not _has_healthy_project_artifact(store, "track_manifest"):
         return None
-    if recipe_id == "ai_previz_generation":
+    if recipe_id in {"ai_previz_generation", "render_generation"}:
         missing_shot_plan = _missing_or_unhealthy_scene_artifact_count(
             store,
             "shot_plan",
             scene_ids,
             preflight.scene_scope,
         )
-        return "ai_previz" if missing_shot_plan == 0 else None
+        if missing_shot_plan != 0:
+            return None
+        if recipe_id == "ai_previz_generation":
+            return "ai_previz"
+        if recipe_id == "render_generation":
+            return "render"
     return None
 
 

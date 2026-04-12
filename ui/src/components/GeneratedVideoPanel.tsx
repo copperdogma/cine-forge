@@ -100,6 +100,8 @@ export function GeneratedVideoPanel({
     : null
   const runBlocked = startRun.isPending || hasActiveRun
   const canStartRender = !!latestInputPath && !runBlocked && preflight?.status !== 'soft_block'
+  const renderStartFrom = preflight?.start_from ?? undefined
+  const renderReusesShotPlan = renderStartFrom === 'render'
   const promptData = promptArtifact?.payload?.data as Record<string, unknown> | undefined
   const videoData = videoArtifact?.payload?.data as Record<string, unknown> | undefined
   const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
@@ -128,14 +130,19 @@ export function GeneratedVideoPanel({
         recipe_id: 'render_generation',
         accept_config: true,
         force: !!generatedVideoGroup || !!renderPromptGroup,
+        start_from: renderStartFrom,
         scene_scope: sceneScope,
       })
 
       useChatStore.getState().setActiveRun(projectId, run_id)
       toast.success(
         generatedVideoGroup || renderPromptGroup
-          ? `Refreshing scene renders for ${configuredScopeLabel.toLowerCase()}`
-          : `Started scene render generation for ${configuredScopeLabel.toLowerCase()}`,
+          ? renderReusesShotPlan
+            ? `Refreshing scene renders from the current shot plan for ${configuredScopeLabel.toLowerCase()}`
+            : `Refreshing scene renders for ${configuredScopeLabel.toLowerCase()}`
+          : renderReusesShotPlan
+            ? `Started scene render generation from the current shot plan for ${configuredScopeLabel.toLowerCase()}`
+            : `Started scene render generation for ${configuredScopeLabel.toLowerCase()}`,
       )
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to start scene render generation')
@@ -242,6 +249,12 @@ export function GeneratedVideoPanel({
             <p>
               Scene render generation is currently running for {activeRunScopeLabel.toLowerCase()}.
               Stay here and this scene will refresh when the new prompt and render land.
+            </p>
+          )}
+          {renderReusesShotPlan && (
+            <p>
+              Reuse path: CineForge will keep the current shot plan and rerun only render plus
+              media validation.
             </p>
           )}
           <SceneActionControls

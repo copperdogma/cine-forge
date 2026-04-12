@@ -244,6 +244,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 152 | Previz AI Regenerate Reuse Path | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 149, 150, 151 | [story-152](stories/story-152-previz-ai-regenerate-reuse-path.md) |
 | 153 | Previz Minimal AI Clip Mode and Provider Floor | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 143, 149, 150, 151, 152 | [story-153](stories/story-153-previz-minimal-ai-clip-provider-floor.md) |
 | 164 | Real Scene Generation Product Truth | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 028, 140, 148 | [story-164](stories/story-164-real-scene-generation-product-truth.md) |
+| 165 | Scene Render Refresh Reuse Path | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 164 | [story-165](stories/story-165-scene-render-refresh-reuse-path.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

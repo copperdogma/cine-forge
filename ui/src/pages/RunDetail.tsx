@@ -33,6 +33,7 @@ import { RECIPE_NAMES, getOrderedStageIds, getSceneScopeLabel, getSceneScopeTarg
 import { toast } from 'sonner'
 import { formatDuration } from '@/lib/format'
 import { StatusBadge, StatusIcon } from '@/components/StatusBadge'
+import { humanizeStageName } from '@/lib/chat-messages'
 
 // Derive overall status from stage states
 function getOverallStatus(stages: Record<string, StageState>, stageOrder?: string[]): string {
@@ -250,8 +251,19 @@ export default function RunDetail() {
   const recipeName = state.recipe_id.replace('recipe-', '').replace(/-/g, ' ')
   const sceneScope = readSceneScope(state.runtime_params.scene_scope)
   const sceneActionPreflight = readSceneActionPreflight(state.runtime_params.scene_action_preflight)
+  const startFrom = typeof state.runtime_params.start_from === 'string'
+    ? state.runtime_params.start_from
+    : sceneActionPreflight?.start_from ?? null
+  const endAt = typeof state.runtime_params.end_at === 'string'
+    ? state.runtime_params.end_at
+    : sceneActionPreflight?.end_at ?? null
   const scopeLabel = getSceneScopeLabel(sceneScope)
   const scopeTargetLabel = getSceneScopeTargetLabel(sceneScope)
+  const orderedStageIds = getOrderedStageIds(
+    Object.keys(state.stages),
+    state.stage_order as string[] | undefined,
+  )
+  const stageOrderSummary = orderedStageIds.join(', ')
 
   const duration = state.finished_at && state.started_at
     ? state.finished_at - state.started_at
@@ -259,10 +271,7 @@ export default function RunDetail() {
       ? now - state.started_at
       : 0
 
-  const stageEntries = getOrderedStageIds(
-    Object.keys(state.stages),
-    state.stage_order as string[] | undefined,
-  )
+  const stageEntries = orderedStageIds
     .map((stageId) => [stageId, state.stages[stageId]] as const)
     .sort(([, a], [, b]) => {
     // Sort by started_at ascending; stages that haven't started go last
@@ -447,6 +456,21 @@ export default function RunDetail() {
           <CardContent className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="outline">Selected: {scopeLabel}</Badge>
+              {startFrom && (
+                <Badge variant="secondary" className="font-mono text-[11px]">
+                  start_from={startFrom}
+                </Badge>
+              )}
+              {endAt && (
+                <Badge variant="secondary" className="font-mono text-[11px]">
+                  end_at={endAt}
+                </Badge>
+              )}
+              {orderedStageIds.length > 0 && (
+                <Badge variant="secondary" className="font-mono text-[11px]">
+                  stage_order=[{stageOrderSummary}]
+                </Badge>
+              )}
               {sceneActionPreflight && (
                 <Badge
                   variant="outline"
@@ -475,6 +499,16 @@ export default function RunDetail() {
               {sceneActionPreflight?.summary
                 || `This run targeted ${scopeTargetLabel}.`}
             </p>
+            {(startFrom || orderedStageIds.length > 0) && (
+              <p className="text-sm text-muted-foreground">
+                {startFrom
+                  ? `This run resumed at ${humanizeStageName(startFrom)}. `
+                  : ''}
+                {orderedStageIds.length > 0
+                  ? `Executed stages: ${orderedStageIds.map(humanizeStageName).join(' -> ')}.`
+                  : ''}
+              </p>
+            )}
             {sceneActionPreflight && sceneActionPreflight.items.length > 0 && (
               <div className="space-y-2">
                 {sceneActionPreflight.items.map((item, index) => (
