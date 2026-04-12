@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ExternalLink, Film, Loader2, RefreshCw } from 'lucide-react'
+import { AlertCircle, ExternalLink, Film, Loader2, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
 import { HealthBadge } from '@/components/HealthBadge'
@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   isRunActive,
+  runHasFailed,
   useArtifact,
   useProjectInputs,
   useRunState,
@@ -21,6 +22,17 @@ import {
 import { useChatStore } from '@/lib/chat-store'
 import type { ArtifactGroupSummary, SceneScopeMode } from '@/lib/types'
 import { buildSceneScope, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
+
+function latestFailedAttemptError(attempts: Array<Record<string, unknown>> | undefined): string | null {
+  if (!Array.isArray(attempts)) return null
+  for (const attempt of [...attempts].reverse()) {
+    if (attempt.status !== 'failed') continue
+    if (typeof attempt.error === 'string' && attempt.error.trim()) {
+      return attempt.error
+    }
+  }
+  return null
+}
 
 type GeneratedVideoPanelProps = {
   projectId: string
@@ -78,6 +90,14 @@ export function GeneratedVideoPanel({
   const renderRunActive = hasActiveRun && runState?.state.recipe_id === 'render_generation'
   const anotherRunActive =
     hasActiveRun && !!runState && runState.state.recipe_id !== 'render_generation'
+  const renderRunFailed =
+    !!activeRunId && runState?.state.recipe_id === 'render_generation' && runHasFailed(runState)
+  const renderStage = runState?.state.stages?.render
+  const renderError = renderRunFailed
+    ? runState?.background_error?.trim()
+      || latestFailedAttemptError(renderStage?.attempts)
+      || 'Scene render failed. Open run details for more information.'
+    : null
   const runBlocked = startRun.isPending || hasActiveRun
   const canStartRender = !!latestInputPath && !runBlocked && preflight?.status !== 'soft_block'
   const promptData = promptArtifact?.payload?.data as Record<string, unknown> | undefined
@@ -95,6 +115,7 @@ export function GeneratedVideoPanel({
   const configuredScopeLabel = getSceneScopeLabel(sceneScope)
   const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
   const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
+  const runDetailHref = activeRunId ? `/${projectId}/run/${activeRunId}` : null
 
   async function handleStartRender() {
     if (!latestInputPath) return
@@ -232,6 +253,30 @@ export function GeneratedVideoPanel({
         </CardContent>
       </Card>
 
+      {renderRunFailed && renderError && (
+        <Card className="gap-0 border-destructive/40 bg-destructive/5">
+          <CardContent className="flex items-start gap-3 py-4">
+            <AlertCircle className="mt-0.5 h-4 w-4 text-destructive" />
+            <div className="space-y-2">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-destructive">Scene render failed</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {renderError}
+                </p>
+              </div>
+              {runDetailHref && (
+                <Button asChild variant="outline" size="sm">
+                  <Link to={runDetailHref}>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Open Run Details
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {renderRunActive && (videoData || promptData) && (
         <Card className="gap-0 border-amber-500/30 bg-amber-500/5">
           <CardContent className="flex items-start gap-3 py-4">
@@ -266,7 +311,7 @@ export function GeneratedVideoPanel({
         </div>
       )}
 
-      {!videoData && !promptData && !renderRunActive && !generatedVideoGroup && !renderPromptGroup && !videoLoading && !promptLoading && (
+      {!videoData && !promptData && !renderRunActive && !renderRunFailed && !generatedVideoGroup && !renderPromptGroup && !videoLoading && !promptLoading && (
         <div className="rounded-xl border border-dashed border-border bg-card/50 px-6 py-12 text-center">
           <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
             <div className="rounded-full bg-muted p-3">

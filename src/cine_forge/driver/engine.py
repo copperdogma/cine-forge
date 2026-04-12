@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import os
 import threading
 import time
 import uuid
@@ -1273,8 +1274,13 @@ class DriverEngine:
     @staticmethod
     def _write_run_state(path: Path, payload: dict[str, Any]) -> None:
         validated = RunState.model_validate(payload)
-        with path.open("w", encoding="utf-8") as file:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temp_path = path.with_name(f".{path.name}.tmp")
+        with temp_path.open("w", encoding="utf-8") as file:
             json.dump(validated.to_json_payload(), file, indent=2, sort_keys=True)
+            file.flush()
+            os.fsync(file.fileno())
+        temp_path.replace(path)
 
 
 def _coerce_cost(cost_payload: dict[str, Any] | list[dict[str, Any]] | None) -> CostRecord | None:

@@ -170,6 +170,11 @@ def section_metadata(section_id: str) -> tuple[str | None, list[str]]:
     return role if isinstance(role, str) else None, list(artifact_types)
 
 
+def known_prompt_categories() -> set[str]:
+    """Return the canonical prompt category ids used by the render adapter."""
+    return set(_CATEGORY_SPECS)
+
+
 def _build_prompt(
     *,
     engine_pack: EnginePack,

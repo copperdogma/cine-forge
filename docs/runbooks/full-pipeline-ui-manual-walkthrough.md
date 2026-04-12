@@ -57,33 +57,32 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
    Pass if the UI can carry the whole `mvp_ingest` path without requiring
    recipe/module reasoning or a detour into raw run details.
 4. Stay on `/open-frequency` until the script pass finishes.
-   Expected result: surfaced script/world progress updates make sense from Home,
-   and "Run Details" stays optional.
-5. From `/open-frequency`, click `Deep Breakdown`.
-   Pass if the next-step CTA is obvious and honest after the first pass.
-6. Stay on `/open-frequency` until the world-building pass finishes.
-   Expected result: Home acknowledges the project is current enough to keep
-   exploring, rather than pretending the next action is still initial intake.
-7. Visit the surfaced desktop routes in this order:
+   Expected result: surfaced script progress updates make sense from Home,
+   "Run Details" stays optional, and the project is ready to continue into the
+   surfaced scene routes without requiring a deeper world-building detour first.
+5. Visit the surfaced desktop routes in this order:
    `/open-frequency`
    `/open-frequency/intent`
    `/open-frequency/scenes`
    `/open-frequency/characters`
    `/open-frequency/locations`
    `/open-frequency/inbox`
-8. From `/open-frequency/scenes`, open `scene_001` and verify the scene
+6. From `/open-frequency/scenes`, open `scene_001` and verify the scene
    workspace plus the current downstream tabs:
    `/open-frequency/scenes/scene_001`
    `/open-frequency/scenes/scene_001?tab=shots`
    `/open-frequency/scenes/scene_001?tab=storyboard`
    `/open-frequency/scenes/scene_001?tab=render`
+   From the surfaced Render panel, run `Run Render for Current Scene`.
    Pass if the scene workspace remains usable, the downstream tabs are reachable
-   through surfaced navigation, and each tab is honest about missing
-   prerequisites vs. what is already ready.
-9. Spot-check the same project on mobile at minimum on:
+   through surfaced navigation, the Render tab stays honest about warnings vs.
+   blockers while auto-building minimal prerequisites when appropriate, and the
+   same panel then exposes `Prompt Detail`, `Video Detail`, and
+   `Validation Detail` for the resulting scene render.
+7. Spot-check the same project on mobile at minimum on:
    `/open-frequency`
    `/open-frequency/scenes/scene_001?tab=render`
-10. Record the run in `docs/ui-scout/<date>-<project>-<env>.md`, update
+8. Record the run in `docs/ui-scout/<date>-<project>-<env>.md`, update
     `docs/ui-scout.md`, update `docs/methodology/state.yaml` `ui_scout`, and
     rerun `pnpm methodology:compile`.
     If the honest boundary changes, update this runbook in the same diff as the

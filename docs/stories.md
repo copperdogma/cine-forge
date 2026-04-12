@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. Story 023 has now closed the first shipped Character & Performance slice on the active `spec:4` / `spec:5` lane.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 164 closed the first representative Scene Workspace render route. The active `spec:6` / `spec:7` lane now needs the next feature-completeness story packaged from that surfaced baseline rather than reverting to throughput-only follow-ons.
 
 ### Pending — Ready To Build Now
 
@@ -100,11 +100,13 @@ No blocked lines currently need attention.
 
 ## Active Focus
 
-- Active categories: `spec:4`, `spec:5`
-- UI scout freshness: fresh — last run 2026-04-10
-- Sequencing bias: `pipeline-throughput-efficiency` — Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. The honest detector and its first hotspot stories have now landed, so future optimization should keep using measured hotspot truth instead of reopening the detector slice or biasing toward already-closed follow-up stories.
+- Active categories: `spec:6`, `spec:7`
+- UI scout freshness: fresh — last run 2026-04-12
+- Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
+- Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
 - Active campaign `ui-product-truth-scouting`: Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage.
+- Active campaign `scene-generation-completion`: Story 164 closed the first representative Scene Workspace render route. This campaign stays active until the next `spec:6` / `spec:7` follow-up story is packaged so scene-generation completeness remains ahead of throughput-only follow-ons.
 
 ## Story Index
 
@@ -241,6 +243,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 151 | Previz Shot Planning Compact Mode | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 149, 150 | [story-151](stories/story-151-previz-shot-planning-compact-mode.md) |
 | 152 | Previz AI Regenerate Reuse Path | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 149, 150, 151 | [story-152](stories/story-152-previz-ai-regenerate-reuse-path.md) |
 | 153 | Previz Minimal AI Clip Mode and Provider Floor | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 143, 149, 150, 151, 152 | [story-153](stories/story-153-previz-minimal-ai-clip-provider-floor.md) |
+| 164 | Real Scene Generation Product Truth | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 028, 140, 148 | [story-164](stories/story-164-real-scene-generation-product-truth.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

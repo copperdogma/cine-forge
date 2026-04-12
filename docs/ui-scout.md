@@ -15,12 +15,13 @@ Machine-readable freshness source: `docs/methodology/state.yaml` `ui_scout`
 
 | Scenario | Goal | Last Checked | Notes |
 |---|---|---|---|
-| FP1 — Full Pipeline Canonical Fixture | A fresh project on the canonical short screenplay should reach the current honest downstream boundary through surfaced navigation and still feel polished, obvious, and honest | 2026-04-10 | Latest rerun passed. Story 157's completed-path CTA honesty fix remains verified, and Story 158 removed the fresh-run `/api/runs/{id}/events` startup noise plus the stale fresh-import `Upload Screenplay` CTA regression on the surfaced Home path. |
+| FP1 — Full Pipeline Canonical Fixture | A fresh project on the canonical short screenplay should reach the current honest downstream boundary through surfaced navigation and still feel polished, obvious, and honest | 2026-04-12 | Latest rerun passed. Story 164 raised the honest downstream boundary from “Render tab is reachable” to “a real scene render lands surfaced prompt/video/validation detail through the normal Scene Workspace route,” while also fixing the surfaced `/api/runs/{id}/state` polling race exposed during that render verification. |
 
 ## Run Index
 
 | Date | Scenario | Project | Follow-Up | Status |
 |---|---|---|---|---|
+| [2026-04-12 local scene-render validation](ui-scout/2026-04-12-open-frequency-render-story-164-local.md) | FP1 | `open-frequency-render-story-164` | — | Pass |
 | [2026-04-10 local validation](ui-scout/2026-04-10-open-frequency-local-validation.md) | FP1 | `open-frequency-3` | — | Pass |
 | [2026-04-10 local recheck](ui-scout/2026-04-10-open-frequency-local-recheck.md) | FP1 | `open-frequency` | [158](stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md) | Issues Found |
 | [2026-04-10 local walkthrough](ui-scout/2026-04-10-open-frequency-local.md) | FP1 | `open-frequency` | [157](stories/story-157-chat-suggestions-stop-advertising-completed-paths.md) | Recheck Due |

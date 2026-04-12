@@ -643,7 +643,8 @@
           "153",
           "156",
           "157",
-          "158"
+          "158",
+          "164"
         ],
         "adrIds": [
           "ADR-002",
@@ -754,7 +755,8 @@
           "150",
           "151",
           "152",
-          "153"
+          "153",
+          "164"
         ],
         "adrIds": [
           "ADR-002",
@@ -827,7 +829,8 @@
           "150",
           "151",
           "152",
-          "153"
+          "153",
+          "164"
         ],
         "adrIds": [
           "ADR-002",
@@ -1062,7 +1065,8 @@
           "150",
           "151",
           "152",
-          "153"
+          "153",
+          "164"
         ],
         "adrIds": [
           "ADR-003"
@@ -10122,6 +10126,78 @@
           "summary": "completion: ran the final close-out checks on the current tree"
         }
       }
+    },
+    {
+      "id": "164",
+      "title": "Real Scene Generation Product Truth",
+      "path": "docs/stories/story-164-real-scene-generation-product-truth.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.5",
+        "spec:6.1",
+        "spec:7.1",
+        "spec:7.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "028",
+        "140",
+        "148"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "feature-completeness",
+        "product-truth",
+        "render",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260412-1246",
+        "date": "2026-04-12",
+        "summary": "story-done: closed Story 164 after the fresh validation pass confirmed the surfaced route, artifacts, and trust surfaces all hold on representative state. Evidence: story metadata now reflects `Done`, acceptance criteri…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "164",
+        "sourcePath": "docs/stories/story-164-real-scene-generation-product-truth.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "story-done: closed Story 164 after the fresh validation pass confirmed the surfaced route, artifacts, and trust surfaces all hold on representative state. Evidence: story metadata now reflects `Done`, acceptance criteri…",
+        "lastRelevantAction": {
+          "date": "2026-04-12",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-164-real-scene-generation-product-truth.md",
+          "summary": "story-done: closed Story 164 after the fresh validation pass confirmed the surfaced route, artifacts, and trust surfaces all hold on representative state. Evidence: story metadata now reflects `Done`, acceptance criteri…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -11851,13 +11927,17 @@
     },
     "roadmap": {
       "active_focus": [
-        "spec:4",
-        "spec:5"
+        "spec:6",
+        "spec:7"
       ],
       "sequencing_bias": [
         {
+          "target": "scene-generation-completion",
+          "reason": "Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work."
+        },
+        {
           "target": "pipeline-throughput-efficiency",
-          "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. The honest detector and its first hotspot stories have now landed, so future optimization should keep using measured hotspot truth instead of reopening the detector slice or biasing toward already-closed follow-up stories."
+          "reason": "Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes."
         },
         {
           "target": "ui-product-truth-scouting",
@@ -11886,12 +11966,18 @@
           "status": "active",
           "story_refs": [],
           "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage."
+        },
+        {
+          "id": "scene-generation-completion",
+          "status": "active",
+          "story_refs": [],
+          "notes": "Story 164 closed the first representative Scene Workspace render route. This campaign stays active until the next `spec:6` / `spec:7` follow-up story is packaged so scene-generation completeness remains ahead of throughput-only follow-ons."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Story 034 closed the in-app style-pack creation lane, and Story 100 closed the first real Story World motif-tracking slice that replaces the placeholder-only path. Story 023 has now closed the first shipped Character & Performance slice on the active `spec:4` / `spec:5` lane.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 164 closed the first representative Scene Workspace render route. The active `spec:6` / `spec:7` lane now needs the next feature-completeness story packaged from that surfaced baseline rather than reverting to throughput-only follow-ons.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -12014,13 +12100,13 @@
       "cadence": {
         "max_days_without_run": 14
       },
-      "last_run_at": "2026-04-10",
-      "last_run_story_id": "158",
+      "last_run_at": "2026-04-12",
+      "last_run_story_id": "164",
       "scenarios": {
         "FP1": {
           "label": "Full Pipeline Canonical Fixture",
-          "last_checked": "2026-04-10",
-          "latest_report": "2026-04-10-open-frequency-local-validation",
+          "last_checked": "2026-04-12",
+          "latest_report": "2026-04-12-open-frequency-render-story-164-local",
           "status": "pass",
           "follow_up_story_refs": []
         }

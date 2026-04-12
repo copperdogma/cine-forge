@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-12-02] — Make surfaced scene render path real (Story 164)
+
+### Added
+- Added atomic `run_state.json` write coverage plus a dated UI-scout report that records the representative Scene Workspace render route on a fresh project
+
+### Changed
+- Changed the surfaced scene render path so warning-level prompt gaps stay advisory, produce honest completeness metadata, and still allow the selected scene to reach prompt, video, and validation artifacts
+- Changed the Scene Workspace render panel, UI scout, and manual walkthrough surfaces so failed runs show inline truth and the honest FP1 boundary is now “one real scene render lands through the normal route”
+
+### Fixed
+- Fixed the contradiction where render preflight said a scene could proceed with warnings but `render_adapter_v1` hard-failed on those same warning-level gaps
+- Fixed a `run_state.json` partial-write race that could make surfaced run polling intermittently 500 during active render refresh
 ## [2026-04-12-01] — Decompose scene-analysis ownership seams (Story 163)
 
 ### Added

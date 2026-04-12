@@ -18,6 +18,7 @@ from cine_forge.modules.generation.render_adapter_v1.previz_prompting import (
 )
 from cine_forge.modules.generation.render_adapter_v1.prompting import (
     compile_render_prompt,
+    known_prompt_categories,
     prompt_sources_from_sections,
     section_metadata,
 )
@@ -283,10 +284,10 @@ def _render_scene(
                 if note
             ],
         )
-        if completeness.missing_categories:
+        if completeness.blocking_missing_categories:
             raise ValueError(
                 f"render_adapter_v1 prompt for {plan.scene_id} is incomplete: "
-                f"{', '.join(completeness.missing_categories)}"
+                f"{', '.join(completeness.blocking_missing_categories)}"
             )
         prompt_text = prompt_draft.prompt_text
 
@@ -1211,6 +1212,11 @@ def _finalize_prompt_sections(
 ) -> tuple[list[RenderPromptSection], RenderCompletenessCheck, list[str]]:
     sections: list[RenderPromptSection] = []
     covered: set[str] = set()
+    required = {
+        category.strip()
+        for category in required_categories
+        if isinstance(category, str) and category.strip()
+    }
     for section in prompt_draft.sections:
         role, artifact_types = section_metadata(section.section_id)
         source_artifact_types = list(dict.fromkeys(section.source_artifact_types or artifact_types))
@@ -1225,8 +1231,20 @@ def _finalize_prompt_sections(
         )
         covered.add(section.section_id)
     covered.update(item for item in prompt_draft.covered_categories if isinstance(item, str))
-    missing = {item for item in prompt_draft.missing_inputs if isinstance(item, str) and item}
-    missing.update(category for category in required_categories if category not in covered)
+    reported_missing = {
+        item.strip()
+        for item in prompt_draft.missing_inputs
+        if isinstance(item, str) and item.strip()
+    }
+    known_categories = known_prompt_categories()
+    blocking_missing = {category for category in required if category not in covered}
+    advisory_missing: set[str] = set()
+    for item in reported_missing:
+        if item not in known_categories or item in required:
+            blocking_missing.add(item)
+            continue
+        advisory_missing.add(item)
+    missing = blocking_missing | advisory_missing
     prompt_sources = prompt_sources_from_sections(sections, resolved_inputs)
     for artifact_type in extra_source_artifact_types:
         if artifact_type not in prompt_sources:
@@ -1234,6 +1252,8 @@ def _finalize_prompt_sections(
     completeness = RenderCompletenessCheck(
         included_categories=sorted(covered),
         missing_categories=sorted(missing),
+        blocking_missing_categories=sorted(blocking_missing),
+        advisory_missing_categories=sorted(advisory_missing),
         notes=[*prompt_draft.operator_notes, *notes],
     )
     return sections, completeness, prompt_sources
@@ -1271,6 +1291,12 @@ def _prompt_artifact_dict(
                 if prompt_artifact.preview_provenance
                 else None,
                 "missing_categories": prompt_artifact.completeness.missing_categories,
+                "blocking_missing_categories": (
+                    prompt_artifact.completeness.blocking_missing_categories
+                ),
+                "advisory_missing_categories": (
+                    prompt_artifact.completeness.advisory_missing_categories
+                ),
             },
         },
     }

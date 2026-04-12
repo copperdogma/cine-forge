@@ -69,6 +69,8 @@ class RenderCompletenessCheck(BaseModel):
 
     included_categories: list[str] = Field(default_factory=list)
     missing_categories: list[str] = Field(default_factory=list)
+    blocking_missing_categories: list[str] = Field(default_factory=list)
+    advisory_missing_categories: list[str] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list)
 
 

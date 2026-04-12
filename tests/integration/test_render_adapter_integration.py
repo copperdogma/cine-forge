@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 import pytest
@@ -152,6 +153,7 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
         run_id="integration-render",
         force=True,
+        start_from="render",
         runtime_params={
             "engine_pack_id": "openai_sora2",
             "compiler_model": "gpt-5.4-mini",
@@ -199,3 +201,151 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
     )
     assert validation.target_ref.path == generated_video_refs[0].path
     assert validation.recommended_health == ArtifactHealth.NEEDS_REVIEW
+
+
+@pytest.mark.integration
+def test_render_recipe_allows_warning_level_prompt_gaps(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_render_project(tmp_path, include_keyframe=False, include_scene_image=False)
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+    clip_bytes = (
+        workspace_root
+        / "benchmarks"
+        / "video_understanding"
+        / "dialogue_confession_push_in"
+        / "clip.mp4"
+    ).read_bytes()
+
+    project_config_ref = seeded["store"].latest_ref("project_config", "project")
+    assert project_config_ref is not None
+    project_config_artifact = seeded["store"].load_artifact(project_config_ref)
+    project_config_payload = dict(project_config_artifact.data)
+    project_config_payload["production_format"] = None
+    seeded["store"].save_artifact(
+        artifact_type="project_config",
+        entity_id="project",
+        data=project_config_payload,
+        metadata=project_config_artifact.metadata.model_copy(update={"ref": None}),
+    )
+
+    intent_mood_path = seeded["project_dir"] / "artifacts" / "intent_mood" / "project" / "v1.json"
+    if intent_mood_path.exists():
+        intent_mood_path.unlink()
+    look_and_feel_dir = seeded["project_dir"] / "artifacts" / "look_and_feel"
+    if look_and_feel_dir.exists():
+        for artifact_path in look_and_feel_dir.rglob("*.json"):
+            artifact_path.unlink()
+    character_bible_dir = seeded["project_dir"] / "artifacts" / "character_bible"
+    if character_bible_dir.exists():
+        for artifact_path in character_bible_dir.rglob("*.json"):
+            artifact_path.unlink()
+    location_bible_dir = seeded["project_dir"] / "artifacts" / "location_bible"
+    if location_bible_dir.exists():
+        for artifact_path in location_bible_dir.rglob("*.json"):
+            artifact_path.unlink()
+    bibles_dir = seeded["project_dir"] / "artifacts" / "bibles"
+    if bibles_dir.exists():
+        shutil.rmtree(bibles_dir)
+
+    def _fake_call_llm(**kwargs):
+        schema = kwargs["response_schema"]
+        return (
+            schema.model_validate(
+                {
+                    "prompt_text": (
+                        "Render the confrontation as a controlled push that keeps the room "
+                        "pressure "
+                        "and Mara's decision legible without inventing absent style docs."
+                    ),
+                    "sections": [
+                        {
+                            "section_id": "shot_definition",
+                            "title": "Shot Definition",
+                            "body": "Preserve the planned slow push and room geometry.",
+                            "source_artifact_types": ["shot_plan"],
+                        },
+                        {
+                            "section_id": "character_and_performance",
+                            "title": "Character & Performance",
+                            "body": "Keep Mara compressed and deliberate while the frame tightens.",
+                            "source_artifact_types": ["character_and_performance", "shot_plan"],
+                        },
+                    ],
+                    "covered_categories": [
+                        "shot_definition",
+                        "character_and_performance",
+                    ],
+                    "missing_inputs": [
+                        "creative_brief",
+                        "look_and_feel",
+                        "sound_and_music",
+                        "rhythm_and_flow",
+                        "character_bible_state",
+                        "location_bible_state",
+                        "keyframes",
+                        "injected_assets",
+                    ],
+                    "operator_notes": [
+                        "Optional upstream direction is absent, so the adapter stayed shot-plan "
+                        "grounded."
+                    ],
+                }
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 170,
+                "output_tokens": 135,
+                "estimated_cost_usd": 0.009,
+                "latency_seconds": 0.6,
+                "request_id": "compile-warning-001",
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
+        _fake_call_llm,
+    )
+    monkeypatch.setattr(
+        "cine_forge.ai.video.generate_video",
+        lambda *, request, engine_pack: VideoGenerationResult(
+            video_bytes=clip_bytes,
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="video-warning-001",
+            provider_job_id="job-warning-001",
+        ),
+    )
+
+    run_state = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
+        run_id="integration-render-warning-gaps",
+        force=True,
+        start_from="render",
+        runtime_params={
+            "engine_pack_id": "openai_sora2",
+            "compiler_model": "gpt-5.4-mini",
+            "duration_seconds": 8,
+        },
+    )
+
+    assert run_state["stages"]["render"]["status"] == "done"
+    render_refs = [
+        ArtifactRef.model_validate(item) for item in run_state["stages"]["render"]["artifact_refs"]
+    ]
+    render_prompt_ref = next(ref for ref in render_refs if ref.artifact_type == "render_prompt")
+    render_prompt = engine.store.load_artifact(render_prompt_ref).data
+
+    assert render_prompt["completeness"]["blocking_missing_categories"] == []
+    assert render_prompt["completeness"]["advisory_missing_categories"] == [
+        "character_bible_state",
+        "creative_brief",
+        "injected_assets",
+        "keyframes",
+        "location_bible_state",
+        "look_and_feel",
+        "rhythm_and_flow",
+        "sound_and_music",
+    ]

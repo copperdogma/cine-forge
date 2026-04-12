@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 import pytest
@@ -220,6 +221,184 @@ def test_run_module_generates_prompt_video_and_track_entries(
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
         == "generated_video"
     )
+
+
+@pytest.mark.unit
+def test_run_module_allows_advisory_missing_prompt_inputs(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=False, include_scene_image=False)
+    seeded["inputs"]["intent_mood"] = None
+    seeded["inputs"]["look_and_feel"] = []
+    seeded["inputs"]["character_bible"] = []
+    seeded["inputs"]["location_bible"] = []
+    bibles_dir = seeded["project_dir"] / "artifacts" / "bibles"
+    if bibles_dir.exists():
+        shutil.rmtree(bibles_dir)
+    project_config = dict(seeded["inputs"]["project_config"])
+    project_config["production_format"] = None
+    seeded["inputs"]["project_config"] = project_config
+
+    def _fake_call_llm(**kwargs):
+        schema = kwargs["response_schema"]
+        return (
+            schema.model_validate(
+                {
+                    "prompt_text": (
+                        "Render the lab confrontation as a measured push that stays anchored "
+                        "to Mara's decision and the room's machine pressure."
+                    ),
+                    "sections": [
+                        {
+                            "section_id": "shot_definition",
+                            "title": "Shot Definition",
+                            "body": (
+                                "Use the planned slow push and preserve the confrontation "
+                                "geometry."
+                            ),
+                            "source_artifact_types": ["shot_plan"],
+                        },
+                        {
+                            "section_id": "character_and_performance",
+                            "title": "Character & Performance",
+                            "body": "Keep Mara taut and Owen rigid as the room closes in.",
+                            "source_artifact_types": ["character_and_performance", "shot_plan"],
+                        },
+                    ],
+                    "covered_categories": [
+                        "shot_definition",
+                        "character_and_performance",
+                    ],
+                    "missing_inputs": [
+                        "creative_brief",
+                        "look_and_feel",
+                        "sound_and_music",
+                        "rhythm_and_flow",
+                        "character_bible_state",
+                        "location_bible_state",
+                        "keyframes",
+                        "injected_assets",
+                    ],
+                    "operator_notes": [
+                        "Optional upstream render context is missing, so the prompt stays "
+                        "tightly grounded in the shot plan."
+                    ],
+                }
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 180,
+                "output_tokens": 140,
+                "estimated_cost_usd": 0.008,
+                "latency_seconds": 0.7,
+                "request_id": "compile-optional-001",
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
+        _fake_call_llm,
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: VideoGenerationResult(
+            video_bytes=b"fake-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="video-optional-001",
+            provider_job_id="job-optional-001",
+        ),
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "engine_pack_id": "openai_sora2",
+            "compiler_model": "gpt-5.4-mini",
+            "duration_seconds": 8,
+        },
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    )
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+
+    assert prompt_artifact.completeness.blocking_missing_categories == []
+    assert prompt_artifact.completeness.advisory_missing_categories == [
+        "character_bible_state",
+        "creative_brief",
+        "injected_assets",
+        "keyframes",
+        "location_bible_state",
+        "look_and_feel",
+        "rhythm_and_flow",
+        "sound_and_music",
+    ]
+    assert prompt_artifact.completeness.missing_categories == (
+        prompt_artifact.completeness.advisory_missing_categories
+    )
+
+
+@pytest.mark.unit
+def test_run_module_rejects_blocking_prompt_gaps(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=False, include_scene_image=False)
+
+    def _fake_call_llm(**kwargs):
+        schema = kwargs["response_schema"]
+        return (
+            schema.model_validate(
+                {
+                    "prompt_text": "Render the scene from the shot plan only.",
+                    "sections": [
+                        {
+                            "section_id": "shot_definition",
+                            "title": "Shot Definition",
+                            "body": "Use the planned hero shot.",
+                            "source_artifact_types": ["shot_plan"],
+                        }
+                    ],
+                    "covered_categories": ["shot_definition"],
+                    "missing_inputs": ["provider_contract"],
+                    "operator_notes": [],
+                }
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 120,
+                "output_tokens": 80,
+                "estimated_cost_usd": 0.004,
+                "latency_seconds": 0.4,
+                "request_id": "compile-blocking-001",
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
+        _fake_call_llm,
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda **_: pytest.fail("video generation should not start when blocking gaps remain"),
+    )
+
+    with pytest.raises(ValueError, match="provider_contract"):
+        run_module(
+            inputs=seeded["inputs"],
+            params={
+                "engine_pack_id": "openai_sora2",
+                "compiler_model": "gpt-5.4-mini",
+                "duration_seconds": 8,
+            },
+            context={"project_dir": str(seeded["project_dir"])},
+        )
 
 
 @pytest.mark.unit
