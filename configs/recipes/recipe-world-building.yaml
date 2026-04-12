@@ -7,6 +7,8 @@ stages:
     params:
       skip_qa: true
       batch_size: 5
+      max_batch_size: 10
+      max_batch_words: 2500
     needs: []
     store_inputs:
       normalize: canonical_script

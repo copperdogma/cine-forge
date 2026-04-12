@@ -18,6 +18,15 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 from cine_forge.ai import call_llm, qa_check
+from cine_forge.modules.ingest.scene_analysis_v1.batching import (
+    batch_word_count as _batch_word_count,
+)
+from cine_forge.modules.ingest.scene_analysis_v1.batching import (
+    build_macro_analysis_prompt as _build_macro_analysis_prompt,
+)
+from cine_forge.modules.ingest.scene_analysis_v1.batching import (
+    plan_scene_batches as _plan_scene_batches,
+)
 from cine_forge.modules.ingest.scene_breakdown_v1.main import _extract_elements, _slugify
 from cine_forge.schemas import (
     ArtifactHealth,
@@ -33,6 +42,7 @@ from cine_forge.schemas.qa import QAResult
 logger = logging.getLogger(__name__)
 
 DEFAULT_TONE = "neutral"
+DEFAULT_BATCH_SIZE = 5
 
 # ---------------------------------------------------------------------------
 # LLM response schemas
@@ -73,34 +83,126 @@ def run_module(
 ) -> dict[str, Any]:
     del context
 
-    # --- Resolve inputs ---
     scene_index_data, canonical_data = _resolve_inputs(inputs)
-    script_text = canonical_data["script_text"]
     scene_index = SceneIndex.model_validate(scene_index_data)
+    options = _resolve_runtime_options(params)
+    scene_texts = _extract_scene_texts(
+        canonical_data["script_text"], scene_index.entries
+    )
 
-    # --- Resolve params ---
+    batches, batch_stats = _plan_scene_batches(
+        entries=scene_index.entries,
+        scene_texts=scene_texts,
+        batch_size=options["batch_size"],
+        max_batch_size=options["max_batch_size"],
+        max_batch_words=options["max_batch_words"],
+    )
+    _log_batch_plan(len(scene_index.entries), batches, batch_stats)
+
+    all_enrichments, all_costs, total_qa_needs_review, duration = (
+        _run_batch_analysis(
+            batches=batches,
+            scene_texts=scene_texts,
+            work_model=options["work_model"],
+            escalate_model=options["escalate_model"],
+            max_retries=options["max_retries"],
+            skip_qa=options["skip_qa"],
+            qa_model=options["qa_model"],
+        )
+    )
+    logger.info("Scene analysis complete in %.2fs", duration)
+
+    scene_artifacts, updated_entries = _build_scene_outputs(
+        entries=scene_index.entries,
+        scene_texts=scene_texts,
+        enrichments=all_enrichments,
+        total_qa_needs_review=total_qa_needs_review,
+    )
+    scene_artifacts.append(
+        _build_scene_index_artifact(
+            scene_count=len(scene_index.entries),
+            estimated_runtime_minutes=scene_index.estimated_runtime_minutes,
+            updated_entries=updated_entries,
+            total_qa_needs_review=total_qa_needs_review,
+            batch_stats=batch_stats,
+        )
+    )
+
+    return {"artifacts": scene_artifacts, "cost": _sum_costs(all_costs)}
+
+
+def _resolve_runtime_options(params: dict[str, Any]) -> dict[str, Any]:
     work_model = (
         params.get("work_model") or params.get("model") or "claude-sonnet-4-6"
     )
-    escalate_model = params.get("escalate_model") or work_model
-    qa_model = (
-        params.get("qa_model") or params.get("verify_model")
-        or "gpt-4.1-mini"
-    )
-    max_retries = int(params.get("max_retries", 1))
-    skip_qa = bool(params.get("skip_qa", False))
-    batch_size = int(params.get("batch_size", 5))
+    batch_size = max(1, int(params.get("batch_size", DEFAULT_BATCH_SIZE)))
+    max_batch_size = int(params.get("max_batch_size", 0) or 0)
+    if max_batch_size <= 0:
+        max_batch_size = batch_size
 
-    # --- Build scene text map from canonical script ---
-    scene_texts = _extract_scene_texts(script_text, scene_index.entries)
+    return {
+        "work_model": work_model,
+        "escalate_model": params.get("escalate_model") or work_model,
+        "qa_model": (
+            params.get("qa_model") or params.get("verify_model")
+            or "gpt-4.1-mini"
+        ),
+        "max_retries": int(params.get("max_retries", 1)),
+        "skip_qa": bool(params.get("skip_qa", False)),
+        "batch_size": batch_size,
+        "max_batch_size": max(batch_size, max_batch_size),
+        "max_batch_words": max(0, int(params.get("max_batch_words", 0) or 0)),
+    }
 
-    # --- Batch scenes for macro-analysis ---
-    batches = _create_batches(scene_index.entries, batch_size)
-    logger.info(
-        f"Scene analysis: {len(scene_index.entries)} scenes in "
-        f"{len(batches)} batches of up to {batch_size}"
-    )
 
+# ---------------------------------------------------------------------------
+# Input resolution
+# ---------------------------------------------------------------------------
+
+
+def _resolve_inputs(
+    inputs: dict[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    scene_index_data: dict[str, Any] | None = None
+    canonical_data: dict[str, Any] | None = None
+
+    for _key, payload in inputs.items():
+        if not isinstance(payload, dict):
+            continue
+        if "entries" in payload and "total_scenes" in payload:
+            scene_index_data = payload
+        elif "script_text" in payload:
+            canonical_data = payload
+
+    if not scene_index_data:
+        raise ValueError("scene_analysis_v1 requires scene_index input")
+    if not canonical_data:
+        raise ValueError("scene_analysis_v1 requires canonical_script input")
+    return scene_index_data, canonical_data
+
+
+def _extract_scene_texts(
+    script_text: str, entries: list[SceneIndexEntry]
+) -> dict[str, str]:
+    """Extract raw text for each scene from the canonical script using source spans."""
+    lines = script_text.splitlines()
+    result: dict[str, str] = {}
+    for entry in entries:
+        start = entry.source_span.start_line - 1
+        end = entry.source_span.end_line
+        result[entry.scene_id] = "\n".join(lines[start:end]).strip()
+    return result
+
+
+def _run_batch_analysis(
+    batches: list[list[SceneIndexEntry]],
+    scene_texts: dict[str, str],
+    work_model: str,
+    escalate_model: str,
+    max_retries: int,
+    skip_qa: bool,
+    qa_model: str,
+) -> tuple[dict[str, _SceneEnrichment], list[dict[str, Any]], int, float]:
     all_enrichments: dict[str, _SceneEnrichment] = {}
     all_costs: list[dict[str, Any]] = []
     total_qa_needs_review = 0
@@ -108,9 +210,15 @@ def run_module(
     start_time = time.time()
 
     for batch_idx, batch in enumerate(batches):
+        batch_words = _batch_word_count(batch, scene_texts)
         logger.info(
-            f"  Batch {batch_idx + 1}/{len(batches)}: "
-            f"scenes {batch[0].scene_id}–{batch[-1].scene_id}"
+            "  Batch %s/%s: scenes %s-%s (%s scenes, %s words)",
+            batch_idx + 1,
+            len(batches),
+            batch[0].scene_id,
+            batch[-1].scene_id,
+            len(batch),
+            batch_words,
         )
 
         batch_texts = {
@@ -130,47 +238,54 @@ def run_module(
         for enrichment in enrichments:
             all_enrichments[enrichment.scene_id] = enrichment
 
-        if not skip_qa:
-            qa_result, qa_cost = _qa_batch(
-                entries=batch,
-                enrichments=enrichments,
-                scene_texts=batch_texts,
-                model=qa_model,
-            )
-            all_costs.append(qa_cost)
-            if not qa_result.passed:
-                total_qa_needs_review += len(batch)
+        if skip_qa:
+            continue
 
-    duration = time.time() - start_time
-    logger.info(f"Scene analysis complete in {duration:.2f}s")
+        qa_result, qa_cost = _qa_batch(
+            entries=batch,
+            enrichments=enrichments,
+            scene_texts=batch_texts,
+            model=qa_model,
+        )
+        all_costs.append(qa_cost)
+        if not qa_result.passed:
+            total_qa_needs_review += len(batch)
 
-    # --- Build output artifacts ---
+    return (
+        all_enrichments,
+        all_costs,
+        total_qa_needs_review,
+        time.time() - start_time,
+    )
+
+
+def _build_scene_outputs(
+    entries: list[SceneIndexEntry],
+    scene_texts: dict[str, str],
+    enrichments: dict[str, _SceneEnrichment],
+    total_qa_needs_review: int,
+) -> tuple[list[dict[str, Any]], list[SceneIndexEntry]]:
     scene_artifacts: list[dict[str, Any]] = []
     updated_entries: list[SceneIndexEntry] = []
 
-    for entry in scene_index.entries:
-        enrichment = all_enrichments.get(entry.scene_id)
+    for entry in entries:
+        enrichment = enrichments.get(entry.scene_id)
         if not enrichment:
-            # No enrichment for this scene — pass through unchanged
             updated_entries.append(entry)
             continue
 
-        # Recover structural elements from canonical script so they carry
-        # forward into the enriched artifact version (elements live on the
-        # full Scene artifact, not on SceneIndexEntry).
+        analysis_failed = enrichment.tone_mood == "_analysis_failed"
+        if analysis_failed:
+            enrichment = enrichment.model_copy(update={"tone_mood": DEFAULT_TONE})
+
         scene_raw = scene_texts.get(entry.scene_id, "")
         elements, _chars = _extract_elements(scene_raw.splitlines())
         scene_data = _build_enriched_scene(entry, enrichment, elements)
         scene_payload = Scene.model_validate(scene_data).model_dump(mode="json")
 
-        analysis_failed = enrichment.tone_mood == "_analysis_failed"
-        if analysis_failed:
-            # Reset to neutral — the _analysis_failed sentinel is internal only
-            enrichment.tone_mood = DEFAULT_TONE
-
         has_review_issues = (
             analysis_failed
-            or (total_qa_needs_review > 0 and entry.scene_id in all_enrichments)
+            or (total_qa_needs_review > 0 and entry.scene_id in enrichments)
         )
 
         scene_artifacts.append(
@@ -219,111 +334,83 @@ def run_module(
             )
         )
 
-    # --- Build updated SceneIndex ---
-    qa_passed = len(scene_index.entries) - total_qa_needs_review
+    return scene_artifacts, updated_entries
+
+
+def _build_scene_index_artifact(
+    scene_count: int,
+    estimated_runtime_minutes: float,
+    updated_entries: list[SceneIndexEntry],
+    total_qa_needs_review: int,
+    batch_stats: dict[str, Any],
+) -> dict[str, Any]:
+    qa_passed = scene_count - total_qa_needs_review
     updated_index = SceneIndex.model_validate(
         {
-            "total_scenes": len(scene_index.entries),
+            "total_scenes": scene_count,
             "unique_locations": sorted(
                 {
-                    e.location
-                    for e in updated_entries
-                    if e.location and e.location != "UNKNOWN"
+                    entry.location
+                    for entry in updated_entries
+                    if entry.location and entry.location != "UNKNOWN"
                 }
             ),
             "unique_characters": sorted(
                 {
-                    char
-                    for e in updated_entries
-                    for char in e.characters_present
+                    character
+                    for entry in updated_entries
+                    for character in entry.characters_present
                 }
             ),
-            "estimated_runtime_minutes": scene_index.estimated_runtime_minutes,
+            "estimated_runtime_minutes": estimated_runtime_minutes,
             "scenes_passed_qa": qa_passed,
             "scenes_need_review": total_qa_needs_review,
-            "entries": [e.model_dump(mode="json") for e in updated_entries],
+            "entries": [entry.model_dump(mode="json") for entry in updated_entries],
         }
     ).model_dump(mode="json")
 
-    scene_artifacts.append(
-        {
-            "artifact_type": "scene_index",
-            "entity_id": "project",
-            "include_stage_lineage": True,
-            "data": updated_index,
-            "metadata": {
-                "intent": "Updated scene index with narrative analysis enrichment",
-                "rationale": "Tier 2 enrichment adds tone_mood and gap-fills to index",
-                "confidence": 0.90,
-                "source": "ai",
-                "schema_version": "1.0.0",
-                "health": (
-                    ArtifactHealth.NEEDS_REVIEW.value
-                    if total_qa_needs_review > 0
-                    else ArtifactHealth.VALID.value
-                ),
-                "annotations": {
-                    "discovery_tier": "llm_enriched",
-                    "batch_size": batch_size,
-                    "total_batches": len(batches),
-                },
+    return {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "include_stage_lineage": True,
+        "data": updated_index,
+        "metadata": {
+            "intent": "Updated scene index with narrative analysis enrichment",
+            "rationale": "Tier 2 enrichment adds tone_mood and gap-fills to index",
+            "confidence": 0.90,
+            "source": "ai",
+            "schema_version": "1.0.0",
+            "health": (
+                ArtifactHealth.NEEDS_REVIEW.value
+                if total_qa_needs_review > 0
+                else ArtifactHealth.VALID.value
+            ),
+            "annotations": {
+                "discovery_tier": "llm_enriched",
+                **batch_stats,
             },
-        }
+        },
+    }
+
+
+def _log_batch_plan(
+    scene_count: int,
+    batches: list[list[SceneIndexEntry]],
+    batch_stats: dict[str, Any],
+) -> None:
+    logger.info(
+        (
+            "Scene analysis: %s scenes in %s batches "
+            "(min=%s, max=%s, word_budget=%s, largest=%s scenes/%s words)"
+        ),
+        scene_count,
+        len(batches),
+        batch_stats["configured_batch_size"],
+        batch_stats["configured_max_batch_size"],
+        batch_stats["configured_max_batch_words"] or "off",
+        batch_stats["largest_batch_size"],
+        batch_stats["largest_batch_words"],
     )
-
-    return {"artifacts": scene_artifacts, "cost": _sum_costs(all_costs)}
-
-
-# ---------------------------------------------------------------------------
-# Input resolution
-# ---------------------------------------------------------------------------
-
-
-def _resolve_inputs(
-    inputs: dict[str, Any],
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    scene_index_data: dict[str, Any] | None = None
-    canonical_data: dict[str, Any] | None = None
-
-    for _key, payload in inputs.items():
-        if not isinstance(payload, dict):
-            continue
-        if "entries" in payload and "total_scenes" in payload:
-            scene_index_data = payload
-        elif "script_text" in payload:
-            canonical_data = payload
-
-    if not scene_index_data:
-        raise ValueError("scene_analysis_v1 requires scene_index input")
-    if not canonical_data:
-        raise ValueError("scene_analysis_v1 requires canonical_script input")
-    return scene_index_data, canonical_data
-
-
-def _extract_scene_texts(
-    script_text: str, entries: list[SceneIndexEntry]
-) -> dict[str, str]:
-    """Extract raw text for each scene from the canonical script using source spans."""
-    lines = script_text.splitlines()
-    result: dict[str, str] = {}
-    for entry in entries:
-        start = entry.source_span.start_line - 1
-        end = entry.source_span.end_line
-        result[entry.scene_id] = "\n".join(lines[start:end]).strip()
-    return result
-
-
-# ---------------------------------------------------------------------------
-# Batching
-# ---------------------------------------------------------------------------
-
-
-def _create_batches(
-    entries: list[SceneIndexEntry], batch_size: int
-) -> list[list[SceneIndexEntry]]:
-    return [
-        entries[i : i + batch_size] for i in range(0, len(entries), batch_size)
-    ]
 
 
 # ---------------------------------------------------------------------------
@@ -341,43 +428,7 @@ def _analyze_batch(
     if work_model == "mock":
         return _mock_enrichments(entries), _empty_cost(work_model)
 
-    scene_summaries = []
-    for entry in entries:
-        text = scene_texts.get(entry.scene_id, "(text unavailable)")
-        scene_summaries.append(
-            f"--- SCENE {entry.scene_id} ({entry.heading}) ---\n{text}"
-        )
-
-    prompt = (
-        "You are analyzing a batch of screenplay scenes for narrative structure.\n"
-        "Base all analysis strictly on the scene text provided. Do not infer "
-        "narrative beats, tone, or character motivations from general film "
-        "knowledge — only from what is written in these specific scenes.\n"
-        "You MUST return an entry for every scene in the batch — no scenes "
-        "may be skipped or omitted. Verify your output count matches the "
-        "input count before responding.\n\n"
-        "For each scene, identify:\n"
-        "1. **narrative_beats**: Key story beats (conflict, revelation, transition, "
-        "resolution, setup, escalation, climax, denouement). Each beat has a "
-        "beat_type, description, approximate_location (beginning/middle/end), "
-        "and confidence (0-1).\n"
-        "2. **tone_mood**: The dominant emotional tone of the scene "
-        "(e.g., 'tense', 'melancholic', 'darkly comedic').\n"
-        "3. **tone_shifts**: Any tonal transitions within the scene.\n"
-        "4. **Gap-fills**: If location is 'UNKNOWN', time_of_day is 'UNSPECIFIED', "
-        "or characters_present is empty, infer the correct values from context. "
-        "Set these fields to null if the original values are already correct.\n\n"
-        "Return JSON matching the schema exactly, with one entry per scene in "
-        "the same order.\n\n"
-        "Current scene metadata:\n"
-    )
-    for entry in entries:
-        prompt += (
-            f"  {entry.scene_id}: location={entry.location}, "
-            f"time_of_day={entry.time_of_day}, "
-            f"characters={entry.characters_present}\n"
-        )
-    prompt += "\nScene texts:\n\n" + "\n\n".join(scene_summaries) + "\n"
+    prompt = _build_macro_analysis_prompt(entries, scene_texts)
 
     last_error: Exception | None = None
     for attempt in range(max_retries + 1):

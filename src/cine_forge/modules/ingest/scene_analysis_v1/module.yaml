@@ -42,4 +42,14 @@ parameters:
     type: integer
     required: false
     default: 5
-    description: "Number of scenes per Macro-Analysis LLM call."
+    description: "Minimum number of scenes per Macro-Analysis LLM call."
+  max_batch_size:
+    type: integer
+    required: false
+    default: 0
+    description: "Optional upper bound for adaptive Macro-Analysis batches. `0` keeps fixed-size batching."
+  max_batch_words:
+    type: integer
+    required: false
+    default: 0
+    description: "Optional approximate word budget per batch. `0` disables the word-budget guard."

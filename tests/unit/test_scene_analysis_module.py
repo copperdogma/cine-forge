@@ -4,9 +4,11 @@ from typing import Any
 
 import pytest
 
+from cine_forge.modules.ingest.scene_analysis_v1.batching import (
+    create_batches as _create_batches,
+)
 from cine_forge.modules.ingest.scene_analysis_v1.main import (
     _build_enriched_scene,
-    _create_batches,
     _extract_scene_texts,
     _mock_enrichments,
     _resolve_inputs,

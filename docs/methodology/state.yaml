@@ -239,8 +239,7 @@
     "sequencing_bias": [
       {
         "target": "pipeline-throughput-efficiency",
-        "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. The honest detector now exists, so follow-up optimization should route into the measured hotspot stories rather than reopen the detector slice.",
-        "story_refs": ["159", "160", "161"]
+        "reason": "Important long-term requirement: keep screenplay-throughput and per-stage efficiency measurement visible without displacing the current spec:4/spec:5 focus. The honest detector and its first hotspot stories have now landed, so future optimization should keep using measured hotspot truth instead of reopening the detector slice or biasing toward already-closed follow-up stories."
       },
       {
         "target": "ui-product-truth-scouting",
@@ -415,18 +414,24 @@
         "manual_priority": "normal"
       },
       "ingest_and_world_building": {
-        "last_audited_at": "2026-03-13",
-        "recent_story_refs": ["129", "135", "142"],
-        "stories_since_audit": 1,
-        "open_findings": [],
-        "manual_priority": "normal"
+        "last_audited_at": "2026-04-11",
+        "recent_story_refs": ["159", "160", "161", "162"],
+        "stories_since_audit": 0,
+        "open_findings": [
+          "Scene analysis still carries a broad ownership seam: `scene_analysis_v1/main.py` centralizes input resolution, scene-text extraction, batching, prompt construction, retry posture, QA, and artifact merge in one oversized module even after Story 161 reduced the long-form wait cliff."
+        ],
+        "manual_priority": "normal",
+        "last_result": "follow_up_story",
+        "last_summary": "Stories 159, 160, 161, and 162 cleared the concrete long-form runtime blockers in this domain and reduced the scene-analysis wait cliff, but they did not simplify the oversized scene-analysis ownership seam. `scene_analysis_v1/main.py` still owns batching, prompt assembly, LLM retry/escalation, QA, and artifact merge in a single file, so keep this as an open simplification finding rather than reopening the just-landed throughput stories."
       },
       "api_service_and_operator_console": {
-        "last_audited_at": "2026-04-03",
-        "recent_story_refs": ["126", "127", "139", "142"],
-        "stories_since_audit": 1,
+        "last_audited_at": "2026-04-11",
+        "recent_story_refs": ["148", "156", "157", "158"],
+        "stories_since_audit": 0,
         "open_findings": [],
-        "manual_priority": "normal"
+        "manual_priority": "normal",
+        "last_result": "clean",
+        "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
       },
       "creative_direction_and_chat": {
         "last_audited_at": "2026-03-31",

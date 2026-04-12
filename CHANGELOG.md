@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-11-06] — Reduce long-form scene-analysis wait cliff (Story 161)
+
+### Added
+- Added a dedicated `scene_analysis_v1` batching helper and focused long-form batch-planning regression coverage
+
+### Changed
+- Changed long-form scene analysis to use adaptive `5-10` scene batching with a `2500`-word guard and leaner macro-analysis prompt assembly
+- Changed the shipped world-building recipe, Story 155 follow-up truth, and the eval registry to record the new `big_fish_long` throughput result and remaining non-runtime-blocking continuity drift
+
+### Fixed
+- Fixed the scene-analysis fallback path leaking the internal `_analysis_failed` sentinel into persisted enriched-scene payloads
+
 ## [2026-04-11-04] — Add loop-verify coordination skill
 
 ### Added

@@ -1821,6 +1821,24 @@ evals:
         git_sha: "f9dc74d"
         result_file: benchmarks/results/full-script-throughput-story-162-big-fish-2026-04-11.json
         note: "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead completed in `1748.4813s` while continuously emitting `continuity_state` `artifact_saved` events. Remaining long-form issue changed shape: `10` scenes (`026`, `048`, `064`, `093`, `171`, `177`, `183`, `185`, `191`, `192`) exhausted the new bounded scene budget with `LLM output truncated due to max token limit`, producing `77` `needs_review` fallback states. Classification: the old continuity stall is resolved, so the long-form continuity problem is now **non-runtime-blocking** quality/output-budget drift rather than a runtime blocker."
+      - model: "Story 161 Targeted Big Fish Rerun (Analyze Scenes faster, continuity still dominant)"
+        metrics:
+          overall: 1.0
+          successful_case_ratio: 1.0
+          long_case_total_elapsed_ms: 2808707
+          long_case_analyze_scenes_elapsed_ms: 810038
+          long_case_continuity_completed: 1.0
+          long_case_continuity_elapsed_ms: 1723375
+          long_case_continuity_fallback_scene_count: 7
+          long_case_continuity_needs_review_state_count: 52
+          top_runtime_hotspot_current_duration_ms_per_1k_words: 66291.303
+          top_output_hotspot_current_output_tokens_per_1k_words: 8374.62
+        latency_ms: 2808707
+        cost_usd: 3.24163222
+        measured: 2026-04-12
+        git_sha: "246e1eb"
+        result_file: benchmarks/results/full-script-throughput-story-161-big-fish-2026-04-12.json
+        note: "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fell from `60039 -> 53919` versus the original baseline. Downstream truth stayed healthy: `character_bible` finished in `147.496s`, `location_bible` in `106.126s`, and `continuity_tracking` continued to stream artifacts instead of stalling, then completed in `1723.375s`. Remaining long-form issue is still **non-runtime-blocking** quality/output-budget drift in continuity: `7` scenes (`048`, `093`, `169`, `175`, `183`, `189`, `190`) produced `52` `needs_review` continuity states after bounded truncation fallbacks. Classification: Story 161 materially shrank the scene-analysis wait cliff without breaking downstream world-building, but continuity remains the dominant long-form runtime/output hotspot."
 
     attempts: []
 
