@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { Sparkles, Timer, TriangleAlert, Wand2 } from 'lucide-react'
+import { CreativeBriefPreviewCard } from '@/components/intent/CreativeBriefPreviewCard'
 import {
   formatConsistencyStrategy,
   formatLatencyMs,
@@ -11,6 +12,7 @@ import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
 import { SelectionChatButton } from '@/components/SelectionChatButton'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import type { VisualCreativeBrief } from '@/lib/api/intent-mood'
 import {
   asArray,
   asNumber,
@@ -56,6 +58,7 @@ type RenderPromptView = {
   resolvedInputs: RenderInputUsageView[]
   providerParams: Record<string, unknown>
   previewProvenance: ReturnType<typeof parsePreviewProvenance>
+  creativeBrief: VisualCreativeBrief | null
 }
 
 function parseSection(value: unknown, index: number): RenderPromptSectionView | null {
@@ -69,6 +72,44 @@ function parseSection(value: unknown, index: number): RenderPromptSectionView | 
     body,
     sourceRoleId: asString(record.source_role_id),
     sourceArtifactTypes: asStringArray(record.source_artifact_types),
+  }
+}
+
+function parseCreativeBrief(value: unknown): VisualCreativeBrief | null {
+  const record = asRecord(value)
+  if (!record) return null
+  const activeProjectReferences = asArray(record.active_project_references)
+    .map(item => {
+      const reference = asRecord(item)
+      if (!reference) return null
+      const assetId = asString(reference.asset_id)
+      const filename = asString(reference.filename)
+      const purpose = asString(reference.purpose)
+      const lockStatus = asString(reference.lock_status)
+      const transparencyNote = asString(reference.transparency_note)
+      if (!assetId || !filename || !purpose || !lockStatus || !transparencyNote) return null
+      return {
+        asset_id: assetId,
+        filename,
+        purpose,
+        lock_status: lockStatus as VisualCreativeBrief['active_project_references'][number]['lock_status'],
+        transparency_note: transparencyNote,
+      }
+    })
+    .filter((reference): reference is VisualCreativeBrief['active_project_references'][number] => reference !== null)
+
+  return {
+    visual_medium: asString(record.visual_medium),
+    mood_descriptors: asStringArray(record.mood_descriptors),
+    reference_films: asStringArray(record.reference_films),
+    filmmaker_anchors: asStringArray(record.filmmaker_anchors),
+    style_preset_id: asString(record.style_preset_id),
+    natural_language_intent: asString(record.natural_language_intent),
+    look_notes: asString(record.look_notes),
+    active_project_references: activeProjectReferences,
+    summary_lines: asStringArray(record.summary_lines),
+    operator_preview: asString(record.operator_preview) ?? '',
+    sources_used: asStringArray(record.sources_used),
   }
 }
 
@@ -99,6 +140,7 @@ function parseRenderPrompt(data: Record<string, unknown>): RenderPromptView {
       .filter((input): input is RenderInputUsageView => input !== null),
     providerParams,
     previewProvenance: parsePreviewProvenance(data.preview_provenance),
+    creativeBrief: parseCreativeBrief(data.creative_brief_preview),
   }
 }
 
@@ -320,6 +362,8 @@ export function RenderPromptViewer({ data }: RenderPromptViewerProps) {
               )}
             </div>
           </div>
+
+          {prompt.creativeBrief && <CreativeBriefPreviewCard brief={prompt.creativeBrief} />}
 
           {Object.keys(prompt.providerParams).length > 0 && (
             <div className="rounded-lg border border-border bg-card/60 px-4 py-3">

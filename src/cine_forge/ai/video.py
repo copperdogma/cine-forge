@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import base64
+import io
 import json
 import os
 import time
@@ -13,6 +14,8 @@ import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
+
+from PIL import Image, ImageOps
 
 from cine_forge.schemas import EnginePack
 
@@ -127,12 +130,16 @@ def _generate_video_openai(
     ]
     files: list[tuple[str, str, bytes, str]] = []
     if request.first_frame is not None:
+        filename, file_bytes, media_type = _prepare_openai_input_reference(
+            request.first_frame,
+            request.resolution,
+        )
         files.append(
             (
                 "input_reference",
-                request.first_frame.path.name,
-                request.first_frame.path.read_bytes(),
-                request.first_frame.media_type,
+                filename,
+                file_bytes,
+                media_type,
             )
         )
 
@@ -185,6 +192,40 @@ def _generate_video_openai(
         request_id=video_id,
         provider_job_id=video_id,
     )
+
+
+def _prepare_openai_input_reference(
+    reference: VideoReferenceInput,
+    resolution: str,
+) -> tuple[str, bytes, str]:
+    target_size = _openai_resolution_size(resolution)
+    original_bytes = reference.path.read_bytes()
+    if target_size is None:
+        return reference.path.name, original_bytes, reference.media_type
+
+    with Image.open(io.BytesIO(original_bytes)) as image:
+        if image.size == target_size:
+            return reference.path.name, original_bytes, reference.media_type
+
+        fitted = ImageOps.fit(
+            image.convert("RGB"),
+            target_size,
+            method=Image.Resampling.LANCZOS,
+            centering=(0.5, 0.5),
+        )
+        buffer = io.BytesIO()
+        fitted.save(buffer, format="PNG")
+        return f"{reference.path.stem}_openai_input.png", buffer.getvalue(), "image/png"
+
+
+def _openai_resolution_size(resolution: str) -> tuple[int, int] | None:
+    if "x" not in resolution:
+        return None
+    width_text, height_text = resolution.lower().split("x", 1)
+    try:
+        return int(width_text), int(height_text)
+    except ValueError:
+        return None
 
 
 def _generate_video_google(

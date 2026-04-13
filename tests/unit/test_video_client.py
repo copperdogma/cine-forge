@@ -1,13 +1,19 @@
 from __future__ import annotations
 
+import io
+from pathlib import Path
+
 import pytest
+from PIL import Image
 
 from cine_forge.ai.video import (
     VideoGenerationError,
     VideoGenerationRequest,
     VideoGenerationResult,
+    VideoReferenceInput,
     _generate_video_google,
     _generate_video_xai,
+    _prepare_openai_input_reference,
     generate_video,
 )
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
@@ -67,6 +73,41 @@ def test_generate_video_stops_on_nonretryable_failures(monkeypatch: pytest.Monke
         generate_video(request=request, engine_pack=pack)
 
     assert state["calls"] == 1
+
+
+@pytest.mark.unit
+def test_prepare_openai_input_reference_fits_image_to_requested_resolution(tmp_path: Path) -> None:
+    image_path = tmp_path / "operator-ref.png"
+    Image.new("RGB", (96, 96), color=(40, 90, 180)).save(image_path, format="PNG")
+    reference = VideoReferenceInput(
+        path=image_path,
+        media_type="image/png",
+        usage="input_reference",
+    )
+
+    filename, file_bytes, media_type = _prepare_openai_input_reference(reference, "1280x720")
+
+    assert filename == "operator-ref_openai_input.png"
+    assert media_type == "image/png"
+    with Image.open(io.BytesIO(file_bytes)) as image:
+        assert image.size == (1280, 720)
+
+
+@pytest.mark.unit
+def test_prepare_openai_input_reference_keeps_matching_image_bytes(tmp_path: Path) -> None:
+    image_path = tmp_path / "matching-ref.png"
+    Image.new("RGB", (1280, 720), color=(12, 34, 56)).save(image_path, format="PNG")
+    reference = VideoReferenceInput(
+        path=image_path,
+        media_type="image/png",
+        usage="input_reference",
+    )
+
+    filename, file_bytes, media_type = _prepare_openai_input_reference(reference, "1280x720")
+
+    assert filename == "matching-ref.png"
+    assert media_type == "image/png"
+    assert file_bytes == image_path.read_bytes()
 
 
 @pytest.mark.unit

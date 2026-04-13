@@ -187,10 +187,11 @@ export function GeneratedVideoPanel({
               </div>
               <CardDescription className="max-w-3xl leading-relaxed">
                 Render compiles the current shot plan, concern-group direction, keyframes, and
-                approved references into one provider-ready prompt, then generates a scene video.
-                Stay depth-first on this scene when you want to test one moment quickly, or switch
-                to all scenes when you want a broader pass. This tab always resolves back to the
-                latest output for {sceneHeading}.
+                available references into one provider-ready prompt, then records which references
+                became direct provider inputs versus prompt-only context before generating a scene
+                video. Stay depth-first on this scene when you want to test one moment quickly, or
+                switch to all scenes when you want a broader pass. This tab always resolves back to
+                the latest output for {sceneHeading}.
               </CardDescription>
             </div>
 
@@ -334,8 +335,9 @@ export function GeneratedVideoPanel({
               <h3 className="text-lg font-semibold">No scene render for this scene yet</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Render compiles the provider-ready prompt, stores it for audit, and generates the
-                scene video for {configuredScopeTarget}. Use the scope controls above to widen or
-                narrow the run.
+                scene video for {configuredScopeTarget}. The resulting prompt and video artifacts
+                keep the resolved reference usage visible so provider-input demotions stay honest.
+                Use the scope controls above to widen or narrow the run.
               </p>
             </div>
             <Button onClick={handleStartRender} disabled={!canStartRender}>

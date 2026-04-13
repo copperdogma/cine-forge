@@ -170,6 +170,15 @@ def section_metadata(section_id: str) -> tuple[str | None, list[str]]:
     return role if isinstance(role, str) else None, list(artifact_types)
 
 
+def section_title(section_id: str) -> str:
+    """Return the canonical display title for a known prompt section id."""
+    spec = _CATEGORY_SPECS.get(section_id, {})
+    title = spec.get("title")
+    if isinstance(title, str) and title.strip():
+        return title
+    return section_id.replace("_", " ").title()
+
+
 def known_prompt_categories() -> set[str]:
     """Return the canonical prompt category ids used by the render adapter."""
     return set(_CATEGORY_SPECS)

@@ -58,6 +58,7 @@ def seed_render_project(
     include_keyframe: bool = True,
     include_scene_image: bool = True,
     include_scene_audio: bool = False,
+    include_project_taste_refs: bool = False,
 ) -> dict[str, Any]:
     seeded = seed_storyboard_project(tmp_path, scene_count=1)
     project_dir = seeded["project_dir"]
@@ -128,6 +129,25 @@ def seed_render_project(
             lock_status="unlocked",
             content_type="image/jpeg",
         )
+        if include_project_taste_refs:
+            service.inject_asset(
+                target_kind="project",
+                target_id="project",
+                purpose="mood_board",
+                filename="mood_board.jpg",
+                content=(project_dir / inject_image_path).read_bytes(),
+                lock_status="soft_locked",
+                content_type="image/jpeg",
+            )
+            service.inject_asset(
+                target_kind="project",
+                target_id="project",
+                purpose="style_reference",
+                filename="style_reference.jpg",
+                content=(project_dir / inject_image_path).read_bytes(),
+                lock_status="soft_locked",
+                content_type="image/jpeg",
+            )
     if include_scene_audio:
         service.inject_asset(
             target_kind="scene",

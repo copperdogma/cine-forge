@@ -14,7 +14,9 @@ from cine_forge.schemas import (
     GeneratedVideoArtifact,
     TrackManifest,
 )
+from cine_forge.services import InjectedAssetService
 from tests.render_fixtures import seed_render_project
+from tests.storyboard_fixtures import reference_raster_bytes
 
 
 @pytest.mark.unit
@@ -43,7 +45,12 @@ def test_run_module_generates_prompt_video_and_track_entries(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
+    seeded = seed_render_project(
+        tmp_path,
+        include_keyframe=True,
+        include_scene_image=True,
+        include_project_taste_refs=True,
+    )
     captured: dict[str, object] = {}
 
     def _fake_call_llm(**kwargs):
@@ -213,6 +220,23 @@ def test_run_module_generates_prompt_video_and_track_entries(
     assert prompt_artifact.target_provider == "openai"
     assert prompt_artifact.completeness.missing_categories == []
     assert prompt_artifact.creative_brief_preview is not None
+    assert {
+        (reference.filename, reference.purpose)
+        for reference in prompt_artifact.creative_brief_preview.active_project_references
+    } == {
+        ("mood_board.jpg", "mood_board"),
+        ("style_reference.jpg", "style_reference"),
+    }
+    assert {
+        item.label
+        for item in prompt_artifact.resolved_inputs
+        if item.kind == "character_injected_image"
+    } == {"Character visual reference: mara"}
+    assert {
+        item.label
+        for item in prompt_artifact.resolved_inputs
+        if item.kind == "location_injected_image"
+    } == {"Location visual reference: LAB"}
     assert video_output["exclude_upstream_lineage_types"] == ["track_manifest"]
     assert any(item.used_as == "input_reference" for item in prompt_artifact.resolved_inputs)
     assert generated_video.prompt_ref.artifact_type == "render_prompt"
@@ -342,6 +366,110 @@ def test_run_module_allows_advisory_missing_prompt_inputs(
     assert prompt_artifact.completeness.missing_categories == (
         prompt_artifact.completeness.advisory_missing_categories
     )
+
+
+@pytest.mark.unit
+def test_run_module_synthesizes_required_character_state_when_compiler_omits_it(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=False, include_scene_image=True)
+
+    def _fake_call_llm(**kwargs):
+        schema = kwargs["response_schema"]
+        return (
+            schema.model_validate(
+                {
+                    "prompt_text": (
+                        "Render the lab confrontation as a measured push anchored to the shot "
+                        "plan and the approved reference stack."
+                    ),
+                    "sections": [
+                        {
+                            "section_id": "shot_definition",
+                            "title": "Shot Definition",
+                            "body": "Preserve the planned slow push and room geometry.",
+                            "source_artifact_types": ["shot_plan"],
+                        },
+                        {
+                            "section_id": "location_bible_state",
+                            "title": "Location State",
+                            "body": "The lab is steel-blue, wet, and crowded with monitor banks.",
+                            "source_artifact_types": ["location_bible", "bible_manifest"],
+                        },
+                        {
+                            "section_id": "injected_assets",
+                            "title": "Injected Assets",
+                            "body": "Use the scene reference image as a secondary cue.",
+                            "source_artifact_types": ["injected_asset_manifest"],
+                        },
+                    ],
+                    "covered_categories": [
+                        "shot_definition",
+                        "location_bible_state",
+                        "injected_assets",
+                    ],
+                    "missing_inputs": ["character_bible_state"],
+                    "operator_notes": [
+                        "Compiler omitted one required world-state section."
+                    ],
+                }
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 160,
+                "output_tokens": 110,
+                "estimated_cost_usd": 0.007,
+                "latency_seconds": 0.5,
+                "request_id": "compile-fallback-001",
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
+        _fake_call_llm,
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: VideoGenerationResult(
+            video_bytes=b"fake-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="video-fallback-001",
+            provider_job_id="job-fallback-001",
+        ),
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "engine_pack_id": "openai_sora2",
+            "compiler_model": "gpt-5.4-mini",
+            "duration_seconds": 8,
+        },
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    )
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+
+    assert prompt_artifact.completeness.blocking_missing_categories == []
+    assert "character_bible_state" in prompt_artifact.completeness.included_categories
+    assert "character_bible_state" not in prompt_artifact.completeness.missing_categories
+    assert any(
+        note.startswith("Adapter synthesized fallback sections for:")
+        for note in prompt_artifact.completeness.notes
+    )
+    synthesized_section = next(
+        section
+        for section in prompt_artifact.sections
+        if section.section_id == "character_bible_state"
+    )
+    assert "MARA:" in synthesized_section.body
 
 
 @pytest.mark.unit
@@ -499,3 +627,161 @@ def test_run_module_rejects_hard_locked_audio_for_non_upload_pack(
             params={"engine_pack_id": "openai_sora2", "duration_seconds": 8},
             context={"project_dir": str(seeded["project_dir"])},
         )
+
+
+@pytest.mark.unit
+def test_run_module_prefers_soft_locked_project_reference_for_openai_input_reference(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=False, include_scene_image=False)
+    bibles_dir = seeded["project_dir"] / "artifacts" / "bibles"
+    if bibles_dir.exists():
+        shutil.rmtree(bibles_dir)
+    seeded["inputs"]["character_bible"] = []
+    seeded["inputs"]["location_bible"] = []
+
+    service = InjectedAssetService(seeded["project_dir"])
+    service.inject_asset(
+        target_kind="project",
+        target_id="project",
+        purpose="reference_image",
+        filename="aaa_unlocked.jpg",
+        content=reference_raster_bytes("Unlocked", accent=(148, 163, 184)),
+        lock_status="unlocked",
+        content_type="image/jpeg",
+    )
+    service.inject_asset(
+        target_kind="project",
+        target_id="project",
+        purpose="mood_board",
+        filename="zzz_soft_locked.jpg",
+        content=reference_raster_bytes("Soft Locked", accent=(244, 114, 182)),
+        lock_status="soft_locked",
+        content_type="image/jpeg",
+    )
+    manifest, _ = service.load_manifest(target_kind="project", target_id="project")
+    assert manifest is not None
+    seeded["inputs"]["injected_asset_manifest"] = [manifest.model_dump(mode="json")]
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: VideoGenerationResult(
+            video_bytes=b"fake-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="video-priority-001",
+            provider_job_id="job-priority-001",
+        ),
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={"engine_pack_id": "openai_sora2", "compiler_model": "mock", "duration_seconds": 8},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    )
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+    input_reference = next(
+        item for item in prompt_artifact.resolved_inputs if item.used_as == "input_reference"
+    )
+    demoted = {
+        item.label: item.used_as
+        for item in prompt_artifact.resolved_inputs
+        if item.label in {"Project: aaa_unlocked.jpg", "Project: zzz_soft_locked.jpg"}
+    }
+
+    assert input_reference.label == "Project: zzz_soft_locked.jpg"
+    assert demoted["Project: aaa_unlocked.jpg"] == "prompt_context"
+
+
+@pytest.mark.unit
+def test_run_module_rejects_hard_locked_image_when_pack_cannot_honor_it(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=False)
+    service = InjectedAssetService(seeded["project_dir"])
+    service.inject_asset(
+        target_kind="project",
+        target_id="project",
+        purpose="style_reference",
+        filename="locked_style.jpg",
+        content=reference_raster_bytes("Locked Style", accent=(250, 204, 21)),
+        lock_status="hard_locked",
+        content_type="image/jpeg",
+    )
+    manifest, _ = service.load_manifest(target_kind="project", target_id="project")
+    assert manifest is not None
+    seeded["inputs"]["injected_asset_manifest"] = [manifest.model_dump(mode="json")]
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
+        lambda **_: pytest.fail(
+            "prompt compilation should not start when hard-locked images cannot fit"
+        ),
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda **_: pytest.fail("video generation should not start when image constraints fail"),
+    )
+
+    with pytest.raises(ValueError, match="cannot satisfy required image constraints"):
+        run_module(
+            inputs=seeded["inputs"],
+            params={"engine_pack_id": "openai_sora2", "duration_seconds": 8},
+            context={"project_dir": str(seeded["project_dir"])},
+        )
+
+
+@pytest.mark.unit
+def test_run_module_uses_raster_design_refs_and_creative_brief_project_refs_for_google_pack(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(
+        tmp_path,
+        include_keyframe=True,
+        include_scene_image=True,
+        include_project_taste_refs=True,
+    )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: VideoGenerationResult(
+            video_bytes=b"fake-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="video-google-001",
+            provider_job_id="job-google-001",
+        ),
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={"engine_pack_id": "google_veo31", "compiler_model": "mock", "duration_seconds": 8},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    )
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+    resolved = {item.label: item.used_as for item in prompt_artifact.resolved_inputs}
+
+    assert prompt_artifact.creative_brief_preview is not None
+    assert {
+        (reference.filename, reference.purpose)
+        for reference in prompt_artifact.creative_brief_preview.active_project_references
+    } == {
+        ("mood_board.jpg", "mood_board"),
+        ("style_reference.jpg", "style_reference"),
+    }
+    assert resolved["Character visual reference: mara"] == "reference_image"
+    assert resolved["Location visual reference: LAB"] == "reference_image"

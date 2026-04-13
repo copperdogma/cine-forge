@@ -349,3 +349,73 @@ def test_render_recipe_allows_warning_level_prompt_gaps(
         "rhythm_and_flow",
         "sound_and_music",
     ]
+
+
+@pytest.mark.integration
+def test_render_recipe_persists_reference_conditioned_truth_for_google_pack(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_render_project(
+        tmp_path,
+        include_keyframe=True,
+        include_scene_image=True,
+        include_project_taste_refs=True,
+    )
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+    clip_bytes = (
+        workspace_root
+        / "benchmarks"
+        / "video_understanding"
+        / "dialogue_confession_push_in"
+        / "clip.mp4"
+    ).read_bytes()
+    monkeypatch.setattr(
+        "cine_forge.ai.video.generate_video",
+        lambda *, request, engine_pack: VideoGenerationResult(
+            video_bytes=clip_bytes,
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id="video-reference-conditioned-001",
+            provider_job_id="job-reference-conditioned-001",
+        ),
+    )
+
+    run_state = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
+        run_id="integration-render-reference-conditioned",
+        force=True,
+        start_from="render",
+        runtime_params={
+            "engine_pack_id": "google_veo31",
+            "compiler_model": "mock",
+            "duration_seconds": 8,
+        },
+    )
+
+    assert run_state["stages"]["render"]["status"] == "done"
+
+    refs = [
+        ArtifactRef.model_validate(item) for item in run_state["stages"]["render"]["artifact_refs"]
+    ]
+    render_prompt_ref = next(ref for ref in refs if ref.artifact_type == "render_prompt")
+    generated_video_ref = next(ref for ref in refs if ref.artifact_type == "generated_video")
+
+    render_prompt = engine.store.load_artifact(render_prompt_ref).data
+    generated_video = GeneratedVideoArtifact.model_validate(
+        engine.store.load_artifact(generated_video_ref).data
+    )
+    resolved = {item["label"]: item["used_as"] for item in render_prompt["resolved_inputs"]}
+
+    assert render_prompt["creative_brief_preview"] is not None
+    assert {
+        (reference["filename"], reference["purpose"])
+        for reference in render_prompt["creative_brief_preview"]["active_project_references"]
+    } == {
+        ("mood_board.jpg", "mood_board"),
+        ("style_reference.jpg", "style_reference"),
+    }
+    assert resolved["Character visual reference: mara"] == "reference_image"
+    assert resolved["Location visual reference: LAB"] == "reference_image"
+    assert generated_video.prompt_ref.path == render_prompt_ref.path

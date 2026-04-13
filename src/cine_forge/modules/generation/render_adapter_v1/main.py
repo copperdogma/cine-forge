@@ -21,6 +21,7 @@ from cine_forge.modules.generation.render_adapter_v1.prompting import (
     known_prompt_categories,
     prompt_sources_from_sections,
     section_metadata,
+    section_title,
 )
 from cine_forge.modules.generation.render_adapter_v1.support import (
     anticipated_entity_ref,
@@ -274,6 +275,12 @@ def _render_scene(
         sections, completeness, prompt_sources = _finalize_prompt_sections(
             prompt_draft=prompt_draft,
             required_categories=required_categories,
+            context_blocks=_context_blocks(
+                scene=scene,
+                plan=plan,
+                source_maps=source_maps,
+                resolved_inputs=resolved_inputs,
+            ),
             resolved_inputs=resolved_inputs,
             extra_source_artifact_types=creative_brief_source_artifact_types(
                 source_maps["creative_brief"]
@@ -788,7 +795,10 @@ def _shape_generation_request(
     allow_prompt_only_required_media: bool = False,
 ) -> tuple[VideoGenerationRequest, list[RenderResolvedInput], list[str]]:
     updated = [item.model_copy(deep=True) for item in resolved_inputs]
-    image_inputs = [item for item in updated if item.kind in _IMAGE_KINDS and item.relative_path]
+    image_inputs = sorted(
+        [item for item in updated if item.kind in _IMAGE_KINDS and item.relative_path],
+        key=_image_input_priority_key,
+    )
     audio_inputs = [item for item in updated if item.kind in _AUDIO_KINDS]
     notes: list[str] = []
 
@@ -858,9 +868,7 @@ def _shape_generation_request(
 
     reference_images: list[VideoReferenceInput] = []
     required_overflow: list[str] = []
-    for item in sorted(
-        image_inputs, key=lambda candidate: (not candidate.required, candidate.label)
-    ):
+    for item in image_inputs:
         if item.used_as != "prompt_context":
             continue
         if remaining_capacity > 0:
@@ -1206,6 +1214,7 @@ def _finalize_prompt_sections(
     *,
     prompt_draft: Any,
     required_categories: list[str],
+    context_blocks: dict[str, str],
     resolved_inputs: list[RenderResolvedInput],
     extra_source_artifact_types: list[str],
     notes: list[str],
@@ -1237,10 +1246,33 @@ def _finalize_prompt_sections(
         if isinstance(item, str) and item.strip()
     }
     known_categories = known_prompt_categories()
+    synthesized_categories: list[str] = []
+    for category in sorted(required - covered):
+        content = context_blocks.get(category, "").strip()
+        if not content or category not in known_categories:
+            continue
+        role, artifact_types = section_metadata(category)
+        sections.append(
+            RenderPromptSection(
+                section_id=category,
+                title=section_title(category),
+                body=content,
+                source_role_id=role,
+                source_artifact_types=artifact_types,
+            )
+        )
+        covered.add(category)
+        synthesized_categories.append(category)
+
     blocking_missing = {category for category in required if category not in covered}
     advisory_missing: set[str] = set()
     for item in reported_missing:
-        if item not in known_categories or item in required:
+        if item not in known_categories:
+            blocking_missing.add(item)
+            continue
+        if item in synthesized_categories:
+            continue
+        if item in required:
             blocking_missing.add(item)
             continue
         advisory_missing.add(item)
@@ -1249,12 +1281,19 @@ def _finalize_prompt_sections(
     for artifact_type in extra_source_artifact_types:
         if artifact_type not in prompt_sources:
             prompt_sources.append(artifact_type)
+    synthesis_notes = list(notes)
+    if synthesized_categories:
+        synthesis_notes.append(
+            "Adapter synthesized fallback sections for: "
+            + ", ".join(synthesized_categories)
+            + "."
+        )
     completeness = RenderCompletenessCheck(
         included_categories=sorted(covered),
         missing_categories=sorted(missing),
         blocking_missing_categories=sorted(blocking_missing),
         advisory_missing_categories=sorted(advisory_missing),
-        notes=[*prompt_draft.operator_notes, *notes],
+        notes=[*prompt_draft.operator_notes, *synthesis_notes],
     )
     return sections, completeness, prompt_sources
 
@@ -1533,6 +1572,41 @@ def _manifest_asset_kind(target_kind: str, asset_type: str) -> str:
     if asset_type == "audio":
         return "scene_injected_audio" if target_kind == "scene" else "project_injected_audio"
     return "scene_injected_image" if target_kind == "scene" else "project_injected_image"
+
+
+def _image_input_priority_key(item: RenderResolvedInput) -> tuple[int, int, int, str]:
+    return (
+        0 if item.required else 1,
+        _lock_priority_rank(item.lock_status),
+        _kind_priority_rank(item.kind),
+        item.label.lower(),
+    )
+
+
+def _lock_priority_rank(lock_status: str | None) -> int:
+    if lock_status == "hard_locked":
+        return 0
+    if lock_status == "selected_visual_reference":
+        return 1
+    if lock_status == "soft_locked":
+        return 2
+    if lock_status == "unlocked":
+        return 3
+    return 4
+
+
+def _kind_priority_rank(kind: str | None) -> int:
+    if kind == "keyframe":
+        return 0
+    if kind == "character_injected_image":
+        return 1
+    if kind == "location_injected_image":
+        return 2
+    if kind == "scene_injected_image":
+        return 3
+    if kind == "project_injected_image":
+        return 4
+    return 5
 
 
 def _slugify(value: str) -> str:

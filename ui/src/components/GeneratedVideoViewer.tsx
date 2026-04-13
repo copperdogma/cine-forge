@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Clock, DollarSign, Film, Video } from 'lucide-react'
 import {
   formatLatencyMs,
@@ -7,6 +8,7 @@ import {
 } from '@/components/preview-provenance'
 import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   asArray,
@@ -18,6 +20,7 @@ import {
   formatMoney,
   formatToken,
   parseRenderInputUsage,
+  type RenderArtifactRefView,
   type RenderInputUsageView,
 } from '@/components/render-utils'
 import { getAssetFileUrl } from '@/lib/api/assets'
@@ -43,6 +46,7 @@ type GeneratedVideoView = {
   resolvedInputs: RenderInputUsageView[]
   providerParams: Record<string, unknown>
   previewProvenance: ReturnType<typeof parsePreviewProvenance>
+  promptRef: RenderArtifactRefView | null
 }
 
 function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView {
@@ -50,6 +54,7 @@ function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView 
   const cost = asRecord(data.cost)
   const generationParams = asRecord(data.generation_params)
   const providerParams = asRecord(generationParams?.provider_params) ?? {}
+  const promptRef = asRecord(data.prompt_ref)
   return {
     sceneHeading: asString(data.scene_heading),
     sceneNumber: asNumber(data.scene_number),
@@ -68,6 +73,13 @@ function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView 
       .filter((input): input is RenderInputUsageView => input !== null),
     providerParams,
     previewProvenance: parsePreviewProvenance(data.preview_provenance),
+    promptRef: promptRef
+      ? {
+          artifactType: asString(promptRef.artifact_type),
+          entityId: asString(promptRef.entity_id),
+          version: asNumber(promptRef.version),
+        }
+      : null,
   }
 }
 
@@ -77,6 +89,10 @@ export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerPr
     render.sceneNumber !== null ? `Scene ${render.sceneNumber}` : 'Generated Video'
   const videoUrl = render.videoPath ? getAssetFileUrl(projectId, render.videoPath) : null
   const providerParamsJson = JSON.stringify(render.providerParams, null, 2)
+  const promptHref =
+    render.promptRef?.artifactType && render.promptRef.entityId && render.promptRef.version !== null
+      ? `/${projectId}/artifacts/${render.promptRef.artifactType}/${render.promptRef.entityId}/${render.promptRef.version}`
+      : null
 
   return (
     <div className="space-y-4">
@@ -162,6 +178,21 @@ export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerPr
               Inputs: {render.previewProvenance.upstreamInputs.join(', ')}
             </div>
           ) : null}
+
+          {promptHref && (
+            <div className="rounded-lg border border-border bg-card/60 px-4 py-3">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Prompt Provenance
+              </p>
+              <p className="text-sm text-muted-foreground">
+                This render was generated from the linked prompt artifact. Open it to inspect the
+                compiled creative brief, resolved reference usage, and demotion notes.
+              </p>
+              <Button asChild variant="outline" size="sm" className="mt-3">
+                <Link to={promptHref}>Open Prompt Artifact</Link>
+              </Button>
+            </div>
+          )}
 
           {Object.keys(render.providerParams).length > 0 && (
             <div className="rounded-lg border border-border bg-card/60 px-4 py-3">

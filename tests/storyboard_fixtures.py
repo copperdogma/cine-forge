@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import io
 from pathlib import Path
 from typing import Any
+
+from PIL import Image, ImageDraw
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import (
@@ -41,6 +44,17 @@ def save_artifact(
         data=data,
         metadata=metadata(f"seed {artifact_type}"),
     )
+
+
+def reference_raster_bytes(label: str, *, accent: tuple[int, int, int]) -> bytes:
+    buffer = io.BytesIO()
+    image = Image.new("RGB", (640, 360), color=(18, 24, 38))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((28, 28, 612, 332), outline=accent, width=6)
+    draw.text((56, 68), "Reference", fill=(255, 255, 255))
+    draw.text((56, 118), label, fill=accent)
+    image.save(buffer, format="JPEG", quality=90)
+    return buffer.getvalue()
 
 
 def seed_storyboard_project(
@@ -347,11 +361,10 @@ def seed_storyboard_project(
     )
     save_artifact(store, "track_manifest", "project", manifest.model_dump(mode="json"))
 
-    storyboard_svg = b"<svg xmlns='http://www.w3.org/2000/svg' width='16' height='9'></svg>"
-    for entity_type, entity_id, display_name, filename in [
-        ("character", "mara", "MARA", "mara_ref.svg"),
-        ("location", "lab", "LAB", "lab_ref.svg"),
-        ("location", "roof", "ROOF", "roof_ref.svg"),
+    for entity_type, entity_id, display_name, filename, accent in [
+        ("character", "mara", "MARA", "mara_ref.jpg", (125, 211, 252)),
+        ("location", "lab", "LAB", "lab_ref.jpg", (248, 250, 252)),
+        ("location", "roof", "ROOF", "roof_ref.jpg", (196, 181, 253)),
     ]:
         files = [
             {
@@ -366,7 +379,7 @@ def seed_storyboard_project(
             entity_id=entity_id,
             display_name=display_name,
             files=files,
-            data_files={filename: storyboard_svg},
+            data_files={filename: reference_raster_bytes(display_name, accent=accent)},
             metadata=metadata("seed bible manifest"),
             visual_reference_image=filename,
         )

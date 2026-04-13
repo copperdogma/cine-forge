@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-13-02] — Prove reference-conditioned scene render truth (Story 168)
+
+### Added
+- Added representative raster-backed render fixtures and focused regression coverage for design-study references, injected-asset priority, project taste references, and OpenAI opening-frame normalization
+- Added a dated UI-scout record for the representative reference-conditioned render walkthrough on a fresh project
+
+### Changed
+- Changed the surfaced Scene Workspace render, prompt detail, and generated-video detail routes so they expose compiled creative-brief references, prompt provenance, and honest reference demotion truth
+- Changed methodology planning truth to close Story 168 and return the `scene-generation-completion` campaign to triage for its next non-terminal owner
+
+### Fixed
+- Fixed the real OpenAI render path so operator-provided opening-frame images are normalized to the requested output resolution instead of failing provider validation
+- Fixed the render-adapter completeness path so required upstream context can synthesize fallback prompt sections when the compiler omits them, preventing false route failures on representative state
+
 ## [2026-04-13-01] — Validate final-output trust surface (Story 167)
 
 ### Added
