@@ -22,6 +22,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { ExportModal } from '@/components/ExportModal'
+import { FinalOutputCard } from '@/components/FinalOutputCard'
 import { ProductionFormatPill } from '@/components/ProductionFormatPill'
 import {
   Tooltip,
@@ -507,6 +508,13 @@ function FreshImportView({ projectId }: { projectId: string }) {
           </CardContent>
         </Card>
       )}
+
+      <FinalOutputCard
+        projectId={projectId}
+        latestInputPath={latestInput?.stored_path ?? null}
+        artifactGroups={artifactGroups}
+        sceneCount={scenes?.length ?? 0}
+      />
 
       {/* Screenplay content — fills remaining space */}
       {isLoading ? (

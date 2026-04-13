@@ -54,6 +54,7 @@ export const artifactMeta: Record<string, { icon: typeof FileText; label: string
   keyframe: { icon: ImageIcon, label: 'Keyframes', color: 'text-amber-400' },
   render_prompt: { icon: MessageSquare, label: 'Render Prompt', color: 'text-slate-300' },
   generated_video: { icon: Film, label: 'Generated Video', color: 'text-violet-400' },
+  final_output: { icon: Film, label: 'Final Output', color: 'text-amber-300' },
   media_validation: { icon: Activity, label: 'Media Validation', color: 'text-cyan-300' },
 }
 

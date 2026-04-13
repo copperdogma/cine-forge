@@ -1,0 +1,15 @@
+recipe_id: final_output
+description: >
+  Assemble a project-level playable cut from the latest generated scene renders
+  without rerunning scene generation.
+project: {}
+stages:
+  - id: final_output
+    module: final_output_v1
+    params: {}
+    needs: []
+    store_inputs:
+      timeline: timeline
+      track_manifest: track_manifest
+    store_inputs_all:
+      generated_video: generated_video

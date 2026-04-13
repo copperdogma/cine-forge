@@ -323,6 +323,10 @@ export const STAGE_DESCRIPTIONS: Record<string, { start: string; done: string }>
     start: 'Compiling render prompts and generating scene videos...',
     done: 'Scene renders complete.',
   },
+  final_output: {
+    start: 'Assembling the rendered project cut...',
+    done: 'Final output assembly complete.',
+  },
 }
 
 export function humanizeStageName(name: string): string {

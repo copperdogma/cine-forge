@@ -7,6 +7,7 @@ export const RECIPE_NAMES: Record<string, string> = {
   shot_planning: 'Shot Planning',
   ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
+  final_output: 'Final Output',
 }
 
 /** Plain-language recipe names for operator-facing UI. */
@@ -18,6 +19,7 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   shot_planning: 'Shot Planning',
   ai_previz_generation: 'AI Previz',
   render_generation: 'Scene Renders',
+  final_output: 'Final Output',
 }
 
 export function buildSceneScope(mode: 'current_scene' | 'all_scenes', sceneId: string) {
@@ -78,6 +80,9 @@ export function getRunStartedMessage(recipeId: string | null | undefined): strin
   if (recipeId === 'render_generation') {
     return 'Scene Renders started — compiling prompts and generating scene video now...'
   }
+  if (recipeId === 'final_output') {
+    return 'Final Output started — assembling your project cut now...'
+  }
   return 'Run started — processing your project now...'
 }
 
@@ -104,6 +109,11 @@ export function getRunCompletedMessage(
     return summary
       ? `Scene Renders complete! I produced ${summary} for your project.`
       : 'Scene Renders complete!'
+  }
+  if (recipeId === 'final_output') {
+    return summary
+      ? `Final Output complete! I assembled ${summary} for your project.`
+      : 'Final Output complete!'
   }
   return summary
     ? `Run complete! I produced ${summary} for your project.`
@@ -140,6 +150,7 @@ export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   keyframe: ['keyframe set', 'keyframe sets'],
   render_prompt: ['render prompt', 'render prompts'],
   generated_video: ['generated video', 'generated videos'],
+  final_output: ['final output cut', 'final output cuts'],
   media_validation: ['media validation', 'media validation reports'],
 }
 

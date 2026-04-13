@@ -1,0 +1,78 @@
+"""Schemas for assembled project-level final output artifacts."""
+
+from __future__ import annotations
+
+from typing import Literal
+
+from pydantic import BaseModel, Field, model_validator
+
+from .models import ArtifactRef
+from .preview import MediaFile
+
+FinalOutputCoverageState = Literal["partial", "complete"]
+FinalOutputOmissionReason = Literal[
+    "missing_generated_video_track",
+    "missing_generated_video_artifact",
+]
+
+
+class FinalOutputIncludedScene(BaseModel):
+    """One rendered scene clip included in the assembled project output."""
+
+    scene_id: str = Field(min_length=1)
+    scene_number: int = Field(ge=1)
+    scene_heading: str = Field(min_length=1)
+    generated_video_ref: ArtifactRef
+    clip_relative_path: str = Field(min_length=1)
+    duration_seconds: float = Field(ge=0.0)
+    output_start_seconds: float = Field(ge=0.0)
+    output_end_seconds: float = Field(ge=0.0)
+
+    @model_validator(mode="after")
+    def _validate_time_bounds(self) -> FinalOutputIncludedScene:
+        if self.output_end_seconds < self.output_start_seconds:
+            raise ValueError("output_end_seconds must be >= output_start_seconds")
+        return self
+
+
+class FinalOutputOmittedScene(BaseModel):
+    """One timeline scene omitted from the assembled project output."""
+
+    scene_id: str = Field(min_length=1)
+    scene_number: int = Field(ge=1)
+    scene_heading: str = Field(min_length=1)
+    reason: FinalOutputOmissionReason
+    detail: str | None = None
+
+
+class FinalOutputArtifact(BaseModel):
+    """Persisted project-level assembled cut built from generated scene renders."""
+
+    timeline_ref: ArtifactRef
+    track_manifest_ref: ArtifactRef
+    video: MediaFile
+    coverage_state: FinalOutputCoverageState = "partial"
+    total_scene_count: int = Field(ge=0)
+    included_scene_ids: list[str] = Field(default_factory=list)
+    omitted_scene_ids: list[str] = Field(default_factory=list)
+    included_scenes: list[FinalOutputIncludedScene] = Field(default_factory=list)
+    omitted_scenes: list[FinalOutputOmittedScene] = Field(default_factory=list)
+    normalization_applied: bool = False
+    normalization_notes: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _validate_consistency(self) -> FinalOutputArtifact:
+        included_ids = [item.scene_id for item in self.included_scenes]
+        omitted_ids = [item.scene_id for item in self.omitted_scenes]
+
+        if self.included_scene_ids != included_ids:
+            raise ValueError("included_scene_ids must match included_scenes ordering")
+        if self.omitted_scene_ids != omitted_ids:
+            raise ValueError("omitted_scene_ids must match omitted_scenes ordering")
+        if self.total_scene_count != len(self.included_scenes) + len(self.omitted_scenes):
+            raise ValueError("total_scene_count must equal included + omitted scenes")
+        if self.coverage_state == "complete" and self.omitted_scenes:
+            raise ValueError("complete coverage cannot include omitted scenes")
+        if self.coverage_state == "partial" and not self.omitted_scenes:
+            raise ValueError("partial coverage must include at least one omitted scene")
+        return self

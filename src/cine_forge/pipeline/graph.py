@@ -295,7 +295,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         phase_id="production",
         artifact_types=["final_output"],
         dependencies=["render"],
-        implemented=False,
+        implemented=True,
     ),
 ]
 
@@ -376,6 +376,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "shot_planning": "shot_planning",
     "ai_previz": "ai_previz_generation",
     "render": "render_generation",
+    "final_output": "final_output",
 }
 
 

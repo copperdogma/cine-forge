@@ -41,6 +41,7 @@ import { KeyframeViewer } from '@/components/KeyframeViewer'
 import { MediaValidationViewer } from '@/components/MediaValidationViewer'
 import { RenderPromptViewer } from '@/components/RenderPromptViewer'
 import { StoryboardViewer } from '@/components/StoryboardViewer'
+import { FinalOutputViewer } from '@/components/FinalOutputViewer'
 
 function formatTimestamp(timestamp?: string | number) {
   if (!timestamp) return 'Unknown'
@@ -344,6 +345,9 @@ export default function ArtifactDetail() {
 
       case 'generated_video':
         return <GeneratedVideoViewer data={data} projectId={projectId ?? ''} />
+
+      case 'final_output':
+        return <FinalOutputViewer data={data} projectId={projectId ?? ''} />
 
       case 'media_validation':
         return <MediaValidationViewer data={data} projectId={projectId ?? ''} />

@@ -56,18 +56,14 @@ def test_all_phase_ids_are_unique() -> None:
 def test_all_dependencies_reference_valid_nodes() -> None:
     for node in PIPELINE_NODES:
         for dep in node.dependencies:
-            assert dep in _NODE_MAP, (
-                f"Node '{node.id}' has invalid dependency '{dep}'"
-            )
+            assert dep in _NODE_MAP, f"Node '{node.id}' has invalid dependency '{dep}'"
 
 
 @pytest.mark.unit
 def test_all_phase_node_ids_reference_valid_nodes() -> None:
     for phase in PIPELINE_PHASES:
         for nid in phase.node_ids:
-            assert nid in _NODE_MAP, (
-                f"Phase '{phase.id}' references invalid node '{nid}'"
-            )
+            assert nid in _NODE_MAP, f"Phase '{phase.id}' references invalid node '{nid}'"
 
 
 @pytest.mark.unit
@@ -87,14 +83,13 @@ def test_every_node_belongs_to_a_phase() -> None:
     for phase in PIPELINE_PHASES:
         all_phase_nodes.update(phase.node_ids)
     for node in PIPELINE_NODES:
-        assert node.id in all_phase_nodes, (
-            f"Node '{node.id}' is not listed in any phase"
-        )
+        assert node.id in all_phase_nodes, f"Node '{node.id}' is not listed in any phase"
 
 
 # ---------------------------------------------------------------------------
 # Status computation — empty store
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.unit
 def test_empty_store_first_node_available(tmp_path: Path) -> None:
@@ -129,6 +124,7 @@ def test_shot_planning_blocked_until_dependencies_exist(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 # Status computation — populated store
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.unit
 def test_node_completed_when_artifact_exists(tmp_path: Path) -> None:
@@ -187,12 +183,14 @@ def test_bible_node_completed_when_entries_exist(tmp_path: Path) -> None:
         entity_type="character",
         entity_id="mariner",
         display_name="The Mariner",
-        files=[{
-            "filename": "bible.md",
-            "purpose": "master_definition",
-            "version": 1,
-            "provenance": "ai_extracted",
-        }],
+        files=[
+            {
+                "filename": "bible.md",
+                "purpose": "master_definition",
+                "version": 1,
+                "provenance": "ai_extracted",
+            }
+        ],
         data_files={"bible.md": "Character description"},
         metadata=_metadata(),
     )
@@ -208,7 +206,10 @@ def test_in_progress_status(tmp_path: Path) -> None:
     store = ArtifactStore(project_dir=tmp_path / "project")
     node = _NODE_MAP["script_import"]
     status, _count = compute_node_status(
-        node, store, {}, active_stages={"script_import"},
+        node,
+        store,
+        {},
+        active_stages={"script_import"},
     )
     assert status == NodeStatus.IN_PROGRESS
 
@@ -233,6 +234,7 @@ def test_node_available_when_deps_completed(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 # Phase status derivation
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.unit
 def test_phase_completed_when_all_implemented_nodes_done() -> None:
@@ -278,14 +280,34 @@ def test_phase_blocked_when_render_is_implemented_but_missing_inputs() -> None:
     phase = _PHASE_MAP["production"]
     node_statuses = {
         "render": NodeStatus.BLOCKED,
-        "final_output": NodeStatus.NOT_IMPLEMENTED,
+        "final_output": NodeStatus.BLOCKED,
     }
     assert compute_phase_status(phase, node_statuses) == PhaseStatus.BLOCKED
+
+
+@pytest.mark.unit
+def test_final_output_node_completed_when_project_artifact_exists(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    store = ArtifactStore(project_dir=project_dir)
+    store.save_artifact(
+        artifact_type="final_output",
+        entity_id="project",
+        data={
+            "video": {"relative_path": "artifacts/final_output_media/project/v1/final_output.mp4"}
+        },
+        metadata=_metadata(),
+    )
+    node = _NODE_MAP["final_output"]
+    resolved = {"render": NodeStatus.COMPLETED}
+    status, count = compute_node_status(node, store, resolved)
+    assert status == NodeStatus.COMPLETED
+    assert count == 1
 
 
 # ---------------------------------------------------------------------------
 # Full graph computation
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.unit
 def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
@@ -373,6 +395,7 @@ def test_edges_match_dependencies() -> None:
 # Navigation helpers — get_available_actions
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.unit
 def test_get_available_actions_empty_store(tmp_path: Path) -> None:
     """Only script_import should be available in an empty store."""
@@ -458,6 +481,7 @@ def test_get_available_actions_none_when_all_done_or_blocked(tmp_path: Path) -> 
 # Navigation helpers — check_prerequisites
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.unit
 def test_check_prerequisites_all_met(tmp_path: Path) -> None:
     """Normalization prereqs are met when script_import is completed."""
@@ -528,6 +552,7 @@ def test_check_prerequisites_shot_planning_scene_extraction_dep(tmp_path: Path) 
 # ---------------------------------------------------------------------------
 # Staleness tracing
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.unit
 def test_trace_staleness_returns_cause(tmp_path: Path) -> None:

@@ -17,6 +17,8 @@ from cine_forge.schemas import (
     Keyframe,
     KeyframeArtifact,
     MediaFile,
+    TrackEntry,
+    TrackManifest,
 )
 from cine_forge.services import InjectedAssetService
 from tests.storyboard_fixtures import save_artifact, seed_storyboard_project
@@ -282,6 +284,177 @@ def seed_generated_video_project(
     }
 
 
+def seed_final_output_project(
+    tmp_path: Path,
+    *,
+    rendered_scene_ids: list[str] | None = None,
+    clip_slug: str = _BENCHMARK_CLIP_SLUG,
+) -> dict[str, Any]:
+    if rendered_scene_ids is None:
+        rendered_scene_ids = ["scene_001", "scene_002"]
+    seeded = seed_storyboard_project(tmp_path, scene_count=2)
+    project_dir = seeded["project_dir"]
+    store = seeded["store"]
+    clip_path, clip_meta = _fixture_clip(clip_slug)
+
+    generated_video_payloads: list[dict[str, Any]] = []
+    generated_video_refs: dict[str, Any] = {}
+
+    for scene_id in rendered_scene_ids:
+        scene_ref = store.list_versions("scene", scene_id)[-1]
+        scene_data = store.load_artifact(scene_ref).data
+        shot_plan_ref = store.list_versions("shot_plan", scene_id)[-1]
+
+        media_version = len(store.list_versions("generated_video", scene_id)) + 1
+        media_dir = (
+            project_dir / "artifacts" / "generated_video_media" / scene_id / f"v{media_version}"
+        )
+        media_dir.mkdir(parents=True, exist_ok=True)
+        output_path = media_dir / "scene_render.mp4"
+        shutil.copyfile(clip_path, output_path)
+
+        prompt = CompiledRenderPrompt(
+            scene_id=scene_id,
+            scene_number=int(scene_data["scene_number"]),
+            scene_heading=str(scene_data["heading"]),
+            render_unit="scene",
+            scene_ref=scene_ref,
+            shot_plan_ref=shot_plan_ref,
+            keyframe_ref=None,
+            target_provider="openai",
+            target_model="fixture-video",
+            engine_pack_id="fixture_pack",
+            compiler_model="gpt-5.4-mini",
+            requested_duration_seconds=float(clip_meta["duration_seconds"]),
+            resolved_duration_seconds=float(clip_meta["duration_seconds"]),
+            resolution=str(clip_meta["resolution"]),
+            aspect_ratio="16:9",
+            provider_params={},
+            prompt_text=f"Fixture prompt for {scene_id}",
+            sections=[
+                {
+                    "section_id": "shot_definition",
+                    "title": "Shot Definition",
+                    "body": "Preserve the existing fixture shot coverage.",
+                    "source_artifact_types": ["shot_plan"],
+                }
+            ],
+            completeness={
+                "included_categories": ["shot_definition"],
+                "missing_categories": [],
+                "notes": [],
+            },
+            prompt_sources_used=["shot_plan"],
+            resolved_inputs=[],
+        )
+        prompt_ref = store.save_artifact(
+            artifact_type="render_prompt",
+            entity_id=scene_id,
+            data=prompt.model_dump(mode="json"),
+            metadata=ArtifactMetadata(
+                lineage=[scene_ref, shot_plan_ref],
+                intent="seed render prompt",
+                rationale="seed final output fixture prompt",
+                confidence=1.0,
+                source="code",
+                producing_module="tests.render_fixtures",
+            ),
+        )
+
+        generated_video = GeneratedVideoArtifact(
+            scene_id=scene_id,
+            scene_number=int(scene_data["scene_number"]),
+            scene_heading=str(scene_data["heading"]),
+            render_unit="scene",
+            scene_ref=scene_ref,
+            shot_plan_ref=shot_plan_ref,
+            prompt_ref=prompt_ref,
+            keyframe_ref=None,
+            video=MediaFile(
+                relative_path=str(output_path.relative_to(project_dir)),
+                media_type="video/mp4",
+                duration_seconds=float(clip_meta["duration_seconds"]),
+            ),
+            duration_seconds=float(clip_meta["duration_seconds"]),
+            resolution=str(clip_meta["resolution"]),
+            aspect_ratio="16:9",
+            generation_params={},
+            target_provider="openai",
+            target_model="fixture-video",
+            engine_pack_id="fixture_pack",
+            request_id=f"fixture-video-{scene_id}",
+            cost=CostRecord(
+                model="fixture-video",
+                input_tokens=0,
+                output_tokens=0,
+                estimated_cost_usd=0.0,
+            ),
+            resolved_inputs=[],
+            notes=[],
+        )
+        generated_video_ref = store.save_artifact(
+            artifact_type="generated_video",
+            entity_id=scene_id,
+            data=generated_video.model_dump(mode="json"),
+            metadata=ArtifactMetadata(
+                lineage=[scene_ref, shot_plan_ref, prompt_ref],
+                intent="seed generated video",
+                rationale="seed final output fixture video",
+                confidence=1.0,
+                source="code",
+                producing_module="tests.render_fixtures",
+            ),
+        )
+        generated_video_payloads.append(generated_video.model_dump(mode="json"))
+        generated_video_refs[scene_id] = generated_video_ref
+
+    track_manifest_ref = store.latest_ref("track_manifest", "project")
+    assert track_manifest_ref is not None
+    manifest = TrackManifest.model_validate(store.load_artifact(track_manifest_ref).data)
+    updated_entries = list(manifest.entries)
+    for scene_id in sorted(rendered_scene_ids):
+        updated_entries = [
+            entry
+            for entry in updated_entries
+            if not (entry.track_type == "generated_video" and entry.scene_id == scene_id)
+        ]
+        updated_entries.append(
+            TrackEntry(
+                track_type="generated_video",
+                scene_id=scene_id,
+                artifact_ref=generated_video_refs[scene_id],
+                priority=100,
+                status="available",
+                notes="Seeded generated video fixture track.",
+            )
+        )
+
+    updated_manifest = manifest.model_copy(
+        update={
+            "entries": updated_entries,
+            "track_fill_counts": _track_fill_counts(updated_entries),
+        }
+    )
+    save_artifact(store, "track_manifest", "project", updated_manifest.model_dump(mode="json"))
+
+    timeline_ref = store.latest_ref("timeline", "project")
+    assert timeline_ref is not None
+    inputs = dict(seeded["inputs"])
+    inputs["timeline"] = store.load_artifact(timeline_ref).data
+    inputs["track_manifest"] = updated_manifest.model_dump(mode="json")
+    inputs["generated_video"] = generated_video_payloads
+
+    return {
+        **seeded,
+        "project_dir": project_dir,
+        "clip_path": clip_path,
+        "clip_meta": clip_meta,
+        "generated_video_refs": generated_video_refs,
+        "rendered_scene_ids": rendered_scene_ids,
+        "inputs": inputs,
+    }
+
+
 def _fixture_clip(slug: str) -> tuple[Path, dict[str, Any]]:
     clip_dir = _REPO_ROOT / "benchmarks" / "video_understanding" / slug
     meta_path = clip_dir / "meta.json"
@@ -289,3 +462,10 @@ def _fixture_clip(slug: str) -> tuple[Path, dict[str, Any]]:
         raise FileNotFoundError(f"Missing benchmark clip metadata for {slug}")
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
     return clip_dir / "clip.mp4", meta
+
+
+def _track_fill_counts(entries: list[TrackEntry]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for entry in entries:
+        counts[entry.track_type] = counts.get(entry.track_type, 0) + 1
+    return counts

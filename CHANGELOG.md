@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-12-04] — Ship project-level final output assembly (Story 166)
+
+### Added
+- Added a headless `final_output` module, schema, and recipe that assemble a project-level playable cut from timeline-ordered generated scene renders with typed coverage and provenance metadata
+- Added dedicated Final Output UI surfaces on project home and Artifact Detail, plus focused schema/module/integration regression coverage for partial and complete assembly states
+
+### Changed
+- Changed pipeline graph truth and operator-facing run copy so `final_output` is now treated as a shipped production-stage capability instead of an unimplemented placeholder
+
 ## [2026-04-12-03] — Reuse scene render refresh path (Story 165)
 
 ### Added

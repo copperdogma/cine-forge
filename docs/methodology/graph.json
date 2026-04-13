@@ -645,7 +645,8 @@
           "157",
           "158",
           "164",
-          "165"
+          "165",
+          "166"
         ],
         "adrIds": [
           "ADR-002",
@@ -833,7 +834,8 @@
           "152",
           "153",
           "164",
-          "165"
+          "165",
+          "166"
         ],
         "adrIds": [
           "ADR-002",
@@ -1070,7 +1072,8 @@
           "152",
           "153",
           "164",
-          "165"
+          "165",
+          "166"
         ],
         "adrIds": [
           "ADR-003"
@@ -10271,6 +10274,81 @@
           "summary": "close-out: marked Story 165 `Done` after verifying all acceptance criteria against the landed implementation and fresh evidence already recorded above. Closure evidence remains the same clean validation set: `make test-…"
         }
       }
+    },
+    {
+      "id": "166",
+      "title": "Final Output Playable Assembly",
+      "path": "docs/stories/story-166-final-output-playable-assembly.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)",
+        "R9 (export to professional formats)"
+      ],
+      "specRefs": [
+        "spec:10.1",
+        "spec:10.3",
+        "spec:5.3",
+        "spec:7"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "013",
+        "027",
+        "028",
+        "130",
+        "148",
+        "164",
+        "165"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "assembly",
+        "feature-completeness",
+        "final-output",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260412-2115",
+        "date": "2026-04-12",
+        "summary": "completion: marked Story 166 done after confirming the shipped slice closes the project-level final-output gap and only close-out/bookkeeping remained. Evidence: workflow gates are all checked; status is now `Done`; met…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "166",
+        "sourcePath": "docs/stories/story-166-final-output-playable-assembly.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: marked Story 166 done after confirming the shipped slice closes the project-level final-output gap and only close-out/bookkeeping remained. Evidence: workflow gates are all checked; status is now `Done`; met…",
+        "lastRelevantAction": {
+          "date": "2026-04-12",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-166-final-output-playable-assembly.md",
+          "summary": "completion: marked Story 166 done after confirming the shipped slice closes the project-level final-output gap and only close-out/bookkeeping remained. Evidence: workflow gates are all checked; status is now `Done`; met…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -12042,15 +12120,17 @@
         },
         {
           "id": "scene-generation-completion",
-          "status": "active",
-          "story_refs": [],
-          "notes": "Story 164 closed the first representative Scene Workspace render route. This campaign stays active until the next `spec:6` / `spec:7` follow-up story is packaged so scene-generation completeness remains ahead of throughput-only follow-ons."
+          "status": "completed",
+          "story_refs": [
+            "166"
+          ],
+          "notes": "Story 164 closed the first representative Scene Workspace render route, Story 165 closed the render-refresh reuse loop, and Story 166 closed the project-level final-output playable-assembly slice from that honest scene-render baseline. Re-open this lane only after triage packages the next spec:6/spec:7 follow-up story."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 164 closed the first representative Scene Workspace render route. The active `spec:6` / `spec:7` lane now needs the next feature-completeness story packaged from that surfaced baseline rather than reverting to throughput-only follow-ons.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, and Story 166 closed the project-level final-output playable-assembly slice.",
         "lanes": [
           {
             "id": "pending-ready",

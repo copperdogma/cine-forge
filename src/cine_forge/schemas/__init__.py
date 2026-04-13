@@ -78,6 +78,13 @@ from .export_interchange import (
     NarrativeInterchangeExport,
     NarrativeSceneSegment,
 )
+from .final_output import (
+    FinalOutputArtifact,
+    FinalOutputCoverageState,
+    FinalOutputIncludedScene,
+    FinalOutputOmissionReason,
+    FinalOutputOmittedScene,
+)
 from .graph import EntityEdge, EntityGraph
 from .impact import ArtifactImpact, ImpactAssessment
 from .injected_asset import (
@@ -269,6 +276,11 @@ __all__ = [
     "EventType",
     "EntityEdge",
     "EntityGraph",
+    "FinalOutputArtifact",
+    "FinalOutputCoverageState",
+    "FinalOutputIncludedScene",
+    "FinalOutputOmissionReason",
+    "FinalOutputOmittedScene",
     "ArtifactImpact",
     "ImpactAssessment",
     "AssetLockStatus",

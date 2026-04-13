@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, and Story 164 closed the first representative Scene Workspace render route. The active `spec:6` / `spec:7` lane now needs the next feature-completeness story packaged from that surfaced baseline rather than reverting to throughput-only follow-ons.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, and Story 166 closed the project-level final-output playable-assembly slice.
 
 ### Pending — Ready To Build Now
 
@@ -106,7 +106,6 @@ No blocked lines currently need attention.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
 - Active campaign `ui-product-truth-scouting`: Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage.
-- Active campaign `scene-generation-completion`: Story 164 closed the first representative Scene Workspace render route. This campaign stays active until the next `spec:6` / `spec:7` follow-up story is packaged so scene-generation completeness remains ahead of throughput-only follow-ons.
 
 ## Story Index
 
@@ -245,6 +244,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 153 | Previz Minimal AI Clip Mode and Provider Floor | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 143, 149, 150, 151, 152 | [story-153](stories/story-153-previz-minimal-ai-clip-provider-floor.md) |
 | 164 | Real Scene Generation Product Truth | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 028, 140, 148 | [story-164](stories/story-164-real-scene-generation-product-truth.md) |
 | 165 | Scene Render Refresh Reuse Path | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 164 | [story-165](stories/story-165-scene-render-refresh-reuse-path.md) |
+| 166 | Final Output Playable Assembly | High | Done | — | spec:5, spec:7, spec:10 | 013, 027, 028, 130, 148, 164, 165 | [story-166](stories/story-166-final-output-playable-assembly.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

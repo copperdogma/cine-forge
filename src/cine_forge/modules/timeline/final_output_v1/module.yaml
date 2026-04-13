@@ -1,0 +1,10 @@
+module_id: final_output_v1
+stage: production
+description: "Assembles a truthful project-level final output from generated scene renders."
+input_schemas:
+  - timeline
+  - track_manifest
+  - generated_video
+output_schemas:
+  - final_output
+parameters: {}

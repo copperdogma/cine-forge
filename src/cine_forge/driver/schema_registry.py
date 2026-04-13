@@ -16,6 +16,7 @@ from cine_forge.schemas import (
     EntityDiscoveryResults,
     EntityEdge,
     EntityGraph,
+    FinalOutputArtifact,
     GeneratedVideoArtifact,
     ImpactAssessment,
     InjectedAsset,
@@ -110,6 +111,7 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("ai_previz_prompt", CompiledRenderPrompt)
     registry.register("generated_video", GeneratedVideoArtifact)
     registry.register("ai_previz_video", GeneratedVideoArtifact)
+    registry.register("final_output", FinalOutputArtifact)
     registry.register("media_validation", MediaValidationArtifact)
     registry.register("cost_report", CostReport)
     registry.register("video_analysis_target", VideoAnalysisTarget)
