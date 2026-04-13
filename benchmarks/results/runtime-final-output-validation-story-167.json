@@ -1,0 +1,243 @@
+{
+  "eval_id": "runtime-final-output-validation",
+  "measured_at": "2026-04-13T05:38:13.840690+00:00",
+  "fixture_manifest": "benchmarks/fixtures/runtime_final_output_validation_cases.json",
+  "model": "gpt-5.4",
+  "sample_count": 5,
+  "approaches": [
+    {
+      "approach": "deterministic_only",
+      "label": "Deterministic Only",
+      "metrics": {
+        "overall": 0.5,
+        "semantic_cases": 0.0,
+        "structural_cases": 1.0
+      },
+      "latency_ms": 470,
+      "cost_usd": 0.0,
+      "cases": [
+        {
+          "case_id": "partial-project-cut-review",
+          "label": "Partial project cut review",
+          "category": "semantic",
+          "expected_health": "valid",
+          "observed_health": "needs_review",
+          "matched": false,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [],
+          "semantic_finding_codes": [],
+          "summary": "No semantic review model was configured.",
+          "latency_ms": 880,
+          "cost_usd": 0.0,
+          "expectation_note": "A partial assembled cut can still validate cleanly when the visible media is coherent and the omission truth is explicit."
+        },
+        {
+          "case_id": "complete-project-cut-review",
+          "label": "Complete project cut review",
+          "category": "semantic",
+          "expected_health": "valid",
+          "observed_health": "needs_review",
+          "matched": false,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [],
+          "semantic_finding_codes": [],
+          "summary": "No semantic review model was configured.",
+          "latency_ms": 801,
+          "cost_usd": 0.0,
+          "expectation_note": "A complete assembled cut should validate cleanly when the sampled media is coherent and exposes no blocking project-level issues."
+        },
+        {
+          "case_id": "missing-project-cut-file",
+          "label": "Missing project cut file",
+          "category": "structural",
+          "expected_health": "needs_revision",
+          "observed_health": "needs_revision",
+          "matched": true,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [
+            "missing_file"
+          ],
+          "semantic_finding_codes": [],
+          "summary": "Deterministic validation failed with 1 blocking issue(s).",
+          "latency_ms": 0,
+          "cost_usd": 0.0,
+          "expectation_note": "Missing final-output media is a blocking runtime failure."
+        },
+        {
+          "case_id": "corrupt-project-cut-decode",
+          "label": "Corrupt project cut decode",
+          "category": "structural",
+          "expected_health": "needs_revision",
+          "observed_health": "needs_revision",
+          "matched": true,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [
+            "ffprobe_failed",
+            "decode_failed"
+          ],
+          "semantic_finding_codes": [],
+          "summary": "Deterministic validation failed with 1 blocking issue(s).",
+          "latency_ms": 198,
+          "cost_usd": 0.0,
+          "expectation_note": "Corrupt final-output media that cannot decode is a blocking runtime failure."
+        }
+      ]
+    },
+    {
+      "approach": "ai_only",
+      "label": "AI-Only (gpt-5.4)",
+      "metrics": {
+        "overall": 0.5,
+        "semantic_cases": 1.0,
+        "structural_cases": 0.0
+      },
+      "latency_ms": 1386,
+      "cost_usd": 0.002721,
+      "cases": [
+        {
+          "case_id": "partial-project-cut-review",
+          "label": "Partial project cut review",
+          "category": "semantic",
+          "expected_health": "valid",
+          "observed_health": "valid",
+          "matched": true,
+          "semantic_status": "pass",
+          "deterministic_finding_codes": [],
+          "semantic_finding_codes": [],
+          "summary": "The sampled assembled cut appears playable and coherent for the covered material: video and audio streams are present, frames decode successfully, and the visuals are consistent across the sampled 4-second clip. No clear blocking defects are visible in the provided frames.",
+          "latency_ms": 2738,
+          "cost_usd": 0.00554,
+          "expectation_note": "A partial assembled cut can still validate cleanly when the visible media is coherent and the omission truth is explicit."
+        },
+        {
+          "case_id": "complete-project-cut-review",
+          "label": "Complete project cut review",
+          "category": "semantic",
+          "expected_health": "valid",
+          "observed_health": "valid",
+          "matched": true,
+          "semantic_status": "pass",
+          "deterministic_finding_codes": [],
+          "semantic_finding_codes": [],
+          "summary": "The sampled frames show a coherent assembled cut with visible title, character labels, prop label, and readable subtitle text. No clear blocking visual issues are evident in the provided samples.",
+          "latency_ms": 2616,
+          "cost_usd": 0.005343,
+          "expectation_note": "A complete assembled cut should validate cleanly when the sampled media is coherent and exposes no blocking project-level issues."
+        },
+        {
+          "case_id": "missing-project-cut-file",
+          "label": "Missing project cut file",
+          "category": "structural",
+          "expected_health": "needs_revision",
+          "observed_health": "needs_review",
+          "matched": false,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [
+            "missing_file"
+          ],
+          "semantic_finding_codes": [],
+          "summary": "No sampled frames were available for semantic review.",
+          "latency_ms": 0,
+          "cost_usd": 0.0,
+          "expectation_note": "Missing final-output media is a blocking runtime failure."
+        },
+        {
+          "case_id": "corrupt-project-cut-decode",
+          "label": "Corrupt project cut decode",
+          "category": "structural",
+          "expected_health": "needs_revision",
+          "observed_health": "needs_review",
+          "matched": false,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [
+            "ffprobe_failed",
+            "decode_failed"
+          ],
+          "semantic_finding_codes": [],
+          "summary": "No sampled frames were available for semantic review.",
+          "latency_ms": 189,
+          "cost_usd": 0.0,
+          "expectation_note": "Corrupt final-output media that cannot decode is a blocking runtime failure."
+        }
+      ]
+    },
+    {
+      "approach": "hybrid",
+      "label": "Hybrid (gpt-5.4)",
+      "metrics": {
+        "overall": 1.0,
+        "semantic_cases": 1.0,
+        "structural_cases": 1.0
+      },
+      "latency_ms": 1450,
+      "cost_usd": 0.0027,
+      "cases": [
+        {
+          "case_id": "partial-project-cut-review",
+          "label": "Partial project cut review",
+          "category": "semantic",
+          "expected_health": "valid",
+          "observed_health": "valid",
+          "matched": true,
+          "semantic_status": "pass",
+          "deterministic_finding_codes": [],
+          "semantic_finding_codes": [],
+          "summary": "The sampled assembled cut decodes successfully and appears visually coherent and usable in the provided frames. No clear blocking issues are visible. The sample packet is partial, but the shown project output looks production-ready.",
+          "latency_ms": 2874,
+          "cost_usd": 0.005367,
+          "expectation_note": "A partial assembled cut can still validate cleanly when the visible media is coherent and the omission truth is explicit."
+        },
+        {
+          "case_id": "complete-project-cut-review",
+          "label": "Complete project cut review",
+          "category": "semantic",
+          "expected_health": "valid",
+          "observed_health": "valid",
+          "matched": true,
+          "semantic_status": "pass",
+          "deterministic_finding_codes": [],
+          "semantic_finding_codes": [],
+          "summary": "The sampled frames show a coherent assembled cut with visible title, character labels, prop label, and subtitle styling. Decode succeeded and both video and audio streams are present. No clear blocking visual issues are evident in the provided samples.",
+          "latency_ms": 2735,
+          "cost_usd": 0.005435,
+          "expectation_note": "A complete assembled cut should validate cleanly when the sampled media is coherent and exposes no blocking project-level issues."
+        },
+        {
+          "case_id": "missing-project-cut-file",
+          "label": "Missing project cut file",
+          "category": "structural",
+          "expected_health": "needs_revision",
+          "observed_health": "needs_revision",
+          "matched": true,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [
+            "missing_file"
+          ],
+          "semantic_finding_codes": [],
+          "summary": "Deterministic validation failed with 1 blocking issue(s).",
+          "latency_ms": 0,
+          "cost_usd": 0.0,
+          "expectation_note": "Missing final-output media is a blocking runtime failure."
+        },
+        {
+          "case_id": "corrupt-project-cut-decode",
+          "label": "Corrupt project cut decode",
+          "category": "structural",
+          "expected_health": "needs_revision",
+          "observed_health": "needs_revision",
+          "matched": true,
+          "semantic_status": "skipped",
+          "deterministic_finding_codes": [
+            "ffprobe_failed",
+            "decode_failed"
+          ],
+          "semantic_finding_codes": [],
+          "summary": "Deterministic validation failed with 1 blocking issue(s).",
+          "latency_ms": 193,
+          "cost_usd": 0.0,
+          "expectation_note": "Corrupt final-output media that cannot decode is a blocking runtime failure."
+        }
+      ]
+    }
+  ]
+}

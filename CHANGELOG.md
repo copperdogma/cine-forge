@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-04-13-01] — Validate final-output trust surface (Story 167)
+
+### Added
+- Added project-scoped runtime validation coverage for `final_output`, including fixture-backed benchmark inputs/results and surfaced validation detail for the assembled cut
+
+### Changed
+- Changed the shared media-validation substrate and final-output route so project cuts validate against exact artifact lineage and expose matching, stale, and missing trust state on Home and Artifact Detail
+
+### Fixed
+- Fixed the real final-output route so redundant recipe input gating and shot-plan timeline-ref drift no longer strand project-level assembly or its validation path
+
 ## [2026-04-12-04] — Ship project-level final output assembly (Story 166)
 
 ### Added

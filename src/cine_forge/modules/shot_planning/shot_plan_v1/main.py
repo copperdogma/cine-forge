@@ -285,6 +285,7 @@ def run_module(
     timeline_ref = _latest_project_ref(store, "timeline")
     if timeline_ref is None:
         raise ValueError("shot_plan_v1 could not resolve latest timeline artifact")
+    next_timeline_ref = _anticipated_project_ref(store, "timeline")
     track_manifest_ref = _latest_project_ref(store, "track_manifest")
     if track_manifest_ref is None:
         raise ValueError("shot_plan_v1 could not resolve latest track manifest artifact")
@@ -311,6 +312,7 @@ def run_module(
 
     updated_manifest = _update_track_manifest_with_shots(
         manifest=track_manifest,
+        timeline_ref=next_timeline_ref,
         shot_plans_by_scene=shot_plans_by_scene,
         shot_plan_refs=shot_plan_refs,
     )
@@ -801,6 +803,7 @@ def _update_timeline_with_shots(
 
 def _update_track_manifest_with_shots(
     manifest: TrackManifest,
+    timeline_ref: ArtifactRef,
     shot_plans_by_scene: dict[str, ShotPlan],
     shot_plan_refs: dict[str, ArtifactRef],
 ) -> TrackManifest:
@@ -828,6 +831,7 @@ def _update_track_manifest_with_shots(
             )
     return manifest.model_copy(
         update={
+            "timeline_ref": timeline_ref,
             "entries": new_entries,
             "track_fill_counts": _track_counts(new_entries),
         }
@@ -1186,6 +1190,17 @@ def _shot_plan_ref_for_artifact(store: ArtifactStore, artifact: dict[str, Any]) 
 def _latest_project_ref(store: ArtifactStore, artifact_type: str) -> ArtifactRef | None:
     refs = store.list_versions(artifact_type, "project")
     return refs[-1] if refs else None
+
+
+def _anticipated_project_ref(store: ArtifactStore, artifact_type: str) -> ArtifactRef:
+    refs = store.list_versions(artifact_type, "project")
+    next_version = (refs[-1].version + 1) if refs else 1
+    return ArtifactRef(
+        artifact_type=artifact_type,
+        entity_id="project",
+        version=next_version,
+        path=f"artifacts/{artifact_type}/project/v{next_version}.json",
+    )
 
 
 def _latest_entity_ref(store: ArtifactStore, artifact_type: str, entity_id: str) -> ArtifactRef:

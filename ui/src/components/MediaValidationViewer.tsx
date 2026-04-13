@@ -30,7 +30,12 @@ type ValidationView = {
   validatorId: string | null
   validationMode: string | null
   samplingPolicy: string | null
+  targetLabel: string | null
+  targetScope: string | null
   targetRefLabel: string | null
+  coverageState: string | null
+  includedSceneCount: number | null
+  omittedSceneCount: number | null
   durationSeconds: number | null
   decodeSucceeded: boolean
   videoStreamPresent: boolean
@@ -69,6 +74,7 @@ function parseSampleFrame(value: unknown): SampleFrameView | null {
 }
 
 function parseValidation(data: Record<string, unknown>): ValidationView {
+  const target = asRecord(data.target)
   const targetRef = asRecord(data.target_ref)
   const validatedMedia = asRecord(data.validated_media)
   const deterministicProbe = asRecord(data.deterministic_probe)
@@ -83,9 +89,14 @@ function parseValidation(data: Record<string, unknown>): ValidationView {
     validatorId: asString(data.validator_id),
     validationMode: asString(data.validation_mode),
     samplingPolicy: asString(data.sampling_policy),
+    targetLabel: asString(target?.label),
+    targetScope: asString(target?.scope_kind),
     targetRefLabel: targetType && targetVersion !== null
       ? `${targetType}:${targetEntity}:v${targetVersion}`
       : null,
+    coverageState: asString(target?.coverage_state),
+    includedSceneCount: asNumber(target?.included_scene_count),
+    omittedSceneCount: asNumber(target?.omitted_scene_count),
     durationSeconds: asNumber(validatedMedia?.duration_seconds) ?? asNumber(deterministicProbe?.duration_seconds),
     decodeSucceeded: asBoolean(deterministicProbe?.decode_succeeded),
     videoStreamPresent: asBoolean(deterministicProbe?.video_stream_present),
@@ -106,6 +117,12 @@ function parseValidation(data: Record<string, unknown>): ValidationView {
       .map(parseSampleFrame)
       .filter((frame): frame is SampleFrameView => frame !== null),
   }
+}
+
+function coverageLabel(state: string | null): string | null {
+  if (state === 'complete') return 'Complete Coverage'
+  if (state === 'partial') return 'Partial Coverage'
+  return null
 }
 
 function FindingsList({ findings }: { findings: FindingView[] }) {
@@ -147,6 +164,11 @@ export function MediaValidationViewer({ data, projectId, compact = false, detail
               <CardDescription>
                 {validation.summary ?? 'No validation summary recorded yet.'}
               </CardDescription>
+              {validation.targetLabel && (
+                <p className="text-xs text-muted-foreground">
+                  {validation.targetLabel}
+                </p>
+              )}
             </div>
             {detailHref && (
               <Badge asChild variant="outline" className="gap-1">
@@ -162,6 +184,17 @@ export function MediaValidationViewer({ data, projectId, compact = false, detail
           <div className="flex flex-wrap gap-2">
             {validation.validationMode && <Badge variant="secondary">{validation.validationMode}</Badge>}
             {validation.samplingPolicy && <Badge variant="outline">{validation.samplingPolicy}</Badge>}
+            {validation.targetScope && <Badge variant="outline">{validation.targetScope}</Badge>}
+            {coverageLabel(validation.coverageState) && (
+              <Badge variant="outline">{coverageLabel(validation.coverageState)}</Badge>
+            )}
+            {validation.targetScope === 'project'
+              && validation.includedSceneCount !== null
+              && validation.omittedSceneCount !== null && (
+              <Badge variant="outline">
+                {validation.includedSceneCount} included / {validation.omittedSceneCount} omitted
+              </Badge>
+            )}
             {validation.semanticStatus && <Badge variant="outline">semantic: {validation.semanticStatus}</Badge>}
             {validation.semanticModel && <Badge variant="outline">{validation.semanticModel}</Badge>}
           </div>
@@ -195,6 +228,11 @@ export function MediaValidationViewer({ data, projectId, compact = false, detail
               <CardDescription>
                 {validation.summary ?? 'No validation summary recorded yet.'}
               </CardDescription>
+              {validation.targetLabel && (
+                <p className="text-xs text-muted-foreground">
+                  {validation.targetLabel}
+                </p>
+              )}
             </div>
             <div className="flex flex-wrap gap-2">
               {validation.validatorId && (
@@ -204,6 +242,17 @@ export function MediaValidationViewer({ data, projectId, compact = false, detail
                 </Badge>
               )}
               {validation.validationMode && <Badge variant="outline">{validation.validationMode}</Badge>}
+              {validation.targetScope && <Badge variant="outline">{validation.targetScope}</Badge>}
+              {coverageLabel(validation.coverageState) && (
+                <Badge variant="outline">{coverageLabel(validation.coverageState)}</Badge>
+              )}
+              {validation.targetScope === 'project'
+                && validation.includedSceneCount !== null
+                && validation.omittedSceneCount !== null && (
+                <Badge variant="outline">
+                  {validation.includedSceneCount} included / {validation.omittedSceneCount} omitted
+                </Badge>
+              )}
               {validation.targetRefLabel && <Badge variant="outline">{validation.targetRefLabel}</Badge>}
               {formatDuration(validation.durationSeconds) && (
                 <Badge variant="outline">{formatDuration(validation.durationSeconds)}</Badge>

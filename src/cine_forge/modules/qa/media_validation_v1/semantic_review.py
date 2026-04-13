@@ -17,9 +17,9 @@ from cine_forge.ai.llm import estimate_cost_usd
 from cine_forge.schemas import (
     CostRecord,
     DeterministicMediaProbe,
-    GeneratedVideoArtifact,
     MediaValidationEvidence,
     MediaValidationFinding,
+    MediaValidationTarget,
     SemanticMediaReview,
 )
 
@@ -54,12 +54,34 @@ class _SemanticReviewPayload(BaseModel):
     confidence: float = Field(ge=0.0, le=1.0)
     findings: list[_SemanticReviewFindingPayload] = Field(default_factory=list)
 
+    @field_validator("confidence", mode="before")
+    @classmethod
+    def _normalize_confidence(cls, value: Any) -> float:
+        if isinstance(value, (int, float)):
+            return float(value)
+        candidate = str(value).strip().lower()
+        if not candidate:
+            raise ValueError("confidence must be provided")
+        if candidate.endswith("%"):
+            return float(candidate[:-1]) / 100.0
+        synonyms = {
+            "very_high": 0.98,
+            "high": 0.9,
+            "medium": 0.65,
+            "low": 0.35,
+            "very_low": 0.15,
+        }
+        if candidate in synonyms:
+            return synonyms[candidate]
+        return float(candidate)
+
 
 def review_sampled_frames(
     *,
     model: str | None,
-    generated_video: GeneratedVideoArtifact,
+    target: MediaValidationTarget,
     prompt_text: str | None,
+    context_notes: list[str],
     probe: DeterministicMediaProbe,
     project_dir: Path,
     max_tokens: int,
@@ -83,8 +105,9 @@ def review_sampled_frames(
         payload, cost = _call_multimodal_reviewer(
             model=model,
             user_text=_semantic_review_prompt(
-                generated_video=generated_video,
+                target=target,
                 prompt_text=prompt_text,
+                context_notes=context_notes,
                 probe=probe,
             ),
             frames=[
@@ -152,55 +175,94 @@ def _finding_evidence(
 
 def _semantic_review_prompt(
     *,
-    generated_video: GeneratedVideoArtifact,
+    target: MediaValidationTarget,
     prompt_text: str | None,
+    context_notes: list[str],
     probe: DeterministicMediaProbe,
 ) -> str:
     prompt_excerpt = (prompt_text or "").strip()
     if len(prompt_excerpt) > 700:
         prompt_excerpt = f"{prompt_excerpt[:700]}..."
-    return "\n".join(
+    included_scene_count = (
+        target.included_scene_count
+        if target.included_scene_count is not None
+        else "unknown"
+    )
+    omitted_scene_count = (
+        target.omitted_scene_count
+        if target.omitted_scene_count is not None
+        else "unknown"
+    )
+    lines = [
+        (
+            "You are reviewing sampled frames from a validated media artifact "
+            "for production readiness."
+        ),
+        "Judge only what is supported by the provided sampled frames and media facts.",
+        "Return JSON only.",
+        "",
+        "Required behavior:",
+        '- Use verdict "fail" only for clear blocking problems.',
+        (
+            '- Use verdict "needs_review" when the sample packet is '
+            "inconclusive or has softer concerns."
+        ),
+        '- Use verdict "pass" only when the sampled evidence looks usable.',
+        '- Use finding severity "error" for blocking issues and "warning" for softer concerns.',
+        "- Include concrete findings only when you can point to visible evidence.",
+        "",
+        f"Target label: {target.label}",
+        f"Target scope: {target.scope_kind}",
+        f"Audio present: {probe.audio_stream_present}",
+        f"Sample frames: {len(probe.sample_frames)}",
+    ]
+    if target.scope_kind == "scene":
+        lines.extend(
+            [
+                f"Scene: {target.scene_heading}",
+                f"Scene number: {target.scene_number}",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                f"Coverage state: {target.coverage_state or 'unknown'}",
+                f"Included scenes: {included_scene_count}",
+                f"Omitted scenes: {omitted_scene_count}",
+                (
+                    "Important: for project-level final output, judge only "
+                    "the assembled cut that exists here. Omitted scenes are "
+                    "not part of the validated media."
+                ),
+            ]
+        )
+    lines.extend(
         [
-            (
-                "You are reviewing sampled frames from a generated scene video for "
-                "production readiness."
-            ),
-            "Judge only what is supported by the provided sampled frames and media facts.",
-            "Return JSON only.",
-            "",
-            "Required behavior:",
-            '- Use verdict "fail" only for clear blocking problems.',
-            (
-                '- Use verdict "needs_review" when the sample packet is inconclusive '
-                "or has softer concerns."
-            ),
-            '- Use verdict "pass" only when the sampled evidence looks usable.',
-            '- Use finding severity "error" for blocking issues and "warning" for softer concerns.',
-            "- Include concrete findings only when you can point to visible evidence.",
-            "",
-            f"Scene: {generated_video.scene_heading}",
-            f"Scene number: {generated_video.scene_number}",
-            f"Duration seconds: {generated_video.duration_seconds}",
-            f"Resolution: {generated_video.resolution}",
-            f"Aspect ratio: {generated_video.aspect_ratio}",
-            f"Audio present: {probe.audio_stream_present}",
-            f"Sample frames: {len(probe.sample_frames)}",
             "",
             "Deterministic notes:",
             f"- decode_succeeded: {probe.decode_succeeded}",
             f"- video_stream_present: {probe.video_stream_present}",
             f"- audio_stream_present: {probe.audio_stream_present}",
+        ]
+    )
+    if context_notes:
+        lines.extend(["", "Context notes:"])
+        lines.extend(f"- {note}" for note in context_notes)
+    lines.extend(
+        [
             "",
             "Prompt excerpt:",
             prompt_excerpt or "[unavailable]",
             "",
             "Respond with keys: verdict, summary, confidence, findings[].",
+            "Confidence must be a number between 0 and 1, not a word label.",
             (
-                "Each finding must include: code, severity, message, and optionally "
-                "frame_index or timestamp_seconds."
+                "Each finding must include: code, severity, message, and "
+                "optionally frame_index or timestamp_seconds."
             ),
         ]
     )
+    return "\n".join(lines)
 
 
 def _call_multimodal_reviewer(

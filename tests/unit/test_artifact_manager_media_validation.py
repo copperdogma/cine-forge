@@ -9,9 +9,12 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import (
     ArtifactHealth,
     ArtifactMetadata,
+    ArtifactRef,
+    FinalOutputArtifact,
     MediaValidationArtifact,
+    MediaValidationTarget,
 )
-from tests.render_fixtures import seed_generated_video_project
+from tests.render_fixtures import seed_final_output_project, seed_generated_video_project
 
 
 def _manager(project_path: Path) -> ArtifactManager:
@@ -25,18 +28,19 @@ def _manager(project_path: Path) -> ArtifactManager:
 def _seed_validation(
     store: ArtifactStore,
     *,
-    generated_video_ref,
+    target,
+    target_ref,
     prompt_ref,
-    generated_video,
+    validated_media,
+    entity_id: str,
+    declared_duration_seconds: float,
     recommended_health: ArtifactHealth,
 ) -> None:
     validation = MediaValidationArtifact(
-        scene_id=generated_video.scene_id,
-        scene_number=generated_video.scene_number,
-        scene_heading=generated_video.scene_heading,
-        target_ref=generated_video_ref,
+        target=target,
+        target_ref=target_ref,
         prompt_ref=prompt_ref,
-        validated_media=generated_video.video,
+        validated_media=validated_media,
         validator_id="media_validation_v1",
         validation_mode="deterministic_only",
         sampling_policy="2_evenly_spaced_jpegs_v1",
@@ -47,7 +51,7 @@ def _seed_validation(
             "ffmpeg_available": True,
             "probe_succeeded": True,
             "decode_succeeded": True,
-            "duration_seconds": generated_video.duration_seconds,
+            "duration_seconds": declared_duration_seconds,
             "video_stream_present": True,
             "audio_stream_present": False,
             "sample_count_requested": 2,
@@ -64,16 +68,31 @@ def _seed_validation(
     )
     store.save_artifact(
         artifact_type="media_validation",
-        entity_id=generated_video.scene_id,
+        entity_id=entity_id,
         data=validation.model_dump(mode="json"),
         metadata=ArtifactMetadata(
-            lineage=[generated_video_ref, prompt_ref],
+            lineage=[target_ref, *([prompt_ref] if prompt_ref else [])],
             intent="seed media validation",
             rationale="seed overlay path",
             confidence=0.84,
             source="code",
             producing_module="tests.unit",
         ),
+    )
+
+
+def _scene_target(seeded: dict) -> MediaValidationTarget:
+    generated_video = seeded["generated_video"]
+    return MediaValidationTarget(
+        scope_kind="scene",
+        entity_id=seeded["scene_id"],
+        label=(
+            f"Scene {generated_video.scene_number}: "
+            f"{generated_video.scene_heading}"
+        ),
+        scene_id=seeded["scene_id"],
+        scene_number=generated_video.scene_number,
+        scene_heading=generated_video.scene_heading,
     )
 
 
@@ -84,9 +103,12 @@ def test_artifact_manager_overlays_generated_video_health_from_validation(tmp_pa
     store = ArtifactStore(project_dir=project_path)
     _seed_validation(
         store,
-        generated_video_ref=seeded["generated_video_ref"],
+        target=_scene_target(seeded),
+        target_ref=seeded["generated_video_ref"],
         prompt_ref=seeded["prompt_ref"],
-        generated_video=seeded["generated_video"],
+        validated_media=seeded["generated_video"].video,
+        entity_id=seeded["scene_id"],
+        declared_duration_seconds=seeded["generated_video"].duration_seconds,
         recommended_health=ArtifactHealth.NEEDS_REVIEW,
     )
 
@@ -122,9 +144,12 @@ def test_artifact_manager_overlays_ai_previz_video_health_from_validation(tmp_pa
     )
     _seed_validation(
         store,
-        generated_video_ref=ai_previz_ref,
+        target=_scene_target(seeded),
+        target_ref=ai_previz_ref,
         prompt_ref=seeded["prompt_ref"],
-        generated_video=seeded["generated_video"],
+        validated_media=seeded["generated_video"].video,
+        entity_id=seeded["scene_id"],
+        declared_duration_seconds=seeded["generated_video"].duration_seconds,
         recommended_health=ArtifactHealth.NEEDS_REVIEW,
     )
 
@@ -147,9 +172,12 @@ def test_artifact_manager_keeps_structural_stale_over_validation_overlay(tmp_pat
     store = ArtifactStore(project_dir=project_path)
     _seed_validation(
         store,
-        generated_video_ref=seeded["generated_video_ref"],
+        target=_scene_target(seeded),
+        target_ref=seeded["generated_video_ref"],
         prompt_ref=seeded["prompt_ref"],
-        generated_video=seeded["generated_video"],
+        validated_media=seeded["generated_video"].video,
+        entity_id=seeded["scene_id"],
+        declared_duration_seconds=seeded["generated_video"].duration_seconds,
         recommended_health=ArtifactHealth.NEEDS_REVISION,
     )
     store.save_artifact(
@@ -186,9 +214,12 @@ def test_artifact_manager_uses_validation_verdict_for_media_validation_artifact_
     store = ArtifactStore(project_dir=project_path)
     _seed_validation(
         store,
-        generated_video_ref=seeded["generated_video_ref"],
+        target=_scene_target(seeded),
+        target_ref=seeded["generated_video_ref"],
         prompt_ref=seeded["prompt_ref"],
-        generated_video=seeded["generated_video"],
+        validated_media=seeded["generated_video"].video,
+        entity_id=seeded["scene_id"],
+        declared_duration_seconds=seeded["generated_video"].duration_seconds,
         recommended_health=ArtifactHealth.NEEDS_REVIEW,
     )
     validation_ref = store.list_versions("media_validation", seeded["scene_id"])[-1]
@@ -210,3 +241,128 @@ def test_artifact_manager_uses_validation_verdict_for_media_validation_artifact_
     assert detail["health_details"]["source_kind"] == "media_validation"
     assert detail["health_details"]["trigger_ref"]["artifact_type"] == "generated_video"
     assert versions[-1]["health"] == ArtifactHealth.NEEDS_REVIEW.value
+
+
+@pytest.mark.unit
+def test_artifact_manager_marks_final_output_missing_validation_as_unvalidated(
+    tmp_path: Path,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_final_output_project(tmp_path, rendered_scene_ids=["scene_001"])
+    project_path = seeded["project_dir"]
+    from cine_forge.driver.engine import DriverEngine
+
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=project_path)
+    run_state = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-final-output.yaml",
+        run_id="artifact-manager-final-output-missing-validation",
+        end_at="final_output",
+        force=True,
+    )
+    final_output_ref = ArtifactRef.model_validate(
+        run_state["stages"]["final_output"]["artifact_refs"][0]
+    )
+
+    detail = _manager(project_path).read_artifact(
+        "project-id",
+        "final_output",
+        "project",
+        final_output_ref.version,
+    )
+
+    assert detail["health"] == ArtifactHealth.NEEDS_REVIEW.value
+    assert detail["health_details"]["source_kind"] == "media_validation_missing"
+    assert "not been validated" in detail["health_details"]["reason"]
+
+
+@pytest.mark.unit
+def test_artifact_manager_uses_matching_final_output_validation_and_ignores_old_one(
+    tmp_path: Path,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_final_output_project(tmp_path, rendered_scene_ids=["scene_001"])
+    from cine_forge.driver.engine import DriverEngine
+
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+    first_run = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-final-output.yaml",
+        run_id="artifact-manager-final-output-overlay",
+        end_at="final_output",
+        force=True,
+    )
+    first_ref = ArtifactRef.model_validate(first_run["stages"]["final_output"]["artifact_refs"][0])
+    first_artifact = FinalOutputArtifact.model_validate(engine.store.load_artifact(first_ref).data)
+
+    _seed_validation(
+        engine.store,
+        target=MediaValidationTarget(
+            scope_kind="project",
+            entity_id="project",
+            label="Project final output",
+            coverage_state="partial",
+            included_scene_count=1,
+            omitted_scene_count=1,
+        ),
+        target_ref=first_ref,
+        prompt_ref=None,
+        validated_media=first_artifact.video,
+        entity_id="project",
+        declared_duration_seconds=float(first_artifact.video.duration_seconds or 0.0),
+        recommended_health=ArtifactHealth.NEEDS_REVISION,
+    )
+
+    second_run = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-final-output.yaml",
+        run_id="artifact-manager-final-output-overlay-refresh",
+        end_at="final_output",
+        force=True,
+    )
+    second_ref = ArtifactRef.model_validate(
+        second_run["stages"]["final_output"]["artifact_refs"][0]
+    )
+    second_artifact = FinalOutputArtifact.model_validate(
+        engine.store.load_artifact(second_ref).data
+    )
+
+    stale_detail = _manager(seeded["project_dir"]).read_artifact(
+        "project-id",
+        "final_output",
+        "project",
+        second_ref.version,
+    )
+
+    assert stale_detail["health"] == ArtifactHealth.NEEDS_REVIEW.value
+    assert stale_detail["health_details"]["source_kind"] == "media_validation_stale"
+    assert (
+        stale_detail["health_details"]["source_artifact_ref"]["artifact_type"]
+        == "media_validation"
+    )
+
+    _seed_validation(
+        engine.store,
+        target=MediaValidationTarget(
+            scope_kind="project",
+            entity_id="project",
+            label="Project final output",
+            coverage_state="partial",
+            included_scene_count=1,
+            omitted_scene_count=1,
+        ),
+        target_ref=second_ref,
+        prompt_ref=None,
+        validated_media=second_artifact.video,
+        entity_id="project",
+        declared_duration_seconds=float(second_artifact.video.duration_seconds or 0.0),
+        recommended_health=ArtifactHealth.NEEDS_REVIEW,
+    )
+
+    detail = _manager(seeded["project_dir"]).read_artifact(
+        "project-id",
+        "final_output",
+        "project",
+        second_ref.version,
+    )
+
+    assert detail["health"] == ArtifactHealth.NEEDS_REVIEW.value
+    assert detail["health_details"]["source_kind"] == "media_validation"
+    assert detail["health_details"]["source_artifact_ref"]["artifact_type"] == "media_validation"

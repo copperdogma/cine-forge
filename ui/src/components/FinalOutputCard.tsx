@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { AlertCircle, ExternalLink, Film, Loader2, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
+import { HealthBadge } from '@/components/HealthBadge'
+import { MediaValidationViewer } from '@/components/MediaValidationViewer'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -19,7 +21,7 @@ import {
   useStartRun,
 } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
-import type { ArtifactGroupSummary } from '@/lib/types'
+import type { ArtifactGroupSummary, ArtifactHealthDetails } from '@/lib/types'
 
 type FinalOutputCardProps = {
   projectId: string
@@ -49,6 +51,20 @@ function coverageLabel(state: string | null): string {
   if (state === 'complete') return 'Complete Coverage'
   if (state === 'partial') return 'Partial Coverage'
   return 'No Final Output Yet'
+}
+
+function validationStatusCopy(details: ArtifactHealthDetails | null | undefined): string | null {
+  if (!details?.source_kind) return null
+  if (details.source_kind === 'media_validation_missing') {
+    return 'This cut has not been validated yet. Refresh Final Output to run validation on the latest assembled cut.'
+  }
+  if (details.source_kind === 'media_validation_stale') {
+    return 'A validation artifact exists, but it targets an older assembled cut. Refresh Final Output to validate the latest cut.'
+  }
+  if (details.source_kind === 'media_validation') {
+    return details.reason ?? 'Validation is available for the current assembled cut.'
+  }
+  return details.reason ?? null
 }
 
 export function FinalOutputCard({
@@ -84,8 +100,24 @@ export function FinalOutputCard({
 
   const finalOutputData = finalOutputArtifact?.payload?.data as Record<string, unknown> | undefined
   const summary = parseSummary(finalOutputData)
+  const healthDetails = finalOutputGroup?.health_details ?? null
+  const validationRef =
+    healthDetails?.source_kind === 'media_validation'
+      || healthDetails?.source_kind === 'media_validation_stale'
+      ? healthDetails.source_artifact_ref
+      : null
+  const { data: validationArtifact } = useArtifact(
+    projectId,
+    validationRef?.artifact_type,
+    validationRef?.entity_id ?? undefined,
+    validationRef?.version,
+  )
+  const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
   const detailHref = finalOutputGroup
     ? `/${projectId}/artifacts/final_output/${finalOutputEntityId}/${finalOutputGroup.latest_version}`
+    : null
+  const validationDetailHref = validationRef?.entity_id && validationRef.version
+    ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
     : null
   const runDetailHref = activeRunId ? `/${projectId}/run/${activeRunId}` : null
 
@@ -125,6 +157,9 @@ export function FinalOutputCard({
                   {coverageLabel(summary?.coverageState ?? null)}
                 </Badge>
                 {finalOutputGroup && <Badge variant="secondary">v{finalOutputGroup.latest_version}</Badge>}
+                {finalOutputGroup && (
+                  <HealthBadge health={finalOutputGroup.health} details={healthDetails} />
+                )}
                 <Badge variant="outline">
                   {renderedSceneCount}/{sceneCount} scenes rendered
                 </Badge>
@@ -145,6 +180,14 @@ export function FinalOutputCard({
                   <Link to={detailHref}>
                     <ExternalLink className="h-3.5 w-3.5" />
                     Open Artifact Detail
+                  </Link>
+                </Button>
+              )}
+              {validationDetailHref && (
+                <Button asChild variant="outline" size="sm">
+                  <Link to={validationDetailHref}>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Validation Detail
                   </Link>
                 </Button>
               )}
@@ -201,8 +244,18 @@ export function FinalOutputCard({
               Final Output when you want one playable artifact instead of scene-by-scene review.
             </p>
           )}
+          {validationStatusCopy(healthDetails) && <p>{validationStatusCopy(healthDetails)}</p>}
         </CardContent>
       </Card>
+
+      {validationData && healthDetails?.source_kind === 'media_validation' && (
+        <MediaValidationViewer
+          data={validationData}
+          projectId={projectId}
+          compact
+          detailHref={validationDetailHref}
+        />
+      )}
 
       {finalOutputRunFailed && finalOutputError && (
         <Card className="gap-0 border-destructive/40 bg-destructive/5">

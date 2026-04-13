@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import { Download, ExternalLink, Film, Layers3 } from 'lucide-react'
+import { MediaValidationViewer } from '@/components/MediaValidationViewer'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,10 +13,13 @@ import {
   formatDuration,
 } from '@/components/render-utils'
 import { getAssetFileUrl } from '@/lib/api/assets'
+import { useArtifact } from '@/lib/hooks'
+import type { ArtifactHealthDetails } from '@/lib/types'
 
 type FinalOutputViewerProps = {
   data: Record<string, unknown>
   projectId: string
+  healthDetails?: ArtifactHealthDetails | null
 }
 
 type FinalOutputSceneView = {
@@ -51,6 +56,12 @@ type FinalOutputView = {
   trackManifestVersion: number | null
 }
 
+type ArtifactLinkView = {
+  artifactType: string
+  entityId: string | null
+  version: number | null
+}
+
 function parseIncludedScene(value: unknown): FinalOutputSceneView | null {
   const record = asRecord(value)
   if (!record) return null
@@ -77,6 +88,23 @@ function parseOmittedScene(value: unknown): FinalOutputOmittedSceneView | null {
     reason: asString(record.reason),
     detail: asString(record.detail),
   }
+}
+
+function parseArtifactLink(value: unknown): ArtifactLinkView | null {
+  const record = asRecord(value)
+  const artifactType = asString(record?.artifact_type)
+  if (!artifactType) return null
+  return {
+    artifactType,
+    entityId: asString(record?.entity_id),
+    version: asNumber(record?.version),
+  }
+}
+
+function artifactHref(projectId: string, ref: ArtifactLinkView | null): string | null {
+  if (!ref || ref.version === null) return null
+  const entityId = ref.entityId ?? 'project'
+  return `/${projectId}/artifacts/${ref.artifactType}/${entityId}/${ref.version}`
 }
 
 function parseFinalOutput(data: Record<string, unknown>): FinalOutputView {
@@ -129,13 +157,40 @@ function formatTimelineRange(
   return `${formatDuration(startSeconds) ?? `${startSeconds}s`} - ${formatDuration(endSeconds) ?? `${endSeconds}s`}`
 }
 
-export function FinalOutputViewer({ data, projectId }: FinalOutputViewerProps) {
+function validationStatusCopy(details: ArtifactHealthDetails | null | undefined): string | null {
+  if (!details?.source_kind) return null
+  if (details.source_kind === 'media_validation_missing') {
+    return 'This assembled cut has not been validated yet.'
+  }
+  if (details.source_kind === 'media_validation_stale') {
+    return 'The latest validation artifact still points at an older assembled cut.'
+  }
+  if (details.source_kind === 'media_validation') {
+    return details.reason ?? 'Validation is available for this assembled cut.'
+  }
+  return details.reason ?? null
+}
+
+export function FinalOutputViewer({ data, projectId, healthDetails }: FinalOutputViewerProps) {
   const finalOutput = parseFinalOutput(data)
   const videoUrl = finalOutput.videoPath
     ? getAssetFileUrl(projectId, finalOutput.videoPath)
     : null
   const includedCount = finalOutput.includedScenes.length
   const totalCount = finalOutput.totalSceneCount ?? includedCount + finalOutput.omittedScenes.length
+  const validationRef =
+    healthDetails?.source_kind === 'media_validation'
+      || healthDetails?.source_kind === 'media_validation_stale'
+      ? parseArtifactLink(healthDetails.source_artifact_ref)
+      : null
+  const validationDetailHref = artifactHref(projectId, validationRef)
+  const { data: validationArtifact } = useArtifact(
+    projectId,
+    validationRef?.artifactType,
+    validationRef?.entityId ?? undefined,
+    validationRef?.version ?? undefined,
+  )
+  const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
 
   return (
     <div className="space-y-4">
@@ -204,6 +259,20 @@ export function FinalOutputViewer({ data, projectId }: FinalOutputViewerProps) {
                   Download
                 </a>
               </Button>
+              {validationDetailHref && (
+                <Button asChild variant="outline" size="sm">
+                  <Link to={validationDetailHref}>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Validation Detail
+                  </Link>
+                </Button>
+              )}
+            </div>
+          )}
+
+          {validationStatusCopy(healthDetails) && (
+            <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
+              <p>{validationStatusCopy(healthDetails)}</p>
             </div>
           )}
 
@@ -216,6 +285,15 @@ export function FinalOutputViewer({ data, projectId }: FinalOutputViewerProps) {
           )}
         </CardContent>
       </Card>
+
+      {validationData && healthDetails?.source_kind === 'media_validation' && (
+        <MediaValidationViewer
+          data={validationData}
+          projectId={projectId}
+          compact
+          detailHref={validationDetailHref}
+        />
+      )}
 
       <Card className="gap-0">
         <CardHeader className="pb-3">

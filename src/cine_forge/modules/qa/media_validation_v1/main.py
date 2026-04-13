@@ -1,4 +1,4 @@
-"""Headless runtime validation for generated or AI-previz scene videos."""
+"""Headless runtime validation for scene videos and project-level final output."""
 
 from __future__ import annotations
 
@@ -22,23 +22,57 @@ from cine_forge.modules.qa.media_validation_v1.support import (
 from cine_forge.pipeline.scene_actions import filter_scene_payloads
 from cine_forge.schemas import (
     ArtifactHealth,
+    ArtifactRef,
     CompiledRenderPrompt,
     DeterministicMediaProbe,
+    FinalOutputArtifact,
     GeneratedVideoArtifact,
+    MediaFile,
     MediaValidationArtifact,
+    MediaValidationTarget,
     SemanticMediaReview,
 )
+
+
+class ValidationTargetInput:
+    """Internal carrier for one validation target."""
+
+    def __init__(
+        self,
+        *,
+        sort_key: int,
+        entity_id: str,
+        target: MediaValidationTarget,
+        validated_media: MediaFile,
+        declared_duration_seconds: float,
+        prompt_ref: ArtifactRef | None,
+        prompt_text: str | None,
+        context_notes: list[str],
+    ) -> None:
+        self.sort_key = sort_key
+        self.entity_id = entity_id
+        self.target = target
+        self.validated_media = validated_media
+        self.declared_duration_seconds = declared_duration_seconds
+        self.prompt_ref = prompt_ref
+        self.prompt_text = prompt_text
+        self.context_notes = context_notes
 
 
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
-    """Validate scene-video artifacts with deterministic probes plus optional review."""
+    """Validate media artifacts with deterministic probes plus optional review."""
     project_dir = _project_dir(context)
     store = ArtifactStore(project_dir=project_dir)
     runtime_params = _runtime_params(context)
-    generated_videos = _generated_videos(inputs, runtime_params=runtime_params)
     target_artifact_type = _target_artifact_type(params)
+    targets = _validation_targets(
+        store=store,
+        inputs=inputs,
+        target_artifact_type=target_artifact_type,
+        runtime_params=runtime_params,
+    )
 
     sample_count = max(int(params.get("sample_count") or DEFAULT_SAMPLE_COUNT), 0)
     semantic_review_model = _optional_string(
@@ -63,37 +97,40 @@ def run_module(
         "estimated_cost_usd": 0.0,
     }
 
-    for generated_video in sorted(generated_videos, key=lambda item: item.scene_number):
-        target_ref = latest_entity_ref(store, target_artifact_type, generated_video.scene_id)
+    for target_input in sorted(targets, key=lambda item: item.sort_key):
+        target_ref = latest_entity_ref(store, target_artifact_type, target_input.entity_id)
         if target_ref is None:
             raise ValueError(
                 "media_validation_v1 could not resolve "
                 f"{target_artifact_type} ref for "
-                f"{generated_video.scene_id}"
+                f"{target_input.entity_id}"
             )
         validation_ref = anticipated_entity_ref(
             store,
             "media_validation",
-            generated_video.scene_id,
+            target_input.entity_id,
         )
-        prompt_text = _load_prompt_text(store, generated_video)
         probe, probe_notes = run_deterministic_probe(
             project_dir=project_dir,
-            generated_video=generated_video,
+            validated_media=target_input.validated_media,
+            target_label=target_input.target.label,
+            target_entity_id=target_input.entity_id,
+            declared_duration_seconds=target_input.declared_duration_seconds,
             validation_ref=validation_ref,
             sample_count=sample_count,
         )
         semantic_review = review_sampled_frames(
             model=semantic_review_model,
-            generated_video=generated_video,
-            prompt_text=prompt_text,
+            target=target_input.target,
+            prompt_text=target_input.prompt_text,
+            context_notes=target_input.context_notes,
             probe=probe,
             project_dir=project_dir,
             max_tokens=semantic_review_max_tokens,
             temperature=semantic_review_temperature,
         )
         recommended_health = _recommended_health(probe=probe, semantic_review=semantic_review)
-        media_path = project_dir / generated_video.video.relative_path
+        media_path = project_dir / target_input.validated_media.relative_path
         config_payload = {
             "sample_count": sample_count,
             "semantic_review_model": semantic_review_model,
@@ -102,12 +139,10 @@ def run_module(
             "media_sha256": hash_file(media_path) if media_path.exists() else None,
         }
         artifact = MediaValidationArtifact(
-            scene_id=generated_video.scene_id,
-            scene_number=generated_video.scene_number,
-            scene_heading=generated_video.scene_heading,
+            target=target_input.target,
             target_ref=target_ref,
-            prompt_ref=generated_video.prompt_ref,
-            validated_media=generated_video.video,
+            prompt_ref=target_input.prompt_ref,
+            validated_media=target_input.validated_media,
             validator_id="media_validation_v1",
             validation_mode=(
                 "deterministic_only" if semantic_review.status == "skipped" else "hybrid"
@@ -131,23 +166,20 @@ def run_module(
             total_cost["estimated_cost_usd"] += semantic_review.cost.estimated_cost_usd
         artifacts.append(
             {
-                    "artifact_type": "media_validation",
-                    "entity_id": generated_video.scene_id,
-                    "data": artifact.model_dump(mode="json"),
+                "artifact_type": "media_validation",
+                "entity_id": target_input.entity_id,
+                "data": artifact.model_dump(mode="json"),
                 "metadata": {
                     "lineage": [
                         target_ref.model_dump(mode="json"),
                         *(
-                            [generated_video.prompt_ref.model_dump(mode="json")]
-                            if generated_video.prompt_ref
+                            [target_input.prompt_ref.model_dump(mode="json")]
+                            if target_input.prompt_ref
                             else []
                         ),
                     ],
                     "intent": _validation_intent(target_artifact_type),
-                    "rationale": (
-                        "Validation artifacts make generated outputs inspectable without forcing "
-                        "operators to scrub raw media or read run logs."
-                    ),
+                    "rationale": _validation_rationale(target_artifact_type),
                     "confidence": metadata_confidence(
                         probe=probe,
                         semantic_review=semantic_review,
@@ -184,11 +216,87 @@ def _target_artifact_type(params: dict[str, Any]) -> str:
     raw = params.get("target_artifact_type")
     if raw in (None, ""):
         return "generated_video"
-    if raw in {"generated_video", "ai_previz_video"}:
+    if raw in {"generated_video", "ai_previz_video", "final_output"}:
         return str(raw)
     raise ValueError(
-        "media_validation_v1 target_artifact_type must be 'generated_video' "
-        "or 'ai_previz_video'"
+        "media_validation_v1 target_artifact_type must be 'generated_video', "
+        "'ai_previz_video', or 'final_output'"
+    )
+
+
+def _validation_targets(
+    *,
+    store: ArtifactStore,
+    inputs: dict[str, Any],
+    target_artifact_type: str,
+    runtime_params: dict[str, Any],
+) -> list[ValidationTargetInput]:
+    if target_artifact_type == "final_output":
+        return [_final_output_target(inputs)]
+    return _scene_targets(store=store, inputs=inputs, runtime_params=runtime_params)
+
+
+def _scene_targets(
+    *,
+    store: ArtifactStore,
+    inputs: dict[str, Any],
+    runtime_params: dict[str, Any],
+) -> list[ValidationTargetInput]:
+    artifacts = _generated_videos(inputs, runtime_params=runtime_params)
+    targets: list[ValidationTargetInput] = []
+    for generated_video in artifacts:
+        target = MediaValidationTarget(
+            scope_kind="scene",
+            entity_id=generated_video.scene_id,
+            label=f"Scene {generated_video.scene_number}: {generated_video.scene_heading}",
+            scene_id=generated_video.scene_id,
+            scene_number=generated_video.scene_number,
+            scene_heading=generated_video.scene_heading,
+        )
+        targets.append(
+            ValidationTargetInput(
+                sort_key=generated_video.scene_number,
+                entity_id=generated_video.scene_id,
+                target=target,
+                validated_media=generated_video.video,
+                declared_duration_seconds=generated_video.duration_seconds,
+                prompt_ref=generated_video.prompt_ref,
+                prompt_text=_load_prompt_text(store, generated_video.prompt_ref),
+                context_notes=_scene_context_notes(generated_video),
+            )
+        )
+    return targets
+
+
+def _final_output_target(inputs: dict[str, Any]) -> ValidationTargetInput:
+    payload = inputs.get("final_output")
+    if isinstance(payload, list):
+        payload = payload[-1] if payload else None
+    if not isinstance(payload, dict):
+        raise ValueError(
+            "media_validation_v1 requires a final_output input for "
+            "project-cut validation"
+        )
+    final_output = FinalOutputArtifact.model_validate(payload)
+    included_scene_count = len(final_output.included_scenes)
+    omitted_scene_count = len(final_output.omitted_scenes)
+    target = MediaValidationTarget(
+        scope_kind="project",
+        entity_id="project",
+        label="Project final output",
+        coverage_state=final_output.coverage_state,
+        included_scene_count=included_scene_count,
+        omitted_scene_count=omitted_scene_count,
+    )
+    return ValidationTargetInput(
+        sort_key=0,
+        entity_id="project",
+        target=target,
+        validated_media=final_output.video,
+        declared_duration_seconds=float(final_output.video.duration_seconds or 0.0),
+        prompt_ref=None,
+        prompt_text=None,
+        context_notes=_final_output_context_notes(final_output),
     )
 
 
@@ -211,13 +319,48 @@ def _generated_videos(
     return artifacts
 
 
-def _load_prompt_text(store: ArtifactStore, generated_video: GeneratedVideoArtifact) -> str | None:
+def _load_prompt_text(
+    store: ArtifactStore, prompt_ref: ArtifactRef | None
+) -> str | None:
+    if prompt_ref is None:
+        return None
     try:
-        prompt_artifact = store.load_artifact(generated_video.prompt_ref)
+        prompt_artifact = store.load_artifact(prompt_ref)
         prompt = CompiledRenderPrompt.model_validate(prompt_artifact.data)
         return prompt.prompt_text
     except Exception:
         return None
+
+
+def _scene_context_notes(generated_video: GeneratedVideoArtifact) -> list[str]:
+    notes = [
+        f"Declared duration seconds: {generated_video.duration_seconds:.2f}",
+        f"Resolution: {generated_video.resolution}",
+        f"Aspect ratio: {generated_video.aspect_ratio}",
+    ]
+    if generated_video.target_provider:
+        notes.append(f"Target provider: {generated_video.target_provider}")
+    if generated_video.target_model:
+        notes.append(f"Target model: {generated_video.target_model}")
+    return notes
+
+
+def _final_output_context_notes(final_output: FinalOutputArtifact) -> list[str]:
+    notes = [
+        f"Declared duration seconds: {float(final_output.video.duration_seconds or 0.0):.2f}",
+        f"Timeline version: {final_output.timeline_ref.version}",
+        f"Track manifest version: {final_output.track_manifest_ref.version}",
+    ]
+    if final_output.coverage_state == "partial":
+        notes.append(
+            "This assembled cut omits scenes that do not yet have generated-video coverage."
+        )
+    else:
+        notes.append("This assembled cut contains every scene currently covered by the timeline.")
+    if final_output.normalization_applied:
+        notes.append("Codec or timing normalization was applied during assembly.")
+    notes.extend(final_output.normalization_notes[:3])
+    return notes
 
 
 def _recommended_health(
@@ -245,4 +388,18 @@ def _optional_string(value: Any) -> str | None:
 def _validation_intent(target_artifact_type: str) -> str:
     if target_artifact_type == "ai_previz_video":
         return "Runtime trust report for an AI previz scene video."
+    if target_artifact_type == "final_output":
+        return "Runtime trust report for a project-level final output cut."
     return "Runtime trust report for a generated scene video."
+
+
+def _validation_rationale(target_artifact_type: str) -> str:
+    if target_artifact_type == "final_output":
+        return (
+            "Validation artifacts keep the assembled project cut honest by pairing "
+            "playback with inspectable media facts and an optional semantic review."
+        )
+    return (
+        "Validation artifacts make generated outputs inspectable without forcing "
+        "operators to scrub raw media or read run logs."
+    )

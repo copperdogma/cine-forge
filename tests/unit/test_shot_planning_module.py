@@ -494,6 +494,7 @@ def test_run_module_mock_updates_timeline_and_tracks(tmp_path: Path) -> None:
     shot_entries = [entry for entry in manifest.entries if entry.track_type == "shots"]
     assert len(shot_entries) == 6
     assert all(entry.shot_id for entry in shot_entries)
+    assert manifest.timeline_ref.version == 2
     assert manifest.track_fill_counts["shots"] == 6
 
 

@@ -646,7 +646,8 @@
           "158",
           "164",
           "165",
-          "166"
+          "166",
+          "167"
         ],
         "adrIds": [
           "ADR-002",
@@ -655,6 +656,7 @@
         "evalIds": [
           "previz-usefulness",
           "real-ai-previz-runtime",
+          "runtime-final-output-validation",
           "runtime-media-validation"
         ]
       },
@@ -835,7 +837,8 @@
           "153",
           "164",
           "165",
-          "166"
+          "166",
+          "167"
         ],
         "adrIds": [
           "ADR-002",
@@ -844,6 +847,7 @@
         "evalIds": [
           "previz-usefulness",
           "real-ai-previz-runtime",
+          "runtime-final-output-validation",
           "runtime-media-validation",
           "video-understanding"
         ]
@@ -930,7 +934,8 @@
           "159",
           "160",
           "161",
-          "162"
+          "162",
+          "167"
         ],
         "adrIds": [
           "ADR-001",
@@ -951,6 +956,7 @@
           "prop-extraction",
           "qa-pass",
           "relationship-discovery",
+          "runtime-final-output-validation",
           "runtime-media-validation",
           "scene-enrichment",
           "scene-extraction",
@@ -1073,7 +1079,8 @@
           "153",
           "164",
           "165",
-          "166"
+          "166",
+          "167"
         ],
         "adrIds": [
           "ADR-003"
@@ -1081,6 +1088,7 @@
         "evalIds": [
           "previz-usefulness",
           "real-ai-previz-runtime",
+          "runtime-final-output-validation",
           "runtime-media-validation"
         ]
       },
@@ -10349,6 +10357,78 @@
           "summary": "completion: marked Story 166 done after confirming the shipped slice closes the project-level final-output gap and only close-out/bookkeeping remained. Evidence: workflow gates are all checked; status is now `Done`; met…"
         }
       }
+    },
+    {
+      "id": "167",
+      "title": "Final Output Validation and Trust Surface",
+      "path": "docs/stories/story-167-final-output-validation-and-trust-surface.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R11 (production readiness)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.1",
+        "spec:10.3",
+        "spec:5.3",
+        "spec:7",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "140",
+        "166"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "feature-completeness",
+        "final-output",
+        "scene-generation",
+        "trust",
+        "validation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260413-0017",
+        "date": "2026-04-13",
+        "summary": "completion: marked Story 167 done after confirming the shipped slice closes the project-cut trust gap on the real rendered route and only close-out/bookkeeping remained. Evidence: all acceptance criteria and task checkb…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "167",
+        "sourcePath": "docs/stories/story-167-final-output-validation-and-trust-surface.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: marked Story 167 done after confirming the shipped slice closes the project-cut trust gap on the real rendered route and only close-out/bookkeeping remained. Evidence: all acceptance criteria and task checkb…",
+        "lastRelevantAction": {
+          "date": "2026-04-13",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-167-final-output-validation-and-trust-surface.md",
+          "summary": "completion: marked Story 167 done after confirming the shipped slice closes the project-cut trust gap on the real rendered route and only close-out/bookkeeping remained. Evidence: all acceptance criteria and task checkb…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -11488,6 +11568,76 @@
       }
     },
     {
+      "id": "runtime-final-output-validation",
+      "name": "Runtime Final Output Validation",
+      "type": "quality",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/runtime_media_validation_eval.py --eval-id runtime-final-output-validation --fixture-manifest benchmarks/fixtures/runtime_final_output_validation_cases.json --model gpt-5.4 --output-prefix benchmarks/results/runtime-final-output-validation-story-167",
+      "description": "End-to-end runtime validation baseline for project-level `final_output` artifacts. Compares deterministic-only, AI-only, and shared hybrid validation on a fixed final-output fixture pack with complete/partial semantic-review cases plus blocking structural failures.",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "storyIds": [
+        "167"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "compromiseIds": [],
+      "retryWhen": [],
+      "attempts": [],
+      "latestScore": {
+        "model": "Hybrid (GPT-5.4)",
+        "measured": "2026-04-12",
+        "note": "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator."
+      },
+      "declaredSpecRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "declaredStoryIds": [
+        "167"
+      ],
+      "declaredCategoryRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "actionability": {
+        "sourceKind": "eval",
+        "sourceId": "runtime-final-output-validation",
+        "sourcePath": "docs/evals/registry.yaml",
+        "recommendedNow": false,
+        "posture": "no-trigger-recorded",
+        "whyNow": "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator.",
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
+        "lastRelevantAction": {
+          "date": "2026-04-12",
+          "sourceType": "eval-score",
+          "source": "docs/evals/registry.yaml",
+          "summary": "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator."
+        }
+      }
+    },
+    {
       "id": "runtime-media-validation",
       "name": "Runtime Media Validation",
       "type": "quality",
@@ -12120,17 +12270,15 @@
         },
         {
           "id": "scene-generation-completion",
-          "status": "completed",
-          "story_refs": [
-            "166"
-          ],
-          "notes": "Story 164 closed the first representative Scene Workspace render route, Story 165 closed the render-refresh reuse loop, and Story 166 closed the project-level final-output playable-assembly slice from that honest scene-render baseline. Re-open this lane only after triage packages the next spec:6/spec:7 follow-up story."
+          "status": "active",
+          "story_refs": [],
+          "notes": "Stories 164, 165, 166, and 167 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, and the project-cut validation / trust follow-up. Keep `spec:6` / `spec:7` active, but let triage package the next non-terminal owner instead of pinning the campaign to a closed story."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, and Story 166 closed the project-level final-output playable-assembly slice.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, and Story 167 closed the project-cut validation / trust follow-up.",
         "lanes": [
           {
             "id": "pending-ready",

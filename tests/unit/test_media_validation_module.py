@@ -10,10 +10,11 @@ from cine_forge.modules.qa.media_validation_v1.main import _generated_videos, ru
 from cine_forge.schemas import (
     ArtifactHealth,
     ArtifactMetadata,
+    ArtifactRef,
     MediaValidationArtifact,
     SemanticMediaReview,
 )
-from tests.render_fixtures import seed_generated_video_project
+from tests.render_fixtures import seed_final_output_project, seed_generated_video_project
 
 
 @pytest.mark.unit
@@ -30,6 +31,8 @@ def test_run_module_validates_generated_video_with_real_clip(tmp_path: Path) -> 
     artifact = MediaValidationArtifact.model_validate(payload)
 
     assert artifact.target_ref.artifact_type == "generated_video"
+    assert artifact.target.scope_kind == "scene"
+    assert artifact.target.scene_id == seeded["scene_id"]
     assert artifact.deterministic_probe.decode_succeeded is True
     assert artifact.deterministic_probe.video_stream_present is True
     assert artifact.deterministic_probe.sample_count_extracted == 3
@@ -95,6 +98,7 @@ def test_run_module_can_target_ai_previz_video_refs(tmp_path: Path) -> None:
     artifact = MediaValidationArtifact.model_validate(result["artifacts"][0]["data"])
     assert artifact.target_ref.artifact_type == "ai_previz_video"
     assert artifact.target_ref.version == ai_previz_ref.version
+    assert artifact.target.scope_kind == "scene"
 
 
 @pytest.mark.unit
@@ -182,7 +186,7 @@ def test_run_module_normalizes_semantic_review_severity_synonyms(
             {
                 "verdict": "needs_review",
                 "summary": "The clip has a visible continuity concern.",
-                "confidence": 0.81,
+                "confidence": "medium",
                 "findings": [
                     {
                         "code": "continuity_break",
@@ -216,7 +220,80 @@ def test_run_module_normalizes_semantic_review_severity_synonyms(
     artifact = MediaValidationArtifact.model_validate(result["artifacts"][0]["data"])
 
     assert artifact.semantic_review.status == "needs_review"
+    assert artifact.semantic_review.confidence == pytest.approx(0.65)
     assert [finding.severity for finding in artifact.semantic_review.findings] == [
         "error",
         "warning",
     ]
+
+
+@pytest.mark.unit
+def test_run_module_can_validate_final_output_project_cut(tmp_path: Path) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_final_output_project(tmp_path, rendered_scene_ids=["scene_001", "scene_002"])
+    from cine_forge.driver.engine import DriverEngine
+
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+    run_state = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-final-output.yaml",
+        run_id="unit-final-output-seed",
+        end_at="final_output",
+        force=True,
+    )
+    final_output_ref = ArtifactRef.model_validate(
+        run_state["stages"]["final_output"]["artifact_refs"][0]
+    )
+    final_output_artifact = engine.store.load_artifact(final_output_ref).data
+
+    result = run_module(
+        inputs={"final_output": final_output_artifact},
+        params={"sample_count": 2, "target_artifact_type": "final_output"},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    artifact = MediaValidationArtifact.model_validate(result["artifacts"][0]["data"])
+
+    assert artifact.target.scope_kind == "project"
+    assert artifact.target.label == "Project final output"
+    assert artifact.target.coverage_state == "complete"
+    assert artifact.target.included_scene_count == 2
+    assert artifact.target.omitted_scene_count == 0
+    assert artifact.target_ref.artifact_type == "final_output"
+    assert artifact.target_ref.entity_id == "project"
+    assert artifact.validated_media.relative_path.endswith("final_output.mp4")
+    assert artifact.deterministic_probe.decode_succeeded is True
+    assert artifact.semantic_review.status == "skipped"
+
+
+@pytest.mark.unit
+def test_run_module_records_partial_final_output_coverage_in_project_scope(
+    tmp_path: Path,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_final_output_project(tmp_path, rendered_scene_ids=["scene_001"])
+    from cine_forge.driver.engine import DriverEngine
+
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+    run_state = engine.run(
+        recipe_path=workspace_root / "configs" / "recipes" / "recipe-final-output.yaml",
+        run_id="unit-final-output-partial-seed",
+        end_at="final_output",
+        force=True,
+    )
+    final_output_ref = ArtifactRef.model_validate(
+        run_state["stages"]["final_output"]["artifact_refs"][0]
+    )
+    final_output_artifact = engine.store.load_artifact(final_output_ref).data
+
+    result = run_module(
+        inputs={"final_output": final_output_artifact},
+        params={"sample_count": 2, "target_artifact_type": "final_output"},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    artifact = MediaValidationArtifact.model_validate(result["artifacts"][0]["data"])
+
+    assert artifact.target.scope_kind == "project"
+    assert artifact.target.coverage_state == "partial"
+    assert artifact.target.included_scene_count == 1
+    assert artifact.target.omitted_scene_count == 1

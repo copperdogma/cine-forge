@@ -101,6 +101,7 @@ from .media_validation import (
     MediaValidationEvidence,
     MediaValidationFinding,
     MediaValidationSample,
+    MediaValidationTarget,
     SemanticMediaReview,
 )
 from .memory import (
@@ -299,6 +300,7 @@ __all__ = [
     "MediaValidationEvidence",
     "MediaValidationFinding",
     "MediaValidationSample",
+    "MediaValidationTarget",
     "SourceFileInfo",
     "Keyframe",
     "KeyframeArtifact",

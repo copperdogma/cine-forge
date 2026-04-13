@@ -44,12 +44,10 @@ def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
     """Assemble the latest generated scene clips into a project-level playable cut."""
-    del params
+    del inputs, params
 
     project_dir = _project_dir(context)
     store = ArtifactStore(project_dir=project_dir)
-    _require_input(inputs, "timeline")
-    _require_input(inputs, "track_manifest")
 
     timeline_ref, timeline = _load_project_timeline(store)
     track_manifest_ref, track_manifest = _load_project_track_manifest(store)
@@ -137,13 +135,6 @@ def _project_dir(context: dict[str, Any]) -> Path:
     if not isinstance(project_dir_raw, str) or not project_dir_raw:
         raise ValueError("final_output_v1 requires context.project_dir")
     return Path(project_dir_raw)
-
-
-def _require_input(inputs: dict[str, Any], key: str) -> None:
-    if key not in inputs:
-        raise ValueError(f"final_output_v1 requires '{key}' input")
-
-
 def _load_project_timeline(store: ArtifactStore) -> tuple[ArtifactRef, Timeline]:
     timeline_ref = store.latest_ref("timeline", "project")
     if timeline_ref is None:

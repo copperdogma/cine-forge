@@ -1,0 +1,49 @@
+{
+  "cases": [
+    {
+      "case_id": "partial-project-cut-review",
+      "label": "Partial project cut review",
+      "target_kind": "final_output",
+      "rendered_scene_ids": ["scene_001"],
+      "prompt_text": "A short assembled cut should stay honest about partial scene coverage while still presenting a coherent playable clip from the rendered material that exists.",
+      "mutation": "none",
+      "expected_health": "valid",
+      "category": "semantic",
+      "expectation_note": "A partial assembled cut can still validate cleanly when the visible media is coherent and the omission truth is explicit."
+    },
+    {
+      "case_id": "complete-project-cut-review",
+      "label": "Complete project cut review",
+      "target_kind": "final_output",
+      "rendered_scene_ids": ["scene_001", "scene_002"],
+      "prompt_text": "A complete assembled cut should play as one coherent project-level output and surface any visible readability issues as review-worthy warnings rather than blocking failures.",
+      "mutation": "none",
+      "expected_health": "valid",
+      "category": "semantic",
+      "expectation_note": "A complete assembled cut should validate cleanly when the sampled media is coherent and exposes no blocking project-level issues."
+    },
+    {
+      "case_id": "missing-project-cut-file",
+      "label": "Missing project cut file",
+      "target_kind": "final_output",
+      "rendered_scene_ids": ["scene_001", "scene_002"],
+      "prompt_text": "A complete assembled cut should play as one coherent project-level output and surface any visible readability issues as review-worthy warnings rather than blocking failures.",
+      "mutation": "missing_file",
+      "expected_health": "needs_revision",
+      "category": "structural",
+      "expectation_note": "Missing final-output media is a blocking runtime failure."
+    },
+    {
+      "case_id": "corrupt-project-cut-decode",
+      "label": "Corrupt project cut decode",
+      "target_kind": "final_output",
+      "rendered_scene_ids": ["scene_001"],
+      "prompt_text": "A short assembled cut should stay honest about partial scene coverage while still presenting a coherent playable clip from the rendered material that exists.",
+      "mutation": "truncate_media",
+      "truncate_bytes": 512,
+      "expected_health": "needs_revision",
+      "category": "structural",
+      "expectation_note": "Corrupt final-output media that cannot decode is a blocking runtime failure."
+    }
+  ]
+}

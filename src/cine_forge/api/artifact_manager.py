@@ -488,19 +488,31 @@ class ArtifactManager:
         artifact_ref: ArtifactRef,
     ) -> dict[str, Any] | None:
         if (
-            artifact_ref.artifact_type not in {"generated_video", "ai_previz_video"}
+            artifact_ref.artifact_type
+            not in {"generated_video", "ai_previz_video", "final_output"}
             or not artifact_ref.entity_id
         ):
             return None
 
         validation_refs = store.list_versions("media_validation", artifact_ref.entity_id)
+        latest_nonmatching_ref: ArtifactRef | None = None
+        latest_nonmatching_validation: MediaValidationArtifact | None = None
+        latest_nonmatching_updated_at: str | None = None
         for validation_ref in reversed(validation_refs):
-            validation_health = store.graph.get_health(validation_ref)
-            if validation_health == ArtifactHealth.STALE:
-                continue
             artifact = store.load_artifact(validation_ref)
             validation = MediaValidationArtifact.model_validate(artifact.data)
             if validation.target_ref.key() != artifact_ref.key():
+                if (
+                    artifact_ref.artifact_type == "final_output"
+                    and validation.target_ref.artifact_type == "final_output"
+                    and latest_nonmatching_ref is None
+                ):
+                    latest_nonmatching_ref = validation_ref
+                    latest_nonmatching_validation = validation
+                    latest_nonmatching_updated_at = artifact.metadata.created_at.isoformat()
+                continue
+            validation_health = store.graph.get_health(validation_ref)
+            if validation_health == ArtifactHealth.STALE:
                 continue
             return {
                 "health": validation.recommended_health.value,
@@ -518,7 +530,44 @@ class ArtifactManager:
                     "updated_at": artifact.metadata.created_at.isoformat(),
                 },
             }
-        return None
+        if artifact_ref.artifact_type != "final_output":
+            return None
+        if latest_nonmatching_ref is not None and latest_nonmatching_validation is not None:
+            return {
+                "health": ArtifactHealth.NEEDS_REVIEW.value,
+                "health_details": {
+                    "health": ArtifactHealth.NEEDS_REVIEW.value,
+                    "source_kind": "media_validation_stale",
+                    "reason": (
+                        "The current final output has no matching validation yet. "
+                        "The latest validation artifact still points at an older assembled cut."
+                    ),
+                    "trigger_ref": latest_nonmatching_validation.target_ref.model_dump(mode="json"),
+                    "source_artifact_ref": latest_nonmatching_ref.model_dump(mode="json"),
+                    "upstream_change_summary": None,
+                    "suggested_revision": "Re-run media validation for the latest final output.",
+                    "confidence": None,
+                    "assessing_role": latest_nonmatching_validation.validator_id,
+                    "decided_by": None,
+                    "updated_at": latest_nonmatching_updated_at,
+                },
+            }
+        return {
+            "health": ArtifactHealth.NEEDS_REVIEW.value,
+            "health_details": {
+                "health": ArtifactHealth.NEEDS_REVIEW.value,
+                "source_kind": "media_validation_missing",
+                "reason": "The current final output has not been validated yet.",
+                "trigger_ref": artifact_ref.model_dump(mode="json"),
+                "source_artifact_ref": None,
+                "upstream_change_summary": None,
+                "suggested_revision": "Run media validation for the latest final output.",
+                "confidence": None,
+                "assessing_role": "media_validation_v1",
+                "decided_by": None,
+                "updated_at": None,
+            },
+        }
 
 
 def _validation_suggested_revision(validation: MediaValidationArtifact) -> str | None:

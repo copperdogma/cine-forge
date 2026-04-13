@@ -347,7 +347,13 @@ export default function ArtifactDetail() {
         return <GeneratedVideoViewer data={data} projectId={projectId ?? ''} />
 
       case 'final_output':
-        return <FinalOutputViewer data={data} projectId={projectId ?? ''} />
+        return (
+          <FinalOutputViewer
+            data={data}
+            projectId={projectId ?? ''}
+            healthDetails={healthDetails}
+          />
+        )
 
       case 'media_validation':
         return <MediaValidationViewer data={data} projectId={projectId ?? ''} />

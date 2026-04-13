@@ -11,7 +11,6 @@ from typing import Any
 from cine_forge.schemas import (
     ArtifactRef,
     DeterministicMediaProbe,
-    GeneratedVideoArtifact,
     MediaFile,
     MediaStreamSummary,
     MediaValidationFinding,
@@ -22,11 +21,14 @@ from cine_forge.schemas import (
 def run_deterministic_probe(
     *,
     project_dir: Path,
-    generated_video: GeneratedVideoArtifact,
+    validated_media: MediaFile,
+    target_label: str,
+    target_entity_id: str,
+    declared_duration_seconds: float,
     validation_ref: ArtifactRef,
     sample_count: int,
 ) -> tuple[DeterministicMediaProbe, list[str]]:
-    target_path = project_dir / generated_video.video.relative_path
+    target_path = project_dir / validated_media.relative_path
     ffprobe_path = shutil.which("ffprobe")
     ffmpeg_path = shutil.which("ffmpeg")
     findings: list[MediaValidationFinding] = []
@@ -43,7 +45,7 @@ def run_deterministic_probe(
             MediaValidationFinding(
                 code="missing_file",
                 severity="error",
-                message="Generated video file is missing from the project artifacts.",
+                message=f"{target_label} media file is missing from the project artifacts.",
             )
         )
         return probe, notes
@@ -64,7 +66,7 @@ def run_deterministic_probe(
         notes=notes,
     )
     _apply_probe_metadata(
-        generated_video=generated_video,
+        declared_duration_seconds=declared_duration_seconds,
         probe=probe,
         probe_payload=probe_payload,
         findings=findings,
@@ -72,7 +74,8 @@ def run_deterministic_probe(
     _extract_probe_samples(
         ffmpeg_path=ffmpeg_path,
         project_dir=project_dir,
-        generated_video=generated_video,
+        target_entity_id=target_entity_id,
+        declared_duration_seconds=declared_duration_seconds,
         validation_ref=validation_ref,
         target_path=target_path,
         probe=probe,
@@ -161,19 +164,19 @@ def _probe_decode(
 
 def _apply_probe_metadata(
     *,
-    generated_video: GeneratedVideoArtifact,
+    declared_duration_seconds: float,
     probe: DeterministicMediaProbe,
     probe_payload: dict[str, Any] | None,
     findings: list[MediaValidationFinding],
 ) -> None:
     if probe_payload is not None:
         _hydrate_probe_from_ffprobe(probe, probe_payload)
-    elif generated_video.duration_seconds > 0:
-        probe.duration_seconds = generated_video.duration_seconds
+    elif declared_duration_seconds > 0:
+        probe.duration_seconds = declared_duration_seconds
 
     _append_stream_findings(probe=probe, findings=findings)
     _append_duration_finding(
-        declared_duration=generated_video.duration_seconds,
+        declared_duration=declared_duration_seconds,
         observed_duration=probe.duration_seconds,
         findings=findings,
     )
@@ -230,7 +233,8 @@ def _extract_probe_samples(
     *,
     ffmpeg_path: str | None,
     project_dir: Path,
-    generated_video: GeneratedVideoArtifact,
+    target_entity_id: str,
+    declared_duration_seconds: float,
     validation_ref: ArtifactRef,
     target_path: Path,
     probe: DeterministicMediaProbe,
@@ -242,7 +246,7 @@ def _extract_probe_samples(
 
     media_dir = _validation_media_dir(
         project_dir,
-        generated_video.scene_id,
+        target_entity_id,
         validation_ref.version,
     )
     sample_frames, sample_notes = _extract_sample_frames(
@@ -250,7 +254,7 @@ def _extract_probe_samples(
         project_dir=project_dir,
         media_path=target_path,
         media_dir=media_dir,
-        duration_seconds=probe.duration_seconds or generated_video.duration_seconds,
+        duration_seconds=probe.duration_seconds or declared_duration_seconds,
         sample_count=probe.sample_count_requested,
     )
     probe.sample_frames = sample_frames
@@ -395,8 +399,8 @@ def _sample_timestamps(duration_seconds: float, sample_count: int) -> list[float
     ]
 
 
-def _validation_media_dir(project_dir: Path, scene_id: str, version: int) -> Path:
-    return project_dir / "artifacts" / "media_validation_media" / scene_id / f"v{version}"
+def _validation_media_dir(project_dir: Path, entity_id: str, version: int) -> Path:
+    return project_dir / "artifacts" / "media_validation_media" / entity_id / f"v{version}"
 
 
 def _relative_path(project_dir: Path, path: Path) -> str:

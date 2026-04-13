@@ -13,7 +13,7 @@ from pathlib import Path
 from statistics import mean
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
@@ -28,14 +28,28 @@ DEFAULT_MANIFEST = REPO_ROOT / "benchmarks" / "fixtures" / "runtime_media_valida
 class RuntimeValidationCase(BaseModel):
     case_id: str = Field(min_length=1)
     label: str = Field(min_length=1)
-    clip_slug: str = Field(min_length=1)
-    scene_heading: str = Field(min_length=1)
+    target_kind: Literal["generated_video", "final_output"] = "generated_video"
+    clip_slug: str | None = None
+    scene_heading: str | None = None
+    rendered_scene_ids: list[str] | None = None
     prompt_text: str = Field(min_length=1)
     mutation: Literal["none", "missing_file", "truncate_media"] = "none"
     truncate_bytes: int | None = Field(default=None, ge=1)
     expected_health: Literal["valid", "needs_review", "needs_revision"]
     category: Literal["semantic", "structural"]
     expectation_note: str | None = None
+
+    @model_validator(mode="after")
+    def _validate_target_shape(self) -> RuntimeValidationCase:
+        if self.target_kind == "generated_video":
+            if not self.clip_slug or not self.scene_heading:
+                raise ValueError(
+                    "generated_video cases require clip_slug and scene_heading"
+                )
+            return self
+        if not self.rendered_scene_ids:
+            raise ValueError("final_output cases require rendered_scene_ids")
+        return self
 
 
 class RuntimeValidationManifest(BaseModel):
@@ -60,6 +74,11 @@ class CaseResult(BaseModel):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--eval-id",
+        default="runtime-media-validation",
+        help="Eval ID recorded in the result payload.",
+    )
     parser.add_argument(
         "--fixture-manifest",
         type=Path,
@@ -100,6 +119,7 @@ def main() -> None:
             _run_case(
                 case=case,
                 approach=approach_id,
+                eval_id=args.eval_id,
                 model=args.model,
                 sample_count=args.sample_count,
             )
@@ -108,9 +128,9 @@ def main() -> None:
         approach_rows.append(_summarize_approach(approach_id, label, cases))
 
     result = {
-        "eval_id": "runtime-media-validation",
+        "eval_id": args.eval_id,
         "measured_at": datetime.now(UTC).isoformat(),
-        "fixture_manifest": str(args.fixture_manifest.relative_to(REPO_ROOT)),
+        "fixture_manifest": str(args.fixture_manifest.resolve().relative_to(REPO_ROOT)),
         "model": args.model,
         "sample_count": args.sample_count,
         "approaches": approach_rows,
@@ -130,21 +150,24 @@ def _run_case(
     *,
     case: RuntimeValidationCase,
     approach: Literal["deterministic_only", "ai_only", "hybrid"],
+    eval_id: str,
     model: str,
     sample_count: int,
 ) -> dict:
     imports = _runtime_imports()
-    seeded = _seed_case(case, approach)
+    seeded = _seed_case(case, approach, eval_id=eval_id)
     project_dir = seeded["project_dir"]
-    generated_video = seeded["generated_video"]
 
     started = time.perf_counter()
     if approach in {"deterministic_only", "hybrid"}:
-        params = {"sample_count": sample_count}
+        params = {
+            "sample_count": sample_count,
+            "target_artifact_type": seeded["target_artifact_type"],
+        }
         if approach == "hybrid":
             params["semantic_review_model"] = model
         result = imports["run_module"](
-            inputs={"generated_video": [generated_video.model_dump(mode="json")]},
+            inputs=seeded["module_inputs"],
             params=params,
             context={"project_dir": str(project_dir)},
         )
@@ -162,23 +185,31 @@ def _run_case(
     else:
         store = imports["ArtifactStore"](project_dir=project_dir)
         target_ref = imports["latest_entity_ref"](
-            store, "generated_video", generated_video.scene_id
+            store,
+            seeded["target_artifact_type"],
+            seeded["target_entity_id"],
         )
         if target_ref is None:
-            raise RuntimeError(f"Missing generated_video ref for case {case.case_id}")
+            raise RuntimeError(
+                f"Missing {seeded['target_artifact_type']} ref for case {case.case_id}"
+            )
         validation_ref = imports["anticipated_entity_ref"](
-            store, "media_validation", generated_video.scene_id
+            store, "media_validation", seeded["target_entity_id"]
         )
         probe, _notes = imports["run_deterministic_probe"](
             project_dir=project_dir,
-            generated_video=generated_video,
+            validated_media=seeded["validated_media"],
+            target_label=seeded["target"].label,
+            target_entity_id=seeded["target_entity_id"],
+            declared_duration_seconds=seeded["declared_duration_seconds"],
             validation_ref=validation_ref,
             sample_count=sample_count,
         )
         semantic_review = imports["review_sampled_frames"](
             model=model,
-            generated_video=generated_video,
+            target=seeded["target"],
             prompt_text=case.prompt_text,
+            context_notes=seeded["context_notes"],
             probe=probe,
             project_dir=project_dir,
             max_tokens=1200,
@@ -214,26 +245,93 @@ def _run_case(
 def _seed_case(
     case: RuntimeValidationCase,
     approach: str,
+    *,
+    eval_id: str,
 ) -> dict[str, object]:
     imports = _runtime_imports()
-    tmp_root = Path("/tmp/runtime-media-validation-eval") / approach / case.case_id
+    tmp_root = Path("/tmp") / eval_id / approach / case.case_id
     if tmp_root.exists():
         shutil.rmtree(tmp_root)
     tmp_root.mkdir(parents=True, exist_ok=True)
-    seeded = imports["seed_generated_video_project"](
-        tmp_root,
-        clip_slug=case.clip_slug,
-        scene_heading=case.scene_heading,
-        prompt_text=case.prompt_text,
-    )
+    if case.target_kind == "generated_video":
+        seeded = imports["seed_generated_video_project"](
+            tmp_root,
+            clip_slug=case.clip_slug,
+            scene_heading=case.scene_heading,
+            prompt_text=case.prompt_text,
+        )
+        generated_video = seeded["generated_video"]
+        media_path = seeded["project_dir"] / generated_video.video.relative_path
+        target = imports["MediaValidationTarget"](
+            scope_kind="scene",
+            entity_id=generated_video.scene_id,
+            label=f"Scene {generated_video.scene_number}: {generated_video.scene_heading}",
+            scene_id=generated_video.scene_id,
+            scene_number=generated_video.scene_number,
+            scene_heading=generated_video.scene_heading,
+        )
+        seeded_case = {
+            "project_dir": seeded["project_dir"],
+            "target_artifact_type": "generated_video",
+            "target_entity_id": generated_video.scene_id,
+            "target": target,
+            "validated_media": generated_video.video,
+            "declared_duration_seconds": generated_video.duration_seconds,
+            "context_notes": imports["scene_context_notes"](generated_video),
+            "module_inputs": {
+                "generated_video": [generated_video.model_dump(mode="json")]
+            },
+        }
+    else:
+        seeded = imports["seed_final_output_project"](
+            tmp_root,
+            rendered_scene_ids=case.rendered_scene_ids,
+            clip_slug=case.clip_slug or imports["default_clip_slug"],
+        )
+        engine = imports["DriverEngine"](
+            workspace_root=REPO_ROOT,
+            project_dir=seeded["project_dir"],
+        )
+        run_state = engine.run(
+            recipe_path=REPO_ROOT / "configs" / "recipes" / "recipe-final-output.yaml",
+            run_id=f"{eval_id}-{case.case_id}",
+            end_at="final_output",
+            force=True,
+        )
+        final_output_ref = imports["ArtifactRef"].model_validate(
+            run_state["stages"]["final_output"]["artifact_refs"][0]
+        )
+        final_output = imports["FinalOutputArtifact"].model_validate(
+            engine.store.load_artifact(final_output_ref).data
+        )
+        media_path = seeded["project_dir"] / final_output.video.relative_path
+        target = imports["MediaValidationTarget"](
+            scope_kind="project",
+            entity_id="project",
+            label="Project final output",
+            coverage_state=final_output.coverage_state,
+            included_scene_count=len(final_output.included_scenes),
+            omitted_scene_count=len(final_output.omitted_scenes),
+        )
+        seeded_case = {
+            "project_dir": seeded["project_dir"],
+            "target_artifact_type": "final_output",
+            "target_entity_id": "project",
+            "target": target,
+            "validated_media": final_output.video,
+            "declared_duration_seconds": float(
+                final_output.video.duration_seconds or 0.0
+            ),
+            "context_notes": imports["final_output_context_notes"](final_output),
+            "module_inputs": {"final_output": final_output.model_dump(mode="json")},
+        }
 
-    media_path = seeded["project_dir"] / seeded["generated_video"].video.relative_path
     if case.mutation == "missing_file":
         media_path.unlink()
     elif case.mutation == "truncate_media":
         truncate_bytes = case.truncate_bytes or 512
         media_path.write_bytes(media_path.read_bytes()[:truncate_bytes])
-    return seeded
+    return seeded_case
 
 
 def _semantic_only_health(review) -> str:
@@ -303,9 +401,20 @@ def _render_markdown(result: dict) -> str:
 
 
 def _runtime_imports() -> dict[str, object]:
-    from tests.render_fixtures import seed_generated_video_project
+    from tests.render_fixtures import (
+        _BENCHMARK_CLIP_SLUG,
+        seed_final_output_project,
+        seed_generated_video_project,
+    )
 
     from cine_forge.artifacts import ArtifactStore
+    from cine_forge.driver.engine import DriverEngine
+    from cine_forge.modules.qa.media_validation_v1.main import (
+        _final_output_context_notes as final_output_context_notes,
+    )
+    from cine_forge.modules.qa.media_validation_v1.main import (
+        _scene_context_notes as scene_context_notes,
+    )
     from cine_forge.modules.qa.media_validation_v1.main import run_module
     from cine_forge.modules.qa.media_validation_v1.support import (
         anticipated_entity_ref,
@@ -313,17 +422,31 @@ def _runtime_imports() -> dict[str, object]:
         review_sampled_frames,
         run_deterministic_probe,
     )
-    from cine_forge.schemas import ArtifactHealth, MediaValidationArtifact
+    from cine_forge.schemas import (
+        ArtifactHealth,
+        ArtifactRef,
+        FinalOutputArtifact,
+        MediaValidationArtifact,
+        MediaValidationTarget,
+    )
 
     return {
         "ArtifactHealth": ArtifactHealth,
+        "ArtifactRef": ArtifactRef,
         "ArtifactStore": ArtifactStore,
+        "DriverEngine": DriverEngine,
+        "FinalOutputArtifact": FinalOutputArtifact,
         "MediaValidationArtifact": MediaValidationArtifact,
+        "MediaValidationTarget": MediaValidationTarget,
         "anticipated_entity_ref": anticipated_entity_ref,
+        "default_clip_slug": _BENCHMARK_CLIP_SLUG,
+        "final_output_context_notes": final_output_context_notes,
         "latest_entity_ref": latest_entity_ref,
         "review_sampled_frames": review_sampled_frames,
         "run_deterministic_probe": run_deterministic_probe,
         "run_module": run_module,
+        "scene_context_notes": scene_context_notes,
+        "seed_final_output_project": seed_final_output_project,
         "seed_generated_video_project": seed_generated_video_project,
     }
 

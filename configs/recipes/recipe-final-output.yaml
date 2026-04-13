@@ -8,8 +8,9 @@ stages:
     module: final_output_v1
     params: {}
     needs: []
-    store_inputs:
-      timeline: timeline
-      track_manifest: track_manifest
-    store_inputs_all:
-      generated_video: generated_video
+  - id: final_output_validation
+    module: media_validation_v1
+    params:
+      target_artifact_type: final_output
+    needs:
+      - final_output

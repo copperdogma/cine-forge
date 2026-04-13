@@ -6,6 +6,7 @@ description: >
   recommendations.
 input_schemas:
   - generated_video
+  - final_output
 output_schemas:
   - media_validation
 parameters:
@@ -32,4 +33,4 @@ parameters:
     type: string
     required: false
     default: "generated_video"
-    description: "Artifact type whose latest ref should be treated as the validation target (`generated_video` or `ai_previz_video`)."
+    description: "Artifact type whose latest ref should be treated as the validation target (`generated_video`, `ai_previz_video`, or `final_output`)."
