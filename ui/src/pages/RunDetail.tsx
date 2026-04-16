@@ -291,6 +291,12 @@ export default function RunDetail() {
       stageName,
     }))
   )
+  const failedAllScenesRun = overallStatus === 'failed' && sceneScope?.mode === 'all_scenes'
+  const partialFailureSummary = failedAllScenesRun
+    ? allArtifacts.length > 0
+      ? `This all-scenes run failed after saving ${allArtifacts.length} artifact${allArtifacts.length === 1 ? '' : 's'}. Review the preserved outputs below, then rerun from the failed scene set or refresh the affected scenes.`
+      : 'This all-scenes run failed before CineForge finished the batch. Inspect the error details and event log below to see which scenes still need another pass.'
+    : null
 
   // Map API events to RunEvent format
   const events: RunEvent[] = eventsResponse?.events
@@ -649,7 +655,14 @@ export default function RunDetail() {
             <div className="flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
               <div>
-                <div className="font-medium text-sm mb-1">Background Error</div>
+                <div className="font-medium text-sm mb-1">
+                  {failedAllScenesRun ? 'All-Scenes Run Failed' : 'Background Error'}
+                </div>
+                {partialFailureSummary && (
+                  <div className="text-sm text-muted-foreground mb-2">
+                    {partialFailureSummary}
+                  </div>
+                )}
                 <div className="text-sm text-muted-foreground">
                   {runState.background_error}
                 </div>

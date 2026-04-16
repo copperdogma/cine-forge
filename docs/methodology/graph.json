@@ -649,7 +649,8 @@
           "166",
           "167",
           "168",
-          "169"
+          "169",
+          "170"
         ],
         "adrIds": [
           "ADR-002",
@@ -766,7 +767,8 @@
           "164",
           "165",
           "168",
-          "169"
+          "169",
+          "170"
         ],
         "adrIds": [
           "ADR-002",
@@ -846,7 +848,8 @@
           "166",
           "167",
           "168",
-          "169"
+          "169",
+          "170"
         ],
         "adrIds": [
           "ADR-002",
@@ -1091,7 +1094,8 @@
           "164",
           "165",
           "166",
-          "167"
+          "167",
+          "170"
         ],
         "adrIds": [
           "ADR-003"
@@ -10596,6 +10600,85 @@
           "summary": "story-done: closed Story 169 after the narrow close-out hygiene"
         }
       }
+    },
+    {
+      "id": "170",
+      "title": "Breadth-First Scene Generation Product Truth",
+      "path": "docs/stories/story-170-breadth-first-scene-generation-product-truth.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R11 (production readiness)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:10.1",
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.1",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "148",
+        "164",
+        "165",
+        "166",
+        "167",
+        "168",
+        "169"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "breadth-first",
+        "feature-completeness",
+        "final-output",
+        "render",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260416-1908",
+        "date": "2026-04-16",
+        "summary": "completion: marked Story 170 done after the fresh representative rerun closed the only remaining acceptance gap. Evidence: all acceptance criteria and task checkboxes are now checked; the required checks remain green fr…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "170",
+        "sourcePath": "docs/stories/story-170-breadth-first-scene-generation-product-truth.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: marked Story 170 done after the fresh representative rerun closed the only remaining acceptance gap. Evidence: all acceptance criteria and task checkboxes are now checked; the required checks remain green fr…",
+        "lastRelevantAction": {
+          "date": "2026-04-16",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-170-breadth-first-scene-generation-product-truth.md",
+          "summary": "completion: marked Story 170 done after the fresh representative rerun closed the only remaining acceptance gap. Evidence: all acceptance criteria and task checkboxes are now checked; the required checks remain green fr…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -12511,15 +12594,23 @@
         },
         {
           "id": "scene-generation-completion",
-          "status": "active",
-          "story_refs": [],
-          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. The campaign stays active, but triage must name the next non-terminal owner."
+          "status": "completed",
+          "story_refs": [
+            "164",
+            "165",
+            "166",
+            "167",
+            "168",
+            "169",
+            "170"
+          ],
+          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route, so the current `spec:6` / `spec:7` lane now needs fresh triage rather than another in-progress owner."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, and Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, and Story 170 closed the breadth-first scene-generation follow-up. The next move in `spec:6` / `spec:7` should come from fresh triage rather than another preselected in-progress story.",
         "lanes": [
           {
             "id": "pending-ready",

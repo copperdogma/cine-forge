@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, and Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, and Story 170 closed the breadth-first scene-generation follow-up. The next move in `spec:6` / `spec:7` should come from fresh triage rather than another preselected in-progress story.
 
 ### Pending — Ready To Build Now
 
@@ -106,7 +106,6 @@ No blocked lines currently need attention.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
 - Active campaign `ui-product-truth-scouting`: Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage.
-- Active campaign `scene-generation-completion`: Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. The campaign stays active, but triage must name the next non-terminal owner.
 
 ## Story Index
 
@@ -249,6 +248,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 167 | Final Output Validation and Trust Surface | High | Done | — | spec:5, spec:7, spec:8, spec:10 | 140, 166 | [story-167](stories/story-167-final-output-validation-and-trust-surface.md) |
 | 168 | Reference-Conditioned Scene Generation Product Truth | High | Done | — | spec:5, spec:6, spec:7 | 029, 056, 119, 141, 164 | [story-168](stories/story-168-reference-conditioned-scene-generation-product-truth.md) |
 | 169 | Reference-Conditioned Final Render Provider Floor | High | Done | — | spec:5, spec:6, spec:7, spec:8 | 028, 030, 164, 168 | [story-169](stories/story-169-reference-conditioned-final-render-provider-floor.md) |
+| 170 | Breadth-First Scene Generation Product Truth | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 148, 164, 165, 166, 167, 168, 169 | [story-170](stories/story-170-breadth-first-scene-generation-product-truth.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

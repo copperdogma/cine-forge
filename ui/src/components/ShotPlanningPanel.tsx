@@ -66,7 +66,7 @@ export function ShotPlanningPanel({
   const detailHref = shotPlanGroup
     ? `/${projectId}/artifacts/shot_plan/${sceneId}/${shotPlanGroup.latest_version}`
     : null
-  const runDetailHref = activeRunId ? `/${projectId}/run/${activeRunId}` : null
+  const runDetailHref = activeRunId ? `/${projectId}/runs/${activeRunId}` : null
   const configuredScopeLabel = getSceneScopeLabel(sceneScope)
   const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
 

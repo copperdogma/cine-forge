@@ -307,6 +307,16 @@ export function useRunProgressChat(projectId: string | undefined) {
       (m) => m.id === `progress_${activeRunId}_complete` || m.id === `progress_${activeRunId}_failed`,
     )
     if (runState.state.finished_at) {
+      // Keep terminal failure context available to the workspace panels and CTA links.
+      const executedStageOrder = (runState.state.stage_order as string[] | undefined)
+        ?? Object.keys(stages)
+      const executedStages = executedStageOrder
+        .map((stageId) => stages[stageId])
+        .filter((stage): stage is StageState => !!stage)
+      const hasFailed = executedStages.some(
+        (stage) => stage.status === 'failed' || stage.status === 'pending',
+      )
+
       if (!completedRef.current.has(activeRunId) && !completionAlreadyPersisted) {
         completedRef.current.add(activeRunId)
 
@@ -319,15 +329,6 @@ export function useRunProgressChat(projectId: string | undefined) {
 
         // A stage left 'pending' on a finished run means an unhandled exception
         // (e.g. missing upstream output) aborted the wave before stage_state was updated.
-        const executedStageOrder = (runState.state.stage_order as string[] | undefined)
-          ?? Object.keys(stages)
-        const executedStages = executedStageOrder
-          .map((stageId) => stages[stageId])
-          .filter((stage): stage is StageState => !!stage)
-        const hasFailed = executedStages.some(
-          (stage) => stage.status === 'failed' || stage.status === 'pending',
-        )
-
         if (hasFailed) {
           void (async () => {
             const currentMessages = useChatStore.getState().getMessages(projectId)
@@ -497,7 +498,9 @@ export function useRunProgressChat(projectId: string | undefined) {
         queryKey: ['projects', projectId, 'runs'],
       })
 
-      store.clearActiveRun(projectId)
+      if (!hasFailed) {
+        store.clearActiveRun(projectId)
+      }
     }
   }, [runState, runEvents, activeRunId, projectId, queryClient])
 }

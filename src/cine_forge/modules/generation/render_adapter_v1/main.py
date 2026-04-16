@@ -111,35 +111,61 @@ def run_module(
     )
     engine_pack = load_engine_pack(engine_pack_id)
     source_maps = _build_source_maps(inputs)
+    announce_artifact = _artifact_announcer(context)
 
     artifacts: list[dict[str, Any]] = []
     total_cost = _empty_cost(model=compiler_model)
     generated_refs: dict[str, ArtifactRef] = {}
+    render_failures: list[dict[str, Any]] = []
 
     for plan in sorted(shot_plans, key=lambda item: item.scene_number):
         scene_artifact = store.load_artifact(plan.scene_ref)
         scene = Scene.model_validate(scene_artifact.data)
-        prompt_artifact, video_artifact, cost = _render_scene(
-            store=store,
-            scene=scene,
-            plan=plan,
-            source_maps=source_maps,
-            engine_pack=engine_pack,
-            compiler_model=compiler_model,
-            requested_duration_seconds=requested_duration_seconds,
-            requested_resolution=requested_resolution,
-            requested_aspect_ratio=requested_aspect_ratio,
-            output_contract=output_contract,
-        )
-        generated_refs[plan.scene_id] = anticipated_entity_ref(
-            store, output_contract["video_artifact_type"], plan.scene_id
-        )
+        try:
+            prompt_artifact, video_artifact, cost = _render_scene(
+                store=store,
+                scene=scene,
+                plan=plan,
+                source_maps=source_maps,
+                engine_pack=engine_pack,
+                compiler_model=compiler_model,
+                requested_duration_seconds=requested_duration_seconds,
+                requested_resolution=requested_resolution,
+                requested_aspect_ratio=requested_aspect_ratio,
+                output_contract=output_contract,
+            )
+            _announce_artifact(announce_artifact, prompt_artifact)
+            video_ref = _announce_artifact(announce_artifact, video_artifact)
+            if video_ref is None:
+                video_ref = anticipated_entity_ref(
+                    store, output_contract["video_artifact_type"], plan.scene_id
+                )
+        except Exception as exc:  # noqa: BLE001
+            render_failures.append(_scene_failure(plan=plan, exc=exc))
+            print(
+                "[render_adapter] Failed "
+                f"{plan.scene_id} with {engine_pack.pack_id}: {exc}"
+            )
+            continue
+
+        generated_refs[plan.scene_id] = video_ref
         artifacts.extend([prompt_artifact, video_artifact])
         _merge_cost(total_cost, cost)
         print(
             "[render_adapter] Compiled and rendered "
             f"{plan.scene_id} as {output_contract['video_artifact_type']} "
             f"with {engine_pack.pack_id}."
+        )
+
+    if not generated_refs and render_failures:
+        if len(render_failures) == 1:
+            raise render_failures[0]["exception"]
+        raise RuntimeError(
+            _render_failure_summary(
+                failures=render_failures,
+                success_count=0,
+                total_count=len(shot_plans),
+            )
         )
 
     track_manifest_ref = latest_project_ref(store, "track_manifest")
@@ -153,26 +179,83 @@ def run_module(
         priority=output_contract["track_priority"],
         notes=output_contract["track_note"],
     )
-    artifacts.append(
-        {
-            "artifact_type": "track_manifest",
-            "entity_id": "project",
-            "data": updated_manifest.model_dump(mode="json"),
-            "include_stage_lineage": True,
-            "metadata": {
-                "lineage": [track_manifest_ref.model_dump(mode="json")],
-                "intent": "Updated track manifest with generated video entries.",
-                "rationale": (
-                    "Generated video becomes the highest-fidelity playable track when "
-                    "scene renders are available."
-                ),
-                "confidence": 0.88,
-                "source": "hybrid",
-                "annotations": {"generated_scene_count": len(generated_refs)},
-            },
-        }
+    track_manifest_artifact = _track_manifest_artifact_dict(
+        updated_manifest=updated_manifest,
+        track_manifest_ref=track_manifest_ref,
+        generated_video_refs=generated_refs,
     )
+    _announce_artifact(announce_artifact, track_manifest_artifact)
+    artifacts.append(track_manifest_artifact)
+
+    if render_failures:
+        raise RuntimeError(
+            _render_failure_summary(
+                failures=render_failures,
+                success_count=len(generated_refs),
+                total_count=len(shot_plans),
+            )
+        )
     return {"artifacts": artifacts, "cost": total_cost}
+
+
+def _artifact_announcer(context: dict[str, Any]) -> Any | None:
+    announce = context.get("announce_artifact") if isinstance(context, dict) else None
+    return announce if callable(announce) else None
+
+
+def _announce_artifact(announce: Any | None, artifact: dict[str, Any]) -> ArtifactRef | None:
+    if not callable(announce):
+        return None
+    announce(artifact)
+    return _pre_saved_ref(artifact)
+
+
+def _pre_saved_ref(artifact: dict[str, Any]) -> ArtifactRef | None:
+    raw = artifact.get("pre_saved_ref")
+    if not isinstance(raw, dict):
+        return None
+    return ArtifactRef.model_validate(raw)
+
+
+def _scene_failure(*, plan: ShotPlan, exc: Exception) -> dict[str, Any]:
+    return {
+        "scene_id": plan.scene_id,
+        "scene_number": plan.scene_number,
+        "scene_heading": plan.scene_heading,
+        "error_class": exc.__class__.__name__,
+        "error": _clean_error_detail(str(exc)),
+        "exception": exc,
+    }
+
+
+def _clean_error_detail(message: str) -> str:
+    compact = " ".join(message.split())
+    return compact if compact else "Unknown render failure"
+
+
+def _render_failure_summary(
+    *,
+    failures: list[dict[str, Any]],
+    success_count: int,
+    total_count: int,
+) -> str:
+    failure_count = len(failures)
+    details = ", ".join(
+        f"{failure['scene_id']} ({failure['error_class']}: {failure['error']})"
+        for failure in failures[:5]
+    )
+    if failure_count > 5:
+        details += f", +{failure_count - 5} more"
+    if success_count > 0:
+        return (
+            "Render generation preserved "
+            f"{success_count} successful scene render(s) but failed for "
+            f"{failure_count}/{total_count} scene(s): {details}."
+        )
+    return (
+        "Render generation failed before any scene renders were preserved: "
+        f"{details}."
+    )
 
 
 def _render_scene(
@@ -1391,6 +1474,7 @@ def _video_artifact_dict(
                 [
                     generated_video.scene_ref,
                     generated_video.shot_plan_ref,
+                    generated_video.prompt_ref,
                     generated_video.keyframe_ref,
                     *[item.source_ref for item in generated_video.resolved_inputs],
                 ]
@@ -1409,6 +1493,31 @@ def _video_artifact_dict(
                 "request_notes": request_notes,
                 "compile_model": compile_cost.get("model"),
             },
+        },
+    }
+
+
+def _track_manifest_artifact_dict(
+    *,
+    updated_manifest: TrackManifest,
+    track_manifest_ref: ArtifactRef,
+    generated_video_refs: dict[str, ArtifactRef],
+) -> dict[str, Any]:
+    return {
+        "artifact_type": "track_manifest",
+        "entity_id": "project",
+        "data": updated_manifest.model_dump(mode="json"),
+        "include_stage_lineage": True,
+        "metadata": {
+            "lineage": _lineage_dump([track_manifest_ref, *generated_video_refs.values()]),
+            "intent": "Updated track manifest with generated video entries.",
+            "rationale": (
+                "Generated video becomes the highest-fidelity playable track when "
+                "scene renders are available."
+            ),
+            "confidence": 0.88,
+            "source": "hybrid",
+            "annotations": {"generated_scene_count": len(generated_video_refs)},
         },
     }
 

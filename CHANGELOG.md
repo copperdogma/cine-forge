@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-16-02] — Close the breadth-first scene-generation route (Story 170)
+
+### Changed
+- Changed the shipped `all_scenes` render route so successful scene outputs and the matching generated-video track manifest persist incrementally instead of disappearing when a later scene fails
+- Changed planning truth to record Story 170 as the story that closes the breadth-first scene-generation route and returns the `spec:6` / `spec:7` lane to fresh triage
+
+### Fixed
+- Fixed the surfaced render and Run Detail failure language so batch failures stay honest about preserved outputs, failed scene ids, and the real Run Detail route
+- Fixed the representative-validation gap by re-running the real surfaced all-scenes route and complete `final_output` handoff on a fresh project after removing the local patched smoke backend
 ## [2026-04-16-01] — Choose the final render provider floor (Story 169)
 
 ### Added

@@ -92,6 +92,8 @@ export function GeneratedVideoPanel({
     hasActiveRun && !!runState && runState.state.recipe_id !== 'render_generation'
   const renderRunFailed =
     !!activeRunId && runState?.state.recipe_id === 'render_generation' && runHasFailed(runState)
+  const failedAllScenesRun =
+    renderRunFailed && runState?.state.runtime_params?.scene_scope?.mode === 'all_scenes'
   const renderStage = runState?.state.stages?.render
   const renderError = renderRunFailed
     ? runState?.background_error?.trim()
@@ -117,7 +119,8 @@ export function GeneratedVideoPanel({
   const configuredScopeLabel = getSceneScopeLabel(sceneScope)
   const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
   const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
-  const runDetailHref = activeRunId ? `/${projectId}/run/${activeRunId}` : null
+  const runDetailHref = activeRunId ? `/${projectId}/runs/${activeRunId}` : null
+  const currentSceneHasSavedOutput = !!(videoData || promptData || generatedVideoGroup || renderPromptGroup)
 
   async function handleStartRender() {
     if (!latestInputPath) return
@@ -273,9 +276,15 @@ export function GeneratedVideoPanel({
             <AlertCircle className="mt-0.5 h-4 w-4 text-destructive" />
             <div className="space-y-2">
               <div className="space-y-1">
-                <p className="text-sm font-medium text-destructive">Scene render failed</p>
+                <p className="text-sm font-medium text-destructive">
+                  {failedAllScenesRun ? 'All-scenes render run failed' : 'Scene render failed'}
+                </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {renderError}
+                  {failedAllScenesRun
+                    ? currentSceneHasSavedOutput
+                      ? `${renderError} CineForge may already have saved successful outputs before the batch failed. This scene is showing the latest render artifacts that landed here; open Run Details to see which scenes still need another pass.`
+                      : `${renderError} CineForge may still have saved outputs for other scenes before the batch failed. Open Run Details to inspect preserved artifacts and the failed scene list.`
+                    : renderError}
                 </p>
               </div>
               {runDetailHref && (

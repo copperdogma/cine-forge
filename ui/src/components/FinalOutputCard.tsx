@@ -119,7 +119,7 @@ export function FinalOutputCard({
   const validationDetailHref = validationRef?.entity_id && validationRef.version
     ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
     : null
-  const runDetailHref = activeRunId ? `/${projectId}/run/${activeRunId}` : null
+  const runDetailHref = activeRunId ? `/${projectId}/runs/${activeRunId}` : null
 
   async function handleStartFinalOutput() {
     if (!latestInputPath) return
