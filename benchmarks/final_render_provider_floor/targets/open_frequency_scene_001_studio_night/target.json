@@ -1,0 +1,58 @@
+{
+  "clip_id": "open_frequency_scene_001_studio_night",
+  "title": "Open Frequency scene 001 — radio studio night",
+  "source_type": "licensed_internal",
+  "source_description": "Representative Story 169 final-render benchmark target for the storm-hit radio studio scene in Open Frequency.",
+  "rights": "Project-owned internal benchmark fixture",
+  "duration_seconds": 8.0,
+  "resolution": "720p",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": null,
+  "summary_reference": "A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.",
+  "required_keywords": [
+    "radio",
+    "studio",
+    "storm"
+  ],
+  "tone_tags": [
+    "tense",
+    "hopeful"
+  ],
+  "emotion_tags": [
+    "resolve",
+    "suspicion"
+  ],
+  "color_tags": [
+    "navy",
+    "teal",
+    "amber"
+  ],
+  "camera_tags": [
+    "wide_master"
+  ],
+  "motion_tags": [
+    "measured"
+  ],
+  "continuity_status": "ambiguous",
+  "continuity_notes": [],
+  "audio_tags": [],
+  "clip_tags": [
+    "dialogue",
+    "ensemble",
+    "interior",
+    "reference_conditioned"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.22,
+    "tone": 0.16,
+    "emotion": 0.14,
+    "color": 0.12,
+    "camera": 0.1,
+    "motion": 0.08,
+    "continuity": 0.08,
+    "audio": 0.06,
+    "evidence": 0.04
+  }
+}

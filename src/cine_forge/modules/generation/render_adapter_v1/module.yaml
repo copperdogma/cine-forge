@@ -33,7 +33,7 @@ parameters:
   engine_pack_id:
     type: string
     required: false
-    default: "openai_sora2"
+    default: "google_veo31"
     description: "Engine pack used for provider capability checks and request shaping."
   compiler_model:
     type: string

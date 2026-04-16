@@ -1,0 +1,1067 @@
+{
+  "evalId": "eval-KvQ-2026-04-16T20:10:26",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-04-16T20:10:26.015Z",
+    "prompts": [
+      {
+        "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "id": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "provider": "OpenAI Sora 2 Render",
+        "metrics": {
+          "score": 1.2227,
+          "testPassCount": 1,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 2,
+          "totalLatencyMs": 21987,
+          "tokenUsage": {
+            "prompt": 12239,
+            "completion": 906,
+            "cached": 0,
+            "total": 13145,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2655,
+              "prompt": 1667,
+              "completion": 988,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.044187500000000005
+        }
+      },
+      {
+        "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "id": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "provider": "Google Veo 3.1 Render",
+        "metrics": {
+          "score": 1.49935,
+          "testPassCount": 2,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 4,
+          "assertFailCount": 0,
+          "totalLatencyMs": 21748,
+          "tokenUsage": {
+            "prompt": 12239,
+            "completion": 860,
+            "cached": 0,
+            "total": 13099,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2520,
+              "prompt": 1774,
+              "completion": 746,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.043497499999999995
+        }
+      },
+      {
+        "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "id": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "provider": "Google Veo 3.1 Fast Render",
+        "metrics": {
+          "score": 1.2127,
+          "testPassCount": 1,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 2,
+          "totalLatencyMs": 19933,
+          "tokenUsage": {
+            "prompt": 12239,
+            "completion": 722,
+            "cached": 0,
+            "total": 12961,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2359,
+              "prompt": 1619,
+              "completion": 740,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.0414275
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.020935,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.74135,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1180,
+            "prompt": 823,
+            "completion": 357,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.7427,
+              "reason": "overall=0.743 | uncertainty=0.160 | summary=0.67 | tone=0.50 | emotion=1.00 | color=0.67 | camera=1.00 | motion=1.00 | continuity=0.20 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | summary: storm | tone: hopeful | color: navy | continuity: status=ambiguous",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              },
+              "pass": true,
+              "score": 0.74,
+              "reason": "The output closely matches the reference analysis in most key areas. Summary captures the rain-soaked radio studio at night with the team working around analog equipment to get the station live - this aligns well with the reference's 'storm-battered community radio studio' and 'fight to get the station live.' The tone tags include 'tense' (matching) and 'urgent' (close to but not exactly 'hopeful' from the reference - this is a notable miss). Emotion tags include 'resolve' and 'suspicion' (both matching), plus 'hesitation' (not in reference but reasonable). Color tags include 'teal' and 'amber' (both matching), plus 'desaturated' and 'red' - missing 'navy' from the reference. Camera tags include 'wide_master' (matching) plus additional tags. Motion includes 'measured' (matching). The biggest divergence is continuity: the output says 'intact' while the reference says 'ambiguous' - this is a meaningful difference as it suggests the model was too confident about continuity. The storm-night atmosphere is well-preserved ('rain-soaked,' 'rain on windows'). Character distinctness is maintained with specific mention of three people plus a fourth entering. The evidence timestamps provide good specificity about the dramatic progression culminating in the ON AIR sign. The output reads as a deliberately staged scene analysis rather than generic video description. Minor penalties for: missing 'hopeful' tone, missing 'navy' color, and incorrect continuity status.",
+              "tokensUsed": {
+                "total": 1180,
+                "prompt": 823,
+                "completion": 357,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"open_frequency_scene_001_studio_night\\\",\\\"summary\\\":\\\"In a rain-soaked radio studio, three people work around analog equipment as a fourth person enters carrying gear. The scene culminates in a close-up of a control being switched and the ON AIR sign lighting up.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"urgent\\\"],\\\"emotion_tags\\\":[\\\"suspicion\\\",\\\"resolve\\\",\\\"hesitation\\\"],\\\"color_tags\\\":[\\\"teal\\\",\\\"amber\\\",\\\"desaturated\\\",\\\"red\\\"],\\\"camera_tags\\\":[\\\"wide_master\\\",\\\"profile_closeup\\\",\\\"static\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"abrupt_cut\\\",\\\"stillness\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"The sampled frames support a coherent progression from studio setup, to a person entering through the left door, to a close-up of the broadcast control activating the ON AIR sign. No clear visual continuity break is evident across wardrobe, set layout, or action direction.\\\",\\\"audio_tags\\\":[\\\"speech\\\",\\\"radio\\\"],\\\"audio_notes\\\":\\\"Audio is not provided in the packet, but the dialogue/ensemble metadata and radio-studio visuals support likely spoken interaction and broadcast-related sound. No stronger audio claim is grounded from the samples alone.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.8,\\\"cue\\\":\\\"Wide studio view shows three people at tape and mixing equipment, rain on windows, and a figure visible at the left door.\\\"},{\\\"timestamp_seconds\\\":2.1,\\\"cue\\\":\\\"The left door opens and a fourth person enters carrying a lantern and long antenna-like gear, increasing scene urgency.\\\"},{\\\"timestamp_seconds\\\":6.4,\\\"cue\\\":\\\"Close-up isolates a hand turning a control beneath an unlit ON AIR sign on the console.\\\"},{\\\"timestamp_seconds\\\":7.2,\\\"cue\\\":\\\"The ON AIR sign glows red immediately after the control adjustment, signaling broadcast activation.\\\"}],\\\"overall_confidence\\\":0.84}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scene 001 — radio studio night\\n\\n- Summary: A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.\\n- Tone: tense, hopeful\\n- Emotion: resolve, suspicion\\n- Color / grade: navy, teal, amber\\n- Camera language: wide_master\\n- Motion: measured\\n- Continuity: ambiguous\\n\\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\\nor read like generic video instead of a deliberately staged final render.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Open Frequency scene 001 — radio studio night\n\n- Summary: A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.\n- Tone: tense, hopeful\n- Emotion: resolve, suspicion\n- Color / grade: navy, teal, amber\n- Camera language: wide_master\n- Motion: measured\n- Continuity: ambiguous\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              }
+            }
+          ]
+        },
+        "id": "2aa216da-2f6a-4c27-a0b8-ef8fb0a45cc9",
+        "latencyMs": 9890,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "promptIdx": 2,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Google Veo 3.1 Fast Render"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"open_frequency_scene_001_studio_night\",\"summary\":\"In a rain-soaked radio studio, three people work around analog equipment as a fourth person enters carrying gear. The scene culminates in a close-up of a control being switched and the ON AIR sign lighting up.\",\"tone_tags\":[\"tense\",\"urgent\"],\"emotion_tags\":[\"suspicion\",\"resolve\",\"hesitation\"],\"color_tags\":[\"teal\",\"amber\",\"desaturated\",\"red\"],\"camera_tags\":[\"wide_master\",\"profile_closeup\",\"static\"],\"motion_tags\":[\"measured\",\"abrupt_cut\",\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":\"The sampled frames support a coherent progression from studio setup, to a person entering through the left door, to a close-up of the broadcast control activating the ON AIR sign. No clear visual continuity break is evident across wardrobe, set layout, or action direction.\",\"audio_tags\":[\"speech\",\"radio\"],\"audio_notes\":\"Audio is not provided in the packet, but the dialogue/ensemble metadata and radio-studio visuals support likely spoken interaction and broadcast-related sound. No stronger audio claim is grounded from the samples alone.\",\"evidence\":[{\"timestamp_seconds\":0.8,\"cue\":\"Wide studio view shows three people at tape and mixing equipment, rain on windows, and a figure visible at the left door.\"},{\"timestamp_seconds\":2.1,\"cue\":\"The left door opens and a fourth person enters carrying a lantern and long antenna-like gear, increasing scene urgency.\"},{\"timestamp_seconds\":6.4,\"cue\":\"Close-up isolates a hand turning a control beneath an unlit ON AIR sign on the console.\"},{\"timestamp_seconds\":7.2,\"cue\":\"The ON AIR sign glows red immediately after the control adjustment, signaling broadcast activation.\"}],\"overall_confidence\":0.84}",
+          "tokenUsage": {
+            "total": 6494,
+            "prompt": 6118,
+            "completion": 376,
+            "numRequests": 1
+          },
+          "cost": 0.020935,
+          "latencyMs": 9890,
+          "cached": false,
+          "metadata": {
+            "clip_id": "open_frequency_scene_001_studio_night",
+            "candidate_variant": "google_veo31_fast",
+            "prompt_version": "final-render-provider-floor-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.74135,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "clip_id": "open_frequency_scene_001_studio_night",
+            "clip_title": "Open Frequency scene 001 — radio studio night",
+            "target_path": "final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json",
+            "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "clip_id": "open_frequency_scene_001_studio_night",
+          "clip_title": "Open Frequency scene 001 — radio studio night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md"
+        },
+        "metadata": {
+          "clip_id": "open_frequency_scene_001_studio_night",
+          "candidate_variant": "google_veo31_fast",
+          "prompt_version": "final-render-provider-floor-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.02215,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.78135,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1276,
+            "prompt": 912,
+            "completion": 364,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.7427,
+              "reason": "overall=0.743 | uncertainty=0.160 | summary=0.67 | tone=0.50 | emotion=1.00 | color=0.67 | camera=1.00 | motion=1.00 | continuity=0.20 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | summary: storm | tone: hopeful | color: navy | continuity: status=ambiguous",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "The output closely matches the reference analysis in most key areas. Summary accurately captures the storm-battered community radio studio at night with the team working around equipment. Tone tags include 'tense' (matching reference) and 'urgent'/'intimate' which are reasonable additions, though 'hopeful' from the reference is missing. Emotion tags include 'resolve' and 'suspicion' (both matching reference), plus 'hesitation' as an addition. Color tags include 'teal' and 'amber' (matching reference), plus 'red' and 'desaturated'; the reference specifies 'navy' which is close to but not identical to the output's color palette. Camera tags include 'wide_master' (matching reference) plus additional tags like 'slow_push_in' and 'profile_closeup'. Motion includes 'measured' (matching reference) plus additional descriptors. The storm-night atmosphere is well-preserved with the rain-leaking skylight detail. Character distinctness is maintained with descriptions of specific individuals (the entering man, the woman at the tape machine, the seated mixer operator). The ON AIR sign and broadcast activation are well-captured. The main discrepancy is continuity: the reference says 'ambiguous' while the output says 'intact', though the continuity notes do acknowledge limitations. Missing 'hopeful' tone and 'navy' color are minor gaps. Overall, this is a strong analysis that preserves dramatic beats, setting, character presence, lighting mood, and visual specificity without flattening the environment or reading as generic.",
+              "tokensUsed": {
+                "total": 1276,
+                "prompt": 912,
+                "completion": 364,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"open_frequency_scene_001_studio_night\\\",\\\"summary\\\":\\\"A small team works inside a rain-leaking radio studio at night, coordinating around tape decks, a mixer, and a whiteboard under a glowing ON AIR sign. The scene builds quiet urgency as one person enters, others adjust equipment, and a hand activates a close-up ON AIR light.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"urgent\\\",\\\"intimate\\\"],\\\"emotion_tags\\\":[\\\"resolve\\\",\\\"hesitation\\\",\\\"suspicion\\\"],\\\"color_tags\\\":[\\\"teal\\\",\\\"amber\\\",\\\"red\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"wide_master\\\",\\\"slow_push_in\\\",\\\"profile_closeup\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"slow_drift\\\",\\\"escalating\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"Sampled frames support a coherent progression within the same studio space: the entering man advances toward the foreground group, the woman at left shifts attention from the tape machine toward the others, and the final close-up of the ON AIR light reads as a motivated insert rather than a contradiction. No clear wardrobe, prop, or spatial discontinuity is visible across the samples.\\\",\\\"audio_tags\\\":[\\\"speech\\\",\\\"radio\\\"],\\\"audio_notes\\\":\\\"No transcript or audio description is provided, but the packet tags indicate dialogue and the visuals strongly suggest a radio-studio environment where speech is likely central. No specific music, alarm, or other sound source can be confirmed from the frames alone.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.6,\\\"cue\\\":\\\"Wide studio view shows four people working simultaneously under a glowing ON AIR sign while rain falls through the skylight, establishing a pressured interior broadcast setting.\\\"},{\\\"timestamp_seconds\\\":2.4,\\\"cue\\\":\\\"The man from the doorway moves forward into the group as the woman threads tape and the seated operator concentrates on the mixer, indicating coordinated activity and rising urgency.\\\"},{\\\"timestamp_seconds\\\":4.8,\\\"cue\\\":\\\"Foreground interaction tightens as the standing man reaches center, the woman turns toward him, and the mixer operator looks up, suggesting a shared moment of decision.\\\"},{\\\"timestamp_seconds\\\":7.4,\\\"cue\\\":\\\"Close-up insert of a hand switching or steadying a bright red ON AIR unit emphasizes broadcast activation and stakes.\\\"}],\\\"overall_confidence\\\":0.84}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scene 001 — radio studio night\\n\\n- Summary: A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.\\n- Tone: tense, hopeful\\n- Emotion: resolve, suspicion\\n- Color / grade: navy, teal, amber\\n- Camera language: wide_master\\n- Motion: measured\\n- Continuity: ambiguous\\n\\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\\nor read like generic video instead of a deliberately staged final render.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Open Frequency scene 001 — radio studio night\n\n- Summary: A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.\n- Tone: tense, hopeful\n- Emotion: resolve, suspicion\n- Color / grade: navy, teal, amber\n- Camera language: wide_master\n- Motion: measured\n- Continuity: ambiguous\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              }
+            }
+          ]
+        },
+        "id": "2d875754-c4db-4269-8504-5c0d759aaa85",
+        "latencyMs": 12468,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Google Veo 3.1 Render"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"open_frequency_scene_001_studio_night\",\"summary\":\"A small team works inside a rain-leaking radio studio at night, coordinating around tape decks, a mixer, and a whiteboard under a glowing ON AIR sign. The scene builds quiet urgency as one person enters, others adjust equipment, and a hand activates a close-up ON AIR light.\",\"tone_tags\":[\"tense\",\"urgent\",\"intimate\"],\"emotion_tags\":[\"resolve\",\"hesitation\",\"suspicion\"],\"color_tags\":[\"teal\",\"amber\",\"red\",\"desaturated\"],\"camera_tags\":[\"wide_master\",\"slow_push_in\",\"profile_closeup\"],\"motion_tags\":[\"measured\",\"slow_drift\",\"escalating\"],\"continuity_status\":\"intact\",\"continuity_notes\":\"Sampled frames support a coherent progression within the same studio space: the entering man advances toward the foreground group, the woman at left shifts attention from the tape machine toward the others, and the final close-up of the ON AIR light reads as a motivated insert rather than a contradiction. No clear wardrobe, prop, or spatial discontinuity is visible across the samples.\",\"audio_tags\":[\"speech\",\"radio\"],\"audio_notes\":\"No transcript or audio description is provided, but the packet tags indicate dialogue and the visuals strongly suggest a radio-studio environment where speech is likely central. No specific music, alarm, or other sound source can be confirmed from the frames alone.\",\"evidence\":[{\"timestamp_seconds\":0.6,\"cue\":\"Wide studio view shows four people working simultaneously under a glowing ON AIR sign while rain falls through the skylight, establishing a pressured interior broadcast setting.\"},{\"timestamp_seconds\":2.4,\"cue\":\"The man from the doorway moves forward into the group as the woman threads tape and the seated operator concentrates on the mixer, indicating coordinated activity and rising urgency.\"},{\"timestamp_seconds\":4.8,\"cue\":\"Foreground interaction tightens as the standing man reaches center, the woman turns toward him, and the mixer operator looks up, suggesting a shared moment of decision.\"},{\"timestamp_seconds\":7.4,\"cue\":\"Close-up insert of a hand switching or steadying a bright red ON AIR unit emphasizes broadcast activation and stakes.\"}],\"overall_confidence\":0.84}",
+          "tokenUsage": {
+            "total": 6575,
+            "prompt": 6118,
+            "completion": 457,
+            "numRequests": 1
+          },
+          "cost": 0.02215,
+          "latencyMs": 12468,
+          "cached": false,
+          "metadata": {
+            "clip_id": "open_frequency_scene_001_studio_night",
+            "candidate_variant": "google_veo31",
+            "prompt_version": "final-render-provider-floor-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.78135,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "clip_id": "open_frequency_scene_001_studio_night",
+            "clip_title": "Open Frequency scene 001 — radio studio night",
+            "target_path": "final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json",
+            "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "clip_id": "open_frequency_scene_001_studio_night",
+          "clip_title": "Open Frequency scene 001 — radio studio night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md"
+        },
+        "metadata": {
+          "clip_id": "open_frequency_scene_001_studio_night",
+          "candidate_variant": "google_veo31",
+          "prompt_version": "final-render-provider-floor-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.02212,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.73135,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1214,
+            "prompt": 827,
+            "completion": 387,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.7427,
+              "reason": "overall=0.743 | uncertainty=0.160 | summary=0.67 | tone=0.50 | emotion=1.00 | color=0.67 | camera=1.00 | motion=1.00 | continuity=0.20 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | summary: storm | tone: hopeful | color: navy | continuity: status=ambiguous",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              },
+              "pass": true,
+              "score": 0.72,
+              "reason": "The output closely matches the reference analysis in most key areas. Summary correctly identifies the radio studio at night with a small group working urgently around consoles, tape equipment, whiteboard, and ON AIR sign. The tone captures 'tense' (matching reference) but uses 'urgent' instead of 'hopeful' - this is a reasonable interpretation but misses the hopeful beat. Emotion tags include 'resolve' and 'suspicion' (both matching reference) plus 'hesitation' (reasonable addition). Color tags include 'teal' and 'amber' (matching reference) but use 'red' and 'desaturated' instead of 'navy' - the absence of 'navy' is a minor miss since the dim/cool nighttime palette should suggest it. Camera tags include 'wide_master' (matching) plus additional tags like 'profile_closeup' and 'static' which are reasonable additions. Motion includes 'measured' (matching) plus 'abrupt_cut'. Continuity is marked as 'intact' while reference says 'ambiguous' - this is a notable discrepancy. The output doesn't explicitly mention the storm-night atmosphere, which the reference emphasizes ('storm-battered'). The evidence entries are well-grounded with specific timestamps and visual cues that demonstrate deliberate staging rather than generic video description. The output preserves character distinctness (mentioning four people, specific actions), lighting mood (cool ambient vs warm practicals, red indicators), and setting specificity. Overall, the output is strong but misses the storm context, the 'hopeful' tone, the 'navy' color, and gets continuity status wrong.",
+              "tokensUsed": {
+                "total": 1214,
+                "prompt": 827,
+                "completion": 387,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"open_frequency_scene_001_studio_night\\\",\\\"summary\\\":\\\"A small group works urgently inside a dim radio studio at night, coordinating around tape equipment, a whiteboard, and an illuminated ON AIR sign. The scene suggests preparation or live transmission under pressure, with cool ambient light contrasted by warm practicals and red indicator lights.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"urgent\\\"],\\\"emotion_tags\\\":[\\\"resolve\\\",\\\"suspicion\\\",\\\"hesitation\\\"],\\\"color_tags\\\":[\\\"teal\\\",\\\"amber\\\",\\\"red\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"wide_master\\\",\\\"profile_closeup\\\",\\\"static\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"abrupt_cut\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"Sampled frames remain consistent in location, wardrobe, lighting palette, and props. The action progression from group setup to equipment handling appears coherent, with no clear visual continuity break in the provided frames.\\\",\\\"audio_tags\\\":[\\\"speech\\\"],\\\"audio_notes\\\":\\\"No transcript or audio description is provided, but the ensemble radio-studio setup and ON AIR context support likely spoken dialogue or live communication. No stronger audio claim is grounded by the packet.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.6,\\\"cue\\\":\\\"Wide studio view shows four people, microphones, tape machine, whiteboard notes, and a glowing ON AIR sign, establishing an active radio workspace.\\\"},{\\\"timestamp_seconds\\\":2.1,\\\"cue\\\":\\\"Close-up of a hand operating reel-to-reel tape equipment indicates technical setup or playback/recording action.\\\"},{\\\"timestamp_seconds\\\":4.3,\\\"cue\\\":\\\"Profile shot of a woman writing frequencies or notes on the whiteboard reinforces coordinated planning and seriousness.\\\"},{\\\"timestamp_seconds\\\":6.9,\\\"cue\\\":\\\"Close-up of a hand turning a red-lit control suggests activation or adjustment of broadcast equipment, heightening urgency.\\\"}],\\\"overall_confidence\\\":0.84}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scene 001 — radio studio night\\n\\n- Summary: A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.\\n- Tone: tense, hopeful\\n- Emotion: resolve, suspicion\\n- Color / grade: navy, teal, amber\\n- Camera language: wide_master\\n- Motion: measured\\n- Continuity: ambiguous\\n\\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\\nor read like generic video instead of a deliberately staged final render.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Open Frequency scene 001 — radio studio night\n\n- Summary: A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.\n- Tone: tense, hopeful\n- Emotion: resolve, suspicion\n- Color / grade: navy, teal, amber\n- Camera language: wide_master\n- Motion: measured\n- Continuity: ambiguous\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              }
+            }
+          ]
+        },
+        "id": "a8a85ae0-722d-4b85-ad4f-004cb4354a7b",
+        "latencyMs": 13725,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "OpenAI Sora 2 Render"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"open_frequency_scene_001_studio_night\",\n  \"summary\": \"A small group works urgently inside a dim radio studio at night, coordinating around tape equipment, a whiteboard, and an illuminated ON AIR sign. The scene suggests preparation or live transmission under pressure, with cool ambient light contrasted by warm practicals and red indicator lights.\",\n  \"tone_tags\": [\"tense\", \"urgent\"],\n  \"emotion_tags\": [\"resolve\", \"suspicion\", \"hesitation\"],\n  \"color_tags\": [\"teal\", \"amber\", \"red\", \"desaturated\"],\n  \"camera_tags\": [\"wide_master\", \"profile_closeup\", \"static\"],\n  \"motion_tags\": [\"measured\", \"abrupt_cut\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": \"Sampled frames remain consistent in location, wardrobe, lighting palette, and props. The action progression from group setup to equipment handling appears coherent, with no clear visual continuity break in the provided frames.\",\n  \"audio_tags\": [\"speech\"],\n  \"audio_notes\": \"No transcript or audio description is provided, but the ensemble radio-studio setup and ON AIR context support likely spoken dialogue or live communication. No stronger audio claim is grounded by the packet.\",\n  \"evidence\": [\n    {\n      \"timestamp_seconds\": 0.6,\n      \"cue\": \"Wide studio view shows four people, microphones, tape machine, whiteboard notes, and a glowing ON AIR sign, establishing an active radio workspace.\"\n    },\n    {\n      \"timestamp_seconds\": 2.1,\n      \"cue\": \"Close-up of a hand operating reel-to-reel tape equipment indicates technical setup or playback/recording action.\"\n    },\n    {\n      \"timestamp_seconds\": 4.3,\n      \"cue\": \"Profile shot of a woman writing frequencies or notes on the whiteboard reinforces coordinated planning and seriousness.\"\n    },\n    {\n      \"timestamp_seconds\": 6.9,\n      \"cue\": \"Close-up of a hand turning a red-lit control suggests activation or adjustment of broadcast equipment, heightening urgency.\"\n    }\n  ],\n  \"overall_confidence\": 0.84\n}",
+          "tokenUsage": {
+            "total": 6573,
+            "prompt": 6118,
+            "completion": 455,
+            "numRequests": 1
+          },
+          "cost": 0.02212,
+          "latencyMs": 13725,
+          "cached": false,
+          "metadata": {
+            "clip_id": "open_frequency_scene_001_studio_night",
+            "candidate_variant": "openai_sora2",
+            "prompt_version": "final-render-provider-floor-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.73135,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "clip_id": "open_frequency_scene_001_studio_night",
+            "clip_title": "Open Frequency scene 001 — radio studio night",
+            "target_path": "final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json",
+            "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "clip_id": "open_frequency_scene_001_studio_night",
+          "clip_title": "Open Frequency scene 001 — radio studio night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md"
+        },
+        "metadata": {
+          "clip_id": "open_frequency_scene_001_studio_night",
+          "candidate_variant": "openai_sora2",
+          "prompt_version": "final-render-provider-floor-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.0220675,
+        "error": "The output captures many key elements of the reference scene: the water tower catwalk at night, two figures working with equipment (antenna/mounted device), lantern light, radio equipment, and the overall nighttime atmosphere. However, there are notable discrepancies:\n\n1. **Characters**: The output identifies 'two bundled figures' and later mentions 'one woman' and 'the other,' but does not name Aria and Noah. The reference specifies these two distinct characters. The output also seems to suggest two women rather than a man and woman, losing character distinctness.\n\n2. **Tone**: The reference says 'urgent, hopeful' while the output says 'tense, intimate, ominous.' 'Tense' partially overlaps with 'urgent,' but 'ominous' and 'intimate' diverge significantly from 'hopeful.' The hopeful/urgent dramatic beat is somewhat flattened into something more generically dark.\n\n3. **Emotion**: Reference says 'resolve, wonder.' Output says 'hesitation, vulnerability, resolve.' 'Resolve' matches, but 'hesitation' and 'vulnerability' replace 'wonder,' which is a meaningful dramatic beat about breakthrough/discovery.\n\n4. **Storm atmosphere**: The reference explicitly mentions 'wind-lashed' and 'storm-night atmosphere.' The output makes no mention of wind or storm conditions, which is a significant omission that flattens the environment.\n\n5. **Color**: Reference says 'navy, amber.' Output says 'teal, amber, desaturated.' Teal vs navy is a moderate discrepancy but in the same general family.\n\n6. **Camera**: Both include 'wide_master,' though the output adds 'profile_closeup' and 'static.'\n\n7. **Motion**: Reference says 'escalating, measured.' Output says 'measured, stillness.' Missing the 'escalating' quality.\n\n8. **Continuity**: Reference says 'ambiguous,' output says 'intact.' This is a direct contradiction.\n\n9. **Setting specifics**: The output captures the antenna/device rigging, the radio, and the lantern light well. The 'distant radio breakthrough' from the reference is partially captured by the radio/transceiver evidence.\n\nOverall, the output demonstrates good visual grounding and captures the core setting, but misses the storm atmosphere, flattens the hopeful/urgent tone into something more generically ominous, loses character naming/distinctness, and misreads continuity status.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.49134999999999995,
+          "reason": "The output captures many key elements of the reference scene: the water tower catwalk at night, two figures working with equipment (antenna/mounted device), lantern light, radio equipment, and the overall nighttime atmosphere. However, there are notable discrepancies:\n\n1. **Characters**: The output identifies 'two bundled figures' and later mentions 'one woman' and 'the other,' but does not name Aria and Noah. The reference specifies these two distinct characters. The output also seems to suggest two women rather than a man and woman, losing character distinctness.\n\n2. **Tone**: The reference says 'urgent, hopeful' while the output says 'tense, intimate, ominous.' 'Tense' partially overlaps with 'urgent,' but 'ominous' and 'intimate' diverge significantly from 'hopeful.' The hopeful/urgent dramatic beat is somewhat flattened into something more generically dark.\n\n3. **Emotion**: Reference says 'resolve, wonder.' Output says 'hesitation, vulnerability, resolve.' 'Resolve' matches, but 'hesitation' and 'vulnerability' replace 'wonder,' which is a meaningful dramatic beat about breakthrough/discovery.\n\n4. **Storm atmosphere**: The reference explicitly mentions 'wind-lashed' and 'storm-night atmosphere.' The output makes no mention of wind or storm conditions, which is a significant omission that flattens the environment.\n\n5. **Color**: Reference says 'navy, amber.' Output says 'teal, amber, desaturated.' Teal vs navy is a moderate discrepancy but in the same general family.\n\n6. **Camera**: Both include 'wide_master,' though the output adds 'profile_closeup' and 'static.'\n\n7. **Motion**: Reference says 'escalating, measured.' Output says 'measured, stillness.' Missing the 'escalating' quality.\n\n8. **Continuity**: Reference says 'ambiguous,' output says 'intact.' This is a direct contradiction.\n\n9. **Setting specifics**: The output captures the antenna/device rigging, the radio, and the lantern light well. The 'distant radio breakthrough' from the reference is partially captured by the radio/transceiver evidence.\n\nOverall, the output demonstrates good visual grounding and captures the core setting, but misses the storm atmosphere, flattens the hopeful/urgent tone into something more generically ominous, loses character naming/distinctness, and misreads continuity status.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1441,
+            "prompt": 840,
+            "completion": 601,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.5327,
+              "reason": "overall=0.533 | uncertainty=0.120 | summary=0.67 | tone=0.00 | emotion=0.50 | color=0.50 | camera=1.00 | motion=0.50 | continuity=0.20 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | summary: antenna | tone: hopeful, urgent | emotion: wonder | color: navy | motion: escalating | continuity: status=ambiguous",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              },
+              "pass": false,
+              "score": 0.45,
+              "reason": "The output captures many key elements of the reference scene: the water tower catwalk at night, two figures working with equipment (antenna/mounted device), lantern light, radio equipment, and the overall nighttime atmosphere. However, there are notable discrepancies:\n\n1. **Characters**: The output identifies 'two bundled figures' and later mentions 'one woman' and 'the other,' but does not name Aria and Noah. The reference specifies these two distinct characters. The output also seems to suggest two women rather than a man and woman, losing character distinctness.\n\n2. **Tone**: The reference says 'urgent, hopeful' while the output says 'tense, intimate, ominous.' 'Tense' partially overlaps with 'urgent,' but 'ominous' and 'intimate' diverge significantly from 'hopeful.' The hopeful/urgent dramatic beat is somewhat flattened into something more generically dark.\n\n3. **Emotion**: Reference says 'resolve, wonder.' Output says 'hesitation, vulnerability, resolve.' 'Resolve' matches, but 'hesitation' and 'vulnerability' replace 'wonder,' which is a meaningful dramatic beat about breakthrough/discovery.\n\n4. **Storm atmosphere**: The reference explicitly mentions 'wind-lashed' and 'storm-night atmosphere.' The output makes no mention of wind or storm conditions, which is a significant omission that flattens the environment.\n\n5. **Color**: Reference says 'navy, amber.' Output says 'teal, amber, desaturated.' Teal vs navy is a moderate discrepancy but in the same general family.\n\n6. **Camera**: Both include 'wide_master,' though the output adds 'profile_closeup' and 'static.'\n\n7. **Motion**: Reference says 'escalating, measured.' Output says 'measured, stillness.' Missing the 'escalating' quality.\n\n8. **Continuity**: Reference says 'ambiguous,' output says 'intact.' This is a direct contradiction.\n\n9. **Setting specifics**: The output captures the antenna/device rigging, the radio, and the lantern light well. The 'distant radio breakthrough' from the reference is partially captured by the radio/transceiver evidence.\n\nOverall, the output demonstrates good visual grounding and captures the core setting, but misses the storm atmosphere, flattens the hopeful/urgent tone into something more generically ominous, loses character naming/distinctness, and misreads continuity status.",
+              "tokensUsed": {
+                "total": 1441,
+                "prompt": 840,
+                "completion": 601,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"open_frequency_scene_002_water_tower_night\\\",\\\"summary\\\":\\\"At night on a water tower catwalk, two bundled figures work quietly with a mounted device and a handheld radio under lantern light. The scene feels tense and intimate, with one woman appearing emotionally strained while the other focuses on the equipment.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"intimate\\\",\\\"ominous\\\"],\\\"emotion_tags\\\":[\\\"hesitation\\\",\\\"vulnerability\\\",\\\"resolve\\\"],\\\"color_tags\\\":[\\\"teal\\\",\\\"amber\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"profile_closeup\\\",\\\"wide_master\\\",\\\"static\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"stillness\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"The sampled frames consistently show the same nighttime water tower catwalk setup, with the mounted pole device, lantern, and two-person arrangement remaining coherent across close and wide shots. No clear wardrobe, prop, or spatial discontinuity is evident from the provided frames.\\\",\\\"audio_tags\\\":[],\\\"audio_notes\\\":\\\"Audio is present per packet, but no transcript or audio description is provided and the sampled frames do not support a grounded audio classification.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.8,\\\"cue\\\":\\\"Close-up of gloved hands tightening or holding a clamp-like mount on a vertical pole attached to the catwalk railing.\\\"},{\\\"timestamp_seconds\\\":2.1,\\\"cue\\\":\\\"Wide shot reveals two figures on the circular water tower catwalk at night, lit by a warm lantern against a teal-blue sky.\\\"},{\\\"timestamp_seconds\\\":4,\\\"cue\\\":\\\"Close-up of a handheld radio/transceiver with an orange-lit display and connected cable suggests careful communication or signal work.\\\"},{\\\"timestamp_seconds\\\":5.6,\\\"cue\\\":\\\"Profile close-up of the woman’s face shows moist eyes and a subdued expression, reinforcing vulnerability and tension.\\\"}],\\\"overall_confidence\\\":0.88}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scene 002 — water tower catwalk night\\n\\n- Summary: A wind-lashed water tower catwalk at night, with Aria and Noah rigging an antenna above a mostly dark town while lantern light and a distant radio breakthrough cut through the storm.\\n- Tone: urgent, hopeful\\n- Emotion: resolve, wonder\\n- Color / grade: navy, amber\\n- Camera language: wide_master\\n- Motion: escalating, measured\\n- Continuity: ambiguous\\n\\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\\nor read like generic video instead of a deliberately staged final render.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Open Frequency scene 002 — water tower catwalk night\n\n- Summary: A wind-lashed water tower catwalk at night, with Aria and Noah rigging an antenna above a mostly dark town while lantern light and a distant radio breakthrough cut through the storm.\n- Tone: urgent, hopeful\n- Emotion: resolve, wonder\n- Color / grade: navy, amber\n- Camera language: wide_master\n- Motion: escalating, measured\n- Continuity: ambiguous\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              }
+            }
+          ]
+        },
+        "id": "48f5bf7b-db33-48f7-94ed-14dd97fc18b9",
+        "latencyMs": 8262,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "OpenAI Sora 2 Render"
+        },
+        "response": {
+          "output": "{\n  \"clip_id\": \"open_frequency_scene_002_water_tower_night\",\n  \"summary\": \"At night on a water tower catwalk, two bundled figures work quietly with a mounted device and a handheld radio under lantern light. The scene feels tense and intimate, with one woman appearing emotionally strained while the other focuses on the equipment.\",\n  \"tone_tags\": [\"tense\", \"intimate\", \"ominous\"],\n  \"emotion_tags\": [\"hesitation\", \"vulnerability\", \"resolve\"],\n  \"color_tags\": [\"teal\", \"amber\", \"desaturated\"],\n  \"camera_tags\": [\"profile_closeup\", \"wide_master\", \"static\"],\n  \"motion_tags\": [\"measured\", \"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": \"The sampled frames consistently show the same nighttime water tower catwalk setup, with the mounted pole device, lantern, and two-person arrangement remaining coherent across close and wide shots. No clear wardrobe, prop, or spatial discontinuity is evident from the provided frames.\",\n  \"audio_tags\": [],\n  \"audio_notes\": \"Audio is present per packet, but no transcript or audio description is provided and the sampled frames do not support a grounded audio classification.\",\n  \"evidence\": [\n    {\n      \"timestamp_seconds\": 0.8,\n      \"cue\": \"Close-up of gloved hands tightening or holding a clamp-like mount on a vertical pole attached to the catwalk railing.\"\n    },\n    {\n      \"timestamp_seconds\": 2.1,\n      \"cue\": \"Wide shot reveals two figures on the circular water tower catwalk at night, lit by a warm lantern against a teal-blue sky.\"\n    },\n    {\n      \"timestamp_seconds\": 4.0,\n      \"cue\": \"Close-up of a handheld radio/transceiver with an orange-lit display and connected cable suggests careful communication or signal work.\"\n    },\n    {\n      \"timestamp_seconds\": 5.6,\n      \"cue\": \"Profile close-up of the woman’s face shows moist eyes and a subdued expression, reinforcing vulnerability and tension.\"\n    }\n  ],\n  \"overall_confidence\": 0.88\n}",
+          "tokenUsage": {
+            "total": 6572,
+            "prompt": 6121,
+            "completion": 451,
+            "numRequests": 1
+          },
+          "cost": 0.0220675,
+          "latencyMs": 8262,
+          "cached": false,
+          "metadata": {
+            "clip_id": "open_frequency_scene_002_water_tower_night",
+            "candidate_variant": "openai_sora2",
+            "prompt_version": "final-render-provider-floor-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.49134999999999995,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "open_frequency_scene_002_water_tower_night",
+            "clip_title": "Open Frequency scene 002 — water tower catwalk night",
+            "target_path": "final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json",
+            "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "clip_id": "open_frequency_scene_002_water_tower_night",
+          "clip_title": "Open Frequency scene 002 — water tower catwalk night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md"
+        },
+        "metadata": {
+          "clip_id": "open_frequency_scene_002_water_tower_night",
+          "candidate_variant": "openai_sora2",
+          "prompt_version": "final-render-provider-floor-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.0204925,
+        "error": "The output captures many key elements well: the water tower catwalk setting at night, two characters (though not named as Aria and Noah), lantern light, the radio/antenna activity, navy and amber color palette, and measured motion. It correctly identifies resolve as an emotion tag. However, there are notable gaps: (1) The storm/wind-lashed atmosphere is completely absent - no mention of wind, storm, or weather conditions, which is a significant dramatic beat. (2) The tone is 'tense/intimate/ominous' rather than 'urgent/hopeful' - missing the hopefulness that is central to the scene's intent. (3) 'Wonder' as an emotion is absent, replaced by 'suspicion' and 'hesitation' which don't match the reference's intended feel. (4) Characters are not identified by name (Aria and Noah). (5) The antenna rigging is described more as 'adjusting a handheld radio' rather than rigging an antenna above a town. (6) The 'distant radio breakthrough' moment is not captured. (7) Camera tags include 'profile_closeup' but miss 'wide_master'. (8) Continuity is marked 'intact' vs reference 'ambiguous'. (9) The 'mostly dark town' context is missing. The output reads somewhat generically - two people with a radio at night - rather than capturing the specific dramatic staging of rigging an antenna in a storm with hope of breakthrough communication. The color palette match is good, and the evidence timestamps show reasonable visual reading, but the overall dramatic interpretation flattens the environment and misses the storm-night atmosphere significantly.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.47135000000000005,
+          "reason": "The output captures many key elements well: the water tower catwalk setting at night, two characters (though not named as Aria and Noah), lantern light, the radio/antenna activity, navy and amber color palette, and measured motion. It correctly identifies resolve as an emotion tag. However, there are notable gaps: (1) The storm/wind-lashed atmosphere is completely absent - no mention of wind, storm, or weather conditions, which is a significant dramatic beat. (2) The tone is 'tense/intimate/ominous' rather than 'urgent/hopeful' - missing the hopefulness that is central to the scene's intent. (3) 'Wonder' as an emotion is absent, replaced by 'suspicion' and 'hesitation' which don't match the reference's intended feel. (4) Characters are not identified by name (Aria and Noah). (5) The antenna rigging is described more as 'adjusting a handheld radio' rather than rigging an antenna above a town. (6) The 'distant radio breakthrough' moment is not captured. (7) Camera tags include 'profile_closeup' but miss 'wide_master'. (8) Continuity is marked 'intact' vs reference 'ambiguous'. (9) The 'mostly dark town' context is missing. The output reads somewhat generically - two people with a radio at night - rather than capturing the specific dramatic staging of rigging an antenna in a storm with hope of breakthrough communication. The color palette match is good, and the evidence timestamps show reasonable visual reading, but the overall dramatic interpretation flattens the environment and misses the storm-night atmosphere significantly.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1179,
+            "prompt": 796,
+            "completion": 383,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.4927,
+              "reason": "overall=0.493 | uncertainty=0.110 | summary=0.67 | tone=0.00 | emotion=0.50 | color=1.00 | camera=0.00 | motion=0.50 | continuity=0.20 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | summary: antenna | tone: hopeful, urgent | emotion: wonder | camera: wide_master | motion: escalating | continuity: status=ambiguous",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              },
+              "pass": false,
+              "score": 0.45,
+              "reason": "The output captures many key elements well: the water tower catwalk setting at night, two characters (though not named as Aria and Noah), lantern light, the radio/antenna activity, navy and amber color palette, and measured motion. It correctly identifies resolve as an emotion tag. However, there are notable gaps: (1) The storm/wind-lashed atmosphere is completely absent - no mention of wind, storm, or weather conditions, which is a significant dramatic beat. (2) The tone is 'tense/intimate/ominous' rather than 'urgent/hopeful' - missing the hopefulness that is central to the scene's intent. (3) 'Wonder' as an emotion is absent, replaced by 'suspicion' and 'hesitation' which don't match the reference's intended feel. (4) Characters are not identified by name (Aria and Noah). (5) The antenna rigging is described more as 'adjusting a handheld radio' rather than rigging an antenna above a town. (6) The 'distant radio breakthrough' moment is not captured. (7) Camera tags include 'profile_closeup' but miss 'wide_master'. (8) Continuity is marked 'intact' vs reference 'ambiguous'. (9) The 'mostly dark town' context is missing. The output reads somewhat generically - two people with a radio at night - rather than capturing the specific dramatic staging of rigging an antenna in a storm with hope of breakthrough communication. The color palette match is good, and the evidence timestamps show reasonable visual reading, but the overall dramatic interpretation flattens the environment and misses the storm-night atmosphere significantly.",
+              "tokensUsed": {
+                "total": 1179,
+                "prompt": 796,
+                "completion": 383,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"open_frequency_scene_002_water_tower_night\\\",\\\"summary\\\":\\\"Two people stand on a water tower catwalk at night as one adjusts a handheld radio while the other watches under lantern light. The scene shifts into tighter coverage as they inspect the device and prepare to speak into it.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"intimate\\\",\\\"ominous\\\"],\\\"emotion_tags\\\":[\\\"suspicion\\\",\\\"hesitation\\\",\\\"resolve\\\"],\\\"color_tags\\\":[\\\"amber\\\",\\\"navy\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"locked_two_shot\\\",\\\"profile_closeup\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"stillness\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"The radio, jackets, lantern, and catwalk setting remain consistent across the sampled frames. The progression from wide two-shot to close coverage supports a continuous action of checking and handing off the radio.\\\",\\\"audio_tags\\\":[],\\\"audio_notes\\\":\\\"No transcript or audio description is provided, and the sampled frames do not supply reliable evidence for specific audio tags.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.8,\\\"cue\\\":\\\"Wide two-shot on the catwalk: woman holds a bright lantern while the man works on a radio clipped near the railing.\\\"},{\\\"timestamp_seconds\\\":2.6,\\\"cue\\\":\\\"The man continues adjusting the radio and cable with focused expression; the woman remains watchful beside him.\\\"},{\\\"timestamp_seconds\\\":5.1,\\\"cue\\\":\\\"Closer shot shows the man lifting the radio and inspecting its cord, indicating a transition from setup to use.\\\"},{\\\"timestamp_seconds\\\":7,\\\"cue\\\":\\\"Close-up of the woman holding the radio near her mouth while the man looks on, suggesting imminent communication.\\\"}],\\\"overall_confidence\\\":0.89}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scene 002 — water tower catwalk night\\n\\n- Summary: A wind-lashed water tower catwalk at night, with Aria and Noah rigging an antenna above a mostly dark town while lantern light and a distant radio breakthrough cut through the storm.\\n- Tone: urgent, hopeful\\n- Emotion: resolve, wonder\\n- Color / grade: navy, amber\\n- Camera language: wide_master\\n- Motion: escalating, measured\\n- Continuity: ambiguous\\n\\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\\nor read like generic video instead of a deliberately staged final render.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Open Frequency scene 002 — water tower catwalk night\n\n- Summary: A wind-lashed water tower catwalk at night, with Aria and Noah rigging an antenna above a mostly dark town while lantern light and a distant radio breakthrough cut through the storm.\n- Tone: urgent, hopeful\n- Emotion: resolve, wonder\n- Color / grade: navy, amber\n- Camera language: wide_master\n- Motion: escalating, measured\n- Continuity: ambiguous\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              }
+            }
+          ]
+        },
+        "id": "354e5b31-ee39-48f1-9a85-2b74e8d866ec",
+        "latencyMs": 10043,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "promptIdx": 2,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Google Veo 3.1 Fast Render"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"open_frequency_scene_002_water_tower_night\",\"summary\":\"Two people stand on a water tower catwalk at night as one adjusts a handheld radio while the other watches under lantern light. The scene shifts into tighter coverage as they inspect the device and prepare to speak into it.\",\"tone_tags\":[\"tense\",\"intimate\",\"ominous\"],\"emotion_tags\":[\"suspicion\",\"hesitation\",\"resolve\"],\"color_tags\":[\"amber\",\"navy\",\"desaturated\"],\"camera_tags\":[\"locked_two_shot\",\"profile_closeup\"],\"motion_tags\":[\"measured\",\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":\"The radio, jackets, lantern, and catwalk setting remain consistent across the sampled frames. The progression from wide two-shot to close coverage supports a continuous action of checking and handing off the radio.\",\"audio_tags\":[],\"audio_notes\":\"No transcript or audio description is provided, and the sampled frames do not supply reliable evidence for specific audio tags.\",\"evidence\":[{\"timestamp_seconds\":0.8,\"cue\":\"Wide two-shot on the catwalk: woman holds a bright lantern while the man works on a radio clipped near the railing.\"},{\"timestamp_seconds\":2.6,\"cue\":\"The man continues adjusting the radio and cable with focused expression; the woman remains watchful beside him.\"},{\"timestamp_seconds\":5.1,\"cue\":\"Closer shot shows the man lifting the radio and inspecting its cord, indicating a transition from setup to use.\"},{\"timestamp_seconds\":7.0,\"cue\":\"Close-up of the woman holding the radio near her mouth while the man looks on, suggesting imminent communication.\"}],\"overall_confidence\":0.89}",
+          "tokenUsage": {
+            "total": 6467,
+            "prompt": 6121,
+            "completion": 346,
+            "numRequests": 1
+          },
+          "cost": 0.0204925,
+          "latencyMs": 10043,
+          "cached": false,
+          "metadata": {
+            "clip_id": "open_frequency_scene_002_water_tower_night",
+            "candidate_variant": "google_veo31_fast",
+            "prompt_version": "final-render-provider-floor-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.47135000000000005,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "open_frequency_scene_002_water_tower_night",
+            "clip_title": "Open Frequency scene 002 — water tower catwalk night",
+            "target_path": "final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json",
+            "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "clip_id": "open_frequency_scene_002_water_tower_night",
+          "clip_title": "Open Frequency scene 002 — water tower catwalk night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md"
+        },
+        "metadata": {
+          "clip_id": "open_frequency_scene_002_water_tower_night",
+          "candidate_variant": "google_veo31_fast",
+          "prompt_version": "final-render-provider-floor-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.0213475,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.718,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1244,
+            "prompt": 862,
+            "completion": 382,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.786,
+              "reason": "overall=0.786 | uncertainty=0.160 | summary=1.00 | tone=0.50 | emotion=0.50 | color=1.00 | camera=1.00 | motion=1.00 | continuity=0.20 | audio=1.00 | evidence=1.00 | hard_constraints=1.00 | tone: urgent | emotion: wonder | continuity: status=ambiguous",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              },
+              "pass": true,
+              "score": 0.65,
+              "reason": "The output closely matches the reference analysis in most key areas. Summary correctly identifies two people on a water tower catwalk at night, working with a radio/antenna above a small town with lantern light - capturing the core dramatic beats. However, it misses the 'wind-lashed' / storm atmosphere, describing it more as a calm night scene ('blue starry sky') rather than a storm-night atmosphere. Character names (Aria and Noah) are not used, though the model identifies a woman and a man with distinct roles. Tone tags include 'tense' and 'hopeful' - 'tense' is close to 'urgent' and 'hopeful' matches. Emotion tags include 'resolve' which matches, but 'wonder' is missing, replaced with 'suspicion', 'panic', and 'relief' which aren't in the reference. Color tags include 'navy' and 'amber' which match, plus 'teal' which is extra but not harmful. Camera tags include 'wide_master' which matches, plus additional tags that go beyond the reference but aren't contradictory. Motion tags 'escalating' and 'measured' match perfectly. Continuity is marked 'intact' while reference says 'ambiguous' - this is a notable discrepancy. The output doesn't mention the storm or wind, which is a significant miss per the rubric's instruction to not 'ignore the storm-night atmosphere.' The 'radio breakthrough' element is partially captured through the woman speaking into a radio. Overall, the output is quite good but loses points for missing the storm atmosphere and marking continuity as intact rather than ambiguous.",
+              "tokensUsed": {
+                "total": 1244,
+                "prompt": 862,
+                "completion": 382,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"open_frequency_scene_002_water_tower_night\\\",\\\"summary\\\":\\\"Two people stand on a water tower catwalk at night, working with a radio beside a hanging lantern above a small town. The scene tightens from a wide establishing view into close-ups as the woman appears to speak urgently into the handset while the man watches closely.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"intimate\\\",\\\"hopeful\\\"],\\\"emotion_tags\\\":[\\\"suspicion\\\",\\\"resolve\\\",\\\"panic\\\",\\\"relief\\\"],\\\"color_tags\\\":[\\\"navy\\\",\\\"amber\\\",\\\"teal\\\"],\\\"camera_tags\\\":[\\\"wide_master\\\",\\\"slow_push_in\\\",\\\"locked_two_shot\\\",\\\"profile_closeup\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"slow_drift\\\",\\\"escalating\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":\\\"The sampled frames show consistent character placement, wardrobe, props, and lighting as the camera moves progressively closer. No clear visual discontinuity is evident across the provided samples.\\\",\\\"audio_tags\\\":[\\\"speech\\\"],\\\"audio_notes\\\":\\\"No transcript or audio description is provided, but the woman is visibly speaking into a handheld radio in the close frames. Other audio elements cannot be confirmed from the packet alone.\\\",\\\"evidence\\\":[{\\\"timestamp_seconds\\\":0.8,\\\"cue\\\":\\\"Wide night establishing shot of two figures on the water tower catwalk, lantern glowing warm against a blue starry sky and town lights below.\\\"},{\\\"timestamp_seconds\\\":2.4,\\\"cue\\\":\\\"Medium two-shot shows the woman holding a handheld radio while the man steadies himself at the railing; tools and lantern remain visible on the platform.\\\"},{\\\"timestamp_seconds\\\":4.9,\\\"cue\\\":\\\"Closer framing emphasizes the radio and antenna rig, with both characters focused downward and inward, reinforcing a concentrated, intimate tension.\\\"},{\\\"timestamp_seconds\\\":6.6,\\\"cue\\\":\\\"Extreme close-up shows the woman speaking with mouth open into the radio while the man leans in, then her expression softens slightly in the final sample.\\\"}],\\\"overall_confidence\\\":0.84}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured clip analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scene 002 — water tower catwalk night\\n\\n- Summary: A wind-lashed water tower catwalk at night, with Aria and Noah rigging an antenna above a mostly dark town while lantern light and a distant radio breakthrough cut through the storm.\\n- Tone: urgent, hopeful\\n- Emotion: resolve, wonder\\n- Color / grade: navy, amber\\n- Camera language: wide_master\\n- Motion: escalating, measured\\n- Continuity: ambiguous\\n\\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\\nor read like generic video instead of a deliberately staged final render.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n# Open Frequency scene 002 — water tower catwalk night\n\n- Summary: A wind-lashed water tower catwalk at night, with Aria and Noah rigging an antenna above a mostly dark town while lantern light and a distant radio breakthrough cut through the storm.\n- Tone: urgent, hopeful\n- Emotion: resolve, wonder\n- Color / grade: navy, amber\n- Camera language: wide_master\n- Motion: escalating, measured\n- Continuity: ambiguous\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+              }
+            }
+          ]
+        },
+        "id": "5a3f011f-5a81-4173-a529-d5ded1ff0aa9",
+        "latencyMs": 9280,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/video-understanding.txt: You are CineForge's generated-output QA analyst.\n\nAnalyze the provided clip packet and sampled frames as if they were a short generated scene preview.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Mention a continuity break only if the sampled frames clearly support it.\n- Use the transcript/audio description when present, but do not ignore the visual evidence.\n- `evidence` must be a list of 2-4 items with `timestamp_seconds` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "9ee562df951372f12118e66c15af15b98cf60c1d0705b135cf754184795f4962",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Google Veo 3.1 Render"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"open_frequency_scene_002_water_tower_night\",\"summary\":\"Two people stand on a water tower catwalk at night, working with a radio beside a hanging lantern above a small town. The scene tightens from a wide establishing view into close-ups as the woman appears to speak urgently into the handset while the man watches closely.\",\"tone_tags\":[\"tense\",\"intimate\",\"hopeful\"],\"emotion_tags\":[\"suspicion\",\"resolve\",\"panic\",\"relief\"],\"color_tags\":[\"navy\",\"amber\",\"teal\"],\"camera_tags\":[\"wide_master\",\"slow_push_in\",\"locked_two_shot\",\"profile_closeup\"],\"motion_tags\":[\"measured\",\"slow_drift\",\"escalating\"],\"continuity_status\":\"intact\",\"continuity_notes\":\"The sampled frames show consistent character placement, wardrobe, props, and lighting as the camera moves progressively closer. No clear visual discontinuity is evident across the provided samples.\",\"audio_tags\":[\"speech\"],\"audio_notes\":\"No transcript or audio description is provided, but the woman is visibly speaking into a handheld radio in the close frames. Other audio elements cannot be confirmed from the packet alone.\",\"evidence\":[{\"timestamp_seconds\":0.8,\"cue\":\"Wide night establishing shot of two figures on the water tower catwalk, lantern glowing warm against a blue starry sky and town lights below.\"},{\"timestamp_seconds\":2.4,\"cue\":\"Medium two-shot shows the woman holding a handheld radio while the man steadies himself at the railing; tools and lantern remain visible on the platform.\"},{\"timestamp_seconds\":4.9,\"cue\":\"Closer framing emphasizes the radio and antenna rig, with both characters focused downward and inward, reinforcing a concentrated, intimate tension.\"},{\"timestamp_seconds\":6.6,\"cue\":\"Extreme close-up shows the woman speaking with mouth open into the radio while the man leans in, then her expression softens slightly in the final sample.\"}],\"overall_confidence\":0.84}",
+          "tokenUsage": {
+            "total": 6524,
+            "prompt": 6121,
+            "completion": 403,
+            "numRequests": 1
+          },
+          "cost": 0.0213475,
+          "latencyMs": 9280,
+          "cached": false,
+          "metadata": {
+            "clip_id": "open_frequency_scene_002_water_tower_night",
+            "candidate_variant": "google_veo31",
+            "prompt_version": "final-render-provider-floor-v1",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.718,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "clip_id": "open_frequency_scene_002_water_tower_night",
+            "clip_title": "Open Frequency scene 002 — water tower catwalk night",
+            "target_path": "final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json",
+            "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "clip_id": "open_frequency_scene_002_water_tower_night",
+          "clip_title": "Open Frequency scene 002 — water tower catwalk night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md"
+        },
+        "metadata": {
+          "clip_id": "open_frequency_scene_002_water_tower_night",
+          "candidate_variant": "google_veo31",
+          "prompt_version": "final-render-provider-floor-v1",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 4,
+      "failures": 2,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 36717,
+        "completion": 2488,
+        "cached": 0,
+        "total": 39205,
+        "numRequests": 6,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 7534,
+          "prompt": 5060,
+          "completion": 2474,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 45073,
+      "evaluationDurationMs": 45073
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Reference-conditioned final-render provider floor — compare the wired packs on the same representative clip set",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/6721/cine-forge/benchmarks/prompts/video-understanding.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "OpenAI Sora 2 Render",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "final-render-provider-floor-v1",
+          "clip_root": "../final_render_provider_floor",
+          "candidate_variant": "openai_sora2",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Google Veo 3.1 Render",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "final-render-provider-floor-v1",
+          "clip_root": "../final_render_provider_floor",
+          "candidate_variant": "google_veo31",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Google Veo 3.1 Fast Render",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "final-render-provider-floor-v1",
+          "clip_root": "../final_render_provider_floor",
+          "candidate_variant": "google_veo31_fast",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "clip_id": "open_frequency_scene_001_studio_night",
+          "clip_title": "Open Frequency scene 001 — radio studio night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "open_frequency_scene_002_water_tower_night",
+          "clip_title": "Open Frequency scene 002 — water tower catwalk night",
+          "target_path": "final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json",
+          "target_markdown": "file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured clip analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve the intended dramatic beats, setting, character distinctness,\nlighting mood, and reference-conditioned visual specificity from the target scene. Penalize\nclips that flatten the environment, lose who is present, ignore the storm-night atmosphere,\nor read like generic video instead of a deliberately staged final render.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "benchmarks/results/final-render-provider-floor-story-169-quality-2026-04-16.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-04-16T20:11:11.372Z",
+    "evaluationCreatedAt": "2026-04-16T20:10:26.015Z"
+  }
+}

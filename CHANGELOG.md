@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-16-01] — Choose the final render provider floor (Story 169)
+
+### Added
+- Added a reference-conditioned final-render provider-floor benchmark substrate, dataset generator, promptfoo task, and decision reporting path for the shipped Scene Workspace render route
+
+### Changed
+- Changed the final-render default from `openai_sora2` to `google_veo31` based on measured quality, runtime, and direct-reference usage on the representative Story 168-style scene set
+- Changed methodology and eval tracking to record the new provider-floor decision, benchmark evidence, and Story 169 close-out truth
+
+### Fixed
+- Fixed the Google Veo final-render transport to send image inputs as `bytesBase64Encoded` and to avoid the mixed frame-guidance-plus-reference request shape the live Gemini API rejects
+- Fixed the residual dead `inlineData` helper left behind after the Google transport correction
+
 ## [2026-04-13-02] — Prove reference-conditioned scene render truth (Story 168)
 
 ### Added

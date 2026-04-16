@@ -16,6 +16,7 @@ known_limitations:
   - Duration is limited to 4, 6, or 8 seconds.
   - Reference images and 1080p output require an 8-second render.
   - Direct audio upload is not supported; audio references must be translated into prompt cues.
+  - The live Gemini API currently rejects mixed frame guidance plus extra reference images in one request.
 limits:
   supported_durations_seconds: [4, 6, 8]
   supported_resolutions: ["720p", "1080p"]
@@ -31,6 +32,7 @@ request_defaults:
   portrait_aspect_ratio: "9:16"
   reference_images_require_eight_seconds: true
   high_resolution_requires_eight_seconds: true
+  mixed_frame_guidance_and_reference_images_supported: false
   benchmark_cost_per_second_usd: 0.10
   benchmark_default_duration_seconds: 4
   benchmark_consistency_strategy: "prompt_only"

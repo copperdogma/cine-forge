@@ -1,0 +1,58 @@
+{
+  "clip_id": "open_frequency_scene_002_water_tower_night",
+  "title": "Open Frequency scene 002 — water tower catwalk night",
+  "source_type": "licensed_internal",
+  "source_description": "Representative Story 169 final-render benchmark target for the water-tower relay scene in Open Frequency.",
+  "rights": "Project-owned internal benchmark fixture",
+  "duration_seconds": 8.0,
+  "resolution": "720p",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": null,
+  "summary_reference": "A wind-lashed water tower catwalk at night, with Aria and Noah rigging an antenna above a mostly dark town while lantern light and a distant radio breakthrough cut through the storm.",
+  "required_keywords": [
+    "catwalk",
+    "antenna",
+    "lantern"
+  ],
+  "tone_tags": [
+    "urgent",
+    "hopeful"
+  ],
+  "emotion_tags": [
+    "resolve",
+    "wonder"
+  ],
+  "color_tags": [
+    "navy",
+    "amber"
+  ],
+  "camera_tags": [
+    "wide_master"
+  ],
+  "motion_tags": [
+    "escalating",
+    "measured"
+  ],
+  "continuity_status": "ambiguous",
+  "continuity_notes": [],
+  "audio_tags": [],
+  "clip_tags": [
+    "exterior",
+    "weather",
+    "night",
+    "reference_conditioned"
+  ],
+  "anchor_subset": false,
+  "weights": {
+    "summary": 0.22,
+    "tone": 0.16,
+    "emotion": 0.14,
+    "color": 0.12,
+    "camera": 0.1,
+    "motion": 0.08,
+    "continuity": 0.08,
+    "audio": 0.06,
+    "evidence": 0.04
+  }
+}

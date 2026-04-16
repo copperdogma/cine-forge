@@ -1,0 +1,672 @@
+{
+  "eval_id": "final-render-provider-floor-runtime",
+  "measured_at": "2026-04-16T19:28:57.081542+00:00",
+  "fixture_manifest": "benchmarks/fixtures/final_render_provider_floor_cases.json",
+  "candidate_packs": [
+    "openai_sora2",
+    "google_veo31",
+    "google_veo31_fast"
+  ],
+  "comparison_settings": {
+    "duration_seconds": 8,
+    "aspect_ratio": "16:9",
+    "normalized_resolution": "720p"
+  },
+  "summary": {
+    "candidates": [
+      {
+        "candidate_variant": "openai_sora2",
+        "candidate_label": "OpenAI Sora 2 Render",
+        "engine_pack_id": "openai_sora2",
+        "target_model": "sora-2",
+        "total_cases": 2,
+        "successful_cases": 2,
+        "success_ratio": 1.0,
+        "mean_total_elapsed_ms": 436078.0,
+        "mean_render_elapsed_ms": 217469.5,
+        "mean_render_stage_elapsed_ms": 199249.0,
+        "mean_validate_media_stage_elapsed_ms": 18163.0,
+        "mean_total_cost_usd": 0.01,
+        "mean_active_input_count": 1.0,
+        "mean_prompt_context_count": 4.0,
+        "mean_unsupported_count": 0.0,
+        "mean_reference_usage_counts": {
+          "input_reference": 1.0,
+          "prompt_context": 4.0
+        }
+      },
+      {
+        "candidate_variant": "google_veo31_fast",
+        "candidate_label": "Google Veo 3.1 Fast Render",
+        "engine_pack_id": "google_veo31_fast",
+        "target_model": "veo-3.1-fast-generate-preview",
+        "total_cases": 2,
+        "successful_cases": 0,
+        "success_ratio": 0.0,
+        "mean_total_elapsed_ms": null,
+        "mean_render_elapsed_ms": null,
+        "mean_render_stage_elapsed_ms": null,
+        "mean_validate_media_stage_elapsed_ms": null,
+        "mean_total_cost_usd": null,
+        "mean_active_input_count": null,
+        "mean_prompt_context_count": null,
+        "mean_unsupported_count": null,
+        "mean_reference_usage_counts": {}
+      },
+      {
+        "candidate_variant": "google_veo31",
+        "candidate_label": "Google Veo 3.1 Render",
+        "engine_pack_id": "google_veo31",
+        "target_model": "veo-3.1-generate-preview",
+        "total_cases": 2,
+        "successful_cases": 0,
+        "success_ratio": 0.0,
+        "mean_total_elapsed_ms": null,
+        "mean_render_elapsed_ms": null,
+        "mean_render_stage_elapsed_ms": null,
+        "mean_validate_media_stage_elapsed_ms": null,
+        "mean_total_cost_usd": null,
+        "mean_active_input_count": null,
+        "mean_prompt_context_count": null,
+        "mean_unsupported_count": null,
+        "mean_reference_usage_counts": {}
+      }
+    ]
+  },
+  "runs": [
+    {
+      "case_id": "open_frequency_scene_001_studio_night",
+      "case_label": "Open Frequency scene 001 \u2014 radio studio night",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Interior ensemble control case with storm pressure, project taste refs, one hard-locked scene image, and canonical character/location visuals.",
+      "candidate_variant": "openai_sora2",
+      "candidate_label": "OpenAI Sora 2 Render",
+      "engine_pack_id": "openai_sora2",
+      "target_model": "sora-2",
+      "project_dir": "output/story-169-openai_sora2-open_frequency_scene_001_studio_night-bb7747",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 244498,
+      "render_elapsed_ms": 242355,
+      "total_elapsed_ms": 486853,
+      "total_cost_usd": 0.00916875,
+      "render_stage_elapsed_ms": 223018,
+      "validate_media_stage_elapsed_ms": 19281,
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_001_studio_night-openai_sora2-71d1",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 242355,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.00916875,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 223018,
+          "validate_media": 19281
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_001/v1.json",
+          "generated_video": "artifacts/generated_video/scene_001/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_001/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_001/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_001/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json",
+      "request_id": "video_69e135e9d39c8191b72a2831cbbb3d2c06e4f69b0bc7fa42",
+      "provider_job_id": "video_69e135e9d39c8191b72a2831cbbb3d2c06e4f69b0bc7fa42",
+      "reference_usage_counts": {
+        "prompt_context": 4,
+        "input_reference": 1
+      },
+      "active_input_count": 1,
+      "prompt_context_count": 4,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-941d30a6c8",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-941d30a6c8_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-318ce62ce8",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-318ce62ce8_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-04cf131009",
+          "kind": "scene_injected_image",
+          "label": "INT. COMMUNITY RADIO STUDIO - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_001/user_assets/asset-04cf131009_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_001",
+            "path": "artifacts/injected_asset_manifest/scene__scene_001/v1.json",
+            "version": 1
+          },
+          "used_as": "input_reference"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "location_visual_community_radio_studio",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Community Radio Studio",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_community_radio_studio/community_radio_studio_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_community_radio_studio",
+            "path": "artifacts/bibles/location_community_radio_studio/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-941d30a6c8",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-318ce62ce8",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    },
+    {
+      "case_id": "open_frequency_scene_001_studio_night",
+      "case_label": "Open Frequency scene 001 \u2014 radio studio night",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Interior ensemble control case with storm pressure, project taste refs, one hard-locked scene image, and canonical character/location visuals.",
+      "candidate_variant": "google_veo31",
+      "candidate_label": "Google Veo 3.1 Render",
+      "engine_pack_id": "google_veo31",
+      "target_model": "veo-3.1-generate-preview",
+      "project_dir": "output/story-169-google_veo31-open_frequency_scene_001_studio_night-6069df",
+      "success": false,
+      "error": "HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"`inlineData` isn't supported by this model. Please remove it or refer to the Gemini API documentation for supported usage.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+      "preparation_elapsed_ms": 244498,
+      "render_elapsed_ms": 11764,
+      "total_elapsed_ms": 256262,
+      "total_cost_usd": 0.0,
+      "render_stage_elapsed_ms": 11702,
+      "validate_media_stage_elapsed_ms": 0,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_001_studio_night-google_veo31-dbf6",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 11764,
+        "success": false,
+        "error": "HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"`inlineData` isn't supported by this model. Please remove it or refer to the Gemini API documentation for supported usage.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+        "total_cost_usd": 0.0,
+        "stage_statuses": {
+          "render": "failed",
+          "shot_planning": "pending",
+          "timeline": "pending",
+          "tracks": "pending",
+          "validate_media": "pending"
+        },
+        "stage_durations_ms": {
+          "render": 11702,
+          "shot_planning": 0,
+          "timeline": 0,
+          "tracks": 0,
+          "validate_media": 0
+        },
+        "artifact_counts": {},
+        "artifact_paths": {}
+      },
+      "render_prompt_path": null,
+      "generated_video_artifact_path": null,
+      "generated_media_path": null,
+      "media_validation_path": null,
+      "request_id": null,
+      "provider_job_id": null,
+      "reference_usage_counts": {},
+      "active_input_count": 0,
+      "prompt_context_count": 0,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [],
+      "active_project_references": []
+    },
+    {
+      "case_id": "open_frequency_scene_001_studio_night",
+      "case_label": "Open Frequency scene 001 \u2014 radio studio night",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Interior ensemble control case with storm pressure, project taste refs, one hard-locked scene image, and canonical character/location visuals.",
+      "candidate_variant": "google_veo31_fast",
+      "candidate_label": "Google Veo 3.1 Fast Render",
+      "engine_pack_id": "google_veo31_fast",
+      "target_model": "veo-3.1-fast-generate-preview",
+      "project_dir": "output/story-169-google_veo31_fast-open_frequency_scene_001_studio_night-ca2eef",
+      "success": false,
+      "error": "HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"`inlineData` isn't supported by this model. Please remove it or refer to the Gemini API documentation for supported usage.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+      "preparation_elapsed_ms": 244498,
+      "render_elapsed_ms": 11287,
+      "total_elapsed_ms": 255785,
+      "total_cost_usd": 0.0,
+      "render_stage_elapsed_ms": 11222,
+      "validate_media_stage_elapsed_ms": 0,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_001_studio_night-google_veo31_fast-4b00",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 11286,
+        "success": false,
+        "error": "HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"`inlineData` isn't supported by this model. Please remove it or refer to the Gemini API documentation for supported usage.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+        "total_cost_usd": 0.0,
+        "stage_statuses": {
+          "render": "failed",
+          "shot_planning": "pending",
+          "timeline": "pending",
+          "tracks": "pending",
+          "validate_media": "pending"
+        },
+        "stage_durations_ms": {
+          "render": 11222,
+          "shot_planning": 0,
+          "timeline": 0,
+          "tracks": 0,
+          "validate_media": 0
+        },
+        "artifact_counts": {},
+        "artifact_paths": {}
+      },
+      "render_prompt_path": null,
+      "generated_video_artifact_path": null,
+      "generated_media_path": null,
+      "media_validation_path": null,
+      "request_id": null,
+      "provider_job_id": null,
+      "reference_usage_counts": {},
+      "active_input_count": 0,
+      "prompt_context_count": 0,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [],
+      "active_project_references": []
+    },
+    {
+      "case_id": "open_frequency_scene_002_water_tower_night",
+      "case_label": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "scene_id": "scene_002",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Exterior contrast case with wind, height, lantern warmth against a dark town, and the same multi-reference conditioning pattern.",
+      "candidate_variant": "openai_sora2",
+      "candidate_label": "OpenAI Sora 2 Render",
+      "engine_pack_id": "openai_sora2",
+      "target_model": "sora-2",
+      "project_dir": "output/story-169-openai_sora2-open_frequency_scene_002_water_tower_night-ef62ec",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 192719,
+      "render_elapsed_ms": 192584,
+      "total_elapsed_ms": 385303,
+      "total_cost_usd": 0.01153475,
+      "render_stage_elapsed_ms": 175480,
+      "validate_media_stage_elapsed_ms": 17045,
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_002_water_tower_night-openai_sora2-4f85",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 192584,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.01153475,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 175480,
+          "validate_media": 17045
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_002/v1.json",
+          "generated_video": "artifacts/generated_video/scene_002/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_002/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_002/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_002/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_002/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_002/v1.json",
+      "request_id": "video_69e137b1040c81908dd02b4159d32a770ee195c9897926eb",
+      "provider_job_id": "video_69e137b1040c81908dd02b4159d32a770ee195c9897926eb",
+      "reference_usage_counts": {
+        "prompt_context": 4,
+        "input_reference": 1
+      },
+      "active_input_count": 1,
+      "prompt_context_count": 4,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-4a8106b0bb",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-4a8106b0bb_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-6325ea1a42",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-6325ea1a42_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-4b6dcdbd2d",
+          "kind": "scene_injected_image",
+          "label": "EXT. WATER TOWER CATWALK - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_002/user_assets/asset-4b6dcdbd2d_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_002",
+            "path": "artifacts/injected_asset_manifest/scene__scene_002/v1.json",
+            "version": 1
+          },
+          "used_as": "input_reference"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "location_visual_water_tower_catwalk",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Water Tower Catwalk",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_water_tower_catwalk/water_tower_catwalk_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_water_tower_catwalk",
+            "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-4a8106b0bb",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-6325ea1a42",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    },
+    {
+      "case_id": "open_frequency_scene_002_water_tower_night",
+      "case_label": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "scene_id": "scene_002",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Exterior contrast case with wind, height, lantern warmth against a dark town, and the same multi-reference conditioning pattern.",
+      "candidate_variant": "google_veo31",
+      "candidate_label": "Google Veo 3.1 Render",
+      "engine_pack_id": "google_veo31",
+      "target_model": "veo-3.1-generate-preview",
+      "project_dir": "output/story-169-google_veo31-open_frequency_scene_002_water_tower_night-7d0fe1",
+      "success": false,
+      "error": "render_adapter_v1 prompt for scene_002 is incomplete: June visual/performance reference, Noah visual reference",
+      "preparation_elapsed_ms": 192719,
+      "render_elapsed_ms": 8534,
+      "total_elapsed_ms": 201253,
+      "total_cost_usd": 0.0,
+      "render_stage_elapsed_ms": 8478,
+      "validate_media_stage_elapsed_ms": 0,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_002_water_tower_night-google_veo31-ea0c",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 8534,
+        "success": false,
+        "error": "render_adapter_v1 prompt for scene_002 is incomplete: June visual/performance reference, Noah visual reference",
+        "total_cost_usd": 0.0,
+        "stage_statuses": {
+          "render": "failed",
+          "shot_planning": "pending",
+          "timeline": "pending",
+          "tracks": "pending",
+          "validate_media": "pending"
+        },
+        "stage_durations_ms": {
+          "render": 8478,
+          "shot_planning": 0,
+          "timeline": 0,
+          "tracks": 0,
+          "validate_media": 0
+        },
+        "artifact_counts": {},
+        "artifact_paths": {}
+      },
+      "render_prompt_path": null,
+      "generated_video_artifact_path": null,
+      "generated_media_path": null,
+      "media_validation_path": null,
+      "request_id": null,
+      "provider_job_id": null,
+      "reference_usage_counts": {},
+      "active_input_count": 0,
+      "prompt_context_count": 0,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [],
+      "active_project_references": []
+    },
+    {
+      "case_id": "open_frequency_scene_002_water_tower_night",
+      "case_label": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "scene_id": "scene_002",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Exterior contrast case with wind, height, lantern warmth against a dark town, and the same multi-reference conditioning pattern.",
+      "candidate_variant": "google_veo31_fast",
+      "candidate_label": "Google Veo 3.1 Fast Render",
+      "engine_pack_id": "google_veo31_fast",
+      "target_model": "veo-3.1-fast-generate-preview",
+      "project_dir": "output/story-169-google_veo31_fast-open_frequency_scene_002_water_tower_night-db111b",
+      "success": false,
+      "error": "HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"`inlineData` isn't supported by this model. Please remove it or refer to the Gemini API documentation for supported usage.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+      "preparation_elapsed_ms": 192719,
+      "render_elapsed_ms": 8852,
+      "total_elapsed_ms": 201571,
+      "total_cost_usd": 0.0,
+      "render_stage_elapsed_ms": 8798,
+      "validate_media_stage_elapsed_ms": 0,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_002_water_tower_night-google_veo31_fast-ea82",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 8851,
+        "success": false,
+        "error": "HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"`inlineData` isn't supported by this model. Please remove it or refer to the Gemini API documentation for supported usage.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+        "total_cost_usd": 0.0,
+        "stage_statuses": {
+          "render": "failed",
+          "shot_planning": "pending",
+          "timeline": "pending",
+          "tracks": "pending",
+          "validate_media": "pending"
+        },
+        "stage_durations_ms": {
+          "render": 8798,
+          "shot_planning": 0,
+          "timeline": 0,
+          "tracks": 0,
+          "validate_media": 0
+        },
+        "artifact_counts": {},
+        "artifact_paths": {}
+      },
+      "render_prompt_path": null,
+      "generated_video_artifact_path": null,
+      "generated_media_path": null,
+      "media_validation_path": null,
+      "request_id": null,
+      "provider_job_id": null,
+      "reference_usage_counts": {},
+      "active_input_count": 0,
+      "prompt_context_count": 0,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [],
+      "active_project_references": []
+    }
+  ]
+}

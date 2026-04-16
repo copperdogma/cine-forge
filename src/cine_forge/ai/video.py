@@ -239,13 +239,13 @@ def _generate_video_google(
 
     instance: dict[str, Any] = {"prompt": request.prompt}
     if request.first_frame is not None:
-        instance["image"] = _inline_data(request.first_frame)
+        instance["image"] = _google_image_payload(request.first_frame)
     if request.last_frame is not None:
-        instance["lastFrame"] = _inline_data(request.last_frame)
+        instance["lastFrame"] = _google_image_payload(request.last_frame)
     if request.reference_images:
         instance["referenceImages"] = [
             {
-                "image": _inline_data(item),
+                "image": _google_image_payload(item),
                 "referenceType": "asset",
             }
             for item in request.reference_images
@@ -496,12 +496,10 @@ def _encode_multipart_form(
     return b"".join(chunks), f"multipart/form-data; boundary={boundary}"
 
 
-def _inline_data(reference: VideoReferenceInput) -> dict[str, Any]:
+def _google_image_payload(reference: VideoReferenceInput) -> dict[str, Any]:
     return {
-        "inlineData": {
-            "mimeType": reference.media_type,
-            "data": base64.b64encode(reference.path.read_bytes()).decode("ascii"),
-        }
+        "bytesBase64Encoded": base64.b64encode(reference.path.read_bytes()).decode("ascii"),
+        "mimeType": reference.media_type,
     }
 
 

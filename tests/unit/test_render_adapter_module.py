@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+import yaml
 
 from cine_forge.ai.video import VideoGenerationResult
 from cine_forge.modules.generation.render_adapter_v1.main import run_module
@@ -38,6 +39,74 @@ def test_load_engine_pack_supports_story_143_previz_candidate_packs() -> None:
     assert grok.provider == "xai"
     assert grok.target_model == "grok-imagine-video"
     assert grok.request_defaults["default_resolution"] == "480p"
+
+
+@pytest.mark.unit
+def test_render_module_metadata_defaults_final_render_to_google_veo31() -> None:
+    module_yaml = (
+        Path(__file__).resolve().parents[2]
+        / "src"
+        / "cine_forge"
+        / "modules"
+        / "generation"
+        / "render_adapter_v1"
+        / "module.yaml"
+    )
+    payload = yaml.safe_load(module_yaml.read_text(encoding="utf-8"))
+
+    assert payload["parameters"]["engine_pack_id"]["default"] == "google_veo31"
+
+
+@pytest.mark.unit
+def test_run_module_defaults_final_render_to_google_veo31(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(
+        tmp_path,
+        include_keyframe=False,
+        include_scene_image=True,
+        include_project_taste_refs=True,
+    )
+    captured: dict[str, str] = {}
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: (
+            captured.setdefault("engine_pack_id", engine_pack.pack_id),
+            VideoGenerationResult(
+                video_bytes=b"fake-mp4",
+                media_type="video/mp4",
+                model_used=engine_pack.target_model,
+                request_id="video-default-001",
+                provider_job_id="job-default-001",
+            ),
+        )[1],
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={"compiler_model": "mock", "duration_seconds": 8},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    )
+    video_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "generated_video"
+    )
+
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+    generated_video = GeneratedVideoArtifact.model_validate(video_payload)
+
+    assert captured["engine_pack_id"] == "google_veo31"
+    assert prompt_artifact.engine_pack_id == "google_veo31"
+    assert generated_video.engine_pack_id == "google_veo31"
 
 
 @pytest.mark.unit
@@ -739,26 +808,30 @@ def test_run_module_rejects_hard_locked_image_when_pack_cannot_honor_it(
 
 
 @pytest.mark.unit
-def test_run_module_uses_raster_design_refs_and_creative_brief_project_refs_for_google_pack(
+def test_run_module_uses_reference_images_for_google_pack_without_keyframe_guidance(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     seeded = seed_render_project(
         tmp_path,
-        include_keyframe=True,
+        include_keyframe=False,
         include_scene_image=True,
         include_project_taste_refs=True,
     )
+    captured: dict[str, object] = {}
 
     monkeypatch.setattr(
         "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
-        lambda *, request, engine_pack: VideoGenerationResult(
-            video_bytes=b"fake-mp4",
-            media_type="video/mp4",
-            model_used=engine_pack.target_model,
-            request_id="video-google-001",
-            provider_job_id="job-google-001",
-        ),
+        lambda *, request, engine_pack: (
+            captured.setdefault("video_request", request),
+            VideoGenerationResult(
+                video_bytes=b"fake-mp4",
+                media_type="video/mp4",
+                model_used=engine_pack.target_model,
+                request_id="video-google-001",
+                provider_job_id="job-google-001",
+            ),
+        )[1],
     )
 
     result = run_module(
@@ -783,5 +856,62 @@ def test_run_module_uses_raster_design_refs_and_creative_brief_project_refs_for_
         ("mood_board.jpg", "mood_board"),
         ("style_reference.jpg", "style_reference"),
     }
+    request = captured["video_request"]
+    assert request.first_frame is None
+    assert request.last_frame is None
+    assert len(request.reference_images) == 3
+    assert request.reference_images[0].usage == "reference_image"
     assert resolved["Character visual reference: mara"] == "reference_image"
     assert resolved["Location visual reference: LAB"] == "reference_image"
+
+
+@pytest.mark.unit
+def test_run_module_keeps_google_reference_images_prompt_only_when_keyframe_guidance_exists(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(
+        tmp_path,
+        include_keyframe=True,
+        include_scene_image=True,
+        include_project_taste_refs=True,
+    )
+    captured: dict[str, object] = {}
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: (
+            captured.setdefault("video_request", request),
+            VideoGenerationResult(
+                video_bytes=b"fake-mp4",
+                media_type="video/mp4",
+                model_used=engine_pack.target_model,
+                request_id="video-google-002",
+                provider_job_id="job-google-002",
+            ),
+        )[1],
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={"engine_pack_id": "google_veo31", "compiler_model": "mock", "duration_seconds": 8},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    )
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+    resolved = {item.label: item.used_as for item in prompt_artifact.resolved_inputs}
+
+    request = captured["video_request"]
+    assert request.first_frame is not None
+    assert request.reference_images == []
+    assert resolved["Character visual reference: mara"] == "prompt_context"
+    assert resolved["Location visual reference: LAB"] == "prompt_context"
+    assert any(
+        "mixing frame guidance with extra reference images" in note
+        for note in prompt_artifact.completeness.notes
+    )

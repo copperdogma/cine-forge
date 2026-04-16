@@ -491,7 +491,7 @@ def _output_contract(
         "fidelity_intent": "render_preview",
         "intended_use": ["human_review", "ai_conditioning"],
         "consistency_strategy": None,
-        "default_engine_pack_id": "openai_sora2",
+        "default_engine_pack_id": "google_veo31",
         "default_compiler_model": "gpt-5.4-mini",
         "prompt_intent": "Compiled, provider-ready generation prompt for a scene render.",
         "prompt_rationale": (
@@ -946,6 +946,37 @@ def _shape_generation_request(
     if bool(engine_pack.request_defaults.get("high_resolution_requires_eight_seconds")):
         if resolution == "1080p" and duration_seconds != 8:
             raise ValueError(f"{engine_pack.pack_id} requires 8-second renders for {resolution}")
+    if (
+        reference_images
+        and (first_frame is not None or last_frame is not None)
+        and not bool(
+            engine_pack.request_defaults.get(
+                "mixed_frame_guidance_and_reference_images_supported",
+                True,
+            )
+        )
+    ):
+        required_refs = [
+            item.label
+            for item in updated
+            if item.used_as == "reference_image" and item.required
+        ]
+        if required_refs and not allow_prompt_only_required_media:
+            for item in updated:
+                if item.used_as == "reference_image" and item.required:
+                    item.used_as = "unsupported"
+            raise ValueError(
+                f"{engine_pack.pack_id} cannot combine frame guidance with required "
+                f"reference images on the live provider API: {', '.join(required_refs)}"
+            )
+        for item in updated:
+            if item.used_as == "reference_image":
+                item.used_as = "prompt_context"
+        reference_images = []
+        notes.append(
+            "Additional reference images stayed prompt-only because the live provider "
+            "API rejects mixing frame guidance with extra reference images."
+        )
 
     return (
         VideoGenerationRequest(

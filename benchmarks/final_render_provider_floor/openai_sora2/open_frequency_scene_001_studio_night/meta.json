@@ -1,0 +1,49 @@
+{
+  "clip_id": "open_frequency_scene_001_studio_night",
+  "title": "Open Frequency scene 001 \u2014 radio studio night",
+  "source_type": "licensed_internal",
+  "source_description": "Story 169 candidate generated with openai_sora2 (sora-2) on the representative reference-conditioned render harness.",
+  "rights": "Project-owned internal benchmark fixture",
+  "duration_seconds": 8.0,
+  "resolution": "720p",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": null,
+  "tags": [
+    "dialogue",
+    "ensemble",
+    "interior",
+    "reference_conditioned"
+  ],
+  "candidate_variant": "openai_sora2",
+  "candidate_label": "OpenAI Sora 2 Render",
+  "operator_lane": "generated_render",
+  "engine_pack_id": "openai_sora2",
+  "target_model": "sora-2",
+  "generation_latency_ms": 182955,
+  "end_to_end_latency_ms": 391160,
+  "estimated_generation_cost_usd": 0.0088665,
+  "request_id": "video_69e13ec353488190a31931587f6686fa0d9d987364367e58",
+  "provider_job_id": "video_69e13ec353488190a31931587f6686fa0d9d987364367e58",
+  "reference_usage_counts": {
+    "prompt_context": 4,
+    "input_reference": 1
+  },
+  "request_notes": [],
+  "active_project_references": [
+    {
+      "asset_id": "asset-907001516d",
+      "filename": "mood_board.png",
+      "lock_status": "soft_locked",
+      "purpose": "mood_board",
+      "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+    },
+    {
+      "asset_id": "asset-f08ffd088b",
+      "filename": "style_reference.png",
+      "lock_status": "soft_locked",
+      "purpose": "style_reference",
+      "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+    }
+  ]
+}

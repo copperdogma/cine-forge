@@ -150,6 +150,82 @@ def test_generate_video_google_sends_numeric_duration(monkeypatch: pytest.Monkey
 
 
 @pytest.mark.unit
+def test_generate_video_google_serializes_images_as_bytes_base64_encoded(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    pack = load_engine_pack("google_veo31")
+    first_path = tmp_path / "first.png"
+    last_path = tmp_path / "last.png"
+    ref_path = tmp_path / "ref.png"
+    for image_path, color in (
+        (first_path, (10, 20, 30)),
+        (last_path, (40, 50, 60)),
+        (ref_path, (70, 80, 90)),
+    ):
+        Image.new("RGB", (64, 64), color=color).save(image_path, format="PNG")
+
+    request = VideoGenerationRequest(
+        prompt="Render a reference-conditioned lab scene.",
+        duration_seconds=8,
+        resolution="720p",
+        aspect_ratio="16:9",
+        first_frame=VideoReferenceInput(
+            path=first_path,
+            media_type="image/png",
+            usage="input_reference",
+        ),
+        last_frame=VideoReferenceInput(
+            path=last_path,
+            media_type="image/png",
+            usage="last_frame",
+        ),
+        reference_images=[
+            VideoReferenceInput(
+                path=ref_path,
+                media_type="image/png",
+                usage="reference_image",
+            )
+        ],
+    )
+    payloads: list[dict] = []
+
+    def _fake_request_json(*, url, method, headers, body=None, timeout=60):
+        if method == "POST":
+            assert body is not None
+            payload = __import__("json").loads(body.decode("utf-8"))
+            payloads.append(payload)
+            return {"name": "operations/test-op", "done": False}
+        return {
+            "name": "operations/test-op",
+            "done": True,
+            "response": {
+                "generateVideoResponse": {
+                    "generatedSamples": [{"video": {"uri": "https://example.com/video.mp4"}}]
+                }
+            },
+        }
+
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setattr("cine_forge.ai.video._request_json", _fake_request_json)
+    monkeypatch.setattr("cine_forge.ai.video._request_bytes", lambda **_: b"video-bytes")
+    monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+
+    result = _generate_video_google(request=request, engine_pack=pack)
+
+    assert result.media_type == "video/mp4"
+    image_payload = payloads[0]["instances"][0]["image"]
+    assert image_payload["mimeType"] == "image/png"
+    assert "bytesBase64Encoded" in image_payload
+    assert "inlineData" not in image_payload
+    last_frame_payload = payloads[0]["instances"][0]["lastFrame"]
+    assert "bytesBase64Encoded" in last_frame_payload
+    ref_payload = payloads[0]["instances"][0]["referenceImages"][0]["image"]
+    assert ref_payload["mimeType"] == "image/png"
+    assert "bytesBase64Encoded" in ref_payload
+
+
+@pytest.mark.unit
 def test_generate_video_xai_polls_until_done_and_downloads_bytes(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

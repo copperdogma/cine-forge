@@ -648,13 +648,15 @@
           "165",
           "166",
           "167",
-          "168"
+          "168",
+          "169"
         ],
         "adrIds": [
           "ADR-002",
           "ADR-003"
         ],
         "evalIds": [
+          "final-render-provider-floor",
           "previz-usefulness",
           "real-ai-previz-runtime",
           "runtime-final-output-validation",
@@ -763,13 +765,15 @@
           "153",
           "164",
           "165",
-          "168"
+          "168",
+          "169"
         ],
         "adrIds": [
           "ADR-002",
           "ADR-003"
         ],
         "evalIds": [
+          "final-render-provider-floor",
           "previz-usefulness",
           "real-ai-previz-runtime",
           "runtime-media-validation"
@@ -841,13 +845,15 @@
           "165",
           "166",
           "167",
-          "168"
+          "168",
+          "169"
         ],
         "adrIds": [
           "ADR-002",
           "ADR-003"
         ],
         "evalIds": [
+          "final-render-provider-floor",
           "previz-usefulness",
           "real-ai-previz-runtime",
           "runtime-final-output-validation",
@@ -938,7 +944,8 @@
           "160",
           "161",
           "162",
-          "167"
+          "167",
+          "169"
         ],
         "adrIds": [
           "ADR-001",
@@ -952,6 +959,7 @@
           "config-detection",
           "continuity-extraction",
           "entity-discovery",
+          "final-render-provider-floor",
           "full-script-throughput",
           "location-extraction",
           "normalization",
@@ -1445,35 +1453,39 @@
           "159",
           "160",
           "161",
-          "162"
+          "162",
+          "169"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
+          "final-render-provider-floor",
           "full-script-throughput"
         ],
         "actionability": {
           "sourceKind": "eval",
-          "sourceId": "full-script-throughput",
+          "sourceId": "final-render-provider-floor",
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…",
+          "whyNow": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat.",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": "2026-04-12",
+            "date": "2026-04-16",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…"
+            "summary": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
           },
           "storyIds": [
             "155",
             "159",
             "160",
             "161",
-            "162"
+            "162",
+            "169"
           ],
           "evalIds": [
+            "final-render-provider-floor",
             "full-script-throughput",
             "compromise-C3-tiered-models"
           ]
@@ -10507,6 +10519,83 @@
           "summary": "completion-marked-done: closed Story 168 after confirming the"
         }
       }
+    },
+    {
+      "id": "169",
+      "title": "Reference-Conditioned Final Render Provider Floor",
+      "path": "docs/stories/story-169-reference-conditioned-final-render-provider-floor.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:5.3",
+        "spec:6.1",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "028",
+        "030",
+        "164",
+        "168"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "model-selection",
+        "provider-floor",
+        "references",
+        "render",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260416-1451",
+        "date": "2026-04-16",
+        "summary": "validation: reran the required validation-pass checks and"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "169",
+        "sourcePath": "docs/stories/story-169-reference-conditioned-final-render-provider-floor.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "validation: reran the required validation-pass checks and",
+        "lastRelevantAction": {
+          "date": "2026-04-16",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-169-reference-conditioned-final-render-provider-floor.md",
+          "summary": "validation: reran the required validation-pass checks and"
+        }
+      }
     }
   ],
   "adrs": [
@@ -11129,6 +11218,80 @@
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
           "summary": "Failed the recall gate by missing required character DAD despite otherwise broad coverage."
+        }
+      }
+    },
+    {
+      "id": "final-render-provider-floor",
+      "name": "Final Render Provider Floor",
+      "type": "quality",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_render_provider_floor_eval.py --fixture-manifest benchmarks/fixtures/final_render_provider_floor_cases.json --output-prefix benchmarks/results/final-render-provider-floor-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_final_render_provider_floor_dataset.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/final-render-provider-floor.yaml --no-cache -j 3 --output benchmarks/results/final-render-provider-floor-quality.json && PYTHONPATH=src .venv/bin/python benchmarks/scripts/final_render_provider_floor_report.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json --promptfoo-result benchmarks/results/final-render-provider-floor-quality.json --output-prefix benchmarks/results/final-render-provider-floor-decision",
+      "description": "Measures the shipped reference-conditioned final-render route on a fixed two-scene Story 168-style substrate across the wired candidate packs (`openai_sora2`, `google_veo31`, `google_veo31_fast`). Combines a live runtime harness that records success, latency, cost, and reference-slot usage with Story 030's video-understanding scorer for semantic quality.",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "storyIds": [
+        "169"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "retryWhen": [],
+      "attempts": [],
+      "latestScore": {
+        "model": "OpenAI Sora 2 Render",
+        "measured": "2026-04-16",
+        "note": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
+      },
+      "declaredSpecRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "declaredStoryIds": [
+        "169"
+      ],
+      "declaredCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [
+        "C3"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "actionability": {
+        "sourceKind": "eval",
+        "sourceId": "final-render-provider-floor",
+        "sourcePath": "docs/evals/registry.yaml",
+        "recommendedNow": false,
+        "posture": "no-trigger-recorded",
+        "whyNow": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat.",
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
+        "lastRelevantAction": {
+          "date": "2026-04-16",
+          "sourceType": "eval-score",
+          "source": "docs/evals/registry.yaml",
+          "summary": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
         }
       }
     },
@@ -12350,13 +12513,13 @@
           "id": "scene-generation-completion",
           "status": "active",
           "story_refs": [],
-          "notes": "Stories 164, 165, 166, 167, and 168 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, and the reference-conditioned scene-generation product-truth slice. Keep `spec:6` / `spec:7` active, but let triage package the next non-terminal owner instead of pinning the campaign to a closed story."
+          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. The campaign stays active, but triage must name the next non-terminal owner."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, and Story 168 closed the reference-conditioned scene-generation product-truth slice.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, and Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route.",
         "lanes": [
           {
             "id": "pending-ready",

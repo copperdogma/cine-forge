@@ -1,0 +1,84 @@
+# Story 169 — final-render provider-floor quality comparison
+
+description: "Reference-conditioned final-render provider floor — compare the wired packs on the same representative clip set"
+
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/video-understanding.txt
+
+providers:
+  - id: file://../providers/video_understanding_provider.py
+    label: "OpenAI Sora 2 Render"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: final-render-provider-floor-v1
+      clip_root: ../final_render_provider_floor
+      candidate_variant: openai_sora2
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Google Veo 3.1 Render"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: final-render-provider-floor-v1
+      clip_root: ../final_render_provider_floor
+      candidate_variant: google_veo31
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Google Veo 3.1 Fast Render"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: final-render-provider-floor-v1
+      clip_root: ../final_render_provider_floor
+      candidate_variant: google_veo31_fast
+      pythonExecutable: python
+      timeout: 300000
+
+tests:
+  - vars:
+      clip_id: open_frequency_scene_001_studio_night
+      clip_title: Open Frequency scene 001 — radio studio night
+      target_path: final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json
+      target_markdown: file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md
+    assert: &final_render_provider_assertions
+      - type: python
+        value: file://../scorers/video_understanding_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate this model's structured clip analysis against the reference below.
+
+          Reference analysis:
+          {{target_markdown}}
+
+          Reward outputs that preserve the intended dramatic beats, setting, character distinctness,
+          lighting mood, and reference-conditioned visual specificity from the target scene. Penalize
+          clips that flatten the environment, lose who is present, ignore the storm-night atmosphere,
+          or read like generic video instead of a deliberately staged final render.
+
+  - vars:
+      clip_id: open_frequency_scene_002_water_tower_night
+      clip_title: Open Frequency scene 002 — water tower catwalk night
+      target_path: final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json
+      target_markdown: file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md
+    assert: *final_render_provider_assertions

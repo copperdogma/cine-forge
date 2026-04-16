@@ -1457,6 +1457,98 @@ evals:
         git_sha: "80200d9"
         note: "Story 149 kept the validated 2026-04-03 UI-backed quality scores, but re-measured the deterministic lanes with the updated dataset generator and produced a fresh report. Annotated Animatic now records 606 ms average / 635 ms median generation latency, Symbolic Animatic records 476 ms average, and the corrected product truth is now explicit: deterministic lanes are fallback/control only, while Veo 3.1 Lite remains the strongest current AI-previz lane at 0.828 overall and 39273 ms."
 
+  - id: final-render-provider-floor
+    name: Final Render Provider Floor
+    type: quality
+    spec_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:8
+    story_refs:
+      - "169"
+    category_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:8
+    compromise_refs:
+      - C3
+    description: >
+      Measures the shipped reference-conditioned final-render route on a fixed
+      two-scene Story 168-style substrate across the wired candidate packs
+      (`openai_sora2`, `google_veo31`, `google_veo31_fast`). Combines a live
+      runtime harness that records success, latency, cost, and reference-slot
+      usage with Story 030's video-understanding scorer for semantic quality.
+    pipeline_stage: generation
+    runner: custom
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_render_provider_floor_eval.py --fixture-manifest benchmarks/fixtures/final_render_provider_floor_cases.json --output-prefix benchmarks/results/final-render-provider-floor-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_final_render_provider_floor_dataset.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/final-render-provider-floor.yaml --no-cache -j 3 --output benchmarks/results/final-render-provider-floor-quality.json && PYTHONPATH=src .venv/bin/python benchmarks/scripts/final_render_provider_floor_report.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json --promptfoo-result benchmarks/results/final-render-provider-floor-quality.json --output-prefix benchmarks/results/final-render-provider-floor-decision"
+    script: benchmarks/scripts/final_render_provider_floor_report.py
+    config: benchmarks/tasks/final-render-provider-floor.yaml
+    scorer: benchmarks/scorers/video_understanding_scorer.py
+    golden: benchmarks/final_render_provider_floor/manifest.json
+    test_cases: 2
+    default_model: "google_veo31"
+
+    target:
+      metric: overall
+      value: 0.74
+      latency_ms_max: 300000
+      cost_usd_max: 0.02
+      note: "The shipped default should pass both representative scenes, stay within the current cost floor, preserve multiple direct reference-image slots, and clear the old default by a meaningful quality margin instead of winning on anecdote."
+
+    scores:
+      - model: "Google Veo 3.1 Render"
+        metrics:
+          overall: 0.7497
+          python: 0.7644
+          rubric: 0.735
+          success_ratio: 1.0
+          direct_inputs: 3.0
+        latency_ms: 245735
+        cost_usd: 0.012
+        cost_estimated: true
+        measured: 2026-04-16
+        git_sha: "62a02d6"
+        result_file: benchmarks/results/final-render-provider-floor-story-169-decision-2026-04-16.json
+        note: "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
+      - model: "OpenAI Sora 2 Render"
+        metrics:
+          overall: 0.6113
+          python: 0.6377
+          rubric: 0.585
+          success_ratio: 1.0
+          direct_inputs: 1.0
+        latency_ms: 390477
+        cost_usd: 0.012
+        cost_estimated: true
+        measured: 2026-04-16
+        git_sha: "62a02d6"
+        result_file: benchmarks/results/final-render-provider-floor-story-169-quality-2026-04-16.json
+        note: "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
+      - model: "Google Veo 3.1 Fast Render"
+        metrics:
+          overall: 0.6063
+          python: 0.6177
+          rubric: 0.595
+          success_ratio: 1.0
+          direct_inputs: 3.0
+        latency_ms: 245715
+        cost_usd: 0.012
+        cost_estimated: true
+        measured: 2026-04-16
+        git_sha: "62a02d6"
+        result_file: benchmarks/results/final-render-provider-floor-story-169-quality-2026-04-16.json
+        note: "Comparator only, non-runtime-blocking. It kept the same three direct reference images and Sora-beating runtime, but scene `open_frequency_scene_002_water_tower_night` remained model-wrong and read more generic than the standard Veo render on tone, camera language, and storm-night specificity."
+
+    attempts:
+      - date: 2026-04-16
+        git_sha: "62a02d6"
+        note: "The first Story 169 runtime pass misclassified Google as runtime-blocking, but the blocker was transport-wrong, not provider-wrong: the repo sent `inlineData`, which live Veo rejected. Direct API probes on 2026-04-16 confirmed that `bytesBase64Encoded` payloads plus `referenceImages`-only requests succeeded on both `veo-3.1-generate-preview` and `veo-3.1-fast-generate-preview`, while mixed primary-frame plus extra-reference requests still returned `INVALID_ARGUMENT`."
+      - date: 2026-04-16
+        git_sha: "62a02d6"
+        note: "Post-fix full rerun cleared all six live renders and reclassified the earlier Google blocker as resolved. Mismatch investigation on the two remaining quality failures found both non-default misses model-wrong and non-runtime-blocking: `openai_sora2` on `open_frequency_scene_002_water_tower_night` flattened the scene into generic close coverage, and `google_veo31_fast` kept the props but still lost the storm-wide hopeful staging. `google_veo31` passed both cases, won the quality/runtime/reference trade-off, and became the new default."
+
   - id: runtime-media-validation
     name: Runtime Media Validation
     type: quality

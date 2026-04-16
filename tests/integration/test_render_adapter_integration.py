@@ -416,6 +416,10 @@ def test_render_recipe_persists_reference_conditioned_truth_for_google_pack(
         ("mood_board.jpg", "mood_board"),
         ("style_reference.jpg", "style_reference"),
     }
-    assert resolved["Character visual reference: mara"] == "reference_image"
-    assert resolved["Location visual reference: LAB"] == "reference_image"
+    assert resolved["Character visual reference: mara"] == "prompt_context"
+    assert resolved["Location visual reference: LAB"] == "prompt_context"
+    assert any(
+        "mixing frame guidance with extra reference images" in note
+        for note in render_prompt["completeness"]["notes"]
+    )
     assert generated_video.prompt_ref.path == render_prompt_ref.path

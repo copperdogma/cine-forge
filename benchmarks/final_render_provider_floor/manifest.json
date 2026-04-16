@@ -1,0 +1,26 @@
+{
+  "cases": [
+    {
+      "case_id": "open_frequency_scene_001_studio_night",
+      "title": "Open Frequency scene 001 \u2014 radio studio night",
+      "variants": [
+        "google_veo31",
+        "google_veo31_fast",
+        "openai_sora2"
+      ],
+      "target_path": "targets/open_frequency_scene_001_studio_night/target.json",
+      "target_markdown": "targets/open_frequency_scene_001_studio_night/target.md"
+    },
+    {
+      "case_id": "open_frequency_scene_002_water_tower_night",
+      "title": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "variants": [
+        "google_veo31",
+        "google_veo31_fast",
+        "openai_sora2"
+      ],
+      "target_path": "targets/open_frequency_scene_002_water_tower_night/target.json",
+      "target_markdown": "targets/open_frequency_scene_002_water_tower_night/target.md"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "eval_id": "final-render-provider-floor",
+  "runtime_result_file": "benchmarks/fixtures/final_render_provider_floor_cases.json",
+  "candidates": [
+    {
+      "candidate_variant": "google_veo31",
+      "candidate_label": "Google Veo 3.1 Render",
+      "engine_pack_id": "google_veo31",
+      "target_model": "veo-3.1-generate-preview",
+      "success_ratio": 1.0,
+      "quality_overall": 0.7497,
+      "quality_python": 0.7644,
+      "quality_rubric": 0.735,
+      "mean_total_elapsed_ms": 245735.0,
+      "mean_render_stage_elapsed_ms": 46554.0,
+      "mean_total_cost_usd": 0.012,
+      "mean_reference_usage_counts": {
+        "prompt_context": 2.0,
+        "reference_image": 3.0
+      },
+      "mean_active_input_count": 3.0,
+      "mean_prompt_context_count": 2.0,
+      "mean_unsupported_count": 0.0,
+      "calls": 2
+    },
+    {
+      "candidate_variant": "openai_sora2",
+      "candidate_label": "OpenAI Sora 2 Render",
+      "engine_pack_id": "openai_sora2",
+      "target_model": "sora-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.6113,
+      "quality_python": 0.6377,
+      "quality_rubric": 0.585,
+      "mean_total_elapsed_ms": 390476.5,
+      "mean_render_stage_elapsed_ms": 184615.0,
+      "mean_total_cost_usd": 0.012,
+      "mean_reference_usage_counts": {
+        "input_reference": 1.0,
+        "prompt_context": 4.0
+      },
+      "mean_active_input_count": 1.0,
+      "mean_prompt_context_count": 4.0,
+      "mean_unsupported_count": 0.0,
+      "calls": 2
+    },
+    {
+      "candidate_variant": "google_veo31_fast",
+      "candidate_label": "Google Veo 3.1 Fast Render",
+      "engine_pack_id": "google_veo31_fast",
+      "target_model": "veo-3.1-fast-generate-preview",
+      "success_ratio": 1.0,
+      "quality_overall": 0.6063,
+      "quality_python": 0.6177,
+      "quality_rubric": 0.595,
+      "mean_total_elapsed_ms": 245715.0,
+      "mean_render_stage_elapsed_ms": 46782.5,
+      "mean_total_cost_usd": 0.012,
+      "mean_reference_usage_counts": {
+        "prompt_context": 2.0,
+        "reference_image": 3.0
+      },
+      "mean_active_input_count": 3.0,
+      "mean_prompt_context_count": 2.0,
+      "mean_unsupported_count": 0.0,
+      "calls": 2
+    }
+  ],
+  "recommendation": {
+    "decision": "switch_default_to_google_veo31",
+    "rationale": "Google Veo 3.1 Render beat the current default by 0.138 quality points, stayed within 0.63x of the current total runtime, and preserved more direct image conditioning on average. That is a defensible provider-floor improvement instead of noisy churn."
+  },
+  "previous_default": null
+}

@@ -1,0 +1,1134 @@
+{
+  "eval_id": "final-render-provider-floor-runtime",
+  "measured_at": "2026-04-16T20:08:58.357593+00:00",
+  "fixture_manifest": "benchmarks/fixtures/final_render_provider_floor_cases.json",
+  "candidate_packs": [
+    "openai_sora2",
+    "google_veo31",
+    "google_veo31_fast"
+  ],
+  "comparison_settings": {
+    "duration_seconds": 8,
+    "aspect_ratio": "16:9",
+    "normalized_resolution": "720p"
+  },
+  "summary": {
+    "candidates": [
+      {
+        "candidate_variant": "google_veo31_fast",
+        "candidate_label": "Google Veo 3.1 Fast Render",
+        "engine_pack_id": "google_veo31_fast",
+        "target_model": "veo-3.1-fast-generate-preview",
+        "total_cases": 2,
+        "successful_cases": 2,
+        "success_ratio": 1.0,
+        "mean_total_elapsed_ms": 245715.0,
+        "mean_render_elapsed_ms": 52730.0,
+        "mean_render_stage_elapsed_ms": 46782.5,
+        "mean_validate_media_stage_elapsed_ms": 5893.5,
+        "mean_total_cost_usd": 0.012,
+        "mean_active_input_count": 3.0,
+        "mean_prompt_context_count": 2.0,
+        "mean_unsupported_count": 0.0,
+        "mean_reference_usage_counts": {
+          "prompt_context": 2.0,
+          "reference_image": 3.0
+        }
+      },
+      {
+        "candidate_variant": "google_veo31",
+        "candidate_label": "Google Veo 3.1 Render",
+        "engine_pack_id": "google_veo31",
+        "target_model": "veo-3.1-generate-preview",
+        "total_cases": 2,
+        "successful_cases": 2,
+        "success_ratio": 1.0,
+        "mean_total_elapsed_ms": 245735.0,
+        "mean_render_elapsed_ms": 52750.0,
+        "mean_render_stage_elapsed_ms": 46554.0,
+        "mean_validate_media_stage_elapsed_ms": 6130.0,
+        "mean_total_cost_usd": 0.012,
+        "mean_active_input_count": 3.0,
+        "mean_prompt_context_count": 2.0,
+        "mean_unsupported_count": 0.0,
+        "mean_reference_usage_counts": {
+          "prompt_context": 2.0,
+          "reference_image": 3.0
+        }
+      },
+      {
+        "candidate_variant": "openai_sora2",
+        "candidate_label": "OpenAI Sora 2 Render",
+        "engine_pack_id": "openai_sora2",
+        "target_model": "sora-2",
+        "total_cases": 2,
+        "successful_cases": 2,
+        "success_ratio": 1.0,
+        "mean_total_elapsed_ms": 390476.5,
+        "mean_render_elapsed_ms": 197491.5,
+        "mean_render_stage_elapsed_ms": 184615.0,
+        "mean_validate_media_stage_elapsed_ms": 12834.0,
+        "mean_total_cost_usd": 0.012,
+        "mean_active_input_count": 1.0,
+        "mean_prompt_context_count": 4.0,
+        "mean_unsupported_count": 0.0,
+        "mean_reference_usage_counts": {
+          "input_reference": 1.0,
+          "prompt_context": 4.0
+        }
+      }
+    ]
+  },
+  "runs": [
+    {
+      "case_id": "open_frequency_scene_001_studio_night",
+      "case_label": "Open Frequency scene 001 \u2014 radio studio night",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Interior ensemble control case with storm pressure, project taste refs, one hard-locked scene image, and canonical character/location visuals.",
+      "candidate_variant": "openai_sora2",
+      "candidate_label": "OpenAI Sora 2 Render",
+      "engine_pack_id": "openai_sora2",
+      "target_model": "sora-2",
+      "project_dir": "output/story-169-openai_sora2-open_frequency_scene_001_studio_night-23b3ba",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 191008,
+      "render_elapsed_ms": 200152,
+      "total_elapsed_ms": 391160,
+      "total_cost_usd": 0.0124569,
+      "render_stage_elapsed_ms": 182955,
+      "validate_media_stage_elapsed_ms": 17165,
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_001_studio_night-openai_sora2-1237",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 200152,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0124569,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 182955,
+          "validate_media": 17165
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_001/v1.json",
+          "generated_video": "artifacts/generated_video/scene_001/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_001/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_001/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_001/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json",
+      "request_id": "video_69e13ec353488190a31931587f6686fa0d9d987364367e58",
+      "provider_job_id": "video_69e13ec353488190a31931587f6686fa0d9d987364367e58",
+      "reference_usage_counts": {
+        "prompt_context": 4,
+        "input_reference": 1
+      },
+      "active_input_count": 1,
+      "prompt_context_count": 4,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-907001516d",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-907001516d_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-f08ffd088b",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-f08ffd088b_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-da3c5b1bc7",
+          "kind": "scene_injected_image",
+          "label": "INT. COMMUNITY RADIO STUDIO - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_001/user_assets/asset-da3c5b1bc7_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_001",
+            "path": "artifacts/injected_asset_manifest/scene__scene_001/v1.json",
+            "version": 1
+          },
+          "used_as": "input_reference"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "location_visual_community_radio_studio",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Community Radio Studio",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_community_radio_studio/community_radio_studio_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_community_radio_studio",
+            "path": "artifacts/bibles/location_community_radio_studio/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-907001516d",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-f08ffd088b",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    },
+    {
+      "case_id": "open_frequency_scene_001_studio_night",
+      "case_label": "Open Frequency scene 001 \u2014 radio studio night",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Interior ensemble control case with storm pressure, project taste refs, one hard-locked scene image, and canonical character/location visuals.",
+      "candidate_variant": "google_veo31",
+      "candidate_label": "Google Veo 3.1 Render",
+      "engine_pack_id": "google_veo31",
+      "target_model": "veo-3.1-generate-preview",
+      "project_dir": "output/story-169-google_veo31-open_frequency_scene_001_studio_night-61b99d",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 191008,
+      "render_elapsed_ms": 59925,
+      "total_elapsed_ms": 250933,
+      "total_cost_usd": 0.01325845,
+      "render_stage_elapsed_ms": 52537,
+      "validate_media_stage_elapsed_ms": 7330,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_001_studio_night-google_veo31-dbd2",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 59925,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.01325845,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 52537,
+          "validate_media": 7330
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_001/v1.json",
+          "generated_video": "artifacts/generated_video/scene_001/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_001/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_001/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_001/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json",
+      "request_id": "models/veo-3.1-generate-preview/operations/dwuxykjhycf1",
+      "provider_job_id": "models/veo-3.1-generate-preview/operations/dwuxykjhycf1",
+      "reference_usage_counts": {
+        "prompt_context": 2,
+        "reference_image": 3
+      },
+      "active_input_count": 3,
+      "prompt_context_count": 2,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-907001516d",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-907001516d_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-f08ffd088b",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-f08ffd088b_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-da3c5b1bc7",
+          "kind": "scene_injected_image",
+          "label": "INT. COMMUNITY RADIO STUDIO - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_001/user_assets/asset-da3c5b1bc7_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_001",
+            "path": "artifacts/injected_asset_manifest/scene__scene_001/v1.json",
+            "version": 1
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "location_visual_community_radio_studio",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Community Radio Studio",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_community_radio_studio/community_radio_studio_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_community_radio_studio",
+            "path": "artifacts/bibles/location_community_radio_studio/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-907001516d",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-f08ffd088b",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    },
+    {
+      "case_id": "open_frequency_scene_001_studio_night",
+      "case_label": "Open Frequency scene 001 \u2014 radio studio night",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Interior ensemble control case with storm pressure, project taste refs, one hard-locked scene image, and canonical character/location visuals.",
+      "candidate_variant": "google_veo31_fast",
+      "candidate_label": "Google Veo 3.1 Fast Render",
+      "engine_pack_id": "google_veo31_fast",
+      "target_model": "veo-3.1-fast-generate-preview",
+      "project_dir": "output/story-169-google_veo31_fast-open_frequency_scene_001_studio_night-1dd9e9",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 191008,
+      "render_elapsed_ms": 49275,
+      "total_elapsed_ms": 240283,
+      "total_cost_usd": 0.0133571,
+      "render_stage_elapsed_ms": 42399,
+      "validate_media_stage_elapsed_ms": 6821,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_001_studio_night-google_veo31_fast-9dc9",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 49275,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0133571,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 42399,
+          "validate_media": 6821
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_001/v1.json",
+          "generated_video": "artifacts/generated_video/scene_001/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_001/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_001/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_001/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json",
+      "request_id": "models/veo-3.1-fast-generate-preview/operations/sp849p31vx4x",
+      "provider_job_id": "models/veo-3.1-fast-generate-preview/operations/sp849p31vx4x",
+      "reference_usage_counts": {
+        "prompt_context": 2,
+        "reference_image": 3
+      },
+      "active_input_count": 3,
+      "prompt_context_count": 2,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-907001516d",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-907001516d_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-f08ffd088b",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-f08ffd088b_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-da3c5b1bc7",
+          "kind": "scene_injected_image",
+          "label": "INT. COMMUNITY RADIO STUDIO - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_001/user_assets/asset-da3c5b1bc7_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_001",
+            "path": "artifacts/injected_asset_manifest/scene__scene_001/v1.json",
+            "version": 1
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "location_visual_community_radio_studio",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Community Radio Studio",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_community_radio_studio/community_radio_studio_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_community_radio_studio",
+            "path": "artifacts/bibles/location_community_radio_studio/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-907001516d",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-f08ffd088b",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    },
+    {
+      "case_id": "open_frequency_scene_002_water_tower_night",
+      "case_label": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "scene_id": "scene_002",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Exterior contrast case with wind, height, lantern warmth against a dark town, and the same multi-reference conditioning pattern.",
+      "candidate_variant": "openai_sora2",
+      "candidate_label": "OpenAI Sora 2 Render",
+      "engine_pack_id": "openai_sora2",
+      "target_model": "sora-2",
+      "project_dir": "output/story-169-openai_sora2-open_frequency_scene_002_water_tower_night-20c6da",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 194962,
+      "render_elapsed_ms": 194831,
+      "total_elapsed_ms": 389793,
+      "total_cost_usd": 0.011238,
+      "render_stage_elapsed_ms": 186275,
+      "validate_media_stage_elapsed_ms": 8503,
+      "duration_seconds": 8,
+      "resolution": "1280x720",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_002_water_tower_night-openai_sora2-3861",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 194831,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.011238,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 186275,
+          "validate_media": 8503
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_002/v1.json",
+          "generated_video": "artifacts/generated_video/scene_002/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_002/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_002/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_002/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_002/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_002/v1.json",
+      "request_id": "video_69e140b96cd48190b3979a16548a28130ce2a8118001e334",
+      "provider_job_id": "video_69e140b96cd48190b3979a16548a28130ce2a8118001e334",
+      "reference_usage_counts": {
+        "prompt_context": 4,
+        "input_reference": 1
+      },
+      "active_input_count": 1,
+      "prompt_context_count": 4,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-255717efb3",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-255717efb3_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-02be9f2bfa",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-02be9f2bfa_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-775afa5689",
+          "kind": "scene_injected_image",
+          "label": "EXT. WATER TOWER CATWALK - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_002/user_assets/asset-775afa5689_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_002",
+            "path": "artifacts/injected_asset_manifest/scene__scene_002/v1.json",
+            "version": 1
+          },
+          "used_as": "input_reference"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "location_visual_water_tower_catwalk",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Water Tower Catwalk",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_water_tower_catwalk/water_tower_catwalk_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_water_tower_catwalk",
+            "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-255717efb3",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-02be9f2bfa",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    },
+    {
+      "case_id": "open_frequency_scene_002_water_tower_night",
+      "case_label": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "scene_id": "scene_002",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Exterior contrast case with wind, height, lantern warmth against a dark town, and the same multi-reference conditioning pattern.",
+      "candidate_variant": "google_veo31",
+      "candidate_label": "Google Veo 3.1 Render",
+      "engine_pack_id": "google_veo31",
+      "target_model": "veo-3.1-generate-preview",
+      "project_dir": "output/story-169-google_veo31-open_frequency_scene_002_water_tower_night-34fd02",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 194962,
+      "render_elapsed_ms": 45575,
+      "total_elapsed_ms": 240537,
+      "total_cost_usd": 0.01086865,
+      "render_stage_elapsed_ms": 40571,
+      "validate_media_stage_elapsed_ms": 4930,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_002_water_tower_night-google_veo31-8a99",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 45575,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.01086865,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 40571,
+          "validate_media": 4930
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_002/v1.json",
+          "generated_video": "artifacts/generated_video/scene_002/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_002/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_002/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_002/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_002/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_002/v1.json",
+      "request_id": "models/veo-3.1-generate-preview/operations/fsi7rv1z4bc1",
+      "provider_job_id": "models/veo-3.1-generate-preview/operations/fsi7rv1z4bc1",
+      "reference_usage_counts": {
+        "prompt_context": 2,
+        "reference_image": 3
+      },
+      "active_input_count": 3,
+      "prompt_context_count": 2,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-255717efb3",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-255717efb3_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-02be9f2bfa",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-02be9f2bfa_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-775afa5689",
+          "kind": "scene_injected_image",
+          "label": "EXT. WATER TOWER CATWALK - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_002/user_assets/asset-775afa5689_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_002",
+            "path": "artifacts/injected_asset_manifest/scene__scene_002/v1.json",
+            "version": 1
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "location_visual_water_tower_catwalk",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Water Tower Catwalk",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_water_tower_catwalk/water_tower_catwalk_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_water_tower_catwalk",
+            "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-255717efb3",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-02be9f2bfa",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    },
+    {
+      "case_id": "open_frequency_scene_002_water_tower_night",
+      "case_label": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "scene_id": "scene_002",
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Exterior contrast case with wind, height, lantern warmth against a dark town, and the same multi-reference conditioning pattern.",
+      "candidate_variant": "google_veo31_fast",
+      "candidate_label": "Google Veo 3.1 Fast Render",
+      "engine_pack_id": "google_veo31_fast",
+      "target_model": "veo-3.1-fast-generate-preview",
+      "project_dir": "output/story-169-google_veo31_fast-open_frequency_scene_002_water_tower_night-bdf96f",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 194962,
+      "render_elapsed_ms": 56185,
+      "total_elapsed_ms": 251147,
+      "total_cost_usd": 0.0110552,
+      "render_stage_elapsed_ms": 51166,
+      "validate_media_stage_elapsed_ms": 4966,
+      "duration_seconds": 8,
+      "resolution": "720p",
+      "normalized_resolution": "720p",
+      "aspect_ratio": "16:9",
+      "render_run": {
+        "run_id": "open_frequency_scene_002_water_tower_night-google_veo31_fast-d7e0",
+        "recipe_id": "render_generation",
+        "elapsed_ms": 56185,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0110552,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "render": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "render": 51166,
+          "validate_media": 4966
+        },
+        "artifact_counts": {
+          "render_prompt": 1,
+          "generated_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "render_prompt": "artifacts/render_prompt/scene_002/v1.json",
+          "generated_video": "artifacts/generated_video/scene_002/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_002/v1.json"
+        }
+      },
+      "render_prompt_path": "artifacts/render_prompt/scene_002/v1.json",
+      "generated_video_artifact_path": "artifacts/generated_video/scene_002/v1.json",
+      "generated_media_path": "artifacts/generated_video_media/scene_002/v1/scene_render.mp4",
+      "media_validation_path": "artifacts/media_validation/scene_002/v1.json",
+      "request_id": "models/veo-3.1-fast-generate-preview/operations/j5nm3mvhqf2c",
+      "provider_job_id": "models/veo-3.1-fast-generate-preview/operations/j5nm3mvhqf2c",
+      "reference_usage_counts": {
+        "prompt_context": 2,
+        "reference_image": 3
+      },
+      "active_input_count": 3,
+      "prompt_context_count": 2,
+      "unsupported_count": 0,
+      "request_notes": [],
+      "resolved_inputs": [
+        {
+          "input_id": "asset-255717efb3",
+          "kind": "project_injected_image",
+          "label": "Project: mood_board.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=mood_board",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-255717efb3_mood_board.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-02be9f2bfa",
+          "kind": "project_injected_image",
+          "label": "Project: style_reference.png",
+          "lock_status": "soft_locked",
+          "media_type": "image/png",
+          "notes": "purpose=style_reference",
+          "relative_path": "artifacts/project_config/__project__/user_assets/asset-02be9f2bfa_style_reference.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "project__project",
+            "path": "artifacts/injected_asset_manifest/project__project/v2.json",
+            "version": 2
+          },
+          "used_as": "prompt_context"
+        },
+        {
+          "input_id": "asset-775afa5689",
+          "kind": "scene_injected_image",
+          "label": "EXT. WATER TOWER CATWALK - NIGHT: scene_reference.png",
+          "lock_status": "hard_locked",
+          "media_type": "image/png",
+          "notes": "purpose=reference_image",
+          "relative_path": "artifacts/scene/scene_002/user_assets/asset-775afa5689_scene_reference.png",
+          "required": true,
+          "source_ref": {
+            "artifact_type": "injected_asset_manifest",
+            "entity_id": "scene__scene_002",
+            "path": "artifacts/injected_asset_manifest/scene__scene_002/v1.json",
+            "version": 1
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "character_visual_aria",
+          "kind": "character_injected_image",
+          "label": "Character visual reference: aria",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/character_aria/aria_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_aria",
+            "path": "artifacts/bibles/character_aria/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        },
+        {
+          "input_id": "location_visual_water_tower_catwalk",
+          "kind": "location_injected_image",
+          "label": "Location visual reference: Water Tower Catwalk",
+          "lock_status": "selected_visual_reference",
+          "media_type": "image/png",
+          "notes": null,
+          "relative_path": "artifacts/bibles/location_water_tower_catwalk/water_tower_catwalk_visual_ref.png",
+          "required": false,
+          "source_ref": {
+            "artifact_type": "bible_manifest",
+            "entity_id": "location_water_tower_catwalk",
+            "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v2.json",
+            "version": 2
+          },
+          "used_as": "reference_image"
+        }
+      ],
+      "active_project_references": [
+        {
+          "asset_id": "asset-255717efb3",
+          "filename": "mood_board.png",
+          "lock_status": "soft_locked",
+          "purpose": "mood_board",
+          "transparency_note": "mood_board.png (mood_board, soft_locked): mood-board cue from filename/purpose only; keep interpretation transparent and bounded."
+        },
+        {
+          "asset_id": "asset-02be9f2bfa",
+          "filename": "style_reference.png",
+          "lock_status": "soft_locked",
+          "purpose": "style_reference",
+          "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
+        }
+      ]
+    }
+  ]
+}
