@@ -14,6 +14,8 @@ Important is not enough by itself. `/triage` must answer both:
 
 - what gap matters most?
 - why is this the right thing to do now?
+- how close is the project to the Ideal on today's technology, not just
+  against the literal north-star?
 
 A primary gap can stay primary while still be the wrong recommended action if
 nothing materially changed since the last attempt, recommendation, or
@@ -156,7 +158,19 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - Do **not** let a blocked story or an exhausted eval retry masquerade as
      actionable just because it is the most continuous existing line
 
-7. **Choose one next action**
+7. **Calibrate against the Ideal**
+   - Add one short section that answers "how are we doing vs the Ideal?"
+   - Keep this grounded in current project evidence, not vibes
+   - Distinguish:
+     - literal north-star distance
+     - current-tech progress
+   - Keep it compact and decision-useful:
+     - where the project is already strong
+     - where the biggest remaining gap still blocks a stronger "close to the
+       Ideal" claim
+     - whether the line of travel is improving, stalled, or blocked
+
+8. **Choose one next action**
    Only rank actionable candidates here. Blocked stories with unmet unblock
    conditions and eval retries whose triggers remain exhausted belong under
    `Health Flags`, not `Recommended Action`.
@@ -187,7 +201,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
    capability, was just retried on the same premise without a new trigger, or
    lacks a bounded falsifiable next step.
 
-8. **Return a short report**
+9. **Return a short report**
 
 ```markdown
 ## Triage
@@ -201,6 +215,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Last relevant action: {date + story/eval/artifact}
 - Why now: {materially new trigger or "none"}
 - If "none": {why the primary gap is not the recommended action today}
+
+### Vs Ideal
+- Literal north-star: {how far the project still is from the true Ideal}
+- Current-tech read: {how close the project is to a strong present-day version of the Ideal}
+- Direction: {getting closer | mixed | stalled | blocked} — {why}
 
 ### Recommended Action
 - {one next action}
@@ -228,6 +247,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Full-sweep mode is read-only
 - Do not let `/triage` absorb leaf-skill implementation detail
 - Always converge to one recommendation
+- Always include a short `Vs Ideal` read in full-sweep mode
 - Never start from "what stories are ready?" Start from "what gap matters most?"
 - If the top gap has no story yet, recommend creating or promoting the right artifact instead of silently skipping it
 - Do not let inbox novelty, eval staleness, or small ready work outrank a larger live gap without an explicit explanation
