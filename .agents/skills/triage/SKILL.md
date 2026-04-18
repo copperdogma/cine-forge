@@ -34,7 +34,13 @@ Ideal/spec/state reasoning.
 Story existence is packaging context and a tie-breaker, not a primary value
 signal. When the same subsystem, validation boundary, and success surface are
 still live, prefer continuing, reopening, expanding, or consolidating the
-existing story line before creating or prioritizing a new shell.
+existing story line before creating or prioritizing a new shell. Before
+recommending a new story shell, challenge that choice against the last 2-4
+stories on the same problem line. If the delta is mostly same-line
+later-state progression, test/docs/truth-surface codification, or a
+container/input permutation with the same subsystem and operator-facing
+outcome, prefer continuing, reopening, expanding, or consolidating the
+existing line instead.
 
 Continuity bias never overrides blocked-state truth. A `Blocked` story with an
 unmet unblock condition is not an actionable continuation; surface it under
@@ -157,6 +163,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
    Prefer this order:
    - continue, reopen, expand, or consolidate an in-flight or recently advanced story that directly advances the chosen gap
    - promote or reshape an existing draft story that is the clearest continuation of the chosen gap
+   - before recommending `create the missing story / ADR / spec update / eval`,
+     challenge that choice against the last 2-4 stories on the same problem
+     line; if the subsystem, validation boundary, and success surface are still
+     materially the same, prefer continuing, reopening, expanding, or
+     consolidating the existing line instead
    - create the missing story / ADR / spec update / eval if the gap has no proper home yet
    - do not silently outrank overdue UI-scout freshness with smaller unrelated
      ready work unless the stronger line is genuinely not actionable yet
@@ -220,6 +231,10 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Never start from "what stories are ready?" Start from "what gap matters most?"
 - If the top gap has no story yet, recommend creating or promoting the right artifact instead of silently skipping it
 - Do not let inbox novelty, eval staleness, or small ready work outrank a larger live gap without an explicit explanation
+- Do not recommend a new story for same-line later-state progression,
+  tests/docs/truth-surface codification, or input/container permutations on an
+  already-supported behavior class unless the runtime seam or validation
+  boundary materially changed
 - Never recommend a blocked line just because continuity or recent commits make
   it feel active; if the unblock condition is unmet, keep it in `Health Flags`
 - Never treat a previously consumed `retry_when` condition as fresh evidence
