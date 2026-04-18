@@ -503,8 +503,8 @@ class ArtifactManager:
             validation = MediaValidationArtifact.model_validate(artifact.data)
             if validation.target_ref.key() != artifact_ref.key():
                 if (
-                    artifact_ref.artifact_type == "final_output"
-                    and validation.target_ref.artifact_type == "final_output"
+                    artifact_ref.artifact_type in {"ai_previz_video", "final_output"}
+                    and validation.target_ref.artifact_type == artifact_ref.artifact_type
                     and latest_nonmatching_ref is None
                 ):
                     latest_nonmatching_ref = validation_ref
@@ -530,44 +530,33 @@ class ArtifactManager:
                     "updated_at": artifact.metadata.created_at.isoformat(),
                 },
             }
-        if artifact_ref.artifact_type != "final_output":
+        if artifact_ref.artifact_type not in {"ai_previz_video", "final_output"}:
             return None
         if latest_nonmatching_ref is not None and latest_nonmatching_validation is not None:
-            return {
-                "health": ArtifactHealth.NEEDS_REVIEW.value,
-                "health_details": {
-                    "health": ArtifactHealth.NEEDS_REVIEW.value,
-                    "source_kind": "media_validation_stale",
-                    "reason": (
-                        "The current final output has no matching validation yet. "
-                        "The latest validation artifact still points at an older assembled cut."
-                    ),
-                    "trigger_ref": latest_nonmatching_validation.target_ref.model_dump(mode="json"),
-                    "source_artifact_ref": latest_nonmatching_ref.model_dump(mode="json"),
-                    "upstream_change_summary": None,
-                    "suggested_revision": "Re-run media validation for the latest final output.",
-                    "confidence": None,
-                    "assessing_role": latest_nonmatching_validation.validator_id,
-                    "decided_by": None,
-                    "updated_at": latest_nonmatching_updated_at,
-                },
-            }
-        return {
-            "health": ArtifactHealth.NEEDS_REVIEW.value,
-            "health_details": {
-                "health": ArtifactHealth.NEEDS_REVIEW.value,
-                "source_kind": "media_validation_missing",
-                "reason": "The current final output has not been validated yet.",
-                "trigger_ref": artifact_ref.model_dump(mode="json"),
-                "source_artifact_ref": None,
-                "upstream_change_summary": None,
-                "suggested_revision": "Run media validation for the latest final output.",
-                "confidence": None,
-                "assessing_role": "media_validation_v1",
-                "decided_by": None,
-                "updated_at": None,
-            },
-        }
+            return _pending_validation_payload(
+                artifact_ref=artifact_ref,
+                source_kind="media_validation_stale",
+                reason=_stale_validation_reason(artifact_ref.artifact_type),
+                trigger_ref=latest_nonmatching_validation.target_ref,
+                source_artifact_ref=latest_nonmatching_ref,
+                suggested_revision=_pending_validation_suggested_revision(
+                    artifact_ref.artifact_type
+                ),
+                assessing_role=latest_nonmatching_validation.validator_id,
+                updated_at=latest_nonmatching_updated_at,
+            )
+        return _pending_validation_payload(
+            artifact_ref=artifact_ref,
+            source_kind="media_validation_missing",
+            reason=_missing_validation_reason(artifact_ref.artifact_type),
+            trigger_ref=artifact_ref,
+            source_artifact_ref=None,
+            suggested_revision=_pending_validation_suggested_revision(
+                artifact_ref.artifact_type
+            ),
+            assessing_role="media_validation_v1",
+            updated_at=None,
+        )
 
 
 def _validation_suggested_revision(validation: MediaValidationArtifact) -> str | None:
@@ -578,3 +567,64 @@ def _validation_suggested_revision(validation: MediaValidationArtifact) -> str |
         if finding.severity in {"warning", "error"}:
             return finding.message
     return None
+
+
+def _pending_validation_payload(
+    *,
+    artifact_ref: ArtifactRef,
+    source_kind: str,
+    reason: str,
+    trigger_ref: ArtifactRef,
+    source_artifact_ref: ArtifactRef | None,
+    suggested_revision: str,
+    assessing_role: str,
+    updated_at: str | None,
+) -> dict[str, Any]:
+    return {
+        "health": ArtifactHealth.NEEDS_REVIEW.value,
+        "health_details": {
+            "health": ArtifactHealth.NEEDS_REVIEW.value,
+            "source_kind": source_kind,
+            "reason": reason,
+            "trigger_ref": trigger_ref.model_dump(mode="json"),
+            "source_artifact_ref": (
+                source_artifact_ref.model_dump(mode="json")
+                if source_artifact_ref is not None
+                else None
+            ),
+            "upstream_change_summary": None,
+            "suggested_revision": suggested_revision,
+            "confidence": None,
+            "assessing_role": assessing_role,
+            "decided_by": None,
+            "updated_at": updated_at,
+        },
+    }
+
+
+def _missing_validation_reason(artifact_type: str) -> str:
+    if artifact_type == "ai_previz_video":
+        return (
+            "This AI previz clip is playable, but validation for the latest clip "
+            "has not completed yet."
+        )
+    return "The current final output has not been validated yet."
+
+
+def _stale_validation_reason(artifact_type: str) -> str:
+    if artifact_type == "ai_previz_video":
+        return (
+            "This AI previz clip is playable, but validation for the latest clip "
+            "is still pending. The latest validation artifact still points at an "
+            "older clip."
+        )
+    return (
+        "The current final output has no matching validation yet. The latest "
+        "validation artifact still points at an older assembled cut."
+    )
+
+
+def _pending_validation_suggested_revision(artifact_type: str) -> str:
+    if artifact_type == "ai_previz_video":
+        return "Run media validation for the latest AI previz clip."
+    return "Run media validation for the latest final output."

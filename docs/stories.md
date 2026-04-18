@@ -249,6 +249,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 168 | Reference-Conditioned Scene Generation Product Truth | High | Done | — | spec:5, spec:6, spec:7 | 029, 056, 119, 141, 164 | [story-168](stories/story-168-reference-conditioned-scene-generation-product-truth.md) |
 | 169 | Reference-Conditioned Final Render Provider Floor | High | Done | — | spec:5, spec:6, spec:7, spec:8 | 028, 030, 164, 168 | [story-169](stories/story-169-reference-conditioned-final-render-provider-floor.md) |
 | 170 | Breadth-First Scene Generation Product Truth | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 148, 164, 165, 166, 167, 168, 169 | [story-170](stories/story-170-breadth-first-scene-generation-product-truth.md) |
+| 171 | AI Previz First-Playable Latency Reduction | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 149, 150, 151, 152, 153 | [story-171](stories/story-171-ai-previz-first-playable-latency-reduction.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

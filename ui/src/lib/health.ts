@@ -3,6 +3,12 @@ import type { ArtifactGroupSummary, ArtifactHealthDetails } from './types'
 export const ATTENTION_HEALTHS = ['stale', 'needs_revision', 'needs_review', 'confirmed_valid'] as const
 export const BIBLE_REVIEW_TYPES = ['character_bible', 'location_bible', 'prop_bible'] as const
 
+export type MediaValidationStatus = {
+  label: 'Validation Pending' | 'Validated' | 'Validation Failed'
+  description: string
+  tone: 'pending' | 'validated' | 'failed'
+}
+
 export function isAttentionHealth(health: string | null | undefined): boolean {
   return !!health && ATTENTION_HEALTHS.includes(health as (typeof ATTENTION_HEALTHS)[number])
 }
@@ -34,7 +40,13 @@ export function gateReviewGroups(
   )
 }
 
-export function healthLabel(health: string | null | undefined): string {
+export function healthLabel(
+  health: string | null | undefined,
+  details?: ArtifactHealthDetails | null,
+): string {
+  const validationStatus = mediaValidationStatus(health, details)
+  if (validationStatus) return validationStatus.label
+
   switch (health) {
     case 'valid':
     case 'healthy':
@@ -56,6 +68,11 @@ export function healthDescription(
   health: string | null | undefined,
   details?: ArtifactHealthDetails | null,
 ): string {
+  const validationStatus = mediaValidationStatus(health, details)
+  if (validationStatus) {
+    return validationStatus.description
+  }
+
   if (details?.reason) {
     return details.reason
   }
@@ -74,5 +91,41 @@ export function healthDescription(
       return 'This artifact needs human review before it should drive downstream work.'
     default:
       return 'Health status not yet determined.'
+  }
+}
+
+export function mediaValidationStatus(
+  health: string | null | undefined,
+  details?: ArtifactHealthDetails | null,
+): MediaValidationStatus | null {
+  if (!details?.source_kind) return null
+
+  if (
+    details.source_kind === 'media_validation_missing'
+    || details.source_kind === 'media_validation_stale'
+  ) {
+    return {
+      label: 'Validation Pending',
+      description:
+        details.reason
+        ?? 'This artifact is playable, but media validation for the latest version is still pending.',
+      tone: 'pending',
+    }
+  }
+
+  if (details.source_kind !== 'media_validation') return null
+
+  if (health === 'valid' || health === 'healthy' || health === 'confirmed_valid') {
+    return {
+      label: 'Validated',
+      description: details.reason ?? 'Validation is available for this artifact.',
+      tone: 'validated',
+    }
+  }
+
+  return {
+    label: 'Validation Failed',
+    description: details.reason ?? 'Validation flagged this artifact for follow-up.',
+    tone: 'failed',
   }
 }

@@ -166,6 +166,96 @@ def test_artifact_manager_overlays_ai_previz_video_health_from_validation(tmp_pa
 
 
 @pytest.mark.unit
+def test_artifact_manager_marks_ai_previz_missing_validation_as_pending(
+    tmp_path: Path,
+) -> None:
+    seeded = seed_generated_video_project(tmp_path)
+    project_path = seeded["project_dir"]
+    store = ArtifactStore(project_dir=project_path)
+    ai_previz_ref = store.save_artifact(
+        artifact_type="ai_previz_video",
+        entity_id=seeded["scene_id"],
+        data=seeded["generated_video"].model_dump(mode="json"),
+        metadata=ArtifactMetadata(
+            lineage=[seeded["generated_video_ref"], seeded["prompt_ref"]],
+            intent="seed ai previz video",
+            rationale="seed pending overlay path",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.unit",
+        ),
+    )
+
+    detail = _manager(project_path).read_artifact(
+        "project-id",
+        "ai_previz_video",
+        seeded["scene_id"],
+        ai_previz_ref.version,
+    )
+
+    assert detail["health"] == ArtifactHealth.NEEDS_REVIEW.value
+    assert detail["health_details"]["source_kind"] == "media_validation_missing"
+    assert "playable" in detail["health_details"]["reason"]
+
+
+@pytest.mark.unit
+def test_artifact_manager_marks_ai_previz_with_older_validation_as_pending_latest(
+    tmp_path: Path,
+) -> None:
+    seeded = seed_generated_video_project(tmp_path)
+    project_path = seeded["project_dir"]
+    store = ArtifactStore(project_dir=project_path)
+    first_ref = store.save_artifact(
+        artifact_type="ai_previz_video",
+        entity_id=seeded["scene_id"],
+        data=seeded["generated_video"].model_dump(mode="json"),
+        metadata=ArtifactMetadata(
+            lineage=[seeded["generated_video_ref"], seeded["prompt_ref"]],
+            intent="seed ai previz video v1",
+            rationale="seed stale overlay path",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.unit",
+        ),
+    )
+    _seed_validation(
+        store,
+        target=_scene_target(seeded),
+        target_ref=first_ref,
+        prompt_ref=seeded["prompt_ref"],
+        validated_media=seeded["generated_video"].video,
+        entity_id=seeded["scene_id"],
+        declared_duration_seconds=seeded["generated_video"].duration_seconds,
+        recommended_health=ArtifactHealth.VALID,
+    )
+    second_ref = store.save_artifact(
+        artifact_type="ai_previz_video",
+        entity_id=seeded["scene_id"],
+        data=seeded["generated_video"].model_dump(mode="json"),
+        metadata=ArtifactMetadata(
+            lineage=[first_ref, seeded["prompt_ref"]],
+            intent="seed ai previz video v2",
+            rationale="seed stale overlay path",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.unit",
+        ),
+    )
+
+    detail = _manager(project_path).read_artifact(
+        "project-id",
+        "ai_previz_video",
+        seeded["scene_id"],
+        second_ref.version,
+    )
+
+    assert detail["health"] == ArtifactHealth.NEEDS_REVIEW.value
+    assert detail["health_details"]["source_kind"] == "media_validation_stale"
+    assert detail["health_details"]["source_artifact_ref"]["artifact_type"] == "media_validation"
+    assert "older clip" in detail["health_details"]["reason"]
+
+
+@pytest.mark.unit
 def test_artifact_manager_keeps_structural_stale_over_validation_overlay(tmp_path: Path) -> None:
     seeded = seed_generated_video_project(tmp_path)
     project_path = seeded["project_dir"]

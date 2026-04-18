@@ -26,6 +26,7 @@ import {
   useStartRun,
 } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
+import { mediaValidationStatus } from '@/lib/health'
 import {
   buildSceneScope,
   getSceneScopeLabel,
@@ -97,9 +98,16 @@ export function PrevizPanel({
   const aiPrevizPromptHref = aiPrevizPromptGroup
     ? `/${projectId}/artifacts/ai_previz_prompt/${sceneId}/${aiPrevizPromptGroup.latest_version}`
     : null
-  const validationRef = aiPrevizGroup?.health_details?.source_kind === 'media_validation'
+  const validationRef = (
+    aiPrevizGroup?.health_details?.source_kind === 'media_validation'
+    || aiPrevizGroup?.health_details?.source_kind === 'media_validation_stale'
+  )
     ? aiPrevizGroup.health_details.source_artifact_ref
     : null
+  const validationStatus = mediaValidationStatus(
+    aiPrevizGroup?.health,
+    aiPrevizGroup?.health_details,
+  )
   const { data: validationArtifact, isLoading: validationLoading } = useArtifact(
     projectId,
     validationRef?.artifact_type,
@@ -310,7 +318,11 @@ export function PrevizPanel({
 
           {aiPrevizData && (
             <p className="text-sm text-muted-foreground">
-              Latest AI previz clip is ready for {sceneHeading}. The viewer appears below.
+              {validationStatus?.label === 'Validation Pending'
+                ? `Latest AI previz clip is playable for ${sceneHeading}. Validation is still pending.`
+                : validationStatus?.label === 'Validation Failed'
+                  ? `Latest AI previz clip is playable for ${sceneHeading}, but validation flagged it for follow-up.`
+                  : `Latest AI previz clip is ready for ${sceneHeading}. The viewer appears below.`}
             </p>
           )}
           {!aiPrevizData && !aiPrevizRunActive && !aiPrevizLoading && (
@@ -355,7 +367,14 @@ export function PrevizPanel({
         <div className="h-36 rounded-xl border border-border bg-muted/20 animate-pulse" />
       )}
 
-      {aiPrevizData && <AiPrevizViewer data={aiPrevizData} projectId={projectId} />}
+      {aiPrevizData && (
+        <AiPrevizViewer
+          data={aiPrevizData}
+          projectId={projectId}
+          health={aiPrevizGroup?.health}
+          healthDetails={aiPrevizGroup?.health_details}
+        />
+      )}
       {validationData && (
         <MediaValidationViewer
           data={validationData}

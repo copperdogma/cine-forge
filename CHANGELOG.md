@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-18-01] — Surface honest AI previz first-playable state (Story 171)
+
+### Added
+- Added focused AI-previz media-validation overlay coverage for matching, missing, and stale latest-clip cases in the artifact-manager test seam
+
+### Changed
+- Changed the Scene Workspace previz route and artifact detail surface to show explicit `Validation Pending`, `Validated`, and `Validation Failed` states while keeping the latest honest AI-previz clip playable as soon as it lands
+- Changed planning truth to close Story 171 around the measured first-playable surfacing seam instead of widening the work into another provider-floor rerun
+
+### Fixed
+- Fixed the shared health-overlay path so AI-previz clips inherit the same explicit validation-trust surface that final outputs already used, instead of collapsing back to generic current health
+
 ## [2026-04-16-02] — Close the breadth-first scene-generation route (Story 170)
 
 ### Changed

@@ -650,7 +650,8 @@
           "167",
           "168",
           "169",
-          "170"
+          "170",
+          "171"
         ],
         "adrIds": [
           "ADR-002",
@@ -768,7 +769,8 @@
           "165",
           "168",
           "169",
-          "170"
+          "170",
+          "171"
         ],
         "adrIds": [
           "ADR-002",
@@ -849,7 +851,8 @@
           "167",
           "168",
           "169",
-          "170"
+          "170",
+          "171"
         ],
         "adrIds": [
           "ADR-002",
@@ -948,7 +951,8 @@
           "161",
           "162",
           "167",
-          "169"
+          "169",
+          "171"
         ],
         "adrIds": [
           "ADR-001",
@@ -1095,7 +1099,8 @@
           "165",
           "166",
           "167",
-          "170"
+          "170",
+          "171"
         ],
         "adrIds": [
           "ADR-003"
@@ -10677,6 +10682,83 @@
           "sourceType": "story-work-log",
           "source": "docs/stories/story-170-breadth-first-scene-generation-product-truth.md",
           "summary": "completion: marked Story 170 done after the fresh representative rerun closed the only remaining acceptance gap. Evidence: all acceptance criteria and task checkboxes are now checked; the required checks remain green fr…"
+        }
+      }
+    },
+    {
+      "id": "171",
+      "title": "AI Previz First-Playable Latency Reduction",
+      "path": "docs/stories/story-171-ai-previz-first-playable-latency-reduction.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.5",
+        "spec:7.1",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "149",
+        "150",
+        "151",
+        "152",
+        "153"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "first-playable",
+        "iteration-loop",
+        "latency",
+        "previz"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260418-0032",
+        "date": "2026-04-18",
+        "summary": "completion: closed Story 171 after rerunning the required close-out suite on the worktree and confirming the shipped slice satisfies the story’s real success surface. Evidence: `make test-unit PYTHON=/Users/cam/Document…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "171",
+        "sourcePath": "docs/stories/story-171-ai-previz-first-playable-latency-reduction.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: closed Story 171 after rerunning the required close-out suite on the worktree and confirming the shipped slice satisfies the story’s real success surface. Evidence: `make test-unit PYTHON=/Users/cam/Document…",
+        "lastRelevantAction": {
+          "date": "2026-04-18",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-171-ai-previz-first-playable-latency-reduction.md",
+          "summary": "completion: closed Story 171 after rerunning the required close-out suite on the worktree and confirming the shipped slice satisfies the story’s real success surface. Evidence: `make test-unit PYTHON=/Users/cam/Document…"
         }
       }
     }

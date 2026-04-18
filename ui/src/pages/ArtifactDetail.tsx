@@ -339,6 +339,7 @@ export default function ArtifactDetail() {
           <AiPrevizViewer
             data={data}
             projectId={projectId ?? ''}
+            health={artifact?.health ?? null}
             healthDetails={healthDetails}
           />
         )

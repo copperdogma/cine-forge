@@ -28,12 +28,14 @@ import {
   type RenderInputUsageView,
 } from '@/components/render-utils'
 import { getAssetFileUrl } from '@/lib/api/assets'
+import { mediaValidationStatus } from '@/lib/health'
 import { usePrevizAdoptionStatus } from '@/lib/hooks'
 import type { ArtifactHealthDetails } from '@/lib/types'
 
 type AiPrevizViewerProps = {
   data: Record<string, unknown>
   projectId: string
+  health?: string | null
   healthDetails?: ArtifactHealthDetails | null
 }
 
@@ -99,16 +101,30 @@ function parseAiPreviz(data: Record<string, unknown>): AiPrevizView {
   }
 }
 
-export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewerProps) {
+function validationToneClass(label: string | null): string {
+  if (label === 'Validated') {
+    return 'border-emerald-500/20 bg-emerald-500/5 text-foreground/90'
+  }
+  if (label === 'Validation Failed') {
+    return 'border-red-500/20 bg-red-500/5 text-foreground/90'
+  }
+  return 'border-amber-500/30 bg-amber-500/5 text-amber-100'
+}
+
+export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPrevizViewerProps) {
   const previz = parseAiPreviz(data)
   const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
   const aiPrevizStatus = previzStatus?.ai_previz
   const sceneLabel = previz.sceneNumber !== null ? `Scene ${previz.sceneNumber}` : 'AI Previz'
   const videoUrl = previz.videoPath ? getAssetFileUrl(projectId, previz.videoPath) : null
   const promptHref = artifactHref(projectId, previz.promptRef)
-  const validationHref = healthDetails?.source_kind === 'media_validation'
+  const validationHref = (
+    healthDetails?.source_kind === 'media_validation'
+    || healthDetails?.source_kind === 'media_validation_stale'
+  )
     ? artifactHref(projectId, parseArtifactLink(healthDetails.source_artifact_ref))
     : null
+  const validationStatus = mediaValidationStatus(health, healthDetails)
   const costBadge = aiPrevizCostBadge(aiPrevizStatus)
   const extraBlockers = (aiPrevizStatus?.blocker_reasons ?? [])
     .filter(blocker => blocker !== aiPrevizStatus?.reason)
@@ -186,6 +202,15 @@ export function AiPrevizViewer({ data, projectId, healthDetails }: AiPrevizViewe
               </p>
             </div>
           </div>
+
+          {validationStatus && (
+            <div className={`rounded-lg border px-4 py-3 text-sm ${validationToneClass(validationStatus.label)}`}>
+              <div className="space-y-1">
+                <p className="font-medium">{validationStatus.label}</p>
+                <p>{validationStatus.description}</p>
+              </div>
+            </div>
+          )}
 
           {aiPrevizStatus && (
             <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
