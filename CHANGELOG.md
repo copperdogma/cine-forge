@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-19-03] — Refresh shipped previz regenerate truth (Story 152)
+
+### Added
+- Added existing-clip full-regenerate and `start_from=ai_previz` reuse cases to the maintained `real-ai-previz-runtime` harness for the shipped xAI previz lane
+
+### Changed
+- Changed the shared AI-previz adoption contract and Scene Workspace previz panel to show distinct first-pass, reuse, and full-regenerate latency truth when the current shot plan is being reused
+- Changed eval and methodology planning truth to record the fresh Story 152 validation rerun and classify the remaining detector miss as runtime-blocking rather than a product-truth gap
+
+### Fixed
+- Fixed the runtime harness accounting so existing-clip regenerate runs separate pre-`ai_previz` time, post-playable overhead, and full completion honestly instead of collapsing them into the first-pass path
+
 ## [2026-04-19-02] — Choose one-pass AI previz provider floor (Story 176)
 
 ### Added

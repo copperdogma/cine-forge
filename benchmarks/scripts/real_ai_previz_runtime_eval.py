@@ -140,9 +140,17 @@ def _run_attempts(
     repeat_count: int,
     keep_projects: bool,
 ) -> list[RuntimeCaseResult]:
-    grouped_cases: dict[tuple[str, str, str], list[RuntimeEvalCase]] = defaultdict(list)
+    grouped_cases: dict[tuple[str, str, str, bool, str], list[RuntimeEvalCase]] = defaultdict(list)
     for case in cases:
-        grouped_cases[(case.input_fixture, case.scene_id, case.prerequisite_mode)].append(case)
+        grouped_cases[
+            (
+                case.input_fixture,
+                case.scene_id,
+                case.prerequisite_mode,
+                case.existing_clip_state,
+                _existing_clip_seed_signature(case),
+            )
+        ].append(case)
 
     attempts: list[RuntimeCaseResult] = []
     for attempt_index in range(1, repeat_count + 1):
@@ -228,6 +236,22 @@ def _prepare_shared_substrate(
         prerequisite_runs.append(planning_run)
 
     prerequisite_elapsed_ms = round((time.perf_counter() - prereq_started) * 1000)
+    seed_run: RecipeRunSummary | None = None
+    if all(run.success for run in prerequisite_runs) and seed_case.existing_clip_state:
+        seed_recipe_path = _materialize_ai_previz_recipe(seed_case)
+        try:
+            seed_run = _run_recipe(
+                recipe_path=seed_recipe_path,
+                project_dir=project_dir,
+                run_id=f"{seed_case.case_id}-shared-{attempt_index}-seed-{uuid.uuid4().hex[:4]}",
+                runtime_params=runtime_params,
+                start_from="ai_previz",
+            )
+        finally:
+            if seed_recipe_path != AI_PREVIZ_RECIPE and seed_recipe_path.exists():
+                seed_recipe_path.unlink()
+        prerequisite_runs.append(seed_run)
+
     success = all(run.success for run in prerequisite_runs)
     error = next((run.error for run in prerequisite_runs if run.error), None)
     return {
@@ -235,6 +259,7 @@ def _prepare_shared_substrate(
         "runtime_params": runtime_params,
         "prerequisite_runs": prerequisite_runs,
         "prerequisite_elapsed_ms": prerequisite_elapsed_ms,
+        "count_prerequisites_in_results": not seed_case.existing_clip_state,
         "success": success,
         "error": error,
     }
@@ -259,7 +284,8 @@ def _run_case_attempt(
     prerequisite_runs = [
         run.model_copy(deep=True) for run in shared["prerequisite_runs"]
     ]
-    prerequisite_elapsed_ms = int(shared["prerequisite_elapsed_ms"])
+    shared_prerequisite_elapsed_ms = int(shared["prerequisite_elapsed_ms"])
+    count_prerequisites_in_results = bool(shared["count_prerequisites_in_results"])
     base_success = bool(shared["success"])
     base_error = shared["error"]
     ai_previz_run: RecipeRunSummary | None = None
@@ -273,13 +299,14 @@ def _run_case_attempt(
     if base_success:
         shutil.copytree(shared_project_dir, project_dir)
         ai_recipe_path = _materialize_ai_previz_recipe(case)
+        requested_start_from = _requested_start_from(case)
         try:
             ai_previz_run = _run_recipe(
                 recipe_path=ai_recipe_path,
                 project_dir=project_dir,
                 run_id=f"{case.case_id}-ai-previz-r{attempt_index}-{uuid.uuid4().hex[:4]}",
                 runtime_params=dict(shared["runtime_params"]),
-                start_from="ai_previz",
+                start_from=requested_start_from,
             )
         finally:
             if ai_recipe_path != AI_PREVIZ_RECIPE and ai_recipe_path.exists():
@@ -292,10 +319,21 @@ def _run_case_attempt(
                 int(ai_previz_run.stage_durations_ms.get("ai_previz", 0))
                 or ai_previz_run.elapsed_ms
             )
+            prerequisite_elapsed_ms = (
+                shared_prerequisite_elapsed_ms
+                if count_prerequisites_in_results
+                else _in_run_pre_ai_previz_elapsed_ms(ai_previz_run)
+            )
             time_to_first_playable_ms = prerequisite_elapsed_ms + ai_previz_elapsed_ms
             post_playable_overhead_ms = max(
                 0,
-                ai_previz_run.elapsed_ms - ai_previz_elapsed_ms,
+                ai_previz_run.elapsed_ms
+                - (
+                    _in_run_pre_ai_previz_elapsed_ms(ai_previz_run)
+                    if not count_prerequisites_in_results
+                    else 0
+                )
+                - ai_previz_elapsed_ms,
             )
             if ai_previz_run.error:
                 error = ai_previz_run.error
@@ -303,7 +341,11 @@ def _run_case_attempt(
         project_dir.mkdir(parents=True, exist_ok=True)
 
     success = base_success and ai_previz_run is not None and ai_previz_run.success
-    total_elapsed_ms = prerequisite_elapsed_ms + (ai_previz_run.elapsed_ms if ai_previz_run else 0)
+    total_elapsed_ms = (
+        prerequisite_elapsed_ms + (ai_previz_run.elapsed_ms if ai_previz_run else 0)
+        if count_prerequisites_in_results
+        else (ai_previz_run.elapsed_ms if ai_previz_run else 0)
+    )
     result = RuntimeCaseResult(
         case_id=case.case_id,
         label=case.label,
@@ -334,6 +376,8 @@ def _run_case_attempt(
         ),
         scene_id=case.scene_id,
         input_fixture=case.input_fixture,
+        existing_clip_state=case.existing_clip_state,
+        requested_start_from=_requested_start_from(case),
         attempt_index=attempt_index,
         notes=case.notes,
         project_dir=str(project_dir.relative_to(REPO_ROOT)),
@@ -533,6 +577,35 @@ def _default_prerequisite_strategy(prerequisite_mode: str) -> str:
     if prerequisite_mode == "mvp_ingest_only":
         return "one_pass_previz_prep"
     return "full_scene_ready_chain"
+
+
+def _existing_clip_seed_signature(case: RuntimeEvalCase) -> str:
+    if not case.existing_clip_state:
+        return "none"
+    if case.recipe_mode == "shipped" or case.ai_previz is None:
+        return "shipped"
+    override = case.ai_previz
+    return (
+        f"{override.engine_pack_id}:{override.duration_seconds}:{override.resolution}:"
+        f"{override.consistency_strategy}:{override.prompt_profile}"
+    )
+
+
+def _requested_start_from(case: RuntimeEvalCase) -> str | None:
+    if case.requested_start_from is not None:
+        return case.requested_start_from
+    if case.existing_clip_state:
+        return None
+    return "ai_previz"
+
+
+def _in_run_pre_ai_previz_elapsed_ms(run: RecipeRunSummary) -> int:
+    total = 0
+    for stage_id, duration_ms in run.stage_durations_ms.items():
+        if stage_id == "ai_previz":
+            break
+        total += duration_ms
+    return total
 
 
 def _state_succeeded(state: dict | None) -> bool:

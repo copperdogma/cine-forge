@@ -126,6 +126,8 @@ class PrevizLaneStatus(BaseModel):
     measured_at: str | None = None
     latency_ms: int | None = Field(default=None, ge=0)
     latency_budget_ms: int | None = Field(default=None, ge=0)
+    regenerate_reuse_latency_ms: int | None = Field(default=None, ge=0)
+    regenerate_full_latency_ms: int | None = Field(default=None, ge=0)
     engine_pack_id: str | None = None
     target_model: str | None = None
     resolution: str | None = None

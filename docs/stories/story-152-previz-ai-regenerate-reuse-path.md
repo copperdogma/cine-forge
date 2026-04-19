@@ -7,23 +7,28 @@ ideal_refs:
   - "R7 (generate -> react -> refine)"
   - "R10 (playable assembly at every stage)"
   - "R12 (transparency & control)"
+  - "vision-level preference: Easy, fun, and engaging"
 spec_refs:
   - "spec:5.3"
   - "spec:5.5"
   - "spec:6.3"
   - "spec:7.1"
+  - "spec:8.2"
   - "spec:10.3"
 adr_refs:
   - "ADR-002"
   - "ADR-003"
 depends_on:
   - "149"
-  - "150"
   - "151"
+  - "171"
+  - "175"
+  - "176"
 category_refs:
   - "spec:5"
   - "spec:6"
   - "spec:7"
+  - "spec:8"
   - "spec:10"
 compromise_refs: []
 input_coverage_refs: []
@@ -41,51 +46,50 @@ legacy_system: ""
 
 **Priority**: High
 **Status**: Done
-**Ideal Refs**: R7 (generate -> react -> refine), R10 (playable assembly at every stage), R12 (transparency & control)
-**Spec Refs**: spec:5.3, spec:5.5, spec:6.3, spec:7.1, spec:10.3
+**Ideal Refs**: R7 (generate -> react -> refine), R10 (playable assembly at every stage), R12 (transparency & control), vision-level preference: Easy, fun, and engaging
+**Spec Refs**: spec:5.3, spec:5.5, spec:6.3, spec:7.1, spec:8.2, spec:10.3
 **ADR Refs**: ADR-002 (Goal-Oriented Navigation), ADR-003 (Film Elements / Scene Workspace / previz as planning surface)
-**Depends On**: Story 149, Story 150, Story 151
+**Depends On**: Story 149, Story 151, Story 171, Story 175, Story 176
 
 ## Goal
 
-Reduce AI-previz iteration latency by reusing existing healthy planning instead of silently rerunning the full scene-planning substrate every time the operator asks for another AI-previz clip. Story 151 proved that `shot_planning` can be cut down to ~20-25 seconds, but the current regenerate path still pays that cost because the UI launches `ai_previz_generation` with `force=true`, which disables stage-cache reuse. This story makes the product path honest: when CineForge already has a healthy shot plan for the target scope, AI-previz generation should jump straight to the `ai_previz` stage and rerun only the provider-backed clip plus media validation.
+Reopen the AI-previz iteration line around the current shipped xAI one-pass lane. Story 152 originally proved that regenerating from an existing healthy shot plan should reuse `start_from=ai_previz` instead of silently rerunning `timeline`, `tracks`, and `shot_planning`. Story 176 then changed the shipped lane to `xai_grok_imagine_video` on the honest one-pass route, but the maintained runtime/adoption surface still reports only the first-pass one-pass latency (`65514 ms`) and the panel shows that number even when preflight is about to reuse the current shot plan. This story exists to extend the maintained runtime detector with the warmed regenerate loop, re-measure the shipped xAI reuse path, and surface distinct regenerate truth in the operator-facing previz panel if that loop is materially faster than the first-pass one-pass baseline.
 
 ## Acceptance Criteria
 
-- [x] Scene-action preflight can recommend `start_from: ai_previz` for AI-previz runs when the target scope already has healthy `shot_plan` artifacts and the required shared substrate is present; stale or missing planning keeps the current full-path behavior.
-- [x] The Scene Workspace AI-previz action uses the backend-recommended `start_from` value so healthy existing planning is reused for both initial clip generation-from-shot-plan and clip regeneration, while unsafe states still run the full recipe.
-- [x] Preflight/UI copy makes the reuse behavior legible enough that operators can tell when CineForge is regenerating from the current plan instead of replanning the scene.
-- [x] Targeted tests cover the new preflight recommendation logic, including at least one stale-planning case.
-- [x] A mechanical runtime benchmark on an honest project state records the delta between full AI-previz regeneration and the `start_from=ai_previz` reuse path, and the result is written into the story and `docs/evals/registry.yaml`.
+- [x] The maintained `real-ai-previz-runtime` harness can measure the shipped xAI same-scene regenerate loop on honest existing-clip state, not just the first-pass one-pass route. Required recorded outputs: full-regenerate control versus `start_from=ai_previz` reuse on the same shipped xAI lane, with `time_to_first_playable_ms`, isolated `ai_previz` runtime, post-playable overhead, full completion time, and result paths persisted.
+- [x] `docs/evals/registry.yaml` is updated in the same story with the fresh regenerate result paths, `git_sha`, date, and mismatch classification (`model-wrong`, `golden-wrong`, `ambiguous`, plus `runtime-blocking` vs `non-runtime-blocking`) for the reopened Story 152 slice.
+- [x] If the measured shipped xAI regenerate loop differs materially from the first-pass one-pass lane, the shared adoption/schema/UI contract surfaces that distinction in the Scene Workspace previz panel when preflight is reusing the current shot plan. Operators should be able to tell the difference between “first clip on this scene” and “regenerate from current plan” without reading story prose or benchmark markdown.
+- [x] Focused regression coverage exists for the runtime support summary, the previz adoption service/schema, and any UI typing/rendering touched by the new regenerate truth.
 
 ## Out of Scope
 
-- Redesigning first-time AI-previz latency from raw screenplay input
-- Further prompt/schema changes inside `shot_plan_v1`
-- Provider/model quality benchmarking across new Veo/Sora packs
-- Relaxing health/staleness rules to force reuse when planning is stale or missing
+- Another provider-floor comparison or fixed-pack prompt race for AI previz
+- Reworking first-pass one-pass prerequisite strategy from Story 175
+- Relaxing health/staleness rules to reuse stale or missing planning
+- Final-render or reference-conditioned render follow-up work
 
 ## Approach Evaluation
 
-- **Simplification baseline**: Do nothing and keep full regeneration. Real run-state evidence already falsifies this as the right operator loop: on the same honest benchmark project, full AI-previz regeneration reran `shot_planning` for `20.9637s` before the provider call even finished, while the sliced `start_from=ai_previz` run executes only `ai_previz` and `validate_media`.
-- **AI-only**: Wrong fit. This is orchestration and runtime reuse, not a reasoning gap.
-- **Hybrid**: Possible but unnecessary. Adding another planner/chooser stage would add pipeline and latency to save latency.
-- **Pure code**: Best fit. Preflight already understands scene scope and substrate readiness, and the driver already supports `start_from`; the missing piece is connecting those two truths into the operator path.
-- **Repo constraints / ADRs**: ADR-002 favors explicit warn/proceed behavior instead of hidden backend magic. ADR-003 keeps previz in Scene Workspace as an operator-readable planning surface. Reuse must respect immutable artifacts and stale-health truth; it cannot pretend a stale shot plan is safe.
-- **Existing patterns to reuse**: Reuse `build_scene_action_preflight`, the existing `start_from` run contract, stage-cache / stage-slicing in `DriverEngine`, and the existing Scene Workspace action controls rather than inventing a second previz recipe.
-- **Eval**: Mechanical runtime comparison on the same honest project state: full `ai_previz_generation` with `force=true` versus `start_from=ai_previz`. Browser verification on the real project route confirms the product path sends the reused start stage and still renders correctly.
+- **Simplification baseline**: Keep the existing shipped xAI lane and current `Avg 65.5s` badge untouched. That is wrong if regenerate-from-current-plan is materially faster, because ADR-002 requires the surfaced route to explain what will happen when the operator clicks now, not just the slowest honest first-pass lane.
+- **AI-only**: Wrong fit. This is runtime measurement, schema truth, and UI disclosure, not a reasoning-quality problem.
+- **Hybrid**: Best fit. Keep the product/runtime measurement deterministic via the maintained `real-ai-previz-runtime` harness, then use the shared adoption/preflight contract to surface the operator-facing distinction only when the measured regenerate loop is actually different.
+- **Pure code**: Insufficient by itself. We could add a second badge or copy branch immediately, but without a fresh measured xAI regenerate baseline we would just be moving story prose into UI chrome.
+- **Repo constraints / ADRs**: ADR-002 rejects hidden pipeline differences and expects warn/proceed guidance at the action boundary. ADR-003 keeps previz as a readable planning surface, so “reuse current shot plan” is not enough if the panel still advertises only first-pass latency. The maintained `real-ai-previz-runtime` surface already owns honest current-lane timing, so this story should extend that surface instead of inventing a third detector.
+- **Existing patterns to reuse**: Reuse Story 152's `start_from=ai_previz` loop, Story 171's first-playable truth framing, Story 175's one-pass route distinction, Story 176's shipped xAI provider floor, `real_ai_previz_runtime_eval.py`, `real_ai_previz_runtime_support.py`, `PrevizAdoptionService`, `PrevizPanel.tsx`, and the existing preflight reuse disclosure rather than adding a new subsystem.
+- **Eval**: Extend the maintained `real-ai-previz-runtime` harness so it can seed an existing-clip state and compare full regeneration versus reuse on the shipped xAI lane. If the regenerate delta is small, keep the UI unchanged and record why. If the delta is material, use that measured number in the shared adoption/UI truth.
 
 ## Tasks
 
-- [x] Extend scene-action preflight so AI-previz can recommend `start_from=ai_previz` only when planning reuse is safe for the current scope.
-- [x] Wire the Scene Workspace AI-previz action to honor the recommended start stage and disclose reuse clearly in the UI.
-- [x] Add targeted backend tests for healthy-vs-stale planning reuse decisions.
-- [x] Run the reuse benchmark on an honest project state, capture the measured delta, and update `docs/evals/registry.yaml`.
-- [x] Check whether the chosen implementation makes any existing code, helper paths, or docs redundant; remove them or create a concrete follow-up
+- [x] Extend `real_ai_previz_runtime` case/schema support so the harness can seed existing-clip state and compare full-regenerate versus `start_from=ai_previz` reuse on the shipped xAI lane.
+- [x] Add the shipped xAI regenerate cases to the runtime manifest, rerun the regenerate benchmark on honest current-scene state, and update `docs/evals/registry.yaml`.
+- [x] Thread measured regenerate latency through the shared previz adoption/schema surface and update the Scene Workspace previz panel so reuse-path latency is surfaced distinctly when preflight is reusing the current shot plan.
+- [x] Add focused regression coverage for runtime support summaries, previz adoption parsing, and UI typing/rendering.
+- [x] Check whether the reopened implementation makes any prior helper paths or copy redundant; remove them or record a concrete follow-up.
 - [x] Run required checks for touched scope:
   - [x] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
-  - [x] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
-  - [x] UI (if touched): `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
+  - [x] Backend lint: `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/`
+  - [x] UI: `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
 - [x] If story metadata, ADR metadata, or methodology state changes: `pnpm methodology:compile`
 - [x] If evals or goldens are changed: classify all mismatches and update `docs/evals/registry.yaml`
 - [x] If UI is touched: verify the changed flow with browser tools in desktop and mobile views when possible (screenshots + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
@@ -118,66 +122,117 @@ N/A
 
 ## Architectural Fit
 
-- **Owning class/module**: The reuse decision belongs in `pipeline/scene_actions.py`, because that is already the shared preflight/scene-scope truth for UI and API actions. The UI should consume the recommendation, not re-derive it from artifact groups on its own.
-- **Data contracts**: No new cross-layer schema is required if the existing `SceneActionPreflight.start_from` field becomes the effective recommended start stage. The run contract already supports `start_from`.
-- **File sizes**: `make check-size` flags `src/cine_forge/pipeline/scene_actions.py` at `482` lines, `ui/src/components/PrevizPanel.tsx` at `629` lines, `ui/src/lib/types.ts` at `680` lines, and `src/cine_forge/api/models.py` at `510` lines. The plan should keep edits surgical and avoid widening ownership unnecessarily.
-- **Decision context**: Reviewed ADR-002, ADR-003, Story 149 blocker evidence, Story 150/151 runtime results, `DriverEngine` stage-slicing/reuse behavior, and the current PrevizPanel start-run payloads.
+- **Owning class/module**: The regenerate measurement belongs first in the maintained benchmark seam (`benchmarks/scripts/real_ai_previz_runtime_eval.py` and `real_ai_previz_runtime_support.py`), while the operator-facing distinction belongs in the shared previz adoption contract (`schemas/render.py`, `services/previz_adoption.py`) and the existing `PrevizPanel.tsx` consumer. No new standalone previz policy surface is justified.
+- **Data contracts**: This story likely adds a small schema-first cross-layer contract so the backend can expose a distinct regenerate latency/readout without forcing the UI to infer it from raw registry notes. Add the field in `PrevizLaneStatus` before wiring service/UI consumers.
+- **File sizes**: `make check-size` currently flags likely owners at: `benchmarks/scripts/real_ai_previz_runtime_eval.py` (`560`), `ui/src/lib/types.ts` (`768`), and `ui/src/components/PrevizPanel.tsx` (`419`). `real_ai_previz_runtime_support.py` (`359`), `render.py` (`249`), `previz_adoption.py` (`342`), `tests/unit/test_real_ai_previz_runtime_support.py` (`314`), and `tests/unit/test_previz_adoption_service.py` (`326`) are still tractable. Keep changes concentrated in these seams and avoid widening `render_adapter_v1/main.py` unless the benchmark reveals a real runtime defect there.
+- **Decision context**: Reviewed `docs/ideal.md`, `docs/spec.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/build-map.md`, ADR-002, ADR-003, Stories 152 / 171 / 175 / 176, `docs/evals/registry.yaml`, `real_ai_previz_runtime_eval.py`, `real_ai_previz_runtime_support.py`, `scene_actions.py`, `PrevizPanel.tsx`, `PrevizAdoptionService`, and the current shipped recipe/engine-pack defaults.
 
 ## Files to Modify
 
-- `src/cine_forge/pipeline/scene_actions.py` — recommend safe AI-previz reuse start stages from preflight (`482` lines)
-- `ui/src/components/PrevizPanel.tsx` — use preflight-recommended `start_from` and disclose reuse in the action flow (`629` lines)
-- `ui/src/lib/types.ts` — keep the TS contract aligned if response typing needs adjustment (`680` lines)
-- `tests/unit/test_scene_actions.py` — cover healthy and stale reuse cases (`99` lines)
-- `docs/stories/story-152-previz-ai-regenerate-reuse-path.md` — track exploration, implementation, and measured runtime evidence
-- `docs/evals/registry.yaml` — record the reuse benchmark result and whether the remaining gap is still runtime-blocking
+- `docs/stories/story-152-previz-ai-regenerate-reuse-path.md` — reopen the story, track the new xAI regenerate scope, and record fresh evidence (`190`)
+- `benchmarks/scripts/real_ai_previz_runtime_eval.py` — extend the maintained harness to seed existing-clip state and compare regenerate modes (`560`)
+- `benchmarks/scripts/real_ai_previz_runtime_support.py` — add regenerate-case metadata and summary fields without bloating the main eval script (`359`)
+- `benchmarks/fixtures/real_ai_previz_runtime_cases.json` — add shipped xAI regenerate control/reuse cases on honest current-scene state (`169`)
+- `src/cine_forge/schemas/render.py` — add schema-first regenerate-latency fields to the shared previz adoption response if the measured delta is material (`249`)
+- `src/cine_forge/services/previz_adoption.py` — read the new runtime metrics from the registry and populate the shared operator-facing status (`342`)
+- `ui/src/lib/types.ts` — keep the frontend contract aligned with the shared regenerate-latency fields (`768`)
+- `ui/src/components/PrevizPanel.tsx` — surface first-pass versus regenerate truth when preflight is reusing the current shot plan (`419`)
+- `tests/unit/test_real_ai_previz_runtime_support.py` — cover new summary fields and focus behavior for regenerate cases (`314`)
+- `tests/unit/test_previz_adoption_service.py` — cover the new regenerate-latency parsing and shipped xAI disclosure (`326`)
+- `docs/evals/registry.yaml` — record fresh regenerate evidence and classifier truth for the reopened Story 152 slice
+- `docs/methodology/state.yaml` — refresh the current execution summary after the story is reopened and the latest lane truth is known
 
 ## Redundancy / Removal Targets
 
-- The implicit “regen means rerun the whole recipe” behavior in the Scene Workspace AI-previz button
-- Any UI wording that implies AI-previz regeneration always replans the scene even when CineForge already has a healthy shot plan
+- Any remaining panel copy that implies the first-pass one-pass latency is the same thing as the reuse/regenerate loop
+- Story/state prose that still treats Story 152 as a closed historical artifact rather than the active owner for iteration-loop truth on the shipped xAI lane
 
 ## Notes
 
-- Mechanical benchmark setup on copied honest project state:
-  - source project: `output/eval-real-ai-previz-fast_4_mvp_ingest_only-fe36ed`
-  - full regen copy: `output/tmp/previz-regen-baseline-full`
-  - sliced regen copy: `output/tmp/previz-regen-baseline-start`
-- Early run-state evidence already proves the structural waste:
-  - full regen run `story152-regen-full-baseline` reached `shot_planning=20.9637s` before entering the provider-backed `ai_previz` stage
-  - sliced run `story152-regen-start-baseline` executes stage order `['ai_previz', 'validate_media']`, skipping `shot_planning` entirely
-- Completed wall-clock result on the same sampled honest project state:
-  - full regen: `81545 ms`
-  - reuse regen: `75337 ms`
-  - net improvement: `6208 ms`
-  - caveat: `validate_media` was noisier on the sliced run (`21693 ms` vs `6704 ms`), so the measured gain was much smaller than the removed `shot_planning` stage itself
-- This story does not claim to solve first-time AI-previz latency from a fresh project. It is specifically about not wasting substrate time once planning already exists.
+- Historical Story 152 benchmark on the old Fast 4 / one-pass substrate proved the structural reuse seam but is no longer current shipped truth:
+  - full regen (`story152-regen-full-baseline`): `81545 ms`
+  - reuse regen (`story152-regen-start-baseline`): `75337 ms`
+  - delta: `6208 ms`, with `validate_media` noise masking the removed `shot_planning=20964 ms`
+- Current shipped first-pass one-pass baseline after Story 176 is materially different:
+  - `real-ai-previz-runtime` now records shipped xAI one-pass first playable at `65514 ms`
+  - isolated `ai_previz` on that route is `17649 ms`
+  - this story now adds paired same-scene regenerate truth: `39325 ms` first playable for full regenerate versus `17869 ms` for `start_from=ai_previz` reuse on the same warmed substrate
+- Answered question: the warmed current-scene regenerate loop does deserve a distinct operator-facing latency readout. The shipped xAI reuse path is materially faster than rerunning from recipe start, while the underlying provider video segment is effectively the same.
 
 ## Plan
 
-1. Add a focused preflight helper in `pipeline/scene_actions.py` that marks AI-previz as reusable from `ai_previz` when:
-   - project `track_manifest` exists and is healthy
-   - all target scenes already have healthy latest `shot_plan` artifacts
-   - otherwise leave `start_from` empty and preserve the current full recipe path
-   Impact: this stays inside the shared preflight boundary and avoids UI-only business logic.
+### Exploration Notes
 
-2. Update `PrevizPanel.tsx` to use `aiPreflight?.start_from` when starting AI previz.
-   Change: when preflight recommends `ai_previz`, send that `start_from` in the run payload and show a short note that CineForge is reusing the current shot plan. When no recommendation is present, keep the existing full-run behavior.
-   Impact: product behavior changes only when the backend already proved reuse is safe.
+- **Files likely to change**: `real_ai_previz_runtime_eval.py`, `real_ai_previz_runtime_support.py`, `real_ai_previz_runtime_cases.json`, `render.py`, `previz_adoption.py`, `PrevizPanel.tsx`, `ui/src/lib/types.ts`, runtime/adoption tests, the story, the eval registry, and likely `state.yaml`.
+- **Files at risk of breakage**: oversized benchmark script `real_ai_previz_runtime_eval.py` (`560`), oversized UI contract `ui/src/lib/types.ts` (`768`), and the panel consumer `PrevizPanel.tsx` (`419`). Keep new logic out of `render_adapter_v1/main.py` unless the fresh regenerate measurement proves a real runtime defect there.
+- **ADRs / decision docs consulted**: `docs/ideal.md`, `docs/spec.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/build-map.md`, ADR-002, ADR-003, Stories 152 / 171 / 175 / 176, `docs/evals/registry.yaml`.
+- **Patterns to follow**: maintained benchmark surfaces over orphan detectors, schema-first backend↔UI changes, preflight-driven UI disclosure, and explicit first-playable versus full-completion truth.
+- **Potential redundant code / cleanup targets**: lane-level latency copy that ignores regenerate-path truth, and stale methodology summary text that still stops at Story 175.
 
-3. Add targeted tests in `tests/unit/test_scene_actions.py`.
-   Cases:
-   - healthy shot plan + track manifest => AI-previz preflight recommends `start_from='ai_previz'`
-   - stale shot plan => recommendation is withheld
-   - missing shot plan => current auto-build path remains unchanged
+### Baseline / Eval Gate
 
-4. Finish the reuse benchmark and write the result into `docs/evals/registry.yaml` plus this story work log.
-   Done when: the measured delta between full regen and sliced regen is recorded with concrete run ids / durations and the remaining runtime state is classified honestly.
+- **Primary eval**: extend the maintained `real-ai-previz-runtime` harness so it can seed an existing-clip project state and compare:
+  - shipped xAI full regeneration from recipe start on current scene
+  - shipped xAI regenerate reuse via `start_from=ai_previz`
+- **Baseline to record**:
+  - current shipped first-pass one-pass truth from Story 176: `65514 ms` first playable, `17649 ms` isolated `ai_previz`
+  - current historical reuse truth from old Story 152: `81545 ms` full regen vs `75337 ms` reuse on pre-xAI substrate
+- **Candidate approaches**:
+  - AI-only: rejected
+  - Hybrid: extend maintained runtime measurement + surface operator truth from shared backend contract
+  - Pure code: only if the fresh regenerate measurement says the current panel is already honest enough or exposes a tiny non-measured fix
 
-5. Run the required backend + UI + browser checks, then recompile methodology surfaces.
-   Done when: static checks pass, browser verification passes on desktop/mobile against a reachable real project route, and Story 152 appears correctly in generated planning surfaces.
+### Repo-Fit / Optimality Evidence
+
+- Story 176 already answered the provider-floor question on the honest one-pass lane. Repeating that line would violate the current state bias and the anti-fragmentation rule.
+- ADR-002 requires the action boundary to explain what will happen now. The current panel already tells the user when CineForge will reuse the current shot plan, so the missing piece is measured latency truth for that exact branch.
+- The repo already has one maintained runtime detector (`real-ai-previz-runtime`) and one shared operator-facing policy contract (`PrevizAdoptionService` / `PrevizLaneStatus`). Extending those is lower-risk and more honest than adding a story-local benchmark or UI-only heuristic.
+
+### Structural Health Check
+
+- `benchmarks/scripts/real_ai_previz_runtime_eval.py` — `560` lines, already large. Keep new behavior in helpers or small branches rather than widening one long control path.
+- `ui/src/lib/types.ts` — `768` lines, already large. Add only the minimal new fields needed for the shared contract.
+- `ui/src/components/PrevizPanel.tsx` — `419` lines, large but still locally owned. Keep disclosure changes small and reuse existing preflight/adoption badges instead of adding another panel.
+- `benchmarks/scripts/real_ai_previz_runtime_support.py` (`359`), `src/cine_forge/services/previz_adoption.py` (`342`), `tests/unit/test_real_ai_previz_runtime_support.py` (`314`), and `tests/unit/test_previz_adoption_service.py` (`326`) are the preferred homes for most of the new logic.
+
+### Implementation Order
+
+1. Extend the runtime support schema and summary to represent regenerate cases and report a distinct regenerate winner.
+   Done looks like: the support layer can summarize full-regenerate versus reuse cases without overloading the existing first-pass one-pass fields.
+
+2. Extend the runtime eval harness and manifest to seed existing-clip state on the shipped xAI lane and rerun the current-scene regenerate comparison.
+   Done looks like: a fresh runtime artifact records the shipped xAI regenerate loop with concrete full-regenerate versus reuse numbers on honest project state.
+
+3. If the regenerate delta is material, add schema-first shared adoption fields and surface them in the panel only when preflight is reusing the current shot plan.
+   Done looks like: the panel can distinguish first-pass lane truth from regenerate truth without inferring anything UI-side from raw registry prose.
+
+4. Update the eval registry, story, and methodology truth with the fresh measured result and classifier status.
+   Done looks like: `docs/evals/registry.yaml`, this story, and `docs/methodology/state.yaml` all agree on the active iteration-loop truth.
+
+### UI Verification Plan
+
+- Exercise the normal Scene Workspace route on a project where the current scene already has a healthy shot plan and at least one AI previz clip.
+- Verify desktop and mobile:
+  - the previz panel shows the shipped xAI lane
+  - the reuse-path disclosure appears when preflight chooses `start_from=ai_previz`
+  - any new regenerate-latency badge/copy only appears on the reuse branch and does not replace the broader lane truth elsewhere
+- Confirm clean console output and capture screenshots of the reuse-path state.
+
+### Human-Approval Blockers
+
+- None. This is a bounded continuation of the existing Story 152 / 176 line and does not introduce a new public API family or architectural decision.
 
 ## Work Log
+
+20260419-2046 — validation-rerun: reran the full required validation suite after closure rather than relying on the earlier close-out note. Fresh evidence from this validation pass only: `git status --short`, `git diff --stat`, `git diff`, and `git ls-files --others --exclude-standard` re-collected the local delta; `make test-unit PYTHON=.venv/bin/python` (`759 passed, 173 deselected, 1 warning`); `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/` (clean); `PYTHONPATH=src .venv/bin/python -m pytest tests/unit/test_real_ai_previz_runtime_support.py tests/unit/test_previz_adoption_service.py -q` (`10 passed`); `pnpm --dir ui run lint` (clean); `cd ui && npx tsc -b` (clean); `pnpm --dir ui run build` (clean except the pre-existing chunk-size warning); `pnpm methodology:check` (current, with the pre-existing `api_service_and_operator_console` audit warning); `PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --filter-case shipped_xai_4_480p_regenerate_full --filter-case shipped_xai_4_480p_regenerate_reuse --output-prefix benchmarks/results/real-ai-previz-runtime-story-152-xai-regenerate-2026-04-19 --repeat-count 1` (successful runtime rerun); and a fresh desktop/mobile browser pass on `http://127.0.0.1:5188/eval-real-ai-previz-shared-mvp_ingest_only-1-6e2703/scenes/scene_001?tab=previz` with `consoleErrors=[]` / `pageErrors=[]` plus updated screenshots at `output/browser-verification/story152-previz-desktop-2026-04-19.png` and `output/browser-verification/story152-previz-mobile-2026-04-19.png`. Fresh runtime truth: `shipped_xai_4_480p_regenerate_full` reached `39325 ms` first playable (`21363 ms` pre-`ai_previz` + `17962 ms` isolated `ai_previz`; `43952 ms` full completion), while `shipped_xai_4_480p_regenerate_reuse` reached `17869 ms` first playable / `20976 ms` full completion. Classification: no `model-wrong`, `golden-wrong`, or `ambiguous` mismatches remained; the detector is still explicitly `runtime-blocking` against the Ideal `<=6000 ms` target, but the implementation result still holds because the reuse path remains materially faster than full regenerate and the UI surfaces that distinction honestly. Next step: `/check-in-diff`.
+
+20260419-2034 — close-out: marked Story 152 Done after the reopened shipped-xAI regenerate slice cleared its actual success surface. Evidence: `benchmarks/results/real-ai-previz-runtime-story-152-xai-regenerate-2026-04-19.{json,md}` records `35847 ms` first playable for full regenerate versus `17752 ms` for `start_from=ai_previz` reuse on honest existing-clip state; `docs/evals/registry.yaml` and `docs/methodology/state.yaml` now carry the fresh result, `git_sha`, and classifier truth; `output/browser-verification/story152-previz-desktop-2026-04-19.png` and `output/browser-verification/story152-previz-mobile-2026-04-19.png` show the reused-path disclosure plus the new `First pass` / `Full regen` truth on the real Scene Workspace route `http://127.0.0.1:5188/eval-real-ai-previz-shared-mvp_ingest_only-1-6e2703/scenes/scene_001?tab=previz` with `consoleErrors=[]` and `pageErrors=[]`; and the required local checks passed (`make test-unit PYTHON=.venv/bin/python`, `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/`, `pnpm --dir ui run lint`, `pnpm --dir ui run build`, `pnpm methodology:compile`, `pnpm methodology:check`). Classification: no `model-wrong`, `golden-wrong`, or `ambiguous` mismatches remained in the runtime harness; the remaining detector miss is explicitly `runtime-blocking` against the Ideal `<=6000 ms` target, but that blocker belongs to the broader fast-previz loop, not to this story’s success surface. Next step: `/check-in-diff`.
+
+20260419-2026 — validation: reran the maintained runtime detector on the reopened shipped lane and verified the surfaced UI against a representative kept project. Runtime evidence: `benchmarks/results/real-ai-previz-runtime-story-152-xai-regenerate-2026-04-19.{json,md}` shows `shipped_xai_4_480p_regenerate_full` at `35847 ms` first playable (`18113 ms` pre-`ai_previz` + `17734 ms` isolated `ai_previz`; `39672 ms` full completion) and `shipped_xai_4_480p_regenerate_reuse` at `17752 ms` first playable / `21437 ms` full completion. Browser evidence: `output/browser-verification/story152-previz-desktop-2026-04-19.png` and `output/browser-verification/story152-previz-mobile-2026-04-19.png` on `eval-real-ai-previz-shared-mvp_ingest_only-1-6e2703` both show the reuse-path disclosure, measured regenerate copy, `First pass` badge, `Full regen` badge, and enabled `Regenerate AI Previz for Current Scene` button with zero console/page errors. Next step: close the story if the shared planning truth stays aligned after recompiling methodology outputs.
+
+20260419-1956 — implementation: extended the maintained runtime harness to seed existing-clip state, thread regenerate-case metrics through the shared adoption contract, and expose distinct reuse-versus-full-regenerate truth in the Scene Workspace previz panel. Evidence: updated `benchmarks/scripts/real_ai_previz_runtime_eval.py`, `benchmarks/scripts/real_ai_previz_runtime_support.py`, `benchmarks/fixtures/real_ai_previz_runtime_cases.json`, `src/cine_forge/schemas/render.py`, `src/cine_forge/services/previz_adoption.py`, `ui/src/lib/types.ts`, `ui/src/components/PrevizPanel.tsx`, and focused tests in `tests/unit/test_real_ai_previz_runtime_support.py` plus `tests/unit/test_previz_adoption_service.py`. Local seam checks passed immediately after implementation: `PYTHONPATH=src .venv/bin/python -m pytest tests/unit/test_real_ai_previz_runtime_support.py tests/unit/test_previz_adoption_service.py -q` (`10 passed`), `.venv/bin/python -m ruff check src/cine_forge/services/previz_adoption.py src/cine_forge/schemas/render.py tests/unit/test_previz_adoption_service.py benchmarks/scripts/real_ai_previz_runtime_eval.py benchmarks/scripts/real_ai_previz_runtime_support.py tests/unit/test_real_ai_previz_runtime_support.py` (clean), `pnpm --dir ui run lint` (clean), and `pnpm --dir ui run build` (clean except existing chunk-size warning). Next step: run the live shipped-xAI regenerate benchmark, classify the result, and update eval/planning truth before closing.
+
+20260419-1904 — reopened-story: reopened Story 152 after `/triage` identified the shipped xAI current-scene regenerate loop as the highest-leverage continuation of the active `spec:6` / `spec:7` lane. Evidence: reviewed `docs/ideal.md`, `docs/spec.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/build-map.md`, ADR-002, ADR-003, Stories 152 / 171 / 175 / 176, `docs/evals/registry.yaml`, `real_ai_previz_runtime_eval.py`, `real_ai_previz_runtime_support.py`, `PrevizAdoptionService`, `PrevizPanel.tsx`, and current shipped xAI recipe/defaults. Key conclusion: this should be a reopen, not a new story shell, because the subsystem, operator-facing outcome, and validation boundary remain Story 152’s iteration-loop seam; the new trigger is Story 176’s shipped xAI one-pass lane plus the now-misaligned single-latency panel truth. Next step: extend the maintained runtime detector with regenerate cases, rerun the shipped xAI regenerate comparison, and surface distinct reuse-path latency only if the measured delta is material.
 
 20260408-2018 — story-created: opened Story 152 as a distinct unblocker because the work moved from “shrink shot planning” to “avoid unnecessary replanning in the AI-previz loop.” Evidence: Story 149 is blocked on runtime, Story 150 measured the runtime envelope, and Story 151 already landed the compact planner. Next step: prove whether the current regenerate path is really rerunning `shot_planning`.
 
@@ -187,4 +242,4 @@ N/A
 
 20260408-2210 — validation: finished the honest UI verification against the live API-backed route `http://127.0.0.1:5174/story-149-real-ui-rerun/scenes/scene_001?tab=previz` using a disposable local Playwright install with system Chrome because the shared MCP browser profile was locked. Evidence: desktop and mobile screenshots at `/tmp/story152-previz-reuse-desktop.png` and `/tmp/story152-previz-reuse-mobile.png`, clean console output, visible reuse note, enabled `Regenerate AI Previz for Current Scene` button, and intercepted `/api/runs/start` payload containing `start_from: "ai_previz"` for `scene_001`. Next step: hand off Story 152 as implemented and validated, while keeping Story 149 blocked because first-time AI-previz latency is still dominated by provider generation and prerequisites.
 
-20260408-2242 — close-out: marked Story 152 Done because the shipped slice is complete and verified. Evidence: backend and UI checks passed, honest browser validation confirmed the real Scene Workspace route sends `start_from: "ai_previz"`, and the runtime benchmark plus registry update show the iteration-loop improvement without overstating it. Remaining detector failure stays runtime-blocking for Story 149, not for this story, because Story 152's success surface was the regenerate reuse path rather than first-time raw-input latency. Next step: /check-in-diff
+20260408-2242 — close-out: marked Story 152 Done because the shipped slice is complete and verified. Evidence: backend and UI checks passed, honest browser validation confirmed the real Scene Workspace route sends `start_from: "ai_previz"`, and the runtime benchmark plus registry update show the iteration-loop improvement without overstating it. Remaining detector failure stayed runtime-blocking for Story 149, not for this story, because Story 152's first success surface was the regenerate reuse seam rather than first-time raw-input latency. Historical note only: Story 176 later changed the shipped lane to xAI and reopened this story on 2026-04-19 to refresh the iteration-loop truth. Next step at the time was `/check-in-diff`.

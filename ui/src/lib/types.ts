@@ -489,6 +489,8 @@ export type PrevizLaneStatus = {
   measured_at?: string | null
   latency_ms?: number | null
   latency_budget_ms?: number | null
+  regenerate_reuse_latency_ms?: number | null
+  regenerate_full_latency_ms?: number | null
   engine_pack_id?: string | null
   target_model?: string | null
   resolution?: string | null

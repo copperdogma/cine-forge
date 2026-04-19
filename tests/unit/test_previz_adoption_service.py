@@ -60,6 +60,7 @@ def _write_registry(
     baseline_overall: float,
     latency_ms: int,
     runtime_latency_ms: int | None = None,
+    runtime_metrics: dict[str, int] | None = None,
 ) -> None:
     evals: list[dict[str, object]] = [
         {
@@ -81,13 +82,16 @@ def _write_registry(
         }
     ]
     if runtime_latency_ms is not None:
+        metrics: dict[str, object] = {"overall": 0.5}
+        if runtime_metrics:
+            metrics.update(runtime_metrics)
         evals.append(
             {
                 "id": "real-ai-previz-runtime",
                 "scores": [
                     {
                         "model": "Current shipped runtime",
-                        "metrics": {"overall": 0.5},
+                        "metrics": metrics,
                         "latency_ms": runtime_latency_ms,
                         "measured": "2026-04-19",
                     }
@@ -295,6 +299,10 @@ def test_previz_adoption_service_supports_shipped_xai_lane_when_it_clears_qualit
         baseline_overall=0.8380,
         latency_ms=17611,
         runtime_latency_ms=61387,
+        runtime_metrics={
+            "fastest_regenerate_reuse_ms": 17611,
+            "fastest_regenerate_full_ms": 47865,
+        },
     )
 
     service = PrevizAdoptionService(
@@ -320,6 +328,8 @@ def test_previz_adoption_service_supports_shipped_xai_lane_when_it_clears_qualit
     assert status.ai_previz.adoption_state == "default"
     assert status.ai_previz.score_margin == 0.0033
     assert status.ai_previz.latency_ms == 61387
+    assert status.ai_previz.regenerate_reuse_latency_ms == 17611
+    assert status.ai_previz.regenerate_full_latency_ms == 47865
     assert any(
         "61387 ms" in blocker for blocker in status.ai_previz.blocker_reasons
     )

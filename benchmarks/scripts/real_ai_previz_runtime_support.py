@@ -24,6 +24,8 @@ class RuntimeEvalCase(BaseModel):
     prerequisite_mode: Literal["mvp_ingest_only", "scene_ready"] = "scene_ready"
     prerequisite_strategy: str | None = None
     recipe_mode: Literal["shipped", "patched"] = "shipped"
+    existing_clip_state: bool = False
+    requested_start_from: str | None = None
     ai_previz: AiPrevizStageOverride | None = None
     notes: str | None = None
 
@@ -57,6 +59,8 @@ class RuntimeCaseResult(BaseModel):
     resolution: str
     scene_id: str
     input_fixture: str
+    existing_clip_state: bool = False
+    requested_start_from: str | None = None
     attempt_index: int = Field(ge=1, default=1)
     notes: str | None = None
     project_dir: str
@@ -85,6 +89,8 @@ class RuntimeCaseAggregate(BaseModel):
     resolution: str
     scene_id: str
     input_fixture: str
+    existing_clip_state: bool = False
+    requested_start_from: str | None = None
     notes: str | None = None
     repeat_count: int = Field(ge=1)
     successful_attempts: int = Field(ge=0)
@@ -148,6 +154,8 @@ def aggregate_attempts(attempts: list[RuntimeCaseResult]) -> list[RuntimeCaseAgg
                 resolution=template.resolution,
                 scene_id=template.scene_id,
                 input_fixture=template.input_fixture,
+                existing_clip_state=template.existing_clip_state,
+                requested_start_from=template.requested_start_from,
                 notes=template.notes,
                 repeat_count=len(ordered_attempts),
                 successful_attempts=len(successful_attempts),
@@ -208,6 +216,27 @@ def summarize_results(
     fastest_scene_ready_ai_previz = min(
         scene_ready,
         key=lambda result: result.ai_previz_elapsed_ms,
+        default=None,
+    )
+    regenerate_cases = [result for result in successful if result.existing_clip_state]
+    regenerate_reuse = [
+        result
+        for result in regenerate_cases
+        if result.requested_start_from == "ai_previz"
+    ]
+    regenerate_full = [
+        result
+        for result in regenerate_cases
+        if result.requested_start_from in {None, ""}
+    ]
+    fastest_regenerate_reuse = min(
+        regenerate_reuse,
+        key=lambda result: result.time_to_first_playable_ms,
+        default=None,
+    )
+    fastest_regenerate_full = min(
+        regenerate_full,
+        key=lambda result: result.time_to_first_playable_ms,
         default=None,
     )
     overall = 0.0
@@ -271,6 +300,52 @@ def summarize_results(
             if fastest_scene_ready_ai_previz
             else None
         ),
+        "fastest_regenerate_reuse_case_id": (
+            fastest_regenerate_reuse.case_id if fastest_regenerate_reuse else None
+        ),
+        "fastest_regenerate_reuse_ms": (
+            fastest_regenerate_reuse.time_to_first_playable_ms
+            if fastest_regenerate_reuse
+            else None
+        ),
+        "fastest_regenerate_reuse_ai_previz_ms": (
+            fastest_regenerate_reuse.ai_previz_elapsed_ms
+            if fastest_regenerate_reuse
+            else None
+        ),
+        "fastest_regenerate_reuse_full_completion_ms": (
+            fastest_regenerate_reuse.total_elapsed_ms
+            if fastest_regenerate_reuse
+            else None
+        ),
+        "fastest_regenerate_reuse_post_playable_overhead_ms": (
+            fastest_regenerate_reuse.post_playable_overhead_ms
+            if fastest_regenerate_reuse
+            else None
+        ),
+        "fastest_regenerate_full_case_id": (
+            fastest_regenerate_full.case_id if fastest_regenerate_full else None
+        ),
+        "fastest_regenerate_full_ms": (
+            fastest_regenerate_full.time_to_first_playable_ms
+            if fastest_regenerate_full
+            else None
+        ),
+        "fastest_regenerate_full_ai_previz_ms": (
+            fastest_regenerate_full.ai_previz_elapsed_ms
+            if fastest_regenerate_full
+            else None
+        ),
+        "fastest_regenerate_full_completion_ms": (
+            fastest_regenerate_full.total_elapsed_ms
+            if fastest_regenerate_full
+            else None
+        ),
+        "fastest_regenerate_full_post_playable_overhead_ms": (
+            fastest_regenerate_full.post_playable_overhead_ms
+            if fastest_regenerate_full
+            else None
+        ),
         "fastest_total_case_id": fastest_total.case_id if fastest_total else None,
         "fastest_total_ms": fastest_total.total_elapsed_ms if fastest_total else None,
         "target_fast_previz_ms": fast_previz_target_ms,
@@ -323,6 +398,38 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
             f"- Fastest isolated {focus_label} AI-previz median: "
             f"{summary['fastest_focus_isolated_ai_previz_ms']} ms"
         ),
+    ]
+    if summary.get("fastest_regenerate_reuse_case_id"):
+        lines.extend([
+            (
+                f"- Fastest regenerate reuse case: "
+                f"`{summary['fastest_regenerate_reuse_case_id']}`"
+            ),
+            (
+                f"- Fastest regenerate reuse time to first playable: "
+                f"{summary['fastest_regenerate_reuse_ms']} ms"
+            ),
+            (
+                f"- Fastest regenerate reuse AI-previz recipe: "
+                f"{summary['fastest_regenerate_reuse_ai_previz_ms']} ms"
+            ),
+            (
+                f"- Fastest regenerate reuse full completion: "
+                f"{summary['fastest_regenerate_reuse_full_completion_ms']} ms"
+            ),
+        ])
+    if summary.get("fastest_regenerate_full_case_id"):
+        lines.extend([
+            (
+                f"- Fastest regenerate full-control case: "
+                f"`{summary['fastest_regenerate_full_case_id']}`"
+            ),
+            (
+                f"- Fastest regenerate full-control time to first playable: "
+                f"{summary['fastest_regenerate_full_ms']} ms"
+            ),
+        ])
+    lines.extend([
         f"- Fastest total case: `{summary['fastest_total_case_id']}`",
         f"- Fastest total elapsed: {summary['fastest_total_ms']} ms",
         (
@@ -333,12 +440,12 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
         "## Cases",
         "",
         (
-            "| Case | Attempts | Mode | Strategy | Engine Pack | Prompt | Prereqs | "
+            "| Case | Attempts | Mode | Strategy | Start | Engine Pack | Prompt | Prereqs | "
             "AI Previz ms | First playable ms | Full completion ms | "
             "Post-playable overhead | Success | Notes |"
         ),
-        "| --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
-    ]
+        "| --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+    ])
     for case in cases:
         lines.append(
             "| "
@@ -346,6 +453,7 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
             f"{case['successful_attempts']}/{case['repeat_count']} | "
             f"{case['recipe_mode']} | "
             f"{case.get('prerequisite_strategy') or case['prerequisite_mode']} | "
+            f"{case.get('requested_start_from') or 'recipe_start'} | "
             f"{case['engine_pack_id']} / {case['duration_seconds']}s {case['resolution']} | "
             f"{case['prompt_profile']} | "
             f"{case['prerequisite_mode']} ({case['prerequisite_elapsed_ms']} ms) | "

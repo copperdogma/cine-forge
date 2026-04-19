@@ -957,6 +957,7 @@
           "138",
           "140",
           "144",
+          "152",
           "155",
           "159",
           "160",
@@ -9414,14 +9415,16 @@
       "idealRefs": [
         "R10 (playable assembly at every stage)",
         "R12 (transparency & control)",
-        "R7 (generate -> react -> refine)"
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
       ],
       "specRefs": [
         "spec:10.3",
         "spec:5.3",
         "spec:5.5",
         "spec:6.3",
-        "spec:7.1"
+        "spec:7.1",
+        "spec:8.2"
       ],
       "adrIds": [
         "ADR-002",
@@ -9430,13 +9433,16 @@
       "compromiseIds": [],
       "dependsOn": [
         "149",
-        "150",
-        "151"
+        "151",
+        "171",
+        "175",
+        "176"
       ],
       "categoryRefs": [
         "spec:5",
         "spec:6",
         "spec:7",
+        "spec:8",
         "spec:10"
       ],
       "inputCoverageRefs": [],
@@ -12290,12 +12296,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story 176 One-Pass Provider Floor (xAI Ships, Still Runtime-Blocking)",
+        "model": "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)",
         "measured": "2026-04-19",
         "metrics": {
           "overall": 0.5
         },
-        "note": "Fresh `/validate` rerun of Story 176's honest one-pass provider-floor comparison still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate. xAI reaches first playable at `65514 ms` (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for the Lite control and `100653 ms` / `52788 ms` / `107667 ms`…"
+        "note": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -12337,14 +12343,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Fresh `/validate` rerun of Story 176's honest one-pass provider-floor comparison still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate. xAI reaches first playable at `65514 ms` (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for the Lite control and `100653 ms` / `52788 ms` / `107667 ms`…",
+        "whyNow": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-19",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Fresh `/validate` rerun of Story 176's honest one-pass provider-floor comparison still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate. xAI reaches first playable at `65514 ms` (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for the Lite control and `100653 ms` / `52788 ms` / `107667 ms`…"
+          "summary": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
         }
       }
     },
@@ -13144,7 +13150,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, and Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, surfacing prerequisite truth across preflight and provenance, and cutting the validated scene-ready loop to `96821 ms` first playable with `44048 ms` of prerequisites. The `spec:6` / `spec:7` lane remains runtime-blocking against the fast-previz detector, so the next move returns to fresh triage on the honest current-scene loop rather than another fixed-pack compare.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, and Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites. Reopened Story 152 is now the active current-scene follow-up: the fresh existing-clip validation rerun shows `39325 ms` first playable for full regenerate versus `17869 ms` for `start_from=ai_previz` reuse on the same shipped xAI lane, so the next move is to keep that distinction honest in the surfaced operator loop. The `spec:6` / `spec:7` lane remains runtime-blocking against the fast-previz detector, but the active blocker is iteration speed rather than provider choice.",
         "lanes": [
           {
             "id": "pending-ready",

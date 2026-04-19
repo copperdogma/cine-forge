@@ -26,6 +26,8 @@ def _case_result(
     post_playable_overhead_ms: int,
     total_elapsed_ms: int,
     error: str | None = None,
+    existing_clip_state: bool = False,
+    requested_start_from: str | None = None,
 ) -> object:
     return runtime_support.RuntimeCaseResult(
         case_id=case_id,
@@ -38,6 +40,8 @@ def _case_result(
         resolution="720p",
         scene_id="scene_001",
         input_fixture="tests/fixtures/sample_screenplay.fountain",
+        existing_clip_state=existing_clip_state,
+        requested_start_from=requested_start_from,
         attempt_index=attempt_index,
         project_dir=f"output/{case_id}-{attempt_index}",
         success=success,
@@ -79,12 +83,22 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
                             "prompt_profile": "compact",
                         },
                     },
+                    {
+                        "case_id": "xai_regen_reuse",
+                        "label": "xAI regenerate reuse",
+                        "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+                        "scene_id": "scene_001",
+                        "prerequisite_mode": "mvp_ingest_only",
+                        "recipe_mode": "shipped",
+                        "existing_clip_state": True,
+                        "requested_start_from": "ai_previz",
+                    },
                 ]
             }
         )
     )
 
-    assert len(manifest.cases) == 2
+    assert len(manifest.cases) == 3
     assert manifest.cases[0].recipe_mode == "shipped"
     assert manifest.cases[0].ai_previz is None
     assert manifest.cases[1].prerequisite_mode == "mvp_ingest_only"
@@ -92,6 +106,8 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
     assert manifest.cases[1].ai_previz is not None
     assert manifest.cases[1].ai_previz.engine_pack_id == "xai_grok_imagine_video"
     assert manifest.cases[1].ai_previz.prompt_profile == "compact"
+    assert manifest.cases[2].existing_clip_state is True
+    assert manifest.cases[2].requested_start_from == "ai_previz"
 
 
 @pytest.mark.unit
@@ -312,3 +328,47 @@ def test_summarize_results_uses_one_pass_focus_when_only_ingest_only_cases_are_s
     assert summary["fastest_focus_isolated_ai_previz_ms"] == 22_000
     assert summary["fastest_scene_ready_case_id"] is None
     assert summary["overall"] == 0.5
+
+
+@pytest.mark.unit
+def test_summarize_results_reports_regenerate_reuse_and_full_control_metrics() -> None:
+    aggregates = runtime_support.aggregate_attempts([
+        _case_result(
+            case_id="shipped_xai_regen_full",
+            attempt_index=1,
+            success=True,
+            prerequisite_elapsed_ms=24_000,
+            ai_previz_elapsed_ms=18_000,
+            time_to_first_playable_ms=42_000,
+            post_playable_overhead_ms=5_000,
+            total_elapsed_ms=47_000,
+            existing_clip_state=True,
+            requested_start_from=None,
+        ),
+        _case_result(
+            case_id="shipped_xai_regen_reuse",
+            attempt_index=1,
+            success=True,
+            prerequisite_elapsed_ms=0,
+            ai_previz_elapsed_ms=18_000,
+            time_to_first_playable_ms=18_000,
+            post_playable_overhead_ms=4_000,
+            total_elapsed_ms=22_000,
+            existing_clip_state=True,
+            requested_start_from="ai_previz",
+        ),
+    ])
+
+    summary = runtime_support.summarize_results(
+        aggregates,
+        fast_previz_target_ms=6_000,
+    )
+
+    assert summary["fastest_regenerate_reuse_case_id"] == "shipped_xai_regen_reuse"
+    assert summary["fastest_regenerate_reuse_ms"] == 18_000
+    assert summary["fastest_regenerate_reuse_ai_previz_ms"] == 18_000
+    assert summary["fastest_regenerate_reuse_full_completion_ms"] == 22_000
+    assert summary["fastest_regenerate_full_case_id"] == "shipped_xai_regen_full"
+    assert summary["fastest_regenerate_full_ms"] == 42_000
+    assert summary["fastest_regenerate_full_ai_previz_ms"] == 18_000
+    assert summary["fastest_regenerate_full_completion_ms"] == 47_000

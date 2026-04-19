@@ -88,6 +88,15 @@ export function PrevizPanel({
   const aiPrevizCostLabel = aiPrevizCostBadge(aiPrevizStatus)
   const aiPrevizStartFrom = aiPreflight?.start_from ?? undefined
   const aiPrevizReusesShotPlan = aiPrevizStartFrom === 'ai_previz'
+  const firstPassLatencyMs = aiPrevizStatus?.latency_ms ?? null
+  const regenerateReuseLatencyMs = aiPrevizStatus?.regenerate_reuse_latency_ms ?? null
+  const regenerateFullLatencyMs = aiPrevizStatus?.regenerate_full_latency_ms ?? null
+  const showReuseRegenerateLatency = aiPrevizReusesShotPlan
+    && regenerateReuseLatencyMs !== null
+    && regenerateReuseLatencyMs !== firstPassLatencyMs
+  const showFullRegenerateLatency = aiPrevizReusesShotPlan
+    && regenerateFullLatencyMs !== null
+    && regenerateFullLatencyMs !== regenerateReuseLatencyMs
   const configuredScopeLabel = getSceneScopeLabel(sceneScope)
   const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
   const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
@@ -212,8 +221,14 @@ export function PrevizPanel({
                 <Badge variant="outline">{aiPrevizStatus.candidate_label}</Badge>
               )}
               {aiPrevizCostLabel && <Badge variant="outline">{aiPrevizCostLabel}</Badge>}
-              {aiPrevizStatus?.latency_ms && (
-                <Badge variant="outline">Avg {formatLatencyMs(aiPrevizStatus.latency_ms)}</Badge>
+              {firstPassLatencyMs !== null && (
+                <Badge variant="outline">First pass {formatLatencyMs(firstPassLatencyMs)}</Badge>
+              )}
+              {showReuseRegenerateLatency && regenerateReuseLatencyMs !== null && (
+                <Badge variant="outline">Reuse {formatLatencyMs(regenerateReuseLatencyMs)}</Badge>
+              )}
+              {showFullRegenerateLatency && regenerateFullLatencyMs !== null && (
+                <Badge variant="outline">Full regen {formatLatencyMs(regenerateFullLatencyMs)}</Badge>
               )}
               {aiPrevizStatus?.latency_budget_ms && (
                 <Badge variant="outline">Target ≤ {formatLatencyMs(aiPrevizStatus.latency_budget_ms)}</Badge>
@@ -270,6 +285,15 @@ export function PrevizPanel({
                 <p>
                   Reuse path: CineForge will keep the current shot plan and rerun only AI video
                   generation plus media validation.
+                </p>
+              )}
+              {showReuseRegenerateLatency && regenerateReuseLatencyMs !== null && (
+                <p>
+                  Measured regenerate loop: {formatLatencyMs(regenerateReuseLatencyMs)} to first
+                  playable on the current reuse path
+                  {showFullRegenerateLatency && regenerateFullLatencyMs !== null
+                    ? ` versus ${formatLatencyMs(regenerateFullLatencyMs)} when rerunning from recipe start on the same existing-clip substrate.`
+                    : '.'}
                 </p>
               )}
               {(aiPreflight?.reused_artifact_types?.length ?? 0) > 0 && (

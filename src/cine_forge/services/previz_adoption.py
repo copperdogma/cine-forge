@@ -71,6 +71,14 @@ class PrevizAdoptionService:
             else None
         )
         latency_ms = self._latency_ms(runtime_entry) or self._latency_ms(score_entry)
+        regenerate_reuse_latency_ms = self._metric_ms(
+            runtime_entry,
+            "fastest_regenerate_reuse_ms",
+        )
+        regenerate_full_latency_ms = self._metric_ms(
+            runtime_entry,
+            "fastest_regenerate_full_ms",
+        )
         ai_viable = self._validation_stage_enabled(recipe) and (
             overall_score is not None and overall_score >= _QUALITY_FLOOR
         )
@@ -107,6 +115,8 @@ class PrevizAdoptionService:
             measured_at=self._measured_at(runtime_entry) or self._measured_at(score_entry),
             latency_ms=latency_ms,
             latency_budget_ms=_FAST_AI_PREVIZ_TARGET_MS,
+            regenerate_reuse_latency_ms=regenerate_reuse_latency_ms,
+            regenerate_full_latency_ms=regenerate_full_latency_ms,
             engine_pack_id=engine_pack.pack_id,
             target_model=engine_pack.target_model,
             resolution=self._resolution(params=params, engine_pack=engine_pack),
@@ -293,6 +303,19 @@ class PrevizAdoptionService:
 
     def _latency_ms(self, entry: dict[str, Any] | None) -> int | None:
         value = entry.get("latency_ms") if isinstance(entry, dict) else None
+        if isinstance(value, int):
+            return value
+        if isinstance(value, float):
+            return round(value)
+        return None
+
+    def _metric_ms(self, entry: dict[str, Any] | None, key: str) -> int | None:
+        if not isinstance(entry, dict):
+            return None
+        metrics = entry.get("metrics")
+        if not isinstance(metrics, dict):
+            return None
+        value = metrics.get(key)
         if isinstance(value, int):
             return value
         if isinstance(value, float):
