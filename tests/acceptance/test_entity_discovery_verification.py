@@ -4,17 +4,19 @@ Tests the recall verification loop by running entity discovery on The Mariner
 with a scene_index that contains known locations/props, then checking whether
 the verification step improves recall compared to raw discovery.
 
-Requires: GEMINI_API_KEY (uses gemini-2.5-flash-lite, the production default).
+Requires: CINE_FORGE_GEMINI_API_KEY or GEMINI_API_KEY (uses
+gemini-2.5-flash-lite, the production default).
 """
 
 from __future__ import annotations
 
 import json
-import os
 import re
 from pathlib import Path
 
 import pytest
+
+from cine_forge.env import resolve_env
 
 BENCHMARKS = Path(__file__).resolve().parents[2] / "benchmarks"
 SCREENPLAY = BENCHMARKS / "input" / "the-mariner.md"
@@ -23,8 +25,8 @@ GOLDEN = BENCHMARKS / "golden" / "the-mariner-entity-discovery.json"
 pytestmark = [
     pytest.mark.acceptance,
     pytest.mark.skipif(
-        not os.environ.get("GEMINI_API_KEY"),
-        reason="GEMINI_API_KEY required for live entity discovery",
+        not resolve_env("GEMINI_API_KEY"),
+        reason="CINE_FORGE_GEMINI_API_KEY or GEMINI_API_KEY required for live entity discovery",
     ),
 ]
 

@@ -43,6 +43,7 @@ _AI_VARIANTS = {
     "google_veo31_previz",
     "google_veo31_fast_previz",
     "google_veo31_lite_previz",
+    "google_veo31_lite_compact_previz",
 }
 
 
@@ -95,6 +96,7 @@ def build_summary(results: list[dict], dataset_root: Path | None = None) -> dict
             "resolutions": set(),
             "durations": set(),
             "consistency_strategies": set(),
+            "prompt_profiles": set(),
             "style_profile_ids": set(),
             "style_profile_titles": set(),
         }
@@ -161,6 +163,7 @@ def build_summary(results: list[dict], dataset_root: Path | None = None) -> dict
         _maybe_add(bucket["resolutions"], candidate_meta.get("resolution"))
         _maybe_add(bucket["durations"], candidate_meta.get("duration_seconds"))
         _maybe_add(bucket["consistency_strategies"], candidate_meta.get("consistency_strategy"))
+        _maybe_add(bucket["prompt_profiles"], candidate_meta.get("prompt_profile"))
         _maybe_add(bucket["style_profile_ids"], candidate_meta.get("style_profile_id"))
         _maybe_add(bucket["style_profile_titles"], candidate_meta.get("style_profile_title"))
         bucket["calls"] += 1
@@ -208,6 +211,7 @@ def build_summary(results: list[dict], dataset_root: Path | None = None) -> dict
                 "engine_pack_id": _single_or_join(bucket["engine_pack_ids"]),
                 "target_model": _single_or_join(bucket["target_models"]),
                 "consistency_strategy": _single_or_join(bucket["consistency_strategies"]),
+                "prompt_profile": _single_or_join(bucket["prompt_profiles"]),
                 "style_profile_id": _single_or_join(bucket["style_profile_ids"]),
                 "style_profile_title": _single_or_join(bucket["style_profile_titles"]),
                 "dimension_scores": {
@@ -237,10 +241,10 @@ def render_markdown(summary: dict) -> str:
         "",
         (
             "| Candidate | Lane | Overall | Gen Latency | Budget | Gen Cost | "
-            "Resolution | Consistency | "
+            "Resolution | Consistency | Prompt | "
             "Analysis Latency | Analysis Cost |"
         ),
-        "|---|---|---:|---:|---:|---:|---|---|---:|---:|",
+        "|---|---|---:|---:|---:|---:|---|---|---|---:|---:|",
     ]
     for row in summary["candidates"]:
         generation_latency = (
@@ -268,7 +272,8 @@ def render_markdown(summary: dict) -> str:
             f"| {row['candidate']} | {row['operator_lane'] or row['candidate_class']} | "
             f"{row['overall']:.3f} | {generation_latency} | {latency_budget} | "
             f"{generation_cost} | {row['resolution'] or 'n/a'} | "
-            f"{row['consistency_strategy'] or 'n/a'} | {analysis_latency} | {analysis_cost} |"
+            f"{row['consistency_strategy'] or 'n/a'} | {row['prompt_profile'] or 'n/a'} | "
+            f"{analysis_latency} | {analysis_cost} |"
         )
 
     lines.extend(["", "## Candidate Notes", ""])
@@ -279,6 +284,7 @@ def render_markdown(summary: dict) -> str:
         lines.append(f"- latency budget: {row['latency_budget_ms'] or 'n/a'}")
         lines.append(f"- engine pack: {row['engine_pack_id'] or 'n/a'}")
         lines.append(f"- target model: {row['target_model'] or 'n/a'}")
+        lines.append(f"- prompt profile: {row['prompt_profile'] or 'n/a'}")
         lines.append(
             f"- style profile: {row['style_profile_title'] or row['style_profile_id'] or 'n/a'}"
         )

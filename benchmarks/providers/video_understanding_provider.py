@@ -13,12 +13,18 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+load_dotenv(REPO_ROOT / ".env")
+load_dotenv(REPO_ROOT / ".env.local")
+
 estimate_cost_usd = importlib.import_module("cine_forge.ai.llm").estimate_cost_usd
+require_env = importlib.import_module("cine_forge.env").require_env
 
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
@@ -400,7 +406,4 @@ def _request_json(url: str, *, headers: dict[str, str], body: dict[str, Any]) ->
 
 
 def _require_env(name: str) -> str:
-    value = __import__("os").environ.get(name)
-    if not value:
-        raise RuntimeError(f"{name} is not set")
-    return value
+    return require_env(name)

@@ -279,7 +279,7 @@
   },
   "stories_index": {
     "current_execution_map": {
-      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, and Story 170 closed the breadth-first scene-generation follow-up. The next move in `spec:6` / `spec:7` should come from fresh triage rather than another preselected in-progress story.",
+      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, and Story 174 closed the bounded compact-previz compare. Compact Lite now leads the fixed-pack usefulness compare and slightly improves the honest current-scene route, but the loop still lands at `186659 ms` to first playable, so the shipped lane stays unchanged and the next `spec:6` / `spec:7` move returns to fresh triage rather than another fake-solved claim.",
       "lanes": [
         {
           "id": "pending-ready",
@@ -434,8 +434,8 @@
       },
       "api_service_and_operator_console": {
         "last_audited_at": "2026-04-11",
-        "recent_story_refs": ["168", "169", "170", "171"],
-        "stories_since_audit": 8,
+        "recent_story_refs": ["168", "169", "170", "171", "174"],
+        "stories_since_audit": 9,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
@@ -450,12 +450,12 @@
       },
       "generation_and_visualization": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["164", "165", "166", "167", "168", "169", "170", "171", "173"],
-        "stories_since_audit": 0,
+        "recent_story_refs": ["164", "165", "166", "167", "168", "169", "170", "171", "173", "174"],
+        "stories_since_audit": 1,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, and Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, and Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
       }
     }
   }

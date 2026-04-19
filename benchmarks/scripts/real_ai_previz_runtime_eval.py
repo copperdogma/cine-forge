@@ -264,6 +264,8 @@ def _run_case_attempt(
     base_error = shared["error"]
     ai_previz_run: RecipeRunSummary | None = None
     ai_previz_elapsed_ms = 0
+    time_to_first_playable_ms = 0
+    post_playable_overhead_ms = 0
     error = str(base_error) if base_error else None
     ai_previz_artifact_path: str | None = None
     media_validation_path: str | None = None
@@ -272,7 +274,6 @@ def _run_case_attempt(
         shutil.copytree(shared_project_dir, project_dir)
         ai_recipe_path = _materialize_ai_previz_recipe(case)
         try:
-            ai_started = time.perf_counter()
             ai_previz_run = _run_recipe(
                 recipe_path=ai_recipe_path,
                 project_dir=project_dir,
@@ -280,7 +281,6 @@ def _run_case_attempt(
                 runtime_params=dict(shared["runtime_params"]),
                 start_from="ai_previz",
             )
-            ai_previz_elapsed_ms = round((time.perf_counter() - ai_started) * 1000)
         finally:
             if ai_recipe_path != AI_PREVIZ_RECIPE and ai_recipe_path.exists():
                 ai_recipe_path.unlink()
@@ -288,13 +288,22 @@ def _run_case_attempt(
         if ai_previz_run is not None:
             ai_previz_artifact_path = ai_previz_run.artifact_paths.get("ai_previz_video")
             media_validation_path = ai_previz_run.artifact_paths.get("media_validation")
+            ai_previz_elapsed_ms = (
+                int(ai_previz_run.stage_durations_ms.get("ai_previz", 0))
+                or ai_previz_run.elapsed_ms
+            )
+            time_to_first_playable_ms = prerequisite_elapsed_ms + ai_previz_elapsed_ms
+            post_playable_overhead_ms = max(
+                0,
+                ai_previz_run.elapsed_ms - ai_previz_elapsed_ms,
+            )
             if ai_previz_run.error:
                 error = ai_previz_run.error
     else:
         project_dir.mkdir(parents=True, exist_ok=True)
 
     success = base_success and ai_previz_run is not None and ai_previz_run.success
-    total_elapsed_ms = prerequisite_elapsed_ms + ai_previz_elapsed_ms
+    total_elapsed_ms = prerequisite_elapsed_ms + (ai_previz_run.elapsed_ms if ai_previz_run else 0)
     result = RuntimeCaseResult(
         case_id=case.case_id,
         label=case.label,
@@ -304,6 +313,11 @@ def _run_case_attempt(
             case.ai_previz.engine_pack_id
             if case.ai_previz is not None
             else _shipped_ai_previz_defaults()["engine_pack_id"]
+        ),
+        prompt_profile=(
+            case.ai_previz.prompt_profile
+            if case.ai_previz is not None
+            else str(_shipped_ai_previz_defaults().get("prompt_profile") or "standard")
         ),
         duration_seconds=(
             case.ai_previz.duration_seconds
@@ -324,6 +338,8 @@ def _run_case_attempt(
         error=error,
         prerequisite_elapsed_ms=prerequisite_elapsed_ms,
         ai_previz_elapsed_ms=ai_previz_elapsed_ms,
+        time_to_first_playable_ms=time_to_first_playable_ms,
+        post_playable_overhead_ms=post_playable_overhead_ms,
         total_elapsed_ms=total_elapsed_ms,
         prerequisite_runs=prerequisite_runs,
         ai_previz_run=ai_previz_run,
@@ -428,6 +444,7 @@ def _materialize_ai_previz_recipe(case: RuntimeEvalCase) -> Path:
         params["duration_seconds"] = case.ai_previz.duration_seconds
         params["resolution"] = case.ai_previz.resolution
         params["consistency_strategy"] = case.ai_previz.consistency_strategy
+        params["prompt_profile"] = case.ai_previz.prompt_profile
         break
     recipe["recipe_id"] = f"ai_previz_generation_eval_{case.case_id}"
     temp_path = REPO_ROOT / "output" / "tmp" / f"{recipe['recipe_id']}.yaml"

@@ -1345,6 +1345,7 @@ evals:
       - "143"
       - "144"
       - "149"
+      - "174"
     category_refs:
       - spec:5
       - spec:6
@@ -1353,16 +1354,17 @@ evals:
       - spec:10
     compromise_refs: []
     description: >
-      Compares five scene-level previz candidates on the same fixed fixture pack:
+      Compares fixed scene-level previz candidates on the same fixture pack:
       Story 027's symbolic baseline, Story 137's richer deterministic annotated
-      animatic, and three candidate-specific low-fidelity AI-previz lanes
-      (`sora-2`, `veo-3.1-fast`, `veo-3.1-lite`). Uses Story 030's frame-packet
+      animatic, and bounded candidate-specific low-fidelity AI-previz lanes
+      (`sora-2`, `veo-3.1-fast`, `veo-3.1-lite`, plus Story 174's compact Lite
+      variant when reachable). Uses Story 030's frame-packet
       video-understanding substrate with GPT-5.4 as the fixed analysis model and a
       rubric centered on camera readability, blocking clarity, motion, pacing,
       staging legibility, and low-detail previz usefulness for human review.
     pipeline_stage: visualization
     runner: promptfoo
-    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03"
+    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03"
     config: benchmarks/tasks/previz-usefulness.yaml
     scorer: benchmarks/scorers/video_understanding_scorer.py
     golden: benchmarks/previz_usefulness/manifest.json
@@ -1376,30 +1378,42 @@ evals:
       note: "Operator-facing previz should eventually mean AI-generated motion within <=6000 ms on the fixed pack. Deterministic animatics remain fallback/control baselines and must stay clearly labeled as such until a real AI lane clears the target."
 
     scores:
-      - model: "Veo 3.1 Lite Previz"
+      - model: "Veo 3.1 Lite Compact Previz"
         metrics:
-          overall: 0.828
-          python: 0.8293
-          rubric: 0.8267
-        latency_ms: 39273
+          overall: 0.8753
+          python: 0.8773
+          rubric: 0.8733
+        latency_ms: 39357
         cost_usd: null
         cost_estimated: false
-        measured: 2026-04-03
-        git_sha: "d6ac336"
-        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
-        note: "Strongest current AI-previz candidate. Prompt-only consistency is still good enough for previz readability, but it remains runtime-blocking because Lite cost is still unverified and the measured 39.3s latency is far outside the 6s fast-AI-previz target."
+        measured: 2026-04-19
+        git_sha: "0f8414b"
+        result_file: benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.json
+        note: "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking."
+      - model: "Veo 3.1 Lite Previz"
+        metrics:
+          overall: 0.868
+          python: 0.8693
+          rubric: 0.8667
+        latency_ms: 46838
+        cost_usd: null
+        cost_estimated: false
+        measured: 2026-04-19
+        git_sha: "0f8414b"
+        result_file: benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.json
+        note: "Refreshed shipped-Lite comparator from Story 174's bounded rerun. The fixed-pack lane improves over the older `0.828` score and stays above the deterministic floor at `0.868`, but compact Lite edges it on both usefulness and fixed-pack generation latency while neither route-level result comes close to the `<=6000 ms` target."
       - model: "Annotated Animatic"
         metrics:
-          overall: 0.803
-          python: 0.8127
-          rubric: 0.7933
-        latency_ms: 606
+          overall: 0.8547
+          python: 0.8693
+          rubric: 0.84
+        latency_ms: 581
         cost_usd: 0.0
         cost_estimated: true
-        measured: 2026-04-08
-        git_sha: "80200d9"
-        result_file: benchmarks/results/previz-usefulness-story-149-fast-lane-2026-04-08-report.json
-        note: "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement."
+        measured: 2026-04-19
+        git_sha: "0f8414b"
+        result_file: benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.json
+        note: "Refreshed deterministic fallback/control floor from the Story 174 rerun. Annotated Animatic stays comfortably inside the fast control budget at `581 ms` and now measures `0.8547` overall on the current report, but it still does not satisfy the product requirement for real AI-generated motion."
       - model: "Veo 3.1 Fast Previz"
         metrics:
           overall: 0.778
@@ -1456,6 +1470,12 @@ evals:
       - date: 2026-04-08
         git_sha: "80200d9"
         note: "Story 149 kept the validated 2026-04-03 UI-backed quality scores, but re-measured the deterministic lanes with the updated dataset generator and produced a fresh report. Annotated Animatic now records 606 ms average / 635 ms median generation latency, Symbolic Animatic records 476 ms average, and the corrected product truth is now explicit: deterministic lanes are fallback/control only, while Veo 3.1 Lite remains the strongest current AI-previz lane at 0.828 overall and 39273 ms."
+      - date: 2026-04-18
+        git_sha: "0f8414b"
+        note: "Story 174 widened the fixed-pack previz-usefulness harness to include a bounded `Veo 3.1 Lite Compact Previz` candidate, but the live rerun could not produce any fresh clip packets because the current `GEMINI_API_KEY` is invalid in this workspace. Command attempted: `source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py --candidate-pack google_veo31_lite --candidate-pack google_veo31_lite_compact`. Classification: provider-wrong / runtime-blocking setup failure (`HTTP 400 ... API key not valid`) before promptfoo could run, so no score row was updated."
+      - date: 2026-04-19
+        git_sha: "0f8414b"
+        note: "Auth-blocked Story 174 rerun is now complete after the repo started preferring `CINE_FORGE_*` provider keys and promptfoo was wrapped via `scripts/with_cine_forge_provider_env.py`. The refreshed report in `benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.{json,md}` passed all 9 assertions with no remaining model/golden mismatches: compact Lite leads at `0.8753`, shipped Lite follows at `0.8680`, and Annotated Animatic rises to `0.8547`. Classification: no eval mismatches remained; the product decision stays `hold_ai_primary_blocked` because the paired honest-route runtime detector is still runtime-blocking."
 
   - id: final-render-provider-floor
     name: Final Render Provider Floor
@@ -1720,10 +1740,12 @@ evals:
       - "151"
       - "152"
       - "153"
+      - "174"
     category_refs:
       - spec:5
       - spec:6
       - spec:7
+      - spec:8
       - spec:10
     compromise_refs: []
     description: >
@@ -1731,13 +1753,14 @@ evals:
       Compares the current shipped `ai_previz_generation` recipe, an explicit
       Lite 8-second control, reachable 4-second Veo pack variants, and a
       benchmark-first xAI Grok Imagine candidate while separating prerequisite
-      overhead from `ai_previz_video` generation time.
+      overhead, `time_to_first_playable_ms`, and full run completion from
+      isolated `ai_previz_video` generation time.
     pipeline_stage: visualization
     runner: custom
     command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-current"
     script: benchmarks/scripts/real_ai_previz_runtime_eval.py
     golden: benchmarks/fixtures/real_ai_previz_runtime_cases.json
-    test_cases: 10
+    test_cases: 11
 
     target:
       metric: overall
@@ -1746,6 +1769,20 @@ evals:
       note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful scene-ready case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
 
     scores:
+      - model: "Story 174 Compact Compare (Slight Edge, Still Runtime-Blocking)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 186659
+          fastest_scene_ready_ai_previz_ms: 53368
+          fastest_scene_ready_full_completion_ms: 190622
+          fastest_total_ms: 190622
+        latency_ms: 186659
+        cost_usd: 0.28393916
+        measured: 2026-04-19
+        git_sha: "0f8414b"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-174-compact-candidate-2026-04-18.json
+        note: "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz). Classification: no model/golden mismatch remained; the detector stays runtime-blocking because the result is still far outside the `<=6000 ms` target and well below the story's `15%` ship bar."
       - model: "xAI Dual Probe (Fastest Runtime, Still Runtime-Blocking)"
         metrics:
           overall: 0.5
@@ -1892,6 +1929,12 @@ evals:
       - date: 2026-04-08
         git_sha: "0d6d517"
         note: "Fresh validation reran the full matrix on the post-change manifest and produced a different winner ordering: Lite 4 remained better than the Lite 8 controls, but `veo31_4_scene_ready` became the fastest scene-ready case and `fast_4_scene_ready` had the quickest scene-ready ai-previz segment. The harness still proves runtime-blocking, but it does not yet isolate a stable shipped winner strongly enough to close Story 153."
+      - date: 2026-04-18
+        git_sha: "0f8414b"
+        note: "Story 174 added explicit `time_to_first_playable_ms`, `full completion`, and `prompt_profile` fields to the runtime harness and attempted the bounded shipped-Lite-vs-compact-Lite compare on the honest shared-substrate route. Result file: `benchmarks/results/real-ai-previz-runtime-story-174-compact-candidate-2026-04-18.{json,md}`. Both cases failed before any `ai_previz_video` existed because shared prerequisite run `shipped_lite_4_scene_ready-shared-1-recipe-mvp-ingest-9385` hit `Gemini HTTP error 400 ... API key not valid` in `script_bible`. Classification: provider-wrong / runtime-blocking setup failure. No score row was updated because the blocked run never reached a valid first-playable clip."
+      - date: 2026-04-19
+        git_sha: "0f8414b"
+        note: "Auth-cleared Story 174 rerun succeeded end to end after the repo adopted the `CINE_FORGE_*` provider-key resolver. The first rerun also surfaced a local-code/runtime-blocking issue in `story_world_v1` (`_StoryWorldAuthoringResponse` missing `model_rebuild()`), which was fixed in the same story before the final compare. Final runtime artifact `benchmarks/results/real-ai-previz-runtime-story-174-compact-candidate-2026-04-18.{json,md}` shows compact Lite narrowly ahead of shipped Lite (`186659 ms` vs `187264 ms` to first playable; `53368 ms` vs `53973 ms` isolated ai-previz) with no remaining runtime mismatches beyond the detector miss itself. Classification: old auth blocker was provider-wrong/runtime-blocking and is resolved; intermediate `story_world_v1` crash was local-code/runtime-blocking and is fixed; final result remains runtime-blocking."
 
   - id: full-script-throughput
     name: Full Script Throughput

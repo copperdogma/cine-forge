@@ -6,19 +6,22 @@ Provides prompt compilation plus provider dispatch:
   - generate_image: dispatch to the appropriate provider and return raw image bytes + model used
 
 Provider routing:
-  - Models starting with "gpt-" → OpenAI Images API (OPENAI_API_KEY)
-  - All others → Google Imagen API (GEMINI_API_KEY)
+  - Models starting with "gpt-" → OpenAI Images API
+  - All others → Google Imagen API
+
+Provider keys prefer ``CINE_FORGE_*`` env names and fall back to the generic
+provider names inside this repo process when needed.
 """
 
 from __future__ import annotations
 
 import base64
 import json
-import os
 import urllib.error
 import urllib.request
 from typing import Any, Literal
 
+from cine_forge.env import require_env
 from cine_forge.schemas import VisualCreativeBrief
 from cine_forge.services.creative_brief import creative_brief_prompt_lines
 
@@ -299,9 +302,10 @@ def _generate_image_openai(
 
     Returns JPEG-encoded image data (requests output_format=jpeg).
     """
-    api_key = os.environ.get("OPENAI_API_KEY", "")
-    if not api_key:
-        raise ImageGenerationError("OPENAI_API_KEY environment variable is not set")
+    try:
+        api_key = require_env("OPENAI_API_KEY")
+    except RuntimeError as exc:
+        raise ImageGenerationError(str(exc)) from exc
 
     size = OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")
 
@@ -362,9 +366,10 @@ def _generate_image_imagen(
     aspect_ratio: str | None = None,
 ) -> tuple[bytes, str]:
     """Generate an image via Google Imagen and return (image_bytes, model_used)."""
-    api_key = os.environ.get("GEMINI_API_KEY", "")
-    if not api_key:
-        raise ImageGenerationError("GEMINI_API_KEY environment variable is not set")
+    try:
+        api_key = require_env("GEMINI_API_KEY")
+    except RuntimeError as exc:
+        raise ImageGenerationError(str(exc)) from exc
 
     ratio = aspect_ratio or ASPECT_RATIO_BY_ENTITY_TYPE.get(entity_type, "1:1")
 
@@ -422,8 +427,8 @@ def generate_image(
     """Generate an image and return (image_bytes, model_used).
 
     Routes to the appropriate provider based on model ID:
-      - "gpt-image-1" → OpenAI Images API (OPENAI_API_KEY)
-      - All others → Google Imagen API (GEMINI_API_KEY)
+      - "gpt-image-1" → OpenAI Images API
+      - All others → Google Imagen API
 
     Args:
         prompt: The visual description to generate from.

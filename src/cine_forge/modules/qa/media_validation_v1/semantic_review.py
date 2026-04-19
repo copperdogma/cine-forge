@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import base64
 import json
-import os
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -14,6 +13,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, field_validator
 
 from cine_forge.ai.llm import estimate_cost_usd
+from cine_forge.env import require_env as _require_provider_env
 from cine_forge.schemas import (
     CostRecord,
     DeterministicMediaProbe,
@@ -485,10 +485,7 @@ def _request_json(url: str, *, headers: dict[str, str], body: dict[str, Any]) ->
 
 
 def _require_env(name: str) -> str:
-    value = os.environ.get(name)
-    if not value:
-        raise RuntimeError(f"{name} is not set")
-    return value
+    return _require_provider_env(name)
 
 
 def _parse_provider(model: str) -> tuple[str, str]:

@@ -17,6 +17,8 @@ from typing import Any
 
 from pydantic import BaseModel
 
+from cine_forge.env import require_env
+
 logger = logging.getLogger(__name__)
 
 # Input/output pricing in USD per 1M tokens.
@@ -345,9 +347,10 @@ def _openai_transport(
     *,
     request_timeout_seconds: float | None = None,
 ) -> dict[str, Any]:
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise LLMCallError("OPENAI_API_KEY is required for OpenAI transport")
+    try:
+        api_key = require_env("OPENAI_API_KEY")
+    except RuntimeError as exc:
+        raise LLMCallError(f"{exc} for OpenAI transport") from exc
 
     encoded = json.dumps(request_payload).encode("utf-8")
     request = urllib.request.Request(
@@ -468,9 +471,10 @@ def _anthropic_transport(
     request_timeout_seconds: float | None = None,
 ) -> dict[str, Any]:
     """Send request to Anthropic Messages API."""
-    api_key = os.getenv("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise LLMCallError("ANTHROPIC_API_KEY is required for Anthropic transport")
+    try:
+        api_key = require_env("ANTHROPIC_API_KEY")
+    except RuntimeError as exc:
+        raise LLMCallError(f"{exc} for Anthropic transport") from exc
 
     encoded = json.dumps(request_payload).encode("utf-8")
     request = urllib.request.Request(
@@ -630,9 +634,10 @@ def _gemini_transport(
     request_timeout_seconds: float | None = None,
 ) -> dict[str, Any]:
     """Send request to Gemini generateContent API."""
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise LLMCallError("GEMINI_API_KEY is required for Google transport")
+    try:
+        api_key = require_env("GEMINI_API_KEY")
+    except RuntimeError as exc:
+        raise LLMCallError(f"{exc} for Google transport") from exc
 
     model = request_payload.pop("_model")
     url = f"{GEMINI_BASE_URL}/{model}:generateContent?key={api_key}"

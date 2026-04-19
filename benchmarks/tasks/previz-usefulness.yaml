@@ -5,7 +5,7 @@
 #   cd benchmarks
 #   python scripts/generate_previz_usefulness_dataset.py
 #   python scripts/generate_previz_usefulness_dataset.py --skip-ai --output-dir tmp/previz_fast_lane
-#   PROMPTFOO_PYTHON=python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
+#   PROMPTFOO_PYTHON=python python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
 #     --output results/previz-usefulness-story-143-2026-04-03.json
 
 description: "Previz usefulness — compare deterministic fallback/control baselines against current low-fidelity AI-previz candidates"
@@ -90,6 +90,21 @@ providers:
       prompt_version: previz-usefulness-v2
       clip_root: ../previz_usefulness
       candidate_variant: google_veo31_lite_previz
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Veo 3.1 Lite Compact Previz"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: previz-usefulness-v2
+      clip_root: ../previz_usefulness
+      candidate_variant: google_veo31_lite_compact_previz
       pythonExecutable: python
       timeout: 300000
 

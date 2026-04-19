@@ -10,6 +10,22 @@
       "notes": "Current shipped recipe and honest scene-ready prerequisite chain after Story 153."
     },
     {
+      "case_id": "lite_4_compact_scene_ready",
+      "label": "Veo 3.1 Lite 4s compact-prompt scene-ready candidate",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "scene_id": "scene_001",
+      "prerequisite_mode": "scene_ready",
+      "recipe_mode": "patched",
+      "ai_previz": {
+        "engine_pack_id": "google_veo31_lite",
+        "duration_seconds": 4,
+        "resolution": "720p",
+        "consistency_strategy": "prompt_only",
+        "prompt_profile": "compact"
+      },
+      "notes": "Bounded Story 174 candidate that keeps the shipped Lite lane but compacts the previz prompt contract."
+    },
+    {
       "case_id": "shipped_lite_4_mvp_ingest_only",
       "label": "Shipped Veo 3.1 Lite 4s ingest-only baseline",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",

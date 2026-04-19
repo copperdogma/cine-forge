@@ -57,3 +57,8 @@ parameters:
     type: string
     required: false
     description: "Previz-only consistency strategy, for example prompt_only or optional_references."
+  prompt_profile:
+    type: string
+    required: false
+    default: "standard"
+    description: "Previz-only prompt-shaping profile, for example standard or compact."

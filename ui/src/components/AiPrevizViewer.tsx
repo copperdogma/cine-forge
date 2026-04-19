@@ -3,6 +3,7 @@ import { Clock, ExternalLink, Film, Timer, TriangleAlert } from 'lucide-react'
 import {
   formatConsistencyStrategy,
   formatLatencyMs,
+  formatPromptProfile,
   formatPreviewIntent,
   formatPreviewMode,
   parsePreviewProvenance,
@@ -180,6 +181,11 @@ export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPre
               {formatConsistencyStrategy(previz.previewProvenance?.consistencyStrategy ?? null) && (
                 <Badge variant="outline">
                   {formatConsistencyStrategy(previz.previewProvenance?.consistencyStrategy ?? null)}
+                </Badge>
+              )}
+              {formatPromptProfile(previz.previewProvenance?.promptProfile ?? null) && (
+                <Badge variant="outline">
+                  {formatPromptProfile(previz.previewProvenance?.promptProfile ?? null)}
                 </Badge>
               )}
               {formatLatencyMs(previz.previewProvenance?.generationLatencyMs ?? null) && (

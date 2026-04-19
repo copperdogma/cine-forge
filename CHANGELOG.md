@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-18-04] — Record compact previz compare truth (Story 174)
+
+### Added
+- Added a shared provider-env resolver plus a `promptfoo` bridge script so repo-scoped `CINE_FORGE_*` keys drive the same provider credentials across runtime harnesses, discovery, and eval tooling
+- Added a compact AI-previz prompt profile, explicit prompt-profile provenance on render/preview artifacts, and route-level runtime reporting for `time_to_first_playable_ms` versus isolated `ai_previz` time
+
+### Changed
+- Changed the bounded Story 174 compare to measure shipped Lite versus compact Lite on the honest current-scene route and the maintained usefulness pack, then kept the shipped lane unchanged because compact Lite only improved runtime by about 1% despite winning usefulness
+- Changed methodology and generated planning truth to remove the stale auth-blocked claim and record that the next `spec:6` / `spec:7` move returns to fresh triage with the lane still runtime-blocking
+
+### Fixed
+- Fixed the `story_world_v1` live-run failure by rebuilding the internal authoring response model before runtime use, so the auth-cleared compare can complete instead of failing locally after provider setup succeeds
+
 ## [2026-04-18-03] — Remove stale coverage graph node (Story 173)
 
 ### Changed

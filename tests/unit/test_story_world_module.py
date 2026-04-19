@@ -6,7 +6,10 @@ from typing import Any
 
 import pytest
 
-from cine_forge.modules.creative_direction.story_world_v1.main import run_module
+from cine_forge.modules.creative_direction.story_world_v1.main import (
+    _StoryWorldAuthoringResponse,
+    run_module,
+)
 from cine_forge.schemas.concern_groups import StoryWorld
 
 
@@ -100,6 +103,15 @@ def test_run_module_mock_mode_produces_story_world_artifact() -> None:
     assert artifact["metadata"]["annotations"]["visual_motif_count"] == len(
         story_world.visual_motif_annotations
     )
+
+
+@pytest.mark.unit
+def test_story_world_response_schema_is_fully_defined() -> None:
+    schema = _StoryWorldAuthoringResponse.model_json_schema()
+
+    visual_items = schema["properties"]["visual_motif_annotations"]["items"]
+    assert visual_items["$ref"] == "#/$defs/MotifAnnotation"
+    assert "MotifAnnotation" in schema["$defs"]
 
 
 @pytest.mark.unit

@@ -71,6 +71,45 @@ def test_compile_low_fidelity_previz_prompt_builds_non_final_house_style() -> No
 
 
 @pytest.mark.unit
+def test_compile_low_fidelity_previz_prompt_compact_profile_stays_shorter() -> None:
+    pack = load_engine_pack("google_veo31_lite")
+    brief = shot_brief_from_target(
+        target={
+            "clip_id": "dialogue_confession_push_in",
+            "title": "Dialogue confession push-in",
+            "summary_reference": (
+                "A cool blue two-shot pushes toward a confession while the envelope stays "
+                "visible between them and the room remains readable."
+            ),
+            "transcript": "I should have told you before the train left.",
+            "audio_description": "Soft piano under the line with minimal room tone.",
+            "tone_tags": ["intimate", "regretful"],
+            "color_tags": ["navy", "teal"],
+            "camera_tags": ["locked_two_shot", "slow_push_in"],
+            "motion_tags": ["measured"],
+            "continuity_notes": ["The envelope stays with Subject B."],
+            "clip_tags": ["dialogue"],
+        },
+        meta={},
+        character_labels=["Subject A", "Subject B"],
+    )
+
+    standard = compile_low_fidelity_previz_prompt(brief=brief, engine_pack=pack)
+    compact = compile_low_fidelity_previz_prompt(
+        brief=brief,
+        engine_pack=pack,
+        prompt_profile="compact",
+    )
+
+    assert standard.prompt_profile == "standard"
+    assert compact.prompt_profile == "compact"
+    assert len(compact.prompt_text) < len(standard.prompt_text)
+    assert "This is previs, not a final render." in compact.prompt_text
+    assert "Characters: Subject A, Subject B." in compact.prompt_text
+    assert "Avoid photoreal polish" in compact.prompt_text
+
+
+@pytest.mark.unit
 def test_compile_low_fidelity_previz_prompt_respects_engine_prompt_budget() -> None:
     pack = load_engine_pack("xai_grok_imagine_video")
     brief = shot_brief_from_target(

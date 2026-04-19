@@ -13,6 +13,7 @@ class AiPrevizStageOverride(BaseModel):
     duration_seconds: int = Field(ge=1)
     resolution: str = Field(min_length=1)
     consistency_strategy: str = Field(default="prompt_only", min_length=1)
+    prompt_profile: str = Field(default="standard", min_length=1)
 
 
 class RuntimeEvalCase(BaseModel):
@@ -49,6 +50,7 @@ class RuntimeCaseResult(BaseModel):
     prerequisite_mode: str
     recipe_mode: str
     engine_pack_id: str
+    prompt_profile: str = Field(default="standard", min_length=1)
     duration_seconds: int
     resolution: str
     scene_id: str
@@ -60,6 +62,8 @@ class RuntimeCaseResult(BaseModel):
     error: str | None = None
     prerequisite_elapsed_ms: int = Field(ge=0)
     ai_previz_elapsed_ms: int = Field(ge=0)
+    time_to_first_playable_ms: int = Field(ge=0)
+    post_playable_overhead_ms: int = Field(ge=0)
     total_elapsed_ms: int = Field(ge=0)
     prerequisite_runs: list[RecipeRunSummary] = Field(default_factory=list)
     ai_previz_run: RecipeRunSummary | None = None
@@ -73,6 +77,7 @@ class RuntimeCaseAggregate(BaseModel):
     prerequisite_mode: str
     recipe_mode: str
     engine_pack_id: str
+    prompt_profile: str = Field(default="standard", min_length=1)
     duration_seconds: int
     resolution: str
     scene_id: str
@@ -83,7 +88,11 @@ class RuntimeCaseAggregate(BaseModel):
     success: bool
     prerequisite_elapsed_ms: int = Field(ge=0)
     ai_previz_elapsed_ms: int = Field(ge=0)
+    time_to_first_playable_ms: int = Field(ge=0)
+    post_playable_overhead_ms: int = Field(ge=0)
     total_elapsed_ms: int = Field(ge=0)
+    min_time_to_first_playable_ms: int = Field(ge=0)
+    max_time_to_first_playable_ms: int = Field(ge=0)
     min_total_elapsed_ms: int = Field(ge=0)
     max_total_elapsed_ms: int = Field(ge=0)
     min_ai_previz_elapsed_ms: int = Field(ge=0)
@@ -110,10 +119,18 @@ def aggregate_attempts(attempts: list[RuntimeCaseResult]) -> list[RuntimeCaseAgg
         successful_attempts = [attempt for attempt in ordered_attempts if attempt.success]
         prerequisite_values = [attempt.prerequisite_elapsed_ms for attempt in successful_attempts]
         ai_values = [attempt.ai_previz_elapsed_ms for attempt in successful_attempts]
+        first_playable_values = [
+            attempt.time_to_first_playable_ms for attempt in successful_attempts
+        ]
+        overhead_values = [attempt.post_playable_overhead_ms for attempt in successful_attempts]
         total_values = [attempt.total_elapsed_ms for attempt in successful_attempts]
         if not total_values:
             prerequisite_values = [attempt.prerequisite_elapsed_ms for attempt in ordered_attempts]
             ai_values = [attempt.ai_previz_elapsed_ms for attempt in ordered_attempts]
+            first_playable_values = [
+                attempt.time_to_first_playable_ms for attempt in ordered_attempts
+            ]
+            overhead_values = [attempt.post_playable_overhead_ms for attempt in ordered_attempts]
             total_values = [attempt.total_elapsed_ms for attempt in ordered_attempts]
         aggregates.append(
             RuntimeCaseAggregate(
@@ -122,6 +139,7 @@ def aggregate_attempts(attempts: list[RuntimeCaseResult]) -> list[RuntimeCaseAgg
                 prerequisite_mode=template.prerequisite_mode,
                 recipe_mode=template.recipe_mode,
                 engine_pack_id=template.engine_pack_id,
+                prompt_profile=template.prompt_profile,
                 duration_seconds=template.duration_seconds,
                 resolution=template.resolution,
                 scene_id=template.scene_id,
@@ -132,7 +150,11 @@ def aggregate_attempts(attempts: list[RuntimeCaseResult]) -> list[RuntimeCaseAgg
                 success=len(successful_attempts) == len(ordered_attempts),
                 prerequisite_elapsed_ms=round(median(prerequisite_values)),
                 ai_previz_elapsed_ms=round(median(ai_values)),
+                time_to_first_playable_ms=round(median(first_playable_values)),
+                post_playable_overhead_ms=round(median(overhead_values)),
                 total_elapsed_ms=round(median(total_values)),
+                min_time_to_first_playable_ms=min(first_playable_values),
+                max_time_to_first_playable_ms=max(first_playable_values),
                 min_total_elapsed_ms=min(total_values),
                 max_total_elapsed_ms=max(total_values),
                 min_ai_previz_elapsed_ms=min(ai_values),
@@ -157,7 +179,7 @@ def summarize_results(
     ]
     fastest_scene_ready = min(
         scene_ready,
-        key=lambda result: result.total_elapsed_ms,
+        key=lambda result: result.time_to_first_playable_ms,
         default=None,
     )
     fastest_total = min(
@@ -172,7 +194,11 @@ def summarize_results(
     )
     overall = 0.0
     if fastest_scene_ready is not None:
-        overall = 1.0 if fastest_scene_ready.total_elapsed_ms <= fast_previz_target_ms else 0.5
+        overall = (
+            1.0
+            if fastest_scene_ready.time_to_first_playable_ms <= fast_previz_target_ms
+            else 0.5
+        )
 
     return {
         "overall": overall,
@@ -182,13 +208,19 @@ def summarize_results(
         "fully_successful_cases": len([result for result in results if result.success]),
         "fastest_scene_ready_case_id": fastest_scene_ready.case_id if fastest_scene_ready else None,
         "fastest_scene_ready_ms": (
-            fastest_scene_ready.total_elapsed_ms if fastest_scene_ready else None
+            fastest_scene_ready.time_to_first_playable_ms if fastest_scene_ready else None
         ),
         "fastest_scene_ready_prerequisite_ms": (
             fastest_scene_ready.prerequisite_elapsed_ms if fastest_scene_ready else None
         ),
         "fastest_scene_ready_ai_previz_ms": (
             fastest_scene_ready.ai_previz_elapsed_ms if fastest_scene_ready else None
+        ),
+        "fastest_scene_ready_full_completion_ms": (
+            fastest_scene_ready.total_elapsed_ms if fastest_scene_ready else None
+        ),
+        "fastest_scene_ready_post_playable_overhead_ms": (
+            fastest_scene_ready.post_playable_overhead_ms if fastest_scene_ready else None
         ),
         "fastest_scene_ready_ai_previz_case_id": (
             fastest_scene_ready_ai_previz.case_id if fastest_scene_ready_ai_previz else None
@@ -217,9 +249,17 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
         f"- Successful cases: {summary['successful_cases']} / {summary['total_cases']}",
         f"- Fully successful cases: {summary['fully_successful_cases']} / {summary['total_cases']}",
         f"- Fastest scene-ready case: `{summary['fastest_scene_ready_case_id']}`",
-        f"- Fastest scene-ready total runtime: {summary['fastest_scene_ready_ms']} ms",
+        f"- Fastest scene-ready time to first playable: {summary['fastest_scene_ready_ms']} ms",
         f"- Fastest scene-ready prerequisites: {summary['fastest_scene_ready_prerequisite_ms']} ms",
         f"- Fastest scene-ready AI-previz recipe: {summary['fastest_scene_ready_ai_previz_ms']} ms",
+        (
+            "- Fastest scene-ready full completion: "
+            f"{summary['fastest_scene_ready_full_completion_ms']} ms"
+        ),
+        (
+            "- Fastest scene-ready post-playable overhead: "
+            f"{summary['fastest_scene_ready_post_playable_overhead_ms']} ms"
+        ),
         (
             "- Fastest isolated scene-ready AI-previz case: "
             f"`{summary['fastest_scene_ready_ai_previz_case_id']}`"
@@ -238,10 +278,11 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
         "## Cases",
         "",
         (
-            "| Case | Attempts | Mode | Engine Pack | Prereqs | "
-            "AI Previz ms | Total ms | Total range | Success | Notes |"
+            "| Case | Attempts | Mode | Engine Pack | Prompt | Prereqs | "
+            "AI Previz ms | First playable ms | Full completion ms | "
+            "Post-playable overhead | Success | Notes |"
         ),
-        "| --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- |",
+        "| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
     ]
     for case in cases:
         lines.append(
@@ -250,10 +291,12 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
             f"{case['successful_attempts']}/{case['repeat_count']} | "
             f"{case['recipe_mode']} | "
             f"{case['engine_pack_id']} / {case['duration_seconds']}s {case['resolution']} | "
+            f"{case['prompt_profile']} | "
             f"{case['prerequisite_mode']} ({case['prerequisite_elapsed_ms']} ms) | "
             f"{case['ai_previz_elapsed_ms']} | "
+            f"{case['time_to_first_playable_ms']} | "
             f"{case['total_elapsed_ms']} | "
-            f"{case['min_total_elapsed_ms']}-{case['max_total_elapsed_ms']} ms | "
+            f"{case['post_playable_overhead_ms']} | "
             f"{'yes' if case['success'] else 'no'} | "
             f"{case.get('notes') or ''} |"
         )

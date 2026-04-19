@@ -22,6 +22,8 @@ def _case_result(
     success: bool,
     prerequisite_elapsed_ms: int,
     ai_previz_elapsed_ms: int,
+    time_to_first_playable_ms: int,
+    post_playable_overhead_ms: int,
     total_elapsed_ms: int,
     error: str | None = None,
 ) -> object:
@@ -31,6 +33,7 @@ def _case_result(
         prerequisite_mode="scene_ready",
         recipe_mode="patched",
         engine_pack_id="fixture_pack",
+        prompt_profile="standard",
         duration_seconds=4,
         resolution="720p",
         scene_id="scene_001",
@@ -41,6 +44,8 @@ def _case_result(
         error=error,
         prerequisite_elapsed_ms=prerequisite_elapsed_ms,
         ai_previz_elapsed_ms=ai_previz_elapsed_ms,
+        time_to_first_playable_ms=time_to_first_playable_ms,
+        post_playable_overhead_ms=post_playable_overhead_ms,
         total_elapsed_ms=total_elapsed_ms,
     )
 
@@ -71,6 +76,7 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
                             "duration_seconds": 4,
                             "resolution": "480p",
                             "consistency_strategy": "prompt_only",
+                            "prompt_profile": "compact",
                         },
                     },
                 ]
@@ -84,6 +90,7 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
     assert manifest.cases[1].prerequisite_mode == "mvp_ingest_only"
     assert manifest.cases[1].ai_previz is not None
     assert manifest.cases[1].ai_previz.engine_pack_id == "xai_grok_imagine_video"
+    assert manifest.cases[1].ai_previz.prompt_profile == "compact"
 
 
 @pytest.mark.unit
@@ -95,7 +102,9 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
             success=True,
             prerequisite_elapsed_ms=111_000,
             ai_previz_elapsed_ms=53_000,
-            total_elapsed_ms=164_000,
+            time_to_first_playable_ms=164_000,
+            post_playable_overhead_ms=4_000,
+            total_elapsed_ms=168_000,
         ),
         _case_result(
             case_id="fast_4_scene_ready",
@@ -103,7 +112,9 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
             success=True,
             prerequisite_elapsed_ms=109_000,
             ai_previz_elapsed_ms=51_000,
-            total_elapsed_ms=160_000,
+            time_to_first_playable_ms=160_000,
+            post_playable_overhead_ms=3_000,
+            total_elapsed_ms=163_000,
         ),
         _case_result(
             case_id="lite_4_scene_ready",
@@ -111,7 +122,9 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
             success=False,
             prerequisite_elapsed_ms=120_000,
             ai_previz_elapsed_ms=56_000,
-            total_elapsed_ms=176_000,
+            time_to_first_playable_ms=176_000,
+            post_playable_overhead_ms=5_000,
+            total_elapsed_ms=181_000,
             error="provider timeout",
         ),
         _case_result(
@@ -120,7 +133,9 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
             success=True,
             prerequisite_elapsed_ms=118_000,
             ai_previz_elapsed_ms=55_000,
-            total_elapsed_ms=173_000,
+            time_to_first_playable_ms=173_000,
+            post_playable_overhead_ms=4_000,
+            total_elapsed_ms=177_000,
         ),
     ]
 
@@ -134,12 +149,14 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
     lite_case = next(case for case in aggregates if case.case_id == "lite_4_scene_ready")
 
     assert fast_case.success is True
-    assert fast_case.total_elapsed_ms == 162_000
+    assert fast_case.time_to_first_playable_ms == 162_000
     assert fast_case.ai_previz_elapsed_ms == 52_000
+    assert fast_case.total_elapsed_ms == 165_500
 
     assert lite_case.success is False
     assert lite_case.successful_attempts == 1
-    assert lite_case.total_elapsed_ms == 173_000
+    assert lite_case.time_to_first_playable_ms == 173_000
+    assert lite_case.total_elapsed_ms == 177_000
     assert lite_case.ai_previz_elapsed_ms == 55_000
 
     assert summary["successful_cases"] == 1
@@ -147,6 +164,7 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
     assert summary["fastest_scene_ready_case_id"] == "fast_4_scene_ready"
     assert summary["fastest_scene_ready_ms"] == 162_000
     assert summary["fastest_isolated_ai_previz_ms"] == 52_000
+    assert summary["fastest_scene_ready_full_completion_ms"] == 165_500
     assert summary["overall"] == 0.5
 
 
@@ -159,6 +177,7 @@ def test_summarize_results_falls_back_to_partial_success_when_needed() -> None:
             prerequisite_mode="scene_ready",
             recipe_mode="patched",
             engine_pack_id="fixture_fast",
+            prompt_profile="standard",
             duration_seconds=4,
             resolution="720p",
             scene_id="scene_001",
@@ -168,9 +187,13 @@ def test_summarize_results_falls_back_to_partial_success_when_needed() -> None:
             success=False,
             prerequisite_elapsed_ms=100_000,
             ai_previz_elapsed_ms=40_000,
-            total_elapsed_ms=140_000,
-            min_total_elapsed_ms=139_000,
-            max_total_elapsed_ms=141_000,
+            time_to_first_playable_ms=140_000,
+            post_playable_overhead_ms=4_000,
+            total_elapsed_ms=144_000,
+            min_time_to_first_playable_ms=139_000,
+            max_time_to_first_playable_ms=141_000,
+            min_total_elapsed_ms=143_000,
+            max_total_elapsed_ms=145_000,
             min_ai_previz_elapsed_ms=39_000,
             max_ai_previz_elapsed_ms=41_000,
         ),
@@ -180,6 +203,7 @@ def test_summarize_results_falls_back_to_partial_success_when_needed() -> None:
             prerequisite_mode="scene_ready",
             recipe_mode="patched",
             engine_pack_id="fixture_slow",
+            prompt_profile="compact",
             duration_seconds=4,
             resolution="720p",
             scene_id="scene_001",
@@ -189,9 +213,13 @@ def test_summarize_results_falls_back_to_partial_success_when_needed() -> None:
             success=False,
             prerequisite_elapsed_ms=130_000,
             ai_previz_elapsed_ms=60_000,
-            total_elapsed_ms=190_000,
-            min_total_elapsed_ms=189_000,
-            max_total_elapsed_ms=191_000,
+            time_to_first_playable_ms=190_000,
+            post_playable_overhead_ms=6_000,
+            total_elapsed_ms=196_000,
+            min_time_to_first_playable_ms=189_000,
+            max_time_to_first_playable_ms=191_000,
+            min_total_elapsed_ms=195_000,
+            max_total_elapsed_ms=197_000,
             min_ai_previz_elapsed_ms=59_000,
             max_ai_previz_elapsed_ms=61_000,
         ),

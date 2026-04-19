@@ -21,6 +21,7 @@ PrevizConsistencyStrategy = Literal[
     "optional_references",
     "reference_guided",
 ]
+PrevizPromptProfile = Literal["standard", "compact"]
 RenderPromptUsage = Literal[
     "input_reference",
     "reference_image",
@@ -92,6 +93,7 @@ class PrevizPromptContract(BaseModel):
 
     target_engine_pack_id: str = Field(min_length=1)
     consistency_strategy: PrevizConsistencyStrategy = "prompt_only"
+    prompt_profile: PrevizPromptProfile = "standard"
     style_profile: PrevizStyleProfile
     prompt_text: str = Field(min_length=1)
     negative_prompt_terms: list[str] = Field(default_factory=list)

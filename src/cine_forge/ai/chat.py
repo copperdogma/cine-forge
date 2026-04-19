@@ -22,6 +22,7 @@ from cine_forge.ai.artifact_editing import (
     build_artifact_edit_tool_result,
     build_assistant_broker_tool_result,
 )
+from cine_forge.env import require_env
 from cine_forge.services.memory import MemoryService
 
 log = logging.getLogger(__name__)
@@ -1432,9 +1433,7 @@ def _stream_anthropic_sse(
 
     Yields parsed SSE event dicts. Uses http.client for line-by-line reading.
     """
-    api_key = os.getenv("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY is required")
+    api_key = require_env("ANTHROPIC_API_KEY")
 
     body = json.dumps(payload).encode("utf-8")
     context = ssl.create_default_context()
@@ -1561,9 +1560,12 @@ def _summarize_prefix(
 
 def _call_anthropic_sync(payload: dict[str, Any]) -> str:
     """Make a non-streaming Anthropic API call and return the text content."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY is required for transcript summarization")
+    try:
+        api_key = require_env("ANTHROPIC_API_KEY")
+    except RuntimeError as exc:
+        raise RuntimeError(
+            f"{exc} for transcript summarization"
+        ) from exc
     headers = {
         "Content-Type": "application/json",
         "x-api-key": api_key,

@@ -8,6 +8,7 @@ import pytest
 
 from cine_forge.ai.fountain_parser import validate_fountain_structure
 from cine_forge.driver.engine import DriverEngine
+from cine_forge.env import resolve_env
 from cine_forge.modules.ingest.script_normalize_v1.main import run_module
 from cine_forge.schemas import ArtifactRef
 
@@ -137,8 +138,11 @@ def test_normalization_fdx_fixture_detects_interop_and_emits_parseable_output() 
 def test_normalization_live_llm_short_sample() -> None:
     if os.getenv("CINE_FORGE_LIVE_TESTS") != "1":
         pytest.skip("Set CINE_FORGE_LIVE_TESTS=1 to run live normalization integration test")
-    if not os.getenv("OPENAI_API_KEY"):
-        pytest.skip("OPENAI_API_KEY is required for live normalization integration test")
+    if not resolve_env("OPENAI_API_KEY"):
+        pytest.skip(
+            "CINE_FORGE_OPENAI_API_KEY or OPENAI_API_KEY is required "
+            "for live normalization integration test"
+        )
 
     live_model = os.getenv("CINE_FORGE_LIVE_MODEL", "gpt-4o-mini")
     input_payload = {

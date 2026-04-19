@@ -11,6 +11,7 @@ from cine_forge.schemas import (
     EnginePack,
     PrevizConsistencyStrategy,
     PrevizPromptContract,
+    PrevizPromptProfile,
     PrevizStyleProfile,
     RenderCompletenessCheck,
     RenderPromptSection,
@@ -106,6 +107,7 @@ def compile_low_fidelity_previz_prompt(
     brief: PrevizShotBrief,
     engine_pack: EnginePack,
     consistency_strategy: PrevizConsistencyStrategy = "prompt_only",
+    prompt_profile: PrevizPromptProfile = "standard",
 ) -> PrevizPromptContract:
     """Compile a deterministic low-fidelity previz prompt for one engine pack."""
     character_line = (
@@ -127,41 +129,19 @@ def compile_low_fidelity_previz_prompt(
     )
     transcript_line = brief.transcript or "No spoken line needs explicit lip-sync detail."
     engine_line = engine_pack.preferred_prompt_style.strip()
-
-    prompt_lines = [
-        "Create a low-fidelity previs clip in CineForge's shared house style.",
-        (
-            "This is previs, not a final render. Make camera placement, blocking, motion, "
-            "subject positions, prop positions, and location readability obvious at a glance."
-        ),
-        f"House style: {_HOUSE_STYLE_PROFILE.summary}",
-        (
-            "Visual treatment: simplified flat-shaded animation, clear silhouettes, "
-            "restrained texture, non-photoreal finish."
-        ),
-        f"Characters to keep distinct: {character_line}.",
-        (
-            "Identity handling: keep characters distinguishable through silhouette and wardrobe "
-            "color coding; add minimal chest labels only if identity would otherwise be unclear."
-        ),
-        f"Shot brief: {brief.summary_reference}",
-        f"Tone cue: {tone_line}.",
-        f"Color cue: {color_line}.",
-        *camera_lines,
-        *motion_lines,
-        f"Continuity anchor: {continuity_line}",
-        f"Audio cue: {audio_line}",
-        f"Dialogue cue: {transcript_line}",
-        (
-            "Suppress distracting detail: no photoreal surfaces, no elaborate set dressing, "
-            "no beauty pass, no cinematic prestige finish."
-        ),
-        (
-            "Keep the same simplified house style that would read consistently across "
-            "other previz clips."
-        ),
-        f"Engine guidance: {engine_line}",
-    ]
+    prompt_lines = _prompt_lines_for_profile(
+        prompt_profile=prompt_profile,
+        character_line=character_line,
+        tone_line=tone_line,
+        color_line=color_line,
+        camera_lines=camera_lines,
+        motion_lines=motion_lines,
+        continuity_line=continuity_line,
+        audio_line=audio_line,
+        transcript_line=transcript_line,
+        shot_brief=brief.summary_reference,
+        engine_line=engine_line,
+    )
     prompt_text = _fit_prompt_lines_to_budget(
         prompt_lines,
         max_chars=_request_int(engine_pack, "max_prompt_chars"),
@@ -169,6 +149,7 @@ def compile_low_fidelity_previz_prompt(
 
     notes = [
         f"consistency_strategy={consistency_strategy}",
+        f"prompt_profile={prompt_profile}",
         f"engine_pack_id={engine_pack.pack_id}",
         f"target_model={engine_pack.target_model}",
     ]
@@ -180,6 +161,7 @@ def compile_low_fidelity_previz_prompt(
     return PrevizPromptContract(
         target_engine_pack_id=engine_pack.pack_id,
         consistency_strategy=consistency_strategy,
+        prompt_profile=prompt_profile,
         style_profile=_HOUSE_STYLE_PROFILE,
         prompt_text=prompt_text,
         negative_prompt_terms=list(_DEFAULT_NEGATIVE_TERMS),
@@ -226,6 +208,7 @@ def compile_scene_previz_prompt(
     resolved_inputs: Sequence[RenderResolvedInput],
     engine_pack: EnginePack,
     consistency_strategy: PrevizConsistencyStrategy = "prompt_only",
+    prompt_profile: PrevizPromptProfile = "standard",
 ) -> tuple[PrevizPromptContract, list[RenderPromptSection], RenderCompletenessCheck, list[str]]:
     """Compile a deterministic low-fidelity previz prompt from scene artifacts."""
     primary_shot = plan.shots[0] if plan.shots else None
@@ -266,6 +249,7 @@ def compile_scene_previz_prompt(
         brief=brief,
         engine_pack=engine_pack,
         consistency_strategy=consistency_strategy,
+        prompt_profile=prompt_profile,
     )
     sections = [
         RenderPromptSection(
@@ -362,10 +346,90 @@ def compile_scene_previz_prompt(
         missing_categories=[],
         notes=[
             f"consistency_strategy={contract.consistency_strategy}",
+            f"prompt_profile={contract.prompt_profile}",
             f"style_profile={contract.style_profile.profile_id}",
         ],
     )
     return contract, sections, completeness, prompt_sources
+
+
+def _prompt_lines_for_profile(
+    *,
+    prompt_profile: PrevizPromptProfile,
+    character_line: str,
+    tone_line: str,
+    color_line: str,
+    camera_lines: list[str],
+    motion_lines: list[str],
+    continuity_line: str,
+    audio_line: str,
+    transcript_line: str,
+    shot_brief: str,
+    engine_line: str,
+) -> list[str]:
+    if prompt_profile == "compact":
+        return [
+            "Create a low-fidelity previs clip in CineForge's shared house style.",
+            (
+                "This is previs, not a final render. Prioritize readable blocking, camera path, "
+                "motion, subject positions, prop positions, and scene geography."
+            ),
+            (
+                "Visual treatment: simplified flat-shaded schematic animation, clear silhouettes, "
+                "restrained texture, non-photoreal finish."
+            ),
+            (
+                f"Characters: {character_line}. Distinguish them by silhouette and wardrobe "
+                "color; label only if needed."
+            ),
+            f"Shot brief: {shot_brief}",
+            f"Tone and color: {tone_line}; {color_line}.",
+            f"Camera: {_join_unique_lines(camera_lines)}",
+            f"Motion: {_join_unique_lines(motion_lines)}",
+            f"Continuity: {continuity_line}",
+            f"Audio: {audio_line}",
+            f"Dialogue: {transcript_line}",
+            (
+                "Avoid photoreal polish, ornate texture, decorative camera flourishes, and "
+                "final-render finish."
+            ),
+            f"Engine guidance: {engine_line}",
+        ]
+
+    return [
+        "Create a low-fidelity previs clip in CineForge's shared house style.",
+        (
+            "This is previs, not a final render. Make camera placement, blocking, motion, "
+            "subject positions, prop positions, and location readability obvious at a glance."
+        ),
+        f"House style: {_HOUSE_STYLE_PROFILE.summary}",
+        (
+            "Visual treatment: simplified flat-shaded animation, clear silhouettes, "
+            "restrained texture, non-photoreal finish."
+        ),
+        f"Characters to keep distinct: {character_line}.",
+        (
+            "Identity handling: keep characters distinguishable through silhouette and wardrobe "
+            "color coding; add minimal chest labels only if identity would otherwise be unclear."
+        ),
+        f"Shot brief: {shot_brief}",
+        f"Tone cue: {tone_line}.",
+        f"Color cue: {color_line}.",
+        *camera_lines,
+        *motion_lines,
+        f"Continuity anchor: {continuity_line}",
+        f"Audio cue: {audio_line}",
+        f"Dialogue cue: {transcript_line}",
+        (
+            "Suppress distracting detail: no photoreal surfaces, no elaborate set dressing, "
+            "no beauty pass, no cinematic prestige finish."
+        ),
+        (
+            "Keep the same simplified house style that would read consistently across "
+            "other previz clips."
+        ),
+        f"Engine guidance: {engine_line}",
+    ]
 
 
 def _ordered_lines(tags: Sequence[str], mapping: dict[str, str]) -> list[str]:
@@ -375,6 +439,13 @@ def _ordered_lines(tags: Sequence[str], mapping: dict[str, str]) -> list[str]:
         if line and line not in lines:
             lines.append(line)
     return lines or ["Keep the camera and motion readable without extra flourish."]
+
+
+def _join_unique_lines(lines: Sequence[str]) -> str:
+    unique = [line.strip().rstrip(".") for line in lines if isinstance(line, str) and line.strip()]
+    if not unique:
+        return "Keep the camera and motion readable without extra flourish."
+    return "; ".join(dict.fromkeys(unique)) + "."
 
 
 def _fit_prompt_lines_to_budget(

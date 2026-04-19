@@ -14,7 +14,6 @@ Usage:
 
 import argparse
 import json
-import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -23,8 +22,21 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+SRC_ROOT = REPO_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
 load_dotenv(REPO_ROOT / ".env")
 load_dotenv(REPO_ROOT / ".env.local")
+
+from cine_forge.env import (  # noqa: E402
+    export_legacy_provider_envs,
+    preferred_env_name,
+    provider_env_names,
+    resolve_env,
+)
+
+export_legacy_provider_envs()
 
 # httpx is a project dependency (pyproject.toml)
 try:
@@ -146,21 +158,24 @@ def classify_tier(model_id: str) -> str:
 PROVIDERS = {
     "openai": {
         "env_key": "OPENAI_API_KEY",
+        "preferred_env_key": preferred_env_name("OPENAI_API_KEY"),
         "display": "OpenAI",
         "setup_url": "https://platform.openai.com/api-keys",
-        "setup_hint": "export OPENAI_API_KEY='sk-...'",
+        "setup_hint": f"export {preferred_env_name('OPENAI_API_KEY')}='sk-...'",
     },
     "anthropic": {
         "env_key": "ANTHROPIC_API_KEY",
+        "preferred_env_key": preferred_env_name("ANTHROPIC_API_KEY"),
         "display": "Anthropic",
         "setup_url": "https://console.anthropic.com/settings/keys",
-        "setup_hint": "export ANTHROPIC_API_KEY='sk-ant-...'",
+        "setup_hint": f"export {preferred_env_name('ANTHROPIC_API_KEY')}='sk-ant-...'",
     },
     "google": {
         "env_key": "GEMINI_API_KEY",
+        "preferred_env_key": preferred_env_name("GEMINI_API_KEY"),
         "display": "Google (Gemini)",
         "setup_url": "https://aistudio.google.com/app/apikey",
-        "setup_hint": "export GEMINI_API_KEY='AI...'",
+        "setup_hint": f"export {preferred_env_name('GEMINI_API_KEY')}='AI...'",
     },
 }
 
@@ -445,10 +460,11 @@ def format_text_report(results: dict, registry_models: set[str] | None = None) -
     # Key status
     lines.append("\n## API Key Status\n")
     for prov_id, prov in PROVIDERS.items():
-        key = os.environ.get(prov["env_key"], "")
+        key = resolve_env(prov["env_key"])
         status = "SET" if key else "NOT SET"
         icon = "+" if key else "-"
-        lines.append(f"  [{icon}] {prov['display']:20s} ({prov['env_key']}): {status}")
+        accepted_names = " or ".join(provider_env_names(prov["env_key"]))
+        lines.append(f"  [{icon}] {prov['display']:20s} ({accepted_names}): {status}")
         if not key:
             lines.append(f"      Setup: {prov['setup_url']}")
             lines.append(f"      {prov['setup_hint']}")
@@ -507,12 +523,13 @@ def format_yaml_report(results: dict) -> str:
     }
 
     for prov_id in PROVIDERS:
-        key_set = bool(os.environ.get(PROVIDERS[prov_id]["env_key"], ""))
+        key_set = bool(resolve_env(PROVIDERS[prov_id]["env_key"]))
         models = results.get(prov_id)
 
         entry = {
             "api_key_set": key_set,
-            "env_key": PROVIDERS[prov_id]["env_key"],
+            "env_key": PROVIDERS[prov_id]["preferred_env_key"],
+            "legacy_env_key": PROVIDERS[prov_id]["env_key"],
         }
 
         if models is None:
@@ -601,7 +618,7 @@ def discover_models() -> dict:
     """Query all providers and return results dict."""
     results = {}
     for prov_id, prov in PROVIDERS.items():
-        api_key = os.environ.get(prov["env_key"], "")
+        api_key = resolve_env(prov["env_key"])
         if not api_key:
             results[prov_id] = None
             continue

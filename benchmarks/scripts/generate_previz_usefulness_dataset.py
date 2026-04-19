@@ -13,12 +13,16 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
 from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
+
+load_dotenv(REPO_ROOT / ".env")
+load_dotenv(REPO_ROOT / ".env.local")
 
 from legacy_previz_support import (  # noqa: E402
     annotate_previz_frame,
@@ -45,6 +49,7 @@ DEFAULT_CANDIDATE_PACKS = (
     "openai_sora2",
     "google_veo31_fast",
     "google_veo31_lite",
+    "google_veo31_lite_compact",
 )
 SELECTED_CLIPS = (
     "dialogue_confession_push_in",
@@ -52,10 +57,26 @@ SELECTED_CLIPS = (
     "radio_hold_tracking",
 )
 _AI_VARIANTS_BY_PACK = {
-    "openai_sora2": ("openai_sora2_previz", "Sora 2 Previz"),
-    "google_veo31_fast": ("google_veo31_fast_previz", "Veo 3.1 Fast Previz"),
-    "google_veo31_lite": ("google_veo31_lite_previz", "Veo 3.1 Lite Previz"),
-    "google_veo31": ("google_veo31_previz", "Veo 3.1 Previz"),
+    "openai_sora2": ("openai_sora2", "openai_sora2_previz", "Sora 2 Previz", "standard"),
+    "google_veo31_fast": (
+        "google_veo31_fast",
+        "google_veo31_fast_previz",
+        "Veo 3.1 Fast Previz",
+        "standard",
+    ),
+    "google_veo31_lite": (
+        "google_veo31_lite",
+        "google_veo31_lite_previz",
+        "Veo 3.1 Lite Previz",
+        "standard",
+    ),
+    "google_veo31_lite_compact": (
+        "google_veo31_lite",
+        "google_veo31_lite_compact_previz",
+        "Veo 3.1 Lite Compact Previz",
+        "compact",
+    ),
+    "google_veo31": ("google_veo31", "google_veo31_previz", "Veo 3.1 Previz", "standard"),
 }
 
 
@@ -64,6 +85,7 @@ class CandidateSpec:
     pack_id: str
     variant: str
     label: str
+    prompt_profile: str = "standard"
 
 
 def main() -> None:
@@ -160,10 +182,18 @@ def _candidate_specs(*, pack_ids: tuple[str, ...], include_ai: bool) -> list[Can
         return []
     specs: list[CandidateSpec] = []
     for pack_id in pack_ids:
-        variant_info = _AI_VARIANTS_BY_PACK.get(pack_id)
-        if variant_info is None:
+        candidate_info = _AI_VARIANTS_BY_PACK.get(pack_id)
+        if candidate_info is None:
             raise SystemExit(f"Unsupported previz candidate pack id: {pack_id}")
-        specs.append(CandidateSpec(pack_id=pack_id, variant=variant_info[0], label=variant_info[1]))
+        engine_pack_id, variant, label, prompt_profile = candidate_info
+        specs.append(
+            CandidateSpec(
+                pack_id=engine_pack_id,
+                variant=variant,
+                label=label,
+                prompt_profile=prompt_profile,
+            )
+        )
     return specs
 
 
@@ -194,7 +224,11 @@ def _build_ai_candidate(
             target.get("clip_tags", []),
         ),
     )
-    prompt_contract = compile_low_fidelity_previz_prompt(brief=brief, engine_pack=engine_pack)
+    prompt_contract = compile_low_fidelity_previz_prompt(
+        brief=brief,
+        engine_pack=engine_pack,
+        prompt_profile=candidate.prompt_profile,
+    )
     prompt_path = destination / "prompt_contract.json"
     prompt_path.write_text(
         prompt_contract.model_dump_json(indent=2) + "\n",
@@ -250,6 +284,7 @@ def _build_ai_candidate(
                 duration_seconds=float(duration_seconds),
             ),
             "consistency_strategy": prompt_contract.consistency_strategy,
+            "prompt_profile": prompt_contract.prompt_profile,
             "style_profile_id": prompt_contract.style_profile.profile_id,
             "style_profile_title": prompt_contract.style_profile.title,
             "style_profile_summary": prompt_contract.style_profile.summary,

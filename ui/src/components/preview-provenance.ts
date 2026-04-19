@@ -4,6 +4,7 @@ export type PreviewProvenanceView = {
   intendedUse: string[]
   upstreamInputs: string[]
   consistencyStrategy: string | null
+  promptProfile: string | null
   estimatedCostUsd: number | null
   generationLatencyMs: number | null
 }
@@ -41,6 +42,7 @@ export function parsePreviewProvenance(value: unknown): PreviewProvenanceView | 
     intendedUse: asStringArray(record.intended_use),
     upstreamInputs: asStringArray(record.upstream_inputs),
     consistencyStrategy: asString(record.consistency_strategy),
+    promptProfile: asString(record.prompt_profile),
     estimatedCostUsd: asNumber(record.estimated_cost_usd),
     generationLatencyMs: asNumber(record.generation_latency_ms),
   }
@@ -73,6 +75,17 @@ export function formatConsistencyStrategy(value: string | null): string | null {
       return 'Optional references'
     case 'reference_guided':
       return 'Reference-guided'
+    default:
+      return value
+  }
+}
+
+export function formatPromptProfile(value: string | null): string | null {
+  switch (value) {
+    case 'standard':
+      return 'Standard prompt'
+    case 'compact':
+      return 'Compact prompt'
     default:
       return value
   }

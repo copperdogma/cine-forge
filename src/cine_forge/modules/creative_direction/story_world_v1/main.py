@@ -45,6 +45,9 @@ class _StoryWorldAuthoringResponse(BaseModel):
     confidence: float = Field(ge=0.0, le=1.0)
 
 
+_StoryWorldAuthoringResponse.model_rebuild()
+
+
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:

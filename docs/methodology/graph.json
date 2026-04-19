@@ -651,7 +651,8 @@
           "168",
           "169",
           "170",
-          "171"
+          "171",
+          "174"
         ],
         "adrIds": [
           "ADR-002",
@@ -771,7 +772,8 @@
           "169",
           "170",
           "171",
-          "173"
+          "173",
+          "174"
         ],
         "adrIds": [
           "ADR-002",
@@ -853,7 +855,8 @@
           "168",
           "169",
           "170",
-          "171"
+          "171",
+          "174"
         ],
         "adrIds": [
           "ADR-002",
@@ -953,7 +956,8 @@
           "162",
           "167",
           "169",
-          "171"
+          "171",
+          "174"
         ],
         "adrIds": [
           "ADR-001",
@@ -974,6 +978,7 @@
           "previz-usefulness",
           "prop-extraction",
           "qa-pass",
+          "real-ai-previz-runtime",
           "relationship-discovery",
           "runtime-final-output-validation",
           "runtime-media-validation",
@@ -1101,7 +1106,8 @@
           "166",
           "167",
           "170",
-          "171"
+          "171",
+          "174"
         ],
         "adrIds": [
           "ADR-003"
@@ -10895,6 +10901,81 @@
           "summary": "completion: marked Story 173 done after validation confirmed"
         }
       }
+    },
+    {
+      "id": "174",
+      "title": "Fast Useful AI Previz on Honest Current-Scene Route",
+      "path": "docs/stories/story-174-fast-useful-ai-previz-current-scene-route.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.5",
+        "spec:7.1",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "143",
+        "153",
+        "171"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "iteration-loop",
+        "previz",
+        "runtime",
+        "usefulness"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260419-0012",
+        "date": "2026-04-19",
+        "summary": "completion: closed Story 174 after validation confirmed the shipped/product-facing slice is honest and the bounded compact-prompt compare is fully recorded. Evidence: `make test-unit PYTHON=.venv/bin/python` (`755 passe…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "174",
+        "sourcePath": "docs/stories/story-174-fast-useful-ai-previz-current-scene-route.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: closed Story 174 after validation confirmed the shipped/product-facing slice is honest and the bounded compact-prompt compare is fully recorded. Evidence: `make test-unit PYTHON=.venv/bin/python` (`755 passe…",
+        "lastRelevantAction": {
+          "date": "2026-04-19",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-174-fast-useful-ai-previz-current-scene-route.md",
+          "summary": "completion: closed Story 174 after validation confirmed the shipped/product-facing slice is honest and the bounded compact-prompt compare is fully recorded. Evidence: `make test-unit PYTHON=.venv/bin/python` (`755 passe…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -11813,8 +11894,8 @@
       "id": "previz-usefulness",
       "name": "Previz Usefulness",
       "type": "quality",
-      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03",
-      "description": "Compares five scene-level previz candidates on the same fixed fixture pack: Story 027's symbolic baseline, Story 137's richer deterministic annotated animatic, and three candidate-specific low-fidelity AI-previz lanes (`sora-2`, `veo-3.1-fast`, `veo-3.1-lite`). Uses Story 030's frame-packet video-understanding substrate with GPT-5.4 as the fixed analysis model and a rubric centered on camera readability, blocking clarity, motion, pacing, staging legibility, and low-detail previz usefulness for…",
+      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03",
+      "description": "Compares fixed scene-level previz candidates on the same fixture pack: Story 027's symbolic baseline, Story 137's richer deterministic annotated animatic, and bounded candidate-specific low-fidelity AI-previz lanes (`sora-2`, `veo-3.1-fast`, `veo-3.1-lite`, plus Story 174's compact Lite variant when reachable). Uses Story 030's frame-packet video-understanding substrate with GPT-5.4 as the fixed analysis model and a rubric centered on camera readability, blocking clarity, motion, pacing, stagin…",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:5",
@@ -11827,7 +11908,8 @@
         "137",
         "143",
         "144",
-        "149"
+        "149",
+        "174"
       ],
       "categoryRefs": [
         "spec:5",
@@ -11840,12 +11922,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Annotated Animatic",
-        "measured": "2026-04-08",
+        "model": "Veo 3.1 Lite Compact Previz",
+        "measured": "2026-04-19",
         "metrics": {
-          "overall": 0.803
+          "overall": 0.8753
         },
-        "note": "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement."
+        "note": "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking."
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -11858,7 +11940,8 @@
         "137",
         "143",
         "144",
-        "149"
+        "149",
+        "174"
       ],
       "declaredCategoryRefs": [
         "spec:5",
@@ -11882,14 +11965,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement.",
+        "whyNow": "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-08",
+          "date": "2026-04-19",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement."
+          "summary": "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking."
         }
       }
     },
@@ -12011,7 +12094,7 @@
       "name": "Real AI Previz Runtime",
       "type": "quality",
       "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-current",
-      "description": "End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane. Compares the current shipped `ai_previz_generation` recipe, an explicit Lite 8-second control, reachable 4-second Veo pack variants, and a benchmark-first xAI Grok Imagine candidate while separating prerequisite overhead from `ai_previz_video` generation time.",
+      "description": "End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane. Compares the current shipped `ai_previz_generation` recipe, an explicit Lite 8-second control, reachable 4-second Veo pack variants, and a benchmark-first xAI Grok Imagine candidate while separating prerequisite overhead, `time_to_first_playable_ms`, and full run completion from isolated `ai_previz_video` generation time.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:5",
@@ -12024,24 +12107,26 @@
         "150",
         "151",
         "152",
-        "153"
+        "153",
+        "174"
       ],
       "categoryRefs": [
         "spec:5",
         "spec:6",
         "spec:7",
+        "spec:8",
         "spec:10"
       ],
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "xAI Dual Probe (Fastest Runtime, Still Runtime-Blocking)",
-        "measured": "2026-04-09",
+        "model": "Story 174 Compact Compare (Slight Edge, Still Runtime-Blocking)",
+        "measured": "2026-04-19",
         "metrics": {
           "overall": 0.5
         },
-        "note": "Story 151 widened the real runtime harness to include Grok Imagine, fixed the worktree dotenv/bootstrap mismatch, and added pack-local prompt budgeting for xAI's 4096-character prompt cap. The resulting two-case xAI probe is fully successful: `xai_4_480p_scene_ready` now lands at 130399 ms total / 22635 ms isolated ai-previz, and `xai_4_480p_mvp_ingest_only` lands at 65552 ms total / 21687 ms iso…"
+        "note": "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz).…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -12054,12 +12139,14 @@
         "150",
         "151",
         "152",
-        "153"
+        "153",
+        "174"
       ],
       "declaredCategoryRefs": [
         "spec:5",
         "spec:6",
         "spec:7",
+        "spec:8",
         "spec:10"
       ],
       "declaredCompromiseIds": [],
@@ -12068,6 +12155,7 @@
         "spec:5",
         "spec:6",
         "spec:7",
+        "spec:8",
         "spec:10"
       ],
       "actionability": {
@@ -12076,14 +12164,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 151 widened the real runtime harness to include Grok Imagine, fixed the worktree dotenv/bootstrap mismatch, and added pack-local prompt budgeting for xAI's 4096-character prompt cap. The resulting two-case xAI probe is fully successful: `xai_4_480p_scene_ready` now lands at 130399 ms total / 22635 ms isolated ai-previz, and `xai_4_480p_mvp_ingest_only` lands at 65552 ms total / 21687 ms iso…",
+        "whyNow": "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz).…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-09",
+          "date": "2026-04-19",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 151 widened the real runtime harness to include Grok Imagine, fixed the worktree dotenv/bootstrap mismatch, and added pack-local prompt budgeting for xAI's 4096-character prompt cap. The resulting two-case xAI probe is fully successful: `xai_4_480p_scene_ready` now lands at 130399 ms total / 22635 ms isolated ai-previz, and `xai_4_480p_mvp_ingest_only` lands at 65552 ms total / 21687 ms iso…"
+          "summary": "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz).…"
         }
       }
     },
@@ -12883,7 +12971,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, and Story 170 closed the breadth-first scene-generation follow-up. The next move in `spec:6` / `spec:7` should come from fresh triage rather than another preselected in-progress story.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, and Story 174 closed the bounded compact-previz compare. Compact Lite now leads the fixed-pack usefulness compare and slightly improves the honest current-scene route, but the loop still lands at `186659 ms` to first playable, so the shipped lane stays unchanged and the next `spec:6` / `spec:7` move returns to fresh triage rather than another fake-solved claim.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -13072,9 +13160,10 @@
             "168",
             "169",
             "170",
-            "171"
+            "171",
+            "174"
           ],
-          "stories_since_audit": 8,
+          "stories_since_audit": 9,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -13102,13 +13191,14 @@
             "169",
             "170",
             "171",
-            "173"
+            "173",
+            "174"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 1,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
-          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, and Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, and Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
         }
       }
     }

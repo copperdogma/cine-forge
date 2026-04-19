@@ -9,11 +9,11 @@ run in CI — invoke with:
 
 from __future__ import annotations
 
-import os
 from typing import Any
 
 import pytest
 
+from cine_forge.env import resolve_env
 from cine_forge.modules.world_building.continuity_tracking_v1.main import (
     run_module,
 )
@@ -115,8 +115,8 @@ def _build_inputs() -> dict[str, Any]:
 def test_continuity_ai_produces_meaningful_output() -> None:
     """Run continuity extraction with a real model and verify output quality."""
     # Skip if no API key is available
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        pytest.skip("ANTHROPIC_API_KEY not set")
+    if not resolve_env("ANTHROPIC_API_KEY"):
+        pytest.skip("CINE_FORGE_ANTHROPIC_API_KEY or ANTHROPIC_API_KEY not set")
 
     inputs = _build_inputs()
     result = run_module(

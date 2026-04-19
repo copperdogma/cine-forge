@@ -1,11 +1,14 @@
-"""Thin video-generation wrapper for OpenAI, Google, and xAI video APIs."""
+"""Thin video-generation wrapper for OpenAI, Google, and xAI video APIs.
+
+Provider keys prefer ``CINE_FORGE_*`` env names and fall back to the generic
+provider names inside this repo process when needed.
+"""
 
 from __future__ import annotations
 
 import base64
 import io
 import json
-import os
 import time
 import urllib.error
 import urllib.parse
@@ -17,6 +20,7 @@ from typing import Any, Literal
 
 from PIL import Image, ImageOps
 
+from cine_forge.env import require_env
 from cine_forge.schemas import EnginePack
 
 OPENAI_BASE_URL = "https://api.openai.com/v1"
@@ -118,9 +122,10 @@ def _generate_video_openai(
     request: VideoGenerationRequest,
     engine_pack: EnginePack,
 ) -> VideoGenerationResult:
-    api_key = os.environ.get("OPENAI_API_KEY", "")
-    if not api_key:
-        raise VideoGenerationError("OPENAI_API_KEY environment variable is not set")
+    try:
+        api_key = require_env("OPENAI_API_KEY")
+    except RuntimeError as exc:
+        raise VideoGenerationError(str(exc)) from exc
 
     fields: list[tuple[str, str]] = [
         ("prompt", request.prompt),
@@ -233,9 +238,10 @@ def _generate_video_google(
     request: VideoGenerationRequest,
     engine_pack: EnginePack,
 ) -> VideoGenerationResult:
-    api_key = os.environ.get("GEMINI_API_KEY", "")
-    if not api_key:
-        raise VideoGenerationError("GEMINI_API_KEY environment variable is not set")
+    try:
+        api_key = require_env("GEMINI_API_KEY")
+    except RuntimeError as exc:
+        raise VideoGenerationError(str(exc)) from exc
 
     instance: dict[str, Any] = {"prompt": request.prompt}
     if request.first_frame is not None:
@@ -323,9 +329,10 @@ def _generate_video_xai(
     request: VideoGenerationRequest,
     engine_pack: EnginePack,
 ) -> VideoGenerationResult:
-    api_key = os.environ.get("XAI_API_KEY", "")
-    if not api_key:
-        raise VideoGenerationError("XAI_API_KEY environment variable is not set")
+    try:
+        api_key = require_env("XAI_API_KEY")
+    except RuntimeError as exc:
+        raise VideoGenerationError(str(exc)) from exc
 
     payload: dict[str, Any] = {
         "model": engine_pack.target_model,

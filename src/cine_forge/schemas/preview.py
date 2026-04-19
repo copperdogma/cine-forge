@@ -46,6 +46,7 @@ class PreviewProvenance(BaseModel):
     intended_use: list[PreviewIntendedUse] = Field(default_factory=lambda: ["human_review"])
     upstream_inputs: list[str] = Field(default_factory=list)
     consistency_strategy: PreviewConsistencyStrategy | None = None
+    prompt_profile: str | None = None
     estimated_cost_usd: float | None = Field(default=None, ge=0.0)
     generation_latency_ms: int | None = Field(default=None, ge=0)
 

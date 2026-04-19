@@ -322,6 +322,7 @@ def _render_scene(
             resolved_inputs=resolved_inputs,
             engine_pack=engine_pack,
             consistency_strategy=output_contract["consistency_strategy"],
+            prompt_profile=output_contract["prompt_profile"],
         )
         prompt_text = previz_contract.prompt_text
         completeness = completeness.model_copy(
@@ -417,6 +418,7 @@ def _render_scene(
                 resolved_inputs=resolved_inputs,
             ),
             consistency_strategy=output_contract["consistency_strategy"],
+            prompt_profile=output_contract.get("prompt_profile"),
             estimated_cost_usd=_preview_cost_value(
                 scene_cost=scene_cost,
                 output_contract=output_contract,
@@ -491,6 +493,7 @@ def _render_scene(
                 resolved_inputs=resolved_inputs,
             ),
             consistency_strategy=output_contract["consistency_strategy"],
+            prompt_profile=output_contract.get("prompt_profile"),
             estimated_cost_usd=_preview_cost_value(
                 scene_cost=scene_cost,
                 output_contract=output_contract,
@@ -548,6 +551,10 @@ def _output_contract(
                 params.get("consistency_strategy") or runtime_params.get("consistency_strategy")
             )
             or "prompt_only",
+            "prompt_profile": _optional_string(
+                params.get("prompt_profile") or runtime_params.get("prompt_profile")
+            )
+            or "standard",
             "default_engine_pack_id": "google_veo31_lite",
             "default_compiler_model": "code",
             "prompt_intent": "Compiled low-fidelity AI previz prompt for scene blocking review.",

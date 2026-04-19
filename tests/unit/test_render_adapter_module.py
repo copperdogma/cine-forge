@@ -657,6 +657,7 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
     assert prompt_artifact.compiler_model == "code"
     assert prompt_artifact.preview_provenance.mode == "ai_previz"
     assert prompt_artifact.preview_provenance.consistency_strategy == "prompt_only"
+    assert prompt_artifact.preview_provenance.prompt_profile == "standard"
     assert "This is previs, not a final render." in prompt_artifact.prompt_text
     assert generated_video.prompt_ref.artifact_type == "ai_previz_prompt"
     assert generated_video.preview_provenance.mode == "ai_previz"
