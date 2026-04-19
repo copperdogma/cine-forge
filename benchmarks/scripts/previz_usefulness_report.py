@@ -44,6 +44,7 @@ _AI_VARIANTS = {
     "google_veo31_fast_previz",
     "google_veo31_lite_previz",
     "google_veo31_lite_compact_previz",
+    "xai_grok_imagine_video_previz",
 }
 
 

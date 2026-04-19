@@ -18,10 +18,12 @@
   "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
   "candidate_variant": "annotated_symbolic",
   "candidate_label": "Annotated Animatic",
+  "operator_lane": "deterministic_baseline",
   "consistency_strategy": "deterministic",
   "style_profile_id": "cineforge_low_fidelity_previz_v1",
   "style_profile_title": "CineForge Low-Fidelity Previz",
   "style_profile_summary": "Production-readable schematic previz with explicit camera, blocking, and pacing.",
   "estimated_generation_cost_usd": 0.0,
-  "generation_latency_ms": 0
+  "generation_latency_ms": 542,
+  "latency_budget_ms": 6000
 }

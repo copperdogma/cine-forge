@@ -699,6 +699,59 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
 
 
 @pytest.mark.unit
+def test_run_module_defaults_ai_previz_to_shipped_xai_lane(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
+    captured: dict[str, str] = {}
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.compile_render_prompt",
+        lambda *args, **kwargs: pytest.fail(
+            "render prompt compilation should not run for ai_previz mode"
+        ),
+    )
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        lambda *, request, engine_pack: (
+            captured.setdefault("engine_pack_id", engine_pack.pack_id),
+            VideoGenerationResult(
+                video_bytes=b"fake-mp4",
+                media_type="video/mp4",
+                model_used=engine_pack.target_model,
+                request_id="previz-video-default-001",
+                provider_job_id="previz-job-default-001",
+            ),
+        )[1],
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={"prompt_mode": "ai_previz"},
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_prompt"
+    )
+    video_payload = next(
+        artifact["data"]
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_video"
+    )
+
+    prompt_artifact = CompiledRenderPrompt.model_validate(prompt_payload)
+    generated_video = GeneratedVideoArtifact.model_validate(video_payload)
+
+    assert captured["engine_pack_id"] == "xai_grok_imagine_video"
+    assert prompt_artifact.engine_pack_id == "xai_grok_imagine_video"
+    assert generated_video.engine_pack_id == "xai_grok_imagine_video"
+
+
+@pytest.mark.unit
 def test_run_module_rejects_hard_locked_audio_for_non_upload_pack(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

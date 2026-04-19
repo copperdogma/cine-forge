@@ -655,7 +655,8 @@
           "170",
           "171",
           "174",
-          "175"
+          "175",
+          "176"
         ],
         "adrIds": [
           "ADR-002",
@@ -777,7 +778,8 @@
           "171",
           "173",
           "174",
-          "175"
+          "175",
+          "176"
         ],
         "adrIds": [
           "ADR-002",
@@ -861,7 +863,8 @@
           "170",
           "171",
           "174",
-          "175"
+          "175",
+          "176"
         ],
         "adrIds": [
           "ADR-002",
@@ -963,7 +966,8 @@
           "169",
           "171",
           "174",
-          "175"
+          "175",
+          "176"
         ],
         "adrIds": [
           "ADR-001",
@@ -1114,7 +1118,8 @@
           "170",
           "171",
           "174",
-          "175"
+          "175",
+          "176"
         ],
         "adrIds": [
           "ADR-003"
@@ -11062,6 +11067,79 @@
           "summary": "completion: closed Story 175 after confirming the shipped one-pass previz-prep lane remains the honest winner and the methodology/eval surfaces already carry the latest validation truth. Evidence: the story has build +…"
         }
       }
+    },
+    {
+      "id": "176",
+      "title": "AI Previz Provider Floor on Honest One-Pass Route",
+      "path": "docs/stories/story-176-ai-previz-one-pass-provider-floor.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.5",
+        "spec:7.1",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "151",
+        "153",
+        "174",
+        "175"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "iteration-loop",
+        "one-pass",
+        "previz",
+        "provider-floor",
+        "runtime"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "176",
+        "sourcePath": "docs/stories/story-176-ai-previz-one-pass-provider-floor.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-176-ai-previz-one-pass-provider-floor.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -11980,8 +12058,8 @@
       "id": "previz-usefulness",
       "name": "Previz Usefulness",
       "type": "quality",
-      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03",
-      "description": "Compares fixed scene-level previz candidates on the same fixture pack: Story 027's symbolic baseline, Story 137's richer deterministic annotated animatic, and bounded candidate-specific low-fidelity AI-previz lanes (`sora-2`, `veo-3.1-fast`, `veo-3.1-lite`, plus Story 174's compact Lite variant when reachable). Uses Story 030's frame-packet video-understanding substrate with GPT-5.4 as the fixed analysis model and a rubric centered on camera readability, blocking clarity, motion, pacing, stagin…",
+      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json --output-prefix results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19",
+      "description": "Compares fixed scene-level previz candidates on the same fixture pack: Story 027's symbolic baseline, Story 137's richer deterministic annotated animatic, and the current maintained low-fidelity AI-previz provider-floor lanes (`veo-3.1-fast`, `veo-3.1-lite`, and `xai_grok_imagine_video`). Historical Sora 2 and compact Lite results remain comparative evidence only. Uses Story 030's frame-packet video-understanding substrate with GPT-5.4 as the fixed analysis model and a rubric centered on camera…",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:5",
@@ -11995,7 +12073,8 @@
         "143",
         "144",
         "149",
-        "174"
+        "174",
+        "176"
       ],
       "categoryRefs": [
         "spec:5",
@@ -12008,12 +12087,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Veo 3.1 Lite Compact Previz",
+        "model": "Veo 3.1 Lite Previz",
         "measured": "2026-04-19",
         "metrics": {
-          "overall": 0.8753
+          "overall": 0.898
         },
-        "note": "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking."
+        "note": "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the s…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -12027,7 +12106,8 @@
         "143",
         "144",
         "149",
-        "174"
+        "174",
+        "176"
       ],
       "declaredCategoryRefs": [
         "spec:5",
@@ -12051,14 +12131,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking.",
+        "whyNow": "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the s…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-19",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking."
+          "summary": "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the s…"
         }
       }
     },
@@ -12195,7 +12275,8 @@
         "152",
         "153",
         "174",
-        "175"
+        "175",
+        "176"
       ],
       "categoryRefs": [
         "spec:4",
@@ -12209,12 +12290,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)",
+        "model": "Story 176 One-Pass Provider Floor (xAI Ships, Still Runtime-Blocking)",
         "measured": "2026-04-19",
         "metrics": {
           "overall": 0.5
         },
-        "note": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
+        "note": "Fresh `/validate` rerun of Story 176's honest one-pass provider-floor comparison still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate. xAI reaches first playable at `65514 ms` (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for the Lite control and `100653 ms` / `52788 ms` / `107667 ms`…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -12229,7 +12310,8 @@
         "152",
         "153",
         "174",
-        "175"
+        "175",
+        "176"
       ],
       "declaredCategoryRefs": [
         "spec:4",
@@ -12255,14 +12337,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…",
+        "whyNow": "Fresh `/validate` rerun of Story 176's honest one-pass provider-floor comparison still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate. xAI reaches first playable at `65514 ms` (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for the Lite control and `100653 ms` / `52788 ms` / `107667 ms`…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-19",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
+          "summary": "Fresh `/validate` rerun of Story 176's honest one-pass provider-floor comparison still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate. xAI reaches first playable at `65514 ms` (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for the Lite control and `100653 ms` / `52788 ms` / `107667 ms`…"
         }
       }
     },

@@ -8,15 +8,22 @@ from cine_forge.schemas import EnginePack
 from cine_forge.services.previz_adoption import PrevizAdoptionService
 
 
-def _write_recipe(path: Path, *, engine_pack_id: str, with_validation: bool = True) -> None:
+def _write_recipe(
+    path: Path,
+    *,
+    engine_pack_id: str,
+    duration_seconds: int = 8,
+    resolution: str = "1280x720",
+    with_validation: bool = True,
+) -> None:
     stages: list[dict[str, object]] = [
         {
             "id": "ai_previz",
             "module": "render_adapter_v1",
             "params": {
                 "engine_pack_id": engine_pack_id,
-                "duration_seconds": 8,
-                "resolution": "1280x720",
+                "duration_seconds": duration_seconds,
+                "resolution": resolution,
                 "consistency_strategy": "prompt_only",
             },
         }
@@ -102,17 +109,20 @@ def _engine_pack(
     target_model: str,
     cost_per_second: float | None,
     pricing_note: str,
+    provider: str = "google",
+    default_resolution: str = "1280x720",
+    benchmark_default_duration_seconds: int = 8,
 ) -> EnginePack:
     request_defaults: dict[str, object] = {
-        "default_resolution": "1280x720",
-        "benchmark_default_duration_seconds": 8,
+        "default_resolution": default_resolution,
+        "benchmark_default_duration_seconds": benchmark_default_duration_seconds,
     }
     if cost_per_second is not None:
         request_defaults["benchmark_cost_per_second_usd"] = cost_per_second
     return EnginePack.model_validate(
         {
             "pack_id": pack_id,
-            "provider": "google",
+            "provider": provider,
             "target_model": target_model,
             "description": "fixture pack",
             "preferred_prompt_style": "fixture",
@@ -120,7 +130,7 @@ def _engine_pack(
             "known_limitations": [pricing_note],
             "limits": {
                 "supported_durations_seconds": [4, 6, 8],
-                "supported_resolutions": ["1280x720"],
+                "supported_resolutions": [default_resolution],
                 "supported_aspect_ratios": ["16:9"],
             },
             "request_defaults": request_defaults,
@@ -265,3 +275,52 @@ def test_previz_adoption_service_prefers_honest_runtime_latency_when_available(
     assert any(
         "186659 ms" in blocker for blocker in status.ai_previz.blocker_reasons
     )
+
+
+def test_previz_adoption_service_supports_shipped_xai_lane_when_it_clears_quality_floor(
+    tmp_path: Path,
+) -> None:
+    recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(
+        recipe_path,
+        engine_pack_id="xai_grok_imagine_video",
+        duration_seconds=4,
+        resolution="480p",
+    )
+    _write_registry(
+        registry_path,
+        candidate_label="Grok Imagine Previz",
+        candidate_overall=0.8413,
+        baseline_overall=0.8380,
+        latency_ms=17611,
+        runtime_latency_ms=61387,
+    )
+
+    service = PrevizAdoptionService(
+        recipe_path=recipe_path,
+        registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id="xai_grok_imagine_video",
+            target_model="grok-imagine-video",
+            cost_per_second=None,
+            pricing_note="Provider pricing rate is not yet recorded for this xAI fixture.",
+            provider="xai",
+            default_resolution="480p",
+            benchmark_default_duration_seconds=4,
+        ),
+    )
+
+    status = service.build_status()
+
+    assert status.ai_previz.candidate_label == "Grok Imagine Previz"
+    assert status.ai_previz.engine_pack_id == "xai_grok_imagine_video"
+    assert status.ai_previz.resolution == "480p"
+    assert status.ai_previz.duration_seconds == 4.0
+    assert status.ai_previz.adoption_state == "default"
+    assert status.ai_previz.score_margin == 0.0033
+    assert status.ai_previz.latency_ms == 61387
+    assert any(
+        "61387 ms" in blocker for blocker in status.ai_previz.blocker_reasons
+    )
+    assert any("pricing" in blocker.lower() for blocker in status.ai_previz.blocker_reasons)

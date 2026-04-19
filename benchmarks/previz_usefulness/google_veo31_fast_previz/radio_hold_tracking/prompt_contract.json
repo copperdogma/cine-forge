@@ -1,6 +1,7 @@
 {
   "target_engine_pack_id": "google_veo31_fast",
   "consistency_strategy": "prompt_only",
+  "prompt_profile": "standard",
   "style_profile": {
     "profile_id": "cineforge_low_fidelity_previz_v1",
     "title": "CineForge Low-Fidelity Previz",
@@ -33,6 +34,7 @@
   ],
   "notes": [
     "consistency_strategy=prompt_only",
+    "prompt_profile=standard",
     "engine_pack_id=google_veo31_fast",
     "target_model=veo-3.1-fast-generate-preview",
     "Prompt-only identity/style consistency requested; no reference images assumed."

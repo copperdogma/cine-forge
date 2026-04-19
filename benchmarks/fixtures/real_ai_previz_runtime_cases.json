@@ -1,14 +1,30 @@
 {
   "cases": [
     {
-      "case_id": "shipped_lite_4_scene_ready",
-      "label": "Shipped Veo 3.1 Lite 4s scene-ready baseline",
+      "case_id": "lite_4_scene_ready_control",
+      "label": "Veo 3.1 Lite 4s scene-ready control",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "scene_id": "scene_001",
+      "prerequisite_mode": "scene_ready",
+      "prerequisite_strategy": "full_scene_ready_chain",
+      "recipe_mode": "patched",
+      "ai_previz": {
+        "engine_pack_id": "google_veo31_lite",
+        "duration_seconds": 4,
+        "resolution": "720p",
+        "consistency_strategy": "prompt_only"
+      },
+      "notes": "Former shipped Lite 4 scene-ready lane retained as a post-Story-176 control after the xAI ship switch."
+    },
+    {
+      "case_id": "shipped_xai_4_480p_scene_ready",
+      "label": "Shipped Grok Imagine 4s 480p scene-ready baseline",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
       "prerequisite_strategy": "full_scene_ready_chain",
       "recipe_mode": "shipped",
-      "notes": "Current shipped recipe and honest scene-ready prerequisite chain after Story 153."
+      "notes": "Current shipped xAI recipe on the honest full scene-ready prerequisite chain after Story 176."
     },
     {
       "case_id": "lite_4_compact_scene_ready",
@@ -28,14 +44,30 @@
       "notes": "Bounded Story 174 candidate that keeps the shipped Lite lane but compacts the previz prompt contract."
     },
     {
-      "case_id": "shipped_lite_4_mvp_ingest_only",
-      "label": "Shipped Veo 3.1 Lite 4s one-pass previz-prep baseline",
+      "case_id": "lite_4_mvp_ingest_only_control",
+      "label": "Veo 3.1 Lite 4s one-pass previz-prep control",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "scene_id": "scene_001",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
+      "recipe_mode": "patched",
+      "ai_previz": {
+        "engine_pack_id": "google_veo31_lite",
+        "duration_seconds": 4,
+        "resolution": "720p",
+        "consistency_strategy": "prompt_only"
+      },
+      "notes": "Former shipped Lite 4 one-pass lane retained as a post-Story-176 control after the xAI ship switch."
+    },
+    {
+      "case_id": "shipped_xai_4_480p_mvp_ingest_only",
+      "label": "Shipped Grok Imagine 4s 480p one-pass previz-prep baseline",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
       "prerequisite_strategy": "one_pass_previz_prep",
       "recipe_mode": "shipped",
-      "notes": "Story 175 simplification baseline: MVP ingest plus a single on-demand shot-planning pass, without the full creative_direction chain."
+      "notes": "Story 176 shipped baseline: MVP ingest plus a single on-demand shot-planning pass routed through xAI Grok Imagine without the full creative_direction chain."
     },
     {
       "case_id": "lite_8_scene_ready_control",
@@ -132,38 +164,6 @@
         "consistency_strategy": "prompt_only"
       },
       "notes": "Best-case full Veo runtime with minimal prerequisites."
-    },
-    {
-      "case_id": "xai_4_480p_scene_ready",
-      "label": "Grok Imagine 4s 480p scene-ready",
-      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
-      "scene_id": "scene_001",
-      "prerequisite_mode": "scene_ready",
-      "prerequisite_strategy": "full_scene_ready_chain",
-      "recipe_mode": "patched",
-      "ai_previz": {
-        "engine_pack_id": "xai_grok_imagine_video",
-        "duration_seconds": 4,
-        "resolution": "480p",
-        "consistency_strategy": "prompt_only"
-      },
-      "notes": "Benchmark-first xAI Grok Imagine candidate on the honest scene-ready path."
-    },
-    {
-      "case_id": "xai_4_480p_mvp_ingest_only",
-      "label": "Grok Imagine 4s 480p ingest-only",
-      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
-      "scene_id": "scene_001",
-      "prerequisite_mode": "mvp_ingest_only",
-      "prerequisite_strategy": "one_pass_previz_prep",
-      "recipe_mode": "patched",
-      "ai_previz": {
-        "engine_pack_id": "xai_grok_imagine_video",
-        "duration_seconds": 4,
-        "resolution": "480p",
-        "consistency_strategy": "prompt_only"
-      },
-      "notes": "Benchmark-first xAI Grok Imagine candidate with minimal prerequisites."
     }
   ]
 }

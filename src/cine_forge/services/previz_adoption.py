@@ -25,6 +25,7 @@ _CANDIDATE_LABELS = {
     "google_veo31_fast": "Veo 3.1 Fast Previz",
     "google_veo31_lite": "Veo 3.1 Lite Previz",
     "openai_sora2": "Sora 2 Previz",
+    "xai_grok_imagine_video": "Grok Imagine Previz",
 }
 
 

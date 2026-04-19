@@ -603,7 +603,7 @@ def _output_contract(
                 params.get("prompt_profile") or runtime_params.get("prompt_profile")
             )
             or "standard",
-            "default_engine_pack_id": "google_veo31_lite",
+            "default_engine_pack_id": "xai_grok_imagine_video",
             "default_compiler_model": "code",
             "prompt_intent": "Compiled low-fidelity AI previz prompt for scene blocking review.",
             "prompt_rationale": (

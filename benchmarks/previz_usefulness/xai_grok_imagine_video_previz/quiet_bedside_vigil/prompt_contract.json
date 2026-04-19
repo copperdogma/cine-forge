@@ -1,0 +1,42 @@
+{
+  "target_engine_pack_id": "xai_grok_imagine_video",
+  "consistency_strategy": "prompt_only",
+  "prompt_profile": "standard",
+  "style_profile": {
+    "profile_id": "cineforge_low_fidelity_previz_v1",
+    "title": "CineForge Low-Fidelity Previz",
+    "summary": "A production-readable schematic animation language for camera, blocking, motion, and prop/location staging review.",
+    "identity_strategy": "Keep characters distinct through silhouette, wardrobe color blocking, and minimal on-costume labels only when identity would otherwise be ambiguous.",
+    "location_strategy": "Render locations and props only to the level needed for staging, entrances, exits, and scene geography.",
+    "motion_priority": "Prioritize camera path, subject blocking, and movement arcs over surface detail.",
+    "detail_suppression": [
+      "photoreal facial features",
+      "complex material rendering",
+      "ambient decoration not needed for staging",
+      "shot-beautification effects"
+    ],
+    "prompt_guidance": [
+      "Use simplified, flat-shaded schematic animation rather than polished final imagery.",
+      "Keep silhouettes clean and backgrounds restrained.",
+      "Preserve continuity anchors such as key props and their positions.",
+      "Treat audio as secondary to readable camera and blocking."
+    ]
+  },
+  "prompt_text": "Create a low-fidelity previs clip in CineForge's shared house style.\nThis is previs, not a final render. Make camera placement, blocking, motion, subject positions, prop positions, and location readability obvious at a glance.\nHouse style: A production-readable schematic animation language for camera, blocking, motion, and prop/location staging review.\nVisual treatment: simplified flat-shaded animation, clear silhouettes, restrained texture, non-photoreal finish.\nCharacters to keep distinct: Caretaker.\nIdentity handling: keep characters distinguishable through silhouette and wardrobe color coding; add minimal chest labels only if identity would otherwise be unclear.\nShot brief: A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.\nTone cue: intimate, mournful.\nColor cue: amber, desaturated.\nHold the camera steady unless motion is required by the shot.\nFrame the space as a wide master so subject and prop placement stay obvious.\nKeep body movement minimal and readable.\nContinuity anchor: The folded blanket remains untouched at frame right.\nAudio cue: A soft room tone with a faint heartbeat monitor and low piano.\nDialogue cue: No spoken line needs explicit lip-sync detail.\nSuppress distracting detail: no photoreal surfaces, no elaborate set dressing, no beauty pass, no cinematic prestige finish.\nKeep the same simplified house style that would read consistently across other previz clips.\nEngine guidance: Use direct low-detail staging language with explicit camera path, blocking, motion, and only enough environment detail to keep the scene readable.",
+  "negative_prompt_terms": [
+    "photorealistic skin detail",
+    "ornate textures",
+    "beauty-lighting polish",
+    "hyper-detailed props",
+    "decorative camera flourishes",
+    "bokeh glamour shots",
+    "final-render finish"
+  ],
+  "notes": [
+    "consistency_strategy=prompt_only",
+    "prompt_profile=standard",
+    "engine_pack_id=xai_grok_imagine_video",
+    "target_model=grok-imagine-video",
+    "Prompt-only identity/style consistency requested; no reference images assumed."
+  ]
+}

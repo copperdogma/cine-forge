@@ -8,7 +8,7 @@
 #   PROMPTFOO_PYTHON=python python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
 #     --output results/previz-usefulness-story-143-2026-04-03.json
 
-description: "Previz usefulness — compare deterministic fallback/control baselines against current low-fidelity AI-previz candidates"
+description: "Previz usefulness — compare deterministic fallback/control baselines against the current one-pass AI-previz provider-floor candidates"
 
 defaultTest:
   options:
@@ -49,7 +49,7 @@ providers:
       timeout: 300000
 
   - id: file://../providers/video_understanding_provider.py
-    label: "Sora 2 Previz"
+    label: "Veo 3.1 Lite Previz"
     config:
       provider: openai
       model: gpt-5.4
@@ -59,7 +59,7 @@ providers:
       frame_policy: five_evenly_spaced_jpegs_v1
       prompt_version: previz-usefulness-v2
       clip_root: ../previz_usefulness
-      candidate_variant: openai_sora2_previz
+      candidate_variant: google_veo31_lite_previz
       pythonExecutable: python
       timeout: 300000
 
@@ -79,7 +79,7 @@ providers:
       timeout: 300000
 
   - id: file://../providers/video_understanding_provider.py
-    label: "Veo 3.1 Lite Previz"
+    label: "Grok Imagine Previz"
     config:
       provider: openai
       model: gpt-5.4
@@ -89,22 +89,7 @@ providers:
       frame_policy: five_evenly_spaced_jpegs_v1
       prompt_version: previz-usefulness-v2
       clip_root: ../previz_usefulness
-      candidate_variant: google_veo31_lite_previz
-      pythonExecutable: python
-      timeout: 300000
-
-  - id: file://../providers/video_understanding_provider.py
-    label: "Veo 3.1 Lite Compact Previz"
-    config:
-      provider: openai
-      model: gpt-5.4
-      temperature: 0
-      max_tokens: 1400
-      max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v2
-      clip_root: ../previz_usefulness
-      candidate_variant: google_veo31_lite_compact_previz
+      candidate_variant: xai_grok_imagine_video_previz
       pythonExecutable: python
       timeout: 300000
 

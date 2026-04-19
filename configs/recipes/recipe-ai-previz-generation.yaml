@@ -51,9 +51,9 @@ stages:
       prompt_artifact_type: ai_previz_prompt
       video_artifact_type: ai_previz_video
       track_type: ai_previz_video
-      engine_pack_id: google_veo31_lite
+      engine_pack_id: xai_grok_imagine_video
       duration_seconds: 4
-      resolution: 720p
+      resolution: 480p
       consistency_strategy: prompt_only
     after: [shot_planning]
     store_inputs:

@@ -176,6 +176,20 @@ def summarize_results(
     successful = [result for result in results if result.success]
     if not successful:
         successful = [result for result in results if result.successful_attempts > 0]
+    focus_mode = _focus_prerequisite_mode(successful)
+    focus_results = [
+        result for result in successful if result.prerequisite_mode == focus_mode
+    ] if focus_mode is not None else successful
+    fastest_focus = min(
+        focus_results,
+        key=lambda result: result.time_to_first_playable_ms,
+        default=None,
+    )
+    fastest_focus_ai_previz = min(
+        focus_results,
+        key=lambda result: result.ai_previz_elapsed_ms,
+        default=None,
+    )
     scene_ready = [
         result
         for result in successful
@@ -197,10 +211,10 @@ def summarize_results(
         default=None,
     )
     overall = 0.0
-    if fastest_scene_ready is not None:
+    if fastest_focus is not None:
         overall = (
             1.0
-            if fastest_scene_ready.time_to_first_playable_ms <= fast_previz_target_ms
+            if fastest_focus.time_to_first_playable_ms <= fast_previz_target_ms
             else 0.5
         )
 
@@ -210,6 +224,29 @@ def summarize_results(
         "total_cases": len(results),
         "successful_case_ratio": round(len(successful) / len(results), 4),
         "fully_successful_cases": len([result for result in results if result.success]),
+        "focus_prerequisite_mode": focus_mode,
+        "fastest_focus_case_id": fastest_focus.case_id if fastest_focus else None,
+        "fastest_focus_ms": (
+            fastest_focus.time_to_first_playable_ms if fastest_focus else None
+        ),
+        "fastest_focus_prerequisite_ms": (
+            fastest_focus.prerequisite_elapsed_ms if fastest_focus else None
+        ),
+        "fastest_focus_ai_previz_ms": (
+            fastest_focus.ai_previz_elapsed_ms if fastest_focus else None
+        ),
+        "fastest_focus_full_completion_ms": (
+            fastest_focus.total_elapsed_ms if fastest_focus else None
+        ),
+        "fastest_focus_post_playable_overhead_ms": (
+            fastest_focus.post_playable_overhead_ms if fastest_focus else None
+        ),
+        "fastest_focus_ai_previz_case_id": (
+            fastest_focus_ai_previz.case_id if fastest_focus_ai_previz else None
+        ),
+        "fastest_focus_isolated_ai_previz_ms": (
+            fastest_focus_ai_previz.ai_previz_elapsed_ms if fastest_focus_ai_previz else None
+        ),
         "fastest_scene_ready_case_id": fastest_scene_ready.case_id if fastest_scene_ready else None,
         "fastest_scene_ready_ms": (
             fastest_scene_ready.time_to_first_playable_ms if fastest_scene_ready else None
@@ -240,9 +277,22 @@ def summarize_results(
     }
 
 
+def _focus_prerequisite_mode(results: list[RuntimeCaseAggregate]) -> str | None:
+    modes = {result.prerequisite_mode for result in results}
+    if not modes:
+        return None
+    if len(modes) == 1:
+        return next(iter(modes))
+    if "scene_ready" in modes:
+        return "scene_ready"
+    return sorted(modes)[0]
+
+
 def render_runtime_markdown(payload: dict[str, object]) -> str:
     summary = payload["summary"]
     cases = payload["cases"]
+    focus_mode = summary.get("focus_prerequisite_mode") or "selected"
+    focus_label = str(focus_mode).replace("_", " ")
     lines = [
         "# Real AI Previz Runtime Eval",
         "",
@@ -252,31 +302,32 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
         f"- Repeat count: {payload['repeat_count']}",
         f"- Successful cases: {summary['successful_cases']} / {summary['total_cases']}",
         f"- Fully successful cases: {summary['fully_successful_cases']} / {summary['total_cases']}",
-        f"- Fastest scene-ready case: `{summary['fastest_scene_ready_case_id']}`",
-        f"- Fastest scene-ready time to first playable: {summary['fastest_scene_ready_ms']} ms",
-        f"- Fastest scene-ready prerequisites: {summary['fastest_scene_ready_prerequisite_ms']} ms",
-        f"- Fastest scene-ready AI-previz recipe: {summary['fastest_scene_ready_ai_previz_ms']} ms",
+        f"- Focus prerequisite mode: `{focus_mode}`",
+        f"- Fastest {focus_label} case: `{summary['fastest_focus_case_id']}`",
+        f"- Fastest {focus_label} time to first playable: {summary['fastest_focus_ms']} ms",
+        f"- Fastest {focus_label} prerequisites: {summary['fastest_focus_prerequisite_ms']} ms",
+        f"- Fastest {focus_label} AI-previz recipe: {summary['fastest_focus_ai_previz_ms']} ms",
         (
-            "- Fastest scene-ready full completion: "
-            f"{summary['fastest_scene_ready_full_completion_ms']} ms"
+            f"- Fastest {focus_label} full completion: "
+            f"{summary['fastest_focus_full_completion_ms']} ms"
         ),
         (
-            "- Fastest scene-ready post-playable overhead: "
-            f"{summary['fastest_scene_ready_post_playable_overhead_ms']} ms"
+            f"- Fastest {focus_label} post-playable overhead: "
+            f"{summary['fastest_focus_post_playable_overhead_ms']} ms"
         ),
         (
-            "- Fastest isolated scene-ready AI-previz case: "
-            f"`{summary['fastest_scene_ready_ai_previz_case_id']}`"
+            f"- Fastest isolated {focus_label} AI-previz case: "
+            f"`{summary['fastest_focus_ai_previz_case_id']}`"
         ),
         (
-            "- Fastest isolated scene-ready AI-previz median: "
-            f"{summary['fastest_isolated_ai_previz_ms']} ms"
+            f"- Fastest isolated {focus_label} AI-previz median: "
+            f"{summary['fastest_focus_isolated_ai_previz_ms']} ms"
         ),
         f"- Fastest total case: `{summary['fastest_total_case_id']}`",
         f"- Fastest total elapsed: {summary['fastest_total_ms']} ms",
         (
             f"- Fast target: <= {summary['target_fast_previz_ms']} ms "
-            "to first real scene-ready `ai_previz_video`"
+            f"to first real {focus_label} `ai_previz_video`"
         ),
         "",
         "## Cases",

@@ -1346,6 +1346,7 @@ evals:
       - "144"
       - "149"
       - "174"
+      - "176"
     category_refs:
       - spec:5
       - spec:6
@@ -1356,15 +1357,16 @@ evals:
     description: >
       Compares fixed scene-level previz candidates on the same fixture pack:
       Story 027's symbolic baseline, Story 137's richer deterministic annotated
-      animatic, and bounded candidate-specific low-fidelity AI-previz lanes
-      (`sora-2`, `veo-3.1-fast`, `veo-3.1-lite`, plus Story 174's compact Lite
-      variant when reachable). Uses Story 030's frame-packet
+      animatic, and the current maintained low-fidelity AI-previz provider-floor
+      lanes (`veo-3.1-fast`, `veo-3.1-lite`, and `xai_grok_imagine_video`).
+      Historical Sora 2 and compact Lite results remain comparative evidence
+      only. Uses Story 030's frame-packet
       video-understanding substrate with GPT-5.4 as the fixed analysis model and a
       rubric centered on camera readability, blocking clarity, motion, pacing,
       staging legibility, and low-detail previz usefulness for human review.
     pipeline_stage: visualization
     runner: promptfoo
-    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-143-2026-04-03.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-143-2026-04-03.json --output-prefix results/previz-usefulness-story-143-2026-04-03"
+    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json --output-prefix results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19"
     config: benchmarks/tasks/previz-usefulness.yaml
     scorer: benchmarks/scorers/video_understanding_scorer.py
     golden: benchmarks/previz_usefulness/manifest.json
@@ -1378,6 +1380,30 @@ evals:
       note: "Operator-facing previz should eventually mean AI-generated motion within <=6000 ms on the fixed pack. Deterministic animatics remain fallback/control baselines and must stay clearly labeled as such until a real AI lane clears the target."
 
     scores:
+      - model: "Veo 3.1 Fast Previz"
+        metrics:
+          overall: 0.863
+          python: 0.896
+          rubric: 0.83
+        latency_ms: 52765
+        cost_usd: 0.4
+        cost_estimated: true
+        measured: 2026-04-19
+        git_sha: "648ac84"
+        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
+        note: "Fresh `/validate` rerun regenerated the Story 176 clip pack and reran promptfoo. Veo 3.1 Fast lands at `0.8630` overall and `52765 ms` generation latency, but the paired one-pass runtime harness still lands at `100653 ms` to first playable / `52788 ms` isolated `ai_previz`, so it remains well outside the story's `15%` ship bar. Classification: no Fast-specific model-wrong or golden-wrong mismatches remained; the only failing assertions in the rerun are three ambiguous deterministic-control mismatches plus one ambiguous xAI scorer miss."
+      - model: "Veo 3.1 Lite Previz"
+        metrics:
+          overall: 0.898
+          python: 0.8893
+          rubric: 0.9067
+        latency_ms: 39361
+        cost_usd: null
+        cost_estimated: false
+        measured: 2026-04-19
+        git_sha: "648ac84"
+        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
+        note: "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the shipped lane."
       - model: "Veo 3.1 Lite Compact Previz"
         metrics:
           overall: 0.8753
@@ -1389,55 +1415,43 @@ evals:
         measured: 2026-04-19
         git_sha: "0f8414b"
         result_file: benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.json
-        note: "Story 174's bounded compact-prompt candidate is now the strongest fixed-pack AI-previz lane. It beats the refreshed shipped Lite row on both usefulness (`0.8753` vs `0.8680`) and fixed-pack generation latency (`39357 ms` vs `46838 ms`), but the honest current-scene runtime detector still lands at `186659 ms` to first playable, so the shipped lane remains unchanged and runtime-blocking."
-      - model: "Veo 3.1 Lite Previz"
+        note: "Historical bounded compact-prompt candidate from Story 174. It was not rerun in Story 176 because the live one-pass provider-floor question narrowed to shipped Lite, Veo Fast, and xAI. Keep it as historical fixed-pack evidence only."
+      - model: "Grok Imagine Previz"
         metrics:
-          overall: 0.868
-          python: 0.8693
-          rubric: 0.8667
-        latency_ms: 46838
+          overall: 0.842
+          python: 0.8407
+          rubric: 0.8433
+        latency_ms: 16009
         cost_usd: null
         cost_estimated: false
         measured: 2026-04-19
-        git_sha: "0f8414b"
-        result_file: benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.json
-        note: "Refreshed shipped-Lite comparator from Story 174's bounded rerun. The fixed-pack lane improves over the older `0.828` score and stays above the deterministic floor at `0.868`, but compact Lite edges it on both usefulness and fixed-pack generation latency while neither route-level result comes close to the `<=6000 ms` target."
+        git_sha: "648ac84"
+        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
+        note: "Fresh `/validate` rerun keeps Grok Imagine above the validated usefulness floor at `0.8420` overall and lowers fixed-pack generation latency to `16009 ms`. The paired one-pass runtime artifact still wins clearly at `65514 ms` to first playable / `17649 ms` isolated `ai_previz`. Classification: no xAI-specific model-wrong or golden-wrong mismatches remained, but `radio_hold_tracking` now has one ambiguous python-only mismatch because the strict scorer penalizes tone/emotion tag drift (`urgent`/`resolve` vs `tense|detached` and `suspicion|hesitation`) while the Opus rubric still passes the row at `0.8` on blocking, camera, motion, and continuity."
       - model: "Annotated Animatic"
         metrics:
-          overall: 0.8547
-          python: 0.8693
-          rubric: 0.84
-        latency_ms: 581
+          overall: 0.8197
+          python: 0.8327
+          rubric: 0.8067
+        latency_ms: 616
         cost_usd: 0.0
         cost_estimated: true
         measured: 2026-04-19
-        git_sha: "0f8414b"
-        result_file: benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.json
-        note: "Refreshed deterministic fallback/control floor from the Story 174 rerun. Annotated Animatic stays comfortably inside the fast control budget at `581 ms` and now measures `0.8547` overall on the current report, but it still does not satisfy the product requirement for real AI-generated motion."
-      - model: "Veo 3.1 Fast Previz"
-        metrics:
-          overall: 0.778
-          python: 0.8093
-          rubric: 0.7467
-        latency_ms: 32366
-        cost_usd: 0.4
-        cost_estimated: true
-        measured: 2026-04-03
-        git_sha: "d6ac336"
-        result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
-        note: "Runner-up AI lane, non-runtime-blocking. It stays below Annotated Animatic overall, and the latest rerun still shows a model-wrong dialogue_confession_push_in miss where the planned slow push reads as static."
+        git_sha: "648ac84"
+        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
+        note: "Fresh `/validate` rerun keeps the deterministic annotated control inside the fast control budget at `616 ms` with `0.8197` overall, but it remains control-only. The lone failing assertion on `radio_hold_tracking` stays ambiguous because the simplified annotated packet preserves the corridor track and transcript while flattening tone/emotion tags relative to the richer source target."
       - model: "Symbolic Animatic"
         metrics:
-          overall: 0.6547
-          python: 0.736
+          overall: 0.6647
+          python: 0.756
           rubric: 0.5733
-        latency_ms: 476
+        latency_ms: 446
         cost_usd: 0.0
         cost_estimated: true
-        measured: 2026-04-08
-        git_sha: "80200d9"
-        result_file: benchmarks/results/previz-usefulness-story-149-fast-lane-2026-04-08-report.json
-        note: "Baseline comparator and explicit fallback, non-runtime-blocking. Story 149 re-measured the symbolic deterministic lane at 476 ms average; it is fast enough for control use, but it does not change the blocked truth that real previz still means AI-generated motion."
+        measured: 2026-04-19
+        git_sha: "648ac84"
+        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
+        note: "Fresh `/validate` rerun keeps the symbolic deterministic control fast at `446 ms`, but it still loses the previz semantics badly at `0.6647` overall. The failing assertions on `quiet_bedside_vigil` and `radio_hold_tracking` stay ambiguous because the symbolic packet visibly simplifies posture, affect, and camera semantics relative to the richer target clip."
       - model: "Sora 2 Previz"
         metrics:
           overall: 0.659
@@ -1449,9 +1463,15 @@ evals:
         measured: 2026-04-03
         git_sha: "d6ac336"
         result_file: benchmarks/results/previz-usefulness-validation-story-143-ui-2026-04-03.json
-        note: "Comparator only, non-runtime-blocking. The three hard_constraints failures remain ambiguous evidence_timestamp_range mismatches while the rubric stays strong, but the lane still loses badly on latency and cost."
+        note: "Historical comparator only; not part of Story 176's narrowed one-pass provider-floor pack. The three hard_constraints failures remain ambiguous evidence_timestamp_range mismatches while the rubric stays strong, but the lane still loses badly on latency and cost."
 
     attempts:
+      - date: 2026-04-19
+        git_sha: "648ac84"
+        note: "Fresh `/validate` rerun regenerated the full Story 176 clip pack and reran promptfoo into `benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.{json,md}`. Verified ranking: Veo 3.1 Lite `0.8980`, Veo 3.1 Fast `0.8630`, Grok Imagine `0.8420`, Annotated `0.8197`, Symbolic `0.6647`. Classification: no model-wrong or golden-wrong mismatches remained; three deterministic-control mismatches stay ambiguous and non-runtime-blocking, and `Grok Imagine Previz / radio_hold_tracking` adds one ambiguous AI-row python-only mismatch because the scorer penalizes tone/emotion tags while the Opus rubric still passes the row at `0.8`. Product decision is unchanged: xAI still clears the `0.803` usefulness floor, so the paired one-pass runtime win remains ship-relevant."
+      - date: 2026-04-19
+        git_sha: "648ac84"
+        note: "Story 176 narrowed the maintained usefulness harness to the current one-pass provider-floor candidates (`google_veo31_lite`, `google_veo31_fast`, and `xai_grok_imagine_video`) and reran promptfoo on a rebuilt fixed clip pack. Final report: Veo Fast `0.9063`, Veo Lite `0.8853`, Grok Imagine `0.8413`, Annotated `0.8380`, Symbolic `0.6587`. Classification: no model-wrong or golden-wrong mismatches remained; the only failing assertions are ambiguous deterministic-control mismatches on `Symbolic Animatic / quiet_bedside_vigil`, `Symbolic Animatic / radio_hold_tracking`, and `Annotated Animatic / radio_hold_tracking`. Product decision: xAI now clears the usefulness floor, so the paired one-pass runtime win is ship-relevant."
       - date: 2026-04-03
         git_sha: "07379cf"
         note: "Validation rerun used the existing benchmark dataset and reconfirmed the ranking at Annotated 0.8503, Symbolic 0.6887, and Shared 0.593. That pass exposed the README write bug in benchmarks/scripts/generate_previz_usefulness_dataset.py."
@@ -1742,6 +1762,7 @@ evals:
       - "153"
       - "174"
       - "175"
+      - "176"
     category_refs:
       - spec:4
       - spec:5
@@ -1770,6 +1791,21 @@ evals:
       note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful scene-ready case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
 
     scores:
+      - model: "Story 176 One-Pass Provider Floor (xAI Ships, Still Runtime-Blocking)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_focus_ms: 65514
+          fastest_focus_prerequisite_ms: 47865
+          fastest_focus_ai_previz_ms: 17649
+          fastest_focus_full_completion_ms: 82137
+          fastest_total_ms: 82137
+        latency_ms: 65514
+        cost_usd: 0.046829
+        measured: 2026-04-19
+        git_sha: "648ac84"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-176-one-pass-provider-floor-2026-04-19.json
+        note: "Fresh `/validate` rerun of Story 176's honest one-pass provider-floor comparison still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate. xAI reaches first playable at `65514 ms` (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for the Lite control and `100653 ms` / `52788 ms` / `107667 ms` for Veo Fast. That is still a `32.3%` first-playable improvement over the Story 175 shipped baseline and a `66.6%` isolated `ai_previz` improvement. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained in the runtime harness. The detector still stays runtime-blocking versus the Ideal `<=6000 ms` target, but the story-specific ship bar remains cleared because fresh `previz-usefulness` still shows xAI at `0.8420`, above the validated `0.803` floor."
       - model: "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)"
         metrics:
           overall: 0.5
@@ -1914,6 +1950,12 @@ evals:
         note: "Story 150 pilot ran 3 real cases and then recovered the summary from completed run states after fixing a post-run fixture-path bug in the harness. All 3 cases succeeded, but none challenged the fast detector: shipped Lite 8s scene-ready was the best honest path at 270922 ms total (97846 ms prerequisites + 173076 ms ai-previz recipe), Fast 4s scene-ready was worse at 353687 ms, and Fast 4s ingest-only still needed 124929 ms. No semantic mismatches were present in the pilot subset; remaining failure is runtime-blocking."
 
     attempts:
+      - date: 2026-04-19
+        git_sha: "648ac84"
+        note: "Fresh `/validate` reran the Story 176 one-pass provider-floor race into `benchmarks/results/real-ai-previz-runtime-story-176-one-pass-provider-floor-2026-04-19.{json,md}` using the shared-prerequisite-strategy harness. xAI Grok Imagine still wins at `65514 ms` first playable / `17649 ms` isolated `ai_previz` / `82137 ms` full completion, versus `100929 ms` / `53064 ms` / `105506 ms` for Lite control and `100653 ms` / `52788 ms` / `107667 ms` for Fast. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the result is still runtime-blocking relative to the `<=6000 ms` detector, but it remains strong enough to justify the shipped xAI lane because the paired usefulness rerun still clears the `0.803` floor."
+      - date: 2026-04-19
+        git_sha: "648ac84"
+        note: "Story 176 reran the one-pass provider-floor race into `benchmarks/results/real-ai-previz-runtime-story-176-one-pass-provider-floor-2026-04-19.{json,md}` using the shared-prerequisite-strategy harness. xAI Grok Imagine wins at `61387 ms` first playable / `17679 ms` isolated `ai_previz` / `67856 ms` full completion, beating the Story 175 shipped Lite baseline by `35201 ms` first playable and `35201 ms` inside the ai-previz stage. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the result is still runtime-blocking relative to the `<=6000 ms` detector, but it is strong enough to switch the shipped one-pass lane because paired usefulness now clears the `0.803` floor."
       - date: 2026-04-19
         git_sha: "17003d3"
         note: "Fresh `/validate` reran the same two Story 175 cases into `benchmarks/results/real-ai-previz-runtime-story-175-validation-2026-04-19.{json,md}`. The verdict held and slightly improved on the one-pass lane: `shipped_lite_4_mvp_ingest_only` reached first playable at `96821 ms` with `44048 ms` of prerequisites, while the full `scene_ready` chain remained much slower at `209021 ms` / `156144 ms`. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the detector is still runtime-blocking only because the honest shipped lane remains far above the `<=6000 ms` target."

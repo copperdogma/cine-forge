@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-04-19-02] — Choose one-pass AI previz provider floor (Story 176)
+
+### Added
+- Added xAI/Grok Imagine coverage to the maintained `previz-usefulness` harness and refreshed one-pass provider-floor benchmark artifacts for the honest `mvp_ingest_only` route
+
+### Changed
+- Changed the shipped AI-previz route, adoption truth, and internal render-adapter default to use xAI/Grok Imagine on the honest one-pass lane after the paired runtime and usefulness evidence cleared the story bar
+- Changed eval and methodology planning truth to record Story 176's fresh provider-floor decision, result artifacts, and mismatch classification
+
+### Fixed
+- Fixed the `render_adapter_v1` fallback path so AI-previz runs without an explicit `engine_pack_id` no longer drift back to the stale Lite default
 ## [2026-04-19-01] — Collapse honest previz prerequisites (Story 175)
 
 ### Added

@@ -162,6 +162,9 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
 
     assert summary["successful_cases"] == 1
     assert summary["fully_successful_cases"] == 1
+    assert summary["focus_prerequisite_mode"] == "scene_ready"
+    assert summary["fastest_focus_case_id"] == "fast_4_scene_ready"
+    assert summary["fastest_focus_ms"] == 162_000
     assert summary["fastest_scene_ready_case_id"] == "fast_4_scene_ready"
     assert summary["fastest_scene_ready_ms"] == 162_000
     assert summary["fastest_isolated_ai_previz_ms"] == 52_000
@@ -233,5 +236,79 @@ def test_summarize_results_falls_back_to_partial_success_when_needed() -> None:
 
     assert summary["successful_cases"] == 2
     assert summary["fully_successful_cases"] == 0
+    assert summary["focus_prerequisite_mode"] == "scene_ready"
+    assert summary["fastest_focus_case_id"] == "fast_partial"
     assert summary["fastest_scene_ready_case_id"] == "fast_partial"
     assert summary["fastest_total_case_id"] == "fast_partial"
+
+
+@pytest.mark.unit
+def test_summarize_results_uses_one_pass_focus_when_only_ingest_only_cases_are_selected() -> None:
+    aggregates = [
+        runtime_support.RuntimeCaseAggregate(
+            case_id="shipped_lite_4_mvp_ingest_only",
+            label="Shipped lite",
+            prerequisite_mode="mvp_ingest_only",
+            recipe_mode="shipped",
+            engine_pack_id="google_veo31_lite",
+            prompt_profile="standard",
+            duration_seconds=4,
+            resolution="720p",
+            scene_id="scene_001",
+            input_fixture="tests/fixtures/sample_screenplay.fountain",
+            repeat_count=1,
+            successful_attempts=1,
+            success=True,
+            prerequisite_elapsed_ms=44_000,
+            ai_previz_elapsed_ms=52_000,
+            time_to_first_playable_ms=96_000,
+            post_playable_overhead_ms=8_000,
+            total_elapsed_ms=104_000,
+            min_time_to_first_playable_ms=96_000,
+            max_time_to_first_playable_ms=96_000,
+            min_total_elapsed_ms=104_000,
+            max_total_elapsed_ms=104_000,
+            min_ai_previz_elapsed_ms=52_000,
+            max_ai_previz_elapsed_ms=52_000,
+        ),
+        runtime_support.RuntimeCaseAggregate(
+            case_id="xai_4_480p_mvp_ingest_only",
+            label="xAI",
+            prerequisite_mode="mvp_ingest_only",
+            recipe_mode="patched",
+            engine_pack_id="xai_grok_imagine_video",
+            prompt_profile="standard",
+            duration_seconds=4,
+            resolution="480p",
+            scene_id="scene_001",
+            input_fixture="tests/fixtures/sample_screenplay.fountain",
+            repeat_count=1,
+            successful_attempts=1,
+            success=True,
+            prerequisite_elapsed_ms=43_000,
+            ai_previz_elapsed_ms=22_000,
+            time_to_first_playable_ms=65_000,
+            post_playable_overhead_ms=0,
+            total_elapsed_ms=65_000,
+            min_time_to_first_playable_ms=65_000,
+            max_time_to_first_playable_ms=65_000,
+            min_total_elapsed_ms=65_000,
+            max_total_elapsed_ms=65_000,
+            min_ai_previz_elapsed_ms=22_000,
+            max_ai_previz_elapsed_ms=22_000,
+        ),
+    ]
+
+    summary = runtime_support.summarize_results(
+        aggregates,
+        fast_previz_target_ms=6_000,
+    )
+
+    assert summary["focus_prerequisite_mode"] == "mvp_ingest_only"
+    assert summary["fastest_focus_case_id"] == "xai_4_480p_mvp_ingest_only"
+    assert summary["fastest_focus_ms"] == 65_000
+    assert summary["fastest_focus_prerequisite_ms"] == 43_000
+    assert summary["fastest_focus_ai_previz_ms"] == 22_000
+    assert summary["fastest_focus_isolated_ai_previz_ms"] == 22_000
+    assert summary["fastest_scene_ready_case_id"] is None
+    assert summary["overall"] == 0.5

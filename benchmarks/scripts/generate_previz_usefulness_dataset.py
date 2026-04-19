@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the Story 143 previz-usefulness dataset."""
+"""Generate the maintained previz-usefulness dataset."""
 
 from __future__ import annotations
 
@@ -46,10 +46,9 @@ DATASET_ROOT = REPO_ROOT / "benchmarks" / "previz_usefulness"
 FAST_PREVIZ_BUDGET_MS = 6_000
 BASELINE_VARIANTS = ("symbolic", "annotated_symbolic")
 DEFAULT_CANDIDATE_PACKS = (
-    "openai_sora2",
-    "google_veo31_fast",
     "google_veo31_lite",
-    "google_veo31_lite_compact",
+    "google_veo31_fast",
+    "xai_grok_imagine_video",
 )
 SELECTED_CLIPS = (
     "dialogue_confession_push_in",
@@ -77,6 +76,12 @@ _AI_VARIANTS_BY_PACK = {
         "compact",
     ),
     "google_veo31": ("google_veo31", "google_veo31_previz", "Veo 3.1 Previz", "standard"),
+    "xai_grok_imagine_video": (
+        "xai_grok_imagine_video",
+        "xai_grok_imagine_video_previz",
+        "Grok Imagine Previz",
+        "standard",
+    ),
 }
 
 
