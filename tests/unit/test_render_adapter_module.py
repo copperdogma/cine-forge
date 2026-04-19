@@ -631,7 +631,26 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
             "resolution": "1280x720",
             "consistency_strategy": "prompt_only",
         },
-        context={"project_dir": str(seeded["project_dir"])},
+        context={
+            "project_dir": str(seeded["project_dir"]),
+            "runtime_params": {
+                "scene_action_preflight": {
+                    "recipe_id": "ai_previz_generation",
+                    "recipe_name": "AI Previz",
+                    "scene_scope": {
+                        "mode": "current_scene",
+                        "scene_ids": [seeded["scene_id"]],
+                    },
+                    "status": "warn",
+                    "summary": "AI Previz can run for the current scene with warnings.",
+                    "prerequisite_strategy": "one_pass_previz_prep",
+                    "reused_artifact_types": ["track_manifest"],
+                    "auto_build_artifact_types": ["timeline", "shot_plan"],
+                    "missing_optional_artifact_types": ["look_and_feel", "sound_and_music"],
+                    "items": [],
+                }
+            },
+        },
     )
 
     prompt_payload = next(
@@ -658,9 +677,20 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
     assert prompt_artifact.preview_provenance.mode == "ai_previz"
     assert prompt_artifact.preview_provenance.consistency_strategy == "prompt_only"
     assert prompt_artifact.preview_provenance.prompt_profile == "standard"
+    assert prompt_artifact.preview_provenance.prerequisite_strategy == "one_pass_previz_prep"
+    assert prompt_artifact.preview_provenance.reused_artifact_types == ["track_manifest"]
+    assert prompt_artifact.preview_provenance.auto_build_artifact_types == [
+        "timeline",
+        "shot_plan",
+    ]
+    assert prompt_artifact.preview_provenance.missing_optional_artifact_types == [
+        "look_and_feel",
+        "sound_and_music",
+    ]
     assert "This is previs, not a final render." in prompt_artifact.prompt_text
     assert generated_video.prompt_ref.artifact_type == "ai_previz_prompt"
     assert generated_video.preview_provenance.mode == "ai_previz"
+    assert generated_video.preview_provenance.prerequisite_strategy == "one_pass_previz_prep"
     assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
     assert (
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]

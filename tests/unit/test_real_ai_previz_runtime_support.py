@@ -88,6 +88,7 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
     assert manifest.cases[0].recipe_mode == "shipped"
     assert manifest.cases[0].ai_previz is None
     assert manifest.cases[1].prerequisite_mode == "mvp_ingest_only"
+    assert manifest.cases[1].prerequisite_strategy is None
     assert manifest.cases[1].ai_previz is not None
     assert manifest.cases[1].ai_previz.engine_pack_id == "xai_grok_imagine_video"
     assert manifest.cases[1].ai_previz.prompt_profile == "compact"

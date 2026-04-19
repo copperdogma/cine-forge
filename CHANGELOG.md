@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-19-01] — Collapse honest previz prerequisites (Story 175)
+
+### Added
+- Added prerequisite-strategy coverage to the maintained `real-ai-previz-runtime` harness, including paired validation artifacts for the shipped one-pass lane versus the full scene-ready chain
+
+### Changed
+- Changed the honest current-scene AI-previz route to keep the one-pass previz-prep lane as the shipped winner and to surface reused, auto-built, and missing-optional prerequisite truth across preflight, adoption, and prompt/video provenance
+- Changed methodology and eval planning truth to close Story 175 around the validated prerequisite-collapse result instead of keeping it as the active `spec:6` / `spec:7` build
+
+### Fixed
+- Fixed stale preflight and provenance wording that implied the full scene-ready prerequisite chain was still the required previz path even when the route was reusing or narrowing its upstream work
+
 ## [2026-04-18-04] — Record compact previz compare truth (Story 174)
 
 ### Added

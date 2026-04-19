@@ -4,6 +4,7 @@ import {
   formatConsistencyStrategy,
   formatLatencyMs,
   formatPromptProfile,
+  formatPrerequisiteStrategy,
   formatPreviewIntent,
   formatPreviewMode,
   parsePreviewProvenance,
@@ -188,6 +189,11 @@ export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPre
                   {formatPromptProfile(previz.previewProvenance?.promptProfile ?? null)}
                 </Badge>
               )}
+              {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null) && (
+                <Badge variant="outline">
+                  {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null)}
+                </Badge>
+              )}
               {formatLatencyMs(previz.previewProvenance?.generationLatencyMs ?? null) && (
                 <Badge variant="outline" className="gap-1">
                   <Timer className="h-3 w-3" />
@@ -208,6 +214,46 @@ export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPre
               </p>
             </div>
           </div>
+
+          {(previz.previewProvenance?.prerequisiteStrategy
+            || (previz.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0
+            || (previz.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0
+            || (previz.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0) && (
+            <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
+              <div className="space-y-1">
+                {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null) && (
+                  <p>
+                    Prep strategy:{' '}
+                    {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null)}
+                  </p>
+                )}
+                {(previz.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0 && (
+                  <p>
+                    Reused:{' '}
+                    {previz.previewProvenance?.reusedArtifactTypes
+                      .map(token => formatToken(token) ?? token)
+                      .join(', ')}
+                  </p>
+                )}
+                {(previz.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0 && (
+                  <p>
+                    Auto-built:{' '}
+                    {previz.previewProvenance?.autoBuildArtifactTypes
+                      .map(token => formatToken(token) ?? token)
+                      .join(', ')}
+                  </p>
+                )}
+                {(previz.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0 && (
+                  <p>
+                    Missing optional context:{' '}
+                    {previz.previewProvenance?.missingOptionalArtifactTypes
+                      .map(token => formatToken(token) ?? token)
+                      .join(', ')}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {validationStatus && (
             <div className={`rounded-lg border px-4 py-3 text-sm ${validationToneClass(validationStatus.label)}`}>

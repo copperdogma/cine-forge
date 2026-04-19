@@ -117,7 +117,7 @@ def main() -> None:
         "measured_at": datetime.now(UTC).isoformat(),
         "fixture_manifest": display_repo_relative_path(fixture_manifest_path, REPO_ROOT),
         "target_fast_previz_ms": FAST_PREVIZ_TARGET_MS,
-        "comparison_method": "shared_shot_planning_substrate",
+        "comparison_method": "shared_prerequisite_strategy_substrate",
         "repeat_count": args.repeat_count,
         "summary": summary,
         "cases": [result.model_dump(mode="json") for result in case_aggregates],
@@ -308,6 +308,9 @@ def _run_case_attempt(
         case_id=case.case_id,
         label=case.label,
         prerequisite_mode=case.prerequisite_mode,
+        prerequisite_strategy=(
+            case.prerequisite_strategy or _default_prerequisite_strategy(case.prerequisite_mode)
+        ),
         recipe_mode=case.recipe_mode,
         engine_pack_id=(
             case.ai_previz.engine_pack_id
@@ -376,6 +379,13 @@ def _run_recipe(
 
     started = time.perf_counter()
     engine = DriverEngine(workspace_root=REPO_ROOT, project_dir=project_dir)
+    effective_runtime_params = _runtime_params_for_recipe(
+        recipe_path=recipe_path,
+        project_dir=project_dir,
+        runtime_params=runtime_params,
+        start_from=start_from,
+        end_at=end_at,
+    )
     state: dict | None = None
     error: str | None = None
     success = False
@@ -385,7 +395,7 @@ def _run_recipe(
             recipe_path=recipe_path,
             run_id=run_id,
             force=True,
-            runtime_params=runtime_params,
+            runtime_params=effective_runtime_params,
             start_from=start_from,
             end_at=end_at,
         )
@@ -474,6 +484,55 @@ def _seed_input(*, project_dir: Path, source: Path) -> Path:
     target = inputs_dir / f"{uuid.uuid4().hex[:8]}_{source.name}"
     target.write_bytes(source.read_bytes())
     return target
+
+
+def _runtime_params_for_recipe(
+    *,
+    recipe_path: Path,
+    project_dir: Path,
+    runtime_params: dict[str, object],
+    start_from: str | None,
+    end_at: str | None,
+) -> dict[str, object]:
+    effective = dict(runtime_params)
+    scene_scope = effective.get("scene_scope")
+    if not isinstance(scene_scope, dict):
+        return effective
+
+    from cine_forge.pipeline.scene_actions import build_scene_action_preflight
+    from cine_forge.schemas.scene_scope import SceneExecutionScope
+
+    try:
+        scope = SceneExecutionScope.model_validate(scene_scope)
+    except Exception:
+        return effective
+    if not scope.is_scene_scoped:
+        return effective
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id=_recipe_id_from_file(recipe_path),
+        scene_scope=scope,
+        start_from=start_from,
+        end_at=end_at,
+    )
+    effective["scene_action_preflight"] = preflight.model_dump(mode="json")
+    return effective
+
+
+def _recipe_id_from_file(recipe_path: Path) -> str:
+    recipe = yaml.safe_load(recipe_path.read_text(encoding="utf-8"))
+    if isinstance(recipe, dict):
+        recipe_id = recipe.get("recipe_id")
+        if isinstance(recipe_id, str) and recipe_id.strip():
+            return recipe_id
+    return recipe_path.stem
+
+
+def _default_prerequisite_strategy(prerequisite_mode: str) -> str:
+    if prerequisite_mode == "mvp_ingest_only":
+        return "one_pass_previz_prep"
+    return "full_scene_ready_chain"
 
 
 def _state_succeeded(state: dict | None) -> bool:

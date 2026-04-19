@@ -36,6 +36,10 @@ PreviewFidelityIntent = Literal[
     "final_render",
 ]
 PreviewIntendedUse = Literal["human_review", "ai_conditioning"]
+PreviewPrerequisiteStrategy = Literal[
+    "reuse_existing_shot_plan",
+    "one_pass_previz_prep",
+]
 
 
 class PreviewProvenance(BaseModel):
@@ -47,6 +51,10 @@ class PreviewProvenance(BaseModel):
     upstream_inputs: list[str] = Field(default_factory=list)
     consistency_strategy: PreviewConsistencyStrategy | None = None
     prompt_profile: str | None = None
+    prerequisite_strategy: PreviewPrerequisiteStrategy | None = None
+    reused_artifact_types: list[str] = Field(default_factory=list)
+    auto_build_artifact_types: list[str] = Field(default_factory=list)
+    missing_optional_artifact_types: list[str] = Field(default_factory=list)
     estimated_cost_usd: float | None = Field(default=None, ge=0.0)
     generation_latency_ms: int | None = Field(default=None, ge=0)
 

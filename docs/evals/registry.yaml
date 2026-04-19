@@ -1741,7 +1741,9 @@ evals:
       - "152"
       - "153"
       - "174"
+      - "175"
     category_refs:
+      - spec:4
       - spec:5
       - spec:6
       - spec:7
@@ -1750,9 +1752,8 @@ evals:
     compromise_refs: []
     description: >
       End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane.
-      Compares the current shipped `ai_previz_generation` recipe, an explicit
-      Lite 8-second control, reachable 4-second Veo pack variants, and a
-      benchmark-first xAI Grok Imagine candidate while separating prerequisite
+      Compares the current shipped `ai_previz_generation` recipe across
+      prerequisite strategies and pack variants while separating prerequisite
       overhead, `time_to_first_playable_ms`, and full run completion from
       isolated `ai_previz_video` generation time.
     pipeline_stage: visualization
@@ -1769,6 +1770,23 @@ evals:
       note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful scene-ready case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
 
     scores:
+      - model: "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          fastest_scene_ready_ms: 209021
+          fastest_scene_ready_prerequisite_ms: 156144
+          fastest_scene_ready_ai_previz_ms: 52877
+          fastest_scene_ready_full_completion_ms: 213747
+          fastest_total_first_playable_ms: 96821
+          fastest_total_prerequisite_ms: 44048
+          fastest_total_ms: 105702
+        latency_ms: 96821
+        cost_usd: 0.2021
+        measured: 2026-04-19
+        git_sha: "17003d3"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-175-validation-2026-04-19.json
+        note: "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintained full `scene_ready` chain. That is a `67.0%` prerequisite reduction versus Story 174's `133291 ms` baseline and a `71.8%` reduction versus the paired full-chain control in the same validation run. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; operator truth is aligned, but the detector stays runtime-blocking because even the improved shipped lane still misses the `<=6000 ms` fast-previz target. `previz-usefulness` was not rerun because the shipped compiled previz inputs and prompt contract did not change."
       - model: "Story 174 Compact Compare (Slight Edge, Still Runtime-Blocking)"
         metrics:
           overall: 0.5
@@ -1896,6 +1914,12 @@ evals:
         note: "Story 150 pilot ran 3 real cases and then recovered the summary from completed run states after fixing a post-run fixture-path bug in the harness. All 3 cases succeeded, but none challenged the fast detector: shipped Lite 8s scene-ready was the best honest path at 270922 ms total (97846 ms prerequisites + 173076 ms ai-previz recipe), Fast 4s scene-ready was worse at 353687 ms, and Fast 4s ingest-only still needed 124929 ms. No semantic mismatches were present in the pilot subset; remaining failure is runtime-blocking."
 
     attempts:
+      - date: 2026-04-19
+        git_sha: "17003d3"
+        note: "Fresh `/validate` reran the same two Story 175 cases into `benchmarks/results/real-ai-previz-runtime-story-175-validation-2026-04-19.{json,md}`. The verdict held and slightly improved on the one-pass lane: `shipped_lite_4_mvp_ingest_only` reached first playable at `96821 ms` with `44048 ms` of prerequisites, while the full `scene_ready` chain remained much slower at `209021 ms` / `156144 ms`. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the detector is still runtime-blocking only because the honest shipped lane remains far above the `<=6000 ms` target."
+      - date: 2026-04-19
+        git_sha: "17003d3"
+        note: "Story 175 widened the runtime harness from shared-pack comparison to shared-prerequisite-strategy comparison, then reran the honest shipped-Lite compare between the maintained full `scene_ready` chain and the shipped one-pass previz-prep baseline. Result file: `benchmarks/results/real-ai-previz-runtime-story-175-prereq-strategy-2026-04-19.{json,md}`. The one-pass route reached first playable at `99540 ms` with only `45801 ms` of prerequisites, versus `194199 ms` / `140342 ms` for the full chain. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the detector stays runtime-blocking only because even the improved shipped lane still misses the `<=6000 ms` target."
       - date: 2026-04-09
         git_sha: "2271ebc"
         note: "Story 151 widened the harness to include xAI/Grok Imagine via `xai_grok_imagine_video`, fixed the worktree dotenv loading path, then added deterministic prompt budgeting after the first real xAI call exposed a 4096-character prompt cap. The final two-case xAI probe is fully successful and currently the fastest measured AI-previz runtime in this harness shape, but it remains runtime-blocking because scene-ready total is still 130399 ms and isolated ai-previz is still 22635 ms. Result file: `benchmarks/results/real-ai-previz-runtime-story-151-xai-2026-04-08.{json,md}`."

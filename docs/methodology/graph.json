@@ -515,14 +515,16 @@
           "121",
           "126",
           "131",
-          "141"
+          "141",
+          "175"
         ],
         "adrIds": [
           "ADR-002",
           "ADR-003"
         ],
         "evalIds": [
-          "compromise-C5-role-modality"
+          "compromise-C5-role-modality",
+          "real-ai-previz-runtime"
         ]
       },
       {
@@ -652,7 +654,8 @@
           "169",
           "170",
           "171",
-          "174"
+          "174",
+          "175"
         ],
         "adrIds": [
           "ADR-002",
@@ -773,7 +776,8 @@
           "170",
           "171",
           "173",
-          "174"
+          "174",
+          "175"
         ],
         "adrIds": [
           "ADR-002",
@@ -856,7 +860,8 @@
           "169",
           "170",
           "171",
-          "174"
+          "174",
+          "175"
         ],
         "adrIds": [
           "ADR-002",
@@ -957,7 +962,8 @@
           "167",
           "169",
           "171",
-          "174"
+          "174",
+          "175"
         ],
         "adrIds": [
           "ADR-001",
@@ -1107,7 +1113,8 @@
           "167",
           "170",
           "171",
-          "174"
+          "174",
+          "175"
         ],
         "adrIds": [
           "ADR-003"
@@ -10976,6 +10983,85 @@
           "summary": "completion: closed Story 174 after validation confirmed the shipped/product-facing slice is honest and the bounded compact-prompt compare is fully recorded. Evidence: `make test-unit PYTHON=.venv/bin/python` (`755 passe…"
         }
       }
+    },
+    {
+      "id": "175",
+      "title": "AI Previz Scene-Ready Prerequisite Collapse",
+      "path": "docs/stories/story-175-ai-previz-scene-ready-prerequisite-collapse.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:4.10.6",
+        "spec:4.10.7",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.5",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "151",
+        "171",
+        "174"
+      ],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "creative_direction_and_chat",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "iteration-loop",
+        "prerequisites",
+        "previz",
+        "runtime",
+        "scene-ready"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260419-1758",
+        "date": "2026-04-19",
+        "summary": "completion: closed Story 175 after confirming the shipped one-pass previz-prep lane remains the honest winner and the methodology/eval surfaces already carry the latest validation truth. Evidence: the story has build +…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "175",
+        "sourcePath": "docs/stories/story-175-ai-previz-scene-ready-prerequisite-collapse.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: closed Story 175 after confirming the shipped one-pass previz-prep lane remains the honest winner and the methodology/eval surfaces already carry the latest validation truth. Evidence: the story has build +…",
+        "lastRelevantAction": {
+          "date": "2026-04-19",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-175-ai-previz-scene-ready-prerequisite-collapse.md",
+          "summary": "completion: closed Story 175 after confirming the shipped one-pass previz-prep lane remains the honest winner and the methodology/eval surfaces already carry the latest validation truth. Evidence: the story has build +…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -12094,7 +12180,7 @@
       "name": "Real AI Previz Runtime",
       "type": "quality",
       "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-current",
-      "description": "End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane. Compares the current shipped `ai_previz_generation` recipe, an explicit Lite 8-second control, reachable 4-second Veo pack variants, and a benchmark-first xAI Grok Imagine candidate while separating prerequisite overhead, `time_to_first_playable_ms`, and full run completion from isolated `ai_previz_video` generation time.",
+      "description": "End-to-end runtime detector for the fastest honest scene-scoped AI-previz lane. Compares the current shipped `ai_previz_generation` recipe across prerequisite strategies and pack variants while separating prerequisite overhead, `time_to_first_playable_ms`, and full run completion from isolated `ai_previz_video` generation time.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:5",
@@ -12108,9 +12194,11 @@
         "151",
         "152",
         "153",
-        "174"
+        "174",
+        "175"
       ],
       "categoryRefs": [
+        "spec:4",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -12121,12 +12209,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story 174 Compact Compare (Slight Edge, Still Runtime-Blocking)",
+        "model": "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)",
         "measured": "2026-04-19",
         "metrics": {
           "overall": 0.5
         },
-        "note": "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz).…"
+        "note": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -12140,9 +12228,11 @@
         "151",
         "152",
         "153",
-        "174"
+        "174",
+        "175"
       ],
       "declaredCategoryRefs": [
+        "spec:4",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -12152,6 +12242,7 @@
       "declaredCompromiseIds": [],
       "missingLineageKeys": [],
       "derivedCategoryRefs": [
+        "spec:4",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -12164,14 +12255,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz).…",
+        "whyNow": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-19",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz).…"
+          "summary": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
         }
       }
     },
@@ -12971,7 +13062,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, and Story 174 closed the bounded compact-previz compare. Compact Lite now leads the fixed-pack usefulness compare and slightly improves the honest current-scene route, but the loop still lands at `186659 ms` to first playable, so the shipped lane stays unchanged and the next `spec:6` / `spec:7` move returns to fresh triage rather than another fake-solved claim.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, and Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, surfacing prerequisite truth across preflight and provenance, and cutting the validated scene-ready loop to `96821 ms` first playable with `44048 ms` of prerequisites. The `spec:6` / `spec:7` lane remains runtime-blocking against the fast-previz detector, so the next move returns to fresh triage on the honest current-scene loop rather than another fixed-pack compare.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -13161,9 +13252,10 @@
             "169",
             "170",
             "171",
-            "174"
+            "174",
+            "175"
           ],
-          "stories_since_audit": 9,
+          "stories_since_audit": 10,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -13174,9 +13266,10 @@
           "recent_story_refs": [
             "141",
             "144",
-            "148"
+            "148",
+            "175"
           ],
-          "stories_since_audit": 1,
+          "stories_since_audit": 2,
           "open_findings": [],
           "manual_priority": "normal"
         },
@@ -13192,9 +13285,10 @@
             "170",
             "171",
             "173",
-            "174"
+            "174",
+            "175"
           ],
-          "stories_since_audit": 1,
+          "stories_since_audit": 2,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -13205,6 +13299,8 @@
   },
   "validation": {
     "errors": [],
-    "warnings": []
+    "warnings": [
+      "Architecture audit domains due or carrying open findings: api_service_and_operator_console"
+    ]
   }
 }

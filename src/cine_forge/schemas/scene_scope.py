@@ -9,6 +9,10 @@ from pydantic import BaseModel, Field, model_validator
 SceneExecutionMode = Literal["all_scenes", "current_scene"]
 SceneActionPreflightStatus = Literal["ready", "warn", "soft_block"]
 SceneActionPreflightItemKind = Literal["warning", "auto_build", "soft_block"]
+SceneActionPrerequisiteStrategy = Literal[
+    "reuse_existing_shot_plan",
+    "one_pass_previz_prep",
+]
 
 
 class SceneExecutionScope(BaseModel):
@@ -52,5 +56,8 @@ class SceneActionPreflight(BaseModel):
     scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
     status: SceneActionPreflightStatus = "ready"
     summary: str = ""
+    prerequisite_strategy: SceneActionPrerequisiteStrategy | None = None
+    reused_artifact_types: list[str] = Field(default_factory=list)
+    auto_build_artifact_types: list[str] = Field(default_factory=list)
+    missing_optional_artifact_types: list[str] = Field(default_factory=list)
     items: list[SceneActionPreflightItem] = Field(default_factory=list)
-

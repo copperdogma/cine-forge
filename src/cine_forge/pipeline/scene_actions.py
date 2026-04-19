@@ -215,6 +215,9 @@ def build_scene_action_preflight(
                 recipe_id=recipe_id,
                 scene_ids=scene_ids,
             )
+        _prune_generation_autobuilds_for_start_stage(preflight)
+        if recipe_id == "ai_previz_generation":
+            _apply_ai_previz_prerequisite_strategy(preflight)
 
     if any(item.kind == "soft_block" for item in preflight.items):
         preflight.status = "soft_block"
@@ -346,17 +349,23 @@ def _populate_generation_preflight(
     scene_ids: list[str],
 ) -> None:
     if not _has_healthy_project_artifact(store, "timeline"):
+        _append_unique(preflight.auto_build_artifact_types, "timeline")
         preflight.items.append(SceneActionPreflightItem(
             kind="auto_build",
             label="Timeline",
             detail="This run will build the project timeline first.",
         ))
+    else:
+        _append_unique(preflight.reused_artifact_types, "timeline")
     if not _has_healthy_project_artifact(store, "track_manifest"):
+        _append_unique(preflight.auto_build_artifact_types, "track_manifest")
         preflight.items.append(SceneActionPreflightItem(
             kind="auto_build",
             label="Track manifest",
             detail="This run will register baseline track rows before generating scene outputs.",
         ))
+    else:
+        _append_unique(preflight.reused_artifact_types, "track_manifest")
     if not _has_healthy_project_artifact(store, "continuity_index"):
         preflight.items.append(SceneActionPreflightItem(
             kind="warning",
@@ -379,6 +388,7 @@ def _populate_generation_preflight(
             preflight.scene_scope,
         )
         if missing_shot_plan:
+            _append_unique(preflight.auto_build_artifact_types, "shot_plan")
             preflight.items.append(SceneActionPreflightItem(
                 kind="auto_build",
                 label="Shot planning",
@@ -389,6 +399,8 @@ def _populate_generation_preflight(
                     "This run will build shot plans for the missing scenes first.",
                 ),
             ))
+        else:
+            _append_unique(preflight.reused_artifact_types, "shot_plan")
 
     if recipe_id in {
         "shot_planning",
@@ -405,6 +417,7 @@ def _populate_generation_preflight(
             )
             if not missing:
                 continue
+            _append_unique(preflight.missing_optional_artifact_types, artifact_type)
             preflight.items.append(SceneActionPreflightItem(
                 kind="warning",
                 label=f"{label} missing",
@@ -529,6 +542,35 @@ def _recommended_generation_start_stage(
         if recipe_id == "render_generation":
             return "render"
     return None
+
+
+def _apply_ai_previz_prerequisite_strategy(preflight: SceneActionPreflight) -> None:
+    if preflight.start_from == "ai_previz":
+        preflight.prerequisite_strategy = "reuse_existing_shot_plan"
+        return
+    preflight.prerequisite_strategy = "one_pass_previz_prep"
+
+
+def _prune_generation_autobuilds_for_start_stage(preflight: SceneActionPreflight) -> None:
+    if preflight.start_from not in {"ai_previz", "render"}:
+        return
+    skipped_labels = {"Timeline", "Track manifest", "Shot planning"}
+    skipped_artifact_types = {"timeline", "track_manifest", "shot_plan"}
+    preflight.items = [
+        item
+        for item in preflight.items
+        if not (item.kind == "auto_build" and item.label in skipped_labels)
+    ]
+    preflight.auto_build_artifact_types = [
+        artifact_type
+        for artifact_type in preflight.auto_build_artifact_types
+        if artifact_type not in skipped_artifact_types
+    ]
+
+
+def _append_unique(values: list[str], value: str) -> None:
+    if value not in values:
+        values.append(value)
 
 
 def _scope_label(scene_scope: SceneExecutionScope) -> str:

@@ -22,6 +22,7 @@ class RuntimeEvalCase(BaseModel):
     input_fixture: str = Field(min_length=1)
     scene_id: str = Field(default="scene_001", min_length=1)
     prerequisite_mode: Literal["mvp_ingest_only", "scene_ready"] = "scene_ready"
+    prerequisite_strategy: str | None = None
     recipe_mode: Literal["shipped", "patched"] = "shipped"
     ai_previz: AiPrevizStageOverride | None = None
     notes: str | None = None
@@ -48,6 +49,7 @@ class RuntimeCaseResult(BaseModel):
     case_id: str
     label: str
     prerequisite_mode: str
+    prerequisite_strategy: str | None = None
     recipe_mode: str
     engine_pack_id: str
     prompt_profile: str = Field(default="standard", min_length=1)
@@ -75,6 +77,7 @@ class RuntimeCaseAggregate(BaseModel):
     case_id: str
     label: str
     prerequisite_mode: str
+    prerequisite_strategy: str | None = None
     recipe_mode: str
     engine_pack_id: str
     prompt_profile: str = Field(default="standard", min_length=1)
@@ -137,6 +140,7 @@ def aggregate_attempts(attempts: list[RuntimeCaseResult]) -> list[RuntimeCaseAgg
                 case_id=case_id,
                 label=template.label,
                 prerequisite_mode=template.prerequisite_mode,
+                prerequisite_strategy=template.prerequisite_strategy,
                 recipe_mode=template.recipe_mode,
                 engine_pack_id=template.engine_pack_id,
                 prompt_profile=template.prompt_profile,
@@ -278,11 +282,11 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
         "## Cases",
         "",
         (
-            "| Case | Attempts | Mode | Engine Pack | Prompt | Prereqs | "
+            "| Case | Attempts | Mode | Strategy | Engine Pack | Prompt | Prereqs | "
             "AI Previz ms | First playable ms | Full completion ms | "
             "Post-playable overhead | Success | Notes |"
         ),
-        "| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+        "| --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
     ]
     for case in cases:
         lines.append(
@@ -290,6 +294,7 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
             f"{case['case_id']} | "
             f"{case['successful_attempts']}/{case['repeat_count']} | "
             f"{case['recipe_mode']} | "
+            f"{case.get('prerequisite_strategy') or case['prerequisite_mode']} | "
             f"{case['engine_pack_id']} / {case['duration_seconds']}s {case['resolution']} | "
             f"{case['prompt_profile']} | "
             f"{case['prerequisite_mode']} ({case['prerequisite_elapsed_ms']} ms) | "

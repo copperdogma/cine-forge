@@ -52,30 +52,44 @@ def _write_registry(
     candidate_overall: float,
     baseline_overall: float,
     latency_ms: int,
+    runtime_latency_ms: int | None = None,
 ) -> None:
+    evals: list[dict[str, object]] = [
+        {
+            "id": "previz-usefulness",
+            "scores": [
+                {
+                    "model": candidate_label,
+                    "metrics": {"overall": candidate_overall},
+                    "latency_ms": latency_ms,
+                    "measured": "2026-04-03",
+                },
+                {
+                    "model": "Annotated Animatic",
+                    "metrics": {"overall": baseline_overall},
+                    "latency_ms": 0,
+                    "measured": "2026-04-03",
+                },
+            ],
+        }
+    ]
+    if runtime_latency_ms is not None:
+        evals.append(
+            {
+                "id": "real-ai-previz-runtime",
+                "scores": [
+                    {
+                        "model": "Current shipped runtime",
+                        "metrics": {"overall": 0.5},
+                        "latency_ms": runtime_latency_ms,
+                        "measured": "2026-04-19",
+                    }
+                ],
+            }
+        )
     path.write_text(
         yaml.safe_dump(
-            {
-                "evals": [
-                    {
-                        "id": "previz-usefulness",
-                        "scores": [
-                            {
-                                "model": candidate_label,
-                                "metrics": {"overall": candidate_overall},
-                                "latency_ms": latency_ms,
-                                "measured": "2026-04-03",
-                            },
-                            {
-                                "model": "Annotated Animatic",
-                                "metrics": {"overall": baseline_overall},
-                                "latency_ms": 0,
-                                "measured": "2026-04-03",
-                            },
-                        ],
-                    }
-                ]
-            },
+            {"evals": evals},
             sort_keys=False,
         ),
         encoding="utf-8",
@@ -217,3 +231,37 @@ def test_previz_adoption_service_keeps_ai_previz_primary_even_when_it_is_too_slo
 
     assert status.ai_previz.adoption_state == "default"
     assert "outside the 6000 ms fast-previz target" in status.ai_previz.reason
+
+
+def test_previz_adoption_service_prefers_honest_runtime_latency_when_available(
+    tmp_path: Path,
+) -> None:
+    recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(recipe_path, engine_pack_id="google_veo31_fast")
+    _write_registry(
+        registry_path,
+        candidate_label="Veo 3.1 Fast Previz",
+        candidate_overall=0.86,
+        baseline_overall=0.80,
+        latency_ms=3200,
+        runtime_latency_ms=186659,
+    )
+
+    service = PrevizAdoptionService(
+        recipe_path=recipe_path,
+        registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id="google_veo31_fast",
+            target_model="veo-3.1-fast-generate-preview",
+            cost_per_second=0.05,
+            pricing_note="Prompt-only fixture limitation.",
+        ),
+    )
+
+    status = service.build_status()
+
+    assert status.ai_previz.latency_ms == 186659
+    assert any(
+        "186659 ms" in blocker for blocker in status.ai_previz.blocker_reasons
+    )

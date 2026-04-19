@@ -4,6 +4,7 @@ import { CreativeBriefPreviewCard } from '@/components/intent/CreativeBriefPrevi
 import {
   formatConsistencyStrategy,
   formatLatencyMs,
+  formatPrerequisiteStrategy,
   formatPreviewIntent,
   formatPreviewMode,
   parsePreviewProvenance,
@@ -253,6 +254,11 @@ export function RenderPromptViewer({ data }: RenderPromptViewerProps) {
                   {formatConsistencyStrategy(prompt.previewProvenance?.consistencyStrategy ?? null)}
                 </Badge>
               )}
+              {formatPrerequisiteStrategy(prompt.previewProvenance?.prerequisiteStrategy ?? null) && (
+                <Badge variant="outline">
+                  {formatPrerequisiteStrategy(prompt.previewProvenance?.prerequisiteStrategy ?? null)}
+                </Badge>
+              )}
               {formatLatencyMs(prompt.previewProvenance?.generationLatencyMs ?? null) && (
                 <Badge variant="outline" className="gap-1">
                   <Timer className="h-3 w-3" />
@@ -266,6 +272,46 @@ export function RenderPromptViewer({ data }: RenderPromptViewerProps) {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          {(prompt.previewProvenance?.prerequisiteStrategy
+            || (prompt.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0
+            || (prompt.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0
+            || (prompt.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0) && (
+            <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
+              <div className="space-y-1">
+                {formatPrerequisiteStrategy(prompt.previewProvenance?.prerequisiteStrategy ?? null) && (
+                  <p>
+                    Prep strategy:{' '}
+                    {formatPrerequisiteStrategy(prompt.previewProvenance?.prerequisiteStrategy ?? null)}
+                  </p>
+                )}
+                {(prompt.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0 && (
+                  <p>
+                    Reused:{' '}
+                    {prompt.previewProvenance?.reusedArtifactTypes
+                      .map(token => formatToken(token) ?? token)
+                      .join(', ')}
+                  </p>
+                )}
+                {(prompt.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0 && (
+                  <p>
+                    Auto-built:{' '}
+                    {prompt.previewProvenance?.autoBuildArtifactTypes
+                      .map(token => formatToken(token) ?? token)
+                      .join(', ')}
+                  </p>
+                )}
+                {(prompt.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0 && (
+                  <p>
+                    Missing optional context:{' '}
+                    {prompt.previewProvenance?.missingOptionalArtifactTypes
+                      .map(token => formatToken(token) ?? token)
+                      .join(', ')}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
           {isAiPrevizPrompt && (
             <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-100">
               <div className="flex items-start gap-2">

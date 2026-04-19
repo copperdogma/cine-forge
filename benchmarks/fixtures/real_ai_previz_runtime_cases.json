@@ -6,6 +6,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
+      "prerequisite_strategy": "full_scene_ready_chain",
       "recipe_mode": "shipped",
       "notes": "Current shipped recipe and honest scene-ready prerequisite chain after Story 153."
     },
@@ -15,6 +16,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
+      "prerequisite_strategy": "full_scene_ready_chain",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31_lite",
@@ -27,12 +29,13 @@
     },
     {
       "case_id": "shipped_lite_4_mvp_ingest_only",
-      "label": "Shipped Veo 3.1 Lite 4s ingest-only baseline",
+      "label": "Shipped Veo 3.1 Lite 4s one-pass previz-prep baseline",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
       "recipe_mode": "shipped",
-      "notes": "Separates creative-direction overhead from the shipped AI-previz runtime after Story 153."
+      "notes": "Story 175 simplification baseline: MVP ingest plus a single on-demand shot-planning pass, without the full creative_direction chain."
     },
     {
       "case_id": "lite_8_scene_ready_control",
@@ -40,6 +43,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
+      "prerequisite_strategy": "full_scene_ready_chain",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31_lite",
@@ -55,6 +59,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31_lite",
@@ -70,6 +75,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
+      "prerequisite_strategy": "full_scene_ready_chain",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31_fast",
@@ -85,6 +91,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31_fast",
@@ -100,6 +107,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
+      "prerequisite_strategy": "full_scene_ready_chain",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31",
@@ -115,6 +123,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "google_veo31",
@@ -130,6 +139,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "scene_ready",
+      "prerequisite_strategy": "full_scene_ready_chain",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "xai_grok_imagine_video",
@@ -145,6 +155,7 @@
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",
       "scene_id": "scene_001",
       "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
       "recipe_mode": "patched",
       "ai_previz": {
         "engine_pack_id": "xai_grok_imagine_video",

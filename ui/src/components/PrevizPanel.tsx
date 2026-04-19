@@ -12,7 +12,7 @@ import {
 } from '@/components/previz-panel-support'
 import { SceneActionControls } from '@/components/SceneActionControls'
 import { formatConsistencyStrategy, formatLatencyMs } from '@/components/preview-provenance'
-import { formatDuration } from '@/components/render-utils'
+import { formatDuration, formatToken } from '@/components/render-utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -259,10 +259,41 @@ export function PrevizPanel({
                 Final footage still belongs in the Render tab. Keep this lane focused on motion,
                 staging, and operator-readable planning feedback.
               </p>
+              {aiPreflight?.prerequisite_strategy && (
+                <p>
+                  Prep strategy: {aiPreflight.prerequisite_strategy === 'reuse_existing_shot_plan'
+                    ? 'Reuse current shot plan'
+                    : 'One-pass previz prep'}.
+                </p>
+              )}
               {aiPrevizReusesShotPlan && (
                 <p>
                   Reuse path: CineForge will keep the current shot plan and rerun only AI video
                   generation plus media validation.
+                </p>
+              )}
+              {(aiPreflight?.reused_artifact_types?.length ?? 0) > 0 && (
+                <p>
+                  Reused:{' '}
+                  {aiPreflight?.reused_artifact_types
+                    ?.map(token => formatToken(token) ?? token)
+                    .join(', ')}.
+                </p>
+              )}
+              {(aiPreflight?.auto_build_artifact_types?.length ?? 0) > 0 && (
+                <p>
+                  Auto-built:{' '}
+                  {aiPreflight?.auto_build_artifact_types
+                    ?.map(token => formatToken(token) ?? token)
+                    .join(', ')}.
+                </p>
+              )}
+              {(aiPreflight?.missing_optional_artifact_types?.length ?? 0) > 0 && (
+                <p>
+                  Missing optional context:{' '}
+                  {aiPreflight?.missing_optional_artifact_types
+                    ?.map(token => formatToken(token) ?? token)
+                    .join(', ')}.
                 </p>
               )}
             </div>

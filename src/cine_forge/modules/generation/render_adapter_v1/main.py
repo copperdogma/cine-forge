@@ -62,6 +62,7 @@ from cine_forge.schemas import (
     TrackEntry,
     TrackManifest,
 )
+from cine_forge.schemas.scene_scope import SceneActionPreflight
 from cine_forge.services.creative_brief import (
     build_visual_creative_brief,
     creative_brief_source_artifact_types,
@@ -87,6 +88,7 @@ def run_module(
     store = ArtifactStore(project_dir=project_dir)
     track_manifest = _track_manifest(inputs)
     runtime_params = _runtime_params(context)
+    scene_action_preflight = _scene_action_preflight(runtime_params)
     shot_plans = _shot_plans(inputs, runtime_params=runtime_params)
     output_contract = _output_contract(params=params, runtime_params=runtime_params)
 
@@ -133,6 +135,7 @@ def run_module(
                 requested_resolution=requested_resolution,
                 requested_aspect_ratio=requested_aspect_ratio,
                 output_contract=output_contract,
+                scene_action_preflight=scene_action_preflight,
             )
             _announce_artifact(announce_artifact, prompt_artifact)
             video_ref = _announce_artifact(announce_artifact, video_artifact)
@@ -270,6 +273,7 @@ def _render_scene(
     requested_resolution: str | None,
     requested_aspect_ratio: str | None,
     output_contract: dict[str, Any],
+    scene_action_preflight: SceneActionPreflight | None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     started = time.perf_counter()
     prompt_ref = anticipated_entity_ref(
@@ -387,6 +391,14 @@ def _render_scene(
         generation_model=engine_pack.target_model,
         request_id=None,
     )
+    preview_provenance = _build_preview_provenance(
+        output_contract=output_contract,
+        scene_cost=scene_cost,
+        prompt_sources=prompt_sources,
+        resolved_inputs=resolved_inputs,
+        generation_latency_ms=None,
+        scene_action_preflight=scene_action_preflight,
+    )
     prompt_artifact = CompiledRenderPrompt(
         scene_id=plan.scene_id,
         scene_number=plan.scene_number,
@@ -409,22 +421,7 @@ def _render_scene(
         prompt_sources_used=prompt_sources,
         creative_brief_preview=source_maps["creative_brief"],
         resolved_inputs=resolved_inputs,
-        preview_provenance=PreviewProvenance(
-            mode=output_contract["preview_mode"],
-            fidelity_intent=output_contract["fidelity_intent"],
-            intended_use=list(output_contract["intended_use"]),
-            upstream_inputs=_render_upstream_inputs(
-                prompt_sources=prompt_sources,
-                resolved_inputs=resolved_inputs,
-            ),
-            consistency_strategy=output_contract["consistency_strategy"],
-            prompt_profile=output_contract.get("prompt_profile"),
-            estimated_cost_usd=_preview_cost_value(
-                scene_cost=scene_cost,
-                output_contract=output_contract,
-            ),
-            generation_latency_ms=None,
-        ),
+        preview_provenance=preview_provenance,
     )
 
     request = VideoGenerationRequest(
@@ -484,21 +481,13 @@ def _render_scene(
         cost=CostRecord.model_validate(scene_cost),
         resolved_inputs=resolved_inputs,
         notes=completeness.notes,
-        preview_provenance=PreviewProvenance(
-            mode=output_contract["preview_mode"],
-            fidelity_intent=output_contract["fidelity_intent"],
-            intended_use=list(output_contract["intended_use"]),
-            upstream_inputs=_render_upstream_inputs(
-                prompt_sources=prompt_sources,
-                resolved_inputs=resolved_inputs,
-            ),
-            consistency_strategy=output_contract["consistency_strategy"],
-            prompt_profile=output_contract.get("prompt_profile"),
-            estimated_cost_usd=_preview_cost_value(
-                scene_cost=scene_cost,
-                output_contract=output_contract,
-            ),
+        preview_provenance=_build_preview_provenance(
+            output_contract=output_contract,
+            scene_cost=scene_cost,
+            prompt_sources=prompt_sources,
+            resolved_inputs=resolved_inputs,
             generation_latency_ms=latency_ms,
+            scene_action_preflight=scene_action_preflight,
         ),
     )
     return (
@@ -524,6 +513,65 @@ def _project_dir(context: dict[str, Any]) -> Path:
 def _runtime_params(context: dict[str, Any]) -> dict[str, Any]:
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     return runtime_params if isinstance(runtime_params, dict) else {}
+
+
+def _scene_action_preflight(runtime_params: dict[str, Any]) -> SceneActionPreflight | None:
+    raw = runtime_params.get("scene_action_preflight")
+    if isinstance(raw, SceneActionPreflight):
+        return raw
+    if isinstance(raw, dict):
+        try:
+            return SceneActionPreflight.model_validate(raw)
+        except Exception:
+            return None
+    return None
+
+
+def _build_preview_provenance(
+    *,
+    output_contract: dict[str, Any],
+    scene_cost: dict[str, Any],
+    prompt_sources: list[str],
+    resolved_inputs: list[RenderResolvedInput],
+    generation_latency_ms: int | None,
+    scene_action_preflight: SceneActionPreflight | None,
+) -> PreviewProvenance:
+    return PreviewProvenance(
+        mode=output_contract["preview_mode"],
+        fidelity_intent=output_contract["fidelity_intent"],
+        intended_use=list(output_contract["intended_use"]),
+        upstream_inputs=_render_upstream_inputs(
+            prompt_sources=prompt_sources,
+            resolved_inputs=resolved_inputs,
+        ),
+        consistency_strategy=output_contract["consistency_strategy"],
+        prompt_profile=output_contract.get("prompt_profile"),
+        prerequisite_strategy=(
+            scene_action_preflight.prerequisite_strategy
+            if output_contract["preview_mode"] == "ai_previz" and scene_action_preflight
+            else None
+        ),
+        reused_artifact_types=(
+            list(scene_action_preflight.reused_artifact_types)
+            if output_contract["preview_mode"] == "ai_previz" and scene_action_preflight
+            else []
+        ),
+        auto_build_artifact_types=(
+            list(scene_action_preflight.auto_build_artifact_types)
+            if output_contract["preview_mode"] == "ai_previz" and scene_action_preflight
+            else []
+        ),
+        missing_optional_artifact_types=(
+            list(scene_action_preflight.missing_optional_artifact_types)
+            if output_contract["preview_mode"] == "ai_previz" and scene_action_preflight
+            else []
+        ),
+        estimated_cost_usd=_preview_cost_value(
+            scene_cost=scene_cost,
+            output_contract=output_contract,
+        ),
+        generation_latency_ms=generation_latency_ms,
+    )
 
 
 def _output_contract(

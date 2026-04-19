@@ -52,12 +52,14 @@ class PrevizAdoptionService:
         engine_pack = self._engine_pack_loader(engine_pack_id)
         score_entry = self._candidate_score(engine_pack_id)
         baseline_entry = self._historical_baseline_score()
+        runtime_entry = self._runtime_score()
 
         blockers = self._blockers_for(
             recipe=recipe,
             params=params,
             engine_pack=engine_pack,
             score_entry=score_entry,
+            runtime_entry=runtime_entry,
         )
         cost = self._cost_evidence(params=params, engine_pack=engine_pack)
         overall_score = self._overall_score(score_entry)
@@ -67,7 +69,7 @@ class PrevizAdoptionService:
             if overall_score is not None and baseline_score is not None
             else None
         )
-        latency_ms = self._latency_ms(score_entry)
+        latency_ms = self._latency_ms(runtime_entry) or self._latency_ms(score_entry)
         ai_viable = self._validation_stage_enabled(recipe) and (
             overall_score is not None and overall_score >= _QUALITY_FLOOR
         )
@@ -101,7 +103,7 @@ class PrevizAdoptionService:
             overall_score=overall_score,
             baseline_score=baseline_score,
             score_margin=margin,
-            measured_at=self._measured_at(score_entry),
+            measured_at=self._measured_at(runtime_entry) or self._measured_at(score_entry),
             latency_ms=latency_ms,
             latency_budget_ms=_FAST_AI_PREVIZ_TARGET_MS,
             engine_pack_id=engine_pack.pack_id,
@@ -124,6 +126,7 @@ class PrevizAdoptionService:
         params: dict[str, Any],
         engine_pack: EnginePack,
         score_entry: dict[str, Any] | None,
+        runtime_entry: dict[str, Any] | None,
     ) -> list[str]:
         blockers: list[str] = []
         if not self._validation_stage_enabled(recipe):
@@ -143,7 +146,7 @@ class PrevizAdoptionService:
                 f"{_QUALITY_FLOOR:.2f} adoption floor."
             )
 
-        latency_ms = self._latency_ms(score_entry)
+        latency_ms = self._latency_ms(runtime_entry) or self._latency_ms(score_entry)
         if latency_ms is not None and latency_ms > _FAST_AI_PREVIZ_TARGET_MS:
             blockers.append(
                 f"Measured AI previz latency is {latency_ms} ms, outside the "
@@ -250,6 +253,20 @@ class PrevizAdoptionService:
 
     def _historical_baseline_score(self) -> dict[str, Any] | None:
         return self._score_by_label(_HISTORICAL_BASELINE_LABEL)
+
+    def _runtime_score(self) -> dict[str, Any] | None:
+        registry = self._load_yaml(self._registry_path)
+        evals = registry.get("evals", []) if isinstance(registry, dict) else []
+        for entry in evals:
+            if not isinstance(entry, dict) or entry.get("id") != "real-ai-previz-runtime":
+                continue
+            scores = entry.get("scores")
+            if not isinstance(scores, list):
+                return None
+            for score in scores:
+                if isinstance(score, dict):
+                    return score
+        return None
 
     def _score_by_label(self, label: str) -> dict[str, Any] | None:
         registry = self._load_yaml(self._registry_path)

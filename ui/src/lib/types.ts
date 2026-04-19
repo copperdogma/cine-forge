@@ -197,6 +197,10 @@ export type SceneActionPreflight = {
   scene_scope: SceneExecutionScope
   status: 'ready' | 'warn' | 'soft_block'
   summary: string
+  prerequisite_strategy?: 'reuse_existing_shot_plan' | 'one_pass_previz_prep' | null
+  reused_artifact_types?: string[]
+  auto_build_artifact_types?: string[]
+  missing_optional_artifact_types?: string[]
   items: SceneActionPreflightItem[]
 }
 

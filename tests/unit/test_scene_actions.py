@@ -172,6 +172,10 @@ def test_ai_previz_preflight_reuses_existing_healthy_shot_plan(tmp_path: Path) -
     )
 
     assert preflight.start_from == "ai_previz"
+    assert preflight.prerequisite_strategy == "reuse_existing_shot_plan"
+    assert "track_manifest" in preflight.reused_artifact_types
+    assert "shot_plan" in preflight.reused_artifact_types
+    assert preflight.auto_build_artifact_types == []
     assert all(item.label != "Shot planning" for item in preflight.items)
 
 
@@ -195,6 +199,15 @@ def test_ai_previz_preflight_does_not_reuse_stale_shot_plan(tmp_path: Path) -> N
     )
 
     assert preflight.start_from is None
+    assert preflight.prerequisite_strategy == "one_pass_previz_prep"
+    assert "shot_plan" in preflight.auto_build_artifact_types
+    assert "timeline" in preflight.auto_build_artifact_types
+    assert "track_manifest" in preflight.reused_artifact_types
+    assert sorted(preflight.missing_optional_artifact_types) == [
+        "look_and_feel",
+        "rhythm_and_flow",
+        "sound_and_music",
+    ]
     assert any(item.label == "Shot planning" for item in preflight.items)
 
 
@@ -215,7 +228,7 @@ def test_render_preflight_reuses_existing_healthy_shot_plan_for_current_scene(
 
     assert preflight.start_from == "render"
     labels = {item.label for item in preflight.items}
-    assert "Timeline" in labels
+    assert "Timeline" not in labels
     assert "Shot planning" not in labels
 
 
@@ -240,6 +253,7 @@ def test_render_preflight_reuses_existing_healthy_shot_plan_for_all_scenes(tmp_p
     )
 
     assert preflight.start_from == "render"
+    assert all(item.label != "Timeline" for item in preflight.items)
     assert all(item.label != "Shot planning" for item in preflight.items)
 
 

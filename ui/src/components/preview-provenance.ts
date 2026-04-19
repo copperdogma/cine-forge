@@ -5,6 +5,10 @@ export type PreviewProvenanceView = {
   upstreamInputs: string[]
   consistencyStrategy: string | null
   promptProfile: string | null
+  prerequisiteStrategy: string | null
+  reusedArtifactTypes: string[]
+  autoBuildArtifactTypes: string[]
+  missingOptionalArtifactTypes: string[]
   estimatedCostUsd: number | null
   generationLatencyMs: number | null
 }
@@ -43,6 +47,10 @@ export function parsePreviewProvenance(value: unknown): PreviewProvenanceView | 
     upstreamInputs: asStringArray(record.upstream_inputs),
     consistencyStrategy: asString(record.consistency_strategy),
     promptProfile: asString(record.prompt_profile),
+    prerequisiteStrategy: asString(record.prerequisite_strategy),
+    reusedArtifactTypes: asStringArray(record.reused_artifact_types),
+    autoBuildArtifactTypes: asStringArray(record.auto_build_artifact_types),
+    missingOptionalArtifactTypes: asStringArray(record.missing_optional_artifact_types),
     estimatedCostUsd: asNumber(record.estimated_cost_usd),
     generationLatencyMs: asNumber(record.generation_latency_ms),
   }
@@ -86,6 +94,17 @@ export function formatPromptProfile(value: string | null): string | null {
       return 'Standard prompt'
     case 'compact':
       return 'Compact prompt'
+    default:
+      return value
+  }
+}
+
+export function formatPrerequisiteStrategy(value: string | null): string | null {
+  switch (value) {
+    case 'reuse_existing_shot_plan':
+      return 'Reuse current shot plan'
+    case 'one_pass_previz_prep':
+      return 'One-pass previz prep'
     default:
       return value
   }
