@@ -1169,7 +1169,8 @@
           "146",
           "147",
           "154",
-          "156"
+          "156",
+          "172"
         ],
         "adrIds": [],
         "evalIds": []
@@ -1225,27 +1226,29 @@
           "145",
           "146",
           "147",
-          "154"
+          "154",
+          "172"
         ],
         "evalIds": [],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "154",
-          "sourcePath": "docs/stories/story-154-methodology-hardening-follow-up-sweep.md",
+          "sourceId": "172",
+          "sourcePath": "docs/stories/story-172-methodology-actionability-truth-and-audit-freshness.md",
           "recommendedNow": false,
           "posture": "completed",
-          "whyNow": "finish-and-push preflight: reran the required landing-time",
+          "whyNow": "completion: marked Story 172 done after rerunning the full",
           "lastRelevantAction": {
-            "date": "2026-04-08",
+            "date": "2026-04-18",
             "sourceType": "story-work-log",
-            "source": "docs/stories/story-154-methodology-hardening-follow-up-sweep.md",
-            "summary": "finish-and-push preflight: reran the required landing-time"
+            "source": "docs/stories/story-172-methodology-actionability-truth-and-audit-freshness.md",
+            "summary": "completion: marked Story 172 done after rerunning the full"
           },
           "storyIds": [
             "145",
             "146",
             "147",
-            "154"
+            "154",
+            "172"
           ],
           "evalIds": []
         }
@@ -1264,26 +1267,28 @@
         "storyIds": [
           "145",
           "147",
-          "154"
+          "154",
+          "172"
         ],
         "evalIds": [],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "154",
-          "sourcePath": "docs/stories/story-154-methodology-hardening-follow-up-sweep.md",
+          "sourceId": "172",
+          "sourcePath": "docs/stories/story-172-methodology-actionability-truth-and-audit-freshness.md",
           "recommendedNow": false,
           "posture": "completed",
-          "whyNow": "finish-and-push preflight: reran the required landing-time",
+          "whyNow": "completion: marked Story 172 done after rerunning the full",
           "lastRelevantAction": {
-            "date": "2026-04-08",
+            "date": "2026-04-18",
             "sourceType": "story-work-log",
-            "source": "docs/stories/story-154-methodology-hardening-follow-up-sweep.md",
-            "summary": "finish-and-push preflight: reran the required landing-time"
+            "source": "docs/stories/story-172-methodology-actionability-truth-and-audit-freshness.md",
+            "summary": "completion: marked Story 172 done after rerunning the full"
           },
           "storyIds": [
             "145",
             "147",
-            "154"
+            "154",
+            "172"
           ],
           "evalIds": []
         }
@@ -1476,14 +1481,14 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat.",
+          "whyNow": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime.",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
             "date": "2026-04-16",
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
+            "summary": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
           },
           "storyIds": [
             "155",
@@ -10761,6 +10766,71 @@
           "summary": "completion: closed Story 171 after rerunning the required close-out suite on the worktree and confirming the shipped slice satisfies the story’s real success surface. Evidence: `make test-unit PYTHON=/Users/cam/Document…"
         }
       }
+    },
+    {
+      "id": "172",
+      "title": "Methodology Actionability Truth and Audit Freshness",
+      "path": "docs/stories/story-172-methodology-actionability-truth-and-audit-freshness.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Execution Ideal",
+        "R14 (Nothing is ever lost)",
+        "radical transparency"
+      ],
+      "specRefs": [
+        "spec:11",
+        "spec:11.2",
+        "spec:11.3",
+        "spec:11.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [
+        "B2",
+        "B3"
+      ],
+      "dependsOn": [
+        "154"
+      ],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "actionability",
+        "audit-freshness",
+        "follow-up-from-154",
+        "methodology",
+        "triage"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260418-1535",
+        "date": "2026-04-18",
+        "summary": "completion: marked Story 172 done after rerunning the full"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "172",
+        "sourcePath": "docs/stories/story-172-methodology-actionability-truth-and-audit-freshness.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: marked Story 172 done after rerunning the full",
+        "lastRelevantAction": {
+          "date": "2026-04-18",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-172-methodology-actionability-truth-and-audit-freshness.md",
+          "summary": "completion: marked Story 172 done after rerunning the full"
+        }
+      }
     }
   ],
   "adrs": [
@@ -10909,6 +10979,9 @@
       "latestScore": {
         "model": "Grok 4.1 Fast Reasoning",
         "measured": "2026-03-14",
+        "metrics": {
+          "overall": 0.858
+        },
         "note": "Passed 3/3 cheaply, but still trailed the verified leaders, especially on DAD depth."
       },
       "declaredSpecRefs": [
@@ -11227,9 +11300,12 @@
         }
       ],
       "latestScore": {
-        "model": "GPT-5.4 Nano",
+        "model": "GPT-5.4 Mini",
         "measured": "2026-03-18",
-        "note": "Model-wrong: misses the short-film classification and falls below even the already-rejected GPT-4.1 baseline."
+        "metrics": {
+          "overall": 0.70775
+        },
+        "note": "Model-wrong: still classifies the screenplay as a feature film despite estimating a 15-minute runtime. Faster than GPT-4.1 Mini, but well below the Gemini 3 Flash winner."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -11252,7 +11328,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Model-wrong: misses the short-film classification and falls below even the already-rejected GPT-4.1 baseline.",
+        "whyNow": "Model-wrong: still classifies the screenplay as a feature film despite estimating a 15-minute runtime. Faster than GPT-4.1 Mini, but well below the Gemini 3 Flash winner.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -11288,6 +11364,9 @@
       "latestScore": {
         "model": "Grok 4.1 Fast Reasoning",
         "measured": "2026-03-14",
+        "metrics": {
+          "overall": 0.858
+        },
         "note": ""
       },
       "declaredSpecRefs": [
@@ -11347,9 +11426,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.4 Nano",
+        "model": "GPT-5.4 Mini",
         "measured": "2026-03-18",
-        "note": "Failed the recall gate by missing required character DAD despite otherwise broad coverage."
+        "metrics": {
+          "overall": 0.94
+        },
+        "note": "Meets the eval target with GPT-4.1-level quality at lower latency/cost. Still emits prop noise (e.g. uniform, bandolier, generic gun), so this is a strong candidate but not an automatic default flip."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -11375,14 +11457,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Failed the recall gate by missing required character DAD despite otherwise broad coverage.",
+        "whyNow": "Meets the eval target with GPT-4.1-level quality at lower latency/cost. Still emits prop noise (e.g. uniform, bandolier, generic gun), so this is a strong candidate but not an automatic default flip.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-03-18",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Failed the recall gate by missing required character DAD despite otherwise broad coverage."
+          "summary": "Meets the eval target with GPT-4.1-level quality at lower latency/cost. Still emits prop noise (e.g. uniform, bandolier, generic gun), so this is a strong candidate but not an automatic default flip."
         }
       }
     },
@@ -11414,9 +11496,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "OpenAI Sora 2 Render",
+        "model": "Google Veo 3.1 Render",
         "measured": "2026-04-16",
-        "note": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
+        "metrics": {
+          "overall": 0.7497
+        },
+        "note": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -11449,14 +11534,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat.",
+        "whyNow": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-16",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
+          "summary": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
         }
       }
     },
@@ -11493,6 +11578,9 @@
       "latestScore": {
         "model": "Story 161 Targeted Big Fish Rerun (Analyze Scenes faster, continuity still dominant)",
         "measured": "2026-04-12",
+        "metrics": {
+          "overall": 1
+        },
         "note": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…"
       },
       "declaredSpecRefs": [
@@ -11561,6 +11649,9 @@
       "latestScore": {
         "model": "Grok 4.1 Fast Reasoning",
         "measured": "2026-03-14",
+        "metrics": {
+          "overall": 0.899
+        },
         "note": ""
       },
       "declaredSpecRefs": [
@@ -11617,6 +11708,9 @@
       "latestScore": {
         "model": "GPT-5.4 Nano",
         "measured": "2026-03-18",
+        "metrics": {
+          "overall": 0.8175
+        },
         "note": "Passed the broken-Fountain cleanup, but failed prose-to-Fountain conversion by keeping dialogue in prose paragraphs instead of proper character cues."
       },
       "declaredSpecRefs": [
@@ -11682,9 +11776,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Symbolic Animatic",
+        "model": "Annotated Animatic",
         "measured": "2026-04-08",
-        "note": "Baseline comparator and explicit fallback, non-runtime-blocking. Story 149 re-measured the symbolic deterministic lane at 476 ms average; it is fast enough for control use, but it does not change the blocked truth that real previz still means AI-generated motion."
+        "metrics": {
+          "overall": 0.803
+        },
+        "note": "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement."
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -11721,14 +11818,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Baseline comparator and explicit fallback, non-runtime-blocking. Story 149 re-measured the symbolic deterministic lane at 476 ms average; it is fast enough for control use, but it does not change the blocked truth that real previz still means AI-generated motion.",
+        "whyNow": "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-08",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Baseline comparator and explicit fallback, non-runtime-blocking. Story 149 re-measured the symbolic deterministic lane at 476 ms average; it is fast enough for control use, but it does not change the blocked truth that real previz still means AI-generated motion."
+          "summary": "Deterministic fallback/control baseline. Story 149 re-measured the annotated animatic lane on the fixed pack at 606 ms average / 635 ms median, which comfortably clears the control-arm budget while keeping the same validated 0.803 usefulness score, but this does not satisfy the AI-previz product requirement."
         }
       }
     },
@@ -11754,6 +11851,9 @@
       "latestScore": {
         "model": "Grok 4.1 Fast Reasoning",
         "measured": "2026-03-14",
+        "metrics": {
+          "overall": 0.874
+        },
         "note": ""
       },
       "declaredSpecRefs": [
@@ -11806,9 +11906,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.4 Nano",
+        "model": "GPT-5.4 Mini",
         "measured": "2026-03-18",
-        "note": "Unsafe QA gate: same false-negative pattern as GPT-5.4 Mini on the known-good scene."
+        "metrics": {
+          "overall": 0.640625
+        },
+        "note": "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene."
       },
       "declaredSpecRefs": [
         "spec:8"
@@ -11828,14 +11931,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Unsafe QA gate: same false-negative pattern as GPT-5.4 Mini on the known-good scene.",
+        "whyNow": "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-03-18",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Unsafe QA gate: same false-negative pattern as GPT-5.4 Mini on the known-good scene."
+          "summary": "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene."
         }
       }
     },
@@ -11871,6 +11974,9 @@
       "latestScore": {
         "model": "xAI Dual Probe (Fastest Runtime, Still Runtime-Blocking)",
         "measured": "2026-04-09",
+        "metrics": {
+          "overall": 0.5
+        },
         "note": "Story 151 widened the real runtime harness to include Grok Imagine, fixed the worktree dotenv/bootstrap mismatch, and added pack-local prompt budgeting for xAI's 4096-character prompt cap. The resulting two-case xAI probe is fully successful: `xai_4_480p_scene_ready` now lands at 130399 ms total / 22635 ms isolated ai-previz, and `xai_4_480p_mvp_ingest_only` lands at 65552 ms total / 21687 ms iso…"
       },
       "declaredSpecRefs": [
@@ -11939,6 +12045,9 @@
       "latestScore": {
         "model": "Grok 4.1 Fast Reasoning",
         "measured": "2026-03-14",
+        "metrics": {
+          "overall": 0.986
+        },
         "note": ""
       },
       "declaredSpecRefs": [
@@ -12001,6 +12110,9 @@
       "latestScore": {
         "model": "Hybrid (GPT-5.4)",
         "measured": "2026-04-12",
+        "metrics": {
+          "overall": 1
+        },
         "note": "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator."
       },
       "declaredSpecRefs": [
@@ -12072,6 +12184,9 @@
       "latestScore": {
         "model": "Hybrid (GPT-5.4)",
         "measured": "2026-04-04",
+        "metrics": {
+          "overall": 1
+        },
         "note": "Validation rerun for Story 144. Hybrid remains the runtime-default leader and cleared all 4 seeded cases again after the `ai_previz_video` target-override changes landed in `media_validation_v1`. This eval still measures the shared generated-video fixture pack, so ai-previz-specific trust coverage also comes from targeted unit tests plus the seeded browser verification."
       },
       "declaredSpecRefs": [
@@ -12147,7 +12262,10 @@
       "latestScore": {
         "model": "Sonnet 4.6",
         "measured": "2026-04-12",
-        "note": "Story 163 validation rerun against the current default model only. Both fixtures passed, but the Opus judge penalized the elevator case for missing the muzak-vs-violence tonal juxtaposition, so the aggregate landed below the 0.93 target."
+        "metrics": {
+          "overall": 0.959
+        },
+        "note": "Verified across two no-cache reruns after reinforcing prompt instructions to name tonal contradictions and flashback/memory framing explicitly. Latest verified run stayed above target on both fixtures."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -12170,7 +12288,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 163 validation rerun against the current default model only. Both fixtures passed, but the Opus judge penalized the elevator case for missing the muzak-vs-violence tonal juxtaposition, so the aggregate landed below the 0.93 target.",
+        "whyNow": "Verified across two no-cache reruns after reinforcing prompt instructions to name tonal contradictions and flashback/memory framing explicitly. Latest verified run stayed above target on both fixtures.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -12202,9 +12320,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.4 Nano",
+        "model": "GPT-5.4 Mini",
         "measured": "2026-03-18",
-        "note": "Model-wrong: over-split the screenplay to 22 scenes and hallucinated extra scene variants."
+        "metrics": {
+          "overall": 0.60835
+        },
+        "note": "Model-wrong: collapsed the screenplay to 10 scenes by folding flashbacks into parent scenes. Fast, but not viable."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -12227,14 +12348,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Model-wrong: over-split the screenplay to 22 scenes and hallucinated extra scene variants.",
+        "whyNow": "Model-wrong: collapsed the screenplay to 10 scenes by folding flashbacks into parent scenes. Fast, but not viable.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-03-18",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Model-wrong: over-split the screenplay to 22 scenes and hallucinated extra scene variants."
+          "summary": "Model-wrong: collapsed the screenplay to 10 scenes by folding flashbacks into parent scenes. Fast, but not viable."
         }
       }
     },
@@ -12260,6 +12381,9 @@
       "latestScore": {
         "model": "Grok 4.1 Fast Reasoning",
         "measured": "2026-03-14",
+        "metrics": {
+          "overall": 0.955
+        },
         "note": "Interesting value candidate: within 0.015 of the quality leader at a fraction of the cost."
       },
       "declaredSpecRefs": [
@@ -12329,9 +12453,12 @@
         }
       ],
       "latestScore": {
-        "model": "Sonnet 4.6",
+        "model": "GPT-5.4",
         "measured": "2026-03-19",
-        "note": "Refreshed rerun trails GPT-5.4 and still misses director-facing detail on dialogue_confession_push_in, neon_crosswalk_reveal, and muzak_aftermath_tableau. Classified model-wrong, not golden-wrong."
+        "metrics": {
+          "overall": 0.7923
+        },
+        "note": "Discovery-spike rerun leader. Improved the OpenAI slot from the earlier GPT-4.1 pilot and passed 5/6 anchor clips. Remaining miss is model-wrong on neon_crosswalk_reveal: still misses the intended reveal/motion read."
       },
       "declaredSpecRefs": [
         "spec:7",
@@ -12359,7 +12486,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Refreshed rerun trails GPT-5.4 and still misses director-facing detail on dialogue_confession_push_in, neon_crosswalk_reveal, and muzak_aftermath_tableau. Classified model-wrong, not golden-wrong.",
+        "whyNow": "Discovery-spike rerun leader. Improved the OpenAI slot from the earlier GPT-4.1 pilot and passed 5/6 anchor clips. Remaining miss is model-wrong on neon_crosswalk_reveal: still misses the intended reveal/motion read.",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "new-approach"
@@ -12833,17 +12960,19 @@
       },
       "domains": {
         "methodology_tooling": {
-          "last_audited_at": "2026-04-04",
+          "last_audited_at": "2026-04-18",
           "recent_story_refs": [
             "145",
             "146",
-            "147"
+            "147",
+            "154",
+            "172"
           ],
           "stories_since_audit": 0,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
-          "last_summary": "Stories 145 and 146 completed the graph+state migration and legacy metadata backfill. Story 147 then aligned the remaining workflow semantics: problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation defaults, and inspectable blocked-story metadata."
+          "last_summary": "Stories 145-147 established the graph+state planning substrate, Story 154 hardened the methodology package, and Story 172 corrected eval-actionability score selection plus architecture-audit freshness validation. The methodology tooling lane is back to honest generated truth."
         },
         "driver_and_runtime": {
           "last_audited_at": "2026-03-02",
@@ -12852,35 +12981,36 @@
             "116",
             "117"
           ],
-          "stories_since_audit": 1,
+          "stories_since_audit": 0,
           "open_findings": [],
           "manual_priority": "normal"
         },
         "ingest_and_world_building": {
-          "last_audited_at": "2026-04-11",
+          "last_audited_at": "2026-04-18",
           "recent_story_refs": [
-            "159",
-            "160",
-            "161",
-            "162"
+            "163",
+            "164",
+            "165",
+            "166",
+            "167",
+            "168",
+            "169"
           ],
           "stories_since_audit": 0,
-          "open_findings": [
-            "Scene analysis still carries a broad ownership seam: `scene_analysis_v1/main.py` centralizes input resolution, scene-text extraction, batching, prompt construction, retry posture, QA, and artifact merge in one oversized module even after Story 161 reduced the long-form wait cliff."
-          ],
+          "open_findings": [],
           "manual_priority": "normal",
-          "last_result": "follow_up_story",
-          "last_summary": "Stories 159, 160, 161, and 162 cleared the concrete long-form runtime blockers in this domain and reduced the scene-analysis wait cliff, but they did not simplify the oversized scene-analysis ownership seam. `scene_analysis_v1/main.py` still owns batching, prompt assembly, LLM retry/escalation, QA, and artifact merge in a single file, so keep this as an open simplification finding rather than reopening the just-landed throughput stories."
+          "last_result": "clean",
+          "last_summary": "Story 163 removed the scene-analysis ownership seam that previously kept this domain open, and later domain-tagged product-truth stories 164-169 did not reintroduce a structural follow-up. Keep throughput and product-truth work separate from architecture-audit debt here unless a new ownership seam appears."
         },
         "api_service_and_operator_console": {
           "last_audited_at": "2026-04-11",
           "recent_story_refs": [
-            "148",
-            "156",
-            "157",
-            "158"
+            "168",
+            "169",
+            "170",
+            "171"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 8,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -12890,21 +13020,22 @@
           "last_audited_at": "2026-03-31",
           "recent_story_refs": [
             "141",
-            "144"
+            "144",
+            "148"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 1,
           "open_findings": [],
           "manual_priority": "normal"
         },
         "generation_and_visualization": {
           "last_audited_at": "2026-04-04",
           "recent_story_refs": [
-            "137",
-            "140",
-            "143",
-            "144"
+            "168",
+            "169",
+            "170",
+            "171"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 13,
           "open_findings": [],
           "manual_priority": "normal"
         }
@@ -12914,7 +13045,7 @@
   "validation": {
     "errors": [],
     "warnings": [
-      "Architecture audit domains due or carrying open findings: ingest_and_world_building"
+      "Architecture audit domains due or carrying open findings: generation_and_visualization"
     ]
   }
 }

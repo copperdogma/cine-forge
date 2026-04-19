@@ -669,9 +669,12 @@ function parseScoreSection(sectionLines) {
     .map((item) => ({
       model: String(item.model || "").trim(),
       measured: String(item.measured || "").trim(),
+      metrics: {
+        overall: parseNamedMetricValue(item.metrics, "overall"),
+      },
       note: summarizeText(String(item.note || "").trim(), 400),
     }))
-    .filter((item) => item.model || item.measured || item.note);
+    .filter((item) => item.model || item.measured || item.note || item.metrics.overall != null);
 }
 
 function latestItem(items, dateKey, fallbackKey) {
@@ -682,6 +685,37 @@ function latestItem(items, dateKey, fallbackKey) {
       (a, b) =>
         String(a[dateKey] || "").localeCompare(String(b[dateKey] || "")) ||
         String(a[fallbackKey] || "").localeCompare(String(b[fallbackKey] || "")),
+    )
+    .at(-1);
+}
+
+function parseNamedMetricValue(value, metricName) {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  const match = String(value || "").match(new RegExp(`\\b${metricName}:\\s*(null|-?\\d+(?:\\.\\d+)?)\\b`, "i"));
+  if (!match || match[1] === "null") return null;
+  const parsed = Number(match[1]);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function compareNullableNumbers(a, b) {
+  const leftMissing = a == null;
+  const rightMissing = b == null;
+  if (leftMissing && rightMissing) return 0;
+  if (leftMissing) return -1;
+  if (rightMissing) return 1;
+  return a - b;
+}
+
+function selectCurrentScore(scores) {
+  if (!scores.length) return null;
+  return scores
+    .slice()
+    .sort(
+      (a, b) =>
+        String(a.measured || "").localeCompare(String(b.measured || "")) ||
+        compareNullableNumbers(a.metrics?.overall ?? null, b.metrics?.overall ?? null) ||
+        String(a.model || "").localeCompare(String(b.model || "")) ||
+        String(a.note || "").localeCompare(String(b.note || "")),
     )
     .at(-1);
 }
@@ -752,6 +786,22 @@ function summarizeEvalActionability(evalRecord) {
           summary: latestScore?.note || "",
         },
   };
+}
+
+function collectDomainStoryUpdatesSinceAudit(stories, domainId, lastAuditedAt) {
+  const auditDate = parseDateOnlyUtc(lastAuditedAt);
+  if (!auditDate) return [];
+  return stories
+    .filter((story) => {
+      if (!story.architectureDomains.includes(domainId)) return false;
+      const storyDate = parseDateOnlyUtc(story.lastWorkLogEntry?.date);
+      return storyDate && storyDate.getTime() > auditDate.getTime();
+    })
+    .sort(
+      (a, b) =>
+        String(a.lastWorkLogEntry?.date || "").localeCompare(String(b.lastWorkLogEntry?.date || "")) ||
+        compareStoryRecords(a, b),
+    );
 }
 
 function selectStoryByPosture(stories, postureRank) {
@@ -984,7 +1034,7 @@ function parseEvalRegistry() {
     if (!current || !current.id) return;
     const topLevelRetryWhen = parseRetryWhenSection(collectSectionLines(block, "retry_when", 4));
     const attempts = parseAttemptSection(collectSectionLines(block, "attempts", 4));
-    const latestScore = latestItem(parseScoreSection(collectSectionLines(block, "scores", 4)), "measured", "model") || null;
+    const latestScore = selectCurrentScore(parseScoreSection(collectSectionLines(block, "scores", 4))) || null;
     const specRefs = uniqueSorted(current.spec_refs || [], compareSpecRefs);
     const storyIds = uniqueSorted(current.story_refs || [], compareStoryIdStrings);
     const categoryRefs = uniqueSorted(current.category_refs || [], compareSpecRefs);
@@ -1584,9 +1634,26 @@ function validateGraph(state, spec, stories, adrs, evals) {
   pushUnexpectedKeys(errors, (state.architecture_audits || {}).cadence || {}, VALID_STATE_AUDIT_CADENCE_KEYS, "state.architecture_audits.cadence");
   for (const [domainId, domainValue] of Object.entries(auditDomains)) {
     pushUnexpectedKeys(errors, domainValue, VALID_STATE_AUDIT_DOMAIN_KEYS, `state.architecture_audits.domains.${domainId}`);
+    if (typeof domainValue.last_audited_at !== "undefined" && !parseDateOnlyUtc(domainValue.last_audited_at)) {
+      errors.push(`state.architecture_audits.domains.${domainId}.last_audited_at must use YYYY-MM-DD`);
+    }
     const storyRefs = Array.isArray(domainValue.recent_story_refs) ? domainValue.recent_story_refs.map(String) : [];
     for (const storyRef of storyRefs) {
       if (!storyIds.has(storyRef)) errors.push(`state.architecture_audits.domains.${domainId}.recent_story_refs includes missing story ${storyRef}`);
+    }
+    const postAuditStories = collectDomainStoryUpdatesSinceAudit(stories, domainId, domainValue.last_audited_at);
+    const postAuditStoryIds = uniqueSorted(postAuditStories.map((story) => story.id), compareStoryIdStrings);
+    const storiesSinceAudit = Number.isFinite(domainValue.stories_since_audit) ? Number(domainValue.stories_since_audit) : null;
+    if (storiesSinceAudit !== null && storiesSinceAudit !== postAuditStoryIds.length) {
+      errors.push(
+        `state.architecture_audits.domains.${domainId}.stories_since_audit=${storiesSinceAudit} but found ${postAuditStoryIds.length} domain-tagged story updates after ${domainValue.last_audited_at}: ${postAuditStoryIds.join(", ") || "none"}`,
+      );
+    }
+    const latestPostAuditStoryId = postAuditStoryIds.at(-1) || null;
+    if (latestPostAuditStoryId && !storyRefs.includes(latestPostAuditStoryId)) {
+      errors.push(
+        `state.architecture_audits.domains.${domainId}.recent_story_refs is missing latest post-audit domain story: ${latestPostAuditStoryId}`,
+      );
     }
   }
 

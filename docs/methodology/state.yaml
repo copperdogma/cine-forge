@@ -408,36 +408,34 @@
     },
     "domains": {
       "methodology_tooling": {
-        "last_audited_at": "2026-04-04",
-        "recent_story_refs": ["145", "146", "147"],
+        "last_audited_at": "2026-04-18",
+        "recent_story_refs": ["145", "146", "147", "154", "172"],
         "stories_since_audit": 0,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Stories 145 and 146 completed the graph+state migration and legacy metadata backfill. Story 147 then aligned the remaining workflow semantics: problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation defaults, and inspectable blocked-story metadata."
+        "last_summary": "Stories 145-147 established the graph+state planning substrate, Story 154 hardened the methodology package, and Story 172 corrected eval-actionability score selection plus architecture-audit freshness validation. The methodology tooling lane is back to honest generated truth."
       },
       "driver_and_runtime": {
         "last_audited_at": "2026-03-02",
         "recent_story_refs": ["115", "116", "117"],
-        "stories_since_audit": 1,
+        "stories_since_audit": 0,
         "open_findings": [],
         "manual_priority": "normal"
       },
       "ingest_and_world_building": {
-        "last_audited_at": "2026-04-11",
-        "recent_story_refs": ["159", "160", "161", "162"],
+        "last_audited_at": "2026-04-18",
+        "recent_story_refs": ["163", "164", "165", "166", "167", "168", "169"],
         "stories_since_audit": 0,
-        "open_findings": [
-          "Scene analysis still carries a broad ownership seam: `scene_analysis_v1/main.py` centralizes input resolution, scene-text extraction, batching, prompt construction, retry posture, QA, and artifact merge in one oversized module even after Story 161 reduced the long-form wait cliff."
-        ],
+        "open_findings": [],
         "manual_priority": "normal",
-        "last_result": "follow_up_story",
-        "last_summary": "Stories 159, 160, 161, and 162 cleared the concrete long-form runtime blockers in this domain and reduced the scene-analysis wait cliff, but they did not simplify the oversized scene-analysis ownership seam. `scene_analysis_v1/main.py` still owns batching, prompt assembly, LLM retry/escalation, QA, and artifact merge in a single file, so keep this as an open simplification finding rather than reopening the just-landed throughput stories."
+        "last_result": "clean",
+        "last_summary": "Story 163 removed the scene-analysis ownership seam that previously kept this domain open, and later domain-tagged product-truth stories 164-169 did not reintroduce a structural follow-up. Keep throughput and product-truth work separate from architecture-audit debt here unless a new ownership seam appears."
       },
       "api_service_and_operator_console": {
         "last_audited_at": "2026-04-11",
-        "recent_story_refs": ["148", "156", "157", "158"],
-        "stories_since_audit": 0,
+        "recent_story_refs": ["168", "169", "170", "171"],
+        "stories_since_audit": 8,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
@@ -445,15 +443,15 @@
       },
       "creative_direction_and_chat": {
         "last_audited_at": "2026-03-31",
-        "recent_story_refs": ["141", "144"],
-        "stories_since_audit": 0,
+        "recent_story_refs": ["141", "144", "148"],
+        "stories_since_audit": 1,
         "open_findings": [],
         "manual_priority": "normal"
       },
       "generation_and_visualization": {
         "last_audited_at": "2026-04-04",
-        "recent_story_refs": ["137", "140", "143", "144"],
-        "stories_since_audit": 0,
+        "recent_story_refs": ["168", "169", "170", "171"],
+        "stories_since_audit": 13,
         "open_findings": [],
         "manual_priority": "normal"
       }

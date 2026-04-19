@@ -347,6 +347,68 @@ def test_methodology_graph_preserves_eval_description_and_top_level_retry_when(
     assert eval_record["actionability"]["retryTriggerStatus"] == "waiting"
 
 
+def test_methodology_graph_prefers_strongest_latest_eval_score_on_same_day(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: sample-eval
+            name: Sample Eval
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:11
+            compromise_refs: []
+            scores:
+              - model: "Sonnet 4.6"
+                metrics:
+                  overall: 0.959
+                measured: 2026-04-12
+                note: "Latest verified run stayed above target."
+              - model: "Sonnet 4.6"
+                metrics:
+                  overall: 0.913
+                measured: 2026-04-12
+                note: "Intermediate validation rerun dipped below target."
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    graph = json.loads(
+        (tmp_path / "docs" / "methodology" / "graph.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    eval_record = graph["evals"][0]
+    assert eval_record["latestScore"]["metrics"]["overall"] == 0.959
+    assert (
+        eval_record["latestScore"]["note"]
+        == "Latest verified run stayed above target."
+    )
+    assert (
+        eval_record["actionability"]["whyNow"]
+        == "Latest verified run stayed above target."
+    )
+    assert (
+        eval_record["actionability"]["lastRelevantAction"]["summary"]
+        == "Latest verified run stayed above target."
+    )
+
+
 def test_methodology_graph_renders_structured_current_execution_map(
     tmp_path: Path,
 ) -> None:
@@ -847,6 +909,159 @@ def test_methodology_graph_rejects_unrecognized_structured_state_keys(
     assert (
         "state.categories.spec:11.rogue_key is not a recognized structured state key"
         in result.stderr
+    )
+
+
+def test_methodology_graph_rejects_stale_architecture_audit_story_activity(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "stories" / "story-002-domain-follow-up.md",
+        """
+        ---
+        id: "002"
+        title: "Domain follow-up"
+        status: "Done"
+        priority: "Medium"
+        ideal_refs:
+          - "R14"
+        spec_refs:
+          - "spec:11"
+          - "spec:11.1"
+        adr_refs: []
+        depends_on: []
+        category_refs:
+          - "spec:11"
+        compromise_refs: []
+        input_coverage_refs: []
+        architecture_domains:
+          - "methodology_tooling"
+        roadmap_tags: []
+        legacy_system: ""
+        ---
+
+        # Story 002 — Domain follow-up
+
+        **Priority**: Medium
+        **Status**: Done
+        **Ideal Refs**: R14
+        **Spec Refs**: spec:11; spec:11.1
+        **ADR Refs**: None found after search
+        **Depends On**: None
+
+        ## Goal
+
+        Keep architecture audit state honest.
+
+        ## Acceptance Criteria
+
+        - [x] Domain-tagged story activity should force audit freshness updates.
+
+        ## Out of Scope
+
+        - None
+
+        ## Workflow Gates
+
+        - [x] Build complete: implementation finished, required checks run, and human summary shared
+        - [x] Validation complete or explicitly skipped by user
+        - [x] Story marked done via `/mark-story-done`
+
+        ## Blocker Summary
+
+        N/A
+
+        ## Blocker Evidence
+
+        N/A
+
+        ## Unblock Condition
+
+        N/A
+
+        ## Work Log
+
+        20260406-1200 — fixture: landed a post-audit methodology story.
+        Evidence=test-only temp repo. Next=refresh audit state
+        """,
+    )
+    _write(
+        tmp_path / "docs" / "methodology" / "state.yaml",
+        """
+        {
+          "categories": {
+            "spec:11": {
+              "product_need": "Execution clarity",
+              "tech_need": "Methodology substrate",
+              "substrate": "exists",
+              "phase": "hold",
+              "story_coverage": "partial",
+              "notes": []
+            }
+          },
+          "compromises": {},
+          "stories_index": {
+            "sections": []
+          },
+          "roadmap": {
+            "active_focus": [],
+            "sequencing_bias": [],
+            "campaigns": []
+          },
+          "architecture_audits": {
+            "cadence": {
+              "target_story_interval": 5
+            },
+            "domains": {
+              "methodology_tooling": {
+                "last_audited_at": "2026-04-04",
+                "recent_story_refs": ["001"],
+                "stories_since_audit": 0,
+                "open_findings": [],
+                "manual_priority": "normal",
+                "last_result": "clean",
+                "last_summary": "Audit ran before the follow-up story landed."
+              }
+            }
+          },
+          "ui_scout": {
+            "cadence": {
+              "max_days_without_run": 7
+            },
+            "last_run_at": "2026-04-04",
+            "last_run_story_id": "001",
+            "scenarios": {
+              "FP1": {
+                "label": "Canonical fixture",
+                "last_checked": "2026-04-04",
+                "latest_report": "report-001",
+                "status": "pass",
+                "follow_up_story_refs": []
+              }
+            }
+          }
+        }
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "print")
+
+    assert result.returncode == 1
+    assert (
+        "state.architecture_audits.domains.methodology_tooling.stories_since_audit="
+        "0 but found 1 domain-tagged story updates after 2026-04-04: 002"
+        in result.stderr
+    )
+    assert (
+        "state.architecture_audits.domains.methodology_tooling.recent_story_refs "
+        "is missing latest post-audit domain story: 002" in result.stderr
     )
 
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-18-02] — Restore methodology planning truth (Story 172)
+
+### Changed
+- Changed the methodology compiler to derive current eval actionability from deterministic latest-day score truth instead of incidental `scores:` ordering, so generated planning surfaces stop resurfacing already-green eval lines as the default next move
+- Changed methodology state and generated planning surfaces to keep architecture-audit freshness honest when later domain-tagged stories land, including clearing the disproven stale ingest audit finding
+
+### Fixed
+- Fixed Story 172 close-out validation by restoring the local UI toolchain in this worktree and rerunning the required frontend lint/typecheck gate before landing
+
 ## [2026-04-18-01] — Surface honest AI previz first-playable state (Story 171)
 
 ### Added
