@@ -229,7 +229,7 @@ PIPELINE_NODES: list[PipelineNode] = [
         implemented=True,
     ),
 
-    # --- Shots phase (future) ---
+    # --- Shots phase ---
     PipelineNode(
         id="shot_planning",
         label="Shot Planning",
@@ -238,14 +238,6 @@ PIPELINE_NODES: list[PipelineNode] = [
         check_mode="entity",
         dependencies=["scene_extraction"],
         implemented=True,
-    ),
-    PipelineNode(
-        id="coverage",
-        label="Coverage Analysis",
-        phase_id="shots",
-        artifact_types=["coverage_report"],
-        dependencies=["shot_planning"],
-        implemented=False,
     ),
 
     # --- Storyboards phase (future) ---
@@ -334,7 +326,7 @@ PIPELINE_PHASES: list[PipelinePhase] = [
         id="shots",
         label="Shots",
         icon="Camera",
-        node_ids=["shot_planning", "coverage"],
+        node_ids=["shot_planning"],
     ),
     PipelinePhase(
         id="storyboards",

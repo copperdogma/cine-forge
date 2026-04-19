@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-18-03] — Remove stale coverage graph node (Story 173)
+
+### Changed
+- Changed the shipped pipeline graph so the `shots` phase exposes only `shot_planning`, matching Story 025's contract that coverage adequacy lives inside `CoverageStrategy` rather than a parallel `coverage_report` stage
+- Changed methodology planning truth to record Story 173 and clear the `generation_and_visualization` architecture-audit finding once the stale graph node was actually removed
+
+### Fixed
+- Fixed the operator-visible API and pipeline bar so they no longer surface a fake `Coverage Analysis` capability that the real runtime never owned
+
 ## [2026-04-18-02] — Restore methodology planning truth (Story 172)
 
 ### Changed

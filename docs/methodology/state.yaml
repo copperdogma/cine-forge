@@ -449,11 +449,13 @@
         "manual_priority": "normal"
       },
       "generation_and_visualization": {
-        "last_audited_at": "2026-04-04",
-        "recent_story_refs": ["168", "169", "170", "171"],
-        "stories_since_audit": 13,
+        "last_audited_at": "2026-04-18",
+        "recent_story_refs": ["164", "165", "166", "167", "168", "169", "170", "171", "173"],
+        "stories_since_audit": 0,
         "open_findings": [],
-        "manual_priority": "normal"
+        "manual_priority": "normal",
+        "last_result": "clean",
+        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, and Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
       }
     }
   }

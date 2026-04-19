@@ -86,6 +86,13 @@ def test_every_node_belongs_to_a_phase() -> None:
         assert node.id in all_phase_nodes, f"Node '{node.id}' is not listed in any phase"
 
 
+@pytest.mark.unit
+def test_shots_phase_only_exposes_shot_planning() -> None:
+    shots_phase = _PHASE_MAP["shots"]
+    assert shots_phase.node_ids == ["shot_planning"]
+    assert "coverage" not in shots_phase.node_ids
+
+
 # ---------------------------------------------------------------------------
 # Status computation — empty store
 # ---------------------------------------------------------------------------
@@ -333,6 +340,10 @@ def test_compute_pipeline_graph_empty_store(tmp_path: Path) -> None:
     lf = next(n for n in graph["nodes"] if n["id"] == "look_and_feel")
     assert lf["status"] == "blocked"
 
+    shots_phase = next(p for p in graph["phases"] if p["id"] == "shots")
+    assert shots_phase["total_count"] == 1
+    assert not any(node["id"] == "coverage" for node in graph["nodes"])
+
     render = next(n for n in graph["nodes"] if n["id"] == "render")
     assert render["status"] == "blocked"
 
@@ -369,6 +380,7 @@ def test_compute_pipeline_graph_with_artifacts(tmp_path: Path) -> None:
     assert shot_planning["status"] == "available"
     assert storyboard_gen["status"] == "available"
     assert render["status"] == "available"
+    assert not any(node["id"] == "coverage" for node in graph["nodes"])
 
 
 @pytest.mark.unit

@@ -119,7 +119,7 @@
 **Phase:** climb
 
 **Story coverage:** partial
-**Stories:** 025, 026, 027, 056, 119, 120, 121, 130, 132, 137, 143, 144, 148, 149, 150, 151, 152, 153, 164, 165, 168, 169, 170, 171
+**Stories:** 025, 026, 027, 056, 119, 120, 121, 130, 132, 137, 143, 144, 148, 149, 150, 151, 152, 153, 164, 165, 168, 169, 170, 171, 173
 **ADR Refs:** ADR-002, ADR-003
 **Spec:** spec:6 (spec:6.1, spec:6.1.1, spec:6.1.2, spec:6.1.3, spec:6.1.4, spec:6.2, spec:6.2.1, spec:6.2.2, spec:6.3, spec:6.3.1, spec:6.3.2, spec:6.3.3, spec:6.3.4, spec:6.3.5, spec:6.4)
 **Absorbs:** Shot Planning & Visualization (old 6)

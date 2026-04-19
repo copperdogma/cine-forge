@@ -279,6 +279,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 |---|---|---|---|---|---|---|---|
 | 143 | AI-Generated Low-Fidelity Previz | High | Done | — | spec:6, spec:7, spec:10 | 028, 029, 030, 056, 119, 137, 140 | [story-143](stories/story-143-ai-generated-low-fidelity-previz.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | Medium | Done | — | spec:6, spec:7, spec:10 | 012, 013, 058 | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
+| 173 | Stale Coverage Graph Node Removal | Medium | Done | — | spec:6 | 025 | [story-173](stories/story-173-stale-coverage-graph-node-removal.md) |
 | 137 | Previz Fidelity Upgrade | Low | Done | — | spec:6, spec:7, spec:10 | 027, 028, 030 | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
 | 025 | Shot Planning | Unknown | Done | — | spec:6 | 011, 012, 013, 020, 021, 022 | [story-025](stories/story-025-shot-planning.md) |
 | 026 | Storyboard Generation (Optional) | Unknown | Done | — | spec:6, spec:10 | 013, 025 | [story-026](stories/story-026-storyboard-generation.md) |

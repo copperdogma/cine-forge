@@ -770,7 +770,8 @@
           "168",
           "169",
           "170",
-          "171"
+          "171",
+          "173"
         ],
         "adrIds": [
           "ADR-002",
@@ -10831,6 +10832,69 @@
           "summary": "completion: marked Story 172 done after rerunning the full"
         }
       }
+    },
+    {
+      "id": "173",
+      "title": "Stale Coverage Graph Node Removal",
+      "path": "docs/stories/story-173-stale-coverage-graph-node-removal.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "Execution Ideal",
+        "R12 (transparency & control)",
+        "R15 (changes propagate through the dependency graph)"
+      ],
+      "specRefs": [
+        "spec:6.1",
+        "spec:6.1.1",
+        "spec:6.1.4"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "025"
+      ],
+      "categoryRefs": [
+        "spec:6"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "architecture",
+        "cleanup",
+        "pipeline-graph",
+        "shot-planning"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260418-2145",
+        "date": "2026-04-18",
+        "summary": "completion: marked Story 173 done after validation confirmed"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "173",
+        "sourcePath": "docs/stories/story-173-stale-coverage-graph-node-removal.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: marked Story 173 done after validation confirmed",
+        "lastRelevantAction": {
+          "date": "2026-04-18",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-173-stale-coverage-graph-node-removal.md",
+          "summary": "completion: marked Story 173 done after validation confirmed"
+        }
+      }
     }
   ],
   "adrs": [
@@ -13028,24 +13092,29 @@
           "manual_priority": "normal"
         },
         "generation_and_visualization": {
-          "last_audited_at": "2026-04-04",
+          "last_audited_at": "2026-04-18",
           "recent_story_refs": [
+            "164",
+            "165",
+            "166",
+            "167",
             "168",
             "169",
             "170",
-            "171"
+            "171",
+            "173"
           ],
-          "stories_since_audit": 13,
+          "stories_since_audit": 0,
           "open_findings": [],
-          "manual_priority": "normal"
+          "manual_priority": "normal",
+          "last_result": "clean",
+          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, and Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
         }
       }
     }
   },
   "validation": {
     "errors": [],
-    "warnings": [
-      "Architecture audit domains due or carrying open findings: generation_and_visualization"
-    ]
+    "warnings": []
   }
 }

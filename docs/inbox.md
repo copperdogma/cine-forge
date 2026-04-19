@@ -15,3 +15,5 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
   still that AI-previz usefulness is plausible while runtime remains blocked.
 
 - Veo 3.1 Fast and Veo 3.1 both take multiple input images as reference, which will be useful when we start eval'ing final video models for final render.
+
+- Good full production approach using Higgsfield we may be able to glean from: https://x.com/PJaccetturo/status/2045180107971805578?s=20
