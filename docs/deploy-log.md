@@ -49,3 +49,4 @@ Entries:
 2026-04-16T17:19:26Z | 463 | failed | unknown | Remote-builder deploy stalled after image build/push start; no new Fly release appeared, old image remained active, attempt terminated after bounded wait
 2026-04-16T17:20:12Z | 4 | failed | unknown | Local-only retry failed immediately because Docker daemon was unavailable at unix:///Users/cam/.docker/run/docker.sock
 2026-04-16T17:30:10Z | 92 | success | partial | Remote-builder retry succeeded with heavily cached layers; production advanced to v2026.04.13-02; API smoke passed (health/recipes/projects/recent/changelog 200); browser UI smoke passed on home + /the-mariner-11 with 0 console errors and 1 CodeMirror warning
+2026-04-20T16:06:51Z | 158 | success | no | Remote-builder deploy from clean main after check-in; health version 2026.04.20-02; API smoke passed (health/recipes/projects/recent/changelog 200); browser UI smoke passed on home + /the-mariner-11 with 0 console errors and 1 CodeMirror warning

@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-04-20-03] — Record production deploy result
+
+### Changed
+- Changed deployment operations history to append the successful production deploy for version `2026.04.20-02`, preserving the latest timing and smoke-check evidence for future deploy recalibration
+
 ## [2026-04-20-02] — Record deploy timing history
 
 ### Changed
