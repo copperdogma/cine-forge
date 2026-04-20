@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-04-20-02] — Record deploy timing history
+
+### Changed
+- Changed deployment operations history to append the missing April 16 Fly.io attempts and successful retry so future deploy-duration recalibration uses complete timing evidence
+
 ## [2026-04-20-01] — Collapse imported-project previz prerequisites (Story 178)
 
 ### Added
