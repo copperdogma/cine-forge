@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from types import SimpleNamespace
 
+import opentimelineio as otio
 import pytest
 from fastapi.testclient import TestClient
 
@@ -16,6 +17,7 @@ from cine_forge.export.interchange_fcpxml import (
     build_narrative_interchange_export,
     render_fcpxml,
 )
+from cine_forge.export.interchange_otio import parse_otio, render_otio
 from cine_forge.schemas import (
     ArtifactMetadata,
     ProjectConfig,
@@ -232,6 +234,16 @@ def _seed_export_store(project_dir: Path) -> ArtifactStore:
     return store
 
 
+def _all_otio_markers(timeline: otio.schema.Timeline) -> list[otio.schema.Marker]:
+    return [
+        marker
+        for track in timeline.tracks
+        for clip in track
+        if isinstance(clip, otio.schema.Clip)
+        for marker in clip.markers
+    ]
+
+
 @pytest.mark.unit
 def test_build_narrative_interchange_export_contains_scene_boundaries_beats_and_character_changes(
     tmp_path: Path,
@@ -280,6 +292,57 @@ def test_render_fcpxml_contains_gap_sequence_and_marker_notes(tmp_path: Path) ->
     assert "Entrance: ELIAS" in marker_values
     assert "Exit: OWEN" in marker_values
     assert any("Color label" in marker.attrib.get("note", "") for marker in markers)
+
+
+@pytest.mark.unit
+def test_render_otio_round_trip_preserves_scene_and_annotation_metadata(tmp_path: Path) -> None:
+    store = _seed_export_store(tmp_path / "project")
+    payload = build_narrative_interchange_export(
+        store,
+        project_id="pressure-test",
+        project_title="Pressure Test",
+    )
+
+    timeline = parse_otio(render_otio(payload))
+
+    assert timeline.name == "Pressure Test"
+    assert timeline.metadata["cine_forge"]["project_id"] == "pressure-test"
+    clips = list(timeline.tracks[0])
+    assert [clip.name for clip in clips] == [scene.heading for scene in payload.scenes]
+    assert (
+        clips[0].metadata["cine_forge"]["scene"]["scene_ref"]["path"]
+        == payload.scenes[0].scene_ref.path
+    )
+
+    markers = _all_otio_markers(timeline)
+    marker_names = {marker.name for marker in markers}
+    assert "Scene 1" in marker_names
+    assert "Beat: warning" in marker_names
+    assert "Entrance: ELIAS" in marker_names
+    assert "Exit: OWEN" in marker_names
+
+    elias_marker = next(marker for marker in markers if marker.name == "Entrance: ELIAS")
+    assert elias_marker.metadata["cine_forge"]["annotation"]["kind"] == "character_entrance"
+    assert elias_marker.metadata["cine_forge"]["annotation"]["character_name"] == "ELIAS"
+    assert "first appears" in elias_marker.comment
+
+
+@pytest.mark.unit
+def test_otio_and_fcpxml_exports_preserve_the_same_annotation_labels(tmp_path: Path) -> None:
+    store = _seed_export_store(tmp_path / "project")
+    payload = build_narrative_interchange_export(
+        store,
+        project_id="pressure-test",
+        project_title="Pressure Test",
+    )
+
+    fcpxml_root = ET.fromstring(render_fcpxml(payload))
+    fcpxml_labels = {marker.attrib["value"] for marker in fcpxml_root.findall(".//marker")}
+
+    otio_timeline = parse_otio(render_otio(payload))
+    otio_labels = {marker.name for marker in _all_otio_markers(otio_timeline)}
+
+    assert otio_labels == fcpxml_labels
 
 
 @pytest.mark.unit
@@ -336,6 +399,13 @@ def test_export_routes_return_fcpxml_and_call_sheet_files(tmp_path: Path) -> Non
     assert "application/xml" in fcpxml_response.headers["content-type"]
     fcpxml_root = ET.fromstring(fcpxml_response.text)
     assert fcpxml_root.tag == "fcpxml"
+
+    otio_response = client.get(f"/api/projects/{project_id}/export/otio")
+    assert otio_response.status_code == 200
+    assert "application/json" in otio_response.headers["content-type"]
+    otio_timeline = parse_otio(otio_response.text)
+    assert otio_timeline.name == "Pressure Test"
+    assert "Scene 1" in {marker.name for marker in _all_otio_markers(otio_timeline)}
 
     pdf_response = client.get(f"/api/projects/{project_id}/export/pdf?layout=call-sheet")
     assert pdf_response.status_code == 200
@@ -436,3 +506,27 @@ def test_cli_handle_export_writes_fcpxml(tmp_path: Path, monkeypatch: pytest.Mon
     root = ET.fromstring(out_path.read_text(encoding="utf-8"))
     assert root.tag == "fcpxml"
     assert len(root.findall(".//marker")) >= 6
+
+
+@pytest.mark.unit
+def test_cli_handle_export_writes_otio(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    project_id = "cli-export-project"
+    project_path = tmp_path / "output" / project_id
+    _seed_export_store(project_path)
+    monkeypatch.chdir(tmp_path)
+
+    out_path = tmp_path / "exports" / "timeline.otio"
+    handle_export(
+        SimpleNamespace(
+            project=project_id,
+            format="otio",
+            scope="everything",
+            layout="report",
+            out=str(out_path),
+        )
+    )
+
+    assert out_path.exists()
+    timeline = parse_otio(out_path.read_text(encoding="utf-8"))
+    assert timeline.metadata["cine_forge"]["project_id"] == project_id
+    assert "Exit: OWEN" in {marker.name for marker in _all_otio_markers(timeline)}

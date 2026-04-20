@@ -14,6 +14,7 @@ from cine_forge.export.interchange_fcpxml import (
     build_narrative_interchange_export,
     render_fcpxml,
 )
+from cine_forge.export.interchange_otio import render_otio
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
 from cine_forge.export.project_loader import load_all_artifacts, load_project_title
@@ -131,14 +132,18 @@ def handle_export(args):
                 output_path=str(out_path)
             )
             print(f"Exported project report PDF to {out_path}")
-    elif args.format == "fcpxml":
+    elif args.format in {"fcpxml", "otio"}:
         payload = build_narrative_interchange_export(
             store,
             project_id=args.project,
             project_title=project_title,
         )
-        out_path.write_text(render_fcpxml(payload), encoding="utf-8")
-        print(f"Exported FCPXML interchange to {out_path}")
+        if args.format == "fcpxml":
+            out_path.write_text(render_fcpxml(payload), encoding="utf-8")
+            print(f"Exported FCPXML interchange to {out_path}")
+        else:
+            out_path.write_text(render_otio(payload), encoding="utf-8")
+            print(f"Exported OTIO interchange to {out_path}")
 
 def main():
     parser = argparse.ArgumentParser(description="CineForge CLI")
@@ -167,7 +172,7 @@ def main():
     export_parser = subparsers.add_parser("export", help="Export project artifacts")
     export_parser.add_argument("--project", required=True, help="Project ID")
     export_parser.add_argument(
-        "--format", required=True, choices=["markdown", "pdf", "fcpxml"],
+        "--format", required=True, choices=["markdown", "pdf", "fcpxml", "otio"],
         help="Export format"
     )
     export_parser.add_argument(

@@ -279,7 +279,7 @@
   },
   "stories_index": {
     "current_execution_map": {
-      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, and Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites. Reopened Story 152 is now the active current-scene follow-up: the fresh existing-clip validation rerun shows `39325 ms` first playable for full regenerate versus `17869 ms` for `start_from=ai_previz` reuse on the same shipped xAI lane, so the next move is to keep that distinction honest in the surfaced operator loop. The `spec:6` / `spec:7` lane remains runtime-blocking against the fast-previz detector, but the active blocker is iteration speed rather than provider choice.",
+      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, but the export-fidelity continuation is now landed too, so the next move returns to fresh triage instead of keeping another story artificially in progress.",
       "lanes": [
         {
           "id": "pending-ready",
@@ -434,12 +434,12 @@
       },
       "api_service_and_operator_console": {
         "last_audited_at": "2026-04-11",
-        "recent_story_refs": ["168", "169", "170", "171", "174", "175"],
-        "stories_since_audit": 10,
+        "recent_story_refs": ["169", "170", "171", "174", "175", "177"],
+        "stories_since_audit": 11,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
+        "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Story 177 adds a new export-carrier follow-up through the existing export modal / router seam but does not yet introduce a new operator-console ownership concern. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
       },
       "creative_direction_and_chat": {
         "last_audited_at": "2026-03-31",
@@ -450,12 +450,12 @@
       },
       "generation_and_visualization": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["164", "165", "166", "167", "168", "169", "170", "171", "173", "174", "175"],
-        "stories_since_audit": 2,
+        "recent_story_refs": ["165", "166", "167", "168", "169", "170", "171", "173", "174", "175", "177"],
+        "stories_since_audit": 3,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, and Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, and Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
       }
     }
   }

@@ -16,6 +16,7 @@ from cine_forge.export.interchange_fcpxml import (
     build_narrative_interchange_export,
     render_fcpxml,
 )
+from cine_forge.export.interchange_otio import render_otio
 from cine_forge.export.markdown import MarkdownExporter
 from cine_forge.export.pdf import PDFGenerator
 from cine_forge.export.project_loader import (
@@ -38,7 +39,7 @@ if TYPE_CHECKING:
 router = APIRouter(prefix="/projects/{project_id}/export", tags=["export"])
 
 ExportScope = Literal["everything", "scenes", "characters", "locations", "props", "single"]
-ExportFormat = Literal["markdown", "pdf", "call-sheet", "fountain", "docx"]
+ExportFormat = Literal["markdown", "pdf", "call-sheet", "fountain", "docx", "fcpxml", "otio"]
 
 _service: OperatorConsoleService | None = None
 _REPORT_EXPORT_PRECONDITION = (
@@ -251,17 +252,7 @@ def export_pdf(
 
 @router.get("/fcpxml")
 def export_fcpxml(project_id: str):
-    store = get_store(project_id)
-    project_title = load_project_title(store, project_id)
-
-    try:
-        payload = build_narrative_interchange_export(
-            store,
-            project_id=project_id,
-            project_title=project_title,
-        )
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    payload = _load_narrative_interchange_payload(project_id)
 
     xml_content = render_fcpxml(payload)
     return Response(
@@ -269,6 +260,18 @@ def export_fcpxml(project_id: str):
         media_type="application/xml",
         headers={
             "Content-Disposition": f"attachment; filename={project_id}-timeline.fcpxml"
+        },
+    )
+
+
+@router.get("/otio")
+def export_otio(project_id: str):
+    payload = _load_narrative_interchange_payload(project_id)
+    return Response(
+        content=render_otio(payload),
+        media_type="application/json",
+        headers={
+            "Content-Disposition": f"attachment; filename={project_id}-timeline.otio"
         },
     )
 
@@ -438,3 +441,16 @@ def export_costs_json(project_id: str, run_id: str | None = None):
         media_type="application/json",
         headers={"Content-Disposition": f"attachment; filename={filename}"},
     )
+
+
+def _load_narrative_interchange_payload(project_id: str):
+    store = get_store(project_id)
+    project_title = load_project_title(store, project_id)
+    try:
+        return build_narrative_interchange_export(
+            store,
+            project_id=project_id,
+            project_title=project_title,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc

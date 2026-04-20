@@ -6,6 +6,7 @@ export type ExportFormat =
   | 'pdf'
   | 'call-sheet'
   | 'fcpxml'
+  | 'otio'
   | 'fountain'
   | 'docx'
   | 'shot-list-csv'
@@ -47,6 +48,10 @@ export function getExportUrl(
 
   if (format === 'fcpxml') {
     return buildProjectExportUrl(projectId, 'fcpxml', params)
+  }
+
+  if (format === 'otio') {
+    return buildProjectExportUrl(projectId, 'otio', params)
   }
 
   if (format === 'docx') {
@@ -148,6 +153,8 @@ function defaultExportFilename(projectId: string, format: ExportFormat): string 
   switch (format) {
     case 'fcpxml':
       return `${projectId}-timeline.fcpxml`
+    case 'otio':
+      return `${projectId}-timeline.otio`
     case 'fountain':
       return `${projectId}.fountain`
     case 'docx':

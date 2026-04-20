@@ -87,6 +87,7 @@ export function ExportModal({
     pdf: 'PDF',
     'call-sheet': 'Call Sheet',
     fcpxml: 'FCPXML',
+    otio: 'OTIO',
     fountain: 'Fountain',
     docx: 'DOCX',
     'shot-list-csv': 'Shot List CSV',
@@ -182,7 +183,7 @@ export function ExportModal({
   const renderInterchangeExports = () => {
     const description = hasTimeline
       ? 'Timeline-backed interchange with scene markers, beats, character entrances/exits, and mood notes.'
-      : 'Run timeline generation first to enable FCPXML interchange export.'
+      : 'Run timeline generation first to enable OTIO and FCPXML interchange export.'
 
     return (
       <div className="space-y-3 pt-2">
@@ -193,13 +194,22 @@ export function ExportModal({
             {description}
           </p>
         </div>
-        <ExportButton className="w-full" onClick={() => handleDownload('fcpxml')} disabled={!hasTimeline}>
-          <FileCode className="mr-2 h-4 w-4" />
-          <div className="min-w-0 text-left">
-            <div className="font-medium text-sm">FCPXML</div>
-            <div className="text-xs text-muted-foreground">Narrative timeline interchange export</div>
-          </div>
-        </ExportButton>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <ExportButton onClick={() => handleDownload('otio')} disabled={!hasTimeline}>
+            <FileCode className="mr-2 h-4 w-4" />
+            <div className="min-w-0 text-left">
+              <div className="font-medium text-sm">OpenTimelineIO (.otio)</div>
+              <div className="text-xs text-muted-foreground">Resolve- and OTIO-native interchange</div>
+            </div>
+          </ExportButton>
+          <ExportButton onClick={() => handleDownload('fcpxml')} disabled={!hasTimeline}>
+            <FileCode className="mr-2 h-4 w-4" />
+            <div className="min-w-0 text-left">
+              <div className="font-medium text-sm">FCPXML</div>
+              <div className="text-xs text-muted-foreground">Final Cut Pro timeline interchange</div>
+            </div>
+          </ExportButton>
+        </div>
       </div>
     )
   }

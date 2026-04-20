@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-19-04] — Add OTIO narrative interchange export (Story 177)
+
+### Added
+- Added OpenTimelineIO (`.otio`) as a second narrative-aware interchange carrier on the shared `NarrativeInterchangeExport` payload path, including deterministic OTIO round-trip coverage
+
+### Changed
+- Changed the backend export flow, CLI, and Export Modal so OTIO ships through the same headless export seam and honest timeline-presence gating as `FCPXML`
+- Changed methodology planning truth to record Story 177 as a completed export-fidelity follow-up from Story 130
+
 ## [2026-04-19-03] — Refresh shipped previz regenerate truth (Story 152)
 
 ### Added
