@@ -418,15 +418,15 @@
       },
       "driver_and_runtime": {
         "last_audited_at": "2026-03-02",
-        "recent_story_refs": ["115", "116", "117"],
-        "stories_since_audit": 0,
+        "recent_story_refs": ["115", "116", "117", "183"],
+        "stories_since_audit": 1,
         "open_findings": [],
         "manual_priority": "normal"
       },
       "ingest_and_world_building": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["163", "164", "165", "166", "167", "168", "169"],
-        "stories_since_audit": 0,
+        "recent_story_refs": ["163", "164", "165", "166", "167", "168", "169", "183"],
+        "stories_since_audit": 1,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
@@ -434,8 +434,8 @@
       },
       "api_service_and_operator_console": {
         "last_audited_at": "2026-04-11",
-        "recent_story_refs": ["169", "170", "171", "174", "175", "177", "178", "179"],
-        "stories_since_audit": 13,
+        "recent_story_refs": ["169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182"],
+        "stories_since_audit": 16,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
@@ -450,8 +450,8 @@
       },
       "generation_and_visualization": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["165", "166", "167", "168", "169", "170", "171", "173", "174", "175", "177", "178"],
-        "stories_since_audit": 4,
+        "recent_story_refs": ["165", "166", "167", "168", "169", "170", "171", "173", "174", "175", "177", "178", "180", "181"],
+        "stories_since_audit": 6,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",

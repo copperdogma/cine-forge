@@ -129,6 +129,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 183 | Representative Deep Breakdown Runtime Truth Refresh | Medium | Pending | — | spec:2, spec:3, spec:8 | 155, 159, 160, 161, 162 | [story-183](stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | High | Done | — | spec:2, spec:3, spec:5, spec:8 | 008, 041 | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
@@ -225,6 +226,9 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 180 | Scene Workspace Entry Clarity and Tab Target Precision | High | Pending | — | spec:5, spec:6, spec:7 | 099, 170 | [story-180](stories/story-180-scene-workspace-entry-clarity.md) |
+| 181 | Post-Deep-Breakdown Next-Step Guidance | High | Pending | — | spec:5, spec:6, spec:7 | 156, 157 | [story-181](stories/story-181-post-deep-breakdown-next-step-guidance.md) |
+| 182 | Post-Analysis Chat Resource Failure Recovery | High | Pending | — | spec:1, spec:5, spec:9 | — | [story-182](stories/story-182-post-analysis-chat-resource-failure-recovery.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |

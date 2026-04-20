@@ -178,7 +178,8 @@
           "128",
           "131",
           "139",
-          "142"
+          "142",
+          "182"
         ],
         "adrIds": [
           "ADR-002",
@@ -277,7 +278,8 @@
           "148",
           "155",
           "161",
-          "163"
+          "163",
+          "183"
         ],
         "adrIds": [
           "ADR-003"
@@ -357,7 +359,8 @@
           "129",
           "159",
           "160",
-          "162"
+          "162",
+          "183"
         ],
         "adrIds": [
           "ADR-001",
@@ -659,7 +662,10 @@
           "175",
           "176",
           "178",
-          "179"
+          "179",
+          "180",
+          "181",
+          "182"
         ],
         "adrIds": [
           "ADR-002",
@@ -784,7 +790,9 @@
           "175",
           "176",
           "177",
-          "178"
+          "178",
+          "180",
+          "181"
         ],
         "adrIds": [
           "ADR-002",
@@ -871,7 +879,9 @@
           "175",
           "176",
           "177",
-          "178"
+          "178",
+          "180",
+          "181"
         ],
         "adrIds": [
           "ADR-002",
@@ -977,7 +987,8 @@
           "175",
           "176",
           "178",
-          "179"
+          "179",
+          "183"
         ],
         "adrIds": [
           "ADR-001",
@@ -1061,7 +1072,8 @@
           "086",
           "102",
           "126",
-          "131"
+          "131",
+          "182"
         ],
         "adrIds": [
           "ADR-002",
@@ -1414,32 +1426,32 @@
           "159",
           "160",
           "161",
-          "162"
+          "162",
+          "183"
         ],
         "evalIds": [
           "full-script-throughput"
         ],
         "actionability": {
-          "sourceKind": "eval",
-          "sourceId": "full-script-throughput",
-          "sourcePath": "docs/evals/registry.yaml",
-          "recommendedNow": false,
-          "posture": "no-trigger-recorded",
-          "whyNow": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…",
-          "retryTriggerStatus": "none",
-          "retryWhen": [],
+          "sourceKind": "story",
+          "sourceId": "183",
+          "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
+          "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
           "lastRelevantAction": {
-            "date": "2026-04-12",
-            "sourceType": "eval-score",
-            "source": "docs/evals/registry.yaml",
-            "summary": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…"
+            "date": "2026-04-20",
+            "sourceType": "story-work-log",
+            "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+            "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
           },
           "storyIds": [
             "155",
             "159",
             "160",
             "161",
-            "162"
+            "162",
+            "183"
           ],
           "evalIds": [
             "full-script-throughput"
@@ -1499,7 +1511,8 @@
           "160",
           "161",
           "162",
-          "169"
+          "169",
+          "183"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1507,19 +1520,17 @@
           "full-script-throughput"
         ],
         "actionability": {
-          "sourceKind": "eval",
-          "sourceId": "final-render-provider-floor",
-          "sourcePath": "docs/evals/registry.yaml",
-          "recommendedNow": false,
-          "posture": "no-trigger-recorded",
-          "whyNow": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime.",
-          "retryTriggerStatus": "none",
-          "retryWhen": [],
+          "sourceKind": "story",
+          "sourceId": "183",
+          "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
+          "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
           "lastRelevantAction": {
-            "date": "2026-04-16",
-            "sourceType": "eval-score",
-            "source": "docs/evals/registry.yaml",
-            "summary": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
+            "date": "2026-04-20",
+            "sourceType": "story-work-log",
+            "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+            "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
           },
           "storyIds": [
             "155",
@@ -1527,7 +1538,8 @@
             "160",
             "161",
             "162",
-            "169"
+            "169",
+            "183"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1549,30 +1561,30 @@
         },
         "storyIds": [
           "155",
-          "161"
+          "161",
+          "183"
         ],
         "evalIds": [
           "compromise-C4-two-tier-scenes",
           "full-script-throughput"
         ],
         "actionability": {
-          "sourceKind": "eval",
-          "sourceId": "full-script-throughput",
-          "sourcePath": "docs/evals/registry.yaml",
-          "recommendedNow": false,
-          "posture": "no-trigger-recorded",
-          "whyNow": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…",
-          "retryTriggerStatus": "none",
-          "retryWhen": [],
+          "sourceKind": "story",
+          "sourceId": "183",
+          "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
+          "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
           "lastRelevantAction": {
-            "date": "2026-04-12",
-            "sourceType": "eval-score",
-            "source": "docs/evals/registry.yaml",
-            "summary": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…"
+            "date": "2026-04-20",
+            "sourceType": "story-work-log",
+            "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+            "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
           },
           "storyIds": [
             "155",
-            "161"
+            "161",
+            "183"
           ],
           "evalIds": [
             "full-script-throughput",
@@ -11370,6 +11382,289 @@
           "summary": "story-done: closed Story 179 after production verification of"
         }
       }
+    },
+    {
+      "id": "180",
+      "title": "Scene Workspace Entry Clarity and Tab Target Precision",
+      "path": "docs/stories/story-180-scene-workspace-entry-clarity.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R11 (production readiness per scene)",
+        "R12 (radical transparency)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5.3",
+        "spec:5.5",
+        "spec:5.6",
+        "spec:6.1",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "099",
+        "170"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "navigation",
+        "pipeline-bar",
+        "scene-workspace",
+        "tab-targeting",
+        "ux"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260420-0000",
+        "date": "2026-04-20",
+        "summary": "story-created: captured the manual QA scene-entry confusion as a standalone `Pending` UX story instead of burying it under a generic \"Scene Workspace rethink.\" Evidence: `docs/inbox.md` QA notes, `ui/src/pages/SceneWork…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "180",
+        "sourcePath": "docs/stories/story-180-scene-workspace-entry-clarity.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "story-created: captured the manual QA scene-entry confusion as a standalone `Pending` UX story instead of burying it under a generic \"Scene Workspace rethink.\" Evidence: `docs/inbox.md` QA notes, `ui/src/pages/SceneWork…",
+        "lastRelevantAction": {
+          "date": "2026-04-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-180-scene-workspace-entry-clarity.md",
+          "summary": "story-created: captured the manual QA scene-entry confusion as a standalone `Pending` UX story instead of burying it under a generic \"Scene Workspace rethink.\" Evidence: `docs/inbox.md` QA notes, `ui/src/pages/SceneWork…"
+        }
+      }
+    },
+    {
+      "id": "181",
+      "title": "Post-Deep-Breakdown Next-Step Guidance",
+      "path": "docs/stories/story-181-post-deep-breakdown-next-step-guidance.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (radical transparency)",
+        "R5 (full spectrum of human involvement)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5.3",
+        "spec:5.4",
+        "spec:5.6",
+        "spec:6.1",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "156",
+        "157"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "chat",
+        "default-path",
+        "next-step-guidance",
+        "onboarding",
+        "ux"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260420-0001",
+        "date": "2026-04-20",
+        "summary": "story-created: split the post-Deep-Breakdown dead end into its own `Pending` story so it can be solved as chat/progress guidance rather than mixed with Scene Workspace layout fixes. Evidence: `docs/inbox.md` QA notes, `…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "181",
+        "sourcePath": "docs/stories/story-181-post-deep-breakdown-next-step-guidance.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "story-created: split the post-Deep-Breakdown dead end into its own `Pending` story so it can be solved as chat/progress guidance rather than mixed with Scene Workspace layout fixes. Evidence: `docs/inbox.md` QA notes, `…",
+        "lastRelevantAction": {
+          "date": "2026-04-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-181-post-deep-breakdown-next-step-guidance.md",
+          "summary": "story-created: split the post-Deep-Breakdown dead end into its own `Pending` story so it can be solved as chat/progress guidance rather than mixed with Scene Workspace layout fixes. Evidence: `docs/inbox.md` QA notes, `…"
+        }
+      }
+    },
+    {
+      "id": "182",
+      "title": "Post-Analysis Chat Resource Failure Recovery",
+      "path": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (radical transparency)",
+        "R14 (nothing is ever lost)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:1.6",
+        "spec:5.3",
+        "spec:5.6",
+        "spec:9.2"
+      ],
+      "adrIds": [
+        "ADR-002"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:1",
+        "spec:5",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "bug",
+        "chat",
+        "error-recovery",
+        "post-run",
+        "resilience"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260420-0002",
+        "date": "2026-04-20",
+        "summary": "story-created: preserved the post-run black-screen report as a concrete `Pending` resilience bug instead of assuming it is just more performance pain. Evidence: `docs/inbox.md` QA notes, `/api/projects/the-mariner-13/ch…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "182",
+        "sourcePath": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "story-created: preserved the post-run black-screen report as a concrete `Pending` resilience bug instead of assuming it is just more performance pain. Evidence: `docs/inbox.md` QA notes, `/api/projects/the-mariner-13/ch…",
+        "lastRelevantAction": {
+          "date": "2026-04-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
+          "summary": "story-created: preserved the post-run black-screen report as a concrete `Pending` resilience bug instead of assuming it is just more performance pain. Evidence: `docs/inbox.md` QA notes, `/api/projects/the-mariner-13/ch…"
+        }
+      }
+    },
+    {
+      "id": "183",
+      "title": "Representative Deep Breakdown Runtime Truth Refresh",
+      "path": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+      "status": "Pending",
+      "priority": "Medium",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (radical transparency)",
+        "R3 (perfect continuity)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:2.6",
+        "spec:3.4",
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "dependsOn": [
+        "155",
+        "159",
+        "160",
+        "161",
+        "162"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "driver_and_runtime",
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "deep-breakdown",
+        "detector",
+        "measurement",
+        "runtime",
+        "throughput"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260420-0003",
+        "date": "2026-04-20",
+        "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "183",
+        "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
+        "lastRelevantAction": {
+          "date": "2026-04-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+          "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -13536,9 +13831,10 @@
           "recent_story_refs": [
             "115",
             "116",
-            "117"
+            "117",
+            "183"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 1,
           "open_findings": [],
           "manual_priority": "normal"
         },
@@ -13551,9 +13847,10 @@
             "166",
             "167",
             "168",
-            "169"
+            "169",
+            "183"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 1,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -13569,9 +13866,12 @@
             "175",
             "177",
             "178",
-            "179"
+            "179",
+            "180",
+            "181",
+            "182"
           ],
-          "stories_since_audit": 13,
+          "stories_since_audit": 16,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -13604,9 +13904,11 @@
             "174",
             "175",
             "177",
-            "178"
+            "178",
+            "180",
+            "181"
           ],
-          "stories_since_audit": 4,
+          "stories_since_audit": 6,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",

@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-04-20-05] — Triage QA inbox into planning stories
+
+### Added
+- Added Story 180 for Scene Workspace entry clarity and tab-target precision, Story 181 for post-Deep-Breakdown next-step guidance, Story 182 for post-analysis chat failure recovery, and Story 183 for a refreshed Deep Breakdown runtime truth pass
+- Added Scout 021 as the durable watchlist home for final-render model and media-orchestration reference notes that should not become active backlog yet
+
+### Changed
+- Changed the inbox routing outcome so `docs/inbox.md` returns to `No live items.` after the QA notes were converted into concrete planning artifacts
+- Changed methodology planning truth and regenerated surfaces (`docs/stories.md`, `docs/build-map.md`, `docs/methodology/graph.json`) so the new stories and current architecture-audit counters are reflected consistently
+- Changed `docs/scout.md` to index both the previously unindexed Scout 020 and the new Scout 021
+
 ## [2026-04-20-04] — Add provider dependency health surface (Story 179)
 
 ### Added
