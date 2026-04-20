@@ -1763,6 +1763,7 @@ evals:
       - "174"
       - "175"
       - "176"
+      - "178"
     category_refs:
       - spec:4
       - spec:5
@@ -1788,32 +1789,39 @@ evals:
       metric: overall
       value: 1.0
       latency_ms_max: 6000
-      note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful scene-ready case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
+      note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful focus case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
 
     scores:
-      - model: "Current Shipped xAI Lane (First Pass + Regenerate, Still Runtime-Blocking)"
+      - model: "Current Shipped xAI Lane (Imported-Project First Pass + Regenerate, Still Runtime-Blocking)"
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
-          fastest_focus_ms: 65514
-          fastest_focus_prerequisite_ms: 47865
-          fastest_focus_ai_previz_ms: 17649
-          fastest_focus_full_completion_ms: 82137
-          fastest_regenerate_reuse_ms: 17869
-          fastest_regenerate_reuse_ai_previz_ms: 17869
-          fastest_regenerate_reuse_full_completion_ms: 20976
-          fastest_regenerate_reuse_post_playable_overhead_ms: 3107
-          fastest_regenerate_full_ms: 39325
-          fastest_regenerate_full_ai_previz_ms: 17962
-          fastest_regenerate_full_completion_ms: 43952
-          fastest_regenerate_full_post_playable_overhead_ms: 4627
-          fastest_total_ms: 82137
-        latency_ms: 65514
-        cost_usd: 0.046829
+          focus_route_kind: imported_project_first_pass
+          fastest_focus_ms: 37186
+          fastest_focus_prerequisite_ms: 19161
+          fastest_focus_ai_previz_ms: 18025
+          fastest_focus_full_completion_ms: 40198
+          fastest_raw_input_first_pass_ms: 109868
+          fastest_raw_input_first_pass_prerequisite_ms: 92216
+          fastest_imported_project_first_pass_ms: 37186
+          fastest_imported_project_first_pass_prerequisite_ms: 19161
+          fastest_imported_project_first_pass_ai_previz_ms: 18025
+          fastest_imported_project_first_pass_full_completion_ms: 40198
+          fastest_regenerate_reuse_ms: 18152
+          fastest_regenerate_reuse_ai_previz_ms: 18152
+          fastest_regenerate_reuse_full_completion_ms: 23446
+          fastest_regenerate_reuse_post_playable_overhead_ms: 5294
+          fastest_regenerate_full_ms: 39062
+          fastest_regenerate_full_ai_previz_ms: 18019
+          fastest_regenerate_full_completion_ms: 42523
+          fastest_regenerate_full_post_playable_overhead_ms: 3461
+          fastest_total_ms: 23446
+        latency_ms: 37186
+        cost_usd: 0.045703
         measured: 2026-04-19
-        git_sha: "e6e736a"
-        result_file: benchmarks/results/real-ai-previz-runtime-story-176-one-pass-provider-floor-2026-04-19.json
-        note: "Fresh 2026-04-19 shipped-lane runtime truth now covers both first pass and same-scene regenerate on the current xAI route. Story 176's one-pass provider-floor rerun still leaves xAI Grok Imagine first on identical `mvp_ingest_only` substrate at `65514 ms` first playable (`47865 ms` prerequisites + `17649 ms` isolated `ai_previz`; `82137 ms` full completion), versus `100929 ms` / `53064 ms` / `105506 ms` for Lite control and `100653 ms` / `52788 ms` / `107667 ms` for Veo Fast. Story 152's validation rerun in `benchmarks/results/real-ai-previz-runtime-story-152-xai-regenerate-2026-04-19.json` then measured same-scene full regeneration at `39325 ms` first playable (`21363 ms` pre-`ai_previz` + `17962 ms` isolated `ai_previz`; `43952 ms` full completion) and `start_from=ai_previz` reuse at `17869 ms` first playable / `20976 ms` full completion on the same shipped lane. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained in the runtime harness. The detector still stays runtime-blocking versus the Ideal `<=6000 ms` target, but the product truth is now sharper: the xAI lane ships because usefulness still clears `0.803`, while the warmed same-scene reuse loop is materially faster than rerunning from recipe start."
+        git_sha: "eac9018"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-178-first-pass-project-ready-2026-04-19.json
+        note: "Story 178 extended the maintained runtime harness with an explicit imported-project first-pass case so the active Scene Workspace route no longer inherits the raw-input bootstrap baseline. Fresh 2026-04-19 result `benchmarks/results/real-ai-previz-runtime-story-178-first-pass-project-ready-2026-04-19.{json,md}` keeps all four shipped-xAI cases successful and moves the focus route to `imported_project_first_pass`: `37186 ms` first playable (`19161 ms` prerequisites + `18025 ms` isolated `ai_previz`; `40198 ms` full completion) for the first clip on an already imported project, versus `109868 ms` (`92216 ms` prerequisites + `17652 ms` isolated `ai_previz`) for the raw-input bootstrap bundle, `39062 ms` for same-scene full regenerate, and `18152 ms` for `start_from=ai_previz` reuse. This is a `59.9%` prerequisite reduction versus the previous `47865 ms` focus baseline without changing the compiled previz prompt contract, so `previz-usefulness` did not need a rerun. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained in the runtime harness. The detector stays runtime-blocking versus the Ideal `<=6000 ms` target, but the surfaced first-pass truth is now sharper: imported-project first pass and warmed reuse are materially faster than the old raw-input bundle, while xAI remains the shipped lane because usefulness still clears `0.803`."
       - model: "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)"
         metrics:
           overall: 0.5
@@ -1958,6 +1966,9 @@ evals:
         note: "Story 150 pilot ran 3 real cases and then recovered the summary from completed run states after fixing a post-run fixture-path bug in the harness. All 3 cases succeeded, but none challenged the fast detector: shipped Lite 8s scene-ready was the best honest path at 270922 ms total (97846 ms prerequisites + 173076 ms ai-previz recipe), Fast 4s scene-ready was worse at 353687 ms, and Fast 4s ingest-only still needed 124929 ms. No semantic mismatches were present in the pilot subset; remaining failure is runtime-blocking."
 
     attempts:
+      - date: 2026-04-19
+        git_sha: "eac9018"
+        note: "Story 178 widened the maintained runtime harness with an explicit `imported_project_first_pass` case and reran the shipped xAI lane into `benchmarks/results/real-ai-previz-runtime-story-178-first-pass-project-ready-2026-04-19.{json,md}`. Result: the current-project first clip reached `37186 ms` first playable (`19161 ms` prerequisites + `18025 ms` isolated `ai_previz`; `40198 ms` full completion), while the preserved raw-input bootstrap case remained much slower at `109868 ms` / `92216 ms`, full regenerate landed at `39062 ms`, and `start_from=ai_previz` reuse landed at `18152 ms`. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the detector stays runtime-blocking versus `<=6000 ms`, but the maintained first-pass truth now follows the active imported-project route instead of the raw-input bootstrap bundle."
       - date: 2026-04-19
         git_sha: "e6e736a"
         note: "Fresh `/validate` reran Story 152's shipped-xAI regenerate compare into `benchmarks/results/real-ai-previz-runtime-story-152-xai-regenerate-2026-04-19.{json,md}`. Full regenerate from recipe start reached `39325 ms` first playable (`21363 ms` before `ai_previz` + `17962 ms` isolated `ai_previz`; `43952 ms` full completion), while `start_from=ai_previz` reuse reached `17869 ms` first playable / `20976 ms` full completion. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the result is still runtime-blocking versus the `<=6000 ms` detector, but it confirms the shipped reuse path still cuts same-scene first-playable latency by more than half versus full regenerate on the same warmed substrate."

@@ -24,6 +24,7 @@ class RuntimeEvalCase(BaseModel):
     prerequisite_mode: Literal["mvp_ingest_only", "scene_ready"] = "scene_ready"
     prerequisite_strategy: str | None = None
     recipe_mode: Literal["shipped", "patched"] = "shipped"
+    existing_project_state: bool = False
     existing_clip_state: bool = False
     requested_start_from: str | None = None
     ai_previz: AiPrevizStageOverride | None = None
@@ -59,6 +60,7 @@ class RuntimeCaseResult(BaseModel):
     resolution: str
     scene_id: str
     input_fixture: str
+    existing_project_state: bool = False
     existing_clip_state: bool = False
     requested_start_from: str | None = None
     attempt_index: int = Field(ge=1, default=1)
@@ -89,6 +91,7 @@ class RuntimeCaseAggregate(BaseModel):
     resolution: str
     scene_id: str
     input_fixture: str
+    existing_project_state: bool = False
     existing_clip_state: bool = False
     requested_start_from: str | None = None
     notes: str | None = None
@@ -154,6 +157,7 @@ def aggregate_attempts(attempts: list[RuntimeCaseResult]) -> list[RuntimeCaseAgg
                 resolution=template.resolution,
                 scene_id=template.scene_id,
                 input_fixture=template.input_fixture,
+                existing_project_state=template.existing_project_state,
                 existing_clip_state=template.existing_clip_state,
                 requested_start_from=template.requested_start_from,
                 notes=template.notes,
@@ -188,6 +192,13 @@ def summarize_results(
     focus_results = [
         result for result in successful if result.prerequisite_mode == focus_mode
     ] if focus_mode is not None else successful
+    imported_project_focus = [
+        result
+        for result in focus_results
+        if result.existing_project_state and not result.existing_clip_state
+    ]
+    if imported_project_focus:
+        focus_results = imported_project_focus
     fastest_focus = min(
         focus_results,
         key=lambda result: result.time_to_first_playable_ms,
@@ -216,6 +227,26 @@ def summarize_results(
     fastest_scene_ready_ai_previz = min(
         scene_ready,
         key=lambda result: result.ai_previz_elapsed_ms,
+        default=None,
+    )
+    raw_input_first_pass = [
+        result
+        for result in successful
+        if not result.existing_project_state and not result.existing_clip_state
+    ]
+    fastest_raw_input_first_pass = min(
+        raw_input_first_pass,
+        key=lambda result: result.time_to_first_playable_ms,
+        default=None,
+    )
+    imported_project_first_pass = [
+        result
+        for result in successful
+        if result.existing_project_state and not result.existing_clip_state
+    ]
+    fastest_imported_project_first_pass = min(
+        imported_project_first_pass,
+        key=lambda result: result.time_to_first_playable_ms,
         default=None,
     )
     regenerate_cases = [result for result in successful if result.existing_clip_state]
@@ -254,6 +285,7 @@ def summarize_results(
         "successful_case_ratio": round(len(successful) / len(results), 4),
         "fully_successful_cases": len([result for result in results if result.success]),
         "focus_prerequisite_mode": focus_mode,
+        "focus_route_kind": _focus_route_kind(fastest_focus),
         "fastest_focus_case_id": fastest_focus.case_id if fastest_focus else None,
         "fastest_focus_ms": (
             fastest_focus.time_to_first_playable_ms if fastest_focus else None
@@ -298,6 +330,44 @@ def summarize_results(
         "fastest_isolated_ai_previz_ms": (
             fastest_scene_ready_ai_previz.ai_previz_elapsed_ms
             if fastest_scene_ready_ai_previz
+            else None
+        ),
+        "fastest_raw_input_first_pass_case_id": (
+            fastest_raw_input_first_pass.case_id if fastest_raw_input_first_pass else None
+        ),
+        "fastest_raw_input_first_pass_ms": (
+            fastest_raw_input_first_pass.time_to_first_playable_ms
+            if fastest_raw_input_first_pass
+            else None
+        ),
+        "fastest_raw_input_first_pass_prerequisite_ms": (
+            fastest_raw_input_first_pass.prerequisite_elapsed_ms
+            if fastest_raw_input_first_pass
+            else None
+        ),
+        "fastest_imported_project_first_pass_case_id": (
+            fastest_imported_project_first_pass.case_id
+            if fastest_imported_project_first_pass
+            else None
+        ),
+        "fastest_imported_project_first_pass_ms": (
+            fastest_imported_project_first_pass.time_to_first_playable_ms
+            if fastest_imported_project_first_pass
+            else None
+        ),
+        "fastest_imported_project_first_pass_prerequisite_ms": (
+            fastest_imported_project_first_pass.prerequisite_elapsed_ms
+            if fastest_imported_project_first_pass
+            else None
+        ),
+        "fastest_imported_project_first_pass_ai_previz_ms": (
+            fastest_imported_project_first_pass.ai_previz_elapsed_ms
+            if fastest_imported_project_first_pass
+            else None
+        ),
+        "fastest_imported_project_first_pass_full_completion_ms": (
+            fastest_imported_project_first_pass.total_elapsed_ms
+            if fastest_imported_project_first_pass
             else None
         ),
         "fastest_regenerate_reuse_case_id": (
@@ -363,11 +433,22 @@ def _focus_prerequisite_mode(results: list[RuntimeCaseAggregate]) -> str | None:
     return sorted(modes)[0]
 
 
+def _focus_route_kind(result: RuntimeCaseAggregate | None) -> str | None:
+    if result is None:
+        return None
+    if result.existing_clip_state:
+        return "existing_clip"
+    if result.existing_project_state:
+        return "imported_project_first_pass"
+    return "raw_input_first_pass"
+
+
 def render_runtime_markdown(payload: dict[str, object]) -> str:
     summary = payload["summary"]
     cases = payload["cases"]
     focus_mode = summary.get("focus_prerequisite_mode") or "selected"
     focus_label = str(focus_mode).replace("_", " ")
+    focus_route_kind = summary.get("focus_route_kind") or "selected"
     lines = [
         "# Real AI Previz Runtime Eval",
         "",
@@ -378,6 +459,7 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
         f"- Successful cases: {summary['successful_cases']} / {summary['total_cases']}",
         f"- Fully successful cases: {summary['fully_successful_cases']} / {summary['total_cases']}",
         f"- Focus prerequisite mode: `{focus_mode}`",
+        f"- Focus route kind: `{focus_route_kind}`",
         f"- Fastest {focus_label} case: `{summary['fastest_focus_case_id']}`",
         f"- Fastest {focus_label} time to first playable: {summary['fastest_focus_ms']} ms",
         f"- Fastest {focus_label} prerequisites: {summary['fastest_focus_prerequisite_ms']} ms",
@@ -399,6 +481,36 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
             f"{summary['fastest_focus_isolated_ai_previz_ms']} ms"
         ),
     ]
+    if summary.get("fastest_imported_project_first_pass_case_id"):
+        lines.extend([
+            (
+                "- Fastest imported-project first-pass case: "
+                f"`{summary['fastest_imported_project_first_pass_case_id']}`"
+            ),
+            (
+                "- Fastest imported-project first-pass time to first playable: "
+                f"{summary['fastest_imported_project_first_pass_ms']} ms"
+            ),
+            (
+                "- Fastest imported-project first-pass prerequisites: "
+                f"{summary['fastest_imported_project_first_pass_prerequisite_ms']} ms"
+            ),
+        ])
+    if summary.get("fastest_raw_input_first_pass_case_id"):
+        lines.extend([
+            (
+                "- Fastest raw-input first-pass case: "
+                f"`{summary['fastest_raw_input_first_pass_case_id']}`"
+            ),
+            (
+                "- Fastest raw-input first-pass time to first playable: "
+                f"{summary['fastest_raw_input_first_pass_ms']} ms"
+            ),
+            (
+                "- Fastest raw-input first-pass prerequisites: "
+                f"{summary['fastest_raw_input_first_pass_prerequisite_ms']} ms"
+            ),
+        ])
     if summary.get("fastest_regenerate_reuse_case_id"):
         lines.extend([
             (
@@ -440,17 +552,29 @@ def render_runtime_markdown(payload: dict[str, object]) -> str:
         "## Cases",
         "",
         (
-            "| Case | Attempts | Mode | Strategy | Start | Engine Pack | Prompt | Prereqs | "
+            "| Case | Attempts | Substrate | Mode | Strategy | Start | "
+            "Engine Pack | Prompt | Prereqs | "
             "AI Previz ms | First playable ms | Full completion ms | "
             "Post-playable overhead | Success | Notes |"
         ),
-        "| --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+        (
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | "
+            "---: | ---: | ---: | ---: | --- | --- |"
+        ),
     ])
     for case in cases:
+        substrate = (
+            "existing clip"
+            if case.get("existing_clip_state")
+            else "imported project"
+            if case.get("existing_project_state")
+            else "raw input"
+        )
         lines.append(
             "| "
             f"{case['case_id']} | "
             f"{case['successful_attempts']}/{case['repeat_count']} | "
+            f"{substrate} | "
             f"{case['recipe_mode']} | "
             f"{case.get('prerequisite_strategy') or case['prerequisite_mode']} | "
             f"{case.get('requested_start_from') or 'recipe_start'} | "

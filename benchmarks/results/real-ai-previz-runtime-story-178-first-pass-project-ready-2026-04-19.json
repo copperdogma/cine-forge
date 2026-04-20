@@ -1,0 +1,762 @@
+{
+  "eval_id": "real-ai-previz-runtime",
+  "measured_at": "2026-04-20T04:17:01.518607+00:00",
+  "fixture_manifest": "benchmarks/fixtures/real_ai_previz_runtime_cases.json",
+  "target_fast_previz_ms": 6000,
+  "comparison_method": "shared_prerequisite_strategy_substrate",
+  "repeat_count": 1,
+  "summary": {
+    "overall": 0.5,
+    "successful_cases": 4,
+    "total_cases": 4,
+    "successful_case_ratio": 1.0,
+    "fully_successful_cases": 4,
+    "focus_prerequisite_mode": "mvp_ingest_only",
+    "focus_route_kind": "imported_project_first_pass",
+    "fastest_focus_case_id": "shipped_xai_4_480p_project_ready_first_pass",
+    "fastest_focus_ms": 37186,
+    "fastest_focus_prerequisite_ms": 19161,
+    "fastest_focus_ai_previz_ms": 18025,
+    "fastest_focus_full_completion_ms": 40198,
+    "fastest_focus_post_playable_overhead_ms": 3012,
+    "fastest_focus_ai_previz_case_id": "shipped_xai_4_480p_project_ready_first_pass",
+    "fastest_focus_isolated_ai_previz_ms": 18025,
+    "fastest_scene_ready_case_id": null,
+    "fastest_scene_ready_ms": null,
+    "fastest_scene_ready_prerequisite_ms": null,
+    "fastest_scene_ready_ai_previz_ms": null,
+    "fastest_scene_ready_full_completion_ms": null,
+    "fastest_scene_ready_post_playable_overhead_ms": null,
+    "fastest_scene_ready_ai_previz_case_id": null,
+    "fastest_isolated_ai_previz_ms": null,
+    "fastest_raw_input_first_pass_case_id": "shipped_xai_4_480p_mvp_ingest_only",
+    "fastest_raw_input_first_pass_ms": 109868,
+    "fastest_raw_input_first_pass_prerequisite_ms": 92216,
+    "fastest_imported_project_first_pass_case_id": "shipped_xai_4_480p_project_ready_first_pass",
+    "fastest_imported_project_first_pass_ms": 37186,
+    "fastest_imported_project_first_pass_prerequisite_ms": 19161,
+    "fastest_imported_project_first_pass_ai_previz_ms": 18025,
+    "fastest_imported_project_first_pass_full_completion_ms": 40198,
+    "fastest_regenerate_reuse_case_id": "shipped_xai_4_480p_regenerate_reuse",
+    "fastest_regenerate_reuse_ms": 18152,
+    "fastest_regenerate_reuse_ai_previz_ms": 18152,
+    "fastest_regenerate_reuse_full_completion_ms": 23446,
+    "fastest_regenerate_reuse_post_playable_overhead_ms": 5294,
+    "fastest_regenerate_full_case_id": "shipped_xai_4_480p_regenerate_full",
+    "fastest_regenerate_full_ms": 39062,
+    "fastest_regenerate_full_ai_previz_ms": 18019,
+    "fastest_regenerate_full_completion_ms": 42523,
+    "fastest_regenerate_full_post_playable_overhead_ms": 3461,
+    "fastest_total_case_id": "shipped_xai_4_480p_regenerate_reuse",
+    "fastest_total_ms": 23446,
+    "target_fast_previz_ms": 6000
+  },
+  "cases": [
+    {
+      "case_id": "shipped_xai_4_480p_mvp_ingest_only",
+      "label": "Shipped Grok Imagine 4s 480p one-pass previz-prep baseline",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": false,
+      "existing_clip_state": false,
+      "requested_start_from": "ai_previz",
+      "notes": "Story 176 shipped baseline: MVP ingest plus a single on-demand shot-planning pass routed through xAI Grok Imagine without the full creative_direction chain.",
+      "repeat_count": 1,
+      "successful_attempts": 1,
+      "success": true,
+      "prerequisite_elapsed_ms": 92216,
+      "ai_previz_elapsed_ms": 17652,
+      "time_to_first_playable_ms": 109868,
+      "post_playable_overhead_ms": 3746,
+      "total_elapsed_ms": 113614,
+      "min_time_to_first_playable_ms": 109868,
+      "max_time_to_first_playable_ms": 109868,
+      "min_total_elapsed_ms": 113614,
+      "max_total_elapsed_ms": 113614,
+      "min_ai_previz_elapsed_ms": 17652,
+      "max_ai_previz_elapsed_ms": 17652
+    },
+    {
+      "case_id": "shipped_xai_4_480p_project_ready_first_pass",
+      "label": "Shipped Grok Imagine 4s 480p imported-project first pass",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "project_ready_first_pass",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": true,
+      "existing_clip_state": false,
+      "requested_start_from": null,
+      "notes": "Current Scene Workspace first clip on an already imported project: reuse healthy ingest artifacts, then auto-build shot planning before xAI previz.",
+      "repeat_count": 1,
+      "successful_attempts": 1,
+      "success": true,
+      "prerequisite_elapsed_ms": 19161,
+      "ai_previz_elapsed_ms": 18025,
+      "time_to_first_playable_ms": 37186,
+      "post_playable_overhead_ms": 3012,
+      "total_elapsed_ms": 40198,
+      "min_time_to_first_playable_ms": 37186,
+      "max_time_to_first_playable_ms": 37186,
+      "min_total_elapsed_ms": 40198,
+      "max_total_elapsed_ms": 40198,
+      "min_ai_previz_elapsed_ms": 18025,
+      "max_ai_previz_elapsed_ms": 18025
+    },
+    {
+      "case_id": "shipped_xai_4_480p_regenerate_full",
+      "label": "Shipped Grok Imagine 4s 480p existing-clip full regenerate",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "existing_clip_full_regenerate",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": false,
+      "existing_clip_state": true,
+      "requested_start_from": null,
+      "notes": "Current shipped xAI lane with a healthy shot plan and prior AI previz clip already present, but measured from recipe start to capture the full-regenerate penalty during same-scene iteration.",
+      "repeat_count": 1,
+      "successful_attempts": 1,
+      "success": true,
+      "prerequisite_elapsed_ms": 21043,
+      "ai_previz_elapsed_ms": 18019,
+      "time_to_first_playable_ms": 39062,
+      "post_playable_overhead_ms": 3461,
+      "total_elapsed_ms": 42523,
+      "min_time_to_first_playable_ms": 39062,
+      "max_time_to_first_playable_ms": 39062,
+      "min_total_elapsed_ms": 42523,
+      "max_total_elapsed_ms": 42523,
+      "min_ai_previz_elapsed_ms": 18019,
+      "max_ai_previz_elapsed_ms": 18019
+    },
+    {
+      "case_id": "shipped_xai_4_480p_regenerate_reuse",
+      "label": "Shipped Grok Imagine 4s 480p existing-clip reuse regenerate",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "existing_clip_reuse_regenerate",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": false,
+      "existing_clip_state": true,
+      "requested_start_from": "ai_previz",
+      "notes": "Current shipped xAI lane with a healthy shot plan and prior AI previz clip already present, reusing start_from=ai_previz to measure the honest regenerate loop.",
+      "repeat_count": 1,
+      "successful_attempts": 1,
+      "success": true,
+      "prerequisite_elapsed_ms": 0,
+      "ai_previz_elapsed_ms": 18152,
+      "time_to_first_playable_ms": 18152,
+      "post_playable_overhead_ms": 5294,
+      "total_elapsed_ms": 23446,
+      "min_time_to_first_playable_ms": 18152,
+      "max_time_to_first_playable_ms": 18152,
+      "min_total_elapsed_ms": 23446,
+      "max_total_elapsed_ms": 23446,
+      "min_ai_previz_elapsed_ms": 18152,
+      "max_ai_previz_elapsed_ms": 18152
+    }
+  ],
+  "attempts": [
+    {
+      "case_id": "shipped_xai_4_480p_mvp_ingest_only",
+      "label": "Shipped Grok Imagine 4s 480p one-pass previz-prep baseline",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "one_pass_previz_prep",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": false,
+      "existing_clip_state": false,
+      "requested_start_from": "ai_previz",
+      "attempt_index": 1,
+      "notes": "Story 176 shipped baseline: MVP ingest plus a single on-demand shot-planning pass routed through xAI Grok Imagine without the full creative_direction chain.",
+      "project_dir": "output/eval-real-ai-previz-shipped_xai_4_480p_mvp_ingest_only-r1-2d71e3",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 92216,
+      "ai_previz_elapsed_ms": 17652,
+      "time_to_first_playable_ms": 109868,
+      "post_playable_overhead_ms": 3746,
+      "total_elapsed_ms": 113614,
+      "prerequisite_runs": [
+        {
+          "run_id": "shipped_xai_4_480p_mvp_ingest_only-shared-1-recipe-mvp-ingest-2390",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 21383,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.03135538,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 4,
+            "normalize": 11,
+            "breakdown_scenes": 1283,
+            "script_bible": 4994,
+            "project_config": 16299
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_002/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        },
+        {
+          "run_id": "shipped_xai_4_480p_mvp_ingest_only-shared-1-planning-8c61",
+          "recipe_id": "ai_previz_generation",
+          "elapsed_ms": 70597,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.218638,
+          "stage_statuses": {
+            "timeline": "done",
+            "tracks": "done",
+            "shot_planning": "done",
+            "ai_previz": "pending",
+            "validate_media": "pending"
+          },
+          "stage_durations_ms": {
+            "timeline": 3,
+            "tracks": 3,
+            "shot_planning": 70526,
+            "ai_previz": 0,
+            "validate_media": 0
+          },
+          "artifact_counts": {
+            "timeline": 2,
+            "track_manifest": 2,
+            "shot_plan": 1
+          },
+          "artifact_paths": {
+            "timeline": "artifacts/timeline/project/v1.json",
+            "track_manifest": "artifacts/track_manifest/project/v1.json",
+            "shot_plan": "artifacts/shot_plan/scene_001/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "shipped_xai_4_480p_mvp_ingest_only-ai-previz-r1-2883",
+        "recipe_id": "ai_previz_generation",
+        "elapsed_ms": 21398,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0016228,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "ai_previz": 17652,
+          "validate_media": 3675
+        },
+        "artifact_counts": {
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v3.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "shipped_xai_4_480p_project_ready_first_pass",
+      "label": "Shipped Grok Imagine 4s 480p imported-project first pass",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "project_ready_first_pass",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": true,
+      "existing_clip_state": false,
+      "requested_start_from": null,
+      "attempt_index": 1,
+      "notes": "Current Scene Workspace first clip on an already imported project: reuse healthy ingest artifacts, then auto-build shot planning before xAI previz.",
+      "project_dir": "output/eval-real-ai-previz-shipped_xai_4_480p_project_ready_first_pass-r1-459e64",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 19161,
+      "ai_previz_elapsed_ms": 18025,
+      "time_to_first_playable_ms": 37186,
+      "post_playable_overhead_ms": 3012,
+      "total_elapsed_ms": 40198,
+      "prerequisite_runs": [
+        {
+          "run_id": "shipped_xai_4_480p_project_ready_first_pass-shared-1-recipe-mvp-ingest-6530",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 21609,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.03256538,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 3,
+            "normalize": 8,
+            "breakdown_scenes": 1748,
+            "script_bible": 4652,
+            "project_config": 16885
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_004/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "shipped_xai_4_480p_project_ready_first_pass-ai-previz-r1-2e5e",
+        "recipe_id": "ai_previz_generation",
+        "elapsed_ms": 40198,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0131372,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 4,
+          "tracks": 3,
+          "shot_planning": 19154,
+          "ai_previz": 18025,
+          "validate_media": 2942
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+          "media_validation": "artifacts/media_validation/scene_001/v1.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v1.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v1.json"
+    },
+    {
+      "case_id": "shipped_xai_4_480p_regenerate_full",
+      "label": "Shipped Grok Imagine 4s 480p existing-clip full regenerate",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "existing_clip_full_regenerate",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": false,
+      "existing_clip_state": true,
+      "requested_start_from": null,
+      "attempt_index": 1,
+      "notes": "Current shipped xAI lane with a healthy shot plan and prior AI previz clip already present, but measured from recipe start to capture the full-regenerate penalty during same-scene iteration.",
+      "project_dir": "output/eval-real-ai-previz-shipped_xai_4_480p_regenerate_full-r1-eef8b4",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 21043,
+      "ai_previz_elapsed_ms": 18019,
+      "time_to_first_playable_ms": 39062,
+      "post_playable_overhead_ms": 3461,
+      "total_elapsed_ms": 42523,
+      "prerequisite_runs": [
+        {
+          "run_id": "shipped_xai_4_480p_regenerate_full-shared-1-recipe-mvp-ingest-bde6",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 21177,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.03230418,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 3,
+            "normalize": 8,
+            "breakdown_scenes": 2440,
+            "script_bible": 4647,
+            "project_config": 16454
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_002/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        },
+        {
+          "run_id": "shipped_xai_4_480p_regenerate_full-shared-1-planning-233a",
+          "recipe_id": "ai_previz_generation",
+          "elapsed_ms": 75982,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.2251826,
+          "stage_statuses": {
+            "timeline": "done",
+            "tracks": "done",
+            "shot_planning": "done",
+            "ai_previz": "pending",
+            "validate_media": "pending"
+          },
+          "stage_durations_ms": {
+            "timeline": 4,
+            "tracks": 3,
+            "shot_planning": 75911,
+            "ai_previz": 0,
+            "validate_media": 0
+          },
+          "artifact_counts": {
+            "timeline": 2,
+            "track_manifest": 2,
+            "shot_plan": 1
+          },
+          "artifact_paths": {
+            "timeline": "artifacts/timeline/project/v1.json",
+            "track_manifest": "artifacts/track_manifest/project/v1.json",
+            "shot_plan": "artifacts/shot_plan/scene_001/v1.json"
+          }
+        },
+        {
+          "run_id": "shipped_xai_4_480p_regenerate_full-shared-1-seed-267d",
+          "recipe_id": "ai_previz_generation",
+          "elapsed_ms": 21760,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.0016476,
+          "stage_statuses": {
+            "timeline": "pending",
+            "tracks": "pending",
+            "shot_planning": "pending",
+            "ai_previz": "done",
+            "validate_media": "done"
+          },
+          "stage_durations_ms": {
+            "timeline": 0,
+            "tracks": 0,
+            "shot_planning": 0,
+            "ai_previz": 17961,
+            "validate_media": 3714
+          },
+          "artifact_counts": {
+            "ai_previz_prompt": 1,
+            "ai_previz_video": 1,
+            "track_manifest": 1,
+            "media_validation": 1
+          },
+          "artifact_paths": {
+            "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+            "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+            "track_manifest": "artifacts/track_manifest/project/v3.json",
+            "media_validation": "artifacts/media_validation/scene_001/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "shipped_xai_4_480p_regenerate_full-ai-previz-r1-6a37",
+        "recipe_id": "ai_previz_generation",
+        "elapsed_ms": 42523,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0127348,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 3,
+          "tracks": 3,
+          "shot_planning": 21037,
+          "ai_previz": 18019,
+          "validate_media": 3396
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 1,
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v3.json",
+          "track_manifest": "artifacts/track_manifest/project/v4.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v2.json",
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v2.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v2.json",
+          "media_validation": "artifacts/media_validation/scene_001/v2.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v2.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v2.json"
+    },
+    {
+      "case_id": "shipped_xai_4_480p_regenerate_reuse",
+      "label": "Shipped Grok Imagine 4s 480p existing-clip reuse regenerate",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "existing_clip_reuse_regenerate",
+      "recipe_mode": "shipped",
+      "engine_pack_id": "xai_grok_imagine_video",
+      "prompt_profile": "standard",
+      "duration_seconds": 4,
+      "resolution": "480p",
+      "scene_id": "scene_001",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "existing_project_state": false,
+      "existing_clip_state": true,
+      "requested_start_from": "ai_previz",
+      "attempt_index": 1,
+      "notes": "Current shipped xAI lane with a healthy shot plan and prior AI previz clip already present, reusing start_from=ai_previz to measure the honest regenerate loop.",
+      "project_dir": "output/eval-real-ai-previz-shipped_xai_4_480p_regenerate_reuse-r1-f7ed80",
+      "success": true,
+      "error": null,
+      "prerequisite_elapsed_ms": 0,
+      "ai_previz_elapsed_ms": 18152,
+      "time_to_first_playable_ms": 18152,
+      "post_playable_overhead_ms": 5294,
+      "total_elapsed_ms": 23446,
+      "prerequisite_runs": [
+        {
+          "run_id": "shipped_xai_4_480p_regenerate_full-shared-1-recipe-mvp-ingest-bde6",
+          "recipe_id": "mvp_ingest",
+          "elapsed_ms": 21177,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.03230418,
+          "stage_statuses": {
+            "ingest": "done",
+            "normalize": "done",
+            "breakdown_scenes": "done",
+            "script_bible": "done",
+            "project_config": "done"
+          },
+          "stage_durations_ms": {
+            "ingest": 3,
+            "normalize": 8,
+            "breakdown_scenes": 2440,
+            "script_bible": 4647,
+            "project_config": 16454
+          },
+          "artifact_counts": {
+            "raw_input": 1,
+            "canonical_script": 1,
+            "scene": 8,
+            "scene_index": 1,
+            "script_bible": 1,
+            "project_config": 1
+          },
+          "artifact_paths": {
+            "raw_input": "artifacts/raw_input/project/v1.json",
+            "canonical_script": "artifacts/canonical_script/project/v1.json",
+            "scene": "artifacts/scene/scene_002/v1.json",
+            "scene_index": "artifacts/scene_index/project/v1.json",
+            "script_bible": "artifacts/script_bible/project/v1.json",
+            "project_config": "artifacts/project_config/project/v1.json"
+          }
+        },
+        {
+          "run_id": "shipped_xai_4_480p_regenerate_full-shared-1-planning-233a",
+          "recipe_id": "ai_previz_generation",
+          "elapsed_ms": 75982,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.2251826,
+          "stage_statuses": {
+            "timeline": "done",
+            "tracks": "done",
+            "shot_planning": "done",
+            "ai_previz": "pending",
+            "validate_media": "pending"
+          },
+          "stage_durations_ms": {
+            "timeline": 4,
+            "tracks": 3,
+            "shot_planning": 75911,
+            "ai_previz": 0,
+            "validate_media": 0
+          },
+          "artifact_counts": {
+            "timeline": 2,
+            "track_manifest": 2,
+            "shot_plan": 1
+          },
+          "artifact_paths": {
+            "timeline": "artifacts/timeline/project/v1.json",
+            "track_manifest": "artifacts/track_manifest/project/v1.json",
+            "shot_plan": "artifacts/shot_plan/scene_001/v1.json"
+          }
+        },
+        {
+          "run_id": "shipped_xai_4_480p_regenerate_full-shared-1-seed-267d",
+          "recipe_id": "ai_previz_generation",
+          "elapsed_ms": 21760,
+          "success": true,
+          "error": null,
+          "total_cost_usd": 0.0016476,
+          "stage_statuses": {
+            "timeline": "pending",
+            "tracks": "pending",
+            "shot_planning": "pending",
+            "ai_previz": "done",
+            "validate_media": "done"
+          },
+          "stage_durations_ms": {
+            "timeline": 0,
+            "tracks": 0,
+            "shot_planning": 0,
+            "ai_previz": 17961,
+            "validate_media": 3714
+          },
+          "artifact_counts": {
+            "ai_previz_prompt": 1,
+            "ai_previz_video": 1,
+            "track_manifest": 1,
+            "media_validation": 1
+          },
+          "artifact_paths": {
+            "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v1.json",
+            "ai_previz_video": "artifacts/ai_previz_video/scene_001/v1.json",
+            "track_manifest": "artifacts/track_manifest/project/v3.json",
+            "media_validation": "artifacts/media_validation/scene_001/v1.json"
+          }
+        }
+      ],
+      "ai_previz_run": {
+        "run_id": "shipped_xai_4_480p_regenerate_reuse-ai-previz-r1-27e7",
+        "recipe_id": "ai_previz_generation",
+        "elapsed_ms": 23446,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.00163,
+        "stage_statuses": {
+          "timeline": "pending",
+          "tracks": "pending",
+          "shot_planning": "pending",
+          "ai_previz": "done",
+          "validate_media": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 0,
+          "tracks": 0,
+          "shot_planning": 0,
+          "ai_previz": 18152,
+          "validate_media": 5232
+        },
+        "artifact_counts": {
+          "ai_previz_prompt": 1,
+          "ai_previz_video": 1,
+          "track_manifest": 1,
+          "media_validation": 1
+        },
+        "artifact_paths": {
+          "ai_previz_prompt": "artifacts/ai_previz_prompt/scene_001/v2.json",
+          "ai_previz_video": "artifacts/ai_previz_video/scene_001/v2.json",
+          "track_manifest": "artifacts/track_manifest/project/v4.json",
+          "media_validation": "artifacts/media_validation/scene_001/v2.json"
+        }
+      },
+      "ai_previz_artifact_path": "artifacts/ai_previz_video/scene_001/v2.json",
+      "media_validation_path": "artifacts/media_validation/scene_001/v2.json"
+    }
+  ]
+}

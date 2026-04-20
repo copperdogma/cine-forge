@@ -26,13 +26,15 @@ def _case_result(
     post_playable_overhead_ms: int,
     total_elapsed_ms: int,
     error: str | None = None,
+    prerequisite_mode: str = "scene_ready",
+    existing_project_state: bool = False,
     existing_clip_state: bool = False,
     requested_start_from: str | None = None,
 ) -> object:
     return runtime_support.RuntimeCaseResult(
         case_id=case_id,
         label=case_id,
-        prerequisite_mode="scene_ready",
+        prerequisite_mode=prerequisite_mode,
         recipe_mode="patched",
         engine_pack_id="fixture_pack",
         prompt_profile="standard",
@@ -40,6 +42,7 @@ def _case_result(
         resolution="720p",
         scene_id="scene_001",
         input_fixture="tests/fixtures/sample_screenplay.fountain",
+        existing_project_state=existing_project_state,
         existing_clip_state=existing_clip_state,
         requested_start_from=requested_start_from,
         attempt_index=attempt_index,
@@ -93,12 +96,21 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
                         "existing_clip_state": True,
                         "requested_start_from": "ai_previz",
                     },
+                    {
+                        "case_id": "xai_project_ready_first_pass",
+                        "label": "xAI imported-project first pass",
+                        "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+                        "scene_id": "scene_001",
+                        "prerequisite_mode": "mvp_ingest_only",
+                        "recipe_mode": "shipped",
+                        "existing_project_state": True,
+                    },
                 ]
             }
         )
     )
 
-    assert len(manifest.cases) == 3
+    assert len(manifest.cases) == 4
     assert manifest.cases[0].recipe_mode == "shipped"
     assert manifest.cases[0].ai_previz is None
     assert manifest.cases[1].prerequisite_mode == "mvp_ingest_only"
@@ -108,6 +120,8 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
     assert manifest.cases[1].ai_previz.prompt_profile == "compact"
     assert manifest.cases[2].existing_clip_state is True
     assert manifest.cases[2].requested_start_from == "ai_previz"
+    assert manifest.cases[3].existing_project_state is True
+    assert manifest.cases[3].existing_clip_state is False
 
 
 @pytest.mark.unit
@@ -328,6 +342,52 @@ def test_summarize_results_uses_one_pass_focus_when_only_ingest_only_cases_are_s
     assert summary["fastest_focus_isolated_ai_previz_ms"] == 22_000
     assert summary["fastest_scene_ready_case_id"] is None
     assert summary["overall"] == 0.5
+
+
+@pytest.mark.unit
+def test_summarize_results_prefers_imported_project_first_pass_within_one_pass_focus() -> None:
+    aggregates = runtime_support.aggregate_attempts([
+        _case_result(
+            case_id="shipped_xai_4_480p_mvp_ingest_only",
+            attempt_index=1,
+            success=True,
+            prerequisite_mode="mvp_ingest_only",
+            prerequisite_elapsed_ms=47_000,
+            ai_previz_elapsed_ms=18_000,
+            time_to_first_playable_ms=65_000,
+            post_playable_overhead_ms=16_000,
+            total_elapsed_ms=81_000,
+        ),
+        _case_result(
+            case_id="shipped_xai_4_480p_project_ready_first_pass",
+            attempt_index=1,
+            success=True,
+            prerequisite_mode="mvp_ingest_only",
+            prerequisite_elapsed_ms=21_000,
+            ai_previz_elapsed_ms=18_000,
+            time_to_first_playable_ms=39_000,
+            post_playable_overhead_ms=16_000,
+            total_elapsed_ms=55_000,
+            existing_project_state=True,
+        ),
+    ])
+
+    summary = runtime_support.summarize_results(
+        aggregates,
+        fast_previz_target_ms=6_000,
+    )
+
+    assert summary["focus_prerequisite_mode"] == "mvp_ingest_only"
+    assert summary["focus_route_kind"] == "imported_project_first_pass"
+    assert summary["fastest_focus_case_id"] == "shipped_xai_4_480p_project_ready_first_pass"
+    assert summary["fastest_focus_ms"] == 39_000
+    assert summary["fastest_focus_prerequisite_ms"] == 21_000
+    assert summary["fastest_imported_project_first_pass_case_id"] == (
+        "shipped_xai_4_480p_project_ready_first_pass"
+    )
+    assert summary["fastest_imported_project_first_pass_ms"] == 39_000
+    assert summary["fastest_raw_input_first_pass_case_id"] == "shipped_xai_4_480p_mvp_ingest_only"
+    assert summary["fastest_raw_input_first_pass_ms"] == 65_000
 
 
 @pytest.mark.unit

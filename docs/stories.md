@@ -203,6 +203,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 126 | Frontend Chat and Data-Layer Decomposition | High | Done | — | spec:4, spec:5, spec:9 | — | [story-126](stories/story-126-frontend-chat-data-layer-decomposition.md) |
 | 141 | Intent Taste Stack and Transparent Creative Brief | High | Done | — | spec:4, spec:7 | 029, 095, 119, 120 | [story-141](stories/story-141-intent-taste-stack-and-transparent-creative-brief.md) |
 | 175 | AI Previz Scene-Ready Prerequisite Collapse | High | Done | — | spec:4, spec:5, spec:6, spec:7, spec:8, spec:10 | 151, 171, 174 | [story-175](stories/story-175-ai-previz-scene-ready-prerequisite-collapse.md) |
+| 178 | AI Previz First-Pass xAI Prerequisite Collapse | High | Done | — | spec:4, spec:5, spec:6, spec:7, spec:8, spec:10 | 152, 175, 176 | [story-178](stories/story-178-ai-previz-first-pass-runtime-collapse.md) |
 | 096 | \"Chat About This\" Interaction Pattern | Medium | Done | — | spec:4 | 011f, 082, 099, 126 | [story-096](stories/story-096-chat-about-this.md) |
 | 131 | Preference Learning from User Choices | Medium | Done | — | spec:1, spec:4, spec:9 | 017 | [story-131](stories/story-131-preference-learning-from-user-choices.md) |
 | 014 | Role System Foundation | Unknown | Done | — | spec:1, spec:4, spec:5 | 002, 006 | [story-014](stories/story-014-role-system-foundation.md) |

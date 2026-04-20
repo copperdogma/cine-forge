@@ -140,13 +140,17 @@ def _run_attempts(
     repeat_count: int,
     keep_projects: bool,
 ) -> list[RuntimeCaseResult]:
-    grouped_cases: dict[tuple[str, str, str, bool, str], list[RuntimeEvalCase]] = defaultdict(list)
+    grouped_cases: dict[
+        tuple[str, str, str, bool, bool, str],
+        list[RuntimeEvalCase],
+    ] = defaultdict(list)
     for case in cases:
         grouped_cases[
             (
                 case.input_fixture,
                 case.scene_id,
                 case.prerequisite_mode,
+                case.existing_project_state,
                 case.existing_clip_state,
                 _existing_clip_seed_signature(case),
             )
@@ -225,7 +229,8 @@ def _prepare_shared_substrate(
             break
 
     planning_run: RecipeRunSummary | None = None
-    if all(run.success for run in prerequisite_runs):
+    planning_required = not seed_case.existing_project_state or seed_case.existing_clip_state
+    if all(run.success for run in prerequisite_runs) and planning_required:
         planning_run = _run_recipe(
             recipe_path=AI_PREVIZ_RECIPE,
             project_dir=project_dir,
@@ -259,7 +264,9 @@ def _prepare_shared_substrate(
         "runtime_params": runtime_params,
         "prerequisite_runs": prerequisite_runs,
         "prerequisite_elapsed_ms": prerequisite_elapsed_ms,
-        "count_prerequisites_in_results": not seed_case.existing_clip_state,
+        "count_prerequisites_in_results": not (
+            seed_case.existing_project_state or seed_case.existing_clip_state
+        ),
         "success": success,
         "error": error,
     }
@@ -376,6 +383,7 @@ def _run_case_attempt(
         ),
         scene_id=case.scene_id,
         input_fixture=case.input_fixture,
+        existing_project_state=case.existing_project_state,
         existing_clip_state=case.existing_clip_state,
         requested_start_from=_requested_start_from(case),
         attempt_index=attempt_index,
@@ -594,6 +602,8 @@ def _existing_clip_seed_signature(case: RuntimeEvalCase) -> str:
 def _requested_start_from(case: RuntimeEvalCase) -> str | None:
     if case.requested_start_from is not None:
         return case.requested_start_from
+    if case.existing_project_state:
+        return None
     if case.existing_clip_state:
         return None
     return "ai_previz"

@@ -516,7 +516,8 @@
           "126",
           "131",
           "141",
-          "175"
+          "175",
+          "178"
         ],
         "adrIds": [
           "ADR-002",
@@ -656,7 +657,8 @@
           "171",
           "174",
           "175",
-          "176"
+          "176",
+          "178"
         ],
         "adrIds": [
           "ADR-002",
@@ -780,7 +782,8 @@
           "174",
           "175",
           "176",
-          "177"
+          "177",
+          "178"
         ],
         "adrIds": [
           "ADR-002",
@@ -866,7 +869,8 @@
           "174",
           "175",
           "176",
-          "177"
+          "177",
+          "178"
         ],
         "adrIds": [
           "ADR-002",
@@ -970,7 +974,8 @@
           "171",
           "174",
           "175",
-          "176"
+          "176",
+          "178"
         ],
         "adrIds": [
           "ADR-001",
@@ -1123,7 +1128,8 @@
           "174",
           "175",
           "176",
-          "177"
+          "177",
+          "178"
         ],
         "adrIds": [
           "ADR-003"
@@ -11217,6 +11223,88 @@
           "summary": "story-done: closed Story 177 after the fresh validation rerun"
         }
       }
+    },
+    {
+      "id": "178",
+      "title": "AI Previz First-Pass xAI Prerequisite Collapse",
+      "path": "docs/stories/story-178-ai-previz-first-pass-runtime-collapse.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:4.10.6",
+        "spec:4.10.7",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:6.3.2",
+        "spec:6.3.5",
+        "spec:7.1",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "152",
+        "175",
+        "176"
+      ],
+      "categoryRefs": [
+        "spec:4",
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "creative_direction_and_chat",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "first-pass",
+        "iteration-loop",
+        "one-pass",
+        "prerequisites",
+        "previz",
+        "runtime"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260420-0712",
+        "date": "2026-04-20",
+        "summary": "story-done: closed Story 178 after the clean validation pass"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "178",
+        "sourcePath": "docs/stories/story-178-ai-previz-first-pass-runtime-collapse.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "story-done: closed Story 178 after the clean validation pass",
+        "lastRelevantAction": {
+          "date": "2026-04-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-178-ai-previz-first-pass-runtime-collapse.md",
+          "summary": "story-done: closed Story 178 after the clean validation pass"
+        }
+      }
     }
   ],
   "adrs": [
@@ -12353,7 +12441,8 @@
         "153",
         "174",
         "175",
-        "176"
+        "176",
+        "178"
       ],
       "categoryRefs": [
         "spec:4",
@@ -12388,7 +12477,8 @@
         "153",
         "174",
         "175",
-        "176"
+        "176",
+        "178"
       ],
       "declaredCategoryRefs": [
         "spec:4",
@@ -13412,9 +13502,10 @@
             "171",
             "174",
             "175",
-            "177"
+            "177",
+            "178"
           ],
-          "stories_since_audit": 11,
+          "stories_since_audit": 12,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -13426,9 +13517,10 @@
             "141",
             "144",
             "148",
-            "175"
+            "175",
+            "178"
           ],
-          "stories_since_audit": 2,
+          "stories_since_audit": 3,
           "open_findings": [],
           "manual_priority": "normal"
         },
@@ -13445,9 +13537,10 @@
             "173",
             "174",
             "175",
-            "177"
+            "177",
+            "178"
           ],
-          "stories_since_audit": 3,
+          "stories_since_audit": 4,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",

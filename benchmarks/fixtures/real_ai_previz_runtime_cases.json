@@ -70,6 +70,17 @@
       "notes": "Story 176 shipped baseline: MVP ingest plus a single on-demand shot-planning pass routed through xAI Grok Imagine without the full creative_direction chain."
     },
     {
+      "case_id": "shipped_xai_4_480p_project_ready_first_pass",
+      "label": "Shipped Grok Imagine 4s 480p imported-project first pass",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "scene_id": "scene_001",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "project_ready_first_pass",
+      "recipe_mode": "shipped",
+      "existing_project_state": true,
+      "notes": "Current Scene Workspace first clip on an already imported project: reuse healthy ingest artifacts, then auto-build shot planning before xAI previz."
+    },
+    {
       "case_id": "shipped_xai_4_480p_regenerate_full",
       "label": "Shipped Grok Imagine 4s 480p existing-clip full regenerate",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",

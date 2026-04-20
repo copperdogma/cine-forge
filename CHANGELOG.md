@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-20-01] — Align first-pass previz runtime truth (Story 178)
+
+### Added
+- Added an explicit imported-project first-pass case to the maintained `real-ai-previz-runtime` harness so the active Scene Workspace route is measured separately from raw-input bootstrap
+
+### Changed
+- Changed the runtime summary, result markdown, and eval registry truth to treat imported-project first pass as the maintained first-pass focus while still preserving raw-input bootstrap and regenerate comparisons
+- Changed methodology planning surfaces to close Story 178 around the validated imported-project first-pass runtime result
+
+### Fixed
+- Fixed the detector-level assumption that all first-pass previz timing should inherit the raw-input bootstrap path, which had been overstating the operator-facing prerequisite cost after import
+
 ## [2026-04-19-04] — Add OTIO narrative interchange export (Story 177)
 
 ### Added
