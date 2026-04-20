@@ -1418,40 +1418,40 @@ evals:
         note: "Historical bounded compact-prompt candidate from Story 174. It was not rerun in Story 176 because the live one-pass provider-floor question narrowed to shipped Lite, Veo Fast, and xAI. Keep it as historical fixed-pack evidence only."
       - model: "Grok Imagine Previz"
         metrics:
-          overall: 0.842
-          python: 0.8407
-          rubric: 0.8433
-        latency_ms: 16009
+          overall: 0.8997
+          python: 0.8993
+          rubric: 0.9
+        latency_ms: 17935
         cost_usd: null
         cost_estimated: false
-        measured: 2026-04-19
-        git_sha: "648ac84"
-        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
-        note: "Fresh `/validate` rerun keeps Grok Imagine above the validated usefulness floor at `0.8420` overall and lowers fixed-pack generation latency to `16009 ms`. The paired one-pass runtime artifact still wins clearly at `65514 ms` to first playable / `17649 ms` isolated `ai_previz`. Classification: no xAI-specific model-wrong or golden-wrong mismatches remained, but `radio_hold_tracking` now has one ambiguous python-only mismatch because the strict scorer penalizes tone/emotion tag drift (`urgent`/`resolve` vs `tense|detached` and `suspicion|hesitation`) while the Opus rubric still passes the row at `0.8` on blocking, camera, motion, and continuity."
+        measured: 2026-04-20
+        git_sha: "e3c1d39"
+        result_file: benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20-report.json
+        note: "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Classification: no xAI-specific model-wrong, golden-wrong, or ambiguous mismatches remained in this validation rerun. Remaining failures are deterministic-control only and non-runtime-blocking."
       - model: "Annotated Animatic"
         metrics:
-          overall: 0.8197
-          python: 0.8327
-          rubric: 0.8067
-        latency_ms: 616
+          overall: 0.838
+          python: 0.8727
+          rubric: 0.8033
+        latency_ms: 618
         cost_usd: 0.0
         cost_estimated: true
-        measured: 2026-04-19
-        git_sha: "648ac84"
-        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
-        note: "Fresh `/validate` rerun keeps the deterministic annotated control inside the fast control budget at `616 ms` with `0.8197` overall, but it remains control-only. The lone failing assertion on `radio_hold_tracking` stays ambiguous because the simplified annotated packet preserves the corridor track and transcript while flattening tone/emotion tags relative to the richer source target."
+        measured: 2026-04-20
+        git_sha: "e3c1d39"
+        result_file: benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20-report.json
+        note: "Fresh `/validate` reran the deterministic annotated control into the same validation report. It remains control-only but clean at `618 ms` and `0.8380` overall, and it passed all assertions in this validation rerun. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained for this row."
       - model: "Symbolic Animatic"
         metrics:
-          overall: 0.6647
+          overall: 0.6847
           python: 0.756
           rubric: 0.5733
-        latency_ms: 446
+        latency_ms: 445
         cost_usd: 0.0
         cost_estimated: true
-        measured: 2026-04-19
-        git_sha: "648ac84"
-        result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
-        note: "Fresh `/validate` rerun keeps the symbolic deterministic control fast at `446 ms`, but it still loses the previz semantics badly at `0.6647` overall. The failing assertions on `quiet_bedside_vigil` and `radio_hold_tracking` stay ambiguous because the symbolic packet visibly simplifies posture, affect, and camera semantics relative to the richer target clip."
+        measured: 2026-04-20
+        git_sha: "e3c1d39"
+        result_file: benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20-report.json
+        note: "Fresh `/validate` reran the symbolic deterministic control into the same validation report. It remains control-only at `445 ms` and `0.6647` overall. Two failures remain ambiguous and non-runtime-blocking: `quiet_bedside_vigil` misses blocking clarity on a seated-vs-standing vigil read, and `radio_hold_tracking` still flattens the lateral track into static framing while drifting on tone/emotion and flashlight continuity. No model-wrong or golden-wrong mismatches remained."
       - model: "Sora 2 Previz"
         metrics:
           overall: 0.659
@@ -1466,6 +1466,9 @@ evals:
         note: "Historical comparator only; not part of Story 176's narrowed one-pass provider-floor pack. The three hard_constraints failures remain ambiguous evidence_timestamp_range mismatches while the rubric stays strong, but the lane still loses badly on latency and cost."
 
     attempts:
+      - date: 2026-04-20
+        git_sha: "e3c1d39"
+        note: "Fresh `/validate` reran the narrowed Story 178 xAI-plus-controls usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Verified ranking: Grok Imagine `0.8997`, Annotated `0.8380`, Symbolic `0.6647`. Classification: no model-wrong or golden-wrong mismatches remained; Grok Imagine and Annotated passed clean, while Symbolic keeps two deterministic-control ambiguities (`quiet_bedside_vigil`, `radio_hold_tracking`) that stay non-runtime-blocking. Product decision is unchanged: the shipped xAI lane remains above the `0.803` usefulness floor."
       - date: 2026-04-19
         git_sha: "648ac84"
         note: "Fresh `/validate` rerun regenerated the full Story 176 clip pack and reran promptfoo into `benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.{json,md}`. Verified ranking: Veo 3.1 Lite `0.8980`, Veo 3.1 Fast `0.8630`, Grok Imagine `0.8420`, Annotated `0.8197`, Symbolic `0.6647`. Classification: no model-wrong or golden-wrong mismatches remained; three deterministic-control mismatches stay ambiguous and non-runtime-blocking, and `Grok Imagine Previz / radio_hold_tracking` adds one ambiguous AI-row python-only mismatch because the scorer penalizes tone/emotion tags while the Opus rubric still passes the row at `0.8`. Product decision is unchanged: xAI still clears the `0.803` usefulness floor, so the paired one-pass runtime win remains ship-relevant."
@@ -1792,6 +1795,26 @@ evals:
       note: "Overall reaches 1.0 only when the harness succeeds and the fastest successful focus case reaches a real `ai_previz_video` in `<= 6000 ms` total, including the honest prerequisite path. Slower successful cases are still useful evidence, but they remain runtime-blocking for Story 149."
 
     scores:
+      - model: "Story 178 QA-Skip Collapse (Imported-Project First-Pass Control, Still Runtime-Blocking)"
+        metrics:
+          overall: 0.5
+          successful_case_ratio: 1.0
+          focus_route_kind: imported_project_first_pass
+          fastest_focus_ms: 32130
+          fastest_focus_prerequisite_ms: 14103
+          fastest_focus_ai_previz_ms: 18027
+          fastest_focus_full_completion_ms: 36258
+          fastest_imported_project_first_pass_ms: 32130
+          fastest_imported_project_first_pass_prerequisite_ms: 14103
+          fastest_imported_project_first_pass_ai_previz_ms: 18027
+          fastest_imported_project_first_pass_full_completion_ms: 36258
+          fastest_total_ms: 36258
+        latency_ms: 32130
+        cost_usd: 0.04235518
+        measured: 2026-04-20
+        git_sha: "e3c1d39"
+        result_file: benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.json
+        note: "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258 ms` full completion) versus `40507 ms` (`22967 ms` prerequisites + `17540 ms` isolated `ai_previz`; `44928 ms` full completion) for the matched control. That is a `26.4%` prerequisite reduction versus the prior imported-project baseline (`19161 ms` on 2026-04-19) and a `38.6%` prerequisite reduction versus the matched control. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained in the runtime harness. The detector remains runtime-blocking versus `<=6000 ms`; same-scene regenerate metrics still come from the 2026-04-19 Story 178 / 152 artifacts because this validation rerun intentionally narrowed to the imported-project first-pass seam."
       - model: "Current Shipped xAI Lane (Imported-Project First Pass + Regenerate, Still Runtime-Blocking)"
         metrics:
           overall: 0.5
@@ -1966,6 +1989,9 @@ evals:
         note: "Story 150 pilot ran 3 real cases and then recovered the summary from completed run states after fixing a post-run fixture-path bug in the harness. All 3 cases succeeded, but none challenged the fast detector: shipped Lite 8s scene-ready was the best honest path at 270922 ms total (97846 ms prerequisites + 173076 ms ai-previz recipe), Fast 4s scene-ready was worse at 353687 ms, and Fast 4s ingest-only still needed 124929 ms. No semantic mismatches were present in the pilot subset; remaining failure is runtime-blocking."
 
     attempts:
+      - date: 2026-04-20
+        git_sha: "e3c1d39"
+        note: "Fresh `/validate` reran Story 178's imported-project first-pass compare into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped QA-skip route reached `32130 ms` first playable (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258 ms` full completion) versus `40507 ms` (`22967 ms` prerequisites + `17540 ms`; `44928 ms` full completion) for the explicit old-behavior control. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the detector stays runtime-blocking versus `<=6000 ms`, but the shipped route still clears Story 178's `>=25%` prerequisite-reduction bar."
       - date: 2026-04-19
         git_sha: "eac9018"
         note: "Story 178 widened the maintained runtime harness with an explicit `imported_project_first_pass` case and reran the shipped xAI lane into `benchmarks/results/real-ai-previz-runtime-story-178-first-pass-project-ready-2026-04-19.{json,md}`. Result: the current-project first clip reached `37186 ms` first playable (`19161 ms` prerequisites + `18025 ms` isolated `ai_previz`; `40198 ms` full completion), while the preserved raw-input bootstrap case remained much slower at `109868 ms` / `92216 ms`, full regenerate landed at `39062 ms`, and `start_from=ai_previz` reuse landed at `18152 ms`. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the detector stays runtime-blocking versus `<=6000 ms`, but the maintained first-pass truth now follows the active imported-project route instead of the raw-input bootstrap bundle."

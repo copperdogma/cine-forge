@@ -60,44 +60,38 @@ legacy_system: ""
 
 ## Goal
 
-Story 176 established the current shipped xAI one-pass previz lane at `65514 ms`
-to first playable, with `47865 ms` spent before `ai_previz` even starts and only
-`17649 ms` inside provider video generation. Story 152 then proved that the same
-shipped lane can reach `39325 ms` for full regenerate and `17869 ms` for
-`start_from=ai_previz` reuse on warmed scene state. That means the live product
-gap is no longer provider floor, warmed regenerate truth, or fake-placeholder
-debate. It is collapsing the first-pass prerequisite cost on the shipped xAI
-lane without breaking honest preflight, compiled-prompt provenance, or the
-current usefulness floor. This story measures the narrowest credible first-pass
-collapse on the maintained runtime surface and either ships it or records
-sharper blocker truth.
+Story 178 was reopened after the April 19, 2026 runtime rerun corrected the
+focus route. The live operator path is no longer the raw-input one-pass lane at
+`65514 ms`; it is the imported-project first clip on the shipped xAI route at
+`37186 ms` to first playable, with `19161 ms` still spent in the remaining
+`shot_planning` prerequisite and `18025 ms` inside `ai_previz`. That means the
+next bounded climb is not another provider-floor pass or another truth-surface
+cleanup. It is shrinking the imported-project first-pass shot-planning cost on
+the shipped xAI lane without breaking honest preflight, compiled-prompt
+provenance, the persisted `shot_plan` contract, or the current usefulness
+floor. This reopened scope should either ship a materially cheaper first-pass
+route on the same artifact boundary or record precise blocker truth.
 
 ## Acceptance Criteria
 
-- [x] A measured simplification baseline exists on the maintained
-      `real-ai-previz-runtime` surface for the current shipped xAI first-pass
-      route. At minimum, compare the current one-pass prerequisite bundle
-      against one bounded collapse hypothesis (single previz-prep call or
-      narrower prerequisite bundle) on identical current-scene substrate, with
-      result paths recorded.
-- [x] The chosen implementation keeps operator truth honest: preflight, run
-      metadata, and prompt/video provenance explicitly show which first-pass
-      prerequisites were reused, auto-built, collapsed, or bypassed. No silent
-      fallback to the old first-pass bundle remains once a narrower route is
-      claimed.
-- [x] On an equivalent shipped-xAI first-pass runtime comparison, the chosen
-      route reduces `fastest_focus_prerequisite_ms` by at least `20%` versus the
-      current `47865 ms` baseline, or the story records explicit blocker truth
-      and leaves the shipped lane unchanged.
-- [x] If the chosen slice materially changes compiled previz inputs or prompt
-      contract, refreshed `previz-usefulness` results stay at or above the
-      validated usefulness floor of `0.803`; otherwise the story records why a
-      usefulness rerun was unnecessary.
-- [x] Focused regression coverage exists for runtime-harness case handling, any
-      new first-pass strategy metadata, prompt/provenance contract, and UI
-      disclosure if touched. If UI changes, desktop and mobile browser
-      verification cover Scene Workspace previz plus any changed artifact-detail
-      route with clean console output.
+- [x] A fresh imported-project first-pass baseline exists for the current code
+      on the maintained `real-ai-previz-runtime` surface, and the benchmark can
+      compare the new shipped route against an explicit old-behavior control on
+      identical imported-project substrate rather than relying on prose memory.
+- [x] The chosen implementation reduces
+      `fastest_imported_project_first_pass_prerequisite_ms` by at least `25%`
+      versus the current `19161 ms` baseline, or the story records blocker
+      truth and leaves the shipped lane unchanged.
+- [x] The shipped route keeps the current `shot_plan`-backed previz contract
+      intact: no prompt-only first-pass shortcut ships, and prompt/video
+      provenance stays honest about the same prerequisite strategy.
+- [x] Refreshed `previz-usefulness` results for the shipped xAI lane stay at or
+      above the validated usefulness floor of `0.803`, and every significant
+      mismatch is classified as `model-wrong`, `golden-wrong`, or `ambiguous`
+      with runtime impact.
+- [x] Focused regression coverage exists for any new runtime-case override
+      schema, shot-planning/recipe behavior, and provenance or preflight
+      contract touched by the implementation.
 
 ## Out of Scope
 
@@ -110,66 +104,70 @@ sharper blocker truth.
 
 ## Approach Evaluation
 
-- **Simplification baseline**: Before adding more orchestration, measure whether
-  one bounded previz-prep call or a narrower first-pass prerequisite bundle
-  already collapses the current xAI route. No abstract architecture argument is
-  sufficient without that runtime proof.
-- **AI-only**: A single bounded previz-prep call could plausibly replace the
-  current first-pass auto-build bundle. Attractive on runtime, but risky if it
-  turns compiled artifacts into an opaque shortcut that fights ADR-003's
-  prompt-compilation model.
-- **Hybrid**: Strongest default. Reuse healthy import/project artifacts and
-  collapse only the first-pass prerequisites that are still gating xAI previz.
-  Keep prompt compilation and provenance explicit rather than inventing a second
-  hidden subsystem.
-- **Pure code**: Only the right answer if the remaining `47865 ms` of first-pass
-  prerequisite time proves to be overbroad orchestration, duplicate health
-  checks, or avoidable auto-build stages rather than missing reasoning. Story
-  152's warmed regenerate numbers suggest much of the remaining gap is in route
-  prep, not provider video time.
+- **Simplification baseline**: Before widening scope, compare the current
+  imported-project first-pass route against an explicit control on the same
+  substrate. The story already proved the route; the reopened scope must now
+  prove a cheaper variant of that same route.
+- **AI-only**: Letting `render_adapter_v1` compile previz directly from scene +
+  concern-group context without a persisted `shot_plan` is tempting on latency,
+  but it now implies a larger schema break through `render_adapter_v1`,
+  `CompiledRenderPrompt`, `GeneratedVideoArtifact`, module input contracts, and
+  UI/viewer assumptions about `shot_plan_ref`. That is a much larger change
+  than the current bottleneck justifies without evidence.
+- **Hybrid**: Strongest default. Keep the persisted `shot_plan` seam and shrink
+  the cost of producing it on the shipped previz-fast route. That preserves the
+  existing prompt-compilation and provenance model while attacking the remaining
+  `19161 ms` prerequisite wall directly.
+- **Pure code**: `shot_plan_v1` already has a deterministic mock path, but
+  current repo evidence says deterministic planning is a control/fallback
+  substrate, not the product answer. `previz-usefulness` still keeps the
+  strongest deterministic rows below the best AI rows, so replacing the shipped
+  lane with code-only planning would be premature.
 - **Repo constraints / ADRs**: ADR-002 requires honest surfaced action-boundary
   truth. ADR-003 keeps prompts as read-only compiled artifacts and treats Story
   World as persistent upstream context, not disposable runtime glue. `spec:6`
   remains in `climb` specifically because fast useful AI previz is still
   unfinished. If build introduces a new model-dependent prep call, rerun
   `/discover-models` before freezing that candidate.
-- **Existing patterns to reuse**: Story 175's prerequisite-strategy compare,
-  Story 176's shipped xAI one-pass route, Story 152's regenerate/reuse runtime
-  surface, `benchmarks/scripts/real_ai_previz_runtime_eval.py`,
-  `scene_actions.py` preflight truth, `scene_readiness.py`,
-  `recipe-ai-previz-generation.yaml`, `render_adapter_v1/previz_prompting.py`,
-  `PrevizAdoptionService`, and existing preview-provenance surfaces.
-- **Eval**: `real-ai-previz-runtime` is the primary detector. Rerun
-  `previz-usefulness` only if the chosen slice materially changes compiled
-  previz inputs or prompt contract. No new eval entry is needed because the
-  registry already owns this lane.
+- **Existing patterns to reuse**: Story 151's compact shot-planning profile,
+  Story 175's prerequisite-strategy compare, Story 176's shipped xAI one-pass
+  route, Story 178's imported-project first-pass detector, `recipe-ai-previz-generation.yaml`,
+  `shot_plan_v1`, `scene_actions.py`, and the existing preview-provenance
+  surfaces.
+- **Eval**: `real-ai-previz-runtime` remains the primary detector. Because this
+  reopened scope changes shot-planning behavior on the shipped lane, rerun
+  `previz-usefulness` even if the downstream previz prompt contract text stays
+  nominally the same.
 
 ## Tasks
 
-- [x] Extend the maintained `real-ai-previz-runtime` surface so it isolates the
-      current shipped xAI first-pass prerequisite bundle and compares at least
-      one bounded collapse hypothesis on identical current-scene substrate.
-- [x] Implement the smallest honest first-pass collapse in the owning runtime
-      seams. Prefer a narrower prerequisite bundle and reuse of healthy artifacts
-      over a new parallel previz subsystem.
-- [x] Thread first-pass strategy truth through preflight, run metadata, and
-      prompt/video provenance so operators can see what the first-pass route
-      actually waited for.
+- [x] Extend the maintained `real-ai-previz-runtime` case schema only as much as
+      needed so the benchmark can compare the reopened shipped lane against an
+      old-behavior imported-project control on identical substrate.
+- [x] Implement the smallest honest imported-project first-pass optimization on
+      the shipped xAI route. Default expectation: keep the same persisted
+      `shot_plan` seam and reduce the cost of producing it for previz-fast,
+      rather than inventing a prompt-only shortcut.
+- [x] Keep preflight, runtime summary, and preview provenance aligned with the
+      same prerequisite strategy. No UI wording should claim a new strategy if
+      the route still behaves as one-pass previz prep.
 - [x] Add or extend focused regression coverage for the runtime harness,
-      scene-action/readiness logic, prompt/provenance contract, and any UI
-      rendering touched by the chosen slice.
-- [x] Rerun `real-ai-previz-runtime` and, if required by the chosen slice,
-      `previz-usefulness`; classify all significant mismatches and update
+      shot-planning behavior, and any provenance contract touched by the
+      implementation.
+- [x] Rerun `real-ai-previz-runtime` on the imported-project first-pass subset
+      plus the matched control, rerun `previz-usefulness` for the shipped xAI
+      lane, classify all significant mismatches, and update
       `docs/evals/registry.yaml`.
-- [x] Check whether the chosen implementation makes any existing code, helper paths, or docs redundant; remove them or create a concrete follow-up
+- [x] Check whether the chosen implementation makes any old recipe knobs,
+      benchmark assumptions, or docs redundant; remove them or create a
+      concrete follow-up.
 - [x] Run required checks for touched scope:
   - [x] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
   - [x] Backend lint: `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/`
-  - [x] UI (if touched): `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
-- [x] If agent tooling or project instructions are touched: `make skills-check`
-- [x] If story metadata, ADR metadata, or methodology state changes: `pnpm methodology:compile`
-- [x] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
-- [x] If UI is touched: verify the changed flow with browser tools in desktop and mobile views when possible (screenshots + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
+  - [x] UI validation: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`
+  - [x] Browser verification not required; no UI files changed
+- [x] Methodology surfaces refreshed with `pnpm methodology:compile` after the eval registry changed
+- [x] If evals are changed: classify all mismatches and update `docs/evals/registry.yaml`
 - [x] Search all docs and update any related to what we touched
 - [x] Verify adherence to Central Tenets (0-5):
   - [x] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved?
@@ -307,14 +305,14 @@ N/A
 
 ## Notes
 
-- This is a new story rather than a reopen of Stories 175, 176, or 152 because
-  the success surface changed again. Story 175 chose the one-pass route. Story
-  176 chose the shipped xAI provider floor on that route. Story 152 measured
-  warmed regenerate/reuse truth. None of them collapse the first-pass cost on
-  the current shipped route itself.
-- Current baseline from `docs/evals/registry.yaml`: shipped xAI first pass is
-  `65514 ms` to first playable with `47865 ms` of prerequisites, `17649 ms`
-  inside `ai_previz`, and `82137 ms` full completion.
+- Historical context: Story 178 originally split out from Stories 175 / 176 /
+  152 because the success surface changed from provider-floor selection to the
+  first-pass prerequisite wall on the shipped xAI lane. The current work keeps
+  that same story open because the subsystem and detector are still the same.
+- Reopened baseline from `docs/evals/registry.yaml` before this implementation:
+  shipped xAI imported-project first pass was `37186 ms` to first playable with
+  `19161 ms` of prerequisites, `18025 ms` inside `ai_previz`, and `40198 ms`
+  full completion on the April 19, 2026 rerun.
 - Warmed same-lane evidence is materially better: Story 152 records `39325 ms`
   for full regenerate with `21363 ms` before `ai_previz`, and `17869 ms` for
   `start_from=ai_previz` reuse. That implies the remaining first-pass gap is
@@ -329,75 +327,63 @@ N/A
 
 ## Plan
 
-### Task 1 — Expand the maintained runtime detector around the actual current-project first-pass problem
+### Task 1 — Add a true before/after comparison on the imported-project first-pass route
 
 - Files: `benchmarks/fixtures/real_ai_previz_runtime_cases.json`,
+  `benchmarks/scripts/real_ai_previz_runtime_support.py`,
   `benchmarks/scripts/real_ai_previz_runtime_eval.py`,
-  `benchmarks/scripts/real_ai_previz_runtime_support.py`
-- Change: add an explicit imported-project first-pass case for the shipped xAI
-  lane so the maintained runtime surface can distinguish raw screenplay
-  bootstrap from the real Scene Workspace route that already reuses healthy
-  import artifacts and only auto-builds `shot_planning` before `ai_previz`.
-  Persist both the raw-input and imported-project first-pass metrics in the
-  same artifact instead of silently treating them as one route.
-- Repo-fit evidence: this keeps the new work on the maintained
-  `real-ai-previz-runtime` surface rather than inventing a story-local benchmark
-  that would drift immediately.
-- Done means: one runtime artifact can answer “what did first pass wait for,
-  and which current-project route is actually relevant?” on the shipped xAI
-  lane.
+  `tests/unit/test_real_ai_previz_runtime_support.py`
+- Change: extend the runtime-case schema just enough to patch the
+  `shot_planning` stage as well as `ai_previz`, then add an imported-project
+  control case that preserves the old shipped shot-planning behavior beside the
+  reopened shipped route.
+- Repo-fit evidence: the maintained runtime harness already owns this line, and
+  the codebase has no other detector that can compare two imported-project
+  first-pass variants honestly on the same substrate.
+- Structural health check: `real_ai_previz_runtime_eval.py` is `633` lines and
+  `real_ai_previz_runtime_support.py` is `467`, so new override logic should
+  stay in the support model + small recipe materialization helper rather than
+  bloating the runner.
+- Done means: one rerun can say whether the new shipped route is actually
+  faster than the old behavior on the same imported-project first-pass seam.
 
-### Task 2 — Prove the narrowest honest collapse before adding any new prep subsystem
+### Task 2 — Reduce first-pass shot-planning cost without deleting the shot-plan seam
 
-- Candidate baseline: current-project first pass on already imported substrate.
-  Exploration found that the repo already has this narrower route: scene-action
-  preflight reuses `timeline` and `track_manifest` when they are healthy,
-  auto-builds only `shot_plan`, and the actual first-pass cost is then
-  dominated by `shot_planning` plus xAI video generation. That is the simplest
-  truthful collapse to measure before inventing any new one-call previz-prep
-  subsystem.
-- Decision gate:
-  - If the imported-project first-pass case materially improves the maintained
-    prerequisite budget and the current shared product surfaces can already
-    express it honestly, prefer detector/adoption truth over adding a new prep
-    subsystem.
-  - Only if that narrower current-project route still proves insufficiently
-    honest or unmeasurable should build widen scope into new first-pass
-    strategy code.
-  - If build still needs a new model-dependent prep call after that, rerun
-    `/discover-models` before freezing it.
-- Done means: the story contains measured evidence for the already-shipped
-  narrower route first, not a speculative architecture branch.
+- Files: `configs/recipes/recipe-ai-previz-generation.yaml`,
+  `src/cine_forge/modules/shot_planning/shot_plan_v1/main.py`,
+  `tests/unit/test_shot_planning_module.py`
+- Change: make the shipped previz-fast shot-planning path cheaper in place.
+  Default expected slice: skip the extra QA pass on the AI-previz recipe's
+  compact shot-planning stage, while keeping the same persisted `shot_plan`
+  artifact boundary and current prompt-compilation model.
+- Repo-fit evidence: `render_adapter_v1` and the render schemas still require a
+  real `shot_plan_ref`; bypassing that would spill into `CompiledRenderPrompt`,
+  `GeneratedVideoArtifact`, module input contracts, and UI viewers. The shot
+  planner already exposes `skip_qa` and `previz_fast`, so this route reuses an
+  existing bounded control point instead of inventing a second planning system.
+- Alternatives rejected:
+  - AI-only no-shot-plan first pass: larger schema/product refactor with no
+    evidence yet that it is needed.
+  - Pure code/mock shot plan: deterministic planning remains a control/fallback
+    substrate, and current usefulness evidence keeps deterministic rows below
+    the best AI rows.
+- Structural health check: `shot_plan_v1/main.py` is `1232` lines, so keep the
+  code change surgical and favor recipe-level wiring plus a small focused test.
+- Done means: the shipped imported-project first-pass route still emits a real
+  `shot_plan`, but it no longer pays for an avoidable QA pass before xAI previz.
 
-### Task 3 — Let the maintained focus metrics follow the current-project first-pass route
+### Task 3 — Re-measure the shipped lane and update the repo truth surfaces
 
-- Expected default: no new previz-prep subsystem. Prefer the existing imported
-  project route if it already satisfies the story's first-pass collapse surface.
-- Likely owners: the benchmark harness plus the shared adoption/runtime truth
-  seam. Touch recipe/preflight/provenance code only if the benchmark proves the
-  current product path cannot actually express the narrower route.
-- Change: keep raw-input bootstrap evidence visible, but stop letting it stand
-  in for the active Scene Workspace first-pass route when the maintained score
-  and surfaced latency truth are supposed to describe what happens after import.
-- Structural guardrail: `render_adapter_v1/main.py` and `shot_plan_v1/main.py`
-  stay fallback-only. The likely implementation should remain inside the
-  benchmark/support/adoption seams.
-- Done means: the shipped xAI lane still has one honest prerequisite contract,
-  but the current-project first-pass route is no longer hidden behind the raw
-  import bundle.
-
-### Task 4 — Surface the narrowed first-pass truth and lock it with tests and registry updates
-
-- Files: focused benchmark/adoption tests, `docs/evals/registry.yaml`, and
-  fallback-only shared UI contract files if the current panel needs an explicit
-  imported-project first-pass field.
-- Change: make the runtime artifact, registry note, and any surfaced
-  first-pass latency readout agree on the actual current-project route while
-  preserving raw-input bootstrap evidence as explicit context rather than
-  hidden baseline drift.
-- Done means: runtime artifact, registry entry, and surfaced first-pass truth
-  all agree on when CineForge is reusing imported substrate versus building
-  more before `ai_previz`.
+- Files: `docs/evals/registry.yaml`, `docs/stories/story-178-ai-previz-first-pass-runtime-collapse.md`,
+  fallback-only methodology outputs after compile
+- Change: rerun the imported-project runtime subset plus the shipped xAI
+  usefulness lane, classify any mismatches, and update the registry/work log
+  with the new first-pass numbers and blocker truth.
+- Repo-fit evidence: `real-ai-previz-runtime` and `previz-usefulness` are the
+  canonical detectors for this line; using anything else would produce drift.
+- Done means: the story, registry, and generated planning surfaces all reflect
+  the new shipped first-pass cost and whether the reopened climb actually moved
+  the user-facing loop.
 
 ## Work Log
 
@@ -493,3 +479,92 @@ warning; and `CHANGELOG.md` now includes the Story 178 entry. Close-out
 judgment: no implementation work remained, and the still-red runtime detector
 was already classified honestly as `runtime-blocking` in the registry and
 validation note. Next step: `/check-in-diff`.
+20260420-0858 — implementation: kept the shipped imported-project first-pass
+route on the same persisted `shot_plan` seam and removed only the extra QA pass
+from the previz-fast shot-planning recipe. Evidence: set `skip_qa: true` on
+`configs/recipes/recipe-ai-previz-generation.yaml`; extended the maintained
+runtime harness with a bounded `shot_planning` override model in
+`benchmarks/scripts/real_ai_previz_runtime_support.py` and recipe
+materialization support in `benchmarks/scripts/real_ai_previz_runtime_eval.py`;
+added the explicit old-behavior imported-project control to
+`benchmarks/fixtures/real_ai_previz_runtime_cases.json`; and added regression
+coverage in `tests/unit/test_real_ai_previz_runtime_support.py`. Fresh runtime
+artifact `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-2026-04-20.{json,md}`
+shows the shipped route at `31369 ms` first playable (`13194 ms` prerequisites
++ `18175 ms` isolated `ai_previz`; `35639 ms` full completion) versus the
+matched old-behavior control at `41675 ms` (`23844 ms` prerequisites +
+`17831 ms` isolated `ai_previz`; `45959 ms` full completion). That is a
+`31.1%` prerequisite reduction versus the prior imported-project baseline
+(`19161 ms`) and a `44.7%` prerequisite reduction versus the matched control.
+Practical product read: the first imported-project clip is still too slow, but
+the wait dropped by about ten seconds without inventing a second planning
+system or weakening provenance truth. Next step: rerun usefulness, refresh the
+registry, and run full checks.
+20260420-0919 — evals-and-validation: reran the shipped xAI usefulness slice,
+classified the remaining mismatches, updated the registry, and completed the
+required backend checks. Evidence: `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-2026-04-20-report.{json,md}`
+keeps `Grok Imagine Previz` above the usefulness floor at `0.8380` overall with
+`17549 ms` generation latency; `Annotated Animatic` lands at `0.8180` /
+`601 ms`; `Symbolic Animatic` lands at `0.6847` / `480 ms`. Significant
+mismatch classification: no model-wrong or golden-wrong mismatches remained;
+`radio_hold_tracking` stayed ambiguous and non-runtime-blocking for all three
+rerun providers. For xAI specifically, the only miss is a python-only
+ambiguity where the strict scorer still penalizes tone/emotion tag drift
+(`urgent`/`resolve` vs `tense|detached` / `suspicion|hesitation`) plus the
+missing `navy` color tag while the Opus rubric passes the row at `0.78` for
+blocking, camera, motion, and continuity. Required checks passed:
+`make test-unit PYTHON=.venv/bin/python` (`765 passed, 173 deselected,
+1 warning`), `.venv/bin/python -m ruff check src/ tests/ benchmarks/scripts/`,
+and targeted pytest for the touched runtime/shot-planning coverage. No browser
+or API smoke pass was needed because this slice changed recipe/eval surfaces,
+not UI or service behavior. `docs/evals/registry.yaml` now records the fresh
+runtime compare and the xAI/control usefulness rerun with current `git_sha`
+`e3c1d39`. Next step: `/validate 178`.
+20260420-0926 — methodology-refresh: recompiled the generated planning surfaces
+after the eval registry changed so future triage does not read stale derived
+views. Evidence: `pnpm methodology:compile` rewrote
+`docs/methodology/graph.json`, `docs/stories.md`, and `docs/build-map.md` with
+only the pre-existing `api_service_and_operator_console` architecture-audit
+warning. Next step: `/validate 178`.
+20260420-1613 — validation: reran the full required validation suite plus both
+paid Story 178 detectors and confirmed the implementation is ready for close-out.
+Fresh evidence from this validation pass: `make test-unit PYTHON=.venv/bin/python`
+passed (`765 passed, 173 deselected, 1 warning`); `.venv/bin/python -m ruff
+check src/ tests/ benchmarks/scripts/` passed clean; targeted pytest
+`tests/unit/test_real_ai_previz_runtime_support.py
+tests/unit/test_shot_planning_module.py -q` passed (`16 passed`); `pnpm --dir ui
+run lint` passed; `cd ui && npx tsc -b` passed with only the pre-existing npm
+`min-release-age` warning; `pnpm methodology:check` initially failed because the
+generated surfaces were stale, then passed after `pnpm methodology:compile`
+with only the pre-existing `api_service_and_operator_console` architecture-audit
+warning. Fresh runtime artifact
+`benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`
+holds the shipped imported-project first pass at `32130 ms` first playable
+(`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258 ms` full
+completion) versus `40507 ms` (`22967 ms` prerequisites + `17540 ms`
+isolated `ai_previz`; `44928 ms` full completion) for the matched QA control,
+which still clears the story bar at `26.4%` prerequisite reduction versus the
+`19161 ms` baseline and `38.6%` versus the matched control. Fresh usefulness
+artifact
+`benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20-report.{json,md}`
+keeps `Grok Imagine Previz` at `0.8997` overall / `17935 ms`, `Annotated
+Animatic` at `0.8380` / `618 ms`, and `Symbolic Animatic` at `0.6647` / `445
+ms`. Significant mismatch classification from this validation rerun: no
+model-wrong or golden-wrong mismatches remained; xAI and Annotated passed
+clean; `Symbolic Animatic / quiet_bedside_vigil` and
+`Symbolic Animatic / radio_hold_tracking` remain ambiguous and
+non-runtime-blocking deterministic-control failures. Practical product read:
+the first imported-project clip is still far from the Ideal, but the shipped
+xAI lane now reaches a first playable clip about eight seconds sooner than the
+validated old-behavior control without dropping below the usefulness floor or
+weakening the persisted `shot_plan` seam. Next step: `/mark-story-done 178`.
+20260420-1626 — story-done: closed Story 178 after the clean validation rerun
+and final close-out audit. Evidence: story status is now `Done`; workflow gates
+are fully checked; `pnpm methodology:compile` refreshed
+`docs/methodology/graph.json`, `docs/stories.md`, and `docs/build-map.md`; and
+the existing `CHANGELOG.md` Story 178 entry was updated to reflect the shipped
+QA-skip collapse outcome rather than the earlier narrower first-pass truth-only
+reopen note. Close-out judgment: no implementation work remained, registry
+scores and mismatch classifications were current, and the still-red runtime
+detector remained explicitly classified as `runtime-blocking` rather than being
+misrepresented as unfinished story work. Next step: `/check-in-diff`.

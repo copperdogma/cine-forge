@@ -81,6 +81,20 @@
       "notes": "Current Scene Workspace first clip on an already imported project: reuse healthy ingest artifacts, then auto-build shot planning before xAI previz."
     },
     {
+      "case_id": "xai_4_480p_project_ready_first_pass_with_qa_control",
+      "label": "Grok Imagine 4s 480p imported-project first pass with shot-planning QA control",
+      "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+      "scene_id": "scene_001",
+      "prerequisite_mode": "mvp_ingest_only",
+      "prerequisite_strategy": "project_ready_first_pass",
+      "recipe_mode": "patched",
+      "existing_project_state": true,
+      "shot_planning": {
+        "skip_qa": false
+      },
+      "notes": "Explicit old-behavior control for Story 178 after the shipped previz-fast route stops paying for the extra shot-planning QA pass."
+    },
+    {
       "case_id": "shipped_xai_4_480p_regenerate_full",
       "label": "Shipped Grok Imagine 4s 480p existing-clip full regenerate",
       "input_fixture": "tests/fixtures/sample_screenplay.fountain",

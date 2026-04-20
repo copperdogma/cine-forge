@@ -11285,9 +11285,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260420-0712",
+        "timestamp": "20260420-1626",
         "date": "2026-04-20",
-        "summary": "story-done: closed Story 178 after the clean validation pass"
+        "summary": "story-done: closed Story 178 after the clean validation rerun"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11297,12 +11297,12 @@
         "sourcePath": "docs/stories/story-178-ai-previz-first-pass-runtime-collapse.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "story-done: closed Story 178 after the clean validation pass",
+        "whyNow": "story-done: closed Story 178 after the clean validation rerun",
         "lastRelevantAction": {
           "date": "2026-04-20",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-178-ai-previz-first-pass-runtime-collapse.md",
-          "summary": "story-done: closed Story 178 after the clean validation pass"
+          "summary": "story-done: closed Story 178 after the clean validation rerun"
         }
       }
     }
@@ -12252,12 +12252,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Veo 3.1 Lite Previz",
-        "measured": "2026-04-19",
+        "model": "Grok Imagine Previz",
+        "measured": "2026-04-20",
         "metrics": {
-          "overall": 0.898
+          "overall": 0.8997
         },
-        "note": "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the s…"
+        "note": "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Clas…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -12296,14 +12296,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the s…",
+        "whyNow": "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Clas…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-19",
+          "date": "2026-04-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the s…"
+          "summary": "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Clas…"
         }
       }
     },
@@ -12456,12 +12456,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)",
-        "measured": "2026-04-19",
+        "model": "Story 178 QA-Skip Collapse (Imported-Project First-Pass Control, Still Runtime-Blocking)",
+        "measured": "2026-04-20",
         "metrics": {
           "overall": 0.5
         },
-        "note": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
+        "note": "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -12504,14 +12504,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…",
+        "whyNow": "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-19",
+          "date": "2026-04-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintaine…"
+          "summary": "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258…"
         }
       }
     },

@@ -1,16 +1,17 @@
 # Changelog
 
-## [2026-04-20-01] — Align first-pass previz runtime truth (Story 178)
+## [2026-04-20-01] — Collapse imported-project previz prerequisites (Story 178)
 
 ### Added
-- Added an explicit imported-project first-pass case to the maintained `real-ai-previz-runtime` harness so the active Scene Workspace route is measured separately from raw-input bootstrap
+- Added a bounded shot-planning override seam to the maintained `real-ai-previz-runtime` harness so Story 178 can compare the shipped imported-project first pass against an explicit old-behavior QA control on identical substrate
+- Added fresh runtime and usefulness result artifacts for the shipped xAI lane plus validation reruns of the same narrowed slice
 
 ### Changed
-- Changed the runtime summary, result markdown, and eval registry truth to treat imported-project first pass as the maintained first-pass focus while still preserving raw-input bootstrap and regenerate comparisons
-- Changed methodology planning surfaces to close Story 178 around the validated imported-project first-pass runtime result
+- Changed the shipped `ai_previz_generation` recipe to skip the extra shot-planning QA pass on the previz-fast imported-project route while preserving the persisted `shot_plan` seam and prompt/video provenance contract
+- Changed the eval registry and methodology planning truth to record the validated Story 178 prerequisite-collapse result: `32130 ms` first playable with `14103 ms` prerequisites on the shipped xAI lane, still above the usefulness floor at `0.8997`
 
 ### Fixed
-- Fixed the detector-level assumption that all first-pass previz timing should inherit the raw-input bootstrap path, which had been overstating the operator-facing prerequisite cost after import
+- Fixed the shipped imported-project first-pass route paying for avoidable shot-planning QA work before xAI previz, cutting prerequisite time by `26.4%` versus the prior imported-project baseline and `38.6%` versus the matched old-behavior control
 
 ## [2026-04-19-04] — Add OTIO narrative interchange export (Story 177)
 

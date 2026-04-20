@@ -16,6 +16,10 @@ class AiPrevizStageOverride(BaseModel):
     prompt_profile: str = Field(default="standard", min_length=1)
 
 
+class ShotPlanningStageOverride(BaseModel):
+    skip_qa: bool | None = None
+
+
 class RuntimeEvalCase(BaseModel):
     case_id: str = Field(min_length=1)
     label: str = Field(min_length=1)
@@ -27,6 +31,7 @@ class RuntimeEvalCase(BaseModel):
     existing_project_state: bool = False
     existing_clip_state: bool = False
     requested_start_from: str | None = None
+    shot_planning: ShotPlanningStageOverride | None = None
     ai_previz: AiPrevizStageOverride | None = None
     notes: str | None = None
 

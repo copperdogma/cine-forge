@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BENCHMARK_SCRIPT_ROOT = REPO_ROOT / "benchmarks" / "scripts"
@@ -13,6 +14,7 @@ if str(BENCHMARK_SCRIPT_ROOT) not in sys.path:
     sys.path.insert(0, str(BENCHMARK_SCRIPT_ROOT))
 
 runtime_support = importlib.import_module("real_ai_previz_runtime_support")
+runtime_eval = importlib.import_module("real_ai_previz_runtime_eval")
 
 
 def _case_result(
@@ -105,12 +107,24 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
                         "recipe_mode": "shipped",
                         "existing_project_state": True,
                     },
+                    {
+                        "case_id": "xai_project_ready_first_pass_control",
+                        "label": "xAI imported-project first pass control",
+                        "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+                        "scene_id": "scene_001",
+                        "prerequisite_mode": "mvp_ingest_only",
+                        "recipe_mode": "patched",
+                        "existing_project_state": True,
+                        "shot_planning": {
+                            "skip_qa": False,
+                        },
+                    },
                 ]
             }
         )
     )
 
-    assert len(manifest.cases) == 4
+    assert len(manifest.cases) == 5
     assert manifest.cases[0].recipe_mode == "shipped"
     assert manifest.cases[0].ai_previz is None
     assert manifest.cases[1].prerequisite_mode == "mvp_ingest_only"
@@ -122,6 +136,51 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
     assert manifest.cases[2].requested_start_from == "ai_previz"
     assert manifest.cases[3].existing_project_state is True
     assert manifest.cases[3].existing_clip_state is False
+    assert manifest.cases[4].shot_planning is not None
+    assert manifest.cases[4].shot_planning.skip_qa is False
+
+
+@pytest.mark.unit
+def test_materialize_eval_recipe_can_patch_shot_planning_without_ai_previz_override() -> None:
+    case = runtime_support.RuntimeEvalCase(
+        case_id="project_ready_control",
+        label="Project ready control",
+        input_fixture="tests/fixtures/sample_screenplay.fountain",
+        scene_id="scene_001",
+        prerequisite_mode="mvp_ingest_only",
+        recipe_mode="patched",
+        existing_project_state=True,
+        shot_planning=runtime_support.ShotPlanningStageOverride(skip_qa=False),
+    )
+
+    recipe_path = runtime_eval._materialize_eval_recipe(case)  # type: ignore[attr-defined]
+    try:
+        recipe = yaml.safe_load(recipe_path.read_text(encoding="utf-8"))
+    finally:
+        if recipe_path != runtime_eval.AI_PREVIZ_RECIPE and recipe_path.exists():  # type: ignore[attr-defined]
+            recipe_path.unlink()
+
+    shot_planning_stage = next(
+        stage for stage in recipe["stages"] if stage["id"] == "shot_planning"
+    )
+    ai_previz_stage = next(stage for stage in recipe["stages"] if stage["id"] == "ai_previz")
+
+    assert shot_planning_stage["params"]["skip_qa"] is False
+    assert ai_previz_stage["params"]["engine_pack_id"] == "xai_grok_imagine_video"
+
+
+@pytest.mark.unit
+def test_shipped_ai_previz_recipe_skips_shot_planning_qa() -> None:
+    recipe = yaml.safe_load(
+        (REPO_ROOT / "configs" / "recipes" / "recipe-ai-previz-generation.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+    shot_planning_stage = next(
+        stage for stage in recipe["stages"] if stage["id"] == "shot_planning"
+    )
+
+    assert shot_planning_stage["params"]["skip_qa"] is True
 
 
 @pytest.mark.unit

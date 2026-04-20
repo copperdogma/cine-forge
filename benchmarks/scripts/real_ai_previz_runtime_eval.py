@@ -141,7 +141,7 @@ def _run_attempts(
     keep_projects: bool,
 ) -> list[RuntimeCaseResult]:
     grouped_cases: dict[
-        tuple[str, str, str, bool, bool, str],
+        tuple[str, str, str, bool, bool, str, str],
         list[RuntimeEvalCase],
     ] = defaultdict(list)
     for case in cases:
@@ -152,6 +152,7 @@ def _run_attempts(
                 case.prerequisite_mode,
                 case.existing_project_state,
                 case.existing_clip_state,
+                _shared_planning_signature(case),
                 _existing_clip_seed_signature(case),
             )
         ].append(case)
@@ -243,7 +244,7 @@ def _prepare_shared_substrate(
     prerequisite_elapsed_ms = round((time.perf_counter() - prereq_started) * 1000)
     seed_run: RecipeRunSummary | None = None
     if all(run.success for run in prerequisite_runs) and seed_case.existing_clip_state:
-        seed_recipe_path = _materialize_ai_previz_recipe(seed_case)
+        seed_recipe_path = _materialize_eval_recipe(seed_case)
         try:
             seed_run = _run_recipe(
                 recipe_path=seed_recipe_path,
@@ -305,7 +306,7 @@ def _run_case_attempt(
 
     if base_success:
         shutil.copytree(shared_project_dir, project_dir)
-        ai_recipe_path = _materialize_ai_previz_recipe(case)
+        ai_recipe_path = _materialize_eval_recipe(case)
         requested_start_from = _requested_start_from(case)
         try:
             ai_previz_run = _run_recipe(
@@ -491,23 +492,29 @@ def _run_recipe(
     )
 
 
-def _materialize_ai_previz_recipe(case: RuntimeEvalCase) -> Path:
+def _materialize_eval_recipe(case: RuntimeEvalCase) -> Path:
     if case.recipe_mode == "shipped":
+        if _has_recipe_overrides(case):
+            raise ValueError(
+                f"Case {case.case_id} declares shipped mode but also includes stage overrides."
+            )
         return AI_PREVIZ_RECIPE
-    if case.ai_previz is None:
-        raise ValueError(f"Case {case.case_id} is patched but missing ai_previz overrides.")
+    if not _has_recipe_overrides(case):
+        raise ValueError(f"Case {case.case_id} is patched but missing stage overrides.")
 
     recipe = yaml.safe_load(AI_PREVIZ_RECIPE.read_text(encoding="utf-8"))
     for stage in recipe.get("stages", []):
-        if stage.get("id") != "ai_previz":
-            continue
+        stage_id = stage.get("id")
         params = stage.setdefault("params", {})
-        params["engine_pack_id"] = case.ai_previz.engine_pack_id
-        params["duration_seconds"] = case.ai_previz.duration_seconds
-        params["resolution"] = case.ai_previz.resolution
-        params["consistency_strategy"] = case.ai_previz.consistency_strategy
-        params["prompt_profile"] = case.ai_previz.prompt_profile
-        break
+        if stage_id == "shot_planning" and case.shot_planning is not None:
+            if case.shot_planning.skip_qa is not None:
+                params["skip_qa"] = case.shot_planning.skip_qa
+        if stage_id == "ai_previz" and case.ai_previz is not None:
+            params["engine_pack_id"] = case.ai_previz.engine_pack_id
+            params["duration_seconds"] = case.ai_previz.duration_seconds
+            params["resolution"] = case.ai_previz.resolution
+            params["consistency_strategy"] = case.ai_previz.consistency_strategy
+            params["prompt_profile"] = case.ai_previz.prompt_profile
     recipe["recipe_id"] = f"ai_previz_generation_eval_{case.case_id}"
     temp_path = REPO_ROOT / "output" / "tmp" / f"{recipe['recipe_id']}.yaml"
     temp_path.parent.mkdir(parents=True, exist_ok=True)
@@ -596,6 +603,19 @@ def _existing_clip_seed_signature(case: RuntimeEvalCase) -> str:
     return (
         f"{override.engine_pack_id}:{override.duration_seconds}:{override.resolution}:"
         f"{override.consistency_strategy}:{override.prompt_profile}"
+    )
+
+
+def _shared_planning_signature(case: RuntimeEvalCase) -> str:
+    planning_required = not case.existing_project_state or case.existing_clip_state
+    if not planning_required or case.shot_planning is None or case.shot_planning.skip_qa is None:
+        return "none"
+    return f"skip_qa={case.shot_planning.skip_qa}"
+
+
+def _has_recipe_overrides(case: RuntimeEvalCase) -> bool:
+    return (case.shot_planning is not None and case.shot_planning.skip_qa is not None) or (
+        case.ai_previz is not None
     )
 
 
