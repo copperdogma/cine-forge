@@ -11,7 +11,7 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 | **DNS** | Cloudflare | Zone: `copper-dog.com`, Zone ID: `372acf29f0a6f95c35e9f7ea94aa7efa` |
 | **SSL** | Let's Encrypt (via Fly.io) | Auto-renewed, CNAME-validated |
 | **Storage** | Fly.io Volume | `cineforge_data_v2` 1GB mounted at `/app/output` |
-| **Secrets** | Fly.io Secrets | `ANTHROPIC_API_KEY` |
+| **Secrets** | Fly.io Secrets | `ANTHROPIC_API_KEY`, `CINE_FORGE_GEMINI_API_KEY`, `CINE_FORGE_OPENAI_API_KEY` |
 | **Container** | Multi-stage Docker | Node 24 (frontend build) → Python 3.12-slim (runtime), ~168MB |
 | **Cost** | ~$5-7/month | shared-cpu-2x, 512MB RAM, 1GB volume, auto-stop |
 
@@ -39,6 +39,7 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 - **Auto-stop**: Machine stops when idle, auto-starts on request (~5-10s cold start).
 - **No auth**: App is open (2 users: Cam + sister). No login required.
 - **Health check**: `GET /api/health` every 15s, 10s grace period.
+- **Dependency health**: `GET /api/health/dependencies` exposes cached provider readiness; use `?refresh=1` for an immediate post-rollout probe.
 
 ## Container Environment
 
@@ -47,6 +48,8 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 | `PYTHONPATH` | `/app/src` | Python module resolution |
 | `CINEFORGE_STATIC_DIR` | `/app/static` | Frontend build directory |
 | `ANTHROPIC_API_KEY` | (Fly secret) | AI chat feature |
+| `CINE_FORGE_GEMINI_API_KEY` | (Fly secret) | `mvp_ingest` `script_bible_v1` default Google transport |
+| `CINE_FORGE_OPENAI_API_KEY` | (Fly secret) | `mvp_ingest` `project_config_v1` QA/default OpenAI transport |
 
 ## Docker Build
 
@@ -77,6 +80,26 @@ fly secrets list -a cineforge-app
 fly secrets set KEY=VALUE -a cineforge-app
 ```
 
+### Post-rollout eval
+```bash
+.venv/bin/python scripts/post_rollout_breakdown_eval.py \
+  --base-url https://cineforge.copper-dog.com
+```
+
+This creates a fresh project, uploads the canonical short
+`tests/fixtures/ingest_inputs/open_frequency_short.fountain` fixture, starts
+the surfaced `Break Down Script` (`mvp_ingest`) flow, and fails if
+`script_bible` or `project_config` do not land.
+
+### Dependency health
+```bash
+curl -sf "https://cineforge.copper-dog.com/api/health/dependencies?refresh=1"
+```
+
+Use this as the fast provider-readiness signal after deploy. It should report
+Anthropic, Google, and OpenAI separately. Do not treat it as a replacement for
+the representative post-rollout eval above.
+
 ### Volumes
 ```bash
 fly volumes list -a cineforge-app
@@ -106,7 +129,7 @@ curl -s "https://api.cloudflare.com/client/v4/zones/372acf29f0a6f95c35e9f7ea94aa
 
 ### `fly logs` Hangs Forever
 `fly logs` is a **streaming command** — it tails logs in real-time and never exits. Do not use it as a verification step.
-Fix: Use `timeout 10 fly logs -a cineforge-app 2>&1 | tail -20` if you need recent logs. But prefer the health endpoint (`curl /api/health`) as the deploy success signal — logs are for debugging failures only.
+Fix: Use `timeout 10 fly logs -a cineforge-app 2>&1 | tail -20` if you need recent logs. But prefer `/api/health` for process liveness and `/api/health/dependencies?refresh=1` for fast provider readiness — logs are for debugging failures only.
 
 ### Depot 401 Registry Push
 ```
@@ -119,6 +142,27 @@ Fix: Always use `--depot=false` flag. Depot (Fly's remote builder) has intermitt
 Error: Internal Server Error (500) on /api/health or any endpoint
 ```
 Fix: Check `fly logs`. Common cause: missing or expired `ANTHROPIC_API_KEY` secret, or a volume mount issue. Verify with `fly secrets list -a cineforge-app` and `fly volumes list -a cineforge-app`.
+
+### "Break Down Script" Fails Immediately After Deploy
+If health/homepage checks pass but the surfaced Script Breakdown flow fails
+within a few seconds, the deploy is not actually healthy.
+
+Most common causes are broken provider credentials on the shipped `mvp_ingest`
+path. Today that surfaced path depends on:
+- `ANTHROPIC_API_KEY`
+- `CINE_FORGE_GEMINI_API_KEY`
+- `CINE_FORGE_OPENAI_API_KEY`
+
+Fix:
+1. Probe dependency health directly:
+   - `curl -sf "https://cineforge.copper-dog.com/api/health/dependencies?refresh=1"`
+2. Verify Fly sees the secret names:
+   - `fly secrets list -a cineforge-app`
+3. If a key is missing or stale, roll the relevant secret again.
+4. Re-run the representative post-rollout eval:
+   - `.venv/bin/python scripts/post_rollout_breakdown_eval.py --base-url https://cineforge.copper-dog.com`
+5. If dependency health or the eval still fails with `API key not valid`, the local source key is stale or revoked. Replace the local key with a known-good one, roll Fly again, and rerun both checks.
+6. Do not count the deploy as successful unless dependency health is green and that eval passes.
 
 ### Volume Permission Errors
 ```
@@ -137,7 +181,7 @@ If the API works but the frontend shows a blank page or 404:
 
 ### Chrome MCP Unavailable During UI Smoke Tests
 If deploy verification expects browser screenshots/console checks but the agent session cannot access Chrome MCP:
-1. Confirm this is a tooling/session availability issue (not an app outage) by running API checks first (`/api/health`, `/api/recipes`, `/api/projects/recent`, `/api/changelog`).
+1. Confirm this is a tooling/session availability issue (not an app outage) by running API checks first (`/api/health`, `/api/health/dependencies?refresh=1`, `/api/recipes`, `/api/projects/recent`, `/api/changelog`).
 2. Run fallback UI checks:
    - `curl -sf https://cineforge.copper-dog.com/` and verify `<title>CineForge</title>`
    - Verify a referenced JS bundle (`assets/index-*.js`) returns HTTP 200
@@ -161,11 +205,13 @@ If you ever need to recreate the infrastructure:
 
 1. `fly apps create cineforge-app --org personal`
 2. `fly volumes create cineforge_data --size 1 --region ord -a cineforge-app`
-3. `fly secrets set ANTHROPIC_API_KEY=<key> -a cineforge-app`
+3. `fly secrets set ANTHROPIC_API_KEY=<key> CINE_FORGE_GEMINI_API_KEY=<key> CINE_FORGE_OPENAI_API_KEY=<key> -a cineforge-app`
 4. `fly deploy --depot=false --yes`
 5. `fly certs add cineforge.copper-dog.com -a cineforge-app`
 6. Add DNS CNAMEs via Cloudflare API (see DNS Management above)
 7. Verify: `curl https://cineforge.copper-dog.com/api/health`
+8. Verify: `curl "https://cineforge.copper-dog.com/api/health/dependencies?refresh=1"`
+9. Run `.venv/bin/python scripts/post_rollout_breakdown_eval.py --base-url https://cineforge.copper-dog.com`
 
 ## History
 

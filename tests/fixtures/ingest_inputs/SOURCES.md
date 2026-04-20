@@ -20,9 +20,10 @@ These fixtures were downloaded from publicly accessible free sources for ingesti
   - Source: Repo-authored fixture
   - Work: *Open Frequency*
   - Notes: Canonical very short screenplay for the recurring full-pipeline UI
-    manual walkthrough. Intentionally short enough for occasional end-to-end
-    manual runs, but rich enough to exercise intake, world understanding, scene
-    workspace, and downstream planning/visualization surfaces.
+    manual walkthrough and post-rollout `Break Down Script` eval. Intentionally
+    short enough for occasional end-to-end runs, but rich enough to exercise
+    intake, world understanding, scene workspace, and downstream
+    planning/visualization surfaces.
 
 - `pit_and_pendulum.pdf`
   - URL: `https://ibiblio.org/ebooks/Poe/Pit_Pendulum.pdf`

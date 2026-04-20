@@ -139,6 +139,11 @@ from .preferences import (
 )
 from .preview import Keyframe, KeyframeArtifact, MediaFile, PreviewProvenance
 from .progress_event import EventType, ProgressEvent
+from .provider_health import (
+    AppHealthResponse,
+    ProviderDependencyCheck,
+    ProviderDependencyHealthSnapshot,
+)
 from .qa import QAIssue, QAResult
 from .readiness import ReadinessState, SceneReadiness, compute_scene_readiness
 from .registry import (
@@ -228,6 +233,7 @@ __all__ = [
     "ArtifactHealth",
     "ArtifactMetadata",
     "ArtifactRef",
+    "AppHealthResponse",
     "BibleFileEntry",
     "BibleManifest",
     "CharacterAndPerformance",
@@ -313,6 +319,8 @@ __all__ = [
     "PreferenceLearningSettings",
     "PreferenceProfile",
     "PreferenceSignal",
+    "ProviderDependencyCheck",
+    "ProviderDependencyHealthSnapshot",
     "RawInput",
     "ReadinessState",
     "SceneReadiness",

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-20-04] — Add provider dependency health surface (Story 179)
+
+### Added
+- Added a typed `/api/health/dependencies` surface that reports cached Anthropic, Google, and OpenAI readiness using cheap model-access probes instead of generation calls
+- Added a shared provider-failure taxonomy plus focused service, schema, and API coverage for provider dependency health and startup cache warming
+
+### Changed
+- Changed deploy/runbook guidance so post-rollout verification now checks Fly secrets, dependency health, and the representative `Break Down Script` eval instead of trusting homepage and liveness smoke alone
+- Changed production deployment documentation and the canonical short screenplay fixture notes so the surfaced `mvp_ingest` post-rollout eval is part of the normal deploy truth surface
+
+### Fixed
+- Fixed the API startup warm path to use a FastAPI-compatible startup hook on production so dependency-health cache warming does not crash Fly on boot
+- Fixed provider failure operator messaging so permission-denied model access errors classify distinctly from auth failures
+
 ## [2026-04-20-03] — Record production deploy result
 
 ### Changed

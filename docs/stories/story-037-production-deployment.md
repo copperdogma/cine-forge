@@ -150,6 +150,10 @@ fly ssh console -a cineforge-app
 # Set secrets
 fly secrets set KEY=VALUE -a cineforge-app
 
+# Representative post-rollout eval
+.venv/bin/python scripts/post_rollout_breakdown_eval.py \
+  --base-url https://cineforge.copper-dog.com
+
 # View volumes
 fly volumes list -a cineforge-app
 ```
@@ -160,6 +164,7 @@ fly volumes list -a cineforge-app
 - **Volume**: `cineforge_data` 1GB mounted at `/app/output`
 - **Image**: Multi-stage Docker (Node 24 + Python 3.12-slim), ~168MB
 - **Secrets**: `ANTHROPIC_API_KEY`
+- **Representative rollout eval**: `scripts/post_rollout_breakdown_eval.py` against `tests/fixtures/ingest_inputs/open_frequency_short.fountain`
 - **Cost**: ~$3-5/month (shared-cpu-1x, 512MB, 1GB volume, auto-stop)
 
 ### Notes
@@ -217,3 +222,21 @@ fly volumes list -a cineforge-app
 - Path traversal verified blocked on production (returns index.html, not file contents)
 - 156 unit tests pass, ruff lint clean
 - **Story 037 complete** — all 9 acceptance criteria met, all phases done
+
+20260420-1735 — Production rollout hardening after surfaced Script Breakdown miss
+- Impact: a deploy could report green on health/homepage smoke while the surfaced `Break Down Script` action still failed immediately on production because Fly was missing `CINE_FORGE_GEMINI_API_KEY`. That made the deploy workflow dishonest: it validated the shell of the product, not the first real user path.
+- Change: rolled `CINE_FORGE_GEMINI_API_KEY` to Fly, added `scripts/post_rollout_breakdown_eval.py`, and updated deployment docs/skill to require a fresh-project `mvp_ingest` eval using `tests/fixtures/ingest_inputs/open_frequency_short.fountain` after every rollout.
+- Evidence checked: `fly secrets list -a cineforge-app` now shows `CINE_FORGE_GEMINI_API_KEY` deployed; the new rollout eval targets the same surfaced API path the UI uses (`/api/projects/new` → upload → `/api/runs/start` with `recipe_id=mvp_ingest`) and verifies `script_bible` plus `project_config` actually land.
+- Next falsifiable step: run the new post-rollout eval against production on every deploy and treat any failure in `script_bible`/`project_config` as a hard deploy failure, even if health/homepage smoke stays green.
+
+20260420-1810 — Representative rollout eval caught stale Gemini key, not just missing config
+- Impact: the newly added post-rollout eval immediately reproduced the surfaced failure on production, which proves the gate is now pointed at the right user path. It also exposed a second issue: after rolling the secret name to Fly, the current local Gemini/Google source key is itself invalid with Google, so presence-only checks would still have lied.
+- Change: tightened `scripts/post_rollout_breakdown_eval.py` so failures now print `project_id`, `run_id`, the actual failed stage, and the final stage-status snapshot instead of noisy `running`/`pending` lines. Added unit coverage for that reporting.
+- Evidence checked: `.venv/bin/python scripts/post_rollout_breakdown_eval.py --base-url https://cineforge.copper-dog.com` failed on project `post-rollout-eval-20260420-163903` / run `run-dac84520` in `script_bible`; direct Google probe of the current workspace Gemini key returned `HTTP 400` with `API key not valid`.
+- Next falsifiable step: replace the stale local Gemini key with a known-good one, roll `CINE_FORGE_GEMINI_API_KEY` to Fly again, and require the post-rollout eval to pass before calling production healthy.
+
+20260420-1822 — Production eval now reports the actionable provider failure directly
+- Impact: operators no longer have to dig through `/api/runs/{id}/state` or Fly logs to understand why the surfaced Script Breakdown flow failed after deploy. The eval now emits the project id, run id, failed stage, and the provider error in one place.
+- Change: added a short grace period in `scripts/post_rollout_breakdown_eval.py` so it keeps polling when a stage flips to `failed` without a message while sibling stages are still unwinding. That avoids freezing on the transient half-written state and lets the real `background_error` land.
+- Evidence checked: `.venv/bin/python scripts/post_rollout_breakdown_eval.py --base-url https://cineforge.copper-dog.com` failed on project `post-rollout-eval-20260420-164628` / run `run-08c5f2e0` with `Representative Script Breakdown eval failed in script_bible: Gemini HTTP error 400 ... API key not valid`.
+- Next falsifiable step: install a working Gemini key locally, roll Fly again, rerun the eval, and require `script_bible` plus `project_config` artifacts before marking production healthy.

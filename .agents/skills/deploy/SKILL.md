@@ -14,11 +14,12 @@ Deploy CineForge to production on Fly.io.
 
 - `docs/deployment.md` — infrastructure, architecture, DNS, troubleshooting
 - `docs/runbooks/browser-automation-and-mcp.md` — browser automation + MCP runbook
+- `docs/runbooks/full-pipeline-ui-manual-walkthrough.md` — canonical short fixture and surfaced-path truth
 - `docs/deploy-log.md` — deploy duration history and recalibration memory
 
 ## Expected Duration
 
-~3.25 minutes total (preflight ~15s, deploy ~150s, smoke tests ~30s).  
+~4.5 minutes total (preflight ~20s, deploy ~150s, post-rollout eval ~70s, UI smoke ~30s).  
 Tell the user this estimate before starting. If actual duration deviates by more than 20%, explain why.
 
 ## Duration Recalibration (required)
@@ -53,6 +54,10 @@ After successful deploy:
        - `cd ui && npx tsc -b` (use `-b`, not `--noEmit`)
    - Fly status:
      - `fly status -a cineforge-app`
+   - Fly secrets:
+     - `fly secrets list -a cineforge-app`
+     - Confirm the currently shipped surfaced `mvp_ingest` path has its required provider secrets:
+       `ANTHROPIC_API_KEY`, `CINE_FORGE_GEMINI_API_KEY`, and `CINE_FORGE_OPENAI_API_KEY`
 
 2. **Deploy:**
    - Capture start time (`date +%s`)
@@ -69,11 +74,22 @@ After successful deploy:
 
 3. **API smoke tests (all must pass):**
    - `curl -sf https://cineforge.copper-dog.com/api/health`
+   - `curl -sf "https://cineforge.copper-dog.com/api/health/dependencies?refresh=1"`
    - `curl -sf https://cineforge.copper-dog.com/api/recipes`
    - `curl -sf https://cineforge.copper-dog.com/api/projects/recent`
    - `curl -sf https://cineforge.copper-dog.com/api/changelog`
 
-4. **UI smoke tests:**
+4. **Representative post-rollout eval (must pass):**
+   - Run the real surfaced Script Breakdown path against the canonical short fixture:
+     - `.venv/bin/python scripts/post_rollout_breakdown_eval.py --base-url https://cineforge.copper-dog.com`
+   - This eval must:
+     - create a fresh project
+     - upload `tests/fixtures/ingest_inputs/open_frequency_short.fountain`
+     - start `mvp_ingest`
+     - fail on any stage error, including `script_bible`
+     - verify `script_bible` and `project_config` artifacts land successfully
+
+5. **UI smoke tests:**
    - If browser tooling available (preferred):
      - Open `https://cineforge.copper-dog.com/`
      - Capture screenshot(s) of landing/project flow
@@ -83,14 +99,16 @@ After successful deploy:
      - Verify referenced JS bundle returns 200
      - Report that browser coverage was unavailable in-session
 
-5. **Report only after all smoke checks pass:**
+6. **Report only after all smoke checks pass:**
    - Deployed commit hash and summary
    - API check results
+   - Dependency-health result (overall status plus any broken provider ids)
+   - Post-rollout eval result (project id, run id, and surfaced-stage result)
    - UI check results (including whether browser or fallback path was used)
    - Health endpoint version/status
    - Total duration vs expected (+ explanation if >20% off)
 
-6. **Log + recalibration:**
+7. **Log + recalibration:**
    - Append deploy row in `docs/deploy-log.md`
    - Apply recalibration rule if criteria are met
 
@@ -104,8 +122,9 @@ If any check fails:
 4. If the failure is a Fly remote-builder transport issue rather than an app/runtime issue, switch to the local-only fallback path instead of looping on the same remote command.
 5. If the failure is local Docker disk pressure during a local-only build, do one bounded builder-cache prune and retry once.
 6. If the retry required stashing `docs/deploy-log.md`, restore it before reporting so the attempt history stays complete.
-7. For UI issues, include browser console errors if available.
-8. Propose concrete fix; do not silently retry multiple times unless the user explicitly asked you to keep going.
+7. If dependency health or the post-rollout eval fails, include the failing provider or stage id/message and current Fly secrets state.
+8. For UI issues, include browser console errors if available.
+9. Propose concrete fix; do not silently retry multiple times unless the user explicitly asked you to keep going.
 
 ## Guardrails
 

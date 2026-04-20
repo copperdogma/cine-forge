@@ -658,7 +658,8 @@
           "174",
           "175",
           "176",
-          "178"
+          "178",
+          "179"
         ],
         "adrIds": [
           "ADR-002",
@@ -975,7 +976,8 @@
           "174",
           "175",
           "176",
-          "178"
+          "178",
+          "179"
         ],
         "adrIds": [
           "ADR-001",
@@ -3900,9 +3902,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260217-1000",
-        "date": "2026-02-17",
-        "summary": "Smoke test + security hardening + redeployment"
+        "timestamp": "20260420-1822",
+        "date": "2026-04-20",
+        "summary": "Production eval now reports the actionable provider failure directly"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -3912,12 +3914,12 @@
         "sourcePath": "docs/stories/story-037-production-deployment.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "Smoke test + security hardening + redeployment",
+        "whyNow": "Production eval now reports the actionable provider failure directly",
         "lastRelevantAction": {
-          "date": "2026-02-17",
+          "date": "2026-04-20",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-037-production-deployment.md",
-          "summary": "Smoke test + security hardening + redeployment"
+          "summary": "Production eval now reports the actionable provider failure directly"
         }
       }
     },
@@ -11305,6 +11307,69 @@
           "summary": "story-done: closed Story 178 after the clean validation rerun"
         }
       }
+    },
+    {
+      "id": "179",
+      "title": "Provider Dependency Health and Credential Readiness Surface",
+      "path": "docs/stories/story-179-provider-dependency-health-and-credential-readiness.md",
+      "status": "Done",
+      "priority": "Medium",
+      "idealRefs": [
+        "R12 (every AI decision explainable and overridable)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5",
+        "spec:5.2",
+        "spec:5.5",
+        "spec:8",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "037",
+        "038"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "deploy",
+        "operations",
+        "provider-health",
+        "trust"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260420-1615",
+        "date": "2026-04-20",
+        "summary": "story-done: closed Story 179 after production verification of"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "179",
+        "sourcePath": "docs/stories/story-179-provider-dependency-health-and-credential-readiness.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "story-done: closed Story 179 after production verification of",
+        "lastRelevantAction": {
+          "date": "2026-04-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-179-provider-dependency-health-and-credential-readiness.md",
+          "summary": "story-done: closed Story 179 after production verification of"
+        }
+      }
     }
   ],
   "adrs": [
@@ -13503,9 +13568,10 @@
             "174",
             "175",
             "177",
-            "178"
+            "178",
+            "179"
           ],
-          "stories_since_audit": 12,
+          "stories_since_audit": 13,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",

@@ -6,6 +6,7 @@ import time
 from collections.abc import Iterable
 from typing import Any
 
+from cine_forge.ai.provider_failures import classify_provider_failure_status
 from cine_forge.driver.retry_policy import StageRetryPolicy
 
 _PROVIDER_LABELS = {
@@ -13,46 +14,6 @@ _PROVIDER_LABELS = {
     "google": "Google",
     "openai": "OpenAI",
 }
-
-_BILLING_TOKENS = (
-    "balance is too low",
-    "billing",
-    "billing hard limit",
-    "credit balance",
-    "credits",
-    "exceeded your current quota",
-    "insufficient balance",
-    "insufficient quota",
-    "payment required",
-    "quota exceeded",
-    "top up",
-)
-_AUTH_TOKENS = (
-    "api key expired",
-    "api key invalid",
-    "api key revoked",
-    "auth expired",
-    "authentication failed",
-    "authentication required",
-    "expired access token",
-    "expired api key",
-    "incorrect api key",
-    "invalid api key",
-    "invalid authentication",
-    "invalid x-api-key",
-    "key expired",
-    "token expired",
-    "unauthorized",
-)
-_RATE_LIMIT_TOKENS = (
-    "capacity",
-    "overloaded",
-    "rate limit",
-    "resource exhausted",
-    "temporarily unavailable",
-    "too many requests",
-    "try again later",
-)
 
 
 def build_provider_failure_chat_message(
@@ -83,6 +44,13 @@ def build_provider_failure_chat_message(
             f"{context_line}\n\n"
             f"{provider_label} billing or quota blocked this run. "
             "Top up credits or raise the provider spending limit, then retry from run details."
+        )
+    elif failure_kind == "permission":
+        content = (
+            f"{context_line}\n\n"
+            f"{provider_label} accepted the credentials but rejected access to the requested "
+            "model or capability. Check model access for that key or replace it, then retry "
+            "from run details."
         )
     elif failure_kind == "auth":
         content = (
@@ -127,28 +95,19 @@ def classify_provider_failure(
     message = " ".join(_message_parts(exc=exc, stage_state=stage_state, attempt=attempt))
     error_code = _error_code(exc=exc, attempt=attempt)
     is_transient = bool(attempt.get("transient")) if isinstance(attempt, dict) else False
-
-    if _contains_any(message, _BILLING_TOKENS) or error_code == "402":
+    status = classify_provider_failure_status(
+        message=message,
+        error_code=error_code,
+        is_transient=is_transient,
+    )
+    if status == "quota_failed":
         return "quota"
-
-    if _contains_any(message, _AUTH_TOKENS):
+    if status == "permission_failed":
+        return "permission"
+    if status == "auth_failed":
         return "auth"
-
-    if error_code == "401":
-        return "auth"
-
-    if error_code == "403" and _contains_any(
-        message,
-        ("auth", "credential", "key", "token"),
-    ):
-        return "auth"
-
-    if _contains_any(message, _RATE_LIMIT_TOKENS) or error_code in {"429", "529"}:
+    if status == "rate_limited":
         return "rate_limit"
-
-    if is_transient and error_code is not None:
-        return "rate_limit"
-
     return None
 
 
@@ -281,7 +240,3 @@ def _context_line(
     if request_id:
         context += f" Request ID: `{request_id}`."
     return context
-
-
-def _contains_any(message: str, tokens: Iterable[str]) -> bool:
-    return any(token in message for token in tokens)

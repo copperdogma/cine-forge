@@ -268,6 +268,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 156 | Full-Pipeline UI Acceptance Walkthrough | Medium | Done | — | spec:5, spec:11 | — | [story-156](stories/story-156-full-pipeline-ui-acceptance-walkthrough.md) |
 | 157 | Chat Suggestions Stop Advertising Completed Paths | Medium | Done | — | spec:5 | — | [story-157](stories/story-157-chat-suggestions-stop-advertising-completed-paths.md) |
 | 158 | Fresh Run Event Polling Stops Racing Missing Event Logs | Medium | Done | — | spec:5 | — | [story-158](stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md) |
+| 179 | Provider Dependency Health and Credential Readiness Surface | Medium | Done | — | spec:5, spec:8 | 037, 038 | [story-179](stories/story-179-provider-dependency-health-and-credential-readiness.md) |
 | 089 | Interaction Mode Selection | Low | Done | — | spec:5 | 085 | [story-089](stories/story-089-interaction-mode-selection.md) |
 | 001 | Project Setup and Scaffolding | Unknown | Done | — | spec:1, spec:5, spec:8 | — | [story-001](stories/story-001-project-setup.md) |
 | 002 | Pipeline Foundation (Driver, Artifact Store, Schemas) | Unknown | Done | — | spec:1, spec:5, spec:8 | 001 | [story-002](stories/story-002-pipeline-foundation.md) |

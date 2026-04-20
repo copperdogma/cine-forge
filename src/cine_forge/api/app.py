@@ -48,6 +48,7 @@ from cine_forge.api.routers import (
     costs,
     design_study,
     export,
+    health,
     impact,
     intent_mood,
     memory,
@@ -58,6 +59,7 @@ from cine_forge.api.routers import (
     style_packs,
 )
 from cine_forge.api.service import OperatorConsoleService
+from cine_forge.services.provider_dependency_health import ProviderDependencyHealthService
 
 load_dotenv()
 
@@ -87,12 +89,25 @@ def _parse_version(workspace: Path) -> str:
     return "0.0.0"
 
 
-def create_app(workspace_root: Path | None = None) -> FastAPI:
+def create_app(
+    workspace_root: Path | None = None,
+    *,
+    enable_startup_dependency_checks: bool | None = None,
+) -> FastAPI:
+    repo_root = Path(__file__).resolve().parents[3]
     resolved_workspace = workspace_root or Path(__file__).resolve().parents[3]
     service = OperatorConsoleService(workspace_root=resolved_workspace)
+    provider_dependency_health_service = ProviderDependencyHealthService()
     app_version = _parse_version(resolved_workspace)
     app = FastAPI(title="CineForge API", version=app_version)
+    if enable_startup_dependency_checks is None:
+        enable_startup_dependency_checks = (
+            workspace_root is None or resolved_workspace == repo_root
+        )
+
     app.state.console_service = service
+    app.state.provider_dependency_health_service = provider_dependency_health_service
+    app.state.app_version = app_version
     assets.set_service(service)
     costs.set_service(service)
     export.set_service(service)
@@ -108,6 +123,7 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
     app.include_router(assets.router, prefix="/api")
     app.include_router(costs.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
+    app.include_router(health.router, prefix="/api")
     app.include_router(design_study.router, prefix="/api")
     app.include_router(impact.router, prefix="/api")
     app.include_router(intent_mood.router, prefix="/api")
@@ -130,6 +146,9 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
         allow_headers=["*"],
     )
 
+    if enable_startup_dependency_checks:
+        app.router.on_startup.append(provider_dependency_health_service.start_background_refresh)
+
     @app.exception_handler(ServiceError)
     async def _handle_service_error(_, exc: ServiceError) -> JSONResponse:
         payload = ErrorPayload(code=exc.code, message=exc.message, hint=exc.hint)
@@ -143,10 +162,6 @@ def create_app(workspace_root: Path | None = None) -> FastAPI:
             hint=str(exc),
         )
         return JSONResponse(status_code=422, content=payload.model_dump())
-
-    @app.get("/api/health")
-    async def health() -> dict[str, str]:
-        return {"status": "ok", "version": app_version}
 
     @app.get("/api/changelog")
     async def changelog() -> PlainTextResponse:

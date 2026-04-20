@@ -143,6 +143,31 @@ def test_emits_auth_notification_for_expired_credentials(tmp_path: Path) -> None
 
 
 @pytest.mark.unit
+def test_emits_permission_notification_for_model_access_denied(tmp_path: Path) -> None:
+    messages = _messages_for(
+        tmp_path,
+        run_id="run-permission",
+        exc=RuntimeError("Anthropic HTTP error 403: model access forbidden"),
+        stages={
+            "script_bible": _failed_stage(
+                model_used="claude-sonnet-4-6",
+                provider="anthropic",
+                error="model access forbidden",
+            )
+        },
+    )
+
+    assert len(messages) == 1
+    message = messages[0]
+    assert (
+        "Anthropic failed during the `script bible` stage in run `run-permission`."
+        in message["content"]
+    )
+    assert "rejected access to the requested model or capability" in message["content"]
+    assert message["id"] == "provider_failure_run-permission_script_bible_permission_anthropic"
+
+
+@pytest.mark.unit
 def test_uses_attempt_metadata_when_top_level_error_is_generic(tmp_path: Path) -> None:
     messages = _messages_for(
         tmp_path,
