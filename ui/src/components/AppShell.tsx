@@ -34,6 +34,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { RightPanelProvider } from '@/lib/right-panel'
 import { useRightPanel } from '@/lib/use-right-panel'
 import { CommandPalette } from '@/components/CommandPalette'
+import { ChatErrorBoundary } from '@/components/ChatErrorBoundary'
 import { ProjectSettings } from '@/components/ProjectSettings'
 import { ChatPanel } from '@/components/ChatPanel'
 import { PipelineBar } from '@/components/PipelineBar'
@@ -331,7 +332,9 @@ function RightPanelContent({ onClose }: { onClose: () => void }) {
         </Button>
       </div>
 
-      <ChatPanel />
+      <ChatErrorBoundary>
+        <ChatPanel />
+      </ChatErrorBoundary>
     </>
   )
 }

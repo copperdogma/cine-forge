@@ -228,7 +228,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 |---|---|---|---|---|---|---|---|
 | 180 | Scene Workspace Entry Clarity and Tab Target Precision | High | Pending | — | spec:5, spec:6, spec:7 | 099, 170 | [story-180](stories/story-180-scene-workspace-entry-clarity.md) |
 | 181 | Post-Deep-Breakdown Next-Step Guidance | High | Pending | — | spec:5, spec:6, spec:7 | 156, 157 | [story-181](stories/story-181-post-deep-breakdown-next-step-guidance.md) |
-| 182 | Post-Analysis Chat Resource Failure Recovery | High | Pending | — | spec:1, spec:5, spec:9 | — | [story-182](stories/story-182-post-analysis-chat-resource-failure-recovery.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |
@@ -258,6 +257,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 171 | AI Previz First-Playable Latency Reduction | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 149, 150, 151, 152, 153 | [story-171](stories/story-171-ai-previz-first-playable-latency-reduction.md) |
 | 174 | Fast Useful AI Previz on Honest Current-Scene Route | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 143, 153, 171 | [story-174](stories/story-174-fast-useful-ai-previz-current-scene-route.md) |
 | 176 | AI Previz Provider Floor on Honest One-Pass Route | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 151, 153, 174, 175 | [story-176](stories/story-176-ai-previz-one-pass-provider-floor.md) |
+| 182 | Post-Analysis Chat Resource Failure Recovery | High | Done | — | spec:1, spec:5, spec:9 | — | [story-182](stories/story-182-post-analysis-chat-resource-failure-recovery.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

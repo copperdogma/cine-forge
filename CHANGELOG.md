@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-20-06] — Recover post-analysis chat failures (Story 182)
+
+### Added
+- Added store-backed chat-load state plus a narrow chat render boundary so post-run chat failures stay contained to the chat surface
+- Added a focused chat-load regression test covering the no-auto-retry-until-manual-retry policy
+
+### Fixed
+- Fixed the post-Script-Breakdown and post-Deep-Breakdown black-screen failure mode by surfacing a retryable chat-unavailable state instead of letting chat load errors cascade through the route
+- Fixed the repeated `/api/projects/{project_id}/chat` retry storm after a known failure so the operator can recover deliberately instead of exhausting browser resources
+
 ## [2026-04-20-05] — Triage QA inbox into planning stories
 
 ### Added

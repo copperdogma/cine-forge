@@ -3,6 +3,12 @@
 
 import { create } from 'zustand'
 import { getChatMessages, postChatMessage } from './api/chat'
+import {
+  DEFAULT_CHAT_LOAD_STATE,
+  type ChatLoadState,
+  resolveChatLoadErrorMessage,
+  shouldAutoSyncChat,
+} from './chat-load-state'
 import { dropLegacyBootstrapMessages } from './chat-messages'
 import { dropShadowedGenericRunFailureMessages } from './run-failure-messages'
 import type { ChatAction, ChatMessage, ChatMessageType, PreflightData, ToolCallStatus } from './types'
@@ -70,6 +76,12 @@ function migrateMessages(messages: ChatMessage[]): ChatMessage[] {
   return normalizedBootstrapHistory
 }
 
+function getLastAiSpeaker(messages: ChatMessage[]): string | undefined {
+  return [...messages].reverse().find(
+    m => m.type === 'ai_response' && m.speaker,
+  )?.speaker
+}
+
 export interface EntityContext {
   name: string
   section: string
@@ -80,6 +92,7 @@ interface ChatStore {
   messages: Record<string, ChatMessage[]>
   /** Tracks which projects have been loaded from the backend. */
   loaded: Record<string, boolean>
+  chatLoadState: Record<string, ChatLoadState>
   activeRunId: Record<string, string | null>
   /** Currently-viewed entity, shown as a context chip above the chat input. */
   entityContext: Record<string, EntityContext | null>
@@ -92,6 +105,12 @@ interface ChatStore {
 
   /** Bulk-load messages from backend (replaces any in-memory state for the project). */
   loadMessages: (projectId: string, messages: ChatMessage[]) => void
+  /** Replace local messages without marking the backend load successful. */
+  seedLocalMessages: (
+    projectId: string,
+    messages: ChatMessage[],
+    options?: { loaded?: boolean },
+  ) => void
   /** Add a message to store and persist to backend (fire-and-forget). */
   addMessage: (projectId: string, message: ChatMessage) => void
   /** Add a message to store without persisting it to the backend. */
@@ -128,16 +147,22 @@ interface ChatStore {
   clearMessages: (projectId: string) => void
   hasMessages: (projectId: string) => boolean
   isLoaded: (projectId: string) => boolean
+  getChatLoadState: (projectId: string) => ChatLoadState
+  beginChatLoad: (projectId: string) => void
+  setChatLoadReady: (projectId: string) => void
+  setChatLoadError: (projectId: string, error: unknown) => void
+  retryChatLoad: (projectId: string) => void
   setActiveRun: (projectId: string, runId: string) => void
   clearActiveRun: (projectId: string) => void
   /** Refresh messages from backend for the given project. */
-  syncMessages: (projectId: string) => Promise<void>
+  syncMessages: (projectId: string, options?: { force?: boolean }) => Promise<void>
 }
 
 export const useChatStore = create<ChatStore>()(
   (set, get) => ({
     messages: {},
     loaded: {},
+    chatLoadState: {},
     activeRunId: {},
     entityContext: {},
     activeRole: {},
@@ -147,26 +172,47 @@ export const useChatStore = create<ChatStore>()(
 
     getActiveRole: (projectId) => get().activeRole[projectId] ?? 'assistant',
 
-    syncMessages: async (projectId) => {
+    syncMessages: async (projectId, options) => {
+      const currentChatLoadState = get().getChatLoadState(projectId)
+      if (!options?.force && !shouldAutoSyncChat(currentChatLoadState)) {
+        return
+      }
+
+      get().beginChatLoad(projectId)
+
       try {
         const messages = await getChatMessages(projectId)
         get().loadMessages(projectId, messages)
       } catch (error) {
+        get().setChatLoadError(projectId, error)
         console.error('Failed to sync chat messages:', error)
       }
     },
 
     loadMessages: (projectId, messages) => {
       const migrated = migrateMessages(messages)
-      // Restore active role stickiness from the last AI message's speaker
-      const lastAi = [...migrated].reverse().find(
-        m => m.type === 'ai_response' && m.speaker,
-      )
+      const lastAiSpeaker = getLastAiSpeaker(migrated)
       set((state) => ({
         messages: { ...state.messages, [projectId]: migrated },
         loaded: { ...state.loaded, [projectId]: true },
-        ...(lastAi?.speaker
-          ? { activeRole: { ...state.activeRole, [projectId]: lastAi.speaker } }
+        chatLoadState: {
+          ...state.chatLoadState,
+          [projectId]: { phase: 'ready', error: null },
+        },
+        ...(lastAiSpeaker
+          ? { activeRole: { ...state.activeRole, [projectId]: lastAiSpeaker } }
+          : {}),
+      }))
+    },
+
+    seedLocalMessages: (projectId, messages, options) => {
+      const migrated = migrateMessages(messages)
+      const lastAiSpeaker = getLastAiSpeaker(migrated)
+      set((state) => ({
+        messages: { ...state.messages, [projectId]: migrated },
+        loaded: { ...state.loaded, [projectId]: options?.loaded ?? false },
+        ...(lastAiSpeaker
+          ? { activeRole: { ...state.activeRole, [projectId]: lastAiSpeaker } }
           : {}),
       }))
     },
@@ -405,12 +451,52 @@ export const useChatStore = create<ChatStore>()(
         const { [projectId]: _, ...rest } = state.messages
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [projectId]: __, ...loadedRest } = state.loaded
-        return { messages: rest, loaded: loadedRest }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { [projectId]: ___, ...chatLoadStateRest } = state.chatLoadState
+        return { messages: rest, loaded: loadedRest, chatLoadState: chatLoadStateRest }
       }),
 
     hasMessages: (projectId) => (get().messages[projectId]?.length ?? 0) > 0,
 
     isLoaded: (projectId) => get().loaded[projectId] === true,
+
+    getChatLoadState: (projectId) => get().chatLoadState[projectId] ?? DEFAULT_CHAT_LOAD_STATE,
+
+    beginChatLoad: (projectId) =>
+      set((state) => ({
+        chatLoadState: {
+          ...state.chatLoadState,
+          [projectId]: { phase: 'loading', error: null },
+        },
+      })),
+
+    setChatLoadReady: (projectId) =>
+      set((state) => ({
+        chatLoadState: {
+          ...state.chatLoadState,
+          [projectId]: { phase: 'ready', error: null },
+        },
+      })),
+
+    setChatLoadError: (projectId, error) =>
+      set((state) => ({
+        chatLoadState: {
+          ...state.chatLoadState,
+          [projectId]: {
+            phase: 'error',
+            error: resolveChatLoadErrorMessage(error),
+          },
+        },
+      })),
+
+    retryChatLoad: (projectId) =>
+      set((state) => ({
+        loaded: { ...state.loaded, [projectId]: false },
+        chatLoadState: {
+          ...state.chatLoadState,
+          [projectId]: { phase: 'idle', error: null },
+        },
+      })),
 
     setActiveRun: (projectId, runId) =>
       set((state) => ({

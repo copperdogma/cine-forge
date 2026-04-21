@@ -1,8 +1,9 @@
 import { useEffect, useEffectEvent, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { Sparkles } from 'lucide-react'
+import { AlertTriangle, RefreshCw, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { postChatMessage, streamChatMessage } from '@/lib/api'
 import { dropLegacyBootstrapMessages } from '@/lib/chat-messages'
@@ -44,6 +45,9 @@ export function ChatPanel() {
   const { projectId } = useParams()
   const queryClient = useQueryClient()
   const messages = useChatStore((store) => store.messages[projectId ?? ''] ?? EMPTY_MESSAGES)
+  const chatLoadState = useChatStore((store) =>
+    projectId ? store.getChatLoadState(projectId) : undefined,
+  )
   const addMessage = useChatStore((store) => store.addMessage)
   const entityContext = useChatStore((store) => store.entityContext[projectId ?? ''] ?? null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -60,6 +64,10 @@ export function ChatPanel() {
   const [inputText, setInputText] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
   const [stickyRole, setStickyRole] = useState<string | null>(null)
+  const handleRetryChatLoad = () => {
+    if (!projectId) return
+    useChatStore.getState().retryChatLoad(projectId)
+  }
 
   const handleSendMessage = async (overrideText?: string) => {
     const textToSend = overrideText ?? inputText.trim()
@@ -351,6 +359,30 @@ export function ChatPanel() {
           )
         })()}
         <div className="px-3 pr-4 py-3 space-y-1 w-0 min-w-full">
+          {chatLoadState?.phase === 'error' && (
+            <div
+              role="alert"
+              className="mb-3 flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2.5"
+            >
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
+              <div className="min-w-0 flex-1 space-y-1">
+                <p className="text-sm font-medium text-foreground">Chat is temporarily unavailable</p>
+                <p className="text-xs text-muted-foreground">
+                  {chatLoadState.error ?? 'The project is still available while chat reconnects.'}
+                </p>
+              </div>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="gap-1.5"
+                onClick={handleRetryChatLoad}
+              >
+                <RefreshCw className="h-3.5 w-3.5" />
+                Retry
+              </Button>
+            </div>
+          )}
           {visibleMessages.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-center">
               <Sparkles className="h-8 w-8 text-muted-foreground/50 mb-3" />

@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getChatMessages, listProjectCharacters } from '../api'
+import { shouldAttemptChatLoad } from '../chat-load-state'
 import {
   areBootstrapMessagesCurrent,
   getWelcomeMessages,
@@ -22,60 +23,54 @@ export function useProjectCharacters(projectId: string | undefined) {
 export function useChatLoader(projectId: string | undefined) {
   const projectState = useProjectState(projectId)
   const { data: project, isLoading } = useProject(projectId)
-  const initializedRef = useRef<string | null>(null)
+  const chatLoadState = useChatStore((store) =>
+    projectId ? store.getChatLoadState(projectId) : undefined,
+  )
 
   useEffect(() => {
     if (!projectId || !project || isLoading) return
     const welcomeMessages = getWelcomeMessages(projectState, project)
 
     const store = useChatStore.getState()
-    const replaceBootstrapMessages = (messages: typeof welcomeMessages) => {
-      store.loadMessages(projectId, [])
-      for (const message of messages) {
-        store.addMessage(projectId, message)
-      }
+    const replaceBootstrapMessages = (
+      messages: typeof welcomeMessages,
+      options?: { loaded?: boolean },
+    ) => {
+      store.seedLocalMessages(projectId, messages, options)
     }
 
-    if (initializedRef.current === projectId) {
-      if (store.isLoaded(projectId)) {
-        const loadedMessages = store.getMessages(projectId)
-        if (
-          hasOnlyBootstrapMessages(loadedMessages)
-          && !areBootstrapMessagesCurrent(loadedMessages, projectState, project)
-        ) {
-          replaceBootstrapMessages(welcomeMessages)
-        }
-      }
-      return
-    }
-
-    if (store.isLoaded(projectId)) {
+    if (chatLoadState?.phase === 'ready') {
       const loadedMessages = store.getMessages(projectId)
       if (
         hasOnlyBootstrapMessages(loadedMessages)
         && !areBootstrapMessagesCurrent(loadedMessages, projectState, project)
       ) {
-        replaceBootstrapMessages(welcomeMessages)
+        replaceBootstrapMessages(welcomeMessages, { loaded: store.isLoaded(projectId) })
       }
-      initializedRef.current = projectId
       return
     }
 
-    initializedRef.current = projectId
+    if (!shouldAttemptChatLoad(chatLoadState)) {
+      return
+    }
+
+    store.beginChatLoad(projectId)
     getChatMessages(projectId)
       .then((backendMessages) => {
         if (useChatStore.getState().isLoaded(projectId)) return
         if (backendMessages.length > 0 && !hasOnlyBootstrapMessages(backendMessages)) {
           useChatStore.getState().loadMessages(projectId, backendMessages)
         } else {
-          replaceBootstrapMessages(welcomeMessages)
+          replaceBootstrapMessages(welcomeMessages, { loaded: true })
+          useChatStore.getState().setChatLoadReady(projectId)
         }
       })
-      .catch(() => {
+      .catch((error) => {
         const currentStore = useChatStore.getState()
         if (!currentStore.hasMessages(projectId)) {
           replaceBootstrapMessages(welcomeMessages)
         }
+        currentStore.setChatLoadError(projectId, error)
       })
-  }, [projectId, projectState, project, isLoading])
+  }, [projectId, projectState, project, isLoading, chatLoadState])
 }

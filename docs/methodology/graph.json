@@ -11528,7 +11528,7 @@
       "id": "182",
       "title": "Post-Analysis Chat Resource Failure Recovery",
       "path": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R12 (radical transparency)",
@@ -11568,9 +11568,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260420-0002",
+        "timestamp": "20260420-2032",
         "date": "2026-04-20",
-        "summary": "story-created: preserved the post-run black-screen report as a concrete `Pending` resilience bug instead of assuming it is just more performance pain. Evidence: `docs/inbox.md` QA notes, `/api/projects/the-mariner-13/ch…"
+        "summary": "close-out: marked Story 182 done after confirming the shipped slice meets its own acceptance surface and that the remaining Python lint failures stay outside this landing set. Evidence: Story 182 acceptance criteria and…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11578,14 +11578,14 @@
         "sourceKind": "story",
         "sourceId": "182",
         "sourcePath": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
-        "whyNow": "story-created: preserved the post-run black-screen report as a concrete `Pending` resilience bug instead of assuming it is just more performance pain. Evidence: `docs/inbox.md` QA notes, `/api/projects/the-mariner-13/ch…",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "close-out: marked Story 182 done after confirming the shipped slice meets its own acceptance surface and that the remaining Python lint failures stay outside this landing set. Evidence: Story 182 acceptance criteria and…",
         "lastRelevantAction": {
           "date": "2026-04-20",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
-          "summary": "story-created: preserved the post-run black-screen report as a concrete `Pending` resilience bug instead of assuming it is just more performance pain. Evidence: `docs/inbox.md` QA notes, `/api/projects/the-mariner-13/ch…"
+          "summary": "close-out: marked Story 182 done after confirming the shipped slice meets its own acceptance surface and that the remaining Python lint failures stay outside this landing set. Evidence: Story 182 acceptance criteria and…"
         }
       }
     },
