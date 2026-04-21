@@ -279,7 +279,8 @@
           "155",
           "161",
           "163",
-          "183"
+          "183",
+          "185"
         ],
         "adrIds": [
           "ADR-003"
@@ -665,7 +666,8 @@
           "179",
           "180",
           "181",
-          "182"
+          "182",
+          "185"
         ],
         "adrIds": [
           "ADR-002",
@@ -1143,7 +1145,8 @@
           "175",
           "176",
           "177",
-          "178"
+          "178",
+          "185"
         ],
         "adrIds": [
           "ADR-003"
@@ -11387,7 +11390,7 @@
       "id": "180",
       "title": "Scene Workspace Entry Clarity and Tab Target Precision",
       "path": "docs/stories/story-180-scene-workspace-entry-clarity.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R11 (production readiness per scene)",
@@ -11433,9 +11436,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260420-0000",
+        "timestamp": "20260420-2342",
         "date": "2026-04-20",
-        "summary": "story-created: captured the manual QA scene-entry confusion as a standalone `Pending` UX story instead of burying it under a generic \"Scene Workspace rethink.\" Evidence: `docs/inbox.md` QA notes, `ui/src/pages/SceneWork…"
+        "summary": "marked-done: closed Story 180 after the clean validation pass and kept Story 185 as the separate follow-up for broader Project Home placement discussion. Evidence carried forward from this close-out: `make test-unit PYT…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11443,14 +11446,14 @@
         "sourceKind": "story",
         "sourceId": "180",
         "sourcePath": "docs/stories/story-180-scene-workspace-entry-clarity.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
-        "whyNow": "story-created: captured the manual QA scene-entry confusion as a standalone `Pending` UX story instead of burying it under a generic \"Scene Workspace rethink.\" Evidence: `docs/inbox.md` QA notes, `ui/src/pages/SceneWork…",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "marked-done: closed Story 180 after the clean validation pass and kept Story 185 as the separate follow-up for broader Project Home placement discussion. Evidence carried forward from this close-out: `make test-unit PYT…",
         "lastRelevantAction": {
           "date": "2026-04-20",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-180-scene-workspace-entry-clarity.md",
-          "summary": "story-created: captured the manual QA scene-entry confusion as a standalone `Pending` UX story instead of burying it under a generic \"Scene Workspace rethink.\" Evidence: `docs/inbox.md` QA notes, `ui/src/pages/SceneWork…"
+          "summary": "marked-done: closed Story 180 after the clean validation pass and kept Story 185 as the separate follow-up for broader Project Home placement discussion. Evidence carried forward from this close-out: `make test-unit PYT…"
         }
       }
     },
@@ -11663,6 +11666,78 @@
           "sourceType": "story-work-log",
           "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
           "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+        }
+      }
+    },
+    {
+      "id": "185",
+      "title": "Project Home Script Hierarchy and Supporting Surface Placement",
+      "path": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
+      "status": "Draft",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:2.5",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:5.6"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "093",
+        "142",
+        "166",
+        "167"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:5",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "information-architecture",
+        "project-home",
+        "script-home",
+        "surface-placement",
+        "ux-polish"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260420-2248",
+        "date": "2026-04-20",
+        "summary": "rationale-captured: documented the current above-script stack and the source-story rationale for Script Bible (Story 093), Artifact Health (Story 142), and Final Output (Stories 166/167), then framed the story around re…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "185",
+        "sourcePath": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "rationale-captured: documented the current above-script stack and the source-story rationale for Script Bible (Story 093), Artifact Health (Story 142), and Final Output (Stories 166/167), then framed the story around re…",
+        "lastRelevantAction": {
+          "date": "2026-04-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
+          "summary": "rationale-captured: documented the current above-script stack and the source-story rationale for Script Bible (Story 093), Artifact Health (Story 142), and Final Output (Stories 166/167), then framed the story around re…"
         }
       }
     }
@@ -13869,13 +13944,14 @@
             "179",
             "180",
             "181",
-            "182"
+            "182",
+            "185"
           ],
-          "stories_since_audit": 16,
+          "stories_since_audit": 17,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
-          "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Story 177 adds a new export-carrier follow-up through the existing export modal / router seam but does not yet introduce a new operator-console ownership concern. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
+          "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Story 177 adds a new export-carrier follow-up through the existing export modal / router seam. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
         },
         "creative_direction_and_chat": {
           "last_audited_at": "2026-03-31",

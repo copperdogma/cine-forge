@@ -434,12 +434,12 @@
       },
       "api_service_and_operator_console": {
         "last_audited_at": "2026-04-11",
-        "recent_story_refs": ["169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182"],
-        "stories_since_audit": 16,
+        "recent_story_refs": ["169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182", "185"],
+        "stories_since_audit": 17,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Story 177 adds a new export-carrier follow-up through the existing export modal / router seam but does not yet introduce a new operator-console ownership concern. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
+        "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Story 177 adds a new export-carrier follow-up through the existing export modal / router seam. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
       },
       "creative_direction_and_chat": {
         "last_audited_at": "2026-03-31",

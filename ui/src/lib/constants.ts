@@ -124,6 +124,69 @@ export function getRunActivityLabel(recipeId: string | null | undefined): string
   return recipeId ? `Started ${getUserFacingRecipeName(recipeId)}` : 'Started pipeline run'
 }
 
+export type SceneWorkspaceTab =
+  | 'overview'
+  | 'look_and_feel'
+  | 'sound_and_music'
+  | 'rhythm_and_flow'
+  | 'character_and_performance'
+  | 'story_world'
+  | 'shots'
+  | 'storyboard'
+  | 'previz'
+  | 'render'
+
+export const SCENE_WORKSPACE_TAB_IDS: readonly SceneWorkspaceTab[] = [
+  'overview',
+  'look_and_feel',
+  'sound_and_music',
+  'rhythm_and_flow',
+  'character_and_performance',
+  'story_world',
+  'shots',
+  'storyboard',
+  'previz',
+  'render',
+] as const
+
+const SCENE_WORKSPACE_PHASE_TABS: Record<string, SceneWorkspaceTab> = {
+  shots: 'shots',
+  storyboards: 'storyboard',
+  production: 'render',
+}
+
+const SCENE_WORKSPACE_RECIPE_TABS: Record<string, SceneWorkspaceTab> = {
+  shot_planning: 'shots',
+  storyboard_generation: 'storyboard',
+  ai_previz_generation: 'previz',
+  render_generation: 'render',
+}
+
+export function buildSceneWorkspaceRoute(
+  projectId: string,
+  sceneId: string,
+  tab: SceneWorkspaceTab | null | undefined = null,
+): string {
+  const baseRoute = `/${projectId}/scenes/${sceneId}`
+  return tab && tab !== 'overview' ? `${baseRoute}?tab=${tab}` : baseRoute
+}
+
+export function buildRelativeSceneWorkspaceRoute(
+  sceneId: string,
+  tab: SceneWorkspaceTab | null | undefined = null,
+): string {
+  const baseRoute = `scenes/${sceneId}`
+  return tab && tab !== 'overview' ? `${baseRoute}?tab=${tab}` : baseRoute
+}
+
+export function getSceneWorkspaceTabForPhaseId(phaseId: string): SceneWorkspaceTab | null {
+  return SCENE_WORKSPACE_PHASE_TABS[phaseId] ?? null
+}
+
+export function getSceneWorkspaceTabForRecipeId(recipeId: string): SceneWorkspaceTab | null {
+  return SCENE_WORKSPACE_RECIPE_TABS[recipeId] ?? null
+}
+
 /** Human-readable names for artifact types produced by stages. */
 export const ARTIFACT_NAMES: Record<string, [string, string]> = {
   scene: ['scene', 'scenes'],
@@ -166,11 +229,12 @@ export const CONCERN_GROUP_META: Record<string, {
   label: string       // "Rhythm & Flow"
   roleId: string      // "editorial_architect"
   roleName: string    // "Editorial Architect"
+  sceneWorkspaceTab: SceneWorkspaceTab
 }> = {
-  rhythm_and_flow:           { label: 'Rhythm & Flow',           roleId: 'editorial_architect', roleName: 'Editorial Architect' },
-  look_and_feel:             { label: 'Look & Feel',             roleId: 'visual_architect',    roleName: 'Visual Architect' },
-  sound_and_music:           { label: 'Sound & Music',           roleId: 'sound_designer',      roleName: 'Sound Designer' },
-  character_and_performance: { label: 'Character & Performance', roleId: 'story_editor',        roleName: 'Story Editor' },
+  rhythm_and_flow:           { label: 'Rhythm & Flow',           roleId: 'editorial_architect', roleName: 'Editorial Architect', sceneWorkspaceTab: 'rhythm_and_flow' },
+  look_and_feel:             { label: 'Look & Feel',             roleId: 'visual_architect',    roleName: 'Visual Architect', sceneWorkspaceTab: 'look_and_feel' },
+  sound_and_music:           { label: 'Sound & Music',           roleId: 'sound_designer',      roleName: 'Sound Designer', sceneWorkspaceTab: 'sound_and_music' },
+  character_and_performance: { label: 'Character & Performance', roleId: 'story_editor',        roleName: 'Story Editor', sceneWorkspaceTab: 'character_and_performance' },
 }
 
 /**
@@ -182,7 +246,7 @@ export const CONCERN_GROUP_META: Record<string, {
 export function detectConcernGroupRun(
   recipeId: string,
   stageOrder: string[],
-): { label: string; roleId: string; roleName: string } | null {
+): { label: string; roleId: string; roleName: string; sceneWorkspaceTab: SceneWorkspaceTab } | null {
   if (recipeId !== 'creative_direction' || stageOrder.length !== 1) return null
   return CONCERN_GROUP_META[stageOrder[0]] ?? null
 }

@@ -7,6 +7,7 @@ import { useChatStore } from './chat-store'
 import { streamAutoInsight } from './api/chat'
 import { humanizeStageName } from './chat-messages'
 import {
+  buildRelativeSceneWorkspaceRoute,
   detectConcernGroupRun,
   countTotalScenes,
   getRunCompletedMessage,
@@ -403,9 +404,9 @@ export function useRunProgressChat(projectId: string | undefined) {
                   ? [
                       {
                         id: 'open_scene_workspace',
-                        label: 'Open Scene Workspace',
+                        label: 'Open Scene Workspace (Shots)',
                         variant: 'default' as const,
-                        route: `scenes/${firstSceneId}`,
+                        route: buildRelativeSceneWorkspaceRoute(firstSceneId, 'shots'),
                       },
                     ]
                   : []),
@@ -444,9 +445,12 @@ export function useRunProgressChat(projectId: string | undefined) {
             actions: [
               {
                 id: 'browse_scene',
-                label: 'Browse in Scene 1',
+                label: `Open ${cgComplete.label} in Scene Workspace`,
                 variant: 'default',
-                route: `scenes/${firstSceneId}`,
+                route: buildRelativeSceneWorkspaceRoute(
+                  firstSceneId,
+                  cgComplete.sceneWorkspaceTab,
+                ),
               },
               {
                 id: 'view_run_detail',

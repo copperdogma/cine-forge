@@ -33,6 +33,10 @@ import {
 import { useIsMobile } from '@/lib/use-mobile'
 import { cn } from '@/lib/utils'
 import { askChatQuestion } from '@/lib/glossary'
+import {
+  buildSceneWorkspaceRoute,
+  getSceneWorkspaceTabForPhaseId,
+} from '@/lib/constants'
 import type {
   PipelineGraphNode,
   PipelineGraphPhase,
@@ -48,7 +52,7 @@ const NODE_STATUS_CONFIG: Record<PipelineNodeStatus, {
   completed: { icon: Check, className: 'text-emerald-400', label: 'Complete' },
   stale: { icon: CircleAlert, className: 'text-amber-400', label: 'Needs rerun' },
   in_progress: { icon: Loader2, className: 'text-blue-400 animate-spin', label: 'Running' },
-  available: { icon: Circle, className: 'text-foreground/60', label: 'Run now' },
+  available: { icon: Circle, className: 'text-foreground/60', label: 'Ready' },
   blocked: { icon: CircleOff, className: 'text-muted-foreground/40', label: 'Blocked' },
   not_implemented: { icon: Minus, className: 'text-muted-foreground/30', label: 'Coming soon' },
 }
@@ -260,17 +264,10 @@ function PhaseSegment({
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const phaseNodes = nodes.filter((n) => n.phase_id === phase.id)
-  const sceneWorkspaceTab =
-    phase.id === 'shots'
-      ? 'shots'
-      : phase.id === 'storyboards'
-        ? 'storyboard'
-        : phase.id === 'production'
-          ? 'render'
-          : null
+  const sceneWorkspaceTab = getSceneWorkspaceTabForPhaseId(phase.id)
   const sceneWorkspaceRoute =
     defaultSceneId && sceneWorkspaceTab
-      ? `/${projectId}/scenes/${defaultSceneId}?tab=${sceneWorkspaceTab}`
+      ? buildSceneWorkspaceRoute(projectId, defaultSceneId, sceneWorkspaceTab)
       : null
   const isClickable = !!phase.nav_route || !!sceneWorkspaceRoute
   const status = phase.status as PipelinePhaseStatus

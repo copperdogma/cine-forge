@@ -5,7 +5,7 @@
  * red/yellow readiness indicators, entity roster, and intent/mood panel.
  * Story 099.
  */
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import {
   ArrowLeft,
@@ -44,6 +44,7 @@ import { StoryboardPanel } from '@/components/StoryboardPanel'
 import { CharacterPerformancePanel } from '@/components/CharacterPerformancePanel'
 import { StoryWorldPanel } from '@/components/StoryWorldPanel'
 import { ArtifactReviewControls } from '@/components/ArtifactReviewControls'
+import { SceneWorkspaceFocusBanner } from '@/components/SceneWorkspaceFocusBanner'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import { EmptyState, ErrorState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
@@ -70,7 +71,13 @@ import type {
   SceneReadiness,
   SceneScopeMode,
 } from '@/lib/types'
-import { buildSceneScope, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
+import {
+  buildSceneScope,
+  getSceneScopeLabel,
+  getSceneScopeTargetLabel,
+  SCENE_WORKSPACE_TAB_IDS,
+} from '@/lib/constants'
+import type { SceneWorkspaceTab } from '@/lib/constants'
 
 // ---------------------------------------------------------------------------
 // Concern group config
@@ -139,6 +146,8 @@ const CONCERN_GROUPS: ConcernGroupDef[] = [
     projectScoped: true,
   },
 ]
+
+const VALID_SCENE_WORKSPACE_TABS = new Set<SceneWorkspaceTab>(SCENE_WORKSPACE_TAB_IDS)
 
 // ---------------------------------------------------------------------------
 // Readiness indicator
@@ -545,6 +554,7 @@ export default function SceneWorkspacePage() {
   const { projectId, entityId } = useParams()
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
+  const tabsRegionRef = useRef<HTMLDivElement | null>(null)
   const [isExportOpen, setIsExportOpen] = useState(false)
 
   const nav = useEntityNavigation(projectId, 'scenes', entityId)
@@ -659,16 +669,11 @@ export default function SceneWorkspacePage() {
   )
   const previzLevel = aiPrevizGroup ? 'yellow' : 'red'
   const renderLevel = getArtifactPresenceLevel(groups, 'generated_video', entityId)
-  const validTabs = new Set([
-    'overview',
-    ...CONCERN_GROUPS.map((cg) => cg.id),
-    'shots',
-    'storyboard',
-    'previz',
-    'render',
-  ])
   const requestedTab = searchParams.get('tab')
-  const activeTab = requestedTab && validTabs.has(requestedTab) ? requestedTab : 'overview'
+  const activeTab: SceneWorkspaceTab =
+    requestedTab && VALID_SCENE_WORKSPACE_TABS.has(requestedTab as SceneWorkspaceTab)
+      ? requestedTab as SceneWorkspaceTab
+      : 'overview'
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -728,6 +733,15 @@ export default function SceneWorkspacePage() {
         </Button>
       </div>
 
+      {activeTab !== 'overview' && (
+        <SceneWorkspaceFocusBanner
+          tab={activeTab}
+          onJumpToPanel={() => {
+            tabsRegionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }}
+        />
+      )}
+
       {/* Entity roster — characters, location, props */}
       {data && (
         <SceneEntityRoster sceneData={data} resolve={resolve} propsInScene={propsInScene} />
@@ -747,49 +761,50 @@ export default function SceneWorkspacePage() {
       <SceneIntentPanel projectId={projectId} entityId={entityId} />
 
       {/* Main workspace tabs */}
-      <Tabs
-        value={activeTab}
-        onValueChange={(value) => {
-          const nextParams = new URLSearchParams(searchParams)
-          if (value === 'overview') {
-            nextParams.delete('tab')
-          } else {
-            nextParams.set('tab', value)
-          }
-          setSearchParams(nextParams, { replace: true })
-        }}
-        className="w-full"
-      >
-        <TabsList variant="line" scrollable className="w-full border-b border-border pb-1">
-          <TabsTrigger value="overview">
-            Overview
-          </TabsTrigger>
-          {CONCERN_GROUPS.map(cg => {
-            const level = getConcernGroupReadinessLevel(readiness, cg.id, readinessLoading)
-            return (
-              <TabsTrigger key={cg.id} value={cg.id} className="gap-1.5">
-                <ReadinessDot level={level} label={cg.label} />
-                {cg.label}
-              </TabsTrigger>
-            )
-          })}
-          <TabsTrigger value="shots" className="gap-1.5">
-            <ReadinessDot level={shotPlanLevel} label="Shots" />
-            Shots
-          </TabsTrigger>
-          <TabsTrigger value="storyboard" className="gap-1.5">
-            <ReadinessDot level={storyboardLevel} label="Storyboard" />
-            Storyboard
-          </TabsTrigger>
-          <TabsTrigger value="previz" className="gap-1.5">
-            <ReadinessDot level={previzLevel} label="Previz" />
-            Previz
-          </TabsTrigger>
-          <TabsTrigger value="render" className="gap-1.5">
-            <ReadinessDot level={renderLevel} label="Render" />
-            Render
-          </TabsTrigger>
-        </TabsList>
+      <div ref={tabsRegionRef}>
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => {
+            const nextParams = new URLSearchParams(searchParams)
+            if (value === 'overview') {
+              nextParams.delete('tab')
+            } else {
+              nextParams.set('tab', value)
+            }
+            setSearchParams(nextParams, { replace: true })
+          }}
+          className="w-full"
+        >
+          <TabsList variant="line" scrollable className="w-full border-b border-border pb-1">
+            <TabsTrigger value="overview">
+              Overview
+            </TabsTrigger>
+            {CONCERN_GROUPS.map(cg => {
+              const level = getConcernGroupReadinessLevel(readiness, cg.id, readinessLoading)
+              return (
+                <TabsTrigger key={cg.id} value={cg.id} className="gap-1.5">
+                  <ReadinessDot level={level} label={cg.label} />
+                  {cg.label}
+                </TabsTrigger>
+              )
+            })}
+            <TabsTrigger value="shots" className="gap-1.5">
+              <ReadinessDot level={shotPlanLevel} label="Shots" />
+              Shots
+            </TabsTrigger>
+            <TabsTrigger value="storyboard" className="gap-1.5">
+              <ReadinessDot level={storyboardLevel} label="Storyboard" />
+              Storyboard
+            </TabsTrigger>
+            <TabsTrigger value="previz" className="gap-1.5">
+              <ReadinessDot level={previzLevel} label="Previz" />
+              Previz
+            </TabsTrigger>
+            <TabsTrigger value="render" className="gap-1.5">
+              <ReadinessDot level={renderLevel} label="Render" />
+              Render
+            </TabsTrigger>
+          </TabsList>
 
         {/* Overview — scene data (text summary = current "best available preview") */}
         <TabsContent value="overview" className="mt-4">
@@ -839,18 +854,19 @@ export default function SceneWorkspacePage() {
           />
         </TabsContent>
 
-        <TabsContent value="render" className="mt-4">
-          <GeneratedVideoPanel
-            projectId={projectId}
-            sceneId={entityId}
-            sceneHeading={displayName}
-            shotPlanGroup={shotPlanGroup}
-            renderPromptGroup={renderPromptGroup}
-            generatedVideoGroup={generatedVideoGroup}
-            keyframeGroup={keyframeGroup}
-          />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="render" className="mt-4">
+            <GeneratedVideoPanel
+              projectId={projectId}
+              sceneId={entityId}
+              sceneHeading={displayName}
+              shotPlanGroup={shotPlanGroup}
+              renderPromptGroup={renderPromptGroup}
+              generatedVideoGroup={generatedVideoGroup}
+              keyframeGroup={keyframeGroup}
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
 
       <ExportModal
         isOpen={isExportOpen}

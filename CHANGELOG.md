@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-04-20-07] — Clarify Scene Workspace entry targets (Story 180)
+
+### Added
+- Added a focused Scene Workspace entry banner plus a representative browser smoke harness so targeted `shots`, `storyboard`, and `render` routes are obvious above the fold and stay regression-covered
+- Added Story 185 to capture the follow-up Project Home hierarchy discussion about where Script Bible, Artifact Health, and Final Output should live
+
+### Changed
+- Changed Scene Workspace route construction so pipeline navigation, run-completion CTAs, and direct concern-group completions all share the same tab-target truth
+
+### Fixed
+- Fixed shot-planning and concern-group completion CTAs dropping operators back onto the ambiguous Scene Overview instead of the artifact lane that just completed
+- Fixed pipeline helper copy that advertised a fake `Run now` affordance on downstream phases
 ## [2026-04-20-06] — Recover post-analysis chat failures (Story 182)
 
 ### Added
