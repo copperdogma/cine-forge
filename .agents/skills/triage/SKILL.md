@@ -54,6 +54,11 @@ detector, not a standing recommendation. If the same trigger was already
 checked and nothing materially changed, treat that eval follow-on as exhausted
 and report it as a health flag / deferral, not the next move.
 
+Recurring codebase-improvement scouting is a lower-priority but real pressure
+line. If the repo has accumulated meaningful source churn since the last broad
+repo-hygiene pass, triage should treat stale scout coverage as a live risk to
+building on brittle code, not as an optional cleanup nice-to-have.
+
 Companion runbook: `docs/runbooks/triage.md`
 
 ## Routing
@@ -94,6 +99,13 @@ When invoked with no scope, run a methodology-first orchestration pass:
      `graph["stories"][*]["actionability"]`, and
      `graph["evals"][*]["actionability"]` before reconstructing retry posture
      or recency manually from story/eval prose.
+   - codebase-improvement freshness:
+     - inspect `memory/codebase-improvement-state.yaml` when present
+     - otherwise inspect the latest report under `docs/reports/codebase-improvement/`
+     - treat the lane as `never` when neither exists
+     - compare the last broad scout pass against recent source churn in active
+       code roots so stale hygiene coverage is visible before recommending
+       `no-op`
    - `docs/build-map.md`
    - recent `git log --oneline -20`
    - Goal: identify the biggest live gap or simplification opportunity before reading stories as a backlog.
@@ -152,6 +164,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
      is marked `issues_found` / `recheck_due`, inspect `docs/ui-scout.md` and
      the latest relevant report in `docs/ui-scout/` before deciding whether the
      right next action is a fresh scout run or the follow-up story line
+   - Codebase-improvement freshness:
+     - when was the last broad codebase-improvement scout?
+     - was it a real repo sweep or a narrow one-off pass?
+     - how much meaningful source churn landed since then?
+     - did the last scout leave an unresolved recommended next step or story candidate?
    - But interpret each leaf through one question:
      - what already exists that advances the chosen gap?
    - Do **not** let a smaller ready story outrank the chosen gap just because it is easier to start
@@ -185,6 +202,9 @@ When invoked with no scope, run a methodology-first orchestration pass:
    - create the missing story / ADR / spec update / eval if the gap has no proper home yet
    - do not silently outrank overdue UI-scout freshness with smaller unrelated
      ready work unless the stronger line is genuinely not actionable yet
+   - do not silently outrank overdue codebase-improvement freshness with
+     `no-op` or smaller unrelated ready work when recent code churn has
+     clearly outpaced the last broad hygiene pass
    - only fall back to a smaller unrelated ready story if the larger gap is genuinely not actionable yet, and explain why
 
    Choose among those options with the strongest combined signal across:
@@ -200,6 +220,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
    when every plausible phase-aligned move is blocked by missing external
    capability, was just retried on the same premise without a new trigger, or
    lacks a bounded falsifiable next step.
+
+   If the repo has never had a broad codebase-improvement scout, or meaningful
+   source churn has piled up since the last one, prefer
+   `/codebase-improvement-scout` over `no-op` unless a stronger actionable
+   line clearly wins.
 
 9. **Return a short report**
 
@@ -236,6 +261,7 @@ When invoked with no scope, run a methodology-first orchestration pass:
 - Inbox: {which inbox items do or do not map to the chosen gap}
 - Evals: {which evals matter for the chosen gap, or why eval work is not the move}
 - Architecture: {which audit domains matter, or why architecture work is not the move}
+- Codebase improvement: {last broad scout, freshness vs recent churn, and whether a hygiene pass is due}
 
 ### Health Flags
 - {blocked story with unmet unblock condition, exhausted eval retry, or "none"}
@@ -261,6 +287,11 @@ When invoked with no scope, run a methodology-first orchestration pass:
   without a materially new trigger
 - Never recommend repeating a line just because it is still the biggest open
   gap; cite the last attempt and the current why-now trigger explicitly
+- Do not treat any codebase-improvement artifact as fresh automatically; check
+  whether it was a broad repo sweep or only a narrow one-off pass
+- Do not recommend `no-op` while the codebase-improvement lane is missing or
+  stale after meaningful recent source churn unless a stronger actionable line
+  clearly outranks it
 - Do not treat lack of a fresh external trigger as sufficient reason for
   `no-op` when a bounded phase-aligned improvement move still exists
 - Prefer recommending the best next attempt, simplification, or new story shell
