@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+HOST="${CINE_FORGE_HOST:-127.0.0.1}"
+SERVER_PORT="${CINE_FORGE_SERVER_PORT:-8000}"
+UI_PORT="${CINE_FORGE_UI_PORT:-5174}"
+PNPM_BIN="${PNPM:-pnpm}"
+INSTALL=0
+
+usage() {
+  cat <<USAGE
+Usage: ./scripts/dev-local [--install]
+
+Starts CineForge locally on its reserved ports:
+  API: http://${HOST}:${SERVER_PORT}
+  UI:  http://${HOST}:${UI_PORT}
+
+Environment overrides:
+  CINE_FORGE_SERVER_PORT
+  CINE_FORGE_UI_PORT
+  CINE_FORGE_HOST
+  CINE_FORGE_PYTHON
+  PNPM
+USAGE
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --install)
+      INSTALL=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+abs_path() {
+  case "$1" in
+    /*) printf '%s\n' "$1" ;;
+    *) printf '%s\n' "$ROOT/$1" ;;
+  esac
+}
+
+resolve_python() {
+  if [[ -n "${CINE_FORGE_PYTHON:-}" ]]; then
+    printf '%s\n' "$CINE_FORGE_PYTHON"
+    return
+  fi
+
+  if [[ -x "$ROOT/.venv/bin/python" ]]; then
+    printf '%s\n' "$ROOT/.venv/bin/python"
+    return
+  fi
+
+  local common_dir
+  common_dir="$(git -C "$ROOT" rev-parse --git-common-dir 2>/dev/null || true)"
+  if [[ -n "$common_dir" ]]; then
+    common_dir="$(abs_path "$common_dir")"
+    local primary_root
+    primary_root="$(cd "$(dirname "$common_dir")" && pwd)"
+    if [[ -x "$primary_root/.venv/bin/python" ]]; then
+      printf '%s\n' "$primary_root/.venv/bin/python"
+      return
+    fi
+  fi
+
+  printf '%s\n' "${PYTHON:-python3}"
+}
+
+port_owner() {
+  if ! command -v lsof >/dev/null 2>&1; then
+    return 0
+  fi
+  local output
+  output="$(lsof -nP -iTCP:"$1" -sTCP:LISTEN 2>/dev/null || true)"
+  awk 'NR > 1 {print "  " $1 " pid " $2 " " $9}' <<<"$output"
+}
+
+ensure_free_port() {
+  local port="$1"
+  local label="$2"
+  local owner
+  owner="$(port_owner "$port")"
+  if [[ -n "$owner" ]]; then
+    echo "${label} port ${port} is already in use:" >&2
+    echo "$owner" >&2
+    echo "Stop that process or choose an override port before starting CineForge." >&2
+    exit 1
+  fi
+}
+
+if ! command -v "$PNPM_BIN" >/dev/null 2>&1; then
+  echo "Missing pnpm. Install pnpm or set PNPM=/path/to/pnpm." >&2
+  exit 1
+fi
+
+PYTHON_BIN="$(resolve_python)"
+
+if [[ "$INSTALL" -eq 1 ]]; then
+  "$PNPM_BIN" --dir "$ROOT/ui" install
+fi
+
+ensure_free_port "$SERVER_PORT" "CineForge API"
+ensure_free_port "$UI_PORT" "CineForge UI"
+
+echo "CineForge local dev"
+echo "  root: $ROOT"
+echo "  python: $PYTHON_BIN"
+echo "  API: http://${HOST}:${SERVER_PORT}"
+echo "  UI:  http://${HOST}:${UI_PORT}"
+
+pids=()
+
+cleanup() {
+  local pid
+  for pid in "${pids[@]}"; do
+    if kill -0 "$pid" >/dev/null 2>&1; then
+      kill "$pid" >/dev/null 2>&1 || true
+    fi
+  done
+}
+
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+(
+  cd "$ROOT"
+  PYTHONPATH="${PYTHONPATH:-src}" "$PYTHON_BIN" -m cine_forge.api --port "$SERVER_PORT"
+) &
+pids+=("$!")
+api_pid="$!"
+
+(
+  cd "$ROOT/ui"
+  CINE_FORGE_UI_PORT="$UI_PORT" \
+    FRONTEND_PORT="$UI_PORT" \
+    CINE_FORGE_API_URL="http://${HOST}:${SERVER_PORT}" \
+    "$PNPM_BIN" run dev -- --host "$HOST"
+) &
+pids+=("$!")
+ui_pid="$!"
+
+status=0
+while true; do
+  if ! kill -0 "$api_pid" >/dev/null 2>&1; then
+    wait "$api_pid" || status=$?
+    break
+  fi
+  if ! kill -0 "$ui_pid" >/dev/null 2>&1; then
+    wait "$ui_pid" || status=$?
+    break
+  fi
+  sleep 1
+done
+
+exit "$status"

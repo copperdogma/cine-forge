@@ -3,14 +3,17 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
+const uiPort = Number(process.env.CINE_FORGE_UI_PORT ?? process.env.FRONTEND_PORT ?? 5174)
+const apiTarget = process.env.CINE_FORGE_API_URL ?? process.env.BACKEND_URL ?? 'http://127.0.0.1:8000'
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port: 5174,
+    port: uiPort,
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000',
+        target: apiTarget,
         changeOrigin: true,
       },
     },

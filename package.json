@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "dev:local": "bash scripts/dev-local",
     "methodology:compile": "node scripts/methodology-graph.js build",
     "methodology:check": "node scripts/methodology-graph.js check"
   },
