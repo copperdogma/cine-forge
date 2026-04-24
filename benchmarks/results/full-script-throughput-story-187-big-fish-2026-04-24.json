@@ -1,0 +1,781 @@
+{
+  "eval_id": "full-script-throughput",
+  "measured_at": "2026-04-24T17:21:31.908624+00:00",
+  "fixture_manifest": "benchmarks/fixtures/full_script_throughput_cases.json",
+  "boundary": {
+    "boundary_id": "story_lane_workspace_ready",
+    "boundary_label": "Break Down Script -> Deep Breakdown",
+    "honest_scope": "Current surfaced story-lane path only: run `mvp_ingest` (Break Down Script) followed by `world_building` (Deep Breakdown) on a fresh screenplay project. Excludes unfinished film-lane generation, export, and any pretend full-pipeline runtime claim.",
+    "recipes": [
+      {
+        "recipe_id": "mvp_ingest",
+        "recipe_path": "configs/recipes/recipe-mvp-ingest.yaml",
+        "ui_label": "Break Down Script",
+        "notes": "Tier 1 story-lane ingest: canonical script, scene breakdown, script bible, project config."
+      },
+      {
+        "recipe_id": "world_building",
+        "recipe_path": "configs/recipes/recipe-world-building.yaml",
+        "ui_label": "Deep Breakdown",
+        "notes": "Tier 2 story-lane enrichment: scene analysis, entity bibles, continuity, and graph."
+      }
+    ]
+  },
+  "summary": {
+    "overall": 1.0,
+    "successful_cases": 1,
+    "total_cases": 1,
+    "successful_case_ratio": 1.0,
+    "median_total_elapsed_ms": 3263471,
+    "median_total_cost_usd": 3.585747,
+    "fastest_case_id": "big_fish_long",
+    "fastest_total_ms": 3263471,
+    "slowest_case_id": "big_fish_long",
+    "slowest_total_ms": 3263471,
+    "boundary_current_budget_duration_ms_per_1k_words": 125532.6,
+    "boundary_climb_target_duration_ms_per_1k_words": 125532.6,
+    "top_runtime_hotspot_id": "world_building.continuity_tracking",
+    "top_runtime_hotspot_current_duration_ms_per_1k_words": 69648.075,
+    "top_output_hotspot_id": "world_building.continuity_tracking",
+    "top_output_hotspot_current_output_tokens_per_1k_words": 8438.974,
+    "follow_up_candidates": [
+      {
+        "scope_id": "world_building.continuity_tracking",
+        "scope_label": "world_building:continuity_tracking",
+        "runtime_ms_per_1k_words": 69648.075,
+        "output_tokens_per_1k_words": 8438.974,
+        "median_duration_share": 0.5548,
+        "median_output_share": 0.4736,
+        "note": "Dominant runtime and output-volume hotspot in the current boundary."
+      },
+      {
+        "scope_id": "world_building.analyze_scenes",
+        "scope_label": "world_building:analyze_scenes",
+        "runtime_ms_per_1k_words": 40898.527,
+        "output_tokens_per_1k_words": 2453.706,
+        "median_duration_share": 0.3258,
+        "median_output_share": 0.1377,
+        "note": "Measured hotspot: promote into a stage-specific throughput follow-up."
+      },
+      {
+        "scope_id": "world_building.character_bible",
+        "scope_label": "world_building:character_bible",
+        "runtime_ms_per_1k_words": 6107.782,
+        "output_tokens_per_1k_words": 3330.192,
+        "median_duration_share": 0.0487,
+        "median_output_share": 0.1869,
+        "note": "Measured hotspot: promote into a stage-specific throughput follow-up."
+      }
+    ]
+  },
+  "budgets": [
+    {
+      "scope_type": "boundary",
+      "scope_id": "story_lane_workspace_ready",
+      "scope_label": "Story-lane workspace-ready boundary",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 125532.6,
+        "climb_target_duration_ms_per_1k_words": 125532.6,
+        "current_cost_usd_per_1k_words": 0.138,
+        "climb_target_cost_usd_per_1k_words": 0.138,
+        "current_output_tokens_per_1k_words": 17820.633,
+        "climb_target_output_tokens_per_1k_words": 17820.633,
+        "current_output_bytes_per_1k_words": 3143900.873,
+        "climb_target_output_bytes_per_1k_words": 3143900.873
+      },
+      "median_duration_share": null,
+      "median_output_share": null,
+      "note": "Median is the current budget; best observed normalized rate is the next climb target."
+    },
+    {
+      "scope_type": "recipe",
+      "scope_id": "world_building",
+      "scope_label": "Deep Breakdown",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 123026.58,
+        "climb_target_duration_ms_per_1k_words": 123026.58,
+        "current_cost_usd_per_1k_words": 0.126,
+        "climb_target_cost_usd_per_1k_words": 0.126,
+        "current_output_tokens_per_1k_words": 16976.19,
+        "climb_target_output_tokens_per_1k_words": 16976.19,
+        "current_output_bytes_per_1k_words": 3091081.471,
+        "climb_target_output_bytes_per_1k_words": 3091081.471
+      },
+      "median_duration_share": 0.98,
+      "median_output_share": 0.9526,
+      "note": "Dominant runtime and output-volume hotspot in the current boundary."
+    },
+    {
+      "scope_type": "recipe",
+      "scope_id": "mvp_ingest",
+      "scope_label": "Break Down Script",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 2506.02,
+        "climb_target_duration_ms_per_1k_words": 2506.02,
+        "current_cost_usd_per_1k_words": 0.012,
+        "climb_target_cost_usd_per_1k_words": 0.012,
+        "current_output_tokens_per_1k_words": 844.444,
+        "climb_target_output_tokens_per_1k_words": 844.444,
+        "current_output_bytes_per_1k_words": 52819.402,
+        "climb_target_output_bytes_per_1k_words": 52819.402
+      },
+      "median_duration_share": 0.02,
+      "median_output_share": 0.0474,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.continuity_tracking",
+      "scope_label": "world_building:continuity_tracking",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 69648.075,
+        "climb_target_duration_ms_per_1k_words": 69648.075,
+        "current_cost_usd_per_1k_words": 0.046,
+        "climb_target_cost_usd_per_1k_words": 0.046,
+        "current_output_tokens_per_1k_words": 8438.974,
+        "climb_target_output_tokens_per_1k_words": 8438.974,
+        "current_output_bytes_per_1k_words": 2942755.741,
+        "climb_target_output_bytes_per_1k_words": 2942755.741
+      },
+      "median_duration_share": 0.5548,
+      "median_output_share": 0.4736,
+      "note": "Dominant runtime and output-volume hotspot in the current boundary."
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.analyze_scenes",
+      "scope_label": "world_building:analyze_scenes",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 40898.527,
+        "climb_target_duration_ms_per_1k_words": 40898.527,
+        "current_cost_usd_per_1k_words": 0.037,
+        "climb_target_cost_usd_per_1k_words": 0.037,
+        "current_output_tokens_per_1k_words": 2453.706,
+        "climb_target_output_tokens_per_1k_words": 2453.706,
+        "current_output_bytes_per_1k_words": 42242.605,
+        "climb_target_output_bytes_per_1k_words": 42242.605
+      },
+      "median_duration_share": 0.3258,
+      "median_output_share": 0.1377,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.entity_discovery",
+      "scope_label": "world_building:entity_discovery",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 6365.773,
+        "climb_target_duration_ms_per_1k_words": 6365.773,
+        "current_cost_usd_per_1k_words": 0.007,
+        "climb_target_cost_usd_per_1k_words": 0.007,
+        "current_output_tokens_per_1k_words": 767.242,
+        "climb_target_output_tokens_per_1k_words": 767.242,
+        "current_output_bytes_per_1k_words": 419.202,
+        "climb_target_output_bytes_per_1k_words": 419.202
+      },
+      "median_duration_share": 0.0507,
+      "median_output_share": 0.0431,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.character_bible",
+      "scope_label": "world_building:character_bible",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 6107.782,
+        "climb_target_duration_ms_per_1k_words": 6107.782,
+        "current_cost_usd_per_1k_words": 0.021,
+        "climb_target_cost_usd_per_1k_words": 0.021,
+        "current_output_tokens_per_1k_words": 3330.192,
+        "climb_target_output_tokens_per_1k_words": 3330.192,
+        "current_output_bytes_per_1k_words": 28747.163,
+        "climb_target_output_bytes_per_1k_words": 28747.163
+      },
+      "median_duration_share": 0.0487,
+      "median_output_share": 0.1869,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.location_bible",
+      "scope_label": "world_building:location_bible",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 4020.233,
+        "climb_target_duration_ms_per_1k_words": 4020.233,
+        "current_cost_usd_per_1k_words": 0.011,
+        "climb_target_cost_usd_per_1k_words": 0.011,
+        "current_output_tokens_per_1k_words": 1622.61,
+        "climb_target_output_tokens_per_1k_words": 1622.61,
+        "current_output_bytes_per_1k_words": 25685.233,
+        "climb_target_output_bytes_per_1k_words": 25685.233
+      },
+      "median_duration_share": 0.032,
+      "median_output_share": 0.0911,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "mvp_ingest.script_bible",
+      "scope_label": "mvp_ingest:script_bible",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 1262.338,
+        "climb_target_duration_ms_per_1k_words": 1262.338,
+        "current_cost_usd_per_1k_words": 0.002,
+        "climb_target_cost_usd_per_1k_words": 0.002,
+        "current_output_tokens_per_1k_words": 112.205,
+        "climb_target_output_tokens_per_1k_words": 112.205,
+        "current_output_bytes_per_1k_words": 535.023,
+        "climb_target_output_bytes_per_1k_words": 535.023
+      },
+      "median_duration_share": 0.0101,
+      "median_output_share": 0.0063,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.prop_bible",
+      "scope_label": "world_building:prop_bible",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 1088.318,
+        "climb_target_duration_ms_per_1k_words": 1088.318,
+        "current_cost_usd_per_1k_words": 0.002,
+        "climb_target_cost_usd_per_1k_words": 0.002,
+        "current_output_tokens_per_1k_words": 284.648,
+        "climb_target_output_tokens_per_1k_words": 284.648,
+        "current_output_bytes_per_1k_words": 24265.838,
+        "climb_target_output_bytes_per_1k_words": 24265.838
+      },
+      "median_duration_share": 0.0087,
+      "median_output_share": 0.016,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.refresh_project_config",
+      "scope_label": "world_building:refresh_project_config",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 1045.274,
+        "climb_target_duration_ms_per_1k_words": 1045.274,
+        "current_cost_usd_per_1k_words": 0.002,
+        "climb_target_cost_usd_per_1k_words": 0.002,
+        "current_output_tokens_per_1k_words": 43.89,
+        "climb_target_output_tokens_per_1k_words": 43.89,
+        "current_output_bytes_per_1k_words": 523.291,
+        "climb_target_output_bytes_per_1k_words": 523.291
+      },
+      "median_duration_share": 0.0083,
+      "median_output_share": 0.0025,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "mvp_ingest.project_config",
+      "scope_label": "mvp_ingest:project_config",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 923.684,
+        "climb_target_duration_ms_per_1k_words": 923.684,
+        "current_cost_usd_per_1k_words": 0.002,
+        "climb_target_cost_usd_per_1k_words": 0.002,
+        "current_output_tokens_per_1k_words": 42.39,
+        "climb_target_output_tokens_per_1k_words": 42.39,
+        "current_output_bytes_per_1k_words": 516.79,
+        "climb_target_output_bytes_per_1k_words": 516.79
+      },
+      "median_duration_share": 0.0074,
+      "median_output_share": 0.0024,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "mvp_ingest.breakdown_scenes",
+      "scope_label": "mvp_ingest:breakdown_scenes",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 846.636,
+        "climb_target_duration_ms_per_1k_words": 846.636,
+        "current_cost_usd_per_1k_words": 0.007,
+        "climb_target_cost_usd_per_1k_words": 0.007,
+        "current_output_tokens_per_1k_words": 390.007,
+        "climb_target_output_tokens_per_1k_words": 390.007,
+        "current_output_bytes_per_1k_words": 39684.964,
+        "climb_target_output_bytes_per_1k_words": 39684.964
+      },
+      "median_duration_share": 0.0067,
+      "median_output_share": 0.0219,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "mvp_ingest.normalize",
+      "scope_label": "mvp_ingest:normalize",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 313.459,
+        "climb_target_duration_ms_per_1k_words": 313.459,
+        "current_cost_usd_per_1k_words": 0.002,
+        "climb_target_cost_usd_per_1k_words": 0.002,
+        "current_output_tokens_per_1k_words": 299.842,
+        "climb_target_output_tokens_per_1k_words": 299.842,
+        "current_output_bytes_per_1k_words": 6187.714,
+        "climb_target_output_bytes_per_1k_words": 6187.714
+      },
+      "median_duration_share": 0.0025,
+      "median_output_share": 0.0168,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "world_building.entity_graph",
+      "scope_label": "world_building:entity_graph",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 249.798,
+        "climb_target_duration_ms_per_1k_words": 249.798,
+        "current_cost_usd_per_1k_words": 0.0,
+        "climb_target_cost_usd_per_1k_words": 0.0,
+        "current_output_tokens_per_1k_words": 34.927,
+        "climb_target_output_tokens_per_1k_words": 34.927,
+        "current_output_bytes_per_1k_words": 26442.397,
+        "climb_target_output_bytes_per_1k_words": 26442.397
+      },
+      "median_duration_share": 0.002,
+      "median_output_share": 0.002,
+      "note": null
+    },
+    {
+      "scope_type": "stage",
+      "scope_id": "mvp_ingest.ingest",
+      "scope_label": "mvp_ingest:ingest",
+      "case_count": 1,
+      "measurement": {
+        "current_label": "current_observed",
+        "climb_label": "climb_target",
+        "current_duration_ms_per_1k_words": 0.923,
+        "climb_target_duration_ms_per_1k_words": 0.923,
+        "current_cost_usd_per_1k_words": 0.0,
+        "climb_target_cost_usd_per_1k_words": 0.0,
+        "current_output_tokens_per_1k_words": 0.0,
+        "climb_target_output_tokens_per_1k_words": 0.0,
+        "current_output_bytes_per_1k_words": 5894.911,
+        "climb_target_output_bytes_per_1k_words": 5894.911
+      },
+      "median_duration_share": 0.0,
+      "median_output_share": 0.0,
+      "note": null
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "big_fish_long",
+      "label": "Long screenplay",
+      "input_fixture": "tests/fixtures/round_trip/big-fish/Big-Fish.fountain",
+      "input_word_count": 25997,
+      "input_line_count": 4635,
+      "input_bytes": 146254,
+      "notes": "Long screenplay case to expose stage scaling, output-volume drift, and honest story-lane wall-clock cost.",
+      "project_dir": "output/eval-full-script-throughput-big_fish_long-e72a09",
+      "success": true,
+      "error": null,
+      "total_elapsed_ms": 3263471,
+      "total_duration_ms": 3451643,
+      "total_cost_usd": 3.5857468,
+      "total_input_tokens": 1215389,
+      "total_output_tokens": 463283,
+      "output_volume": {
+        "artifact_count": 1638,
+        "total_bytes": 81731991,
+        "text_characters": 81731991,
+        "text_lines": 2521799,
+        "by_artifact_type": {
+          "raw_input": 1,
+          "canonical_script": 1,
+          "scene": 384,
+          "scene_index": 2,
+          "script_bible": 1,
+          "project_config": 2,
+          "entity_discovery_results": 1,
+          "character_bible": 120,
+          "bible_manifest": 277,
+          "location_bible": 133,
+          "prop_bible": 24,
+          "entity_graph": 1,
+          "continuity_state": 690,
+          "continuity_index": 1
+        }
+      },
+      "recipe_runs": [
+        {
+          "run_id": "big_fish_long-mvp_ingest-0012",
+          "recipe_id": "mvp_ingest",
+          "recipe_path": "configs/recipes/recipe-mvp-ingest.yaml",
+          "ui_label": "Break Down Script",
+          "elapsed_ms": 65149,
+          "success": true,
+          "error": null,
+          "stage_summaries": [
+            {
+              "stage_id": "ingest",
+              "status": "done",
+              "model_used": "code",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 24,
+              "cost_usd": 0.0,
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "output_volume": {
+                "artifact_count": 1,
+                "total_bytes": 153250,
+                "text_characters": 153250,
+                "text_lines": 79,
+                "by_artifact_type": {
+                  "raw_input": 1
+                }
+              }
+            },
+            {
+              "stage_id": "normalize",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 8149,
+              "cost_usd": 0.041164,
+              "input_tokens": 12480,
+              "output_tokens": 7795,
+              "output_volume": {
+                "artifact_count": 1,
+                "total_bytes": 160862,
+                "text_characters": 160862,
+                "text_lines": 291,
+                "by_artifact_type": {
+                  "canonical_script": 1
+                }
+              }
+            },
+            {
+              "stage_id": "breakdown_scenes",
+              "status": "done",
+              "model_used": "mixed:claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 22010,
+              "cost_usd": 0.17504,
+              "input_tokens": 168105,
+              "output_tokens": 10139,
+              "output_volume": {
+                "artifact_count": 193,
+                "total_bytes": 1031690,
+                "text_characters": 1031690,
+                "text_lines": 37974,
+                "by_artifact_type": {
+                  "scene": 192,
+                  "scene_index": 1
+                }
+              }
+            },
+            {
+              "stage_id": "script_bible",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 32817,
+              "cost_usd": 0.0472056,
+              "input_tokens": 44422,
+              "output_tokens": 2917,
+              "output_volume": {
+                "artifact_count": 1,
+                "total_bytes": 13909,
+                "text_characters": 13909,
+                "text_lines": 140,
+                "by_artifact_type": {
+                  "script_bible": 1
+                }
+              }
+            },
+            {
+              "stage_id": "project_config",
+              "status": "done",
+              "model_used": "claude-sonnet-4-6",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 24013,
+              "cost_usd": 0.0465776,
+              "input_tokens": 19311,
+              "output_tokens": 1102,
+              "output_volume": {
+                "artifact_count": 1,
+                "total_bytes": 13435,
+                "text_characters": 13435,
+                "text_lines": 440,
+                "by_artifact_type": {
+                  "project_config": 1
+                }
+              }
+            }
+          ],
+          "total_duration_ms": 87013,
+          "total_cost_usd": 0.3099872,
+          "total_input_tokens": 244318,
+          "total_output_tokens": 21953,
+          "output_volume": {
+            "artifact_count": 197,
+            "total_bytes": 1373146,
+            "text_characters": 1373146,
+            "text_lines": 38924,
+            "by_artifact_type": {
+              "raw_input": 1,
+              "canonical_script": 1,
+              "scene": 192,
+              "scene_index": 1,
+              "script_bible": 1,
+              "project_config": 1
+            }
+          }
+        },
+        {
+          "run_id": "big_fish_long-world_building-f651",
+          "recipe_id": "world_building",
+          "recipe_path": "configs/recipes/recipe-world-building.yaml",
+          "ui_label": "Deep Breakdown",
+          "elapsed_ms": 3198322,
+          "success": true,
+          "error": null,
+          "stage_summaries": [
+            {
+              "stage_id": "analyze_scenes",
+              "status": "done",
+              "model_used": "mixed:claude-sonnet-4-6",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 1063239,
+              "cost_usd": 0.963018,
+              "input_tokens": 2061,
+              "output_tokens": 63789,
+              "output_volume": {
+                "artifact_count": 193,
+                "total_bytes": 1098181,
+                "text_characters": 1098181,
+                "text_lines": 35926,
+                "by_artifact_type": {
+                  "scene": 192,
+                  "scene_index": 1
+                }
+              }
+            },
+            {
+              "stage_id": "refresh_project_config",
+              "status": "done",
+              "model_used": "claude-sonnet-4-6",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 27174,
+              "cost_usd": 0.04732,
+              "input_tokens": 19233,
+              "output_tokens": 1141,
+              "output_volume": {
+                "artifact_count": 1,
+                "total_bytes": 13604,
+                "text_characters": 13604,
+                "text_lines": 438,
+                "by_artifact_type": {
+                  "project_config": 1
+                }
+              }
+            },
+            {
+              "stage_id": "entity_discovery",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 165491,
+              "cost_usd": 0.1762136,
+              "input_tokens": 120537,
+              "output_tokens": 19946,
+              "output_volume": {
+                "artifact_count": 1,
+                "total_bytes": 10898,
+                "text_characters": 10898,
+                "text_lines": 436,
+                "by_artifact_type": {
+                  "entity_discovery_results": 1
+                }
+              }
+            },
+            {
+              "stage_id": "character_bible",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 158784,
+              "cost_usd": 0.5347264,
+              "input_tokens": 235533,
+              "output_tokens": 86575,
+              "output_volume": {
+                "artifact_count": 240,
+                "total_bytes": 747340,
+                "text_characters": 747340,
+                "text_lines": 22658,
+                "by_artifact_type": {
+                  "character_bible": 120,
+                  "bible_manifest": 120
+                }
+              }
+            },
+            {
+              "stage_id": "location_bible",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 104514,
+              "cost_usd": 0.2924768,
+              "input_tokens": 154681,
+              "output_tokens": 42183,
+              "output_volume": {
+                "artifact_count": 266,
+                "total_bytes": 667739,
+                "text_characters": 667739,
+                "text_lines": 19954,
+                "by_artifact_type": {
+                  "location_bible": 133,
+                  "bible_manifest": 133
+                }
+              }
+            },
+            {
+              "stage_id": "prop_bible",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 28293,
+              "cost_usd": 0.0565384,
+              "input_tokens": 33673,
+              "output_tokens": 7400,
+              "output_volume": {
+                "artifact_count": 48,
+                "total_bytes": 630839,
+                "text_characters": 630839,
+                "text_lines": 15820,
+                "by_artifact_type": {
+                  "prop_bible": 24,
+                  "bible_manifest": 24
+                }
+              }
+            },
+            {
+              "stage_id": "entity_graph",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 6494,
+              "cost_usd": 0.0052984,
+              "input_tokens": 2083,
+              "output_tokens": 908,
+              "output_volume": {
+                "artifact_count": 1,
+                "total_bytes": 687423,
+                "text_characters": 687423,
+                "text_lines": 24388,
+                "by_artifact_type": {
+                  "entity_graph": 1
+                }
+              }
+            },
+            {
+              "stage_id": "continuity_tracking",
+              "status": "done",
+              "model_used": "claude-haiku-4-5-20251001",
+              "call_count": 1,
+              "attempt_count": 1,
+              "duration_ms": 1810641,
+              "cost_usd": 1.200168,
+              "input_tokens": 403270,
+              "output_tokens": 219388,
+              "output_volume": {
+                "artifact_count": 691,
+                "total_bytes": 76502821,
+                "text_characters": 76502821,
+                "text_lines": 2363255,
+                "by_artifact_type": {
+                  "continuity_state": 690,
+                  "continuity_index": 1
+                }
+              }
+            }
+          ],
+          "total_duration_ms": 3364630,
+          "total_cost_usd": 3.2757596,
+          "total_input_tokens": 971071,
+          "total_output_tokens": 441330,
+          "output_volume": {
+            "artifact_count": 1441,
+            "total_bytes": 80358845,
+            "text_characters": 80358845,
+            "text_lines": 2482875,
+            "by_artifact_type": {
+              "scene": 192,
+              "scene_index": 1,
+              "project_config": 1,
+              "entity_discovery_results": 1,
+              "character_bible": 120,
+              "bible_manifest": 277,
+              "location_bible": 133,
+              "prop_bible": 24,
+              "entity_graph": 1,
+              "continuity_state": 690,
+              "continuity_index": 1
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

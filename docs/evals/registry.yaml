@@ -2270,6 +2270,7 @@ evals:
       - "160"
       - "161"
       - "183"
+      - "187"
     category_refs:
       - spec:2
       - spec:3
@@ -2427,6 +2428,27 @@ evals:
         git_sha: "2069dbd"
         result_file: benchmarks/results/full-script-throughput-story-183-big-fish-2026-04-24.json
         note: "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final retained artifacts show `625` valid and `48` `needs_review` latest continuity states across `6` fallback scenes (`026`, `166`, `172`, `178`, `180`, `189`), all with `LLM output truncated due to max token limit`; provider read timeouts on scenes `118`, `124`, and `143` recovered and did not appear in final fallback artifacts. Classification: continuity is still **non-runtime-blocking** quality/output-budget drift, not a renewed stall. However, `analyze_scenes` regressed materially to `1130.834s` from Story 161's `810.038s` and Story 155's original `888.476s`; that concrete stage regression is split to Story 187 instead of turning Story 183 into a generic optimization bucket."
+      - model: "Story 187 Targeted Big Fish Rerun (Scene prompt compacted, continuity still dominant)"
+        metrics:
+          overall: 1.0
+          successful_case_ratio: 1.0
+          long_case_total_elapsed_ms: 3263471
+          long_case_analyze_scenes_elapsed_ms: 1063239
+          long_case_analyze_scenes_output_tokens: 63789
+          long_case_total_output_tokens: 463283
+          long_case_total_output_bytes: 81731991
+          long_case_continuity_completed: 1.0
+          long_case_continuity_elapsed_ms: 1810641
+          long_case_continuity_fallback_scene_count: 7
+          long_case_continuity_needs_review_state_count: 58
+          top_runtime_hotspot_current_duration_ms_per_1k_words: 69648.075
+          top_output_hotspot_current_output_tokens_per_1k_words: 8438.974
+        latency_ms: 3263471
+        cost_usd: 3.5857468
+        measured: 2026-04-24
+        git_sha: "a365251"
+        result_file: benchmarks/results/full-script-throughput-story-187-big-fish-2026-04-24.json
+        note: "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` improved from Story 183's regressed `1130.834s` to `1063.239s` (`-67.595s`) but did not recover Story 161's `810.038s`; output tokens increased slightly to `63789`, so the remaining scene-analysis regression is **ambiguous** and **non-runtime-blocking**, not fully converged. Downstream world-building stayed complete: entity discovery, bibles, graph, and continuity all finished. Continuity remains the dominant hotspot at `1810.641s`, `55.5%` of boundary runtime, `219388` output tokens, and `8438.974 output tok / 1k words`; retained artifacts show `628` valid and `58` `needs_review` latest continuity states across `7` fallback scenes (`017`, `026`, `048`, `093`, `174`, `180`, `182`), all truncation fallbacks. Classification: no runtime blocker recurred; remaining mismatches are **model-wrong/output-budget-limited** continuity quality drift plus an **ambiguous** residual scene-analysis runtime gap."
 
     attempts: []
 

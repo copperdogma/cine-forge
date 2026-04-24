@@ -18,6 +18,42 @@ from cine_forge.schemas.qa import QAResult
 logger = logging.getLogger(__name__)
 
 DEFAULT_TONE = "neutral"
+_TONAL_AUDIO_CUES = (
+    "ambient",
+    "banter",
+    "music",
+    "muzak",
+    "radio",
+    "routine",
+    "song",
+    "soundtrack",
+)
+_TONAL_DANGER_CUES = (
+    "blood",
+    "brutal",
+    "danger",
+    "dead",
+    "death",
+    "fight",
+    "gore",
+    "gun",
+    "kill",
+    "skull",
+    "violence",
+    "violent",
+)
+_MEMORY_CUES = (
+    "as a boy",
+    "as a child",
+    "childhood",
+    "flashback",
+    "formative",
+    "memory",
+    "remember",
+    "remembers",
+    "young ",
+    "younger",
+)
 
 
 class _SceneEnrichment(BaseModel):
@@ -222,21 +258,54 @@ def _build_macro_analysis_prompt(
         "- tone_shifts: any notable tonal transitions.\n"
         "- location, time_of_day, characters_present: infer these only when "
         "the current metadata is unresolved; otherwise return null.\n\n"
-        "Use soundtrack, ambient audio, and other sensory cues as evidence "
-        "when they shape tone.\n"
-        "If a scene pairs mundane music, banter, or routine behavior with "
-        "violence or danger, call out that tonal contradiction explicitly in "
-        "a beat description or tone shift instead of using only generic "
-        "phrases like 'action to dark comedy'.\n"
-        "If a scene is framed as a flashback, memory, or formative past "
-        "moment, say that explicitly and explain why the memory matters to "
-        "the larger story.\n\n"
-        "Current scene metadata:\n"
+        + _build_special_scene_guidance(entries, scene_texts)
+        + "Current scene metadata:\n"
         + "\n".join(metadata_lines)
         + "\n\nScene texts:\n\n"
         + "\n\n".join(scene_blocks)
         + "\n"
     )
+
+
+def _build_special_scene_guidance(
+    entries: list[SceneIndexEntry], scene_texts: dict[str, str]
+) -> str:
+    text = "\n".join(scene_texts.get(entry.scene_id, "") for entry in entries).lower()
+    guidance = [
+        "When present, treat sensory tone, tonal contradiction, and memory "
+        "framing as meaningful scene evidence.\n"
+    ]
+
+    if _should_expand_tonal_guidance(text, entries):
+        guidance.append(
+            "If a scene pairs mundane music, banter, or routine behavior with "
+            "violence or danger, call out that tonal contradiction explicitly "
+            "in a beat description or tone shift instead of using only generic "
+            "phrases like 'action to dark comedy'.\n"
+        )
+
+    if _should_expand_memory_guidance(text, entries):
+        guidance.append(
+            "If a scene is framed as a flashback, memory, or formative past "
+            "moment, say that explicitly and explain why the memory matters to "
+            "the larger story.\n"
+        )
+
+    return "".join(guidance) + "\n"
+
+
+def _should_expand_tonal_guidance(text: str, entries: list[SceneIndexEntry]) -> bool:
+    if len(entries) <= 2:
+        return True
+    has_audio_or_routine = any(cue in text for cue in _TONAL_AUDIO_CUES)
+    has_danger = any(cue in text for cue in _TONAL_DANGER_CUES)
+    return "muzak" in text or (has_audio_or_routine and has_danger)
+
+
+def _should_expand_memory_guidance(text: str, entries: list[SceneIndexEntry]) -> bool:
+    if len(entries) <= 2:
+        return True
+    return any(cue in text for cue in _MEMORY_CUES)
 
 
 def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:

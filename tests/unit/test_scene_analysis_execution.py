@@ -136,7 +136,60 @@ def test_build_macro_analysis_prompt_requests_explicit_tonal_juxtaposition() -> 
         },
     )
 
-    assert "soundtrack, ambient audio, and other sensory cues" in prompt
+    assert "sensory tone, tonal contradiction, and memory framing" in prompt
     assert "tonal contradiction explicitly" in prompt
     assert "generic phrases like 'action to dark comedy'" in prompt
     assert "flashback, memory, or formative past moment" in prompt
+
+
+@pytest.mark.unit
+def test_build_macro_analysis_prompt_omits_expanded_guidance_for_plain_batches() -> None:
+    entries = [_entry(index) for index in range(1, 4)]
+
+    prompt = execution_module._build_macro_analysis_prompt(
+        entries=entries,
+        scene_texts={
+            entry.scene_id: f"{entry.heading}\n\nA quiet conversation continues."
+            for entry in entries
+        },
+    )
+
+    assert "sensory tone, tonal contradiction, and memory framing" in prompt
+    assert "tonal contradiction explicitly" not in prompt
+    assert "flashback, memory, or formative past moment" not in prompt
+    assert "Current scene metadata:" in prompt
+    assert "scene_001: location=Room 1" in prompt
+
+
+@pytest.mark.unit
+def test_build_macro_analysis_prompt_expands_memory_guidance_when_cued() -> None:
+    entries = [_entry(index) for index in range(1, 4)]
+
+    prompt = execution_module._build_macro_analysis_prompt(
+        entries=entries,
+        scene_texts={
+            "scene_001": "INT. ROOM 1 - NIGHT\n\nA quiet conversation continues.",
+            "scene_002": "EXT. COAST - DAY\n\nFLASHBACK: A young boy watches the sea.",
+            "scene_003": "INT. ROOM 3 - NIGHT\n\nThe present-day argument resumes.",
+        },
+    )
+
+    assert "flashback, memory, or formative past moment" in prompt
+    assert "tonal contradiction explicitly" not in prompt
+
+
+@pytest.mark.unit
+def test_build_macro_analysis_prompt_expands_tonal_guidance_when_cued() -> None:
+    entries = [_entry(index) for index in range(1, 4)]
+
+    prompt = execution_module._build_macro_analysis_prompt(
+        entries=entries,
+        scene_texts={
+            "scene_001": "INT. ROOM 1 - NIGHT\n\nA quiet conversation continues.",
+            "scene_002": "INT. ELEVATOR - NIGHT\n\nMuzak plays while blood drips.",
+            "scene_003": "INT. ROOM 3 - NIGHT\n\nThe doors close.",
+        },
+    )
+
+    assert "tonal contradiction explicitly" in prompt
+    assert "generic phrases like 'action to dark comedy'" in prompt

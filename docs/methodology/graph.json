@@ -1450,17 +1450,19 @@
           "full-script-throughput"
         ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "187",
-          "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-          "recommendedNow": true,
-          "posture": "ready-now",
-          "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
+          "sourceKind": "eval",
+          "sourceId": "full-script-throughput",
+          "sourcePath": "docs/evals/registry.yaml",
+          "recommendedNow": false,
+          "posture": "no-trigger-recorded",
+          "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
+          "retryTriggerStatus": "none",
+          "retryWhen": [],
           "lastRelevantAction": {
             "date": "2026-04-24",
-            "sourceType": "story-work-log",
-            "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-            "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
+            "sourceType": "eval-score",
+            "source": "docs/evals/registry.yaml",
+            "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
           },
           "storyIds": [
             "155",
@@ -1541,17 +1543,19 @@
           "storyboard-generation-quality"
         ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "187",
-          "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-          "recommendedNow": true,
-          "posture": "ready-now",
-          "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
+          "sourceKind": "eval",
+          "sourceId": "full-script-throughput",
+          "sourcePath": "docs/evals/registry.yaml",
+          "recommendedNow": false,
+          "posture": "no-trigger-recorded",
+          "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
+          "retryTriggerStatus": "none",
+          "retryWhen": [],
           "lastRelevantAction": {
             "date": "2026-04-24",
-            "sourceType": "story-work-log",
-            "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-            "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
+            "sourceType": "eval-score",
+            "source": "docs/evals/registry.yaml",
+            "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
           },
           "storyIds": [
             "155",
@@ -1594,17 +1598,19 @@
           "full-script-throughput"
         ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "187",
-          "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-          "recommendedNow": true,
-          "posture": "ready-now",
-          "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
+          "sourceKind": "eval",
+          "sourceId": "full-script-throughput",
+          "sourcePath": "docs/evals/registry.yaml",
+          "recommendedNow": false,
+          "posture": "no-trigger-recorded",
+          "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
+          "retryTriggerStatus": "none",
+          "retryWhen": [],
           "lastRelevantAction": {
             "date": "2026-04-24",
-            "sourceType": "story-work-log",
-            "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-            "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
+            "sourceType": "eval-score",
+            "source": "docs/evals/registry.yaml",
+            "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
           },
           "storyIds": [
             "155",
@@ -11900,7 +11906,7 @@
       "id": "187",
       "title": "Long-Form Scene Analysis Runtime Regression",
       "path": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "Medium",
       "idealRefs": [
         "R1 (story understanding)",
@@ -11945,9 +11951,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260424-0004",
+        "timestamp": "20260424-1139",
         "date": "2026-04-24",
-        "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
+        "summary": "story-closed: `/mark-story-done 187` closed the story after rechecking workflow gates, acceptance criteria, validation evidence, eval classification, registry updates, and generated planning surfaces. Evidence: Story 18…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11955,14 +11961,14 @@
         "sourceKind": "story",
         "sourceId": "187",
         "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
-        "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "story-closed: `/mark-story-done 187` closed the story after rechecking workflow gates, acceptance criteria, validation evidence, eval classification, registry updates, and generated planning surfaces. Evidence: Story 18…",
         "lastRelevantAction": {
           "date": "2026-04-24",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
-          "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
+          "summary": "story-closed: `/mark-story-done 187` closed the story after rechecking workflow gates, acceptance criteria, validation evidence, eval classification, registry updates, and generated planning surfaces. Evidence: Story 18…"
         }
       }
     }
@@ -12696,7 +12702,8 @@
         "159",
         "160",
         "161",
-        "183"
+        "183",
+        "187"
       ],
       "categoryRefs": [
         "spec:2",
@@ -12711,12 +12718,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story 183 Targeted Big Fish Runtime Refresh (Continuity dominant, scene analysis regressed)",
+        "model": "Story 187 Targeted Big Fish Rerun (Scene prompt compacted, continuity still dominant)",
         "measured": "2026-04-24",
         "metrics": {
           "overall": 1
         },
-        "note": "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final r…"
+        "note": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -12728,7 +12735,8 @@
         "159",
         "160",
         "161",
-        "183"
+        "183",
+        "187"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -12752,14 +12760,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final r…",
+        "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final r…"
+          "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
         }
       }
     },

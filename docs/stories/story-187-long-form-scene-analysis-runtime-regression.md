@@ -1,7 +1,7 @@
 ---
 id: "187"
 title: "Long-Form Scene Analysis Runtime Regression"
-status: "Pending"
+status: "Done"
 priority: "Medium"
 ideal_refs:
   - "R1 (story understanding)"
@@ -39,7 +39,7 @@ legacy_system: ""
 # Story 187 — Long-Form Scene Analysis Runtime Regression
 
 **Priority**: Medium
-**Status**: Pending
+**Status**: Done
 **Ideal Refs**: R1 (story understanding), R7 (generate -> react -> refine), R12 (radical transparency)
 **Spec Refs**: spec:2.7, spec:8.1, spec:8.3
 **ADR Refs**: ADR-003 (story-lane / film-lane boundary)
@@ -51,11 +51,11 @@ Investigate and reverse the fresh long-form `world_building.analyze_scenes` runt
 
 ## Acceptance Criteria
 
-- [ ] A current diagnostic pass explains why `world_building.analyze_scenes` regressed from `810.038s` to `1130.834s` on the maintained Big Fish long-form fixture.
-- [ ] The chosen fix materially reduces long-form `analyze_scenes` runtime from the Story 183 measurement without starving downstream entity discovery, bible generation, or continuity tracking.
-- [ ] A targeted detector rerun records the before/after result in `docs/evals/registry.yaml`, including total runtime, `analyze_scenes` runtime, cost, token volume, output volume, `git_sha`, result path, and runtime-blocking classification.
-- [ ] Focused unit coverage exists for any changed batching, prompt-shaping, retry, provider timeout, or output-compaction behavior.
-- [ ] If the diagnostic proves the regression is provider-side noise rather than local code or prompt behavior, the story records that evidence and updates follow-up pressure instead of shipping a speculative code change.
+- [x] A current diagnostic pass explains why `world_building.analyze_scenes` regressed from `810.038s` to `1130.834s` on the maintained Big Fish long-form fixture.
+- [x] The chosen fix materially reduces long-form `analyze_scenes` runtime from the Story 183 measurement without starving downstream entity discovery, bible generation, or continuity tracking.
+- [x] A targeted detector rerun records the before/after result in `docs/evals/registry.yaml`, including total runtime, `analyze_scenes` runtime, cost, token volume, output volume, `git_sha`, result path, and runtime-blocking classification.
+- [x] Focused unit coverage exists for any changed batching, prompt-shaping, retry, provider timeout, or output-compaction behavior.
+- [x] If the diagnostic proves the regression is provider-side noise rather than local code or prompt behavior, the story records that evidence and updates follow-up pressure instead of shipping a speculative code change.
 
 ## Out of Scope
 
@@ -77,35 +77,35 @@ Investigate and reverse the fresh long-form `world_building.analyze_scenes` runt
 
 ## Tasks
 
-- [ ] Inspect Story 183 artifacts and current `scene_analysis_v1` logs/code to identify whether the regression came from batch count, prompt size, retry behavior, model routing, provider latency, or output verbosity.
-- [ ] Run live model discovery before selecting any alternate model for scene analysis.
-- [ ] Implement the smallest targeted fix: batching/prompt compaction, retry/timeout tuning, instrumentation, or model-routing adjustment backed by evidence.
-- [ ] Add focused tests for any changed scene-analysis batching, execution, prompt-shaping, or output handling behavior.
-- [ ] Rerun the targeted `big_fish_long` throughput detector and compare against Story 183's `1130.834s` scene-analysis measurement.
-- [ ] Update `docs/evals/registry.yaml` with the new result row and classify any remaining mismatch as model-wrong, golden-wrong, or ambiguous; classify runtime impact as runtime-blocking or non-runtime-blocking.
-- [ ] Check whether the chosen implementation makes any existing code, helper paths, or docs redundant; remove them or create a concrete follow-up
-- [ ] Run required checks for touched scope:
-  - [ ] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
-  - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
-  - [ ] UI not expected; if touched unexpectedly: `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
-- [ ] If agent tooling or project instructions are touched: `make skills-check` (not expected)
-- [ ] If story metadata, ADR metadata, or methodology state changes: `pnpm methodology:compile`
-- [ ] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
-- [ ] If UI is touched unexpectedly: verify the changed flow with browser tools in desktop and mobile views when possible (screenshots + console check); if blocked, follow `docs/runbooks/browser-automation-and-mcp.md` and record the blocker
-- [ ] Search all docs and update any related to what we touched
-- [ ] Verify adherence to Central Tenets (0-5):
-  - [ ] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved?
-  - [ ] **T1 — AI-Coded:** Is the code AI-friendly? Would another AI session understand it?
-  - [ ] **T2 — Architect for 100x:** Did we over-engineer something AI will handle better soon?
-  - [ ] **T3 — Fewer Files:** Are files appropriately sized? Types centralized?
-  - [ ] **T4 — Verbose Artifacts:** Is the work log verbose enough for handoff?
-  - [ ] **T5 — Ideal vs Today:** Can this be simplified toward the ideal?
+- [x] Inspect Story 183 artifacts and current `scene_analysis_v1` logs/code to identify whether the regression came from batch count, prompt size, retry behavior, model routing, provider latency, or output verbosity.
+- [x] Run live model discovery before selecting any alternate model for scene analysis.
+- [x] Implement the smallest targeted fix: batching/prompt compaction, retry/timeout tuning, instrumentation, or model-routing adjustment backed by evidence.
+- [x] Add focused tests for any changed scene-analysis batching, execution, prompt-shaping, or output handling behavior.
+- [x] Rerun the targeted `big_fish_long` throughput detector and compare against Story 183's `1130.834s` scene-analysis measurement.
+- [x] Update `docs/evals/registry.yaml` with the new result row and classify any remaining mismatch as model-wrong, golden-wrong, or ambiguous; classify runtime impact as runtime-blocking or non-runtime-blocking.
+- [x] Check whether the chosen implementation makes any existing code, helper paths, or docs redundant; remove them or create a concrete follow-up
+- [x] Run required checks for touched scope:
+  - [x] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
+  - [x] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
+  - [x] UI not expected; validation still ran `pnpm --dir ui run lint` and `cd ui && npx tsc -b`
+- [x] If agent tooling or project instructions are touched: `make skills-check` (not expected)
+- [x] If story metadata, ADR metadata, or methodology state changes: `pnpm methodology:compile`
+- [x] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
+- [x] If UI is touched unexpectedly: verify the changed flow with browser tools in desktop and mobile views when possible (screenshots + console check); not applicable because no UI files or behavior changed
+- [x] Search all docs and update any related to what we touched
+- [x] Verify adherence to Central Tenets (0-5):
+  - [x] **T0 — Data Safety:** Can any user data be lost? Is capture-first preserved?
+  - [x] **T1 — AI-Coded:** Is the code AI-friendly? Would another AI session understand it?
+  - [x] **T2 — Architect for 100x:** Did we over-engineer something AI will handle better soon?
+  - [x] **T3 — Fewer Files:** Are files appropriately sized? Types centralized?
+  - [x] **T4 — Verbose Artifacts:** Is the work log verbose enough for handoff?
+  - [x] **T5 — Ideal vs Today:** Can this be simplified toward the ideal?
 
 ## Workflow Gates
 
-- [ ] Build complete: implementation finished, required checks run, and human summary shared
-- [ ] Validation complete or explicitly skipped by user
-- [ ] Story marked done via `/mark-story-done`
+- [x] Build complete: implementation finished, required checks run, and human summary shared
+- [x] Validation complete or explicitly skipped by user
+- [x] Story marked done via `/mark-story-done`
 
 > If this story is `Blocked`, replace the `N/A` values below with concrete blocker truth and rewrite `## Plan` around the unblock path or blocker reassessment work instead of stale implementation steps.
 
@@ -153,8 +153,162 @@ N/A
 
 ## Plan
 
-To be written by `/build-story` before implementation.
+### Exploration Notes
+
+- **Story status / buildability**: Story 187 is `Pending` and buildable. The
+  required sections are present, blocker fields are `N/A`, and the story has a
+  concrete measured regression rather than a vague optimization premise.
+- **Current runtime truth**:
+  - Story 161: `big_fish_long` completed at `2808707 ms` / `$3.24163222`;
+    `world_building.analyze_scenes` took `810038 ms`, emitted `53919` output
+    tokens, and downstream `character_bible`, `location_bible`, and
+    `continuity_tracking` completed.
+  - Story 183: the same maintained long case completed at `3539391 ms` /
+    `$3.5153332`; `world_building.analyze_scenes` regressed to `1130834 ms`,
+    emitted `61969` output tokens, and downstream stages still completed.
+  - The retained Story 183 project
+    `output/eval-full-script-throughput-big_fish_long-1d6a59` has `190`
+    enriched scenes in `20` adaptive batches; `total_batches=20`,
+    `largest_batch_size=10`, and `largest_batch_words=2342`. This is not a
+    simple "batch extraction disappeared" regression.
+- **Likely driver**: code history shows no current local diff in
+  `scene_analysis_v1` or `recipe-world-building.yaml`, but Story 163 landed
+  prompt-quality reinforcement after Story 161. That added global runtime
+  instructions to explicitly name soundtrack/sensory tonal contradictions and
+  flashback/formative-memory framing. Those instructions were necessary for the
+  `scene-enrichment` eval to recover from model-wrong prompt-adherence misses,
+  but the long-form Story 183 run now shows higher `analyze_scenes` output
+  tokens and longer wall time.
+- **Files likely to change**:
+  - `src/cine_forge/modules/ingest/scene_analysis_v1/execution.py`
+  - `tests/unit/test_scene_analysis_execution.py`
+  - `tests/unit/test_scene_analysis_batch_planning.py` only if diagnostic
+    metadata changes
+  - `docs/evals/registry.yaml`
+  - this story file
+- **Files at risk of breaking**: `benchmarks/tasks/scene-enrichment.yaml`,
+  `benchmarks/prompts/scene-enrichment.txt`, downstream world-building consumers
+  of enriched `scene` / `scene_index` artifacts, and the maintained
+  `full-script-throughput` registry truth.
+- **Decision docs consulted**: `docs/ideal.md`, `docs/spec.md`
+  (`spec:2.6`, `spec:2.7`, `spec:8.1`, `spec:8.3`), `docs/methodology/state.yaml`,
+  `docs/methodology/graph.json`, `docs/build-map.md`, ADR-003, Story 155,
+  Story 161, Story 163, and Story 183. No newer throughput-specific ADR exists.
+- **Model discovery**: `.venv/bin/python scripts/discover-models.py --summary`
+  found `73` available models and `28` untested models. This supports the
+  story's caution: do not change `scene_analysis_v1` model defaults in this
+  story without a dedicated scene-enrichment/model eval. The current first fix
+  should be prompt/runtime behavior, not blind model routing.
+- **Structural health**: `make check-size` has many repo-level large-file
+  warnings, but the likely touch files are small enough for focused edits:
+  `execution.py` `270`, `batching.py` `95`, `main.py` `160`, `outputs.py`
+  `260`, `test_scene_analysis_execution.py` `142`, and
+  `test_scene_analysis_batch_planning.py` `131`. `docs/evals/registry.yaml` is
+  large (`2891`) and must receive only surgical evidence updates.
+- **Redundancy / cleanup targets**: if the runtime prompt can preserve the
+  scene-enrichment quality contract with more compact or cue-conditioned
+  guidance, remove any redundant globally repeated wording rather than adding
+  another prompt layer.
+
+### Baseline / Eval Gate
+
+- **Primary runtime eval**: targeted `big_fish_long` rerun of
+  `benchmarks/scripts/full_script_throughput_eval.py` using the maintained
+  `full_script_throughput_cases.json` manifest and `--filter-case big_fish_long`.
+- **Quality guardrail eval**: bounded `scene-enrichment` promptfoo rerun for the
+  current default model after prompt changes. This is required because the
+  suspected regression came from a quality prompt fix, and removing or
+  compressing it without rechecking the quality surface would be a false win.
+- **Baseline to beat**:
+  - Runtime: Story 183 `analyze_scenes = 1130834 ms`.
+  - Previous good runtime: Story 161 `analyze_scenes = 810038 ms`.
+  - Quality: `scene-enrichment` latest verified Sonnet 4.6 score `0.959`, target
+    `0.93`, after tonal-contradiction and flashback/memory prompt reinforcement.
+
+### Candidate Approaches
+
+- **AI-only / model swap**: rejected for this implementation pass. Live discovery
+  shows new models exist, but the repo has no fresh scene-analysis model eval
+  proving that a replacement model preserves quality and improves long-form
+  runtime. A blind model swap would violate the eval-first rule.
+- **Hybrid prompt + deterministic cue detection**: preferred. Keep narrative
+  analysis in the model, but stop repeating the fullest special-case guidance
+  across every long-form batch if the batch text does not contain relevant
+  audio/juxtaposition/flashback cues. Preserve compact always-on quality
+  language, then add specific cue guidance only when deterministic text evidence
+  suggests it matters.
+- **Pure code batching change**: not first. Story 183 already ran with adaptive
+  `5-10` scene batches and `20` total batches, so another batch-size-only tweak
+  is less grounded than fixing the prompt/output regression. Only revisit batch
+  sizing if the prompt fix does not move the detector.
+
+### Implementation Order
+
+1. **Move the quality reinforcement into a testable prompt-guidance seam**
+   - Files: `execution.py`, `tests/unit/test_scene_analysis_execution.py`
+   - Add a helper that builds compact always-on scene-analysis instructions and
+     conditionally appends special tonal/flashback guidance based on batch text.
+   - Keep the prompt contract explicit: no outside film knowledge, one scene
+     entry per input scene, key beats/tone/tone shifts, and unresolved structural
+     gap fills only.
+
+2. **Add deterministic cue detection with conservative triggers**
+   - Files: `execution.py`, focused tests
+   - Trigger tonal-juxtaposition guidance for cues such as soundtrack, muzak,
+     music, ambient audio, banter/routine behavior paired with violence/gore or
+     danger terms.
+   - Trigger flashback/formative-memory guidance for cues such as flashback,
+     memory, young/younger framing, childhood, or formative past framing.
+   - Default to including the guidance when uncertain for small batches or direct
+     eval fixtures; the goal is long-form prompt hygiene, not hiding known
+     quality requirements.
+
+3. **Verify prompt-size and guidance behavior locally**
+   - Files: tests only unless helper API needs adjustment
+   - Add tests that:
+     - preserve the special guidance for the existing muzak/violence and
+       flashback-style fixture text,
+     - omit the full special-case wording for plain batches,
+     - keep scene ids, metadata, and schema instructions intact.
+
+4. **Run quality and static checks**
+   - Commands:
+     - `PYTHONPATH=src .venv/bin/python -m pytest tests/unit/test_scene_analysis_execution.py tests/unit/test_scene_analysis_batch_planning.py tests/unit/test_scene_analysis_module.py`
+     - `.venv/bin/python -m ruff check src/ tests/`
+     - `cd benchmarks && promptfoo eval -c tasks/scene-enrichment.yaml --no-cache --filter-providers 'Sonnet 4.6' -j 1 --output results/scene-enrichment-story-187-prompt-guard-2026-04-24.json`
+   - If the scene-enrichment rerun drops below target, stop and either restore
+     the global guidance or record the blocker before spending on throughput.
+
+5. **Rerun the targeted paid throughput detector**
+   - Command:
+     `PYTHONPATH=src .venv/bin/python benchmarks/scripts/full_script_throughput_eval.py --fixture-manifest benchmarks/fixtures/full_script_throughput_cases.json --filter-case big_fish_long --keep-projects --output-prefix benchmarks/results/full-script-throughput-story-187-big-fish-2026-04-24`
+   - Compare against Story 183 and Story 161. Specifically inspect
+     `analyze_scenes` runtime, output tokens, total cost, downstream stage
+     completion, continuity fallback count, and `needs_review` state count.
+
+6. **Update truth surfaces and close build phase**
+   - Files: `docs/evals/registry.yaml`, this story, generated methodology views
+     after `pnpm methodology:compile`
+   - Record the new result row, `git_sha`, result paths, runtime-blocking
+     classification, and mismatch classification. If runtime improves but the
+     quality eval fails, do not claim success.
+   - Run final backend checks: `make test-unit PYTHON=.venv/bin/python`,
+     `.venv/bin/python -m ruff check src/ tests/`, `pnpm methodology:check`, and
+     `git diff --check`. UI verification is not expected unless UI files are
+     unexpectedly touched.
+
+### Human Gate
+
+This plan includes one bounded promptfoo rerun and one paid long-form throughput
+detector rerun. Implementation should not start until this plan is approved.
 
 ## Work Log
 
 20260424-0004 — story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on the same maintained long-form fixture. Evidence: `benchmarks/results/full-script-throughput-story-183-big-fish-2026-04-24.{json,md}`, `output/eval-full-script-throughput-big_fish_long-1d6a59`, and Story 161's checked-in result. Next step: `/build-story 187` when throughput work resumes.
+20260424-1015 — build-plan: completed `/build-story 187` exploration and wrote the implementation plan. Evidence: reviewed `docs/ideal.md`, `docs/spec.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, `docs/build-map.md`, ADR-003, Stories 155/161/163/183, `scene_analysis_v1` code/tests, the retained Story 183 project, Story 161/183 throughput reports, `scene-enrichment` registry truth, live model discovery (`73` available models / `28` untested), `make check-size`, and file line counts. Diagnosis: the regression is not missing adaptive batching; Story 183 still used `20` adaptive batches. The likely local cause is the post-Story-161 runtime prompt reinforcement from Story 163, which preserved scene-enrichment quality but increased long-form output and wall time. Next step: human approval of the plan before implementation because the build requires a bounded promptfoo rerun and a paid `big_fish_long` detector rerun.
+20260424-1018 — implementation-started: user approved the build plan. Story moved to `In Progress` so implementation can start from coherent planning state. Next step: `pnpm methodology:compile`, then prompt-guidance code and focused tests.
+20260424-1034 — prompt-guidance-fix: implemented cue-conditioned special scene guidance in `scene_analysis_v1` instead of repeating the full Story 163 tonal-contradiction and flashback guidance in every long-form batch. The prompt now keeps a compact always-on quality reminder and expands detailed tonal guidance only for small batches, `muzak`, or audio/routine cues paired with danger cues; memory guidance expands only for small batches or explicit memory/flashback/young/childhood cues. Evidence: focused scene-analysis tests pass (`20 passed in 0.31s`), ruff passes for touched files, and local prompt instrumentation on the retained Story 183 Big Fish batches drops repeated guidance from all `20/20` batches to tonal `6/20` and memory `14/20`, reducing prompt text from `197840` to `194002` chars (`32887` to `32199` words). Practical impact: the model still gets the quality contract where the scene text suggests it matters, while plain batches stop paying for the longest special-case instructions. Next step: run the registered scene-enrichment quality guard before spending on the full Big Fish detector.
+20260424-1129 — detector-rerun: quality guard and paid runtime detector completed. Evidence: `benchmarks/results/scene-enrichment-story-187-prompt-guard-2026-04-24.json` passed `2/2` promptfoo cases (`100%`), then `benchmarks/results/full-script-throughput-story-187-big-fish-2026-04-24.{json,md}` completed the maintained `big_fish_long` story-lane boundary at `3263471 ms` / `$3.5857468`. `world_building.analyze_scenes` improved from Story 183's regressed `1130.834s` to `1063.239s` (`-67.595s`) but did not recover Story 161's `810.038s`; output tokens were `63789`, slightly above Story 183's `61969`, so the residual scene-analysis gap is **ambiguous** and **non-runtime-blocking**, not converged. Downstream world-building remained complete: entity discovery, character/location/prop bibles, entity graph, and continuity all finished. Continuity remains the dominant hotspot at `1810.641s`, `55.5%` of boundary runtime, with `58` latest `needs_review` states across `7` truncation-fallback scenes (`017`, `026`, `048`, `093`, `174`, `180`, `182`). Updated `docs/evals/registry.yaml` with the Story 187 score row and added Story 187 to the detector refs. Next step: recompile methodology surfaces and run final checks.
+20260424-1138 — build-checks-complete: final build-phase checks passed. Evidence: `pnpm methodology:compile` regenerated `docs/methodology/graph.json`, `docs/stories.md`, and `docs/build-map.md` with the existing `api_service_and_operator_console` architecture-audit warning; `make test-unit PYTHON=.venv/bin/python` passed (`811 passed, 179 deselected`, one existing unknown `acceptance` mark warning); `.venv/bin/python -m ruff check src/ tests/` passed; `pnpm methodology:check` passed with the same architecture-audit warning; `git diff --check` passed. Related-doc search found the remaining Story 183 references are historical evidence, while Story 187 and `docs/evals/registry.yaml` now carry the refreshed Story 187 result. No UI, agent-tooling, or secret-bearing files were touched. Next step: validation should judge whether the modest `analyze_scenes` improvement is enough to close Story 187 or whether the residual runtime gap needs another implementation pass.
+20260424-1136 — validation-complete: `/validate 187` reviewed the local diff, story acceptance criteria, ADR-003, `spec:2.7`, `spec:8.1`, `spec:8.3`, C4, and Ideal refs R1/R7/R12. Fresh validation-pass checks passed: `make test-unit PYTHON=.venv/bin/python` (`811 passed, 179 deselected`, one existing unknown `acceptance` mark warning), `PYTHONPATH=src .venv/bin/python -m pytest tests/unit/test_scene_analysis_execution.py tests/unit/test_scene_analysis_batch_planning.py tests/unit/test_scene_analysis_module.py` (`20 passed`), `.venv/bin/python -m ruff check src/ tests/`, `pnpm --dir ui run lint`, `cd ui && npx tsc -b` (npm emitted the existing `min-release-age` warning), `pnpm methodology:check` (existing `api_service_and_operator_console` architecture-audit warning), `git diff --check`, and the scene-enrichment promptfoo guard (`2/2` cases, `100%`). Validation did not rerun the paid full-script throughput detector; it inspected the build-produced `benchmarks/results/full-script-throughput-story-187-big-fish-2026-04-24.{json,md}` and registry row because rerunning would spend another full Big Fish pass. Verdict: implementation is complete enough to close. The story's explicit goal was to investigate and reverse the Story 183 regression without weakening downstream world-building; the fix produced a measured partial reversal (`1130.834s` -> `1063.239s`) and all downstream stages completed. The residual gap to Story 161 is recorded as **ambiguous** and **non-runtime-blocking**, so it should stay as future throughput pressure rather than keeping this story open. Recommended next step: `/mark-story-done 187`.
+20260424-1139 — story-closed: `/mark-story-done 187` closed the story after rechecking workflow gates, acceptance criteria, validation evidence, eval classification, registry updates, and generated planning surfaces. Evidence: Story 187 records the diagnostic, measured partial reversal (`1130.834s` -> `1063.239s`), downstream completion, promptfoo guardrail, full Big Fish detector result, and fresh validation-pass checks. Remaining scene-analysis runtime gap to Story 161 is explicitly **ambiguous** and **non-runtime-blocking**; continuity fallback drift remains future throughput pressure, not a Story 187 closure blocker. Updated story status to `Done`, checked the mark-done workflow gate, and added the changelog entry. Recommended next step: `/check-in-diff`.

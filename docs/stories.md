@@ -129,7 +129,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 187 | Long-Form Scene Analysis Runtime Regression | Medium | Pending | — | spec:2, spec:8 | 155, 161, 183 | [story-187](stories/story-187-long-form-scene-analysis-runtime-regression.md) |
 | 185 | Project Home Script Hierarchy and Supporting Surface Placement | High | Draft | — | spec:2, spec:5, spec:10 | 093, 142, 166, 167 | [story-185](stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |
@@ -154,6 +153,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 161 | Long-Form Scene Analysis Throughput Reduction | Medium | Done | — | spec:2, spec:8 | 040, 155 | [story-161](stories/story-161-long-form-scene-analysis-throughput-reduction.md) |
 | 163 | Scene Analysis Ownership Decomposition | Medium | Done | — | spec:2 | 161 | [story-163](stories/story-163-scene-analysis-ownership-decomposition.md) |
 | 183 | Representative Deep Breakdown Runtime Truth Refresh | Medium | Done | — | spec:2, spec:3, spec:8 | 155, 159, 160, 161, 162 | [story-183](stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md) |
+| 187 | Long-Form Scene Analysis Runtime Regression | Medium | Done | — | spec:2, spec:8 | 155, 161, 183 | [story-187](stories/story-187-long-form-scene-analysis-runtime-regression.md) |
 | 003 | Story Ingestion Module | Unknown | Done | — | spec:2 | 002 | [story-003](stories/story-003-story-ingestion.md) |
 | 003b | DOCX Ingestion Support | Unknown | Done | — | spec:2 | 003, 007b | [story-003b](stories/story-003b-docx-support.md) |
 | 004 | Script Normalization Module | Unknown | Done | — | spec:1, spec:2, spec:5, spec:8 | 002, 003 | [story-004](stories/story-004-script-normalization.md) |

@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-24-05] — Reduce long-form scene-analysis prompt overhead (Story 187)
+
+### Added
+- Added Story 187 Big Fish throughput result artifacts and a scene-enrichment guardrail result for the prompt-guidance change.
+
+### Changed
+- Changed scene-analysis runtime prompting to keep compact always-on tonal and memory guidance, expanding the detailed special-case instructions only when batch text contains relevant cues.
+- Changed the full-script throughput eval registry and methodology planning surfaces to record Story 187's measured partial reversal of the `analyze_scenes` regression and its non-runtime-blocking residual gap.
+
 ## [2026-04-24-04] — Refresh Deep Breakdown runtime truth (Story 183)
 
 ### Added
