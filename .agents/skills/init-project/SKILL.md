@@ -13,6 +13,16 @@ or more reference repos, then installing the **same methodology package** used
 here: ideal/spec/state, generated graph surfaces, checklist, eval/golden
 baseline, AGENTS wiring, and canonical cross-CLI skill surface.
 
+## Greenfield Intake and Root Eval Boundary
+
+For a blank or idea-first repo, `init-project` must capture project meaning
+before installing methodology furniture. Interview for the product idea, keep
+raw intake, draft a project-specific `docs/ideal.md`, draft a v0 `docs/spec.md`,
+and run a cohesion pass before handing off to `/setup-methodology`. Also seed
+the root eval or full-path golden where possible: describe the perfect one-step
+input/output path, then decompose only when current models or pipeline limits
+make that root path fail.
+
 ## What It Does
 
 1. Reads reference repos for durable patterns.

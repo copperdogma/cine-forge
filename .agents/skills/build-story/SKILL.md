@@ -10,6 +10,23 @@ user-invocable: true
 
 Execute a development story end-to-end.
 
+## Eval Ladder Gate
+
+For AI-capability work, identify the eval ladder before creating or prioritizing
+implementation backlog:
+
+- the root Ideal eval or full-path golden, or the explicit reason it is deferred
+- the parent eval or latest higher-level result that shows the current failure
+- the measured failure mode that makes decomposition necessary
+- the child eval, failure-classification attempt, ADR/spec update, or story that
+  advances the next unresolved ladder node
+
+Prefer rerunning a root/parent eval when new models, provider changes, code
+changes, scorer fixes, or changed constraints could collapse the current
+decomposition. Prefer a child eval or failure-classification attempt when the
+parent failure is still too vague to choose AI-only, multi-call AI, deterministic
+code, or hybrid implementation honestly.
+
 ## Phase 1 — Explore (read-only, no file writes)
 
 1. **Resolve story** — Read `docs/stories/story-{NNN}-*.md` (or resolve from the generated story index `docs/stories.md` if id/title/path is ambiguous). Verify status is Draft, Pending, In Progress, or Blocked.

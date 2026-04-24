@@ -126,3 +126,5 @@ preserved for provenance only; it is **not** the active setup checklist.
 - [ ] Create golden references for shot planning, export metadata, production readiness
 - [ ] Create evals for continuity detection, chat quality (after goldens exist)
 - [ ] Review and update Ideal annually or when fundamental capabilities shift
+- [ ] Ideal/spec intake or local equivalent confirmed before setup creates generic placeholders
+- [ ] Eval ladder represented: root/parent evals, measured failure modes, child evals, and owning stories where applicable

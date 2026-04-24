@@ -139,3 +139,13 @@ them, use `/setup-methodology` instead.
   entrypoint.
 - 2026-03-20 — User-directed cleanup removed the deprecated phased setup skills
   entirely so the repo no longer teaches or carries a second setup surface.
+
+## Intake and Eval-Ladder Preflight
+
+For a blank or idea-first repo, do not let setup invent generic project meaning.
+First run `init-project` or equivalent source-backed intake to produce real
+`docs/ideal.md` and `docs/spec.md`, then run `/setup-methodology` to normalize
+the package around those authored truths. For AI-capability areas, preserve the
+root/parent/child eval ladder: root Ideal eval or explicit deferral, parent
+failure, measured failure mode, child eval when needed, and owning story only
+after the next ladder node is clear.

@@ -30,6 +30,16 @@ reference at `.agents/skills/setup-methodology/references/modes.md`.
 - `AGENTS.md` methodology wiring and canonical public surface
 - cross-CLI skill sync via `scripts/sync-agent-skills.sh`
 
+## Intake and Eval-Ladder Preflight
+
+For a blank or idea-first repo, do not let setup invent generic project meaning.
+First run `init-project` or equivalent source-backed intake to produce real
+`docs/ideal.md` and `docs/spec.md`, then run `/setup-methodology` to normalize
+the package around those authored truths. For AI-capability areas, preserve the
+root/parent/child eval ladder: root Ideal eval or explicit deferral, parent
+failure, measured failure mode, child eval when needed, and owning story only
+after the next ladder node is clear.
+
 ## Modes
 
 ### `greenfield`

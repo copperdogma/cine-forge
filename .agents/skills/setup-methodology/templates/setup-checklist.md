@@ -49,3 +49,5 @@
 - [ ] Deprecated-surface audit completed
 - [ ] Eval workflow audit completed
 - [ ] Alignment sweep completed
+- [ ] Ideal/spec intake or local equivalent confirmed before setup creates generic placeholders
+- [ ] Eval ladder represented: root/parent evals, measured failure modes, child evals, and owning stories where applicable

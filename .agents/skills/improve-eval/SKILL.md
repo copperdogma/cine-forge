@@ -23,6 +23,23 @@ or any combination. "Same quality at 10x faster" is a valid and valuable improve
 **Autonomous mode:** If the user says something like "you choose and just do it", pick the best
 candidate and execute without asking. Also activated by passing `--autonomous`.
 
+## Eval Ladder Gate
+
+For AI-capability work, identify the eval ladder before creating or prioritizing
+implementation backlog:
+
+- the root Ideal eval or full-path golden, or the explicit reason it is deferred
+- the parent eval or latest higher-level result that shows the current failure
+- the measured failure mode that makes decomposition necessary
+- the child eval, failure-classification attempt, ADR/spec update, or story that
+  advances the next unresolved ladder node
+
+Prefer rerunning a root/parent eval when new models, provider changes, code
+changes, scorer fixes, or changed constraints could collapse the current
+decomposition. Prefer a child eval or failure-classification attempt when the
+parent failure is still too vague to choose AI-only, multi-call AI, deterministic
+code, or hybrid implementation honestly.
+
 ## Phase 0 — Situational Awareness
 
 1. **Record the worker model.** Note which AI model is executing this skill (you, the agent).

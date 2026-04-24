@@ -1,5 +1,32 @@
 # Triage
 
+## Eval Ladder Gate
+
+For AI-capability work, identify the eval ladder before creating or prioritizing
+implementation backlog:
+
+- the root Ideal eval or full-path golden, or the explicit reason it is deferred
+- the parent eval or latest higher-level result that shows the current failure
+- the measured failure mode that makes decomposition necessary
+- the child eval, failure-classification attempt, ADR/spec update, or story that
+  advances the next unresolved ladder node
+
+Prefer rerunning a root/parent eval when new models, provider changes, code
+changes, scorer fixes, or changed constraints could collapse the current
+decomposition. Prefer a child eval or failure-classification attempt when the
+parent failure is still too vague to choose AI-only, multi-call AI, deterministic
+code, or hybrid implementation honestly.
+
+## Completion Sanity Gate
+
+Before accepting a "nothing ready", "maintenance only", or idle
+recommendation, prove that the repo is not hiding undecomposed product scope.
+Check the v1/MVP promise, input coverage, future/unplanned state lines, inbox
+items, and recent stories/evals. If those surfaces show missing user-facing
+capability, recommend creating, promoting, reshaping, or validating that work
+before routing to routine maintenance. Never equate "no ready story" with
+"feature-complete" without concrete evidence.
+
 ## Context
 
 Use this runbook when you need a full methodology sweep to decide the highest-value next action across backlog, inbox, and eval/convergence work.

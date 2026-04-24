@@ -28,6 +28,10 @@ legacy_system: ""
 
 {One paragraph describing what this story accomplishes and why it matters.}
 
+## Eval Ladder Context
+
+- **Eval ladder**: {Root/parent eval, latest higher-level result, measured failure mode, and child eval or baseline that distinguishes approaches. If this story succeeds, should the parent eval be rerun?}
+
 ## Acceptance Criteria
 
 - [ ] {Testable criterion 1}
