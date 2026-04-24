@@ -9,11 +9,11 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from dotenv import load_dotenv
 
 from cine_forge.driver.engine import DriverEngine
+from cine_forge.env import load_cine_forge_dotenv
 
-load_dotenv()
+load_cine_forge_dotenv()
 
 
 def build_parser() -> argparse.ArgumentParser:

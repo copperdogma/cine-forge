@@ -667,7 +667,9 @@
           "180",
           "181",
           "182",
-          "185"
+          "184",
+          "185",
+          "186"
         ],
         "adrIds": [
           "ADR-002",
@@ -678,7 +680,8 @@
           "previz-usefulness",
           "real-ai-previz-runtime",
           "runtime-final-output-validation",
-          "runtime-media-validation"
+          "runtime-media-validation",
+          "storyboard-generation-quality"
         ]
       },
       {
@@ -794,7 +797,8 @@
           "177",
           "178",
           "180",
-          "181"
+          "181",
+          "186"
         ],
         "adrIds": [
           "ADR-002",
@@ -804,7 +808,8 @@
           "final-render-provider-floor",
           "previz-usefulness",
           "real-ai-previz-runtime",
-          "runtime-media-validation"
+          "runtime-media-validation",
+          "storyboard-generation-quality"
         ]
       },
       {
@@ -883,7 +888,9 @@
           "177",
           "178",
           "180",
-          "181"
+          "181",
+          "184",
+          "186"
         ],
         "adrIds": [
           "ADR-002",
@@ -895,6 +902,7 @@
           "real-ai-previz-runtime",
           "runtime-final-output-validation",
           "runtime-media-validation",
+          "storyboard-generation-quality",
           "video-understanding"
         ]
       },
@@ -990,7 +998,9 @@
           "176",
           "178",
           "179",
-          "183"
+          "183",
+          "184",
+          "186"
         ],
         "adrIds": [
           "ADR-001",
@@ -1018,6 +1028,7 @@
           "scene-enrichment",
           "scene-extraction",
           "script-bible",
+          "storyboard-generation-quality",
           "video-understanding"
         ]
       },
@@ -1515,12 +1526,14 @@
           "161",
           "162",
           "169",
-          "183"
+          "183",
+          "186"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
           "final-render-provider-floor",
-          "full-script-throughput"
+          "full-script-throughput",
+          "storyboard-generation-quality"
         ],
         "actionability": {
           "sourceKind": "story",
@@ -1542,10 +1555,12 @@
             "161",
             "162",
             "169",
-            "183"
+            "183",
+            "186"
           ],
           "evalIds": [
             "final-render-provider-floor",
+            "storyboard-generation-quality",
             "full-script-throughput",
             "compromise-C3-tiered-models"
           ]
@@ -11461,7 +11476,7 @@
       "id": "181",
       "title": "Post-Deep-Breakdown Next-Step Guidance",
       "path": "docs/stories/story-181-post-deep-breakdown-next-step-guidance.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R12 (radical transparency)",
@@ -11506,9 +11521,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260420-0001",
-        "date": "2026-04-20",
-        "summary": "story-created: split the post-Deep-Breakdown dead end into its own `Pending` story so it can be solved as chat/progress guidance rather than mixed with Scene Workspace layout fixes. Evidence: `docs/inbox.md` QA notes, `…"
+        "timestamp": "20260424-0025",
+        "date": "2026-04-24",
+        "summary": "finish-and-push validation: full branch validation stayed green after close-out edits. Evidence: full unit suite `808 passed, 179 deselected`; Ruff passed on `src/`, `tests/`, touched scripts, and storyboard benchmark f…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11516,14 +11531,14 @@
         "sourceKind": "story",
         "sourceId": "181",
         "sourcePath": "docs/stories/story-181-post-deep-breakdown-next-step-guidance.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
-        "whyNow": "story-created: split the post-Deep-Breakdown dead end into its own `Pending` story so it can be solved as chat/progress guidance rather than mixed with Scene Workspace layout fixes. Evidence: `docs/inbox.md` QA notes, `…",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "finish-and-push validation: full branch validation stayed green after close-out edits. Evidence: full unit suite `808 passed, 179 deselected`; Ruff passed on `src/`, `tests/`, touched scripts, and storyboard benchmark f…",
         "lastRelevantAction": {
-          "date": "2026-04-20",
+          "date": "2026-04-24",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-181-post-deep-breakdown-next-step-guidance.md",
-          "summary": "story-created: split the post-Deep-Breakdown dead end into its own `Pending` story so it can be solved as chat/progress guidance rather than mixed with Scene Workspace layout fixes. Evidence: `docs/inbox.md` QA notes, `…"
+          "summary": "finish-and-push validation: full branch validation stayed green after close-out edits. Evidence: full unit suite `808 passed, 179 deselected`; Ruff passed on `src/`, `tests/`, touched scripts, and storyboard benchmark f…"
         }
       }
     },
@@ -11571,9 +11586,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260420-2032",
-        "date": "2026-04-20",
-        "summary": "close-out: marked Story 182 done after confirming the shipped slice meets its own acceptance surface and that the remaining Python lint failures stay outside this landing set. Evidence: Story 182 acceptance criteria and…"
+        "timestamp": "20260423-1054",
+        "date": "2026-04-23",
+        "summary": "post-close follow-up: investigated a new black-screen report on `brick-steel-full-retired-7` immediately after `mvp_ingest` completed and `world_building` began. Result: this was not a repeat of the Story 182 chat-fetch…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11583,12 +11598,12 @@
         "sourcePath": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "close-out: marked Story 182 done after confirming the shipped slice meets its own acceptance surface and that the remaining Python lint failures stay outside this landing set. Evidence: Story 182 acceptance criteria and…",
+        "whyNow": "post-close follow-up: investigated a new black-screen report on `brick-steel-full-retired-7` immediately after `mvp_ingest` completed and `world_building` began. Result: this was not a repeat of the Story 182 chat-fetch…",
         "lastRelevantAction": {
-          "date": "2026-04-20",
+          "date": "2026-04-23",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-182-post-analysis-chat-resource-failure-recovery.md",
-          "summary": "close-out: marked Story 182 done after confirming the shipped slice meets its own acceptance surface and that the remaining Python lint failures stay outside this landing set. Evidence: Story 182 acceptance criteria and…"
+          "summary": "post-close follow-up: investigated a new black-screen report on `brick-steel-full-retired-7` immediately after `mvp_ingest` completed and `world_building` began. Result: this was not a repeat of the Story 182 chat-fetch…"
         }
       }
     },
@@ -11670,6 +11685,66 @@
       }
     },
     {
+      "id": "184",
+      "title": "Live AI Capability Smoke for Default Text Image and Video Lanes",
+      "path": "docs/stories/story-184-live-ai-capability-smoke.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (every AI decision explainable and overridable)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5",
+        "spec:5.2",
+        "spec:5.5",
+        "spec:7.1",
+        "spec:8.2"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "179"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "operations",
+        "provider-health",
+        "smoke-test",
+        "trust"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "184",
+        "sourcePath": "docs/stories/story-184-live-ai-capability-smoke.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-184-live-ai-capability-smoke.md",
+          "summary": ""
+        }
+      }
+    },
+    {
       "id": "185",
       "title": "Project Home Script Hierarchy and Supporting Surface Placement",
       "path": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
@@ -11738,6 +11813,78 @@
           "sourceType": "story-work-log",
           "source": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
           "summary": "rationale-captured: documented the current above-script stack and the source-story rationale for Script Bible (Story 093), Artifact Health (Story 142), and Final Output (Stories 166/167), then framed the story around re…"
+        }
+      }
+    },
+    {
+      "id": "186",
+      "title": "Storyboard Generation Quality Eval for Reference Fidelity and Identity Consistency",
+      "path": "docs/stories/story-186-storyboard-generation-quality-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:5.3",
+        "spec:6.1",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "169"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "consistency",
+        "eval",
+        "references",
+        "scene-generation",
+        "storyboards"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260424-0027",
+        "date": "2026-04-24",
+        "summary": "finish-and-push validation: full branch validation stayed green after the registry/changelog/story close-out edits. Evidence: full unit suite `808 passed, 179 deselected`; targeted Ruff passed on `src/`, `tests/`, touch…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "186",
+        "sourcePath": "docs/stories/story-186-storyboard-generation-quality-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "finish-and-push validation: full branch validation stayed green after the registry/changelog/story close-out edits. Evidence: full unit suite `808 passed, 179 deselected`; targeted Ruff passed on `src/`, `tests/`, touch…",
+        "lastRelevantAction": {
+          "date": "2026-04-24",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-186-storyboard-generation-quality-eval.md",
+          "summary": "finish-and-push validation: full branch validation stayed green after the registry/changelog/story close-out edits. Evidence: full unit suite `808 passed, 179 deselected`; targeted Ruff passed on `src/`, `tests/`, touch…"
         }
       }
     }
@@ -13346,6 +13493,107 @@
       }
     },
     {
+      "id": "storyboard-generation-quality",
+      "name": "Storyboard Generation Quality",
+      "type": "quality",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_eval.py --fixture-manifest benchmarks/fixtures/storyboard_generation_quality_cases.json --candidate gpt_image_2_template_grid_storyboards --output-prefix benchmarks/results/storyboard-generation-quality-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_storyboard_generation_quality_dataset.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/storyboard-generation-quality.yaml --no-cache -j 1 --filter-providers 'GPT Image 2 Template Grid Storyboards' --output benchmarks/results/storyboard-generation-quality-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_report.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json --promptfoo-result benchmarks/results/storyboard-generation-quality-quality.json --output-prefix benchmarks/results/storyboard-generation-quality-decision; exit $status",
+      "description": "Measures the real storyboard-generation lane on representative multi-scene Open Frequency cases. Combines a live runtime harness that records reference availability, prompt-level reference usage, and direct provider-input counts with a multimodal promptfoo judge for recurring character consistency, obvious reference adherence, readable-text failures, and prop-only non-insert collapses.",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "storyIds": [
+        "186"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "retryWhen": [],
+      "attempts": [
+        {
+          "id": "004",
+          "date": "2026-04-23",
+          "approach": "Add a template-backed scene-grid storyboard lane that passes a blank grid image as a reference, generates one image per scene chunk, and slices panels into frame artifacts.",
+          "note": "",
+          "retryStatus": "",
+          "retryWhen": [
+            "new-approach"
+          ]
+        },
+        {
+          "id": "005",
+          "date": "2026-04-23",
+          "approach": "Split storyboard quality reporting into story specificity, style consistency, identity consistency, reference fidelity, text cleanliness, prop discipline, and evidence dimensions.",
+          "note": "",
+          "retryStatus": "",
+          "retryWhen": [
+            "new-approach"
+          ]
+        }
+      ],
+      "latestScore": {
+        "model": "GPT Image 2 Storyboards",
+        "measured": "2026-04-23",
+        "metrics": {
+          "overall": 0.735
+        },
+        "note": "Split-dimension rerun on the existing full-size `gpt-image-2` storyboard images. The default is strongest on story specificity and style consistency is perfect across the measured packet, but the stricter split report now lands just below the 0.75 floor because identity consistency and text cleanliness are not reliably perfect. Cost/latency remain above target because this lane still generates on…"
+      },
+      "declaredSpecRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "declaredStoryIds": [
+        "186"
+      ],
+      "declaredCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [
+        "C3"
+      ],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "actionability": {
+        "sourceKind": "eval",
+        "sourceId": "storyboard-generation-quality",
+        "sourcePath": "docs/evals/registry.yaml",
+        "recommendedNow": false,
+        "posture": "wait-for-trigger",
+        "whyNow": "Split-dimension rerun on the existing full-size `gpt-image-2` storyboard images. The default is strongest on story specificity and style consistency is perfect across the measured packet, but the stricter split report now lands just below the 0.75 floor because identity consistency and text cleanliness are not reliably perfect. Cost/latency remain above target because this lane still generates on…",
+        "retryTriggerStatus": "waiting",
+        "retryWhen": [
+          "new-approach"
+        ],
+        "lastRelevantAction": {
+          "date": "2026-04-23",
+          "sourceType": "eval-attempt",
+          "source": "docs/evals/registry.yaml",
+          "sourceId": "005",
+          "summary": "Split storyboard quality reporting into story specificity, style consistency, identity consistency, reference fidelity, text cleanliness, prop discipline, and evidence dimensions."
+        }
+      }
+    },
+    {
       "id": "video-understanding",
       "name": "Video Understanding",
       "type": "quality",
@@ -13982,13 +14230,14 @@
             "177",
             "178",
             "180",
-            "181"
+            "181",
+            "186"
           ],
-          "stories_since_audit": 6,
+          "stories_since_audit": 7,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
-          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, and Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, and Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern rather than inventing a second eval stack. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
         }
       }
     }

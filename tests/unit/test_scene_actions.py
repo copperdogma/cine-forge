@@ -119,6 +119,30 @@ def test_storyboard_preflight_warns_and_auto_builds_for_current_scene(tmp_path: 
 
 
 @pytest.mark.unit
+def test_storyboard_preflight_reuses_existing_healthy_shot_plan_for_current_scene(
+    tmp_path: Path,
+) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(store, "shot_plan", "scene_001", {"scene_id": "scene_001", "shots": []})
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="storyboard_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from == "storyboards"
+    labels = {item.label for item in preflight.items}
+    assert "Timeline" not in labels
+    assert "Track manifest" not in labels
+    assert "Shot planning" not in labels
+    assert "track_manifest" in preflight.reused_artifact_types
+    assert "shot_plan" in preflight.reused_artifact_types
+
+
+@pytest.mark.unit
 def test_character_and_performance_preflight_warns_but_does_not_soft_block(tmp_path: Path) -> None:
     project_dir = _seed_scene_action_project(tmp_path)
 

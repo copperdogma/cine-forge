@@ -1,0 +1,27 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "candidates": [
+    {
+      "candidate_variant": "imagen_4_storyboards",
+      "candidate_label": "Imagen 4 Storyboards",
+      "image_model": "imagen-4.0-generate-001",
+      "success_ratio": 1.0,
+      "quality_overall": 0.4738,
+      "quality_python": 0.5975,
+      "quality_rubric": 0.35,
+      "mean_total_elapsed_ms": 485361.0,
+      "mean_storyboard_stage_elapsed_ms": 216543.5,
+      "mean_total_cost_usd": 0.641,
+      "mean_total_frames": 14.5,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.5,
+      "mean_direct_reference_input_count": 15.5,
+      "calls": 2
+    }
+  ],
+  "recommendation": {
+    "decision": "quality_below_initial_floor",
+    "rationale": "The current default storyboard lane scored 0.474, below the initial 0.75 usefulness floor. The eval is doing its job by making that failure repeatable instead of anecdotal."
+  },
+  "previous_default": "imagen_4_storyboards"
+}

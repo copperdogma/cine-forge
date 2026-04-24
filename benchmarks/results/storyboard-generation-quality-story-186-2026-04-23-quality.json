@@ -1,0 +1,423 @@
+{
+  "evalId": "eval-mge-2026-04-23T13:52:36",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-04-23T13:52:36.442Z",
+    "prompts": [
+      {
+        "raw": "You are CineForge's storyboard-sequence quality analyst.\n\nAnalyze the provided storyboard packet. The first images are the generated\nstoryboard frames in sequence order. Any later images are available reference\nimages for the same case.\n\nReturn one strict JSON object with exactly these keys:\n- storyboard_id\n- summary\n- keywords\n- character_assessments\n- reference_assessments\n- readable_text_present\n- prop_only_non_insert_present\n- evidence\n- overall_confidence\n\nAllowed `consistency_status` values for each `character_assessments` item:\n[\"consistent\",\"minor_drift\",\"drifted\",\"absent\"]\n\nAllowed `status` values for each `reference_assessments` item:\n[\"matched\",\"unclear\",\"ignored\",\"not_supplied\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- `keywords` should be short lowercase phrases grounded in the packet.\n- `character_assessments` must be a list of objects with keys:\n  `name`, `consistency_status`, `observed_traits`, `evidence`.\n- `reference_assessments` must be a list of objects with keys:\n  `label`, `entity_name`, `status`, `evidence`.\n- Mark `readable_text_present` true only if the generated storyboard frames\n  themselves contain readable labels, captions, speech bubbles, or slate text.\n- Mark `prop_only_non_insert_present` true only if a non-insert storyboard frame\n  collapses into an isolated object/product image instead of a scene beat.\n- `evidence` must be a list of 2-4 items with keys `frame_id` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- If a reference image exists but the storyboard does not clearly honor it,\n  prefer `unclear` over `matched`.\n- Do not wrap the JSON in markdown fences.",
+        "label": "benchmarks/prompts/storyboard-understanding.txt: You are CineForge's storyboard-sequence quality analyst.\n\nAnalyze the provided storyboard packet. The first images are the generated\nstoryboard frames in sequence order. Any later images are available reference\nimages for the same case.\n\nReturn one strict JSON object with exactly these keys:\n- storyboard_id\n- summary\n- keywords\n- character_assessments\n- reference_assessments\n- readable_text_present\n- prop_only_non_insert_present\n- evidence\n- overall_confidence\n\nAllowed `consistency_status` values for each `character_assessments` item:\n[\"consistent\",\"minor_drift\",\"drifted\",\"absent\"]\n\nAllowed `status` values for each `reference_assessments` item:\n[\"matched\",\"unclear\",\"ignored\",\"not_supplied\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- `keywords` should be short lowercase phrases grounded in the packet.\n- `character_assessments` must be a list of objects with keys:\n  `name`, `consistency_status`, `observed_traits`, `evidence`.\n- `reference_assessments` must be a list of objects with keys:\n  `label`, `entity_name`, `status`, `evidence`.\n- Mark `readable_text_present` true only if the generated storyboard frames\n  themselves contain readable labels, captions, speech bubbles, or slate text.\n- Mark `prop_only_non_insert_present` true only if a non-insert storyboard frame\n  collapses into an isolated object/product image instead of a scene beat.\n- `evidence` must be a list of 2-4 items with keys `frame_id` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- If a reference image exists but the storyboard does not clearly honor it,\n  prefer `unclear` over `matched`.\n- Do not wrap the JSON in markdown fences.",
+        "id": "056439fb9a822d339b675c246d12dba6f47b896c5ce7c08449745e4a23d8aa3a",
+        "provider": "Imagen 4 Storyboards",
+        "metrics": {
+          "score": 0.9475,
+          "testPassCount": 0,
+          "testFailCount": 2,
+          "testErrorCount": 0,
+          "assertPassCount": 0,
+          "assertFailCount": 4,
+          "totalLatencyMs": 33231,
+          "tokenUsage": {
+            "prompt": 20917,
+            "completion": 1180,
+            "cached": 0,
+            "total": 22097,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 3887,
+              "prompt": 2253,
+              "completion": 1634,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.0699925
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.0277025,
+        "error": "The output correctly identifies the storm-night radio station setting, includes all required keywords (radio, storm, antenna, lantern), properly flags readable text as present, and is conservative about reference fidelity. However, it has significant shortcomings: it entirely misses scene_002 (the water tower catwalk), which is a major gap in scene specificity. NOAH's catwalk role is absent, and ARIA's storm gear is not mentioned. The output flags NOAH as 'drifted' while the reference indicates both characters remain recognizable across scenes. Missing half the sequence is a substantial analytical gap, though the analysis of what is covered is reasonably detailed and careful.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.5075000000000001,
+          "reason": "The output correctly identifies the storm-night radio station setting, includes all required keywords (radio, storm, antenna, lantern), properly flags readable text as present, and is conservative about reference fidelity. However, it has significant shortcomings: it entirely misses scene_002 (the water tower catwalk), which is a major gap in scene specificity. NOAH's catwalk role is absent, and ARIA's storm gear is not mentioned. The output flags NOAH as 'drifted' while the reference indicates both characters remain recognizable across scenes. Missing half the sequence is a substantial analytical gap, though the analysis of what is covered is reasonably detailed and careful.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1762,
+            "prompt": 970,
+            "completion": 792,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.665,
+              "reason": "overall=0.6650; hard_constraints=fail; summary=1.00, identity=0.25, reference=1.00, text_cleanliness=0.00, prop_discipline=1.00, evidence=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/storyboard_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+              },
+              "pass": false,
+              "score": 0.35,
+              "reason": "The output correctly identifies the storm-night radio station setting, includes all required keywords (radio, storm, antenna, lantern), properly flags readable text as present, and is conservative about reference fidelity. However, it has significant shortcomings: it entirely misses scene_002 (the water tower catwalk), which is a major gap in scene specificity. NOAH's catwalk role is absent, and ARIA's storm gear is not mentioned. The output flags NOAH as 'drifted' while the reference indicates both characters remain recognizable across scenes. Missing half the sequence is a substantial analytical gap, though the analysis of what is covered is reasonably detailed and careful.",
+              "tokensUsed": {
+                "total": 1762,
+                "prompt": 970,
+                "completion": 792,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"storyboard_id\\\":\\\"open_frequency_sequence_prompt_only\\\",\\\"summary\\\":\\\"The storyboard depicts a storm-battered community radio station with ARIA and NOAH working equipment, planning updates, and reacting to an emergency broadcast situation. Character identity is somewhat stable but not fully consistent across frames, with ARIA clearer than NOAH and one frame showing a different male entrant carrying gear.\\\",\\\"keywords\\\":[\\\"community radio studio\\\",\\\"storm at night\\\",\\\"on air sign\\\",\\\"analog equipment\\\",\\\"whiteboard updates\\\",\\\"female technician\\\",\\\"male sound engineer\\\",\\\"lantern and antenna\\\",\\\"rain through skylight\\\"],\\\"character_assessments\\\":[{\\\"name\\\":\\\"ARIA\\\",\\\"consistency_status\\\":\\\"minor_drift\\\",\\\"observed_traits\\\":[\\\"young woman\\\",\\\"shoulder-length dark hair\\\",\\\"focused serious expression\\\",\\\"works with cables and studio controls\\\",\\\"appears at console and whiteboard\\\"],\\\"evidence\\\":\\\"Seen as the seated female operator in frame 2, the whiteboard writer in frame 3, and close-up cable handler in frame 5; hairstyle and role stay similar but facial design and styling shift.\\\"},{\\\"name\\\":\\\"NOAH\\\",\\\"consistency_status\\\":\\\"drifted\\\",\\\"observed_traits\\\":[\\\"young man\\\",\\\"short hair\\\",\\\"works mixing console\\\",\\\"serious concentrated demeanor\\\",\\\"later depicted as a different rugged male carrying lantern and bag\\\"],\\\"evidence\\\":\\\"Frame 2 shows a slim young male at the board, while frame 4 presents a broader older-looking male entering with lantern, antenna, and satchel, suggesting identity drift rather than a stable depiction.\\\"}],\\\"reference_assessments\\\":[{\\\"label\\\":\\\"none\\\",\\\"entity_name\\\":\\\"none\\\",\\\"status\\\":\\\"not_supplied\\\",\\\"evidence\\\":\\\"No reference images were supplied in the packet metadata.\\\"}],\\\"readable_text_present\\\":true,\\\"prop_only_non_insert_present\\\":false,\\\"evidence\\\":[{\\\"frame_id\\\":\\\"frame_1\\\",\\\"cue\\\":\\\"Wide ensemble shot labels ARIA and NOAH at separate stations in a rain-leaking studio.\\\"},{\\\"frame_id\\\":\\\"frame_2\\\",\\\"cue\\\":\\\"Two-character studio setup shows ARIA handling cable/reel deck and NOAH operating the mixer.\\\"},{\\\"frame_id\\\":\\\"frame_3\\\",\\\"cue\\\":\\\"ARIA-like woman writes emergency notes on a whiteboard beneath an ON AIR sign; readable text is present.\\\"},{\\\"frame_id\\\":\\\"frame_4\\\",\\\"cue\\\":\\\"Male figure with lantern, satchel, and antenna runs into studio, differing from earlier NOAH depiction.\\\"}],\\\"overall_confidence\\\":0.84}\\n</Output>\\n<Rubric>\\nEvaluate this storyboard-sequence analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scenes 001-002 — prompt-only storyboard identity\\n\\n- Summary: A storm-night emergency-radio sequence that begins in a tense community studio and continues on a wind-lashed water tower catwalk, with Aria and Noah remaining recognizable across both scenes.\\n- Scene ids: scene_001, scene_002\\n- Required keywords: radio, storm, antenna, lantern\\n- Recurring characters:\\n  - ARIA: determined, storm gear\\n  - NOAH: radio technician, catwalk\\n- Runtime reference minimums: available>=0, prompt>=0, direct>=0\\n- Avoid readable text: yes\\n- Avoid non-insert prop-only collapse: yes\\n\\nReward outputs that preserve scene specificity, keep recurring\\ncharacters recognizable across the sequence, notice visible text or\\nprop-collapse failures when present, and stay conservative about\\nreference fidelity when the evidence is weak.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n# Open Frequency scenes 001-002 — prompt-only storyboard identity\n\n- Summary: A storm-night emergency-radio sequence that begins in a tense community studio and continues on a wind-lashed water tower catwalk, with Aria and Noah remaining recognizable across both scenes.\n- Scene ids: scene_001, scene_002\n- Required keywords: radio, storm, antenna, lantern\n- Recurring characters:\n  - ARIA: determined, storm gear\n  - NOAH: radio technician, catwalk\n- Runtime reference minimums: available>=0, prompt>=0, direct>=0\n- Avoid readable text: yes\n- Avoid non-insert prop-only collapse: yes\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+              }
+            }
+          ]
+        },
+        "id": "de72ddc6-0182-4b36-8c71-88b1d095d6b5",
+        "latencyMs": 15143,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's storyboard-sequence quality analyst.\n\nAnalyze the provided storyboard packet. The first images are the generated\nstoryboard frames in sequence order. Any later images are available reference\nimages for the same case.\n\nReturn one strict JSON object with exactly these keys:\n- storyboard_id\n- summary\n- keywords\n- character_assessments\n- reference_assessments\n- readable_text_present\n- prop_only_non_insert_present\n- evidence\n- overall_confidence\n\nAllowed `consistency_status` values for each `character_assessments` item:\n[\"consistent\",\"minor_drift\",\"drifted\",\"absent\"]\n\nAllowed `status` values for each `reference_assessments` item:\n[\"matched\",\"unclear\",\"ignored\",\"not_supplied\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- `keywords` should be short lowercase phrases grounded in the packet.\n- `character_assessments` must be a list of objects with keys:\n  `name`, `consistency_status`, `observed_traits`, `evidence`.\n- `reference_assessments` must be a list of objects with keys:\n  `label`, `entity_name`, `status`, `evidence`.\n- Mark `readable_text_present` true only if the generated storyboard frames\n  themselves contain readable labels, captions, speech bubbles, or slate text.\n- Mark `prop_only_non_insert_present` true only if a non-insert storyboard frame\n  collapses into an isolated object/product image instead of a scene beat.\n- `evidence` must be a list of 2-4 items with keys `frame_id` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- If a reference image exists but the storyboard does not clearly honor it,\n  prefer `unclear` over `matched`.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/storyboard-understanding.txt: You are CineForge's storyboard-sequence quality analyst.\n\nAnalyze the provided storyboard packet. The first images are the generated\nstoryboard frames in sequence order. Any later images are available reference\nimages for the same case.\n\nReturn one strict JSON object with exactly these keys:\n- storyboard_id\n- summary\n- keywords\n- character_assessments\n- reference_assessments\n- readable_text_present\n- prop_only_non_insert_present\n- evidence\n- overall_confidence\n\nAllowed `consistency_status` values for each `character_assessments` item:\n[\"consistent\",\"minor_drift\",\"drifted\",\"absent\"]\n\nAllowed `status` values for each `reference_assessments` item:\n[\"matched\",\"unclear\",\"ignored\",\"not_supplied\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- `keywords` should be short lowercase phrases grounded in the packet.\n- `character_assessments` must be a list of objects with keys:\n  `name`, `consistency_status`, `observed_traits`, `evidence`.\n- `reference_assessments` must be a list of objects with keys:\n  `label`, `entity_name`, `status`, `evidence`.\n- Mark `readable_text_present` true only if the generated storyboard frames\n  themselves contain readable labels, captions, speech bubbles, or slate text.\n- Mark `prop_only_non_insert_present` true only if a non-insert storyboard frame\n  collapses into an isolated object/product image instead of a scene beat.\n- `evidence` must be a list of 2-4 items with keys `frame_id` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- If a reference image exists but the storyboard does not clearly honor it,\n  prefer `unclear` over `matched`.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "056439fb9a822d339b675c246d12dba6f47b896c5ce7c08449745e4a23d8aa3a",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/storyboard_understanding_provider.py",
+          "label": "Imagen 4 Storyboards"
+        },
+        "response": {
+          "output": "{\"storyboard_id\":\"open_frequency_sequence_prompt_only\",\"summary\":\"The storyboard depicts a storm-battered community radio station with ARIA and NOAH working equipment, planning updates, and reacting to an emergency broadcast situation. Character identity is somewhat stable but not fully consistent across frames, with ARIA clearer than NOAH and one frame showing a different male entrant carrying gear.\",\"keywords\":[\"community radio studio\",\"storm at night\",\"on air sign\",\"analog equipment\",\"whiteboard updates\",\"female technician\",\"male sound engineer\",\"lantern and antenna\",\"rain through skylight\"],\"character_assessments\":[{\"name\":\"ARIA\",\"consistency_status\":\"minor_drift\",\"observed_traits\":[\"young woman\",\"shoulder-length dark hair\",\"focused serious expression\",\"works with cables and studio controls\",\"appears at console and whiteboard\"],\"evidence\":\"Seen as the seated female operator in frame 2, the whiteboard writer in frame 3, and close-up cable handler in frame 5; hairstyle and role stay similar but facial design and styling shift.\"},{\"name\":\"NOAH\",\"consistency_status\":\"drifted\",\"observed_traits\":[\"young man\",\"short hair\",\"works mixing console\",\"serious concentrated demeanor\",\"later depicted as a different rugged male carrying lantern and bag\"],\"evidence\":\"Frame 2 shows a slim young male at the board, while frame 4 presents a broader older-looking male entering with lantern, antenna, and satchel, suggesting identity drift rather than a stable depiction.\"}],\"reference_assessments\":[{\"label\":\"none\",\"entity_name\":\"none\",\"status\":\"not_supplied\",\"evidence\":\"No reference images were supplied in the packet metadata.\"}],\"readable_text_present\":true,\"prop_only_non_insert_present\":false,\"evidence\":[{\"frame_id\":\"frame_1\",\"cue\":\"Wide ensemble shot labels ARIA and NOAH at separate stations in a rain-leaking studio.\"},{\"frame_id\":\"frame_2\",\"cue\":\"Two-character studio setup shows ARIA handling cable/reel deck and NOAH operating the mixer.\"},{\"frame_id\":\"frame_3\",\"cue\":\"ARIA-like woman writes emergency notes on a whiteboard beneath an ON AIR sign; readable text is present.\"},{\"frame_id\":\"frame_4\",\"cue\":\"Male figure with lantern, satchel, and antenna runs into studio, differing from earlier NOAH depiction.\"}],\"overall_confidence\":0.84}",
+          "tokenUsage": {
+            "total": 8631,
+            "prompt": 8141,
+            "completion": 490,
+            "numRequests": 1
+          },
+          "cost": 0.0277025,
+          "latencyMs": 15143,
+          "cached": false,
+          "metadata": {
+            "storyboard_id": "open_frequency_sequence_prompt_only",
+            "candidate_variant": "imagen_4_storyboards",
+            "prompt_version": "storyboard-understanding-v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.5075000000000001,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "storyboard_id": "open_frequency_sequence_prompt_only",
+            "target_path": "storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.json",
+            "target_markdown": "file://../storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/storyboard_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "storyboard_id": "open_frequency_sequence_prompt_only",
+          "target_path": "storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.md"
+        },
+        "metadata": {
+          "storyboard_id": "open_frequency_sequence_prompt_only",
+          "candidate_variant": "imagen_4_storyboards",
+          "prompt_version": "storyboard-understanding-v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.04229,
+        "error": "The output correctly identifies readable text (a failure per the rubric), appropriately flags the water tower catwalk as ignored, and is conservative about character reference fidelity. However, it has significant gaps: it doesn't mention scene_002 or scene IDs, misses required keywords 'antenna' and 'lantern', doesn't align character descriptions with reference expectations (storm gear for Aria, lantern-lit workwear for Noah), and the summary fails to acknowledge the two-scene structure. The analysis is partial and misses the full scope of the reference sequence, though it does catch some important issues like text presence and the missing location.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.44,
+          "reason": "The output correctly identifies readable text (a failure per the rubric), appropriately flags the water tower catwalk as ignored, and is conservative about character reference fidelity. However, it has significant gaps: it doesn't mention scene_002 or scene IDs, misses required keywords 'antenna' and 'lantern', doesn't align character descriptions with reference expectations (storm gear for Aria, lantern-lit workwear for Noah), and the summary fails to acknowledge the two-scene structure. The analysis is partial and misses the full scope of the reference sequence, though it does catch some important issues like text presence and the missing location.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2125,
+            "prompt": 1283,
+            "completion": 842,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.53,
+              "reason": "overall=0.5300; hard_constraints=fail; summary=0.50, identity=0.50, reference=0.50, text_cleanliness=0.00, prop_discipline=1.00, evidence=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/storyboard_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+              },
+              "pass": false,
+              "score": 0.35,
+              "reason": "The output correctly identifies readable text (a failure per the rubric), appropriately flags the water tower catwalk as ignored, and is conservative about character reference fidelity. However, it has significant gaps: it doesn't mention scene_002 or scene IDs, misses required keywords 'antenna' and 'lantern', doesn't align character descriptions with reference expectations (storm gear for Aria, lantern-lit workwear for Noah), and the summary fails to acknowledge the two-scene structure. The analysis is partial and misses the full scope of the reference sequence, though it does catch some important issues like text presence and the missing location.",
+              "tokensUsed": {
+                "total": 2125,
+                "prompt": 1283,
+                "completion": 842,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"storyboard_id\\\":\\\"open_frequency_sequence_reference_conditioned\\\",\\\"summary\\\":\\\"The storyboard depicts a tense radio-station sequence with ARIA and NOAH operating equipment, reacting to an urgent arrival, and coordinating an on-air emergency response. Character continuity is generally readable but somewhat unstable, while the supplied visual references are only partially and unclearly honored due to the rough sketch style and limited direct resemblance cues.\\\",\\\"keywords\\\":[\\\"radio studio\\\",\\\"emergency broadcast\\\",\\\"on air sign\\\",\\\"reel-to-reel tape\\\",\\\"whiteboard notes\\\",\\\"urgent arrival\\\",\\\"headphones\\\",\\\"catwalk gear\\\",\\\"storm response\\\"],\\\"character_assessments\\\":[{\\\"name\\\":\\\"ARIA\\\",\\\"consistency_status\\\":\\\"minor_drift\\\",\\\"observed_traits\\\":[\\\"young woman\\\",\\\"dark hair usually tied back in bun or ponytail\\\",\\\"collared shirt\\\",\\\"shown operating tape/radio equipment and writing notes\\\",\\\"sometimes wearing headphones\\\"],\\\"evidence\\\":\\\"Appears as the woman at left in frame 1, at left in frame 2, at right foreground with headset in frame 3, at console in frame 5, and writing on the board in frame 6; hairstyle and facial structure shift slightly between bun/ponytail and headset views.\\\"},{\\\"name\\\":\\\"NOAH\\\",\\\"consistency_status\\\":\\\"minor_drift\\\",\\\"observed_traits\\\":[\\\"young man\\\",\\\"short dark hair\\\",\\\"collared shirt\\\",\\\"works at control console\\\",\\\"appears as arriving figure carrying bag and long poles/antenna-like gear\\\"],\\\"evidence\\\":\\\"Seen seated at console in frames 1-2 and as the entering man in frame 3; core role and general look persist, but face shape and build vary noticeably between seated close-up and doorway entrance.\\\"}],\\\"reference_assessments\\\":[{\\\"label\\\":\\\"Aria character reference\\\",\\\"entity_name\\\":\\\"ARIA\\\",\\\"status\\\":\\\"unclear\\\",\\\"evidence\\\":\\\"Storyboard keeps a tied-back-haired female operator across multiple frames, but the sketch treatment and shifting hairstyle/headset views make direct reference matching uncertain.\\\"},{\\\"label\\\":\\\"Noah character reference\\\",\\\"entity_name\\\":\\\"NOAH\\\",\\\"status\\\":\\\"unclear\\\",\\\"evidence\\\":\\\"A recurring short-haired male operator/arrival figure is present, yet facial specifics are too inconsistent and simplified to confirm a strong match to the supplied character reference.\\\"},{\\\"label\\\":\\\"Radio studio location reference\\\",\\\"entity_name\\\":\\\"radio studio\\\",\\\"status\\\":\\\"matched\\\",\\\"evidence\\\":\\\"Multiple frames clearly show a radio control room with mixing desks, microphones, reel-to-reel machines, operator seating, and an illuminated ON AIR sign.\\\"},{\\\"label\\\":\\\"Water tower catwalk location reference\\\",\\\"entity_name\\\":\\\"water tower catwalk\\\",\\\"status\\\":\\\"ignored\\\",\\\"evidence\\\":\\\"No generated storyboard frame clearly depicts an exterior catwalk or water tower setting; the sequence remains inside the studio.\\\"}],\\\"readable_text_present\\\":true,\\\"prop_only_non_insert_present\\\":false,\\\"evidence\\\":[{\\\"frame_id\\\":\\\"frame_3\\\",\\\"cue\\\":\\\"A man enters the studio carrying a shoulder bag and long pole-like equipment while staff turn toward him.\\\"},{\\\"frame_id\\\":\\\"frame_4\\\",\\\"cue\\\":\\\"Close insert of a hand switching an illuminated sign reading 'ON AIR'.\\\"},{\\\"frame_id\\\":\\\"frame_5\\\",\\\"cue\\\":\\\"Woman with tied-back hair operates a reel-to-reel machine in the studio.\\\"},{\\\"frame_id\\\":\\\"frame_6\\\",\\\"cue\\\":\\\"Whiteboard contains readable emergency notes: 'ROAD CLOSURES', 'SHELTERS', 'CALL SIGNS'.\\\"}],\\\"overall_confidence\\\":0.82}\\n</Output>\\n<Rubric>\\nEvaluate this storyboard-sequence analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scenes 001-002 — reference-conditioned storyboard sequence\\n\\n- Summary: A storm-night emergency-radio sequence that begins in a tense community studio and continues on a wind-lashed water tower catwalk, with Aria and Noah remaining recognizable across both scenes and the settings staying specific rather than generic.\\n- Scene ids: scene_001, scene_002\\n- Required keywords: radio, storm, antenna, lantern\\n- Recurring characters:\\n  - ARIA: dark weather gear, composed lead\\n  - NOAH: workwear, field technician\\n- Reference expectations:\\n  - Aria character reference: storm gear, focused\\n  - Noah character reference: workwear, lantern-lit\\n  - Radio studio location reference: analog studio, whiteboard\\n  - Water tower catwalk location reference: catwalk, dark town\\n- Runtime reference minimums: available>=4, prompt>=4, direct>=4\\n- Avoid readable text: yes\\n- Avoid non-insert prop-only collapse: yes\\n\\nReward outputs that preserve scene specificity, keep recurring\\ncharacters recognizable across the sequence, notice visible text or\\nprop-collapse failures when present, and stay conservative about\\nreference fidelity when the evidence is weak.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n# Open Frequency scenes 001-002 — reference-conditioned storyboard sequence\n\n- Summary: A storm-night emergency-radio sequence that begins in a tense community studio and continues on a wind-lashed water tower catwalk, with Aria and Noah remaining recognizable across both scenes and the settings staying specific rather than generic.\n- Scene ids: scene_001, scene_002\n- Required keywords: radio, storm, antenna, lantern\n- Recurring characters:\n  - ARIA: dark weather gear, composed lead\n  - NOAH: workwear, field technician\n- Reference expectations:\n  - Aria character reference: storm gear, focused\n  - Noah character reference: workwear, lantern-lit\n  - Radio studio location reference: analog studio, whiteboard\n  - Water tower catwalk location reference: catwalk, dark town\n- Runtime reference minimums: available>=4, prompt>=4, direct>=4\n- Avoid readable text: yes\n- Avoid non-insert prop-only collapse: yes\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+              }
+            }
+          ]
+        },
+        "id": "74fd2e08-4289-448c-ae8e-e6288d57fe1f",
+        "latencyMs": 18088,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's storyboard-sequence quality analyst.\n\nAnalyze the provided storyboard packet. The first images are the generated\nstoryboard frames in sequence order. Any later images are available reference\nimages for the same case.\n\nReturn one strict JSON object with exactly these keys:\n- storyboard_id\n- summary\n- keywords\n- character_assessments\n- reference_assessments\n- readable_text_present\n- prop_only_non_insert_present\n- evidence\n- overall_confidence\n\nAllowed `consistency_status` values for each `character_assessments` item:\n[\"consistent\",\"minor_drift\",\"drifted\",\"absent\"]\n\nAllowed `status` values for each `reference_assessments` item:\n[\"matched\",\"unclear\",\"ignored\",\"not_supplied\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- `keywords` should be short lowercase phrases grounded in the packet.\n- `character_assessments` must be a list of objects with keys:\n  `name`, `consistency_status`, `observed_traits`, `evidence`.\n- `reference_assessments` must be a list of objects with keys:\n  `label`, `entity_name`, `status`, `evidence`.\n- Mark `readable_text_present` true only if the generated storyboard frames\n  themselves contain readable labels, captions, speech bubbles, or slate text.\n- Mark `prop_only_non_insert_present` true only if a non-insert storyboard frame\n  collapses into an isolated object/product image instead of a scene beat.\n- `evidence` must be a list of 2-4 items with keys `frame_id` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- If a reference image exists but the storyboard does not clearly honor it,\n  prefer `unclear` over `matched`.\n- Do not wrap the JSON in markdown fences.",
+          "label": "benchmarks/prompts/storyboard-understanding.txt: You are CineForge's storyboard-sequence quality analyst.\n\nAnalyze the provided storyboard packet. The first images are the generated\nstoryboard frames in sequence order. Any later images are available reference\nimages for the same case.\n\nReturn one strict JSON object with exactly these keys:\n- storyboard_id\n- summary\n- keywords\n- character_assessments\n- reference_assessments\n- readable_text_present\n- prop_only_non_insert_present\n- evidence\n- overall_confidence\n\nAllowed `consistency_status` values for each `character_assessments` item:\n[\"consistent\",\"minor_drift\",\"drifted\",\"absent\"]\n\nAllowed `status` values for each `reference_assessments` item:\n[\"matched\",\"unclear\",\"ignored\",\"not_supplied\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- `keywords` should be short lowercase phrases grounded in the packet.\n- `character_assessments` must be a list of objects with keys:\n  `name`, `consistency_status`, `observed_traits`, `evidence`.\n- `reference_assessments` must be a list of objects with keys:\n  `label`, `entity_name`, `status`, `evidence`.\n- Mark `readable_text_present` true only if the generated storyboard frames\n  themselves contain readable labels, captions, speech bubbles, or slate text.\n- Mark `prop_only_non_insert_present` true only if a non-insert storyboard frame\n  collapses into an isolated object/product image instead of a scene beat.\n- `evidence` must be a list of 2-4 items with keys `frame_id` and `cue`.\n- `overall_confidence` must be a number between 0 and 1.\n- If a reference image exists but the storyboard does not clearly honor it,\n  prefer `unclear` over `matched`.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "056439fb9a822d339b675c246d12dba6f47b896c5ce7c08449745e4a23d8aa3a",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/storyboard_understanding_provider.py",
+          "label": "Imagen 4 Storyboards"
+        },
+        "response": {
+          "output": "{\"storyboard_id\":\"open_frequency_sequence_reference_conditioned\",\"summary\":\"The storyboard depicts a tense radio-station sequence with ARIA and NOAH operating equipment, reacting to an urgent arrival, and coordinating an on-air emergency response. Character continuity is generally readable but somewhat unstable, while the supplied visual references are only partially and unclearly honored due to the rough sketch style and limited direct resemblance cues.\",\"keywords\":[\"radio studio\",\"emergency broadcast\",\"on air sign\",\"reel-to-reel tape\",\"whiteboard notes\",\"urgent arrival\",\"headphones\",\"catwalk gear\",\"storm response\"],\"character_assessments\":[{\"name\":\"ARIA\",\"consistency_status\":\"minor_drift\",\"observed_traits\":[\"young woman\",\"dark hair usually tied back in bun or ponytail\",\"collared shirt\",\"shown operating tape/radio equipment and writing notes\",\"sometimes wearing headphones\"],\"evidence\":\"Appears as the woman at left in frame 1, at left in frame 2, at right foreground with headset in frame 3, at console in frame 5, and writing on the board in frame 6; hairstyle and facial structure shift slightly between bun/ponytail and headset views.\"},{\"name\":\"NOAH\",\"consistency_status\":\"minor_drift\",\"observed_traits\":[\"young man\",\"short dark hair\",\"collared shirt\",\"works at control console\",\"appears as arriving figure carrying bag and long poles/antenna-like gear\"],\"evidence\":\"Seen seated at console in frames 1-2 and as the entering man in frame 3; core role and general look persist, but face shape and build vary noticeably between seated close-up and doorway entrance.\"}],\"reference_assessments\":[{\"label\":\"Aria character reference\",\"entity_name\":\"ARIA\",\"status\":\"unclear\",\"evidence\":\"Storyboard keeps a tied-back-haired female operator across multiple frames, but the sketch treatment and shifting hairstyle/headset views make direct reference matching uncertain.\"},{\"label\":\"Noah character reference\",\"entity_name\":\"NOAH\",\"status\":\"unclear\",\"evidence\":\"A recurring short-haired male operator/arrival figure is present, yet facial specifics are too inconsistent and simplified to confirm a strong match to the supplied character reference.\"},{\"label\":\"Radio studio location reference\",\"entity_name\":\"radio studio\",\"status\":\"matched\",\"evidence\":\"Multiple frames clearly show a radio control room with mixing desks, microphones, reel-to-reel machines, operator seating, and an illuminated ON AIR sign.\"},{\"label\":\"Water tower catwalk location reference\",\"entity_name\":\"water tower catwalk\",\"status\":\"ignored\",\"evidence\":\"No generated storyboard frame clearly depicts an exterior catwalk or water tower setting; the sequence remains inside the studio.\"}],\"readable_text_present\":true,\"prop_only_non_insert_present\":false,\"evidence\":[{\"frame_id\":\"frame_3\",\"cue\":\"A man enters the studio carrying a shoulder bag and long pole-like equipment while staff turn toward him.\"},{\"frame_id\":\"frame_4\",\"cue\":\"Close insert of a hand switching an illuminated sign reading 'ON AIR'.\"},{\"frame_id\":\"frame_5\",\"cue\":\"Woman with tied-back hair operates a reel-to-reel machine in the studio.\"},{\"frame_id\":\"frame_6\",\"cue\":\"Whiteboard contains readable emergency notes: 'ROAD CLOSURES', 'SHELTERS', 'CALL SIGNS'.\"}],\"overall_confidence\":0.82}",
+          "tokenUsage": {
+            "total": 13466,
+            "prompt": 12776,
+            "completion": 690,
+            "numRequests": 1
+          },
+          "cost": 0.04229,
+          "latencyMs": 18088,
+          "cached": false,
+          "metadata": {
+            "storyboard_id": "open_frequency_sequence_reference_conditioned",
+            "candidate_variant": "imagen_4_storyboards",
+            "prompt_version": "storyboard-understanding-v1",
+            "model": "gpt-5.4",
+            "provider": "openai"
+          }
+        },
+        "score": 0.44,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "storyboard_id": "open_frequency_sequence_reference_conditioned",
+            "target_path": "storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.json",
+            "target_markdown": "file://../storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/storyboard_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "storyboard_id": "open_frequency_sequence_reference_conditioned",
+          "target_path": "storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.md"
+        },
+        "metadata": {
+          "storyboard_id": "open_frequency_sequence_reference_conditioned",
+          "candidate_variant": "imagen_4_storyboards",
+          "prompt_version": "storyboard-understanding-v1",
+          "model": "gpt-5.4",
+          "provider": "openai",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 2,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 20917,
+        "completion": 1180,
+        "cached": 0,
+        "total": 22097,
+        "numRequests": 2,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 3887,
+          "prompt": 2253,
+          "completion": 1634,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 72922,
+      "evaluationDurationMs": 72922
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Storyboard generation quality on representative multi-scene sequences with runtime reference-flow truth plus multimodal sequence judgment",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/400e/cine-forge/benchmarks/prompts/storyboard-understanding.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/storyboard_understanding_provider.py",
+        "label": "Imagen 4 Storyboards",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 6,
+          "max_references": 4,
+          "prompt_version": "storyboard-understanding-v1",
+          "sequence_root": "../storyboard_generation_quality",
+          "candidate_variant": "imagen_4_storyboards",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "storyboard_id": "open_frequency_sequence_prompt_only",
+          "target_path": "storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/storyboard_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "storyboard_id": "open_frequency_sequence_reference_conditioned",
+          "target_path": "storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/storyboard_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nReward outputs that preserve scene specificity, keep recurring\ncharacters recognizable across the sequence, notice visible text or\nprop-collapse failures when present, and stay conservative about\nreference fidelity when the evidence is weak.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "benchmarks/results/storyboard-generation-quality-story-186-2026-04-23-quality.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-04-23T13:53:49.447Z",
+    "evaluationCreatedAt": "2026-04-23T13:52:36.442Z"
+  }
+}

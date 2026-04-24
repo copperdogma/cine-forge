@@ -19,24 +19,19 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-load_dotenv(REPO_ROOT / ".env")
-load_dotenv(REPO_ROOT / ".env.local")
-
 from cine_forge.env import (  # noqa: E402
-    export_legacy_provider_envs,
+    load_cine_forge_dotenv,
     preferred_env_name,
     provider_env_names,
     resolve_env,
 )
 
-export_legacy_provider_envs()
+load_cine_forge_dotenv(REPO_ROOT)
 
 # httpx is a project dependency (pyproject.toml)
 try:

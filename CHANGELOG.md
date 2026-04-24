@@ -1,5 +1,32 @@
 # Changelog
 
+## [2026-04-24-03] — Add storyboard quality eval and grid default (Story 186)
+
+### Added
+- Added the maintained storyboard-generation quality eval with runtime reference-flow capture, promptfoo sequence judgment, split-dimension reporting, and recorded result artifacts
+- Added the `gpt-image-2` template-grid storyboard lane so scene storyboard drafts can be generated in batches and sliced back into the existing per-frame artifact contract
+
+### Changed
+- Changed the shipped storyboard default to the `gpt-image-2` template-grid lane while preserving an explicit per-frame override for comparison and future single-panel regeneration
+
+## [2026-04-24-02] — Add live AI capability smoke (Story 184)
+
+### Added
+- Added an on-demand live AI capability smoke service, API route, and CLI runner for the default text, storyboard-image, alternate image, and render-video lanes
+
+### Changed
+- Changed provider-env bootstrapping so worktrees load repo-scoped CineForge credentials from the active checkout first and the shared primary checkout as a fallback
+- Documented when to use cheap dependency health versus the expensive live smoke before manual QA or rollout checks
+
+## [2026-04-24-01] — Guide scene work through rendering (Story 181)
+
+### Added
+- Added a shared Scene Workspace tutorial card and focused regression coverage so the default scene path remains explicit through shot planning, storyboards, and rendering
+
+### Changed
+- Changed post-Deep-Breakdown and scene completion guidance to point at the next actionable scene step instead of stopping at the artifact that just completed
+- Changed current-scene storyboard refresh to resume from `storyboards` when timeline, tracks, and shot planning are already healthy
+
 ## [2026-04-20-07] — Clarify Scene Workspace entry targets (Story 180)
 
 ### Added
@@ -21,6 +48,7 @@
 ### Fixed
 - Fixed the post-Script-Breakdown and post-Deep-Breakdown black-screen failure mode by surfacing a retryable chat-unavailable state instead of letting chat load errors cascade through the route
 - Fixed the repeated `/api/projects/{project_id}/chat` retry storm after a known failure so the operator can recover deliberately instead of exhausting browser resources
+- Fixed a later post-import black-screen path by replacing the Radix ScrollArea shell wrapper with a ref-stable viewport wrapper that avoids the maximum-update-depth loop
 
 ## [2026-04-20-05] — Triage QA inbox into planning stories
 

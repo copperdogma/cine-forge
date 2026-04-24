@@ -528,7 +528,11 @@ def _recommended_generation_start_stage(
 ) -> str | None:
     if not _has_healthy_project_artifact(store, "track_manifest"):
         return None
-    if recipe_id in {"ai_previz_generation", "render_generation"}:
+    if recipe_id in {
+        "storyboard_generation",
+        "ai_previz_generation",
+        "render_generation",
+    }:
         missing_shot_plan = _missing_or_unhealthy_scene_artifact_count(
             store,
             "shot_plan",
@@ -537,6 +541,8 @@ def _recommended_generation_start_stage(
         )
         if missing_shot_plan != 0:
             return None
+        if recipe_id == "storyboard_generation":
+            return "storyboards"
         if recipe_id == "ai_previz_generation":
             return "ai_previz"
         if recipe_id == "render_generation":
@@ -552,7 +558,7 @@ def _apply_ai_previz_prerequisite_strategy(preflight: SceneActionPreflight) -> N
 
 
 def _prune_generation_autobuilds_for_start_stage(preflight: SceneActionPreflight) -> None:
-    if preflight.start_from not in {"ai_previz", "render"}:
+    if preflight.start_from not in {"storyboards", "ai_previz", "render"}:
         return
     skipped_labels = {"Timeline", "Track manifest", "Shot planning"}
     skipped_artifact_types = {"timeline", "track_manifest", "shot_plan"}

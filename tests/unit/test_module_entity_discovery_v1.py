@@ -169,6 +169,22 @@ class TestLLMFallback:
         prop_prompt = _mock_llm.call_args_list[1][1]["prompt"]
         assert "GOLD COIN" in prop_prompt
 
+    def test_runtime_utility_model_overrides_recipe_discovery_default(self, _mock_llm):
+        """Run-level utility/work model should win over the baked-in recipe discovery model."""
+        _mock_llm.side_effect = [
+            (MagicMock(items=["ABE"]), {"estimated_cost_usd": 0.01}),
+        ]
+        inputs = {"canonical_script": _SCRIPT}
+        params = {
+            "discovery_model": "gemini-2.5-flash-lite",
+            "enable_locations": False,
+            "enable_props": False,
+        }
+
+        run_module(inputs, params, {"runtime_params": {"utility_model": "claude-sonnet-4-6"}})
+
+        assert _mock_llm.call_args_list[0][1]["model"] == "claude-sonnet-4-6"
+
 
 # ── Normalization unit tests ─────────────────────────────────────────
 

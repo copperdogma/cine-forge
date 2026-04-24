@@ -1,7 +1,11 @@
 // State-driven chat message generator.
 // Produces initial messages for each project state with appropriate action buttons.
 
-import { getSceneScopeTargetLabel } from './constants'
+import {
+  getSceneScopeTargetLabel,
+  getSceneWorkNextStepActions,
+  getSceneWorkNextStepContent,
+} from './constants'
 import type { ChatMessage, ProjectState, ProjectSummary } from './types'
 
 const BOOTSTRAP_WELCOME_ID = 'bootstrap_welcome'
@@ -208,19 +212,16 @@ export function getWelcomeMessages(
         {
           id: BOOTSTRAP_WELCOME_ID,
           type: 'ai_welcome',
-          content: 'Your story world is built. Explore your scenes, characters, and creative bibles.',
+          content: 'Your story world is built. CineForge is ready for scene work.',
           timestamp: now,
         },
         {
           id: BOOTSTRAP_SUGGESTION_ID,
           type: 'ai_suggestion',
-          content: "Here's what you can do next:",
+          content: getSceneWorkNextStepContent(),
           timestamp: now + 1,
-          actions: [
-            { id: 'scenes', label: 'Explore Scenes', variant: 'default', route: 'artifacts' },
-            { id: 'inbox', label: 'Review Inbox', variant: 'secondary', route: 'inbox' },
-            { id: 'go_deeper', label: 'Refine World Model', variant: 'outline' },
-          ],
+          actions: getSceneWorkNextStepActions(),
+          needsAction: true,
         },
       ]
 

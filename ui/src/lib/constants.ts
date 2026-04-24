@@ -22,6 +22,21 @@ export const USER_FACING_RECIPE_NAMES: Record<string, string> = {
   final_output: 'Final Output',
 }
 
+const SCENE_WORK_NEXT_STEP_ACTION = {
+  id: 'scenes',
+  label: 'Start Scene Work',
+  variant: 'default' as const,
+  route: 'scenes',
+}
+
+export function getSceneWorkNextStepContent(): string {
+  return 'Next: pick a scene and start with shot planning. Storyboards and generation build from there.'
+}
+
+export function getSceneWorkNextStepActions() {
+  return [{ ...SCENE_WORK_NEXT_STEP_ACTION }]
+}
+
 export function buildSceneScope(mode: 'current_scene' | 'all_scenes', sceneId: string) {
   return {
     mode,
@@ -97,8 +112,8 @@ export function getRunCompletedMessage(
   }
   if (recipeId === 'world_building') {
     return summary
-      ? `Deep Breakdown complete! I built ${summary} for your project.`
-      : 'Deep Breakdown complete!'
+      ? `Deep Breakdown complete! I built ${summary} for your project. You're ready to move into scene work.`
+      : 'Deep Breakdown complete! Your story world is ready for scene work.'
   }
   if (recipeId === 'ai_previz_generation') {
     return summary

@@ -1,58 +1,83 @@
 import * as React from "react"
-import { ScrollArea as ScrollAreaPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
-function ScrollArea({
-  className,
-  children,
-  orientation = "vertical",
-  ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & { orientation?: "vertical" | "horizontal" | "both" }) {
-  return (
-    <ScrollAreaPrimitive.Root
-      data-slot="scroll-area"
-      className={cn("relative", className)}
-      {...props}
-    >
-      <ScrollAreaPrimitive.Viewport
-        data-slot="scroll-area-viewport"
-        className="focus-visible:ring-ring/50 size-full min-w-0 overflow-x-hidden rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&>div]:!block [&>div]:!min-w-0 [&>div]:!w-full"
-      >
-        {children}
-      </ScrollAreaPrimitive.Viewport>
-      {(orientation === "vertical" || orientation === "both") && <ScrollBar orientation="vertical" />}
-      {(orientation === "horizontal" || orientation === "both") && <ScrollBar orientation="horizontal" />}
-      <ScrollAreaPrimitive.Corner />
-    </ScrollAreaPrimitive.Root>
-  )
+type ScrollOrientation = "vertical" | "horizontal" | "both"
+
+function viewportOverflowClasses(orientation: ScrollOrientation) {
+  switch (orientation) {
+    case "horizontal":
+      return "overflow-x-auto overflow-y-hidden"
+    case "both":
+      return "overflow-auto"
+    case "vertical":
+    default:
+      return "overflow-y-auto overflow-x-hidden"
+  }
 }
 
-function ScrollBar({
-  className,
-  orientation = "vertical",
-  ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) {
+const ScrollArea = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & { orientation?: ScrollOrientation }
+>(function ScrollArea(
+  {
+    className,
+    children,
+    orientation = "vertical",
+    ...props
+  },
+  ref,
+) {
   return (
-    <ScrollAreaPrimitive.ScrollAreaScrollbar
-      data-slot="scroll-area-scrollbar"
-      orientation={orientation}
-      className={cn(
-        "flex touch-none p-px transition-colors select-none",
-        orientation === "vertical" &&
-          "h-full w-2.5 border-l border-l-transparent",
-        orientation === "horizontal" &&
-          "h-2.5 flex-col border-t border-t-transparent",
-        className
-      )}
+    <div
+      ref={ref}
+      data-slot="scroll-area"
+      className={cn("relative min-w-0 overflow-hidden", className)}
       {...props}
     >
-      <ScrollAreaPrimitive.ScrollAreaThumb
-        data-slot="scroll-area-thumb"
-        className="bg-border relative flex-1 rounded-full"
-      />
-    </ScrollAreaPrimitive.ScrollAreaScrollbar>
+      <div
+        data-slot="scroll-area-viewport"
+        data-radix-scroll-area-viewport=""
+        className={cn(
+          "focus-visible:ring-ring/50 size-full min-w-0 rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1",
+          viewportOverflowClasses(orientation),
+        )}
+      >
+        <div className="block min-w-0 w-full">
+          {children}
+        </div>
+      </div>
+    </div>
   )
-}
+})
+
+const ScrollBar = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & { orientation?: Exclude<ScrollOrientation, "both"> }
+>(function ScrollBar(
+  {
+    className,
+    orientation = "vertical",
+    ...props
+  },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      data-slot="scroll-area-scrollbar"
+      className={cn(
+        "pointer-events-none absolute opacity-0",
+        orientation === "vertical" ? "right-0 top-0 h-full w-2.5" : "bottom-0 left-0 h-2.5 w-full",
+        className,
+      )}
+      {...props}
+    />
+  )
+})
+
+ScrollArea.displayName = "ScrollArea"
+ScrollBar.displayName = "ScrollBar"
 
 export { ScrollArea, ScrollBar }

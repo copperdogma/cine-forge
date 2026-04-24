@@ -244,9 +244,23 @@ def run_module(
 
     script_text = canonical_script["script_text"]
     script_title = canonical_script.get("title", "Untitled")
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
 
     chunk_size = params.get("chunk_size", 12000)
-    model = params.get("discovery_model", "gemini-2.5-flash-lite")
+    model = (
+        runtime_params.get("discovery_model")
+        or runtime_params.get("work_model")
+        or runtime_params.get("utility_model")
+        or params.get("discovery_model")
+        or params.get("work_model")
+        or params.get("model")
+        or params.get("default_model")
+        or runtime_params.get("default_model")
+        or runtime_params.get("model")
+        or "gemini-2.5-flash-lite"
+    )
 
     chunks = [script_text[i:i+chunk_size] for i in range(0, len(script_text), chunk_size)]
 

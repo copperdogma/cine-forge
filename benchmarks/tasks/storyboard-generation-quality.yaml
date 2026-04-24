@@ -1,0 +1,98 @@
+# Story 186 — storyboard generation quality and reference-fidelity evaluation
+
+description: "Storyboard generation quality on representative multi-scene sequences with runtime reference-flow truth plus multimodal sequence judgment"
+
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-6
+
+prompts:
+  - file://../prompts/storyboard-understanding.txt
+
+providers:
+  - id: file://../providers/storyboard_understanding_provider.py
+    label: "GPT Image 2 Storyboards"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 8
+      max_references: 4
+      prompt_version: storyboard-understanding-v2
+      sequence_root: ../storyboard_generation_quality
+      candidate_variant: gpt_image_2_storyboards
+      pythonExecutable: python
+      timeout: 300000
+  - id: file://../providers/storyboard_understanding_provider.py
+    label: "GPT Image 2 Square Storyboards"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 8
+      max_references: 4
+      prompt_version: storyboard-understanding-v2
+      sequence_root: ../storyboard_generation_quality
+      candidate_variant: gpt_image_2_square_storyboards
+      pythonExecutable: python
+      timeout: 300000
+  - id: file://../providers/storyboard_understanding_provider.py
+    label: "GPT Image 2 Template Grid Storyboards"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 8
+      max_references: 4
+      prompt_version: storyboard-understanding-v2
+      sequence_root: ../storyboard_generation_quality
+      candidate_variant: gpt_image_2_template_grid_storyboards
+      pythonExecutable: python
+      timeout: 300000
+  - id: file://../providers/storyboard_understanding_provider.py
+    label: "Imagen 4 Storyboards"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 8
+      max_references: 4
+      prompt_version: storyboard-understanding-v2
+      sequence_root: ../storyboard_generation_quality
+      candidate_variant: imagen_4_storyboards
+      pythonExecutable: python
+      timeout: 300000
+
+tests:
+  - vars:
+      storyboard_id: open_frequency_sequence_prompt_only
+      target_path: storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.json
+      target_markdown: file://../storyboard_generation_quality/targets/open_frequency_sequence_prompt_only/target.md
+    assert: &storyboard_quality_assertions
+      - type: python
+        value: file://../scorers/storyboard_understanding_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate this storyboard-sequence analysis against the reference below.
+
+          Reference analysis:
+          {{target_markdown}}
+
+          Grade these dimensions separately in your rationale:
+          story specificity, style/medium consistency, character identity
+          consistency, reference fidelity, text cleanliness, and prop discipline.
+          Reward outputs that preserve scene specificity, keep a coherent
+          storyboard medium without sudden photoreal/live-action drift, keep
+          recurring characters recognizable across the sequence, notice visible
+          text or prop-collapse failures when present, and stay conservative
+          about reference fidelity when the evidence is weak.
+
+  - vars:
+      storyboard_id: open_frequency_sequence_reference_conditioned
+      target_path: storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.json
+      target_markdown: file://../storyboard_generation_quality/targets/open_frequency_sequence_reference_conditioned/target.md
+    assert: *storyboard_quality_assertions

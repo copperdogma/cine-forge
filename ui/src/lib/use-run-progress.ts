@@ -5,16 +5,22 @@ import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useChatStore } from './chat-store'
 import { streamAutoInsight } from './api/chat'
-import { humanizeStageName } from './chat-messages'
+import {
+  humanizeStageName,
+} from './chat-messages'
 import {
   buildRelativeSceneWorkspaceRoute,
+  getSceneWorkNextStepActions,
+  getSceneWorkNextStepContent,
   detectConcernGroupRun,
   countTotalScenes,
   getRunCompletedMessage,
   getSceneScopeTargetLabel,
 } from './constants'
+import type { SceneWorkspaceTab } from './constants'
 import { useRunState, useRunEvents } from './hooks/runs'
 import { genericRunFailureMessageId, hasProviderFailureMessage } from './run-failure-messages'
+import { getSceneWorkflowGuide } from './scene-workflow'
 import type { StageState, ArtifactGroupSummary } from './types'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
@@ -91,6 +97,48 @@ function summarizeArtifacts(stages: Record<string, StageState>): string {
   if (parts.length === 0) return ''
   if (parts.length === 1) return parts[0]
   return parts.slice(0, -1).join(', ') + ' and ' + parts[parts.length - 1]
+}
+
+function hasArtifactGroup(
+  groups: ArtifactGroupSummary[] | undefined,
+  artifactType: string,
+  entityId: string,
+): boolean {
+  return (groups ?? []).some(
+    (group) => group.artifact_type === artifactType && group.entity_id === entityId,
+  )
+}
+
+function buildWorkflowRouteAction(
+  sceneId: string,
+  activeTab: Exclude<SceneWorkspaceTab, 'overview' | 'previz'>,
+  groups: ArtifactGroupSummary[] | undefined,
+  overrides?: {
+    hasShotPlan?: boolean
+    hasStoryboard?: boolean
+    hasRender?: boolean
+  },
+) {
+  const guide = getSceneWorkflowGuide({
+    activeTab,
+    hasShotPlan: overrides?.hasShotPlan ?? hasArtifactGroup(groups, 'shot_plan', sceneId),
+    hasStoryboard: overrides?.hasStoryboard ?? hasArtifactGroup(groups, 'storyboard', sceneId),
+    hasRender: overrides?.hasRender ?? hasArtifactGroup(groups, 'generated_video', sceneId),
+  })
+
+  if (guide.actionKind !== 'route' || !guide.targetTab || !guide.actionLabel) {
+    return { guide, action: null }
+  }
+
+  return {
+    guide,
+    action: {
+      id: `workflow_next_${guide.targetTab}`,
+      label: guide.actionLabel,
+      variant: 'outline' as const,
+      route: buildRelativeSceneWorkspaceRoute(sceneId, guide.targetTab),
+    },
+  }
 }
 
 export function useRunProgressChat(projectId: string | undefined) {
@@ -374,6 +422,9 @@ export function useRunProgressChat(projectId: string | undefined) {
           const recipeId = runState.state.recipe_id
           const completionStageOrder = (runState.state.stage_order as string[] | undefined) ?? Object.keys(stages)
           const cgComplete = detectConcernGroupRun(recipeId, completionStageOrder)
+          const cachedGroups = queryClient.getQueryData<ArtifactGroupSummary[]>(
+            ['projects', projectId, 'artifacts'],
+          )
 
           if (recipeId === 'shot_planning') {
             const scopeTarget = getSceneScopeTargetLabel(runState.state.runtime_params?.scene_scope)
@@ -389,14 +440,17 @@ export function useRunProgressChat(projectId: string | undefined) {
             ).sort()
             const firstSceneId = sceneIds[0]
             const sceneCount = sceneIds.length
+            const workflowNext = firstSceneId
+              ? buildWorkflowRouteAction(firstSceneId, 'shots', cachedGroups, { hasShotPlan: true })
+              : null
 
             store.addMessage(projectId, {
               id: `progress_${activeRunId}_complete`,
               type: 'ai_suggestion',
               content: sceneCount > 0
                 ? scopeTarget === 'this scene'
-                  ? 'Shot planning complete. I generated a shot plan for this scene.'
-                  : `Shot planning complete. I generated shot plans for ${sceneCount} ${sceneCount === 1 ? 'scene' : 'scenes'}.`
+                  ? `Shot planning complete. I generated a shot plan for this scene. ${workflowNext?.guide.hint ?? ''}`.trim()
+                  : `Shot planning complete. I generated shot plans for ${sceneCount} ${sceneCount === 1 ? 'scene' : 'scenes'}. ${workflowNext?.guide.hint ?? ''}`.trim()
                 : 'Shot planning complete.',
               timestamp: Date.now(),
               actions: [
@@ -407,6 +461,97 @@ export function useRunProgressChat(projectId: string | undefined) {
                         label: 'Open Scene Workspace (Shots)',
                         variant: 'default' as const,
                         route: buildRelativeSceneWorkspaceRoute(firstSceneId, 'shots'),
+                      },
+                    ]
+                  : []),
+                ...(workflowNext?.action ? [workflowNext.action] : []),
+                {
+                  id: 'view_run_detail',
+                  label: 'Run Details',
+                  variant: 'outline' as const,
+                  route: `runs/${activeRunId}`,
+                },
+              ],
+            })
+          } else if (recipeId === 'storyboard_generation') {
+            const storyboardRefs = Object.values(stages)
+              .flatMap((stage) => stage.artifact_refs)
+              .filter((ref) => ref.artifact_type === 'storyboard')
+            const sceneIds = Array.from(
+              new Set(
+                storyboardRefs
+                  .map((ref) => String(ref.entity_id ?? ''))
+                  .filter((entityId) => entityId.startsWith('scene_')),
+              ),
+            ).sort()
+            const firstSceneId = sceneIds[0]
+            const sceneCount = sceneIds.length
+            const workflowNext = firstSceneId
+              ? buildWorkflowRouteAction(
+                  firstSceneId,
+                  'storyboard',
+                  cachedGroups,
+                  { hasShotPlan: true, hasStoryboard: true },
+                )
+              : null
+
+            store.addMessage(projectId, {
+              id: `progress_${activeRunId}_complete`,
+              type: 'ai_suggestion',
+              content: sceneCount > 0
+                ? sceneCount === 1
+                  ? `Storyboard generation complete. I generated storyboard frames for this scene. ${workflowNext?.guide.hint ?? ''}`.trim()
+                  : `Storyboard generation complete. I generated storyboard frames for ${sceneCount} scenes. ${workflowNext?.guide.hint ?? ''}`.trim()
+                : 'Storyboard generation complete.',
+              timestamp: Date.now(),
+              actions: [
+                ...(firstSceneId
+                  ? [
+                      {
+                        id: 'open_storyboard',
+                        label: 'Open Storyboard',
+                        variant: 'default' as const,
+                        route: buildRelativeSceneWorkspaceRoute(firstSceneId, 'storyboard'),
+                      },
+                    ]
+                  : []),
+                ...(workflowNext?.action ? [workflowNext.action] : []),
+                {
+                  id: 'view_run_detail',
+                  label: 'Run Details',
+                  variant: 'outline' as const,
+                  route: `runs/${activeRunId}`,
+                },
+              ],
+            })
+          } else if (recipeId === 'render_generation') {
+            const renderRefs = Object.values(stages)
+              .flatMap((stage) => stage.artifact_refs)
+              .filter((ref) => ref.artifact_type === 'generated_video' || ref.artifact_type === 'render_prompt')
+            const sceneIds = Array.from(
+              new Set(
+                renderRefs
+                  .map((ref) => String(ref.entity_id ?? ''))
+                  .filter((entityId) => entityId.startsWith('scene_')),
+              ),
+            ).sort()
+            const firstSceneId = sceneIds[0]
+
+            store.addMessage(projectId, {
+              id: `progress_${activeRunId}_complete`,
+              type: 'ai_suggestion',
+              content: firstSceneId
+                ? `${getRunCompletedMessage(recipeId, summary)} Open Render to review the latest prompt, video, and validation details.`
+                : getRunCompletedMessage(recipeId, summary),
+              timestamp: Date.now(),
+              actions: [
+                ...(firstSceneId
+                  ? [
+                      {
+                        id: 'open_render',
+                        label: 'Open Render',
+                        variant: 'default' as const,
+                        route: buildRelativeSceneWorkspaceRoute(firstSceneId, 'render'),
                       },
                     ]
                   : []),
@@ -431,14 +576,19 @@ export function useRunProgressChat(projectId: string | undefined) {
             .map((r) => String(r.entity_id))
             .sort()[0] ?? 'scene_001'
           const scopeTarget = getSceneScopeTargetLabel(runState.state.runtime_params?.scene_scope)
+          const workflowNext = buildWorkflowRouteAction(
+            firstSceneId,
+            cgComplete.sceneWorkspaceTab as Exclude<SceneWorkspaceTab, 'overview' | 'previz'>,
+            cachedGroups,
+          )
 
           store.addMessage(projectId, {
             id: `progress_${activeRunId}_complete`,
             type: 'ai_suggestion',
             content: sceneCount > 0
               ? scopeTarget === 'this scene'
-                ? `I've analyzed this scene and added ${cgComplete.label} direction to its Direction tab.`
-                : `I've analyzed ${sceneCount === 1 ? '1 scene' : `all ${sceneCount} scenes`} and added ${cgComplete.label} direction to each Direction tab.`
+                ? `I've analyzed this scene and added ${cgComplete.label} direction to its Direction tab. ${workflowNext.guide.hint}`
+                : `I've analyzed ${sceneCount === 1 ? '1 scene' : `all ${sceneCount} scenes`} and added ${cgComplete.label} direction to each Direction tab. ${workflowNext.guide.hint}`
               : `${cgComplete.label} direction is ready.`,
             timestamp: Date.now(),
             speaker: cgComplete.roleId,
@@ -452,6 +602,7 @@ export function useRunProgressChat(projectId: string | undefined) {
                   cgComplete.sceneWorkspaceTab,
                 ),
               },
+              ...(workflowNext.action ? [workflowNext.action] : []),
               {
                 id: 'view_run_detail',
                 label: 'Run Details',
@@ -521,6 +672,18 @@ function addNextStepCta(projectId: string, recipeId: string, runId: string) {
         { id: 'go_deeper', label: 'Deep Breakdown', variant: 'default' },
         { id: 'review', label: 'Browse Results', variant: 'outline', route: 'artifacts' },
       ],
+      needsAction: true,
+    })
+    return
+  }
+
+  if (recipeId === 'world_building') {
+    useChatStore.getState().addMessage(projectId, {
+      id: `progress_${runId}_next_steps`,
+      type: 'ai_suggestion',
+      content: getSceneWorkNextStepContent(),
+      timestamp: Date.now(),
+      actions: getSceneWorkNextStepActions(),
       needsAction: true,
     })
   }

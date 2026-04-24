@@ -1,0 +1,169 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "measured_at": "2026-04-23T21:49:47.148786+00:00",
+  "fixture_manifest": "benchmarks/fixtures/storyboard_generation_quality_cases.json",
+  "candidate_variants": [
+    "gpt_image_2_template_grid_storyboards"
+  ],
+  "summary": {
+    "candidates": [
+      {
+        "candidate_variant": "gpt_image_2_template_grid_storyboards",
+        "candidate_label": "GPT Image 2 Template Grid Storyboards",
+        "image_model": "gpt-image-2",
+        "total_cases": 2,
+        "successful_cases": 0,
+        "success_ratio": 0.0,
+        "mean_total_elapsed_ms": null,
+        "mean_storyboard_elapsed_ms": null,
+        "mean_storyboard_stage_elapsed_ms": null,
+        "mean_total_cost_usd": null,
+        "mean_total_frames": null,
+        "mean_available_reference_image_count": null,
+        "mean_prompt_reference_frame_count": null,
+        "mean_direct_reference_input_count": null
+      }
+    ]
+  },
+  "runs": [
+    {
+      "case_id": "open_frequency_sequence_prompt_only",
+      "case_label": "Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity",
+      "scene_ids": [
+        "scene_001",
+        "scene_002"
+      ],
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Baseline storyboard case with recurring ARIA and NOAH but no attached character/location reference images.",
+      "candidate_variant": "gpt_image_2_template_grid_storyboards",
+      "candidate_label": "GPT Image 2 Template Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "project_dir": "output/story-186-gpt_image_2_template_grid_storyboards-open_frequency_sequence_prompt_only-8d991f",
+      "success": false,
+      "error": "storyboard grid generation failed after retries: OpenAI Images API returned HTTP 400: {\n  \"error\": {\n    \"message\": \"Invalid value: 'gpt-image-2'. Value must be 'dall-e-2'.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"model\",\n    \"code\": \"invalid_value\"\n  }\n}",
+      "preparation_elapsed_ms": 164169,
+      "storyboard_elapsed_ms": 111866,
+      "total_elapsed_ms": 276035,
+      "total_cost_usd": 0.242203,
+      "storyboard_stage_elapsed_ms": 16629,
+      "storyboard_run": {
+        "run_id": "open_frequency_sequence_prompt_only-storyboard-afc8",
+        "recipe_id": "storyboard_generation",
+        "elapsed_ms": 111865,
+        "success": false,
+        "error": "storyboard grid generation failed after retries: OpenAI Images API returned HTTP 400: {\n  \"error\": {\n    \"message\": \"Invalid value: 'gpt-image-2'. Value must be 'dall-e-2'.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"model\",\n    \"code\": \"invalid_value\"\n  }\n}",
+        "total_cost_usd": 0.0460464,
+        "stage_statuses": {
+          "shot_planning": "done",
+          "storyboards": "failed",
+          "timeline": "done",
+          "tracks": "done"
+        },
+        "stage_durations_ms": {
+          "shot_planning": 95126,
+          "storyboards": 16629,
+          "timeline": 8,
+          "tracks": 8
+        },
+        "artifact_counts": {
+          "shot_plan": 2,
+          "timeline": 2,
+          "track_manifest": 2
+        },
+        "artifact_paths": {
+          "shot_plan": "artifacts/shot_plan/scene_002/v1.json",
+          "timeline": "artifacts/timeline/project/v2.json",
+          "track_manifest": "artifacts/track_manifest/project/v2.json"
+        }
+      },
+      "storyboard_artifact_paths": [],
+      "frames": [],
+      "reference_images": [],
+      "total_frames": 0,
+      "available_reference_image_count": 0,
+      "prompt_reference_frame_count": 0,
+      "direct_reference_input_count": 0,
+      "reference_transport_supported": false
+    },
+    {
+      "case_id": "open_frequency_sequence_reference_conditioned",
+      "case_label": "Open Frequency scenes 001-002 \u2014 reference-conditioned storyboard sequence",
+      "scene_ids": [
+        "scene_001",
+        "scene_002"
+      ],
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Same two-scene sequence, but with canonical character and location reference images attached before storyboard generation.",
+      "candidate_variant": "gpt_image_2_template_grid_storyboards",
+      "candidate_label": "GPT Image 2 Template Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "project_dir": "output/story-186-gpt_image_2_template_grid_storyboards-open_frequency_sequence_reference_conditioned-45f7b3",
+      "success": false,
+      "error": "storyboard grid generation failed after retries: OpenAI Images API returned HTTP 400: {\n  \"error\": {\n    \"message\": \"Invalid value: 'gpt-image-2'. Value must be 'dall-e-2'.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"model\",\n    \"code\": \"invalid_value\"\n  }\n}",
+      "preparation_elapsed_ms": 169395,
+      "storyboard_elapsed_ms": 60209,
+      "total_elapsed_ms": 229604,
+      "total_cost_usd": 0.2377764,
+      "storyboard_stage_elapsed_ms": 16975,
+      "storyboard_run": {
+        "run_id": "open_frequency_sequence_reference_conditioned-storyboard-f253",
+        "recipe_id": "storyboard_generation",
+        "elapsed_ms": 60209,
+        "success": false,
+        "error": "storyboard grid generation failed after retries: OpenAI Images API returned HTTP 400: {\n  \"error\": {\n    \"message\": \"Invalid value: 'gpt-image-2'. Value must be 'dall-e-2'.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"model\",\n    \"code\": \"invalid_value\"\n  }\n}",
+        "total_cost_usd": 0.0414248,
+        "stage_statuses": {
+          "shot_planning": "done",
+          "storyboards": "failed",
+          "timeline": "done",
+          "tracks": "done"
+        },
+        "stage_durations_ms": {
+          "shot_planning": 43142,
+          "storyboards": 16975,
+          "timeline": 7,
+          "tracks": 6
+        },
+        "artifact_counts": {
+          "shot_plan": 2,
+          "timeline": 2,
+          "track_manifest": 2
+        },
+        "artifact_paths": {
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "timeline": "artifacts/timeline/project/v2.json",
+          "track_manifest": "artifacts/track_manifest/project/v2.json"
+        }
+      },
+      "storyboard_artifact_paths": [],
+      "frames": [],
+      "reference_images": [
+        {
+          "label": "Aria character reference",
+          "entity_name": "ARIA",
+          "relative_path": "artifacts/bibles/character_aria/aria_reference.jpg"
+        },
+        {
+          "label": "Noah character reference",
+          "entity_name": "NOAH",
+          "relative_path": "artifacts/bibles/character_noah/noah_reference.jpg"
+        },
+        {
+          "label": "Radio studio location reference",
+          "entity_name": "COMMUNITY RADIO STUDIO",
+          "relative_path": "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        },
+        {
+          "label": "Water tower catwalk location reference",
+          "entity_name": "WATER TOWER CATWALK",
+          "relative_path": "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        }
+      ],
+      "total_frames": 0,
+      "available_reference_image_count": 0,
+      "prompt_reference_frame_count": 0,
+      "direct_reference_input_count": 0,
+      "reference_transport_supported": false
+    }
+  ]
+}

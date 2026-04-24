@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import json
 import threading
+import time
 from collections import deque
 from datetime import UTC, datetime
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Any
 
 from cine_forge.schemas import ArtifactHealth, ArtifactRef
@@ -18,10 +20,13 @@ class DependencyGraph:
     Thread-safe: all read-modify-write cycles are serialised by ``_lock``.
     """
 
+    _lock_registry_guard = threading.Lock()
+    _lock_registry: dict[Path, threading.Lock] = {}
+
     def __init__(self, project_dir: Path) -> None:
         self._graph_path = project_dir / "graph" / "dependency_graph.json"
         self._graph_path.parent.mkdir(parents=True, exist_ok=True)
-        self._lock = threading.Lock()
+        self._lock = self._shared_lock_for_path(self._graph_path)
         if not self._graph_path.exists():
             self._write_graph({"nodes": {}})
 
@@ -296,12 +301,38 @@ class DependencyGraph:
             self._write_graph(graph)
 
     def _read_graph(self) -> dict:
-        with self._graph_path.open("r", encoding="utf-8") as file:
-            return json.load(file)
+        last_error: json.JSONDecodeError | None = None
+        for attempt in range(4):
+            try:
+                with self._graph_path.open("r", encoding="utf-8") as file:
+                    return json.load(file)
+            except json.JSONDecodeError as exc:
+                last_error = exc
+                if attempt == 3:
+                    raise
+                # Another graph instance may still be finishing an atomic replace.
+                time.sleep(0.01 * (attempt + 1))
+        assert last_error is not None
+        raise last_error
 
     def _write_graph(self, graph: dict) -> None:
-        with self._graph_path.open("w", encoding="utf-8") as file:
+        with NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=self._graph_path.parent,
+            prefix=f"{self._graph_path.stem}.",
+            suffix=".tmp",
+            delete=False,
+        ) as file:
             json.dump(graph, file, indent=2, sort_keys=True)
+            file.flush()
+            temp_path = Path(file.name)
+        temp_path.replace(self._graph_path)
+
+    @classmethod
+    def _shared_lock_for_path(cls, graph_path: Path) -> threading.Lock:
+        with cls._lock_registry_guard:
+            return cls._lock_registry.setdefault(graph_path.resolve(), threading.Lock())
 
     def _collect_refs_by_health(
         self,

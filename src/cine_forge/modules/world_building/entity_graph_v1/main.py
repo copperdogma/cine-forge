@@ -26,6 +26,10 @@ def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
     """Execute entity relationship graph extraction."""
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
+
     # 1. Extract inputs
     # inputs[stage_id] is a list of artifact data since we used needs_all
     character_bibles = []
@@ -57,7 +61,16 @@ def run_module(
         raise ValueError("entity_graph_v1 requires scene_index input")
 
     # Tiered Model Strategy
-    work_model = params.get("work_model") or params.get("model") or "gemini-2.5-flash"
+    work_model = (
+        runtime_params.get("work_model")
+        or runtime_params.get("utility_model")
+        or params.get("work_model")
+        or params.get("model")
+        or params.get("default_model")
+        or runtime_params.get("default_model")
+        or runtime_params.get("model")
+        or "gemini-2.5-flash"
+    )
 
     # Build resolver to canonicalize AI-written character IDs → character_bible entity_ids
     char_resolver = _build_char_resolver(character_bibles)

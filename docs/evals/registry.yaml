@@ -1592,6 +1592,210 @@ evals:
         git_sha: "62a02d6"
         note: "Post-fix full rerun cleared all six live renders and reclassified the earlier Google blocker as resolved. Mismatch investigation on the two remaining quality failures found both non-default misses model-wrong and non-runtime-blocking: `openai_sora2` on `open_frequency_scene_002_water_tower_night` flattened the scene into generic close coverage, and `google_veo31_fast` kept the props but still lost the storm-wide hopeful staging. `google_veo31` passed both cases, won the quality/runtime/reference trade-off, and became the new default."
 
+  - id: storyboard-generation-quality
+    name: Storyboard Generation Quality
+    type: quality
+    spec_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:8
+    story_refs:
+      - "186"
+    category_refs:
+      - spec:5
+      - spec:6
+      - spec:7
+      - spec:8
+    compromise_refs:
+      - C3
+    description: >
+      Measures the real storyboard-generation lane on representative multi-scene
+      Open Frequency cases. Combines a live runtime harness that records
+      reference availability, prompt-level reference usage, and direct
+      provider-input counts with a multimodal promptfoo judge for recurring
+      character consistency, obvious reference adherence, readable-text
+      failures, and prop-only non-insert collapses.
+    pipeline_stage: visualization
+    runner: custom
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_eval.py --fixture-manifest benchmarks/fixtures/storyboard_generation_quality_cases.json --candidate gpt_image_2_template_grid_storyboards --output-prefix benchmarks/results/storyboard-generation-quality-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_storyboard_generation_quality_dataset.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/storyboard-generation-quality.yaml --no-cache -j 1 --filter-providers 'GPT Image 2 Template Grid Storyboards' --output benchmarks/results/storyboard-generation-quality-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_report.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json --promptfoo-result benchmarks/results/storyboard-generation-quality-quality.json --output-prefix benchmarks/results/storyboard-generation-quality-decision; exit $status"
+    script: benchmarks/scripts/storyboard_generation_quality_report.py
+    config: benchmarks/tasks/storyboard-generation-quality.yaml
+    scorer: benchmarks/scorers/storyboard_understanding_scorer.py
+    golden: benchmarks/fixtures/storyboard_generation_quality_cases.json
+    test_cases: 2
+    default_model: "gpt_image_2_template_grid_storyboards"
+
+    target:
+      metric: overall
+      value: 0.75
+      latency_ms_max: 180000
+      cost_usd_max: 0.40
+      note: "The shipped storyboard lane should keep recurring characters legible across the sequence, avoid readable text and prop-collapse failures, and prove that available reference images actually survive into prompt and provider conditioning instead of disappearing upstream."
+
+    scores:
+      - model: "GPT Image 2 Storyboards"
+        metrics:
+          overall: 0.735
+          python: 0.785
+          rubric: 0.685
+          story_specificity: 1.0
+          style_consistency: 1.0
+          identity_consistency: 0.5
+          reference_fidelity: 0.75
+          text_cleanliness: 0.5
+          success_ratio: 1.0
+          prompt_ref_frames: 7.0
+          direct_refs: 15.0
+        latency_ms: 672297
+        cost_usd: 0.447
+        cost_estimated: true
+        measured: 2026-04-23
+        git_sha: "5fa8a8d"
+        result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-default-square-grid-split-final-2026-04-23-decision.json
+        note: "Split-dimension rerun on the existing full-size `gpt-image-2` storyboard images. The default is strongest on story specificity and style consistency is perfect across the measured packet, but the stricter split report now lands just below the 0.75 floor because identity consistency and text cleanliness are not reliably perfect. Cost/latency remain above target because this lane still generates one image per frame."
+      - model: "GPT Image 2 Square Storyboards"
+        metrics:
+          overall: 0.7288
+          python: 0.8225
+          rubric: 0.635
+          story_specificity: 0.75
+          style_consistency: 1.0
+          identity_consistency: 0.625
+          reference_fidelity: 0.75
+          text_cleanliness: 1.0
+          success_ratio: 1.0
+          prompt_ref_frames: 7.0
+          direct_refs: 15.5
+        latency_ms: 615142.5
+        cost_usd: 0.365
+        cost_estimated: true
+        measured: 2026-04-23
+        git_sha: "5fa8a8d"
+        result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-default-square-grid-split-final-2026-04-23-decision.json
+        note: "Split-dimension rerun on the existing `1024x1024` storyboard images. Square keeps style and text clean and reduces cost versus full-size, but storyboard-stage latency remains close to the per-frame default and story specificity still trails the full-size lane."
+      - model: "GPT Image 2 Template Grid Storyboards"
+        metrics:
+          overall: 0.6775
+          python: 0.745
+          rubric: 0.61
+          story_specificity: 0.5
+          style_consistency: 1.0
+          identity_consistency: 0.5
+          reference_fidelity: 0.75
+          text_cleanliness: 1.0
+          success_ratio: 1.0
+          prompt_ref_frames: 7.0
+          direct_refs: 16.0
+        latency_ms: 326228
+        cost_usd: 0.275
+        cost_estimated: true
+        measured: 2026-04-23
+        git_sha: "5fa8a8d"
+        result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-default-square-grid-split-final-2026-04-23-decision.json
+        note: "Split-dimension rerun confirms the grid lane's real shape: the template grid keeps style consistency and text cleanliness perfect on the measured packets, so the earlier concern was not photoreal drift. The quality loss is concentrated in story specificity and identity consistency. The speed/cost thesis still holds: mean cost fell from `$0.447` to `$0.275`, and mean storyboard-stage latency fell from `410166ms` to `94511.5ms`."
+      - model: "GPT Image 2 Storyboards"
+        metrics:
+          overall: 0.5706
+          python: 0.7412
+          rubric: 0.4
+          success_ratio: 1.0
+          prompt_ref_frames: 7.0
+          direct_refs: 15.0
+        latency_ms: 672297
+        cost_usd: 0.447
+        cost_estimated: true
+        measured: 2026-04-23
+        git_sha: "5fa8a8d"
+        result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-2026-04-23-decision.json
+        note: "First maintained Story 186 rerun after promoting the storyboard default to `gpt-image-2`. Runtime is structurally healthy: both cases completed, and the reference-conditioned case carried 4 available references into 14 prompt-reference frames and 30 direct provider reference inputs. Quality improves over the prior Imagen default (`0.5706` vs `0.4738`) but remains below the 0.75 floor; mean total latency (`672297ms`) and mean cost (`$0.447`) also exceed the current targets. Manual contact-sheet inspection shows scene 002 is visibly present, so part of the scored miss is model-wrong in the multimodal analysis/judge path, while readable whiteboard/text leakage and some character/reference drift remain real product failures."
+      - model: "Imagen 4 Storyboards"
+        metrics:
+          overall: 0.4738
+          python: 0.5975
+          rubric: 0.35
+          success_ratio: 1.0
+          prompt_ref_frames: 7.5
+          direct_refs: 15.5
+        latency_ms: 485361
+        cost_usd: 0.641
+        cost_estimated: true
+        measured: 2026-04-23
+        git_sha: "5fa8a8d"
+        result_file: benchmarks/results/storyboard-generation-quality-story-186-2026-04-23-decision.json
+        note: "Post-fix Story 186 rerun after wiring storyboard reference transport. The structural blocker is cleared: the conditioned case now records 4 available refs, 15 prompt-reference frames, and 31 direct reference inputs, so the decision moved off `lane_drops_references_before_generation` to `quality_below_initial_floor`. Remaining red is no longer transport-wrong; it is storyboard usefulness, with readable text artifacts still triggering hard-constraint failure while the evaluation judge still under-reads the clearly present scene-002 catwalk beat."
+      - model: "Imagen 4 Storyboards"
+        metrics:
+          overall: 0.5381
+          python: 0.5413
+          rubric: 0.535
+          success_ratio: 1.0
+          prompt_ref_frames: 0.0
+          direct_refs: 0.0
+        latency_ms: 391283
+        cost_usd: 0.799
+        cost_estimated: true
+        measured: 2026-04-22
+        git_sha: "5fa8a8d"
+        result_file: benchmarks/results/storyboard-generation-quality-story-186-2026-04-22-decision.json
+        note: "First live Story 186 run on the shipped Imagen storyboard lane. Both cases completed, but the reference-conditioned case had 4 available reference images and still recorded 0 prompt-reference frames and 0 direct reference inputs, so the decision is `lane_drops_references_before_generation`. This is runtime-blocking local-code/runtime failure before any subjective quality debate; the remaining red quality rows stay secondary until reference transport is fixed."
+    attempts:
+      - date: 2026-04-22
+        git_sha: "5fa8a8d"
+        note: "The first promptfoo pass after the expensive runtime completed exposed a local-code eval bug: `storyboard_understanding_scorer.py` resolved `target.json` from the repo root instead of the benchmark workspace, zeroing both deterministic assertions with `No such file or directory`. Fixed same day by resolving benchmark-relative target paths; reran the dataset, promptfoo, and decision report without repeating the expensive live generation. Classification: local-code eval bug, not model-wrong or golden-wrong."
+      - date: 2026-04-22
+        git_sha: "5fa8a8d"
+        note: "Final measured result after the scorer fix: `overall 0.5381 / python 0.5413 / rubric 0.535`. Runtime truth is decisive and runtime-blocking: `open_frequency_sequence_reference_conditioned` had 4 available reference images but 0 prompt refs and 0 direct refs, so the storyboard lane is dropping references before generation. Manual spot-check of the generated `scene_002` catwalk frames shows that the multimodal analysis model under-read an actually present location beat, so the scene-specific omission is model-wrong in the evaluation lane, not golden-wrong. Separately, the conditioned packet currently uses abstract placeholder reference cards rather than realistic portraits/locations, so qualitative reference-fidelity misses are partly golden-wrong for this fixture even though the deterministic runtime reference-count failure remains valid. The registry command was updated to tolerate promptfoo exit 100 so red evals still produce a decision report."
+      - date: 2026-04-23
+        git_sha: "5fa8a8d"
+        note: "Reference transport is now fixed in the shipped storyboard lane. Storyboard prompts record `reference_images`, reference-conditioned frames fall back to a direct-reference-capable OpenAI image-edit path when the requested Imagen route cannot accept image inputs, and storyboard artifacts persist `direct_reference_images` so the runtime harness can read transport truth from artifacts instead of placeholders. A live conditioned rerun moved the case from `4 available / 0 prompt / 0 direct` to `4 available / 15 prompt / 31 direct`, clearing the runtime-blocking transport failure."
+      - date: 2026-04-23
+        git_sha: "5fa8a8d"
+        note: "The first post-fix promptfoo rerun exposed one more local-code eval issue: the judge sometimes emitted integer `evidence.frame_id` values, which zeroed the deterministic scorer even when the analysis was otherwise usable. After coercing numeric frame ids to strings and rerunning the dataset/judge/report path, the lane now scores `overall 0.4738 / python 0.5975 / rubric 0.35` with the decision `quality_below_initial_floor`. Manual spot-check of the current prompt-only and conditioned scene-002 catwalk frames shows the beat is visibly present, so the judge's scene omission remains model-wrong; the remaining real product failure is storyboard image quality, especially readable text artifacts. The placeholder reference cards still make some fine-grained reference-fidelity judgments partly golden-wrong."
+      - date: 2026-04-23
+        git_sha: "5fa8a8d"
+        note: "After org verification unlocked `gpt-image-2`, the storyboard default and benchmark default moved to `gpt_image_2_storyboards`. The maintained runtime + promptfoo rerun scored `overall 0.5706 / python 0.7412 / rubric 0.4` with 2/2 runtime success, `410166ms` mean storyboard-stage latency, `$0.447` mean total cost, `7.0` mean prompt-reference frames, and `15.0` mean direct refs. Classification: reference transport is green; quality remains below floor, with true product failures in readable text/whiteboard leakage and identity/reference drift, plus model-wrong under-reading by the multimodal analysis/judge on visible scene-002 water-tower/catwalk frames. Latency and cost remain above target, so the next optimization should measure a scene-grid or smaller-output-size approach rather than another per-frame prompt tweak alone."
+      - date: 2026-04-23
+        git_sha: "5fa8a8d"
+        note: "Smaller-output follow-up found one real product optimization and one eval bug. Live `gpt-image-2` rejected `512x512` and `1024x576` as below the current minimum pixel budget, so the bounded candidate used documented `1024x1024` output. The first square judge pass exposed that the provider only sent the first six frames, hiding scene 002; fixed the provider to sample evenly across the whole sequence and label images before rerunning the cheap judge. Corrected comparison: full-size default `0.8562` quality / `$0.447` / `410166ms` storyboard stage; square `0.8137` / `$0.365` / `382345ms`. Classification: old below-floor score was local-code eval-wrong; square is viable but not a default flip because it weakens film-frame composition while barely changing latency."
+      - id: "004"
+        story: attempts/004-storyboard-generation-quality-template-grid.md
+        date: 2026-04-23
+        status: inconclusive
+        approach: "Add a template-backed scene-grid storyboard lane that passes a blank grid image as a reference, generates one image per scene chunk, and slices panels into frame artifacts."
+        worker_model: "GPT-5"
+        worker_model_date: 2026-04-23
+        subject_model: "gpt-image-2"
+        score_before: 0.8562
+        score_after: 0.666
+        latency_before: 672297
+        latency_after: 326228
+        cost_before: 0.447
+        cost_after: 0.275
+        retry_when:
+          - condition: new-approach
+            note: "Promote grid rendering only after a follow-up improves reference-conditioned quality above the per-frame default or after real generated character reference images replace abstract placeholder refs."
+      - id: "005"
+        story: attempts/005-storyboard-generation-quality-dimension-split.md
+        date: 2026-04-23
+        status: succeeded
+        approach: "Split storyboard quality reporting into story specificity, style consistency, identity consistency, reference fidelity, text cleanliness, prop discipline, and evidence dimensions."
+        worker_model: "GPT-5"
+        worker_model_date: 2026-04-23
+        subject_model: "gpt-image-2"
+        score_before: 0.8562
+        score_after: 0.735
+        latency_before: 672297
+        latency_after: 672297
+        cost_before: 0.447
+        cost_after: 0.447
+        retry_when:
+          - condition: new-approach
+            note: "Use the split dimensions for future grid prompt work; do not treat aggregate quality alone as evidence of style or identity behavior."
+      - date: 2026-04-23
+        git_sha: "5fa8a8d"
+        note: "Product decision after reviewing split dimensions: the shipped storyboard lane now favors the template-grid candidate as the fast batch first pass despite lower story-specificity and identity scores. Rationale: grid keeps style consistency and text cleanliness perfect in the measured packet, cuts storyboard-stage latency from `410166ms` to `94511.5ms`, cuts mean cost from `$0.447` to `$0.275`, and still preserves the existing per-frame artifact contract so users can later regenerate individual failed panels. The registry command/default candidate now targets `gpt_image_2_template_grid_storyboards`; use `storyboard_grid_mode=off` to force the older per-frame path for comparison."
+
   - id: runtime-media-validation
     name: Runtime Media Validation
     type: quality

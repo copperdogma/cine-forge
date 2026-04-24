@@ -58,6 +58,8 @@ export function StoryboardPanel({
     hasActiveRun && !!runState && runState.state.recipe_id !== 'storyboard_generation'
   const runBlocked = startRun.isPending || hasActiveRun
   const canStartStoryboard = !!latestInputPath && !runBlocked && preflight?.status !== 'soft_block'
+  const storyboardStartFrom = preflight?.start_from ?? undefined
+  const storyboardReusesShotPlan = storyboardStartFrom === 'storyboards'
   const artifactData = storyboardArtifact?.payload?.data as Record<string, unknown> | undefined
   const detailHref = storyboardGroup
     ? `/${projectId}/artifacts/storyboard/${sceneId}/${storyboardGroup.latest_version}`
@@ -77,14 +79,19 @@ export function StoryboardPanel({
         recipe_id: 'storyboard_generation',
         accept_config: true,
         force: !!storyboardGroup,
+        start_from: storyboardStartFrom,
         scene_scope: sceneScope,
       })
 
       useChatStore.getState().setActiveRun(projectId, run_id)
       toast.success(
         storyboardGroup
-          ? `Refreshing storyboards for ${configuredScopeLabel.toLowerCase()}`
-          : `Started storyboard generation for ${configuredScopeLabel.toLowerCase()}`,
+          ? storyboardReusesShotPlan
+            ? `Refreshing storyboard generation from the current shot plan for ${configuredScopeLabel.toLowerCase()}`
+            : `Refreshing storyboards for ${configuredScopeLabel.toLowerCase()}`
+          : storyboardReusesShotPlan
+            ? `Started storyboard generation from the current shot plan for ${configuredScopeLabel.toLowerCase()}`
+            : `Started storyboard generation for ${configuredScopeLabel.toLowerCase()}`,
       )
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to start storyboard generation')

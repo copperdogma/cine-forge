@@ -1,0 +1,27 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "candidates": [
+    {
+      "candidate_variant": "imagen_4_storyboards",
+      "candidate_label": "Imagen 4 Storyboards",
+      "image_model": "imagen-4.0-generate-001",
+      "success_ratio": 1.0,
+      "quality_overall": 0.5381,
+      "quality_python": 0.5413,
+      "quality_rubric": 0.535,
+      "mean_total_elapsed_ms": 391283.0,
+      "mean_storyboard_stage_elapsed_ms": 147876.5,
+      "mean_total_cost_usd": 0.799,
+      "mean_total_frames": 14.0,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 0.0,
+      "mean_direct_reference_input_count": 0.0,
+      "calls": 2
+    }
+  ],
+  "recommendation": {
+    "decision": "lane_drops_references_before_generation",
+    "rationale": "The default storyboard lane had reference images available on the project state, but the measured prompt-reference and direct-reference counts stayed at zero. That is a structural failure before any subjective image judging."
+  },
+  "previous_default": "imagen_4_storyboards"
+}

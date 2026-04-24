@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import threading
 from pathlib import Path
 
 import pytest
 
+import cine_forge.artifacts.graph as graph_module
 from cine_forge.artifacts import ArtifactStore, DependencyGraph
 from cine_forge.schemas import ArtifactHealth, ArtifactMetadata, ArtifactRef
 
@@ -223,3 +225,74 @@ def test_graph_records_assessment_provenance(tmp_path: Path) -> None:
     assert info["reason"] == "Performance note depends on the old character motivation."
     assert ArtifactRef.model_validate(info["source_artifact_ref"]) == assessment_ref
     assert refs == [stale_ref]
+
+
+@pytest.mark.unit
+def test_dependency_graph_retries_transient_json_decode_errors(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    graph = DependencyGraph(project_dir=tmp_path)
+    ref = ArtifactRef(artifact_type="scene", entity_id="scene_001", version=1, path="scene/v1.json")
+    graph.register_artifact(ref, [])
+
+    original_load = graph_module.json.load
+    call_count = 0
+
+    def flaky_load(file_obj):
+        nonlocal call_count
+        call_count += 1
+        if call_count == 1:
+            raise graph_module.json.JSONDecodeError("transient", '{"nodes":', 9)
+        return original_load(file_obj)
+
+    monkeypatch.setattr(graph_module.json, "load", flaky_load)
+
+    assert graph.get_health(ref) == ArtifactHealth.VALID
+    assert call_count >= 2
+
+
+@pytest.mark.unit
+def test_dependency_graph_tolerates_concurrent_read_write_access(tmp_path: Path) -> None:
+    writer_graph = DependencyGraph(project_dir=tmp_path)
+    reader_graph = DependencyGraph(project_dir=tmp_path)
+    large_suffix = "x" * 100_000
+    errors: list[Exception] = []
+    stop = threading.Event()
+
+    def writer() -> None:
+        previous_ref: ArtifactRef | None = None
+        try:
+            for version in range(1, 21):
+                ref = ArtifactRef(
+                    artifact_type="scene",
+                    entity_id=f"scene_{version:03d}",
+                    version=version,
+                    path=f"artifacts/scene/scene_{version:03d}/{large_suffix}.json",
+                )
+                upstream = [previous_ref] if previous_ref else []
+                writer_graph.register_artifact(ref, upstream)
+                previous_ref = ref
+        except Exception as exc:  # pragma: no cover - regression trap
+            errors.append(exc)
+        finally:
+            stop.set()
+
+    def reader() -> None:
+        try:
+            while not stop.is_set():
+                reader_graph.get_stale()
+                reader_graph.get_refs_by_health(ArtifactHealth.VALID, ArtifactHealth.STALE)
+        except Exception as exc:  # pragma: no cover - regression trap
+            errors.append(exc)
+            stop.set()
+
+    writer_thread = threading.Thread(target=writer)
+    reader_thread = threading.Thread(target=reader)
+    writer_thread.start()
+    reader_thread.start()
+    writer_thread.join()
+    reader_thread.join(timeout=2)
+    stop.set()
+
+    assert errors == []

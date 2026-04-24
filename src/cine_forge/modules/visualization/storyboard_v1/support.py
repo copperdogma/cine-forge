@@ -9,24 +9,28 @@ from typing import Any
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactRef, ShotPlan, TrackEntry
 
-DEFAULT_IMAGE_MODEL = "imagen-4.0-generate-001"
+DEFAULT_IMAGE_MODEL = "gpt-image-2"
+DEFAULT_GRID_MODE = "template"
+DEFAULT_GRID_MAX_PANELS = 8
 DEFAULT_STYLE = "sketch"
 STYLE_PROMPTS: dict[str, str] = {
     "sketch": (
-        "Render as a rough black-and-white production storyboard sketch with fast pencil energy,"
-        " readable silhouettes, clear staging, and low-detail backgrounds."
+        "Render as a single full-bleed monochrome storyboard frame, not a storyboard page."
+        " Use rough pencil linework, readable silhouettes, cinematic blocking, restrained"
+        " grayscale shading, and low-detail backgrounds."
     ),
     "clean_line": (
-        "Render as clean storyboard line art with crisp outlines, restrained shading, and"
-        " strong composition clarity."
+        "Render as a single full-bleed monochrome storyboard frame with clean line art,"
+        " crisp outlines, restrained shading, and strong composition clarity."
     ),
     "animation_style": (
-        "Render as simplified animation storyboard art with expressive posing, readable"
-        " silhouettes, and stylized but production-useful clarity."
+        "Render as a single full-bleed monochrome storyboard frame with simplified"
+        " animation-style linework, expressive posing, readable silhouettes, and"
+        " production-useful clarity."
     ),
     "abstract_color_coded": (
-        "Render as abstract color-coded storyboard art using simple shapes and controlled"
-        " color blocks to clarify blocking and frame balance."
+        "Render as a single full-bleed storyboard frame using abstract color-coded shapes"
+        " and controlled color blocks to clarify blocking and frame balance."
     ),
     "photoreal": (
         "Render as a cinematic photoreal concept frame while preserving storyboard-style"

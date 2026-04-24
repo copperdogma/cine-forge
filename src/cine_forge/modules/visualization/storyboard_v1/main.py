@@ -15,6 +15,8 @@ from cine_forge.modules.visualization.storyboard_v1.prompting import (
     storyboard_lineage,
 )
 from cine_forge.modules.visualization.storyboard_v1.support import (
+    DEFAULT_GRID_MAX_PANELS,
+    DEFAULT_GRID_MODE,
     DEFAULT_IMAGE_MODEL,
     anticipated_storyboard_ref,
     average_values,
@@ -60,9 +62,7 @@ def run_module(
         runtime_params = {}
     shot_plan_payloads = filter_scene_payloads(shot_plan_payloads, runtime_params)
     shot_plans = [
-        ShotPlan.model_validate(item)
-        for item in shot_plan_payloads
-        if isinstance(item, dict)
+        ShotPlan.model_validate(item) for item in shot_plan_payloads if isinstance(item, dict)
     ]
     if not shot_plans:
         raise ValueError("storyboard_v1 could not parse any shot_plan inputs")
@@ -84,13 +84,42 @@ def run_module(
         raise ValueError("storyboard_v1 photoreal style requires params.photoreal_opt_in=true")
 
     image_model = (
-        params.get("image_model")
-        or runtime_params.get("image_model")
-        or DEFAULT_IMAGE_MODEL
+        params.get("image_model") or runtime_params.get("image_model") or DEFAULT_IMAGE_MODEL
+    )
+    image_size = params.get("image_size") or runtime_params.get("image_size")
+    if image_size is not None and not isinstance(image_size, str):
+        raise ValueError("storyboard_v1 image_size must be a string when provided")
+    identity_model = (
+        params.get("identity_model")
+        or runtime_params.get("identity_model")
+        or params.get("work_model")
+        or runtime_params.get("work_model")
+        or params.get("default_model")
+        or runtime_params.get("default_model")
+        or runtime_params.get("model")
+        or (
+            None
+            if str(image_model) == "mock"
+            else (project_config.default_model if project_config else None)
+        )
+        or ("mock" if str(image_model) == "mock" else "claude-sonnet-4-6")
     )
     max_retries = int(params.get("max_retries") or runtime_params.get("max_retries") or 2)
     retry_delay_seconds = float(
         params.get("retry_delay_seconds") or runtime_params.get("retry_delay_seconds") or 0.5
+    )
+    grid_mode = _resolve_grid_mode(
+        params=params,
+        runtime_params=runtime_params,
+        image_model=str(image_model),
+    )
+    if grid_mode not in {"off", "template", "text"}:
+        raise ValueError("storyboard_v1 grid_mode must be one of: off, template, text")
+    grid_max_panels = int(
+        params.get("grid_max_panels")
+        or runtime_params.get("storyboard_grid_max_panels")
+        or runtime_params.get("grid_max_panels")
+        or DEFAULT_GRID_MAX_PANELS
     )
 
     look_and_feel_by_scene = scene_map(inputs.get("look_and_feel"))
@@ -127,6 +156,7 @@ def run_module(
             plan=plan,
             style=style,
             image_model=str(image_model),
+            image_size=image_size,
             aspect_ratio=aspect_ratio_by_scene.get(plan.scene_id)
             or aspect_ratio_by_scene["__default__"],
             project_config_data=project_config_data,
@@ -134,8 +164,11 @@ def run_module(
             intent_mood_data=intent_mood,
             character_bibles=character_bibles,
             location_bibles=location_bibles,
+            identity_model=str(identity_model),
             max_retries=max_retries,
             retry_delay_seconds=retry_delay_seconds,
+            grid_mode=grid_mode,
+            grid_max_panels=grid_max_panels,
         )
         storyboard_artifacts.append(
             {
@@ -166,6 +199,10 @@ def run_module(
                         "frame_count": len(storyboard.frames),
                         "style": style,
                         "image_model": image_model,
+                        "image_size": image_size,
+                        "identity_model": identity_model,
+                        "grid_mode": grid_mode,
+                        "grid_max_panels": grid_max_panels,
                     },
                 },
             }
@@ -193,8 +230,7 @@ def run_module(
             "metadata": {
                 "lineage": [track_manifest_ref.model_dump(mode="json")],
                 "intent": (
-                    "Updated track manifest with storyboard entries for always-playable "
-                    "fallback."
+                    "Updated track manifest with storyboard entries for always-playable fallback."
                 ),
                 "rationale": (
                     "Storyboard frames become the next visual representation layer when animatics"
@@ -207,6 +243,24 @@ def run_module(
     )
 
     return {"artifacts": storyboard_artifacts, "cost": total_cost}
+
+
+def _resolve_grid_mode(
+    *,
+    params: dict[str, Any],
+    runtime_params: dict[str, Any],
+    image_model: str,
+) -> str:
+    explicit = (
+        params.get("grid_mode")
+        or runtime_params.get("storyboard_grid_mode")
+        or runtime_params.get("grid_mode")
+    )
+    if explicit:
+        return str(explicit)
+    if image_model == "mock":
+        return "off"
+    return DEFAULT_GRID_MODE
 
 
 def _update_track_manifest_with_storyboards(

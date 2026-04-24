@@ -61,8 +61,19 @@ def run_module(
     announce = context.get("announce_artifact")
     canonical = _extract_canonical_script(inputs)
     script_text = canonical["script_text"]
+    runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
+    if not isinstance(runtime_params, dict):
+        runtime_params = {}
 
-    work_model = params.get("work_model") or "gemini-2.5-flash-lite"
+    work_model = (
+        params.get("work_model")
+        or params.get("model")
+        or params.get("default_model")
+        or runtime_params.get("work_model")
+        or runtime_params.get("default_model")
+        or runtime_params.get("model")
+        or "gemini-2.5-flash-lite"
+    )
     max_tokens = int(params.get("max_tokens", 4096))
 
     logger.info("Extracting script bible via %s...", work_model)

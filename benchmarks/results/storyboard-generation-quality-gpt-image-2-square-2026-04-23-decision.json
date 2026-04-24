@@ -1,0 +1,27 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "candidates": [
+    {
+      "candidate_variant": "gpt_image_2_square_storyboards",
+      "candidate_label": "GPT Image 2 Square Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.5844,
+      "quality_python": 0.7188,
+      "quality_rubric": 0.45,
+      "mean_total_elapsed_ms": 615142.5,
+      "mean_storyboard_stage_elapsed_ms": 382345.0,
+      "mean_total_cost_usd": 0.365,
+      "mean_total_frames": 14.5,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.0,
+      "mean_direct_reference_input_count": 15.5,
+      "calls": 2
+    }
+  ],
+  "recommendation": {
+    "decision": "keep_current_default",
+    "rationale": "Current default storyboard candidate is missing from the result set."
+  },
+  "previous_default": "gpt_image_2_storyboards"
+}

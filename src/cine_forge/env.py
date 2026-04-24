@@ -7,6 +7,9 @@ legacy generic provider names for older tooling and tests.
 from __future__ import annotations
 
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 
 _PROVIDER_ENV_ALIASES: dict[str, tuple[str, ...]] = {
     "OPENAI_API_KEY": ("CINE_FORGE_OPENAI_API_KEY", "OPENAI_API_KEY"),
@@ -39,7 +42,7 @@ def resolve_env(name: str) -> str | None:
         value = os.environ.get(alias)
         if value:
             if alias != name:
-                os.environ.setdefault(name, value)
+                os.environ[name] = value
             return value
     return None
 
@@ -64,3 +67,56 @@ def export_legacy_provider_envs() -> dict[str, str]:
         if value:
             exported[generic_name] = value
     return exported
+
+
+def _shared_checkout_root(repo_root: Path) -> Path | None:
+    """Return the shared/main checkout root for a git worktree, if one exists."""
+    git_path = repo_root / ".git"
+    if git_path.is_dir() or not git_path.exists():
+        return None
+    try:
+        git_pointer = git_path.read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    if not git_pointer.startswith("gitdir:"):
+        return None
+
+    gitdir = Path(git_pointer.split(":", 1)[1].strip())
+    if not gitdir.is_absolute():
+        gitdir = (repo_root / gitdir).resolve()
+
+    commondir_path = gitdir / "commondir"
+    if not commondir_path.is_file():
+        return None
+    try:
+        commondir = commondir_path.read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    common_git_dir = Path(commondir)
+    if not common_git_dir.is_absolute():
+        common_git_dir = (gitdir / common_git_dir).resolve()
+
+    shared_root = common_git_dir.parent
+    if shared_root == repo_root:
+        return None
+    return shared_root
+
+
+def load_cine_forge_dotenv(repo_root: Path | None = None) -> tuple[Path, ...]:
+    """Load repo-scoped env files for this checkout and its shared worktree root."""
+    resolved_root = (repo_root or Path(__file__).resolve().parents[2]).resolve()
+    roots = [resolved_root]
+    shared_root = _shared_checkout_root(resolved_root)
+    if shared_root is not None:
+        roots.append(shared_root)
+
+    loaded_paths: list[Path] = []
+    for root in roots:
+        for filename in (".env", ".env.local"):
+            dotenv_path = root / filename
+            if dotenv_path.is_file():
+                load_dotenv(dotenv_path)
+                loaded_paths.append(dotenv_path)
+
+    export_legacy_provider_envs()
+    return tuple(loaded_paths)

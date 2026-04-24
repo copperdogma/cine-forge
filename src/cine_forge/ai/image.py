@@ -1,4 +1,4 @@
-"""Image generation via Google Imagen 4 and OpenAI gpt-image-1.
+"""Image generation via Google Imagen and OpenAI GPT Image models.
 
 Provides prompt compilation plus provider dispatch:
   - synthesize_image_prompt: build a rich visual prompt from a bible dict
@@ -6,8 +6,8 @@ Provides prompt compilation plus provider dispatch:
   - generate_image: dispatch to the appropriate provider and return raw image bytes + model used
 
 Provider routing:
-  - Models starting with "gpt-" → OpenAI Images API
-  - All others → Google Imagen API
+  - OpenAI GPT image models (for example ``gpt-image-1``) → OpenAI Images API
+  - Google Imagen models (for example ``imagen-4.0-generate-001``) → Google Imagen API
 
 Provider keys prefer ``CINE_FORGE_*`` env names and fall back to the generic
 provider names inside this repo process when needed.
@@ -17,8 +17,11 @@ from __future__ import annotations
 
 import base64
 import json
+import mimetypes
 import urllib.error
 import urllib.request
+import uuid
+from pathlib import Path
 from typing import Any, Literal
 
 from cine_forge.env import require_env
@@ -37,21 +40,35 @@ ASPECT_RATIO_BY_ENTITY_TYPE: dict[str, str] = {
     "prop": "4:3",         # product/design sheet
 }
 
-# OpenAI gpt-image-1 size mappings (closest to Imagen aspect ratios).
+# OpenAI GPT image size mappings (closest to Imagen aspect ratios).
 OPENAI_SIZE_BY_ENTITY_TYPE: dict[str, str] = {
     "character": "1024x1536",  # portrait (≈9:16)
     "location": "1536x1024",   # landscape (≈16:9)
     "prop": "1024x1024",       # square (closest to 4:3)
 }
 
-# Models that route to OpenAI instead of Google.
-_OPENAI_MODELS: frozenset[str] = frozenset({"gpt-image-1"})
+REFERENCE_IMAGE_FALLBACK_MODEL = "gpt-image-1"
 
 _OPENAI_IMAGE_COST_BY_MODEL: dict[str, dict[str, dict[str, float]]] = {
     "gpt-image-1": {
         "low": {"1024x1024": 0.011, "1024x1536": 0.016, "1536x1024": 0.016},
         "medium": {"1024x1024": 0.042, "1024x1536": 0.063, "1536x1024": 0.063},
         "high": {"1024x1024": 0.167, "1024x1536": 0.25, "1536x1024": 0.25},
+    },
+    "gpt-image-1.5": {
+        "low": {"1024x1024": 0.009, "1024x1536": 0.013, "1536x1024": 0.013},
+        "medium": {"1024x1024": 0.034, "1024x1536": 0.05, "1536x1024": 0.05},
+        "high": {"1024x1024": 0.133, "1024x1536": 0.2, "1536x1024": 0.2},
+    },
+    "chatgpt-image-latest": {
+        "low": {"1024x1024": 0.009, "1024x1536": 0.013, "1536x1024": 0.013},
+        "medium": {"1024x1024": 0.034, "1024x1536": 0.05, "1536x1024": 0.05},
+        "high": {"1024x1024": 0.133, "1024x1536": 0.2, "1536x1024": 0.2},
+    },
+    "gpt-image-2": {
+        "low": {"1024x1024": 0.00816, "1024x1536": 0.01224, "1536x1024": 0.012},
+        "medium": {"1024x1024": 0.03168, "1024x1536": 0.04752, "1536x1024": 0.04704},
+        "high": {"1024x1024": 0.1248, "1024x1536": 0.1872, "1536x1024": 0.18624},
     },
 }
 
@@ -71,6 +88,14 @@ _MOCK_IMAGE_BYTES = (
 
 class ImageGenerationError(Exception):
     """Raised when the image generation API call fails."""
+
+
+def is_openai_image_model(model: str) -> bool:
+    return model.startswith("gpt-image-") or model == "chatgpt-image-latest"
+
+
+def is_google_imagen_model(model: str) -> bool:
+    return model.startswith("imagen-")
 
 
 def _ensure_sentence(value: str) -> str:
@@ -297,6 +322,8 @@ def _generate_image_openai(
     entity_type: str = "character",
     model: str = "gpt-image-1",
     quality: Literal["auto", "low", "medium", "high"] = "auto",
+    reference_image_paths: list[str] | None = None,
+    size: str | None = None,
 ) -> tuple[bytes, str]:
     """Generate an image via OpenAI gpt-image-1 and return (image_bytes, model_used).
 
@@ -307,37 +334,75 @@ def _generate_image_openai(
     except RuntimeError as exc:
         raise ImageGenerationError(str(exc)) from exc
 
-    size = OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")
+    resolved_size = size or OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")
 
-    payload: dict[str, Any] = {
-        "model": model,
-        "prompt": prompt,
-        "n": 1,
-        "size": size,
-        "quality": quality,
-        "output_format": "jpeg",
-    }
+    cleaned_reference_paths = [
+        str(Path(path))
+        for path in (reference_image_paths or [])
+        if isinstance(path, str) and path.strip()
+    ]
+    if cleaned_reference_paths:
+        if len(cleaned_reference_paths) > 16:
+            raise ImageGenerationError(
+                "OpenAI image edit supports at most 16 reference images per request"
+            )
+        multipart_body, boundary = _build_openai_edit_multipart(
+            model=model,
+            prompt=prompt,
+            size=resolved_size,
+            quality=quality,
+            output_format="jpeg",
+            reference_image_paths=cleaned_reference_paths,
+        )
+        url = f"{OPENAI_BASE_URL}/images/edits"
+        req = urllib.request.Request(
+            url,
+            data=multipart_body,
+            headers={
+                "Content-Type": f"multipart/form-data; boundary={boundary}",
+                "Authorization": f"Bearer {api_key}",
+            },
+            method="POST",
+        )
+    else:
+        payload: dict[str, Any] = {
+            "model": model,
+            "prompt": prompt,
+            "n": 1,
+            "size": resolved_size,
+            "quality": quality,
+            "output_format": "jpeg",
+        }
 
-    url = f"{OPENAI_BASE_URL}/images/generations"
-    request_bytes = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        url,
-        data=request_bytes,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
-        method="POST",
-    )
+        url = f"{OPENAI_BASE_URL}/images/generations"
+        request_bytes = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=request_bytes,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key}",
+            },
+            method="POST",
+        )
 
     try:
         with urllib.request.urlopen(req, timeout=120) as resp:
             response_data = json.loads(resp.read())
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
-        raise ImageGenerationError(
-            f"OpenAI Images API returned HTTP {exc.code}: {body}"
-        ) from exc
+        if cleaned_reference_paths and "Unknown parameter:" in body:
+            response_data = _retry_openai_edit_with_optional_fields_removed(
+                api_key=api_key,
+                model=model,
+                prompt=prompt,
+                size=resolved_size,
+                reference_image_paths=cleaned_reference_paths,
+            )
+        else:
+            raise ImageGenerationError(
+                f"OpenAI Images API returned HTTP {exc.code}: {body}"
+            ) from exc
     except urllib.error.URLError as exc:
         raise ImageGenerationError(
             f"OpenAI Images API request failed: {exc.reason}"
@@ -417,25 +482,134 @@ def _generate_image_imagen(
     return image_bytes, model
 
 
+def supports_direct_reference_images(model: str) -> bool:
+    return is_openai_image_model(model)
+
+
+def _build_openai_edit_multipart(
+    *,
+    model: str,
+    prompt: str,
+    size: str,
+    quality: Literal["auto", "low", "medium", "high"] | None,
+    output_format: str | None,
+    reference_image_paths: list[str],
+) -> tuple[bytes, str]:
+    boundary = f"----CineForge{uuid.uuid4().hex}"
+    body = bytearray()
+
+    def add_field(name: str, value: str) -> None:
+        body.extend(f"--{boundary}\r\n".encode())
+        body.extend(
+            f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode()
+        )
+        body.extend(value.encode("utf-8"))
+        body.extend(b"\r\n")
+
+    def add_file(name: str, path: str) -> None:
+        file_path = Path(path)
+        mime_type = mimetypes.guess_type(file_path.name)[0] or "image/jpeg"
+        file_bytes = file_path.read_bytes()
+        body.extend(f"--{boundary}\r\n".encode())
+        body.extend(
+            (
+                f'Content-Disposition: form-data; name="{name}"; '
+                f'filename="{file_path.name}"\r\n'
+            ).encode()
+        )
+        body.extend(f"Content-Type: {mime_type}\r\n\r\n".encode())
+        body.extend(file_bytes)
+        body.extend(b"\r\n")
+
+    add_field("model", model)
+    add_field("prompt", prompt)
+    add_field("size", size)
+    if quality is not None:
+        add_field("quality", quality)
+    if output_format is not None:
+        add_field("output_format", output_format)
+    for path in reference_image_paths:
+        add_file("image[]", path)
+
+    body.extend(f"--{boundary}--\r\n".encode())
+    return bytes(body), boundary
+
+
+def _retry_openai_edit_with_optional_fields_removed(
+    *,
+    api_key: str,
+    model: str,
+    prompt: str,
+    size: str,
+    reference_image_paths: list[str],
+) -> dict[str, Any]:
+    attempts = [
+        {"quality": None, "output_format": "jpeg"},
+        {"quality": None, "output_format": None},
+    ]
+    last_error: tuple[int, str] | None = None
+    for fields in attempts:
+        multipart_body, boundary = _build_openai_edit_multipart(
+            model=model,
+            prompt=prompt,
+            size=size,
+            quality=fields["quality"],
+            output_format=fields["output_format"],
+            reference_image_paths=reference_image_paths,
+        )
+        req = urllib.request.Request(
+            f"{OPENAI_BASE_URL}/images/edits",
+            data=multipart_body,
+            headers={
+                "Content-Type": f"multipart/form-data; boundary={boundary}",
+                "Authorization": f"Bearer {api_key}",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                return json.loads(resp.read())
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            last_error = (exc.code, body)
+            if "Unknown parameter:" not in body:
+                break
+        except urllib.error.URLError as exc:
+            raise ImageGenerationError(
+                f"OpenAI Images API request failed: {exc.reason}"
+            ) from exc
+    if last_error is None:
+        raise ImageGenerationError("OpenAI Images API edit retry failed")
+    raise ImageGenerationError(
+        f"OpenAI Images API returned HTTP {last_error[0]}: {last_error[1]}"
+    )
+
+
 def generate_image(
     prompt: str,
     entity_type: str = "character",
     model: str = DEFAULT_MODEL,
     aspect_ratio: str | None = None,
     quality: Literal["auto", "low", "medium", "high"] = "auto",
+    reference_image_paths: list[str] | None = None,
+    size: str | None = None,
 ) -> tuple[bytes, str]:
     """Generate an image and return (image_bytes, model_used).
 
     Routes to the appropriate provider based on model ID:
-      - "gpt-image-1" → OpenAI Images API
-      - All others → Google Imagen API
+      - OpenAI GPT image models → OpenAI Images API
+      - Imagen models → Google Imagen API
 
     Args:
         prompt: The visual description to generate from.
         entity_type: Used to pick default aspect ratio / size if not specified.
         model: Model ID — determines provider routing.
         aspect_ratio: Override aspect ratio (Imagen only). Defaults by entity_type:
-            character → "9:16", location → "16:9", prop → "4:3".
+            character -> "9:16", location -> "16:9", prop -> "4:3".
+        reference_image_paths: Optional absolute file paths to reference images.
+            Currently supported for OpenAI GPT Image models only.
+        size: Optional OpenAI image size override. When omitted, the default
+            size is derived from entity_type.
 
     Returns:
         (image_bytes, model_used) where image_bytes is JPEG-encoded image data.
@@ -445,9 +619,21 @@ def generate_image(
     """
     if model == "mock":
         return _MOCK_IMAGE_BYTES, model
-    if model in _OPENAI_MODELS:
-        return _generate_image_openai(prompt, entity_type, model, quality)
-    return _generate_image_imagen(prompt, entity_type, model, aspect_ratio)
+    if is_openai_image_model(model):
+        return _generate_image_openai(
+            prompt,
+            entity_type,
+            model,
+            quality,
+            reference_image_paths=reference_image_paths,
+            size=size,
+        )
+    if is_google_imagen_model(model):
+        return _generate_image_imagen(prompt, entity_type, model, aspect_ratio)
+    raise ImageGenerationError(
+        f"Unsupported image model '{model}'. "
+        "Expected an OpenAI GPT image model or Google Imagen model."
+    )
 
 
 def estimate_image_generation_cost_usd(
@@ -455,15 +641,20 @@ def estimate_image_generation_cost_usd(
     *,
     entity_type: str = "character",
     quality: Literal["auto", "low", "medium", "high"] = "auto",
+    size: str | None = None,
 ) -> float:
     """Return a best-effort per-image cost estimate for supported providers."""
     if model == "mock":
         return 0.0
 
-    if model in _OPENAI_MODELS:
-        size = OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")
+    if is_openai_image_model(model):
+        resolved_size = size or OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")
         effective_quality = "medium" if quality == "auto" else quality
-        return _OPENAI_IMAGE_COST_BY_MODEL.get(model, {}).get(effective_quality, {}).get(size, 0.0)
+        return (
+            _OPENAI_IMAGE_COST_BY_MODEL.get(model, {})
+            .get(effective_quality, {})
+            .get(resolved_size, 0.0)
+        )
 
     if model.startswith("imagen-4.0-ultra"):
         return 0.06

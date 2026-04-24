@@ -8,7 +8,6 @@ import os
 import re
 from pathlib import Path
 
-from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -59,9 +58,11 @@ from cine_forge.api.routers import (
     style_packs,
 )
 from cine_forge.api.service import OperatorConsoleService
+from cine_forge.env import load_cine_forge_dotenv
+from cine_forge.services.provider_capability_smoke import ProviderCapabilitySmokeService
 from cine_forge.services.provider_dependency_health import ProviderDependencyHealthService
 
-load_dotenv()
+load_cine_forge_dotenv()
 
 UPLOAD_FILE_PARAM = File(...)
 
@@ -97,6 +98,7 @@ def create_app(
     repo_root = Path(__file__).resolve().parents[3]
     resolved_workspace = workspace_root or Path(__file__).resolve().parents[3]
     service = OperatorConsoleService(workspace_root=resolved_workspace)
+    provider_capability_smoke_service = ProviderCapabilitySmokeService()
     provider_dependency_health_service = ProviderDependencyHealthService()
     app_version = _parse_version(resolved_workspace)
     app = FastAPI(title="CineForge API", version=app_version)
@@ -106,6 +108,7 @@ def create_app(
         )
 
     app.state.console_service = service
+    app.state.provider_capability_smoke_service = provider_capability_smoke_service
     app.state.provider_dependency_health_service = provider_dependency_health_service
     app.state.app_version = app_version
     assets.set_service(service)

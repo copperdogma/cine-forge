@@ -61,6 +61,10 @@ output/
 logs/
 tmp/
 
+# Generated promptfoo image packets. Recreate with
+# benchmarks/scripts/generate_storyboard_generation_quality_dataset.py.
+benchmarks/storyboard_generation_quality/
+
 # Test corpus (copyrighted screenplays — not for distribution)
 tests/corpus/
 /.playwright-mcp

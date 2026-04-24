@@ -1,0 +1,88 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "candidates": [
+    {
+      "candidate_variant": "gpt_image_2_storyboards",
+      "candidate_label": "GPT Image 2 Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.735,
+      "quality_python": 0.785,
+      "quality_rubric": 0.685,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.5,
+        "prop_discipline": 1.0,
+        "reference_fidelity": 0.75,
+        "story_specificity": 1.0,
+        "style_consistency": 1.0,
+        "text_cleanliness": 0.5
+      },
+      "mean_total_elapsed_ms": 672297.0,
+      "mean_storyboard_stage_elapsed_ms": 410166.0,
+      "mean_total_cost_usd": 0.447,
+      "mean_total_frames": 15.0,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.0,
+      "mean_direct_reference_input_count": 15.0,
+      "calls": 2
+    },
+    {
+      "candidate_variant": "gpt_image_2_square_storyboards",
+      "candidate_label": "GPT Image 2 Square Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.7288,
+      "quality_python": 0.8225,
+      "quality_rubric": 0.635,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.625,
+        "prop_discipline": 1.0,
+        "reference_fidelity": 0.75,
+        "story_specificity": 0.75,
+        "style_consistency": 1.0,
+        "text_cleanliness": 1.0
+      },
+      "mean_total_elapsed_ms": 615142.5,
+      "mean_storyboard_stage_elapsed_ms": 382345.0,
+      "mean_total_cost_usd": 0.365,
+      "mean_total_frames": 14.5,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.0,
+      "mean_direct_reference_input_count": 15.5,
+      "calls": 2
+    },
+    {
+      "candidate_variant": "gpt_image_2_template_grid_storyboards",
+      "candidate_label": "GPT Image 2 Template Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.6775,
+      "quality_python": 0.745,
+      "quality_rubric": 0.61,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.5,
+        "prop_discipline": 1.0,
+        "reference_fidelity": 0.75,
+        "story_specificity": 0.5,
+        "style_consistency": 1.0,
+        "text_cleanliness": 1.0
+      },
+      "mean_total_elapsed_ms": 326228.0,
+      "mean_storyboard_stage_elapsed_ms": 94511.5,
+      "mean_total_cost_usd": 0.275,
+      "mean_total_frames": 14.0,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.0,
+      "mean_direct_reference_input_count": 16.0,
+      "calls": 2
+    }
+  ],
+  "recommendation": {
+    "decision": "quality_below_initial_floor",
+    "rationale": "The current default storyboard lane scored 0.735, below the initial 0.75 usefulness floor. The eval is doing its job by making that failure repeatable instead of anecdotal."
+  },
+  "previous_default": "gpt_image_2_storyboards"
+}

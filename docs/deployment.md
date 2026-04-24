@@ -40,6 +40,7 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 - **No auth**: App is open (2 users: Cam + sister). No login required.
 - **Health check**: `GET /api/health` every 15s, 10s grace period.
 - **Dependency health**: `GET /api/health/dependencies` exposes cached provider readiness; use `?refresh=1` for an immediate post-rollout probe.
+- **Live capability smoke**: `POST /api/health/live-smoke` runs a bounded real-call smoke across the default text, storyboard-image, and render-video lanes. Use it before an expensive QA session or after credential changes when you need stronger proof than cheap readiness alone.
 
 ## Container Environment
 
@@ -100,6 +101,19 @@ Use this as the fast provider-readiness signal after deploy. It should report
 Anthropic, Google, and OpenAI separately. Do not treat it as a replacement for
 the representative post-rollout eval above.
 
+### Live capability smoke
+```bash
+curl -sf -X POST "https://cineforge.copper-dog.com/api/health/live-smoke"
+
+PYTHONPATH=src .venv/bin/python scripts/live_ai_capability_smoke.py
+```
+
+Use this when the cheap dependency surface is not enough and you want a
+real-generation preflight before burning time on a full manual QA session. It
+is intentionally slower and more expensive than `/api/health/dependencies`
+because it performs tiny real text, image, and video calls. Treat it as a
+bounded operator preflight, not a startup health check.
+
 ### Volumes
 ```bash
 fly volumes list -a cineforge-app
@@ -156,13 +170,15 @@ path. Today that surfaced path depends on:
 Fix:
 1. Probe dependency health directly:
    - `curl -sf "https://cineforge.copper-dog.com/api/health/dependencies?refresh=1"`
-2. Verify Fly sees the secret names:
+2. If you need stronger proof before another costly QA run, trigger the live smoke:
+   - `curl -sf -X POST "https://cineforge.copper-dog.com/api/health/live-smoke"`
+3. Verify Fly sees the secret names:
    - `fly secrets list -a cineforge-app`
-3. If a key is missing or stale, roll the relevant secret again.
-4. Re-run the representative post-rollout eval:
+4. If a key is missing or stale, roll the relevant secret again.
+5. Re-run the representative post-rollout eval:
    - `.venv/bin/python scripts/post_rollout_breakdown_eval.py --base-url https://cineforge.copper-dog.com`
-5. If dependency health or the eval still fails with `API key not valid`, the local source key is stale or revoked. Replace the local key with a known-good one, roll Fly again, and rerun both checks.
-6. Do not count the deploy as successful unless dependency health is green and that eval passes.
+6. If dependency health, live smoke, or the eval still fails with `API key not valid`, the local source key is stale or revoked. Replace the local key with a known-good one, roll Fly again, and rerun all relevant checks.
+7. Do not count the deploy as successful unless dependency health is green and the representative eval passes. The live smoke is an additional confidence layer, not a substitute for the eval.
 
 ### Volume Permission Errors
 ```

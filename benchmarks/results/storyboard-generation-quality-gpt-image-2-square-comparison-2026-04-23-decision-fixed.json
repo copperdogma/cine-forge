@@ -1,0 +1,44 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "candidates": [
+    {
+      "candidate_variant": "gpt_image_2_storyboards",
+      "candidate_label": "GPT Image 2 Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.8562,
+      "quality_python": 0.8475,
+      "quality_rubric": 0.865,
+      "mean_total_elapsed_ms": 672297.0,
+      "mean_storyboard_stage_elapsed_ms": 410166.0,
+      "mean_total_cost_usd": 0.447,
+      "mean_total_frames": 15.0,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.0,
+      "mean_direct_reference_input_count": 15.0,
+      "calls": 2
+    },
+    {
+      "candidate_variant": "gpt_image_2_square_storyboards",
+      "candidate_label": "GPT Image 2 Square Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.8137,
+      "quality_python": 0.8625,
+      "quality_rubric": 0.765,
+      "mean_total_elapsed_ms": 615142.5,
+      "mean_storyboard_stage_elapsed_ms": 382345.0,
+      "mean_total_cost_usd": 0.365,
+      "mean_total_frames": 14.5,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.0,
+      "mean_direct_reference_input_count": 15.5,
+      "calls": 2
+    }
+  ],
+  "recommendation": {
+    "decision": "lane_clears_initial_floor",
+    "rationale": "The current default storyboard lane cleared the initial quality floor and did not show an obvious structural reference-flow failure on the measured cases."
+  },
+  "previous_default": "gpt_image_2_storyboards"
+}

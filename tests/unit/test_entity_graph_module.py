@@ -4,6 +4,7 @@ from typing import Any
 
 import pytest
 
+import cine_forge.modules.world_building.entity_graph_v1.main as entity_graph_main
 from cine_forge.modules.world_building.entity_graph_v1.main import (
     _build_char_resolver,
     _generate_co_occurrence_edges,
@@ -97,6 +98,44 @@ def test_entity_graph_module_builds_mock(mock_inputs: dict[str, Any]) -> None:
     
     assert graph_data["entity_count"]["character"] == 2
     assert graph_data["entity_count"]["location"] == 1
+
+
+@pytest.mark.unit
+def test_runtime_work_model_overrides_default_graph_model(
+    mock_inputs: dict[str, Any],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, Any] = {}
+
+    def _fake_extract_new_relationships(
+        character_bibles: list[dict[str, Any]],
+        location_bibles: list[dict[str, Any]],
+        prop_bibles: list[dict[str, Any]],
+        scene_index: dict[str, Any],
+        work_model: str,
+    ):
+        captured["model"] = work_model
+        return [], {
+            "model": work_model,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(
+        entity_graph_main,
+        "_extract_new_relationships",
+        _fake_extract_new_relationships,
+    )
+
+    result = run_module(
+        inputs=mock_inputs,
+        params={},
+        context={"runtime_params": {"work_model": "claude-sonnet-4-6"}},
+    )
+
+    assert captured["model"] == "claude-sonnet-4-6"
+    assert result["cost"]["model"] == "claude-sonnet-4-6"
 
 
 @pytest.mark.unit

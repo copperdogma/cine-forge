@@ -45,6 +45,7 @@ import { CharacterPerformancePanel } from '@/components/CharacterPerformancePane
 import { StoryWorldPanel } from '@/components/StoryWorldPanel'
 import { ArtifactReviewControls } from '@/components/ArtifactReviewControls'
 import { SceneWorkspaceFocusBanner } from '@/components/SceneWorkspaceFocusBanner'
+import { SceneWorkflowGuideCard } from '@/components/SceneWorkflowGuideCard'
 import { ReferenceLibrarySection } from '@/components/assets/ReferenceLibrarySection'
 import { EmptyState, ErrorState } from '@/components/StateViews'
 import { HealthBadge } from '@/components/HealthBadge'
@@ -78,6 +79,7 @@ import {
   SCENE_WORKSPACE_TAB_IDS,
 } from '@/lib/constants'
 import type { SceneWorkspaceTab } from '@/lib/constants'
+import { getSceneWorkflowGuide } from '@/lib/scene-workflow'
 
 // ---------------------------------------------------------------------------
 // Concern group config
@@ -674,6 +676,12 @@ export default function SceneWorkspacePage() {
     requestedTab && VALID_SCENE_WORKSPACE_TABS.has(requestedTab as SceneWorkspaceTab)
       ? requestedTab as SceneWorkspaceTab
       : 'overview'
+  const workflowGuide = getSceneWorkflowGuide({
+    activeTab,
+    hasShotPlan: !!shotPlanGroup,
+    hasStoryboard: !!storyboardGroup,
+    hasRender: !!generatedVideoGroup,
+  })
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -741,6 +749,15 @@ export default function SceneWorkspacePage() {
           }}
         />
       )}
+
+      <SceneWorkflowGuideCard
+        projectId={projectId}
+        sceneId={entityId}
+        guide={workflowGuide}
+        onJumpToPanel={() => {
+          tabsRegionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }}
+      />
 
       {/* Entity roster — characters, location, props */}
       {data && (

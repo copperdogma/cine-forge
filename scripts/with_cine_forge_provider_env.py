@@ -7,17 +7,12 @@ import os
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-load_dotenv(REPO_ROOT / ".env")
-load_dotenv(REPO_ROOT / ".env.local")
-
-from cine_forge.env import export_legacy_provider_envs  # noqa: E402
+from cine_forge.env import load_cine_forge_dotenv  # noqa: E402
 
 
 def main() -> None:
@@ -25,7 +20,7 @@ def main() -> None:
         raise SystemExit(
             "Usage: with_cine_forge_provider_env.py <command> [args...]"
         )
-    export_legacy_provider_envs()
+    load_cine_forge_dotenv(REPO_ROOT)
     os.execvpe(sys.argv[1], sys.argv[1:], os.environ)
 
 

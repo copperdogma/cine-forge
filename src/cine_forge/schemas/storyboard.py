@@ -7,6 +7,17 @@ from pydantic import BaseModel, Field, model_validator
 from .models import ArtifactRef, CostRecord, StoryboardStyleValue
 
 
+class StoryboardCharacterIdentityLock(BaseModel):
+    """Canonical per-scene visual lock reused across storyboard frames."""
+
+    character_id: str
+    name: str
+    appearance_summary: str
+    distinguishing_features: list[str] = Field(default_factory=list)
+    wardrobe_summary: str | None = None
+    source: str = "heuristic"
+
+
 class StoryboardImageFile(BaseModel):
     """Persisted image file referenced by a storyboard frame."""
 
@@ -37,6 +48,7 @@ class StoryboardFrame(BaseModel):
     prompt_used: str
     prompt_sources_used: list[str] = Field(default_factory=list)
     visual_reference_images: list[str] = Field(default_factory=list)
+    direct_reference_images: list[str] = Field(default_factory=list)
     overlay: StoryboardOverlay
     duration_estimate_seconds: float = Field(ge=0.0)
     cost: CostRecord
@@ -59,6 +71,6 @@ class Storyboard(BaseModel):
     shot_plan_ref: ArtifactRef
     style: StoryboardStyleValue
     aspect_ratio: str
+    character_identity_locks: list[StoryboardCharacterIdentityLock] = Field(default_factory=list)
     frames: list[StoryboardFrame] = Field(default_factory=list, min_length=1)
     total_estimated_cost_usd: float = Field(ge=0.0)
-

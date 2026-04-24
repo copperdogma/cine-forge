@@ -141,6 +141,8 @@ from .preview import Keyframe, KeyframeArtifact, MediaFile, PreviewProvenance
 from .progress_event import EventType, ProgressEvent
 from .provider_health import (
     AppHealthResponse,
+    ProviderCapabilitySmokeCheck,
+    ProviderCapabilitySmokeSnapshot,
     ProviderDependencyCheck,
     ProviderDependencyHealthSnapshot,
 )
@@ -207,7 +209,29 @@ from .shot_plan import (
     ShotDefinition,
     ShotPlan,
 )
-from .storyboard import Storyboard, StoryboardFrame, StoryboardImageFile, StoryboardOverlay
+from .storyboard import (
+    Storyboard,
+    StoryboardCharacterIdentityLock,
+    StoryboardFrame,
+    StoryboardImageFile,
+    StoryboardOverlay,
+)
+from .storyboard_analysis import (
+    StoryboardAnalysisDimensionScore,
+    StoryboardAnalysisPrediction,
+    StoryboardAnalysisScore,
+    StoryboardAnalysisTarget,
+    StoryboardAnalysisWeights,
+    StoryboardCharacterAssessment,
+    StoryboardCharacterExpectation,
+    StoryboardConsistencyStatus,
+    StoryboardEvidence,
+    StoryboardReferenceAssessment,
+    StoryboardReferenceExpectation,
+    StoryboardReferenceStatus,
+    StoryboardSourceType,
+    StoryboardStyleAssessment,
+)
 from .suggestion import Decision, Suggestion, SuggestionStatus
 from .timeline import Timeline, TimelineEntry
 from .track import TrackEntry, TrackManifest
@@ -319,6 +343,8 @@ __all__ = [
     "PreferenceLearningSettings",
     "PreferenceProfile",
     "PreferenceSignal",
+    "ProviderCapabilitySmokeCheck",
+    "ProviderCapabilitySmokeSnapshot",
     "ProviderDependencyCheck",
     "ProviderDependencyHealthSnapshot",
     "RawInput",
@@ -400,7 +426,22 @@ __all__ = [
     "ShotPlan",
     "StageCostSummary",
     "PreviewProvenance",
+    "StoryboardAnalysisDimensionScore",
+    "StoryboardAnalysisPrediction",
+    "StoryboardAnalysisScore",
+    "StoryboardAnalysisTarget",
+    "StoryboardAnalysisWeights",
+    "StoryboardCharacterAssessment",
+    "StoryboardCharacterExpectation",
+    "StoryboardConsistencyStatus",
+    "StoryboardEvidence",
+    "StoryboardReferenceAssessment",
+    "StoryboardReferenceExpectation",
+    "StoryboardReferenceStatus",
+    "StoryboardSourceType",
+    "StoryboardStyleAssessment",
     "Storyboard",
+    "StoryboardCharacterIdentityLock",
     "StoryboardFrame",
     "StoryboardImageFile",
     "StoryboardOverlay",

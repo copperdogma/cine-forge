@@ -75,10 +75,13 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
    `/open-frequency/scenes/scene_001?tab=render`
    From the surfaced Render panel, run `Run Render for Current Scene`.
    Pass if the scene workspace remains usable, the downstream tabs are reachable
-   through surfaced navigation, the Render tab stays honest about warnings vs.
-   blockers while auto-building minimal prerequisites when appropriate, and the
-   same panel then exposes `Prompt Detail`, `Video Detail`, and
-   `Validation Detail` for the resulting scene render.
+   through surfaced navigation, the scene tutorial keeps the default path obvious
+   through Shot Planning, Storyboard, and Render, the Render tab stays honest
+   about warnings vs. blockers while auto-building minimal prerequisites when
+   appropriate, the Storyboard tab uses the batch `gpt-image-2` template-grid
+   first pass instead of issuing one provider call per shot by default, and the
+   same panel then exposes `Prompt Detail`, `Video Detail`, and `Validation
+   Detail` for the resulting scene render.
 7. Spot-check the same project on mobile at minimum on:
    `/open-frequency`
    `/open-frequency/scenes/scene_001?tab=render`

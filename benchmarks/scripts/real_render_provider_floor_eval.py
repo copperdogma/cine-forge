@@ -13,7 +13,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from dotenv import load_dotenv
 from PIL import Image, ImageDraw
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -23,8 +22,9 @@ if str(REPO_ROOT) not in sys.path:
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-load_dotenv(REPO_ROOT / ".env")
-load_dotenv(REPO_ROOT / ".env.local")
+from cine_forge.env import load_cine_forge_dotenv  # noqa: E402
+
+load_cine_forge_dotenv(REPO_ROOT)
 
 from real_render_provider_floor_support import (  # noqa: E402
     CANDIDATE_SPECS,

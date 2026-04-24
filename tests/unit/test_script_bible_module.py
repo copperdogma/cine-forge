@@ -6,6 +6,7 @@ from typing import Any
 
 import pytest
 
+import cine_forge.modules.ingest.script_bible_v1.main as script_bible_main
 from cine_forge.modules.ingest.script_bible_v1.main import run_module
 from cine_forge.schemas import ScriptBible
 
@@ -189,3 +190,101 @@ def test_schema_validation_round_trip() -> None:
     assert dumped["title"] == "Test Film"
     assert len(dumped["act_structure"]) == 2
     assert dumped["confidence"] == 0.88
+
+
+@pytest.mark.unit
+def test_runtime_work_model_overrides_module_default(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, Any] = {}
+
+    def _fake_call_llm(**kwargs: Any):
+        captured["model"] = kwargs["model"]
+        return ScriptBible(
+            title="Runtime Override",
+            logline="A runtime override test.",
+            synopsis="The runtime work model should win.",
+            act_structure=[
+                {
+                    "act_number": 1,
+                    "title": "Setup",
+                    "start_scene": "INT. LAB - NIGHT",
+                    "end_scene": "INT. LAB - NIGHT",
+                    "summary": "The override is exercised.",
+                    "turning_points": ["Runtime params win."],
+                }
+            ],
+            themes=[
+                {
+                    "theme": "Configuration",
+                    "description": "Runtime params override stale module defaults.",
+                    "evidence": ["Test fixture."],
+                }
+            ],
+            narrative_arc="Short.",
+            genre="Drama",
+            tone="Neutral",
+            protagonist_journey="Learns the override path.",
+            central_conflict="Configured model versus stale default.",
+            setting_overview="A test harness.",
+            confidence=0.9,
+        ), {"model": kwargs["model"], "estimated_cost_usd": 0.0}
+
+    monkeypatch.setattr(script_bible_main, "call_llm", _fake_call_llm)
+
+    result = run_module(
+        inputs={"normalize": _canonical_script(SAMPLE_SCRIPT)},
+        params={},
+        context={"runtime_params": {"work_model": "claude-sonnet-4-6"}},
+    )
+
+    assert captured["model"] == "claude-sonnet-4-6"
+    assert result["cost"]["model"] == "claude-sonnet-4-6"
+
+
+@pytest.mark.unit
+def test_runtime_default_model_used_when_work_model_missing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, Any] = {}
+
+    def _fake_call_llm(**kwargs: Any):
+        captured["model"] = kwargs["model"]
+        return ScriptBible(
+            title="Default Model Fallback",
+            logline="A default model fallback test.",
+            synopsis="The runtime default model should be used when work_model is absent.",
+            act_structure=[
+                {
+                    "act_number": 1,
+                    "title": "Setup",
+                    "start_scene": "INT. LAB - NIGHT",
+                    "end_scene": "INT. LAB - NIGHT",
+                    "summary": "The default model fallback is exercised.",
+                    "turning_points": ["Default model wins."],
+                }
+            ],
+            themes=[
+                {
+                    "theme": "Fallbacks",
+                    "description": "Default model should be honored before the hardcoded default.",
+                    "evidence": ["Test fixture."],
+                }
+            ],
+            narrative_arc="Short.",
+            genre="Drama",
+            tone="Neutral",
+            protagonist_journey="Learns the fallback path.",
+            central_conflict="Runtime default versus hardcoded fallback.",
+            setting_overview="A test harness.",
+            confidence=0.9,
+        ), {"model": kwargs["model"], "estimated_cost_usd": 0.0}
+
+    monkeypatch.setattr(script_bible_main, "call_llm", _fake_call_llm)
+
+    result = run_module(
+        inputs={"normalize": _canonical_script(SAMPLE_SCRIPT)},
+        params={},
+        context={"runtime_params": {"default_model": "claude-sonnet-4-6"}},
+    )
+
+    assert captured["model"] == "claude-sonnet-4-6"
+    assert result["cost"]["model"] == "claude-sonnet-4-6"

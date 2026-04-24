@@ -19,13 +19,21 @@ parameters:
   image_model:
     type: string
     required: false
-    default: "imagen-4.0-generate-001"
+    default: "gpt-image-2"
     description: "Image model used for storyboard frame generation."
+  image_size:
+    type: string
+    required: false
+    description: "Optional OpenAI image size override for storyboard frame generation."
   style:
     type: string
     required: false
     default: "sketch"
     description: "Storyboard visual style."
+  identity_model:
+    type: string
+    required: false
+    description: "Optional LLM used to compile scene-level character identity locks."
   photoreal_opt_in:
     type: boolean
     required: false
@@ -41,3 +49,13 @@ parameters:
     required: false
     default: 0.5
     description: "Base delay between image-generation retries."
+  grid_mode:
+    type: string
+    required: false
+    default: "template"
+    description: "Storyboard grid mode: template, text, or off for legacy per-frame generation."
+  grid_max_panels:
+    type: integer
+    required: false
+    default: 8
+    description: "Maximum shot panels per generated storyboard grid image."
