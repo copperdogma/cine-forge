@@ -1,0 +1,89 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "measured_at": "2026-04-24T18:43:17.693600+00:00",
+  "fixture_manifest": "benchmarks/fixtures/storyboard_generation_quality_cases.json",
+  "candidate_variants": [
+    "gpt_image_2_beat_grid_storyboards"
+  ],
+  "summary": {
+    "candidates": [
+      {
+        "candidate_variant": "gpt_image_2_beat_grid_storyboards",
+        "candidate_label": "GPT Image 2 Beat Grid Storyboards",
+        "image_model": "gpt-image-2",
+        "total_cases": 1,
+        "successful_cases": 0,
+        "success_ratio": 0.0,
+        "mean_total_elapsed_ms": null,
+        "mean_storyboard_elapsed_ms": null,
+        "mean_storyboard_stage_elapsed_ms": null,
+        "mean_total_cost_usd": null,
+        "mean_total_frames": null,
+        "mean_available_reference_image_count": null,
+        "mean_prompt_reference_frame_count": null,
+        "mean_direct_reference_input_count": null
+      }
+    ]
+  },
+  "runs": [
+    {
+      "case_id": "open_frequency_sequence_prompt_only",
+      "case_label": "Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity",
+      "scene_ids": [
+        "scene_001",
+        "scene_002"
+      ],
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Baseline storyboard case with recurring ARIA and NOAH but no attached character/location reference images.",
+      "candidate_variant": "gpt_image_2_beat_grid_storyboards",
+      "candidate_label": "GPT Image 2 Beat Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "project_dir": "output/story-186-gpt_image_2_beat_grid_storyboards-open_frequency_sequence_prompt_only-30f8d2",
+      "success": false,
+      "error": "storyboard grid generation failed after retries: OpenAI Images API returned HTTP 400: {\n  \"error\": {\n    \"message\": \"Invalid value: 'gpt-image-2'. Value must be 'dall-e-2'.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"model\",\n    \"code\": \"invalid_value\"\n  }\n}",
+      "preparation_elapsed_ms": 163469,
+      "storyboard_elapsed_ms": 114300,
+      "total_elapsed_ms": 277769,
+      "total_cost_usd": 0.2401666,
+      "storyboard_stage_elapsed_ms": 18159,
+      "storyboard_run": {
+        "run_id": "open_frequency_sequence_prompt_only-storyboard-84fd",
+        "recipe_id": "storyboard_generation",
+        "elapsed_ms": 114300,
+        "success": false,
+        "error": "storyboard grid generation failed after retries: OpenAI Images API returned HTTP 400: {\n  \"error\": {\n    \"message\": \"Invalid value: 'gpt-image-2'. Value must be 'dall-e-2'.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"model\",\n    \"code\": \"invalid_value\"\n  }\n}",
+        "total_cost_usd": 0.0469504,
+        "stage_statuses": {
+          "shot_planning": "done",
+          "storyboards": "failed",
+          "timeline": "done",
+          "tracks": "done"
+        },
+        "stage_durations_ms": {
+          "shot_planning": 95954,
+          "storyboards": 18159,
+          "timeline": 6,
+          "tracks": 9
+        },
+        "artifact_counts": {
+          "shot_plan": 2,
+          "timeline": 2,
+          "track_manifest": 2
+        },
+        "artifact_paths": {
+          "shot_plan": "artifacts/shot_plan/scene_002/v1.json",
+          "timeline": "artifacts/timeline/project/v2.json",
+          "track_manifest": "artifacts/track_manifest/project/v2.json"
+        }
+      },
+      "storyboard_artifact_paths": [],
+      "frames": [],
+      "reference_images": [],
+      "total_frames": 0,
+      "available_reference_image_count": 0,
+      "prompt_reference_frame_count": 0,
+      "direct_reference_input_count": 0,
+      "reference_transport_supported": false
+    }
+  ]
+}

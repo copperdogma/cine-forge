@@ -87,6 +87,13 @@ def test_gpt_image_2_is_default_storyboard_quality_candidate() -> None:
         ]
         == "template"
     )
+    beat_grid = support.CANDIDATE_SPECS["gpt_image_2_beat_grid_storyboards"]
+    assert beat_grid.image_model == "gpt-image-2"
+    assert beat_grid.label == "GPT Image 2 Beat Grid Storyboards"
+    assert beat_grid.runtime_params == {
+        "storyboard_grid_mode": "beat_template",
+        "storyboard_grid_max_panels": 9,
+    }
     assert "imagen_4_storyboards" in support.CANDIDATE_SPECS
 
 
@@ -143,10 +150,10 @@ def test_summarize_runtime_runs_tracks_reference_counts() -> None:
 @pytest.mark.unit
 def test_report_flags_reference_flow_gap(tmp_path: Path) -> None:
     dataset_root = tmp_path / "storyboard_generation_quality"
-    sequence_dir = dataset_root / "gpt_image_2_storyboards" / "fixture_case"
+    sequence_dir = dataset_root / "gpt_image_2_template_grid_storyboards" / "fixture_case"
     sequence_dir.mkdir(parents=True, exist_ok=True)
     (sequence_dir / "meta.json").write_text(
-        json.dumps({"candidate_label": "GPT Image 2 Storyboards"}),
+        json.dumps({"candidate_label": "GPT Image 2 Template Grid Storyboards"}),
         encoding="utf-8",
     )
     target_dir = dataset_root / "targets" / "fixture_case"
@@ -177,8 +184,8 @@ def test_report_flags_reference_flow_gap(tmp_path: Path) -> None:
         "summary": {
             "candidates": [
                 {
-                    "candidate_variant": "gpt_image_2_storyboards",
-                    "candidate_label": "GPT Image 2 Storyboards",
+                    "candidate_variant": "gpt_image_2_template_grid_storyboards",
+                    "candidate_label": "GPT Image 2 Template Grid Storyboards",
                     "image_model": "gpt-image-2",
                     "total_cases": 2,
                     "successful_cases": 2,
@@ -204,7 +211,7 @@ def test_report_flags_reference_flow_gap(tmp_path: Path) -> None:
                     },
                     "score": 0.61,
                     "response": {
-                        "metadata": {"candidate_variant": "gpt_image_2_storyboards"},
+                        "metadata": {"candidate_variant": "gpt_image_2_template_grid_storyboards"},
                         "output": json.dumps(
                             {
                                 "storyboard_id": "fixture_case",
@@ -249,3 +256,74 @@ def test_report_flags_reference_flow_gap(tmp_path: Path) -> None:
     assert summary["recommendation"]["decision"] == "lane_drops_references_before_generation"
     row = summary["candidates"][0]
     assert row["dimension_scores"]["style_consistency"] == 1.0
+
+
+@pytest.mark.unit
+def test_report_recommendation_uses_registry_default_candidate(tmp_path: Path) -> None:
+    dataset_root = tmp_path / "storyboard_generation_quality"
+    runtime_payload = {
+        "summary": {
+            "candidates": [
+                {
+                    "candidate_variant": "gpt_image_2_storyboards",
+                    "candidate_label": "GPT Image 2 Storyboards",
+                    "image_model": "gpt-image-2",
+                    "success_ratio": 1.0,
+                    "mean_total_elapsed_ms": 4000.0,
+                    "mean_storyboard_stage_elapsed_ms": 2000.0,
+                    "mean_total_cost_usd": 0.44,
+                    "mean_total_frames": 4.0,
+                    "mean_available_reference_image_count": 2.0,
+                    "mean_prompt_reference_frame_count": 0.0,
+                    "mean_direct_reference_input_count": 0.0,
+                },
+                {
+                    "candidate_variant": "gpt_image_2_template_grid_storyboards",
+                    "candidate_label": "GPT Image 2 Template Grid Storyboards",
+                    "image_model": "gpt-image-2",
+                    "success_ratio": 1.0,
+                    "mean_total_elapsed_ms": 3000.0,
+                    "mean_storyboard_stage_elapsed_ms": 1500.0,
+                    "mean_total_cost_usd": 0.27,
+                    "mean_total_frames": 4.0,
+                    "mean_available_reference_image_count": 2.0,
+                    "mean_prompt_reference_frame_count": 2.0,
+                    "mean_direct_reference_input_count": 2.0,
+                },
+            ]
+        }
+    }
+    promptfoo_payload = {
+        "results": {
+            "results": [
+                {
+                    "vars": {"storyboard_id": "fixture_case"},
+                    "score": 0.9,
+                    "response": {
+                        "metadata": {"candidate_variant": "gpt_image_2_storyboards"},
+                        "output": "{}",
+                    },
+                    "gradingResult": {"componentResults": []},
+                },
+                {
+                    "vars": {"storyboard_id": "fixture_case"},
+                    "score": 0.8,
+                    "response": {
+                        "metadata": {"candidate_variant": "gpt_image_2_template_grid_storyboards"},
+                        "output": "{}",
+                    },
+                    "gradingResult": {"componentResults": []},
+                },
+            ]
+        }
+    }
+
+    summary = report.build_summary(
+        runtime_payload=runtime_payload,
+        promptfoo_payload=promptfoo_payload,
+        dataset_root=dataset_root,
+        baseline_variant="gpt_image_2_template_grid_storyboards",
+    )
+
+    assert summary["previous_default"] == "gpt_image_2_template_grid_storyboards"
+    assert summary["recommendation"]["decision"] == "lane_clears_initial_floor"

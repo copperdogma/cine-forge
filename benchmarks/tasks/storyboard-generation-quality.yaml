@@ -53,6 +53,20 @@ providers:
       pythonExecutable: python
       timeout: 300000
   - id: file://../providers/storyboard_understanding_provider.py
+    label: "GPT Image 2 Beat Grid Storyboards"
+    config:
+      provider: openai
+      model: gpt-5.4
+      temperature: 0
+      max_tokens: 1400
+      max_frames: 8
+      max_references: 4
+      prompt_version: storyboard-understanding-v2
+      sequence_root: ../storyboard_generation_quality
+      candidate_variant: gpt_image_2_beat_grid_storyboards
+      pythonExecutable: python
+      timeout: 300000
+  - id: file://../providers/storyboard_understanding_provider.py
     label: "Imagen 4 Storyboards"
     config:
       provider: openai

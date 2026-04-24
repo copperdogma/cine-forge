@@ -53,7 +53,7 @@ parameters:
     type: string
     required: false
     default: "template"
-    description: "Storyboard grid mode: template, text, or off for legacy per-frame generation."
+    description: "Storyboard grid mode: template, beat_template, text, or off for legacy per-frame generation."
   grid_max_panels:
     type: integer
     required: false

@@ -441,6 +441,75 @@ def test_run_module_template_grid_generates_one_image_and_slices_frames(
 
 
 @pytest.mark.unit
+def test_run_module_beat_template_grid_adds_ordered_story_beats(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_storyboard_project(tmp_path, scene_count=1)
+    calls: list[dict[str, object]] = []
+
+    def fake_generate_image(
+        prompt: str,
+        entity_type: str = "character",
+        model: str = "gpt-image-1",
+        aspect_ratio: str | None = None,
+        quality: str = "auto",
+        reference_image_paths: list[str] | None = None,
+        size: str | None = None,
+    ) -> tuple[bytes, str]:
+        calls.append(
+            {
+                "prompt": prompt,
+                "model": model,
+                "reference_image_paths": list(reference_image_paths or []),
+                "size": size,
+            }
+        )
+        return _jpeg_bytes(str(size or "1536x1024")), model
+
+    monkeypatch.setattr(storyboard_generation, "generate_image", fake_generate_image)
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "identity_model": "mock",
+            "style": "clean_line",
+            "grid_mode": "beat_template",
+            "grid_max_panels": 9,
+        },
+        context={
+            "project_dir": str(seeded["project_dir"]),
+            "run_id": "storyboard-grid-beats",
+            "stage_id": "storyboards",
+        },
+    )
+
+    storyboard_artifact = next(
+        artifact for artifact in result["artifacts"] if artifact["artifact_type"] == "storyboard"
+    )
+    storyboard = Storyboard.model_validate(storyboard_artifact["data"])
+    prompt = str(calls[0]["prompt"])
+
+    assert len(calls) == 1
+    assert "Ordered scene beat router:" in prompt
+    assert "Beat 1 of 2 / shot SCENE_001_A" in prompt
+    assert "opening beat that establishes the scene pressure and geography" in prompt
+    assert "Story function: Establish emotional pressure." in prompt
+    assert "Recurring identity lock: MARA:" in prompt
+    assert "Panel 1 / shot SCENE_001_A:" in prompt
+    reference_paths = list(calls[0]["reference_image_paths"])
+    assert reference_paths
+    assert Path(str(reference_paths[0])).name == "grid_01_template.jpg"
+    assert storyboard.frames[0].prompt_sources_used[-3:] == [
+        "storyboard_grid",
+        "storyboard_grid_beats",
+        "grid_template",
+    ]
+    assert storyboard_artifact["metadata"]["annotations"]["grid_mode"] == "beat_template"
+    assert storyboard_artifact["metadata"]["annotations"]["grid_max_panels"] == 9
+
+
+@pytest.mark.unit
 def test_sanitize_visual_text_preserves_apostrophes_and_strips_dialogue() -> None:
     sanitized = _sanitize_visual_text(
         """Brick's entrance as he mutters "Back off." and OWEN: 'Let it run.'"""

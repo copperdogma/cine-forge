@@ -799,7 +799,8 @@
           "178",
           "180",
           "181",
-          "186"
+          "186",
+          "188"
         ],
         "adrIds": [
           "ADR-002",
@@ -891,7 +892,8 @@
           "180",
           "181",
           "184",
-          "186"
+          "186",
+          "188"
         ],
         "adrIds": [
           "ADR-002",
@@ -1002,7 +1004,8 @@
           "183",
           "184",
           "186",
-          "187"
+          "187",
+          "188"
         ],
         "adrIds": [
           "ADR-001",
@@ -1534,7 +1537,8 @@
           "169",
           "183",
           "186",
-          "187"
+          "187",
+          "188"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1566,7 +1570,8 @@
             "169",
             "183",
             "186",
-            "187"
+            "187",
+            "188"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -11971,6 +11976,77 @@
           "summary": "story-closed: `/mark-story-done 187` closed the story after rechecking workflow gates, acceptance criteria, validation evidence, eval classification, registry updates, and generated planning surfaces. Evidence: Story 18…"
         }
       }
+    },
+    {
+      "id": "188",
+      "title": "Storyboard Grid Beat Router and Motion-Handoff Scout",
+      "path": "docs/stories/story-188-storyboard-grid-beat-router-and-motion-handoff-scout.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:6.2",
+        "spec:6.3",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "186"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "grid",
+        "references",
+        "scene-generation",
+        "scout-follow-up",
+        "storyboards"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260424-1436",
+        "date": "2026-04-24",
+        "summary": "story-closed: `/mark-story-done 188` closed the story after confirming build and validation gates, acceptance criteria, eval classification, registry updates, and generated planning surfaces. Impact: the beat-grid candi…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "188",
+        "sourcePath": "docs/stories/story-188-storyboard-grid-beat-router-and-motion-handoff-scout.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "story-closed: `/mark-story-done 188` closed the story after confirming build and validation gates, acceptance criteria, eval classification, registry updates, and generated planning surfaces. Impact: the beat-grid candi…",
+        "lastRelevantAction": {
+          "date": "2026-04-24",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-188-storyboard-grid-beat-router-and-motion-handoff-scout.md",
+          "summary": "story-closed: `/mark-story-done 188` closed the story after confirming build and validation gates, acceptance criteria, eval classification, registry updates, and generated planning surfaces. Impact: the beat-grid candi…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -13594,7 +13670,8 @@
         "spec:8"
       ],
       "storyIds": [
-        "186"
+        "186",
+        "188"
       ],
       "categoryRefs": [
         "spec:5",
@@ -13629,12 +13706,12 @@
         }
       ],
       "latestScore": {
-        "model": "GPT Image 2 Storyboards",
-        "measured": "2026-04-23",
+        "model": "GPT Image 2 Beat Grid Storyboards",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.735
+          "overall": 0.6838
         },
-        "note": "Split-dimension rerun on the existing full-size `gpt-image-2` storyboard images. The default is strongest on story specificity and style consistency is perfect across the measured packet, but the stricter split report now lands just below the 0.75 floor because identity consistency and text cleanliness are not reliably perfect. Cost/latency remain above target because this lane still generates on…"
+        "note": "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Beat-grid scored higher than the previous judge pass at `overall=0.6838`, but it still does not clear the `0.75` usefulness floor and still regresses the critical identity/prop dimensions (`identity_consistency=0.375`, `prop_discipline=0.5`). Runtime truth from the already-ge…"
       },
       "declaredSpecRefs": [
         "spec:5",
@@ -13643,7 +13720,8 @@
         "spec:8"
       ],
       "declaredStoryIds": [
-        "186"
+        "186",
+        "188"
       ],
       "declaredCategoryRefs": [
         "spec:5",
@@ -13667,7 +13745,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "wait-for-trigger",
-        "whyNow": "Split-dimension rerun on the existing full-size `gpt-image-2` storyboard images. The default is strongest on story specificity and style consistency is perfect across the measured packet, but the stricter split report now lands just below the 0.75 floor because identity consistency and text cleanliness are not reliably perfect. Cost/latency remain above target because this lane still generates on…",
+        "whyNow": "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Beat-grid scored higher than the previous judge pass at `overall=0.6838`, but it still does not clear the `0.75` usefulness floor and still regresses the critical identity/prop dimensions (`identity_consistency=0.375`, `prop_discipline=0.5`). Runtime truth from the already-ge…",
         "retryTriggerStatus": "waiting",
         "retryWhen": [
           "new-approach"
@@ -14324,13 +14402,14 @@
             "178",
             "180",
             "181",
-            "186"
+            "186",
+            "188"
           ],
-          "stories_since_audit": 7,
+          "stories_since_audit": 8,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
-          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, and Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern rather than inventing a second eval stack. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, and Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
         }
       }
     }

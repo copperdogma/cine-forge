@@ -452,12 +452,12 @@
       },
       "generation_and_visualization": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["165", "166", "167", "168", "169", "170", "171", "173", "174", "175", "177", "178", "180", "181", "186"],
-        "stories_since_audit": 7,
+        "recent_story_refs": ["165", "166", "167", "168", "169", "170", "171", "173", "174", "175", "177", "178", "180", "181", "186", "188"],
+        "stories_since_audit": 8,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, and Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern rather than inventing a second eval stack. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, and Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
       }
     }
   }

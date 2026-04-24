@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-24-06] — Measure storyboard beat-grid routing (Story 188)
+
+### Added
+- Added a `beat_template` storyboard-grid candidate that injects ordered scene beats into the existing GPT Image 2 template-grid path without changing the shipped default.
+- Added Story 188 storyboard-quality runtime, promptfoo, and validation result artifacts for the beat-grid comparison.
+
+### Changed
+- Changed storyboard-quality reporting to compare against the registry default instead of the obsolete per-frame baseline.
+- Changed the storyboard eval registry and planning surfaces to record the beat-grid non-promotion decision, including the resolved prompt-size failure and non-runtime-blocking residual quality misses.
+
 ## [2026-04-24-05] — Reduce long-form scene-analysis prompt overhead (Story 187)
 
 ### Added

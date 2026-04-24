@@ -113,8 +113,10 @@ def run_module(
         runtime_params=runtime_params,
         image_model=str(image_model),
     )
-    if grid_mode not in {"off", "template", "text"}:
-        raise ValueError("storyboard_v1 grid_mode must be one of: off, template, text")
+    if grid_mode not in {"off", "template", "text", "beat_template"}:
+        raise ValueError(
+            "storyboard_v1 grid_mode must be one of: off, template, text, beat_template"
+        )
     grid_max_panels = int(
         params.get("grid_max_panels")
         or runtime_params.get("storyboard_grid_max_panels")

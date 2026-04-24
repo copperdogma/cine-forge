@@ -1602,6 +1602,7 @@ evals:
       - spec:8
     story_refs:
       - "186"
+      - "188"
     category_refs:
       - spec:5
       - spec:6
@@ -1676,24 +1677,48 @@ evals:
         note: "Split-dimension rerun on the existing `1024x1024` storyboard images. Square keeps style and text clean and reduces cost versus full-size, but storyboard-stage latency remains close to the per-frame default and story specificity still trails the full-size lane."
       - model: "GPT Image 2 Template Grid Storyboards"
         metrics:
-          overall: 0.6775
-          python: 0.745
-          rubric: 0.61
-          story_specificity: 0.5
+          overall: 0.6613
+          python: 0.7975
+          rubric: 0.525
+          story_specificity: 0.625
           style_consistency: 1.0
-          identity_consistency: 0.5
+          identity_consistency: 0.625
           reference_fidelity: 0.75
           text_cleanliness: 1.0
+          prop_discipline: 1.0
           success_ratio: 1.0
           prompt_ref_frames: 7.0
-          direct_refs: 16.0
-        latency_ms: 326228
+          direct_refs: 15.5
+          total_frames: 14.5
+        latency_ms: 307561
         cost_usd: 0.275
         cost_estimated: true
-        measured: 2026-04-23
-        git_sha: "5fa8a8d"
-        result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-default-square-grid-split-final-2026-04-23-decision.json
-        note: "Split-dimension rerun confirms the grid lane's real shape: the template grid keeps style consistency and text cleanliness perfect on the measured packets, so the earlier concern was not photoreal drift. The quality loss is concentrated in story specificity and identity consistency. The speed/cost thesis still holds: mean cost fell from `$0.447` to `$0.275`, and mean storyboard-stage latency fell from `410166ms` to `94511.5ms`."
+        measured: 2026-04-24
+        git_sha: "f0ca99a"
+        result_file: benchmarks/results/storyboard-generation-quality-story-188-template-vs-beat-validation-decision.json
+        note: "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Template-grid remains below the `0.75` usefulness floor at `overall=0.6613`; runtime truth from the already-generated dataset stays structurally green (`2/2`, `14.5` mean frames, `7.0` prompt-reference frames, `15.5` direct refs). It keeps better identity and prop discipline than beat-grid, so the shipped default stays `gpt_image_2_template_grid_storyboards`."
+      - model: "GPT Image 2 Beat Grid Storyboards"
+        metrics:
+          overall: 0.6838
+          python: 0.7325
+          rubric: 0.635
+          story_specificity: 0.75
+          style_consistency: 1.0
+          identity_consistency: 0.375
+          reference_fidelity: 0.75
+          text_cleanliness: 1.0
+          prop_discipline: 0.5
+          success_ratio: 1.0
+          prompt_ref_frames: 7.5
+          direct_refs: 16.5
+          total_frames: 15.0
+        latency_ms: 341317.5
+        cost_usd: 0.275
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "f0ca99a"
+        result_file: benchmarks/results/storyboard-generation-quality-story-188-template-vs-beat-validation-decision.json
+        note: "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Beat-grid scored higher than the previous judge pass at `overall=0.6838`, but it still does not clear the `0.75` usefulness floor and still regresses the critical identity/prop dimensions (`identity_consistency=0.375`, `prop_discipline=0.5`). Runtime truth from the already-generated dataset stays green (`2/2`, `15.0` mean frames, `7.5` prompt-reference frames, `16.5` direct refs). Classification: remaining misses are model-wrong/product-quality failures, non-runtime-blocking for Story 188; no golden-wrong mismatch was found."
       - model: "GPT Image 2 Storyboards"
         metrics:
           overall: 0.5706
@@ -1795,6 +1820,18 @@ evals:
       - date: 2026-04-23
         git_sha: "5fa8a8d"
         note: "Product decision after reviewing split dimensions: the shipped storyboard lane now favors the template-grid candidate as the fast batch first pass despite lower story-specificity and identity scores. Rationale: grid keeps style consistency and text cleanliness perfect in the measured packet, cuts storyboard-stage latency from `410166ms` to `94511.5ms`, cuts mean cost from `$0.447` to `$0.275`, and still preserves the existing per-frame artifact contract so users can later regenerate individual failed panels. The registry command/default candidate now targets `gpt_image_2_template_grid_storyboards`; use `storyboard_grid_mode=off` to force the older per-frame path for comparison."
+      - date: 2026-04-24
+        git_sha: "f0ca99a"
+        note: "Story 188 added a `gpt_image_2_beat_grid_storyboards` candidate that preserves the existing grid artifact contract and injects an ordered beat spine derived from scene, shot plan, and character identity locks. Focused units, full unit, and Ruff passed. The bounded runtime subset failed before image quality analysis with `success=0/1`, `total_frames=0`, `latency_ms=277769`, and `$0.2402` estimated cost because `gpt-image-2` reference/template edits returned HTTP 400. Classification: runtime-blocking provider/reference-template failure, not model-wrong/golden-wrong/ambiguous quality. Plain `gpt-image-2` live smoke and `gpt-image-1` reference-image probe both pass, so the unblock is to decide the supported template/reference strategy before rerunning this candidate."
+      - date: 2026-04-24
+        git_sha: "f0ca99a"
+        note: "Follow-up investigation resolved the Story 188 runtime blocker. Official OpenAI image docs show `gpt-image-2` on `/v1/images/edits` with repeated `image[]`, and direct small/edit probes passed. The failing path reproduced only with the benchmark's 38k-character beat-grid prompt; compacting duplicated identity-heavy beat and panel text cut the prompt to 16.8k and exact replay passed. Fresh bounded runtime plus one-case promptfoo scoring produced `success=1/1`, `13` frames, `overall=0.78`, `story_specificity=0.75`, `style_consistency=1.0`, `identity_consistency=0.5`, and `text_cleanliness=1.0`. Remaining misses are non-runtime-blocking image-model identity drift plus eval-model under-reading of the water-tower/catwalk; no golden-wrong mismatch was found."
+      - date: 2026-04-24
+        git_sha: "f0ca99a"
+        note: "Direct current-default-vs-beat-grid comparison completed across both maintained storyboard-quality cases. Runtime stayed green for both candidates (`2/2` each); beat-grid had slightly lower storyboard-stage latency (`89242ms` vs `91312.5ms`) and the same mean cost (`$0.275`), but quality regressed materially: template-grid scored `overall=0.675`, beat-grid scored `overall=0.5787`. Beat-grid did not improve story specificity (`0.625` for both) and worsened identity consistency (`0.375` vs `0.75`) plus prop discipline (`0.5` vs `1.0`). Manual inspection confirms the beat-grid prompt-only sheet has recurring-character drift and a non-insert prop-only panel. Classification: model-wrong/product-quality misses, non-runtime-blocking; no golden-wrong mismatch. Product decision: keep `gpt_image_2_template_grid_storyboards` as the default and treat beat-grid as a measured non-default candidate."
+      - date: 2026-04-24
+        git_sha: "f0ca99a"
+        note: "Fresh validation reran the promptfoo quality pass without regenerating the paid image runtime. The judge pass moved beat-grid upward to `overall=0.6838` and template-grid to `overall=0.6613`, but both remain below the `0.75` usefulness floor. The default decision is unchanged because beat-grid still regresses recurring identity and prop discipline even when the aggregate is slightly higher. Classification remains model-wrong/product-quality, non-runtime-blocking for Story 188, with no golden-wrong mismatch found."
 
   - id: runtime-media-validation
     name: Runtime Media Validation

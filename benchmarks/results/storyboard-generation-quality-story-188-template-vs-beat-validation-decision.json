@@ -1,0 +1,62 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "candidates": [
+    {
+      "candidate_variant": "gpt_image_2_beat_grid_storyboards",
+      "candidate_label": "GPT Image 2 Beat Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.6838,
+      "quality_python": 0.7325,
+      "quality_rubric": 0.635,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.375,
+        "prop_discipline": 0.5,
+        "reference_fidelity": 0.75,
+        "story_specificity": 0.75,
+        "style_consistency": 1.0,
+        "text_cleanliness": 1.0
+      },
+      "mean_total_elapsed_ms": 341317.5,
+      "mean_storyboard_stage_elapsed_ms": 89242.0,
+      "mean_total_cost_usd": 0.275,
+      "mean_total_frames": 15.0,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.5,
+      "mean_direct_reference_input_count": 16.5,
+      "calls": 2
+    },
+    {
+      "candidate_variant": "gpt_image_2_template_grid_storyboards",
+      "candidate_label": "GPT Image 2 Template Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.6613,
+      "quality_python": 0.7975,
+      "quality_rubric": 0.525,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.625,
+        "prop_discipline": 1.0,
+        "reference_fidelity": 0.75,
+        "story_specificity": 0.625,
+        "style_consistency": 1.0,
+        "text_cleanliness": 1.0
+      },
+      "mean_total_elapsed_ms": 307561.0,
+      "mean_storyboard_stage_elapsed_ms": 91312.5,
+      "mean_total_cost_usd": 0.275,
+      "mean_total_frames": 14.5,
+      "mean_available_reference_image_count": 2.0,
+      "mean_prompt_reference_frame_count": 7.0,
+      "mean_direct_reference_input_count": 15.5,
+      "calls": 2
+    }
+  ],
+  "recommendation": {
+    "decision": "quality_below_initial_floor",
+    "rationale": "The current default storyboard lane scored 0.661, below the initial 0.75 usefulness floor. The eval is doing its job by making that failure repeatable instead of anecdotal."
+  },
+  "previous_default": "gpt_image_2_template_grid_storyboards"
+}

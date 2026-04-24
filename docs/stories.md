@@ -292,6 +292,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 |---|---|---|---|---|---|---|---|
 | 143 | AI-Generated Low-Fidelity Previz | High | Done | — | spec:6, spec:7, spec:10 | 028, 029, 030, 056, 119, 137, 140 | [story-143](stories/story-143-ai-generated-low-fidelity-previz.md) |
 | 177 | OpenTimelineIO Narrative Interchange Export | High | Done | — | spec:6, spec:7, spec:10 | 130 | [story-177](stories/story-177-otio-narrative-interchange-export.md) |
+| 188 | Storyboard Grid Beat Router and Motion-Handoff Scout | High | Done | — | spec:6, spec:7, spec:8 | 186 | [story-188](stories/story-188-storyboard-grid-beat-router-and-motion-handoff-scout.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | Medium | Done | — | spec:6, spec:7, spec:10 | 012, 013, 058 | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
 | 173 | Stale Coverage Graph Node Removal | Medium | Done | — | spec:6 | 025 | [story-173](stories/story-173-stale-coverage-graph-node-removal.md) |
 | 137 | Previz Fidelity Upgrade | Low | Done | — | spec:6, spec:7, spec:10 | 027, 028, 030 | [story-137](stories/story-137-previz-fidelity-upgrade.md) |

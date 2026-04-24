@@ -14,6 +14,7 @@ from cine_forge.ai.image import (
     supports_direct_reference_images,
 )
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.modules.visualization.storyboard_v1.beats import build_ordered_grid_beats
 from cine_forge.modules.visualization.storyboard_v1.grid import (
     build_grid_prompt,
     render_grid_template,
@@ -256,7 +257,8 @@ def _generate_grid_storyboard_for_scene(
     for chunk_index, shots in enumerate(shot_chunks, start=1):
         layout = resolve_grid_layout(panel_count=len(shots), requested_size=image_size)
         template_path = scene_dir / f"grid_{chunk_index:02d}_template.jpg"
-        uses_template_reference = grid_mode == "template"
+        uses_template_reference = grid_mode in {"template", "beat_template"}
+        uses_beat_router = grid_mode == "beat_template"
         if uses_template_reference:
             render_grid_template(layout, template_path)
 
@@ -304,6 +306,15 @@ def _generate_grid_storyboard_for_scene(
             panel_briefs=panel_briefs,
             shot_ids=[shot.shot_id for shot in shots],
             uses_template_reference=uses_template_reference,
+            ordered_story_beats=(
+                build_ordered_grid_beats(
+                    scene=scene,
+                    shots=shots,
+                    character_identity_locks=character_identity_locks,
+                )
+                if uses_beat_router
+                else None
+            ),
         )
         grid_bytes, model_used, direct_reference_images = generate_grid_bytes(
             prompt=grid_prompt,
@@ -357,6 +368,7 @@ def _generate_grid_storyboard_for_scene(
                     prompt_used=grid_prompt,
                     prompt_sources_used=_dedupe(
                         [*prompt_sources, "storyboard_grid"]
+                        + (["storyboard_grid_beats"] if uses_beat_router else [])
                         + (["grid_template"] if uses_template_reference else [])
                     ),
                     visual_reference_images=reference_images,

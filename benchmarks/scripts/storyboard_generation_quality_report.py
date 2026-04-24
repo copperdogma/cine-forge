@@ -55,7 +55,9 @@ def build_summary(
     runtime_payload: dict[str, Any],
     promptfoo_payload: dict[str, Any],
     dataset_root: Path,
+    baseline_variant: str | None = None,
 ) -> dict[str, Any]:
+    previous_default = baseline_variant or _registry_default()
     runtime_rows: dict[str, dict[str, Any]] = {}
     for row in runtime_payload.get("summary", {}).get("candidates", []):
         runtime_rows[str(row["candidate_variant"])] = dict(row)
@@ -129,12 +131,12 @@ def build_summary(
             row["mean_total_elapsed_ms"] or float("inf"),
         )
     )
-    recommendation = _recommend(rows)
+    recommendation = _recommend(rows, baseline_variant=previous_default)
     return {
         "eval_id": "storyboard-generation-quality",
         "candidates": rows,
         "recommendation": recommendation,
-        "previous_default": _registry_default(),
+        "previous_default": previous_default,
     }
 
 
@@ -181,13 +183,18 @@ def render_markdown(summary: dict[str, Any]) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _recommend(rows: list[dict[str, Any]]) -> dict[str, str]:
+def _recommend(
+    rows: list[dict[str, Any]],
+    *,
+    baseline_variant: str | None,
+) -> dict[str, str]:
     if not rows:
         return {
             "decision": "keep_current_default",
             "rationale": "No storyboard-quality results were available.",
         }
-    baseline = next((row for row in rows if row["candidate_variant"] == BASELINE_VARIANT), None)
+    active_baseline = baseline_variant or BASELINE_VARIANT
+    baseline = next((row for row in rows if row["candidate_variant"] == active_baseline), None)
     if baseline is None:
         return {
             "decision": "keep_current_default",

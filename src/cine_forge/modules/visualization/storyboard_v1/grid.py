@@ -9,6 +9,11 @@ from typing import Any
 
 from PIL import Image, ImageDraw
 
+GRID_PROMPT_MAX_CHARS = 24_000
+GRID_PROMPT_BEAT_MAX_CHARS = 700
+GRID_PROMPT_PANEL_MAX_CHARS = 1_200
+GRID_PROMPT_MIN_ITEM_CHARS = 320
+
 
 class StoryboardGridLayout:
     """Resolved panel layout for one generated storyboard grid image."""
@@ -128,6 +133,7 @@ def build_grid_prompt(
     panel_briefs: list[str],
     shot_ids: list[str],
     uses_template_reference: bool,
+    ordered_story_beats: list[str] | None = None,
 ) -> str:
     template_line = (
         "Use the supplied blank storyboard grid image as the exact panel layout."
@@ -171,18 +177,85 @@ def build_grid_prompt(
             "box. Do not merge panels, skip panels, add extra panels, or create a "
             "comic page with typography."
         ),
-        "",
-        "Panel briefs:",
     ]
+    beat_cap, panel_cap = _prompt_item_budgets(
+        base_lines=lines,
+        ordered_story_beats=ordered_story_beats or [],
+        panel_briefs=panel_briefs,
+    )
+    if ordered_story_beats:
+        lines.extend(
+            [
+                "",
+                "Ordered scene beat router:",
+                (
+                    "Make the full grid read as one continuous film scene sequence. "
+                    "Each active panel must satisfy both its ordered beat and its panel "
+                    "brief, moving left-to-right then top-to-bottom."
+                ),
+            ]
+        )
+        for beat in ordered_story_beats:
+            lines.append(f"- {_compact_prompt_text(beat, beat_cap)}")
+    lines.extend(["", "Panel briefs:"])
     for index, (shot_id, brief) in enumerate(zip(shot_ids, panel_briefs, strict=True), start=1):
         lines.extend(
             [
                 "",
                 f"Panel {index} / shot {shot_id}:",
-                brief,
+                _compact_prompt_text(brief, panel_cap),
             ]
         )
     return "\n".join(line.rstrip() for line in lines if line is not None).strip()
+
+
+def _prompt_item_budgets(
+    *,
+    base_lines: list[str],
+    ordered_story_beats: list[str],
+    panel_briefs: list[str],
+) -> tuple[int, int]:
+    """Keep reference-image edit prompts under OpenAI's practical prompt ceiling."""
+    base_len = len("\n".join(base_lines))
+    remaining = max(4_000, GRID_PROMPT_MAX_CHARS - base_len - 1_000)
+    beat_count = len(ordered_story_beats)
+    panel_count = len(panel_briefs)
+    if beat_count and panel_count:
+        beat_budget = remaining * 2 // 5
+        panel_budget = remaining - beat_budget
+        return (
+            min(
+                GRID_PROMPT_BEAT_MAX_CHARS,
+                max(GRID_PROMPT_MIN_ITEM_CHARS, beat_budget // beat_count),
+            ),
+            min(
+                GRID_PROMPT_PANEL_MAX_CHARS,
+                max(GRID_PROMPT_MIN_ITEM_CHARS, panel_budget // panel_count),
+            ),
+        )
+    if panel_count:
+        return (
+            GRID_PROMPT_BEAT_MAX_CHARS,
+            min(
+                GRID_PROMPT_PANEL_MAX_CHARS,
+                max(GRID_PROMPT_MIN_ITEM_CHARS, remaining // panel_count),
+            ),
+        )
+    return GRID_PROMPT_BEAT_MAX_CHARS, GRID_PROMPT_PANEL_MAX_CHARS
+
+
+def _compact_prompt_text(value: str, max_chars: int) -> str:
+    text = " ".join(str(value).split())
+    if len(text) <= max_chars:
+        return text
+    cutoff = max(
+        text.rfind(". ", 0, max_chars),
+        text.rfind("; ", 0, max_chars),
+        text.rfind(", ", 0, max_chars),
+    )
+    if cutoff < max_chars // 2:
+        cutoff = max_chars
+    return text[:cutoff].rstrip(" ,;.") + "."
 
 
 def _balanced_grid(panel_count: int) -> tuple[int, int]:

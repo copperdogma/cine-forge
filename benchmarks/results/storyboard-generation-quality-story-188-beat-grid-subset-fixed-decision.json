@@ -1,0 +1,36 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "candidates": [
+    {
+      "candidate_variant": "gpt_image_2_beat_grid_storyboards",
+      "candidate_label": "GPT Image 2 Beat Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "success_ratio": 1.0,
+      "quality_overall": 0.78,
+      "quality_python": 0.84,
+      "quality_rubric": 0.72,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.5,
+        "prop_discipline": 1.0,
+        "reference_fidelity": 1.0,
+        "story_specificity": 0.75,
+        "style_consistency": 1.0,
+        "text_cleanliness": 1.0
+      },
+      "mean_total_elapsed_ms": 332282.0,
+      "mean_storyboard_stage_elapsed_ms": 85645.0,
+      "mean_total_cost_usd": 0.264,
+      "mean_total_frames": 13.0,
+      "mean_available_reference_image_count": 0.0,
+      "mean_prompt_reference_frame_count": 0.0,
+      "mean_direct_reference_input_count": 0.0,
+      "calls": 1
+    }
+  ],
+  "recommendation": {
+    "decision": "keep_current_default",
+    "rationale": "Current default storyboard candidate is missing from the result set."
+  },
+  "previous_default": "gpt_image_2_template_grid_storyboards"
+}
