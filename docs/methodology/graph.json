@@ -280,7 +280,8 @@
           "161",
           "163",
           "183",
-          "185"
+          "185",
+          "187"
         ],
         "adrIds": [
           "ADR-003"
@@ -1000,7 +1001,8 @@
           "179",
           "183",
           "184",
-          "186"
+          "186",
+          "187"
         ],
         "adrIds": [
           "ADR-001",
@@ -1441,23 +1443,24 @@
           "160",
           "161",
           "162",
-          "183"
+          "183",
+          "187"
         ],
         "evalIds": [
           "full-script-throughput"
         ],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "183",
-          "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+          "sourceId": "187",
+          "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
           "recommendedNow": true,
           "posture": "ready-now",
-          "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
+          "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
           "lastRelevantAction": {
-            "date": "2026-04-20",
+            "date": "2026-04-24",
             "sourceType": "story-work-log",
-            "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
-            "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+            "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
+            "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
           },
           "storyIds": [
             "155",
@@ -1465,7 +1468,8 @@
             "160",
             "161",
             "162",
-            "183"
+            "183",
+            "187"
           ],
           "evalIds": [
             "full-script-throughput"
@@ -1527,7 +1531,8 @@
           "162",
           "169",
           "183",
-          "186"
+          "186",
+          "187"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1537,16 +1542,16 @@
         ],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "183",
-          "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+          "sourceId": "187",
+          "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
           "recommendedNow": true,
           "posture": "ready-now",
-          "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
+          "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
           "lastRelevantAction": {
-            "date": "2026-04-20",
+            "date": "2026-04-24",
             "sourceType": "story-work-log",
-            "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
-            "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+            "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
+            "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
           },
           "storyIds": [
             "155",
@@ -1556,7 +1561,8 @@
             "162",
             "169",
             "183",
-            "186"
+            "186",
+            "187"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1580,7 +1586,8 @@
         "storyIds": [
           "155",
           "161",
-          "183"
+          "183",
+          "187"
         ],
         "evalIds": [
           "compromise-C4-two-tier-scenes",
@@ -1588,21 +1595,22 @@
         ],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "183",
-          "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
+          "sourceId": "187",
+          "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
           "recommendedNow": true,
           "posture": "ready-now",
-          "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
+          "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
           "lastRelevantAction": {
-            "date": "2026-04-20",
+            "date": "2026-04-24",
             "sourceType": "story-work-log",
-            "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
-            "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+            "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
+            "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
           },
           "storyIds": [
             "155",
             "161",
-            "183"
+            "183",
+            "187"
           ],
           "evalIds": [
             "full-script-throughput",
@@ -11611,7 +11619,7 @@
       "id": "183",
       "title": "Representative Deep Breakdown Runtime Truth Refresh",
       "path": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "Medium",
       "idealRefs": [
         "R1 (story understanding)",
@@ -11663,9 +11671,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260420-0003",
-        "date": "2026-04-20",
-        "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+        "timestamp": "20260424-0929",
+        "date": "2026-04-24",
+        "summary": "mark-done: marked Story 183 Done after close-out confirmed every acceptance criterion and substantive task was complete. The remaining unchecked task rows were not-applicable guards (`skills-check` and browser verificat…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11673,14 +11681,14 @@
         "sourceKind": "story",
         "sourceId": "183",
         "sourcePath": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
-        "whyNow": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "mark-done: marked Story 183 Done after close-out confirmed every acceptance criterion and substantive task was complete. The remaining unchecked task rows were not-applicable guards (`skills-check` and browser verificat…",
         "lastRelevantAction": {
-          "date": "2026-04-20",
+          "date": "2026-04-24",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-183-representative-deep-breakdown-runtime-truth-refresh.md",
-          "summary": "story-created: routed the manual QA speed questions into a fresh measurement story instead of opening another ungrounded optimization bucket. Evidence: `docs/inbox.md` QA notes, `docs/evals/registry.yaml`, `benchmarks/s…"
+          "summary": "mark-done: marked Story 183 Done after close-out confirmed every acceptance criterion and substantive task was complete. The remaining unchecked task rows were not-applicable guards (`skills-check` and browser verificat…"
         }
       }
     },
@@ -11885,6 +11893,76 @@
           "sourceType": "story-work-log",
           "source": "docs/stories/story-186-storyboard-generation-quality-eval.md",
           "summary": "finish-and-push validation: full branch validation stayed green after the registry/changelog/story close-out edits. Evidence: full unit suite `808 passed, 179 deselected`; targeted Ruff passed on `src/`, `tests/`, touch…"
+        }
+      }
+    },
+    {
+      "id": "187",
+      "title": "Long-Form Scene Analysis Runtime Regression",
+      "path": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
+      "status": "Pending",
+      "priority": "Medium",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (radical transparency)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:2.7",
+        "spec:8.1",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "dependsOn": [
+        "155",
+        "161",
+        "183"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "driver_and_runtime",
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "follow-up-from-183",
+        "long-form",
+        "scene-analysis",
+        "throughput"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260424-0004",
+        "date": "2026-04-24",
+        "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "187",
+        "sourcePath": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…",
+        "lastRelevantAction": {
+          "date": "2026-04-24",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-187-long-form-scene-analysis-runtime-regression.md",
+          "summary": "story-created: split from Story 183 because the fresh `big_fish_long` detector rerun exposed a concrete `world_building.analyze_scenes` regression: Story 161 measured `810.038s`, while Story 183 measured `1130.834s` on…"
         }
       }
     }
@@ -12617,7 +12695,8 @@
         "155",
         "159",
         "160",
-        "161"
+        "161",
+        "183"
       ],
       "categoryRefs": [
         "spec:2",
@@ -12632,12 +12711,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Story 161 Targeted Big Fish Rerun (Analyze Scenes faster, continuity still dominant)",
-        "measured": "2026-04-12",
+        "model": "Story 183 Targeted Big Fish Runtime Refresh (Continuity dominant, scene analysis regressed)",
+        "measured": "2026-04-24",
         "metrics": {
           "overall": 1
         },
-        "note": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…"
+        "note": "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final r…"
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -12648,7 +12727,8 @@
         "155",
         "159",
         "160",
-        "161"
+        "161",
+        "183"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -12672,14 +12752,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…",
+        "whyNow": "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final r…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-12",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fe…"
+          "summary": "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final r…"
         }
       }
     },
@@ -14155,9 +14235,10 @@
             "115",
             "116",
             "117",
-            "183"
+            "183",
+            "187"
           ],
-          "stories_since_audit": 1,
+          "stories_since_audit": 2,
           "open_findings": [],
           "manual_priority": "normal"
         },
@@ -14171,16 +14252,17 @@
             "167",
             "168",
             "169",
-            "183"
+            "183",
+            "187"
           ],
-          "stories_since_audit": 1,
+          "stories_since_audit": 2,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
           "last_summary": "Story 163 removed the scene-analysis ownership seam that previously kept this domain open, and later domain-tagged product-truth stories 164-169 did not reintroduce a structural follow-up. Keep throughput and product-truth work separate from architecture-audit debt here unless a new ownership seam appears."
         },
         "api_service_and_operator_console": {
-          "last_audited_at": "2026-04-11",
+          "last_audited_at": "2026-04-24",
           "recent_story_refs": [
             "169",
             "170",
@@ -14193,13 +14275,16 @@
             "180",
             "181",
             "182",
+            "184",
             "185"
           ],
-          "stories_since_audit": 17,
-          "open_findings": [],
+          "stories_since_audit": 0,
+          "open_findings": [
+            "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
+          ],
           "manual_priority": "normal",
-          "last_result": "clean",
-          "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Story 177 adds a new export-carrier follow-up through the existing export modal / router seam. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
+          "last_result": "open_finding",
+          "last_summary": "2026-04-24 audit after Stories 169-185 found no new duplicate API/shell subsystem: live capability smoke stays separate from cheap dependency health, chat failure containment remains in the chat loader/store/boundary seam, the Radix ScrollArea crash was replaced by a narrow ref-stable wrapper, and Scene Workspace guidance/start_from reuse lives in focused workflow/preflight helpers. The real remaining surface-placement drift is already captured by Story 185: Project Home still lets supporting Script Bible, healthy Artifact Health, and Final Output surfaces compete above the screenplay despite the design rule that the screenplay is the home page. Keep oversized `ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `ui/src/pages/SceneWorkspacePage.tsx`, `ui/src/pages/ProjectHome.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`, and new `src/cine_forge/services/provider_capability_smoke.py` as watchpoints, but do not create a broad cleanup story from this audit."
         },
         "creative_direction_and_chat": {
           "last_audited_at": "2026-03-31",

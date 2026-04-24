@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-24-04] — Refresh Deep Breakdown runtime truth (Story 183)
+
+### Added
+- Added fresh `big_fish_long` full-script throughput result artifacts for the current `mvp_ingest` -> `world_building` boundary.
+- Added Story 187 as the targeted follow-up for the measured long-form `analyze_scenes` runtime regression.
+
+### Changed
+- Changed the full-script throughput eval registry to record Story 183's current Deep Breakdown runtime, cost, continuity hotspot, and non-runtime-blocking classification.
+- Changed methodology planning surfaces to reflect Story 183 completion and the new Story 187 follow-up pressure.
+
 ## [2026-04-24-03] — Add storyboard quality eval and grid default (Story 186)
 
 ### Added

@@ -418,28 +418,30 @@
       },
       "driver_and_runtime": {
         "last_audited_at": "2026-03-02",
-        "recent_story_refs": ["115", "116", "117", "183"],
-        "stories_since_audit": 1,
+        "recent_story_refs": ["115", "116", "117", "183", "187"],
+        "stories_since_audit": 2,
         "open_findings": [],
         "manual_priority": "normal"
       },
       "ingest_and_world_building": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["163", "164", "165", "166", "167", "168", "169", "183"],
-        "stories_since_audit": 1,
+        "recent_story_refs": ["163", "164", "165", "166", "167", "168", "169", "183", "187"],
+        "stories_since_audit": 2,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
         "last_summary": "Story 163 removed the scene-analysis ownership seam that previously kept this domain open, and later domain-tagged product-truth stories 164-169 did not reintroduce a structural follow-up. Keep throughput and product-truth work separate from architecture-audit debt here unless a new ownership seam appears."
       },
       "api_service_and_operator_console": {
-        "last_audited_at": "2026-04-11",
-        "recent_story_refs": ["169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182", "185"],
-        "stories_since_audit": 17,
-        "open_findings": [],
+        "last_audited_at": "2026-04-24",
+        "recent_story_refs": ["169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182", "184", "185"],
+        "stories_since_audit": 0,
+        "open_findings": [
+          "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
+        ],
         "manual_priority": "normal",
-        "last_result": "clean",
-        "last_summary": "Stories 156, 157, and 158 plus the 2026-04-10 FP1 reruns cleared the concrete drift signals in this lane. Stale completed-path chat CTAs now resolve through a shared chat-action-state helper, fresh-run `/events` bootstrap is centralized in `RunOrchestrator._bootstrap_run_dir()`, and the canonical surfaced UI path is back to clean pass. Story 177 adds a new export-carrier follow-up through the existing export modal / router seam. Remaining oversized files (`ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`) stay as watchpoints, not open findings, because recent fixes extracted seams instead of adding more duplicated flow logic."
+        "last_result": "open_finding",
+        "last_summary": "2026-04-24 audit after Stories 169-185 found no new duplicate API/shell subsystem: live capability smoke stays separate from cheap dependency health, chat failure containment remains in the chat loader/store/boundary seam, the Radix ScrollArea crash was replaced by a narrow ref-stable wrapper, and Scene Workspace guidance/start_from reuse lives in focused workflow/preflight helpers. The real remaining surface-placement drift is already captured by Story 185: Project Home still lets supporting Script Bible, healthy Artifact Health, and Final Output surfaces compete above the screenplay despite the design rule that the screenplay is the home page. Keep oversized `ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `ui/src/pages/SceneWorkspacePage.tsx`, `ui/src/pages/ProjectHome.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`, and new `src/cine_forge/services/provider_capability_smoke.py` as watchpoints, but do not create a broad cleanup story from this audit."
       },
       "creative_direction_and_chat": {
         "last_audited_at": "2026-03-31",
