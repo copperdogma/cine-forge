@@ -1,0 +1,996 @@
+{
+  "evalId": "eval-W6Q-2026-04-24T23:19:46",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-04-24T23:19:46.003Z",
+    "prompts": [
+      {
+        "raw": "You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+        "label": "prompts/continuity-extraction.txt: You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+        "id": "0692b33e2b1edb7acef2dd4e19ad1bd5d8a11f5f02a357c0709906a1a15548f4",
+        "provider": "GPT-5.5",
+        "metrics": {
+          "score": 1.9279,
+          "testPassCount": 2,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 4,
+          "assertFailCount": 0,
+          "totalLatencyMs": 56438,
+          "tokenUsage": {
+            "prompt": 1813,
+            "completion": 5355,
+            "cached": 0,
+            "total": 7168,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 1024,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 5135,
+              "prompt": 4163,
+              "completion": 972,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      },
+      {
+        "raw": "You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+        "label": "prompts/continuity-extraction.txt: You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+        "id": "0692b33e2b1edb7acef2dd4e19ad1bd5d8a11f5f02a357c0709906a1a15548f4",
+        "provider": "GPT-5.5 Pro",
+        "metrics": {
+          "score": 1.9141,
+          "testPassCount": 2,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 4,
+          "assertFailCount": 0,
+          "totalLatencyMs": 485821,
+          "tokenUsage": {
+            "prompt": 1813,
+            "completion": 22918,
+            "cached": 0,
+            "total": 24731,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 18566,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 5188,
+              "prompt": 4226,
+              "completion": 962,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 4.1796299999999995
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.9662999999999999,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2599,
+            "prompt": 2118,
+            "completion": 481,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.9826,
+              "reason": "change_detection=1.00 | confidence_calibration=1.00 | entity_coverage=1.00 | evidence_quality=1.00 | json_valid=1.00 | property_extraction=0.93",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/continuity_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the continuity extraction for a harbor dock daytime scene.\n\nBILLY arrives at a dock wearing a leather jacket (changed from flannel\nshirt in previous scene). He carries his father's weathered oak OAR.\nHe meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's\ntone is flat and resigned.\n\nCritical evaluation criteria:\n1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?\n2. Does it correctly extract Billy's costume as leather jacket?\n3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?\n4. Does it note Jane's rain jacket and the sealed envelope?\n5. Does it capture Billy's flat/resigned emotional state?\n6. Are change events supported by actual scene text quotes as evidence?\n7. Are confidence scores reasonable (high for explicit text, lower for inferred)?\n\nScore strictly: good continuity extraction catches state changes with\nevidence, not just current state descriptions.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The output meets all 7 critical evaluation criteria:\n\n1. **All 5 entities identified**: Billy (character:billy), Jane (character:jane), dock (location:harbor_dock), oar (prop:oar), envelope (prop:envelope) — all present.\n\n2. **Billy's costume correctly extracted**: Listed as 'leather jacket zipped against the wind' with confidence 1.\n\n3. **Billy's costume CHANGE detected**: A change_event correctly captures the transition from 'faded flannel shirt and worn jeans' to 'leather jacket zipped against the wind', with explicit evidence quoting the scene text. This is the most critical continuity tracking element and it's handled well.\n\n4. **Jane's rain jacket and sealed envelope noted**: Jane's costume is 'rain jacket' (confidence 1), and the envelope is described as 'sealed, intact' (confidence 1).\n\n5. **Billy's emotional state captured**: Listed as 'flat, restrained' with evidence quoting the '(flat)' parenthetical from the script. The change from 'tense, jaw tight' to 'flat, restrained' is tracked.\n\n6. **Evidence quotes from scene text**: All change events include actual scene text quotes as evidence (e.g., 'BILLY walks along the dock, leather jacket zipped against the wind', 'The OAR — his father's, weathered oak with a rope-wrapped grip — rests in his right hand like a walking stick', etc.).\n\n7. **Confidence scores are reasonable**: Explicit text descriptions get high confidence (0.9-1.0), while inferred states like Jane's emotional state ('impatient or reproachful') get lower confidence (0.75) and are marked as not explicit (is_explicit: false). The atmosphere inference is also appropriately lower at 0.75.\n\nThe extraction is thorough, well-structured, and demonstrates strong continuity tracking with proper state change detection, evidence citation, and calibrated confidence levels.",
+              "tokensUsed": {
+                "total": 2599,
+                "prompt": 2118,
+                "completion": 481,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"scene_id\\\":\\\"scene_002\\\",\\\"entity_states\\\":[{\\\"entity_key\\\":\\\"character:billy\\\",\\\"properties\\\":[{\\\"key\\\":\\\"costume\\\",\\\"value\\\":\\\"leather jacket zipped against the wind\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"emotional_state\\\",\\\"value\\\":\\\"flat, restrained\\\",\\\"confidence\\\":0.85},{\\\"key\\\":\\\"props_carried\\\",\\\"value\\\":\\\"not carrying the oar after setting it against a piling; reaching for the envelope\\\",\\\"confidence\\\":0.95}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"costume\\\",\\\"previous_value\\\":\\\"faded flannel shirt and worn jeans\\\",\\\"new_value\\\":\\\"leather jacket zipped against the wind\\\",\\\"reason\\\":\\\"Billy is now specifically described wearing a zipped leather jacket.\\\",\\\"evidence\\\":\\\"BILLY walks along the dock, leather jacket zipped against the wind.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9},{\\\"property_key\\\":\\\"emotional_state\\\",\\\"previous_value\\\":\\\"tense, jaw tight\\\",\\\"new_value\\\":\\\"flat, restrained\\\",\\\"reason\\\":\\\"His line delivery is described as flat, suggesting a more emotionally muted presentation than the prior tense state.\\\",\\\"evidence\\\":\\\"BILLY\\\\n(flat)\\\\nI'm always late.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.8},{\\\"property_key\\\":\\\"props_carried\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"carried the oar in his right hand, then set it against a piling and reached for the envelope\\\",\\\"reason\\\":\\\"Billy is shown carrying the oar, then putting it down and reaching for Jane's envelope.\\\",\\\"evidence\\\":\\\"The OAR — his father's, weathered oak with a rope-wrapped grip —\\\\nrests in his right hand like a walking stick.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95}],\\\"confidence\\\":0.9},{\\\"entity_key\\\":\\\"character:jane\\\",\\\"properties\\\":[{\\\"key\\\":\\\"costume\\\",\\\"value\\\":\\\"rain jacket\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"physical_condition\\\",\\\"value\\\":\\\"sharp eyes; no visible injuries mentioned\\\",\\\"confidence\\\":0.85},{\\\"key\\\":\\\"emotional_state\\\",\\\"value\\\":\\\"impatient or reproachful\\\",\\\"confidence\\\":0.75},{\\\"key\\\":\\\"props_carried\\\",\\\"value\\\":\\\"sealed envelope\\\",\\\"confidence\\\":1}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"costume\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"rain jacket\\\",\\\"reason\\\":\\\"First appearance; Jane's wardrobe is introduced.\\\",\\\"evidence\\\":\\\"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"physical_condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"sharp eyes; no visible injuries mentioned\\\",\\\"reason\\\":\\\"First appearance; Jane is described with sharp eyes and no injury is indicated.\\\",\\\"evidence\\\":\\\"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.85},{\\\"property_key\\\":\\\"emotional_state\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"impatient or reproachful\\\",\\\"reason\\\":\\\"First appearance; her line indicates impatience with Billy's lateness.\\\",\\\"evidence\\\":\\\"JANE\\\\nYou're late.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.75},{\\\"property_key\\\":\\\"props_carried\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"sealed envelope\\\",\\\"reason\\\":\\\"First appearance; Jane is explicitly holding the envelope.\\\",\\\"evidence\\\":\\\"She holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1}],\\\"confidence\\\":0.9},{\\\"entity_key\\\":\\\"location:harbor_dock\\\",\\\"properties\\\":[{\\\"key\\\":\\\"time_of_day\\\",\\\"value\\\":\\\"day\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"weather\\\",\\\"value\\\":\\\"windy\\\",\\\"confidence\\\":0.9},{\\\"key\\\":\\\"atmosphere\\\",\\\"value\\\":\\\"exposed, brisk harbor setting\\\",\\\"confidence\\\":0.75}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"time_of_day\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"day\\\",\\\"reason\\\":\\\"First appearance; scene heading establishes daytime.\\\",\\\"evidence\\\":\\\"EXT. HARBOR DOCK - DAY\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"weather\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"windy\\\",\\\"reason\\\":\\\"First appearance; Billy's jacket is zipped against the wind.\\\",\\\"evidence\\\":\\\"BILLY walks along the dock, leather jacket zipped against the wind.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9},{\\\"property_key\\\":\\\"atmosphere\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"exposed, brisk harbor setting\\\",\\\"reason\\\":\\\"First appearance; the dock, boat, and wind suggest a brisk waterfront environment.\\\",\\\"evidence\\\":\\\"BILLY walks along the dock, leather jacket zipped against the wind.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.75}],\\\"confidence\\\":0.85},{\\\"entity_key\\\":\\\"prop:oar\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"intact, weathered oak with a rope-wrapped grip\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"set against a piling on the dock\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"Billy's father's oar; handled by Billy\\\",\\\"confidence\\\":0.95}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"intact, weathered oak with a rope-wrapped grip\\\",\\\"reason\\\":\\\"First appearance; the oar's material and grip are described, and it is usable as a walking stick.\\\",\\\"evidence\\\":\\\"The OAR — his father's, weathered oak with a rope-wrapped grip —\\\\nrests in his right hand like a walking stick.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"set against a piling on the dock\\\",\\\"reason\\\":\\\"First appearance; Billy initially carries it, then places it against a piling.\\\",\\\"evidence\\\":\\\"He sets the OAR against a piling and reaches for the envelope.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"ownership\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"Billy's father's oar; handled by Billy\\\",\\\"reason\\\":\\\"First appearance; the oar is identified as belonging to Billy's father and is in Billy's hand.\\\",\\\"evidence\\\":\\\"The OAR — his father's, weathered oak with a rope-wrapped grip —\\\\nrests in his right hand like a walking stick.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95}],\\\"confidence\\\":0.95},{\\\"entity_key\\\":\\\"prop:envelope\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"sealed, intact\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"in Jane's hand by the boat as Billy reaches for it\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"held by Jane\\\",\\\"confidence\\\":1}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"sealed, intact\\\",\\\"reason\\\":\\\"First appearance; envelope is explicitly described as sealed.\\\",\\\"evidence\\\":\\\"She holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"in Jane's hand by the boat as Billy reaches for it\\\",\\\"reason\\\":\\\"First appearance; Jane is holding the envelope while waiting by the boat, and Billy reaches for it.\\\",\\\"evidence\\\":\\\"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\\\\nShe holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"ownership\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"held by Jane\\\",\\\"reason\\\":\\\"First appearance; Jane is explicitly holding the envelope.\\\",\\\"evidence\\\":\\\"She holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1}],\\\"confidence\\\":0.95}]}\\n</Output>\\n<Rubric>\\nEvaluate the continuity extraction for a harbor dock daytime scene.\\n\\nBILLY arrives at a dock wearing a leather jacket (changed from flannel\\nshirt in previous scene). He carries his father's weathered oak OAR.\\nHe meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's\\ntone is flat and resigned.\\n\\nCritical evaluation criteria:\\n1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?\\n2. Does it correctly extract Billy's costume as leather jacket?\\n3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?\\n4. Does it note Jane's rain jacket and the sealed envelope?\\n5. Does it capture Billy's flat/resigned emotional state?\\n6. Are change events supported by actual scene text quotes as evidence?\\n7. Are confidence scores reasonable (high for explicit text, lower for inferred)?\\n\\nScore strictly: good continuity extraction catches state changes with\\nevidence, not just current state descriptions.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "95a84905-6d9c-4f3b-b715-c24687b79a3e",
+        "latencyMs": 29284,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene 2: EXT. HARBOR DOCK - DAY\nScene ID: scene_002\n\n```\nEXT. HARBOR DOCK - DAY\n\nBILLY walks along the dock, leather jacket zipped against the wind.\nThe OAR — his father's, weathered oak with a rope-wrapped grip —\nrests in his right hand like a walking stick.\n\nHe spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\nShe holds a sealed ENVELOPE.\n\nJANE\nYou're late.\n\nBILLY\n(flat)\nI'm always late.\n\nHe sets the OAR against a piling and reaches for the envelope.\n```\n\n## Entities Present\n\n### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: faded flannel shirt and worn jeans\n  - emotional_state: tense, jaw tight\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Character: JANE (key: character:jane)\nPrevious state:\n  (First appearance — no previous state)\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  (First appearance — no previous state)\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: scene_002\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"scene_002\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "label": "prompts/continuity-extraction.txt: You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "0692b33e2b1edb7acef2dd4e19ad1bd5d8a11f5f02a357c0709906a1a15548f4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-5.5",
+          "label": "GPT-5.5"
+        },
+        "response": {
+          "output": "{\n  \"scene_id\": \"scene_002\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\n          \"key\": \"costume\",\n          \"value\": \"leather jacket zipped against the wind\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"emotional_state\",\n          \"value\": \"flat, restrained\",\n          \"confidence\": 0.85\n        },\n        {\n          \"key\": \"props_carried\",\n          \"value\": \"not carrying the oar after setting it against a piling; reaching for the envelope\",\n          \"confidence\": 0.95\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"faded flannel shirt and worn jeans\",\n          \"new_value\": \"leather jacket zipped against the wind\",\n          \"reason\": \"Billy is now specifically described wearing a zipped leather jacket.\",\n          \"evidence\": \"BILLY walks along the dock, leather jacket zipped against the wind.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        },\n        {\n          \"property_key\": \"emotional_state\",\n          \"previous_value\": \"tense, jaw tight\",\n          \"new_value\": \"flat, restrained\",\n          \"reason\": \"His line delivery is described as flat, suggesting a more emotionally muted presentation than the prior tense state.\",\n          \"evidence\": \"BILLY\\n(flat)\\nI'm always late.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.8\n        },\n        {\n          \"property_key\": \"props_carried\",\n          \"previous_value\": null,\n          \"new_value\": \"carried the oar in his right hand, then set it against a piling and reached for the envelope\",\n          \"reason\": \"Billy is shown carrying the oar, then putting it down and reaching for Jane's envelope.\",\n          \"evidence\": \"The OAR — his father's, weathered oak with a rope-wrapped grip —\\nrests in his right hand like a walking stick.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        }\n      ],\n      \"confidence\": 0.9\n    },\n    {\n      \"entity_key\": \"character:jane\",\n      \"properties\": [\n        {\n          \"key\": \"costume\",\n          \"value\": \"rain jacket\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"physical_condition\",\n          \"value\": \"sharp eyes; no visible injuries mentioned\",\n          \"confidence\": 0.85\n        },\n        {\n          \"key\": \"emotional_state\",\n          \"value\": \"impatient or reproachful\",\n          \"confidence\": 0.75\n        },\n        {\n          \"key\": \"props_carried\",\n          \"value\": \"sealed envelope\",\n          \"confidence\": 1.0\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": null,\n          \"new_value\": \"rain jacket\",\n          \"reason\": \"First appearance; Jane's wardrobe is introduced.\",\n          \"evidence\": \"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"physical_condition\",\n          \"previous_value\": null,\n          \"new_value\": \"sharp eyes; no visible injuries mentioned\",\n          \"reason\": \"First appearance; Jane is described with sharp eyes and no injury is indicated.\",\n          \"evidence\": \"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.85\n        },\n        {\n          \"property_key\": \"emotional_state\",\n          \"previous_value\": null,\n          \"new_value\": \"impatient or reproachful\",\n          \"reason\": \"First appearance; her line indicates impatience with Billy's lateness.\",\n          \"evidence\": \"JANE\\nYou're late.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.75\n        },\n        {\n          \"property_key\": \"props_carried\",\n          \"previous_value\": null,\n          \"new_value\": \"sealed envelope\",\n          \"reason\": \"First appearance; Jane is explicitly holding the envelope.\",\n          \"evidence\": \"She holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        }\n      ],\n      \"confidence\": 0.9\n    },\n    {\n      \"entity_key\": \"location:harbor_dock\",\n      \"properties\": [\n        {\n          \"key\": \"time_of_day\",\n          \"value\": \"day\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"weather\",\n          \"value\": \"windy\",\n          \"confidence\": 0.9\n        },\n        {\n          \"key\": \"atmosphere\",\n          \"value\": \"exposed, brisk harbor setting\",\n          \"confidence\": 0.75\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"time_of_day\",\n          \"previous_value\": null,\n          \"new_value\": \"day\",\n          \"reason\": \"First appearance; scene heading establishes daytime.\",\n          \"evidence\": \"EXT. HARBOR DOCK - DAY\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"weather\",\n          \"previous_value\": null,\n          \"new_value\": \"windy\",\n          \"reason\": \"First appearance; Billy's jacket is zipped against the wind.\",\n          \"evidence\": \"BILLY walks along the dock, leather jacket zipped against the wind.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        },\n        {\n          \"property_key\": \"atmosphere\",\n          \"previous_value\": null,\n          \"new_value\": \"exposed, brisk harbor setting\",\n          \"reason\": \"First appearance; the dock, boat, and wind suggest a brisk waterfront environment.\",\n          \"evidence\": \"BILLY walks along the dock, leather jacket zipped against the wind.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.75\n        }\n      ],\n      \"confidence\": 0.85\n    },\n    {\n      \"entity_key\": \"prop:oar\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"intact, weathered oak with a rope-wrapped grip\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"set against a piling on the dock\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"Billy's father's oar; handled by Billy\",\n          \"confidence\": 0.95\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": null,\n          \"new_value\": \"intact, weathered oak with a rope-wrapped grip\",\n          \"reason\": \"First appearance; the oar's material and grip are described, and it is usable as a walking stick.\",\n          \"evidence\": \"The OAR — his father's, weathered oak with a rope-wrapped grip —\\nrests in his right hand like a walking stick.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": null,\n          \"new_value\": \"set against a piling on the dock\",\n          \"reason\": \"First appearance; Billy initially carries it, then places it against a piling.\",\n          \"evidence\": \"He sets the OAR against a piling and reaches for the envelope.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"ownership\",\n          \"previous_value\": null,\n          \"new_value\": \"Billy's father's oar; handled by Billy\",\n          \"reason\": \"First appearance; the oar is identified as belonging to Billy's father and is in Billy's hand.\",\n          \"evidence\": \"The OAR — his father's, weathered oak with a rope-wrapped grip —\\nrests in his right hand like a walking stick.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        }\n      ],\n      \"confidence\": 0.95\n    },\n    {\n      \"entity_key\": \"prop:envelope\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"sealed, intact\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"in Jane's hand by the boat as Billy reaches for it\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"held by Jane\",\n          \"confidence\": 1.0\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": null,\n          \"new_value\": \"sealed, intact\",\n          \"reason\": \"First appearance; envelope is explicitly described as sealed.\",\n          \"evidence\": \"She holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": null,\n          \"new_value\": \"in Jane's hand by the boat as Billy reaches for it\",\n          \"reason\": \"First appearance; Jane is holding the envelope while waiting by the boat, and Billy reaches for it.\",\n          \"evidence\": \"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\\nShe holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"ownership\",\n          \"previous_value\": null,\n          \"new_value\": \"held by Jane\",\n          \"reason\": \"First appearance; Jane is explicitly holding the envelope.\",\n          \"evidence\": \"She holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        }\n      ],\n      \"confidence\": 0.95\n    }\n  ]\n}",
+          "tokenUsage": {
+            "total": 3674,
+            "prompt": 917,
+            "completion": 2757,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 512,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 29284,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9f18d5b1cd146d01-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 24 Apr 2026 23:20:15 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "28829",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=NQGLVD9XQ3txlobpbBpMPoxH1oY8L7BpqIh2NtbFpG4-1777072786.2016373-1.0.1.1-ap6_gO2ZIhHUZHshWx5hut7UWw314IlSgWHyFVwj.vsSq2A.3mHmAl48DigdlTUwZEm9TmTNRsTqqIZe1iWb6tZ7VPaafb.5K4i5aKXeTpr66vJZ_r3_DTzAEdU.QCo0; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:50:15 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "15000",
+                "x-ratelimit-limit-tokens": "40000000",
+                "x-ratelimit-remaining-requests": "14999",
+                "x-ratelimit-remaining-tokens": "39999096",
+                "x-ratelimit-reset-requests": "4ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_6a252eb5c955461cbe6b9e80a827cdd9"
+              }
+            }
+          }
+        },
+        "score": 0.9662999999999999,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../input/continuity-scene-dock-day.txt",
+            "scene_heading": "EXT. HARBOR DOCK - DAY",
+            "scene_number": "2",
+            "scene_id": "scene_002",
+            "golden_path": "golden/continuity-extraction-golden.json",
+            "scene_key": "dock_day",
+            "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: faded flannel shirt and worn jeans\n  - emotional_state: tense, jaw tight\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Character: JANE (key: character:jane)\nPrevious state:\n  (First appearance — no previous state)\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  (First appearance — no previous state)\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/continuity_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the continuity extraction for a harbor dock daytime scene.\n\nBILLY arrives at a dock wearing a leather jacket (changed from flannel\nshirt in previous scene). He carries his father's weathered oak OAR.\nHe meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's\ntone is flat and resigned.\n\nCritical evaluation criteria:\n1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?\n2. Does it correctly extract Billy's costume as leather jacket?\n3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?\n4. Does it note Jane's rain jacket and the sealed envelope?\n5. Does it capture Billy's flat/resigned emotional state?\n6. Are change events supported by actual scene text quotes as evidence?\n7. Are confidence scores reasonable (high for explicit text, lower for inferred)?\n\nScore strictly: good continuity extraction catches state changes with\nevidence, not just current state descriptions.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../input/continuity-scene-dock-day.txt",
+          "scene_heading": "EXT. HARBOR DOCK - DAY",
+          "scene_number": "2",
+          "scene_id": "scene_002",
+          "golden_path": "golden/continuity-extraction-golden.json",
+          "scene_key": "dock_day",
+          "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: faded flannel shirt and worn jeans\n  - emotional_state: tense, jaw tight\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Character: JANE (key: character:jane)\nPrevious state:\n  (First appearance — no previous state)\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  (First appearance — no previous state)\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9f18d5b1cd146d01-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 24 Apr 2026 23:20:15 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "28829",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=NQGLVD9XQ3txlobpbBpMPoxH1oY8L7BpqIh2NtbFpG4-1777072786.2016373-1.0.1.1-ap6_gO2ZIhHUZHshWx5hut7UWw314IlSgWHyFVwj.vsSq2A.3mHmAl48DigdlTUwZEm9TmTNRsTqqIZe1iWb6tZ7VPaafb.5K4i5aKXeTpr66vJZ_r3_DTzAEdU.QCo0; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:50:15 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "15000",
+              "x-ratelimit-limit-tokens": "40000000",
+              "x-ratelimit-remaining-requests": "14999",
+              "x-ratelimit-remaining-tokens": "39999096",
+              "x-ratelimit-reset-requests": "4ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_6a252eb5c955461cbe6b9e80a827cdd9"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 2.15673,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.9662999999999999,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2697,
+            "prompt": 2196,
+            "completion": 501,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.9826,
+              "reason": "change_detection=1.00 | confidence_calibration=1.00 | entity_coverage=1.00 | evidence_quality=1.00 | json_valid=1.00 | property_extraction=0.93",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/continuity_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the continuity extraction for a harbor dock daytime scene.\n\nBILLY arrives at a dock wearing a leather jacket (changed from flannel\nshirt in previous scene). He carries his father's weathered oak OAR.\nHe meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's\ntone is flat and resigned.\n\nCritical evaluation criteria:\n1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?\n2. Does it correctly extract Billy's costume as leather jacket?\n3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?\n4. Does it note Jane's rain jacket and the sealed envelope?\n5. Does it capture Billy's flat/resigned emotional state?\n6. Are change events supported by actual scene text quotes as evidence?\n7. Are confidence scores reasonable (high for explicit text, lower for inferred)?\n\nScore strictly: good continuity extraction catches state changes with\nevidence, not just current state descriptions.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The output meets all 7 critical evaluation criteria:\n\n1. **All 5 entities identified**: Billy (character:billy), Jane (character:jane), dock (location:harbor_dock), oar (prop:oar), envelope (prop:envelope) — all present.\n\n2. **Billy's costume correctly extracted**: 'leather jacket zipped against the wind' — correct.\n\n3. **Billy's costume CHANGE detected**: Change event from 'faded flannel shirt and worn jeans' to 'leather jacket zipped against the wind' with explicit evidence quote from the scene text — correctly captured.\n\n4. **Jane's rain jacket and sealed envelope noted**: Jane's costume is 'rain jacket' (confidence 1.0), envelope condition is 'sealed, apparently intact' (confidence 0.95) — both correct.\n\n5. **Billy's flat/resigned emotional state captured**: 'flat, deadpan affect' with evidence from the parenthetical '(flat)' in dialogue — correct.\n\n6. **Change events supported by scene text quotes**: Every change event includes an 'evidence' field with actual quoted text from the scene (e.g., 'BILLY walks along the dock, leather jacket zipped against the wind', 'He sets the OAR against a piling and reaches for the envelope', etc.) — well done.\n\n7. **Confidence scores reasonable**: Explicit text gets high confidence (0.9-1.0), inferred states like Jane's impatience get lower confidence (0.75), atmosphere gets 0.7 — appropriately calibrated.\n\nAdditionally, the output captures the oar's position change (from Billy's hand to against a piling), the oar's detailed description (weathered oak, rope-wrapped grip, father's), and the envelope's ownership status. The structure is clean and comprehensive. The only minor quibble is that Billy's costume change lists the previous value as 'faded flannel shirt and worn jeans' which presumably comes from a prior scene state — this is correct behavior for continuity tracking. Overall, this is an excellent continuity extraction.",
+              "tokensUsed": {
+                "total": 2697,
+                "prompt": 2196,
+                "completion": 501,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"scene_id\\\":\\\"scene_002\\\",\\\"entity_states\\\":[{\\\"entity_key\\\":\\\"character:billy\\\",\\\"properties\\\":[{\\\"key\\\":\\\"costume\\\",\\\"value\\\":\\\"leather jacket zipped against the wind; other garments not specified\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"physical_condition\\\",\\\"value\\\":\\\"ambulatory, walking along the dock\\\",\\\"confidence\\\":0.75},{\\\"key\\\":\\\"emotional_state\\\",\\\"value\\\":\\\"flat, deadpan affect\\\",\\\"confidence\\\":0.9},{\\\"key\\\":\\\"props_carried\\\",\\\"value\\\":\\\"OAR no longer carried; set against a piling while he reaches for the envelope\\\",\\\"confidence\\\":0.85}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"costume\\\",\\\"previous_value\\\":\\\"faded flannel shirt and worn jeans\\\",\\\"new_value\\\":\\\"leather jacket zipped against the wind\\\",\\\"reason\\\":\\\"Visible wardrobe now includes a zipped leather jacket not present in the previous state.\\\",\\\"evidence\\\":\\\"BILLY walks along the dock, leather jacket zipped against the wind.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9},{\\\"property_key\\\":\\\"emotional_state\\\",\\\"previous_value\\\":\\\"tense, jaw tight\\\",\\\"new_value\\\":\\\"flat, deadpan affect\\\",\\\"reason\\\":\\\"His line delivery is explicitly described as flat.\\\",\\\"evidence\\\":\\\"BILLY\\\\n(flat)\\\\nI'm always late.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9},{\\\"property_key\\\":\\\"props_carried\\\",\\\"previous_value\\\":\\\"OAR in his right hand like a walking stick\\\",\\\"new_value\\\":\\\"OAR no longer carried; set against a piling\\\",\\\"reason\\\":\\\"He puts down the oar before reaching for the envelope.\\\",\\\"evidence\\\":\\\"He sets the OAR against a piling and reaches for the envelope.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.85}],\\\"confidence\\\":0.87},{\\\"entity_key\\\":\\\"character:jane\\\",\\\"properties\\\":[{\\\"key\\\":\\\"costume\\\",\\\"value\\\":\\\"rain jacket\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"physical_condition\\\",\\\"value\\\":\\\"30s, sharp eyes\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"emotional_state\\\",\\\"value\\\":\\\"impatient or annoyed while waiting\\\",\\\"confidence\\\":0.75},{\\\"key\\\":\\\"props_carried\\\",\\\"value\\\":\\\"sealed envelope\\\",\\\"confidence\\\":1}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"costume\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"rain jacket\\\",\\\"reason\\\":\\\"First appearance establishes her wardrobe.\\\",\\\"evidence\\\":\\\"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"physical_condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"30s, sharp eyes\\\",\\\"reason\\\":\\\"First appearance provides her visible description.\\\",\\\"evidence\\\":\\\"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"emotional_state\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"impatient or annoyed while waiting\\\",\\\"reason\\\":\\\"Her greeting calls out Billy's lateness, implying impatience.\\\",\\\"evidence\\\":\\\"JANE\\\\nYou're late.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.75},{\\\"property_key\\\":\\\"props_carried\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"sealed envelope\\\",\\\"reason\\\":\\\"First appearance shows her holding the envelope.\\\",\\\"evidence\\\":\\\"She holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1}],\\\"confidence\\\":0.9},{\\\"entity_key\\\":\\\"location:harbor_dock\\\",\\\"properties\\\":[{\\\"key\\\":\\\"lighting\\\",\\\"value\\\":\\\"exterior daylight\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"time_of_day\\\",\\\"value\\\":\\\"day\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"weather\\\",\\\"value\\\":\\\"windy\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"atmosphere\\\",\\\"value\\\":\\\"brisk, tense, anticipatory dockside meeting\\\",\\\"confidence\\\":0.7}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"lighting\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"exterior daylight\\\",\\\"reason\\\":\\\"First appearance of the location is established by the scene heading.\\\",\\\"evidence\\\":\\\"EXT. HARBOR DOCK - DAY\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"time_of_day\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"day\\\",\\\"reason\\\":\\\"First appearance of the location establishes the time of day.\\\",\\\"evidence\\\":\\\"EXT. HARBOR DOCK - DAY\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"weather\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"windy\\\",\\\"reason\\\":\\\"The wind is explicitly affecting Billy's wardrobe.\\\",\\\"evidence\\\":\\\"BILLY walks along the dock, leather jacket zipped against the wind.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"atmosphere\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"brisk, tense, anticipatory dockside meeting\\\",\\\"reason\\\":\\\"The wind, Jane waiting, and terse exchange create a tense mood.\\\",\\\"evidence\\\":\\\"JANE\\\\nYou're late.\\\\n\\\\nBILLY\\\\n(flat)\\\\nI'm always late.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.7}],\\\"confidence\\\":0.88},{\\\"entity_key\\\":\\\"prop:oar\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"weathered oak with a rope-wrapped grip; usable as a walking stick\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"set against a piling on the dock\\\",\\\"confidence\\\":0.98},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"Billy's father's oar; handled by Billy in the scene\\\",\\\"confidence\\\":0.98}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"weathered oak with a rope-wrapped grip; usable as a walking stick\\\",\\\"reason\\\":\\\"First appearance describes the oar's material, wear, and grip.\\\",\\\"evidence\\\":\\\"The OAR — his father's, weathered oak with a rope-wrapped grip —\\\\nrests in his right hand like a walking stick.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":\\\"in Billy's right hand like a walking stick\\\",\\\"new_value\\\":\\\"set against a piling\\\",\\\"reason\\\":\\\"Billy sets the oar down.\\\",\\\"evidence\\\":\\\"He sets the OAR against a piling and reaches for the envelope.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.98},{\\\"property_key\\\":\\\"ownership\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"Billy's father's oar; handled by Billy\\\",\\\"reason\\\":\\\"First appearance identifies the oar as his father's and shows Billy carrying it.\\\",\\\"evidence\\\":\\\"The OAR — his father's, weathered oak with a rope-wrapped grip —\\\\nrests in his right hand like a walking stick.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.98}],\\\"confidence\\\":0.96},{\\\"entity_key\\\":\\\"prop:envelope\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"sealed, apparently intact\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"held by Jane near the boat; Billy reaches for it but no handoff is shown\\\",\\\"confidence\\\":0.9},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"currently in Jane's possession\\\",\\\"confidence\\\":0.95}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"sealed, apparently intact\\\",\\\"reason\\\":\\\"First appearance describes the envelope as sealed.\\\",\\\"evidence\\\":\\\"She holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"held by Jane near the boat\\\",\\\"reason\\\":\\\"First appearance shows Jane holding it.\\\",\\\"evidence\\\":\\\"She holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"ownership\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"currently in Jane's possession\\\",\\\"reason\\\":\\\"Jane is the one holding it; Billy only reaches for it, with no transfer shown.\\\",\\\"evidence\\\":\\\"She holds a sealed ENVELOPE.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95}],\\\"confidence\\\":0.94}]}\\n</Output>\\n<Rubric>\\nEvaluate the continuity extraction for a harbor dock daytime scene.\\n\\nBILLY arrives at a dock wearing a leather jacket (changed from flannel\\nshirt in previous scene). He carries his father's weathered oak OAR.\\nHe meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's\\ntone is flat and resigned.\\n\\nCritical evaluation criteria:\\n1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?\\n2. Does it correctly extract Billy's costume as leather jacket?\\n3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?\\n4. Does it note Jane's rain jacket and the sealed envelope?\\n5. Does it capture Billy's flat/resigned emotional state?\\n6. Are change events supported by actual scene text quotes as evidence?\\n7. Are confidence scores reasonable (high for explicit text, lower for inferred)?\\n\\nScore strictly: good continuity extraction catches state changes with\\nevidence, not just current state descriptions.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "597259a5-7ece-40b5-aea6-f61af1521405",
+        "latencyMs": 210586,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene 2: EXT. HARBOR DOCK - DAY\nScene ID: scene_002\n\n```\nEXT. HARBOR DOCK - DAY\n\nBILLY walks along the dock, leather jacket zipped against the wind.\nThe OAR — his father's, weathered oak with a rope-wrapped grip —\nrests in his right hand like a walking stick.\n\nHe spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\nShe holds a sealed ENVELOPE.\n\nJANE\nYou're late.\n\nBILLY\n(flat)\nI'm always late.\n\nHe sets the OAR against a piling and reaches for the envelope.\n```\n\n## Entities Present\n\n### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: faded flannel shirt and worn jeans\n  - emotional_state: tense, jaw tight\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Character: JANE (key: character:jane)\nPrevious state:\n  (First appearance — no previous state)\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  (First appearance — no previous state)\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: scene_002\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"scene_002\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "label": "prompts/continuity-extraction.txt: You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "0692b33e2b1edb7acef2dd4e19ad1bd5d8a11f5f02a357c0709906a1a15548f4",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/openai_responses_provider.py",
+          "label": "GPT-5.5 Pro"
+        },
+        "response": {
+          "output": "{\n  \"scene_id\": \"scene_002\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\n          \"key\": \"costume\",\n          \"value\": \"leather jacket zipped against the wind; other garments not specified\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"physical_condition\",\n          \"value\": \"ambulatory, walking along the dock\",\n          \"confidence\": 0.75\n        },\n        {\n          \"key\": \"emotional_state\",\n          \"value\": \"flat, deadpan affect\",\n          \"confidence\": 0.9\n        },\n        {\n          \"key\": \"props_carried\",\n          \"value\": \"OAR no longer carried; set against a piling while he reaches for the envelope\",\n          \"confidence\": 0.85\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"faded flannel shirt and worn jeans\",\n          \"new_value\": \"leather jacket zipped against the wind\",\n          \"reason\": \"Visible wardrobe now includes a zipped leather jacket not present in the previous state.\",\n          \"evidence\": \"BILLY walks along the dock, leather jacket zipped against the wind.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        },\n        {\n          \"property_key\": \"emotional_state\",\n          \"previous_value\": \"tense, jaw tight\",\n          \"new_value\": \"flat, deadpan affect\",\n          \"reason\": \"His line delivery is explicitly described as flat.\",\n          \"evidence\": \"BILLY\\n(flat)\\nI'm always late.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        },\n        {\n          \"property_key\": \"props_carried\",\n          \"previous_value\": \"OAR in his right hand like a walking stick\",\n          \"new_value\": \"OAR no longer carried; set against a piling\",\n          \"reason\": \"He puts down the oar before reaching for the envelope.\",\n          \"evidence\": \"He sets the OAR against a piling and reaches for the envelope.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.85\n        }\n      ],\n      \"confidence\": 0.87\n    },\n    {\n      \"entity_key\": \"character:jane\",\n      \"properties\": [\n        {\n          \"key\": \"costume\",\n          \"value\": \"rain jacket\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"physical_condition\",\n          \"value\": \"30s, sharp eyes\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"emotional_state\",\n          \"value\": \"impatient or annoyed while waiting\",\n          \"confidence\": 0.75\n        },\n        {\n          \"key\": \"props_carried\",\n          \"value\": \"sealed envelope\",\n          \"confidence\": 1.0\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": null,\n          \"new_value\": \"rain jacket\",\n          \"reason\": \"First appearance establishes her wardrobe.\",\n          \"evidence\": \"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"physical_condition\",\n          \"previous_value\": null,\n          \"new_value\": \"30s, sharp eyes\",\n          \"reason\": \"First appearance provides her visible description.\",\n          \"evidence\": \"He spots JANE (30s, sharp eyes, rain jacket) waiting by the boat.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"emotional_state\",\n          \"previous_value\": null,\n          \"new_value\": \"impatient or annoyed while waiting\",\n          \"reason\": \"Her greeting calls out Billy's lateness, implying impatience.\",\n          \"evidence\": \"JANE\\nYou're late.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.75\n        },\n        {\n          \"property_key\": \"props_carried\",\n          \"previous_value\": null,\n          \"new_value\": \"sealed envelope\",\n          \"reason\": \"First appearance shows her holding the envelope.\",\n          \"evidence\": \"She holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        }\n      ],\n      \"confidence\": 0.9\n    },\n    {\n      \"entity_key\": \"location:harbor_dock\",\n      \"properties\": [\n        {\n          \"key\": \"lighting\",\n          \"value\": \"exterior daylight\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"time_of_day\",\n          \"value\": \"day\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"weather\",\n          \"value\": \"windy\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"atmosphere\",\n          \"value\": \"brisk, tense, anticipatory dockside meeting\",\n          \"confidence\": 0.7\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"lighting\",\n          \"previous_value\": null,\n          \"new_value\": \"exterior daylight\",\n          \"reason\": \"First appearance of the location is established by the scene heading.\",\n          \"evidence\": \"EXT. HARBOR DOCK - DAY\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"time_of_day\",\n          \"previous_value\": null,\n          \"new_value\": \"day\",\n          \"reason\": \"First appearance of the location establishes the time of day.\",\n          \"evidence\": \"EXT. HARBOR DOCK - DAY\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"weather\",\n          \"previous_value\": null,\n          \"new_value\": \"windy\",\n          \"reason\": \"The wind is explicitly affecting Billy's wardrobe.\",\n          \"evidence\": \"BILLY walks along the dock, leather jacket zipped against the wind.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"atmosphere\",\n          \"previous_value\": null,\n          \"new_value\": \"brisk, tense, anticipatory dockside meeting\",\n          \"reason\": \"The wind, Jane waiting, and terse exchange create a tense mood.\",\n          \"evidence\": \"JANE\\nYou're late.\\n\\nBILLY\\n(flat)\\nI'm always late.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.7\n        }\n      ],\n      \"confidence\": 0.88\n    },\n    {\n      \"entity_key\": \"prop:oar\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"weathered oak with a rope-wrapped grip; usable as a walking stick\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"set against a piling on the dock\",\n          \"confidence\": 0.98\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"Billy's father's oar; handled by Billy in the scene\",\n          \"confidence\": 0.98\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": null,\n          \"new_value\": \"weathered oak with a rope-wrapped grip; usable as a walking stick\",\n          \"reason\": \"First appearance describes the oar's material, wear, and grip.\",\n          \"evidence\": \"The OAR — his father's, weathered oak with a rope-wrapped grip —\\nrests in his right hand like a walking stick.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": \"in Billy's right hand like a walking stick\",\n          \"new_value\": \"set against a piling\",\n          \"reason\": \"Billy sets the oar down.\",\n          \"evidence\": \"He sets the OAR against a piling and reaches for the envelope.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.98\n        },\n        {\n          \"property_key\": \"ownership\",\n          \"previous_value\": null,\n          \"new_value\": \"Billy's father's oar; handled by Billy\",\n          \"reason\": \"First appearance identifies the oar as his father's and shows Billy carrying it.\",\n          \"evidence\": \"The OAR — his father's, weathered oak with a rope-wrapped grip —\\nrests in his right hand like a walking stick.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.98\n        }\n      ],\n      \"confidence\": 0.96\n    },\n    {\n      \"entity_key\": \"prop:envelope\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"sealed, apparently intact\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"held by Jane near the boat; Billy reaches for it but no handoff is shown\",\n          \"confidence\": 0.9\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"currently in Jane's possession\",\n          \"confidence\": 0.95\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": null,\n          \"new_value\": \"sealed, apparently intact\",\n          \"reason\": \"First appearance describes the envelope as sealed.\",\n          \"evidence\": \"She holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": null,\n          \"new_value\": \"held by Jane near the boat\",\n          \"reason\": \"First appearance shows Jane holding it.\",\n          \"evidence\": \"She holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"ownership\",\n          \"previous_value\": null,\n          \"new_value\": \"currently in Jane's possession\",\n          \"reason\": \"Jane is the one holding it; Billy only reaches for it, with no transfer shown.\",\n          \"evidence\": \"She holds a sealed ENVELOPE.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        }\n      ],\n      \"confidence\": 0.94\n    }\n  ]\n}",
+          "tokenUsage": {
+            "total": 12746,
+            "prompt": 917,
+            "completion": 11829,
+            "completionDetails": {
+              "reasoning": 9503
+            },
+            "numRequests": 1
+          },
+          "cost": 2.15673,
+          "latencyMs": 210586,
+          "cached": false,
+          "metadata": {
+            "provider": "openai",
+            "model": "gpt-5.5-pro",
+            "endpoint": "responses",
+            "response_id": "resp_0f96b4f830bba58f0169ebfa930aa4819c8208a636dfb64db6",
+            "status": "completed"
+          }
+        },
+        "score": 0.9662999999999999,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../input/continuity-scene-dock-day.txt",
+            "scene_heading": "EXT. HARBOR DOCK - DAY",
+            "scene_number": "2",
+            "scene_id": "scene_002",
+            "golden_path": "golden/continuity-extraction-golden.json",
+            "scene_key": "dock_day",
+            "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: faded flannel shirt and worn jeans\n  - emotional_state: tense, jaw tight\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Character: JANE (key: character:jane)\nPrevious state:\n  (First appearance — no previous state)\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  (First appearance — no previous state)\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/continuity_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the continuity extraction for a harbor dock daytime scene.\n\nBILLY arrives at a dock wearing a leather jacket (changed from flannel\nshirt in previous scene). He carries his father's weathered oak OAR.\nHe meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's\ntone is flat and resigned.\n\nCritical evaluation criteria:\n1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?\n2. Does it correctly extract Billy's costume as leather jacket?\n3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?\n4. Does it note Jane's rain jacket and the sealed envelope?\n5. Does it capture Billy's flat/resigned emotional state?\n6. Are change events supported by actual scene text quotes as evidence?\n7. Are confidence scores reasonable (high for explicit text, lower for inferred)?\n\nScore strictly: good continuity extraction catches state changes with\nevidence, not just current state descriptions.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../input/continuity-scene-dock-day.txt",
+          "scene_heading": "EXT. HARBOR DOCK - DAY",
+          "scene_number": "2",
+          "scene_id": "scene_002",
+          "golden_path": "golden/continuity-extraction-golden.json",
+          "scene_key": "dock_day",
+          "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: faded flannel shirt and worn jeans\n  - emotional_state: tense, jaw tight\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Character: JANE (key: character:jane)\nPrevious state:\n  (First appearance — no previous state)\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  (First appearance — no previous state)\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+        },
+        "metadata": {
+          "provider": "openai",
+          "model": "gpt-5.5-pro",
+          "endpoint": "responses",
+          "response_id": "resp_0f96b4f830bba58f0169ebfa930aa4819c8208a636dfb64db6",
+          "status": "completed",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.9616,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2536,
+            "prompt": 2045,
+            "completion": 491,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.9732,
+              "reason": "change_detection=0.96 | confidence_calibration=1.00 | entity_coverage=1.00 | evidence_quality=1.00 | json_valid=1.00 | property_extraction=0.93",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/continuity_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the continuity extraction for a harbor dock NIGHT scene — the\naftermath of something violent that happened between scenes.\n\nKey continuity changes from previous scene (day → night):\n1. Billy's leather jacket is now TORN at the left sleeve\n2. Billy has dried blood on his knuckles (new injury)\n3. Billy's emotional state shifted from flat to hollow/defeated\n4. Billy is soaked through (new physical state)\n5. The OAR is now BROKEN in two pieces (was intact)\n6. The ENVELOPE is open with contents scattered (was sealed)\n7. JANE is gone (was present)\n8. Weather changed from windy to heavy rain\n9. Time changed from day to night\n\nCritical evaluation criteria:\n1. Does it detect the jacket damage change event with evidence?\n2. Does it detect the physical injury (blood on knuckles)?\n3. Does it detect the oar being broken?\n4. Does it detect the envelope being opened/scattered?\n5. Does it note the time/weather changes for the location?\n6. Are all change events backed by actual quotes from the scene?\n7. Does it correctly reference previous values?\n\nThis is the harder test case. Score strictly: a strong model catches\nat least 5 of the 9 changes with accurate evidence quotes.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The output is exceptionally thorough and catches all 9 of the 9 key continuity changes:\n\n1. **Jacket damage** — Detected with explicit change event from 'leather jacket zipped against the wind' to 'leather jacket soaked through and torn at the left sleeve', with direct evidence quote. ✅\n2. **Physical injury (blood on knuckles)** — Detected as a change event with evidence 'dried blood visible on his knuckles'. ✅\n3. **Oar broken** — Detected with change from 'intact, weathered oak with rope-wrapped grip' to 'broken in two pieces', with evidence quote. ✅\n4. **Envelope opened/scattered** — Detected with change from 'sealed' to 'open, with contents scattered in puddles', with evidence quote. ✅\n5. **Time change (day → night)** — Detected with evidence 'EXT. HARBOR DOCK - NIGHT'. ✅\n6. **Weather change (windy → heavy rain)** — Detected with evidence 'Rain hammers the dock.' ✅\n7. **Billy soaked through** — Captured in the costume change event. ✅\n8. **Emotional state shift (flat → hollow)** — Detected with evidence 'BILLY stares at the dark water, expression hollow.' ✅\n9. **Jane's absence** — Mentioned in the atmosphere evidence ('JANE is gone') but not tracked as a separate entity/change event. This is a minor gap — Jane's departure is referenced but not given her own entity entry.\n\nAll change events are backed by actual evidence quotes from the scene. Previous values are correctly referenced (jacket zipped, oar intact/weathered oak, envelope sealed, emotional state flat/resigned, weather windy, time day). The confidence scores are reasonable and well-calibrated. The only minor weakness is that Jane's departure isn't tracked as its own entity change event, but it is acknowledged in the evidence for other entities. This is a very strong extraction overall.",
+              "tokensUsed": {
+                "total": 2536,
+                "prompt": 2045,
+                "completion": 491,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"scene_id\\\":\\\"scene_003\\\",\\\"entity_states\\\":[{\\\"entity_key\\\":\\\"character:billy\\\",\\\"properties\\\":[{\\\"key\\\":\\\"costume\\\",\\\"value\\\":\\\"leather jacket soaked through and torn at the left sleeve\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"physical_condition\\\",\\\"value\\\":\\\"soaked through; dried blood visible on his knuckles\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"emotional_state\\\",\\\"value\\\":\\\"hollow, emotionally vacant\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"props_carried\\\",\\\"value\\\":\\\"none observable; the oar is no longer carried and lies broken at his feet\\\",\\\"confidence\\\":0.9}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"costume\\\",\\\"previous_value\\\":\\\"leather jacket zipped against the wind\\\",\\\"new_value\\\":\\\"leather jacket soaked through and torn at the left sleeve\\\",\\\"reason\\\":\\\"Billy's jacket is now wet and visibly damaged.\\\",\\\"evidence\\\":\\\"BILLY sits on a coiled rope, soaked through. His leather jacket is torn at the left sleeve\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"physical_condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"dried blood visible on his knuckles\\\",\\\"reason\\\":\\\"A visible injury or aftermath of injury is shown.\\\",\\\"evidence\\\":\\\"dried blood visible on his knuckles\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"emotional_state\\\",\\\"previous_value\\\":\\\"flat, resigned\\\",\\\"new_value\\\":\\\"hollow, emotionally vacant\\\",\\\"reason\\\":\\\"His expression is described as hollow.\\\",\\\"evidence\\\":\\\"BILLY stares at the dark water, expression hollow.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"props_carried\\\",\\\"previous_value\\\":\\\"oar\\\",\\\"new_value\\\":\\\"none observable; oar lies broken at his feet\\\",\\\"reason\\\":\\\"The oar is no longer in Billy's hands or carried by him.\\\",\\\"evidence\\\":\\\"The OAR lies broken in two pieces at his feet.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9}],\\\"confidence\\\":0.95},{\\\"entity_key\\\":\\\"location:harbor_dock\\\",\\\"properties\\\":[{\\\"key\\\":\\\"time_of_day\\\",\\\"value\\\":\\\"night\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"weather\\\",\\\"value\\\":\\\"heavy rain\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"lighting\\\",\\\"value\\\":\\\"dark nighttime conditions\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"damage_or_changes\\\",\\\"value\\\":\\\"dock is rain-soaked; broken oar and scattered envelope contents are present\\\",\\\"confidence\\\":0.9},{\\\"key\\\":\\\"atmosphere\\\",\\\"value\\\":\\\"bleak, stormy, desolate\\\",\\\"confidence\\\":0.85}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"time_of_day\\\",\\\"previous_value\\\":\\\"day\\\",\\\"new_value\\\":\\\"night\\\",\\\"reason\\\":\\\"The scene heading establishes the time as night.\\\",\\\"evidence\\\":\\\"EXT. HARBOR DOCK - NIGHT\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"weather\\\",\\\"previous_value\\\":\\\"windy\\\",\\\"new_value\\\":\\\"heavy rain\\\",\\\"reason\\\":\\\"Rain is now hammering the dock.\\\",\\\"evidence\\\":\\\"Rain hammers the dock.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"lighting\\\",\\\"previous_value\\\":\\\"daylight\\\",\\\"new_value\\\":\\\"dark nighttime conditions\\\",\\\"reason\\\":\\\"The scene is set at night and the water is described as dark.\\\",\\\"evidence\\\":\\\"EXT. HARBOR DOCK - NIGHT\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"damage_or_changes\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"dock is rain-soaked; broken oar and scattered envelope contents are present\\\",\\\"reason\\\":\\\"New debris and wet conditions are visible on the dock.\\\",\\\"evidence\\\":\\\"Rain hammers the dock. The OAR lies broken in two pieces at his feet. The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9},{\\\"property_key\\\":\\\"atmosphere\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"bleak, stormy, desolate\\\",\\\"reason\\\":\\\"The heavy rain, night setting, Jane's absence, and Billy's hollow expression create a bleak mood.\\\",\\\"evidence\\\":\\\"Rain hammers the dock. JANE is gone. BILLY stares at the dark water, expression hollow.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.85}],\\\"confidence\\\":0.93},{\\\"entity_key\\\":\\\"prop:oar\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"broken in two pieces\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"at Billy's feet on the dock\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"not being held; still associated with Billy by proximity\\\",\\\"confidence\\\":0.7}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":\\\"intact, weathered oak with rope-wrapped grip\\\",\\\"new_value\\\":\\\"broken in two pieces\\\",\\\"reason\\\":\\\"The oar is now visibly broken.\\\",\\\"evidence\\\":\\\"The OAR lies broken in two pieces at his feet.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":\\\"set against a piling\\\",\\\"new_value\\\":\\\"at Billy's feet on the dock\\\",\\\"reason\\\":\\\"The oar has moved from the piling to the ground near Billy.\\\",\\\"evidence\\\":\\\"The OAR lies broken in two pieces at his feet.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"ownership\\\",\\\"previous_value\\\":\\\"Billy\\\",\\\"new_value\\\":\\\"not being held; still associated with Billy by proximity\\\",\\\"reason\\\":\\\"Billy no longer carries the oar, though it remains at his feet.\\\",\\\"evidence\\\":\\\"The OAR lies broken in two pieces at his feet.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.7}],\\\"confidence\\\":0.9},{\\\"entity_key\\\":\\\"prop:envelope\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"open, with contents scattered in puddles\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"on the dock, contents scattered in puddles\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"not held by anyone; abandoned after Jane's departure\\\",\\\"confidence\\\":0.8}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":\\\"sealed\\\",\\\"new_value\\\":\\\"open, with contents scattered in puddles\\\",\\\"reason\\\":\\\"The envelope has been opened and its contents are no longer contained.\\\",\\\"evidence\\\":\\\"The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"on the dock, contents scattered in puddles\\\",\\\"reason\\\":\\\"Its contents are visibly scattered in puddles at the dock location.\\\",\\\"evidence\\\":\\\"The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"ownership\\\",\\\"previous_value\\\":\\\"Jane → Billy (handed over)\\\",\\\"new_value\\\":\\\"not held by anyone; abandoned after Jane's departure\\\",\\\"reason\\\":\\\"Jane is gone and the envelope is open with contents scattered rather than being carried.\\\",\\\"evidence\\\":\\\"JANE is gone. The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.8}],\\\"confidence\\\":0.92}]}\\n</Output>\\n<Rubric>\\nEvaluate the continuity extraction for a harbor dock NIGHT scene — the\\naftermath of something violent that happened between scenes.\\n\\nKey continuity changes from previous scene (day → night):\\n1. Billy's leather jacket is now TORN at the left sleeve\\n2. Billy has dried blood on his knuckles (new injury)\\n3. Billy's emotional state shifted from flat to hollow/defeated\\n4. Billy is soaked through (new physical state)\\n5. The OAR is now BROKEN in two pieces (was intact)\\n6. The ENVELOPE is open with contents scattered (was sealed)\\n7. JANE is gone (was present)\\n8. Weather changed from windy to heavy rain\\n9. Time changed from day to night\\n\\nCritical evaluation criteria:\\n1. Does it detect the jacket damage change event with evidence?\\n2. Does it detect the physical injury (blood on knuckles)?\\n3. Does it detect the oar being broken?\\n4. Does it detect the envelope being opened/scattered?\\n5. Does it note the time/weather changes for the location?\\n6. Are all change events backed by actual quotes from the scene?\\n7. Does it correctly reference previous values?\\n\\nThis is the harder test case. Score strictly: a strong model catches\\nat least 5 of the 9 changes with accurate evidence quotes.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "9688b57a-e724-45b5-be70-6df6265e4f41",
+        "latencyMs": 27154,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene 3: EXT. HARBOR DOCK - NIGHT\nScene ID: scene_003\n\n```\nEXT. HARBOR DOCK - NIGHT\n\nRain hammers the dock. BILLY sits on a coiled rope, soaked through.\nHis leather jacket is torn at the left sleeve — dried blood visible\non his knuckles. The OAR lies broken in two pieces at his feet.\n\nJANE is gone. The ENVELOPE is open, contents scattered in puddles.\n\nBILLY stares at the dark water, expression hollow.\n```\n\n## Entities Present\n\n### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: leather jacket zipped against the wind\n  - emotional_state: flat, resigned\n  - props_carried: oar\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  - time_of_day: day\n  - weather: windy\n  - lighting: daylight\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  - condition: intact, weathered oak with rope-wrapped grip\n  - position: set against a piling\n  - ownership: Billy\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  - condition: sealed\n  - ownership: Jane → Billy (handed over)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: scene_003\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"scene_003\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "label": "prompts/continuity-extraction.txt: You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "0692b33e2b1edb7acef2dd4e19ad1bd5d8a11f5f02a357c0709906a1a15548f4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-5.5",
+          "label": "GPT-5.5"
+        },
+        "response": {
+          "output": "{\n  \"scene_id\": \"scene_003\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\n          \"key\": \"costume\",\n          \"value\": \"leather jacket soaked through and torn at the left sleeve\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"physical_condition\",\n          \"value\": \"soaked through; dried blood visible on his knuckles\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"emotional_state\",\n          \"value\": \"hollow, emotionally vacant\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"props_carried\",\n          \"value\": \"none observable; the oar is no longer carried and lies broken at his feet\",\n          \"confidence\": 0.9\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"leather jacket zipped against the wind\",\n          \"new_value\": \"leather jacket soaked through and torn at the left sleeve\",\n          \"reason\": \"Billy's jacket is now wet and visibly damaged.\",\n          \"evidence\": \"BILLY sits on a coiled rope, soaked through. His leather jacket is torn at the left sleeve\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"physical_condition\",\n          \"previous_value\": null,\n          \"new_value\": \"dried blood visible on his knuckles\",\n          \"reason\": \"A visible injury or aftermath of injury is shown.\",\n          \"evidence\": \"dried blood visible on his knuckles\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"emotional_state\",\n          \"previous_value\": \"flat, resigned\",\n          \"new_value\": \"hollow, emotionally vacant\",\n          \"reason\": \"His expression is described as hollow.\",\n          \"evidence\": \"BILLY stares at the dark water, expression hollow.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"props_carried\",\n          \"previous_value\": \"oar\",\n          \"new_value\": \"none observable; oar lies broken at his feet\",\n          \"reason\": \"The oar is no longer in Billy's hands or carried by him.\",\n          \"evidence\": \"The OAR lies broken in two pieces at his feet.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.95\n    },\n    {\n      \"entity_key\": \"location:harbor_dock\",\n      \"properties\": [\n        {\n          \"key\": \"time_of_day\",\n          \"value\": \"night\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"weather\",\n          \"value\": \"heavy rain\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"lighting\",\n          \"value\": \"dark nighttime conditions\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"damage_or_changes\",\n          \"value\": \"dock is rain-soaked; broken oar and scattered envelope contents are present\",\n          \"confidence\": 0.9\n        },\n        {\n          \"key\": \"atmosphere\",\n          \"value\": \"bleak, stormy, desolate\",\n          \"confidence\": 0.85\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"time_of_day\",\n          \"previous_value\": \"day\",\n          \"new_value\": \"night\",\n          \"reason\": \"The scene heading establishes the time as night.\",\n          \"evidence\": \"EXT. HARBOR DOCK - NIGHT\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"weather\",\n          \"previous_value\": \"windy\",\n          \"new_value\": \"heavy rain\",\n          \"reason\": \"Rain is now hammering the dock.\",\n          \"evidence\": \"Rain hammers the dock.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"lighting\",\n          \"previous_value\": \"daylight\",\n          \"new_value\": \"dark nighttime conditions\",\n          \"reason\": \"The scene is set at night and the water is described as dark.\",\n          \"evidence\": \"EXT. HARBOR DOCK - NIGHT\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"damage_or_changes\",\n          \"previous_value\": null,\n          \"new_value\": \"dock is rain-soaked; broken oar and scattered envelope contents are present\",\n          \"reason\": \"New debris and wet conditions are visible on the dock.\",\n          \"evidence\": \"Rain hammers the dock. The OAR lies broken in two pieces at his feet. The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        },\n        {\n          \"property_key\": \"atmosphere\",\n          \"previous_value\": null,\n          \"new_value\": \"bleak, stormy, desolate\",\n          \"reason\": \"The heavy rain, night setting, Jane's absence, and Billy's hollow expression create a bleak mood.\",\n          \"evidence\": \"Rain hammers the dock. JANE is gone. BILLY stares at the dark water, expression hollow.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.85\n        }\n      ],\n      \"confidence\": 0.93\n    },\n    {\n      \"entity_key\": \"prop:oar\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"broken in two pieces\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"at Billy's feet on the dock\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"not being held; still associated with Billy by proximity\",\n          \"confidence\": 0.7\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": \"intact, weathered oak with rope-wrapped grip\",\n          \"new_value\": \"broken in two pieces\",\n          \"reason\": \"The oar is now visibly broken.\",\n          \"evidence\": \"The OAR lies broken in two pieces at his feet.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": \"set against a piling\",\n          \"new_value\": \"at Billy's feet on the dock\",\n          \"reason\": \"The oar has moved from the piling to the ground near Billy.\",\n          \"evidence\": \"The OAR lies broken in two pieces at his feet.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"ownership\",\n          \"previous_value\": \"Billy\",\n          \"new_value\": \"not being held; still associated with Billy by proximity\",\n          \"reason\": \"Billy no longer carries the oar, though it remains at his feet.\",\n          \"evidence\": \"The OAR lies broken in two pieces at his feet.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.7\n        }\n      ],\n      \"confidence\": 0.9\n    },\n    {\n      \"entity_key\": \"prop:envelope\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"open, with contents scattered in puddles\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"on the dock, contents scattered in puddles\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"not held by anyone; abandoned after Jane's departure\",\n          \"confidence\": 0.8\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": \"sealed\",\n          \"new_value\": \"open, with contents scattered in puddles\",\n          \"reason\": \"The envelope has been opened and its contents are no longer contained.\",\n          \"evidence\": \"The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": null,\n          \"new_value\": \"on the dock, contents scattered in puddles\",\n          \"reason\": \"Its contents are visibly scattered in puddles at the dock location.\",\n          \"evidence\": \"The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"ownership\",\n          \"previous_value\": \"Jane → Billy (handed over)\",\n          \"new_value\": \"not held by anyone; abandoned after Jane's departure\",\n          \"reason\": \"Jane is gone and the envelope is open with contents scattered rather than being carried.\",\n          \"evidence\": \"JANE is gone. The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.8\n        }\n      ],\n      \"confidence\": 0.92\n    }\n  ]\n}",
+          "tokenUsage": {
+            "total": 3494,
+            "prompt": 896,
+            "completion": 2598,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 512,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 27154,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9f18d6a3dbdd6d01-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 24 Apr 2026 23:20:52 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "27016",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=kbpKF1vETK2EjCKlmjUCZYqwbYZxq3jtlZw9Zp2ngCM-1777072824.9371157-1.0.1.1-sV5h1M9A__g7AyQFQnJCfl_7MQBOkpmbFbTl_bEFktYzwVRvwUDcfrGCQXsrSpaINbbXPx.Mbj.s1WRTj_wf9U4U0QjKlhgy3NZUnufOKGFDtGB4cMiiwrehJM7lz7MG; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:50:52 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "15000",
+                "x-ratelimit-limit-tokens": "40000000",
+                "x-ratelimit-remaining-requests": "14999",
+                "x-ratelimit-remaining-tokens": "39999134",
+                "x-ratelimit-reset-requests": "4ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_d40dff710ab74146b34e509ab27bbf41"
+              }
+            }
+          }
+        },
+        "score": 0.9616,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../input/continuity-scene-dock-night.txt",
+            "scene_heading": "EXT. HARBOR DOCK - NIGHT",
+            "scene_number": "3",
+            "scene_id": "scene_003",
+            "golden_path": "golden/continuity-extraction-golden.json",
+            "scene_key": "dock_night",
+            "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: leather jacket zipped against the wind\n  - emotional_state: flat, resigned\n  - props_carried: oar\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  - time_of_day: day\n  - weather: windy\n  - lighting: daylight\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  - condition: intact, weathered oak with rope-wrapped grip\n  - position: set against a piling\n  - ownership: Billy\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  - condition: sealed\n  - ownership: Jane → Billy (handed over)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/continuity_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the continuity extraction for a harbor dock NIGHT scene — the\naftermath of something violent that happened between scenes.\n\nKey continuity changes from previous scene (day → night):\n1. Billy's leather jacket is now TORN at the left sleeve\n2. Billy has dried blood on his knuckles (new injury)\n3. Billy's emotional state shifted from flat to hollow/defeated\n4. Billy is soaked through (new physical state)\n5. The OAR is now BROKEN in two pieces (was intact)\n6. The ENVELOPE is open with contents scattered (was sealed)\n7. JANE is gone (was present)\n8. Weather changed from windy to heavy rain\n9. Time changed from day to night\n\nCritical evaluation criteria:\n1. Does it detect the jacket damage change event with evidence?\n2. Does it detect the physical injury (blood on knuckles)?\n3. Does it detect the oar being broken?\n4. Does it detect the envelope being opened/scattered?\n5. Does it note the time/weather changes for the location?\n6. Are all change events backed by actual quotes from the scene?\n7. Does it correctly reference previous values?\n\nThis is the harder test case. Score strictly: a strong model catches\nat least 5 of the 9 changes with accurate evidence quotes.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "scene_text": "file://../input/continuity-scene-dock-night.txt",
+          "scene_heading": "EXT. HARBOR DOCK - NIGHT",
+          "scene_number": "3",
+          "scene_id": "scene_003",
+          "golden_path": "golden/continuity-extraction-golden.json",
+          "scene_key": "dock_night",
+          "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: leather jacket zipped against the wind\n  - emotional_state: flat, resigned\n  - props_carried: oar\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  - time_of_day: day\n  - weather: windy\n  - lighting: daylight\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  - condition: intact, weathered oak with rope-wrapped grip\n  - position: set against a piling\n  - ownership: Billy\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  - condition: sealed\n  - ownership: Jane → Billy (handed over)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9f18d6a3dbdd6d01-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 24 Apr 2026 23:20:52 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "27016",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=kbpKF1vETK2EjCKlmjUCZYqwbYZxq3jtlZw9Zp2ngCM-1777072824.9371157-1.0.1.1-sV5h1M9A__g7AyQFQnJCfl_7MQBOkpmbFbTl_bEFktYzwVRvwUDcfrGCQXsrSpaINbbXPx.Mbj.s1WRTj_wf9U4U0QjKlhgy3NZUnufOKGFDtGB4cMiiwrehJM7lz7MG; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:50:52 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "15000",
+              "x-ratelimit-limit-tokens": "40000000",
+              "x-ratelimit-remaining-requests": "14999",
+              "x-ratelimit-remaining-tokens": "39999134",
+              "x-ratelimit-reset-requests": "4ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_d40dff710ab74146b34e509ab27bbf41"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 2.0229,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.9478,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2491,
+            "prompt": 2030,
+            "completion": 461,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.9456,
+              "reason": "change_detection=0.94 | confidence_calibration=1.00 | entity_coverage=1.00 | evidence_quality=0.93 | json_valid=1.00 | property_extraction=0.88",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/continuity_extraction_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the continuity extraction for a harbor dock NIGHT scene — the\naftermath of something violent that happened between scenes.\n\nKey continuity changes from previous scene (day → night):\n1. Billy's leather jacket is now TORN at the left sleeve\n2. Billy has dried blood on his knuckles (new injury)\n3. Billy's emotional state shifted from flat to hollow/defeated\n4. Billy is soaked through (new physical state)\n5. The OAR is now BROKEN in two pieces (was intact)\n6. The ENVELOPE is open with contents scattered (was sealed)\n7. JANE is gone (was present)\n8. Weather changed from windy to heavy rain\n9. Time changed from day to night\n\nCritical evaluation criteria:\n1. Does it detect the jacket damage change event with evidence?\n2. Does it detect the physical injury (blood on knuckles)?\n3. Does it detect the oar being broken?\n4. Does it detect the envelope being opened/scattered?\n5. Does it note the time/weather changes for the location?\n6. Are all change events backed by actual quotes from the scene?\n7. Does it correctly reference previous values?\n\nThis is the harder test case. Score strictly: a strong model catches\nat least 5 of the 9 changes with accurate evidence quotes.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The output is exceptionally thorough and catches all 9 of the 9 key continuity changes:\n\n1. **Jacket damage** — Detected as a change event on `character:billy` costume property, with previous value 'leather jacket zipped against the wind' changing to 'leather jacket soaked through, torn at the left sleeve'. Evidence quote provided.\n2. **Physical injury (blood on knuckles)** — Detected under physical_condition with evidence quote about 'dried blood visible on his knuckles'.\n3. **Emotional state shift** — Detected with previous value 'flat, resigned' → 'hollow', with evidence quote.\n4. **Billy soaked through** — Captured in both costume and physical_condition properties.\n5. **Oar broken** — Detected with previous value 'intact, weathered oak with rope-wrapped grip' → 'broken in two pieces', with accurate evidence quote.\n6. **Envelope opened/scattered** — Detected with previous value 'sealed' → 'open; contents scattered in puddles', with evidence quote.\n7. **Jane gone** — Not tracked as a separate entity but referenced in evidence for the envelope ownership change ('JANE is gone').\n8. **Weather change** — Detected: 'windy' → 'heavy rain' with evidence 'Rain hammers the dock.'\n9. **Time change** — Detected: 'day' → 'night' with evidence 'EXT. HARBOR DOCK - NIGHT'.\n\nAll change events are backed by actual quotes from the scene. Previous values are correctly referenced (jacket zipped, oar intact/weathered oak, envelope sealed, weather windy, time day, emotional state flat/resigned). The only minor gap is that Jane's absence isn't tracked as its own entity change event, but it is referenced in the envelope's ownership change. Confidence values are reasonable and well-calibrated. This is an excellent extraction.",
+              "tokensUsed": {
+                "total": 2491,
+                "prompt": 2030,
+                "completion": 461,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"scene_id\\\":\\\"scene_003\\\",\\\"entity_states\\\":[{\\\"entity_key\\\":\\\"character:billy\\\",\\\"properties\\\":[{\\\"key\\\":\\\"costume\\\",\\\"value\\\":\\\"leather jacket soaked through, torn at the left sleeve\\\",\\\"confidence\\\":0.98},{\\\"key\\\":\\\"physical_condition\\\",\\\"value\\\":\\\"soaked through; dried blood visible on knuckles\\\",\\\"confidence\\\":0.98},{\\\"key\\\":\\\"emotional_state\\\",\\\"value\\\":\\\"hollow\\\",\\\"confidence\\\":0.95},{\\\"key\\\":\\\"props_carried\\\",\\\"value\\\":\\\"no prop visibly carried; oar lies broken at his feet\\\",\\\"confidence\\\":0.9}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"costume\\\",\\\"previous_value\\\":\\\"leather jacket zipped against the wind\\\",\\\"new_value\\\":\\\"leather jacket soaked through, torn at the left sleeve\\\",\\\"reason\\\":\\\"Billy's jacket is now visibly soaked and damaged.\\\",\\\"evidence\\\":\\\"BILLY sits on a coiled rope, soaked through.\\\\nHis leather jacket is torn at the left sleeve — dried blood visible\\\\non his knuckles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"physical_condition\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"soaked through; dried blood visible on knuckles\\\",\\\"reason\\\":\\\"Scene newly shows Billy soaked and with blood on his knuckles.\\\",\\\"evidence\\\":\\\"BILLY sits on a coiled rope, soaked through.\\\\nHis leather jacket is torn at the left sleeve — dried blood visible\\\\non his knuckles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.98},{\\\"property_key\\\":\\\"emotional_state\\\",\\\"previous_value\\\":\\\"flat, resigned\\\",\\\"new_value\\\":\\\"hollow\\\",\\\"reason\\\":\\\"His expression is described as hollow.\\\",\\\"evidence\\\":\\\"BILLY stares at the dark water, expression hollow.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.95},{\\\"property_key\\\":\\\"props_carried\\\",\\\"previous_value\\\":\\\"oar\\\",\\\"new_value\\\":\\\"no prop visibly carried; oar lies broken at his feet\\\",\\\"reason\\\":\\\"The oar is no longer carried and is now on the dock at his feet.\\\",\\\"evidence\\\":\\\"The OAR lies broken in two pieces at his feet.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.9}],\\\"confidence\\\":0.95},{\\\"entity_key\\\":\\\"location:harbor_dock\\\",\\\"properties\\\":[{\\\"key\\\":\\\"lighting\\\",\\\"value\\\":\\\"nighttime darkness\\\",\\\"confidence\\\":0.98},{\\\"key\\\":\\\"time_of_day\\\",\\\"value\\\":\\\"night\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"weather\\\",\\\"value\\\":\\\"heavy rain\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"damage_or_changes\\\",\\\"value\\\":\\\"rain-lashed dock with puddles, broken oar, and envelope contents scattered\\\",\\\"confidence\\\":0.9},{\\\"key\\\":\\\"atmosphere\\\",\\\"value\\\":\\\"bleak, stormy, desolate\\\",\\\"confidence\\\":0.85}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"time_of_day\\\",\\\"previous_value\\\":\\\"day\\\",\\\"new_value\\\":\\\"night\\\",\\\"reason\\\":\\\"Scene heading sets the dock at night.\\\",\\\"evidence\\\":\\\"EXT. HARBOR DOCK - NIGHT\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"lighting\\\",\\\"previous_value\\\":\\\"daylight\\\",\\\"new_value\\\":\\\"nighttime darkness\\\",\\\"reason\\\":\\\"The scene has shifted from daylight to night.\\\",\\\"evidence\\\":\\\"EXT. HARBOR DOCK - NIGHT\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.98},{\\\"property_key\\\":\\\"weather\\\",\\\"previous_value\\\":\\\"windy\\\",\\\"new_value\\\":\\\"heavy rain\\\",\\\"reason\\\":\\\"Rain is now the observable weather condition.\\\",\\\"evidence\\\":\\\"Rain hammers the dock.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"damage_or_changes\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"rain-lashed dock with puddles, broken oar, and envelope contents scattered\\\",\\\"reason\\\":\\\"The dock is now shown in rain with broken and scattered items present.\\\",\\\"evidence\\\":\\\"Rain hammers the dock. BILLY sits on a coiled rope, soaked through.\\\\nHis leather jacket is torn at the left sleeve — dried blood visible\\\\non his knuckles. The OAR lies broken in two pieces at his feet.\\\\n\\\\nJANE is gone. The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9},{\\\"property_key\\\":\\\"atmosphere\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"bleak, stormy, desolate\\\",\\\"reason\\\":\\\"The rain, darkness, absence of Jane, and Billy's hollow expression create a bleak mood.\\\",\\\"evidence\\\":\\\"BILLY stares at the dark water, expression hollow.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.85}],\\\"confidence\\\":0.92},{\\\"entity_key\\\":\\\"prop:oar\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"broken in two pieces\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"at Billy's feet\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"associated with Billy; near him but not carried\\\",\\\"confidence\\\":0.75}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":\\\"intact, weathered oak with rope-wrapped grip\\\",\\\"new_value\\\":\\\"broken in two pieces\\\",\\\"reason\\\":\\\"The oar is now visibly broken.\\\",\\\"evidence\\\":\\\"The OAR lies broken in two pieces at his feet.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":\\\"set against a piling\\\",\\\"new_value\\\":\\\"at Billy's feet\\\",\\\"reason\\\":\\\"The oar has moved from the piling to Billy's feet.\\\",\\\"evidence\\\":\\\"The OAR lies broken in two pieces at his feet.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1}],\\\"confidence\\\":0.95},{\\\"entity_key\\\":\\\"prop:envelope\\\",\\\"properties\\\":[{\\\"key\\\":\\\"condition\\\",\\\"value\\\":\\\"open; contents scattered in puddles\\\",\\\"confidence\\\":1},{\\\"key\\\":\\\"position\\\",\\\"value\\\":\\\"contents scattered in puddles on the dock\\\",\\\"confidence\\\":0.9},{\\\"key\\\":\\\"ownership\\\",\\\"value\\\":\\\"unattended; no one visibly has it\\\",\\\"confidence\\\":0.75}],\\\"change_events\\\":[{\\\"property_key\\\":\\\"condition\\\",\\\"previous_value\\\":\\\"sealed\\\",\\\"new_value\\\":\\\"open; contents scattered in puddles\\\",\\\"reason\\\":\\\"The envelope has been opened and its contents spilled.\\\",\\\"evidence\\\":\\\"The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":1},{\\\"property_key\\\":\\\"position\\\",\\\"previous_value\\\":null,\\\"new_value\\\":\\\"contents scattered in puddles on the dock\\\",\\\"reason\\\":\\\"The scene newly establishes where the envelope contents are.\\\",\\\"evidence\\\":\\\"The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":true,\\\"confidence\\\":0.9},{\\\"property_key\\\":\\\"ownership\\\",\\\"previous_value\\\":\\\"Jane → Billy (handed over)\\\",\\\"new_value\\\":\\\"unattended; no one visibly has it\\\",\\\"reason\\\":\\\"Jane is gone and the envelope contents are scattered rather than held.\\\",\\\"evidence\\\":\\\"JANE is gone. The ENVELOPE is open, contents scattered in puddles.\\\",\\\"is_explicit\\\":false,\\\"confidence\\\":0.75}],\\\"confidence\\\":0.9}]}\\n</Output>\\n<Rubric>\\nEvaluate the continuity extraction for a harbor dock NIGHT scene — the\\naftermath of something violent that happened between scenes.\\n\\nKey continuity changes from previous scene (day → night):\\n1. Billy's leather jacket is now TORN at the left sleeve\\n2. Billy has dried blood on his knuckles (new injury)\\n3. Billy's emotional state shifted from flat to hollow/defeated\\n4. Billy is soaked through (new physical state)\\n5. The OAR is now BROKEN in two pieces (was intact)\\n6. The ENVELOPE is open with contents scattered (was sealed)\\n7. JANE is gone (was present)\\n8. Weather changed from windy to heavy rain\\n9. Time changed from day to night\\n\\nCritical evaluation criteria:\\n1. Does it detect the jacket damage change event with evidence?\\n2. Does it detect the physical injury (blood on knuckles)?\\n3. Does it detect the oar being broken?\\n4. Does it detect the envelope being opened/scattered?\\n5. Does it note the time/weather changes for the location?\\n6. Are all change events backed by actual quotes from the scene?\\n7. Does it correctly reference previous values?\\n\\nThis is the harder test case. Score strictly: a strong model catches\\nat least 5 of the 9 changes with accurate evidence quotes.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "c50a7c66-1249-44cb-85ac-0d64e9e0c2e8",
+        "latencyMs": 275235,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene 3: EXT. HARBOR DOCK - NIGHT\nScene ID: scene_003\n\n```\nEXT. HARBOR DOCK - NIGHT\n\nRain hammers the dock. BILLY sits on a coiled rope, soaked through.\nHis leather jacket is torn at the left sleeve — dried blood visible\non his knuckles. The OAR lies broken in two pieces at his feet.\n\nJANE is gone. The ENVELOPE is open, contents scattered in puddles.\n\nBILLY stares at the dark water, expression hollow.\n```\n\n## Entities Present\n\n### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: leather jacket zipped against the wind\n  - emotional_state: flat, resigned\n  - props_carried: oar\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  - time_of_day: day\n  - weather: windy\n  - lighting: daylight\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  - condition: intact, weathered oak with rope-wrapped grip\n  - position: set against a piling\n  - ownership: Billy\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  - condition: sealed\n  - ownership: Jane → Billy (handed over)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: scene_003\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"scene_003\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "label": "prompts/continuity-extraction.txt: You are a Script Supervisor analyzing continuity for a screenplay.\n\nYour job: read the scene text and for each entity present, extract\ntheir current observable state and detect changes from previous state.\n\n## Scene\nScene {{scene_number}}: {{scene_heading}}\nScene ID: {{scene_id}}\n\n```\n{{scene_text}}\n```\n\n## Entities Present\n\n{{entities_block}}\n\n## Instructions\n\nFor each entity, return a JSON object with:\n\n1. **properties** — only include properties observable or inferable from this scene. Each property needs:\n   - `key`: property name (e.g. \"costume\", \"emotional_state\")\n   - `value`: current value as a concise description\n   - `confidence`: 0.0-1.0 (1.0 = explicit in script, 0.5-0.8 = inferred, <0.5 = guessing)\n\n2. **change_events** — if a property differs from the previous state, record:\n   - `property_key`: which property changed\n   - `previous_value`: what it was before (null if first appearance)\n   - `new_value`: what it is now\n   - `reason`: why it changed (brief)\n   - `evidence`: exact quote from the scene text\n   - `is_explicit`: true if stated in script, false if inferred\n   - `confidence`: how certain you are about this change\n\n3. **confidence** — overall confidence in the accuracy of this entity's state extraction (0.0-1.0).\n\nImportant:\n- Only extract properties with evidence in this scene. Do not invent state.\n- If a property from the previous state is not mentioned, carry it forward unchanged (not a change event).\n- Use the exact entity_key values provided (e.g. \"character:billy\", \"location:harbor_dock\").\n- The scene_id in your response must be: {{scene_id}}\n\nReturn valid JSON in this exact format:\n{\n  \"scene_id\": \"{{scene_id}}\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\"key\": \"costume\", \"value\": \"...\", \"confidence\": 0.95}\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"...\",\n          \"new_value\": \"...\",\n          \"reason\": \"...\",\n          \"evidence\": \"exact quote from scene\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.85\n    }\n  ]\n}",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "0692b33e2b1edb7acef2dd4e19ad1bd5d8a11f5f02a357c0709906a1a15548f4",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/openai_responses_provider.py",
+          "label": "GPT-5.5 Pro"
+        },
+        "response": {
+          "output": "{\n  \"scene_id\": \"scene_003\",\n  \"entity_states\": [\n    {\n      \"entity_key\": \"character:billy\",\n      \"properties\": [\n        {\n          \"key\": \"costume\",\n          \"value\": \"leather jacket soaked through, torn at the left sleeve\",\n          \"confidence\": 0.98\n        },\n        {\n          \"key\": \"physical_condition\",\n          \"value\": \"soaked through; dried blood visible on knuckles\",\n          \"confidence\": 0.98\n        },\n        {\n          \"key\": \"emotional_state\",\n          \"value\": \"hollow\",\n          \"confidence\": 0.95\n        },\n        {\n          \"key\": \"props_carried\",\n          \"value\": \"no prop visibly carried; oar lies broken at his feet\",\n          \"confidence\": 0.9\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"costume\",\n          \"previous_value\": \"leather jacket zipped against the wind\",\n          \"new_value\": \"leather jacket soaked through, torn at the left sleeve\",\n          \"reason\": \"Billy's jacket is now visibly soaked and damaged.\",\n          \"evidence\": \"BILLY sits on a coiled rope, soaked through.\\nHis leather jacket is torn at the left sleeve — dried blood visible\\non his knuckles.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"physical_condition\",\n          \"previous_value\": null,\n          \"new_value\": \"soaked through; dried blood visible on knuckles\",\n          \"reason\": \"Scene newly shows Billy soaked and with blood on his knuckles.\",\n          \"evidence\": \"BILLY sits on a coiled rope, soaked through.\\nHis leather jacket is torn at the left sleeve — dried blood visible\\non his knuckles.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.98\n        },\n        {\n          \"property_key\": \"emotional_state\",\n          \"previous_value\": \"flat, resigned\",\n          \"new_value\": \"hollow\",\n          \"reason\": \"His expression is described as hollow.\",\n          \"evidence\": \"BILLY stares at the dark water, expression hollow.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.95\n        },\n        {\n          \"property_key\": \"props_carried\",\n          \"previous_value\": \"oar\",\n          \"new_value\": \"no prop visibly carried; oar lies broken at his feet\",\n          \"reason\": \"The oar is no longer carried and is now on the dock at his feet.\",\n          \"evidence\": \"The OAR lies broken in two pieces at his feet.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.9\n        }\n      ],\n      \"confidence\": 0.95\n    },\n    {\n      \"entity_key\": \"location:harbor_dock\",\n      \"properties\": [\n        {\n          \"key\": \"lighting\",\n          \"value\": \"nighttime darkness\",\n          \"confidence\": 0.98\n        },\n        {\n          \"key\": \"time_of_day\",\n          \"value\": \"night\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"weather\",\n          \"value\": \"heavy rain\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"damage_or_changes\",\n          \"value\": \"rain-lashed dock with puddles, broken oar, and envelope contents scattered\",\n          \"confidence\": 0.9\n        },\n        {\n          \"key\": \"atmosphere\",\n          \"value\": \"bleak, stormy, desolate\",\n          \"confidence\": 0.85\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"time_of_day\",\n          \"previous_value\": \"day\",\n          \"new_value\": \"night\",\n          \"reason\": \"Scene heading sets the dock at night.\",\n          \"evidence\": \"EXT. HARBOR DOCK - NIGHT\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"lighting\",\n          \"previous_value\": \"daylight\",\n          \"new_value\": \"nighttime darkness\",\n          \"reason\": \"The scene has shifted from daylight to night.\",\n          \"evidence\": \"EXT. HARBOR DOCK - NIGHT\",\n          \"is_explicit\": true,\n          \"confidence\": 0.98\n        },\n        {\n          \"property_key\": \"weather\",\n          \"previous_value\": \"windy\",\n          \"new_value\": \"heavy rain\",\n          \"reason\": \"Rain is now the observable weather condition.\",\n          \"evidence\": \"Rain hammers the dock.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"damage_or_changes\",\n          \"previous_value\": null,\n          \"new_value\": \"rain-lashed dock with puddles, broken oar, and envelope contents scattered\",\n          \"reason\": \"The dock is now shown in rain with broken and scattered items present.\",\n          \"evidence\": \"Rain hammers the dock. BILLY sits on a coiled rope, soaked through.\\nHis leather jacket is torn at the left sleeve — dried blood visible\\non his knuckles. The OAR lies broken in two pieces at his feet.\\n\\nJANE is gone. The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        },\n        {\n          \"property_key\": \"atmosphere\",\n          \"previous_value\": null,\n          \"new_value\": \"bleak, stormy, desolate\",\n          \"reason\": \"The rain, darkness, absence of Jane, and Billy's hollow expression create a bleak mood.\",\n          \"evidence\": \"BILLY stares at the dark water, expression hollow.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.85\n        }\n      ],\n      \"confidence\": 0.92\n    },\n    {\n      \"entity_key\": \"prop:oar\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"broken in two pieces\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"at Billy's feet\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"associated with Billy; near him but not carried\",\n          \"confidence\": 0.75\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": \"intact, weathered oak with rope-wrapped grip\",\n          \"new_value\": \"broken in two pieces\",\n          \"reason\": \"The oar is now visibly broken.\",\n          \"evidence\": \"The OAR lies broken in two pieces at his feet.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": \"set against a piling\",\n          \"new_value\": \"at Billy's feet\",\n          \"reason\": \"The oar has moved from the piling to Billy's feet.\",\n          \"evidence\": \"The OAR lies broken in two pieces at his feet.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        }\n      ],\n      \"confidence\": 0.95\n    },\n    {\n      \"entity_key\": \"prop:envelope\",\n      \"properties\": [\n        {\n          \"key\": \"condition\",\n          \"value\": \"open; contents scattered in puddles\",\n          \"confidence\": 1.0\n        },\n        {\n          \"key\": \"position\",\n          \"value\": \"contents scattered in puddles on the dock\",\n          \"confidence\": 0.9\n        },\n        {\n          \"key\": \"ownership\",\n          \"value\": \"unattended; no one visibly has it\",\n          \"confidence\": 0.75\n        }\n      ],\n      \"change_events\": [\n        {\n          \"property_key\": \"condition\",\n          \"previous_value\": \"sealed\",\n          \"new_value\": \"open; contents scattered in puddles\",\n          \"reason\": \"The envelope has been opened and its contents spilled.\",\n          \"evidence\": \"The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": true,\n          \"confidence\": 1.0\n        },\n        {\n          \"property_key\": \"position\",\n          \"previous_value\": null,\n          \"new_value\": \"contents scattered in puddles on the dock\",\n          \"reason\": \"The scene newly establishes where the envelope contents are.\",\n          \"evidence\": \"The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": true,\n          \"confidence\": 0.9\n        },\n        {\n          \"property_key\": \"ownership\",\n          \"previous_value\": \"Jane → Billy (handed over)\",\n          \"new_value\": \"unattended; no one visibly has it\",\n          \"reason\": \"Jane is gone and the envelope contents are scattered rather than held.\",\n          \"evidence\": \"JANE is gone. The ENVELOPE is open, contents scattered in puddles.\",\n          \"is_explicit\": false,\n          \"confidence\": 0.75\n        }\n      ],\n      \"confidence\": 0.9\n    }\n  ]\n}",
+          "tokenUsage": {
+            "total": 11985,
+            "prompt": 896,
+            "completion": 11089,
+            "completionDetails": {
+              "reasoning": 9063
+            },
+            "numRequests": 1
+          },
+          "cost": 2.0229,
+          "latencyMs": 275235,
+          "cached": false,
+          "metadata": {
+            "provider": "openai",
+            "model": "gpt-5.5-pro",
+            "endpoint": "responses",
+            "response_id": "resp_0a75507e635a53ea0169ebfaded95c8197bbf459486995320f",
+            "status": "completed"
+          }
+        },
+        "score": 0.9478,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../input/continuity-scene-dock-night.txt",
+            "scene_heading": "EXT. HARBOR DOCK - NIGHT",
+            "scene_number": "3",
+            "scene_id": "scene_003",
+            "golden_path": "golden/continuity-extraction-golden.json",
+            "scene_key": "dock_night",
+            "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: leather jacket zipped against the wind\n  - emotional_state: flat, resigned\n  - props_carried: oar\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  - time_of_day: day\n  - weather: windy\n  - lighting: daylight\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  - condition: intact, weathered oak with rope-wrapped grip\n  - position: set against a piling\n  - ownership: Billy\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  - condition: sealed\n  - ownership: Jane → Billy (handed over)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/continuity_extraction_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the continuity extraction for a harbor dock NIGHT scene — the\naftermath of something violent that happened between scenes.\n\nKey continuity changes from previous scene (day → night):\n1. Billy's leather jacket is now TORN at the left sleeve\n2. Billy has dried blood on his knuckles (new injury)\n3. Billy's emotional state shifted from flat to hollow/defeated\n4. Billy is soaked through (new physical state)\n5. The OAR is now BROKEN in two pieces (was intact)\n6. The ENVELOPE is open with contents scattered (was sealed)\n7. JANE is gone (was present)\n8. Weather changed from windy to heavy rain\n9. Time changed from day to night\n\nCritical evaluation criteria:\n1. Does it detect the jacket damage change event with evidence?\n2. Does it detect the physical injury (blood on knuckles)?\n3. Does it detect the oar being broken?\n4. Does it detect the envelope being opened/scattered?\n5. Does it note the time/weather changes for the location?\n6. Are all change events backed by actual quotes from the scene?\n7. Does it correctly reference previous values?\n\nThis is the harder test case. Score strictly: a strong model catches\nat least 5 of the 9 changes with accurate evidence quotes.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "scene_text": "file://../input/continuity-scene-dock-night.txt",
+          "scene_heading": "EXT. HARBOR DOCK - NIGHT",
+          "scene_number": "3",
+          "scene_id": "scene_003",
+          "golden_path": "golden/continuity-extraction-golden.json",
+          "scene_key": "dock_night",
+          "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: leather jacket zipped against the wind\n  - emotional_state: flat, resigned\n  - props_carried: oar\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  - time_of_day: day\n  - weather: windy\n  - lighting: daylight\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  - condition: intact, weathered oak with rope-wrapped grip\n  - position: set against a piling\n  - ownership: Billy\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  - condition: sealed\n  - ownership: Jane → Billy (handed over)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+        },
+        "metadata": {
+          "provider": "openai",
+          "model": "gpt-5.5-pro",
+          "endpoint": "responses",
+          "response_id": "resp_0a75507e635a53ea0169ebfaded95c8197bbf459486995320f",
+          "status": "completed",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 4,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 3626,
+        "completion": 28273,
+        "cached": 0,
+        "total": 31899,
+        "numRequests": 4,
+        "completionDetails": {
+          "reasoning": 19590,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 10323,
+          "prompt": 8389,
+          "completion": 1934,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 362155,
+      "evaluationDurationMs": 362155
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Continuity extraction — entity state tracking and change detection",
+    "prompts": [
+      "file:///Users/cam/Documents/Projects/cine-forge/benchmarks/prompts/continuity-extraction.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "scene_text": "file://../input/continuity-scene-dock-day.txt",
+          "scene_heading": "EXT. HARBOR DOCK - DAY",
+          "scene_number": "2",
+          "scene_id": "scene_002",
+          "golden_path": "golden/continuity-extraction-golden.json",
+          "scene_key": "dock_day",
+          "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: faded flannel shirt and worn jeans\n  - emotional_state: tense, jaw tight\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Character: JANE (key: character:jane)\nPrevious state:\n  (First appearance — no previous state)\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  (First appearance — no previous state)\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  (First appearance — no previous state)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/continuity_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the continuity extraction for a harbor dock daytime scene.\n\nBILLY arrives at a dock wearing a leather jacket (changed from flannel\nshirt in previous scene). He carries his father's weathered oak OAR.\nHe meets JANE (30s, rain jacket) who holds a sealed ENVELOPE. BILLY's\ntone is flat and resigned.\n\nCritical evaluation criteria:\n1. Does it identify all 5 entities (Billy, Jane, dock, oar, envelope)?\n2. Does it correctly extract Billy's costume as leather jacket?\n3. Does it detect Billy's costume CHANGE from flannel shirt to leather jacket?\n4. Does it note Jane's rain jacket and the sealed envelope?\n5. Does it capture Billy's flat/resigned emotional state?\n6. Are change events supported by actual scene text quotes as evidence?\n7. Are confidence scores reasonable (high for explicit text, lower for inferred)?\n\nScore strictly: good continuity extraction catches state changes with\nevidence, not just current state descriptions.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "scene_text": "file://../input/continuity-scene-dock-night.txt",
+          "scene_heading": "EXT. HARBOR DOCK - NIGHT",
+          "scene_number": "3",
+          "scene_id": "scene_003",
+          "golden_path": "golden/continuity-extraction-golden.json",
+          "scene_key": "dock_night",
+          "entities_block": "### Character: BILLY (key: character:billy)\nPrevious state:\n  - costume: leather jacket zipped against the wind\n  - emotional_state: flat, resigned\n  - props_carried: oar\nExtract: costume/wardrobe, physical_condition (injuries, visible changes), emotional_state, props_carried (items they have)\n\n### Location: HARBOR DOCK (key: location:harbor_dock)\nPrevious state:\n  - time_of_day: day\n  - weather: windy\n  - lighting: daylight\nExtract: lighting, time_of_day, weather, damage_or_changes, atmosphere (mood of the space)\n\n### Prop: OAR (key: prop:oar)\nPrevious state:\n  - condition: intact, weathered oak with rope-wrapped grip\n  - position: set against a piling\n  - ownership: Billy\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n\n### Prop: ENVELOPE (key: prop:envelope)\nPrevious state:\n  - condition: sealed\n  - ownership: Jane → Billy (handed over)\nExtract: condition (intact/damaged/destroyed), position (where it is), ownership (who has it)\n"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/continuity_extraction_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the continuity extraction for a harbor dock NIGHT scene — the\naftermath of something violent that happened between scenes.\n\nKey continuity changes from previous scene (day → night):\n1. Billy's leather jacket is now TORN at the left sleeve\n2. Billy has dried blood on his knuckles (new injury)\n3. Billy's emotional state shifted from flat to hollow/defeated\n4. Billy is soaked through (new physical state)\n5. The OAR is now BROKEN in two pieces (was intact)\n6. The ENVELOPE is open with contents scattered (was sealed)\n7. JANE is gone (was present)\n8. Weather changed from windy to heavy rain\n9. Time changed from day to night\n\nCritical evaluation criteria:\n1. Does it detect the jacket damage change event with evidence?\n2. Does it detect the physical injury (blood on knuckles)?\n3. Does it detect the oar being broken?\n4. Does it detect the envelope being opened/scattered?\n5. Does it note the time/weather changes for the location?\n6. Are all change events backed by actual quotes from the scene?\n7. Does it correctly reference previous values?\n\nThis is the harder test case. Score strictly: a strong model catches\nat least 5 of the 9 changes with accurate evidence quotes.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/gpt55-continuity-extraction-2026-04-24.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-04-24T23:25:48.255Z",
+    "evaluationCreatedAt": "2026-04-24T23:19:46.003Z"
+  }
+}

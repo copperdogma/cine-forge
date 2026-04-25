@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-24-07] — Refresh GPT-5.5 text evals (Story 189)
+
+### Added
+- Added GPT-5.5 and GPT-5.5 Pro coverage to the maintained text promptfoo eval configs, including a focused Responses API provider for GPT-5.5 Pro.
+- Added raw GPT-5.5/GPT-5.5 Pro eval result artifacts for the 12 maintained text evals.
+
+### Changed
+- Changed the eval registry and cost helpers to record GPT-5.5/GPT-5.5 Pro scores, latency, estimated cost, and mismatch/runtime classifications without changing production model defaults.
+
 ## [2026-04-24-06] — Measure storyboard beat-grid routing (Story 188)
 
 ### Added

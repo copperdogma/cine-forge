@@ -65,6 +65,26 @@ evals:
       cost_usd_max: 0.10
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9496
+        latency_ms: 48475
+        cost_usd: 0.1321
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-character-extraction-2026-04-24.json
+        note: "New measured leader, effectively at the quality threshold, but misses latency and cost targets; not a value default over Sonnet 4.6."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.9232
+        latency_ms: 230187
+        cost_usd: 1.8548
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-character-extraction-2026-04-24.json
+        note: "Passed all cases but was slower, costlier, and lower quality than GPT-5.5 and Claude leaders."
       - model: "Opus 4.6"
         metrics:
           overall: 0.942
@@ -198,6 +218,26 @@ evals:
       cost_usd_max: 0.05
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9504
+        latency_ms: 15553
+        cost_usd: 0.0552
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-location-extraction-2026-04-24.json
+        note: "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.8838
+        latency_ms: 140200
+        cost_usd: 1.1479
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-location-extraction-2026-04-24.json
+        note: "Passed structurally, but quality regressed versus the cheaper frontier candidates and misses all target budgets."
       - model: "Opus 4.6"
         metrics:
           overall: 0.942
@@ -289,6 +329,26 @@ evals:
       cost_usd_max: 0.05
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.8171
+        latency_ms: 14026
+        cost_usd: 0.0443
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-prop-extraction-2026-04-24.json
+        note: "Passes harness cases but remains below the current Claude prop-extraction leaders."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.8621
+        latency_ms: 170900
+        cost_usd: 0.9363
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-prop-extraction-2026-04-24.json
+        note: "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.916
@@ -379,6 +439,26 @@ evals:
       cost_usd_max: 0.10
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9818
+        latency_ms: 48321
+        cost_usd: 0.1339
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-relationship-discovery-2026-04-24.json
+        note: "High quality, but below the current leaders and above the cost target."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.9864
+        latency_ms: 164056
+        cost_usd: 1.8301
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-relationship-discovery-2026-04-24.json
+        note: "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.995
@@ -480,6 +560,26 @@ evals:
       cost_usd_max: 0.02
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9428
+        latency_ms: 34085
+        cost_usd: 0.0943
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-config-detection-2026-04-24.json
+        note: "Strong quality, but misses the current Gemini 3 Flash value target on both latency and cost."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.9769
+        latency_ms: 218715
+        cost_usd: 1.3777
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-config-detection-2026-04-24.json
+        note: "Quality leader, but more than 16x slower and 150x costlier than the production winner."
       - model: "Gemini 3 Flash"
         metrics:
           overall: 0.953
@@ -613,6 +713,26 @@ evals:
       cost_usd_max: 0.10
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9059
+        latency_ms: 70617
+        cost_usd: 0.1896
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-scene-extraction-2026-04-24.json
+        note: "Passes the quality target but misses latency and cost budgets; GPT-5.2 remains the value leader."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.2500
+        latency_ms: 209258
+        cost_usd: 2.2994
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-scene-extraction-2026-04-24.json
+        note: "Runtime-blocking: 12k output cap truncated the 15-scene JSON, and a 24k/900s rerun timed out (benchmarks/results/gpt55pro-scene-extraction-rerun-2026-04-24.json)."
       - model: "GPT-5.2"
         metrics:
           overall: 0.925
@@ -728,6 +848,26 @@ evals:
       cost_usd_max: 0.02
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.8750
+        latency_ms: 13158
+        cost_usd: 0.0286
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-normalization-2026-04-24.json
+        note: "Passed both cases, but below the existing GPT-4.1 and Claude normalization leaders."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.8800
+        latency_ms: 116298
+        cost_usd: 0.6246
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-normalization-2026-04-24.json
+        note: "Slightly above GPT-5.5 quality, but far outside current latency and cost budgets."
       - model: "GPT-4.1"
         metrics:
           overall: 0.961
@@ -850,6 +990,26 @@ evals:
       cost_usd_max: 0.05
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9313
+        latency_ms: 10938
+        cost_usd: 0.0258
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-scene-enrichment-2026-04-24.json
+        note: "Meets all targets, but remains below the latest Sonnet 4.6 scene-enrichment lane."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.9267
+        latency_ms: 63262
+        cost_usd: 0.2963
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-scene-enrichment-2026-04-24.json
+        note: "Passed both cases but offers no value win over GPT-5.5 or the current Claude lane."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.959
@@ -1014,6 +1174,26 @@ evals:
       note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.5982
+        latency_ms: 8290
+        cost_usd: 0.0233
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-qa-pass-2026-04-24.json
+        note: "Model-wrong: false-negatived the known-good scene case; runtime-blocking if used as the QA default."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.5982
+        latency_ms: 61333
+        cost_usd: 0.1907
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-qa-pass-2026-04-24.json
+        note: "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default."
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 1.000
@@ -1136,6 +1316,26 @@ evals:
       cost_usd_max: 0.05
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9640
+        latency_ms: 28219
+        cost_usd: 0.0849
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-continuity-extraction-2026-04-24.json
+        note: "Strong pass, but below the Sonnet 4.6 target score and above the current cost target."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.9571
+        latency_ms: 242910
+        cost_usd: 2.0898
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-continuity-extraction-2026-04-24.json
+        note: "Strong quality but slower, costlier, and lower scoring than GPT-5.5 and the current Claude default."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.982
@@ -2523,6 +2723,26 @@ evals:
       cost_usd_max: 0.02
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9250
+        latency_ms: 48826
+        cost_usd: 0.1185
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-entity-discovery-2026-04-24.json
+        note: "Passes the harness and improves over the cheap default quality, but remains below the target and a poor value candidate versus Gemini 2.5 Flash Lite."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.9250
+        latency_ms: 216358
+        cost_usd: 2.2432
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-entity-discovery-2026-04-24.json
+        note: "Tied GPT-5.5 quality with much higher latency and cost."
       - model: "GPT-4.1"
         metrics:
           overall: 0.940
@@ -2706,6 +2926,26 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "GPT-5.5"
+        metrics:
+          overall: 0.9400
+        latency_ms: 52506
+        cost_usd: 0.1196
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-script-bible-2026-04-24.json
+        note: "Strong quality, but misses latency/cost budgets and has no value win over the cheap Gemini full-script lane."
+      - model: "GPT-5.5 Pro"
+        metrics:
+          overall: 0.9600
+        latency_ms: 203116
+        cost_usd: 1.1232
+        cost_estimated: true
+        measured: 2026-04-24
+        git_sha: "9ede74c"
+        result_file: benchmarks/results/gpt55-script-bible-2026-04-24.json
+        note: "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default."
       - model: "GPT-5.4"
         metrics:
           overall: 0.970

@@ -143,6 +143,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 135 | Brick & Steel PDF Normalization Regression | High | Done | — | spec:2, spec:8 | 004, 064 | [story-135](stories/story-135-screenplay-normalization-brick-steel-pdf-regression.md) |
 | 142 | Initial Intake Should Not Self-Stale | High | Done | — | spec:1, spec:2, spec:5 | 031, 062, 127 | [story-142](stories/story-142-intake-onboarding-should-not-self-stale.md) |
 | 148 | Scene-Scoped Planning and Honest Downstream Generation | High | Done | — | spec:2, spec:5, spec:6, spec:7, spec:10 | 025, 028, 099, 132, 143, 144 | [story-148](stories/story-148-scene-scoped-planning-and-honest-downstream-generation.md) |
+| 189 | GPT-5.5 Frontier Eval Refresh | High | Done | — | spec:2, spec:3, spec:8 | 035 | [story-189](stories/story-189-gpt-55-frontier-eval-refresh.md) |
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Medium | Done | — | spec:2 | — | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | Medium | Done | — | spec:2, spec:3, spec:5 | 045 | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 072 | Live Entity Discovery Feedback | Medium | Done | — | spec:2, spec:5 | 062 | [story-072](stories/story-072-live-entity-discovery-feedback.md) |

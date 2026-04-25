@@ -1,0 +1,983 @@
+{
+  "evalId": "eval-Wg6-2026-04-24T23:16:42",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-04-24T23:16:42.295Z",
+    "prompts": [
+      {
+        "raw": "You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+        "label": "prompts/scene-enrichment.txt: You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+        "id": "64b3ac76047daea7c30812b14f4f06c2f54e48f62486ad6a83deed7843aef099",
+        "provider": "GPT-5.5",
+        "metrics": {
+          "score": 1.8624999999999998,
+          "testPassCount": 2,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 4,
+          "assertFailCount": 0,
+          "totalLatencyMs": 21877,
+          "tokenUsage": {
+            "prompt": 1871,
+            "completion": 1411,
+            "cached": 0,
+            "total": 3282,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 429,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2276,
+              "prompt": 1693,
+              "completion": 583,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      },
+      {
+        "raw": "You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+        "label": "prompts/scene-enrichment.txt: You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+        "id": "64b3ac76047daea7c30812b14f4f06c2f54e48f62486ad6a83deed7843aef099",
+        "provider": "GPT-5.5 Pro",
+        "metrics": {
+          "score": 1.85335,
+          "testPassCount": 2,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 4,
+          "assertFailCount": 0,
+          "totalLatencyMs": 126524,
+          "tokenUsage": {
+            "prompt": 1871,
+            "completion": 2980,
+            "cached": 0,
+            "total": 4851,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 1880,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 2355,
+              "prompt": 1746,
+              "completion": 609,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.59253
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.975,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1396,
+            "prompt": 1067,
+            "completion": 329,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.95,
+              "reason": "beat_quality=1.00 | character_recall=1.00 | field_completeness=1.00 | json_valid=1.00 | location_accuracy=1.00 | time_accuracy=0.50 | tone_accuracy=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/scene_enrichment_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the scene enrichment for an elevator scene from \"The Mariner.\"\n\nThe scene takes place inside an elevator in a building. Rose and Mariner\nare escaping after a violent rescue. Key elements:\n\n1. Does it correctly identify the interior location (elevator/building)?\n2. Does it identify both Rose and Mariner as present?\n3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?\n4. Does it identify the character introduction beat (Mariner's costume description)?\n5. Does it note the AirTag revelation as a conflict/trust beat?\n6. Does it recognize the tonal juxtaposition (muzak vs violence)?\n7. Are narrative beats specific and grounded in the text?\n\nScore strictly: good enrichment captures subtext and tonal nuance, not just plot.\n"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The output excels on every criterion: (1) Correctly identifies INT. RUDDY & GREEN BUILDING - ELEVATOR - DAY. (2) Both Rose and Mariner are listed as present, along with the thugs. (3) Dark comedy tone is explicitly captured — the skull fragment and muzak contrast are both called out. (4) Mariner's character introduction beat is identified with specific details about his nautical gear, blood, modified oar, and the contrast between his mythic appearance and awkward mumbling. (5) The AirTag revelation is noted as a distinct beat, framed as both caring and invasive, capturing the trust/conflict dimension. (6) Tonal juxtaposition (UB40 muzak vs. blood-soaked violence) is explicitly identified as a deliberate comic contradiction and listed among tone shifts. (7) Narrative beats are highly specific and grounded in textual details — skull fragment, AirTag at Thanksgiving, Rose's laughter flipping the protective narrative, the oar as weapon, Rose pressing eleven and suggesting stairs, Mariner defending his costume as 'functional' and 'an homage.' The enrichment goes beyond plot summary to capture subtext (Rose's own dangerous entanglements, the inversion of the rescue dynamic, the eccentric vigilante persona). Tone shifts are enumerated with precision. Confidence scores are reasonable. This is excellent enrichment.",
+              "tokensUsed": {
+                "total": 1396,
+                "prompt": 1067,
+                "completion": 329,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"heading\\\":\\\"INT. RUDDY & GREEN BUILDING - ELEVATOR - DAY\\\",\\\"location\\\":\\\"RUDDY & GREEN BUILDING - ELEVATOR\\\",\\\"time_of_day\\\":\\\"DAY\\\",\\\"int_ext\\\":\\\"INT\\\",\\\"characters_present\\\":[\\\"ROSE\\\",\\\"MARINER\\\",\\\"THUG 1\\\",\\\"THUG 2\\\",\\\"THUG 3\\\"],\\\"narrative_beats\\\":[{\\\"beat_type\\\":\\\"character_introduction\\\",\\\"description\\\":\\\"Mariner is introduced in full superhero/vigilante iconography via a title card and elaborate nautical gear, covered in blood and wielding a modified oar. His imposing, mythic appearance contrasts with his awkward mumbling and protective concern for Rose.\\\",\\\"confidence\\\":0.98},{\\\"beat_type\\\":\\\"dark_comedy\\\",\\\"description\\\":\\\"UB40 muzak plays over a blood-soaked elevator scene as Rose discovers what appears to be a scrap of skull. The bland romantic elevator music deliberately undercuts the gore, creating a grotesque comic contradiction.\\\",\\\"confidence\\\":0.96},{\\\"beat_type\\\":\\\"revelation\\\",\\\"description\\\":\\\"Mariner reveals he found Rose because he secretly hid an AirTag in her purse at Thanksgiving. The reveal reframes his rescue as both caring and invasive, adding tension to their relationship.\\\",\\\"confidence\\\":0.95},{\\\"beat_type\\\":\\\"conflict\\\",\\\"description\\\":\\\"Mariner assumes the attackers are after Rose because of him, but Rose laughs at the idea, implying she has her own dangerous entanglements. This flips his protective narrative and hints that Rose may be more central to the threat than he understands.\\\",\\\"confidence\\\":0.9},{\\\"beat_type\\\":\\\"action\\\",\\\"description\\\":\\\"When the elevator opens on the twelfth floor, three armed thugs ambush them. Mariner instantly disables Thug 1 with his oar and a powerful kick while Rose works the elevator controls to escape.\\\",\\\"confidence\\\":0.99},{\\\"beat_type\\\":\\\"escalation\\\",\\\"description\\\":\\\"Thug 2 radios their location and the remaining thugs open fire, forcing Rose and Mariner to evade bullets inside the elevator. The attackers coordinate a pursuit to the eighth floor, tightening the danger.\\\",\\\"confidence\\\":0.97},{\\\"beat_type\\\":\\\"character_development\\\",\\\"description\\\":\\\"Rose chooses an unexpected tactical move by pressing eleven and suggesting they take the stairs up. Her quick thinking establishes her as active and resourceful rather than merely a person being rescued.\\\",\\\"confidence\\\":0.92},{\\\"beat_type\\\":\\\"comic_relief\\\",\\\"description\\\":\\\"Mariner calls Rose's plan stupid, then defensively justifies his extravagant costume as 'functional' and 'an homage.' The joke punctures the intensity of the gunfight while reinforcing his eccentric vigilante persona.\\\",\\\"confidence\\\":0.94}],\\\"tone_mood\\\":\\\"blood-soaked dark comedy with tense action-thriller urgency\\\",\\\"tone_shifts\\\":[\\\"romantic elevator muzak undercuts gore\\\",\\\"grisly aftermath to awkward family-boundary comedy\\\",\\\"protective concern to relationship conflict\\\",\\\"banter to sudden armed ambush\\\",\\\"gunfight tension to costume-based comic relief\\\"]}\\n</Output>\\n<Rubric>\\nEvaluate the scene enrichment for an elevator scene from \\\"The Mariner.\\\"\\n\\nThe scene takes place inside an elevator in a building. Rose and Mariner\\nare escaping after a violent rescue. Key elements:\\n\\n1. Does it correctly identify the interior location (elevator/building)?\\n2. Does it identify both Rose and Mariner as present?\\n3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?\\n4. Does it identify the character introduction beat (Mariner's costume description)?\\n5. Does it note the AirTag revelation as a conflict/trust beat?\\n6. Does it recognize the tonal juxtaposition (muzak vs violence)?\\n7. Are narrative beats specific and grounded in the text?\\n\\nScore strictly: good enrichment captures subtext and tonal nuance, not just plot.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "8aeb9372-7aac-473a-877f-6d9fe830028a",
+        "latencyMs": 16292,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n==========",
+          "label": "prompts/scene-enrichment.txt: You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "64b3ac76047daea7c30812b14f4f06c2f54e48f62486ad6a83deed7843aef099",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-5.5",
+          "label": "GPT-5.5"
+        },
+        "response": {
+          "output": "{\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR - DAY\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": \"DAY\",\n  \"int_ext\": \"INT\",\n  \"characters_present\": [\n    \"ROSE\",\n    \"MARINER\",\n    \"THUG 1\",\n    \"THUG 2\",\n    \"THUG 3\"\n  ],\n  \"narrative_beats\": [\n    {\n      \"beat_type\": \"character_introduction\",\n      \"description\": \"Mariner is introduced in full superhero/vigilante iconography via a title card and elaborate nautical gear, covered in blood and wielding a modified oar. His imposing, mythic appearance contrasts with his awkward mumbling and protective concern for Rose.\",\n      \"confidence\": 0.98\n    },\n    {\n      \"beat_type\": \"dark_comedy\",\n      \"description\": \"UB40 muzak plays over a blood-soaked elevator scene as Rose discovers what appears to be a scrap of skull. The bland romantic elevator music deliberately undercuts the gore, creating a grotesque comic contradiction.\",\n      \"confidence\": 0.96\n    },\n    {\n      \"beat_type\": \"revelation\",\n      \"description\": \"Mariner reveals he found Rose because he secretly hid an AirTag in her purse at Thanksgiving. The reveal reframes his rescue as both caring and invasive, adding tension to their relationship.\",\n      \"confidence\": 0.95\n    },\n    {\n      \"beat_type\": \"conflict\",\n      \"description\": \"Mariner assumes the attackers are after Rose because of him, but Rose laughs at the idea, implying she has her own dangerous entanglements. This flips his protective narrative and hints that Rose may be more central to the threat than he understands.\",\n      \"confidence\": 0.9\n    },\n    {\n      \"beat_type\": \"action\",\n      \"description\": \"When the elevator opens on the twelfth floor, three armed thugs ambush them. Mariner instantly disables Thug 1 with his oar and a powerful kick while Rose works the elevator controls to escape.\",\n      \"confidence\": 0.99\n    },\n    {\n      \"beat_type\": \"escalation\",\n      \"description\": \"Thug 2 radios their location and the remaining thugs open fire, forcing Rose and Mariner to evade bullets inside the elevator. The attackers coordinate a pursuit to the eighth floor, tightening the danger.\",\n      \"confidence\": 0.97\n    },\n    {\n      \"beat_type\": \"character_development\",\n      \"description\": \"Rose chooses an unexpected tactical move by pressing eleven and suggesting they take the stairs up. Her quick thinking establishes her as active and resourceful rather than merely a person being rescued.\",\n      \"confidence\": 0.92\n    },\n    {\n      \"beat_type\": \"comic_relief\",\n      \"description\": \"Mariner calls Rose's plan stupid, then defensively justifies his extravagant costume as 'functional' and 'an homage.' The joke punctures the intensity of the gunfight while reinforcing his eccentric vigilante persona.\",\n      \"confidence\": 0.94\n    }\n  ],\n  \"tone_mood\": \"blood-soaked dark comedy with tense action-thriller urgency\",\n  \"tone_shifts\": [\n    \"romantic elevator muzak undercuts gore\",\n    \"grisly aftermath to awkward family-boundary comedy\",\n    \"protective concern to relationship conflict\",\n    \"banter to sudden armed ambush\",\n    \"gunfight tension to costume-based comic relief\"\n  ]\n}",
+          "tokenUsage": {
+            "total": 2356,
+            "prompt": 1264,
+            "completion": 1092,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 329,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 16292,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9f18d13589106d01-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 24 Apr 2026 23:16:58 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "15917",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=XXJvjA.xXujR2mHK4KEIUTxAOKSLqDJfBowcwmf8V8Y-1777072602.4888601-1.0.1.1-BE0h7H55DnyB0QzHkr65VWjqtdfU8l5s4.fy2M370uA3VZBRG4OHt_hXJwacaG5ABBZsuccHJDQyniQFx4Yzpz96L_YNqY7b6kpg7a7HtPptqcunXryHAgdlsAdkixwm; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:46:58 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "15000",
+                "x-ratelimit-limit-tokens": "40000000",
+                "x-ratelimit-remaining-requests": "14999",
+                "x-ratelimit-remaining-tokens": "39998780",
+                "x-ratelimit-reset-requests": "4ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_50efd5e010a141a59bb715d2eda69605"
+              }
+            }
+          }
+        },
+        "score": 0.975,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "golden_path": "golden/enrich-scenes-golden.json",
+            "scene_key": "elevator"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/scene_enrichment_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the scene enrichment for an elevator scene from \"The Mariner.\"\n\nThe scene takes place inside an elevator in a building. Rose and Mariner\nare escaping after a violent rescue. Key elements:\n\n1. Does it correctly identify the interior location (elevator/building)?\n2. Does it identify both Rose and Mariner as present?\n3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?\n4. Does it identify the character introduction beat (Mariner's costume description)?\n5. Does it note the AirTag revelation as a conflict/trust beat?\n6. Does it recognize the tonal juxtaposition (muzak vs violence)?\n7. Are narrative beats specific and grounded in the text?\n\nScore strictly: good enrichment captures subtext and tonal nuance, not just plot.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "golden_path": "golden/enrich-scenes-golden.json",
+          "scene_key": "elevator"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9f18d13589106d01-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 24 Apr 2026 23:16:58 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "15917",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=XXJvjA.xXujR2mHK4KEIUTxAOKSLqDJfBowcwmf8V8Y-1777072602.4888601-1.0.1.1-BE0h7H55DnyB0QzHkr65VWjqtdfU8l5s4.fy2M370uA3VZBRG4OHt_hXJwacaG5ABBZsuccHJDQyniQFx4Yzpz96L_YNqY7b6kpg7a7HtPptqcunXryHAgdlsAdkixwm; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:46:58 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "15000",
+              "x-ratelimit-limit-tokens": "40000000",
+              "x-ratelimit-remaining-requests": "14999",
+              "x-ratelimit-remaining-tokens": "39998780",
+              "x-ratelimit-reset-requests": "4ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_50efd5e010a141a59bb715d2eda69605"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.42762,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.9375,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1438,
+            "prompt": 1108,
+            "completion": 330,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.875,
+              "reason": "beat_quality=1.00 | character_recall=1.00 | field_completeness=1.00 | json_valid=1.00 | location_accuracy=1.00 | time_accuracy=0.50 | tone_accuracy=0.50",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/scene_enrichment_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the scene enrichment for an elevator scene from \"The Mariner.\"\n\nThe scene takes place inside an elevator in a building. Rose and Mariner\nare escaping after a violent rescue. Key elements:\n\n1. Does it correctly identify the interior location (elevator/building)?\n2. Does it identify both Rose and Mariner as present?\n3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?\n4. Does it identify the character introduction beat (Mariner's costume description)?\n5. Does it note the AirTag revelation as a conflict/trust beat?\n6. Does it recognize the tonal juxtaposition (muzak vs violence)?\n7. Are narrative beats specific and grounded in the text?\n\nScore strictly: good enrichment captures subtext and tonal nuance, not just plot.\n"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The output excels on every criterion. 1) It correctly identifies the interior location as 'RUDDY & GREEN BUILDING - ELEVATOR' with INT designation. 2) Both Rose and Mariner are identified as present (plus three thugs). 3) Dark comedy tone is thoroughly captured — the skull fragment, muzak contrast, and blood-spattered elevator are all explicitly noted. 4) Mariner's character introduction beat is identified with high confidence (0.98), detailing his costume (oar weapon, bracers, boots, fishing-net cape, shell bandolier) and noting it frames him as 'both intimidating and faintly ridiculous.' 5) The AirTag revelation is identified as a 'revelation' beat with discussion of its implications for trust and invasive behavior. 6) Tonal juxtaposition (muzak vs violence) is recognized both as a narrative beat and as a tone shift. 7) Narrative beats are highly specific and grounded in textual details — skull fragment, Tim Hortons uniform, radio communication, floor numbers (twelve, eight, eleven), costume defense ('functional,' 'an homage'). The enrichment goes beyond plot summary to capture subtext (Rose's laugh implying the threat centers on her, the family dynamic implied by Thanksgiving AirTag planting) and tonal nuance (multiple tone shifts identified with specificity). This is excellent enrichment work.",
+              "tokensUsed": {
+                "total": 1438,
+                "prompt": 1108,
+                "completion": 330,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"heading\\\":\\\"INT. RUDDY & GREEN BUILDING - ELEVATOR - CONTINUOUS\\\",\\\"location\\\":\\\"RUDDY & GREEN BUILDING - ELEVATOR\\\",\\\"time_of_day\\\":\\\"CONTINUOUS\\\",\\\"int_ext\\\":\\\"INT\\\",\\\"characters_present\\\":[\\\"ROSE\\\",\\\"MARINER\\\",\\\"THUG 1\\\",\\\"THUG 2\\\",\\\"THUG 3\\\"],\\\"narrative_beats\\\":[{\\\"beat_type\\\":\\\"comic_relief\\\",\\\"description\\\":\\\"UB40's romantic muzak plays over Rose and Mariner panting in a blood-spattered elevator, turning the grisly aftermath into absurd dark comedy. Rose finding what may be a skull fragment sharpens the contrast between mundane elevator music and graphic violence.\\\",\\\"confidence\\\":0.95},{\\\"beat_type\\\":\\\"character_introduction\\\",\\\"description\\\":\\\"Rose is introduced as a disheveled Tim Hortons worker covered in blood but still sarcastic and practical under pressure. Her disgusted reaction to the gore establishes her as overwhelmed but not helpless.\\\",\\\"confidence\\\":0.9},{\\\"beat_type\\\":\\\"character_introduction\\\",\\\"description\\\":\\\"Mariner receives a full-screen title card and is described as a massive, blood-covered, nautical-themed vigilante with an oar weapon, bracers, boots, fishing-net cape, and shell bandolier. The elaborate costume frames him as both intimidating and faintly ridiculous.\\\",\\\"confidence\\\":0.98},{\\\"beat_type\\\":\\\"revelation\\\",\\\"description\\\":\\\"Mariner reveals he found Rose by secretly stashing an AirTag in her purse at Thanksgiving. The moment exposes his protective, invasive behavior and implies a close personal or family connection.\\\",\\\"confidence\\\":0.94},{\\\"beat_type\\\":\\\"conflict\\\",\\\"description\\\":\\\"Rose insists they go back for her purse while Mariner wants to take her home, believing the attackers targeted her because of him. Rose's laugh and question imply the threat may actually be centered on her, complicating Mariner's assumptions.\\\",\\\"confidence\\\":0.91},{\\\"beat_type\\\":\\\"action\\\",\\\"description\\\":\\\"When the elevator opens on the twelfth floor, three armed thugs ambush them. Mariner uses his bloodied oar and physical force to disarm and knock back the attackers while Rose frantically works the elevator controls.\\\",\\\"confidence\\\":0.97},{\\\"beat_type\\\":\\\"foreshadowing\\\",\\\"description\\\":\\\"Thug 2 radios their location and the muffled order to go down to eight sets up pursuit through the building. Rose counters by choosing to go up to eleven and take the stairs, creating a tactical chase beat.\\\",\\\"confidence\\\":0.88},{\\\"beat_type\\\":\\\"comic_relief\\\",\\\"description\\\":\\\"After the firefight, Mariner protests that Rose's plan is stupid, and she silently points out the absurdity of his own costume. His defense that it is 'functional' and 'an homage' punctures the danger with self-aware humor.\\\",\\\"confidence\\\":0.96}],\\\"tone_mood\\\":\\\"blood-soaked dark action-comedy with absurd superhero parody elements\\\",\\\"tone_shifts\\\":[\\\"romantic muzak undercuts gruesome gore\\\",\\\"gross-out aftermath to invasive-family-boundary argument\\\",\\\"banter to sudden armed ambush\\\",\\\"gunfight danger to tactical bickering\\\",\\\"high-stakes chase to costume-based comic relief\\\"]}\\n</Output>\\n<Rubric>\\nEvaluate the scene enrichment for an elevator scene from \\\"The Mariner.\\\"\\n\\nThe scene takes place inside an elevator in a building. Rose and Mariner\\nare escaping after a violent rescue. Key elements:\\n\\n1. Does it correctly identify the interior location (elevator/building)?\\n2. Does it identify both Rose and Mariner as present?\\n3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?\\n4. Does it identify the character introduction beat (Mariner's costume description)?\\n5. Does it note the AirTag revelation as a conflict/trust beat?\\n6. Does it recognize the tonal juxtaposition (muzak vs violence)?\\n7. Are narrative beats specific and grounded in the text?\\n\\nScore strictly: good enrichment captures subtext and tonal nuance, not just plot.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "73578934-d75a-468d-a8ad-66c606fd1032",
+        "latencyMs": 80602,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n==========",
+          "label": "prompts/scene-enrichment.txt: You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "64b3ac76047daea7c30812b14f4f06c2f54e48f62486ad6a83deed7843aef099",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/openai_responses_provider.py",
+          "label": "GPT-5.5 Pro"
+        },
+        "response": {
+          "output": "{\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR - CONTINUOUS\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": \"CONTINUOUS\",\n  \"int_ext\": \"INT\",\n  \"characters_present\": [\n    \"ROSE\",\n    \"MARINER\",\n    \"THUG 1\",\n    \"THUG 2\",\n    \"THUG 3\"\n  ],\n  \"narrative_beats\": [\n    {\n      \"beat_type\": \"comic_relief\",\n      \"description\": \"UB40's romantic muzak plays over Rose and Mariner panting in a blood-spattered elevator, turning the grisly aftermath into absurd dark comedy. Rose finding what may be a skull fragment sharpens the contrast between mundane elevator music and graphic violence.\",\n      \"confidence\": 0.95\n    },\n    {\n      \"beat_type\": \"character_introduction\",\n      \"description\": \"Rose is introduced as a disheveled Tim Hortons worker covered in blood but still sarcastic and practical under pressure. Her disgusted reaction to the gore establishes her as overwhelmed but not helpless.\",\n      \"confidence\": 0.9\n    },\n    {\n      \"beat_type\": \"character_introduction\",\n      \"description\": \"Mariner receives a full-screen title card and is described as a massive, blood-covered, nautical-themed vigilante with an oar weapon, bracers, boots, fishing-net cape, and shell bandolier. The elaborate costume frames him as both intimidating and faintly ridiculous.\",\n      \"confidence\": 0.98\n    },\n    {\n      \"beat_type\": \"revelation\",\n      \"description\": \"Mariner reveals he found Rose by secretly stashing an AirTag in her purse at Thanksgiving. The moment exposes his protective, invasive behavior and implies a close personal or family connection.\",\n      \"confidence\": 0.94\n    },\n    {\n      \"beat_type\": \"conflict\",\n      \"description\": \"Rose insists they go back for her purse while Mariner wants to take her home, believing the attackers targeted her because of him. Rose's laugh and question imply the threat may actually be centered on her, complicating Mariner's assumptions.\",\n      \"confidence\": 0.91\n    },\n    {\n      \"beat_type\": \"action\",\n      \"description\": \"When the elevator opens on the twelfth floor, three armed thugs ambush them. Mariner uses his bloodied oar and physical force to disarm and knock back the attackers while Rose frantically works the elevator controls.\",\n      \"confidence\": 0.97\n    },\n    {\n      \"beat_type\": \"foreshadowing\",\n      \"description\": \"Thug 2 radios their location and the muffled order to go down to eight sets up pursuit through the building. Rose counters by choosing to go up to eleven and take the stairs, creating a tactical chase beat.\",\n      \"confidence\": 0.88\n    },\n    {\n      \"beat_type\": \"comic_relief\",\n      \"description\": \"After the firefight, Mariner protests that Rose's plan is stupid, and she silently points out the absurdity of his own costume. His defense that it is 'functional' and 'an homage' punctures the danger with self-aware humor.\",\n      \"confidence\": 0.96\n    }\n  ],\n  \"tone_mood\": \"blood-soaked dark action-comedy with absurd superhero parody elements\",\n  \"tone_shifts\": [\n    \"romantic muzak undercuts gruesome gore\",\n    \"gross-out aftermath to invasive-family-boundary argument\",\n    \"banter to sudden armed ambush\",\n    \"gunfight danger to tactical bickering\",\n    \"high-stakes chase to costume-based comic relief\"\n  ]\n}",
+          "tokenUsage": {
+            "total": 3429,
+            "prompt": 1264,
+            "completion": 2165,
+            "completionDetails": {
+              "reasoning": 1364
+            },
+            "numRequests": 1
+          },
+          "cost": 0.42762,
+          "latencyMs": 80602,
+          "cached": false,
+          "metadata": {
+            "provider": "openai",
+            "model": "gpt-5.5-pro",
+            "endpoint": "responses",
+            "response_id": "resp_080fa984c5098a230169ebf9dc120c819d85570e928385a7e1",
+            "status": "completed"
+          }
+        },
+        "score": 0.9375,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "golden_path": "golden/enrich-scenes-golden.json",
+            "scene_key": "elevator"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/scene_enrichment_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the scene enrichment for an elevator scene from \"The Mariner.\"\n\nThe scene takes place inside an elevator in a building. Rose and Mariner\nare escaping after a violent rescue. Key elements:\n\n1. Does it correctly identify the interior location (elevator/building)?\n2. Does it identify both Rose and Mariner as present?\n3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?\n4. Does it identify the character introduction beat (Mariner's costume description)?\n5. Does it note the AirTag revelation as a conflict/trust beat?\n6. Does it recognize the tonal juxtaposition (muzak vs violence)?\n7. Are narrative beats specific and grounded in the text?\n\nScore strictly: good enrichment captures subtext and tonal nuance, not just plot.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "golden_path": "golden/enrich-scenes-golden.json",
+          "scene_key": "elevator"
+        },
+        "metadata": {
+          "provider": "openai",
+          "model": "gpt-5.5-pro",
+          "endpoint": "responses",
+          "response_id": "resp_080fa984c5098a230169ebf9dc120c819d85570e928385a7e1",
+          "status": "completed",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.8875,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 880,
+            "prompt": 626,
+            "completion": 254,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.955,
+              "reason": "beat_quality=0.77 | character_recall=1.00 | field_completeness=1.00 | json_valid=1.00 | location_accuracy=1.00 | time_accuracy=1.00 | tone_accuracy=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/scene_enrichment_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the scene enrichment for a flashback scene from \"The Mariner.\"\n\nA young boy and his father fishing on a coastline. Key elements:\n\n1. Does it correctly identify the exterior coastline/ocean location?\n2. Does it identify both Young Mariner and Dad?\n3. Does it capture the warm, nostalgic, idyllic tone?\n4. Does it identify the thematic statement (\"what's a hero\")?\n5. Does it note this as a flashback/idealized memory?\n6. Does it recognize foreshadowing (Dad's definition of heroism)?\n7. Does it capture the father-son bonding as character development?\n\nScore strictly: the thematic weight of this scene is critical — it\nestablishes the hero myth that later crumbles.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "The output addresses all seven criteria well: 1) Correctly identifies EXT. COASTLINE as the location. 2) Identifies both Young Mariner and Dad as characters present. 3) Captures the warm, nostalgic tone explicitly ('warm, nostalgic, formative'). 4) Identifies the thematic statement about heroism ('brave an true') as a narrative beat with high confidence. 5) The heading includes '(FLASHBACK)' and the narrative describes it as a 'childhood flashback.' 6) Foreshadowing is noted, though it focuses on the beer-fetching detail rather than directly on how Dad's definition of heroism will later crumble — this is a slight miss on the critical thematic weight. The foreshadowing beat could have more explicitly connected the hero myth to its eventual deconstruction. 7) Father-son bonding is captured as character development. The output is strong overall but slightly underweights the critical thematic importance of the hero myth establishment and its future collapse, which the rubric emphasizes as critical.",
+              "tokensUsed": {
+                "total": 880,
+                "prompt": 626,
+                "completion": 254,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"heading\\\":\\\"EXT. COASTLINE - DAY (FLASHBACK)\\\",\\\"location\\\":\\\"COASTLINE\\\",\\\"time_of_day\\\":\\\"DAY\\\",\\\"int_ext\\\":\\\"EXT\\\",\\\"characters_present\\\":[\\\"Young Mariner\\\",\\\"Dad\\\"],\\\"narrative_beats\\\":[{\\\"beat_type\\\":\\\"character_development\\\",\\\"description\\\":\\\"In a warm childhood flashback, Young Mariner shares a happy fishing lesson with his father, establishing an affectionate bond rooted in the sea.\\\",\\\"confidence\\\":0.95},{\\\"beat_type\\\":\\\"thematic_statement\\\",\\\"description\\\":\\\"Dad defines a hero as someone who is 'brave an true,' giving Young Mariner a simple moral code that appears formative to his later identity.\\\",\\\"confidence\\\":0.98},{\\\"beat_type\\\":\\\"foreshadowing\\\",\\\"description\\\":\\\"Young Mariner solemnly fetching his father's beer suggests early exposure to adult responsibility and possibly the imperfect, rough-edged world that shaped him.\\\",\\\"confidence\\\":0.72}],\\\"tone_mood\\\":\\\"warm, nostalgic, formative\\\",\\\"tone_shifts\\\":[\\\"playful father-son bonding to earnest moral instruction\\\"]}\\n</Output>\\n<Rubric>\\nEvaluate the scene enrichment for a flashback scene from \\\"The Mariner.\\\"\\n\\nA young boy and his father fishing on a coastline. Key elements:\\n\\n1. Does it correctly identify the exterior coastline/ocean location?\\n2. Does it identify both Young Mariner and Dad?\\n3. Does it capture the warm, nostalgic, idyllic tone?\\n4. Does it identify the thematic statement (\\\"what's a hero\\\")?\\n5. Does it note this as a flashback/idealized memory?\\n6. Does it recognize foreshadowing (Dad's definition of heroism)?\\n7. Does it capture the father-son bonding as character development?\\n\\nScore strictly: the thematic weight of this scene is critical — it\\nestablishes the hero myth that later crumbles.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "4b0d4693-7510-475d-94ed-f4678fb4dfa0",
+        "latencyMs": 5585,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\nBEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD\nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n==========",
+          "label": "prompts/scene-enrichment.txt: You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "64b3ac76047daea7c30812b14f4f06c2f54e48f62486ad6a83deed7843aef099",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-5.5",
+          "label": "GPT-5.5"
+        },
+        "response": {
+          "output": "{\"heading\":\"EXT. COASTLINE - DAY (FLASHBACK)\",\"location\":\"COASTLINE\",\"time_of_day\":\"DAY\",\"int_ext\":\"EXT\",\"characters_present\":[\"Young Mariner\",\"Dad\"],\"narrative_beats\":[{\"beat_type\":\"character_development\",\"description\":\"In a warm childhood flashback, Young Mariner shares a happy fishing lesson with his father, establishing an affectionate bond rooted in the sea.\",\"confidence\":0.95},{\"beat_type\":\"thematic_statement\",\"description\":\"Dad defines a hero as someone who is 'brave an true,' giving Young Mariner a simple moral code that appears formative to his later identity.\",\"confidence\":0.98},{\"beat_type\":\"foreshadowing\",\"description\":\"Young Mariner solemnly fetching his father's beer suggests early exposure to adult responsibility and possibly the imperfect, rough-edged world that shaped him.\",\"confidence\":0.72}],\"tone_mood\":\"warm, nostalgic, formative\",\"tone_shifts\":[\"playful father-son bonding to earnest moral instruction\"]}",
+          "tokenUsage": {
+            "total": 926,
+            "prompt": 607,
+            "completion": 319,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 100,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 5585,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9f18d1cd3a196d01-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 24 Apr 2026 23:17:12 GMT",
+                "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+                "openai-processing-ms": "5428",
+                "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=0o_hOWt3I5FdbdN9R8dd.j0cW0Cb_trcgkTL.7_.V00-1777072626.7574172-1.0.1.1-Wr0Tt9JG79mwvz784ePFfkpRf96D_Q.ta7PQE5Fuy5Ye5PBu0JFWYPXfkq6evhUNNyEhpDjGvNWaqTgVZbTym45wT8GxA_VONfTQGTdUJ0WrrZR2BQIkqRsJmQsSxuja; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:47:12 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "15000",
+                "x-ratelimit-limit-tokens": "40000000",
+                "x-ratelimit-remaining-requests": "14999",
+                "x-ratelimit-remaining-tokens": "39999372",
+                "x-ratelimit-reset-requests": "4ms",
+                "x-ratelimit-reset-tokens": "0s",
+                "x-request-id": "req_4cedb63c47794b699c02dce17b8cb504"
+              }
+            }
+          }
+        },
+        "score": 0.8875,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-flashback.txt",
+            "golden_path": "golden/enrich-scenes-golden.json",
+            "scene_key": "flashback"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/scene_enrichment_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the scene enrichment for a flashback scene from \"The Mariner.\"\n\nA young boy and his father fishing on a coastline. Key elements:\n\n1. Does it correctly identify the exterior coastline/ocean location?\n2. Does it identify both Young Mariner and Dad?\n3. Does it capture the warm, nostalgic, idyllic tone?\n4. Does it identify the thematic statement (\"what's a hero\")?\n5. Does it note this as a flashback/idealized memory?\n6. Does it recognize foreshadowing (Dad's definition of heroism)?\n7. Does it capture the father-son bonding as character development?\n\nScore strictly: the thematic weight of this scene is critical — it\nestablishes the hero myth that later crumbles.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-flashback.txt",
+          "golden_path": "golden/enrich-scenes-golden.json",
+          "scene_key": "flashback"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9f18d1cd3a196d01-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 24 Apr 2026 23:17:12 GMT",
+              "openai-organization": "user-oqdrq8y0bphopngnvkyuu5wr",
+              "openai-processing-ms": "5428",
+              "openai-project": "proj_ZRoLLwXcJok6Xg2t6eKhI1pn",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=0o_hOWt3I5FdbdN9R8dd.j0cW0Cb_trcgkTL.7_.V00-1777072626.7574172-1.0.1.1-Wr0Tt9JG79mwvz784ePFfkpRf96D_Q.ta7PQE5Fuy5Ye5PBu0JFWYPXfkq6evhUNNyEhpDjGvNWaqTgVZbTym45wT8GxA_VONfTQGTdUJ0WrrZR2BQIkqRsJmQsSxuja; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 24 Apr 2026 23:47:12 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "15000",
+              "x-ratelimit-limit-tokens": "40000000",
+              "x-ratelimit-remaining-requests": "14999",
+              "x-ratelimit-remaining-tokens": "39999372",
+              "x-ratelimit-reset-requests": "4ms",
+              "x-ratelimit-reset-tokens": "0s",
+              "x-request-id": "req_4cedb63c47794b699c02dce17b8cb504"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.16491,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.91585,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 917,
+            "prompt": 638,
+            "completion": 279,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.9517,
+              "reason": "beat_quality=0.76 | character_recall=1.00 | field_completeness=1.00 | json_valid=1.00 | location_accuracy=1.00 | time_accuracy=1.00 | tone_accuracy=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/scene_enrichment_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the scene enrichment for a flashback scene from \"The Mariner.\"\n\nA young boy and his father fishing on a coastline. Key elements:\n\n1. Does it correctly identify the exterior coastline/ocean location?\n2. Does it identify both Young Mariner and Dad?\n3. Does it capture the warm, nostalgic, idyllic tone?\n4. Does it identify the thematic statement (\"what's a hero\")?\n5. Does it note this as a flashback/idealized memory?\n6. Does it recognize foreshadowing (Dad's definition of heroism)?\n7. Does it capture the father-son bonding as character development?\n\nScore strictly: the thematic weight of this scene is critical — it\nestablishes the hero myth that later crumbles.\n"
+              },
+              "pass": true,
+              "score": 0.88,
+              "reason": "The output addresses all seven criteria effectively: 1) Correctly identifies EXT. COASTLINE - DAY. 2) Identifies both Young Mariner and Dad as characters present. 3) Captures the warm, nostalgic, sentimental tone accurately. 4) Identifies the thematic statement about heroism ('brave an true') explicitly. 5) Correctly labels this as a flashback/idealized memory with high confidence. 6) Recognizes foreshadowing — noting that Dad's definition of heroism 'likely shapes Mariner's later sense of courage and identity,' which implicitly sets up the hero myth that later crumbles. However, it doesn't explicitly frame this as foreshadowing or note that the ideal will later be challenged/crumbled, which is a minor gap given the rubric's emphasis on the thematic weight being critical. 7) Captures father-son bonding as character development clearly. The output is well-structured and thorough. The only slight weakness is that it doesn't explicitly articulate the foreshadowing as setting up a hero myth that later crumbles — it hints at it but doesn't fully develop this critical thematic arc.",
+              "tokensUsed": {
+                "total": 917,
+                "prompt": 638,
+                "completion": 279,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"heading\\\":\\\"EXT. COASTLINE - DAY\\\",\\\"location\\\":\\\"COASTLINE\\\",\\\"time_of_day\\\":\\\"DAY\\\",\\\"int_ext\\\":\\\"EXT\\\",\\\"characters_present\\\":[\\\"Young Mariner\\\",\\\"Dad\\\"],\\\"narrative_beats\\\":[{\\\"beat_type\\\":\\\"flashback\\\",\\\"description\\\":\\\"A past-tense memory shows Young Mariner and his father sharing an idyllic fishing lesson in a sailboat near the shore. The golden light and laughter frame this as a formative, emotionally idealized moment.\\\",\\\"confidence\\\":1},{\\\"beat_type\\\":\\\"character_development\\\",\\\"description\\\":\\\"Dad teaches Young Mariner to cast, establishing the boy's early bond with the sea and with his father. Young Mariner's serious obedience when fetching a beer shows his childlike desire to help and earn approval.\\\",\\\"confidence\\\":0.93},{\\\"beat_type\\\":\\\"thematic_statement\\\",\\\"description\\\":\\\"Dad defines a hero as someone who is 'brave an true,' planting a moral ideal that likely shapes Mariner's later sense of courage and identity.\\\",\\\"confidence\\\":0.96}],\\\"tone_mood\\\":\\\"warm, nostalgic, sentimental, formative\\\",\\\"tone_shifts\\\":[]}\\n</Output>\\n<Rubric>\\nEvaluate the scene enrichment for a flashback scene from \\\"The Mariner.\\\"\\n\\nA young boy and his father fishing on a coastline. Key elements:\\n\\n1. Does it correctly identify the exterior coastline/ocean location?\\n2. Does it identify both Young Mariner and Dad?\\n3. Does it capture the warm, nostalgic, idyllic tone?\\n4. Does it identify the thematic statement (\\\"what's a hero\\\")?\\n5. Does it note this as a flashback/idealized memory?\\n6. Does it recognize foreshadowing (Dad's definition of heroism)?\\n7. Does it capture the father-son bonding as character development?\\n\\nScore strictly: the thematic weight of this scene is critical — it\\nestablishes the hero myth that later crumbles.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "8152ff04-b8c8-4ebe-a70f-78e517af5fc1",
+        "latencyMs": 45922,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\nBEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD\nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n==========",
+          "label": "prompts/scene-enrichment.txt: You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.\n\nReturn a JSON object with these fields:\n- heading: The scene heading in standard format (e.g., \"INT. OFFICE - DAY\"). Infer from context if not explicitly stated.\n- location: The location name (without INT/EXT and time of day)\n- time_of_day: e.g., \"DAY\", \"NIGHT\", \"DAWN\", \"CONTINUOUS\". Infer from context clues.\n- int_ext: One of \"INT\", \"EXT\", or \"INT/EXT\"\n- characters_present: Array of character names who appear or speak in this scene\n- narrative_beats: Array of objects, each with:\n  - beat_type: e.g., \"character_introduction\", \"revelation\", \"conflict\", \"comic_relief\", \"thematic_statement\", \"action\", \"foreshadowing\", \"character_development\"\n  - description: 1-2 sentence description of the beat\n  - confidence: float 0-1\n- tone_mood: Overall tone/mood of the scene (e.g., \"tense\", \"warm\", \"dark comedy\")\n- tone_shifts: Array of tone changes within the scene (e.g., [\"tense to comic relief\", \"comic relief to conflict\"])\n\nImportant:\n- Infer location and time from context if not given as a heading\n- Identify ALL characters who speak or are described, including those referred to by name\n- Narrative beats should capture key story moments, not just action descriptions\n- Be specific about tone — \"dark comedy\" is better than \"mixed\"\n- Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone\n- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift\n- Prefer concrete tonal shifts such as \"muzak undercuts brutality\" over generic phrasing such as \"action to dark comedy\"\n- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story\n\nReturn ONLY valid JSON. No explanations or markdown fences.\n\n==========\nSCENE EXCERPT:\n{{scene_text}}\n==========",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "64b3ac76047daea7c30812b14f4f06c2f54e48f62486ad6a83deed7843aef099",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/openai_responses_provider.py",
+          "label": "GPT-5.5 Pro"
+        },
+        "response": {
+          "output": "{\n  \"heading\": \"EXT. COASTLINE - DAY\",\n  \"location\": \"COASTLINE\",\n  \"time_of_day\": \"DAY\",\n  \"int_ext\": \"EXT\",\n  \"characters_present\": [\n    \"Young Mariner\",\n    \"Dad\"\n  ],\n  \"narrative_beats\": [\n    {\n      \"beat_type\": \"flashback\",\n      \"description\": \"A past-tense memory shows Young Mariner and his father sharing an idyllic fishing lesson in a sailboat near the shore. The golden light and laughter frame this as a formative, emotionally idealized moment.\",\n      \"confidence\": 1.0\n    },\n    {\n      \"beat_type\": \"character_development\",\n      \"description\": \"Dad teaches Young Mariner to cast, establishing the boy's early bond with the sea and with his father. Young Mariner's serious obedience when fetching a beer shows his childlike desire to help and earn approval.\",\n      \"confidence\": 0.93\n    },\n    {\n      \"beat_type\": \"thematic_statement\",\n      \"description\": \"Dad defines a hero as someone who is 'brave an true,' planting a moral ideal that likely shapes Mariner's later sense of courage and identity.\",\n      \"confidence\": 0.96\n    }\n  ],\n  \"tone_mood\": \"warm, nostalgic, sentimental, formative\",\n  \"tone_shifts\": []\n}",
+          "tokenUsage": {
+            "total": 1422,
+            "prompt": 607,
+            "completion": 815,
+            "completionDetails": {
+              "reasoning": 516
+            },
+            "numRequests": 1
+          },
+          "cost": 0.16491,
+          "latencyMs": 45922,
+          "cached": false,
+          "metadata": {
+            "provider": "openai",
+            "model": "gpt-5.5-pro",
+            "endpoint": "responses",
+            "response_id": "resp_04b5980374b026b20169ebfa0012d8819ca9011fa9ca9b1811",
+            "status": "completed"
+          }
+        },
+        "score": 0.91585,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-flashback.txt",
+            "golden_path": "golden/enrich-scenes-golden.json",
+            "scene_key": "flashback"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/scene_enrichment_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the scene enrichment for a flashback scene from \"The Mariner.\"\n\nA young boy and his father fishing on a coastline. Key elements:\n\n1. Does it correctly identify the exterior coastline/ocean location?\n2. Does it identify both Young Mariner and Dad?\n3. Does it capture the warm, nostalgic, idyllic tone?\n4. Does it identify the thematic statement (\"what's a hero\")?\n5. Does it note this as a flashback/idealized memory?\n6. Does it recognize foreshadowing (Dad's definition of heroism)?\n7. Does it capture the father-son bonding as character development?\n\nScore strictly: the thematic weight of this scene is critical — it\nestablishes the hero myth that later crumbles.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-flashback.txt",
+          "golden_path": "golden/enrich-scenes-golden.json",
+          "scene_key": "flashback"
+        },
+        "metadata": {
+          "provider": "openai",
+          "model": "gpt-5.5-pro",
+          "endpoint": "responses",
+          "response_id": "resp_04b5980374b026b20169ebfa0012d8819ca9011fa9ca9b1811",
+          "status": "completed",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 4,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 3742,
+        "completion": 4391,
+        "cached": 0,
+        "total": 8133,
+        "numRequests": 4,
+        "completionDetails": {
+          "reasoning": 2309,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 4631,
+          "prompt": 3439,
+          "completion": 1192,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 89780,
+      "evaluationDurationMs": 89780
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Scene enrichment — infer metadata from scene excerpts (The Mariner)",
+    "prompts": [
+      "file:///Users/cam/Documents/Projects/cine-forge/benchmarks/prompts/scene-enrichment.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-flash-lite-preview",
+        "label": "Gemini 3.1 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.4",
+        "label": "GPT-5.4",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-pro-preview",
+        "label": "Gemini 3.1 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "golden_path": "golden/enrich-scenes-golden.json",
+          "scene_key": "elevator"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/scene_enrichment_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the scene enrichment for an elevator scene from \"The Mariner.\"\n\nThe scene takes place inside an elevator in a building. Rose and Mariner\nare escaping after a violent rescue. Key elements:\n\n1. Does it correctly identify the interior location (elevator/building)?\n2. Does it identify both Rose and Mariner as present?\n3. Does it capture the dark comedy tone (skull fragment, muzak contrast)?\n4. Does it identify the character introduction beat (Mariner's costume description)?\n5. Does it note the AirTag revelation as a conflict/trust beat?\n6. Does it recognize the tonal juxtaposition (muzak vs violence)?\n7. Are narrative beats specific and grounded in the text?\n\nScore strictly: good enrichment captures subtext and tonal nuance, not just plot.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-flashback.txt",
+          "golden_path": "golden/enrich-scenes-golden.json",
+          "scene_key": "flashback"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/scene_enrichment_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the scene enrichment for a flashback scene from \"The Mariner.\"\n\nA young boy and his father fishing on a coastline. Key elements:\n\n1. Does it correctly identify the exterior coastline/ocean location?\n2. Does it identify both Young Mariner and Dad?\n3. Does it capture the warm, nostalgic, idyllic tone?\n4. Does it identify the thematic statement (\"what's a hero\")?\n5. Does it note this as a flashback/idealized memory?\n6. Does it recognize foreshadowing (Dad's definition of heroism)?\n7. Does it capture the father-son bonding as character development?\n\nScore strictly: the thematic weight of this scene is critical — it\nestablishes the hero myth that later crumbles.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/gpt55-scene-enrichment-2026-04-24.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-04-24T23:18:12.151Z",
+    "evaluationCreatedAt": "2026-04-24T23:16:42.295Z"
+  }
+}

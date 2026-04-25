@@ -281,7 +281,8 @@
           "163",
           "183",
           "185",
-          "187"
+          "187",
+          "189"
         ],
         "adrIds": [
           "ADR-003"
@@ -362,7 +363,8 @@
           "159",
           "160",
           "162",
-          "183"
+          "183",
+          "189"
         ],
         "adrIds": [
           "ADR-001",
@@ -1005,7 +1007,8 @@
           "184",
           "186",
           "187",
-          "188"
+          "188",
+          "189"
         ],
         "adrIds": [
           "ADR-001",
@@ -1492,7 +1495,9 @@
           "evidence": "`compromise-C2-qa-validation` does not justify deletion yet.",
           "last_reviewed": "2026-04-04"
         },
-        "storyIds": [],
+        "storyIds": [
+          "189"
+        ],
         "evalIds": [
           "compromise-C2-qa-validation"
         ],
@@ -1511,7 +1516,9 @@
             "source": "docs/evals/registry.yaml",
             "summary": ""
           },
-          "storyIds": [],
+          "storyIds": [
+            "189"
+          ],
           "evalIds": [
             "compromise-C2-qa-validation"
           ]
@@ -1538,7 +1545,8 @@
           "183",
           "186",
           "187",
-          "188"
+          "188",
+          "189"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1571,7 +1579,8 @@
             "183",
             "186",
             "187",
-            "188"
+            "188",
+            "189"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1596,7 +1605,8 @@
           "155",
           "161",
           "183",
-          "187"
+          "187",
+          "189"
         ],
         "evalIds": [
           "compromise-C4-two-tier-scenes",
@@ -1621,7 +1631,8 @@
             "155",
             "161",
             "183",
-            "187"
+            "187",
+            "189"
           ],
           "evalIds": [
             "full-script-throughput",
@@ -12047,6 +12058,70 @@
           "summary": "story-closed: `/mark-story-done 188` closed the story after confirming build and validation gates, acceptance criteria, eval classification, registry updates, and generated planning surfaces. Impact: the beat-grid candi…"
         }
       }
+    },
+    {
+      "id": "189",
+      "title": "GPT-5.5 Frontier Eval Refresh",
+      "path": "docs/stories/story-189-gpt-55-frontier-eval-refresh.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "dependsOn": [
+        "035"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "gpt-5.5",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "189",
+        "sourcePath": "docs/stories/story-189-gpt-55-frontier-eval-refresh.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-189-gpt-55-frontier-eval-refresh.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -12193,12 +12268,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.1 Fast Reasoning",
-        "measured": "2026-03-14",
+        "model": "GPT-5.5",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.858
+          "overall": 0.9496
         },
-        "note": "Passed 3/3 cheaply, but still trailed the verified leaders, especially on DAD depth."
+        "note": "New measured leader, effectively at the quality threshold, but misses latency and cost targets; not a value default over Sonnet 4.6."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -12221,14 +12296,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Passed 3/3 cheaply, but still trailed the verified leaders, especially on DAD depth.",
+        "whyNow": "New measured leader, effectively at the quality threshold, but misses latency and cost targets; not a value default over Sonnet 4.6.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-14",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Passed 3/3 cheaply, but still trailed the verified leaders, especially on DAD depth."
+          "summary": "New measured leader, effectively at the quality threshold, but misses latency and cost targets; not a value default over Sonnet 4.6."
         }
       }
     },
@@ -12516,12 +12591,12 @@
         }
       ],
       "latestScore": {
-        "model": "GPT-5.4 Mini",
-        "measured": "2026-03-18",
+        "model": "GPT-5.5 Pro",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.70775
+          "overall": 0.9769
         },
-        "note": "Model-wrong: still classifies the screenplay as a feature film despite estimating a 15-minute runtime. Faster than GPT-4.1 Mini, but well below the Gemini 3 Flash winner."
+        "note": "Quality leader, but more than 16x slower and 150x costlier than the production winner."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -12544,7 +12619,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Model-wrong: still classifies the screenplay as a feature film despite estimating a 15-minute runtime. Faster than GPT-4.1 Mini, but well below the Gemini 3 Flash winner.",
+        "whyNow": "Quality leader, but more than 16x slower and 150x costlier than the production winner.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -12578,12 +12653,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.1 Fast Reasoning",
-        "measured": "2026-03-14",
+        "model": "GPT-5.5",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.858
+          "overall": 0.964
         },
-        "note": ""
+        "note": "Strong pass, but below the Sonnet 4.6 target score and above the current cost target."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -12608,14 +12683,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "",
+        "whyNow": "Strong pass, but below the Sonnet 4.6 target score and above the current cost target.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-14",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": ""
+          "summary": "Strong pass, but below the Sonnet 4.6 target score and above the current cost target."
         }
       }
     },
@@ -12642,12 +12717,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.4 Mini",
-        "measured": "2026-03-18",
+        "model": "GPT-5.5 Pro",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.94
+          "overall": 0.925
         },
-        "note": "Meets the eval target with GPT-4.1-level quality at lower latency/cost. Still emits prop noise (e.g. uniform, bandolier, generic gun), so this is a strong candidate but not an automatic default flip."
+        "note": "Tied GPT-5.5 quality with much higher latency and cost."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -12673,14 +12748,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Meets the eval target with GPT-4.1-level quality at lower latency/cost. Still emits prop noise (e.g. uniform, bandolier, generic gun), so this is a strong candidate but not an automatic default flip.",
+        "whyNow": "Tied GPT-5.5 quality with much higher latency and cost.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-18",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Meets the eval target with GPT-4.1-level quality at lower latency/cost. Still emits prop noise (e.g. uniform, bandolier, generic gun), so this is a strong candidate but not an automatic default flip."
+          "summary": "Tied GPT-5.5 quality with much higher latency and cost."
         }
       }
     },
@@ -12867,12 +12942,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.1 Fast Reasoning",
-        "measured": "2026-03-14",
+        "model": "GPT-5.5",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.899
+          "overall": 0.9504
         },
-        "note": ""
+        "note": "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -12895,14 +12970,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "",
+        "whyNow": "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-14",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": ""
+          "summary": "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target."
         }
       }
     },
@@ -12926,12 +13001,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.4 Nano",
-        "measured": "2026-03-18",
+        "model": "GPT-5.5 Pro",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.8175
+          "overall": 0.88
         },
-        "note": "Passed the broken-Fountain cleanup, but failed prose-to-Fountain conversion by keeping dialogue in prose paragraphs instead of proper character cues."
+        "note": "Slightly above GPT-5.5 quality, but far outside current latency and cost budgets."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -12954,14 +13029,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Passed the broken-Fountain cleanup, but failed prose-to-Fountain conversion by keeping dialogue in prose paragraphs instead of proper character cues.",
+        "whyNow": "Slightly above GPT-5.5 quality, but far outside current latency and cost budgets.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-18",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Passed the broken-Fountain cleanup, but failed prose-to-Fountain conversion by keeping dialogue in prose paragraphs instead of proper character cues."
+          "summary": "Slightly above GPT-5.5 quality, but far outside current latency and cost budgets."
         }
       }
     },
@@ -13073,12 +13148,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.1 Fast Reasoning",
-        "measured": "2026-03-14",
+        "model": "GPT-5.5 Pro",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.874
+          "overall": 0.8621
         },
-        "note": ""
+        "note": "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -13101,14 +13176,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "",
+        "whyNow": "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-14",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": ""
+          "summary": "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets."
         }
       }
     },
@@ -13130,12 +13205,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.4 Mini",
-        "measured": "2026-03-18",
+        "model": "GPT-5.5 Pro",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.640625
+          "overall": 0.5982
         },
-        "note": "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene."
+        "note": "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default."
       },
       "declaredSpecRefs": [
         "spec:8"
@@ -13155,14 +13230,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene.",
+        "whyNow": "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-18",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene."
+          "summary": "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default."
         }
       }
     },
@@ -13281,12 +13356,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.1 Fast Reasoning",
-        "measured": "2026-03-14",
+        "model": "GPT-5.5 Pro",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.986
+          "overall": 0.9864
         },
-        "note": ""
+        "note": "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -13309,14 +13384,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "",
+        "whyNow": "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-14",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": ""
+          "summary": "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets."
         }
       }
     },
@@ -13498,12 +13573,12 @@
         }
       ],
       "latestScore": {
-        "model": "Sonnet 4.6",
-        "measured": "2026-04-12",
+        "model": "GPT-5.5",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.959
+          "overall": 0.9313
         },
-        "note": "Verified across two no-cache reruns after reinforcing prompt instructions to name tonal contradictions and flashback/memory framing explicitly. Latest verified run stayed above target on both fixtures."
+        "note": "Meets all targets, but remains below the latest Sonnet 4.6 scene-enrichment lane."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -13526,7 +13601,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Verified across two no-cache reruns after reinforcing prompt instructions to name tonal contradictions and flashback/memory framing explicitly. Latest verified run stayed above target on both fixtures.",
+        "whyNow": "Meets all targets, but remains below the latest Sonnet 4.6 scene-enrichment lane.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -13558,12 +13633,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.4 Mini",
-        "measured": "2026-03-18",
+        "model": "GPT-5.5",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.60835
+          "overall": 0.9059
         },
-        "note": "Model-wrong: collapsed the screenplay to 10 scenes by folding flashbacks into parent scenes. Fast, but not viable."
+        "note": "Passes the quality target but misses latency and cost budgets; GPT-5.2 remains the value leader."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -13586,14 +13661,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Model-wrong: collapsed the screenplay to 10 scenes by folding flashbacks into parent scenes. Fast, but not viable.",
+        "whyNow": "Passes the quality target but misses latency and cost budgets; GPT-5.2 remains the value leader.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-18",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Model-wrong: collapsed the screenplay to 10 scenes by folding flashbacks into parent scenes. Fast, but not viable."
+          "summary": "Passes the quality target but misses latency and cost budgets; GPT-5.2 remains the value leader."
         }
       }
     },
@@ -13617,12 +13692,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.1 Fast Reasoning",
-        "measured": "2026-03-14",
+        "model": "GPT-5.5 Pro",
+        "measured": "2026-04-24",
         "metrics": {
-          "overall": 0.955
+          "overall": 0.96
         },
-        "note": "Interesting value candidate: within 0.015 of the quality leader at a fraction of the cost."
+        "note": "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -13645,14 +13720,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Interesting value candidate: within 0.015 of the quality leader at a fraction of the cost.",
+        "whyNow": "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-03-14",
+          "date": "2026-04-24",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Interesting value candidate: within 0.015 of the quality leader at a fraction of the cost."
+          "summary": "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default."
         }
       }
     },

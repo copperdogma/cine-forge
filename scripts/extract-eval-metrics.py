@@ -83,6 +83,8 @@ def normalize_label(label: str) -> str:
 # (input_per_M, output_per_M) in USD
 PRICING: dict[str, tuple[float, float]] = {
     "gpt-5.4": (2.5, 15.0),
+    "gpt-5.5": (5.0, 30.0),
+    "gpt-5.5-pro": (30.0, 180.0),
     "gpt-5.4-mini": (0.75, 4.5),
     "gpt-5.4-nano": (0.20, 1.25),
     "claude-sonnet-4-6": (3.0, 15.0),
