@@ -30,6 +30,9 @@ from cine_forge.modules.visualization.storyboard_v1.prompting import (
     load_continuity_states,
     reference_images_for_shot,
 )
+from cine_forge.modules.visualization.storyboard_v1.reference_anchors import (
+    build_reference_anchor_lines,
+)
 from cine_forge.modules.visualization.storyboard_v1.support import (
     STYLE_PROMPTS,
     empty_cost,
@@ -73,6 +76,7 @@ def generate_storyboard_for_scene(
     retry_delay_seconds: float,
     grid_mode: str = "off",
     grid_max_panels: int = 8,
+    grid_reference_anchors: bool = False,
 ) -> tuple[Storyboard, dict[str, Any]]:
     frames: list[StoryboardFrame] = []
     total_cost = empty_cost(model=image_model)
@@ -118,6 +122,7 @@ def generate_storyboard_for_scene(
             retry_delay_seconds=retry_delay_seconds,
             grid_mode=grid_mode,
             grid_max_panels=grid_max_panels,
+            grid_reference_anchors=grid_reference_anchors,
         )
 
     for idx, shot in enumerate(plan.shots, start=1):
@@ -250,6 +255,7 @@ def _generate_grid_storyboard_for_scene(
     retry_delay_seconds: float,
     grid_mode: str,
     grid_max_panels: int,
+    grid_reference_anchors: bool,
 ) -> tuple[Storyboard, dict[str, Any]]:
     frames: list[StoryboardFrame] = []
     shot_chunks = _chunks(list(plan.shots), max(grid_max_panels, 1))
@@ -298,6 +304,17 @@ def _generate_grid_storyboard_for_scene(
             prompt_sources_by_shot.append(prompt_sources)
             reference_images_by_shot.append(reference_images)
 
+        reference_anchor_lines = (
+            build_reference_anchor_lines(
+                shots=shots,
+                character_bibles=character_bibles,
+                location_bible=location_bible,
+                character_identity_locks=character_identity_locks,
+                reference_images_by_shot=reference_images_by_shot,
+            )
+            if grid_reference_anchors
+            else None
+        )
         grid_prompt = build_grid_prompt(
             scene=scene,
             style=style,
@@ -306,6 +323,7 @@ def _generate_grid_storyboard_for_scene(
             panel_briefs=panel_briefs,
             shot_ids=[shot.shot_id for shot in shots],
             uses_template_reference=uses_template_reference,
+            reference_anchor_lines=reference_anchor_lines,
             ordered_story_beats=(
                 build_ordered_grid_beats(
                     scene=scene,
@@ -369,6 +387,11 @@ def _generate_grid_storyboard_for_scene(
                     prompt_sources_used=_dedupe(
                         [*prompt_sources, "storyboard_grid"]
                         + (["storyboard_grid_beats"] if uses_beat_router else [])
+                        + (
+                            ["storyboard_grid_reference_anchors"]
+                            if reference_anchor_lines
+                            else []
+                        )
                         + (["grid_template"] if uses_template_reference else [])
                     ),
                     visual_reference_images=reference_images,

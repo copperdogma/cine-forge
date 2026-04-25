@@ -123,6 +123,12 @@ def run_module(
         or runtime_params.get("grid_max_panels")
         or DEFAULT_GRID_MAX_PANELS
     )
+    grid_reference_anchors = _resolve_bool_param(
+        params=params,
+        runtime_params=runtime_params,
+        names=("grid_reference_anchors", "storyboard_grid_reference_anchors"),
+        default=False,
+    )
 
     look_and_feel_by_scene = scene_map(inputs.get("look_and_feel"))
     aspect_ratio_by_scene = resolve_aspect_ratio(
@@ -171,6 +177,7 @@ def run_module(
             retry_delay_seconds=retry_delay_seconds,
             grid_mode=grid_mode,
             grid_max_panels=grid_max_panels,
+            grid_reference_anchors=grid_reference_anchors,
         )
         storyboard_artifacts.append(
             {
@@ -205,6 +212,7 @@ def run_module(
                         "identity_model": identity_model,
                         "grid_mode": grid_mode,
                         "grid_max_panels": grid_max_panels,
+                        "grid_reference_anchors": grid_reference_anchors,
                     },
                 },
             }
@@ -263,6 +271,29 @@ def _resolve_grid_mode(
     if image_model == "mock":
         return "off"
     return DEFAULT_GRID_MODE
+
+
+def _resolve_bool_param(
+    *,
+    params: dict[str, Any],
+    runtime_params: dict[str, Any],
+    names: tuple[str, ...],
+    default: bool,
+) -> bool:
+    for name in names:
+        if name in params:
+            return _coerce_bool(params[name])
+        if name in runtime_params:
+            return _coerce_bool(runtime_params[name])
+    return default
+
+
+def _coerce_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+    return bool(value)
 
 
 def _update_track_manifest_with_storyboards(

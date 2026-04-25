@@ -441,6 +441,72 @@ def test_run_module_template_grid_generates_one_image_and_slices_frames(
 
 
 @pytest.mark.unit
+def test_run_module_template_grid_reference_anchors_are_runtime_selectable(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_storyboard_project(tmp_path, scene_count=1)
+    calls: list[dict[str, object]] = []
+
+    def fake_generate_image(
+        prompt: str,
+        entity_type: str = "character",
+        model: str = "gpt-image-1",
+        aspect_ratio: str | None = None,
+        quality: str = "auto",
+        reference_image_paths: list[str] | None = None,
+        size: str | None = None,
+    ) -> tuple[bytes, str]:
+        calls.append(
+            {
+                "prompt": prompt,
+                "model": model,
+                "reference_image_paths": list(reference_image_paths or []),
+                "size": size,
+            }
+        )
+        return _jpeg_bytes(str(size or "1536x1024")), model
+
+    monkeypatch.setattr(storyboard_generation, "generate_image", fake_generate_image)
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "identity_model": "mock",
+            "style": "clean_line",
+            "grid_mode": "template",
+            "grid_reference_anchors": True,
+        },
+        context={
+            "project_dir": str(seeded["project_dir"]),
+            "run_id": "storyboard-grid-reference-anchors",
+            "stage_id": "storyboards",
+        },
+    )
+
+    storyboard_artifact = next(
+        artifact for artifact in result["artifacts"] if artifact["artifact_type"] == "storyboard"
+    )
+    storyboard = Storyboard.model_validate(storyboard_artifact["data"])
+    prompt = str(calls[0]["prompt"])
+    reference_path_names = [Path(str(path)).name for path in calls[0]["reference_image_paths"]]
+
+    assert "Reference-image anchors:" in prompt
+    assert "MARA: use mara_ref.jpg" in prompt
+    assert "LAB: use lab_ref.jpg" in prompt
+    assert "Do not draw the reference card" in prompt
+    assert reference_path_names[0] == "grid_01_template.jpg"
+    assert "mara_ref.jpg" in reference_path_names
+    assert "lab_ref.jpg" in reference_path_names
+    assert storyboard.frames[0].prompt_sources_used[-3:] == [
+        "storyboard_grid",
+        "storyboard_grid_reference_anchors",
+        "grid_template",
+    ]
+    assert storyboard_artifact["metadata"]["annotations"]["grid_reference_anchors"] is True
+
+
+@pytest.mark.unit
 def test_run_module_beat_template_grid_adds_ordered_story_beats(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

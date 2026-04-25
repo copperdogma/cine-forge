@@ -54,3 +54,34 @@ def test_build_grid_prompt_compacts_long_beat_template_context() -> None:
     assert "Beat 9 of 9 / shot S9" in prompt
     assert "Panel 9 / shot S9:" in prompt
     assert "Do not add panel numbers" in prompt
+
+
+@pytest.mark.unit
+def test_build_grid_prompt_includes_reference_anchors_without_drawing_refs() -> None:
+    layout = StoryboardGridLayout(columns=2, rows=2, size="1536x1024", panel_count=2)
+    scene = SimpleNamespace(heading="INT. LAB - NIGHT")
+
+    prompt = build_grid_prompt(
+        scene=scene,
+        style="sketch",
+        style_instruction="Black-and-white production storyboard drawing.",
+        layout=layout,
+        panel_briefs=[
+            "MARA studies the console in the lab.",
+            "OWEN turns toward the monitor bank.",
+        ],
+        shot_ids=["S1", "S2"],
+        uses_template_reference=True,
+        reference_anchor_lines=[
+            (
+                "- MARA: use mara_ref.jpg as the canonical off-canvas character "
+                "reference for panels 1-2. Preserve face, hair, build, and wardrobe."
+            )
+        ],
+    )
+
+    assert len(prompt) <= GRID_PROMPT_MAX_CHARS
+    assert "Reference-image anchors:" in prompt
+    assert "mara_ref.jpg" in prompt
+    assert "do not draw the reference cards" in prompt
+    assert "Panel briefs:" in prompt

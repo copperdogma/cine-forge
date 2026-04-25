@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-25-01] — Measure storyboard reference anchors (Story 190)
+
+### Added
+- Added a non-default GPT Image 2 template-grid reference-anchor candidate that maps direct reference images to characters, locations, and storyboard panels without changing the shipped default.
+- Added Story 190 storyboard-quality runtime, promptfoo, decision, and eval-attempt artifacts for the bounded reference-conditioned comparison.
+
+### Changed
+- Changed storyboard grid prompting and artifact annotations to support optional reference-anchor guidance while preserving the existing storyboard artifact contract and grid slicing path.
+- Changed the storyboard eval registry and planning surfaces to record the reference-anchor rejection, including non-runtime-blocking model-quality misses and the abstract-reference fixture limitation.
+
 ## [2026-04-24-07] — Refresh GPT-5.5 text evals (Story 189)
 
 ### Added

@@ -133,6 +133,7 @@ def build_grid_prompt(
     panel_briefs: list[str],
     shot_ids: list[str],
     uses_template_reference: bool,
+    reference_anchor_lines: list[str] | None = None,
     ordered_story_beats: list[str] | None = None,
 ) -> str:
     template_line = (
@@ -178,6 +179,20 @@ def build_grid_prompt(
             "comic page with typography."
         ),
     ]
+    if reference_anchor_lines:
+        lines.extend(
+            [
+                "",
+                "Reference-image anchors:",
+                (
+                    "Attached reference images are canonical off-canvas design anchors. "
+                    "Use them to stabilize recurring identity and location design, but "
+                    "do not draw the reference cards, portraits, diagrams, or borders "
+                    "as objects inside the storyboard panels."
+                ),
+                *reference_anchor_lines,
+            ]
+        )
     beat_cap, panel_cap = _prompt_item_budgets(
         base_lines=lines,
         ordered_story_beats=ordered_story_beats or [],

@@ -87,6 +87,16 @@ def test_gpt_image_2_is_default_storyboard_quality_candidate() -> None:
         ]
         == "template"
     )
+    reference_anchors = support.CANDIDATE_SPECS[
+        "gpt_image_2_template_grid_reference_anchors"
+    ]
+    assert reference_anchors.image_model == "gpt-image-2"
+    assert reference_anchors.label == "GPT Image 2 Template Grid Reference Anchors"
+    assert reference_anchors.runtime_params == {
+        "storyboard_grid_mode": "template",
+        "storyboard_grid_max_panels": 8,
+        "storyboard_grid_reference_anchors": True,
+    }
     beat_grid = support.CANDIDATE_SPECS["gpt_image_2_beat_grid_storyboards"]
     assert beat_grid.image_model == "gpt-image-2"
     assert beat_grid.label == "GPT Image 2 Beat Grid Storyboards"

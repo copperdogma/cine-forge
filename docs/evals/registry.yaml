@@ -1803,6 +1803,7 @@ evals:
     story_refs:
       - "186"
       - "188"
+      - "190"
     category_refs:
       - spec:5
       - spec:6
@@ -2032,6 +2033,25 @@ evals:
       - date: 2026-04-24
         git_sha: "f0ca99a"
         note: "Fresh validation reran the promptfoo quality pass without regenerating the paid image runtime. The judge pass moved beat-grid upward to `overall=0.6838` and template-grid to `overall=0.6613`, but both remain below the `0.75` usefulness floor. The default decision is unchanged because beat-grid still regresses recurring identity and prop discipline even when the aggregate is slightly higher. Classification remains model-wrong/product-quality, non-runtime-blocking for Story 188, with no golden-wrong mismatch found."
+      - id: "006"
+        story: attempts/006-storyboard-generation-quality-reference-anchors.md
+        date: 2026-04-25
+        status: rejected
+        approach: "Add a non-default template-grid reference-anchor packet that maps direct reference images to named characters, locations, and panels in the grid prompt."
+        worker_model: "GPT-5"
+        worker_model_date: 2026-04-25
+        subject_model: "gpt-image-2"
+        score_before: 0.7
+        score_after: 0.685
+        latency_before: 84651
+        latency_after: 82554
+        cost_before: 0.273
+        cost_after: 0.276
+        result_file: benchmarks/results/storyboard-generation-quality-story-190-reference-anchor-subset-decision.json
+        note: "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identity_consistency=0.5` and `reference_fidelity=0.5`, while aggregate quality moved from `0.700` to `0.685`. Manual contact-sheet inspection showed the local code still transports references, but the fixture reference assets are abstract cards rather than realistic character/location anchors, and the generated grids still drift ARIA/NOAH identity. Classification: candidate rejected; default remains `gpt_image_2_template_grid_storyboards`; remaining misses are model-wrong/product-quality plus golden-wrong fixture limitation, non-runtime-blocking for Story 190."
+        retry_when:
+          - condition: realistic-reference-fixture
+            note: "Retry after replacing abstract reference cards with realistic user-like character/location reference images or after the image model's reference-adherence behavior changes."
 
   - id: runtime-media-validation
     name: Runtime Media Validation

@@ -802,7 +802,8 @@
           "180",
           "181",
           "186",
-          "188"
+          "188",
+          "190"
         ],
         "adrIds": [
           "ADR-002",
@@ -895,7 +896,8 @@
           "181",
           "184",
           "186",
-          "188"
+          "188",
+          "190"
         ],
         "adrIds": [
           "ADR-002",
@@ -1008,7 +1010,8 @@
           "186",
           "187",
           "188",
-          "189"
+          "189",
+          "190"
         ],
         "adrIds": [
           "ADR-001",
@@ -1556,18 +1559,21 @@
         ],
         "actionability": {
           "sourceKind": "eval",
-          "sourceId": "full-script-throughput",
+          "sourceId": "storyboard-generation-quality",
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
-          "posture": "no-trigger-recorded",
-          "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
-          "retryTriggerStatus": "none",
-          "retryWhen": [],
+          "posture": "wait-for-trigger",
+          "whyNow": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…",
+          "retryTriggerStatus": "waiting",
+          "retryWhen": [
+            "realistic-reference-fixture"
+          ],
           "lastRelevantAction": {
-            "date": "2026-04-24",
-            "sourceType": "eval-score",
+            "date": "2026-04-25",
+            "sourceType": "eval-attempt",
             "source": "docs/evals/registry.yaml",
-            "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
+            "sourceId": "006",
+            "summary": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…"
           },
           "storyIds": [
             "155",
@@ -12122,6 +12128,78 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "190",
+      "title": "Storyboard Identity and Reference Stability",
+      "path": "docs/stories/story-190-storyboard-identity-reference-stability.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:6.2",
+        "spec:6.3",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "186",
+        "188"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "eval-follow-up",
+        "gpt-image-2",
+        "identity-consistency",
+        "references",
+        "scene-generation",
+        "storyboards"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260425-0914",
+        "date": "2026-04-25",
+        "summary": "mark-story-done: marked Story 190 Done after `/validate` found no implementation gaps. Evidence: build and validation gates are checked; all tasks and acceptance criteria are checked; Story 190's eval mismatch classific…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "190",
+        "sourcePath": "docs/stories/story-190-storyboard-identity-reference-stability.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "mark-story-done: marked Story 190 Done after `/validate` found no implementation gaps. Evidence: build and validation gates are checked; all tasks and acceptance criteria are checked; Story 190's eval mismatch classific…",
+        "lastRelevantAction": {
+          "date": "2026-04-25",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-190-storyboard-identity-reference-stability.md",
+          "summary": "mark-story-done: marked Story 190 Done after `/validate` found no implementation gaps. Evidence: build and validation gates are checked; all tasks and acceptance criteria are checked; Story 190's eval mismatch classific…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -13746,7 +13824,8 @@
       ],
       "storyIds": [
         "186",
-        "188"
+        "188",
+        "190"
       ],
       "categoryRefs": [
         "spec:5",
@@ -13778,6 +13857,16 @@
           "retryWhen": [
             "new-approach"
           ]
+        },
+        {
+          "id": "006",
+          "date": "2026-04-25",
+          "approach": "Add a non-default template-grid reference-anchor packet that maps direct reference images to named characters, locations, and panels in the grid prompt.",
+          "note": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…",
+          "retryStatus": "",
+          "retryWhen": [
+            "realistic-reference-fixture"
+          ]
         }
       ],
       "latestScore": {
@@ -13796,7 +13885,8 @@
       ],
       "declaredStoryIds": [
         "186",
-        "188"
+        "188",
+        "190"
       ],
       "declaredCategoryRefs": [
         "spec:5",
@@ -13820,17 +13910,17 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "wait-for-trigger",
-        "whyNow": "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Beat-grid scored higher than the previous judge pass at `overall=0.6838`, but it still does not clear the `0.75` usefulness floor and still regresses the critical identity/prop dimensions (`identity_consistency=0.375`, `prop_discipline=0.5`). Runtime truth from the already-ge…",
+        "whyNow": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…",
         "retryTriggerStatus": "waiting",
         "retryWhen": [
-          "new-approach"
+          "realistic-reference-fixture"
         ],
         "lastRelevantAction": {
-          "date": "2026-04-23",
+          "date": "2026-04-25",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "005",
-          "summary": "Split storyboard quality reporting into story specificity, style consistency, identity consistency, reference fidelity, text cleanliness, prop discipline, and evidence dimensions."
+          "sourceId": "006",
+          "summary": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…"
         }
       }
     },
@@ -14235,7 +14325,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, but the export-fidelity continuation is now landed too, so the next move returns to fresh triage instead of keeping another story artificially in progress.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, and Story 190 now owns the next focused storyboard identity/reference-stability follow-up instead of leaving the lane at fresh triage.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -14478,13 +14568,14 @@
             "180",
             "181",
             "186",
-            "188"
+            "188",
+            "190"
           ],
-          "stories_since_audit": 8,
+          "stories_since_audit": 9,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
-          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, and Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack, and Story 190 keeps the next storyboard work focused on identity/reference stability under that same eval boundary. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
         }
       }
     }

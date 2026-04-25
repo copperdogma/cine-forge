@@ -133,6 +133,16 @@ CANDIDATE_SPECS: dict[str, CandidateSpec] = {
         label="GPT Image 2 Template Grid Storyboards",
         runtime_params={"storyboard_grid_mode": "template", "storyboard_grid_max_panels": 8},
     ),
+    "gpt_image_2_template_grid_reference_anchors": CandidateSpec(
+        image_model="gpt-image-2",
+        variant="gpt_image_2_template_grid_reference_anchors",
+        label="GPT Image 2 Template Grid Reference Anchors",
+        runtime_params={
+            "storyboard_grid_mode": "template",
+            "storyboard_grid_max_panels": 8,
+            "storyboard_grid_reference_anchors": True,
+        },
+    ),
     "gpt_image_2_beat_grid_storyboards": CandidateSpec(
         image_model="gpt-image-2",
         variant="gpt_image_2_beat_grid_storyboards",

@@ -59,3 +59,8 @@ parameters:
     required: false
     default: 8
     description: "Maximum shot panels per generated storyboard grid image."
+  grid_reference_anchors:
+    type: boolean
+    required: false
+    default: false
+    description: "When true, add direct reference-image-to-subject anchor guidance to storyboard grid prompts."
