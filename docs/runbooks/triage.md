@@ -1,169 +1,82 @@
-# Triage
+# Triage Runbook
 
-## Eval Ladder Gate
+This is the operational companion to `/triage`. Use it for full-sweep
+methodology triage before treating stories as a flat backlog. The orchestrator
+starts from the Ideal/spec/state/graph frame, gathers neutral lane packets,
+shows the top three candidates, then chooses one yes-ready next action.
 
-For AI-capability work, identify the eval ladder before creating or prioritizing
-implementation backlog:
-
-- the root Ideal eval or full-path golden, or the explicit reason it is deferred
-- the parent eval or latest higher-level result that shows the current failure
-- the measured failure mode that makes decomposition necessary
-- the child eval, failure-classification attempt, ADR/spec update, or story that
-  advances the next unresolved ladder node
-
-Prefer rerunning a root/parent eval when new models, provider changes, code
-changes, scorer fixes, or changed constraints could collapse the current
-decomposition. Prefer a child eval or failure-classification attempt when the
-parent failure is still too vague to choose AI-only, multi-call AI, deterministic
-code, or hybrid implementation honestly.
-
-## Completion Sanity Gate
+## Gates
 
 Before accepting a "nothing ready", "maintenance only", or idle
-recommendation, prove that the repo is not hiding undecomposed product scope.
-Check the v1/MVP promise, input coverage, future/unplanned state lines, inbox
-items, and recent stories/evals. If those surfaces show missing user-facing
-capability, recommend creating, promoting, reshaping, or validating that work
-before routing to routine maintenance. Never equate "no ready story" with
-"feature-complete" without concrete evidence.
+recommendation, inspect the v1/MVP promise, input coverage, future/unplanned
+state lines, inbox items, UI-scout truth, and recent stories/evals. If those
+surfaces show missing user-facing capability, recommend creating, promoting,
+reshaping, or validating that work before routing to routine maintenance.
 
-## Context
+For AI-capability work, name the root/parent/child eval placement before
+recommending implementation work. Prefer a root or parent eval rerun when new
+models, provider changes, code changes, scorer fixes, or changed constraints
+could collapse the current decomposition.
 
-Use this runbook when you need a full methodology sweep to decide the highest-value next action across backlog, inbox, and eval/convergence work.
+## Triage Shape
 
-This is the operational companion to `/triage`.
+1. Read `docs/ideal.md`, `docs/spec.md`, `docs/methodology/state.yaml`,
+   `docs/methodology/graph.json`, `docs/build-map.md`, and `docs/ui-scout.md`.
+2. Start neutral lane packets when delegation is available:
+   - `/triage-stories`
+   - `/triage-inbox scan`
+   - `/triage-evals`
+   - `/triage-architecture scan`
+   - `/triage-health scan`
+3. In the main thread, run:
 
-## Prerequisites
+   ```bash
+   python scripts/triage_facts.py --json
+   ```
 
-- The leaf triage skills exist and are healthy:
-  - `/triage-stories`
-  - `/triage-inbox`
-  - `/triage-evals`
-- `/triage-architecture`
-- [docs/methodology/state.yaml](../methodology/state.yaml) exists
-- generated dashboards such as [docs/build-map.md](../build-map.md) are current
-- You know whether the invocation is full-sweep or scoped (`stories`, `inbox`, `evals`, `architecture`)
+   Use this as direct evidence for branch/dirty state, generated wrapper drift,
+   story/eval recommendations, inbox counts, architecture-audit cadence,
+   UI-scout status, codebase-improvement freshness, lane presence, and recent
+   churn. Keep it as a main-thread fact source, not as a substitute for lane
+   judgment. If it fails, report the blocker and continue with lower confidence.
+4. If delegation is unavailable, collect the same scoped lane packets
+   sequentially after the direct fact pass.
+5. Name 2-4 candidate unmet Ideal/spec/state gaps without picking the final
+   winner before lane packets report.
+6. Run completion sanity before accepting maintenance-only work.
+7. Run the eval-ladder gate for AI-capability gaps.
+8. Run the actionability gate for plausible winners: last meaningful action,
+   date, proof artifact, and what materially changed.
+9. Check existing stories, inbox items, evals, architecture audit state,
+   UI-scout state, health surfaces, and ADRs for candidate gaps.
+10. Add a short `Vs Ideal` read that distinguishes literal north-star distance
+   from current-tech progress. Remember CineForge's Ideal test: if using the
+   app feels like work, something is wrong.
+11. Build a visible top-three shortlist. Show the same contract for all three
+   candidates: Ideal/spec value, why now, action shape, validation/stop
+   condition, and rank rationale.
+12. Recommend one next action, restate its action shape, and state why it is the
+   right move now.
+13. End with the exact handoff:
+    `Reply yes to proceed with: {exact next command or concrete action}.`
 
-## Steps
+## Guardrails
 
-1. **[script] Decide routing mode**
-   - If the user passed `stories`, `inbox`, `evals`, or `architecture`, route
-     directly to the leaf skill and stop.
-   - If no scope was passed, continue with full-sweep mode.
-
-2. **[script] Read the shared frame**
-   - Open:
-     - `docs/ideal.md`
-     - `docs/methodology-ideal-spec-compromise.md`
-     - `docs/spec.md`
-     - `docs/methodology/state.yaml`
-     - `docs/methodology/graph.json`
-     - `docs/build-map.md`
-   - Prefer the compiled actionability surfaces in `graph.json` before
-     reconstructing retry posture or recency manually from story/eval prose.
-   - Optionally inspect recent `git log --oneline -20` for momentum context.
-   - Goal: identify the highest-leverage live gap before looking at the backlog.
-
-3. **[judgment] Name the primary gap**
-   - State the unmet Ideal promise or overscaffolded compromise
-   - Map it to the owning spec section(s)
-   - Map it to the owning methodology category, substrate, and phase
-   - Name 1-2 runner-up gaps
-   - Goal: decide what actually matters before looking for convenient work
-
-4. **[judgment] Run the why-now / actionability gate**
-   - Before recommending work under the primary gap, answer:
-     - what was the last meaningful action on this line?
-     - on what date did it happen?
-     - what artifact, story, eval, or recommendation proves that?
-     - what materially changed since then?
-   - A primary gap with no live trigger can stay primary, but it should not
-     automatically become the recommended action.
-
-5. **[script] Read decision constraints for that gap**
-   - Open the relevant ADRs / design docs
-   - If none apply, say so explicitly
-   - Goal: make sure the next move fits the chosen architecture
-
-6. **[script] Query existing work under that gap**
-   - Stories: `/triage-stories`
-   - Inbox: `/triage-inbox scan`
-   - Evals: `/triage-evals`
-   - Architecture: `/triage-architecture scan`
-   - UI product-truth freshness: always inspect `docs/methodology/state.yaml`
-     `ui_scout`; if the lane is overdue, the canonical scenario is still
-     `never`, or the latest report is marked `issues_found` / `recheck_due`,
-     inspect `docs/ui-scout.md` and the latest relevant report under
-     `docs/ui-scout/` before finalizing the recommendation
-   - Goal: find which existing artifacts already advance the chosen gap, especially active or recently advanced lines that should be continued, reopened, expanded, or consolidated before inventing a new shell
-   - Filter blocked stories with unmet unblock conditions and eval retries whose
-     triggers remain exhausted into health flags before ranking candidates
-
-7. **[judgment] Synthesize one next action**
-   - Prefer:
-     - continuing, reopening, expanding, or consolidating the strongest existing story line under the chosen gap
-     - promoting or reshaping the draft that best advances the chosen gap
-     - creating the missing story / ADR / spec update / eval if the gap has no home
-   - Do not silently outrank overdue UI-scout freshness with smaller unrelated
-     ready work unless the stronger line is genuinely not actionable yet
-   - Only fall back to smaller unrelated ready work when the larger gap is not actionable yet
-   - Story existence is packaging context and tie-breaker only; it should not outrank a more important live gap by itself
-   - A blocked line with an unmet unblock condition is not actionable even if it
-     is the most continuous recent work
-   - Good output: one recommended action, plus runner-ups, with an explicit reason the chosen gap won.
-
-## Boundaries
-
-### Always do
-
-- Keep full-sweep `/triage` read-only
-- Let leaf skills own their domain logic
-- End with one clear recommendation
-- Start from Ideal/spec/state gaps, not the backlog
-- Keep blocked stories with unmet unblock conditions and exhausted eval retry
-  triggers in health flags / deferrals instead of promoting them as the next move
-
-### Ask first
-
-- Before turning a full-sweep triage into implementation work
-- Before adding new triage domains beyond the current leaf set
-
-### Never do
-
-- Never duplicate leaf-skill logic in `/triage`
-- Never let full-sweep `/triage` modify inbox items or other files
-- Never return three equal-priority recommendations without choosing one
-- Never let "easy and ready" silently outrank "important and under-owned"
-- Never let continuity or recent commits override a recorded blocker or an
-  exhausted retry trigger
-
-## Troubleshooting
-
-- **Leaf recommendations conflict**
-  - Fix: go back to the named primary gap and prefer the recommendation that most directly advances it.
-
-- **A leaf skill is stale or missing**
-  - Fix: call out the gap instead of pretending the full sweep is complete.
-
-- **Generated dashboard is thin or stale**
-  - Fix: read `docs/methodology/state.yaml` directly, call out the freshness
-    problem, and downgrade confidence in convergence-based ranking.
-
-- **The only active-looking line is blocked**
-  - Fix: surface it as a health flag, restate the unmet unblock condition, and
-    choose a different actionable next move unless the user explicitly wants the
-    unblock path.
-
-## Lessons Learned
-
-- 2026-03-15 — `/triage` works best as an orchestrator. CineForge already had useful eval-triage logic; folding that into a monolith would have been a regression.
-- 2026-03-20 — Orchestration still has to be methodology-first. If triage
-  starts from stories or eval queues, the backlog begins prioritizing itself
-  instead of serving the Ideal/spec/state spine.
-- 2026-04-04 — Continuity is a positive bias only for actionable lines. A
-  blocked story or exhausted eval retry should stay visible as a health flag,
-  not become the default recommendation by process of elimination.
-- 2026-04-10 — The methodology graph should carry actionability, not just
-  priority. If triage cannot say what changed since the last meaningful
-  action, it should usually keep the line in context or health flags rather
-  than making it the default next move.
+- Do not let a smaller ready story outrank the chosen Ideal/spec/state gap just
+  because it is easier to start.
+- Do not create implementation backlog when a parent eval failure is still too
+  vague to classify.
+- Do not force exact wording from another repo when the local product surface
+  needs different examples or validation paths.
+- Do not pick a final winner before neutral lane evidence can surface stronger
+  domain-specific candidates.
+- Do not hide the lower-ranked top-three candidates; Cam may choose
+  recommendation 2 or 3.
+- Keep full-sweep triage read-only.
+- Do not recommend a new story for same-line progression or docs/test
+  codification unless the runtime seam or validation boundary materially
+  changed.
+- Do not ignore UI-scout freshness when the Ideal concern is product feel,
+  operator confidence, workflow obviousness, or "does this feel like work?"
+- Do not recommend work that fights a settled ADR, immutable-artifact boundary,
+  best-model baseline rule, or headless-operation requirement.

@@ -1,60 +1,37 @@
 ---
 name: triage
-description: Identify the highest-leverage Ideal/spec/state gap, run completion sanity and eval-ladder gates, then recommend the next action
+description: Orchestrate CineForge triage from Ideal/spec facts and neutral lane packets, then recommend the best next action
 user-invocable: true
 ---
 
-# /triage [stories|inbox|evals] [sub-arg]
+# /triage [stories|inbox|evals|architecture|health] [sub-arg]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current state phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with
+> `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`,
+> `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated
+> dashboards, and relevant decision records in `docs/decisions/` /
+> `docs/design/`. If this work touches a known constraint in `docs/spec.md`,
+> respect both its limitation type and current phase. If none apply, say so
+> explicitly.
 
-`/triage` is the proactive meta-skill. Its job is to choose the **most important live methodology gap** before looking for convenient work, then recommend the highest-leverage actionable move under current repo reality.
+`/triage` is the proactive meta-skill. It does not own the backlog, inbox, eval,
+architecture, UI-scout, or health logic itself. In full-sweep mode it starts
+from the Ideal/spec/state/graph, gathers neutral lane packets, shows the top
+three cross-domain candidates, then synthesizes one recommended next action
+under current repo reality.
 
-Important is not enough by itself. `/triage` must answer both:
+Important is not enough by itself. `/triage` must answer:
 
 - what gap matters most?
 - why is this the right thing to do now?
 - how close is the project to the Ideal on today's technology, not just
   against the literal north-star?
+- which top three cross-domain candidates are credible, and why did the final
+  recommendation beat the other top-three candidates?
 
-A primary gap can stay primary while still be the wrong recommended action if
-nothing materially changed since the last attempt, recommendation, or
-measurement pass.
-
-The required order is:
-
-1. **Ideal** — what major user promise or simplification opportunity is most visibly unmet?
-2. **Spec** — which active constraint or requirement expresses that gap?
-3. **Methodology state** — which category owns it, and is the correct move `climb`, `hold`, `converge`, or `unplanned`?
-4. **ADRs / design docs** — what decisions constrain the next move?
-5. **Existing work** — which stories, inbox items, or evals already advance that exact gap?
-
-Stories, inbox items, evals, and architecture audits are **not** the source of
-priority. They are candidate continuations of the priority established by
-Ideal/spec/state reasoning.
-
-Story existence is packaging context and a tie-breaker, not a primary value
-signal. When the same subsystem, validation boundary, and success surface are
-still live, prefer continuing, reopening, expanding, or consolidating the
-existing story line before creating or prioritizing a new shell. Before
-recommending a new story shell, challenge that choice against the last 2-4
-stories on the same problem line. If the delta is mostly same-line
-later-state progression, test/docs/truth-surface codification, or a
-container/input permutation with the same subsystem and operator-facing
-outcome, prefer continuing, reopening, expanding, or consolidating the
-existing line instead.
-
-Continuity bias never overrides blocked-state truth. A `Blocked` story with an
-unmet unblock condition is not an actionable continuation; surface it under
-Health Flags unless the user is explicitly asking how to unblock it or the
-unblock condition is now materially satisfied.
-
-Eval retry metadata works the same way: a `retry_when` entry is a dormant
-detector, not a standing recommendation. If the same trigger was already
-checked and nothing materially changed, treat that eval follow-on as exhausted
-and report it as a health flag / deferral, not the next move.
-
-Companion runbook: `docs/runbooks/triage.md`
+CineForge's Ideal test is product-facing: if using the app feels like work,
+something is wrong. Story/eval/tooling surfaces exist to move the project
+toward that Ideal, not to create backlog motion for its own sake.
 
 ## Routing
 
@@ -69,8 +46,11 @@ Companion runbook: `docs/runbooks/triage.md`
 | `/triage evals C3` | Delegate to `/triage-evals C3` |
 | `/triage architecture` | Delegate to `/triage-architecture scan` |
 | `/triage architecture methodology_tooling` | Delegate to `/triage-architecture scan methodology_tooling` |
+| `/triage health` | Delegate to `/triage-health scan` |
+| `/triage health scan` | Delegate to `/triage-health scan` |
 
-When a scope is provided, hand off completely to the leaf skill. Do **not** keep a second implementation here.
+When a scope is provided, hand off completely to the leaf skill. Do not
+maintain duplicate logic here.
 
 ## Leaf Skills
 
@@ -78,16 +58,39 @@ When a scope is provided, hand off completely to the leaf skill. Do **not** keep
 - `/triage-inbox` — inbox processing, plus read-only `scan` mode for orchestration
 - `/triage-evals` — eval health, compromise leverage, rerun candidates
 - `/triage-architecture` — architecture-audit cadence, drift signals, simplification routing
+- `/triage-health` — read-only freshness packet across UI-scout, codebase
+  improvement, eval/model/golden, methodology/tooling, architecture-audit, and
+  dependency/provider health
+- `/codebase-improvement-scout` — report-first codebase hygiene follow-up when
+  triage recommends it
+- `/discover-models` — provider/model freshness follow-up when triage recommends it
+
+When full-sweep `/triage` asks a leaf for input, request a compact lane packet
+instead of a final repo-wide decision. Each lane packet should provide up to
+three neutral candidates with:
+
+- candidate name
+- Ideal promise and spec refs
+- evidence and source files
+- why now
+- suggested action shape
+- whether it is story-worthy or too small
+- validation or stop condition
+- blockers, stale evidence, and reasons not to do it now
+
+The main `/triage` thread owns cross-domain ranking. Do not preselect one
+"largest gap" so narrowly that leaf lanes ignore stronger evidence in their own
+domains.
 
 ## Completion Sanity Gate
 
 Before accepting a "nothing ready", "maintenance only", or idle
 recommendation, prove that the repo is not hiding undecomposed product scope.
 Check the v1/MVP promise, input coverage, future/unplanned state lines, inbox
-items, and recent stories/evals. If those surfaces show missing user-facing
-capability, recommend creating, promoting, reshaping, or validating that work
-before routing to routine maintenance. Never equate "no ready story" with
-"feature-complete" without concrete evidence.
+items, UI-scout truth, and recent stories/evals. If those surfaces show missing
+user-facing capability, recommend creating, promoting, reshaping, or validating
+that work before routing to routine maintenance. Never equate "no ready story"
+with "feature-complete" without concrete evidence.
 
 ## Eval Ladder Gate
 
@@ -103,12 +106,12 @@ implementation backlog:
 Prefer rerunning a root/parent eval when new models, provider changes, code
 changes, scorer fixes, or changed constraints could collapse the current
 decomposition. Prefer a child eval or failure-classification attempt when the
-parent failure is still too vague to choose AI-only, multi-call AI, deterministic
-code, or hybrid implementation honestly.
+parent failure is still too vague to choose AI-only, multi-call AI,
+deterministic code, or hybrid implementation honestly.
 
 ## Full-Sweep Mode
 
-When invoked with no scope, run a methodology-first orchestration pass:
+When invoked with no scope:
 
 1. **Read the shared frame**
    - `docs/ideal.md`
@@ -122,176 +125,180 @@ When invoked with no scope, run a methodology-first orchestration pass:
      `graph["evals"][*]["actionability"]` before reconstructing retry posture
      or recency manually from story/eval prose.
    - `docs/build-map.md`
+   - `docs/ui-scout.md` and `state.ui_scout` when UI polish, obviousness, or
+     workflow truth could be a candidate
+   - relevant ADRs under `docs/decisions/` / `docs/design/`
    - recent `git log --oneline -20`
-   - Goal: identify the biggest live gap or simplification opportunity before reading stories as a backlog.
+   - Goal: identify a broad candidate set of live gaps and simplification
+     opportunities before reading stories as a backlog, without choosing the
+     final winner yet.
 
-2. **Name the primary gap**
-   - State the unmet Ideal promise or overscaffolded compromise in plain language
-   - Map it to the owning spec section(s)
-   - Map it to the owning methodology category
-   - State why this gap wins right now:
-     - missing or partial substrate
-     - highest-value `climb`
-     - credible `converge`
-     - urgent trust break
-     - simplification leverage
-   - Also name 1-2 runner-up gaps
+2. **Start neutral lane evidence, then run the fact collector directly**
+   - If the environment and user instructions allow subagents or delegation,
+     immediately launch scoped lane packet requests after reading the shared
+     frame. Keep packets neutral: ask each lane for its best candidates from
+     the broad Ideal/spec/state/graph context, not for a final repo-wide pick
+     and not for confirmation of one preselected gap.
+   - Ask these lanes for packets:
+     - `/triage-stories`
+     - `/triage-inbox scan`
+     - `/triage-evals`
+     - `/triage-architecture scan`
+     - `/triage-health scan`
+   - In the main thread, while lane packets are running, run:
 
-3. **Run the why-now / actionability gate**
-   - Before recommending work under the primary gap, answer:
-     - what was the last meaningful action on this line?
-     - on what date did it happen?
-     - what artifact, story, eval, or recommendation proves that?
-     - what materially changed since then?
-   - If the gap has no live trigger and no genuinely new question, keep it as
-     the primary gap or a health flag, but do not recommend repeating that
-     line just because it is still important.
+     ```bash
+     python scripts/triage_facts.py --json
+     ```
 
-4. **Apply phase-pressure defaults**
-   Phase is not tie-break metadata. It creates default pressure to keep moving
-   the repo toward the Ideal:
+   - Use the facts for branch/dirty state, generated wrapper drift,
+     story/eval recommendations, inbox counts, architecture-audit cadence,
+     UI-scout status, codebase-improvement freshness, lane presence, and recent
+     churn.
+   - If the script fails, say so explicitly and continue from the underlying
+     docs with lower confidence. Do not pretend the fact pass happened.
+   - If delegation is unavailable, still run the direct fact collector here,
+     then query the same neutral lane packet contracts sequentially later.
+
+3. **Open candidate gaps without picking a winner yet**
+   - State 2-4 plausible unmet Ideal promises or overscaffolded compromises in
+     plain language.
+   - Map each to owning spec section(s), methodology category, phase,
+     UI-scout/architecture health if relevant, and known evidence.
+   - Do not pick the final winner before lane packets report.
+
+4. **Run the why-now / actionability gate for plausible winners**
+   - What was the last meaningful action on this line?
+   - On what date did it happen?
+   - What artifact, story, eval, report, or recommendation proves that?
+   - What materially changed since then?
+   - Treat blocked stories whose unblock condition is still unmet, exhausted
+     eval retries, and stale "do this next" notes as health flags unless new
+     evidence makes them actionable.
+
+5. **Apply phase-pressure defaults**
    - `converge` -> prefer the smallest honest deletion, simplification, or
      residue-removal move that could retire the compromise or prove why it
-     cannot be retired yet
+     cannot be retired yet.
    - `climb` -> prefer the strongest bounded improvement move that could
-     advance the line toward `hold` (quality, proof widening, substrate
-     hardening, or a more capable approach)
+     advance the line toward `hold`.
    - `hold` -> prefer thinner / cheaper / faster / simpler / easier-to-operate
-     work when no stronger actionable `converge` or `climb` line wins
+     work when no stronger actionable `converge` or `climb` line wins.
 
    A line does not need a new bug report, inbox item, or external prompt to be
    actionable. If phase plus current repo evidence suggests a bounded,
    falsifiable next move, that is enough unless recent evidence says the same
    move is currently blocked, exhausted, or not worth repeating.
 
-5. **Read decision constraints for that gap**
-   - Open the relevant ADRs / design docs for the chosen gap
-   - If none apply, say so explicitly
-   - Goal: avoid picking a next action that fights a settled architecture decision
+6. **Read decision and architecture constraints for plausible winners**
+   - Open relevant ADRs, design docs, and architecture-audit state.
+   - If none apply, say so explicitly.
+   - Avoid picking a next action that fights a settled architecture decision,
+     immutable artifact rule, best-model baseline rule, or headless-operation
+     requirement.
 
-6. **Query the existing work under that gap**
-   - Stories: `/triage-stories`
-   - Inbox: `/triage-inbox scan`
-   - Evals: `/triage-evals`
-   - Architecture: `/triage-architecture scan`
-   - UI product-truth freshness: always inspect `state.ui_scout`; if the lane
-     is overdue, the canonical scenario is still `never`, or the latest report
-     is marked `issues_found` / `recheck_due`, inspect `docs/ui-scout.md` and
-     the latest relevant report in `docs/ui-scout/` before deciding whether the
-     right next action is a fresh scout run or the follow-up story line
-   - But interpret each leaf through one question:
-     - what already exists that advances the chosen gap?
-   - Do **not** let a smaller ready story outrank the chosen gap just because it is easier to start
-   - Do **not** let a blocked story or an exhausted eval retry masquerade as
-     actionable just because it is the most continuous existing line
+7. **Collect lane packets**
+   - If packets were launched earlier, collect their reports here.
+   - If delegation was unavailable, run the same scoped contracts sequentially.
+   - Keep `scripts/triage_facts.py` as a direct main-thread fact source, not a
+     delegated lane and not a substitute for lane judgment.
 
-7. **Calibrate against the Ideal**
-   - Add one short section that answers "how are we doing vs the Ideal?"
-   - Keep this grounded in current project evidence, not vibes
-   - Distinguish:
-     - literal north-star distance
-     - current-tech progress
-   - Keep it compact and decision-useful:
-     - where the project is already strong
-     - where the biggest remaining gap still blocks a stronger "close to the
-       Ideal" claim
-     - whether the line of travel is improving, stalled, or blocked
+8. **Calibrate against the Ideal**
+   - Add one short `Vs Ideal` section.
+   - Distinguish literal north-star distance from current-tech progress.
+   - Ground the answer in current evidence: what is already strong, what still
+     makes the app feel like work, and whether the line of travel is improving,
+     mixed, stalled, or blocked.
 
-8. **Choose one next action**
-   Only rank actionable candidates here. Blocked stories with unmet unblock
-   conditions and eval retries whose triggers remain exhausted belong under
-   `Health Flags`, not `Recommended Action`.
-   Prefer this order:
-   - continue, reopen, expand, or consolidate an in-flight or recently advanced story that directly advances the chosen gap
-   - promote or reshape an existing draft story that is the clearest continuation of the chosen gap
-   - before recommending `create the missing story / ADR / spec update / eval`,
-     challenge that choice against the last 2-4 stories on the same problem
-     line; if the subsystem, validation boundary, and success surface are still
-     materially the same, prefer continuing, reopening, expanding, or
-     consolidating the existing line instead
-   - create the missing story / ADR / spec update / eval if the gap has no proper home yet
-   - do not silently outrank overdue UI-scout freshness with smaller unrelated
-     ready work unless the stronger line is genuinely not actionable yet
-   - only fall back to a smaller unrelated ready story if the larger gap is genuinely not actionable yet, and explain why
+9. **Build the top-three shortlist**
+   Merge lane candidates into the top three cross-domain recommendations. Each
+   item must include:
+   - recommendation
+   - Ideal/spec value
+   - why now
+   - action shape
+   - validation or stop condition
+   - why it ranked above or below the other two
 
-   Choose among those options with the strongest combined signal across:
-   - movement toward the Ideal
-   - real problem pressure
-   - phase pressure (`converge` > actionable `climb` > actionable `hold`,
-     unless blocker or recency evidence says otherwise)
-   - blocking power / dependency leverage
-   - simplification leverage
-   - continuity from active unresolved work lines
+   Do not hide the other top-three candidates. Cam may choose recommendation 2
+   or 3 when human context changes the call.
 
-   `No-op` is the last resort, not the default safe answer. It is only honest
-   when every plausible phase-aligned move is blocked by missing external
-   capability, was just retried on the same premise without a new trigger, or
-   lacks a bounded falsifiable next step.
+10. **Synthesize one cross-domain recommendation**
+   Rank the problem first, then choose the vehicle that best advances it
+   (continue an active story, expand/reopen a story, create a story, run an
+   eval, do architecture work, run UI scout, or no-op).
 
-9. **Return a short report**
+   Before recommending `create a story`, challenge that choice against the last
+   2-4 stories on the same problem line. If the delta is mostly same-line
+   progression, test/docs/truth-surface codification, or an input/container
+   permutation with the same subsystem and operator-facing outcome, prefer
+   `continue`, `expand`, `reopen`, or `consolidate` instead. Do not fragment
+   work into tiny story shells that barely advance the app.
+
+11. **Return a short report**
 
 ```markdown
 ## Triage
 
-### Primary Gap
-- {Ideal promise or simplification opportunity}
-- Spec: {spec refs}
-- State: {category + substrate + phase}
+### Candidate Gaps
+- {candidate gap + spec/category/phase}
+- {candidate gap + spec/category/phase}
 
 ### Actionability
 - Last relevant action: {date + story/eval/artifact}
-- Why now: {materially new trigger or "none"}
-- If "none": {why the primary gap is not the recommended action today}
+- Why now: {materially new trigger or phase/evidence pressure}
+- Health flags: {blocked/exhausted/stale lines or none}
 
 ### Vs Ideal
 - Literal north-star: {how far the project still is from the true Ideal}
 - Current-tech read: {how close the project is to a strong present-day version of the Ideal}
-- Direction: {getting closer | mixed | stalled | blocked} — {why}
+- Direction: {getting closer | mixed | stalled | blocked} - {why}
 
-### Recommended Action
+### Top Three
+1. {recommendation}
+   - Ideal/spec value: {refs + value}
+   - Why now: {trigger}
+   - Action shape: {continue story | expand story | create story | eval | audit | scout | no-op}
+   - Stop condition: {validation or proof}
+   - Rank rationale: {why this ranks above or below the other top-three candidates}
+2. {recommendation}
+   - Ideal/spec value: {refs + value}
+   - Why now: {trigger}
+   - Action shape: {continue story | expand story | create story | eval | audit | scout | no-op}
+   - Stop condition: {validation or proof}
+   - Rank rationale: {why this ranks above or below the other top-three candidates}
+3. {recommendation}
+   - Ideal/spec value: {refs + value}
+   - Why now: {trigger}
+   - Action shape: {continue story | expand story | create story | eval | audit | scout | no-op}
+   - Stop condition: {validation or proof}
+   - Rank rationale: {why this ranks above or below the other top-three candidates}
+
+### Final Recommendation
 - {one next action}
+- Action shape: {continue story | expand story | create story | eval | audit | scout | no-op}
 
 ### Why
 - {2-3 strongest reasons}
 
-### Runner-Ups
-- {alternate action}
-- {alternate action}
-
-### Domain Notes
-- Stories: {which stories do or do not advance the chosen gap}
-- Inbox: {which inbox items do or do not map to the chosen gap}
-- Evals: {which evals matter for the chosen gap, or why eval work is not the move}
-- Architecture: {which audit domains matter, or why architecture work is not the move}
-
-### Health Flags
-- {blocked story with unmet unblock condition, exhausted eval retry, or "none"}
+### Handoff
+Reply yes to proceed with: {exact next command or concrete action}.
 ```
 
 ## Guardrails
 
-- Scoped invocations delegate — no duplicate logic here
-- Full-sweep mode is read-only
-- Do not let `/triage` absorb leaf-skill implementation detail
-- Always converge to one recommendation
-- Always include a short `Vs Ideal` read in full-sweep mode
-- Never start from "what stories are ready?" Start from "what gap matters most?"
-- If the top gap has no story yet, recommend creating or promoting the right artifact instead of silently skipping it
-- Do not let inbox novelty, eval staleness, or small ready work outrank a larger live gap without an explicit explanation
-- Do not recommend a new story for same-line later-state progression,
-  tests/docs/truth-surface codification, or input/container permutations on an
-  already-supported behavior class unless the runtime seam or validation
-  boundary materially changed
-- Never recommend a blocked line just because continuity or recent commits make
-  it feel active; if the unblock condition is unmet, keep it in `Health Flags`
-- Never treat a previously consumed `retry_when` condition as fresh evidence
-  without a materially new trigger
-- Never recommend repeating a line just because it is still the biggest open
-  gap; cite the last attempt and the current why-now trigger explicitly
-- Do not treat lack of a fresh external trigger as sufficient reason for
-  `no-op` when a bounded phase-aligned improvement move still exists
-- Prefer recommending the best next attempt, simplification, or new story shell
-  over `no-op` unless the repo is genuinely out of actionable phase-aligned
-  moves
-- `Converge` means "try to delete or collapse residue," not "wait until
-  something else happens."
+- Scoped invocations delegate; do not duplicate leaf-skill logic here.
+- Full-sweep mode is read-only.
+- Always include a short `Vs Ideal` read.
+- Surface the top three recommendations before the final recommendation.
+- Start from Ideal/spec/state gaps, not from "what stories are ready?"
+- Do not pick the final winner before neutral lane evidence can surface
+  stronger domain-specific candidates.
+- Do not hide the lower-ranked top-three candidates.
+- Do not recommend a blocked line while the unblock condition is unmet.
+- Do not treat an exhausted `retry_when` condition as fresh evidence.
+- Do not recommend a new story for same-line progression, docs/test
+  codification, or input/container permutations unless the runtime seam or
+  validation boundary materially changed.
+- Do not recommend "no action" unless every plausible phase-aligned move is
+  blocked, exhausted, or lacks a bounded falsifiable next step.

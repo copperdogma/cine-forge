@@ -1,6 +1,6 @@
 ---
 name: loop-verify
-description: Run a bounded parallel verification-and-fix loop across a file set, diff slice, or work queue using subagents in repeated full rounds. Use when the user explicitly wants delegation, subagents, or parallel review/fix work, especially for requests like checking many files, sharded audits, or repeated sweeps where any real fix should trigger another full pass until an entire round finds no more issues.
+description: Run a bounded parallel verification-and-fix loop across a file set, diff slice, or work queue using subagents in repeated full rounds. Use when the user explicitly wants delegation, subagents, or parallel review/fix work, especially for requests like checking many files, sharded audits, or repeated sweeps where material fixes should trigger another full pass until a complete round finds no material issues.
 user-invocable: true
 ---
 
@@ -26,9 +26,47 @@ Use this to orchestrate repeated parallel verification across a bounded scope.
   changed underneath them.
 - Default to fix-capable workers. Only fall back to find-only workers if shared
   write surfaces make delegated edits unsafe.
-- Treat a round as clean only when every worker returns `RESULT: no-issue` and
-  the main agent did not apply any substantiated fix after reviewing worker
-  output.
+- Treat a round as clean when every worker returns `RESULT: no-issue`, or when
+  the only fixes made were clearly minor/local and passed a targeted check.
+- Reset the full loop for material fixes: semantic changes, executable changes,
+  contract/API changes, generated-surface changes that could affect other
+  shards, or any fix whose secondary effects are not obviously local.
+- Do not chase nits indefinitely. A loop is for catching material secondary
+  effects, not for perfecting every typo, whitespace mark, or phrasing
+  preference.
+- Do not impose a fixed round cap. If each round keeps finding solid material
+  issues, keep running fresh full rounds until a full round is clean, blocked,
+  or clearly non-convergent.
+
+## Materiality Gate
+
+Before starting the first round, define what counts as a material finding for
+this task. Use these defaults unless the user gives a stricter threshold.
+
+Material findings:
+
+- executable behavior, tests, scripts, generated outputs, or build/validation
+  behavior changed
+- prompt, skill, API, schema, output-shape, or cross-file contract changed
+- a fix may affect another shard's correctness or interpretation
+- a user-visible bug, data-loss risk, security risk, or validation blocker was
+  found
+- the change invalidates previous evidence gathered in the round
+
+Minor findings:
+
+- typo, grammar, whitespace, line wrapping, or formatting cleanup
+- wording clarity that does not change the contract, ranking, or expected
+  behavior
+- strictly local documentation cleanup with no generated or cross-file effect
+- already-equivalent code style cleanup that local checks cover
+
+Minor findings may be fixed, but they do not make the round fail by themselves.
+Use a targeted check for the touched shard, then continue to final validation.
+If a worker finds one minor issue, or a small bounded set of minor issues, that
+usually should not trigger another full round. If a worker finds many minor
+issues, it should fix only the obvious bounded set or report the pattern. Do
+not start another full round just to hunt for more minor issues.
 
 ## Round Protocol
 
@@ -48,8 +86,10 @@ Use this to orchestrate repeated parallel verification across a bounded scope.
    - Use `spawn_agent` with worker agents for fix-capable lanes.
    - Tell each worker it is not alone in the codebase, it must not revert
      others' edits, and it owns only its assigned shard.
-   - Instruct each worker to fix real local issues directly and otherwise
-     return `RESULT: no-issue`.
+   - Instruct each worker to focus on material issues, fix bounded minor issues
+     only when they are obvious, and otherwise return `RESULT: no-issue`.
+   - Tell workers not to broaden into nit-hunting or style cleanup outside the
+     task's materiality gate.
 5. Wait for round results and classify them.
    - `RESULT: fixed` means the worker made a real corrective change, or it
      surfaced a real issue that the main agent then fixed before the round
@@ -61,10 +101,19 @@ Use this to orchestrate repeated parallel verification across a bounded scope.
    - If any shard is `RESULT: blocked` and the blocker is still unresolved at
      the end of the round, the round is blocked even if other shards returned
      `RESULT: fixed`.
-   - If any shard is `RESULT: fixed`, rerun the entire round across the full
+   - For every `RESULT: fixed`, classify the change as material or minor.
+   - If any shard made a material fix, rerun the entire round across the full
      original scope.
-   - If the main agent had to land a real fix because of a worker finding, that
-     also resets the loop.
+   - If the main agent had to land a material fix because of a worker finding,
+     that also resets the loop.
+   - Minor fixes do not automatically reset the loop. Accept them only when the
+     secondary effect is obviously confined to that shard and a targeted check
+     passes.
+   - If a round contains only minor fixes, do not launch another full round
+     unless those minor fixes exposed a broader material pattern.
+   - Do not stop just because the loop has run many rounds. Ten rounds is
+     acceptable if each round keeps finding solid material issues and the work
+     is still converging.
    - If all shards are `RESULT: no-issue`, stop the loop and run final
      top-level validation.
    - If any shard is `RESULT: blocked`, stop and report the blocker unless the
@@ -99,25 +148,13 @@ You own only:
 - path/a
 - path/b
 
-Task: inspect your shard for real issues related to <goal>. Fix any issue that
-is local to your shard. Do not widen scope. You are not alone in the codebase;
-do not revert others' edits. End with exactly one of RESULT: fixed,
-RESULT: no-issue, or RESULT: blocked. List changed files and checks run.
-```
-
-## Examples
-
-```text
-/loop-verify Check these 40 markdown files for broken internal links and fix
-any local issues you find with parallel subagents. If any shard makes a real
-fix, rerun the full pass across all 40 files until one complete round comes
-back clean.
-```
-
-```text
-/loop-verify Review all changed TypeScript files for real type-safety or lint
-issues. Shard the work across subagents that can fix their own files, and keep
-looping over the full changed-file set until every shard reports no issue.
+Task: inspect your shard for material issues related to <goal>. Fix material
+issues that are local to your shard. You may fix obvious bounded typos or
+formatting issues, but do not hunt for nits or broaden into cleanup. Do not
+widen scope. You are not alone in the codebase; do not revert others' edits.
+End with exactly one of RESULT: fixed, RESULT: no-issue, or RESULT: blocked.
+List files inspected, changed files, checks run, and whether each fix was
+material or minor.
 ```
 
 ## Main-Agent Responsibilities
@@ -125,22 +162,36 @@ looping over the full changed-file set until every shard reports no issue.
 - Orchestrate the loop instead of redoing every shard review personally.
 - Review returned diffs briefly before accepting them.
 - Keep a round summary with shard, status, changed files, and any blocker.
+- Classify every fix as material or minor before deciding whether the loop
+  resets.
 - Run the narrowest honest validation after the final clean round.
 - Stop and report non-convergence if repeated rounds keep generating new issues
   because the scope is too coupled or workers are interfering indirectly.
+- Stop instead of burning time when repeated rounds are only producing nits.
+- Continue instead of stopping when repeated rounds are still producing solid
+  material fixes and the results are converging.
 
 ## Output Shape
 
 - scope
 - round count
 - per-round status summary
+- materiality decision for any `RESULT: fixed`
 - final state: converged, blocked, or non-convergent
 - checks run
 
 ## Guardrails
 
 - Do not use this skill as an excuse to spawn agents for trivial work.
-- Do not mark a round clean if any real fix occurred anywhere in that round.
+- Do not mark a round clean if any material fix occurred anywhere in that
+  round.
+- Do not reset the full loop for harmless typo/formatting fixes once their
+  local check has passed.
+- Do not ask workers to exhaustively polish prose, formatting, comments, or
+  style unless that is the user's explicit task.
+- Do not use a hard maximum round count. Stop for cleanliness, unresolved
+  blockers, non-convergence, or minor-only results; do not stop only because a
+  number of rounds has been reached.
 - Do not let workers fight over the same files.
 - Do not ignore secondary effects from earlier fixes; rerunning the full loop is
   the point.

@@ -15,6 +15,30 @@ Go through accumulated inbox items together with the user.
 - default: interactive processing mode
 - `scan`: read-only scan mode for `/triage` orchestration. Summarize the top inbox items and likely dispositions, but do not create artifacts or delete anything.
 
+## Lane Packet Mode
+
+When full-sweep `/triage` asks for `scan`, return up to three neutral inbox
+candidates or stop conditions. Do not choose the repo-wide winner and do not
+process items. For each candidate include the Ideal/spec value, evidence from
+`docs/inbox.md` and any obvious existing home, why now, suggested action shape,
+whether it is story-worthy or too small, validation/stop condition, blockers,
+and reasons not now.
+
+Use this scan-mode output shape for full-sweep `/triage`:
+
+```markdown
+## Inbox Triage Lane Packet
+
+### Lane Packet
+- <neutral inbox candidate + Ideal/spec value + evidence + why now + action shape + stop condition + blockers + reasons not now>
+
+### Stop Conditions
+- <why no inbox action is warranted now, if applicable>
+```
+
+Do not include a final repo-wide recommendation, artifact-creation handoff, or
+direct yes/no handoff in scan mode.
+
 ## Steps
 
 1. **Read the methodology frame first**
@@ -27,10 +51,10 @@ Go through accumulated inbox items together with the user.
    - Identify which active gap or category each inbox item plausibly advances
    - If an item does not advance any meaningful gap, say so plainly
 
-4. **Prioritize** — Evaluate the full inbox and present a prioritized recommendation:
-  - Read the current generated story index (`docs/stories.md`) and recent project state to understand what's in flight
+4. **Prioritize** — Evaluate the full inbox and present a prioritized disposition list:
+   - Read the current generated story index (`docs/stories.md`) and recent project state to understand what's in flight
    - Group items by theme if natural clusters exist (e.g., "these 3 are all chat UI bugs").
-   - Recommend a **top 3-5** to triage first, with a short "why" for each:
+   - Identify a **top 3-5** to triage first, with a short "why" for each:
      - What Ideal/spec/state gap does it address?
      - Does it advance the highest-leverage live gap or just a side issue?
      - Is it blocking current work?
@@ -40,8 +64,10 @@ Go through accumulated inbox items together with the user.
    - Flag items that are probably **defer/discard** candidates so the user can batch-dismiss them.
    - Let the user adjust the order or override before proceeding.
 
-5. **If running in `scan` mode, stop after the prioritized recommendation**
+5. **If running in `scan` mode, stop after the prioritized scan**
    - Return the top items, likely dispositions, and any health flags.
+   - Include a `### Lane Packet` section with neutral candidates for
+     full-sweep `/triage`.
    - Do not create artifacts.
    - Do not delete inbox entries.
 

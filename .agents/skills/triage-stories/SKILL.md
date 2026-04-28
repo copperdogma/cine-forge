@@ -10,6 +10,35 @@ user-invocable: true
 
 Evaluate the story backlog as a **continuation surface** for methodology gaps. The backlog does not define priority by itself.
 
+## Lane Packet Mode
+
+When full-sweep `/triage` asks for a lane packet, stay read-only and return up
+to three neutral story candidates or stop conditions. Do not choose the
+repo-wide winner. For each candidate include the Ideal/spec value, evidence
+from the generated story index and actual story file, why now, suggested action
+shape, whether it is a solid AI-sized story or too small, validation/stop
+condition, blockers, and reasons not now.
+
+Direct invocation may still return a ranked story recommendation. Lane-packet
+mode exists so the main `/triage` thread can compare story evidence against
+inbox, eval, architecture, UI-scout, and health evidence before making the
+final call.
+
+When responding to a full-sweep lane-packet request, use:
+
+```markdown
+## Story Triage Lane Packet
+
+### Lane Packet
+- <neutral story candidate + Ideal/spec value + evidence + why now + action shape + stop condition + blockers + reasons not now>
+
+### Stop Conditions
+- <why no story action is warranted now, if applicable>
+```
+
+Do not include a final repo-wide recommendation, kickoff, or direct yes/no
+handoff in lane-packet mode.
+
 ## Eval Ladder Gate
 
 For AI-capability work, identify the eval ladder before creating or prioritizing
@@ -100,7 +129,7 @@ code, or hybrid implementation honestly.
    `Blocked` + unmet unblock condition means `Readiness = not actionable` no
    matter how strong continuity or recent commit history looks.
 
-6. **Present recommendations** — Show the user a ranked top 3–5 with:
+6. **Present recommendations** — In direct mode, show the user a ranked top 3–5 with:
    - Story ID and title
    - Recommended action: continue / reopen / expand / consolidate / promote
    - Current status label
@@ -110,6 +139,9 @@ code, or hybrid implementation honestly.
    - Any caveats (e.g., "this is large — consider splitting first")
    - Exclude blocked stories with unmet unblock conditions from this ranked
      list; report them separately under concerns / health flags
+   - If running for full-sweep `/triage`, present this under `### Lane Packet`
+     as neutral candidates and stop conditions rather than a final repo-wide
+     recommendation.
 
 7. **Flag concerns** — Surface any issues noticed during the scan:
    - Stories marked Pending that are actually blocked (missing dependency not recorded)

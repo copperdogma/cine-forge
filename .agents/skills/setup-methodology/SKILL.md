@@ -1,157 +1,280 @@
 ---
 name: setup-methodology
-description: Canonical bootstrap for the CineForge methodology package — docs, checklist, eval/golden baseline, story wiring, and public skill surface
+description: Canonical installer/normalizer for the full Ideal-first methodology package after Ideal/spec intake exists, including upgraded triage and loop-verify bootstrap
 user-invocable: true
 ---
 
-# /setup-methodology [greenfield|retrofit|refresh]
+# /setup-methodology [greenfield|retrofit|adr-021-migration|refresh]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, generated graph surfaces under `docs/methodology/`, and relevant decision records in `docs/decisions/` / `docs/design/`. If none apply, say so explicitly.
+> Alignment check: Before choosing an approach, verify it aligns with
+> `docs/ideal.md`, `docs/methodology/state.yaml`,
+> `docs/methodology/graph.json`, and relevant decision records in
+> `docs/decisions/`. If this work touches a known compromise in `docs/spec.md`,
+> respect its limitation type and evolution path. If none apply, say so
+> explicitly.
 
-Use this skill as the **single public bootstrap entrypoint** for CineForge's
-methodology package. It replaces the old phased setup surface with one
-integrated flow.
+Use this skill as the **canonical full-package setup entrypoint** for the
+methodology package. It assumes project-specific `docs/ideal.md` and
+`docs/spec.md` already exist from `/init-project` or equivalent source-backed
+intake. It replaces the old phased setup surface with one integrated package
+installer/normalizer.
 
-Companion runbook: `docs/runbooks/setup-methodology.md`
+`/setup-methodology` does not discover a blank project's idea. For a greenfield
+folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
+
+## What This Skill Owns
+
+- `docs/ideal.md` / `docs/spec.md` / `docs/methodology/state.yaml` / `docs/methodology/graph.json` alignment after Ideal/spec intake
+- `docs/setup-checklist.md` working copy generation from the bundled template
+- eval harness bootstrap, day-zero golden workspace bootstrap, and root eval
+  ladder setup
+- story/decomposition bootstrap
+- upgraded triage bootstrap: `/triage`, lane-packet leaf skills,
+  `/triage-health`, sparse-safe triage facts, and wrapper sync
+- upgraded verification bootstrap: `/loop-verify` materiality/no-hard-cap
+  guidance with a minor-only stop rule
+- optional recurring methodology lanes already encoded in the package, such as
+  `architecture_audits` / `/triage-architecture` and `ui_scout` /
+  `docs/ui-scout*`
+- `AGENTS.md` methodology wiring and state/graph-first operating rules
+- cross-CLI skill sync via `scripts/sync-agent-skills.sh`
 
 Use the bundled checklist template at
 `.agents/skills/setup-methodology/templates/setup-checklist.md` and the mode
 reference at `.agents/skills/setup-methodology/references/modes.md`.
 
-## What This Skill Owns
-
-- `docs/ideal.md` / `docs/spec.md` / `docs/methodology/state.yaml` alignment
-- `docs/setup-checklist.md` working-copy generation from the bundled template
-- generated methodology surfaces (`docs/build-map.md`, `docs/stories.md`, `docs/methodology/graph.json`)
-- baseline golden + eval setup, including CineForge's sidequest benchmark lane
-- story / planning bootstrap guidance
-- optional recurring methodology lanes already encoded in the package, such as
-  `ui_scout` plus its history and runbook surfaces
-- `AGENTS.md` methodology wiring and canonical public surface
-- cross-CLI skill sync via `scripts/sync-agent-skills.sh`
-
-## Intake and Eval-Ladder Preflight
-
-For a blank or idea-first repo, do not let setup invent generic project meaning.
-First run `init-project` or equivalent source-backed intake to produce real
-`docs/ideal.md` and `docs/spec.md`, then run `/setup-methodology` to normalize
-the package around those authored truths. For AI-capability areas, preserve the
-root/parent/child eval ladder: root Ideal eval or explicit deferral, parent
-failure, measured failure mode, child eval when needed, and owning story only
-after the next ladder node is clear.
-
 ## Modes
 
 ### `greenfield`
 
-For a new repo or fresh skeleton. Install the full methodology package:
-ideal/spec/state/checklist, generated graph surfaces, eval + golden baseline,
-story bootstrap, and canonical skill surface.
+For a new project after `/init-project new-idea` or equivalent intake has
+produced reviewed `docs/ideal.md` and v0 `docs/spec.md`. Install and normalize
+the full methodology package around those authored truths: state/graph,
+checklist, eval + golden bootstrap, story bootstrap, and public skill surface.
 
 ### `retrofit`
 
-For an existing repo that needs the methodology package applied or re-applied.
-Read the repo first, preserve provenance, and normalize the package without
-rewriting valid project-specific content.
+For an existing project that needs the full methodology package applied or
+reapplied. Read the repo thoroughly, classify what already exists, preserve
+provenance, and bring the project onto the canonical package. If the project
+lacks a real Ideal/spec, route through `/init-project from-existing` first to
+reconstruct them from code/docs and user conversation.
+
+### `adr-021-migration`
+
+For repos that already use Ideal-first but still need the ADR-021 structure:
+dual ideal, category-aligned spec/state structure, execution constraints, and
+state/graph-centered planning.
 
 ### `refresh`
 
-For a repo that already has the package but has drifted. Refresh the checklist,
-AGENTS wiring, runbooks, eval/golden references, and public surface without
-redoing the entire methodology conversation.
+For repos that already have the package but need it re-synced: update AGENTS,
+runbook, checklist structure, eval/golden references, and public-surface docs
+without redoing the whole bootstrap conversation.
 
 ## Working Rules
 
-1. **Create or refresh the checklist first.** `docs/setup-checklist.md` is the
-   active working copy for setup/migration/refresh passes.
-2. **State-first operating rule:** planning and triage start from
-   `docs/methodology/state.yaml`, then compile the generated dashboard views.
+1. **Ideal/spec preflight is mandatory.** Before installing package surfaces,
+   verify `docs/ideal.md` and `docs/spec.md` exist and are project-specific.
+   They may be v0, but they must be real authored artifacts. If either is
+   missing, generic, only a placeholder, or not yet reviewed for cohesion
+   against raw intake, stop and route to `/init-project`; do not fabricate them
+   from the setup template.
+2. **Create or refresh the checklist first after preflight.** Copy the bundled template to
+   `docs/setup-checklist.md` if it is missing or if the existing file is still
+   an older one-off format. Work from that file and check items off as the run
+   proceeds.
+3. **State/graph-first operating rule:** planning and triage start from
+   `docs/methodology/state.yaml` and `docs/methodology/graph.json`.
    Implementation starts from the active story, but must read the relevant
-   `spec:N` category, state lane, and linked ADRs first.
-3. **Treat goldens and evals as baseline setup.** The methodology package is not
-   fully installed until the repo has both the golden workspace and the eval
-   registry / benchmark workflow.
-4. **Keep recurring work separate.** After the package exists, ongoing eval work
-   should flow through `/create-eval`, `/improve-eval`, `/align`, the local
-   `ui-scout` lane when `state.ui_scout` exists, and the normal
-   story/build/validate/close-out skills.
-5. **Canonical public surface only.** AGENTS/docs should advertise
-   `/setup-methodology` as the setup front door. Remove deprecated phased setup
-   skills instead of keeping hidden aliases around.
+   `spec:N` sections plus the matching state/graph slice first.
+4. **Treat goldens and evals as baseline setup.** Day-zero setup is incomplete
+   until the repo has the golden workspace, the eval harness/story, and a root
+   Ideal eval or explicit deferral. For AI-capability work, preserve the
+   initial decomposition ladder: root eval, known parent failures, child evals,
+   and the implementation stories that exist because those evals fail.
+5. **Keep recurring work separate.** The bootstrap skill installs the package
+   and preserves optional recurring lanes that are already part of it. Ongoing
+   work uses `/create-eval`, `/improve-eval`, `/align`,
+   `/triage-architecture`, the local `ui-scout` lane when `state.ui_scout`
+   exists, story/build skills, and normal ADR/story workflows.
+6. **Canonical public surface only.** AGENTS/docs should advertise
+   `/init-project` for greenfield idea intake and `/setup-methodology` for
+   full package setup. Do not reintroduce the old phased setup skills.
+7. **No-code repos get a sparse package, not a long forensic loop.** When a
+   repo has little or no code, install the methodology surfaces quickly around
+   the authored Ideal/spec, mark unavailable lanes as absent or deferred, and
+   avoid asking agents to infer runtime truth that cannot exist yet.
+8. **Shared skill surfaces should be copied exactly.** When this setup skill or
+   the shared triage/loop-verify package changes, upgrade one source copy,
+   perform a local propagation sweep, then copy the exact shared files to the
+   other repos and run wrapper checks. Do not independently rewrite the same
+   skill in each repo.
+
+## Greenfield / No-Code Fast Path
+
+For a repo with no meaningful code yet, the goal is to install a useful package
+without spending many rounds proving absent evidence. Do this:
+
+1. Verify `/init-project` or equivalent intake produced real `docs/ideal.md`
+   and `docs/spec.md`. If not, stop and route back to intake.
+2. Create the smallest coherent methodology state/graph that reflects the
+   authored Ideal/spec. Do not invent implementation history.
+3. Install the shared skill package exactly:
+   - `/triage` with main-thread Ideal/spec synthesis, top-three recommendations,
+     and one final yes-ready recommendation
+   - triage leaf skills in packet mode where their lanes are present
+   - `/triage-health` for sparse health/freshness packets
+   - `/loop-verify` with material-vs-minor stop rules and no hard round cap
+4. Add a sparse-safe triage fact collector when the repo has enough tooling to
+   support one. It should report absent/deferred/empty statuses directly rather
+   than treating missing reports, missing codebase scans, missing UI scouts, or
+   missing eval attempts as broken files.
+5. Mark optional lanes honestly:
+   - `architecture_audits`: deferred until there is architecture to audit
+   - `ui_scout`: absent or deferred until there is a real UI surface
+   - eval/golden lanes: present only when there is an actual initial eval or an
+     explicit deferral with a trigger
+   - codebase-improvement: absent until there is enough code for a scan
+6. Run cheap validation only: skill wrapper check, methodology compile/check,
+   direct fact JSON parse if a fact script exists, and whitespace/diff checks.
+   Do not run heavy evals, browser scouts, provider calls, or repeated
+   subagent verification just because evidence is absent by design.
+7. Before the first `/loop-verify`, run a local propagation sweep for shared
+   semantics across the main triage skill, leaves, health runbook, fact script,
+   tests, and wrappers. This prevents Echo-style long loops where the same fact
+   meaning is rediscovered one adjacent surface at a time.
 
 ## Steps
 
-1. **Determine mode from repo reality**
-   - Verify whether the repo is greenfield, retrofit, or refresh.
-   - If the user supplied a mode, confirm it matches the actual repo state.
+1. **Determine mode from repo reality** — new repo, retrofit, ADR-021 migration,
+   or refresh. If the user supplied a mode, verify it matches what the repo
+   actually looks like.
 
-2. **Read the canonical references**
+2. **Run the Ideal/spec preflight**:
+   - Confirm `docs/ideal.md` exists and is not a blank/template placeholder
+   - Confirm `docs/spec.md` exists and has real project-specific compromise or
+     constraint content
+   - For greenfield, confirm the artifacts came from `/init-project` or
+     equivalent idea intake
+   - Confirm the Ideal/spec were reviewed against raw intake for coverage,
+     contradictions, duplicate ideas, and late-arriving Ideal material
+   - If this fails, stop and tell the user to run `/init-project new-idea` or
+     `/init-project from-existing`
+
+3. **Read the canonical references**:
    - `docs/runbooks/setup-methodology.md`
    - `docs/methodology-ideal-spec-compromise.md`
-   - `docs/methodology/state.yaml`
-   - generated dashboards (`docs/build-map.md`, `docs/stories.md`) if present
+   - relevant ADRs in `docs/decisions/`
    - `AGENTS.md`
-   - relevant ADRs / design docs if the current drift involves workflow,
-     architecture, schema, or UX decisions
    - existing setup/eval/golden/story docs if present
 
-3. **Create or refresh `docs/setup-checklist.md`**
-   - Copy the bundled template if the file is missing or still reflects the old
-     one-off retrofit format
-   - Preserve historical context instead of deleting it blindly
-   - Check items off as the run proceeds
+4. **Create or refresh `docs/setup-checklist.md`** from the bundled template.
+   Replace placeholders and check items off as work is completed. Never treat
+   the checklist as optional.
 
-4. **Install or refresh the methodology package**
-   - Ensure `docs/ideal.md`, `docs/spec.md`, and `docs/methodology/state.yaml`
-     describe the same system
-   - Run `pnpm methodology:compile` after metadata changes so generated
-     dashboards stay current
-   - Add or refresh `docs/runbooks/setup-methodology.md`
-   - When `state.ui_scout` exists, keep `docs/ui-scout.md`,
-     `docs/runbooks/full-pipeline-ui-manual-walkthrough.md`, and the AGENTS
-     routing aligned with the package
-   - Update `AGENTS.md` so the repo teaches the current hierarchy and public
-     skill surface
+5. **Install or refresh the methodology package around the authored Ideal/spec**:
+   - `docs/ideal.md` — product + execution ideal, preserved/refined from intake
+   - `docs/spec.md` — category-aligned constraint source, preserved/refined from intake
+   - `docs/methodology/state.yaml` — central operational state
+   - `docs/methodology/graph.json` — compiled methodology joins
+   - `docs/stories.md` — generated story view
+   - `docs/runbooks/setup-methodology.md` — prose front door
+   - optional recurring lane docs/routing such as `docs/ui-scout.md`, its
+     companion runbook, and AGENTS/triage references when `state.ui_scout`
+     exists
+   - `AGENTS.md` — canonical public surface and operating rules
 
-5. **Bootstrap baseline evidence infrastructure**
-   - Ensure the golden workspace exists and matches current schemas
-   - Ensure `docs/evals/README.md`, `docs/evals/registry.yaml`, and
-     `docs/evals/attempt-template.md` are current
-   - If the repo uses promptfoo-style evals, ensure `docs/runbooks/promptfoo.md`
-     exists and matches the actual benchmark workspace layout
-   - Ensure `/create-eval` and `/improve-eval` cover new-eval creation vs
-     existing-eval iteration cleanly
+6. **Bootstrap baseline evidence infrastructure**:
+   - Ensure the golden workspace exists and matches project schemas
+   - Ensure the root Ideal eval/golden exists or is explicitly deferred with a
+     reason and a next trigger
+   - Ensure any day-zero child evals record their parent eval and measured
+     failure mode
+   - Ensure the eval package exists and is wired together: `docs/evals/README.md`,
+     `docs/evals/registry.yaml`, `docs/evals/attempt-template.md`,
+     `docs/runbooks/promptfoo.md` when promptfoo applies, and the linked
+     `tests/fixtures/golden/` workspace or repo-equivalent locations
+   - Ensure day-to-day eval creation and improvement paths are documented and
+     installed (`/create-eval`, `/improve-eval`)
 
-6. **Normalize the public setup surface**
-   - `/setup-methodology` is the advertised setup entrypoint
-   - deprecated phased setup skills are removed from the repo
+7. **Bootstrap story/planning infrastructure**:
+   - Ensure state/graph-backed story decomposition exists
+   - Ensure the story framework points back to methodology state/graph + spec,
+     not to a stale feature-map or legacy dashboard model
+
+8. **Install the upgraded triage and verification surface**:
+   - Install or refresh `/triage` as the orchestration skill: Ideal/spec first,
+     main-thread facts, neutral lane packets, top three recommendations, and
+     one final yes-ready recommendation.
+   - Install or refresh packet-mode triage leaves. In full `/triage`, leaves
+     return candidates and stop conditions; they do not emit lane-local final
+     recommendations, kickoff phrasing, or yes-ready handoffs.
+   - Install or refresh `/triage-health` only as a sparse health/freshness
+     packet lane. It reports architecture, UI, eval, codebase, methodology,
+     wrapper, dependency, or provider risks without running deeper audits by
+     default.
+   - Install or refresh a sparse-safe triage fact collector when repo tooling
+     exists. It must be cheap, read-only, deterministic, and parseable through
+     the direct script command.
+   - Install or refresh `/loop-verify` with materiality guidance: material
+     semantic/executable/contract/generated changes reset a full fresh pass;
+     minor typo/formatting/non-contract wording fixes only need targeted
+     checks; no hard round cap.
+
+9. **Run the shared-surface propagation sweep**:
+   - Check that setup, triage, triage leaves, triage-health, loop-verify,
+     runbooks, fact script/tests, and wrappers agree on the same terms.
+   - For no-code repos, confirm absent/deferred lanes are explicit and do not
+     create fake triage pressure.
+   - Confirm direct fact commands are separate from convenience package scripts
+     so package-manager banners cannot corrupt JSON proof.
+   - Confirm wrapper facts distinguish `absent`, `ok`, and `drift`; UI/eval
+     facts distinguish empty paths, deferred evidence, and broken pointers.
+
+10. **Normalize the public skill surface**:
+   - `init-project` is the greenfield idea-intake seed skill
+   - `setup-methodology` is the canonical full-package setup entrypoint
+   - old phased setup skills are removed rather than preserved as aliases
+   - `/triage-architecture` is installed when the package includes the
+     architecture-audit lane
    - `ui_scout` is documented only when the package includes the UI
      product-truth lane
-   - `init-project` installs the same package for new repos
+   - `init-project` seeds Ideal/spec first, then imports the appropriate package
    - run `scripts/sync-agent-skills.sh`
    - validate with `scripts/sync-agent-skills.sh --check`
 
-7. **Audit and summarize**
-   - search for stale phased-setup language in AGENTS, runbooks, and active
-     skills
-   - confirm eval creation vs improvement paths are clearly separated
-   - perform a short alignment sweep across Ideal / Spec / State / Generated
-     Dashboards / Stories / Evals / AGENTS
+11. **Audit and summarize**:
+   - reference audit for stale phased-setup language
+   - surface audit confirming the removed setup commands are no longer active
+   - eval workflow audit (`create-eval` vs `improve-eval`)
+   - triage/loop-verify surface audit
+   - short alignment sweep across Ideal / Spec / State / Stories / Evals / ADRs
 
 ## Outputs
 
-- canonical setup skill surface installed
-- working copy of `docs/setup-checklist.md`
-- runbook + AGENTS docs aligned to the same package
-- generated methodology dashboards refreshed from the compiler
-- baseline golden/eval/story bootstrap included
-- cross-CLI wrappers regenerated and checked
+- Canonical setup skill surface installed
+- Existing project-specific Ideal/spec preserved, reviewed, and aligned
+- Working copy of `docs/setup-checklist.md`
+- Runbook + AGENTS docs aligned to the same package
+- Baseline golden/eval/story bootstrap included
+- Upgraded triage, triage-health, sparse facts, and loop-verify surfaces
+  installed or explicitly deferred by lane
+- Cross-CLI wrappers regenerated and checked
 
 ## Guardrails
 
-- Do not teach multiple competing setup models in AGENTS or runbooks.
-- Do not leave deprecated phased setup skills in place as hidden aliases.
-- Do not split methodology bootstrap from golden/eval baseline unless the user
-  explicitly chooses to defer it.
-- Do not hardcode a benchmark-worktree path you cannot verify; use the documented
-  sidequest workspace contract instead.
+- Do not teach multiple competing setup models in AGENTS or docs.
+- Do not fabricate a generic `docs/ideal.md` or `docs/spec.md`; use
+  `/init-project` for greenfield idea intake first.
+- Do not recreate or advertise the removed phased setup skills.
+- Do not treat old setup notes or retrofit notes as canonical bootstrapping
+  docs once the runbook exists; mark them historical/superseded instead.
+- Do not split day-zero bootstrap from golden/eval setup unless the user
+  explicitly chooses to defer them.
+- Do not create a new methodology shape in one doc and leave the old shape in
+  the skill surface or `init-project`.
+- Do not run long subagent verification loops in a no-code repo just to prove
+  that code-dependent evidence does not exist yet. Install the sparse package,
+  mark absent/deferred lanes, run cheap checks, and let later real code create
+  real evidence.

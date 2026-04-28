@@ -14,6 +14,20 @@ The core filter is actionability, not abstract importance. A red or stale eval
 line is not recommendable unless the diagnosis can name why that line should be
 revisited now.
 
+## Lane Packet Mode
+
+When full-sweep `/triage` asks for a lane packet, stay read-only and return up
+to three neutral eval/model/golden candidates or stop conditions. Do not choose
+the repo-wide winner. For each candidate include the Ideal/spec value, registry
+and attempt evidence, why now, suggested action shape, whether it is
+story-worthy or an eval-only action, validation/stop condition, blockers, and
+reasons not now.
+
+Direct invocation may still return a ranked eval recommendation. Lane-packet
+mode exists so the main `/triage` thread can compare eval evidence against
+story, inbox, architecture, UI-scout, and health evidence before making the
+final call.
+
 Companion runbook: `docs/runbooks/triage-evals.md`
 
 ## Eval Ladder Gate
@@ -167,7 +181,7 @@ premise, or missing a falsifiable next experiment.
 
 ## Output Format
 
-Present the result as:
+In direct mode, present the result as:
 
 ```
 ## Eval Triage — YYYY-MM-DD
@@ -192,6 +206,21 @@ Present the result as:
 ### Notable Deferrals
 - <item> — why it is not worth attention now
 ```
+
+In lane-packet mode, use:
+
+```markdown
+## Eval Triage Lane Packet
+
+### Lane Packet
+- <neutral eval candidate + Ideal/spec value + evidence + why now + action shape + stop condition + blockers + reasons not now>
+
+### Stop Conditions
+- <why no eval action is warranted now, if applicable>
+```
+
+Do not include a direct-mode `### Top Candidates` ranking, `Recommendation:`,
+or final repo-wide handoff in lane-packet mode.
 
 ## Guardrails
 

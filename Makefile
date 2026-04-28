@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTHONPATH ?= src
 
-.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format skills-sync skills-check check-size
+.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format skills-sync skills-check triage-facts triage-facts-check check-size
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest
@@ -32,6 +32,12 @@ skills-sync:
 
 skills-check:
 	./scripts/sync-agent-skills.sh --check
+
+triage-facts:
+	$(PYTHON) scripts/triage_facts.py
+
+triage-facts-check:
+	$(PYTHON) -m pytest tests/unit/test_triage_facts.py
 
 check-size:
 	@echo "Python source files over 400 lines:"

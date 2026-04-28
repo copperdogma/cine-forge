@@ -15,6 +15,13 @@ Use this when the question is not "what feature should we build next?" but
 
 Companion runbook: `docs/runbooks/triage-architecture.md`
 
+When full-sweep `/triage` asks for scan mode, return up to three neutral
+architecture candidates or stop conditions. Do not choose the repo-wide winner,
+and do not let default-mode "pick the target domain" language leak into a
+single final lane decision. For each candidate include the Ideal/spec value,
+domain evidence, why now, suggested action shape, whether it is story-worthy or
+an audit/no-op, validation/stop condition, blockers, and reasons not now.
+
 ## Modes
 
 - **Default mode** (`/triage-architecture` or `/triage-architecture <domain-id>`)
@@ -25,6 +32,8 @@ Companion runbook: `docs/runbooks/triage-architecture.md`
   - read-only
   - used by `/triage`
   - never edits files
+  - treats target-domain ranking as candidate discovery, not as a final lane
+    decision
 
 ## Inputs
 
@@ -52,15 +61,19 @@ Companion runbook: `docs/runbooks/triage-architecture.md`
      - `manual_priority`
      - any `last_result` / `last_summary` fields if present
 
-3. **Pick the target domain**
-   - If the user passed a `domain-id`, audit that domain directly
+3. **Pick the target domain or scan candidates**
+   - In scan mode, use this as bounded candidate discovery and return neutral
+     architecture candidates or stop conditions instead of selecting a final
+     lane action
+   - If the user passed a `domain-id`, inspect it directly in scan mode or
+     audit it directly in default mode
    - Otherwise rank domains using this order:
      - explicit `manual_priority: high`
      - domains with open findings
      - domains whose `stories_since_audit` meets or exceeds the target cadence
      - domains with recent story churn but no prior audit
      - domains that have been untouched longest while still owning active work
-   - Audit at most 1-2 domains in one pass
+   - Inspect or audit at most 1-2 domains in one pass
 
 4. **Name why the audit is due**
    - concentrated churn
@@ -144,7 +157,7 @@ work is a separate decision.
 
 ## Output Format
 
-Use:
+In default mode, use:
 
 ```markdown
 ## Architecture Triage
@@ -168,12 +181,27 @@ Use:
 - <exact next command or concrete action on yes>
 ```
 
-End with one concrete default recommendation and a direct yes/no handoff.
+End default mode with one concrete recommendation and a direct yes/no handoff.
+
+In scan mode, use:
+
+```markdown
+## Architecture Triage Lane Packet
+
+### Lane Packet
+- <neutral architecture candidate + Ideal/spec value + evidence + why now + action shape + stop condition + blockers + reasons not now>
+
+### Stop Conditions
+- <why no architecture action is warranted now, if applicable>
+```
+
+Do not include a default-mode `### Recommendation`, `### Kickoff`, or direct
+yes/no handoff in scan mode.
 
 ## Guardrails
 
 - In scan mode, never modify files
-- Audit at most 1-2 domains per pass
+- Inspect or audit at most 1-2 domains per pass
 - Prefer simplification over novelty
 - Do not recommend repo-wide undirected cleanup
 - Do not force an architecture story when a no-op audit is the honest result

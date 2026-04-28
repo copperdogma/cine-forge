@@ -14583,7 +14583,8 @@
   "validation": {
     "errors": [],
     "warnings": [
-      "Architecture audit domains due or carrying open findings: api_service_and_operator_console"
+      "Architecture audit domains due or carrying open findings: api_service_and_operator_console",
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 16 days old against a 14-day cadence"
     ]
   }
 }

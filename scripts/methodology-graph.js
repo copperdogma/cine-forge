@@ -59,6 +59,7 @@ const REQUIRED_EVAL_LINEAGE_KEYS = [
 ];
 const STATIC_ACTIVE_SURFACE_PATHS = [
   join(ROOT, "AGENTS.md"),
+  join(ROOT, "Makefile"),
   README_PATH,
   IDEAL_PATH,
   SPEC_PATH,
@@ -73,6 +74,8 @@ const STATIC_ACTIVE_SURFACE_PATHS = [
   join(ROOT, "docs/setup-checklist.md"),
   join(ROOT, "docs/runbooks/setup-methodology.md"),
   join(ROOT, "docs/runbooks/triage.md"),
+  join(ROOT, "docs/runbooks/triage-health.md"),
+  join(ROOT, "docs/runbooks/triage-orchestration-preservation-map.md"),
   UI_SCOUT_RUNBOOK_PATH,
   join(ROOT, "docs/runbooks/migrate-problem-first-triage-and-story-workflow.md"),
   join(ROOT, "docs/runbooks/triage-evals.md"),
@@ -84,6 +87,7 @@ const STATIC_ACTIVE_SURFACE_PATHS = [
   join(ROOT, ".agents/skills/triage/SKILL.md"),
   join(ROOT, ".agents/skills/triage-stories/SKILL.md"),
   join(ROOT, ".agents/skills/triage-evals/SKILL.md"),
+  join(ROOT, ".agents/skills/triage-health/SKILL.md"),
   join(ROOT, ".agents/skills/triage-inbox/SKILL.md"),
   join(ROOT, ".agents/skills/align/SKILL.md"),
   join(ROOT, ".agents/skills/create-eval/SKILL.md"),
@@ -102,6 +106,8 @@ const STATIC_ACTIVE_SURFACE_PATHS = [
   join(ROOT, ".agents/skills/create-adr/templates/adr.md"),
   join(ROOT, ".agents/skills/retrofit-ideal/SKILL.md"),
   join(ROOT, ".agents/skills/triage-architecture/SKILL.md"),
+  join(ROOT, ".agents/skills/loop-verify/SKILL.md"),
+  join(ROOT, "scripts/triage_facts.py"),
 ];
 const ACTIVE_SURFACE_PATHS = collectActiveSurfacePaths();
 const MANUAL_STORIES_RE =
