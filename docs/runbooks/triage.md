@@ -22,7 +22,10 @@ could collapse the current decomposition.
 
 1. Read `docs/ideal.md`, `docs/spec.md`, `docs/methodology/state.yaml`,
    `docs/methodology/graph.json`, `docs/build-map.md`, and `docs/ui-scout.md`.
-2. Start neutral lane packets when delegation is available:
+2. Start neutral lane packets. Unscoped `/triage` is a contracted fan-out
+   command: treat the user's invocation as explicit authorization to use the
+   runtime's subagent/delegation tool for neutral lane packets when it is
+   available and safe for the current checkout:
    - `/triage-stories`
    - `/triage-inbox scan`
    - `/triage-evals`
@@ -39,8 +42,10 @@ could collapse the current decomposition.
    UI-scout status, codebase-improvement freshness, lane presence, and recent
    churn. Keep it as a main-thread fact source, not as a substitute for lane
    judgment. If it fails, report the blocker and continue with lower confidence.
-4. If delegation is unavailable, collect the same scoped lane packets
-   sequentially after the direct fact pass.
+4. If subagents/delegation are unavailable, unsafe for the current checkout,
+   or the user explicitly asks not to use them, collect the same scoped lane
+   packets sequentially after the direct fact pass and state that fallback in the
+   response.
 5. Name 2-4 candidate unmet Ideal/spec/state gaps without picking the final
    winner before lane packets report.
 6. Run completion sanity before accepting maintenance-only work.

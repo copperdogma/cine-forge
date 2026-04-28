@@ -134,8 +134,11 @@ When invoked with no scope:
      final winner yet.
 
 2. **Start neutral lane evidence, then run the fact collector directly**
-   - If the environment and user instructions allow subagents or delegation,
-     immediately launch scoped lane packet requests after reading the shared
+   - Unscoped `/triage` is a contracted fan-out command. Treat the user's
+     invocation of unscoped `/triage` as explicit authorization to use the
+     runtime's subagent/delegation tool for neutral lane packets when it is
+     available and safe for the current checkout.
+   - Immediately launch scoped lane packet requests after reading the shared
      frame. Keep packets neutral: ask each lane for its best candidates from
      the broad Ideal/spec/state/graph context, not for a final repo-wide pick
      and not for confirmation of one preselected gap.
@@ -157,8 +160,10 @@ When invoked with no scope:
      churn.
    - If the script fails, say so explicitly and continue from the underlying
      docs with lower confidence. Do not pretend the fact pass happened.
-   - If delegation is unavailable, still run the direct fact collector here,
-     then query the same neutral lane packet contracts sequentially later.
+   - If subagents/delegation are unavailable, unsafe for the current checkout,
+     or the user explicitly asks not to use them, still run the direct fact
+     collector here, then query the same neutral lane packet contracts
+     sequentially later and state that fallback in the response.
 
 3. **Open candidate gaps without picking a winner yet**
    - State 2-4 plausible unmet Ideal promises or overscaffolded compromises in
@@ -198,8 +203,9 @@ When invoked with no scope:
      requirement.
 
 7. **Collect lane packets**
-   - If packets were launched earlier, collect their reports here.
-   - If delegation was unavailable, run the same scoped contracts sequentially.
+   - If subagents were used, collect their lane reports here.
+   - If using the sequential fallback, run the same scoped contracts now and
+     state that no subagents were used.
    - Keep `scripts/triage_facts.py` as a direct main-thread fact source, not a
      delegated lane and not a substitute for lane judgment.
 
