@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-29-03] — Preserve Brick & Steel final-render prompt truth (Story 191)
+
+### Added
+- Added Story 191's Brick & Steel evidence packet and Story 192 as the explicit follow-up for GPT-image design-study completion/error truth.
+
+### Changed
+- Changed final-render prompt compilation so exact shot-plan dialogue is carried into the compiler context and deterministically appended to isolated video prompts when the LLM compiler omits it.
+- Updated scene-generation planning surfaces to close the final-render prompt-truth slice while keeping the separate design-study UI/provider lifecycle residual visible.
+
 ## [2026-04-29-02] — Record deploy auth recovery
 
 ### Changed

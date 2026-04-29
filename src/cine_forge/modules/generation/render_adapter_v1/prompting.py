@@ -19,6 +19,8 @@ Rules:
 - Preserve the creative intent already established upstream.
 - Prefer concrete physical language over abstract commentary.
 - Make camera, blocking, lighting, environment, motion, and sound cues explicit.
+- Preserve exact scripted dialogue lines provided by the shot plan verbatim; never
+  replace them with summaries such as "delivers the joke" or "responds."
 - Mention uploaded references only when they materially guide the model.
 - Never ask the target model to do something the engine pack says is unsupported.
 - If upstream context is missing, name the gap in `missing_inputs` instead of

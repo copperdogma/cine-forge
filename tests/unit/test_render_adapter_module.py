@@ -284,9 +284,20 @@ def test_run_module_generates_prompt_video_and_track_entries(
     manifest = TrackManifest.model_validate(manifest_payload)
 
     assert "Coverage approach" in str(captured["compiler_prompt"])
+    assert "exact_scripted_dialogue=We can still stop this." in str(
+        captured["compiler_prompt"]
+    )
     assert "CREATIVE BRIEF:" in str(captured["compiler_prompt"])
     assert prompt_output["exclude_upstream_lineage_types"] == ["track_manifest"]
     assert prompt_artifact.target_provider == "openai"
+    assert "Exact scripted dialogue to preserve verbatim:" in prompt_artifact.prompt_text
+    assert "- We can still stop this." in prompt_artifact.prompt_text
+    assert "Exact scripted dialogue to preserve verbatim:" in captured["video_request"].prompt
+    assert "- We can still stop this." in captured["video_request"].prompt
+    assert any(
+        note.startswith("Adapter appended exact scripted dialogue from the shot plan")
+        for note in prompt_artifact.completeness.notes
+    )
     assert prompt_artifact.completeness.missing_categories == []
     assert prompt_artifact.creative_brief_preview is not None
     assert {

@@ -384,7 +384,14 @@ def _render_scene(
                 f"render_adapter_v1 prompt for {plan.scene_id} is incomplete: "
                 f"{', '.join(completeness.blocking_missing_categories)}"
             )
-        prompt_text = prompt_draft.prompt_text
+        prompt_text, exact_dialogue_note = _ensure_exact_dialogue_in_prompt(
+            prompt_draft.prompt_text,
+            plan,
+        )
+        if exact_dialogue_note:
+            completeness = completeness.model_copy(
+                update={"notes": [*completeness.notes, exact_dialogue_note]}
+            )
 
     scene_cost = _scene_cost(
         compile_cost=compile_cost,
@@ -1194,22 +1201,72 @@ def _shot_definition_block(plan: ShotPlan) -> str:
         f"Performance notes: {plan.coverage_strategy.character_and_performance_notes}",
     ]
     for shot in plan.shots:
-        lines.append(
-            " | ".join(
-                [
-                    f"{shot.shot_id}",
-                    shot.shot_size,
-                    shot.camera_angle,
-                    shot.camera_movement,
-                    f"lens={shot.lens_focal_length}",
-                    f"duration={shot.duration_estimate_seconds:.1f}s",
-                    f"blocking={shot.blocking}",
-                    f"action={shot.action_description}",
-                    f"edit_intent={shot.edit_intent}",
-                ]
+        shot_parts = [
+            f"{shot.shot_id}",
+            shot.shot_size,
+            shot.camera_angle,
+            shot.camera_movement,
+            f"lens={shot.lens_focal_length}",
+            f"duration={shot.duration_estimate_seconds:.1f}s",
+            f"blocking={shot.blocking}",
+            f"action={shot.action_description}",
+            f"edit_intent={shot.edit_intent}",
+        ]
+        dialogue = _exact_dialogue_lines_for_shot(shot)
+        if dialogue:
+            shot_parts.append(
+                "exact_scripted_dialogue=" + " ; ".join(dialogue)
             )
-        )
+        lines.append(" | ".join(shot_parts))
     return "\n".join(lines)
+
+
+def _exact_dialogue_lines_for_shot(shot: Any) -> list[str]:
+    return [
+        line.strip()
+        for line in getattr(shot, "dialogue_lines", [])
+        if isinstance(line, str) and line.strip()
+    ]
+
+
+def _exact_dialogue_lines_for_plan(plan: ShotPlan) -> list[str]:
+    seen: set[str] = set()
+    lines: list[str] = []
+    for shot in plan.shots:
+        for line in _exact_dialogue_lines_for_shot(shot):
+            if line in seen:
+                continue
+            seen.add(line)
+            lines.append(line)
+    return lines
+
+
+def _ensure_exact_dialogue_in_prompt(
+    prompt_text: str,
+    plan: ShotPlan,
+) -> tuple[str, str | None]:
+    dialogue_lines = _exact_dialogue_lines_for_plan(plan)
+    if not dialogue_lines:
+        return prompt_text, None
+    missing = [line for line in dialogue_lines if line not in prompt_text]
+    if not missing:
+        return prompt_text, None
+
+    dialogue_block = "\n".join(f"- {line}" for line in dialogue_lines)
+    updated_prompt = (
+        prompt_text.rstrip()
+        + "\n\nExact scripted dialogue to preserve verbatim:\n"
+        + dialogue_block
+    )
+    sample = "; ".join(missing[:3])
+    if len(missing) > 3:
+        sample += f"; +{len(missing) - 3} more"
+    punctuation = "" if sample.endswith((".", "!", "?")) else "."
+    return (
+        updated_prompt,
+        "Adapter appended exact scripted dialogue from the shot plan because "
+        f"the compiler omitted: {sample}{punctuation}",
+    )
 
 
 def _creative_brief_block(creative_brief: Any) -> str:

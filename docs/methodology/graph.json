@@ -673,7 +673,9 @@
           "182",
           "184",
           "185",
-          "186"
+          "186",
+          "191",
+          "192"
         ],
         "adrIds": [
           "ADR-002",
@@ -804,7 +806,8 @@
           "181",
           "186",
           "188",
-          "190"
+          "190",
+          "191"
         ],
         "adrIds": [
           "ADR-002",
@@ -898,7 +901,9 @@
           "184",
           "186",
           "188",
-          "190"
+          "190",
+          "191",
+          "192"
         ],
         "adrIds": [
           "ADR-002",
@@ -1012,7 +1017,9 @@
           "187",
           "188",
           "189",
-          "190"
+          "190",
+          "191",
+          "192"
         ],
         "adrIds": [
           "ADR-001",
@@ -1550,7 +1557,9 @@
           "186",
           "187",
           "188",
-          "189"
+          "189",
+          "191",
+          "192"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1559,22 +1568,17 @@
           "storyboard-generation-quality"
         ],
         "actionability": {
-          "sourceKind": "eval",
-          "sourceId": "storyboard-generation-quality",
-          "sourcePath": "docs/evals/registry.yaml",
-          "recommendedNow": false,
-          "posture": "wait-for-trigger",
-          "whyNow": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…",
-          "retryTriggerStatus": "waiting",
-          "retryWhen": [
-            "realistic-reference-fixture"
-          ],
+          "sourceKind": "story",
+          "sourceId": "192",
+          "sourcePath": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
+          "whyNow": "",
           "lastRelevantAction": {
-            "date": "2026-04-25",
-            "sourceType": "eval-attempt",
-            "source": "docs/evals/registry.yaml",
-            "sourceId": "006",
-            "summary": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…"
+            "date": null,
+            "sourceType": "story-status",
+            "source": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
+            "summary": ""
           },
           "storyIds": [
             "155",
@@ -1587,7 +1591,9 @@
             "186",
             "187",
             "188",
-            "189"
+            "189",
+            "191",
+            "192"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1694,9 +1700,30 @@
           "evidence": "No registry-backed deletion harness exists yet; this remains an ecosystem detector.",
           "last_reviewed": "2026-04-04"
         },
-        "storyIds": [],
+        "storyIds": [
+          "191",
+          "192"
+        ],
         "evalIds": [],
-        "actionability": null
+        "actionability": {
+          "sourceKind": "story",
+          "sourceId": "192",
+          "sourcePath": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
+          "whyNow": "",
+          "lastRelevantAction": {
+            "date": null,
+            "sourceType": "story-status",
+            "source": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
+            "summary": ""
+          },
+          "storyIds": [
+            "191",
+            "192"
+          ],
+          "evalIds": []
+        }
       },
       {
         "id": "C7",
@@ -12213,6 +12240,155 @@
           "summary": "mark-story-done: marked Story 190 Done after `/validate` found no implementation gaps. Evidence: build and validation gates are checked; all tasks and acceptance criteria are checked; Story 190's eval mismatch classific…"
         }
       }
+    },
+    {
+      "id": "191",
+      "title": "Brick & Steel Final-Render Prompt Truth",
+      "path": "docs/stories/story-191-brick-steel-scene-media-product-truth.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:4.10.7",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.1",
+        "spec:6.2",
+        "spec:6.3",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3",
+        "C6"
+      ],
+      "dependsOn": [
+        "168",
+        "169",
+        "190"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "brick-steel",
+        "final-render",
+        "image-generation",
+        "product-truth",
+        "references",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "191",
+        "sourcePath": "docs/stories/story-191-brick-steel-scene-media-product-truth.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-191-brick-steel-scene-media-product-truth.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "192",
+      "title": "Brick & Steel GPT-Image Completion and Error Truth",
+      "path": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:5.3",
+        "spec:5.5",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3",
+        "C6"
+      ],
+      "dependsOn": [
+        "191"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "brick-steel",
+        "design-study",
+        "gpt-image",
+        "product-truth",
+        "provider-errors",
+        "ui-verification"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "192",
+        "sourcePath": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -14322,7 +14498,7 @@
         },
         {
           "id": "scene-generation-completion",
-          "status": "completed",
+          "status": "active",
           "story_refs": [
             "164",
             "165",
@@ -14330,15 +14506,17 @@
             "167",
             "168",
             "169",
-            "170"
+            "170",
+            "191",
+            "192"
           ],
-          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route, so the current `spec:6` / `spec:7` lane now needs fresh triage rather than another in-progress owner."
+          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closes the Brick & Steel final-render prompt-truth slice; Story 192 preserves the separate GPT-image design-study completion/error follow-up."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, and Story 190 now owns the next focused storyboard identity/reference-stability follow-up instead of leaving the lane at fresh triage.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closes the focused Brick & Steel final-render prompt-truth follow-up, and Story 192 now owns the residual GPT-image design-study lifecycle truth work.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -14347,7 +14525,9 @@
               "Pending"
             ],
             "empty_message": "No stories currently fit this lane.",
-            "story_notes": {}
+            "story_notes": {
+              "192": "Follow-up from Story 191: reproduce or falsify the Brick & Steel GPT-image completion spinner/error-surfacing residual through the normal design-study UI/API path."
+            }
           },
           {
             "id": "in-progress",
