@@ -50,6 +50,26 @@ Assess whether a story's implementation meets its requirements.
    - **Rationale**: Strict linting (e.g., React 19 purity) and type-checking can flag issues that aren't immediately obvious in the IDE. Running these locally is the only way to ensure a green deployment gate.
    - If a command is unavailable (missing script/tool), report it explicitly.
 
+4b. **Use optional parallel validation only when warranted**:
+   - Parallel packets are useful for non-trivial validation slices such as
+     changed-file review, acceptance-criteria review, backend/UI check
+     execution, browser/live-smoke evidence review, eval mismatch review, and
+     holistic Ideal/spec/design fit review.
+   - Scope each packet to explicit files, commands, criteria, screens, smoke
+     targets, evals, or architecture questions. Require fresh evidence from
+     this validation pass, and preserve CineForge's backend, UI, browser,
+     eval, methodology, and skill-sync gates.
+   - Subagents may gather evidence or flag findings, but the main thread keeps
+     the final grade, closure recommendation, story handoff state, and
+     yes-ready next step.
+   - Do not make subagents mandatory for routine small validation.
+   - If subagents are unavailable, unsafe for the checkout, or explicitly
+     disabled by the user, run the same validation packets sequentially and
+     state that fallback in the report.
+   - Escalate to `/loop-verify` for broad or high-risk diffs, repeated material
+     fixes during validation, cross-repo rollout surfaces, or cases where one
+     complete clean parallel round matters before closure.
+
 5. **Review acceptance criteria** — For each criterion:
    - **Met** — Evidence that it works (test output, code reference)
    - **Partial** — Partially implemented, what's missing
