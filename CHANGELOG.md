@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-29-01] — Recover long-running operation progress (Story 139)
+
+### Added
+- Added focused run-progress recovery coverage so malformed terminal progress updates leave a Run Details fallback instead of taking down the project shell.
+
+### Fixed
+- Fixed the long-running operation black-screen failure by throttling active-run SSE invalidations and stopping broad in-progress artifact invalidations from refetching every mounted artifact detail.
+- Fixed terminal run completion invalidation to refresh project, artifact-group, and run-list data exactly instead of triggering avoidable request storms.
+
 ## [2026-04-25-01] — Measure storyboard reference anchors (Story 190)
 
 ### Added

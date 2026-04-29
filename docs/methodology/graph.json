@@ -643,6 +643,7 @@
           "114",
           "126",
           "132",
+          "139",
           "142",
           "144",
           "148",
@@ -8656,35 +8657,47 @@
     },
     {
       "id": "139",
-      "title": "Historical Run Progress Cards Stop Polling Missing Runs",
+      "title": "Long-Running Operation Black-Screen Recovery",
       "path": "docs/stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md",
-      "status": "Draft",
-      "priority": "Medium",
+      "status": "Done",
+      "priority": "High",
       "idealRefs": [
-        "R12 (radical transparency)"
+        "R12 (radical transparency)",
+        "vision-level preference: Easy, fun, and engaging"
       ],
       "specRefs": [
-        "spec:1.6"
+        "spec:1.6",
+        "spec:5.3",
+        "spec:5.6"
       ],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "127"
       ],
       "categoryRefs": [
-        "spec:1"
+        "spec:1",
+        "spec:5"
       ],
       "inputCoverageRefs": [],
-      "architectureDomains": [],
-      "roadmapTags": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "chat-progress",
+        "long-running-operations",
+        "production-qa"
+      ],
       "legacySystem": "",
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260320-1605",
-        "date": "2026-03-20",
-        "summary": "created from Story 127 validation follow-up: captured the stale-project historical run polling bug in a dedicated Draft story instead of leaving it as an oral note. Evidence: browser validation on `/the-mariner-36/artif…"
+        "timestamp": "20260429-0005",
+        "date": "2026-04-29",
+        "summary": "closeout via `/mark-story-done`: Story 139 is marked Done after validation confirmed the implementation is complete. Evidence remains the fresh `/validate` pass above plus the reproduced no-provider 800-stage request-ex…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -8693,13 +8706,13 @@
         "sourceId": "139",
         "sourcePath": "docs/stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md",
         "recommendedNow": false,
-        "posture": "draft",
-        "whyNow": "created from Story 127 validation follow-up: captured the stale-project historical run polling bug in a dedicated Draft story instead of leaving it as an oral note. Evidence: browser validation on `/the-mariner-36/artif…",
+        "posture": "completed",
+        "whyNow": "closeout via `/mark-story-done`: Story 139 is marked Done after validation confirmed the implementation is complete. Evidence remains the fresh `/validate` pass above plus the reproduced no-provider 800-stage request-ex…",
         "lastRelevantAction": {
-          "date": "2026-03-20",
+          "date": "2026-04-29",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md",
-          "summary": "created from Story 127 validation follow-up: captured the stale-project historical run polling bug in a dedicated Draft story instead of leaving it as an oral note. Evidence: browser validation on `/the-mariner-36/artif…"
+          "summary": "closeout via `/mark-story-done`: Story 139 is marked Done after validation confirmed the implementation is complete. Evidence remains the fresh `/validate` pass above plus the reproduced no-provider 800-stage request-ex…"
         }
       }
     },
@@ -14378,8 +14391,7 @@
               "105": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "106": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "112": "Valuable redesign candidate, but it still needs tighter scope before it should leave Draft.",
-              "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
-              "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed."
+              "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending."
             }
           },
           {
@@ -14515,6 +14527,7 @@
         "api_service_and_operator_console": {
           "last_audited_at": "2026-04-24",
           "recent_story_refs": [
+            "139",
             "169",
             "170",
             "171",
@@ -14529,7 +14542,7 @@
             "184",
             "185"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 1,
           "open_findings": [
             "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
           ],
@@ -14584,7 +14597,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 16 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 17 days old against a 14-day cadence"
     ]
   }
 }

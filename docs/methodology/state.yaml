@@ -316,7 +316,6 @@
           "statuses": ["Draft"],
           "empty_message": "No draft stories currently need review.",
           "story_notes": {
-            "139": "Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed.",
             "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
             "103": "Valid repo-hygiene draft, but still needs tighter scoping and remains secondary to the current product-facing backlog.",
             "102": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
@@ -434,8 +433,8 @@
       },
       "api_service_and_operator_console": {
         "last_audited_at": "2026-04-24",
-        "recent_story_refs": ["169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182", "184", "185"],
-        "stories_since_audit": 0,
+        "recent_story_refs": ["139", "169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182", "184", "185"],
+        "stories_since_audit": 1,
         "open_findings": [
           "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
         ],

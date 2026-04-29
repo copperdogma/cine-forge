@@ -43,7 +43,6 @@ No stories currently need the sequence-sensitive lane.
 | **106** Disk-Backed Chunk-Level Extraction Cache | Worth keeping visible, but it is less immediately executable than the current product-facing pending lane. |
 | **112** Continuity Tracking: First Principles Redesign | Valuable redesign candidate, but it still needs tighter scope before it should leave Draft. |
 | **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
-| **139** Historical Run Progress Cards Stop Polling Missing Runs | Validation-discovered UI bug: stale project chat history can keep polling dead run IDs and spam the console. Draft until the narrowest guard path and regression harness are confirmed. |
 
 ### Deferred — Intentionally Parked
 
@@ -101,7 +100,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 16 days old against a 14-day cadence
+- UI scout freshness: attention needed — last run 2026-04-12 is 17 days old against a 14-day cadence
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
@@ -115,7 +114,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 139 | Historical Run Progress Cards Stop Polling Missing Runs | Medium | Draft | — | spec:1 | 127 | [story-139](stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md) |
 | 071 | Refine vs. Regenerate Pipeline Modes | Medium | Deferred | — | spec:1 | — | [story-071](stories/story-071-refine-vs-regenerate-pipeline.md) |
 | 073 | Add `after:` ordering-only stage dependency to recipe DSL | Medium | Done | — | spec:1 | — | [story-073](stories/story-073-add-after-ordering-dependency.md) |
 | 074 | Artifact graph staleness: regression tests + sibling cross-contamination fix | Medium | Done | — | spec:1 | — | [story-074](stories/story-074-artifact-graph-staleness-regression-tests.md) |
@@ -242,6 +240,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 076 | Entity Detail: Cross-Reference Layout & Narrative Role Polish | High | Done | — | spec:5 | — | [story-076](stories/story-076-entity-detail-cross-ref-layout.md) |
 | 085 | Pipeline Capability Graph & Navigation Bar | High | Done | — | spec:5 | 002, 011e, 011f, 082 | [story-085](stories/story-085-pipeline-capability-graph.md) |
 | 086 | AI Navigation Intelligence | High | Done | — | spec:5, spec:9 | 085 | [story-086](stories/story-086-ai-navigation-intelligence.md) |
+| 139 | Long-Running Operation Black-Screen Recovery | High | Done | — | spec:1, spec:5 | 127 | [story-139](stories/story-139-historical-run-progress-cards-stop-polling-missing-runs.md) |
 | 144 | AI Previz Adoption Gate and Trust Guardrails | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 032, 140, 143 | [story-144](stories/story-144-ai-previz-adoption-gate-and-trust-guardrails.md) |
 | 149 | Fast AI Previz and Latency Budget | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 028, 143, 144, 148 | [story-149](stories/story-149-previz-fast-lane-and-latency-budget.md) |
 | 150 | Fastest Real AI Previz Runtime Eval | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 143, 144, 148, 149 | [story-150](stories/story-150-fastest-real-ai-previz-runtime-eval.md) |

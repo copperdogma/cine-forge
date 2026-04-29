@@ -20,6 +20,7 @@ import {
 import type { SceneWorkspaceTab } from './constants'
 import { useRunState, useRunEvents } from './hooks/runs'
 import { genericRunFailureMessageId, hasProviderFailureMessage } from './run-failure-messages'
+import { recoverRunProgressUiError } from './run-progress-recovery'
 import { getSceneWorkflowGuide } from './scene-workflow'
 import type { StageState, ArtifactGroupSummary } from './types'
 
@@ -30,23 +31,45 @@ const API_BASE = import.meta.env.VITE_API_BASE ?? ''
  * On each message, invalidates TanStack Query caches so the existing
  * polling hooks re-fetch immediately instead of waiting for the next interval.
  */
-function useRunEventSSE(runId: string | null, projectId: string | undefined) {
+function useRunEventSSE(runId: string | null) {
   const queryClient = useQueryClient()
   const esRef = useRef<EventSource | null>(null)
+  const lastInvalidationAtRef = useRef(0)
+  const pendingInvalidationRef = useRef<ReturnType<typeof window.setTimeout> | null>(null)
 
   useEffect(() => {
     if (!runId) return
+
+    lastInvalidationAtRef.current = 0
+
+    const invalidateRunQueries = () => {
+      lastInvalidationAtRef.current = Date.now()
+      queryClient.invalidateQueries({ queryKey: ['runs', runId, 'events'] })
+      queryClient.invalidateQueries({ queryKey: ['runs', runId, 'state'] })
+    }
 
     const url = `${API_BASE}/api/runs/${runId}/events/stream`
     const es = new EventSource(url)
     esRef.current = es
 
     es.onmessage = () => {
-      // Invalidate both events and state — a new event means state may have changed too
-      queryClient.invalidateQueries({ queryKey: ['runs', runId, 'events'] })
-      queryClient.invalidateQueries({ queryKey: ['runs', runId, 'state'] })
-      if (projectId) {
-        queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
+      // Many stages can emit multiple events per second. Coalesce SSE-driven
+      // refreshes so a busy run cannot exhaust the browser request pool.
+      const elapsed = Date.now() - lastInvalidationAtRef.current
+      if (elapsed >= 750) {
+        if (pendingInvalidationRef.current) {
+          window.clearTimeout(pendingInvalidationRef.current)
+          pendingInvalidationRef.current = null
+        }
+        invalidateRunQueries()
+        return
+      }
+
+      if (!pendingInvalidationRef.current) {
+        pendingInvalidationRef.current = window.setTimeout(() => {
+          pendingInvalidationRef.current = null
+          invalidateRunQueries()
+        }, 750 - elapsed)
       }
     }
 
@@ -57,10 +80,14 @@ function useRunEventSSE(runId: string | null, projectId: string | undefined) {
     }
 
     return () => {
+      if (pendingInvalidationRef.current) {
+        window.clearTimeout(pendingInvalidationRef.current)
+        pendingInvalidationRef.current = null
+      }
       es.close()
       esRef.current = null
     }
-  }, [runId, projectId, queryClient])
+  }, [runId, queryClient])
 }
 
 /** Build a human-readable summary of what was produced (e.g. "13 scenes and a standardized script"). */
@@ -152,7 +179,7 @@ export function useRunProgressChat(projectId: string | undefined) {
   const queryClient = useQueryClient()
 
   // SSE acceleration — pushes cache invalidations so polling hooks fire immediately
-  useRunEventSSE(activeRunId, projectId)
+  useRunEventSSE(activeRunId)
 
   // Track which stages we've already notified as paused
   const pausedRef = useRef<Set<string>>(new Set())
@@ -170,6 +197,7 @@ export function useRunProgressChat(projectId: string | undefined) {
 
   useEffect(() => {
     if (!runState || !activeRunId || !projectId) return
+    try {
 
     const stages = runState.state.stages
     const store = useChatStore.getState()
@@ -216,14 +244,11 @@ export function useRunProgressChat(projectId: string | undefined) {
       })
     }
 
-    // --- Invalidate artifacts every poll while a run is active (live sidebar counts) ---
-    // Artifacts are written to the store individually as each entity completes,
-    // so counts can tick up mid-stage — not just on stage completion.
+    // --- Track active stage updates ---
+    // AppShell polls artifact groups while a run is active. Do not invalidate the
+    // broad artifact query prefix here; it also matches mounted artifact-detail
+    // queries and can create a request storm during busy long-running operations.
     if (!runState.state.finished_at) {
-      queryClient.invalidateQueries({
-        queryKey: ['projects', projectId, 'artifacts'],
-      })
-
       // Check for newly paused stages
       for (const [stageId, stage] of Object.entries(stages)) {
         if (stage.status === 'paused' && !pausedRef.current.has(stageId)) {
@@ -294,8 +319,9 @@ export function useRunProgressChat(projectId: string | undefined) {
 
     // --- Bible extraction live progress (artifact_saved events from world-building pipeline) ---
     // Each character/location/prop bible artifact emits artifact_saved when saved mid-stage.
-    // We update ONE in-place message per type ("Writing 3 character bibles...") and immediately
-    // invalidate the sidebar artifact count so the badge ticks up as each entity lands.
+    // We update ONE in-place message per type ("Writing 3 character bibles...").
+    // AppShell owns active-run artifact group polling, which keeps badges moving
+    // without invalidating every mounted artifact-detail query.
     // Once the stage completes, the RunProgressCard shows the final count with a checkmark,
     // so we resolve the spinner immediately rather than waiting for the entire run to finish.
     const bibleStageMap: Record<string, string> = {
@@ -319,9 +345,6 @@ export function useRunProgressChat(projectId: string | undefined) {
       const dedupeKey = `${activeRunId}:artifact_saved:${artifactType}:${entityId}:${i}`
       if (processedEventIdsRef.current.has(dedupeKey)) continue
       processedEventIdsRef.current.add(dedupeKey)
-
-      // Immediately refresh sidebar counts so the badge ticks up as each entity lands
-      queryClient.invalidateQueries({ queryKey: ['projects', projectId, 'artifacts'] })
 
       // Increment per-type count and update in-place chat message
       bibleFoundCountsRef.current[artifactType] = (bibleFoundCountsRef.current[artifactType] ?? 0) + 1
@@ -416,7 +439,14 @@ export function useRunProgressChat(projectId: string | undefined) {
                 },
               ],
             })
-          })()
+          })().catch((error) => {
+            recoverRunProgressUiError({
+              projectId,
+              runId: activeRunId,
+              error,
+              store: useChatStore.getState(),
+            })
+          })
         } else {
           const summary = summarizeArtifacts(stages)
           const recipeId = runState.state.recipe_id
@@ -645,17 +675,27 @@ export function useRunProgressChat(projectId: string | undefined) {
       }
 
       // Invalidate project data so UI reflects new state
-      queryClient.invalidateQueries({ queryKey: ['projects', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['projects', projectId], exact: true })
       queryClient.invalidateQueries({
         queryKey: ['projects', projectId, 'artifacts'],
+        exact: true,
       })
       queryClient.invalidateQueries({
         queryKey: ['projects', projectId, 'runs'],
+        exact: true,
       })
 
       if (!hasFailed) {
         store.clearActiveRun(projectId)
       }
+    }
+    } catch (error) {
+      recoverRunProgressUiError({
+        projectId,
+        runId: activeRunId,
+        error,
+        store: useChatStore.getState(),
+      })
     }
   }, [runState, runEvents, activeRunId, projectId, queryClient])
 }
