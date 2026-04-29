@@ -7,6 +7,7 @@ description: >
   appropriate shared track.
 input_schemas:
   - shot_plan
+  - render_clip_plan
   - track_manifest
   - project_config
   - intent_mood

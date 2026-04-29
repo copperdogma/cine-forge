@@ -32,6 +32,7 @@ from cine_forge.schemas import (
     PropBible,
     QAResult,
     RawInput,
+    RenderClipPlan,
     RhythmAndFlow,
     RhythmAndFlowIndex,
     RoleDefinition,
@@ -108,6 +109,7 @@ def build_schema_registry() -> SchemaRegistry:
     registry.register("keyframe", KeyframeArtifact)
     registry.register("preference_signal", PreferenceSignal)
     registry.register("render_prompt", CompiledRenderPrompt)
+    registry.register("render_clip_plan", RenderClipPlan)
     registry.register("ai_previz_prompt", CompiledRenderPrompt)
     registry.register("generated_video", GeneratedVideoArtifact)
     registry.register("ai_previz_video", GeneratedVideoArtifact)

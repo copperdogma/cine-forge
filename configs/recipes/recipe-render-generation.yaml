@@ -39,10 +39,22 @@ stages:
       sound_and_music: sound_and_music
       character_bible: character_bible
       character_and_performance: character_and_performance
+  - id: render_clip_planning
+    module: render_clip_plan_v1
+    params: {}
+    after: [shot_planning]
+    store_inputs:
+      scene_index: scene_index
+      timeline: timeline
+      track_manifest: track_manifest
+    store_inputs_optional:
+      normalize: canonical_script
+    store_inputs_all:
+      shot_plan: shot_plan
   - id: render
     module: render_adapter_v1
     params: {}
-    after: [shot_planning]
+    needs_all: [render_clip_planning]
     store_inputs:
       track_manifest: track_manifest
     store_inputs_optional:
@@ -50,6 +62,7 @@ stages:
       intent_mood: intent_mood
     store_inputs_all:
       shot_plan: shot_plan
+      render_clip_plan: render_clip_plan
       look_and_feel: look_and_feel
       sound_and_music: sound_and_music
       rhythm_and_flow: rhythm_and_flow

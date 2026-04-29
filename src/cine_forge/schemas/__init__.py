@@ -175,6 +175,13 @@ from .render import (
     RenderPromptSection,
     RenderResolvedInput,
 )
+from .render_clip_plan import (
+    RenderClip,
+    RenderClipDerivation,
+    RenderClipPlan,
+    RenderClipPlanMode,
+    RenderClipPlanSource,
+)
 from .role import (
     DirectorReview,
     DisagreementRecord,
@@ -376,6 +383,11 @@ __all__ = [
     "ReviewDecision",
     "ReviewReadiness",
     "RenderCompletenessCheck",
+    "RenderClip",
+    "RenderClipDerivation",
+    "RenderClipPlan",
+    "RenderClipPlanMode",
+    "RenderClipPlanSource",
     "RenderPromptSection",
     "RenderResolvedInput",
     "RoleResponse",

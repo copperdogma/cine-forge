@@ -52,6 +52,7 @@ from cine_forge.schemas import (
     MediaFile,
     PreviewProvenance,
     ProjectConfig,
+    RenderClipPlan,
     RenderCompletenessCheck,
     RenderPromptSection,
     RenderResolvedInput,
@@ -285,6 +286,8 @@ def _render_scene(
     shot_plan_ref = latest_entity_ref(store, "shot_plan", plan.scene_id)
     if shot_plan_ref is None:
         raise ValueError(f"render_adapter_v1 could not resolve shot_plan ref for {plan.scene_id}")
+    render_clip_plan = source_maps["render_clip_plan"].get(plan.scene_id)
+    render_clip_plan_ref = latest_entity_ref(store, "render_clip_plan", plan.scene_id)
 
     aspect_ratio, aspect_note = normalize_aspect_ratio(
         requested_aspect_ratio
@@ -375,7 +378,13 @@ def _render_scene(
             ),
             notes=[
                 note
-                for note in (aspect_note, duration_note, resolution_note, *request_notes)
+                for note in (
+                    aspect_note,
+                    duration_note,
+                    resolution_note,
+                    *_render_clip_plan_notes(render_clip_plan, duration_seconds),
+                    *request_notes,
+                )
                 if note
             ],
         )
@@ -413,6 +422,7 @@ def _render_scene(
         scene_heading=plan.scene_heading,
         scene_ref=plan.scene_ref,
         shot_plan_ref=shot_plan_ref,
+        render_clip_plan_ref=render_clip_plan_ref,
         keyframe_ref=latest_entity_ref(store, "keyframe", plan.scene_id),
         target_provider=engine_pack.provider,
         target_model=engine_pack.target_model,
@@ -466,6 +476,7 @@ def _render_scene(
         scene_heading=plan.scene_heading,
         scene_ref=plan.scene_ref,
         shot_plan_ref=shot_plan_ref,
+        render_clip_plan_ref=render_clip_plan_ref,
         prompt_ref=prompt_ref,
         keyframe_ref=latest_entity_ref(store, "keyframe", plan.scene_id),
         video=MediaFile(
@@ -695,6 +706,7 @@ def _build_source_maps(inputs: dict[str, Any]) -> dict[str, Any]:
         inputs.get("rhythm_and_flow"), RhythmAndFlow, scene_key="scene_id"
     )
     keyframes = _scene_payload_map(inputs.get("keyframe"), KeyframeArtifact, scene_key="scene_id")
+    render_clip_plan = _render_clip_plan_map(inputs)
     manifests = _manifest_payload_map(inputs.get("injected_asset_manifest"))
     return {
         "project_config": project_config,
@@ -707,6 +719,7 @@ def _build_source_maps(inputs: dict[str, Any]) -> dict[str, Any]:
         "look_and_feel": look_and_feel,
         "sound_and_music": sound_and_music,
         "rhythm_and_flow": rhythm_and_flow,
+        "render_clip_plan": render_clip_plan,
         "character_and_performance": _performance_by_scene(inputs.get("character_and_performance")),
         "character_bible": _entity_payload_map(
             inputs.get("character_bible"),
@@ -721,6 +734,24 @@ def _build_source_maps(inputs: dict[str, Any]) -> dict[str, Any]:
         "keyframes": keyframes,
         "injected_manifests": manifests,
     }
+
+
+def _render_clip_plan_map(inputs: dict[str, Any]) -> dict[str, RenderClipPlan]:
+    payloads: list[Any] = []
+    raw_store_payloads = inputs.get("render_clip_plan")
+    if isinstance(raw_store_payloads, list):
+        payloads.extend(raw_store_payloads)
+    raw_stage_payloads = inputs.get("render_clip_planning")
+    if isinstance(raw_stage_payloads, list):
+        payloads.extend(raw_stage_payloads)
+
+    result: dict[str, RenderClipPlan] = {}
+    for item in payloads:
+        if not isinstance(item, dict):
+            continue
+        plan = RenderClipPlan.model_validate(item)
+        result[plan.scene_id] = plan
+    return result
 
 
 def _scene_payload_map(
@@ -1169,6 +1200,9 @@ def _context_blocks(
 ) -> dict[str, str]:
     return {
         "shot_definition": _shot_definition_block(plan),
+        "render_clip_plan": _render_clip_plan_block(
+            source_maps["render_clip_plan"].get(plan.scene_id)
+        ),
         "creative_brief": _creative_brief_block(source_maps["creative_brief"]),
         "look_and_feel": _look_and_feel_block(source_maps["look_and_feel"].get(plan.scene_id)),
         "sound_and_music": _sound_block(
@@ -1226,6 +1260,71 @@ def _shot_definition_block(plan: ShotPlan) -> str:
     if dialogue_contract:
         lines.extend(["", dialogue_contract])
     return "\n".join(lines)
+
+
+def _render_clip_plan_block(plan: RenderClipPlan | None) -> str:
+    if plan is None:
+        return (
+            "No render_clip_plan artifact was provided. The adapter is using the "
+            "scene-level shot plan only, so duration compression risk is unknown."
+        )
+    lines = [
+        (
+            "Scene target dramatic duration: "
+            f"{plan.target_dramatic_duration_seconds:.1f}s"
+        ),
+        f"Engine max clip duration: {plan.engine_max_clip_duration_seconds:.1f}s",
+        f"Provenance: {plan.provenance_mode}; confidence={plan.confidence:.2f}",
+        f"Duration rationale: {plan.duration_rationale}",
+    ]
+    if plan.missing_upstream_categories:
+        lines.append(
+            "Missing upstream categories: "
+            + ", ".join(plan.missing_upstream_categories)
+        )
+    if len(plan.clips) > 1:
+        lines.append(
+            "Current render path still emits one scene-level video; preserve this "
+            "multi-clip pacing in the prompt and disclose compression risk."
+        )
+    for clip in plan.clips:
+        pieces = [
+            clip.clip_id,
+            f"{clip.start_time_seconds:.1f}-{clip.end_time_seconds:.1f}s",
+            f"target={clip.target_duration_seconds:.1f}s",
+        ]
+        if clip.source_shot_ids:
+            pieces.append(f"shots={', '.join(clip.source_shot_ids)}")
+        if clip.fallback_beat_ids:
+            pieces.append(f"beats={', '.join(clip.fallback_beat_ids)}")
+        if clip.dialogue_lines:
+            pieces.append(f"dialogue_lines={len(clip.dialogue_lines)}")
+        if clip.action_beats:
+            pieces.append(f"action={'; '.join(clip.action_beats[:2])}")
+        pieces.append(f"rationale={clip.rationale}")
+        lines.append(" | ".join(pieces))
+    return "\n".join(lines)
+
+
+def _render_clip_plan_notes(
+    plan: RenderClipPlan | None,
+    duration_seconds: float,
+) -> list[str]:
+    if plan is None:
+        return [
+            "No render_clip_plan artifact was available; render prompt compilation "
+            "could not verify scene-duration compression risk."
+        ]
+    if len(plan.clips) <= 1:
+        return []
+    return [
+        (
+            "Current scene-level render compresses a "
+            f"{plan.target_dramatic_duration_seconds:g}s render-clip plan with "
+            f"{len(plan.clips)} planned clips into one {duration_seconds:g}s provider clip; "
+            "Story 194 owns multi-clip execution."
+        )
+    ]
 
 
 def _exact_dialogue_lines_for_shot(shot: Any) -> list[str]:
@@ -1644,6 +1743,7 @@ def _prompt_artifact_dict(
                 [
                     prompt_artifact.scene_ref,
                     prompt_artifact.shot_plan_ref,
+                    prompt_artifact.render_clip_plan_ref,
                     prompt_artifact.keyframe_ref,
                     *[item.source_ref for item in prompt_artifact.resolved_inputs],
                 ]
@@ -1691,6 +1791,7 @@ def _video_artifact_dict(
                 [
                     generated_video.scene_ref,
                     generated_video.shot_plan_ref,
+                    generated_video.render_clip_plan_ref,
                     generated_video.prompt_ref,
                     generated_video.keyframe_ref,
                     *[item.source_ref for item in generated_video.resolved_inputs],

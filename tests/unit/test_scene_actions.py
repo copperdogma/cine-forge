@@ -236,7 +236,7 @@ def test_ai_previz_preflight_does_not_reuse_stale_shot_plan(tmp_path: Path) -> N
 
 
 @pytest.mark.unit
-def test_render_preflight_reuses_existing_healthy_shot_plan_for_current_scene(
+def test_render_preflight_builds_clip_plan_after_reusing_shot_plan_for_current_scene(
     tmp_path: Path,
 ) -> None:
     project_dir = _seed_scene_action_project(tmp_path)
@@ -250,14 +250,17 @@ def test_render_preflight_reuses_existing_healthy_shot_plan_for_current_scene(
         scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
     )
 
-    assert preflight.start_from == "render"
+    assert preflight.start_from == "render_clip_planning"
     labels = {item.label for item in preflight.items}
     assert "Timeline" not in labels
     assert "Shot planning" not in labels
+    assert "Render clip planning" in labels
 
 
 @pytest.mark.unit
-def test_render_preflight_reuses_existing_healthy_shot_plan_for_all_scenes(tmp_path: Path) -> None:
+def test_render_preflight_builds_clip_plan_after_reusing_shot_plan_for_all_scenes(
+    tmp_path: Path,
+) -> None:
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
     _save_project_artifact(store, "track_manifest", {"tracks": []})
@@ -276,9 +279,34 @@ def test_render_preflight_reuses_existing_healthy_shot_plan_for_all_scenes(tmp_p
         scene_scope=SceneExecutionScope(mode="all_scenes", scene_ids=[]),
     )
 
-    assert preflight.start_from == "render"
+    assert preflight.start_from == "render_clip_planning"
     assert all(item.label != "Timeline" for item in preflight.items)
     assert all(item.label != "Shot planning" for item in preflight.items)
+    assert any(item.label == "Render clip planning" for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_render_preflight_reuses_existing_healthy_render_clip_plan(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(store, "shot_plan", "scene_001", {"scene_id": "scene_001", "shots": []})
+    _save_scene_artifact(
+        store,
+        "render_clip_plan",
+        "scene_001",
+        {"scene_id": "scene_001", "clips": [{"clip_id": "clip_001"}]},
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.start_from == "render"
+    assert "render_clip_plan" in preflight.reused_artifact_types
+    assert all(item.label != "Render clip planning" for item in preflight.items)
 
 
 @pytest.mark.unit

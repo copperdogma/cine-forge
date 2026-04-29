@@ -153,6 +153,7 @@ class CompiledRenderPrompt(BaseModel):
     render_unit: Literal["scene"] = "scene"
     scene_ref: ArtifactRef
     shot_plan_ref: ArtifactRef
+    render_clip_plan_ref: ArtifactRef | None = None
     keyframe_ref: ArtifactRef | None = None
     target_provider: RenderProvider
     target_model: str = Field(min_length=1)
@@ -189,6 +190,7 @@ class GeneratedVideoArtifact(BaseModel):
     render_unit: Literal["scene"] = "scene"
     scene_ref: ArtifactRef
     shot_plan_ref: ArtifactRef
+    render_clip_plan_ref: ArtifactRef | None = None
     prompt_ref: ArtifactRef
     keyframe_ref: ArtifactRef | None = None
     video: MediaFile

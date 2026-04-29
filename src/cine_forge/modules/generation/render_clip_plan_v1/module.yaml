@@ -1,0 +1,29 @@
+module_id: render_clip_plan_v1
+stage: generation
+description: >
+  Estimates scene dramatic duration and plans provider-bounded render clips
+  before final render prompt compilation.
+input_schemas:
+  - canonical_script
+  - scene_index
+  - timeline
+  - track_manifest
+  - shot_plan
+output_schemas:
+  - render_clip_plan
+parameters:
+  planner_model:
+    type: string
+    required: false
+    default: "claude-opus-4-6"
+    description: "Model used for dramatic duration and render-clip grouping."
+  engine_pack_id:
+    type: string
+    required: false
+    default: "google_veo31"
+    description: "Video engine pack whose duration limits bound each render clip."
+  max_tokens:
+    type: integer
+    required: false
+    default: 2400
+    description: "Token ceiling for the clip-planning response."

@@ -20,6 +20,27 @@ from tests.storyboard_fixtures import seed_storyboard_project
 
 
 @pytest.mark.integration
+def test_render_recipe_starting_at_render_requires_cached_clip_plan(tmp_path: Path) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
+    engine = DriverEngine(workspace_root=workspace_root, project_dir=seeded["project_dir"])
+
+    with pytest.raises(ValueError, match="render_clip_planning"):
+        engine.run(
+            recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
+            run_id="integration-render-missing-clip-plan-cache",
+            force=True,
+            start_from="render",
+            runtime_params={
+                "engine_pack_id": "google_veo31",
+                "compiler_model": "mock",
+                "planner_model": "mock",
+                "duration_seconds": 8,
+            },
+        )
+
+
+@pytest.mark.integration
 def test_render_recipe_persists_prompt_video_and_track_entries(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -154,10 +175,11 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
         run_id="integration-render",
         force=True,
-        start_from="render",
+        start_from="render_clip_planning",
         runtime_params={
             "engine_pack_id": "openai_sora2",
             "compiler_model": "gpt-5.4-mini",
+            "planner_model": "mock",
             "duration_seconds": 8,
         },
     )
@@ -168,8 +190,13 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
     refs = [
         ArtifactRef.model_validate(item) for item in run_state["stages"]["render"]["artifact_refs"]
     ]
+    clip_plan_refs = [
+        ArtifactRef.model_validate(item)
+        for item in run_state["stages"]["render_clip_planning"]["artifact_refs"]
+    ]
     render_prompt_refs = [ref for ref in refs if ref.artifact_type == "render_prompt"]
     generated_video_refs = [ref for ref in refs if ref.artifact_type == "generated_video"]
+    assert len(clip_plan_refs) == 1
     assert len(render_prompt_refs) == 1
     assert len(generated_video_refs) == 1
 
@@ -179,7 +206,10 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
     assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
     assert generated_video.preview_provenance is not None
     assert generated_video.preview_provenance.mode == "generated_render"
+    assert generated_video.render_clip_plan_ref is not None
+    assert generated_video.render_clip_plan_ref.key() == clip_plan_refs[0].key()
     render_prompt = engine.store.load_artifact(render_prompt_refs[0]).data
+    assert render_prompt["render_clip_plan_ref"] is not None
     assert render_prompt["creative_brief_preview"] is not None
     assert render_prompt["preview_provenance"]["mode"] == "generated_render"
 
@@ -284,11 +314,12 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
             recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
             run_id="integration-render-partial-preserved",
             force=True,
-            start_from="render",
+            start_from="render_clip_planning",
             runtime_params={
                 "scene_scope": {"mode": "all_scenes", "scene_ids": []},
                 "engine_pack_id": "google_veo31",
                 "compiler_model": "gpt-5.4-mini",
+                "planner_model": "mock",
                 "duration_seconds": 8,
             },
         )
@@ -439,10 +470,11 @@ def test_render_recipe_allows_warning_level_prompt_gaps(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
         run_id="integration-render-warning-gaps",
         force=True,
-        start_from="render",
+        start_from="render_clip_planning",
         runtime_params={
             "engine_pack_id": "openai_sora2",
             "compiler_model": "gpt-5.4-mini",
+            "planner_model": "mock",
             "duration_seconds": 8,
         },
     )
@@ -502,10 +534,11 @@ def test_render_recipe_persists_reference_conditioned_truth_for_google_pack(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
         run_id="integration-render-reference-conditioned",
         force=True,
-        start_from="render",
+        start_from="render_clip_planning",
         runtime_params={
             "engine_pack_id": "google_veo31",
             "compiler_model": "mock",
+            "planner_model": "mock",
             "duration_seconds": 8,
         },
     )

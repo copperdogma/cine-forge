@@ -50,6 +50,11 @@ _CATEGORY_SPECS: dict[str, dict[str, Any]] = {
         "source_role_id": "shot_planning",
         "source_artifact_types": ["shot_plan"],
     },
+    "render_clip_plan": {
+        "title": "Render Clip Plan",
+        "source_role_id": "render_planning",
+        "source_artifact_types": ["render_clip_plan"],
+    },
     "look_and_feel": {
         "title": "Look & Feel",
         "source_role_id": "visual_architect",

@@ -125,6 +125,62 @@ def seed_storyboard_project(
             metadata=metadata("seed scene"),
         )
 
+    script_lines: list[str] = []
+    line_number = 1
+    scene_index_entries: list[dict[str, Any]] = []
+    for scene in scenes:
+        scene_start = line_number
+        script_lines.append(scene["heading"])
+        line_number += 1
+        for element in scene["elements"]:
+            script_lines.append(str(element["content"]))
+            line_number += 1
+        script_lines.append("")
+        scene_index_entries.append(
+            {
+                "scene_id": scene["scene_id"],
+                "scene_number": scene["scene_number"],
+                "heading": scene["heading"],
+                "location": scene["location"],
+                "time_of_day": scene["time_of_day"],
+                "characters_present": scene["characters_present"],
+                "characters_present_ids": scene["characters_present_ids"],
+                "props_mentioned": scene["props_mentioned"],
+                "source_span": {
+                    "start_line": scene_start,
+                    "end_line": line_number - 1,
+                },
+                "tone_mood": scene["tone_mood"],
+            }
+        )
+        line_number += 1
+    save_artifact(
+        store,
+        "canonical_script",
+        "project",
+        {"title": "Pressure Test", "script_text": "\n".join(script_lines)},
+    )
+    save_artifact(
+        store,
+        "scene_index",
+        "project",
+        {
+            "total_scenes": len(scenes),
+            "unique_locations": sorted({scene["location"] for scene in scenes}),
+            "unique_characters": sorted(
+                {
+                    character
+                    for scene in scenes
+                    for character in scene["characters_present"]
+                }
+            ),
+            "estimated_runtime_minutes": float(len(scenes)),
+            "scenes_passed_qa": len(scenes),
+            "scenes_need_review": 0,
+            "entries": scene_index_entries,
+        },
+    )
+
     project_config = ProjectConfig(
         title="Pressure Test",
         format="screenplay",

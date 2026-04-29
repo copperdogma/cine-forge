@@ -272,6 +272,16 @@ PIPELINE_NODES: list[PipelineNode] = [
 
     # --- Production phase (future) ---
     PipelineNode(
+        id="render_clip_planning",
+        label="Render Clip Planning",
+        phase_id="production",
+        artifact_types=["render_clip_plan"],
+        check_mode="entity",
+        dependencies=["scene_extraction"],
+        nav_route="/scenes",
+        implemented=True,
+    ),
+    PipelineNode(
         id="render",
         label="Render",
         phase_id="production",
@@ -338,7 +348,7 @@ PIPELINE_PHASES: list[PipelinePhase] = [
         id="production",
         label="Production",
         icon="Film",
-        node_ids=["render", "final_output"],
+        node_ids=["render_clip_planning", "render", "final_output"],
     ),
 ]
 
@@ -367,6 +377,7 @@ NODE_FIX_RECIPES: dict[str, str] = {
     "story_world": "creative_direction",
     "shot_planning": "shot_planning",
     "ai_previz": "ai_previz_generation",
+    "render_clip_planning": "render_generation",
     "render": "render_generation",
     "final_output": "final_output",
 }

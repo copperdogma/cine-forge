@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-04-29-04] — Add scene render clip planning (Story 193)
+
+### Added
+- Added the typed `render_clip_plan` artifact and `render_clip_plan_v1` module so final render can estimate dramatic scene duration, enforce engine clip limits, and persist provider-bounded clip boundaries with provenance.
+- Added Brick & Steel-style duration coverage plus render-recipe integration tests for missing-shot-plan fallback, AI/default provenance, engine-cap splitting, and strict `start_from=render` cache enforcement.
+
+### Changed
+- Changed final-render generation to run render-clip planning before prompt compilation and to auto-build or reuse clip plans through scene-action preflight.
+- Changed render prompt and video artifacts to reference the selected clip plan and disclose when the current one-scene video path compresses a multi-clip plan that Story 194 will consume.
+
 ## [2026-04-29-03] — Preserve Brick & Steel final-render prompt truth (Story 191)
 
 ### Added

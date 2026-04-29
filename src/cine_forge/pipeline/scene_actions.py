@@ -28,6 +28,7 @@ _SCENE_ENTITY_ARTIFACT_TYPES = {
     "sound_and_music",
     "character_and_performance",
     "shot_plan",
+    "render_clip_plan",
     "storyboard",
     "keyframe",
     "ai_previz_prompt",
@@ -438,6 +439,30 @@ def _populate_generation_preflight(
             ))
 
     if recipe_id == "render_generation":
+        missing_render_clip_plan = _missing_or_unhealthy_scene_artifact_count(
+            store,
+            "render_clip_plan",
+            scene_ids,
+            preflight.scene_scope,
+        )
+        if missing_render_clip_plan:
+            _append_unique(preflight.auto_build_artifact_types, "render_clip_plan")
+            preflight.items.append(SceneActionPreflightItem(
+                kind="auto_build",
+                label="Render clip planning",
+                detail=_auto_build_detail(
+                    preflight.scene_scope,
+                    missing_render_clip_plan,
+                    "This run will estimate scene duration and render clip boundaries first.",
+                    (
+                        "This run will estimate scene duration and render clip boundaries "
+                        "for the missing scenes first."
+                    ),
+                ),
+            ))
+        else:
+            _append_unique(preflight.reused_artifact_types, "render_clip_plan")
+
         missing_keyframes = _missing_or_unhealthy_scene_artifact_count(
             store,
             "keyframe",
@@ -546,6 +571,14 @@ def _recommended_generation_start_stage(
         if recipe_id == "ai_previz_generation":
             return "ai_previz"
         if recipe_id == "render_generation":
+            missing_render_clip_plan = _missing_or_unhealthy_scene_artifact_count(
+                store,
+                "render_clip_plan",
+                scene_ids,
+                preflight.scene_scope,
+            )
+            if missing_render_clip_plan != 0:
+                return "render_clip_planning"
             return "render"
     return None
 
@@ -558,10 +591,18 @@ def _apply_ai_previz_prerequisite_strategy(preflight: SceneActionPreflight) -> N
 
 
 def _prune_generation_autobuilds_for_start_stage(preflight: SceneActionPreflight) -> None:
-    if preflight.start_from not in {"storyboards", "ai_previz", "render"}:
+    if preflight.start_from not in {
+        "storyboards",
+        "ai_previz",
+        "render_clip_planning",
+        "render",
+    }:
         return
     skipped_labels = {"Timeline", "Track manifest", "Shot planning"}
     skipped_artifact_types = {"timeline", "track_manifest", "shot_plan"}
+    if preflight.start_from == "render":
+        skipped_labels.add("Render clip planning")
+        skipped_artifact_types.add("render_clip_plan")
     preflight.items = [
         item
         for item in preflight.items
