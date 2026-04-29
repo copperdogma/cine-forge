@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-04-29-02] — Record deploy auth recovery
+
+### Changed
+- Updated the deploy runbook duration estimate from recent deploy history and recorded the expired Fly token preflight plus successful authenticated production deploy.
+
 ## [2026-04-29-01] — Recover long-running operation progress (Story 139)
 
 ### Added
