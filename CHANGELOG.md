@@ -4,10 +4,12 @@
 
 ### Added
 - Added Story 191's Brick & Steel evidence packet and Story 192 as the explicit follow-up for GPT-image design-study completion/error truth.
+- Added Story 193 for scene-duration/render-clip planning and Story 194 as the dependent multi-clip rendering draft.
 
 ### Changed
 - Changed final-render prompt compilation so exact shot-plan dialogue is carried into the compiler context and deterministically appended to isolated video prompts when the LLM compiler omits it.
-- Updated scene-generation planning surfaces to close the final-render prompt-truth slice while keeping the separate design-study UI/provider lifecycle residual visible.
+- Changed the prompt compiler's exact-dialogue contract to avoid duplicate dialogue blocks when quoted speaker lines are already present, and to add cadence guidance for dialogue-heavy short clips.
+- Updated scene-generation planning surfaces to close the final-render prompt-truth slice while keeping the separate design-study UI/provider lifecycle residual and render-clip planning follow-up visible.
 
 ## [2026-04-29-02] — Record deploy auth recovery
 

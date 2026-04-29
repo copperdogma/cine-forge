@@ -807,7 +807,9 @@
           "186",
           "188",
           "190",
-          "191"
+          "191",
+          "193",
+          "194"
         ],
         "adrIds": [
           "ADR-002",
@@ -903,7 +905,9 @@
           "188",
           "190",
           "191",
-          "192"
+          "192",
+          "193",
+          "194"
         ],
         "adrIds": [
           "ADR-002",
@@ -1176,7 +1180,9 @@
           "176",
           "177",
           "178",
-          "185"
+          "185",
+          "193",
+          "194"
         ],
         "adrIds": [
           "ADR-003"
@@ -1702,7 +1708,9 @@
         },
         "storyIds": [
           "191",
-          "192"
+          "192",
+          "193",
+          "194"
         ],
         "evalIds": [],
         "actionability": {
@@ -1720,7 +1728,9 @@
           },
           "storyIds": [
             "191",
-            "192"
+            "192",
+            "193",
+            "194"
           ],
           "evalIds": []
         }
@@ -12389,6 +12399,150 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "193",
+      "title": "Scene Render Clip Plan",
+      "path": "docs/stories/story-193-scene-render-clip-plan.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R11 (production readiness per scene)",
+        "R12 (transparency & control)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:10.1",
+        "spec:10.2",
+        "spec:10.3",
+        "spec:6.1",
+        "spec:6.3",
+        "spec:7.1",
+        "spec:7.1.2",
+        "spec:7.1.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C6"
+      ],
+      "dependsOn": [
+        "191"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "driver_and_runtime",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "brick-steel",
+        "multi-clip-render",
+        "pacing",
+        "render-planning",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "193",
+        "sourcePath": "docs/stories/story-193-scene-render-clip-plan.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-193-scene-render-clip-plan.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "194",
+      "title": "Multi-Clip Scene Rendering",
+      "path": "docs/stories/story-194-multi-clip-scene-rendering.md",
+      "status": "Draft",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:10.1",
+        "spec:10.2",
+        "spec:10.3",
+        "spec:6.1",
+        "spec:6.3",
+        "spec:6.4",
+        "spec:7.1",
+        "spec:7.1.2",
+        "spec:7.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C6"
+      ],
+      "dependsOn": [
+        "193"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "driver_and_runtime",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "brick-steel",
+        "multi-clip-render",
+        "render-planning",
+        "scene-generation",
+        "timeline-assembly"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "194",
+        "sourcePath": "docs/stories/story-194-multi-clip-scene-rendering.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-194-multi-clip-scene-rendering.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -14508,15 +14662,17 @@
             "169",
             "170",
             "191",
-            "192"
+            "192",
+            "193",
+            "194"
           ],
-          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closes the Brick & Steel final-render prompt-truth slice; Story 192 preserves the separate GPT-image design-study completion/error follow-up."
+          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 preserves the separate GPT-image design-study completion/error follow-up. Story 193 captures the newly identified scene-duration/render-clip planning artifact, and Story 194 drafts the dependent multi-clip scene-render execution slice."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closes the focused Brick & Steel final-render prompt-truth follow-up, and Story 192 now owns the residual GPT-image design-study lifecycle truth work.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 owns the residual GPT-image design-study lifecycle truth work, Story 193 is the sequence-sensitive render-clip planning follow-up, and Story 194 is the dependent multi-clip rendering draft.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -14545,7 +14701,9 @@
               "Pending"
             ],
             "empty_message": "No stories currently need the sequence-sensitive lane.",
-            "story_notes": {}
+            "story_notes": {
+              "193": "Sequence-sensitive follow-up from Story 191: create a scene-duration/render-clip planning artifact before changing render execution."
+            }
           },
           {
             "id": "blocked",
@@ -14571,7 +14729,8 @@
               "105": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "106": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "112": "Valuable redesign candidate, but it still needs tighter scope before it should leave Draft.",
-              "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending."
+              "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
+              "194": "Dependent consumer story for multi-clip scene rendering; keep Draft until Story 193's render-clip plan contract lands."
             }
           },
           {

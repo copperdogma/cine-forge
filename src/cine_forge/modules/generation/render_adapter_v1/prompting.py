@@ -21,6 +21,16 @@ Rules:
 - Make camera, blocking, lighting, environment, motion, and sound cues explicit.
 - Preserve exact scripted dialogue lines provided by the shot plan verbatim; never
   replace them with summaries such as "delivers the joke" or "responds."
+- For dialogue scenes, use exactly one canonical dialogue/timing section in
+  `prompt_text`. Do not list the same scripted dialogue in both prose and a
+  separate block.
+- Format exact dialogue as `SPEAKER: line` bullets without wrapping the utterance
+  in extra quotation marks.
+- Give dialogue scenes explicit cadence: line order, speaker turns, pauses,
+  reaction beats, and planned silences. Avoid compressed back-to-back delivery.
+- Organize `prompt_text` in a provider-friendly order: scene format and intent,
+  reference usage, camera/blocking/motion, action timing, exact dialogue timing,
+  lighting/color, then audio.
 - Mention uploaded references only when they materially guide the model.
 - Never ask the target model to do something the engine pack says is unsupported.
 - If upstream context is missing, name the gap in `missing_inputs` instead of

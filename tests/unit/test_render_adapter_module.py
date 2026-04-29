@@ -7,12 +7,16 @@ import pytest
 import yaml
 
 from cine_forge.ai.video import VideoGenerationResult
-from cine_forge.modules.generation.render_adapter_v1.main import run_module
+from cine_forge.modules.generation.render_adapter_v1.main import (
+    _ensure_dialogue_prompt_contract,
+    run_module,
+)
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
 from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
 from cine_forge.schemas import (
     CompiledRenderPrompt,
     GeneratedVideoArtifact,
+    ShotPlan,
     TrackManifest,
 )
 from cine_forge.services import InjectedAssetService
@@ -284,18 +288,22 @@ def test_run_module_generates_prompt_video_and_track_entries(
     manifest = TrackManifest.model_validate(manifest_payload)
 
     assert "Coverage approach" in str(captured["compiler_prompt"])
-    assert "exact_scripted_dialogue=We can still stop this." in str(
-        captured["compiler_prompt"]
-    )
+    assert "Dialogue timing / exact lines:" in str(captured["compiler_prompt"])
+    assert "We can still stop this." in str(captured["compiler_prompt"])
     assert "CREATIVE BRIEF:" in str(captured["compiler_prompt"])
     assert prompt_output["exclude_upstream_lineage_types"] == ["track_manifest"]
     assert prompt_artifact.target_provider == "openai"
-    assert "Exact scripted dialogue to preserve verbatim:" in prompt_artifact.prompt_text
+    assert "Dialogue timing / exact lines:" in prompt_artifact.prompt_text
     assert "- We can still stop this." in prompt_artifact.prompt_text
-    assert "Exact scripted dialogue to preserve verbatim:" in captured["video_request"].prompt
+    assert "Dialogue cadence:" in prompt_artifact.prompt_text
+    assert "Dialogue timing / exact lines:" in captured["video_request"].prompt
     assert "- We can still stop this." in captured["video_request"].prompt
     assert any(
-        note.startswith("Adapter appended exact scripted dialogue from the shot plan")
+        note.startswith("Adapter appended a dialogue timing contract from the shot plan")
+        for note in prompt_artifact.completeness.notes
+    )
+    assert any(
+        note.startswith("Adapter added dialogue cadence guidance")
         for note in prompt_artifact.completeness.notes
     )
     assert prompt_artifact.completeness.missing_categories == []
@@ -325,6 +333,56 @@ def test_run_module_generates_prompt_video_and_track_entries(
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
         == "generated_video"
     )
+
+
+@pytest.mark.unit
+def test_dialogue_prompt_contract_does_not_duplicate_quoted_speaker_lines(
+    tmp_path: Path,
+) -> None:
+    seeded = seed_render_project(tmp_path)
+    base_plan = ShotPlan.model_validate(seeded["inputs"]["shot_plan"][0])
+    dialogue_lines = [
+        "STEEL: Beer's ready!",
+        "BRICK: Are they cold?",
+        "STEEL: Does a bear crap in the woods?",
+        "STEEL: To retirement.",
+        "BRICK: To retirement.",
+        "STEEL: Screw retirement.",
+        "BRICK: Screw retirement.",
+    ]
+    shots = [
+        base_plan.shots[0].model_copy(
+            update={
+                "shot_id": "scene_001_dialogue",
+                "shot_size": "Two-shot",
+                "dialogue_lines": dialogue_lines,
+                "duration_estimate_seconds": 8.0,
+            }
+        )
+    ]
+    plan = base_plan.model_copy(
+        update={"shots": shots, "total_estimated_duration_seconds": 8.0}
+    )
+    prompt_text = (
+        'Live-action 8-second patio scene. Exact dialogue, spoken verbatim: '
+        'STEEL: "Beer\'s ready!" BRICK: "Are they cold?" '
+        'STEEL: "Does a bear crap in the woods?" STEEL: "To retirement." '
+        'BRICK: "To retirement." STEEL: "Screw retirement." '
+        'BRICK: "Screw retirement." Hold the silence after the toast.'
+    )
+
+    updated_prompt, notes = _ensure_dialogue_prompt_contract(
+        prompt_text,
+        plan,
+        duration_seconds=8.0,
+    )
+
+    assert "Dialogue timing / exact lines:" not in updated_prompt
+    assert updated_prompt.count("Beer's ready!") == 1
+    assert updated_prompt.count("Screw retirement.") == 2
+    assert "Dialogue cadence: This is dialogue-dense" in updated_prompt
+    assert not any("compiler omitted" in note for note in notes)
+    assert any("dense for the requested 8s render" in note for note in notes)
 
 
 @pytest.mark.unit

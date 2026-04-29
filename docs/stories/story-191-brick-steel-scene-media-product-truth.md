@@ -61,6 +61,8 @@ legacy_system: ""
 
 Turn the current `Brick & Steel: Full Retired` final-render prompt failure into inspectable product truth, then fix the confirmed shipped seam. The scene-media capture found several related failures, but the local-code owner proved by current artifacts was narrower: final-render prompts were hand-waving dialogue instead of carrying exact script lines into isolated video generation. This story preserves the broader classification evidence, fixes the final-render prompt compiler gap, and explicitly hands the remaining GPT-image completion/error lifecycle work to Story 192.
 
+Reopened 2026-04-28 after production prompt review showed the first fix was too blunt: exact dialogue was present once in the compiled prose and then appended a second time by the deterministic fallback, while the prompt still invited rushed back-to-back delivery in an 8-second clip.
+
 ## Eval Ladder Context
 
 - **Root Ideal need**: R7/R8/R17 require generated images, storyboards, and final renders to be good enough for creative reaction and refinement, with user-provided or generated references treated as real inputs instead of vibes.
@@ -78,6 +80,9 @@ Turn the current `Brick & Steel: Full Retired` final-render prompt failure into 
 - [x] GPT-image completion and failure handling is preserved as classified follow-up work in Story 192 rather than claimed fixed by this final-render prompt slice.
 - [x] At least one focused regression test or harness covers any local-code seam changed by the story. If the story closes with no local code change, it must preserve the evidence packet and record the provider/model blocker plus a concrete retry trigger.
 - [x] Browser verification for the remaining design-study media-generation flow is moved to Story 192; no UI files changed in this final-render prompt slice.
+- [x] Reopened prompt compiler no longer appends a duplicate exact-dialogue block when the compiler already included every shot-plan line with speaker labels and extra quote wrappers.
+- [x] Reopened prompt compiler gives dialogue-heavy short clips explicit cadence/timing guidance so exact lines are not encouraged to run back-to-back without breaths or reaction beats.
+- [x] Current AI video prompt best-practice research is preserved in the story evidence packet and reflected in the compiler rules.
 
 ## Out of Scope
 
@@ -125,6 +130,14 @@ Turn the current `Brick & Steel: Full Retired` final-render prompt failure into 
   - [x] **T3 - Fewer Files:** Are files appropriately sized? Types centralized?
   - [x] **T4 - Verbose Artifacts:** Is the work log verbose enough for handoff?
   - [x] **T5 - Ideal vs Today:** Can this be simplified toward the ideal?
+
+### Reopen Tasks
+
+- [x] Research current official AI video-generation prompt guidance for structure, ordering, dialogue, audio, pacing, and short-clip complexity.
+- [x] Replace the previous blunt exact-dialogue footer with normalized exact-line detection, a single dialogue timing fallback, and cadence guidance.
+- [x] Add regression coverage for the quoted-speaker-line duplication case from the production Brick & Steel prompt.
+- [x] Manually inspect the updated prompt-builder output against the pasted production failure shape.
+- [x] Re-run focused backend validation for the changed compiler seam, then run the required broader checks before closing again.
 
 ## Workflow Gates
 
@@ -216,6 +229,16 @@ Impact and risk:
 
 Anti-fragmentation check: this remains a new story instead of a Story 190 reopen because Story 190 was limited to storyboard identity/reference eval work and rejected a specific non-default candidate, while this story's first confirmed fix is final-render prompt grounding plus current production scene-media classification.
 
+### Reopen Plan
+
+1. Preserve a small source-backed research artifact for AI video prompt structure and ordering. Bias toward official provider guidance and translate it into compiler rules, not generic prompt folklore.
+2. Change the final-render compiler to use a single dialogue timing contract:
+   - The shot-definition context should point to one dialogue timing section instead of burying exact lines inline in each shot row.
+   - The postprocessor should normalize quotes and punctuation around exact dialogue before deciding a line is missing.
+   - The deterministic fallback should append one `Dialogue timing / exact lines` section only when exact lines are actually absent.
+3. Add cadence pressure handling for dialogue-dense short clips. The prompt and artifact notes should state when the requested duration is tight for the line count, then ask for terse but distinct delivery with breaths/reaction beats.
+4. Validate with a regression modeled on the production failure: shot-plan lines like `STEEL: Beer's ready!` must not be considered missing when the compiler writes `STEEL: "Beer's ready!"`.
+
 ## Work Log
 
 20260428-2113 - story-created: created Story 191 from unscoped `/triage` after neutral story, inbox, eval, architecture, and health lanes agreed that the current `Brick & Steel` scene-media cluster is the highest-value active `spec:6` / `spec:7` follow-up. Evidence: `docs/inbox.md` reports bad character/reference images, GPT-image completion uncertainty, moderation errors, final-render reference uncertainty, and missing exact script lines; Story 139 likely handled the black-screen item; Story 190 is done and waiting for a realistic-reference fixture trigger rather than another prompt tweak. Next step: run `/build-story 191` to capture and classify the current artifact truth before coding.
@@ -224,3 +247,7 @@ Anti-fragmentation check: this remains a new story instead of a Story 190 reopen
 20260428-2154 - validation: ran `/validate` fresh against the Story 191 diff. Checks passed: `make test-unit PYTHON=.venv/bin/python` (`818 passed, 179 deselected, 1 warning`), `.venv/bin/python -m ruff check src/ tests/`, `.venv/bin/python -m pytest -m unit tests/unit/test_render_adapter_module.py::test_run_module_generates_prompt_video_and_track_entries`, `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, `pnpm methodology:check`, and `git diff --check`. The implemented exact-dialogue prompt transport is clean and aligned with ADR-002/ADR-003; no compatibility shim, duplicate owner, dead wrapper, or widened contract drift was found. No promptfoo eval or registry update was run because this slice changed deterministic prompt assembly rather than a maintained scored model-quality eval. Closure is not clean as written: GPT-image completion/failure handling and desktop/mobile browser verification remain unchecked original acceptance criteria. Recommendation: rescope those UI/provider lifecycle criteria into a follow-up story, then run `/mark-story-done 191`; otherwise keep Story 191 open and fix the residual completion/error/browser path before closure.
 20260428-2158 - rescope-closeout: created Story 192, `Brick & Steel GPT-Image Completion and Error Truth`, as the explicit owner for the design-study GPT-image completion/failure handling and desktop/mobile browser-verification residual. Narrowed Story 191's title, goal, acceptance criteria, tasks, and out-of-scope list to the shipped final-render prompt-truth slice. Evidence remains the Story 191 capture packet plus validation pass; no UI/provider lifecycle fix is claimed here. Next step: `/mark-story-done 191`.
 20260428-2201 - completion: marked Story 191 Done via `/mark-story-done` after the rescope made all acceptance criteria and tasks truthful for the shipped final-render prompt-truth slice. Fresh close-out checks passed: `make test-unit PYTHON=.venv/bin/python` (`818 passed, 179 deselected, 1 warning`), `.venv/bin/python -m ruff check src/ tests/`, `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, `pnpm methodology:check`, and `git diff --check`. Story 192 now owns the separate design-study GPT-image completion/error/browser follow-up, so Story 191 closes without claiming that residual is fixed. Recommended next step: `/check-in-diff`.
+20260428-2252 - reopened: production prompt review for `brick-steel-full-retired/scene_001` showed the first exact-dialogue fallback created a new artifact-quality problem. The compiled prompt already contained the exact Brick/Steel lines in prose with quote wrappers, but deterministic missing-line detection treated `STEEL: "Beer's ready!"` as missing relative to `STEEL: Beer's ready!` and appended a second exact-dialogue block. The same prompt still gave only broad rhythm language for seven lines plus a long silence inside an 8-second clip, which invites rapid-fire delivery. Reopened Story 191 rather than creating a separate story because the bug is directly inside the prior prompt compiler seam.
+20260428-2300 - implementation: researched official Sora, Veo, and Runway prompt guidance and captured the compiler implications in `docs/reports/story-191-brick-steel-scene-media-product-truth/video-prompting-research.md`. Updated the render adapter so `_shot_definition_block` exposes one `Dialogue timing / exact lines` contract instead of duplicating exact lines inside shot rows, and replaced the blunt footer with normalized exact-line matching plus a single timing fallback. The postprocessor now normalizes quote wrappers and curly quotes before deciding a line is missing, so `STEEL: "Beer's ready!"` no longer triggers a duplicate exact-dialogue block. Added cadence guidance and a density note when the exact line count is tight for the requested duration. Focused regression now covers both missing-dialogue fallback and the quoted Brick/Steel-style duplicate case; targeted unit check passed (`2 passed`).
+20260428-2311 - validation: manually exercised a Brick/Steel-shaped sample through `_shot_definition_block` and `_ensure_dialogue_prompt_contract`; the shot block contained one `Dialogue timing / exact lines` contract, the quoted exact-dialogue prompt did not get a fallback timing block appended, `Beer's ready!` appeared once, and the dense 8-second cadence guidance was added. Checks passed: targeted Story 191 regression tests (`2 passed`), targeted Ruff for the touched files, `make test-unit PYTHON=.venv/bin/python` (`819 passed, 179 deselected, 1 warning`), `.venv/bin/python -m ruff check src/ tests/`, `pnpm methodology:compile`, `pnpm methodology:check`, and `git diff --check`. Methodology check reports pre-existing warnings for `api_service_and_operator_console` architecture audit attention and stale UI-scout freshness; no UI files were touched, so browser verification is not part of this compiler-only reopen.
+20260428-2351 - reclose-scope-boundary: re-closed Story 191 as the prompt-compiler truth repair only. The shipped slice fixes duplicate exact-dialogue fallback behavior, preserves exact lines once, and adds cadence guidance for dialogue-heavy clips. It intentionally does not claim to solve the larger provider-duration mismatch where a roughly 30-second scene is forced into a single 8-second render; Story 193 now owns the prerequisite `render_clip_plan` artifact and Story 194 drafts the dependent multi-clip render execution path. Recommended next step: `/check-in-diff`.
