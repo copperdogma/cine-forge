@@ -18,6 +18,15 @@ Assess whether a story's implementation meets its requirements.
    - `git diff`
    - `git ls-files --others --exclude-standard`
 
+1b. **Run a findings-first review pass before scoring closure**:
+   - Review the current diff for concrete bugs, behavioral regressions, missing
+     tests, security/trust-boundary risks, and operational hazards.
+   - Report material findings first, ordered by severity and grounded in
+     file/line references when possible.
+   - If no material findings are found, say so explicitly and name any residual
+     verification limits.
+   - Do not let green checks or tidy story bookkeeping hide a real defect.
+
 2. **Read the story** — Load `docs/stories/story-{NNN}-*.md`. Note all acceptance criteria and tasks.
 
 2b. **Check workflow gates** — Read the `Workflow Gates` section if present. If it is missing on an older story, add equivalent gates before continuing so the handoff state is explicit.
@@ -52,9 +61,10 @@ Assess whether a story's implementation meets its requirements.
 
 4b. **Use optional parallel validation only when warranted**:
    - Parallel packets are useful for non-trivial validation slices such as
-     changed-file review, acceptance-criteria review, backend/UI check
-     execution, browser/live-smoke evidence review, eval mismatch review, and
-     holistic Ideal/spec/design fit review.
+     findings-first defect review, changed-file review,
+     acceptance-criteria review, backend/UI check execution,
+     browser/live-smoke evidence review, eval mismatch review, and holistic
+     Ideal/spec/design fit review.
    - Scope each packet to explicit files, commands, criteria, screens, smoke
      targets, evals, or architecture questions. Require fresh evidence from
      this validation pass, and preserve CineForge's backend, UI, browser,
@@ -115,6 +125,8 @@ Assess whether a story's implementation meets its requirements.
    - In that note and in the report, label results only from commands rerun in this validation pass; anything not rerun here must be called out as not freshly verified
 
 11. **Produce report** — Findings must explicitly call out:
+   - findings first: concrete bugs, regressions, missing tests, or "no material
+     findings found" with residual risks
    - missing ADR / decision alignment
    - weak or unproven approach selection
    - redundant code left behind
