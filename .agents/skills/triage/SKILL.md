@@ -240,6 +240,13 @@ When invoked with no scope:
    permutation with the same subsystem and operator-facing outcome, prefer
    `continue`, `expand`, `reopen`, or `consolidate` instead. Do not fragment
    work into tiny story shells that barely advance the app.
+   When a new story is still the right vehicle, do not default to a few-minute
+   slice. If adjacent work shares the same runtime seam, artifact chain,
+   validation boundary, or operator-facing proof surface, expand the boundary
+   toward roughly one focused AI hour of implementation plus validation, or
+   longer when that is the smallest coherent milestone. Treat that as a sizing
+   heuristic, not a quota; keep tiny stories only for genuine high-risk
+   unknowns, blockers, or indivisible proof boundaries.
 
 11. **Return a short report**
 
