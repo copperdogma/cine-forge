@@ -18,11 +18,13 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, and Story 194 closed the dependent multi-clip rendering slice.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, and Story 194 closed the dependent multi-clip rendering slice. Inbox triage on 2026-04-30 routed the current Brick & Steel notes into Stories 195-199; Story 195 is the recommended next build because production xAI previz readiness is the narrowest blocker on the active scene-generation lane.
 
 ### Pending — Ready To Build Now
 
-No stories currently fit this lane.
+| Story | Why |
+|---|---|
+| **195** Production xAI Previz Readiness | Recommended next build from inbox triage: prove production xAI AI-previz readiness through health/live-smoke and the Brick & Steel scene route without changing provider defaults or leaking secrets. |
 
 ### In Progress
 
@@ -30,7 +32,10 @@ No stories currently in progress.
 
 ### Pending — Ready, But Sequence-Sensitive
 
-No stories currently need the sequence-sensitive lane.
+| Story | Why |
+|---|---|
+| **196** Brick & Steel Product Truth Scrub | Run after or alongside the xAI readiness check: verify the current Brick & Steel desktop/mobile product truth, then separate stale inbox notes from live defects with evidence. |
+| **198** Brick & Steel Character Adjudication | Build once the scene-generation lane is not blocked by prod readiness, or sooner if character/reference correctness becomes the active surface: reproduce Brick vs Brick Braddock and prove artifact-edit merge/deprecation. |
 
 ### Draft — Scope Or Decision Needed First
 
@@ -43,6 +48,8 @@ No stories currently need the sequence-sensitive lane.
 | **106** Disk-Backed Chunk-Level Extraction Cache | Worth keeping visible, but it is less immediately executable than the current product-facing pending lane. |
 | **112** Continuity Tracking: First Principles Redesign | Valuable redesign candidate, but it still needs tighter scope before it should leave Draft. |
 | **138** Cost Profiles, Model Comparison, and Stage Budget Controls | Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending. |
+| **197** Reference Pack Visual Fidelity | High-value reference-pack visual-fidelity lane from inbox triage, but it needs the provider/reference-pack eval ladder and decision boundary before build. |
+| **199** Casting and Table Read Reference Loop | Vision-level casting and table-read idea from inbox triage; preserve it for Ideal/spec shaping before implementation work. |
 
 ### Deferred — Intentionally Parked
 
@@ -104,7 +111,7 @@ No blocked lines currently need attention.
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
-- Active campaign `ui-product-truth-scouting`: Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage.
+- Active campaign `ui-product-truth-scouting` (stories: 196): Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 is the current Brick & Steel product-truth scrub created from inbox triage.
 
 ## Story Index
 
@@ -127,6 +134,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 198 | Brick & Steel Character Adjudication | High | Pending | — | spec:2, spec:3, spec:5, spec:8 | 055, 081, 097, 124, 129 | [story-198](stories/story-198-brick-steel-character-adjudication.md) |
 | 185 | Project Home Script Hierarchy and Supporting Surface Placement | High | Draft | — | spec:2, spec:5, spec:10 | 093, 142, 166, 167 | [story-185](stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |
@@ -168,7 +176,9 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 197 | Reference Pack Visual Fidelity | High | Draft | — | spec:3, spec:4, spec:6, spec:7, spec:8 | 029, 056, 186, 190, 192 | [story-197](stories/story-197-reference-pack-visual-fidelity.md) |
 | 112 | Continuity Tracking: First Principles Redesign | Medium | Draft | — | spec:3 | — | [story-112](stories/story-112-continuity-redesign-first-principles.md) |
+| 199 | Casting and Table Read Reference Loop | Medium | Draft | — | spec:3, spec:4, spec:5, spec:7, spec:10 | 023, 029, 097 | [story-199](stories/story-199-casting-table-read-reference-loop.md) |
 | 043 | Entity-First Navigation | High | Done | — | spec:3, spec:5 | — | [story-043](stories/story-043-entity-first-navigation.md) |
 | 045 | Entity Cross-Linking | High | Done | — | spec:3, spec:5 | — | [story-045](stories/story-045-entity-cross-linking.md) |
 | 055 | LLM-First Entity Adjudication for Character, Location, and Prop | High | Done | — | spec:1, spec:3, spec:5, spec:8 | 008, 009, 041, 054 | [story-055](stories/story-055-llm-first-entity-adjudication-for-character-location-prop.md) |
@@ -227,6 +237,8 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 195 | Production xAI Previz Readiness | High | Pending | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 176, 184, 194 | [story-195](stories/story-195-production-xai-previz-readiness.md) |
+| 196 | Brick & Steel Product Truth Scrub | High | Pending | — | spec:5, spec:6, spec:7, spec:10 | 139, 180, 191, 192, 193, 194 | [story-196](stories/story-196-brick-steel-product-truth-scrub.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
 | 051 | Chat UX Polish: Ordering, Naming, Progress Card, and Live Counts | High | Done | — | spec:5 | — | [story-051](stories/story-051-chat-ux-polish.md) |

@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-30-02] — Route Brick & Steel inbox triage
+
+### Added
+- Added Stories 195-199 to route the Brick & Steel inbox into production xAI readiness, product-truth scrub, reference-pack fidelity, character adjudication, and casting/table-read follow-up lanes.
+
+### Changed
+- Updated methodology state and generated planning surfaces so Story 195 is the recommended next build, with related follow-ups sequenced or kept in Draft as appropriate.
+- Cleared `docs/inbox.md` after routing all live items into durable story artifacts.
+
 ## [2026-04-30-01] — Persist design-study lifecycle truth (Story 192)
 
 ### Added

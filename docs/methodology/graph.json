@@ -282,7 +282,8 @@
           "183",
           "185",
           "187",
-          "189"
+          "189",
+          "198"
         ],
         "adrIds": [
           "ADR-003"
@@ -364,7 +365,10 @@
           "160",
           "162",
           "183",
-          "189"
+          "189",
+          "197",
+          "198",
+          "199"
         ],
         "adrIds": [
           "ADR-001",
@@ -524,7 +528,9 @@
           "131",
           "141",
           "175",
-          "178"
+          "178",
+          "197",
+          "199"
         ],
         "adrIds": [
           "ADR-002",
@@ -675,7 +681,11 @@
           "185",
           "186",
           "191",
-          "192"
+          "192",
+          "195",
+          "196",
+          "198",
+          "199"
         ],
         "adrIds": [
           "ADR-002",
@@ -809,7 +819,10 @@
           "190",
           "191",
           "193",
-          "194"
+          "194",
+          "195",
+          "196",
+          "197"
         ],
         "adrIds": [
           "ADR-002",
@@ -907,7 +920,11 @@
           "191",
           "192",
           "193",
-          "194"
+          "194",
+          "195",
+          "196",
+          "197",
+          "199"
         ],
         "adrIds": [
           "ADR-002",
@@ -1023,7 +1040,10 @@
           "189",
           "190",
           "191",
-          "192"
+          "192",
+          "195",
+          "197",
+          "198"
         ],
         "adrIds": [
           "ADR-001",
@@ -1182,7 +1202,10 @@
           "178",
           "185",
           "193",
-          "194"
+          "194",
+          "195",
+          "196",
+          "199"
         ],
         "adrIds": [
           "ADR-003"
@@ -1513,28 +1536,28 @@
           "last_reviewed": "2026-04-04"
         },
         "storyIds": [
-          "189"
+          "189",
+          "198"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
         ],
         "actionability": {
-          "sourceKind": "eval",
-          "sourceId": "compromise-C2-qa-validation",
-          "sourcePath": "docs/evals/registry.yaml",
-          "recommendedNow": false,
-          "posture": "no-trigger-recorded",
+          "sourceKind": "story",
+          "sourceId": "198",
+          "sourcePath": "docs/stories/story-198-brick-steel-character-adjudication.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
           "whyNow": "",
-          "retryTriggerStatus": "none",
-          "retryWhen": [],
           "lastRelevantAction": {
             "date": null,
-            "sourceType": "eval-score",
-            "source": "docs/evals/registry.yaml",
+            "sourceType": "story-status",
+            "source": "docs/stories/story-198-brick-steel-character-adjudication.md",
             "summary": ""
           },
           "storyIds": [
-            "189"
+            "189",
+            "198"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1565,7 +1588,10 @@
           "188",
           "189",
           "191",
-          "192"
+          "192",
+          "195",
+          "197",
+          "198"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1574,22 +1600,17 @@
           "storyboard-generation-quality"
         ],
         "actionability": {
-          "sourceKind": "eval",
-          "sourceId": "storyboard-generation-quality",
-          "sourcePath": "docs/evals/registry.yaml",
-          "recommendedNow": false,
-          "posture": "wait-for-trigger",
-          "whyNow": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…",
-          "retryTriggerStatus": "waiting",
-          "retryWhen": [
-            "realistic-reference-fixture"
-          ],
+          "sourceKind": "story",
+          "sourceId": "195",
+          "sourcePath": "docs/stories/story-195-production-xai-previz-readiness.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
+          "whyNow": "",
           "lastRelevantAction": {
-            "date": "2026-04-25",
-            "sourceType": "eval-attempt",
-            "source": "docs/evals/registry.yaml",
-            "sourceId": "006",
-            "summary": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…"
+            "date": null,
+            "sourceType": "story-status",
+            "source": "docs/stories/story-195-production-xai-previz-readiness.md",
+            "summary": ""
           },
           "storyIds": [
             "155",
@@ -1604,7 +1625,10 @@
             "188",
             "189",
             "191",
-            "192"
+            "192",
+            "195",
+            "197",
+            "198"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1675,7 +1699,9 @@
           "evidence": "`compromise-C5-role-modality` has no passing deletion signal.",
           "last_reviewed": "2026-04-04"
         },
-        "storyIds": [],
+        "storyIds": [
+          "199"
+        ],
         "evalIds": [
           "compromise-C5-role-modality"
         ],
@@ -1694,7 +1720,9 @@
             "source": "docs/evals/registry.yaml",
             "summary": ""
           },
-          "storyIds": [],
+          "storyIds": [
+            "199"
+          ],
           "evalIds": [
             "compromise-C5-role-modality"
           ]
@@ -1715,27 +1743,35 @@
           "191",
           "192",
           "193",
-          "194"
+          "194",
+          "195",
+          "196",
+          "197",
+          "199"
         ],
         "evalIds": [],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "192",
-          "sourcePath": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-          "recommendedNow": false,
-          "posture": "completed",
-          "whyNow": "marked-done: `/finish-and-push 192` ran the `/mark-story-done` close-out after build and validation gates were already green. Set the story status to Done, checked the mark-story-done workflow gate, and prepared generat…",
+          "sourceId": "195",
+          "sourcePath": "docs/stories/story-195-production-xai-previz-readiness.md",
+          "recommendedNow": true,
+          "posture": "ready-now",
+          "whyNow": "",
           "lastRelevantAction": {
-            "date": "2026-04-30",
-            "sourceType": "story-work-log",
-            "source": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-            "summary": "marked-done: `/finish-and-push 192` ran the `/mark-story-done` close-out after build and validation gates were already green. Set the story status to Done, checked the mark-story-done workflow gate, and prepared generat…"
+            "date": null,
+            "sourceType": "story-status",
+            "source": "docs/stories/story-195-production-xai-previz-readiness.md",
+            "summary": ""
           },
           "storyIds": [
             "191",
             "192",
             "193",
-            "194"
+            "194",
+            "195",
+            "196",
+            "197",
+            "199"
           ],
           "evalIds": []
         }
@@ -12552,6 +12588,390 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "195",
+      "title": "Production xAI Previz Readiness",
+      "path": "docs/stories/story-195-production-xai-previz-readiness.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R11 (production readiness per scene)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:6.3",
+        "spec:7.1",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3",
+        "C6"
+      ],
+      "dependsOn": [
+        "176",
+        "184",
+        "194"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "ai-previz",
+        "brick-steel",
+        "live-smoke",
+        "production-health",
+        "xai"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "195",
+        "sourcePath": "docs/stories/story-195-production-xai-previz-readiness.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-195-production-xai-previz-readiness.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "196",
+      "title": "Brick & Steel Product Truth Scrub",
+      "path": "docs/stories/story-196-brick-steel-product-truth-scrub.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly at every stage)",
+        "R11 (production readiness per scene)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)",
+        "vision-level preference: easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:5.3",
+        "spec:5.5",
+        "spec:5.6",
+        "spec:6.3",
+        "spec:6.4",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C6"
+      ],
+      "dependsOn": [
+        "139",
+        "180",
+        "191",
+        "192",
+        "193",
+        "194"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "brick-steel",
+        "inbox-scrub",
+        "product-truth",
+        "scene-generation",
+        "ui-scout"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "196",
+        "sourcePath": "docs/stories/story-196-brick-steel-product-truth-scrub.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-196-brick-steel-product-truth-scrub.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "197",
+      "title": "Reference Pack Visual Fidelity",
+      "path": "docs/stories/story-197-reference-pack-visual-fidelity.md",
+      "status": "Draft",
+      "priority": "High",
+      "idealRefs": [
+        "R11 (production readiness per scene)",
+        "R12 (transparency & control)",
+        "R17 (real-world assets as first-class inputs)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:3.3",
+        "spec:4.10.6",
+        "spec:6.2",
+        "spec:6.3",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3",
+        "C6"
+      ],
+      "dependsOn": [
+        "029",
+        "056",
+        "186",
+        "190",
+        "192"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:4",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization",
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "brick-steel",
+        "design-study",
+        "references",
+        "rendering",
+        "storyboards",
+        "visual-fidelity"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "197",
+        "sourcePath": "docs/stories/story-197-reference-pack-visual-fidelity.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-197-reference-pack-visual-fidelity.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "198",
+      "title": "Brick & Steel Character Adjudication",
+      "path": "docs/stories/story-198-brick-steel-character-adjudication.md",
+      "status": "Pending",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R5 (full spectrum of human involvement)",
+        "R8 (professional-grade production artifacts)"
+      ],
+      "specRefs": [
+        "spec:2.4",
+        "spec:2.6",
+        "spec:3.1",
+        "spec:3.2",
+        "spec:3.3",
+        "spec:5.4",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C2",
+        "C3"
+      ],
+      "dependsOn": [
+        "055",
+        "081",
+        "097",
+        "124",
+        "129"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:5",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "artifact-editing",
+        "brick-steel",
+        "character-resolution",
+        "entity-adjudication"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "198",
+        "sourcePath": "docs/stories/story-198-brick-steel-character-adjudication.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-198-brick-steel-character-adjudication.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "199",
+      "title": "Casting and Table Read Reference Loop",
+      "path": "docs/stories/story-199-casting-table-read-reference-loop.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R11 (production readiness per scene)",
+        "R17 (real-world assets as first-class inputs)",
+        "R4 (creative conversation)",
+        "R5 (full spectrum of human involvement)",
+        "R8 (professional-grade production artifacts)",
+        "vision-level preference: voice-first as ultimate expression"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:3.3",
+        "spec:4.10.5",
+        "spec:4.10.6",
+        "spec:5.4",
+        "spec:7.2"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C5",
+        "C6"
+      ],
+      "dependsOn": [
+        "023",
+        "029",
+        "097"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:4",
+        "spec:5",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "creative_direction_and_chat",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "casting",
+        "character-performance",
+        "ideal-update",
+        "table-read",
+        "voice-reference"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "199",
+        "sourcePath": "docs/stories/story-199-casting-table-read-reference-loop.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-199-casting-table-read-reference-loop.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -14656,8 +15076,10 @@
         {
           "id": "ui-product-truth-scouting",
           "status": "active",
-          "story_refs": [],
-          "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage."
+          "story_refs": [
+            "196"
+          ],
+          "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 is the current Brick & Steel product-truth scrub created from inbox triage."
         },
         {
           "id": "scene-generation-completion",
@@ -14681,7 +15103,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, and Story 194 closed the dependent multi-clip rendering slice.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, and Story 194 closed the dependent multi-clip rendering slice. Inbox triage on 2026-04-30 routed the current Brick & Steel notes into Stories 195-199; Story 195 is the recommended next build because production xAI previz readiness is the narrowest blocker on the active scene-generation lane.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -14690,7 +15112,9 @@
               "Pending"
             ],
             "empty_message": "No stories currently fit this lane.",
-            "story_notes": {}
+            "story_notes": {
+              "195": "Recommended next build from inbox triage: prove production xAI AI-previz readiness through health/live-smoke and the Brick & Steel scene route without changing provider defaults or leaking secrets."
+            }
           },
           {
             "id": "in-progress",
@@ -14708,7 +15132,10 @@
               "Pending"
             ],
             "empty_message": "No stories currently need the sequence-sensitive lane.",
-            "story_notes": {}
+            "story_notes": {
+              "196": "Run after or alongside the xAI readiness check: verify the current Brick & Steel desktop/mobile product truth, then separate stale inbox notes from live defects with evidence.",
+              "198": "Build once the scene-generation lane is not blocked by prod readiness, or sooner if character/reference correctness becomes the active surface: reproduce Brick vs Brick Braddock and prove artifact-edit merge/deprecation."
+            }
           },
           {
             "id": "blocked",
@@ -14734,7 +15161,9 @@
               "105": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "106": "Worth keeping visible, but it is less immediately executable than the current product-facing pending lane.",
               "112": "Valuable redesign candidate, but it still needs tighter scope before it should leave Draft.",
-              "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending."
+              "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
+              "197": "High-value reference-pack visual-fidelity lane from inbox triage, but it needs the provider/reference-pack eval ladder and decision boundary before build.",
+              "199": "Vision-level casting and table-read idea from inbox triage; preserve it for Ideal/spec shaping before implementation work."
             }
           },
           {
