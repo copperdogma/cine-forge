@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from .creative_brief import VisualCreativeBrief
 
 EntityType = Literal["character", "location", "prop"]
+DesignStudyRoundStatus = Literal["generating", "completed", "failed"]
 
 ImageDecision = Literal[
     "pending",
@@ -32,6 +33,24 @@ class DesignStudyImage(BaseModel):
     created_at: datetime = Field(default_factory=datetime.now)
 
 
+class DesignStudyGenerationFailure(BaseModel):
+    """Provider failure metadata captured for an attempted design-study round."""
+
+    provider: str
+    model: str
+    message: str
+    operator_message: str
+    classification: str | None = None
+    status_code: int | None = None
+    request_id: str | None = None
+    error_code: str | None = None
+    error_type: str | None = None
+    failed_image_index: int
+    prompt_sha256: str
+    prompt_excerpt: str
+    created_at: datetime = Field(default_factory=datetime.now)
+
+
 class DesignStudyRound(BaseModel):
     """A single generation round within a design study."""
 
@@ -49,6 +68,8 @@ class DesignStudyRound(BaseModel):
     creative_brief_preview: VisualCreativeBrief | None = None
     count: int = 1
     created_at: datetime = Field(default_factory=datetime.now)
+    status: DesignStudyRoundStatus = "completed"
+    failure: DesignStudyGenerationFailure | None = None
     images: list[DesignStudyImage] = Field(default_factory=list)
 
 

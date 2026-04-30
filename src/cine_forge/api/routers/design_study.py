@@ -16,13 +16,16 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
 from cine_forge.ai.image import (
     ImageGenerationError,
     build_image_prompt,
     generate_image,
+)
+from cine_forge.api.routers.design_study_failures import (
+    design_study_failure_from_exception,
 )
 from cine_forge.api.routers.design_study_support import (
     apply_image_decision,
@@ -344,36 +347,9 @@ async def generate_design_study(
         creative_brief_data=creative_brief.model_dump(mode="json") if creative_brief else None,
     )
 
-    # Generate images — ensure bible dir exists once before writing any files
+    # Generate images — persist the round before provider calls so the UI can poll progress.
     bib_dir.mkdir(parents=True, exist_ok=True)
-    images: list[DesignStudyImage] = []
-    model_used = "imagen-4.0-generate-001"
-    for idx in range(body.count):
-        try:
-            image_bytes, model_used = generate_image(
-                prompt=prompt,
-                entity_type=body.entity_type,
-                model=body.model,
-            )
-        except ImageGenerationError as exc:
-            log.error("Image generation failed for %s: %s", entity_id, exc)
-            raise HTTPException(status_code=502, detail=str(exc)) from exc
-
-        filename = f"design_study_r{round_number}_img{idx + 1}.jpg"
-        image_path = bib_dir / filename
-        image_path.write_bytes(image_bytes)
-
-        images.append(
-            DesignStudyImage(
-                filename=filename,
-                decision="pending",
-                prompt_used=prompt,
-                model=model_used,
-                round_number=round_number,
-            )
-        )
-        log.info("Saved design study image: %s/%s", entity_id, filename)
-
+    model_used = body.model
     round_ = DesignStudyRound(
         round_number=round_number,
         prompt=prompt,
@@ -388,9 +364,66 @@ async def generate_design_study(
         learned_preferences_used=learned_preferences_used,
         creative_brief_preview=creative_brief,
         count=body.count,
-        images=images,
+        status="generating",
+        images=[],
     )
     state.rounds.append(round_)
+    state.last_updated = datetime.now()
+    _write_state(bib_dir, state)
+
+    for idx in range(body.count):
+        try:
+            image_bytes, model_used = generate_image(
+                prompt=prompt,
+                entity_type=body.entity_type,
+                model=body.model,
+            )
+        except ImageGenerationError as exc:
+            failure = design_study_failure_from_exception(
+                exc,
+                prompt=prompt,
+                model=model_used,
+                failed_image_index=idx + 1,
+                requested_count=body.count,
+            )
+            round_.model = failure.model
+            round_.status = "failed"
+            round_.failure = failure
+            state.last_updated = datetime.now()
+            _write_state(bib_dir, state)
+            log.error("Image generation failed for %s: %s", entity_id, failure.operator_message)
+            return JSONResponse(
+                status_code=502,
+                content={
+                    "code": "design_study_generation_failed",
+                    "message": failure.operator_message,
+                    "hint": (
+                        "The failed round was saved in the design study state "
+                        "with provider, model, request, and prompt context."
+                    ),
+                },
+            )
+
+        filename = f"design_study_r{round_number}_img{idx + 1}.jpg"
+        image_path = bib_dir / filename
+        image_path.write_bytes(image_bytes)
+
+        round_.model = model_used
+        round_.images.append(
+            DesignStudyImage(
+                filename=filename,
+                decision="pending",
+                prompt_used=prompt,
+                model=model_used,
+                round_number=round_number,
+            )
+        )
+        state.last_updated = datetime.now()
+        _write_state(bib_dir, state)
+        log.info("Saved design study image: %s/%s", entity_id, filename)
+
+    round_.status = "completed"
+    round_.failure = None
     state.last_updated = datetime.now()
     _write_state(bib_dir, state)
 

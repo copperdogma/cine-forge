@@ -3,12 +3,14 @@ import type { ApiError } from '../types'
 export const API_BASE = import.meta.env.VITE_API_BASE ?? ''
 
 export class ApiRequestError extends Error {
+  code?: string
   hint?: string
   status?: number
 
-  constructor(message: string, hint?: string, status?: number) {
+  constructor(message: string, hint?: string, status?: number, code?: string) {
     super(message)
     this.name = 'ApiRequestError'
+    this.code = code
     this.hint = hint
     this.status = status
   }
@@ -38,7 +40,7 @@ async function readErrorPayload(response: Response): Promise<ApiError | null> {
 async function throwRequestError(response: Response, fallbackMessage: string): Promise<never> {
   const payload = await readErrorPayload(response)
   const message = payload?.message ?? fallbackMessage
-  throw new ApiRequestError(message, payload?.hint ?? undefined, response.status)
+  throw new ApiRequestError(message, payload?.hint ?? undefined, response.status, payload?.code)
 }
 
 export async function request<T>(path: string, init?: RequestInit): Promise<T> {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
@@ -11,6 +11,7 @@ import {
   decideDesignStudy,
   updateProjectSettings,
 } from '@/lib/api'
+import { getDesignStudyRoundStatus, isDesignStudyRoundActive } from '@/lib/design-study-status'
 import { useProject } from '@/lib/hooks'
 import type {
   DesignStudyImage,
@@ -73,6 +74,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
         .find(img => img.decision === 'seed_for_variants')
     : undefined
   const roundsNewestFirst: DesignStudyRound[] = state ? [...state.rounds].reverse() : []
+  const hasGeneratingRound = roundsNewestFirst.some(isDesignStudyRoundActive)
   const latestRound = roundsNewestFirst[0]
   const activeRoundNumber =
     expandedRoundNumber !== null
@@ -108,7 +110,20 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
       setNegativeRefs([])
       setExpandedRoundNumber(updated.rounds[updated.rounds.length - 1]?.round_number ?? null)
     },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['design-study', projectId, entityId] })
+    },
   })
+
+  useEffect(() => {
+    if (!generateMutation.isPending && !hasGeneratingRound) {
+      return undefined
+    }
+    const interval = window.setInterval(() => {
+      void queryClient.invalidateQueries({ queryKey: ['design-study', projectId, entityId] })
+    }, 1500)
+    return () => window.clearInterval(interval)
+  }, [entityId, generateMutation.isPending, hasGeneratingRound, projectId, queryClient])
 
   const saveFormatMutation = useMutation({
     mutationFn: (format: ProductionFormat) =>
@@ -199,6 +214,9 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
       : 'Generation failed: Unknown error'
     : null
   const visibleRounds = roundsNewestFirst.filter(round => {
+    if (getDesignStudyRoundStatus(round) !== 'completed') {
+      return true
+    }
     if (round.round_number === activeRoundNumber) {
       return true
     }
@@ -281,6 +299,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
                     isGenerating={generateMutation.isPending || saveFormatMutation.isPending}
                     generationLabel={generationLabel}
                     errorMessage={generationError}
+                    sticky={getDesignStudyRoundStatus(round) !== 'failed'}
                     latestSeedFilename={latestSeedImage?.filename ?? null}
                     useSeedVariants={useSeedVariants}
                     onDirectiveChange={setDirective}

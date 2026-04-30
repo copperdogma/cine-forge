@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-04-30-01] — Persist design-study lifecycle truth (Story 192)
+
+### Added
+- Added persisted design-study round lifecycle state for generating, completed, and failed rounds, including provider/model/status/request/error/prompt context for operator debugging.
+- Added focused backend, provider-classification, UI helper, and browser-validation evidence for the design-study completion and failure surfaces.
+
+### Changed
+- Changed the design-study UI to poll/refetch while image generation is active, render in-progress and failed rounds, and keep AI-generated and uploaded visual references in the same downstream reference path.
+- Changed OpenAI and Imagen image transport errors to preserve structured provider metadata for design-study failure reporting.
+
+### Fixed
+- Fixed completed GPT-image design-study rounds so persisted results become visible without a manual refresh.
+- Fixed failed design-study rounds so the operator-visible provider message and prompt context are not hidden by the next-round composer.
+
 ## [2026-04-29-05] — Render scenes as provider-bounded clips (Story 194)
 
 ### Added

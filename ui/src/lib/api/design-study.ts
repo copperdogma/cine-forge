@@ -9,6 +9,23 @@ export type ImageDecision =
   | 'seed_for_variants'
 
 export type DesignStudyEntityType = 'character' | 'location' | 'prop'
+export type DesignStudyRoundStatus = 'generating' | 'completed' | 'failed'
+
+export interface DesignStudyGenerationFailure {
+  provider: string
+  model: string
+  message: string
+  operator_message: string
+  classification: string | null
+  status_code: number | null
+  request_id: string | null
+  error_code: string | null
+  error_type: string | null
+  failed_image_index: number
+  prompt_sha256: string
+  prompt_excerpt: string
+  created_at: string
+}
 
 export interface DesignStudyImage {
   filename: string
@@ -35,6 +52,8 @@ export interface DesignStudyRound {
   creative_brief_preview: VisualCreativeBrief | null
   count: number
   created_at: string
+  status: DesignStudyRoundStatus
+  failure: DesignStudyGenerationFailure | null
   images: DesignStudyImage[]
 }
 

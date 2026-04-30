@@ -1,8 +1,10 @@
-import { CheckCircle2, ChevronDown, ChevronUp, GitBranch, Heart, RotateCcw, XCircle } from 'lucide-react'
+import { CheckCircle2, ChevronDown, ChevronUp, GitBranch, Heart, Loader2, RotateCcw, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DesignStudyImageCard } from '@/components/DesignStudyImageCard'
+import { DesignStudyRoundStatusPanel } from '@/components/DesignStudyRoundStatusPanel'
 import { DesignStudySourcesPanel } from '@/components/DesignStudySourcesPanel'
 import { getDesignStudyImageUrl } from '@/lib/api'
+import { getDesignStudyProgressText, getDesignStudyRoundStatus } from '@/lib/design-study-status'
 import { cn } from '@/lib/utils'
 import type { DesignStudyImage, DesignStudyRound, ImageDecision } from '@/lib/api'
 
@@ -75,11 +77,15 @@ export function ContactSheetRow({
   onDecide,
   onComposeRef,
 }: Props) {
+  const status = getDesignStudyRoundStatus(round)
+
   return (
     <section
       className={cn(
         'rounded-xl border border-border/70 bg-card/70 transition-colors',
         expanded && 'border-primary/30 bg-primary/5',
+        status === 'failed' && 'border-destructive/40',
+        status === 'generating' && 'border-sky-500/30',
       )}
     >
       <div className="flex flex-col gap-3 px-3 py-3">
@@ -92,11 +98,12 @@ export function ContactSheetRow({
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold">Round {round.round_number}</span>
               <span className="text-xs text-muted-foreground">{modelLabel(round.model)}</span>
+              {status === 'generating' && <Loader2 className="h-3.5 w-3.5 animate-spin text-sky-300" />}
             </div>
             <p className="text-xs text-muted-foreground">
-              {images.length} visible of {round.images.length} image{round.images.length !== 1 ? 's' : ''}
-              {' '}
-              {expanded ? 'shown full size below.' : 'in the contact sheet.'}
+              {status === 'completed'
+                ? `${images.length} visible of ${round.images.length} image${round.images.length !== 1 ? 's' : ''} ${expanded ? 'shown full size below.' : 'in the contact sheet.'}`
+                : getDesignStudyProgressText(round)}
             </p>
           </button>
 
@@ -124,47 +131,58 @@ export function ContactSheetRow({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onExpand}
-          className="grid auto-cols-[88px] grid-flow-col gap-2 overflow-x-auto pb-1 text-left"
-        >
-          {round.images.map((image, index) => {
-            const badge = decisionBadge(image.decision)
-            return (
-              <span
-                key={image.filename}
-                className={cn(
-                  'relative block overflow-hidden rounded-lg border border-border/60 bg-muted/20',
-                  image.decision === 'rejected' && 'opacity-50 grayscale',
-                )}
-              >
-                <img
-                  src={getDesignStudyImageUrl(projectId, entityId, image.filename)}
-                  alt={`Round ${round.round_number} study ${index + 1}`}
-                  className="h-24 w-[88px] object-cover object-top"
-                />
-                <span className="absolute right-1 top-1 rounded bg-black/70 px-1 font-mono text-[10px] text-white">
-                  {index + 1}
-                </span>
-                {badge && (
-                  <span
-                    className={cn(
-                      'absolute left-1 top-1 rounded px-1 py-0.5',
-                      badge.className,
-                    )}
-                  >
-                    {badge.icon}
+        {round.images.length > 0 ? (
+          <button
+            type="button"
+            onClick={onExpand}
+            className="grid auto-cols-[88px] grid-flow-col gap-2 overflow-x-auto pb-1 text-left"
+          >
+            {round.images.map((image, index) => {
+              const badge = decisionBadge(image.decision)
+              return (
+                <span
+                  key={image.filename}
+                  className={cn(
+                    'relative block overflow-hidden rounded-lg border border-border/60 bg-muted/20',
+                    image.decision === 'rejected' && 'opacity-50 grayscale',
+                  )}
+                >
+                  <img
+                    src={getDesignStudyImageUrl(projectId, entityId, image.filename)}
+                    alt={`Round ${round.round_number} study ${index + 1}`}
+                    className="h-24 w-[88px] object-cover object-top"
+                  />
+                  <span className="absolute right-1 top-1 rounded bg-black/70 px-1 font-mono text-[10px] text-white">
+                    {index + 1}
                   </span>
-                )}
-              </span>
-            )
-          })}
-        </button>
+                  {badge && (
+                    <span
+                      className={cn(
+                        'absolute left-1 top-1 rounded px-1 py-0.5',
+                        badge.className,
+                      )}
+                    >
+                      {badge.icon}
+                    </span>
+                  )}
+                </span>
+              )
+            })}
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onExpand}
+            className="flex h-24 items-center justify-center rounded-lg border border-dashed border-border/70 bg-muted/20 text-xs text-muted-foreground"
+          >
+            {status === 'generating' ? 'Waiting for provider image…' : 'No images saved for this round'}
+          </button>
+        )}
       </div>
 
       {expanded && (
         <div className="space-y-3 border-t border-border/60 px-3 py-3">
+          <DesignStudyRoundStatusPanel round={round} />
           <DesignStudySourcesPanel round={round} defaultOpen={isLatest} />
           {images.length > 0 ? (
             <div className="grid gap-3">

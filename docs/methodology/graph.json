@@ -1574,17 +1574,22 @@
           "storyboard-generation-quality"
         ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "192",
-          "sourcePath": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-          "recommendedNow": true,
-          "posture": "ready-now",
-          "whyNow": "",
+          "sourceKind": "eval",
+          "sourceId": "storyboard-generation-quality",
+          "sourcePath": "docs/evals/registry.yaml",
+          "recommendedNow": false,
+          "posture": "wait-for-trigger",
+          "whyNow": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…",
+          "retryTriggerStatus": "waiting",
+          "retryWhen": [
+            "realistic-reference-fixture"
+          ],
           "lastRelevantAction": {
-            "date": null,
-            "sourceType": "story-status",
-            "source": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-            "summary": ""
+            "date": "2026-04-25",
+            "sourceType": "eval-attempt",
+            "source": "docs/evals/registry.yaml",
+            "sourceId": "006",
+            "summary": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…"
           },
           "storyIds": [
             "155",
@@ -1717,14 +1722,14 @@
           "sourceKind": "story",
           "sourceId": "192",
           "sourcePath": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-          "recommendedNow": true,
-          "posture": "ready-now",
-          "whyNow": "",
+          "recommendedNow": false,
+          "posture": "completed",
+          "whyNow": "marked-done: `/finish-and-push 192` ran the `/mark-story-done` close-out after build and validation gates were already green. Set the story status to Done, checked the mark-story-done workflow gate, and prepared generat…",
           "lastRelevantAction": {
-            "date": null,
-            "sourceType": "story-status",
+            "date": "2026-04-30",
+            "sourceType": "story-work-log",
             "source": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-            "summary": ""
+            "summary": "marked-done: `/finish-and-push 192` ran the `/mark-story-done` close-out after build and validation gates were already green. Set the story status to Done, checked the mark-story-done workflow gate, and prepared generat…"
           },
           "storyIds": [
             "191",
@@ -12333,7 +12338,7 @@
       "id": "192",
       "title": "Brick & Steel GPT-Image Completion and Error Truth",
       "path": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R12 (transparency & control)",
@@ -12382,21 +12387,25 @@
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
-      "lastWorkLogEntry": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260430-1152",
+        "date": "2026-04-30",
+        "summary": "marked-done: `/finish-and-push 192` ran the `/mark-story-done` close-out after build and validation gates were already green. Set the story status to Done, checked the mark-story-done workflow gate, and prepared generat…"
+      },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "actionability": {
         "sourceKind": "story",
         "sourceId": "192",
         "sourcePath": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
-        "whyNow": "",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "marked-done: `/finish-and-push 192` ran the `/mark-story-done` close-out after build and validation gates were already green. Set the story status to Done, checked the mark-story-done workflow gate, and prepared generat…",
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "story-status",
+          "date": "2026-04-30",
+          "sourceType": "story-work-log",
           "source": "docs/stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md",
-          "summary": ""
+          "summary": "marked-done: `/finish-and-push 192` ran the `/mark-story-done` close-out after build and validation gates were already green. Set the story status to Done, checked the mark-story-done workflow gate, and prepared generat…"
         }
       }
     },
@@ -14652,7 +14661,7 @@
         },
         {
           "id": "scene-generation-completion",
-          "status": "active",
+          "status": "completed",
           "story_refs": [
             "164",
             "165",
@@ -14666,13 +14675,13 @@
             "193",
             "194"
           ],
-          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 preserves the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, and Story 194 closed the dependent multi-clip scene-render execution slice."
+          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, and Story 194 closed the dependent multi-clip scene-render execution slice."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 owns the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, and Story 194 closed the dependent multi-clip rendering slice.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, and Story 194 closed the dependent multi-clip rendering slice.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -14681,9 +14690,7 @@
               "Pending"
             ],
             "empty_message": "No stories currently fit this lane.",
-            "story_notes": {
-              "192": "Follow-up from Story 191: reproduce or falsify the Brick & Steel GPT-image completion spinner/error-surfacing residual through the normal design-study UI/API path."
-            }
+            "story_notes": {}
           },
           {
             "id": "in-progress",
@@ -14876,9 +14883,10 @@
             "181",
             "182",
             "184",
-            "185"
+            "185",
+            "192"
           ],
-          "stories_since_audit": 1,
+          "stories_since_audit": 2,
           "open_findings": [
             "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
           ],
@@ -14918,9 +14926,10 @@
             "181",
             "186",
             "188",
-            "190"
+            "190",
+            "192"
           ],
-          "stories_since_audit": 9,
+          "stories_since_audit": 10,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -14932,7 +14941,7 @@
   "validation": {
     "errors": [],
     "warnings": [
-      "Architecture audit domains due or carrying open findings: api_service_and_operator_console",
+      "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
       "UI scout freshness due: attention needed — last run 2026-04-12 is 18 days old against a 14-day cadence"
     ]
   }

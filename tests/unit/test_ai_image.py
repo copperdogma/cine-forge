@@ -4,6 +4,7 @@ import base64
 import io
 import json
 import urllib.error
+from email.message import Message
 
 import pytest
 
@@ -189,3 +190,93 @@ def test_openai_edit_retries_without_quality_when_provider_rejects_param(
     assert b'name="output_format"' in request_bodies[1]
     assert b'name="quality"' not in request_bodies[2]
     assert b'name="output_format"' not in request_bodies[2]
+
+
+@pytest.mark.unit
+def test_openai_image_http_error_preserves_provider_metadata(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    headers = Message()
+    headers["x-request-id"] = "req_openai_123"
+
+    def fake_urlopen(req: object, timeout: int) -> object:
+        raise urllib.error.HTTPError(
+            url="https://api.openai.com/v1/images/generations",
+            code=400,
+            msg="Bad Request",
+            hdrs=headers,
+            fp=io.BytesIO(
+                json.dumps({
+                    "error": {
+                        "message": "Prompt rejected by content policy",
+                        "code": "content_policy_violation",
+                        "type": "invalid_request_error",
+                    }
+                }).encode("utf-8")
+            ),
+        )
+
+    monkeypatch.setattr(image_module.urllib.request, "urlopen", fake_urlopen)
+
+    with pytest.raises(ImageGenerationError) as exc_info:
+        image_module._generate_image_openai(
+            prompt="test prompt",
+            entity_type="character",
+            model="gpt-image-1",
+        )
+
+    exc = exc_info.value
+    assert str(exc) == (
+        "OpenAI Images API returned HTTP 400: Prompt rejected by content policy"
+    )
+    assert exc.provider == "openai"
+    assert exc.model == "gpt-image-1"
+    assert exc.status_code == 400
+    assert exc.request_id == "req_openai_123"
+    assert exc.error_code == "content_policy_violation"
+    assert exc.error_type == "invalid_request_error"
+
+
+@pytest.mark.unit
+def test_imagen_http_error_preserves_provider_metadata(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    headers = Message()
+    headers["x-goog-request-id"] = "req_google_456"
+
+    def fake_urlopen(req: object, timeout: int) -> object:
+        raise urllib.error.HTTPError(
+            url="https://generativelanguage.googleapis.com/v1beta/models/imagen:predict",
+            code=429,
+            msg="Too Many Requests",
+            hdrs=headers,
+            fp=io.BytesIO(
+                json.dumps({
+                    "error": {
+                        "message": "Resource exhausted, try again later",
+                        "code": "rate_limit",
+                        "type": "RESOURCE_EXHAUSTED",
+                    }
+                }).encode("utf-8")
+            ),
+        )
+
+    monkeypatch.setattr(image_module.urllib.request, "urlopen", fake_urlopen)
+
+    with pytest.raises(ImageGenerationError) as exc_info:
+        image_module._generate_image_imagen(
+            prompt="test prompt",
+            entity_type="character",
+            model="imagen-4.0-generate-001",
+        )
+
+    exc = exc_info.value
+    assert str(exc) == "Imagen API returned HTTP 429: Resource exhausted, try again later"
+    assert exc.provider == "google"
+    assert exc.model == "imagen-4.0-generate-001"
+    assert exc.status_code == 429
+    assert exc.request_id == "req_google_456"
+    assert exc.error_code == "rate_limit"
+    assert exc.error_type == "RESOURCE_EXHAUSTED"

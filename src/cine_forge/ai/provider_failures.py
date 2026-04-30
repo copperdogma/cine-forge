@@ -7,7 +7,10 @@ from typing import Literal
 
 ProviderFailureStatus = Literal[
     "auth_failed",
+    "network_error",
+    "policy_blocked",
     "permission_failed",
+    "provider_error",
     "quota_failed",
     "rate_limited",
 ]
@@ -26,6 +29,7 @@ _BILLING_TOKENS = (
     "top up",
 )
 _AUTH_TOKENS = (
+    "api key is required",
     "api key expired",
     "api key invalid",
     "api key not valid",
@@ -33,6 +37,10 @@ _AUTH_TOKENS = (
     "auth expired",
     "authentication failed",
     "authentication required",
+    "api key is not set",
+    "api key not set",
+    "api_key is not set",
+    "api_key) is not set",
     "expired access token",
     "expired api key",
     "incorrect api key",
@@ -40,8 +48,20 @@ _AUTH_TOKENS = (
     "invalid authentication",
     "invalid x-api-key",
     "key expired",
+    "missing api key",
     "token expired",
     "unauthorized",
+)
+_POLICY_TOKENS = (
+    "blocked by safety",
+    "content policy",
+    "filtered for safety",
+    "moderation",
+    "policy violation",
+    "prompt was rejected",
+    "rai",
+    "responsible ai",
+    "safety policy",
 )
 _PERMISSION_TOKENS = (
     "access denied",
@@ -85,6 +105,9 @@ def classify_provider_failure_status(
 
     if error_code == "403":
         return "permission_failed"
+
+    if _contains_any(normalized_message, _POLICY_TOKENS):
+        return "policy_blocked"
 
     if _contains_any(normalized_message, _RATE_LIMIT_TOKENS) or error_code in {"429", "529"}:
         return "rate_limited"

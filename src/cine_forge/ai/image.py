@@ -24,6 +24,7 @@ import uuid
 from pathlib import Path
 from typing import Any, Literal
 
+from cine_forge.ai.image_errors import ImageGenerationError, provider_http_error
 from cine_forge.env import require_env
 from cine_forge.schemas import VisualCreativeBrief
 from cine_forge.services.creative_brief import creative_brief_prompt_lines
@@ -85,10 +86,6 @@ _MOCK_IMAGE_BYTES = (
     b'font-size="60" font-family="Helvetica, Arial, sans-serif" fill="#1f2937">'
     b'Storyboard Mock</text></svg>'
 )
-
-class ImageGenerationError(Exception):
-    """Raised when the image generation API call fails."""
-
 
 def is_openai_image_model(model: str) -> bool:
     return model.startswith("gpt-image-") or model == "chatgpt-image-latest"
@@ -332,7 +329,7 @@ def _generate_image_openai(
     try:
         api_key = require_env("OPENAI_API_KEY")
     except RuntimeError as exc:
-        raise ImageGenerationError(str(exc)) from exc
+        raise ImageGenerationError(str(exc), provider="openai", model=model) from exc
 
     resolved_size = size or OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")
 
@@ -344,7 +341,9 @@ def _generate_image_openai(
     if cleaned_reference_paths:
         if len(cleaned_reference_paths) > 16:
             raise ImageGenerationError(
-                "OpenAI image edit supports at most 16 reference images per request"
+                "OpenAI image edit supports at most 16 reference images per request",
+                provider="openai",
+                model=model,
             )
         multipart_body, boundary = _build_openai_edit_multipart(
             model=model,
@@ -400,24 +399,38 @@ def _generate_image_openai(
                 reference_image_paths=cleaned_reference_paths,
             )
         else:
-            raise ImageGenerationError(
-                f"OpenAI Images API returned HTTP {exc.code}: {body}"
+            raise provider_http_error(
+                provider="openai",
+                provider_label="OpenAI Images API",
+                model=model,
+                status_code=exc.code,
+                headers=exc.headers,
+                body=body,
             ) from exc
     except urllib.error.URLError as exc:
         raise ImageGenerationError(
-            f"OpenAI Images API request failed: {exc.reason}"
+            f"OpenAI Images API request failed: {exc.reason}",
+            provider="openai",
+            model=model,
+            is_transient=True,
         ) from exc
 
     data = response_data.get("data", [])
     if not data:
         raise ImageGenerationError(
-            f"OpenAI Images API returned no data. Response: {response_data}"
+            f"OpenAI Images API returned no data. Response: {response_data}",
+            provider="openai",
+            model=model,
+            response_body=json.dumps(response_data),
         )
 
     b64_data = data[0].get("b64_json", "")
     if not b64_data:
         raise ImageGenerationError(
-            "OpenAI Images API response missing b64_json field"
+            "OpenAI Images API response missing b64_json field",
+            provider="openai",
+            model=model,
+            response_body=json.dumps(response_data),
         )
 
     image_bytes = base64.b64decode(b64_data)
@@ -434,7 +447,7 @@ def _generate_image_imagen(
     try:
         api_key = require_env("GEMINI_API_KEY")
     except RuntimeError as exc:
-        raise ImageGenerationError(str(exc)) from exc
+        raise ImageGenerationError(str(exc), provider="google", model=model) from exc
 
     ratio = aspect_ratio or ASPECT_RATIO_BY_ENTITY_TYPE.get(entity_type, "1:1")
 
@@ -460,22 +473,38 @@ def _generate_image_imagen(
             response_data = json.loads(resp.read())
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
-        raise ImageGenerationError(
-            f"Imagen API returned HTTP {exc.code}: {body}"
+        raise provider_http_error(
+            provider="google",
+            provider_label="Imagen API",
+            model=model,
+            status_code=exc.code,
+            headers=exc.headers,
+            body=body,
         ) from exc
     except urllib.error.URLError as exc:
-        raise ImageGenerationError(f"Imagen API request failed: {exc.reason}") from exc
+        raise ImageGenerationError(
+            f"Imagen API request failed: {exc.reason}",
+            provider="google",
+            model=model,
+            is_transient=True,
+        ) from exc
 
     predictions = response_data.get("predictions", [])
     if not predictions:
         raise ImageGenerationError(
-            f"Imagen API returned no predictions. Response: {response_data}"
+            f"Imagen API returned no predictions. Response: {response_data}",
+            provider="google",
+            model=model,
+            response_body=json.dumps(response_data),
         )
 
     b64_data = predictions[0].get("bytesBase64Encoded", "")
     if not b64_data:
         raise ImageGenerationError(
-            "Imagen API prediction missing bytesBase64Encoded field"
+            "Imagen API prediction missing bytesBase64Encoded field",
+            provider="google",
+            model=model,
+            response_body=json.dumps(response_data),
         )
 
     image_bytes = base64.b64decode(b64_data)
@@ -576,12 +605,25 @@ def _retry_openai_edit_with_optional_fields_removed(
                 break
         except urllib.error.URLError as exc:
             raise ImageGenerationError(
-                f"OpenAI Images API request failed: {exc.reason}"
+                f"OpenAI Images API request failed: {exc.reason}",
+                provider="openai",
+                model=model,
+                is_transient=True,
             ) from exc
     if last_error is None:
-        raise ImageGenerationError("OpenAI Images API edit retry failed")
-    raise ImageGenerationError(
-        f"OpenAI Images API returned HTTP {last_error[0]}: {last_error[1]}"
+        raise ImageGenerationError(
+            "OpenAI Images API edit retry failed",
+            provider="openai",
+            model=model,
+            is_transient=True,
+        )
+    raise provider_http_error(
+        provider="openai",
+        provider_label="OpenAI Images API",
+        model=model,
+        status_code=last_error[0],
+        headers=None,
+        body=last_error[1],
     )
 
 
@@ -632,7 +674,8 @@ def generate_image(
         return _generate_image_imagen(prompt, entity_type, model, aspect_ratio)
     raise ImageGenerationError(
         f"Unsupported image model '{model}'. "
-        "Expected an OpenAI GPT image model or Google Imagen model."
+        "Expected an OpenAI GPT image model or Google Imagen model.",
+        model=model,
     )
 
 

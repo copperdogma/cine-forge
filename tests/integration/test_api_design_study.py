@@ -15,6 +15,7 @@ import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 
+from cine_forge.ai.image import ImageGenerationError
 from cine_forge.api.app import create_app
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
@@ -296,6 +297,105 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     )
     assert resp.status_code == 200
     assert resp.headers["content-type"] == "image/jpeg"
+
+
+@pytest.mark.integration
+def test_design_study_generate_persists_progress_during_provider_loop(tmp_path: Path) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    app = create_app(workspace_root=workspace_root)
+    client = TestClient(app)
+
+    project_path = tmp_path / "design-study-progress"
+    created = client.post("/api/projects/new", json={"project_path": str(project_path)})
+    assert created.status_code == 200
+    project_id = created.json()["project_id"]
+
+    entity_id = "character_mariner"
+    _create_mock_bible(project_path, entity_id)
+    _seed_project_prompt_context(project_path)
+    state_path = project_path / "artifacts" / "bibles" / entity_id / "design_study_state.json"
+    snapshots: list[dict] = []
+
+    def fake_generate_image(**_: object) -> tuple[bytes, str]:
+        snapshots.append(json.loads(state_path.read_text(encoding="utf-8")))
+        return _FAKE_JPEG, "gpt-image-1"
+
+    with patch(
+        "cine_forge.api.routers.design_study.generate_image",
+        side_effect=fake_generate_image,
+    ):
+        resp = client.post(
+            f"/api/projects/{project_id}/design-study/{entity_id}/generate",
+            json={"entity_type": "character", "count": 2, "model": "gpt-image-1"},
+        )
+
+    assert resp.status_code == 200, resp.text
+    assert snapshots[0]["rounds"][0]["status"] == "generating"
+    assert snapshots[0]["rounds"][0]["images"] == []
+    assert snapshots[1]["rounds"][0]["status"] == "generating"
+    assert len(snapshots[1]["rounds"][0]["images"]) == 1
+
+    state = resp.json()
+    assert state["rounds"][0]["status"] == "completed"
+    assert state["rounds"][0]["failure"] is None
+    assert len(state["rounds"][0]["images"]) == 2
+
+
+@pytest.mark.integration
+def test_design_study_generate_persists_structured_provider_failure(tmp_path: Path) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    app = create_app(workspace_root=workspace_root)
+    client = TestClient(app)
+
+    project_path = tmp_path / "design-study-provider-failure"
+    created = client.post("/api/projects/new", json={"project_path": str(project_path)})
+    assert created.status_code == 200
+    project_id = created.json()["project_id"]
+
+    entity_id = "character_mariner"
+    _create_mock_bible(project_path, entity_id)
+    _seed_project_prompt_context(project_path)
+
+    def fake_generate_image(**_: object) -> tuple[bytes, str]:
+        raise ImageGenerationError(
+            "OpenAI Images API returned HTTP 400: prompt rejected by content policy",
+            provider="openai",
+            model="gpt-image-1",
+            status_code=400,
+            request_id="req_design_study_123",
+            error_code="content_policy_violation",
+            error_type="invalid_request_error",
+        )
+
+    with patch(
+        "cine_forge.api.routers.design_study.generate_image",
+        side_effect=fake_generate_image,
+    ):
+        resp = client.post(
+            f"/api/projects/{project_id}/design-study/{entity_id}/generate",
+            json={"entity_type": "character", "count": 4, "model": "gpt-image-1"},
+        )
+
+    assert resp.status_code == 502
+    payload = resp.json()
+    assert payload["code"] == "design_study_generation_failed"
+    assert "req_design_study_123" in payload["message"]
+
+    fetched = client.get(f"/api/projects/{project_id}/design-study/{entity_id}")
+    assert fetched.status_code == 200
+    round_ = fetched.json()["rounds"][0]
+    assert round_["status"] == "failed"
+    assert round_["images"] == []
+    failure = round_["failure"]
+    assert failure["provider"] == "openai"
+    assert failure["model"] == "gpt-image-1"
+    assert failure["classification"] == "policy_blocked"
+    assert failure["status_code"] == 400
+    assert failure["request_id"] == "req_design_study_123"
+    assert failure["error_code"] == "content_policy_violation"
+    assert failure["failed_image_index"] == 1
+    assert failure["prompt_sha256"]
+    assert "The Mariner" in failure["prompt_excerpt"]
 
 
 @pytest.mark.integration

@@ -29,6 +29,7 @@ interface Props {
   errorMessage?: string | null
   latestSeedFilename?: string | null
   useSeedVariants: boolean
+  sticky?: boolean
   onDirectiveChange: (value: string) => void
   onCountChange: (count: 1 | 2 | 4 | 8) => void
   onModelChange: (model: string) => void
@@ -83,6 +84,7 @@ export function CompositionBar({
   errorMessage = null,
   latestSeedFilename = null,
   useSeedVariants,
+  sticky = true,
   onDirectiveChange,
   onCountChange,
   onModelChange,
@@ -91,7 +93,12 @@ export function CompositionBar({
   onGenerate,
 }: Props) {
   return (
-    <div className="sticky bottom-3 z-20 rounded-xl border border-border/70 bg-card/95 p-3 shadow-xl backdrop-blur">
+    <div
+      className={cn(
+        'rounded-xl border border-border/70 bg-card/95 p-3 shadow-xl backdrop-blur',
+        sticky && 'sticky bottom-3 z-20',
+      )}
+    >
       <div className="space-y-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
