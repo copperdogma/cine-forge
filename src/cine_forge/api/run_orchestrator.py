@@ -165,6 +165,7 @@ class RunOrchestrator:
             end_at=request.get("end_at"),
             scene_scope=request.get("scene_scope") or {},
             scene_action_preflight=request.get("scene_action_preflight"),
+            render_clip_ids=request.get("render_clip_ids"),
         )
         runtime_params = params.model_dump(by_alias=True, exclude_none=True)
 

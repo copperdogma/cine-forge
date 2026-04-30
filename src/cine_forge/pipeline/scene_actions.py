@@ -21,7 +21,7 @@ _CONCERN_GROUP_LABELS = {
     "story_world": "Story World",
 }
 
-_SCENE_ENTITY_ARTIFACT_TYPES = {
+_SCENE_EXACT_ENTITY_ARTIFACT_TYPES = {
     "scene",
     "rhythm_and_flow",
     "look_and_feel",
@@ -31,6 +31,9 @@ _SCENE_ENTITY_ARTIFACT_TYPES = {
     "render_clip_plan",
     "storyboard",
     "keyframe",
+}
+
+_SCENE_DERIVED_ENTITY_ARTIFACT_TYPES = {
     "ai_previz_prompt",
     "ai_previz_video",
     "render_prompt",
@@ -38,11 +41,21 @@ _SCENE_ENTITY_ARTIFACT_TYPES = {
     "media_validation",
 }
 
+_SCENE_ENTITY_ARTIFACT_TYPES = (
+    _SCENE_EXACT_ENTITY_ARTIFACT_TYPES | _SCENE_DERIVED_ENTITY_ARTIFACT_TYPES
+)
+
 _OPTIONAL_DIRECTION_ARTIFACTS = (
     ("rhythm_and_flow", "Rhythm & Flow"),
     ("look_and_feel", "Look & Feel"),
     ("sound_and_music", "Sound & Music"),
 )
+
+_OPTIONAL_DIRECTION_TABS = {
+    "rhythm_and_flow": "rhythm_and_flow",
+    "look_and_feel": "look_and_feel",
+    "sound_and_music": "sound_and_music",
+}
 
 
 def scene_scope_from_runtime_params(runtime_params: dict[str, Any] | None) -> SceneExecutionScope:
@@ -65,8 +78,27 @@ def selected_scene_ids(runtime_params: dict[str, Any] | None) -> list[str]:
 
 
 def scene_scoped_entity_artifact_types() -> set[str]:
-    """Artifact types whose entity ids are guaranteed to be scene ids."""
+    """Artifact types whose entity ids can be matched to scene scope."""
     return set(_SCENE_ENTITY_ARTIFACT_TYPES)
+
+
+def scene_scope_matches_entity_id(
+    *,
+    artifact_type: str,
+    entity_id: str,
+    scene_ids: set[str],
+) -> bool:
+    """Return whether an artifact entity belongs inside a scene-scoped run."""
+    if not scene_ids:
+        return True
+    if artifact_type in _SCENE_DERIVED_ENTITY_ARTIFACT_TYPES:
+        return any(
+            entity_id == scene_id
+            or entity_id.startswith(f"{scene_id}_")
+            or entity_id.startswith(f"{scene_id}__")
+            for scene_id in scene_ids
+        )
+    return entity_id in scene_ids
 
 
 def load_latest_scene_payloads(
@@ -159,12 +191,16 @@ def build_scene_action_preflight(
             kind="soft_block",
             label="No screenplay input",
             detail="Upload a screenplay or script input before starting this run.",
+            action_label="Upload Screenplay",
+            action_path="/new",
         ))
     if not _has_project_artifact(store, "canonical_script"):
         preflight.items.append(SceneActionPreflightItem(
             kind="soft_block",
             label="Script normalization missing",
             detail="Run the script breakdown path first so CineForge has a canonical script.",
+            action_label="Open Script Breakdown",
+            action_path="intent",
         ))
     if not _has_project_artifact(store, "scene_index"):
         preflight.items.append(SceneActionPreflightItem(
@@ -174,12 +210,16 @@ def build_scene_action_preflight(
                 "Break the script into scenes first. Scene-scoped generation has no "
                 "target scene without that substrate."
             ),
+            action_label="Open Script Breakdown",
+            action_path="intent",
         ))
     if scene_scope.is_scene_scoped and not scene_ids:
         preflight.items.append(SceneActionPreflightItem(
             kind="soft_block",
             label="Current scene unavailable",
             detail="The requested scene is missing or no longer exists in the project.",
+            action_label="Open Scenes",
+            action_path="scenes",
         ))
 
     if recipe_id == "animatics_generation":
@@ -216,6 +256,13 @@ def build_scene_action_preflight(
                 recipe_id=recipe_id,
                 scene_ids=scene_ids,
             )
+        else:
+            preflight.start_from = _coerced_generation_start_stage(preflight)
+        _cascade_full_generation_prep_autobuilds(
+            preflight=preflight,
+            recipe_id=recipe_id,
+            scene_ids=scene_ids,
+        )
         _prune_generation_autobuilds_for_start_stage(preflight)
         if recipe_id == "ai_previz_generation":
             _apply_ai_previz_prerequisite_strategy(preflight)
@@ -248,16 +295,16 @@ def _populate_concern_group_preflight(
                     "Character & Performance can still run, but motivations and subtext "
                     "will lean more on scene text than structured character grounding."
                 ),
+                action_label="Open Deep Breakdown",
+                action_path="intent",
             ))
         if not _has_project_artifact(store, "intent_mood"):
-            preflight.items.append(SceneActionPreflightItem(
-                kind="warning",
-                label="Intent & Mood missing",
-                detail=(
+            preflight.items.append(
+                _intent_mood_missing_item(
                     "Character & Performance can still run, but tonal alignment will rely "
                     "more on the current scene than project-level creative intent."
-                ),
-            ))
+                )
+            )
 
     if stage_id == "look_and_feel":
         if not store.list_entities("character_bible"):
@@ -268,6 +315,8 @@ def _populate_concern_group_preflight(
                     "Look & Feel can still run, but wardrobe and character-specific "
                     "visual notes will lean more on AI defaults."
                 ),
+                action_label="Open Deep Breakdown",
+                action_path="intent",
             ))
         if not store.list_entities("location_bible"):
             preflight.items.append(SceneActionPreflightItem(
@@ -277,6 +326,8 @@ def _populate_concern_group_preflight(
                     "Look & Feel can still run, but production-design grounding will "
                     "rely more on scene text alone."
                 ),
+                action_label="Open Deep Breakdown",
+                action_path="intent",
             ))
     if stage_id == "rhythm_and_flow" and not store.list_entities("character_bible"):
         preflight.items.append(SceneActionPreflightItem(
@@ -286,26 +337,24 @@ def _populate_concern_group_preflight(
                 "Rhythm & Flow can still run, but beat-specific performance and "
                 "coverage nuance will have less upstream grounding."
             ),
+            action_label="Open Deep Breakdown",
+            action_path="intent",
         ))
     if stage_id == "sound_and_music" and not _has_project_artifact(store, "intent_mood"):
-        preflight.items.append(SceneActionPreflightItem(
-            kind="warning",
-            label="Intent & Mood missing",
-            detail=(
+        preflight.items.append(
+            _intent_mood_missing_item(
                 "Sound & Music can still run, but tonal alignment will rely more on "
                 "scene text than project-level intent."
-            ),
-        ))
+            )
+        )
     if stage_id == "story_world":
         if not _has_project_artifact(store, "intent_mood"):
-            preflight.items.append(SceneActionPreflightItem(
-                kind="warning",
-                label="Intent & Mood missing",
-                detail=(
+            preflight.items.append(
+                _intent_mood_missing_item(
                     "Story World can still run, but motif suggestions will lean more on "
                     "script text than explicit project taste inputs."
-                ),
-            ))
+                )
+            )
         if not store.list_entities("character_bible"):
             preflight.items.append(SceneActionPreflightItem(
                 kind="warning",
@@ -314,6 +363,8 @@ def _populate_concern_group_preflight(
                     "Story World can still run, but character-linked motifs and design "
                     "baselines will have less structured grounding."
                 ),
+                action_label="Open Deep Breakdown",
+                action_path="intent",
             ))
         if not store.list_entities("location_bible"):
             preflight.items.append(SceneActionPreflightItem(
@@ -323,6 +374,8 @@ def _populate_concern_group_preflight(
                     "Story World can still run, but location-linked motifs and baseline "
                     "references will rely more on the scene text alone."
                 ),
+                action_label="Open Deep Breakdown",
+                action_path="intent",
             ))
         if not store.list_entities("prop_bible"):
             preflight.items.append(SceneActionPreflightItem(
@@ -332,6 +385,8 @@ def _populate_concern_group_preflight(
                     "Story World can still run, but prop-linked motifs and baseline "
                     "references will be limited until prop bibles exist."
                 ),
+                action_label="Open Deep Breakdown",
+                action_path="intent",
             ))
 
     if preflight.scene_scope.is_scene_scoped and not scene_ids:
@@ -339,7 +394,19 @@ def _populate_concern_group_preflight(
             kind="soft_block",
             label="No target scene",
             detail="Pick a valid scene before running a current-scene direction pass.",
+            action_label="Open Scenes",
+            action_path="scenes",
         ))
+
+
+def _intent_mood_missing_item(detail: str) -> SceneActionPreflightItem:
+    return SceneActionPreflightItem(
+        kind="warning",
+        label="Intent & Mood missing",
+        detail=detail,
+        action_label="Open Intent & Mood",
+        action_path="intent",
+    )
 
 
 def _populate_generation_preflight(
@@ -349,7 +416,10 @@ def _populate_generation_preflight(
     recipe_id: str,
     scene_ids: list[str],
 ) -> None:
-    if not _has_healthy_project_artifact(store, "timeline"):
+    timeline_needs_build = not _has_healthy_project_artifact(store, "timeline")
+    track_manifest_needs_build = not _has_healthy_project_artifact(store, "track_manifest")
+
+    if timeline_needs_build:
         _append_unique(preflight.auto_build_artifact_types, "timeline")
         preflight.items.append(SceneActionPreflightItem(
             kind="auto_build",
@@ -358,7 +428,7 @@ def _populate_generation_preflight(
         ))
     else:
         _append_unique(preflight.reused_artifact_types, "timeline")
-    if not _has_healthy_project_artifact(store, "track_manifest"):
+    if track_manifest_needs_build:
         _append_unique(preflight.auto_build_artifact_types, "track_manifest")
         preflight.items.append(SceneActionPreflightItem(
             kind="auto_build",
@@ -375,6 +445,8 @@ def _populate_generation_preflight(
                 "Scene planning can still run, but state carry-over and continuity "
                 "checks will rely more on scene text and may need cleanup later."
             ),
+            action_label="Open Continuity",
+            action_path="world/continuity",
         ))
 
     if recipe_id in {
@@ -388,17 +460,25 @@ def _populate_generation_preflight(
             scene_ids,
             preflight.scene_scope,
         )
-        if missing_shot_plan:
+        shot_plan_needs_build = missing_shot_plan != 0
+        if shot_plan_needs_build:
+            shot_plan_build_count = missing_shot_plan or len(scene_ids) or 1
             _append_unique(preflight.auto_build_artifact_types, "shot_plan")
             preflight.items.append(SceneActionPreflightItem(
                 kind="auto_build",
                 label="Shot planning",
                 detail=_auto_build_detail(
                     preflight.scene_scope,
-                    missing_shot_plan,
+                    shot_plan_build_count,
                     "This run will build shot plans first.",
                     "This run will build shot plans for the missing scenes first.",
                 ),
+                action_label=_scene_tab_action_label(
+                    preflight.scene_scope,
+                    "Open Shots",
+                    "Open Scenes",
+                ),
+                action_path=_scene_tab_action_path(preflight.scene_scope, scene_ids, "shots"),
             ))
         else:
             _append_unique(preflight.reused_artifact_types, "shot_plan")
@@ -436,33 +516,56 @@ def _populate_generation_preflight(
                         "AI defaults."
                     ),
                 ),
+                action_label=_scene_tab_action_label(
+                    preflight.scene_scope,
+                    f"Open {label}",
+                    "Open Scenes",
+                ),
+                action_path=_scene_tab_action_path(
+                    preflight.scene_scope,
+                    scene_ids,
+                    _OPTIONAL_DIRECTION_TABS[artifact_type],
+                ),
             ))
 
-    if recipe_id == "render_generation":
+    if recipe_id in {"ai_previz_generation", "render_generation"}:
         missing_render_clip_plan = _missing_or_unhealthy_scene_artifact_count(
             store,
             "render_clip_plan",
             scene_ids,
             preflight.scene_scope,
         )
-        if missing_render_clip_plan:
+        render_clip_plan_needs_build = missing_render_clip_plan != 0
+        if render_clip_plan_needs_build:
+            render_clip_plan_build_count = missing_render_clip_plan or len(scene_ids) or 1
             _append_unique(preflight.auto_build_artifact_types, "render_clip_plan")
             preflight.items.append(SceneActionPreflightItem(
                 kind="auto_build",
                 label="Render clip planning",
                 detail=_auto_build_detail(
                     preflight.scene_scope,
-                    missing_render_clip_plan,
+                    render_clip_plan_build_count,
                     "This run will estimate scene duration and render clip boundaries first.",
                     (
                         "This run will estimate scene duration and render clip boundaries "
                         "for the missing scenes first."
                     ),
                 ),
+                action_label=_scene_tab_action_label(
+                    preflight.scene_scope,
+                    "Open Previz" if recipe_id == "ai_previz_generation" else "Open Render",
+                    "Open Scenes",
+                ),
+                action_path=_scene_tab_action_path(
+                    preflight.scene_scope,
+                    scene_ids,
+                    "previz" if recipe_id == "ai_previz_generation" else "render",
+                ),
             ))
         else:
             _append_unique(preflight.reused_artifact_types, "render_clip_plan")
 
+    if recipe_id == "render_generation":
         missing_keyframes = _missing_or_unhealthy_scene_artifact_count(
             store,
             "keyframe",
@@ -486,6 +589,12 @@ def _populate_generation_preflight(
                         "later framing pass."
                     ),
                 ),
+                action_label=_scene_tab_action_label(
+                    preflight.scene_scope,
+                    "Open Render",
+                    "Open Scenes",
+                ),
+                action_path=_scene_tab_action_path(preflight.scene_scope, scene_ids, "render"),
             ))
 
 
@@ -568,9 +677,7 @@ def _recommended_generation_start_stage(
             return None
         if recipe_id == "storyboard_generation":
             return "storyboards"
-        if recipe_id == "ai_previz_generation":
-            return "ai_previz"
-        if recipe_id == "render_generation":
+        if recipe_id in {"ai_previz_generation", "render_generation"}:
             missing_render_clip_plan = _missing_or_unhealthy_scene_artifact_count(
                 store,
                 "render_clip_plan",
@@ -578,13 +685,134 @@ def _recommended_generation_start_stage(
                 preflight.scene_scope,
             )
             if missing_render_clip_plan != 0:
+                if not _has_healthy_project_artifact(store, "timeline"):
+                    return None
                 return "render_clip_planning"
+        if recipe_id == "ai_previz_generation":
+            return "ai_previz"
+        if recipe_id == "render_generation":
             return "render"
+    return None
+
+
+def _cascade_full_generation_prep_autobuilds(
+    *,
+    preflight: SceneActionPreflight,
+    recipe_id: str,
+    scene_ids: list[str],
+) -> None:
+    if recipe_id not in {"ai_previz_generation", "render_generation"}:
+        return
+    if preflight.start_from is not None:
+        return
+    if "timeline" not in preflight.auto_build_artifact_types:
+        return
+
+    for artifact_type in ("track_manifest", "shot_plan", "render_clip_plan"):
+        preflight.reused_artifact_types = [
+            reused for reused in preflight.reused_artifact_types if reused != artifact_type
+        ]
+    preflight.auto_build_artifact_types = [
+        artifact_type
+        for artifact_type in preflight.auto_build_artifact_types
+        if artifact_type not in {"track_manifest", "shot_plan", "render_clip_plan"}
+    ]
+    preflight.items = [
+        item
+        for item in preflight.items
+        if not (
+            item.kind == "auto_build"
+            and item.label in {"Track manifest", "Shot planning", "Render clip planning"}
+        )
+    ]
+
+    _append_unique(preflight.auto_build_artifact_types, "track_manifest")
+    preflight.items.append(SceneActionPreflightItem(
+        kind="auto_build",
+        label="Track manifest",
+        detail="This run will register baseline track rows before generating scene outputs.",
+    ))
+
+    scene_build_count = len(scene_ids) or 1
+    _append_unique(preflight.auto_build_artifact_types, "shot_plan")
+    preflight.items.append(SceneActionPreflightItem(
+        kind="auto_build",
+        label="Shot planning",
+        detail=_auto_build_detail(
+            preflight.scene_scope,
+            scene_build_count,
+            "This run will build shot plans first.",
+            "This run will build shot plans for the missing scenes first.",
+        ),
+        action_label=_scene_tab_action_label(
+            preflight.scene_scope,
+            "Open Shots",
+            "Open Scenes",
+        ),
+        action_path=_scene_tab_action_path(preflight.scene_scope, scene_ids, "shots"),
+    ))
+
+    _append_unique(preflight.auto_build_artifact_types, "render_clip_plan")
+    preflight.items.append(SceneActionPreflightItem(
+        kind="auto_build",
+        label="Render clip planning",
+        detail=_auto_build_detail(
+            preflight.scene_scope,
+            scene_build_count,
+            "This run will estimate scene duration and render clip boundaries first.",
+            (
+                "This run will estimate scene duration and render clip boundaries "
+                "for the missing scenes first."
+            ),
+        ),
+        action_label=_scene_tab_action_label(
+            preflight.scene_scope,
+            "Open Previz" if recipe_id == "ai_previz_generation" else "Open Render",
+            "Open Scenes",
+        ),
+        action_path=_scene_tab_action_path(
+            preflight.scene_scope,
+            scene_ids,
+            "previz" if recipe_id == "ai_previz_generation" else "render",
+        ),
+    ))
+
+
+def _coerced_generation_start_stage(preflight: SceneActionPreflight) -> str | None:
+    requested_start = preflight.start_from
+    if not requested_start:
+        return None
+
+    required_ready_artifacts_by_stage = {
+        "tracks": {"timeline"},
+        "shot_planning": {"timeline", "track_manifest"},
+        "storyboards": {"track_manifest", "shot_plan"},
+        "render_clip_planning": {"timeline", "track_manifest", "shot_plan"},
+        "ai_previz": {"track_manifest", "shot_plan", "render_clip_plan"},
+        "render": {"track_manifest", "shot_plan", "render_clip_plan"},
+    }
+    required_ready_artifacts = required_ready_artifacts_by_stage.get(requested_start)
+    if not required_ready_artifacts:
+        return requested_start
+
+    skipped_auto_builds = required_ready_artifacts.intersection(
+        preflight.auto_build_artifact_types
+    )
+    if not skipped_auto_builds:
+        return requested_start
+
+    if requested_start in {"ai_previz", "render"} and skipped_auto_builds == {
+        "render_clip_plan"
+    }:
+        return "render_clip_planning"
     return None
 
 
 def _apply_ai_previz_prerequisite_strategy(preflight: SceneActionPreflight) -> None:
     if preflight.start_from == "ai_previz":
+        preflight.prerequisite_strategy = "reuse_existing_render_clip_plan"
+        return
+    if preflight.start_from == "render_clip_planning":
         preflight.prerequisite_strategy = "reuse_existing_shot_plan"
         return
     preflight.prerequisite_strategy = "one_pass_previz_prep"
@@ -600,7 +828,7 @@ def _prune_generation_autobuilds_for_start_stage(preflight: SceneActionPreflight
         return
     skipped_labels = {"Timeline", "Track manifest", "Shot planning"}
     skipped_artifact_types = {"timeline", "track_manifest", "shot_plan"}
-    if preflight.start_from == "render":
+    if preflight.start_from in {"ai_previz", "render"}:
         skipped_labels.add("Render clip planning")
         skipped_artifact_types.add("render_clip_plan")
     preflight.items = [
@@ -618,6 +846,24 @@ def _prune_generation_autobuilds_for_start_stage(preflight: SceneActionPreflight
 def _append_unique(values: list[str], value: str) -> None:
     if value not in values:
         values.append(value)
+
+
+def _scene_tab_action_label(
+    scene_scope: SceneExecutionScope,
+    scene_label: str,
+    fallback_label: str,
+) -> str:
+    return scene_label if scene_scope.is_scene_scoped else fallback_label
+
+
+def _scene_tab_action_path(
+    scene_scope: SceneExecutionScope,
+    scene_ids: list[str],
+    tab: str,
+) -> str:
+    if scene_scope.is_scene_scoped and len(scene_ids) == 1:
+        return f"scenes/{scene_ids[0]}?tab={tab}"
+    return "scenes"
 
 
 def _scope_label(scene_scope: SceneExecutionScope) -> str:

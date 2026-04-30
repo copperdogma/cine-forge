@@ -8,6 +8,10 @@ from pathlib import Path
 from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.modules.generation.render_adapter_v1.render_units import (
+    dialogue_line_key,
+    remove_dialogue_quotes,
+)
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
 from cine_forge.modules.generation.render_clip_plan_v1.prompting import (
     RenderClipPlanningResponse,
@@ -227,7 +231,7 @@ def _ai_plan(
     lower_bound: float,
     planner_model: str,
 ) -> RenderClipPlan:
-    seeds = [_seed_from_ai_clip(clip) for clip in response.clips]
+    seeds = _sanitize_clip_seeds([_seed_from_ai_clip(clip) for clip in response.clips])
     target_duration = max(
         lower_bound,
         float(response.target_dramatic_duration_seconds),
@@ -269,6 +273,7 @@ def _code_plan(
     seeds = _shot_plan_seeds(planning_context) if planning_context.shot_plan else []
     if not seeds:
         seeds = _scene_element_seeds(planning_context)
+    seeds = _sanitize_clip_seeds(seeds)
     target_duration = max(lower_bound, sum(seed.duration_seconds for seed in seeds))
     clips = _build_clips(
         scene_id=planning_context.scene.scene_id,
@@ -513,7 +518,7 @@ def _materialize_clip(
         start_time_seconds=round(start, 2),
         end_time_seconds=end,
         target_duration_seconds=duration,
-        dialogue_lines=_dedupe_text(
+        dialogue_lines=_dedupe_dialogue_text(
             line for seed in seeds for line in seed.dialogue_lines
         ),
         action_beats=_dedupe_text(
@@ -624,6 +629,80 @@ def _seed_from_ai_clip(clip: RenderClipPlanningResponseClip) -> _ClipSeed:
     )
 
 
+def _sanitize_clip_seeds(seeds: list[_ClipSeed]) -> list[_ClipSeed]:
+    seen_dialogue: set[str] = set()
+    sanitized: list[_ClipSeed] = []
+    for seed in seeds:
+        dialogue_lines: list[str] = []
+        for line in seed.dialogue_lines:
+            cleaned = line.strip()
+            if not cleaned:
+                continue
+            key = dialogue_line_key(cleaned)
+            if not key or key in seen_dialogue:
+                continue
+            seen_dialogue.add(key)
+            dialogue_lines.append(cleaned)
+        action_beats = [
+            remove_dialogue_quotes(beat, seed.dialogue_lines)
+            for beat in seed.action_beats
+            if beat.strip()
+        ]
+        sanitized.append(
+            _ClipSeed(
+                source_shot_ids=seed.source_shot_ids,
+                fallback_beat_ids=seed.fallback_beat_ids,
+                duration_seconds=seed.duration_seconds,
+                dialogue_lines=dialogue_lines,
+                action_beats=action_beats,
+                continuity_start_notes=seed.continuity_start_notes,
+                continuity_end_notes=seed.continuity_end_notes,
+                reference_intent=seed.reference_intent,
+                keyframe_intent=seed.keyframe_intent,
+                rationale=remove_dialogue_quotes(seed.rationale, seed.dialogue_lines),
+                confidence=seed.confidence,
+            )
+        )
+    return sanitized
+
+
+def _deduped_shot_dialogue(shot_plan: ShotPlan) -> dict[str, list[str]]:
+    last_occurrence: dict[str, str] = {}
+    for shot in shot_plan.shots:
+        for line in shot.dialogue_lines:
+            key = dialogue_line_key(line)
+            if key:
+                last_occurrence[key] = shot.shot_id
+
+    dialogue_by_shot: dict[str, list[str]] = {}
+    seen_by_shot: dict[str, set[str]] = {}
+    for shot in shot_plan.shots:
+        seen = seen_by_shot.setdefault(shot.shot_id, set())
+        lines = dialogue_by_shot.setdefault(shot.shot_id, [])
+        for line in shot.dialogue_lines:
+            key = dialogue_line_key(line)
+            if not key or key in seen or last_occurrence.get(key) != shot.shot_id:
+                continue
+            seen.add(key)
+            lines.append(line)
+    return dialogue_by_shot
+
+
+def _dedupe_dialogue_text(lines: Any) -> list[str]:
+    seen: set[str] = set()
+    deduped: list[str] = []
+    for line in lines:
+        if not isinstance(line, str):
+            continue
+        cleaned = line.strip()
+        key = dialogue_line_key(cleaned)
+        if not cleaned or not key or key in seen:
+            continue
+        seen.add(key)
+        deduped.append(cleaned)
+    return deduped
+
+
 def _ai_scene_context(
     *,
     planning_context: _PlanningContext,
@@ -650,9 +729,10 @@ def _ai_scene_context(
             ]
         )
     if planning_context.shot_plan is not None:
+        dialogue_by_shot = _deduped_shot_dialogue(planning_context.shot_plan)
         lines.extend(["", "Shot plan:"])
         for shot in planning_context.shot_plan.shots:
-            dialogue = "; ".join(shot.dialogue_lines) or "none"
+            dialogue = "; ".join(dialogue_by_shot.get(shot.shot_id, [])) or "none"
             lines.append(
                 f"- {shot.shot_id}: duration={shot.duration_estimate_seconds:g}s; "
                 f"role={shot.coverage_role}; action={shot.action_description}; "

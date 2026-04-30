@@ -2,7 +2,9 @@
 // Produces initial messages for each project state with appropriate action buttons.
 
 import {
-  getSceneScopeTargetLabel,
+  CONCERN_GROUP_META,
+  getSceneRunTargetLabel,
+  getSingleSceneScopeId,
   getSceneWorkNextStepActions,
   getSceneWorkNextStepContent,
 } from './constants'
@@ -336,22 +338,36 @@ export function humanizeStageName(name: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
-export function getStageStartMessage(stageName: string, sceneScope?: unknown): string {
-  const scopeTarget = getSceneScopeTargetLabel(sceneScope)
+export function getStageStartMessage(
+  stageName: string,
+  sceneScope?: unknown,
+  sceneData?: Record<string, unknown>,
+): string {
+  const singleSceneId = getSingleSceneScopeId(sceneScope)
+  const sceneTarget = getSceneRunTargetLabel(sceneScope, sceneData)
+  const concernGroup = CONCERN_GROUP_META[stageName]
+  if (concernGroup && singleSceneId) {
+    return `Working on ${concernGroup.label} for ${sceneTarget}...`
+  }
   if (stageName === 'shot_planning') {
-    return scopeTarget === 'this scene'
-      ? 'Planning coverage and shot list for this scene...'
+    return singleSceneId
+      ? `Planning coverage and shot list for ${sceneTarget}...`
       : 'Planning coverage and shot lists across your scenes...'
   }
   if (stageName === 'storyboards') {
-    return scopeTarget === 'this scene'
-      ? 'Generating storyboard frames for this scene...'
+    return singleSceneId
+      ? `Generating storyboard frames for ${sceneTarget}...`
       : 'Generating storyboard frames across your scenes...'
   }
   if (stageName === 'ai_previz') {
-    return scopeTarget === 'this scene'
-      ? 'Generating low-fidelity AI previz clip for this scene...'
+    return singleSceneId
+      ? `Generating low-fidelity AI previz clip for ${sceneTarget}...`
       : 'Generating low-fidelity AI previz clips for blocking and camera review...'
+  }
+  if (stageName === 'render') {
+    return singleSceneId
+      ? `Compiling render prompts and generating scene video for ${sceneTarget}...`
+      : 'Compiling render prompts and generating scene videos...'
   }
   return STAGE_DESCRIPTIONS[stageName]?.start ?? `Working on ${humanizeStageName(stageName)}...`
 }

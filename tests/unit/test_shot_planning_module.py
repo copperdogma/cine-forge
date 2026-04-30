@@ -481,6 +481,7 @@ def test_run_module_mock_updates_timeline_and_tracks(tmp_path: Path) -> None:
     timeline_artifact = next(
         artifact for artifact in result["artifacts"] if artifact["artifact_type"] == "timeline"
     )
+    assert timeline_artifact["exclude_upstream_lineage_types"] == ["track_manifest"]
     updated_timeline = Timeline.model_validate(timeline_artifact["data"])
     assert [entry.shot_count for entry in updated_timeline.entries] == [3, 3]
     assert all(entry.shot_ids for entry in updated_timeline.entries)
@@ -654,6 +655,8 @@ def test_run_module_preserves_adequacy_review_from_model_output(
 
     assert adequacy.verdict == "borderline"
     assert adequacy.missing_coverage_risks == ["Missing insert of the console activation."]
+    assert plan.shots[0].dialogue_lines == ["No. We let it run."]
+    assert plan.shots[1].dialogue_lines == ["We can still stop this."]
     assert plan.shots[-1].coverage_role == "Insert"
     assert plan.shots[-1].audit.intent == "Give the editor the missing decision detail."
 
@@ -687,6 +690,21 @@ def test_previz_fast_prompt_profile_compacts_scene_prompt(tmp_path: Path) -> Non
     assert len(previz_prompt) < len(full_prompt)
     assert len(previz_prompt) <= int(len(full_prompt) * 0.75)
     assert "..." in previz_prompt
+
+
+@pytest.mark.unit
+def test_previz_fast_prompt_profile_handles_missing_intent_text(tmp_path: Path) -> None:
+    scene_context = _scene_context_for_first_scene(tmp_path)
+    scene_context.intent_mood["natural_language_intent"] = None
+
+    prompt = _build_scene_prompt(
+        scene_context,
+        prompt_profile="previz_fast",
+        max_shots=5,
+    )
+
+    assert "Create 3 to 5 shots only." in prompt
+    assert "Intent: n/a" in prompt
 
 
 @pytest.mark.unit
@@ -807,6 +825,84 @@ def test_run_module_previz_fast_profile_passes_compact_prompt_and_max_tokens(
 
     assert result["cost"]["model"] == "fixture"
     assert captured["max_tokens"] == 2200
+    assert "Create 3 to 5 shots only." in captured["prompt"]
+    assert "Keep shot rationale and edit_intent to one short sentence." in captured["prompt"]
+
+
+@pytest.mark.unit
+def test_run_module_current_scene_scope_defaults_to_compact_prompt(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    project_dir, inputs = _seed_shot_planning_inputs(tmp_path, scene_count=1)
+    captured: dict[str, Any] = {}
+
+    def _fake_call_llm(**kwargs: Any) -> tuple[_ScenePlanResponse, dict[str, Any]]:
+        captured["prompt"] = kwargs["prompt"]
+        captured["max_tokens"] = kwargs["max_tokens"]
+        return (
+            _ScenePlanResponse(
+                coverage_strategy=_CoverageResponse(
+                    coverage_approach="Compact coverage.",
+                    rhythm_and_flow_intent="Measured escalation.",
+                    look_and_feel_intent="Observational restraint.",
+                    sound_and_music_intent="Room tone.",
+                    character_and_performance_notes="Mara drives urgency.",
+                    coverage_patterns=["Master", "Single", "Insert"],
+                    adequacy_verdict="adequate",
+                    adequacy_rationale="Core beats are covered.",
+                    missing_coverage_risks=[],
+                    rationale="Enough coverage for the scene turn.",
+                    alternatives_considered=[],
+                    confidence=0.84,
+                ),
+                shots=[
+                    _ShotResponse(
+                        shot_id="S001-A",
+                        shot_size="Wide",
+                        camera_angle="Eye level",
+                        camera_movement="Static",
+                        lens_focal_length="35mm",
+                        coverage_role="Master",
+                        characters_in_frame=["MARA", "OWEN"],
+                        blocking="Hold both characters at the console.",
+                        action_description="Establish the confrontation geography.",
+                        dialogue_lines=["We can still stop this."],
+                        duration_estimate_seconds=10.0,
+                        edit_intent="Anchor the beat.",
+                        rationale="The cut needs clean geography first.",
+                        alternatives_considered=[],
+                        confidence=0.83,
+                    )
+                ],
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 100,
+                "output_tokens": 120,
+                "estimated_cost_usd": 0.01,
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.shot_planning.shot_plan_v1.main.call_llm",
+        _fake_call_llm,
+    )
+
+    run_module(
+        inputs=inputs,
+        params={"work_model": "fixture", "skip_qa": True, "concurrency": 1},
+        context={
+            "project_dir": str(project_dir),
+            "run_id": "r",
+            "stage_id": "shot_planning",
+            "runtime_params": {
+                "scene_scope": {"mode": "current_scene", "scene_ids": ["scene_001"]},
+            },
+        },
+    )
+
+    assert captured["max_tokens"] == 2400
     assert "Create 3 to 5 shots only." in captured["prompt"]
     assert "Keep shot rationale and edit_intent to one short sentence." in captured["prompt"]
 

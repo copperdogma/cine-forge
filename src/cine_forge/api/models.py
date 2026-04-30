@@ -137,6 +137,7 @@ class RunStartRequest(BaseModel):
     start_from: str | None = None
     end_at: str | None = None
     scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
+    render_clip_ids: list[str] | None = Field(default=None, min_length=1)
     skip_qa: bool = False
     project_budget_limit_usd: float | None = Field(default=None, ge=0.0)
     run_budget_limit_usd: float | None = Field(default=None, ge=0.0)

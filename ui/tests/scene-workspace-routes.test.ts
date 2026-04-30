@@ -4,6 +4,9 @@ import {
   buildRelativeSceneWorkspaceRoute,
   buildSceneWorkspaceRoute,
   detectConcernGroupRun,
+  getSceneProgressTotal,
+  getSceneRunTargetLabel,
+  getSingleSceneScopeId,
   getSceneWorkspaceTabForPhaseId,
   getSceneWorkspaceTabForRecipeId,
 } from '../src/lib/constants.ts'
@@ -47,4 +50,24 @@ test('single concern-group creative runs expose their matching scene workspace t
     roleName: 'Visual Architect',
     sceneWorkspaceTab: 'look_and_feel',
   })
+})
+
+test('single-scene run labels name the scene instead of showing batch progress', () => {
+  const sceneScope = { mode: 'current_scene', scene_ids: ['scene_001'] }
+  const sceneData = { heading: "EXT. BRICK'S PATIO - DAY" }
+
+  assert.equal(getSingleSceneScopeId(sceneScope), 'scene_001')
+  assert.equal(
+    getSceneRunTargetLabel(sceneScope, sceneData),
+    "SCENE 001: EXT. BRICK'S PATIO - DAY",
+  )
+  assert.equal(getSceneProgressTotal(sceneScope, 6), null)
+})
+
+test('multi-scene concern runs keep batch progress totals', () => {
+  assert.equal(getSceneProgressTotal({ mode: 'all_scenes', scene_ids: [] }, 6), 6)
+  assert.equal(
+    getSceneProgressTotal({ mode: 'current_scene', scene_ids: ['scene_001', 'scene_002'] }, 6),
+    2,
+  )
 })

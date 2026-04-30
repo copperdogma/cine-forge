@@ -7,12 +7,17 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from cine_forge.modules.generation.render_adapter_v1.render_units import (
+    remove_dialogue_quotes,
+    render_clip_dialogue_lines,
+)
 from cine_forge.schemas import (
     EnginePack,
     PrevizConsistencyStrategy,
     PrevizPromptContract,
     PrevizPromptProfile,
     PrevizStyleProfile,
+    RenderClip,
     RenderCompletenessCheck,
     RenderPromptSection,
     RenderResolvedInput,
@@ -50,6 +55,9 @@ _DEFAULT_NEGATIVE_TERMS = [
     "decorative camera flourishes",
     "bokeh glamour shots",
     "final-render finish",
+    "improvised dialogue",
+    "extra spoken words",
+    "speech captions or subtitles",
 ]
 _HOUSE_STYLE_PROFILE = PrevizStyleProfile(
     profile_id="cineforge_low_fidelity_previz_v1",
@@ -127,7 +135,7 @@ def compile_low_fidelity_previz_prompt(
         if brief.audio_description
         else "Keep audio minimal and subordinate to the visual staging read."
     )
-    transcript_line = brief.transcript or "No spoken line needs explicit lip-sync detail."
+    dialogue_lock_line = _dialogue_lock_line(brief.transcript)
     engine_line = engine_pack.preferred_prompt_style.strip()
     prompt_lines = _prompt_lines_for_profile(
         prompt_profile=prompt_profile,
@@ -138,7 +146,7 @@ def compile_low_fidelity_previz_prompt(
         motion_lines=motion_lines,
         continuity_line=continuity_line,
         audio_line=audio_line,
-        transcript_line=transcript_line,
+        dialogue_lock_line=dialogue_lock_line,
         shot_brief=brief.summary_reference,
         engine_line=engine_line,
     )
@@ -204,6 +212,7 @@ def compile_scene_previz_prompt(
     *,
     scene: Scene,
     plan: ShotPlan,
+    render_clip: RenderClip | None = None,
     source_maps: dict[str, Any],
     resolved_inputs: Sequence[RenderResolvedInput],
     engine_pack: EnginePack,
@@ -211,19 +220,23 @@ def compile_scene_previz_prompt(
     prompt_profile: PrevizPromptProfile = "standard",
 ) -> tuple[PrevizPromptContract, list[RenderPromptSection], RenderCompletenessCheck, list[str]]:
     """Compile a deterministic low-fidelity previz prompt from scene artifacts."""
-    primary_shot = plan.shots[0] if plan.shots else None
-    transcript_lines = _collect_dialogue_lines(plan)
+    transcript_lines = _collect_dialogue_lines(plan, render_clip=render_clip)
     sound_and_music = source_maps.get("sound_and_music", {}).get(plan.scene_id)
     look_and_feel = source_maps.get("look_and_feel", {}).get(plan.scene_id)
     rhythm_and_flow = source_maps.get("rhythm_and_flow", {}).get(plan.scene_id)
     intent_mood = source_maps.get("intent_mood")
 
     target = {
-        "clip_id": plan.scene_id,
-        "title": plan.scene_heading,
+        "clip_id": render_clip.clip_id if render_clip else plan.scene_id,
+        "title": (
+            f"{plan.scene_heading} — {render_clip.clip_id}"
+            if render_clip
+            else plan.scene_heading
+        ),
         "summary_reference": _summary_reference(
             scene=scene,
             plan=plan,
+            render_clip=render_clip,
             look_and_feel=look_and_feel,
             rhythm_and_flow=rhythm_and_flow,
         ),
@@ -231,19 +244,20 @@ def compile_scene_previz_prompt(
         "audio_description": _audio_description(sound_and_music),
         "tone_tags": _tone_tags(intent_mood, rhythm_and_flow),
         "color_tags": _color_tags(look_and_feel),
-        "camera_tags": _camera_tags(primary_shot),
-        "motion_tags": _motion_tags(primary_shot, rhythm_and_flow),
+        "camera_tags": _camera_tags(plan),
+        "motion_tags": _motion_tags(plan, rhythm_and_flow),
         "continuity_notes": _continuity_notes(
             scene=scene,
-            primary_shot=primary_shot,
+            plan=plan,
+            render_clip=render_clip,
             resolved_inputs=resolved_inputs,
         ),
-        "clip_tags": _clip_tags(scene=scene, plan=plan),
+        "clip_tags": _clip_tags(scene=scene, plan=plan, render_clip=render_clip),
     }
     brief = shot_brief_from_target(
         target=target,
         meta={},
-        character_labels=_character_labels(scene=scene, primary_shot=primary_shot),
+        character_labels=_character_labels(scene=scene, plan=plan),
     )
     contract = compile_low_fidelity_previz_prompt(
         brief=brief,
@@ -251,12 +265,15 @@ def compile_scene_previz_prompt(
         consistency_strategy=consistency_strategy,
         prompt_profile=prompt_profile,
     )
+    shot_brief_sources = ["scene", "shot_plan"]
+    if render_clip is not None:
+        shot_brief_sources.append("render_clip_plan")
     sections = [
         RenderPromptSection(
             section_id="shot_brief",
             title="Shot Brief",
             body=target["summary_reference"],
-            source_artifact_types=["scene", "shot_plan"],
+            source_artifact_types=shot_brief_sources,
         ),
         RenderPromptSection(
             section_id="house_style",
@@ -303,13 +320,24 @@ def compile_scene_previz_prompt(
                 source_artifact_types=["sound_and_music"],
             )
         )
+    dialogue_sources = ["shot_plan"]
+    if render_clip is not None:
+        dialogue_sources.append("render_clip_plan")
+    sections.append(
+        RenderPromptSection(
+            section_id="dialogue_lock",
+            title="Dialogue Lock",
+            body=_dialogue_lock_line(" ".join(transcript_lines) if transcript_lines else None),
+            source_artifact_types=dialogue_sources,
+        )
+    )
     if transcript_lines:
         sections.append(
             RenderPromptSection(
                 section_id="dialogue",
                 title="Dialogue Cue",
                 body=" ".join(transcript_lines),
-                source_artifact_types=["shot_plan"],
+                source_artifact_types=dialogue_sources,
             )
         )
     if resolved_inputs:
@@ -348,6 +376,7 @@ def compile_scene_previz_prompt(
             f"consistency_strategy={contract.consistency_strategy}",
             f"prompt_profile={contract.prompt_profile}",
             f"style_profile={contract.style_profile.profile_id}",
+            *(_render_clip_notes(render_clip) if render_clip is not None else []),
         ],
     )
     return contract, sections, completeness, prompt_sources
@@ -363,7 +392,7 @@ def _prompt_lines_for_profile(
     motion_lines: list[str],
     continuity_line: str,
     audio_line: str,
-    transcript_line: str,
+    dialogue_lock_line: str,
     shot_brief: str,
     engine_line: str,
 ) -> list[str]:
@@ -374,6 +403,7 @@ def _prompt_lines_for_profile(
                 "This is previs, not a final render. Prioritize readable blocking, camera path, "
                 "motion, subject positions, prop positions, and scene geography."
             ),
+            dialogue_lock_line,
             (
                 "Visual treatment: simplified flat-shaded schematic animation, clear silhouettes, "
                 "restrained texture, non-photoreal finish."
@@ -388,7 +418,6 @@ def _prompt_lines_for_profile(
             f"Motion: {_join_unique_lines(motion_lines)}",
             f"Continuity: {continuity_line}",
             f"Audio: {audio_line}",
-            f"Dialogue: {transcript_line}",
             (
                 "Avoid photoreal polish, ornate texture, decorative camera flourishes, and "
                 "final-render finish."
@@ -402,6 +431,7 @@ def _prompt_lines_for_profile(
             "This is previs, not a final render. Make camera placement, blocking, motion, "
             "subject positions, prop positions, and location readability obvious at a glance."
         ),
+        dialogue_lock_line,
         f"House style: {_HOUSE_STYLE_PROFILE.summary}",
         (
             "Visual treatment: simplified flat-shaded animation, clear silhouettes, "
@@ -419,7 +449,6 @@ def _prompt_lines_for_profile(
         *motion_lines,
         f"Continuity anchor: {continuity_line}",
         f"Audio cue: {audio_line}",
-        f"Dialogue cue: {transcript_line}",
         (
             "Suppress distracting detail: no photoreal surfaces, no elaborate set dressing, "
             "no beauty pass, no cinematic prestige finish."
@@ -430,6 +459,23 @@ def _prompt_lines_for_profile(
         ),
         f"Engine guidance: {engine_line}",
     ]
+
+
+def _dialogue_lock_line(transcript: str | None) -> str:
+    transcript_text = transcript.strip() if isinstance(transcript, str) else ""
+    if transcript_text:
+        return (
+            "Dialogue lock: the only spoken words permitted in this clip are exactly "
+            f"these scripted lines, verbatim and in order: {transcript_text} "
+            "Do not add, paraphrase, repeat, translate, narrate, or improvise any "
+            "other dialogue, including whispered or muttered extra words. Do not create "
+            "speech captions or subtitles."
+        )
+    return (
+        "Dialogue lock: this clip has no scripted spoken dialogue. Characters must stay silent: "
+        "no words, no mouth-synced speech, no whispers, no mutters, no voiceover, no improvised "
+        "dialogue, and no speech captions or subtitles."
+    )
 
 
 def _ordered_lines(tags: Sequence[str], mapping: dict[str, str]) -> list[str]:
@@ -454,7 +500,7 @@ def _fit_prompt_lines_to_budget(
     max_chars: int | None,
 ) -> str:
     prompt_text = "\n".join(prompt_lines)
-    if not max_chars or len(prompt_text) <= max_chars:
+    if not max_chars or _prompt_length(prompt_text) <= max_chars:
         return prompt_text
 
     adjusted = _apply_line_caps(
@@ -468,7 +514,7 @@ def _fit_prompt_lines_to_budget(
         },
     )
     prompt_text = "\n".join(adjusted)
-    if len(prompt_text) <= max_chars:
+    if _prompt_length(prompt_text) <= max_chars:
         return prompt_text
 
     adjusted = _apply_line_caps(
@@ -482,20 +528,36 @@ def _fit_prompt_lines_to_budget(
         },
     )
     prompt_text = "\n".join(adjusted)
-    if len(prompt_text) <= max_chars:
+    if _prompt_length(prompt_text) <= max_chars:
         return prompt_text
 
-    overflow = len(prompt_text) - max_chars
+    overflow = _prompt_length(prompt_text) - max_chars
     for prefix in ("Shot brief: ", "Audio cue: ", "Color cue: ", "Dialogue cue: "):
         adjusted, reduced = _trim_prefixed_line(adjusted, prefix=prefix, overflow=overflow)
         if not reduced:
             continue
         prompt_text = "\n".join(adjusted)
-        if len(prompt_text) <= max_chars:
+        if _prompt_length(prompt_text) <= max_chars:
             return prompt_text
-        overflow = len(prompt_text) - max_chars
+        overflow = _prompt_length(prompt_text) - max_chars
 
-    return prompt_text[: max_chars - 3].rstrip() + "..."
+    return _truncate_prompt_to_budget(prompt_text, max_chars)
+
+
+def _prompt_length(text: str) -> int:
+    """Return provider-facing UTF-8 byte length, not Python codepoint count."""
+    return len(text.encode("utf-8"))
+
+
+def _truncate_prompt_to_budget(text: str, max_chars: int) -> str:
+    if max_chars <= 3:
+        return text.encode("utf-8")[:max_chars].decode("utf-8", errors="ignore")
+    suffix = "..."
+    budget = max_chars - _prompt_length(suffix)
+    encoded = text.rstrip().encode("utf-8")
+    if len(encoded) <= max_chars:
+        return text.rstrip()
+    return encoded[:budget].decode("utf-8", errors="ignore").rstrip() + suffix
 
 
 def _apply_line_caps(prompt_lines: list[str], caps: dict[str, int]) -> list[str]:
@@ -562,29 +624,94 @@ def _summary_reference(
     *,
     scene: Scene,
     plan: ShotPlan,
+    render_clip: RenderClip | None,
     look_and_feel: Any,
     rhythm_and_flow: Any,
 ) -> str:
-    shot = plan.shots[0] if plan.shots else None
     pieces = [
         scene.heading,
+        _render_clip_reference(render_clip),
         getattr(plan.coverage_strategy, "coverage_approach", None),
+        _shot_sequence_reference(plan, include_action=render_clip is None),
         getattr(rhythm_and_flow, "pacing_intent", None),
         getattr(look_and_feel, "camera_personality", None),
-        getattr(shot, "blocking", None),
-        getattr(shot, "action_description", None),
     ]
     return ". ".join(piece.strip() for piece in pieces if isinstance(piece, str) and piece.strip())
 
 
-def _collect_dialogue_lines(plan: ShotPlan) -> list[str]:
+def _render_clip_reference(render_clip: RenderClip | None) -> str | None:
+    if render_clip is None:
+        return None
+    pieces = [
+        (
+            f"Render clip {render_clip.clip_id}: scene time "
+            f"{render_clip.start_time_seconds:g}-{render_clip.end_time_seconds:g}s"
+        )
+    ]
+    if render_clip.source_shot_ids:
+        pieces.append("source shots " + ", ".join(render_clip.source_shot_ids))
+    if render_clip.action_beats:
+        action_beats = [
+            remove_dialogue_quotes(beat, render_clip.dialogue_lines)
+            for beat in render_clip.action_beats[:3]
+        ]
+        pieces.append("action beats: " + " / ".join(action_beats))
+    clip_dialogue = render_clip_dialogue_lines(render_clip)
+    if clip_dialogue:
+        pieces.append(f"dialogue lines: {len(clip_dialogue)} exact line(s)")
+    if render_clip.rationale:
+        pieces.append("rationale: " + render_clip.rationale)
+    return "; ".join(pieces)
+
+
+def _render_clip_notes(render_clip: RenderClip) -> list[str]:
+    notes = [
+        f"render_clip_id={render_clip.clip_id}",
+        (
+            "render_clip_window="
+            f"{render_clip.start_time_seconds:g}-{render_clip.end_time_seconds:g}s"
+        ),
+    ]
+    if render_clip.source_shot_ids:
+        notes.append("source_shot_ids=" + ",".join(render_clip.source_shot_ids))
+    return notes
+
+
+def _shot_sequence_reference(plan: ShotPlan, *, include_action: bool = True) -> str | None:
+    if not plan.shots:
+        return None
     lines: list[str] = []
+    for index, shot in enumerate(plan.shots[:6], start=1):
+        pieces = [
+            getattr(shot, "shot_size", None),
+            getattr(shot, "coverage_role", None),
+        ]
+        if include_action:
+            pieces.append(getattr(shot, "action_description", None))
+        body = "; ".join(
+            piece.strip() for piece in pieces if isinstance(piece, str) and piece.strip()
+        )
+        if body:
+            lines.append(f"Shot {index}: {body}")
+    if len(plan.shots) > 6:
+        lines.append(f"+{len(plan.shots) - 6} more planned shots")
+    return "Planned shot sequence: " + " | ".join(lines) if lines else None
+
+
+def _collect_dialogue_lines(
+    plan: ShotPlan,
+    *,
+    render_clip: RenderClip | None = None,
+) -> list[str]:
+    lines: list[str] = []
+    if render_clip is not None:
+        return render_clip_dialogue_lines(render_clip)[:8]
     for shot in plan.shots:
         for line in shot.dialogue_lines:
             cleaned = line.strip()
             if cleaned and cleaned not in lines:
                 lines.append(cleaned)
-    return lines[:3]
+    return lines[:8]
 
 
 def _audio_description(sound_and_music: Any) -> str:
@@ -614,9 +741,18 @@ def _color_tags(look_and_feel: Any) -> list[str]:
     return [part.strip() for part in palette.replace("/", ",").split(",") if part.strip()][:4]
 
 
-def _camera_tags(primary_shot: Any) -> list[str]:
-    shot_size = _normalize_token(getattr(primary_shot, "shot_size", None))
-    movement = _normalize_token(getattr(primary_shot, "camera_movement", None))
+def _camera_tags(plan: ShotPlan) -> list[str]:
+    mapping: list[str] = []
+    for shot in plan.shots:
+        shot_size = _normalize_token(getattr(shot, "shot_size", None))
+        movement = _normalize_token(getattr(shot, "camera_movement", None))
+        mapping.extend(_camera_tags_for_shot(shot_size=shot_size, movement=movement))
+    if not mapping:
+        mapping.append("static")
+    return list(dict.fromkeys(mapping))[:4]
+
+
+def _camera_tags_for_shot(*, shot_size: str, movement: str) -> list[str]:
     mapping: list[str] = []
     if shot_size and "two" in shot_size:
         mapping.append("locked_two_shot")
@@ -637,14 +773,16 @@ def _camera_tags(primary_shot: Any) -> list[str]:
     return mapping
 
 
-def _motion_tags(primary_shot: Any, rhythm_and_flow: Any) -> list[str]:
+def _motion_tags(plan: ShotPlan, rhythm_and_flow: Any) -> list[str]:
     dynamics = _normalize_token(getattr(rhythm_and_flow, "camera_movement_dynamics", None))
-    movement = _normalize_token(getattr(primary_shot, "camera_movement", None))
+    movements = " ".join(
+        _normalize_token(getattr(shot, "camera_movement", None)) for shot in plan.shots
+    )
     if dynamics and ("fast" in dynamics or "urgent" in dynamics):
         return ["fast_lateral"]
-    if movement and "drift" in movement:
+    if "drift" in movements:
         return ["slow_drift"]
-    if movement and ("handheld" in movement or "shaky" in movement):
+    if "handheld" in movements or "shaky" in movements:
         return ["escalating"]
     return ["measured"]
 
@@ -652,13 +790,28 @@ def _motion_tags(primary_shot: Any, rhythm_and_flow: Any) -> list[str]:
 def _continuity_notes(
     *,
     scene: Scene,
-    primary_shot: Any,
+    plan: ShotPlan,
+    render_clip: RenderClip | None,
     resolved_inputs: Sequence[RenderResolvedInput],
 ) -> list[str]:
     notes: list[str] = []
-    blocking = _first_non_empty(getattr(primary_shot, "blocking", None))
-    if blocking:
-        notes.append(blocking)
+    if render_clip is not None:
+        for note in [
+            *render_clip.continuity_start_notes,
+            *render_clip.continuity_end_notes,
+            *render_clip.reference_intent,
+        ]:
+            cleaned = note.strip()
+            if cleaned and cleaned not in notes:
+                notes.append(cleaned)
+        if render_clip.keyframe_intent and render_clip.keyframe_intent not in notes:
+            notes.append(render_clip.keyframe_intent)
+    for shot in plan.shots:
+        blocking = _first_non_empty(getattr(shot, "blocking", None))
+        if blocking and blocking not in notes:
+            notes.append(blocking)
+        if len(notes) >= 3:
+            break
     if scene.location:
         notes.append(f"Keep location geography legible in {scene.location}.")
     if resolved_inputs:
@@ -669,16 +822,25 @@ def _continuity_notes(
     return notes[:4]
 
 
-def _clip_tags(*, scene: Scene, plan: ShotPlan) -> list[str]:
+def _clip_tags(*, scene: Scene, plan: ShotPlan, render_clip: RenderClip | None) -> list[str]:
     tags = [scene.int_ext.lower(), scene.time_of_day.lower()]
-    if plan.shots:
-        tags.append(plan.shots[0].coverage_role.lower())
+    if render_clip is not None:
+        tags.extend(["render_clip", render_clip.derivation])
+    for shot in plan.shots[:4]:
+        coverage_role = _string_or_none(getattr(shot, "coverage_role", None))
+        if coverage_role:
+            tags.append(coverage_role.lower())
     return [tag for tag in tags if tag]
 
 
-def _character_labels(*, scene: Scene, primary_shot: Any) -> list[str]:
-    if primary_shot is not None and getattr(primary_shot, "characters_in_frame", None):
-        return list(primary_shot.characters_in_frame)
+def _character_labels(*, scene: Scene, plan: ShotPlan) -> list[str]:
+    labels: list[str] = []
+    for shot in plan.shots:
+        for label in getattr(shot, "characters_in_frame", []) or []:
+            if label not in labels:
+                labels.append(label)
+    if labels:
+        return labels[:6]
     return list(scene.characters_present[:3])
 
 

@@ -27,10 +27,15 @@ def build_scene_readiness(store: ArtifactStore, scene_id: str) -> SceneReadiness
     )
 
     for artifact_type in _SCENE_GROUPS:
-        artifacts[artifact_type] = _latest_artifact_data(
+        scene_artifact = _latest_artifact_data(
             store,
             artifact_type=artifact_type,
             entity_id=scene_id,
+        )
+        artifacts[artifact_type] = scene_artifact or _latest_artifact_data(
+            store,
+            artifact_type=artifact_type,
+            entity_id="project",
         )
 
     artifacts["story_world"] = _latest_artifact_data(

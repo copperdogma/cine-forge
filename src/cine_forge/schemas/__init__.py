@@ -81,6 +81,7 @@ from .export_interchange import (
 from .final_output import (
     FinalOutputArtifact,
     FinalOutputCoverageState,
+    FinalOutputIncludedClip,
     FinalOutputIncludedScene,
     FinalOutputOmissionReason,
     FinalOutputOmittedScene,
@@ -174,6 +175,7 @@ from .render import (
     RenderCompletenessCheck,
     RenderPromptSection,
     RenderResolvedInput,
+    RenderUnit,
 )
 from .render_clip_plan import (
     RenderClip,
@@ -317,6 +319,7 @@ __all__ = [
     "EntityGraph",
     "FinalOutputArtifact",
     "FinalOutputCoverageState",
+    "FinalOutputIncludedClip",
     "FinalOutputIncludedScene",
     "FinalOutputOmissionReason",
     "FinalOutputOmittedScene",
@@ -383,6 +386,7 @@ __all__ = [
     "ReviewDecision",
     "ReviewReadiness",
     "RenderCompletenessCheck",
+    "RenderUnit",
     "RenderClip",
     "RenderClipDerivation",
     "RenderClipPlan",

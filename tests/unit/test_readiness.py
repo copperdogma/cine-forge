@@ -111,6 +111,19 @@ def test_yellow_character_and_performance() -> None:
 
 
 @pytest.mark.unit
+def test_yellow_character_and_performance_with_propagated_project_field() -> None:
+    """Project-level propagation can seed performance guidance before scene entries exist."""
+    result = compute_scene_readiness("scene_001", {
+        "character_and_performance": {
+            "emotional_state_entering": "Play exhaustion through posture and stillness.",
+            "scope": "project",
+            "user_approved": False,
+        },
+    })
+    assert result.character_and_performance == ReadinessState.YELLOW
+
+
+@pytest.mark.unit
 def test_yellow_character_and_performance_with_empty_scene_artifact() -> None:
     """A no-characters scene artifact is still a meaningful draft outcome."""
     result = compute_scene_readiness("scene_001", {

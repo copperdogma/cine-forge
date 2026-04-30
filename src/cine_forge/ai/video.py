@@ -106,8 +106,8 @@ def generate_video(
 
 
 def _should_retry(error: VideoGenerationError, engine_pack: EnginePack) -> bool:
-    if error.retryable:
-        return True
+    if not error.retryable:
+        return False
     retry_statuses = set(engine_pack.retry_policy.retryable_http_statuses)
     if error.status_code in retry_statuses:
         return True
@@ -164,7 +164,14 @@ def _generate_video_openai(
         raise VideoGenerationError(f"OpenAI video response missing id: {response}")
 
     job = response
+    poll_started_at = time.monotonic()
     while job.get("status") in {"queued", "in_progress"}:
+        _raise_if_poll_timed_out(
+            provider="OpenAI",
+            provider_job_id=video_id,
+            started_at=poll_started_at,
+            engine_pack=engine_pack,
+        )
         time.sleep(engine_pack.retry_policy.poll_interval_seconds)
         job = _request_json(
             url=f"{OPENAI_BASE_URL}/videos/{video_id}",
@@ -287,7 +294,14 @@ def _generate_video_google(
         raise VideoGenerationError(f"Google video response missing operation name: {response}")
 
     status = response
+    poll_started_at = time.monotonic()
     while status.get("done") is not True:
+        _raise_if_poll_timed_out(
+            provider="Google",
+            provider_job_id=operation_name,
+            started_at=poll_started_at,
+            engine_pack=engine_pack,
+        )
         time.sleep(engine_pack.retry_policy.poll_interval_seconds)
         status = _request_json(
             url=f"{GOOGLE_BASE_URL}/{urllib.parse.quote(operation_name, safe='/')}",
@@ -368,7 +382,14 @@ def _generate_video_xai(
         timeout=60,
     )
     status = _read_string(status_payload, "status")
+    poll_started_at = time.monotonic()
     while status == "pending":
+        _raise_if_poll_timed_out(
+            provider="xAI",
+            provider_job_id=request_id,
+            started_at=poll_started_at,
+            engine_pack=engine_pack,
+        )
         time.sleep(engine_pack.retry_policy.poll_interval_seconds)
         status_payload = _request_json(
             url=f"{XAI_BASE_URL}/videos/{urllib.parse.quote(request_id, safe='')}",
@@ -405,6 +426,24 @@ def _generate_video_xai(
         model_used=_read_string(status_payload, "model") or engine_pack.target_model,
         request_id=request_id,
         provider_job_id=request_id,
+    )
+
+
+def _raise_if_poll_timed_out(
+    *,
+    provider: str,
+    provider_job_id: str,
+    started_at: float,
+    engine_pack: EnginePack,
+) -> None:
+    elapsed_seconds = time.monotonic() - started_at
+    max_poll_seconds = float(engine_pack.retry_policy.max_poll_seconds)
+    if elapsed_seconds <= max_poll_seconds:
+        return
+    raise VideoGenerationError(
+        f"{provider} video job {provider_job_id} timed out after "
+        f"{max_poll_seconds:g}s waiting for completion",
+        retryable=False,
     )
 
 

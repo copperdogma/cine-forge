@@ -101,8 +101,10 @@ export function formatPromptProfile(value: string | null): string | null {
 
 export function formatPrerequisiteStrategy(value: string | null): string | null {
   switch (value) {
+    case 'reuse_existing_render_clip_plan':
+      return 'Reuse current render clip plan'
     case 'reuse_existing_shot_plan':
-      return 'Reuse current shot plan'
+      return 'Refresh render clips from current shot plan'
     case 'one_pass_previz_prep':
       return 'One-pass previz prep'
     default:

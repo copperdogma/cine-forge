@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from cine_forge.ai.video import (
+    VideoGenerationError,
     VideoGenerationRequest,
     VideoReferenceInput,
     generate_video,
@@ -22,6 +23,14 @@ from cine_forge.modules.generation.render_adapter_v1.prompting import (
     prompt_sources_from_sections,
     section_metadata,
     section_title,
+)
+from cine_forge.modules.generation.render_adapter_v1.render_units import (
+    clipped_shot_plan,
+    remove_dialogue_quotes,
+    render_clip_dialogue_lines,
+    render_clip_time_note,
+    render_unit_entity_id,
+    render_unit_kind,
 )
 from cine_forge.modules.generation.render_adapter_v1.support import (
     anticipated_entity_ref,
@@ -52,6 +61,7 @@ from cine_forge.schemas import (
     MediaFile,
     PreviewProvenance,
     ProjectConfig,
+    RenderClip,
     RenderClipPlan,
     RenderCompletenessCheck,
     RenderPromptSection,
@@ -81,6 +91,25 @@ _IMAGE_KINDS = {
 _AUDIO_KINDS = {"scene_injected_audio", "project_injected_audio"}
 
 
+class GeneratedVideoTrackRef:
+    """Internal track-registration carrier for a generated scene or render clip."""
+
+    def __init__(
+        self,
+        *,
+        scene_id: str,
+        artifact_ref: ArtifactRef,
+        render_clip_id: str | None,
+        start_time_seconds: float | None,
+        end_time_seconds: float | None,
+    ) -> None:
+        self.scene_id = scene_id
+        self.artifact_ref = artifact_ref
+        self.render_clip_id = render_clip_id
+        self.start_time_seconds = start_time_seconds
+        self.end_time_seconds = end_time_seconds
+
+
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
@@ -90,6 +119,7 @@ def run_module(
     track_manifest = _track_manifest(inputs)
     runtime_params = _runtime_params(context)
     scene_action_preflight = _scene_action_preflight(runtime_params)
+    selected_render_clip_ids = _selected_render_clip_ids(runtime_params)
     shot_plans = _shot_plans(inputs, runtime_params=runtime_params)
     output_contract = _output_contract(params=params, runtime_params=runtime_params)
 
@@ -114,52 +144,86 @@ def run_module(
     )
     engine_pack = load_engine_pack(engine_pack_id)
     source_maps = _build_source_maps(inputs)
+    _ensure_required_render_clip_plans(
+        params=params,
+        context=context,
+        shot_plans=shot_plans,
+        source_maps=source_maps,
+    )
     announce_artifact = _artifact_announcer(context)
 
     artifacts: list[dict[str, Any]] = []
     total_cost = _empty_cost(model=compiler_model)
-    generated_refs: dict[str, ArtifactRef] = {}
+    generated_refs: list[GeneratedVideoTrackRef] = []
     render_failures: list[dict[str, Any]] = []
+    planned_render_count = 0
 
     for plan in sorted(shot_plans, key=lambda item: item.scene_number):
         scene_artifact = store.load_artifact(plan.scene_ref)
         scene = Scene.model_validate(scene_artifact.data)
-        try:
-            prompt_artifact, video_artifact, cost = _render_scene(
-                store=store,
-                scene=scene,
-                plan=plan,
-                source_maps=source_maps,
-                engine_pack=engine_pack,
-                compiler_model=compiler_model,
-                requested_duration_seconds=requested_duration_seconds,
-                requested_resolution=requested_resolution,
-                requested_aspect_ratio=requested_aspect_ratio,
-                output_contract=output_contract,
-                scene_action_preflight=scene_action_preflight,
+        planned_render_count += _planned_render_unit_count(
+            plan=plan,
+            source_maps=source_maps,
+            output_contract=output_contract,
+            selected_render_clip_ids=selected_render_clip_ids,
+        )
+        scene_outputs, scene_failures = _render_scene_outputs(
+            store=store,
+            scene=scene,
+            plan=plan,
+            source_maps=source_maps,
+            engine_pack=engine_pack,
+            compiler_model=compiler_model,
+            requested_duration_seconds=requested_duration_seconds,
+            requested_resolution=requested_resolution,
+            requested_aspect_ratio=requested_aspect_ratio,
+            output_contract=output_contract,
+            scene_action_preflight=scene_action_preflight,
+            selected_render_clip_ids=selected_render_clip_ids,
+        )
+        for failure in scene_failures:
+            render_failures.append(failure)
+            unit_label = (
+                f"{failure['scene_id']}:{failure['render_clip_id']}"
+                if failure.get("render_clip_id")
+                else failure["scene_id"]
             )
+            print(
+                "[render_adapter] Failed "
+                f"{unit_label} with {engine_pack.pack_id}: {failure['error']}"
+            )
+
+        for prompt_artifact, video_artifact, cost in scene_outputs:
             _announce_artifact(announce_artifact, prompt_artifact)
             video_ref = _announce_artifact(announce_artifact, video_artifact)
             if video_ref is None:
                 video_ref = anticipated_entity_ref(
-                    store, output_contract["video_artifact_type"], plan.scene_id
+                    store,
+                    output_contract["video_artifact_type"],
+                    str(video_artifact["entity_id"]),
                 )
-        except Exception as exc:  # noqa: BLE001
-            render_failures.append(_scene_failure(plan=plan, exc=exc))
-            print(
-                "[render_adapter] Failed "
-                f"{plan.scene_id} with {engine_pack.pack_id}: {exc}"
+            generated_video = GeneratedVideoArtifact.model_validate(video_artifact["data"])
+            generated_refs.append(
+                GeneratedVideoTrackRef(
+                    scene_id=generated_video.scene_id,
+                    artifact_ref=video_ref,
+                    render_clip_id=generated_video.render_clip_id,
+                    start_time_seconds=generated_video.render_clip_start_time_seconds,
+                    end_time_seconds=generated_video.render_clip_end_time_seconds,
+                )
             )
-            continue
-
-        generated_refs[plan.scene_id] = video_ref
-        artifacts.extend([prompt_artifact, video_artifact])
-        _merge_cost(total_cost, cost)
-        print(
-            "[render_adapter] Compiled and rendered "
-            f"{plan.scene_id} as {output_contract['video_artifact_type']} "
-            f"with {engine_pack.pack_id}."
-        )
+            artifacts.extend([prompt_artifact, video_artifact])
+            _merge_cost(total_cost, cost)
+            unit_label = (
+                f"{generated_video.scene_id}:{generated_video.render_clip_id}"
+                if generated_video.render_clip_id
+                else generated_video.scene_id
+            )
+            print(
+                "[render_adapter] Compiled and rendered "
+                f"{unit_label} as {output_contract['video_artifact_type']} "
+                f"with {engine_pack.pack_id}."
+            )
 
     if not generated_refs and render_failures:
         if len(render_failures) == 1:
@@ -168,7 +232,7 @@ def run_module(
             _render_failure_summary(
                 failures=render_failures,
                 success_count=0,
-                total_count=len(shot_plans),
+                total_count=planned_render_count or len(shot_plans),
             )
         )
 
@@ -196,10 +260,140 @@ def run_module(
             _render_failure_summary(
                 failures=render_failures,
                 success_count=len(generated_refs),
-                total_count=len(shot_plans),
+                total_count=planned_render_count or len(shot_plans),
             )
         )
     return {"artifacts": artifacts, "cost": total_cost}
+
+
+def _render_scene_outputs(
+    *,
+    store: ArtifactStore,
+    scene: Scene,
+    plan: ShotPlan,
+    source_maps: dict[str, Any],
+    engine_pack: Any,
+    compiler_model: str,
+    requested_duration_seconds: float,
+    requested_resolution: str | None,
+    requested_aspect_ratio: str | None,
+    output_contract: dict[str, Any],
+    scene_action_preflight: SceneActionPreflight | None,
+    selected_render_clip_ids: set[str] | None,
+) -> tuple[list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]], list[dict[str, Any]]]:
+    render_clip_plan = source_maps["render_clip_plan"].get(plan.scene_id)
+    render_clips = _render_clips_for_scene(
+        scene_id=plan.scene_id,
+        render_clip_plan=render_clip_plan,
+        output_contract=output_contract,
+        selected_render_clip_ids=selected_render_clip_ids,
+    )
+    outputs: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]] = []
+    failures: list[dict[str, Any]] = []
+    for render_clip in render_clips:
+        try:
+            outputs.append(
+                _render_scene(
+                    store=store,
+                    scene=scene,
+                    plan=plan,
+                    source_maps=source_maps,
+                    engine_pack=engine_pack,
+                    compiler_model=compiler_model,
+                    requested_duration_seconds=requested_duration_seconds,
+                    requested_resolution=requested_resolution,
+                    requested_aspect_ratio=requested_aspect_ratio,
+                    output_contract=output_contract,
+                    scene_action_preflight=scene_action_preflight,
+                    render_clip=render_clip,
+                )
+            )
+        except Exception as exc:  # noqa: BLE001
+            failures.append(_scene_failure(plan=plan, exc=exc, render_clip=render_clip))
+            if _should_abort_remaining_render_units(exc):
+                break
+    return outputs, failures
+
+
+def _should_abort_remaining_render_units(exc: Exception) -> bool:
+    if not isinstance(exc, VideoGenerationError):
+        return False
+    message = str(exc).lower()
+    return "timed out after" in message and "waiting for completion" in message
+
+
+def _render_clips_for_scene(
+    *,
+    scene_id: str,
+    render_clip_plan: RenderClipPlan | None,
+    output_contract: dict[str, Any],
+    selected_render_clip_ids: set[str] | None = None,
+) -> list[RenderClip | None]:
+    if render_clip_plan is not None and len(render_clip_plan.clips) > 1:
+        clips = list(render_clip_plan.clips)
+        if selected_render_clip_ids is None:
+            return clips
+        selected_clips = [
+            clip for clip in clips if clip.clip_id in selected_render_clip_ids
+        ]
+        matched_clip_ids = {clip.clip_id for clip in selected_clips}
+        missing_clip_ids = selected_render_clip_ids - matched_clip_ids
+        if missing_clip_ids:
+            requested = ", ".join(sorted(missing_clip_ids))
+            available = ", ".join(clip.clip_id for clip in clips)
+            raise ValueError(
+                "render_adapter_v1 could not find requested render clip(s) "
+                f"for {scene_id}: {requested}. Available clips: {available}."
+            )
+        return selected_clips
+    if selected_render_clip_ids is not None:
+        requested = ", ".join(sorted(selected_render_clip_ids))
+        raise ValueError(
+            "render_adapter_v1 received render_clip_ids for a scene without a "
+            f"multi-clip render_clip_plan: {scene_id} ({requested})."
+        )
+    return [None]
+
+
+def _ensure_required_render_clip_plans(
+    *,
+    params: dict[str, Any],
+    context: dict[str, Any],
+    shot_plans: list[ShotPlan],
+    source_maps: dict[str, Any],
+) -> None:
+    if not bool(params.get("require_render_clip_plan")):
+        return
+    missing_scene_ids = [
+        plan.scene_id
+        for plan in shot_plans
+        if plan.scene_id not in source_maps["render_clip_plan"]
+    ]
+    if not missing_scene_ids:
+        return
+    stage_id = context.get("stage_id", "render") if isinstance(context, dict) else "render"
+    missing = ", ".join(sorted(missing_scene_ids))
+    raise ValueError(
+        f"Stage '{stage_id}' requires render_clip_plan artifacts for {missing}. "
+        "Run render_clip_planning before this stage."
+    )
+
+
+def _planned_render_unit_count(
+    *,
+    plan: ShotPlan,
+    source_maps: dict[str, Any],
+    output_contract: dict[str, Any],
+    selected_render_clip_ids: set[str] | None = None,
+) -> int:
+    return len(
+        _render_clips_for_scene(
+            scene_id=plan.scene_id,
+            render_clip_plan=source_maps["render_clip_plan"].get(plan.scene_id),
+            output_contract=output_contract,
+            selected_render_clip_ids=selected_render_clip_ids,
+        )
+    )
 
 
 def _artifact_announcer(context: dict[str, Any]) -> Any | None:
@@ -221,11 +415,17 @@ def _pre_saved_ref(artifact: dict[str, Any]) -> ArtifactRef | None:
     return ArtifactRef.model_validate(raw)
 
 
-def _scene_failure(*, plan: ShotPlan, exc: Exception) -> dict[str, Any]:
+def _scene_failure(
+    *,
+    plan: ShotPlan,
+    exc: Exception,
+    render_clip: RenderClip | None = None,
+) -> dict[str, Any]:
     return {
         "scene_id": plan.scene_id,
         "scene_number": plan.scene_number,
         "scene_heading": plan.scene_heading,
+        "render_clip_id": render_clip.clip_id if render_clip else None,
         "error_class": exc.__class__.__name__,
         "error": _clean_error_detail(str(exc)),
         "exception": exc,
@@ -245,7 +445,12 @@ def _render_failure_summary(
 ) -> str:
     failure_count = len(failures)
     details = ", ".join(
-        f"{failure['scene_id']} ({failure['error_class']}: {failure['error']})"
+        (
+            f"{failure['scene_id']}:{failure['render_clip_id']}"
+            if failure.get("render_clip_id")
+            else failure["scene_id"]
+        )
+        + f" ({failure['error_class']}: {failure['error']})"
         for failure in failures[:5]
     )
     if failure_count > 5:
@@ -253,11 +458,11 @@ def _render_failure_summary(
     if success_count > 0:
         return (
             "Render generation preserved "
-            f"{success_count} successful scene render(s) but failed for "
-            f"{failure_count}/{total_count} scene(s): {details}."
+            f"{success_count} successful render unit(s) but failed for "
+            f"{failure_count}/{total_count} render unit(s): {details}."
         )
     return (
-        "Render generation failed before any scene renders were preserved: "
+        "Render generation failed before any render units were preserved: "
         f"{details}."
     )
 
@@ -275,13 +480,19 @@ def _render_scene(
     requested_aspect_ratio: str | None,
     output_contract: dict[str, Any],
     scene_action_preflight: SceneActionPreflight | None,
+    render_clip: RenderClip | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     started = time.perf_counter()
+    unit_entity_id = render_unit_entity_id(plan.scene_id, render_clip)
+    unit_plan = clipped_shot_plan(plan, render_clip)
+    unit_requested_duration_seconds = (
+        render_clip.target_duration_seconds if render_clip else requested_duration_seconds
+    )
     prompt_ref = anticipated_entity_ref(
-        store, output_contract["prompt_artifact_type"], plan.scene_id
+        store, output_contract["prompt_artifact_type"], unit_entity_id
     )
     video_ref = anticipated_entity_ref(
-        store, output_contract["video_artifact_type"], plan.scene_id
+        store, output_contract["video_artifact_type"], unit_entity_id
     )
     shot_plan_ref = latest_entity_ref(store, "shot_plan", plan.scene_id)
     if shot_plan_ref is None:
@@ -296,7 +507,7 @@ def _render_scene(
         engine_pack.limits.supported_aspect_ratios,
     )
     duration_seconds, duration_note = normalize_duration_seconds(
-        requested_duration_seconds,
+        unit_requested_duration_seconds,
         engine_pack.limits.supported_durations_seconds,
     )
     resolution, resolution_note = _resolve_resolution(
@@ -324,7 +535,8 @@ def _render_scene(
     if output_contract["prompt_mode"] == "ai_previz":
         previz_contract, sections, completeness, prompt_sources = compile_scene_previz_prompt(
             scene=scene,
-            plan=plan,
+            plan=unit_plan,
+            render_clip=render_clip,
             source_maps=source_maps,
             resolved_inputs=resolved_inputs,
             engine_pack=engine_pack,
@@ -349,12 +561,13 @@ def _render_scene(
         prompt_draft, compile_cost, required_categories = compile_render_prompt(
             compiler_model=compiler_model,
             engine_pack=engine_pack,
-            scene_block=_scene_block(scene=scene, plan=plan),
+            scene_block=_scene_block(scene=scene, plan=unit_plan, render_clip=render_clip),
             context_blocks=_context_blocks(
                 scene=scene,
-                plan=plan,
+                plan=unit_plan,
                 source_maps=source_maps,
                 resolved_inputs=resolved_inputs,
+                render_clip=render_clip,
             ),
             resolved_inputs=resolved_inputs,
             target_provider=engine_pack.provider,
@@ -368,9 +581,10 @@ def _render_scene(
             required_categories=required_categories,
             context_blocks=_context_blocks(
                 scene=scene,
-                plan=plan,
+                plan=unit_plan,
                 source_maps=source_maps,
                 resolved_inputs=resolved_inputs,
+                render_clip=render_clip,
             ),
             resolved_inputs=resolved_inputs,
             extra_source_artifact_types=creative_brief_source_artifact_types(
@@ -382,7 +596,12 @@ def _render_scene(
                     aspect_note,
                     duration_note,
                     resolution_note,
-                    *_render_clip_plan_notes(render_clip_plan, duration_seconds),
+                    render_clip_time_note(render_clip),
+                    *_render_clip_plan_notes(
+                        render_clip_plan,
+                        duration_seconds,
+                        render_clip=render_clip,
+                    ),
                     *request_notes,
                 )
                 if note
@@ -395,8 +614,9 @@ def _render_scene(
             )
         prompt_text, dialogue_notes = _ensure_dialogue_prompt_contract(
             prompt_draft.prompt_text,
-            plan,
+            unit_plan,
             duration_seconds=float(duration_seconds),
+            render_clip=render_clip,
         )
         if dialogue_notes:
             completeness = completeness.model_copy(
@@ -420,6 +640,12 @@ def _render_scene(
         scene_id=plan.scene_id,
         scene_number=plan.scene_number,
         scene_heading=plan.scene_heading,
+        render_unit=render_unit_kind(render_clip),
+        render_clip_id=render_clip.clip_id if render_clip else None,
+        render_clip_start_time_seconds=render_clip.start_time_seconds if render_clip else None,
+        render_clip_end_time_seconds=render_clip.end_time_seconds if render_clip else None,
+        source_shot_ids=list(render_clip.source_shot_ids) if render_clip else [],
+        fallback_beat_ids=list(render_clip.fallback_beat_ids) if render_clip else [],
         scene_ref=plan.scene_ref,
         shot_plan_ref=shot_plan_ref,
         render_clip_plan_ref=render_clip_plan_ref,
@@ -428,7 +654,7 @@ def _render_scene(
         target_model=engine_pack.target_model,
         engine_pack_id=engine_pack.pack_id,
         compiler_model=compiler_model,
-        requested_duration_seconds=requested_duration_seconds,
+        requested_duration_seconds=float(unit_requested_duration_seconds),
         resolved_duration_seconds=float(duration_seconds),
         resolution=resolution,
         aspect_ratio=aspect_ratio,
@@ -461,7 +687,7 @@ def _render_scene(
 
     media_dir = render_media_dir(
         store.project_dir,
-        plan.scene_id,
+        unit_entity_id,
         video_ref.version,
         media_root=output_contract["media_root"],
     )
@@ -474,6 +700,12 @@ def _render_scene(
         scene_id=plan.scene_id,
         scene_number=plan.scene_number,
         scene_heading=plan.scene_heading,
+        render_unit=render_unit_kind(render_clip),
+        render_clip_id=render_clip.clip_id if render_clip else None,
+        render_clip_start_time_seconds=render_clip.start_time_seconds if render_clip else None,
+        render_clip_end_time_seconds=render_clip.end_time_seconds if render_clip else None,
+        source_shot_ids=list(render_clip.source_shot_ids) if render_clip else [],
+        fallback_beat_ids=list(render_clip.fallback_beat_ids) if render_clip else [],
         scene_ref=plan.scene_ref,
         shot_plan_ref=shot_plan_ref,
         render_clip_plan_ref=render_clip_plan_ref,
@@ -532,6 +764,18 @@ def _project_dir(context: dict[str, Any]) -> Path:
 def _runtime_params(context: dict[str, Any]) -> dict[str, Any]:
     runtime_params = context.get("runtime_params", {}) if isinstance(context, dict) else {}
     return runtime_params if isinstance(runtime_params, dict) else {}
+
+
+def _selected_render_clip_ids(runtime_params: dict[str, Any]) -> set[str] | None:
+    raw_ids = runtime_params.get("render_clip_ids")
+    if not isinstance(raw_ids, list):
+        return None
+    clip_ids = {
+        item.strip()
+        for item in raw_ids
+        if isinstance(item, str) and item.strip()
+    }
+    return clip_ids or None
 
 
 def _scene_action_preflight(runtime_params: dict[str, Any]) -> SceneActionPreflight | None:
@@ -608,7 +852,7 @@ def _output_contract(
             "video_artifact_type": "ai_previz_video",
             "track_type": "ai_previz_video",
             "track_priority": 125,
-            "track_note": "Scene-level AI previz clip for blocking and camera review.",
+            "track_note": "AI previz clip for render-unit blocking and camera review.",
             "media_root": "ai_previz_video_media",
             "media_filename": "ai_previz.mp4",
             "preview_mode": "ai_previz",
@@ -629,9 +873,9 @@ def _output_contract(
                 "AI previz prompts stay reviewable so operators can inspect the non-final "
                 "house-style instructions CineForge sent downstream."
             ),
-            "video_intent": "Scene-level AI previz clip for blocking, camera, and motion review.",
+            "video_intent": "AI previz clip for render-unit blocking, camera, and motion review.",
             "video_rationale": (
-                "AI previz turns reviewed planning artifacts into a low-fidelity planning clip "
+                "AI previz turns reviewed planning artifacts into low-fidelity planning clips "
                 "without conflating previz with final render."
             ),
         }
@@ -1175,7 +1419,40 @@ def _scene_block(
     *,
     scene: Scene,
     plan: ShotPlan,
+    render_clip: RenderClip | None = None,
 ) -> str:
+    if render_clip is not None:
+        clip_lines = [
+            f"Scene {scene.scene_number}: {scene.heading}",
+            (
+                f"Render clip: {render_clip.clip_id} "
+                f"({render_clip.start_time_seconds:.1f}-{render_clip.end_time_seconds:.1f}s, "
+                f"target {render_clip.target_duration_seconds:.1f}s)"
+            ),
+            f"Location: {scene.location} ({scene.int_ext}, {scene.time_of_day})",
+            f"Tone: {scene.tone_mood}",
+            f"Characters present: {', '.join(scene.characters_present) or 'none'}",
+        ]
+        if render_clip.source_shot_ids:
+            clip_lines.append("Source shots: " + ", ".join(render_clip.source_shot_ids))
+        if render_clip.fallback_beat_ids:
+            clip_lines.append("Fallback beats: " + ", ".join(render_clip.fallback_beat_ids))
+        if render_clip.action_beats:
+            clip_lines.append("Clip action beats:")
+            clip_lines.extend(
+                f"- {remove_dialogue_quotes(beat, render_clip.dialogue_lines)}"
+                for beat in render_clip.action_beats
+            )
+        clip_dialogue = render_clip_dialogue_lines(render_clip)
+        if clip_dialogue:
+            clip_lines.append("Clip exact dialogue lines:")
+            clip_lines.extend(f"- {line}" for line in clip_dialogue)
+        if render_clip.continuity_start_notes or render_clip.continuity_end_notes:
+            clip_lines.append("Clip continuity notes:")
+            clip_lines.extend(f"- start: {note}" for note in render_clip.continuity_start_notes)
+            clip_lines.extend(f"- end: {note}" for note in render_clip.continuity_end_notes)
+        return "\n".join(clip_lines)
+
     excerpt_lines: list[str] = []
     for element in scene.elements[:6]:
         excerpt_lines.append(f"- {element.element_type}: {element.content}")
@@ -1197,11 +1474,13 @@ def _context_blocks(
     plan: ShotPlan,
     source_maps: dict[str, Any],
     resolved_inputs: list[RenderResolvedInput],
+    render_clip: RenderClip | None = None,
 ) -> dict[str, str]:
     return {
         "shot_definition": _shot_definition_block(plan),
         "render_clip_plan": _render_clip_plan_block(
-            source_maps["render_clip_plan"].get(plan.scene_id)
+            source_maps["render_clip_plan"].get(plan.scene_id),
+            render_clip=render_clip,
         ),
         "creative_brief": _creative_brief_block(source_maps["creative_brief"]),
         "look_and_feel": _look_and_feel_block(source_maps["look_and_feel"].get(plan.scene_id)),
@@ -1262,7 +1541,11 @@ def _shot_definition_block(plan: ShotPlan) -> str:
     return "\n".join(lines)
 
 
-def _render_clip_plan_block(plan: RenderClipPlan | None) -> str:
+def _render_clip_plan_block(
+    plan: RenderClipPlan | None,
+    *,
+    render_clip: RenderClip | None = None,
+) -> str:
     if plan is None:
         return (
             "No render_clip_plan artifact was provided. The adapter is using the "
@@ -1282,12 +1565,16 @@ def _render_clip_plan_block(plan: RenderClipPlan | None) -> str:
             "Missing upstream categories: "
             + ", ".join(plan.missing_upstream_categories)
         )
-    if len(plan.clips) > 1:
+    if render_clip is not None:
+        lines.append("Render path: this prompt is for one planned render clip only.")
+    elif len(plan.clips) > 1:
         lines.append(
-            "Current render path still emits one scene-level video; preserve this "
-            "multi-clip pacing in the prompt and disclose compression risk."
+            "Render path: this scene-level prompt is not expanding each planned "
+            "clip; preserve this multi-clip pacing in the prompt and disclose "
+            "compression risk."
         )
-    for clip in plan.clips:
+    clips = [render_clip] if render_clip is not None else list(plan.clips)
+    for clip in clips:
         pieces = [
             clip.clip_id,
             f"{clip.start_time_seconds:.1f}-{clip.end_time_seconds:.1f}s",
@@ -1300,7 +1587,11 @@ def _render_clip_plan_block(plan: RenderClipPlan | None) -> str:
         if clip.dialogue_lines:
             pieces.append(f"dialogue_lines={len(clip.dialogue_lines)}")
         if clip.action_beats:
-            pieces.append(f"action={'; '.join(clip.action_beats[:2])}")
+            action_beats = [
+                remove_dialogue_quotes(beat, clip.dialogue_lines)
+                for beat in clip.action_beats[:2]
+            ]
+            pieces.append(f"action={'; '.join(action_beats)}")
         pieces.append(f"rationale={clip.rationale}")
         lines.append(" | ".join(pieces))
     return "\n".join(lines)
@@ -1309,6 +1600,8 @@ def _render_clip_plan_block(plan: RenderClipPlan | None) -> str:
 def _render_clip_plan_notes(
     plan: RenderClipPlan | None,
     duration_seconds: float,
+    *,
+    render_clip: RenderClip | None = None,
 ) -> list[str]:
     if plan is None:
         return [
@@ -1317,6 +1610,13 @@ def _render_clip_plan_notes(
         ]
     if len(plan.clips) <= 1:
         return []
+    if render_clip is not None:
+        return [
+            (
+                f"Rendering planned clip {render_clip.clip_id} from a "
+                f"{len(plan.clips)}-clip scene render plan."
+            )
+        ]
     return [
         (
             "Current scene-level render compresses a "
@@ -1352,8 +1652,9 @@ def _ensure_dialogue_prompt_contract(
     plan: ShotPlan,
     *,
     duration_seconds: float,
+    render_clip: RenderClip | None = None,
 ) -> tuple[str, list[str]]:
-    dialogue_lines = _exact_dialogue_lines_for_plan(plan)
+    dialogue_lines = _exact_dialogue_lines_for_render_unit(plan, render_clip)
     if not dialogue_lines:
         return prompt_text, []
 
@@ -1369,6 +1670,7 @@ def _ensure_dialogue_prompt_contract(
         updated_prompt += "\n\n" + _dialogue_timing_contract(
             plan,
             duration_seconds=duration_seconds,
+            render_clip=render_clip,
         )
         sample = "; ".join(missing[:3])
         if len(missing) > 3:
@@ -1392,8 +1694,22 @@ def _ensure_dialogue_prompt_contract(
     return updated_prompt, notes
 
 
-def _dialogue_timing_contract(plan: ShotPlan, *, duration_seconds: float | None) -> str:
-    dialogue_lines = _exact_dialogue_lines_for_plan(plan)
+def _exact_dialogue_lines_for_render_unit(
+    plan: ShotPlan,
+    render_clip: RenderClip | None,
+) -> list[str]:
+    if render_clip is not None:
+        return render_clip_dialogue_lines(render_clip)
+    return _exact_dialogue_lines_for_plan(plan)
+
+
+def _dialogue_timing_contract(
+    plan: ShotPlan,
+    *,
+    duration_seconds: float | None,
+    render_clip: RenderClip | None = None,
+) -> str:
+    dialogue_lines = _exact_dialogue_lines_for_render_unit(plan, render_clip)
     if not dialogue_lines:
         return ""
     lines = [
@@ -1413,6 +1729,15 @@ def _dialogue_timing_contract(plan: ShotPlan, *, duration_seconds: float | None)
     )
     if density_guidance:
         lines.append("- " + density_guidance.removeprefix("Dialogue cadence: "))
+    if render_clip is not None:
+        lines.append(
+            f"- {render_clip.clip_id} "
+            f"(render clip, about {render_clip.target_duration_seconds:.1f}s):"
+        )
+        for line in dialogue_lines:
+            lines.append(f"  - {line}")
+        return "\n".join(lines)
+
     for shot in plan.shots:
         dialogue = _exact_dialogue_lines_for_shot(shot)
         if not dialogue:
@@ -1733,9 +2058,12 @@ def _prompt_artifact_dict(
     *,
     output_contract: dict[str, Any],
 ) -> dict[str, Any]:
+    entity_id = _render_artifact_entity_id(
+        prompt_artifact.scene_id, prompt_artifact.render_clip_id
+    )
     return {
         "artifact_type": output_contract["prompt_artifact_type"],
-        "entity_id": prompt_artifact.scene_id,
+        "entity_id": entity_id,
         "data": prompt_artifact.model_dump(mode="json"),
         "exclude_upstream_lineage_types": ["track_manifest"],
         "metadata": {
@@ -1754,6 +2082,8 @@ def _prompt_artifact_dict(
             "source": "code" if output_contract["prompt_mode"] == "ai_previz" else "hybrid",
             "annotations": {
                 "engine_pack_id": prompt_artifact.engine_pack_id,
+                "render_unit": prompt_artifact.render_unit,
+                "render_clip_id": prompt_artifact.render_clip_id,
                 "target_provider": prompt_artifact.target_provider,
                 "target_model": prompt_artifact.target_model,
                 "compiler_model": prompt_artifact.compiler_model,
@@ -1780,9 +2110,12 @@ def _video_artifact_dict(
     request_notes: list[str],
     output_contract: dict[str, Any],
 ) -> dict[str, Any]:
+    entity_id = _render_artifact_entity_id(
+        generated_video.scene_id, generated_video.render_clip_id
+    )
     return {
         "artifact_type": output_contract["video_artifact_type"],
-        "entity_id": generated_video.scene_id,
+        "entity_id": entity_id,
         "data": generated_video.model_dump(mode="json"),
         "include_stage_lineage": True,
         "exclude_upstream_lineage_types": ["track_manifest"],
@@ -1803,6 +2136,8 @@ def _video_artifact_dict(
             "source": "hybrid",
             "annotations": {
                 "engine_pack_id": generated_video.engine_pack_id,
+                "render_unit": generated_video.render_unit,
+                "render_clip_id": generated_video.render_clip_id,
                 "target_provider": generated_video.target_provider,
                 "target_model": generated_video.target_model,
                 "duration_seconds": generated_video.duration_seconds,
@@ -1819,15 +2154,17 @@ def _track_manifest_artifact_dict(
     *,
     updated_manifest: TrackManifest,
     track_manifest_ref: ArtifactRef,
-    generated_video_refs: dict[str, ArtifactRef],
+    generated_video_refs: list[GeneratedVideoTrackRef],
 ) -> dict[str, Any]:
+    refs = [item.artifact_ref for item in generated_video_refs]
+    scene_ids = {item.scene_id for item in generated_video_refs}
     return {
         "artifact_type": "track_manifest",
         "entity_id": "project",
         "data": updated_manifest.model_dump(mode="json"),
         "include_stage_lineage": True,
         "metadata": {
-            "lineage": _lineage_dump([track_manifest_ref, *generated_video_refs.values()]),
+            "lineage": _lineage_dump([track_manifest_ref, *refs]),
             "intent": "Updated track manifest with generated video entries.",
             "rationale": (
                 "Generated video becomes the highest-fidelity playable track when "
@@ -1835,7 +2172,13 @@ def _track_manifest_artifact_dict(
             ),
             "confidence": 0.88,
             "source": "hybrid",
-            "annotations": {"generated_scene_count": len(generated_video_refs)},
+            "annotations": {
+                "generated_scene_count": len(scene_ids),
+                "generated_render_count": len(generated_video_refs),
+                "generated_clip_count": len(
+                    [item for item in generated_video_refs if item.render_clip_id]
+                ),
+            },
         },
     }
 
@@ -1843,25 +2186,37 @@ def _track_manifest_artifact_dict(
 def _update_track_manifest_with_video_track(
     *,
     manifest: TrackManifest,
-    generated_video_refs: dict[str, ArtifactRef],
+    generated_video_refs: list[GeneratedVideoTrackRef],
     track_type: str,
     priority: int,
     notes: str,
 ) -> TrackManifest:
-    scene_ids = set(generated_video_refs)
+    scene_ids = {item.scene_id for item in generated_video_refs}
+    render_clip_ids = {
+        item.render_clip_id for item in generated_video_refs if item.render_clip_id is not None
+    }
     kept_entries = [
         entry
         for entry in manifest.entries
-        if not (entry.track_type == track_type and entry.scene_id in scene_ids)
+        if not (
+            entry.track_type == track_type
+            and entry.scene_id in scene_ids
+            and (
+                entry.render_clip_id is None
+                or not render_clip_ids
+                or entry.render_clip_id in render_clip_ids
+            )
+        )
     ]
     new_entries = list(kept_entries)
-    for scene_id in sorted(scene_ids):
-        start_time, end_time = _scene_window_for_manifest(manifest, scene_id)
+    for item in sorted(generated_video_refs, key=_generated_track_ref_sort_key):
+        start_time, end_time = _track_entry_window(manifest, item)
         new_entries.append(
             TrackEntry(
                 track_type=track_type,
-                scene_id=scene_id,
-                artifact_ref=generated_video_refs[scene_id],
+                scene_id=item.scene_id,
+                render_clip_id=item.render_clip_id,
+                artifact_ref=item.artifact_ref,
                 start_time_seconds=start_time,
                 end_time_seconds=end_time,
                 priority=priority,
@@ -1872,6 +2227,31 @@ def _update_track_manifest_with_video_track(
     return manifest.model_copy(
         update={"entries": new_entries, "track_fill_counts": track_counts(new_entries)}
     )
+
+
+def _generated_track_ref_sort_key(item: GeneratedVideoTrackRef) -> tuple[str, float, str]:
+    return (
+        item.scene_id,
+        item.start_time_seconds if item.start_time_seconds is not None else -1.0,
+        item.render_clip_id or "",
+    )
+
+
+def _track_entry_window(
+    manifest: TrackManifest,
+    item: GeneratedVideoTrackRef,
+) -> tuple[float | None, float | None]:
+    if item.render_clip_id is not None:
+        return item.start_time_seconds, item.end_time_seconds
+    return _scene_window_for_manifest(manifest, item.scene_id)
+
+
+def _render_artifact_entity_id(scene_id: str, render_clip_id: str | None) -> str:
+    if not render_clip_id:
+        return scene_id
+    if render_clip_id == scene_id or render_clip_id.startswith(f"{scene_id}_"):
+        return render_clip_id
+    return f"{scene_id}__{render_clip_id}"
 
 
 def _scene_window_for_manifest(

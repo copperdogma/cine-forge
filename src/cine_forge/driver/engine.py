@@ -34,6 +34,7 @@ from cine_forge.driver.schema_registry import build_schema_registry
 from cine_forge.driver.state import RunState
 from cine_forge.pipeline.scene_actions import (
     scene_scope_from_runtime_params,
+    scene_scope_matches_entity_id,
     scene_scoped_entity_artifact_types,
 )
 from cine_forge.roles import RoleCatalog, RoleContext
@@ -884,7 +885,15 @@ class DriverEngine:
                 continue
 
             if scene_scope.is_scene_scoped and artifact_type in scene_artifact_types:
-                entities = [entity_id for entity_id in entities if entity_id in selected_scene_ids]
+                entities = [
+                    entity_id
+                    for entity_id in entities
+                    if scene_scope_matches_entity_id(
+                        artifact_type=artifact_type,
+                        entity_id=entity_id,
+                        scene_ids=selected_scene_ids,
+                    )
+                ]
                 if not entities:
                     collected[input_key] = []
                     continue

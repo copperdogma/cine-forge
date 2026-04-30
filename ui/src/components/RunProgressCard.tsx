@@ -1,5 +1,5 @@
 import { CheckCircle2, Loader2, Circle, AlertCircle, SkipForward, PauseCircle } from 'lucide-react'
-import { useRunState, useArtifactGroups, useRuns, isMissingRunError } from '@/lib/hooks'
+import { useArtifact, useRunState, useArtifactGroups, useRuns, isMissingRunError } from '@/lib/hooks'
 import {
   getStageCompleteMessage,
   getStageStartMessage,
@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import {
   ARTIFACT_NAMES, SKIP_TYPES, getOrderedStageIds,
   CONCERN_GROUP_META, countSceneProgress, countTotalScenes,
+  getSceneProgressTotal, getSingleSceneScopeId,
 } from '@/lib/constants'
 
 /** Parse the content prop: new format is JSON with runId + projectId, old format is plain runId string. */
@@ -61,9 +62,21 @@ function StageIcon({ status }: { status: string }) {
   }
 }
 
-function stageLabel(stageId: string, status: string, sceneScope?: unknown): string {
+function artifactDataRecord(payload: Record<string, unknown> | undefined): Record<string, unknown> | undefined {
+  const data = payload?.data
+  return data && typeof data === 'object' && !Array.isArray(data)
+    ? data as Record<string, unknown>
+    : undefined
+}
+
+function stageLabel(
+  stageId: string,
+  status: string,
+  sceneScope?: unknown,
+  sceneData?: Record<string, unknown>,
+): string {
   if (status === 'done' || status === 'skipped_reused') return getStageCompleteMessage(stageId)
-  if (status === 'running') return getStageStartMessage(stageId, sceneScope)
+  if (status === 'running') return getStageStartMessage(stageId, sceneScope, sceneData)
   if (status === 'paused') return "Paused for review"
   return humanizeStageName(stageId)
 }
@@ -82,6 +95,18 @@ export function RunProgressCard({
   const { data: runState, error } = useRunState(runExists ? runId : undefined)
   const { data: artifactGroups } = useArtifactGroups(artifactProjectId)
   const totalScenes = countTotalScenes(artifactGroups)
+  const sceneScope = runState?.state.runtime_params?.scene_scope
+  const scopedSceneId = getSingleSceneScopeId(sceneScope)
+  const scopedSceneGroup = scopedSceneId
+    ? artifactGroups?.find((g) => g.artifact_type === 'scene' && g.entity_id === scopedSceneId)
+    : undefined
+  const { data: scopedSceneArtifact } = useArtifact(
+    artifactProjectId,
+    'scene',
+    scopedSceneId ?? undefined,
+    scopedSceneGroup?.latest_version,
+  )
+  const scopedSceneData = artifactDataRecord(scopedSceneArtifact?.payload)
 
   if (runs && !runExists) {
     return (
@@ -117,7 +142,6 @@ export function RunProgressCard({
   const stageIds = stageOrder && stageOrder.length > 0
     ? stageOrder.filter(id => id in stages)
     : getOrderedStageIds(Object.keys(stages), stageOrder)
-  const sceneScope = runState.state.runtime_params?.scene_scope
 
   return (
     <div className="space-y-0.5 py-1">
@@ -133,8 +157,9 @@ export function RunProgressCard({
         // Per-scene progress for running concern group stages
         const isConcernGroup = stageId in CONCERN_GROUP_META
         const scenesDone = isConcernGroup ? countSceneProgress(stage, stageId) : 0
-        const sceneProgress = isRunning && isConcernGroup && totalScenes > 0
-          ? ` (${scenesDone}/${totalScenes} scenes)`
+        const sceneProgressTotal = getSceneProgressTotal(sceneScope, totalScenes)
+        const sceneProgress = isRunning && isConcernGroup && sceneProgressTotal && sceneProgressTotal > 1
+          ? ` (${scenesDone}/${sceneProgressTotal} scenes)`
           : ''
 
         return (
@@ -149,7 +174,7 @@ export function RunProgressCard({
             )}
           >
             <StageIcon status={status} />
-            <span>{stageLabel(stageId, status, sceneScope)}{sceneProgress}</span>
+            <span>{stageLabel(stageId, status, sceneScope, scopedSceneData)}{sceneProgress}</span>
             {summary && (
               <span className="text-xs text-muted-foreground/50">— {summary}</span>
             )}

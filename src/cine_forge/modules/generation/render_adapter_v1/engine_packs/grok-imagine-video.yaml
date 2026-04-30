@@ -37,6 +37,7 @@ request_defaults:
 retry_policy:
   max_attempts: 2
   poll_interval_seconds: 5
+  max_poll_seconds: 180
   retryable_http_statuses: [408, 429, 500, 502, 503, 504]
   retryable_error_substrings:
     - "rate limit"

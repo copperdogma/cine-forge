@@ -16,8 +16,33 @@ FinalOutputOmissionReason = Literal[
 ]
 
 
+class FinalOutputIncludedClip(BaseModel):
+    """One generated-video clip included inside a rendered timeline scene."""
+
+    render_clip_id: str | None = None
+    generated_video_ref: ArtifactRef
+    clip_relative_path: str = Field(min_length=1)
+    duration_seconds: float = Field(ge=0.0)
+    scene_start_seconds: float | None = Field(default=None, ge=0.0)
+    scene_end_seconds: float | None = Field(default=None, ge=0.0)
+    output_start_seconds: float = Field(ge=0.0)
+    output_end_seconds: float = Field(ge=0.0)
+
+    @model_validator(mode="after")
+    def _validate_time_bounds(self) -> FinalOutputIncludedClip:
+        if self.output_end_seconds < self.output_start_seconds:
+            raise ValueError("output_end_seconds must be >= output_start_seconds")
+        if (
+            self.scene_start_seconds is not None
+            and self.scene_end_seconds is not None
+            and self.scene_end_seconds < self.scene_start_seconds
+        ):
+            raise ValueError("scene_end_seconds must be >= scene_start_seconds")
+        return self
+
+
 class FinalOutputIncludedScene(BaseModel):
-    """One rendered scene clip included in the assembled project output."""
+    """One timeline scene included in the assembled project output."""
 
     scene_id: str = Field(min_length=1)
     scene_number: int = Field(ge=1)
@@ -27,11 +52,17 @@ class FinalOutputIncludedScene(BaseModel):
     duration_seconds: float = Field(ge=0.0)
     output_start_seconds: float = Field(ge=0.0)
     output_end_seconds: float = Field(ge=0.0)
+    clips: list[FinalOutputIncludedClip] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _validate_time_bounds(self) -> FinalOutputIncludedScene:
         if self.output_end_seconds < self.output_start_seconds:
             raise ValueError("output_end_seconds must be >= output_start_seconds")
+        for clip in self.clips:
+            if clip.output_start_seconds < self.output_start_seconds:
+                raise ValueError("clip output_start_seconds must be within scene bounds")
+            if clip.output_end_seconds > self.output_end_seconds:
+                raise ValueError("clip output_end_seconds must be within scene bounds")
         return self
 
 

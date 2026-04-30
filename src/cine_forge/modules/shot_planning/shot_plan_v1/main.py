@@ -31,6 +31,8 @@ from cine_forge.schemas import (
 logger = logging.getLogger(__name__)
 
 _SLUG_RE = re.compile(r"[^a-z0-9]+")
+_DIALOGUE_PARENTHETICAL_RE = re.compile(r"\([^)]*\)")
+_DIALOGUE_NON_WORD_RE = re.compile(r"[^a-z0-9']+")
 _PREVIZ_FAST_PROFILE = "previz_fast"
 _PREVIZ_FAST_MAX_SHOTS = 5
 _COMPACT_VALUE_CHARS = 180
@@ -170,10 +172,9 @@ def run_module(
     verify_model = (
         params.get("verify_model")
         or params.get("qa_model")
-        or params.get("utility_model")
         or runtime_params.get("verify_model")
         or runtime_params.get("qa_model")
-        or runtime_params.get("utility_model")
+        or params.get("utility_model")
         or "claude-haiku-4-5-20251001"
     )
     escalate_model = (
@@ -183,15 +184,7 @@ def run_module(
         or runtime_params.get("sota_model")
         or "claude-opus-4-6"
     )
-    skip_qa = bool(params.get("skip_qa", False))
     concurrency = int(params.get("concurrency") or runtime_params.get("concurrency") or 4)
-    max_tokens = int(params.get("max_tokens") or runtime_params.get("max_tokens") or 4800)
-    prompt_profile = str(params.get("prompt_profile") or "default").strip().lower() or "default"
-    max_shots = int(
-        params.get("max_shots")
-        or (_PREVIZ_FAST_MAX_SHOTS if prompt_profile == _PREVIZ_FAST_PROFILE else 8)
-    )
-
     announce = context.get("announce_artifact")
     intent_mood = inputs.get("intent_mood") if isinstance(inputs.get("intent_mood"), dict) else None
     story_world = inputs.get("story_world") if isinstance(inputs.get("story_world"), dict) else None
@@ -205,6 +198,28 @@ def run_module(
     )
 
     scene_entries = filter_scene_entries(scene_index.get("entries", []), runtime_params)
+    single_scene_scope = _is_single_scene_scope(runtime_params, scene_entries)
+    prompt_profile = (
+        str(
+            params.get("prompt_profile")
+            or runtime_params.get("prompt_profile")
+            or (_PREVIZ_FAST_PROFILE if single_scene_scope else "default")
+        )
+        .strip()
+        .lower()
+        or "default"
+    )
+    max_tokens = int(
+        params.get("max_tokens")
+        or runtime_params.get("max_tokens")
+        or (2400 if prompt_profile == _PREVIZ_FAST_PROFILE else 4800)
+    )
+    max_shots = int(
+        params.get("max_shots")
+        or runtime_params.get("max_shots")
+        or (_PREVIZ_FAST_MAX_SHOTS if prompt_profile == _PREVIZ_FAST_PROFILE else 8)
+    )
+    skip_qa = bool(params.get("skip_qa", runtime_params.get("skip_qa", False)))
     contexts = [
         _build_scene_context(
             scene_entry=entry,
@@ -297,6 +312,7 @@ def run_module(
             "entity_id": "project",
             "data": updated_timeline.model_dump(mode="json"),
             "include_stage_lineage": True,
+            "exclude_upstream_lineage_types": ["track_manifest"],
             "metadata": {
                 "lineage": [timeline_ref.model_dump(mode="json")],
                 "intent": "Updated project timeline with shot counts and shot IDs.",
@@ -483,6 +499,7 @@ def _convert_response_to_plan(
             )
         )
 
+    shots = _dedupe_dialogue_across_shots(shots)
     total_duration = sum(item.duration_estimate_seconds for item in shots)
     return ShotPlan(
         scene_id=scene_context.scene_entry["scene_id"],
@@ -647,6 +664,10 @@ def _build_scene_prompt(
         f"- Create {shot_range} shots only.\n"
         "- Use concrete, cuttable coverage patterns.\n"
         "- Do not invent characters, props, or events not supported by the scene.\n"
+        "- Treat dialogue_lines as the sequential timing assignment: each exact scripted "
+        "speaker/utterance may appear in one planned shot only. If master or reaction "
+        "coverage overlaps a line, describe that coverage in action_description or "
+        "edit_intent instead of repeating the exact line in dialogue_lines.\n"
         "- Before responding, verify every required field is present and non-empty.\n"
         f"{compact_guidance}"
         f"{feedback_block}\n"
@@ -872,6 +893,22 @@ def _character_bible_map(payload: Any) -> dict[str, dict[str, Any]]:
     return mapped
 
 
+def _is_single_scene_scope(
+    runtime_params: dict[str, Any],
+    scene_entries: list[dict[str, Any]],
+) -> bool:
+    raw_scope = runtime_params.get("scene_scope")
+    if not isinstance(raw_scope, dict) or raw_scope.get("mode") != "current_scene":
+        return False
+    scene_ids = raw_scope.get("scene_ids")
+    return (
+        isinstance(scene_ids, list)
+        and len(scene_ids) == 1
+        and len(scene_entries) == 1
+        and scene_entries[0].get("scene_id") == scene_ids[0]
+    )
+
+
 def _character_performance_map(
     payload: Any,
 ) -> tuple[dict[str, list[dict[str, Any]]], dict[str, list[ArtifactRef]]]:
@@ -1054,8 +1091,8 @@ def _render_prompt_value(value: Any, *, compact: bool) -> str:
     return _compact_text(str(value), max_chars=_COMPACT_VALUE_CHARS if compact else 2000)
 
 
-def _compact_text(value: str, *, max_chars: int) -> str:
-    normalized = " ".join(value.split())
+def _compact_text(value: Any, *, max_chars: int) -> str:
+    normalized = " ".join(str(value or "").split())
     if len(normalized) <= max_chars:
         return normalized
     clipped = normalized[: max_chars - 3].rstrip()
@@ -1092,6 +1129,57 @@ def _dialogue_lines_for_character(scene_artifact: dict[str, Any], name: str) -> 
         if element.get("element_type") == "dialogue" and current_character == name:
             lines.append(str(element.get("content", "")))
     return lines or _all_dialogue_lines(scene_artifact)[:1]
+
+
+def _dedupe_dialogue_across_shots(shots: list[ShotDefinition]) -> list[ShotDefinition]:
+    last_occurrence: dict[str, int] = {}
+    for index, shot in enumerate(shots):
+        for line in shot.dialogue_lines:
+            key = _dialogue_key(line)
+            if key:
+                last_occurrence[key] = index
+
+    updated: list[ShotDefinition] = []
+    for index, shot in enumerate(shots):
+        seen_in_shot: set[str] = set()
+        dialogue_lines: list[str] = []
+        for line in shot.dialogue_lines:
+            key = _dialogue_key(line)
+            if not key or key in seen_in_shot or last_occurrence.get(key) != index:
+                continue
+            seen_in_shot.add(key)
+            dialogue_lines.append(line)
+        if dialogue_lines == shot.dialogue_lines:
+            updated.append(shot)
+        else:
+            updated.append(shot.model_copy(update={"dialogue_lines": dialogue_lines}))
+    return updated
+
+
+def _dialogue_key(line: str) -> str:
+    smart_quotes = str.maketrans(
+        {
+            "\u2018": "'",
+            "\u2019": "'",
+            "\u201c": '"',
+            "\u201d": '"',
+        }
+    )
+    text = str(line).strip().translate(smart_quotes)
+    if not text:
+        return ""
+    speaker = ""
+    utterance = text
+    if ":" in text:
+        speaker, utterance = text.split(":", 1)
+    utterance = _DIALOGUE_PARENTHETICAL_RE.sub(" ", utterance)
+    normalized_speaker = _DIALOGUE_NON_WORD_RE.sub(" ", speaker.casefold()).strip()
+    normalized_utterance = _DIALOGUE_NON_WORD_RE.sub(" ", utterance.casefold()).strip()
+    if not normalized_utterance:
+        return ""
+    if normalized_speaker:
+        return f"{normalized_speaker}:{normalized_utterance}"
+    return normalized_utterance
 
 
 def _shot_upstream_refs(

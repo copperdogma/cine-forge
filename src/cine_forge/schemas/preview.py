@@ -37,6 +37,7 @@ PreviewFidelityIntent = Literal[
 ]
 PreviewIntendedUse = Literal["human_review", "ai_conditioning"]
 PreviewPrerequisiteStrategy = Literal[
+    "reuse_existing_render_clip_plan",
     "reuse_existing_shot_plan",
     "one_pass_previz_prep",
 ]

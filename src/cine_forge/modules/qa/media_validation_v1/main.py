@@ -40,7 +40,7 @@ class ValidationTargetInput:
     def __init__(
         self,
         *,
-        sort_key: int,
+        sort_key: float,
         entity_id: str,
         target: MediaValidationTarget,
         validated_media: MediaFile,
@@ -245,18 +245,21 @@ def _scene_targets(
     artifacts = _generated_videos(inputs, runtime_params=runtime_params)
     targets: list[ValidationTargetInput] = []
     for generated_video in artifacts:
+        entity_id = _generated_video_entity_id(generated_video)
+        render_clip_id = entity_id if generated_video.render_clip_id else None
         target = MediaValidationTarget(
             scope_kind="scene",
-            entity_id=generated_video.scene_id,
-            label=f"Scene {generated_video.scene_number}: {generated_video.scene_heading}",
+            entity_id=entity_id,
+            label=_generated_video_label(generated_video),
             scene_id=generated_video.scene_id,
+            render_clip_id=render_clip_id,
             scene_number=generated_video.scene_number,
             scene_heading=generated_video.scene_heading,
         )
         targets.append(
             ValidationTargetInput(
-                sort_key=generated_video.scene_number,
-                entity_id=generated_video.scene_id,
+                sort_key=_generated_video_sort_key(generated_video),
+                entity_id=entity_id,
                 target=target,
                 validated_media=generated_video.video,
                 declared_duration_seconds=generated_video.duration_seconds,
@@ -266,6 +269,28 @@ def _scene_targets(
             )
         )
     return targets
+
+
+def _generated_video_entity_id(generated_video: GeneratedVideoArtifact) -> str:
+    if not generated_video.render_clip_id:
+        return generated_video.scene_id
+    if generated_video.render_clip_id.startswith(f"{generated_video.scene_id}_"):
+        return generated_video.render_clip_id
+    return f"{generated_video.scene_id}__{generated_video.render_clip_id}"
+
+
+def _generated_video_label(generated_video: GeneratedVideoArtifact) -> str:
+    base = f"Scene {generated_video.scene_number}: {generated_video.scene_heading}"
+    if generated_video.render_clip_id:
+        return f"{base} — render clip {generated_video.render_clip_id}"
+    return base
+
+
+def _generated_video_sort_key(generated_video: GeneratedVideoArtifact) -> float:
+    scene_offset = float(generated_video.scene_number) * 10000.0
+    if generated_video.render_clip_start_time_seconds is None:
+        return scene_offset
+    return scene_offset + float(generated_video.render_clip_start_time_seconds)
 
 
 def _final_output_target(inputs: dict[str, Any]) -> ValidationTargetInput:
@@ -338,6 +363,21 @@ def _scene_context_notes(generated_video: GeneratedVideoArtifact) -> list[str]:
         f"Resolution: {generated_video.resolution}",
         f"Aspect ratio: {generated_video.aspect_ratio}",
     ]
+    if generated_video.render_clip_id:
+        notes.append(f"Render clip id: {generated_video.render_clip_id}")
+    if (
+        generated_video.render_clip_start_time_seconds is not None
+        and generated_video.render_clip_end_time_seconds is not None
+    ):
+        notes.append(
+            "Scene time window: "
+            f"{generated_video.render_clip_start_time_seconds:.2f}-"
+            f"{generated_video.render_clip_end_time_seconds:.2f}s"
+        )
+    if generated_video.source_shot_ids:
+        notes.append("Source shots: " + ", ".join(generated_video.source_shot_ids))
+    if generated_video.fallback_beat_ids:
+        notes.append("Fallback beats: " + ", ".join(generated_video.fallback_beat_ids))
     if generated_video.target_provider:
         notes.append(f"Target provider: {generated_video.target_provider}")
     if generated_video.target_model:

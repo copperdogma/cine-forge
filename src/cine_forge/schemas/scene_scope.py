@@ -10,6 +10,7 @@ SceneExecutionMode = Literal["all_scenes", "current_scene"]
 SceneActionPreflightStatus = Literal["ready", "warn", "soft_block"]
 SceneActionPreflightItemKind = Literal["warning", "auto_build", "soft_block"]
 SceneActionPrerequisiteStrategy = Literal[
+    "reuse_existing_render_clip_plan",
     "reuse_existing_shot_plan",
     "one_pass_previz_prep",
 ]
@@ -44,6 +45,8 @@ class SceneActionPreflightItem(BaseModel):
     kind: SceneActionPreflightItemKind
     label: str
     detail: str
+    action_label: str | None = None
+    action_path: str | None = None
 
 
 class SceneActionPreflight(BaseModel):

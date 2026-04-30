@@ -31,6 +31,16 @@ type FinalOutputSceneView = {
   durationSeconds: number | null
   outputStartSeconds: number | null
   outputEndSeconds: number | null
+  clips: FinalOutputClipView[]
+}
+
+type FinalOutputClipView = {
+  renderClipId: string | null
+  generatedVideoVersion: number | null
+  clipPath: string | null
+  durationSeconds: number | null
+  outputStartSeconds: number | null
+  outputEndSeconds: number | null
 }
 
 type FinalOutputOmittedSceneView = {
@@ -62,10 +72,27 @@ type ArtifactLinkView = {
   version: number | null
 }
 
+function parseIncludedClip(value: unknown): FinalOutputClipView | null {
+  const record = asRecord(value)
+  if (!record) return null
+  const generatedVideoRef = asRecord(record.generated_video_ref)
+  return {
+    renderClipId: asString(record.render_clip_id),
+    generatedVideoVersion: asNumber(generatedVideoRef?.version),
+    clipPath: asString(record.clip_relative_path),
+    durationSeconds: asNumber(record.duration_seconds),
+    outputStartSeconds: asNumber(record.output_start_seconds),
+    outputEndSeconds: asNumber(record.output_end_seconds),
+  }
+}
+
 function parseIncludedScene(value: unknown): FinalOutputSceneView | null {
   const record = asRecord(value)
   if (!record) return null
   const generatedVideoRef = asRecord(record.generated_video_ref)
+  const clips = asArray(record.clips)
+    .map(parseIncludedClip)
+    .filter((clip): clip is FinalOutputClipView => clip !== null)
   return {
     sceneId: asString(record.scene_id) ?? 'scene',
     sceneNumber: asNumber(record.scene_number),
@@ -75,6 +102,7 @@ function parseIncludedScene(value: unknown): FinalOutputSceneView | null {
     durationSeconds: asNumber(record.duration_seconds),
     outputStartSeconds: asNumber(record.output_start_seconds),
     outputEndSeconds: asNumber(record.output_end_seconds),
+    clips,
   }
 }
 
@@ -332,8 +360,36 @@ export function FinalOutputViewer({ data, projectId, healthDetails }: FinalOutpu
                     {scene.generatedVideoVersion !== null && (
                       <Badge variant="secondary">Render v{scene.generatedVideoVersion}</Badge>
                     )}
+                    {scene.clips.length > 1 && (
+                      <Badge variant="outline">{scene.clips.length} clips</Badge>
+                    )}
                   </div>
                 </div>
+                {scene.clips.length > 1 && (
+                  <div className="mt-3 space-y-2">
+                    {scene.clips.map(clip => (
+                      <div
+                        key={`${scene.sceneId}-${clip.renderClipId ?? clip.clipPath}`}
+                        className="flex flex-wrap items-center gap-2 rounded-md bg-muted/30 px-3 py-2 text-xs text-muted-foreground"
+                      >
+                        <span className="font-medium text-foreground/80">
+                          {clip.renderClipId ?? 'scene clip'}
+                        </span>
+                        {formatDuration(clip.durationSeconds) && (
+                          <Badge variant="outline">{formatDuration(clip.durationSeconds)}</Badge>
+                        )}
+                        {formatTimelineRange(clip.outputStartSeconds, clip.outputEndSeconds) && (
+                          <Badge variant="outline">
+                            {formatTimelineRange(clip.outputStartSeconds, clip.outputEndSeconds)}
+                          </Badge>
+                        )}
+                        {clip.generatedVideoVersion !== null && (
+                          <Badge variant="secondary">v{clip.generatedVideoVersion}</Badge>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))
           )}

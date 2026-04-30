@@ -33,6 +33,10 @@ type GeneratedVideoViewerProps = {
 type GeneratedVideoView = {
   sceneHeading: string | null
   sceneNumber: number | null
+  renderUnit: string | null
+  renderClipId: string | null
+  renderClipStartSeconds: number | null
+  renderClipEndSeconds: number | null
   videoPath: string | null
   durationSeconds: number | null
   resolution: string | null
@@ -58,6 +62,10 @@ function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView 
   return {
     sceneHeading: asString(data.scene_heading),
     sceneNumber: asNumber(data.scene_number),
+    renderUnit: asString(data.render_unit),
+    renderClipId: asString(data.render_clip_id),
+    renderClipStartSeconds: asNumber(data.render_clip_start_time_seconds),
+    renderClipEndSeconds: asNumber(data.render_clip_end_time_seconds),
     videoPath: asString(video?.relative_path),
     durationSeconds: asNumber(data.duration_seconds),
     resolution: asString(data.resolution),
@@ -81,6 +89,13 @@ function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView 
         }
       : null,
   }
+}
+
+function formatClipWindow(startSeconds: number | null, endSeconds: number | null): string | null {
+  if (startSeconds === null || endSeconds === null) return null
+  const start = formatDuration(startSeconds) ?? `${startSeconds}s`
+  const end = formatDuration(endSeconds) ?? `${endSeconds}s`
+  return `${start} - ${end}`
 }
 
 export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerProps) {
@@ -108,6 +123,17 @@ export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerPr
             <div className="flex flex-wrap gap-2">
               {render.targetProvider && (
                 <Badge variant="secondary">{formatToken(render.targetProvider)}</Badge>
+              )}
+              {render.renderUnit === 'render_clip' && (
+                <Badge variant="secondary">Render Clip</Badge>
+              )}
+              {render.renderClipId && (
+                <Badge variant="outline">{render.renderClipId}</Badge>
+              )}
+              {formatClipWindow(render.renderClipStartSeconds, render.renderClipEndSeconds) && (
+                <Badge variant="outline">
+                  {formatClipWindow(render.renderClipStartSeconds, render.renderClipEndSeconds)}
+                </Badge>
               )}
               {formatPreviewMode(render.previewProvenance?.mode ?? null) && (
                 <Badge variant="secondary">{formatPreviewMode(render.previewProvenance?.mode ?? null)}</Badge>

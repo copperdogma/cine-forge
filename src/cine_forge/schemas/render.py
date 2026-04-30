@@ -144,13 +144,21 @@ class PrevizAdoptionStatus(BaseModel):
     ai_previz: PrevizLaneStatus
 
 
+RenderUnit = Literal["scene", "render_clip"]
+
+
 class CompiledRenderPrompt(BaseModel):
     """Persisted prompt artifact used to create a generated-video artifact."""
 
     scene_id: str = Field(min_length=1)
     scene_number: int = Field(ge=1)
     scene_heading: str = Field(min_length=1)
-    render_unit: Literal["scene"] = "scene"
+    render_unit: RenderUnit = "scene"
+    render_clip_id: str | None = None
+    render_clip_start_time_seconds: float | None = Field(default=None, ge=0.0)
+    render_clip_end_time_seconds: float | None = Field(default=None, ge=0.0)
+    source_shot_ids: list[str] = Field(default_factory=list)
+    fallback_beat_ids: list[str] = Field(default_factory=list)
     scene_ref: ArtifactRef
     shot_plan_ref: ArtifactRef
     render_clip_plan_ref: ArtifactRef | None = None
@@ -178,16 +186,33 @@ class CompiledRenderPrompt(BaseModel):
             raise ValueError("resolved_duration_seconds must be positive")
         if self.requested_duration_seconds <= 0:
             raise ValueError("requested_duration_seconds must be positive")
+        if self.render_clip_end_time_seconds is not None and (
+            self.render_clip_start_time_seconds is None
+            or self.render_clip_end_time_seconds < self.render_clip_start_time_seconds
+        ):
+            raise ValueError("render_clip_end_time_seconds must be >= start time")
+        if self.render_unit == "render_clip":
+            if not self.render_clip_id:
+                raise ValueError("render_clip render units require render_clip_id")
+            if self.render_clip_start_time_seconds is None:
+                raise ValueError("render_clip render units require start time")
+            if self.render_clip_end_time_seconds is None:
+                raise ValueError("render_clip render units require end time")
         return self
 
 
 class GeneratedVideoArtifact(BaseModel):
-    """Persisted scene-level generated-video artifact."""
+    """Persisted scene or render-clip generated-video artifact."""
 
     scene_id: str = Field(min_length=1)
     scene_number: int = Field(ge=1)
     scene_heading: str = Field(min_length=1)
-    render_unit: Literal["scene"] = "scene"
+    render_unit: RenderUnit = "scene"
+    render_clip_id: str | None = None
+    render_clip_start_time_seconds: float | None = Field(default=None, ge=0.0)
+    render_clip_end_time_seconds: float | None = Field(default=None, ge=0.0)
+    source_shot_ids: list[str] = Field(default_factory=list)
+    fallback_beat_ids: list[str] = Field(default_factory=list)
     scene_ref: ArtifactRef
     shot_plan_ref: ArtifactRef
     render_clip_plan_ref: ArtifactRef | None = None
@@ -206,6 +231,24 @@ class GeneratedVideoArtifact(BaseModel):
     resolved_inputs: list[RenderResolvedInput] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list)
     preview_provenance: PreviewProvenance | None = None
+
+    @model_validator(mode="after")
+    def _validate_render_unit(self) -> GeneratedVideoArtifact:
+        if self.duration_seconds <= 0:
+            raise ValueError("duration_seconds must be positive")
+        if self.render_clip_end_time_seconds is not None and (
+            self.render_clip_start_time_seconds is None
+            or self.render_clip_end_time_seconds < self.render_clip_start_time_seconds
+        ):
+            raise ValueError("render_clip_end_time_seconds must be >= start time")
+        if self.render_unit == "render_clip":
+            if not self.render_clip_id:
+                raise ValueError("render_clip render units require render_clip_id")
+            if self.render_clip_start_time_seconds is None:
+                raise ValueError("render_clip render units require start time")
+            if self.render_clip_end_time_seconds is None:
+                raise ValueError("render_clip render units require end time")
+        return self
 
 
 class EnginePackLimits(BaseModel):
@@ -234,6 +277,7 @@ class EnginePackRetryPolicy(BaseModel):
 
     max_attempts: int = Field(default=2, ge=1)
     poll_interval_seconds: float = Field(default=10.0, ge=1.0)
+    max_poll_seconds: float = Field(default=600.0, ge=1.0)
     retryable_http_statuses: list[int] = Field(default_factory=list)
     retryable_error_substrings: list[str] = Field(default_factory=list)
 

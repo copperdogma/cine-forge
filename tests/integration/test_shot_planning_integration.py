@@ -411,6 +411,17 @@ def test_shot_planning_recipe_builds_plans_and_updates_project_artifacts(
         ArtifactHealth.CONFIRMED_VALID,
         None,
     }
+    assert engine.store.graph.get_health(timeline_ref) in {
+        ArtifactHealth.VALID,
+        ArtifactHealth.CONFIRMED_VALID,
+        None,
+    }
+    timeline_lineage_types = {
+        ref.artifact_type
+        for ref in engine.store.load_artifact(timeline_ref).metadata.lineage
+    }
+    assert "shot_plan" in timeline_lineage_types
+    assert "track_manifest" not in timeline_lineage_types
 
     timeline = Timeline.model_validate(engine.store.load_artifact(timeline_ref).data)
     assert [entry.shot_count for entry in timeline.entries] == [3, 3]

@@ -67,6 +67,57 @@ export function getSceneScopeTargetLabel(sceneScope: unknown): string {
   return getSceneScopeLabel(sceneScope) === 'Current scene' ? 'this scene' : 'all scenes'
 }
 
+export function getSingleSceneScopeId(sceneScope: unknown): string | null {
+  if (
+    !sceneScope
+    || typeof sceneScope !== 'object'
+    || !('mode' in sceneScope)
+    || (sceneScope as { mode?: unknown }).mode !== 'current_scene'
+  ) {
+    return null
+  }
+  const ids = (sceneScope as { scene_ids?: unknown }).scene_ids
+  return Array.isArray(ids) && ids.length === 1 && typeof ids[0] === 'string'
+    ? ids[0]
+    : null
+}
+
+function sceneOrdinalLabel(sceneId: string): string {
+  const suffix = sceneId.startsWith('scene_') ? sceneId.slice('scene_'.length) : sceneId
+  return `SCENE ${suffix.replace(/_/g, ' ').toUpperCase()}`
+}
+
+function sceneHeadingFromData(sceneData: Record<string, unknown> | undefined): string | null {
+  if (!sceneData) return null
+  const heading = sceneData.heading ?? sceneData.display_name ?? sceneData.scene_heading
+  return typeof heading === 'string' && heading.trim() ? heading.trim() : null
+}
+
+export function getSceneRunTargetLabel(
+  sceneScope: unknown,
+  sceneData?: Record<string, unknown>,
+): string {
+  const sceneId = getSingleSceneScopeId(sceneScope)
+  if (!sceneId) return getSceneScopeTargetLabel(sceneScope)
+  const sceneLabel = sceneOrdinalLabel(sceneId)
+  const heading = sceneHeadingFromData(sceneData)
+  return heading ? `${sceneLabel}: ${heading}` : sceneLabel
+}
+
+export function getSceneProgressTotal(sceneScope: unknown, allSceneTotal: number): number | null {
+  if (getSingleSceneScopeId(sceneScope)) return null
+  if (
+    sceneScope
+    && typeof sceneScope === 'object'
+    && 'mode' in sceneScope
+    && (sceneScope as { mode?: unknown }).mode === 'current_scene'
+  ) {
+    const ids = (sceneScope as { scene_ids?: unknown }).scene_ids
+    return Array.isArray(ids) && ids.length > 1 ? ids.length : null
+  }
+  return allSceneTotal > 0 ? allSceneTotal : null
+}
+
 export function getUserFacingRecipeName(recipeId: string | null | undefined): string {
   if (!recipeId) return 'Run'
   return USER_FACING_RECIPE_NAMES[recipeId] ?? RECIPE_NAMES[recipeId] ?? recipeId

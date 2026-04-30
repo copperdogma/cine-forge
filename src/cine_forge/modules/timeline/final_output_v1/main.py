@@ -14,6 +14,7 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import (
     ArtifactRef,
     FinalOutputArtifact,
+    FinalOutputIncludedClip,
     FinalOutputIncludedScene,
     FinalOutputOmittedScene,
     GeneratedVideoArtifact,
@@ -26,18 +27,31 @@ from cine_forge.schemas import (
 
 
 class ClipInput:
-    """Internal carrier for one included scene clip."""
+    """Internal carrier for one physical generated-video clip."""
+
+    def __init__(
+        self,
+        *,
+        included_clip: FinalOutputIncludedClip,
+        clip_path: Path,
+        generated_video_ref: ArtifactRef,
+    ) -> None:
+        self.included_clip = included_clip
+        self.clip_path = clip_path
+        self.generated_video_ref = generated_video_ref
+
+
+class SceneClipInput:
+    """Internal carrier for one timeline scene and its generated-video clips."""
 
     def __init__(
         self,
         *,
         included_scene: FinalOutputIncludedScene,
-        clip_path: Path,
-        generated_video_ref: ArtifactRef,
+        clips: list[ClipInput],
     ) -> None:
         self.included_scene = included_scene
-        self.clip_path = clip_path
-        self.generated_video_ref = generated_video_ref
+        self.clips = clips
 
 
 def run_module(
@@ -56,17 +70,18 @@ def run_module(
             "final_output_v1 requires the latest track_manifest to align with the latest timeline."
         )
 
-    included_clips, omitted_scenes = _resolve_scene_clips(
+    included_scenes, omitted_scenes = _resolve_scene_clips(
         store=store,
         project_dir=project_dir,
         timeline=timeline,
         track_manifest=track_manifest,
     )
-    if not included_clips:
+    if not included_scenes:
         raise ValueError(
             "final_output_v1 requires at least one scene with generated video media to assemble."
         )
 
+    included_clips = _flatten_clip_inputs(included_scenes)
     artifact_ref = _anticipated_project_ref(store, "final_output")
     output_path = _final_output_media_path(project_dir, version=artifact_ref.version)
     assembled_duration, normalization_applied, normalization_notes = _assemble_output(
@@ -84,9 +99,9 @@ def run_module(
         ),
         coverage_state="complete" if not omitted_scenes else "partial",
         total_scene_count=len(timeline.entries),
-        included_scene_ids=[clip.included_scene.scene_id for clip in included_clips],
+        included_scene_ids=[scene.included_scene.scene_id for scene in included_scenes],
         omitted_scene_ids=[scene.scene_id for scene in omitted_scenes],
-        included_scenes=[clip.included_scene for clip in included_clips],
+        included_scenes=[scene.included_scene for scene in included_scenes],
         omitted_scenes=omitted_scenes,
         normalization_applied=normalization_applied,
         normalization_notes=normalization_notes,
@@ -135,6 +150,8 @@ def _project_dir(context: dict[str, Any]) -> Path:
     if not isinstance(project_dir_raw, str) or not project_dir_raw:
         raise ValueError("final_output_v1 requires context.project_dir")
     return Path(project_dir_raw)
+
+
 def _load_project_timeline(store: ArtifactStore) -> tuple[ArtifactRef, Timeline]:
     timeline_ref = store.latest_ref("timeline", "project")
     if timeline_ref is None:
@@ -157,17 +174,17 @@ def _resolve_scene_clips(
     project_dir: Path,
     timeline: Timeline,
     track_manifest: TrackManifest,
-) -> tuple[list[ClipInput], list[FinalOutputOmittedScene]]:
+) -> tuple[list[SceneClipInput], list[FinalOutputOmittedScene]]:
     ordered_entries = sorted(timeline.entries, key=lambda entry: entry.edit_position)
     clip_entries = _generated_video_entries(track_manifest.entries)
-    included: list[ClipInput] = []
+    included: list[SceneClipInput] = []
     omitted: list[FinalOutputOmittedScene] = []
     cumulative_seconds = 0.0
 
     for timeline_entry in ordered_entries:
         scene = _load_scene(store, timeline_entry.scene_ref)
-        generated_entry = clip_entries.get(timeline_entry.scene_id)
-        if generated_entry is None:
+        generated_entries = clip_entries.get(timeline_entry.scene_id, [])
+        if not generated_entries:
             omitted.append(
                 FinalOutputOmittedScene(
                     scene_id=scene.scene_id,
@@ -182,78 +199,136 @@ def _resolve_scene_clips(
             )
             continue
 
-        generated_video = _load_generated_video(store, generated_entry.artifact_ref)
-        if generated_video is None:
+        scene_start_seconds = cumulative_seconds
+        scene_clips: list[ClipInput] = []
+        omit_detail: str | None = None
+        for generated_entry in generated_entries:
+            generated_video = _load_generated_video(store, generated_entry.artifact_ref)
+            if generated_video is None:
+                omit_detail = (
+                    "A generated_video artifact referenced by the track manifest "
+                    "is missing or invalid."
+                )
+                break
+
+            clip_path = project_dir / generated_video.video.relative_path
+            if not clip_path.exists():
+                omit_detail = (
+                    "A generated-video media file is missing at "
+                    f"{generated_video.video.relative_path}."
+                )
+                break
+
+            duration_seconds = _clip_duration_seconds(
+                generated_video=generated_video, clip_path=clip_path
+            )
+            included_clip = FinalOutputIncludedClip(
+                render_clip_id=generated_video.render_clip_id or generated_entry.render_clip_id,
+                generated_video_ref=generated_entry.artifact_ref,
+                clip_relative_path=generated_video.video.relative_path,
+                duration_seconds=duration_seconds,
+                scene_start_seconds=generated_video.render_clip_start_time_seconds
+                if generated_video.render_clip_start_time_seconds is not None
+                else generated_entry.start_time_seconds,
+                scene_end_seconds=generated_video.render_clip_end_time_seconds
+                if generated_video.render_clip_end_time_seconds is not None
+                else generated_entry.end_time_seconds,
+                output_start_seconds=round(cumulative_seconds, 3),
+                output_end_seconds=round(cumulative_seconds + duration_seconds, 3),
+            )
+            cumulative_seconds += duration_seconds
+            scene_clips.append(
+                ClipInput(
+                    included_clip=included_clip,
+                    clip_path=clip_path,
+                    generated_video_ref=generated_entry.artifact_ref,
+                )
+            )
+
+        if omit_detail is not None or not scene_clips:
+            cumulative_seconds = scene_start_seconds
             omitted.append(
                 FinalOutputOmittedScene(
                     scene_id=scene.scene_id,
                     scene_number=scene.scene_number,
                     scene_heading=scene.heading,
                     reason="missing_generated_video_artifact",
-                    detail=(
-                        "The generated_video artifact referenced by the track manifest "
-                        "is missing or invalid."
-                    ),
+                    detail=omit_detail or "No usable generated-video clip remained.",
                 )
             )
             continue
 
-        clip_path = project_dir / generated_video.video.relative_path
-        if not clip_path.exists():
-            omitted.append(
-                FinalOutputOmittedScene(
-                    scene_id=scene.scene_id,
-                    scene_number=scene.scene_number,
-                    scene_heading=scene.heading,
-                    reason="missing_generated_video_artifact",
-                    detail=(
-                        "The generated-video media file is missing at "
-                        f"{generated_video.video.relative_path}."
-                    ),
-                )
-            )
-            continue
-
-        duration_seconds = _clip_duration_seconds(
-            generated_video=generated_video, clip_path=clip_path
-        )
         included_scene = FinalOutputIncludedScene(
             scene_id=scene.scene_id,
             scene_number=scene.scene_number,
             scene_heading=scene.heading,
-            generated_video_ref=generated_entry.artifact_ref,
-            clip_relative_path=generated_video.video.relative_path,
-            duration_seconds=duration_seconds,
-            output_start_seconds=round(cumulative_seconds, 3),
-            output_end_seconds=round(cumulative_seconds + duration_seconds, 3),
+            generated_video_ref=scene_clips[0].generated_video_ref,
+            clip_relative_path=scene_clips[0].included_clip.clip_relative_path,
+            duration_seconds=round(cumulative_seconds - scene_start_seconds, 3),
+            output_start_seconds=round(scene_start_seconds, 3),
+            output_end_seconds=round(cumulative_seconds, 3),
+            clips=[clip.included_clip for clip in scene_clips],
         )
-        cumulative_seconds += duration_seconds
         included.append(
-            ClipInput(
+            SceneClipInput(
                 included_scene=included_scene,
-                clip_path=clip_path,
-                generated_video_ref=generated_entry.artifact_ref,
+                clips=scene_clips,
             )
         )
 
     return included, omitted
 
 
-def _generated_video_entries(entries: list[TrackEntry]) -> dict[str, TrackEntry]:
+def _flatten_clip_inputs(included_scenes: list[SceneClipInput]) -> list[ClipInput]:
+    return [clip for scene in included_scenes for clip in scene.clips]
+
+
+def _generated_video_entries(entries: list[TrackEntry]) -> dict[str, list[TrackEntry]]:
     generated_entries = [
         entry
         for entry in entries
         if entry.track_type == "generated_video" and entry.status == "available"
     ]
-    latest_by_scene: dict[str, TrackEntry] = {}
+    latest_scene_entries: dict[str, TrackEntry] = {}
+    latest_clip_entries: dict[tuple[str, str], TrackEntry] = {}
     for entry in generated_entries:
-        existing = latest_by_scene.get(entry.scene_id)
-        if existing is None or (
-            entry.priority <= existing.priority
-            and entry.artifact_ref.version >= existing.artifact_ref.version
-        ):
-            latest_by_scene[entry.scene_id] = entry
-    return latest_by_scene
+        if entry.render_clip_id:
+            key = (entry.scene_id, entry.render_clip_id)
+            existing = latest_clip_entries.get(key)
+            if existing is None or _newer_track_entry(entry, existing):
+                latest_clip_entries[key] = entry
+            continue
+        existing = latest_scene_entries.get(entry.scene_id)
+        if existing is None or _newer_track_entry(entry, existing):
+            latest_scene_entries[entry.scene_id] = entry
+
+    grouped_clip_entries: dict[str, list[TrackEntry]] = {}
+    for entry in latest_clip_entries.values():
+        grouped_clip_entries.setdefault(entry.scene_id, []).append(entry)
+
+    resolved: dict[str, list[TrackEntry]] = {}
+    for scene_id, clip_list in grouped_clip_entries.items():
+        resolved[scene_id] = sorted(clip_list, key=_clip_entry_sort_key)
+    for scene_id, entry in latest_scene_entries.items():
+        if scene_id not in resolved:
+            resolved[scene_id] = [entry]
+    return resolved
+
+
+def _newer_track_entry(candidate: TrackEntry, existing: TrackEntry) -> bool:
+    return (
+        candidate.priority <= existing.priority
+        and candidate.artifact_ref.version >= existing.artifact_ref.version
+    )
+
+
+def _clip_entry_sort_key(entry: TrackEntry) -> tuple[float, float, int, str]:
+    return (
+        entry.start_time_seconds if entry.start_time_seconds is not None else 0.0,
+        entry.end_time_seconds if entry.end_time_seconds is not None else 0.0,
+        entry.artifact_ref.version,
+        entry.render_clip_id or "",
+    )
 
 
 def _load_scene(store: ArtifactStore, scene_ref: ArtifactRef) -> Scene:
@@ -279,14 +354,14 @@ def _clip_duration_seconds(
     generated_video: GeneratedVideoArtifact,
     clip_path: Path,
 ) -> float:
+    probed = _probe_duration_seconds(clip_path)
+    if probed is not None:
+        return float(probed)
     if generated_video.video.duration_seconds is not None:
         return float(generated_video.video.duration_seconds)
     if generated_video.duration_seconds:
         return float(generated_video.duration_seconds)
-    probed = _probe_duration_seconds(clip_path)
-    if probed is None:
-        raise ValueError(f"Could not determine clip duration for {clip_path}")
-    return probed
+    raise ValueError(f"Could not determine clip duration for {clip_path}")
 
 
 def _assemble_output(
@@ -296,7 +371,7 @@ def _assemble_output(
 ) -> tuple[float, bool, list[str]]:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     expected_duration = round(
-        sum(clip.included_scene.duration_seconds for clip in clips),
+        sum(clip.included_clip.duration_seconds for clip in clips),
         3,
     )
 
@@ -306,14 +381,37 @@ def _assemble_output(
 
     concat_error = _concat_copy([clip.clip_path for clip in clips], output_path)
     if concat_error is None:
-        return _probe_duration_seconds(output_path) or expected_duration, False, []
+        copied_duration = _probe_duration_seconds(output_path)
+        if copied_duration is None or _duration_matches_expected(
+            actual=copied_duration, expected=expected_duration
+        ):
+            return copied_duration or expected_duration, False, []
+        if output_path.exists():
+            output_path.unlink()
+        concat_error = (
+            "stream-copy concat produced "
+            f"{copied_duration:.3f}s, expected about {expected_duration:.3f}s"
+        )
 
     normalization_notes = [
         "Direct stream-copy concat failed, so CineForge normalized and re-encoded the project cut.",
         f"Concat detail: {concat_error}",
     ]
     normalization_notes.extend(_concat_normalized([clip.clip_path for clip in clips], output_path))
-    return _probe_duration_seconds(output_path) or expected_duration, True, normalization_notes
+    normalized_duration = _probe_duration_seconds(output_path)
+    if normalized_duration is not None and not _duration_matches_expected(
+        actual=normalized_duration, expected=expected_duration
+    ):
+        raise ValueError(
+            "Normalized ffmpeg assembly produced "
+            f"{normalized_duration:.3f}s, expected about {expected_duration:.3f}s"
+        )
+    return normalized_duration or expected_duration, True, normalization_notes
+
+
+def _duration_matches_expected(*, actual: float, expected: float) -> bool:
+    tolerance_seconds = max(0.25, expected * 0.05)
+    return actual >= expected - tolerance_seconds
 
 
 def _concat_copy(clip_paths: list[Path], output_path: Path) -> str | None:
@@ -381,16 +479,15 @@ def _concat_normalized(clip_paths: list[Path], output_path: Path) -> list[str]:
     concat_inputs: list[str] = []
     for index, _clip_path in enumerate(clip_paths):
         filter_parts.append(
-            
-                f"[{index}:v]scale={target_width}:{target_height}:"
-                "force_original_aspect_ratio=decrease,"
-                f"pad={target_width}:{target_height}:(ow-iw)/2:(oh-ih)/2:black,"
-                f"fps={target_fps:.3f},format=yuv420p[v{index}]"
-            
+            f"[{index}:v]setpts=PTS-STARTPTS,"
+            f"scale={target_width}:{target_height}:"
+            "force_original_aspect_ratio=decrease,"
+            f"pad={target_width}:{target_height}:(ow-iw)/2:(oh-ih)/2:black,"
+            f"fps={target_fps:.3f},format=yuv420p[v{index}]"
         )
         concat_inputs.append(f"[v{index}]")
         if all_have_audio:
-            filter_parts.append(f"[{index}:a]aresample=48000[a{index}]")
+            filter_parts.append(f"[{index}:a]asetpts=PTS-STARTPTS,aresample=48000[a{index}]")
             concat_inputs.append(f"[a{index}]")
 
     if all_have_audio:

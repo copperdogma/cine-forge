@@ -17,6 +17,7 @@ class TrackEntry(BaseModel):
     track_type: str
     scene_id: str
     shot_id: str | None = None
+    render_clip_id: str | None = None
     artifact_ref: ArtifactRef
     start_time_seconds: float | None = Field(default=None, ge=0.0)
     end_time_seconds: float | None = Field(default=None, ge=0.0)

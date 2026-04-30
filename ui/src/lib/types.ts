@@ -187,6 +187,8 @@ export type SceneActionPreflightItem = {
   kind: 'warning' | 'auto_build' | 'soft_block'
   label: string
   detail: string
+  action_label?: string | null
+  action_path?: string | null
 }
 
 export type SceneActionPreflight = {
@@ -197,7 +199,11 @@ export type SceneActionPreflight = {
   scene_scope: SceneExecutionScope
   status: 'ready' | 'warn' | 'soft_block'
   summary: string
-  prerequisite_strategy?: 'reuse_existing_shot_plan' | 'one_pass_previz_prep' | null
+  prerequisite_strategy?:
+    | 'reuse_existing_render_clip_plan'
+    | 'reuse_existing_shot_plan'
+    | 'one_pass_previz_prep'
+    | null
   reused_artifact_types?: string[]
   auto_build_artifact_types?: string[]
   missing_optional_artifact_types?: string[]
@@ -229,6 +235,7 @@ export type RunStartPayload = {
   start_from?: string
   end_at?: string
   scene_scope?: SceneExecutionScope
+  render_clip_ids?: string[]
   config_file?: string
   config_overrides?: Record<string, unknown>
   project_budget_limit_usd?: number | null

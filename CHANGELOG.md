@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-04-29-05] — Render scenes as provider-bounded clips (Story 194)
+
+### Added
+- Added multi-clip Render and AI Previz execution so one scene can generate one prompt/video artifact per provider-bounded render clip with clip lineage, timing, validation, and track entries.
+- Added scene workspace clip truth for Previz and Render, including embedded per-clip players, prompt links, stale/missing clip handling, and per-clip generate/regenerate controls.
+
+### Changed
+- Changed final-output assembly and media validation to understand ordered generated-video render clips while preserving honest missing-coverage reporting.
+- Changed shipped Render and AI Previz recipes to require durable `render_clip_plan` artifacts before generation instead of silently falling back to compressed scene-level output.
+
+### Fixed
+- Fixed repeated or leaked dialogue in shot/render clip prompts, strengthened low-fidelity previz dialogue locks, and corrected the Render tab so the first clip is not presented as the whole scene.
+
 ## [2026-04-29-04] — Add scene render clip planning (Story 193)
 
 ### Added

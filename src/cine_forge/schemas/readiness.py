@@ -100,7 +100,19 @@ def compute_scene_readiness(
         ),
         character_and_performance=_compute_group_readiness(
             artifacts.get("character_and_performance"),
-            ["entries", "scene_id"],
+            [
+                "entries",
+                "scene_id",
+                "emotional_state_entering",
+                "emotional_arc",
+                "motivation",
+                "subtext",
+                "physical_notes",
+                "key_beats",
+                "relationship_dynamics",
+                "dialogue_delivery_notes",
+                "blocking_notes",
+            ],
         ),
         story_world=_compute_group_readiness(
             artifacts.get("story_world"),

@@ -1,4 +1,5 @@
-import { AlertTriangle, CheckCircle2, Wrench } from 'lucide-react'
+import { AlertTriangle, ArrowRight, CheckCircle2, Wrench } from 'lucide-react'
+import { Link, useParams } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -23,12 +24,20 @@ export function SceneActionControls({
   preflight,
   disabled = false,
 }: SceneActionControlsProps) {
+  const { projectId } = useParams<{ projectId: string }>()
   const statusBadge = preflight?.status === 'soft_block'
     ? { label: 'Soft Block', className: 'border-red-500/30 bg-red-500/10 text-red-200' }
     : preflight?.status === 'warn'
       ? { label: 'Warnings', className: 'border-amber-500/30 bg-amber-500/10 text-amber-100' }
       : { label: 'Ready', className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100' }
   const items = [...(preflight?.items ?? [])].sort((a, b) => ITEM_ORDER[a.kind] - ITEM_ORDER[b.kind])
+
+  const actionHref = (actionPath?: string | null) => {
+    if (!projectId || actionPath == null) return null
+    if (actionPath.startsWith('/')) return actionPath
+    const normalized = actionPath.replace(/^\/+/, '')
+    return normalized ? `/${projectId}/${normalized}` : `/${projectId}`
+  }
 
   return (
     <div className="space-y-3 rounded-lg border border-border/70 bg-card/70 px-4 py-3">
@@ -82,12 +91,21 @@ export function SceneActionControls({
               : item.kind === 'auto_build'
                 ? 'text-sky-100'
                 : 'text-amber-100'
+            const href = actionHref(item.action_path)
             return (
               <div key={`${item.kind}-${item.label}-${index}`} className="flex items-start gap-2">
                 <Icon className={cn('mt-0.5 h-4 w-4 shrink-0', tone)} />
-                <div className="space-y-0.5">
+                <div className="space-y-2">
                   <p className={cn('text-sm font-medium', tone)}>{item.label}</p>
                   <p className="text-sm leading-relaxed text-muted-foreground">{item.detail}</p>
+                  {href && item.action_label && (
+                    <Button asChild type="button" size="sm" variant="outline" className="h-8 w-fit">
+                      <Link to={href}>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                        {item.action_label}
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             )

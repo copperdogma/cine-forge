@@ -100,6 +100,7 @@ class MediaValidationTarget(BaseModel):
     entity_id: str = Field(min_length=1)
     label: str = Field(min_length=1)
     scene_id: str | None = Field(default=None, min_length=1)
+    render_clip_id: str | None = Field(default=None, min_length=1)
     scene_number: int | None = Field(default=None, ge=1)
     scene_heading: str | None = Field(default=None, min_length=1)
     coverage_state: Literal["partial", "complete"] | None = None
@@ -113,8 +114,10 @@ class MediaValidationTarget(BaseModel):
                 raise ValueError(
                     "scene targets require scene_id, scene_number, and scene_heading"
                 )
-            if self.entity_id != self.scene_id:
-                raise ValueError("scene targets must use scene_id as entity_id")
+            if self.entity_id != (self.render_clip_id or self.scene_id):
+                raise ValueError(
+                    "scene targets must use scene_id or render_clip_id as entity_id"
+                )
             return self
 
         if self.coverage_state == "complete" and (self.omitted_scene_count or 0) > 0:

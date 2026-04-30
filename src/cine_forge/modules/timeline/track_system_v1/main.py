@@ -311,6 +311,7 @@ def best_for_scene(
             "status": entry.status,
             "priority": entry.priority,
             "shot_id": entry.shot_id,
+            "render_clip_id": entry.render_clip_id,
             "artifact_ref": entry.artifact_ref.model_dump(mode="json"),
         }
         for entry in scene_entries

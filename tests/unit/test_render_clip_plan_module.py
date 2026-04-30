@@ -227,3 +227,62 @@ def test_ai_clip_plan_is_validated_and_split_to_engine_cap(
     assert len(plan.clips) == 3
     assert all(clip.target_duration_seconds <= 8.0 for clip in plan.clips)
     assert result["cost"]["estimated_cost_usd"] == pytest.approx(0.01)
+
+
+@pytest.mark.unit
+def test_ai_clip_plan_assigns_dialogue_once_and_keeps_action_nonverbatim(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_storyboard_project(tmp_path, scene_count=1)
+
+    def _fake_call_llm(**_: Any) -> tuple[RenderClipPlanningResponse, dict[str, Any]]:
+        return (
+            RenderClipPlanningResponse(
+                target_dramatic_duration_seconds=12.0,
+                duration_rationale="The toast needs its own beat without duplicated speech.",
+                confidence=0.82,
+                clips=[
+                    RenderClipPlanningResponseClip(
+                        source_shot_ids=["SCENE_001_A"],
+                        target_duration_seconds=6.0,
+                        dialogue_lines=["STEEL: (beer raised) To retirement."],
+                        action_beats=["STEEL raises his beer and says 'To retirement.'"],
+                        rationale="Cover Steel's toast line.",
+                        confidence=0.8,
+                    ),
+                    RenderClipPlanningResponseClip(
+                        source_shot_ids=["SCENE_001_B"],
+                        target_duration_seconds=6.0,
+                        dialogue_lines=["STEEL: To retirement.", "BRICK: To retirement."],
+                        action_beats=["BRICK repeats 'To retirement.' without hurry."],
+                        rationale="Cover Brick's answer.",
+                        confidence=0.8,
+                    ),
+                ],
+            ),
+            {
+                "model": "claude-opus-4-6",
+                "input_tokens": 100,
+                "output_tokens": 100,
+                "estimated_cost_usd": 0.01,
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_clip_plan_v1.prompting.call_llm",
+        _fake_call_llm,
+    )
+
+    result = run_module(
+        _inputs_for_seeded_project(seeded),
+        {"planner_model": "claude-opus-4-6", "engine_pack_id": "google_veo31"},
+        _context(seeded["project_dir"]),
+    )
+
+    plan = RenderClipPlan.model_validate(result["artifacts"][0]["data"])
+    dialogue = [line for clip in plan.clips for line in clip.dialogue_lines]
+    assert dialogue == ["STEEL: (beer raised) To retirement.", "BRICK: To retirement."]
+    action = " ".join(beat for clip in plan.clips for beat in clip.action_beats)
+    assert "'To retirement" not in action
+    assert "the planned dialogue line" in action

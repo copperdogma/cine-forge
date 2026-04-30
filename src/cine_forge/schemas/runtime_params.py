@@ -56,5 +56,6 @@ class RuntimeParams(BaseModel):
     end_at: str | None = None
     scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
     scene_action_preflight: SceneActionPreflight | None = None
+    render_clip_ids: list[str] | None = Field(default=None, min_length=1)
 
     model_config = {"populate_by_name": True}

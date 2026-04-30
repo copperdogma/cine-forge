@@ -428,6 +428,100 @@ def test_service_start_run_persists_scene_scope_and_preflight_context(
     }
 
 
+def test_service_start_run_applies_coerced_scene_preflight_start_from(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_id = service.create_project_from_slug("coerced-scene-run", "Coerced Scene Run")
+    project_path = service.require_project_path(project_id)
+    (project_path / "inputs").mkdir(parents=True, exist_ok=True)
+    input_path = project_path / "inputs" / "script.fountain"
+    input_path.write_text("INT. LAB - NIGHT\nMARA\nGo.\n", encoding="utf-8")
+
+    store = ArtifactStore(project_dir=project_path)
+    metadata = ArtifactMetadata(
+        intent="seed",
+        rationale="test fixture",
+        confidence=1.0,
+        source="code",
+        producing_module="tests.unit",
+    )
+    store.save_artifact(
+        artifact_type="canonical_script",
+        entity_id="project",
+        data={"title": "Test", "script_text": input_path.read_text(encoding="utf-8")},
+        metadata=metadata,
+    )
+    scene_index_ref = store.save_artifact(
+        artifact_type="scene_index",
+        entity_id="project",
+        data={"entries": [{"scene_id": "scene_001", "scene_number": 1}]},
+        metadata=metadata,
+    )
+    store.save_artifact(
+        artifact_type="scene",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT"},
+        metadata=metadata,
+    )
+    store.save_artifact(
+        artifact_type="timeline",
+        entity_id="project",
+        data={"scenes": []},
+        metadata=metadata.model_copy(update={"lineage": [scene_index_ref]}),
+    )
+    store.save_artifact(
+        artifact_type="scene_index",
+        entity_id="project",
+        data={"entries": [{"scene_id": "scene_001", "scene_number": 1}]},
+        metadata=metadata.model_copy(update={"lineage": [scene_index_ref]}),
+    )
+    store.save_artifact(
+        artifact_type="track_manifest",
+        entity_id="project",
+        data={"tracks": []},
+        metadata=metadata,
+    )
+    store.save_artifact(
+        artifact_type="shot_plan",
+        entity_id="scene_001",
+        data={"scene_id": "scene_001", "shots": []},
+        metadata=metadata,
+    )
+
+    captured: dict[str, object] = {}
+
+    def _fake_start_run(project_id_arg: str, request: dict[str, object]) -> str:
+        captured["project_id"] = project_id_arg
+        captured["request"] = request
+        return "run-coerced-scene"
+
+    monkeypatch.setattr(service._orchestrator, "start_run", _fake_start_run)
+
+    run_id = service.start_run(
+        project_id,
+        {
+            "input_file": str(input_path),
+            "default_model": "gpt-5.4-mini",
+            "recipe_id": "ai_previz_generation",
+            "accept_config": True,
+            "start_from": "render_clip_planning",
+            "scene_scope": {"mode": "current_scene", "scene_ids": ["scene_001"]},
+        },
+    )
+
+    assert run_id == "run-coerced-scene"
+    request = captured["request"]
+    assert isinstance(request, dict)
+    assert "start_from" not in request
+    preflight = request["scene_action_preflight"]
+    assert isinstance(preflight, dict)
+    assert preflight["start_from"] is None
+    assert "timeline" in preflight["auto_build_artifact_types"]
+    assert "render_clip_plan" in preflight["auto_build_artifact_types"]
+
+
 @pytest.mark.unit
 def test_start_run_accepts_retry_failed_stage_for_run_id(tmp_path: Path, monkeypatch) -> None:
     client = _make_client(tmp_path)

@@ -196,7 +196,7 @@ export default function IntentMoodPage() {
       const items = Object.entries(CONCERN_GROUP_META).map(([groupId, meta]) => ({
         label: meta.label,
         status: 'done' as const,
-        detail: created.includes(groupId) ? 'draft created' : 'skipped',
+        detail: created.includes(groupId) ? 'project draft created' : 'skipped',
       }))
       store.updateMessageContent(
         projectId!,
@@ -208,7 +208,7 @@ export default function IntentMoodPage() {
         .map(id => CONCERN_GROUP_META[id]?.label ?? id)
         .join(', ')
       const summary = created.length > 0
-        ? `Creative intent propagated to **${created.length} concern groups**: ${groupNames}. Review the suggestions below, or visit each scene's Direction tab to see how the mood shapes its visual and audio direction.`
+        ? `Creative intent propagated to **${created.length} project-level concern group drafts**: ${groupNames}. Review the suggestions below, or visit each scene's Direction tab to see the inherited guidance.`
         : 'Propagation complete — no concern group drafts were created. Try adjusting the mood or adding reference films.'
       store.addMessage(projectId!, {
         id: `propagate_summary_${Date.now()}`,

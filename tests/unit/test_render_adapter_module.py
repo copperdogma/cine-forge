@@ -16,6 +16,7 @@ from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
 from cine_forge.schemas import (
     CompiledRenderPrompt,
     GeneratedVideoArtifact,
+    RenderClipPlan,
     ShotPlan,
     TrackManifest,
 )
@@ -333,6 +334,283 @@ def test_run_module_generates_prompt_video_and_track_entries(
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
         == "generated_video"
     )
+
+
+@pytest.mark.unit
+def test_run_module_builds_clip_local_render_prompts(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(
+        tmp_path,
+        include_keyframe=False,
+        include_scene_image=True,
+    )
+    scene_id = seeded["scene_id"]
+    base_plan = ShotPlan.model_validate(seeded["inputs"]["shot_plan"][0])
+    first_shot = base_plan.shots[0].model_copy(
+        update={
+            "shot_id": "SCENE_001_A",
+            "action_description": "FIRST ACTION ONLY: Steel enters with the beers.",
+            "dialogue_lines": ["STEEL: FIRST ONLY."],
+            "duration_estimate_seconds": 8.0,
+        }
+    )
+    second_shot = base_plan.shots[0].model_copy(
+        update={
+            "shot_id": "SCENE_001_B",
+            "action_description": "SECOND ACTION ONLY: The retirement silence lands.",
+            "dialogue_lines": ["BRICK: SECOND ONLY."],
+            "duration_estimate_seconds": 8.0,
+        }
+    )
+    third_shot = base_plan.shots[0].model_copy(
+        update={
+            "shot_id": "SCENE_001_C",
+            "action_description": "THIRD ACTION ONLY: Steel breaks the silence.",
+            "dialogue_lines": ["STEEL: THIRD ONLY."],
+            "duration_estimate_seconds": 8.0,
+        }
+    )
+    fourth_shot = base_plan.shots[0].model_copy(
+        update={
+            "shot_id": "SCENE_001_D",
+            "action_description": "FOURTH ACTION ONLY: Brick agrees and the cut lands.",
+            "dialogue_lines": ["BRICK: FOURTH ONLY."],
+            "duration_estimate_seconds": 8.0,
+        }
+    )
+    seeded["inputs"]["shot_plan"] = [
+        base_plan.model_copy(
+            update={
+                "shots": [first_shot, second_shot, third_shot, fourth_shot],
+                "total_estimated_duration_seconds": 32.0,
+            }
+        ).model_dump(mode="json")
+    ]
+    shot_plan_ref = seeded["store"].list_versions("shot_plan", scene_id)[-1]
+    render_clip_plan = RenderClipPlan.model_validate(
+        {
+            "scene_id": scene_id,
+            "scene_number": base_plan.scene_number,
+            "scene_heading": base_plan.scene_heading,
+            "scene_ref": base_plan.scene_ref.model_dump(mode="json"),
+            "shot_plan_ref": shot_plan_ref.model_dump(mode="json"),
+            "selected_engine_pack_id": "openai_sora2",
+            "engine_max_clip_duration_seconds": 8.0,
+            "target_dramatic_duration_seconds": 32.0,
+            "duration_rationale": "Four dialogue beats need separate render units.",
+            "confidence": 0.84,
+            "source": "ai",
+            "provenance_mode": "shot_plan_ai",
+            "planner_model": "gpt-5.4-mini",
+            "missing_upstream_categories": [],
+            "deterministic_lower_bound_seconds": 28.0,
+            "clips": [
+                {
+                    "clip_id": f"{scene_id}_clip_001",
+                    "scene_id": scene_id,
+                    "source_shot_ids": ["SCENE_001_A"],
+                    "start_time_seconds": 0.0,
+                    "end_time_seconds": 8.0,
+                    "target_duration_seconds": 8.0,
+                    "dialogue_lines": ["STEEL: FIRST ONLY."],
+                    "action_beats": ["FIRST ACTION ONLY: Steel enters with the beers."],
+                    "continuity_end_notes": ["Steel sits with the beer bottles settled."],
+                    "derivation": "shot_plan",
+                    "rationale": "Opening movement and first line.",
+                    "confidence": 0.9,
+                },
+                {
+                    "clip_id": f"{scene_id}_clip_002",
+                    "scene_id": scene_id,
+                    "source_shot_ids": ["SCENE_001_B"],
+                    "start_time_seconds": 8.0,
+                    "end_time_seconds": 16.0,
+                    "target_duration_seconds": 8.0,
+                    "dialogue_lines": ["BRICK: SECOND ONLY."],
+                    "action_beats": ["SECOND ACTION ONLY: The retirement silence lands."],
+                    "continuity_start_notes": ["Steel is already seated with both beers settled."],
+                    "derivation": "shot_plan",
+                    "rationale": "Second beat and reaction silence.",
+                    "confidence": 0.88,
+                },
+                {
+                    "clip_id": f"{scene_id}_clip_003",
+                    "scene_id": scene_id,
+                    "source_shot_ids": ["SCENE_001_C"],
+                    "start_time_seconds": 16.0,
+                    "end_time_seconds": 24.0,
+                    "target_duration_seconds": 8.0,
+                    "dialogue_lines": ["STEEL: THIRD ONLY."],
+                    "action_beats": ["THIRD ACTION ONLY: Steel breaks the silence."],
+                    "continuity_start_notes": ["Both partners are still seated."],
+                    "continuity_end_notes": ["Steel has committed to the line."],
+                    "derivation": "shot_plan",
+                    "rationale": "Third beat and decision turn.",
+                    "confidence": 0.87,
+                },
+                {
+                    "clip_id": f"{scene_id}_clip_004",
+                    "scene_id": scene_id,
+                    "source_shot_ids": ["SCENE_001_D"],
+                    "start_time_seconds": 24.0,
+                    "end_time_seconds": 32.0,
+                    "target_duration_seconds": 8.0,
+                    "dialogue_lines": ["BRICK: FOURTH ONLY."],
+                    "action_beats": ["FOURTH ACTION ONLY: Brick agrees and the cut lands."],
+                    "continuity_start_notes": ["Steel's line hangs in the air."],
+                    "derivation": "shot_plan",
+                    "rationale": "Fourth beat and smash-cut setup.",
+                    "confidence": 0.86,
+                },
+            ],
+        }
+    )
+    seeded["inputs"]["render_clip_plan"] = [render_clip_plan.model_dump(mode="json")]
+    compiler_prompts: list[str] = []
+
+    def _fake_call_llm(**kwargs):
+        compiler_prompts.append(str(kwargs["prompt"]))
+        schema = kwargs["response_schema"]
+        return (
+            schema.model_validate(
+                {
+                    "prompt_text": "Render this isolated planned clip with restrained pacing.",
+                    "sections": [
+                        {
+                            "section_id": "shot_definition",
+                            "title": "Shot Definition",
+                            "body": "Use only the selected shot coverage for this clip.",
+                            "source_artifact_types": ["shot_plan"],
+                        }
+                    ],
+                    "covered_categories": ["shot_definition"],
+                    "missing_inputs": [],
+                    "operator_notes": ["Compiler received one render-clip prompt."],
+                }
+            ),
+            {
+                "model": kwargs["model"],
+                "input_tokens": 120,
+                "output_tokens": 80,
+                "estimated_cost_usd": 0.004,
+                "latency_seconds": 0.4,
+                "request_id": f"compile-{len(compiler_prompts):03d}",
+            },
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
+        _fake_call_llm,
+    )
+    video_request_count = 0
+
+    def _fake_generate_video(*, request, engine_pack):
+        nonlocal video_request_count
+        video_request_count += 1
+        return VideoGenerationResult(
+            video_bytes=b"fake-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id=f"video-{video_request_count:03d}",
+            provider_job_id=f"job-{video_request_count:03d}",
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        _fake_generate_video,
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "engine_pack_id": "openai_sora2",
+            "compiler_model": "gpt-5.4-mini",
+            "duration_seconds": 8,
+        },
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_artifacts = [
+        CompiledRenderPrompt.model_validate(artifact["data"])
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    ]
+
+    assert len(compiler_prompts) == 4
+    assert len(prompt_artifacts) == 4
+    assert "FIRST ACTION ONLY" in compiler_prompts[0]
+    assert "STEEL: FIRST ONLY." in compiler_prompts[0]
+    assert "SECOND ACTION ONLY" not in compiler_prompts[0]
+    assert "BRICK: SECOND ONLY." not in compiler_prompts[0]
+    assert "THIRD ACTION ONLY" not in compiler_prompts[0]
+    assert "FOURTH ACTION ONLY" not in compiler_prompts[0]
+    assert "SECOND ACTION ONLY" in compiler_prompts[1]
+    assert "BRICK: SECOND ONLY." in compiler_prompts[1]
+    assert "FIRST ACTION ONLY" not in compiler_prompts[1]
+    assert "STEEL: FIRST ONLY." not in compiler_prompts[1]
+    assert "THIRD ACTION ONLY" in compiler_prompts[2]
+    assert "STEEL: THIRD ONLY." in compiler_prompts[2]
+    assert "FOURTH ACTION ONLY" not in compiler_prompts[2]
+    assert "BRICK: FOURTH ONLY." not in compiler_prompts[2]
+    assert "FOURTH ACTION ONLY" in compiler_prompts[3]
+    assert "BRICK: FOURTH ONLY." in compiler_prompts[3]
+    assert "THIRD ACTION ONLY" not in compiler_prompts[3]
+    assert "STEEL: THIRD ONLY." not in compiler_prompts[3]
+    assert [
+        (artifact.render_unit, artifact.render_clip_id)
+        for artifact in prompt_artifacts
+    ] == [
+        ("render_clip", f"{scene_id}_clip_001"),
+        ("render_clip", f"{scene_id}_clip_002"),
+        ("render_clip", f"{scene_id}_clip_003"),
+        ("render_clip", f"{scene_id}_clip_004"),
+    ]
+    assert "STEEL: FIRST ONLY." in prompt_artifacts[0].prompt_text
+    assert "BRICK: SECOND ONLY." not in prompt_artifacts[0].prompt_text
+    assert "BRICK: SECOND ONLY." in prompt_artifacts[1].prompt_text
+    assert "STEEL: FIRST ONLY." not in prompt_artifacts[1].prompt_text
+    assert "STEEL: THIRD ONLY." in prompt_artifacts[2].prompt_text
+    assert "BRICK: FOURTH ONLY." not in prompt_artifacts[2].prompt_text
+    assert "BRICK: FOURTH ONLY." in prompt_artifacts[3].prompt_text
+    assert "STEEL: THIRD ONLY." not in prompt_artifacts[3].prompt_text
+
+    compiler_prompts.clear()
+    selected_result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "engine_pack_id": "openai_sora2",
+            "compiler_model": "gpt-5.4-mini",
+            "duration_seconds": 8,
+        },
+        context={
+            "project_dir": str(seeded["project_dir"]),
+            "runtime_params": {"render_clip_ids": [f"{scene_id}_clip_003"]},
+        },
+    )
+    selected_prompt_artifacts = [
+        CompiledRenderPrompt.model_validate(artifact["data"])
+        for artifact in selected_result["artifacts"]
+        if artifact["artifact_type"] == "render_prompt"
+    ]
+    selected_video_artifacts = [
+        GeneratedVideoArtifact.model_validate(artifact["data"])
+        for artifact in selected_result["artifacts"]
+        if artifact["artifact_type"] == "generated_video"
+    ]
+
+    assert len(compiler_prompts) == 1
+    assert "THIRD ACTION ONLY" in compiler_prompts[0]
+    assert "FOURTH ACTION ONLY" not in compiler_prompts[0]
+    assert [
+        (artifact.render_unit, artifact.render_clip_id)
+        for artifact in selected_prompt_artifacts
+    ] == [("render_clip", f"{scene_id}_clip_003")]
+    assert [
+        (artifact.render_unit, artifact.render_clip_id)
+        for artifact in selected_video_artifacts
+    ] == [("render_clip", f"{scene_id}_clip_003")]
 
 
 @pytest.mark.unit
@@ -765,6 +1043,205 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
         == "ai_previz_video"
     )
+
+
+@pytest.mark.unit
+def test_run_module_generates_clip_local_ai_previz_outputs(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seeded = seed_render_project(tmp_path, include_keyframe=False, include_scene_image=True)
+    scene_id = seeded["scene_id"]
+    base_plan = ShotPlan.model_validate(seeded["inputs"]["shot_plan"][0])
+    first_shot = base_plan.shots[0].model_copy(
+        update={
+            "shot_id": "SCENE_001_A",
+            "action_description": "FIRST PREVIZ ONLY: Steel enters with the beers.",
+            "dialogue_lines": ["STEEL: FIRST PREVIZ ONLY."],
+            "duration_estimate_seconds": 8.0,
+        }
+    )
+    second_shot = base_plan.shots[0].model_copy(
+        update={
+            "shot_id": "SCENE_001_B",
+            "action_description": "SECOND PREVIZ ONLY: Brick answers after the beat.",
+            "dialogue_lines": ["BRICK: SECOND PREVIZ ONLY."],
+            "duration_estimate_seconds": 8.0,
+        }
+    )
+    seeded["inputs"]["shot_plan"] = [
+        base_plan.model_copy(
+            update={
+                "shots": [first_shot, second_shot],
+                "total_estimated_duration_seconds": 16.0,
+            }
+        ).model_dump(mode="json")
+    ]
+    shot_plan_ref = seeded["store"].list_versions("shot_plan", scene_id)[-1]
+    render_clip_plan = RenderClipPlan.model_validate(
+        {
+            "scene_id": scene_id,
+            "scene_number": base_plan.scene_number,
+            "scene_heading": base_plan.scene_heading,
+            "scene_ref": base_plan.scene_ref.model_dump(mode="json"),
+            "shot_plan_ref": shot_plan_ref.model_dump(mode="json"),
+            "selected_engine_pack_id": "google_veo31",
+            "engine_max_clip_duration_seconds": 8.0,
+            "target_dramatic_duration_seconds": 16.0,
+            "duration_rationale": "Two beats need separate previz units.",
+            "confidence": 0.84,
+            "source": "ai",
+            "provenance_mode": "shot_plan_ai",
+            "planner_model": "gpt-5.4-mini",
+            "missing_upstream_categories": [],
+            "deterministic_lower_bound_seconds": 14.0,
+            "clips": [
+                {
+                    "clip_id": f"{scene_id}_clip_001",
+                    "scene_id": scene_id,
+                    "source_shot_ids": ["SCENE_001_A"],
+                    "start_time_seconds": 0.0,
+                    "end_time_seconds": 8.0,
+                    "target_duration_seconds": 8.0,
+                    "dialogue_lines": ["STEEL: FIRST PREVIZ ONLY."],
+                    "action_beats": ["FIRST PREVIZ ONLY: Steel enters with the beers."],
+                    "continuity_end_notes": ["Steel has crossed to the chairs."],
+                    "derivation": "shot_plan",
+                    "rationale": "Opening movement and first line.",
+                    "confidence": 0.9,
+                },
+                {
+                    "clip_id": f"{scene_id}_clip_002",
+                    "scene_id": scene_id,
+                    "source_shot_ids": ["SCENE_001_B"],
+                    "start_time_seconds": 8.0,
+                    "end_time_seconds": 16.0,
+                    "target_duration_seconds": 8.0,
+                    "dialogue_lines": ["BRICK: SECOND PREVIZ ONLY."],
+                    "action_beats": ["SECOND PREVIZ ONLY: Brick answers after the beat."],
+                    "continuity_start_notes": ["Steel is already settled beside Brick."],
+                    "derivation": "shot_plan",
+                    "rationale": "Second beat and response.",
+                    "confidence": 0.88,
+                },
+            ],
+        }
+    )
+    seeded["inputs"]["render_clip_plan"] = [render_clip_plan.model_dump(mode="json")]
+    video_prompts: list[str] = []
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.compile_render_prompt",
+        lambda *args, **kwargs: pytest.fail(
+            "render prompt compilation should not run for ai_previz mode"
+        ),
+    )
+
+    def _fake_generate_video(*, request, engine_pack):
+        video_prompts.append(request.prompt)
+        return VideoGenerationResult(
+            video_bytes=b"fake-mp4",
+            media_type="video/mp4",
+            model_used=engine_pack.target_model,
+            request_id=f"previz-video-{len(video_prompts):03d}",
+            provider_job_id=f"previz-job-{len(video_prompts):03d}",
+        )
+
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        _fake_generate_video,
+    )
+
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "prompt_mode": "ai_previz",
+            "engine_pack_id": "xai_grok_imagine_video",
+            "duration_seconds": 4,
+            "resolution": "480p",
+            "consistency_strategy": "prompt_only",
+        },
+        context={"project_dir": str(seeded["project_dir"])},
+    )
+
+    prompt_outputs = [
+        artifact for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_prompt"
+    ]
+    video_outputs = [
+        artifact for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_video"
+    ]
+    prompt_artifacts = [
+        CompiledRenderPrompt.model_validate(artifact["data"])
+        for artifact in prompt_outputs
+    ]
+    generated_videos = [
+        GeneratedVideoArtifact.model_validate(artifact["data"])
+        for artifact in video_outputs
+    ]
+
+    assert [artifact["entity_id"] for artifact in prompt_outputs] == [
+        f"{scene_id}_clip_001",
+        f"{scene_id}_clip_002",
+    ]
+    assert [artifact["entity_id"] for artifact in video_outputs] == [
+        f"{scene_id}_clip_001",
+        f"{scene_id}_clip_002",
+    ]
+    assert len(video_prompts) == 2
+    assert "FIRST PREVIZ ONLY" in video_prompts[0]
+    assert "SECOND PREVIZ ONLY" not in video_prompts[0]
+    assert "SECOND PREVIZ ONLY" in video_prompts[1]
+    assert "FIRST PREVIZ ONLY" not in video_prompts[1]
+    assert [
+        (artifact.render_unit, artifact.render_clip_id, artifact.source_shot_ids)
+        for artifact in prompt_artifacts
+    ] == [
+        ("render_clip", f"{scene_id}_clip_001", ["SCENE_001_A"]),
+        ("render_clip", f"{scene_id}_clip_002", ["SCENE_001_B"]),
+    ]
+    assert [
+        (video.render_unit, video.render_clip_id, video.duration_seconds)
+        for video in generated_videos
+    ] == [
+        ("render_clip", f"{scene_id}_clip_001", 8.0),
+        ("render_clip", f"{scene_id}_clip_002", 8.0),
+    ]
+
+    video_prompts.clear()
+    selected_result = run_module(
+        inputs=seeded["inputs"],
+        params={
+            "prompt_mode": "ai_previz",
+            "engine_pack_id": "xai_grok_imagine_video",
+            "duration_seconds": 4,
+            "resolution": "480p",
+            "consistency_strategy": "prompt_only",
+        },
+        context={
+            "project_dir": str(seeded["project_dir"]),
+            "runtime_params": {"render_clip_ids": [f"{scene_id}_clip_002"]},
+        },
+    )
+    selected_prompt_outputs = [
+        artifact for artifact in selected_result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_prompt"
+    ]
+    selected_video_outputs = [
+        artifact for artifact in selected_result["artifacts"]
+        if artifact["artifact_type"] == "ai_previz_video"
+    ]
+
+    assert [artifact["entity_id"] for artifact in selected_prompt_outputs] == [
+        f"{scene_id}_clip_002"
+    ]
+    assert [artifact["entity_id"] for artifact in selected_video_outputs] == [
+        f"{scene_id}_clip_002"
+    ]
+    assert len(video_prompts) == 1
+    assert "SECOND PREVIZ ONLY" in video_prompts[0]
+    assert "FIRST PREVIZ ONLY" not in video_prompts[0]
 
 
 @pytest.mark.unit

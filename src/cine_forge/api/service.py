@@ -1234,6 +1234,17 @@ class OperatorConsoleService:
             merged_request.get("scene_scope") or {}
         )
         merged_request["scene_scope"] = scene_scope.model_dump(mode="json")
+        if merged_request.get("render_clip_ids") and not (
+            scene_scope.mode == "current_scene" and len(scene_scope.scene_ids) == 1
+        ):
+            raise ServiceError(
+                code="render_clip_scope_required",
+                message="Render clip regeneration requires a single current scene scope.",
+                hint=(
+                    "Select the scene that owns the clip, then regenerate that one render clip."
+                ),
+                status_code=422,
+            )
         if scene_scope.is_scene_scoped:
             preflight = self.preview_scene_action(
                 project_id,
@@ -1250,6 +1261,14 @@ class OperatorConsoleService:
                     hint=first_issue.detail if first_issue else None,
                     status_code=422,
                 )
+            if preflight.start_from:
+                merged_request["start_from"] = preflight.start_from
+            else:
+                merged_request.pop("start_from", None)
+            if preflight.end_at:
+                merged_request["end_at"] = preflight.end_at
+            else:
+                merged_request.pop("end_at", None)
             merged_request["scene_action_preflight"] = preflight.model_dump(mode="json")
 
         return self._orchestrator.start_run(project_id, merged_request)

@@ -50,6 +50,11 @@ type ArtifactLinkView = {
 type AiPrevizView = {
   sceneHeading: string | null
   sceneNumber: number | null
+  renderUnit: string | null
+  renderClipId: string | null
+  renderClipStartSeconds: number | null
+  renderClipEndSeconds: number | null
+  sourceShotIds: string[]
   videoPath: string | null
   durationSeconds: number | null
   resolution: string | null
@@ -86,6 +91,11 @@ function parseAiPreviz(data: Record<string, unknown>): AiPrevizView {
   return {
     sceneHeading: asString(data.scene_heading),
     sceneNumber: asNumber(data.scene_number),
+    renderUnit: asString(data.render_unit),
+    renderClipId: asString(data.render_clip_id),
+    renderClipStartSeconds: asNumber(data.render_clip_start_time_seconds),
+    renderClipEndSeconds: asNumber(data.render_clip_end_time_seconds),
+    sourceShotIds: asStringArray(data.source_shot_ids),
     videoPath: asString(video?.relative_path),
     durationSeconds: asNumber(data.duration_seconds),
     resolution: asString(data.resolution),
@@ -111,6 +121,13 @@ function validationToneClass(label: string | null): string {
     return 'border-red-500/20 bg-red-500/5 text-foreground/90'
   }
   return 'border-amber-500/30 bg-amber-500/5 text-amber-100'
+}
+
+function formatClipWindow(startSeconds: number | null, endSeconds: number | null): string | null {
+  if (startSeconds === null || endSeconds === null) return null
+  const start = formatDuration(startSeconds) ?? `${startSeconds}s`
+  const end = formatDuration(endSeconds) ?? `${endSeconds}s`
+  return `${start} - ${end}`
 }
 
 export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPrevizViewerProps) {
@@ -155,6 +172,20 @@ export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPre
                 <Badge variant="secondary">
                   {formatPreviewMode(previz.previewProvenance?.mode ?? null)}
                 </Badge>
+              )}
+              {previz.renderUnit === 'render_clip' && (
+                <Badge variant="secondary">Render Clip</Badge>
+              )}
+              {previz.renderClipId && (
+                <Badge variant="outline">{previz.renderClipId}</Badge>
+              )}
+              {formatClipWindow(previz.renderClipStartSeconds, previz.renderClipEndSeconds) && (
+                <Badge variant="outline">
+                  {formatClipWindow(previz.renderClipStartSeconds, previz.renderClipEndSeconds)}
+                </Badge>
+              )}
+              {previz.sourceShotIds.length > 0 && (
+                <Badge variant="outline">Shots {previz.sourceShotIds.join(', ')}</Badge>
               )}
               {formatPreviewIntent(previz.previewProvenance?.fidelityIntent ?? null) && (
                 <Badge variant="outline">

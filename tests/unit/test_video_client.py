@@ -299,3 +299,66 @@ def test_generate_video_xai_raises_on_failed_status(monkeypatch: pytest.MonkeyPa
 
     with pytest.raises(VideoGenerationError, match="provider rejected prompt"):
         _generate_video_xai(request=request, engine_pack=pack)
+
+
+@pytest.mark.unit
+def test_generate_video_xai_times_out_pending_jobs(monkeypatch: pytest.MonkeyPatch) -> None:
+    pack = load_engine_pack("xai_grok_imagine_video")
+    request = VideoGenerationRequest(
+        prompt="Render a stuck provider job.",
+        duration_seconds=4,
+        resolution="480p",
+        aspect_ratio="16:9",
+    )
+
+    def _fake_request_json(*, url, method, headers, body=None, timeout=60):
+        if method == "POST":
+            return {"request_id": "req-timeout"}
+        return {"status": "pending", "progress": 5}
+
+    monotonic_values = iter([0.0, pack.retry_policy.max_poll_seconds + 0.1])
+
+    monkeypatch.setenv("XAI_API_KEY", "test-key")
+    monkeypatch.setattr("cine_forge.ai.video._request_json", _fake_request_json)
+    monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+    monkeypatch.setattr(
+        "cine_forge.ai.video.time.monotonic",
+        lambda: next(monotonic_values),
+    )
+
+    with pytest.raises(VideoGenerationError, match="timed out after 180s"):
+        _generate_video_xai(request=request, engine_pack=pack)
+
+
+@pytest.mark.unit
+def test_generate_video_does_not_retry_poll_timeouts(monkeypatch: pytest.MonkeyPatch) -> None:
+    pack = load_engine_pack("xai_grok_imagine_video")
+    request = VideoGenerationRequest(
+        prompt="Render a stuck provider job.",
+        duration_seconds=4,
+        resolution="480p",
+        aspect_ratio="16:9",
+    )
+    post_count = 0
+
+    def _fake_request_json(*, url, method, headers, body=None, timeout=60):
+        nonlocal post_count
+        if method == "POST":
+            post_count += 1
+            return {"request_id": f"req-timeout-{post_count}"}
+        return {"status": "pending", "progress": 5}
+
+    monotonic_values = iter([0.0, pack.retry_policy.max_poll_seconds + 0.1])
+
+    monkeypatch.setenv("XAI_API_KEY", "test-key")
+    monkeypatch.setattr("cine_forge.ai.video._request_json", _fake_request_json)
+    monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+    monkeypatch.setattr(
+        "cine_forge.ai.video.time.monotonic",
+        lambda: next(monotonic_values),
+    )
+
+    with pytest.raises(VideoGenerationError, match="timed out after 180s"):
+        generate_video(request=request, engine_pack=pack)
+
+    assert post_count == 1

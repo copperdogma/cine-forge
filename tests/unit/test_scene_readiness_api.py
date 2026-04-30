@@ -112,6 +112,50 @@ def test_scene_readiness_endpoint_returns_canonical_states(tmp_path: Path) -> No
 
 
 @pytest.mark.unit
+def test_scene_readiness_endpoint_uses_project_propagated_defaults(tmp_path: Path) -> None:
+    client = _make_client(tmp_path)
+    project_path = tmp_path / "output" / "scene-readiness-project-defaults"
+    project_id = _init_project(client, project_path)
+
+    store = ArtifactStore(project_dir=project_path)
+    _seed_artifact(
+        store,
+        artifact_type="scene",
+        entity_id="scene_001",
+        data={"display_name": "INT. KITCHEN - NIGHT"},
+    )
+    _seed_artifact(
+        store,
+        artifact_type="sound_and_music",
+        entity_id="project",
+        data={"ambient_environment": "Cicadas and distant highway wash.", "user_approved": False},
+    )
+    _seed_artifact(
+        store,
+        artifact_type="rhythm_and_flow",
+        entity_id="project",
+        data={"pacing_intent": "Patient deadpan pauses.", "user_approved": False},
+    )
+    _seed_artifact(
+        store,
+        artifact_type="character_and_performance",
+        entity_id="project",
+        data={
+            "emotional_state_entering": "Let fatigue show through posture and stillness.",
+            "user_approved": False,
+        },
+    )
+
+    response = client.get(f"/api/projects/{project_id}/scenes/scene_001/readiness")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["sound_and_music"] == "yellow"
+    assert payload["rhythm_and_flow"] == "yellow"
+    assert payload["character_and_performance"] == "yellow"
+
+
+@pytest.mark.unit
 def test_scene_readiness_endpoint_returns_404_for_missing_scene(tmp_path: Path) -> None:
     client = _make_client(tmp_path)
     project_path = tmp_path / "output" / "scene-readiness-missing-scene"

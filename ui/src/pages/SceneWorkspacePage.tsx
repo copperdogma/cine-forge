@@ -168,6 +168,17 @@ function getArtifactPresenceLevel(
   return match ? 'yellow' : 'red'
 }
 
+function isSceneGenerationArtifactGroup(
+  group: ArtifactGroupSummary,
+  artifactType: 'render_prompt' | 'generated_video' | 'ai_previz_prompt' | 'ai_previz_video',
+  sceneId: string,
+): boolean {
+  if (group.artifact_type !== artifactType || !group.entity_id) return false
+  return group.entity_id === sceneId
+    || group.entity_id.startsWith(`${sceneId}_clip_`)
+    || group.entity_id.startsWith(`${sceneId}__`)
+}
+
 function getConcernGroupReadinessLevel(
   readiness: SceneReadiness | undefined,
   concernGroupId: ConcernGroupDef['id'],
@@ -324,10 +335,21 @@ function ConcernGroupTabContent({
   cg: ConcernGroupDef
   groups: ArtifactGroupSummary[] | undefined
 }) {
-  const artifactEntityId = cg.projectScoped ? 'project' : sceneId
-  const existing = groups?.find(
-    g => g.artifact_type === cg.artifactType && g.entity_id === artifactEntityId,
+  const sceneExisting = groups?.find(
+    g => g.artifact_type === cg.artifactType && g.entity_id === sceneId,
   )
+  const projectExisting = groups?.find(
+    g => g.artifact_type === cg.artifactType && g.entity_id === 'project',
+  )
+  const inheritedProjectExisting = !cg.projectScoped && !sceneExisting ? projectExisting : undefined
+  const artifactEntityId = cg.projectScoped
+    ? 'project'
+    : inheritedProjectExisting
+      ? 'project'
+      : sceneId
+  const existing = cg.projectScoped ? projectExisting : (sceneExisting ?? inheritedProjectExisting)
+  const sceneSpecificExists = !!sceneExisting
+  const isInheritedProjectDraft = !!inheritedProjectExisting
 
   const { data: artifact, isLoading } = useArtifact(
     projectId,
@@ -385,7 +407,7 @@ function ConcernGroupTabContent({
         end_at: cg.id,
         accept_config: true,
         skip_qa: true,
-        force: !!existing,
+        force: sceneScope.mode === 'current_scene' ? sceneSpecificExists : !!existing,
         scene_scope: sceneScope,
       })
       useChatStore.getState().setActiveRun(projectId, run_id)
@@ -397,9 +419,14 @@ function ConcernGroupTabContent({
   }
 
   const Icon = cg.icon
+  const canRegenerateSelectedScope = cg.projectScoped
+    ? !!existing
+    : scope === 'current_scene'
+      ? sceneSpecificExists
+      : false
   const generateButtonLabel = scope === 'current_scene'
-    ? (existing ? `Regenerate ${cg.label} for Current Scene` : `Get ${cg.label} for Current Scene`)
-    : (existing ? `Regenerate ${cg.label} for All Scenes` : `Get ${cg.label} for All Scenes`)
+    ? (canRegenerateSelectedScope ? `Regenerate ${cg.label} for Current Scene` : `Get ${cg.label} for Current Scene`)
+    : (canRegenerateSelectedScope ? `Regenerate ${cg.label} for All Scenes` : `Get ${cg.label} for All Scenes`)
   const effectiveGenerateButtonLabel = cg.projectScoped
     ? (existing ? `Regenerate ${cg.label}` : `Generate ${cg.label}`)
     : generateButtonLabel
@@ -409,7 +436,11 @@ function ConcernGroupTabContent({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="outline">Selected: {configuredScopeLabel}</Badge>
-          {existing && <Badge variant="secondary">v{existing.latest_version}</Badge>}
+          {existing && (
+            <Badge variant={isInheritedProjectDraft ? 'outline' : 'secondary'}>
+              {isInheritedProjectDraft ? 'Inherited project draft' : `v${existing.latest_version}`}
+            </Badge>
+          )}
         </div>
         <Button
           size="sm"
@@ -512,9 +543,17 @@ function ConcernGroupTabContent({
     )
   }
 
+  const inheritedProjectNote = isInheritedProjectDraft ? (
+    <div className="rounded-lg border border-border/70 bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
+      This scene is inheriting the project-level {cg.label} draft from Intent & Mood.
+      Generate current-scene direction to create a scene-specific override.
+    </div>
+  ) : null
+
   return (
     <div className="space-y-4">
       {generateBtn}
+      {inheritedProjectNote}
       {cg.id === 'story_world' ? (
         <StoryWorldPanel
           data={data}
@@ -535,7 +574,7 @@ function ConcernGroupTabContent({
             artifactType={cg.artifactType}
             entityId={artifactEntityId}
             data={data}
-            label={cg.label}
+            label={isInheritedProjectDraft ? `${cg.label} project draft` : cg.label}
           />
           <DirectionAnnotation
             concernGroup={cg.concernGroup}
@@ -657,20 +696,21 @@ export default function SceneWorkspacePage() {
   const keyframeGroup = groups?.find(
     g => g.artifact_type === 'keyframe' && g.entity_id === entityId,
   )
-  const aiPrevizPromptGroup = groups?.find(
-    g => g.artifact_type === 'ai_previz_prompt' && g.entity_id === entityId,
+  const renderClipPlanGroup = groups?.find(
+    g => g.artifact_type === 'render_clip_plan' && g.entity_id === entityId,
   )
-  const aiPrevizGroup = groups?.find(
-    g => g.artifact_type === 'ai_previz_video' && g.entity_id === entityId,
-  )
-  const renderPromptGroup = groups?.find(
-    g => g.artifact_type === 'render_prompt' && g.entity_id === entityId,
-  )
-  const generatedVideoGroup = groups?.find(
-    g => g.artifact_type === 'generated_video' && g.entity_id === entityId,
-  )
-  const previzLevel = aiPrevizGroup ? 'yellow' : 'red'
-  const renderLevel = getArtifactPresenceLevel(groups, 'generated_video', entityId)
+  const aiPrevizPromptGroups = groups?.filter(g => isSceneGenerationArtifactGroup(g, 'ai_previz_prompt', entityId)) ?? []
+  const aiPrevizGroups = groups?.filter(g => isSceneGenerationArtifactGroup(g, 'ai_previz_video', entityId)) ?? []
+  const aiPrevizPromptGroup = aiPrevizPromptGroups.find(g => g.entity_id === entityId) ?? aiPrevizPromptGroups[0]
+  const aiPrevizGroup = aiPrevizGroups.find(g => g.entity_id === entityId) ?? aiPrevizGroups[0]
+  const renderPromptGroups = groups?.filter(g => isSceneGenerationArtifactGroup(g, 'render_prompt', entityId)) ?? []
+  const generatedVideoGroups = groups?.filter(g => isSceneGenerationArtifactGroup(g, 'generated_video', entityId)) ?? []
+  const renderPromptGroup = renderPromptGroups.find(g => g.entity_id === entityId) ?? renderPromptGroups[0]
+  const generatedVideoGroup = generatedVideoGroups.find(g => g.entity_id === entityId) ?? generatedVideoGroups[0]
+  const previzLevel = aiPrevizGroups.length > 0 ? 'yellow' : 'red'
+  const renderLevel = generatedVideoGroups.length > 0
+    ? 'yellow'
+    : getArtifactPresenceLevel(groups, 'generated_video', entityId)
   const requestedTab = searchParams.get('tab')
   const activeTab: SceneWorkspaceTab =
     requestedTab && VALID_SCENE_WORKSPACE_TABS.has(requestedTab as SceneWorkspaceTab)
@@ -680,7 +720,7 @@ export default function SceneWorkspacePage() {
     activeTab,
     hasShotPlan: !!shotPlanGroup,
     hasStoryboard: !!storyboardGroup,
-    hasRender: !!generatedVideoGroup,
+    hasRender: generatedVideoGroups.length > 0,
   })
 
   return (
@@ -866,8 +906,11 @@ export default function SceneWorkspacePage() {
             sceneId={entityId}
             sceneHeading={displayName}
             shotPlanGroup={shotPlanGroup}
+            renderClipPlanGroup={renderClipPlanGroup}
             aiPrevizGroup={aiPrevizGroup}
+            aiPrevizGroups={aiPrevizGroups}
             aiPrevizPromptGroup={aiPrevizPromptGroup}
+            aiPrevizPromptGroups={aiPrevizPromptGroups}
           />
         </TabsContent>
 
@@ -877,8 +920,11 @@ export default function SceneWorkspacePage() {
               sceneId={entityId}
               sceneHeading={displayName}
               shotPlanGroup={shotPlanGroup}
+              renderClipPlanGroup={renderClipPlanGroup}
               renderPromptGroup={renderPromptGroup}
+              renderPromptGroups={renderPromptGroups}
               generatedVideoGroup={generatedVideoGroup}
+              generatedVideoGroups={generatedVideoGroups}
               keyframeGroup={keyframeGroup}
             />
           </TabsContent>

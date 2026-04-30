@@ -30,3 +30,16 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 - Do we have an eval for things like Script Breakdown, Deep Breakdown, Look & Feel, etc (including the component parts)? That would be a perfect thing to climb on. We can always be trying to improve the overall speed and quality of those pipelines.
   - We need a deep scan of all code to figure out where we're missing evals and integraton tests of this nature. We hit constant issues where all tests pass yet the app is quite broken.
+
+- User Edits: We need a way for the user to edit things like Look & Feel or render prompts (with the ability to re-render after their edits). Sometimes the user just wants to tweak some stuff.
+
+- Open/Jump: When building a scene, it has the Scene Tutorial that says "Open Storyboard". when you click it it does nothing you can see because the tab it just changed to is halfway down the page. All you see is it changing to "Jump to Storyboard". This should just be one click: Jump to storyboard which should open and jump to the storyboard. Same for all other tutorial flows like this.
+  - FYI the Scene Tutorial should probably be named something else; it's not really a tutorial it's a hint/quick link to what needs to be done next)
+
+- Black Sceen: The ongoing issue of the black screen at the end of certain runs seems to have been patched piecemeal. I no longer see it during Script Breakdown or Deep Breakdown but I get it on some things like rendering Storyboards. I can't tell if its intermittent or only fixed for some long runs. We need a much more in-depth investigation into why this is happening, what the root cause is, and how to fix it.
+
+- Bad Previz: http://localhost:5174/brick-steel-full-retired/scenes/scene_001?tab=previz
+  - It was TERRIBLE for this one! Previz is meant to focus on "camera placement, blocking, motion, pacing, and location" but I'm not sure it listened to much of the advice on that. We also need per SHOT previz, don't we? Plus it looks like a Family Guy cartoon which is distracting (exactly what previz should not be).
+  - Check best practices for previz. How do they do it in hollywood? What does it look like? How DO they strip away detail so people don't focus on the wrong things? How do they render different people in them?
+
+- do we have evals for all ai prompts? Did we try the different levels of 5.5?

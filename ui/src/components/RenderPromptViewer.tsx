@@ -42,6 +42,10 @@ type RenderPromptSectionView = {
 type RenderPromptView = {
   sceneHeading: string | null
   sceneNumber: number | null
+  renderUnit: string | null
+  renderClipId: string | null
+  renderClipStartSeconds: number | null
+  renderClipEndSeconds: number | null
   targetProvider: string | null
   targetModel: string | null
   enginePackId: string | null
@@ -120,6 +124,10 @@ function parseRenderPrompt(data: Record<string, unknown>): RenderPromptView {
   return {
     sceneHeading: asString(data.scene_heading),
     sceneNumber: asNumber(data.scene_number),
+    renderUnit: asString(data.render_unit),
+    renderClipId: asString(data.render_clip_id),
+    renderClipStartSeconds: asNumber(data.render_clip_start_time_seconds),
+    renderClipEndSeconds: asNumber(data.render_clip_end_time_seconds),
     targetProvider: asString(data.target_provider),
     targetModel: asString(data.target_model),
     enginePackId: asString(data.engine_pack_id),
@@ -143,6 +151,13 @@ function parseRenderPrompt(data: Record<string, unknown>): RenderPromptView {
     previewProvenance: parsePreviewProvenance(data.preview_provenance),
     creativeBrief: parseCreativeBrief(data.creative_brief_preview),
   }
+}
+
+function formatClipWindow(startSeconds: number | null, endSeconds: number | null): string | null {
+  if (startSeconds === null || endSeconds === null) return null
+  const start = formatDuration(startSeconds) ?? `${startSeconds}s`
+  const end = formatDuration(endSeconds) ?? `${endSeconds}s`
+  return `${start} - ${end}`
 }
 
 function RenderPromptSectionCard({ section }: { section: RenderPromptSectionView }) {
@@ -221,6 +236,17 @@ export function RenderPromptViewer({ data }: RenderPromptViewerProps) {
               {formatPreviewMode(prompt.previewProvenance?.mode ?? null) && (
                 <Badge variant="secondary">
                   {formatPreviewMode(prompt.previewProvenance?.mode ?? null)}
+                </Badge>
+              )}
+              {prompt.renderUnit === 'render_clip' && (
+                <Badge variant="secondary">Render Clip</Badge>
+              )}
+              {prompt.renderClipId && (
+                <Badge variant="outline">{prompt.renderClipId}</Badge>
+              )}
+              {formatClipWindow(prompt.renderClipStartSeconds, prompt.renderClipEndSeconds) && (
+                <Badge variant="outline">
+                  {formatClipWindow(prompt.renderClipStartSeconds, prompt.renderClipEndSeconds)}
                 </Badge>
               )}
               {formatPreviewIntent(prompt.previewProvenance?.fidelityIntent ?? null) && (

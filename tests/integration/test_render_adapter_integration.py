@@ -13,6 +13,7 @@ from cine_forge.schemas import (
     ArtifactRef,
     GeneratedVideoArtifact,
     MediaValidationArtifact,
+    RenderClipPlan,
     TrackManifest,
 )
 from tests.render_fixtures import seed_render_project
@@ -181,6 +182,7 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
             "compiler_model": "gpt-5.4-mini",
             "planner_model": "mock",
             "duration_seconds": 8,
+            "scene_scope": {"mode": "current_scene", "scene_ids": [seeded["scene_id"]]},
         },
     )
 
@@ -197,21 +199,33 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
     render_prompt_refs = [ref for ref in refs if ref.artifact_type == "render_prompt"]
     generated_video_refs = [ref for ref in refs if ref.artifact_type == "generated_video"]
     assert len(clip_plan_refs) == 1
-    assert len(render_prompt_refs) == 1
-    assert len(generated_video_refs) == 1
+    clip_plan = RenderClipPlan.model_validate(engine.store.load_artifact(clip_plan_refs[0]).data)
+    expected_render_units = len(clip_plan.clips) if len(clip_plan.clips) > 1 else 1
+    assert len(render_prompt_refs) == expected_render_units
+    assert len(generated_video_refs) == expected_render_units
 
-    generated_video = GeneratedVideoArtifact.model_validate(
-        engine.store.load_artifact(generated_video_refs[0]).data
-    )
-    assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
-    assert generated_video.preview_provenance is not None
-    assert generated_video.preview_provenance.mode == "generated_render"
-    assert generated_video.render_clip_plan_ref is not None
-    assert generated_video.render_clip_plan_ref.key() == clip_plan_refs[0].key()
-    render_prompt = engine.store.load_artifact(render_prompt_refs[0]).data
-    assert render_prompt["render_clip_plan_ref"] is not None
-    assert render_prompt["creative_brief_preview"] is not None
-    assert render_prompt["preview_provenance"]["mode"] == "generated_render"
+    generated_videos = [
+        GeneratedVideoArtifact.model_validate(engine.store.load_artifact(ref).data)
+        for ref in generated_video_refs
+    ]
+    for generated_video in generated_videos:
+        assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
+        assert generated_video.preview_provenance is not None
+        assert generated_video.preview_provenance.mode == "generated_render"
+        assert generated_video.render_clip_plan_ref is not None
+        assert generated_video.render_clip_plan_ref.key() == clip_plan_refs[0].key()
+    render_prompts = [engine.store.load_artifact(ref).data for ref in render_prompt_refs]
+    for render_prompt in render_prompts:
+        assert render_prompt["render_clip_plan_ref"] is not None
+        assert render_prompt["creative_brief_preview"] is not None
+        assert render_prompt["preview_provenance"]["mode"] == "generated_render"
+    if expected_render_units > 1:
+        assert [item.render_unit for item in generated_videos] == [
+            "render_clip"
+        ] * expected_render_units
+        assert [item.render_clip_id for item in generated_videos] == [
+            clip.clip_id for clip in clip_plan.clips
+        ]
 
     track_ref = next(ref for ref in refs if ref.artifact_type == "track_manifest")
     manifest = TrackManifest.model_validate(engine.store.load_artifact(track_ref).data)
@@ -219,18 +233,34 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
         best_for_scene(manifest, scene_id=seeded["scene_id"])["selected_track_type"]
         == "generated_video"
     )
+    generated_entries = [
+        entry
+        for entry in manifest.entries
+        if entry.track_type == "generated_video" and entry.scene_id == seeded["scene_id"]
+    ]
+    assert [entry.render_clip_id for entry in generated_entries] == [
+        video.render_clip_id for video in generated_videos
+    ]
 
     validation_refs = [
         ArtifactRef.model_validate(item)
         for item in run_state["stages"]["validate_media"]["artifact_refs"]
     ]
-    assert len(validation_refs) == 1
-    assert validation_refs[0].artifact_type == "media_validation"
+    assert len(validation_refs) == expected_render_units
+    assert all(ref.artifact_type == "media_validation" for ref in validation_refs)
 
-    validation = MediaValidationArtifact.model_validate(
-        engine.store.load_artifact(validation_refs[0]).data
-    )
-    assert validation.target_ref.path == generated_video_refs[0].path
+    validations = [
+        MediaValidationArtifact.model_validate(engine.store.load_artifact(ref).data)
+        for ref in validation_refs
+    ]
+    assert {validation.target_ref.path for validation in validations} == {
+        ref.path for ref in generated_video_refs
+    }
+    if expected_render_units > 1:
+        assert [validation.target.render_clip_id for validation in validations] == [
+            video.render_clip_id for video in generated_videos
+        ]
+    validation = validations[0]
     assert validation.recommended_health == ArtifactHealth.NEEDS_REVIEW
 
 
@@ -309,7 +339,7 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
     )
     monkeypatch.setattr("cine_forge.ai.video.generate_video", _fake_generate_video)
 
-    with pytest.raises(RuntimeError, match="preserved 1 successful scene render"):
+    with pytest.raises(RuntimeError, match="preserved 3 successful render unit"):
         engine.run(
             recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
             run_id="integration-render-partial-preserved",
@@ -324,18 +354,27 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
             },
         )
 
-    render_prompt_refs = engine.store.list_versions("render_prompt", "scene_001")
-    generated_video_refs = engine.store.list_versions("generated_video", "scene_001")
-    assert len(render_prompt_refs) == 1
-    assert len(generated_video_refs) == 1
-    assert engine.store.list_versions("render_prompt", "scene_002") == []
-    assert engine.store.list_versions("generated_video", "scene_002") == []
+    prompt_entities = sorted(engine.store.list_entities("render_prompt"))
+    generated_entities = sorted(engine.store.list_entities("generated_video"))
+    assert prompt_entities == [
+        "scene_001_clip_001",
+        "scene_002_clip_001",
+        "scene_002_clip_002",
+    ]
+    assert generated_entities == prompt_entities
 
-    generated_video = GeneratedVideoArtifact.model_validate(
-        engine.store.load_artifact(generated_video_refs[0]).data
-    )
-    assert generated_video.prompt_ref.key() == render_prompt_refs[0].key()
-    assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
+    for entity_id in generated_entities:
+        render_prompt_refs = engine.store.list_versions("render_prompt", entity_id)
+        generated_video_refs = engine.store.list_versions("generated_video", entity_id)
+        assert len(render_prompt_refs) == 1
+        assert len(generated_video_refs) == 1
+        generated_video = GeneratedVideoArtifact.model_validate(
+            engine.store.load_artifact(generated_video_refs[0]).data
+        )
+        assert generated_video.render_unit == "render_clip"
+        assert generated_video.render_clip_id == entity_id
+        assert generated_video.prompt_ref.key() == render_prompt_refs[0].key()
+        assert (seeded["project_dir"] / generated_video.video.relative_path).exists()
 
     track_ref = engine.store.latest_ref("track_manifest", "project")
     assert track_ref is not None
@@ -343,7 +382,7 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
     generated_entries = [
         entry for entry in manifest.entries if entry.track_type == "generated_video"
     ]
-    assert [entry.scene_id for entry in generated_entries] == ["scene_001"]
+    assert [entry.render_clip_id for entry in generated_entries] == generated_entities
     assert (
         best_for_scene(manifest, scene_id="scene_001")["selected_track_type"]
         == "generated_video"

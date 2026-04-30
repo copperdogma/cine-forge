@@ -53,8 +53,9 @@ stages:
       shot_plan: shot_plan
   - id: render
     module: render_adapter_v1
-    params: {}
-    needs_all: [render_clip_planning]
+    params:
+      require_render_clip_plan: true
+    after: [render_clip_planning]
     store_inputs:
       track_manifest: track_manifest
     store_inputs_optional:
