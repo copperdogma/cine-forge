@@ -11,7 +11,7 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 | **DNS** | Cloudflare | Zone: `copper-dog.com`, Zone ID: `372acf29f0a6f95c35e9f7ea94aa7efa` |
 | **SSL** | Let's Encrypt (via Fly.io) | Auto-renewed, CNAME-validated |
 | **Storage** | Fly.io Volume | `cineforge_data_v2` 1GB mounted at `/app/output` |
-| **Secrets** | Fly.io Secrets | `ANTHROPIC_API_KEY`, `CINE_FORGE_GEMINI_API_KEY`, `CINE_FORGE_OPENAI_API_KEY` |
+| **Secrets** | Fly.io Secrets | `ANTHROPIC_API_KEY`, `CINE_FORGE_GEMINI_API_KEY`, `CINE_FORGE_OPENAI_API_KEY`, `CINE_FORGE_XAI_API_KEY` |
 | **Container** | Multi-stage Docker | Node 24 (frontend build) → Python 3.12-slim (runtime), ~168MB |
 | **Cost** | ~$5-7/month | shared-cpu-2x, 512MB RAM, 1GB volume, auto-stop |
 
@@ -39,8 +39,8 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 - **Auto-stop**: Machine stops when idle, auto-starts on request (~5-10s cold start).
 - **No auth**: App is open (2 users: Cam + sister). No login required.
 - **Health check**: `GET /api/health` every 15s, 10s grace period.
-- **Dependency health**: `GET /api/health/dependencies` exposes cached provider readiness; use `?refresh=1` for an immediate post-rollout probe.
-- **Live capability smoke**: `POST /api/health/live-smoke` runs a bounded real-call smoke across the default text, storyboard-image, and render-video lanes. Use it before an expensive QA session or after credential changes when you need stronger proof than cheap readiness alone.
+- **Dependency health**: `GET /api/health/dependencies` exposes cached provider readiness for Anthropic, Google, OpenAI, and xAI; use `?refresh=1` for an immediate post-rollout probe.
+- **Live capability smoke**: `POST /api/health/live-smoke` runs a bounded real-call smoke across the default text, storyboard-image, scene-render video, and shipped AI-previz video lanes. Use it before an expensive QA session or after credential changes when you need stronger proof than cheap readiness alone.
 
 ## Container Environment
 
@@ -51,6 +51,7 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 | `ANTHROPIC_API_KEY` | (Fly secret) | AI chat feature |
 | `CINE_FORGE_GEMINI_API_KEY` | (Fly secret) | `mvp_ingest` `script_bible_v1` default Google transport |
 | `CINE_FORGE_OPENAI_API_KEY` | (Fly secret) | `mvp_ingest` `project_config_v1` QA/default OpenAI transport |
+| `CINE_FORGE_XAI_API_KEY` | (Fly secret) | `ai_previz_generation` shipped `xai_grok_imagine_video` transport; legacy `XAI_API_KEY` is accepted by the app but should not be the preferred Fly secret name |
 
 ## Docker Build
 
@@ -79,6 +80,9 @@ fly ssh console -a cineforge-app  # Shell into running container
 ```bash
 fly secrets list -a cineforge-app
 fly secrets set KEY=VALUE -a cineforge-app
+
+# xAI AI-previz lane; do not paste or log the value outside the shell
+fly secrets set CINE_FORGE_XAI_API_KEY=<key> -a cineforge-app
 ```
 
 ### Post-rollout eval
@@ -98,8 +102,9 @@ curl -sf "https://cineforge.copper-dog.com/api/health/dependencies?refresh=1"
 ```
 
 Use this as the fast provider-readiness signal after deploy. It should report
-Anthropic, Google, and OpenAI separately. Do not treat it as a replacement for
-the representative post-rollout eval above.
+Anthropic, Google, OpenAI, and xAI separately. The xAI entry checks the shipped
+`grok-imagine-video` model-access surface without generating media. Do not treat
+it as a replacement for the representative post-rollout eval above.
 
 ### Live capability smoke
 ```bash
@@ -111,8 +116,9 @@ PYTHONPATH=src .venv/bin/python scripts/live_ai_capability_smoke.py
 Use this when the cheap dependency surface is not enough and you want a
 real-generation preflight before burning time on a full manual QA session. It
 is intentionally slower and more expensive than `/api/health/dependencies`
-because it performs tiny real text, image, and video calls. Treat it as a
-bounded operator preflight, not a startup health check.
+because it performs tiny real text, image, and video calls, including the
+`xai_grok_imagine_video` AI-previz lane. Treat it as a bounded operator
+preflight, not a startup health check.
 
 ### Volumes
 ```bash
@@ -167,6 +173,9 @@ path. Today that surfaced path depends on:
 - `CINE_FORGE_GEMINI_API_KEY`
 - `CINE_FORGE_OPENAI_API_KEY`
 
+The shipped AI-previz scene path also depends on:
+- `CINE_FORGE_XAI_API_KEY` (preferred) or legacy `XAI_API_KEY`
+
 Fix:
 1. Probe dependency health directly:
    - `curl -sf "https://cineforge.copper-dog.com/api/health/dependencies?refresh=1"`
@@ -174,7 +183,7 @@ Fix:
    - `curl -sf -X POST "https://cineforge.copper-dog.com/api/health/live-smoke"`
 3. Verify Fly sees the secret names:
    - `fly secrets list -a cineforge-app`
-4. If a key is missing or stale, roll the relevant secret again.
+4. If a key is missing or stale, roll the relevant secret again. For the shipped xAI AI-previz lane, use `fly secrets set CINE_FORGE_XAI_API_KEY=<key> -a cineforge-app` and do not record the value in logs, docs, screenshots, or chat.
 5. Re-run the representative post-rollout eval:
    - `.venv/bin/python scripts/post_rollout_breakdown_eval.py --base-url https://cineforge.copper-dog.com`
 6. If dependency health, live smoke, or the eval still fails with `API key not valid`, the local source key is stale or revoked. Replace the local key with a known-good one, roll Fly again, and rerun all relevant checks.
@@ -221,7 +230,7 @@ If you ever need to recreate the infrastructure:
 
 1. `fly apps create cineforge-app --org personal`
 2. `fly volumes create cineforge_data --size 1 --region ord -a cineforge-app`
-3. `fly secrets set ANTHROPIC_API_KEY=<key> CINE_FORGE_GEMINI_API_KEY=<key> CINE_FORGE_OPENAI_API_KEY=<key> -a cineforge-app`
+3. `fly secrets set ANTHROPIC_API_KEY=<key> CINE_FORGE_GEMINI_API_KEY=<key> CINE_FORGE_OPENAI_API_KEY=<key> CINE_FORGE_XAI_API_KEY=<key> -a cineforge-app`
 4. `fly deploy --depot=false --yes`
 5. `fly certs add cineforge.copper-dog.com -a cineforge-app`
 6. Add DNS CNAMEs via Cloudflare API (see DNS Management above)

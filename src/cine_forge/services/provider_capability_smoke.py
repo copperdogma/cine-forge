@@ -161,6 +161,16 @@ _LIVE_PROBE_SPECS: tuple[_ProbeSpec, ...] = (
         surface_tested="Scene render default lane",
         engine_pack_id="google_veo31",
     ),
+    _ProbeSpec(
+        probe_id="xai_ai_previz_video_default",
+        label="xAI AI previz video generation",
+        provider="xai",
+        capability_tested="video_generation",
+        env_name="XAI_API_KEY",
+        model="grok-imagine-video",
+        surface_tested="AI Previz shipped default lane",
+        engine_pack_id="xai_grok_imagine_video",
+    ),
 )
 
 

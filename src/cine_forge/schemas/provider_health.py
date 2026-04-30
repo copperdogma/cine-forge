@@ -17,7 +17,7 @@ ProviderDependencyStatus = Literal[
     "unknown",
 ]
 ProviderDependencyOverallStatus = Literal["ok", "degraded", "unknown"]
-ProviderKey = Literal["anthropic", "google", "openai"]
+ProviderKey = Literal["anthropic", "google", "openai", "xai"]
 ProviderCapabilityTested = Literal[
     "text_generation",
     "image_generation",

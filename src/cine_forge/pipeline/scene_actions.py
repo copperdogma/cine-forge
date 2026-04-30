@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.env import provider_env_names, resolve_env
 from cine_forge.schemas import ArtifactHealth, ArtifactRef
 from cine_forge.schemas.scene_scope import (
     SceneActionPreflight,
@@ -56,6 +57,9 @@ _OPTIONAL_DIRECTION_TABS = {
     "look_and_feel": "look_and_feel",
     "sound_and_music": "sound_and_music",
 }
+
+_AI_PREVIZ_ENV_NAME = "XAI_API_KEY"
+_AI_PREVIZ_ENGINE_PACK_ID = "xai_grok_imagine_video"
 
 
 def scene_scope_from_runtime_params(runtime_params: dict[str, Any] | None) -> SceneExecutionScope:
@@ -243,6 +247,8 @@ def build_scene_action_preflight(
             stage_id=start_from if start_from == end_at else None,
         )
     else:
+        if recipe_id == "ai_previz_generation":
+            _append_ai_previz_provider_readiness(preflight)
         _populate_generation_preflight(
             preflight=preflight,
             store=store,
@@ -276,6 +282,8 @@ def build_scene_action_preflight(
     else:
         preflight.status = "ready"
         preflight.summary = f"{action_label} is ready for {scope_label}."
+    if recipe_id == "ai_previz_generation" and resolve_env(_AI_PREVIZ_ENV_NAME):
+        preflight.summary = f"{preflight.summary} xAI AI Previz credentials are configured."
     return preflight
 
 
@@ -816,6 +824,21 @@ def _apply_ai_previz_prerequisite_strategy(preflight: SceneActionPreflight) -> N
         preflight.prerequisite_strategy = "reuse_existing_shot_plan"
         return
     preflight.prerequisite_strategy = "one_pass_previz_prep"
+
+
+def _append_ai_previz_provider_readiness(preflight: SceneActionPreflight) -> None:
+    if resolve_env(_AI_PREVIZ_ENV_NAME):
+        return
+    accepted_names = provider_env_names(_AI_PREVIZ_ENV_NAME)
+    preflight.items.append(SceneActionPreflightItem(
+        kind="soft_block",
+        label="xAI AI Previz credentials unavailable",
+        detail=(
+            f"Set {accepted_names[0]} (or legacy {_AI_PREVIZ_ENV_NAME}) before starting "
+            f"AI Previz. The shipped engine pack is {_AI_PREVIZ_ENGINE_PACK_ID}."
+        ),
+        action_label="Set xAI Secret",
+    ))
 
 
 def _prune_generation_autobuilds_for_start_stage(preflight: SceneActionPreflight) -> None:

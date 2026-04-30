@@ -127,6 +127,11 @@ def _save_scene_artifact(
     )
 
 
+def _configure_xai(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("CINE_FORGE_XAI_API_KEY", "test-xai-key")
+    monkeypatch.delenv("XAI_API_KEY", raising=False)
+
+
 def _assert_missing_items_have_actions(preflight) -> None:
     missing_items = [
         item
@@ -272,7 +277,9 @@ def test_story_world_preflight_warns_but_does_not_soft_block(tmp_path: Path) -> 
 @pytest.mark.unit
 def test_ai_previz_preflight_builds_clip_plan_after_reusing_shot_plan(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    _configure_xai(monkeypatch)
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
     _save_project_artifact(store, "timeline", {"scenes": []})
@@ -302,7 +309,9 @@ def test_ai_previz_preflight_builds_clip_plan_after_reusing_shot_plan(
 @pytest.mark.unit
 def test_ai_previz_preflight_does_not_skip_stale_timeline_before_clip_plan(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    _configure_xai(monkeypatch)
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
     scene_index_ref = store.latest_ref("scene_index", "project")
@@ -343,7 +352,9 @@ def test_ai_previz_preflight_does_not_skip_stale_timeline_before_clip_plan(
 @pytest.mark.unit
 def test_ai_previz_preflight_coerces_explicit_clip_planning_when_timeline_is_stale(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    _configure_xai(monkeypatch)
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
     _save_project_artifact(store, "timeline", {"scenes": []}, health=ArtifactHealth.STALE)
@@ -365,7 +376,9 @@ def test_ai_previz_preflight_coerces_explicit_clip_planning_when_timeline_is_sta
 @pytest.mark.unit
 def test_ai_previz_preflight_reuses_existing_healthy_render_clip_plan(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    _configure_xai(monkeypatch)
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
     _save_project_artifact(store, "track_manifest", {"tracks": []})
@@ -385,13 +398,57 @@ def test_ai_previz_preflight_reuses_existing_healthy_render_clip_plan(
 
     assert preflight.start_from == "ai_previz"
     assert preflight.prerequisite_strategy == "reuse_existing_render_clip_plan"
+    assert "xAI AI Previz credentials are configured" in preflight.summary
     assert "render_clip_plan" in preflight.reused_artifact_types
     assert "render_clip_plan" not in preflight.auto_build_artifact_types
     assert all(item.label != "Render clip planning" for item in preflight.items)
+    assert all(item.label != "xAI AI Previz credentials unavailable" for item in preflight.items)
 
 
 @pytest.mark.unit
-def test_ai_previz_preflight_does_not_reuse_stale_shot_plan(tmp_path: Path) -> None:
+def test_ai_previz_preflight_soft_blocks_when_xai_key_is_unavailable(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv("CINE_FORGE_XAI_API_KEY", raising=False)
+    monkeypatch.delenv("XAI_API_KEY", raising=False)
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    _save_project_artifact(store, "track_manifest", {"tracks": []})
+    _save_scene_artifact(store, "shot_plan", "scene_001", {"scene_id": "scene_001", "shots": []})
+    _save_scene_artifact(
+        store,
+        "render_clip_plan",
+        "scene_001",
+        {"scene_id": "scene_001", "clips": [{"clip_id": "scene_001_clip_001"}]},
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="ai_previz_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+    )
+
+    assert preflight.status == "soft_block"
+    assert preflight.start_from == "ai_previz"
+    assert preflight.items[0].label == "xAI AI Previz credentials unavailable"
+    item = next(
+        item
+        for item in preflight.items
+        if item.label == "xAI AI Previz credentials unavailable"
+    )
+    assert item.kind == "soft_block"
+    assert "CINE_FORGE_XAI_API_KEY" in item.detail
+    assert "XAI_API_KEY" in item.detail
+    assert "xai_grok_imagine_video" in item.detail
+
+
+@pytest.mark.unit
+def test_ai_previz_preflight_does_not_reuse_stale_shot_plan(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _configure_xai(monkeypatch)
     project_dir = _seed_scene_action_project(tmp_path)
     store = ArtifactStore(project_dir=project_dir)
     _save_project_artifact(store, "track_manifest", {"tracks": []})

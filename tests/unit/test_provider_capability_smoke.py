@@ -15,6 +15,8 @@ def _clear_provider_envs(monkeypatch: pytest.MonkeyPatch) -> None:
         "CINE_FORGE_GEMINI_API_KEY",
         "OPENAI_API_KEY",
         "CINE_FORGE_OPENAI_API_KEY",
+        "XAI_API_KEY",
+        "CINE_FORGE_XAI_API_KEY",
     ):
         monkeypatch.delenv(name, raising=False)
 
@@ -56,6 +58,7 @@ def test_refresh_classifies_live_probe_results(monkeypatch: pytest.MonkeyPatch) 
     monkeypatch.setenv("ANTHROPIC_API_KEY", "anth-key")
     monkeypatch.setenv("CINE_FORGE_GEMINI_API_KEY", "google-key")
     monkeypatch.setenv("OPENAI_API_KEY", "openai-key")
+    monkeypatch.setenv("CINE_FORGE_XAI_API_KEY", "xai-key")
 
     def fake_text_probe(spec, timeout_seconds: float) -> dict[str, str]:
         assert timeout_seconds == 30.0
@@ -71,6 +74,11 @@ def test_refresh_classifies_live_probe_results(monkeypatch: pytest.MonkeyPatch) 
         return {"model_used": spec.model}
 
     def fake_video_probe(spec, engine_pack_loader) -> dict[str, str]:
+        if spec.provider == "xai":
+            assert spec.probe_id == "xai_ai_previz_video_default"
+            assert spec.engine_pack_id == "xai_grok_imagine_video"
+            assert spec.surface_tested == "AI Previz shipped default lane"
+            return {"model_used": spec.model, "request_id": "req-xai-previz"}
         raise VideoGenerationError("rate limit", retryable=True, status_code=429)
 
     service = ProviderCapabilitySmokeService(
@@ -90,6 +98,13 @@ def test_refresh_classifies_live_probe_results(monkeypatch: pytest.MonkeyPatch) 
     assert checks["google_design_study_image_default"].status == "auth_failed"
     assert checks["openai_design_study_image_alt"].status == "ok"
     assert checks["google_render_video_default"].status == "rate_limited"
+    assert checks["xai_ai_previz_video_default"].status == "ok"
+    assert checks["xai_ai_previz_video_default"].provider == "xai"
+    assert checks["xai_ai_previz_video_default"].accepted_env_vars == [
+        "CINE_FORGE_XAI_API_KEY",
+        "XAI_API_KEY",
+    ]
+    assert checks["xai_ai_previz_video_default"].request_id == "req-xai-previz"
 
 
 @pytest.mark.unit
@@ -100,6 +115,7 @@ def test_get_snapshot_reuses_cached_results_until_refresh_requested(
     monkeypatch.setenv("ANTHROPIC_API_KEY", "anth-key")
     monkeypatch.setenv("GEMINI_API_KEY", "google-key")
     monkeypatch.setenv("OPENAI_API_KEY", "openai-key")
+    monkeypatch.setenv("XAI_API_KEY", "xai-key")
     calls: list[str] = []
 
     def fake_text_probe(spec, timeout_seconds: float) -> dict[str, str]:

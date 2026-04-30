@@ -18,13 +18,13 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, and Story 194 closed the dependent multi-clip rendering slice. Inbox triage on 2026-04-30 routed the current Brick & Steel notes into Stories 195-199; Story 195 is the recommended next build because production xAI previz readiness is the narrowest blocker on the active scene-generation lane.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, Story 194 closed the dependent multi-clip rendering slice, and Story 195 closed the production xAI AI-previz readiness surface. Inbox triage on 2026-04-30 routed the current Brick & Steel notes into Stories 195-199; Story 196 is the recommended next build because the production readiness blocker is closed and the inbox product-truth scrub is now the narrowest active scene-generation truth gap.
 
 ### Pending — Ready To Build Now
 
 | Story | Why |
 |---|---|
-| **195** Production xAI Previz Readiness | Recommended next build from inbox triage: prove production xAI AI-previz readiness through health/live-smoke and the Brick & Steel scene route without changing provider defaults or leaking secrets. |
+| **196** Brick & Steel Product Truth Scrub | Recommended next build: verify the current Brick & Steel desktop/mobile product truth, then separate stale inbox notes from live defects with evidence. |
 
 ### In Progress
 
@@ -34,7 +34,6 @@ No stories currently in progress.
 
 | Story | Why |
 |---|---|
-| **196** Brick & Steel Product Truth Scrub | Run after or alongside the xAI readiness check: verify the current Brick & Steel desktop/mobile product truth, then separate stale inbox notes from live defects with evidence. |
 | **198** Brick & Steel Character Adjudication | Build once the scene-generation lane is not blocked by prod readiness, or sooner if character/reference correctness becomes the active surface: reproduce Brick vs Brick Braddock and prove artifact-edit merge/deprecation. |
 
 ### Draft — Scope Or Decision Needed First
@@ -237,7 +236,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 195 | Production xAI Previz Readiness | High | Pending | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 176, 184, 194 | [story-195](stories/story-195-production-xai-previz-readiness.md) |
 | 196 | Brick & Steel Product Truth Scrub | High | Pending | — | spec:5, spec:6, spec:7, spec:10 | 139, 180, 191, 192, 193, 194 | [story-196](stories/story-196-brick-steel-product-truth-scrub.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
@@ -276,6 +274,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 186 | Storyboard Generation Quality Eval for Reference Fidelity and Identity Consistency | High | Done | — | spec:5, spec:6, spec:7, spec:8 | 169 | [story-186](stories/story-186-storyboard-generation-quality-eval.md) |
 | 191 | Brick & Steel Final-Render Prompt Truth | High | Done | — | spec:5, spec:6, spec:7, spec:8 | 168, 169, 190 | [story-191](stories/story-191-brick-steel-scene-media-product-truth.md) |
 | 192 | Brick & Steel GPT-Image Completion and Error Truth | High | Done | — | spec:5, spec:7, spec:8 | 191 | [story-192](stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md) |
+| 195 | Production xAI Previz Readiness | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 176, 184, 194 | [story-195](stories/story-195-production-xai-previz-readiness.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

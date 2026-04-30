@@ -75,6 +75,15 @@ def _snapshot() -> ProviderDependencyHealthSnapshot:
                 model_tested="gpt-4.1-mini",
                 failure_message="Invalid API key provided.",
             ),
+            "xai": ProviderDependencyCheck(
+                provider="xai",
+                configured=False,
+                status="missing",
+                preferred_env_var="CINE_FORGE_XAI_API_KEY",
+                accepted_env_vars=["CINE_FORGE_XAI_API_KEY", "XAI_API_KEY"],
+                model_tested="grok-imagine-video",
+                failure_message="CINE_FORGE_XAI_API_KEY (or legacy XAI_API_KEY) is not set",
+            ),
         },
     )
 
@@ -109,6 +118,20 @@ def _capability_snapshot() -> ProviderCapabilitySmokeSnapshot:
                 surface_tested="Storyboard generation default lane",
                 failure_message="Imagen API returned HTTP 400: API key not valid.",
             ),
+            ProviderCapabilitySmokeCheck(
+                probe_id="xai_ai_previz_video_default",
+                label="xAI AI previz video generation",
+                provider="xai",
+                configured=False,
+                status="missing",
+                preferred_env_var="CINE_FORGE_XAI_API_KEY",
+                accepted_env_vars=["CINE_FORGE_XAI_API_KEY", "XAI_API_KEY"],
+                capability_tested="video_generation",
+                model_tested="grok-imagine-video",
+                engine_pack_id="xai_grok_imagine_video",
+                surface_tested="AI Previz shipped default lane",
+                failure_message="CINE_FORGE_XAI_API_KEY (or legacy XAI_API_KEY) is not set",
+            ),
         ],
     )
 
@@ -137,6 +160,10 @@ def test_dependency_health_endpoint_returns_typed_snapshot_and_refresh_flag(tmp_
     assert payload["providers"]["anthropic"]["status"] == "ok"
     assert payload["providers"]["google"]["status"] == "missing"
     assert payload["providers"]["openai"]["status"] == "auth_failed"
+    assert payload["providers"]["xai"]["accepted_env_vars"] == [
+        "CINE_FORGE_XAI_API_KEY",
+        "XAI_API_KEY",
+    ]
     assert fake_service.calls == [True]
 
 
@@ -157,5 +184,6 @@ def test_live_capability_smoke_endpoints_return_cached_and_refreshed_snapshots(
     refreshed_payload = refreshed.json()
     assert cached_payload["status"] == "degraded"
     assert refreshed_payload["checks"][1]["status"] == "auth_failed"
+    assert refreshed_payload["checks"][2]["engine_pack_id"] == "xai_grok_imagine_video"
     assert fake_service.get_calls == 1
     assert fake_service.refresh_calls == 1

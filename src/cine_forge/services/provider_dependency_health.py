@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 OPENAI_MODEL_URL = "https://api.openai.com/v1/models/{model}"
 ANTHROPIC_MODEL_URL = "https://api.anthropic.com/v1/models/{model}"
 GEMINI_MODEL_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}?key={api_key}"
+XAI_VIDEO_MODEL_URL = "https://api.x.ai/v1/video-generation-models/{model}"
 
 
 @dataclass(frozen=True)
@@ -68,6 +69,7 @@ _REQUIRED_PROVIDER_SPECS: tuple[_ProviderSpec, ...] = (
     _ProviderSpec("anthropic", "ANTHROPIC_API_KEY", "claude-sonnet-4-6"),
     _ProviderSpec("google", "GEMINI_API_KEY", "gemini-2.5-flash-lite"),
     _ProviderSpec("openai", "OPENAI_API_KEY", "gpt-4.1-mini"),
+    _ProviderSpec("xai", "XAI_API_KEY", "grok-imagine-video"),
 )
 
 
@@ -248,6 +250,8 @@ def _provider_probe_url(spec: _ProviderSpec, api_key: str) -> str:
             model=quoted_model,
             api_key=urllib.parse.quote(api_key, safe=""),
         )
+    if spec.provider == "xai":
+        return XAI_VIDEO_MODEL_URL.format(model=quoted_model)
     return OPENAI_MODEL_URL.format(model=quoted_model)
 
 
@@ -257,7 +261,7 @@ def _provider_probe_headers(spec: _ProviderSpec, api_key: str) -> dict[str, str]
             "x-api-key": api_key,
             "anthropic-version": "2023-06-01",
         }
-    if spec.provider == "openai":
+    if spec.provider in {"openai", "xai"}:
         return {
             "Authorization": f"Bearer {api_key}",
         }

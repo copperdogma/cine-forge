@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-04-30-03] — Close production xAI previz readiness (Story 195)
+
+### Added
+- Added xAI to provider dependency health, accepted-env-var reporting, cached/live smoke coverage, and the shipped AI-previz video probe.
+- Added Brick & Steel AI-previz preflight readiness so missing xAI credentials surface before provider work starts.
+
+### Changed
+- Updated deployment guidance and provider-health tests so future default AI-previz lane changes cannot leave live smoke pointed at stale providers.
+
 ## [2026-04-30-02] — Route Brick & Steel inbox triage
 
 ### Added

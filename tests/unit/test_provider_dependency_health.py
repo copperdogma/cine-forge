@@ -17,6 +17,8 @@ def _clear_provider_envs(monkeypatch: pytest.MonkeyPatch) -> None:
         "CINE_FORGE_GEMINI_API_KEY",
         "OPENAI_API_KEY",
         "CINE_FORGE_OPENAI_API_KEY",
+        "XAI_API_KEY",
+        "CINE_FORGE_XAI_API_KEY",
     ):
         monkeypatch.delenv(name, raising=False)
 
@@ -44,6 +46,11 @@ def test_refresh_marks_missing_provider_keys_without_hitting_network(
     assert snapshot.providers["anthropic"].status == "missing"
     assert snapshot.providers["google"].status == "missing"
     assert snapshot.providers["openai"].status == "missing"
+    assert snapshot.providers["xai"].status == "missing"
+    assert snapshot.providers["xai"].accepted_env_vars == [
+        "CINE_FORGE_XAI_API_KEY",
+        "XAI_API_KEY",
+    ]
     assert snapshot.providers["google"].accepted_env_vars == [
         "CINE_FORGE_GEMINI_API_KEY",
         "GEMINI_API_KEY",
@@ -56,6 +63,7 @@ def test_refresh_classifies_provider_health_results(monkeypatch: pytest.MonkeyPa
     monkeypatch.setenv("ANTHROPIC_API_KEY", "anth-key")
     monkeypatch.setenv("CINE_FORGE_GEMINI_API_KEY", "google-key")
     monkeypatch.setenv("OPENAI_API_KEY", "openai-key")
+    monkeypatch.setenv("CINE_FORGE_XAI_API_KEY", "xai-key")
 
     def fake_http_get_json(
         url: str,
@@ -79,6 +87,10 @@ def test_refresh_classifies_provider_health_results(monkeypatch: pytest.MonkeyPa
                 headers={"x-request-id": "req-openai"},
                 payload={},
             )
+        if "api.x.ai" in url:
+            assert url.endswith("/v1/video-generation-models/grok-imagine-video")
+            assert headers["Authorization"] == "Bearer xai-key"
+            return _HttpJsonResponse(headers={"x-request-id": "req-xai"}, payload={"id": "ok"})
         raise AssertionError(f"Unexpected probe URL: {url}")
 
     service = ProviderDependencyHealthService(http_get_json=fake_http_get_json)
@@ -92,6 +104,9 @@ def test_refresh_classifies_provider_health_results(monkeypatch: pytest.MonkeyPa
     assert snapshot.providers["google"].request_id == "req-google"
     assert snapshot.providers["openai"].status == "auth_failed"
     assert snapshot.providers["openai"].request_id == "req-openai"
+    assert snapshot.providers["xai"].status == "ok"
+    assert snapshot.providers["xai"].preferred_env_var == "CINE_FORGE_XAI_API_KEY"
+    assert snapshot.providers["xai"].request_id == "req-xai"
 
 
 @pytest.mark.unit
@@ -102,6 +117,7 @@ def test_get_snapshot_reuses_cached_results_until_refresh_requested(
     monkeypatch.setenv("ANTHROPIC_API_KEY", "anth-key")
     monkeypatch.setenv("GEMINI_API_KEY", "google-key")
     monkeypatch.setenv("OPENAI_API_KEY", "openai-key")
+    monkeypatch.setenv("XAI_API_KEY", "xai-key")
     calls: list[str] = []
 
     def fake_http_get_json(
@@ -117,5 +133,5 @@ def test_get_snapshot_reuses_cached_results_until_refresh_requested(
     first = service.get_snapshot(refresh=True)
     second = service.get_snapshot()
 
-    assert len(calls) == 3
+    assert len(calls) == 4
     assert first.model_dump(mode="json") == second.model_dump(mode="json")
