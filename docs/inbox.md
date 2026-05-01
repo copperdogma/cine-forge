@@ -3,6 +3,16 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 ## Untriaged
 
+- 2026-05-01 — From Conductor Scout 028: Grok 4.3 is now documented for xAI API
+  use as `grok-4.3` and public pricing/benchmark snapshots make it a plausible
+  cheaper/faster Sonnet-class challenger. Evaluate it as a text/image reasoning
+  model, separate from the existing xAI image-generation note: scene/script
+  understanding, director/shot planning, prompt compilation, verification-slot
+  behavior, latency, and per-run cost against current CineForge baselines. Do
+  not change model defaults unless maintained eval registry evidence beats the
+  current model-slot strategy. Source:
+  `/Users/cam/.codex/worktrees/414d/conductor/docs/scout/scout-028-grok-4-3-api-eval-opportunities.md`
+
 - UI Plan: We need an ADR to have a comprehensive plan for the UI. It's gotten huge and unweildy. We need to strip it back to essentials. What ARE we doing here? Script gets broken down into Scenes plus Chars/Locations/Props, which get re-assembled into Scenes. The scenes/shots are then rendered from those elements, planning/opinion, camera movement, action, and dialogue.
   - Are a more pure level we're taking a script and rendering scenes/shots with a ton of inputs both from the script and planning/opinion.
   - If we had an infinite canvas, this would look like a NLE view of a movie where you can scrub back and forth, and coming in from above as a web of nodes would be the inputs: chars/locations/prop references (and how they're modified for this scene), the shots and planning thereof which link to their parent scene which link to the script. The chars/location/props also link back to the script. I suppose at the top level what we're talking about is script + opinions rendering out into a film.
