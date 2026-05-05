@@ -16,7 +16,7 @@ import argparse
 import json
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -125,6 +125,15 @@ TIER_PATTERNS: list[tuple[str, str]] = [
     (r"gemini-2-0",             "legacy"),
     (r"gemini-1\.",             "legacy"),
     (r"gemini-1-",              "legacy"),
+
+    # ── xAI ──────────────────────────────────────────────────────────────────
+    (r"^grok-4\.3\b",           "sota"),
+    (r"^grok-4\.20",            "sota"),
+    (r"^grok-4-1-fast",         "mid"),
+    (r"^grok-4-fast",           "mid"),
+    (r"^grok-4-",               "sota"),
+    (r"^grok-3-mini",           "cheap"),
+    (r"^grok-3\b",              "mid"),
 ]
 
 TIER_LABELS = {
@@ -172,6 +181,13 @@ PROVIDERS = {
         "setup_url": "https://aistudio.google.com/app/apikey",
         "setup_hint": f"export {preferred_env_name('GEMINI_API_KEY')}='AI...'",
     },
+    "xai": {
+        "env_key": "XAI_API_KEY",
+        "preferred_env_key": preferred_env_name("XAI_API_KEY"),
+        "display": "xAI",
+        "setup_url": "https://console.x.ai/",
+        "setup_hint": f"export {preferred_env_name('XAI_API_KEY')}='xai-...'",
+    },
 }
 
 # Chat-capable model patterns per provider (filters out embeddings, TTS, image, etc.)
@@ -210,6 +226,16 @@ GOOGLE_SKIP_PATTERNS = [
     r"^gemini-1\.",     # very old
 ]
 
+# xAI language-model endpoint is already language-only, but keep filters for
+# future mixed endpoint drift and non-eval targets.
+XAI_SKIP_PATTERNS = [
+    r"image",
+    r"imagine",
+    r"video",
+    r"voice",
+    r"code",
+]
+
 
 # ── Provider Query Functions ────────────────────────────────────────────────
 
@@ -225,7 +251,7 @@ def query_openai(api_key: str) -> list[dict]:
     data = resp.json()
 
     models = []
-    for m in data.get("data", []):
+    for m in data.get("data") or data.get("models", []):
         model_id = m["id"]
         # Filter to chat models
         if not any(re.match(p, model_id) for p in OPENAI_CHAT_PATTERNS):
@@ -236,7 +262,7 @@ def query_openai(api_key: str) -> list[dict]:
         models.append({
             "id": model_id,
             "provider": "openai",
-            "created": datetime.fromtimestamp(m.get("created", 0), tz=timezone.utc).strftime("%Y-%m-%d"),
+            "created": datetime.fromtimestamp(m.get("created", 0), tz=UTC).strftime("%Y-%m-%d"),
             "tier": classify_tier(model_id),
         })
 
@@ -268,7 +294,7 @@ def query_anthropic(api_key: str) -> list[dict]:
             if isinstance(created_raw, str):
                 created = created_raw[:10]  # "2025-12-01T..." -> "2025-12-01"
             elif isinstance(created_raw, (int, float)) and created_raw > 0:
-                created = datetime.fromtimestamp(created_raw, tz=timezone.utc).strftime("%Y-%m-%d")
+                created = datetime.fromtimestamp(created_raw, tz=UTC).strftime("%Y-%m-%d")
             else:
                 created = "unknown"
             models.append({
@@ -291,10 +317,30 @@ def query_anthropic(api_key: str) -> list[dict]:
 def _anthropic_fallback() -> list[dict]:
     """Known Anthropic models when the API endpoint isn't available."""
     known = [
-        {"id": "claude-opus-4-6", "provider": "anthropic", "display_name": "Claude Opus 4.6", "created": "2025-12-01"},
-        {"id": "claude-sonnet-4-6", "provider": "anthropic", "display_name": "Claude Sonnet 4.6", "created": "2025-12-01"},
-        {"id": "claude-sonnet-4-5-20241022", "provider": "anthropic", "display_name": "Claude Sonnet 4.5", "created": "2025-10-01"},
-        {"id": "claude-haiku-4-5-20251001", "provider": "anthropic", "display_name": "Claude Haiku 4.5", "created": "2025-10-01"},
+        {
+            "id": "claude-opus-4-6",
+            "provider": "anthropic",
+            "display_name": "Claude Opus 4.6",
+            "created": "2025-12-01",
+        },
+        {
+            "id": "claude-sonnet-4-6",
+            "provider": "anthropic",
+            "display_name": "Claude Sonnet 4.6",
+            "created": "2025-12-01",
+        },
+        {
+            "id": "claude-sonnet-4-5-20241022",
+            "provider": "anthropic",
+            "display_name": "Claude Sonnet 4.5",
+            "created": "2025-10-01",
+        },
+        {
+            "id": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "display_name": "Claude Haiku 4.5",
+            "created": "2025-10-01",
+        },
     ]
     for m in known:
         m["tier"] = classify_tier(m["id"])
@@ -338,10 +384,51 @@ def query_google(api_key: str) -> list[dict]:
     return models
 
 
+def query_xai(api_key: str) -> list[dict]:
+    """Query xAI /v1/language-models for chat/reasoning models."""
+    resp = httpx.get(
+        "https://api.x.ai/v1/language-models",
+        headers={"Authorization": f"Bearer {api_key}"},
+        timeout=15,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+
+    models = []
+    for m in data.get("data") or data.get("models", []):
+        model_id = m["id"]
+        if any(re.search(p, model_id) for p in XAI_SKIP_PATTERNS):
+            continue
+
+        created_raw = m.get("created") or m.get("created_at")
+        if isinstance(created_raw, str):
+            created = created_raw[:10]
+        elif isinstance(created_raw, (int, float)) and created_raw > 0:
+            created = datetime.fromtimestamp(created_raw, tz=UTC).strftime("%Y-%m-%d")
+        else:
+            created = "unknown"
+
+        models.append({
+            "id": model_id,
+            "provider": "xai",
+            "display_name": m.get("display_name", model_id),
+            "created": created,
+            "input_modalities": m.get("input_modalities"),
+            "output_modalities": m.get("output_modalities"),
+            "prompt_text_token_price": m.get("prompt_text_token_price"),
+            "completion_text_token_price": m.get("completion_text_token_price"),
+            "tier": classify_tier(model_id),
+        })
+
+    models.sort(key=lambda x: x.get("created", ""), reverse=True)
+    return models
+
+
 QUERY_FUNCS = {
     "openai": query_openai,
     "anthropic": query_anthropic,
     "google": query_google,
+    "xai": query_xai,
 }
 
 
@@ -371,9 +458,13 @@ def _matches_registry(model_id: str, display_name: str, registry_models: set[str
             return True
         # Handle "Sonnet 4.6" matching "claude-sonnet-4-6"
         # Strip provider prefix and compare
-        stripped_id = re.sub(r"^(claude|gpt|gemini|o\d)-?", "", norm_id)
-        stripped_rm = re.sub(r"^(claude|gpt|gemini|o\d)-?", "", norm_rm)
-        if stripped_id and stripped_rm and (stripped_rm in stripped_id or stripped_id in stripped_rm):
+        stripped_id = re.sub(r"^(claude|gpt|gemini|grok|o\d)-?", "", norm_id)
+        stripped_rm = re.sub(r"^(claude|gpt|gemini|grok|o\d)-?", "", norm_rm)
+        if (
+            stripped_id
+            and stripped_rm
+            and (stripped_rm in stripped_id or stripped_id in stripped_rm)
+        ):
             return True
         # Handle dated snapshots: "gpt-5-2-2025-12-11" should match "GPT-5.2"
         # Remove date suffixes for comparison
@@ -449,12 +540,12 @@ def format_text_report(results: dict, registry_models: set[str] | None = None) -
     lines = []
     lines.append("=" * 60)
     lines.append("  AI Model Discovery Report")
-    lines.append(f"  {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
+    lines.append(f"  {datetime.now(tz=UTC).strftime('%Y-%m-%d %H:%M UTC')}")
     lines.append("=" * 60)
 
     # Key status
     lines.append("\n## API Key Status\n")
-    for prov_id, prov in PROVIDERS.items():
+    for _prov_id, prov in PROVIDERS.items():
         key = resolve_env(prov["env_key"])
         status = "SET" if key else "NOT SET"
         icon = "+" if key else "-"
@@ -502,7 +593,11 @@ def format_text_report(results: dict, registry_models: set[str] | None = None) -
                 # Flag if not in registry
                 in_registry = ""
                 if registry_models is not None:
-                    matched = _matches_registry(model_id, m.get("display_name", ""), registry_models)
+                    matched = _matches_registry(
+                        model_id,
+                        m.get("display_name", ""),
+                        registry_models,
+                    )
                     in_registry = "  [TESTED]" if matched else "  [NEW]"
 
                 lines.append(f"    {model_id}{extra}{in_registry}")
@@ -513,7 +608,7 @@ def format_text_report(results: dict, registry_models: set[str] | None = None) -
 def format_yaml_report(results: dict) -> str:
     """Machine-readable YAML report."""
     report = {
-        "discovered": datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "discovered": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "providers": {},
     }
 
@@ -561,8 +656,9 @@ def format_summary_report(results: dict, registry_models: set[str] | None = None
     lines = []
     lines.append("=" * 60)
     lines.append("  Model Tier Summary")
-    lines.append(f"  {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
-    lines.append(f"  {len(all_models)} total models across {sum(1 for v in results.values() if v and not isinstance(v, str))} providers")
+    lines.append(f"  {datetime.now(tz=UTC).strftime('%Y-%m-%d %H:%M UTC')}")
+    provider_count = sum(1 for v in results.values() if v and not isinstance(v, str))
+    lines.append(f"  {len(all_models)} total models across {provider_count} providers")
     lines.append("=" * 60)
     lines.append("")
 
@@ -589,7 +685,7 @@ def format_summary_report(results: dict, registry_models: set[str] | None = None
             if untested:
                 lines.append(f"    Untested: {len(untested)} model(s) — {', '.join(untested)}")
             else:
-                lines.append(f"    Untested: none")
+                lines.append("    Untested: none")
         lines.append("")
 
     # Untested alert block (only if registry loaded)
@@ -599,7 +695,10 @@ def format_summary_report(results: dict, registry_models: set[str] | None = None
             if not _matches_registry(m["id"], m.get("display_name", ""), registry_models)
         ]
         if all_untested:
-            lines.append(f"  ** {len(all_untested)} untested model(s) found — consider running /improve-eval **")
+            lines.append(
+                f"  ** {len(all_untested)} untested model(s) found — "
+                "consider running /improve-eval **"
+            )
         else:
             lines.append("  All discovered models are covered by existing evals.")
 
@@ -633,9 +732,21 @@ def discover_models() -> dict:
 def main():
     parser = argparse.ArgumentParser(description="Discover available AI models across providers")
     parser.add_argument("--yaml", action="store_true", help="Output as YAML (machine-readable)")
-    parser.add_argument("--cache", action="store_true", help="Write to docs/evals/models-available.yaml")
-    parser.add_argument("--check-new", action="store_true", help="Flag models not yet in eval registry")
-    parser.add_argument("--summary", action="store_true", help="Quick-glance tier summary (for /improve-eval)")
+    parser.add_argument(
+        "--cache",
+        action="store_true",
+        help="Write to docs/evals/models-available.yaml",
+    )
+    parser.add_argument(
+        "--check-new",
+        action="store_true",
+        help="Flag models not yet in eval registry",
+    )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Quick-glance tier summary (for /improve-eval)",
+    )
     args = parser.parse_args()
 
     results = discover_models()
@@ -646,7 +757,12 @@ def main():
         registry_path = Path(__file__).parent.parent / "docs" / "evals" / "registry.yaml"
         registry_models = load_registry_models(registry_path)
         if registry_models:
-            print(f"\nRegistry contains {len(registry_models)} tested models: {', '.join(sorted(registry_models))}", file=sys.stderr)
+            print(
+                "\nRegistry contains "
+                f"{len(registry_models)} tested models: "
+                f"{', '.join(sorted(registry_models))}",
+                file=sys.stderr,
+            )
 
     if args.summary:
         output = format_summary_report(results, registry_models)

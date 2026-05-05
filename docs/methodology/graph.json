@@ -283,7 +283,8 @@
           "185",
           "187",
           "189",
-          "198"
+          "198",
+          "200"
         ],
         "adrIds": [
           "ADR-003"
@@ -530,7 +531,8 @@
           "175",
           "178",
           "197",
-          "199"
+          "199",
+          "200"
         ],
         "adrIds": [
           "ADR-002",
@@ -822,7 +824,8 @@
           "194",
           "195",
           "196",
-          "197"
+          "197",
+          "200"
         ],
         "adrIds": [
           "ADR-002",
@@ -924,7 +927,8 @@
           "195",
           "196",
           "197",
-          "199"
+          "199",
+          "200"
         ],
         "adrIds": [
           "ADR-002",
@@ -1043,7 +1047,8 @@
           "192",
           "195",
           "197",
-          "198"
+          "198",
+          "200"
         ],
         "adrIds": [
           "ADR-001",
@@ -1537,7 +1542,8 @@
         },
         "storyIds": [
           "189",
-          "198"
+          "198",
+          "200"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
@@ -1557,7 +1563,8 @@
           },
           "storyIds": [
             "189",
-            "198"
+            "198",
+            "200"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1591,7 +1598,8 @@
           "192",
           "195",
           "197",
-          "198"
+          "198",
+          "200"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1628,7 +1636,8 @@
             "192",
             "195",
             "197",
-            "198"
+            "198",
+            "200"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1654,7 +1663,8 @@
           "161",
           "183",
           "187",
-          "189"
+          "189",
+          "200"
         ],
         "evalIds": [
           "compromise-C4-two-tier-scenes",
@@ -1680,7 +1690,8 @@
             "161",
             "183",
             "187",
-            "189"
+            "189",
+            "200"
           ],
           "evalIds": [
             "full-script-throughput",
@@ -1700,7 +1711,8 @@
           "last_reviewed": "2026-04-04"
         },
         "storyIds": [
-          "199"
+          "199",
+          "200"
         ],
         "evalIds": [
           "compromise-C5-role-modality"
@@ -1721,7 +1733,8 @@
             "summary": ""
           },
           "storyIds": [
-            "199"
+            "199",
+            "200"
           ],
           "evalIds": [
             "compromise-C5-role-modality"
@@ -1747,7 +1760,8 @@
           "195",
           "196",
           "197",
-          "199"
+          "199",
+          "200"
         ],
         "evalIds": [],
         "actionability": {
@@ -1771,7 +1785,8 @@
             "195",
             "196",
             "197",
-            "199"
+            "199",
+            "200"
           ],
           "evalIds": []
         }
@@ -12972,6 +12987,78 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "200",
+      "title": "Grok 4.3 Text and Image Reasoning Eval Refresh",
+      "path": "docs/stories/story-200-grok-43-text-image-reasoning-eval-refresh.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:4",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "dependsOn": [
+        "035"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:4",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization",
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "grok-4.3",
+        "model-refresh",
+        "xai"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "200",
+        "sourcePath": "docs/stories/story-200-grok-43-text-image-reasoning-eval-refresh.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-200-grok-43-text-image-reasoning-eval-refresh.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -14055,12 +14142,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.5 Pro",
-        "measured": "2026-04-24",
+        "model": "Grok 4.3",
+        "measured": "2026-05-04",
         "metrics": {
-          "overall": 0.5982
+          "overall": 0.2625
         },
-        "note": "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default."
+        "note": "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default."
       },
       "declaredSpecRefs": [
         "spec:8"
@@ -14080,14 +14167,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default.",
+        "whyNow": "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": "2026-05-04",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default."
+          "summary": "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default."
         }
       }
     },
@@ -14423,12 +14510,12 @@
         }
       ],
       "latestScore": {
-        "model": "GPT-5.5",
-        "measured": "2026-04-24",
+        "model": "Grok 4.3",
+        "measured": "2026-05-04",
         "metrics": {
-          "overall": 0.9313
+          "overall": 0.4
         },
-        "note": "Meets all targets, but remains below the latest Sonnet 4.6 scene-enrichment lane."
+        "note": "Story 200 Grok 4.3 probe failed both scene-enrichment fixtures. Classification: model-wrong/output-format - both outputs started with reasoning text before the JSON, so strict parsing failed. No default change; this is below the current Sonnet 4.6 lane and misses the latency target."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -14451,7 +14538,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Meets all targets, but remains below the latest Sonnet 4.6 scene-enrichment lane.",
+        "whyNow": "Story 200 Grok 4.3 probe failed both scene-enrichment fixtures. Classification: model-wrong/output-format - both outputs started with reasoning text before the JSON, so strict parsing failed. No default change; this is below the current Sonnet 4.6 lane and misses the latency target.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -14483,12 +14570,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.5",
-        "measured": "2026-04-24",
+        "model": "Grok 4.3",
+        "measured": "2026-05-04",
         "metrics": {
-          "overall": 0.9059
+          "overall": 0.41
         },
-        "note": "Passes the quality target but misses latency and cost budgets; GPT-5.2 remains the value leader."
+        "note": "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -14511,14 +14598,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Passes the quality target but misses latency and cost budgets; GPT-5.2 remains the value leader.",
+        "whyNow": "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": "2026-05-04",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Passes the quality target but misses latency and cost budgets; GPT-5.2 remains the value leader."
+          "summary": "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target."
         }
       }
     },
@@ -14542,12 +14629,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.5 Pro",
-        "measured": "2026-04-24",
+        "model": "Grok 4.3",
+        "measured": "2026-05-04",
         "metrics": {
-          "overall": 0.96
+          "overall": 0.905
         },
-        "note": "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default."
+        "note": "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -14570,14 +14657,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default.",
+        "whyNow": "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": "2026-05-04",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default."
+          "summary": "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change."
         }
       }
     },
@@ -14731,12 +14818,12 @@
         }
       ],
       "latestScore": {
-        "model": "GPT-5.4",
-        "measured": "2026-03-19",
+        "model": "Grok 4.3",
+        "measured": "2026-05-04",
         "metrics": {
-          "overall": 0.7923
+          "overall": 0.572
         },
-        "note": "Discovery-spike rerun leader. Improved the OpenAI slot from the earlier GPT-4.1 pilot and passed 5/6 anchor clips. Remaining miss is model-wrong on neon_crosswalk_reveal: still misses the intended reveal/motion read."
+        "note": "Story 200 Grok 4.3 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON, but five misses were model-wrong director/shot-read failures, mainly weak camera/motion/reveal reads and shallow summaries. Latency also misses the 15s pilot target. No role-modality or generated-output-QA default change."
       },
       "declaredSpecRefs": [
         "spec:7",
@@ -14764,7 +14851,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Discovery-spike rerun leader. Improved the OpenAI slot from the earlier GPT-4.1 pilot and passed 5/6 anchor clips. Remaining miss is model-wrong on neon_crosswalk_reveal: still misses the intended reveal/motion read.",
+        "whyNow": "Story 200 Grok 4.3 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON, but five misses were model-wrong director/shot-read failures, mainly weak camera/motion/reveal reads and shallow summaries. Latency also misses the 15s pilot target. No role-modality or generated-output-QA default change.",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "new-approach"
@@ -15371,7 +15458,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 19 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 23 days old against a 14-day cadence"
     ]
   }
 }

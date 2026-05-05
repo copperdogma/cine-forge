@@ -89,6 +89,13 @@ providers:
       max_tokens: 4096
       response_format: { type: "json_object" }
 
+  - id: xai:grok-4.3
+    label: "Grok 4.3"
+    config:
+      temperature: 0
+      max_tokens: 4096
+      response_format: { type: "json_object" }
+
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:

@@ -27,6 +27,7 @@ require_env = importlib.import_module("cine_forge.env").require_env
 
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
+XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions"
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 GEMINI_MODELS_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 
@@ -63,6 +64,14 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
                 max_tokens=max_tokens,
                 temperature=temperature,
             )
+        elif provider == "xai":
+            response = _call_xai(
+                model=model,
+                user_text=user_text,
+                frames=packet["frames"],
+                max_tokens=max_tokens,
+                temperature=temperature,
+            )
         elif provider == "anthropic":
             response = _call_anthropic(
                 model=model,
@@ -93,10 +102,15 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
     token_usage = response.get("token_usage", {})
     cost = None
     if token_usage.get("prompt") is not None and token_usage.get("completion") is not None:
+        completion_for_cost = int(token_usage.get("completion", 0))
+        if str(config.get("provider", "")).strip() == "xai":
+            total_tokens = int(token_usage.get("total", 0))
+            prompt_tokens = int(token_usage.get("prompt", 0))
+            completion_for_cost = max(completion_for_cost, total_tokens - prompt_tokens)
         cost = estimate_cost_usd(
             model,
             int(token_usage.get("prompt", 0)),
-            int(token_usage.get("completion", 0)),
+            completion_for_cost,
         )
 
     return {
@@ -300,6 +314,42 @@ def _call_openai(
     )
     response = _request_json(
         OPENAI_CHAT_URL,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        body=payload,
+    )
+    choice = response["choices"][0]["message"]["content"]
+    usage = response.get("usage", {})
+    return {
+        "output": choice,
+        "token_usage": {
+            "prompt": usage.get("prompt_tokens", 0),
+            "completion": usage.get("completion_tokens", 0),
+            "total": usage.get("total_tokens", 0),
+        },
+    }
+
+
+def _call_xai(
+    *,
+    model: str,
+    user_text: str,
+    frames: list[dict[str, str]],
+    max_tokens: int,
+    temperature: float,
+) -> dict[str, Any]:
+    api_key = _require_env("XAI_API_KEY")
+    payload = _build_openai_payload(
+        model=model,
+        user_text=user_text,
+        frames=frames,
+        max_tokens=max_tokens,
+        temperature=temperature,
+    )
+    response = _request_json(
+        XAI_CHAT_URL,
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",

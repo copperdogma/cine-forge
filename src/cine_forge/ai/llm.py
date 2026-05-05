@@ -34,6 +34,8 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
     "gpt-5.5-pro": (30.0, 180.0),
     "gpt-5.4-mini": (0.75, 4.5),
     "gpt-5.4-nano": (0.20, 1.25),
+    # xAI
+    "grok-4.3": (1.25, 2.50),
     # Anthropic
     "claude-sonnet-4-5": (3.0, 15.0),
     "claude-sonnet-4-5-20250929": (3.0, 15.0),
@@ -50,11 +52,13 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
 }
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
+XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions"
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 
 # Provider identifiers used by _parse_provider().
 PROVIDER_OPENAI = "openai"
+PROVIDER_XAI = "xai"
 PROVIDER_ANTHROPIC = "anthropic"
 PROVIDER_GOOGLE = "google"
 
@@ -125,6 +129,12 @@ def call_llm(
             request_timeout_seconds=request_timeout_seconds,
         )
         normalizer = _normalize_gemini_response
+    elif provider == PROVIDER_XAI:
+        sender = partial(
+            _xai_transport,
+            request_timeout_seconds=request_timeout_seconds,
+        )
+        normalizer = None  # xAI Chat Completions is OpenAI-compatible
     else:
         sender = partial(
             _openai_transport,
@@ -285,6 +295,18 @@ def _parse_response(
     usage = raw_response.get("usage", {})
     input_tokens = int(usage.get("prompt_tokens", 0) or 0)
     output_tokens = int(usage.get("completion_tokens", 0) or 0)
+    completion_details = (
+        usage.get("completion_tokens_details")
+        or usage.get("completionDetails")
+        or {}
+    )
+    reasoning_output_tokens = 0
+    if model.startswith("grok-") and isinstance(completion_details, dict):
+        reasoning_output_tokens = int(
+            completion_details.get("reasoning_tokens")
+            or completion_details.get("reasoning")
+            or 0
+        )
     request_id = raw_response.get("id")
     finish_reason = choices[0].get("finish_reason")
     metadata: dict[str, Any] = {
@@ -296,6 +318,13 @@ def _parse_response(
         "request_id": request_id,
         "finish_reason": finish_reason,
     }
+    if reasoning_output_tokens > 0:
+        metadata["reasoning_output_tokens"] = reasoning_output_tokens
+        metadata["estimated_cost_usd"] = estimate_cost_usd(
+            model,
+            input_tokens,
+            output_tokens + reasoning_output_tokens,
+        )
     cache_read = usage.get("cache_read_input_tokens")
     cache_write = usage.get("cache_creation_input_tokens")
     if cache_read is not None or cache_write is not None:
@@ -378,6 +407,40 @@ def _openai_transport(
         raise LLMCallError(f"OpenAI request failed: {exc.reason}") from exc
 
 
+def _xai_transport(
+    request_payload: dict[str, Any],
+    *,
+    request_timeout_seconds: float | None = None,
+) -> dict[str, Any]:
+    try:
+        api_key = require_env("XAI_API_KEY")
+    except RuntimeError as exc:
+        raise LLMCallError(f"{exc} for xAI transport") from exc
+
+    encoded = json.dumps(request_payload).encode("utf-8")
+    request = urllib.request.Request(
+        XAI_CHAT_URL,
+        data=encoded,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(
+            request,
+            timeout=_resolve_request_timeout(request_timeout_seconds),
+        ) as response:  # noqa: S310
+            body = response.read().decode("utf-8")
+            return json.loads(body)
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise LLMCallError(f"xAI HTTP error {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise LLMCallError(f"xAI request failed: {exc.reason}") from exc
+
+
 def _parse_provider(model: str) -> tuple[str, str]:
     """Parse provider prefix from model string, falling back to auto-detection.
 
@@ -385,20 +448,29 @@ def _parse_provider(model: str) -> tuple[str, str]:
         "anthropic:claude-sonnet-4-6"  -> ("anthropic", "claude-sonnet-4-6")
         "google:gemini-2.5-pro"        -> ("google", "gemini-2.5-pro")
         "openai:gpt-4.1"              -> ("openai", "gpt-4.1")
+        "xai:grok-4.3"                -> ("xai", "grok-4.3")
         "claude-sonnet-4-6"           -> ("anthropic", "claude-sonnet-4-6")
         "gemini-2.5-pro"              -> ("google", "gemini-2.5-pro")
+        "grok-4.3"                    -> ("xai", "grok-4.3")
         "gpt-4.1"                     -> ("openai", "gpt-4.1")
     """
     if ":" in model:
         provider, bare_model = model.split(":", 1)
         provider = provider.lower()
-        if provider in (PROVIDER_OPENAI, PROVIDER_ANTHROPIC, PROVIDER_GOOGLE):
+        if provider in (
+            PROVIDER_OPENAI,
+            PROVIDER_XAI,
+            PROVIDER_ANTHROPIC,
+            PROVIDER_GOOGLE,
+        ):
             return provider, bare_model
     # Auto-detect from model name
     if model.startswith("claude-"):
         return PROVIDER_ANTHROPIC, model
     if model.startswith("gemini-"):
         return PROVIDER_GOOGLE, model
+    if model.startswith("grok-"):
+        return PROVIDER_XAI, model
     return PROVIDER_OPENAI, model
 
 

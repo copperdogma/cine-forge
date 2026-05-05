@@ -733,6 +733,16 @@ evals:
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-scene-extraction-2026-04-24.json
         note: "Runtime-blocking: 12k output cap truncated the 15-scene JSON, and a 24k/900s rerun timed out (benchmarks/results/gpt55pro-scene-extraction-rerun-2026-04-24.json)."
+      - model: "Grok 4.3"
+        metrics:
+          overall: 0.4100
+        latency_ms: 116246
+        cost_usd: 0.0291
+        cost_estimated: true
+        measured: 2026-05-04
+        git_sha: "f2d0f13"
+        result_file: benchmarks/results/scene-extraction-grok43-2026-05-04.json
+        note: "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target."
       - model: "GPT-5.2"
         metrics:
           overall: 0.925
@@ -1129,6 +1139,16 @@ evals:
         git_sha: "e704243"
         result_file: benchmarks/results/model-scout-scene-enrichment-grok-4-1-fast-reasoning-full.json
         note: "Passed elevator, failed flashback. Still well below the current leaders on nuanced scene analysis."
+      - model: "Grok 4.3"
+        metrics:
+          overall: 0.4000
+        latency_ms: 40411
+        cost_usd: 0.0097
+        cost_estimated: true
+        measured: 2026-05-04
+        git_sha: "f2d0f13"
+        result_file: benchmarks/results/scene-enrichment-grok43-2026-05-04.json
+        note: "Story 200 Grok 4.3 probe failed both scene-enrichment fixtures. Classification: model-wrong/output-format - both outputs started with reasoning text before the JSON, so strict parsing failed. No default change; this is below the current Sonnet 4.6 lane and misses the latency target."
 
     attempts:
       - id: "003"
@@ -1282,6 +1302,16 @@ evals:
         git_sha: "e704243"
         result_file: benchmarks/results/model-scout-qa-pass-grok-4-1-fast-reasoning-full.json
         note: "Caught the bad extraction but incorrectly failed the good one, making it unsafe as a QA gate."
+      - model: "Grok 4.3"
+        metrics:
+          overall: 0.2625
+        latency_ms: 24490
+        cost_usd: 0.0062
+        cost_estimated: true
+        measured: 2026-05-04
+        git_sha: "f2d0f13"
+        result_file: benchmarks/results/qa-pass-grok43-2026-05-04.json
+        note: "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default."
 
     attempts: []
 
@@ -1512,6 +1542,16 @@ evals:
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-rerun-gemini25pro-maxout-2026-03-19.json
         note: "Corrected rerun after raising Gemini maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves from 0.1492 to 0.5662, but latency now exceeds the 15s pilot target and the model still misses dialogue/emotion and reveal quality on four clips. Remaining misses are model-wrong."
+      - model: "Grok 4.3"
+        metrics:
+          overall: 0.5720
+        latency_ms: 34739
+        cost_usd: 0.0090
+        cost_estimated: true
+        measured: 2026-05-04
+        git_sha: "f2d0f13"
+        result_file: benchmarks/results/video-understanding-grok43-2026-05-04.json
+        note: "Story 200 Grok 4.3 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON, but five misses were model-wrong director/shot-read failures, mainly weak camera/motion/reveal reads and shallow summaries. Latency also misses the 15s pilot target. No role-modality or generated-output-QA default change."
 
     attempts:
       - id: "002"
@@ -2966,6 +3006,16 @@ evals:
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-script-bible-2026-04-24.json
         note: "High quality but below GPT-5.4 and far too slow/expensive for the value-optimized default."
+      - model: "Grok 4.3"
+        metrics:
+          overall: 0.9050
+        latency_ms: 78664
+        cost_usd: 0.0213
+        cost_estimated: true
+        measured: 2026-05-04
+        git_sha: "f2d0f13"
+        result_file: benchmarks/results/script-bible-grok43-2026-05-04.json
+        note: "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change."
       - model: "GPT-5.4"
         metrics:
           overall: 0.970

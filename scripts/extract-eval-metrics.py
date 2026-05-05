@@ -94,6 +94,7 @@ PRICING: dict[str, tuple[float, float]] = {
     "claude-haiku-4-5-20251001": (0.80, 4.0),
     "gemini-3.1-flash-lite-preview": (0.10, 0.40),
     "gemini-3.1-pro-preview": (1.50, 10.0),
+    "grok-4.3": (1.25, 2.50),
 }
 
 
@@ -145,6 +146,18 @@ def extract_from_file(path: Path) -> dict[str, dict]:
             token_usage = entry.get("response", {}).get("tokenUsage", {})
             prompt_tok = token_usage.get("prompt", 0)
             completion_tok = token_usage.get("completion", 0)
+            completion_details = token_usage.get("completionDetails") or {}
+            reasoning_tok = (
+                completion_details.get("reasoning", 0)
+                if isinstance(completion_details, dict)
+                else 0
+            )
+            if "xai:" in provider_id or "grok" in provider_id:
+                total_tok = token_usage.get("total", 0) or 0
+                completion_tok = max(
+                    completion_tok + reasoning_tok,
+                    total_tok - prompt_tok,
+                )
             if prompt_tok > 0:
                 estimated = estimate_cost(provider_id, prompt_tok, completion_tok)
                 if estimated is not None and estimated > 0:

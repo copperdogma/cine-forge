@@ -204,6 +204,7 @@ def test_estimate_cost_usd_uses_known_model_pricing() -> None:
         ("gpt-5.4-nano", 1.45),
         ("gemini-3.1-pro-preview", 11.5),
         ("gemini-3.1-flash-lite-preview", 0.5),
+        ("grok-4.3", 3.75),
     ],
 )
 def test_estimate_cost_usd_supports_newly_added_models(model: str, expected: float) -> None:
@@ -259,6 +260,37 @@ def test_call_llm_passes_request_timeout_to_provider_transport(
     assert seen["timeout"] == 12.5
 
 
+@pytest.mark.unit
+def test_call_llm_routes_xai_models_to_xai_transport(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, Any] = {"payload": None, "timeout": None}
+
+    def fake_xai_transport(
+        payload: dict[str, Any],
+        *,
+        request_timeout_seconds: float | None = None,
+    ) -> dict[str, Any]:
+        seen["payload"] = payload
+        seen["timeout"] = request_timeout_seconds
+        return {
+            "id": "xai_req",
+            "choices": [{"message": {"content": "xai ok"}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 100, "completion_tokens": 20},
+        }
+
+    monkeypatch.setattr("cine_forge.ai.llm._xai_transport", fake_xai_transport)
+
+    result, metadata = call_llm(
+        prompt="test xai",
+        model="xai:grok-4.3",
+        request_timeout_seconds=22.0,
+    )
+
+    assert result == "xai ok"
+    assert seen["timeout"] == 22.0
+    assert seen["payload"]["model"] == "grok-4.3"
+    assert metadata["estimated_cost_usd"] == pytest.approx(0.000175)
+
+
 # --- Provider Parsing ---
 
 
@@ -267,6 +299,7 @@ def test_parse_provider_prefixed() -> None:
     assert _parse_provider("anthropic:claude-sonnet-4-6") == ("anthropic", "claude-sonnet-4-6")
     assert _parse_provider("google:gemini-2.5-pro") == ("google", "gemini-2.5-pro")
     assert _parse_provider("openai:gpt-4.1") == ("openai", "gpt-4.1")
+    assert _parse_provider("xai:grok-4.3") == ("xai", "grok-4.3")
 
 
 @pytest.mark.unit
@@ -277,6 +310,7 @@ def test_parse_provider_autodetect() -> None:
     )
     assert _parse_provider("gemini-2.5-pro") == ("google", "gemini-2.5-pro")
     assert _parse_provider("gemini-2.5-flash") == ("google", "gemini-2.5-flash")
+    assert _parse_provider("grok-4.3") == ("xai", "grok-4.3")
     assert _parse_provider("gpt-4.1") == ("openai", "gpt-4.1")
     assert _parse_provider("gpt-4o-mini") == ("openai", "gpt-4o-mini")
 

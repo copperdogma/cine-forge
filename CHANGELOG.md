@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-05-05-01] — Evaluate Grok 4.3 reasoning slots (Story 200)
+
+### Added
+- Added xAI Grok 4.3 discovery, benchmark provider wiring, and focused unit coverage for text/image reasoning evals.
+- Added maintained Grok 4.3 eval evidence for scene extraction, scene enrichment, QA verification, script bible, and video understanding.
+
+### Changed
+- Updated the eval registry and generated methodology surfaces to record that Grok 4.3 did not beat the current model-slot strategy.
+- Removed the completed Conductor Scout 028 Grok 4.3 inbox item.
+
 ## [2026-04-30-03] — Close production xAI previz readiness (Story 195)
 
 ### Added

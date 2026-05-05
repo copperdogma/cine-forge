@@ -76,6 +76,49 @@ def test_provider_payload_builders_include_all_frames() -> None:
 
 
 @pytest.mark.unit
+def test_provider_xai_call_uses_openai_compatible_payload(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seen: dict[str, object] = {}
+
+    def fake_require_env(name: str) -> str:
+        seen["env"] = name
+        return "xai-test-key"
+
+    def fake_request_json(
+        url: str,
+        *,
+        headers: dict[str, str],
+        body: dict[str, object],
+    ) -> dict[str, object]:
+        seen["url"] = url
+        seen["headers"] = headers
+        seen["body"] = body
+        return {
+            "choices": [{"message": {"content": '{"clip_id":"clip_1"}'}}],
+            "usage": {"prompt_tokens": 80, "completion_tokens": 12, "total_tokens": 92},
+        }
+
+    monkeypatch.setattr(provider, "_require_env", fake_require_env)
+    monkeypatch.setattr(provider, "_request_json", fake_request_json)
+
+    result = provider._call_xai(
+        model="grok-4.3",
+        user_text="Inspect this clip.",
+        frames=[{"mime_type": "image/jpeg", "base64": "abc"}],
+        max_tokens=1200,
+        temperature=0.0,
+    )
+
+    assert seen["env"] == "XAI_API_KEY"
+    assert seen["url"] == provider.XAI_CHAT_URL
+    assert seen["headers"]["Authorization"] == "Bearer xai-test-key"
+    assert seen["body"]["model"] == "grok-4.3"
+    assert result["output"] == '{"clip_id":"clip_1"}'
+    assert result["token_usage"] == {"prompt": 80, "completion": 12, "total": 92}
+
+
+@pytest.mark.unit
 def test_provider_resolves_candidate_variant_clip_dir(tmp_path: Path) -> None:
     clip_dir = provider._resolve_clip_dir(
         base_path=tmp_path,
