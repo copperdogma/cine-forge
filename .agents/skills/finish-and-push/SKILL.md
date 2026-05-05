@@ -103,6 +103,20 @@ Treat these as **major** and stop before commit/push:
 - anything that requires architecture changes, scope renegotiation, or user
   judgment about what should land
 
+
+## Reviewed Learning Hook
+
+Before final closeout, run or explicitly consider `/learning-review` only when
+the landing exposed material check failures, repeated handoff friction, a
+stopped landing with a recurring process gap, a surprising result, a reusable
+procedure, or an explicit user correction. Skip it for ordinary successful
+landings. If it returns `RESULT: candidate-warranted`, report the finding or
+draft it through `/learning-candidate`; do not promote candidates during the
+landing flow. If drafting after check-in or landing would create a new dirty
+candidate file, report the recommendation and leave drafting for a separate
+approved follow-up unless it can be validated and included before closeout
+finishes.
+
 ## Guardrails
 
 - Never bypass `/mark-story-done`

@@ -210,6 +210,17 @@ YYYYMMDD-HHMM — action: result, evidence, next step
 
 Entries should be verbose. Capture decisions, failures, solutions, and learnings. These are build artifacts — any future AI session should be able to pick up context from the log.
 
+
+## Reviewed Learning Hook
+
+Before final handoff, run or explicitly consider `/learning-review` only when
+this build was noisy, failed, widened unexpectedly, exposed a missing guardrail,
+or included an explicit user correction that appears reusable. Skip the detector
+for ordinary successful builds. If `/learning-review` returns
+`RESULT: candidate-warranted`, report the finding or draft it through
+`/learning-candidate`; do not promote or mutate live workflow surfaces during
+ordinary build closeout.
+
 ## Guardrails
 
 - Never write implementation code before the human gate (step 11) — exploration and planning are read-only

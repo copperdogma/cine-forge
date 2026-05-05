@@ -199,6 +199,17 @@ Assess whether a story's implementation meets its requirements.
 - [one recommended next step or short sequence phrased so the user can approve it by replying `yes`]
 ```
 
+
+## Reviewed Learning Hook
+
+Before final validation handoff, run or explicitly consider `/learning-review`
+only when validation found material issues, repeated closeout friction, a
+surprising pass/fail result, a missing guardrail, or an explicit user correction
+that appears reusable. Skip it for ordinary clean validation. If it returns
+`RESULT: candidate-warranted`, report the finding or draft it through
+`/learning-candidate`; do not promote or mutate live workflow surfaces during
+ordinary validation closeout.
+
 ## Guardrails
 
 - Never hide gaps or inflate the grade

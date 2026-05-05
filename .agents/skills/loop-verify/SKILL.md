@@ -180,6 +180,17 @@ material or minor.
 - final state: converged, blocked, or non-convergent
 - checks run
 
+
+## Reviewed Learning Hook
+
+At loop closeout, run or explicitly consider `/learning-review` only when the
+loop exposed material repeated issues, blockers, non-convergence, an explicit
+user correction, a missing guardrail, a high-risk miss, or a reusable
+verification procedure. Omit it for ordinary clean loops, minor-only loops, or
+material fixes that only prove the current loop did useful work. If it returns
+`RESULT: candidate-warranted`, report the finding or draft it through
+`/learning-candidate`; do not promote candidates as part of loop closeout.
+
 ## Guardrails
 
 - Do not use this skill as an excuse to spawn agents for trivial work.
