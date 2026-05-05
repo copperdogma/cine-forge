@@ -1,0 +1,1027 @@
+{
+  "captured_at": "2026-05-04T20:47:00-06:00",
+  "workspace_root": "/Users/cam/Documents/Projects/cine-forge",
+  "project": {
+    "slug": "brick-steel-full-retired",
+    "display_name": "Brick & Steel: Full Retired",
+    "production_format": "live_action"
+  },
+  "artifact_file_counts_by_type": {
+    "ai_previz_prompt": 27,
+    "ai_previz_video": 27,
+    "canonical_script": 1,
+    "character_and_performance": 2,
+    "character_bible": 15,
+    "continuity_index": 1,
+    "continuity_state": 27,
+    "cost_report": 28,
+    "entity_discovery_results": 1,
+    "entity_graph": 1,
+    "generated_video": 8,
+    "intent_mood": 1,
+    "location_bible": 6,
+    "look_and_feel": 2,
+    "look_and_feel_index": 1,
+    "media_validation": 34,
+    "preference_signal": 2,
+    "project_config": 3,
+    "prop_bible": 1,
+    "raw_input": 1,
+    "render_clip_plan": 2,
+    "render_prompt": 8,
+    "rhythm_and_flow": 2,
+    "rhythm_and_flow_index": 1,
+    "scene": 12,
+    "scene_index": 2,
+    "script_bible": 1,
+    "shot_plan": 10,
+    "sound_and_music": 2,
+    "sound_and_music_index": 1,
+    "story_world": 1,
+    "storyboard": 3,
+    "timeline": 20,
+    "track_manifest": 31
+  },
+  "character_entities": [
+    {
+      "entity_id": "boy_band",
+      "name": "BOY BAND",
+      "prominence": "secondary",
+      "scene_presence": [
+        "INT. TRAILER HOME - DAY",
+        "EXT. WOODEN SHACK - DAY (mentioned by Cognito)"
+      ],
+      "description": "The Boy Band, also known as Dan and Jack, are a criminal duo who reside in a trailer home. They are former adversaries of Brick and Braddock who were previously put away by the detectives. They are shown counting money and drugs from their "
+    },
+    {
+      "entity_id": "brick",
+      "name": "BRICK",
+      "prominence": "primary",
+      "scene_presence": [
+        "EXT. BRICK'S PATIO - DAY",
+        "EXT. WOODEN SHACK - DAY",
+        "INT. GARAGE - DAY"
+      ],
+      "description": "Brick Braddock is a retired police detective who, along with his former partner Dick Steel, is drawn back into action when a host of criminals they previously put away come after them. He is one half of the central duo driving the story."
+    },
+    {
+      "entity_id": "brick_braddock",
+      "name": "BRICK BRADDOCK",
+      "prominence": "primary",
+      "scene_presence": [
+        "EXT. BRICK'S PATIO - DAY",
+        "OPENING TITLES"
+      ],
+      "description": "Retired police detective who shares a patio and pool with his former partner Dick Steel. Appears contemplative and restless in retirement, quickly agreeing to abandon it when Steel suggests doing so."
+    },
+    {
+      "entity_id": "cognito",
+      "name": "COGNITO",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. WOODEN SHACK - DAY"
+      ],
+      "description": "A criminal mastermind who is a known associate and frequent suspect in the criminal underworld. He is familiar with the various factions and threats operating in the area, and is regularly roughed up by Brick and Steel as a go-to informant."
+    },
+    {
+      "entity_id": "dan",
+      "name": "DAN",
+      "prominence": "minor",
+      "scene_presence": [
+        "INT. TRAILER HOME - DAY"
+      ],
+      "description": "Dan is one half of a criminal duo known as 'The Boy Band,' alongside Jack. He is seen in a trailer home drinking beer and counting the proceeds from a recent smash-and-grab robbery. He speaks with a menacing, decisive attitude, suggesting l"
+    },
+    {
+      "entity_id": "dick",
+      "name": "DICK",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. WOODEN SHACK - DAY"
+      ],
+      "description": "DICK appears to be an alternate name or nickname used by Cognito when addressing one of the two enforcers (Brick or Steel) who are roughing him up against a wooden shack. The name is used in direct address but no further identity details ar"
+    },
+    {
+      "entity_id": "dick_steel",
+      "name": "DICK STEEL",
+      "prominence": "primary",
+      "scene_presence": [
+        "EXT. BRICK'S PATIO - DAY",
+        "EXT. BRICK'S POOL - DAY"
+      ],
+      "description": "Dick Steel is a retired police detective and former partner of Brick Braddock. He is sociable and quick with a joke, but also restless in retirement. He is killed by the Point Blank Sniper shortly after expressing concern about former crimi"
+    },
+    {
+      "entity_id": "extremely_handsome_man",
+      "name": "EXTREMELY HANDSOME MAN",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. PALATIAL MANSION - DAY"
+      ],
+      "description": "An extremely handsome man seen shirtless outside a palatial mansion, drinking a beer. He commands a minion and orders the deaths of Brick and Steel, suggesting he is a villain or antagonist figure with resources and authority."
+    },
+    {
+      "entity_id": "handsome_man",
+      "name": "HANDSOME MAN",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. PALATIAL MANSION - DAY"
+      ],
+      "description": "An extremely handsome man, shirtless, drinking a beer outside a palatial mansion. He appears to be a villain or antagonist figure who commands minions and orders the deaths of characters named Brick and Steel."
+    },
+    {
+      "entity_id": "jack",
+      "name": "JACK",
+      "prominence": "minor",
+      "scene_presence": [
+        "INT. TRAILER HOME - DAY"
+      ],
+      "description": "Jack is one half of a criminal duo known as 'The Boy Band,' alongside Dan. He is seen in a trailer home drinking beer and counting proceeds from a smash-and-grab robbery. He speaks Vietnamese and appears to have reservations about confronti"
+    },
+    {
+      "entity_id": "minion",
+      "name": "MINION",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. PALATIAL MANSION - DAY"
+      ],
+      "description": "An unnamed subordinate who serves the Extremely Handsome Man. Appears briefly to deliver news about the location of Brick and Steel."
+    },
+    {
+      "entity_id": "point_blank_sniper",
+      "name": "POINT BLANK SNIPER",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. WOODEN SHACK - DAY"
+      ],
+      "description": "A named threat mentioned by Cognito as one of several adversaries coming after Brick and Steel. Exists only as a name in a list of dangerous enemies, suggesting a formidable or notorious figure in the criminal underworld."
+    },
+    {
+      "entity_id": "scorpio",
+      "name": "SCORPIO",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. WOODEN SHACK - DAY"
+      ],
+      "description": "A threat mentioned by Cognito as one of several parties coming after Brick and Steel. Scorpio is named as part of a list of dangerous adversaries, suggesting a criminal or antagonistic figure of some notoriety."
+    },
+    {
+      "entity_id": "sparrow",
+      "name": "SPARROW",
+      "prominence": "minor",
+      "scene_presence": [
+        "EXT. WOODEN SHACK - DAY"
+      ],
+      "description": "A threat mentioned by Cognito as one of several parties coming after Brick and Steel. Sparrow is named alongside other dangerous figures such as Scorpio, The Boy Band, and Point Blank Sniper, suggesting a criminal or adversarial identity, b"
+    },
+    {
+      "entity_id": "steel",
+      "name": "STEEL",
+      "prominence": "primary",
+      "scene_presence": [
+        "EXT. BRICK'S PATIO - DAY",
+        "EXT. BRICK'S POOL - DAY",
+        "EXT. WOODEN SHACK - DAY",
+        "INT. GARAGE - DAY"
+      ],
+      "description": "Dick Steel is a retired police detective and former partner of Brick Braddock. He is one half of the titular duo 'Brick & Steel', now pulled back into action when every criminal they ever put away comes after them."
+    }
+  ],
+  "duplicate_character_evidence": {
+    "brick_family_entities": [
+      {
+        "entity_id": "brick",
+        "name": "BRICK",
+        "prominence": "primary",
+        "scene_presence": [
+          "EXT. BRICK'S PATIO - DAY",
+          "EXT. WOODEN SHACK - DAY",
+          "INT. GARAGE - DAY"
+        ],
+        "description": "Brick Braddock is a retired police detective who, along with his former partner Dick Steel, is drawn back into action when a host of criminals they previously put away come after them. He is one half of the central duo driving the story."
+      },
+      {
+        "entity_id": "brick_braddock",
+        "name": "BRICK BRADDOCK",
+        "prominence": "primary",
+        "scene_presence": [
+          "EXT. BRICK'S PATIO - DAY",
+          "OPENING TITLES"
+        ],
+        "description": "Retired police detective who shares a patio and pool with his former partner Dick Steel. Appears contemplative and restless in retirement, quickly agreeing to abandon it when Steel suggests doing so."
+      }
+    ],
+    "steel_family_entities": [
+      {
+        "entity_id": "steel",
+        "name": "STEEL",
+        "prominence": "primary",
+        "scene_presence": [
+          "EXT. BRICK'S PATIO - DAY",
+          "EXT. BRICK'S POOL - DAY",
+          "EXT. WOODEN SHACK - DAY",
+          "INT. GARAGE - DAY"
+        ],
+        "description": "Dick Steel is a retired police detective and former partner of Brick Braddock. He is one half of the titular duo 'Brick & Steel', now pulled back into action when every criminal they ever put away comes after them."
+      },
+      {
+        "entity_id": "dick",
+        "name": "DICK",
+        "prominence": "minor",
+        "scene_presence": [
+          "EXT. WOODEN SHACK - DAY"
+        ],
+        "description": "DICK appears to be an alternate name or nickname used by Cognito when addressing one of the two enforcers (Brick or Steel) who are roughing him up against a wooden shack. The name is used in direct address but no further identity details ar"
+      },
+      {
+        "entity_id": "dick_steel",
+        "name": "DICK STEEL",
+        "prominence": "primary",
+        "scene_presence": [
+          "EXT. BRICK'S PATIO - DAY",
+          "EXT. BRICK'S POOL - DAY"
+        ],
+        "description": "Dick Steel is a retired police detective and former partner of Brick Braddock. He is sociable and quick with a joke, but also restless in retirement. He is killed by the Point Blank Sniper shortly after expressing concern about former crimi"
+      }
+    ]
+  },
+  "scene_001": {
+    "scene": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "version": 2,
+      "path": "artifacts/scene/scene_001/v2.json",
+      "health": "valid",
+      "created_at": "2026-04-29T17:57:22.921080Z"
+    },
+    "shot_plan": {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_001",
+      "version": 10,
+      "path": "artifacts/shot_plan/scene_001/v10.json",
+      "health": "valid",
+      "created_at": "2026-04-30T02:23:19.084297Z"
+    },
+    "render_clip_plan": {
+      "artifact_type": "render_clip_plan",
+      "entity_id": "scene_001",
+      "version": 2,
+      "path": "artifacts/render_clip_plan/scene_001/v2.json",
+      "health": "valid",
+      "created_at": "2026-04-30T03:02:46.679078Z"
+    },
+    "keyframe": null,
+    "scene_level_ai_previz": {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001",
+      "version": 2,
+      "path": "artifacts/ai_previz_video/scene_001/v2.json",
+      "health": "valid",
+      "created_at": "2026-04-29T21:42:08.458097Z",
+      "render_clip_id": null,
+      "duration_seconds": 4.0,
+      "target_provider": "xai",
+      "target_model": "grok-imagine-video",
+      "video_relative_path": "artifacts/ai_previz_video_media/scene_001/v2/ai_previz.mp4",
+      "video_exists": true
+    },
+    "scene_level_media_validation": {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001",
+      "version": 2,
+      "path": "artifacts/media_validation/scene_001/v2.json",
+      "health": "valid",
+      "created_at": "2026-04-29T21:42:12.365978Z",
+      "status": null,
+      "issues_count": 0,
+      "summary": "The sampled frames clearly depict a readable daytime backyard patio scene with two distinct characters, patio furniture, a grill, and consistent staging suitable for previs review.",
+      "recommended_health": "valid",
+      "semantic_review_status": "pass",
+      "sample_count_extracted": 5
+    },
+    "render_clips": [
+      {
+        "clip_id": "scene_001_clip_001",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_001",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_001/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.728329Z",
+          "render_clip_id": "scene_001_clip_001",
+          "dialogue_exact_lines_present": true,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ],
+          "prompt_text_preview": "Scene format: live-action cinematic dialogue scene, bittersweet-comedic action-thriller tone. EXT. BRICK'S PATIO - DAY. 8-second scene clip that opens with a wide establishing master and holds the patio's oppressive stillness; the men are small against the yard, and the scene should feel like a calm before violence, even though no violence happens yet.\n\nReference usage: use the two uploaded character reference images to preserve Brick Braddock and Dick Steel's exact look and wardrobe continuity. Keep the patio as a bright suburban exterior with saturated greens, empty chairs, an unused barbecue, and a screen door behind Brick. Do not add new visual elements beyond the established patio details.\n\nCamera, blocking, and motion: locked-off, static framing throughout. Start in a wide eye-level establishing shot across the patio toward the house. Brick is already seated at the patio table, sta"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_001",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_001/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.746515Z",
+          "render_clip_id": "scene_001_clip_001",
+          "duration_seconds": 8.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/gy0zt54nrpwv",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_001/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_001",
+          "version": 3,
+          "path": "artifacts/ai_previz_video/scene_001_clip_001/v3.json",
+          "health": "valid",
+          "created_at": "2026-04-30T03:07:16.003619Z",
+          "render_clip_id": "scene_001_clip_001",
+          "duration_seconds": 8.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_001/v3/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_001",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_001/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.042512Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames show a coherent bright suburban patio establishing scene with two men in matching dark jackets, a screen door behind Brick, an unused barbecue, empty patio seating, and no visible blocking defects. The clip appears usable for the stated scene scope.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      },
+      {
+        "clip_id": "scene_001_clip_002",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_002",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_002/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.761982Z",
+          "render_clip_id": "scene_001_clip_002",
+          "dialogue_exact_lines_present": false,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ],
+          "prompt_text_preview": "Scene format and intent: live-action bittersweet-comedic suburban patio scene, 8 seconds, 16:9, 720p. Preserve the established inciting beat: Brick is already seated at the patio table in retirement stillness as Steel emerges from the house with two cold beers. The scene should feel sunlit, ordinary, and emotionally hollow beneath the humor. Keep the camera locked off and let the stillness do the work; the only energetic motion is Steel\u2019s entrance and the eventual hard cut out.\n\nReference usage: use the selected character reference images for Brick Braddock and Dick Steel to preserve their established faces, age, wardrobe feel, and partnership continuity. Use the patio reference details only as material guidance for the domestic outdoor space: screen door, table, chairs, barbecue, potted plants, and the sense of a yard that is too large for two men.\n\nCamera, blocking, and motion: start o"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_002",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_002/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.775736Z",
+          "render_clip_id": "scene_001_clip_002",
+          "duration_seconds": 8.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/r2rx0prxf1x2",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_002/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_002",
+          "version": 3,
+          "path": "artifacts/ai_previz_video/scene_001_clip_002/v3.json",
+          "health": "valid",
+          "created_at": "2026-04-30T03:07:16.057469Z",
+          "render_clip_id": "scene_001_clip_002",
+          "duration_seconds": 8.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_002/v3/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_002",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_002/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.072780Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames show a coherent sunlit suburban patio scene with Brick seated at the table and Steel entering from the house carrying beers, then joining him. The locked-off composition, ordinary backyard setting, and restrained action match the intended beat and tone well enough for production readiness based on the sample.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      },
+      {
+        "clip_id": "scene_001_clip_003",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_003",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_003/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.790509Z",
+          "render_clip_id": "scene_001_clip_003",
+          "dialogue_exact_lines_present": false,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "prompt_context"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "prompt_context"
+            }
+          ],
+          "prompt_text_preview": "Scene format: live-action suburban patio dialogue scene, bittersweet-comedic with action-thriller tension. Duration 6 seconds, 16:9, 720p. Preserve the established intent: two retired detectives in bright midday stillness, a dumb joke, a small genuine laugh, then Steel sits down and the scene settles toward the toast. Keep the camera locked off and the mood dry, restrained, and slightly uncomfortable.\n\nUse the provided character reference images for Brick Braddock and Dick Steel as visual continuity guides. Keep their faces, age, wardrobe, and body language consistent with the references.\n\nCamera and blocking: start on the wide establishing patio view. Brick is already seated at the table, stage left, turned toward Steel. Steel enters from the screen door carrying two beers, crosses to the table, and sets one beer in front of Brick. The patio should feel too large for two men, with empty"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_003",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_003/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.804644Z",
+          "render_clip_id": "scene_001_clip_003",
+          "duration_seconds": 6.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/chq8t5th4pv5",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_003/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "prompt_context"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "prompt_context"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_003",
+          "version": 3,
+          "path": "artifacts/ai_previz_video/scene_001_clip_003/v3.json",
+          "health": "valid",
+          "created_at": "2026-04-30T03:07:16.117949Z",
+          "render_clip_id": "scene_001_clip_003",
+          "duration_seconds": 6.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_003/v3/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_003",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_003/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.100453Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames show a coherent live-action suburban patio scene in bright midday light with two older men, a grill, drinks on the table, and the standing character moving into position beside the seated character. The camera appears locked off and the scene matches the intended patio dialogue setup and tone.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      },
+      {
+        "clip_id": "scene_001_clip_004",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_004",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_004/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.823168Z",
+          "render_clip_id": "scene_001_clip_004",
+          "dialogue_exact_lines_present": false,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ],
+          "prompt_text_preview": "Scene format and intent: live-action bittersweet-comedic suburban patio scene, 8 seconds, 16:9. Two retired cops sit in the same frame with a long, uncomfortable beat that turns a simple toast into a quiet rejection of retirement. Preserve the exact scripted dialogue and the deliberate pause structure. The camera should feel still and patient, with the scene\u2019s emotional weight carried by body language, silence, and ambient sound rather than movement.\n\nReference usage: use the uploaded character references for Brick Braddock and Dick Steel to preserve their established faces, age, and wardrobe continuity. Keep the patio as a pleasant but slightly neglected suburban exterior with empty chairs, a clean unused barbecue, overgrown greenery, and a warped screen door. The references should guide likeness and costume only; do not stylize beyond the established grounded live-action look.\n\nCamera,"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_004",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_004/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.837863Z",
+          "render_clip_id": "scene_001_clip_004",
+          "duration_seconds": 8.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/n6k4ebmugpb0",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_004/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_004",
+          "version": 3,
+          "path": "artifacts/ai_previz_video/scene_001_clip_004/v3.json",
+          "health": "valid",
+          "created_at": "2026-04-30T03:07:16.174754Z",
+          "render_clip_id": "scene_001_clip_004",
+          "duration_seconds": 8.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_004/v3/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_004",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_004/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.128483Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames consistently show two older men seated together on a suburban patio, holding and then drinking from cans in a still, conversational setup. The outdoor setting, 16:9 framing, and calm beat match the scene intent, and there are no visible blocking visual issues in the sample packet.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      },
+      {
+        "clip_id": "scene_001_clip_005",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_005",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_005/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.852170Z",
+          "render_clip_id": "scene_001_clip_005",
+          "dialogue_exact_lines_present": false,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ],
+          "prompt_text_preview": "Scene format: live-action suburban patio scene, bittersweet-comedic tone with action-thriller visual discipline. 8-second clip, 16:9, 720p. This is the first half of the long beat after the toast: the drinking has just ended, both men lower their beers, and the silence begins to accumulate weight. Preserve the feeling that the beat is longer than is funny.\n\nUse the provided character reference images for Brick Braddock and Dick Steel to keep their faces, age, and wardrobe consistent with the upstream design. Keep the patio layout grounded and domestic: outdoor table, cushioned chairs, clean gas barbecue, overgrown lawn, potted plant, coiled hose, warped screen door, and empty negative space around the two men.\n\nCamera and blocking: start on a locked-off medium two-shot at eye level, slight profile, both men visible with the table between them. Brick sits stage left, Steel stage right. Th"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_005",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_005/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.866463Z",
+          "render_clip_id": "scene_001_clip_005",
+          "duration_seconds": 8.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/qdtnsr46gd4p",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_005/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_005",
+          "version": 3,
+          "path": "artifacts/ai_previz_video/scene_001_clip_005/v3.json",
+          "health": "valid",
+          "created_at": "2026-04-30T03:07:16.230201Z",
+          "render_clip_id": "scene_001_clip_005",
+          "duration_seconds": 8.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_005/v3/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_005",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_005/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.159674Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames show a coherent live-action suburban patio scene matching the requested setting and tone: two older men in black leather jackets sit at an outdoor table with beers, the patio includes a gas barbecue, potted plant, screen porch, hose, and overgrown lawn, and the composition supports the intended quiet post-toast beat.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      },
+      {
+        "clip_id": "scene_001_clip_006",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_006",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_006/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.880369Z",
+          "render_clip_id": "scene_001_clip_006",
+          "dialogue_exact_lines_present": false,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ],
+          "prompt_text_preview": "Scene format: live-action suburban patio scene, bittersweet-comedic action-thriller tone. 8-second clip, 16:9, 720p. The moment is a long, uncomfortable silence after a toast, with two retired detectives realizing retirement is unbearable. Preserve the exact emotional beat: stillness, eye contact, the silence becoming depressing, then the reversal line setup. Use the provided character reference images for Brick Braddock and Dick Steel to match their faces, age, and wardrobe.\n\nCamera and blocking: locked-off static two-shot at eye level, slight profile, both men visible with the table between them. Steel sits stage right, Brick stage left. They are seated close enough that the shared silence feels natural, not staged. Keep the patio composition spacious, with empty chairs and an unused barbecue in the background as deliberate negative space. No handheld movement. No dramatic camera motio"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_006",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_006/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.896142Z",
+          "render_clip_id": "scene_001_clip_006",
+          "duration_seconds": 8.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/1qdf7w8zqhmc",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_006/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "reference_image"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "reference_image"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_006",
+          "version": 3,
+          "path": "artifacts/ai_previz_video/scene_001_clip_006/v3.json",
+          "health": "valid",
+          "created_at": "2026-04-30T03:07:16.286162Z",
+          "render_clip_id": "scene_001_clip_006",
+          "duration_seconds": 8.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_006/v3/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_006",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_006/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.188699Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames consistently show a static two-shot on a suburban patio with both retired detectives seated across a table, maintaining eye contact and a quiet, still beat that matches the scene intent. No blocking visual issues are evident in the sample.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      },
+      {
+        "clip_id": "scene_001_clip_007",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_007",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_007/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.917477Z",
+          "render_clip_id": "scene_001_clip_007",
+          "dialogue_exact_lines_present": false,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "prompt_context"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "prompt_context"
+            }
+          ],
+          "prompt_text_preview": "EXT. BRICK'S PATIO - DAY. Live-action scene, bittersweet-comedic action-thriller tone. A locked-off, scene-level render with static framing and a hard SMASH CUT at the end. Preserve the established intent: retirement feels wrong, the patio is too big for two men, and the line lands with quiet finality, not as a joke.\n\nUse the provided character references for Brick Braddock and Dick Steel to preserve their established look and wardrobe. Keep them seated close together on the patio, facing generally the same direction, with Brick already outside and Steel entering through the warped screen door carrying beers.\n\nCamera and blocking: begin on a wide establishing view that makes the patio feel oversized and empty, with negative space from unused chairs, the clean gas barbecue, the coiled hose, and the overgrown yard beyond. Then hold a symmetrical two-shot as Steel arrives and hands off a be"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_007",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_007/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.933049Z",
+          "render_clip_id": "scene_001_clip_007",
+          "duration_seconds": 6.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/k0vvv6kb22ac",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_007/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "prompt_context"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "prompt_context"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_007",
+          "version": 3,
+          "path": "artifacts/ai_previz_video/scene_001_clip_007/v3.json",
+          "health": "valid",
+          "created_at": "2026-04-30T03:07:16.349020Z",
+          "render_clip_id": "scene_001_clip_007",
+          "duration_seconds": 5.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_007/v3/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_007",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_007/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.216678Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames show a coherent daytime patio scene with two seated men holding beer bottles, matching the requested outdoor setup and quiet, grounded tone. Framing is stable and the scene appears production-usable from the provided evidence.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      },
+      {
+        "clip_id": "scene_001_clip_008",
+        "render_prompt": {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_008",
+          "version": 1,
+          "path": "artifacts/render_prompt/scene_001_clip_008/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.947987Z",
+          "render_clip_id": "scene_001_clip_008",
+          "dialogue_exact_lines_present": false,
+          "contains_bear_joke_phrase": false,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "prompt_context"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "prompt_context"
+            }
+          ],
+          "prompt_text_preview": "Scene format: live-action suburban patio inciting beat, bittersweet-comedic action-thriller tone. Duration 6 seconds, 16:9, 720p. Preserve the established intent: two retired detectives on Brick\u2019s patio, stillness and silence turning into a hard reversal. End on an instantaneous SMASH CUT with no hold, no fade, no extra frame after the final syllable.\n\nUse the selected character reference images for Brick Braddock and Dick Steel as visual continuity only; keep their established ages, faces, and grounded retired-cop wardrobe. Do not introduce new styling or redesigns.\n\nCamera and blocking: start on a locked-off medium close-up, slight over-the-shoulder from Brick\u2019s shoulder onto Steel, 85mm feel, shallow depth of field. Steel is seated close beside Brick, facing slightly toward him but mostly oriented toward the yard. Brick remains seated and still, looking outward or down at his beer. Th"
+        },
+        "generated_video": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_008",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_008/v1.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:21.962907Z",
+          "render_clip_id": "scene_001_clip_008",
+          "duration_seconds": 6.0,
+          "target_provider": "google",
+          "target_model": "veo-3.1-generate-preview",
+          "request_id": "models/veo-3.1-generate-preview/operations/yp66em1j3udo",
+          "video_relative_path": "artifacts/generated_video_media/scene_001_clip_008/v1/scene_render.mp4",
+          "video_exists": true,
+          "resolved_reference_inputs": [
+            {
+              "input_id": "character_visual_brick_braddock",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg",
+              "used_as": "prompt_context"
+            },
+            {
+              "input_id": "character_visual_dick_steel",
+              "kind": "character_injected_image",
+              "relative_path": "artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg",
+              "used_as": "prompt_context"
+            }
+          ]
+        },
+        "ai_previz_video": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001_clip_008",
+          "version": 4,
+          "path": "artifacts/ai_previz_video/scene_001_clip_008/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:15:49.690361Z",
+          "render_clip_id": "scene_001_clip_008",
+          "duration_seconds": 5.0,
+          "target_provider": "xai",
+          "target_model": "grok-imagine-video",
+          "video_relative_path": "artifacts/ai_previz_video_media/scene_001_clip_008/v4/ai_previz.mp4",
+          "video_exists": true
+        },
+        "media_validation": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_008",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_008/v4.json",
+          "health": "valid",
+          "created_at": "2026-04-30T04:25:54.249216Z",
+          "status": null,
+          "issues_count": 0,
+          "summary": "The sampled frames show a consistent live-action suburban patio setup with two older men in grounded casual attire, matching the scene intent and visual continuity. No blocking visual issues are evident in the sample packet.",
+          "recommended_health": "valid",
+          "semantic_review_status": "pass",
+          "sample_count_extracted": 5
+        }
+      }
+    ]
+  },
+  "design_studies": [
+    {
+      "entity_id": "character_brick_braddock",
+      "exists": true,
+      "path": "artifacts/bibles/character_brick_braddock/design_study_state.json",
+      "round_count": 1,
+      "image_count": 4,
+      "models": [
+        "gpt-image-1"
+      ],
+      "selected_final_filename": "design_study_r1_img1.jpg",
+      "decisions": {
+        "pending": 3,
+        "selected_final": 1
+      },
+      "last_updated": "2026-04-29T14:59:00.242360"
+    },
+    {
+      "entity_id": "character_dick_steel",
+      "exists": true,
+      "path": "artifacts/bibles/character_dick_steel/design_study_state.json",
+      "round_count": 1,
+      "image_count": 4,
+      "models": [
+        "gpt-image-1"
+      ],
+      "selected_final_filename": "design_study_r1_img3.jpg",
+      "decisions": {
+        "pending": 3,
+        "selected_final": 1
+      },
+      "last_updated": "2026-04-29T15:03:47.916220"
+    }
+  ]
+}

@@ -825,7 +825,8 @@
           "195",
           "196",
           "197",
-          "200"
+          "200",
+          "201"
         ],
         "adrIds": [
           "ADR-002",
@@ -928,7 +929,8 @@
           "196",
           "197",
           "199",
-          "200"
+          "200",
+          "201"
         ],
         "adrIds": [
           "ADR-002",
@@ -1210,7 +1212,8 @@
           "194",
           "195",
           "196",
-          "199"
+          "199",
+          "201"
         ],
         "adrIds": [
           "ADR-003"
@@ -1761,20 +1764,21 @@
           "196",
           "197",
           "199",
-          "200"
+          "200",
+          "201"
         ],
         "evalIds": [],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "196",
-          "sourcePath": "docs/stories/story-196-brick-steel-product-truth-scrub.md",
+          "sourceId": "201",
+          "sourcePath": "docs/stories/story-201-keyframe-affordance-truth.md",
           "recommendedNow": true,
           "posture": "ready-now",
           "whyNow": "",
           "lastRelevantAction": {
             "date": null,
             "sourceType": "story-status",
-            "source": "docs/stories/story-196-brick-steel-product-truth-scrub.md",
+            "source": "docs/stories/story-201-keyframe-affordance-truth.md",
             "summary": ""
           },
           "storyIds": [
@@ -1786,7 +1790,8 @@
             "196",
             "197",
             "199",
-            "200"
+            "200",
+            "201"
           ],
           "evalIds": []
         }
@@ -11937,9 +11942,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260420-2248",
-        "date": "2026-04-20",
-        "summary": "rationale-captured: documented the current above-script stack and the source-story rationale for Script Bible (Story 093), Artifact Health (Story 142), and Final Output (Stories 166/167), then framed the story around re…"
+        "timestamp": "20260504-2128",
+        "date": "2026-05-04",
+        "summary": "validation-addendum: Story 196 validation reran the mobile browser packet and found the Brick & Steel mobile Home route loads without blank screen or browser errors, but does not expose `Start Scene Work` text. Evidence…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -11949,12 +11954,12 @@
         "sourcePath": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
         "recommendedNow": false,
         "posture": "draft",
-        "whyNow": "rationale-captured: documented the current above-script stack and the source-story rationale for Script Bible (Story 093), Artifact Health (Story 142), and Final Output (Stories 166/167), then framed the story around re…",
+        "whyNow": "validation-addendum: Story 196 validation reran the mobile browser packet and found the Brick & Steel mobile Home route loads without blank screen or browser errors, but does not expose `Start Scene Work` text. Evidence…",
         "lastRelevantAction": {
-          "date": "2026-04-20",
+          "date": "2026-05-04",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
-          "summary": "rationale-captured: documented the current above-script stack and the source-story rationale for Script Bible (Story 093), Artifact Health (Story 142), and Final Output (Stories 166/167), then framed the story around re…"
+          "summary": "validation-addendum: Story 196 validation reran the mobile browser packet and found the Brick & Steel mobile Home route loads without blank screen or browser errors, but does not expose `Start Scene Work` text. Evidence…"
         }
       }
     },
@@ -12683,7 +12688,7 @@
       "id": "196",
       "title": "Brick & Steel Product Truth Scrub",
       "path": "docs/stories/story-196-brick-steel-product-truth-scrub.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R10 (playable assembly at every stage)",
@@ -12746,8 +12751,8 @@
         "sourceKind": "story",
         "sourceId": "196",
         "sourcePath": "docs/stories/story-196-brick-steel-product-truth-scrub.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
+        "recommendedNow": false,
+        "posture": "completed",
         "whyNow": "",
         "lastRelevantAction": {
           "date": null,
@@ -13056,6 +13061,75 @@
           "date": null,
           "sourceType": "story-status",
           "source": "docs/stories/story-200-grok-43-text-image-reasoning-eval-refresh.md",
+          "summary": ""
+        }
+      }
+    },
+    {
+      "id": "201",
+      "title": "Keyframe Affordance Truth",
+      "path": "docs/stories/story-201-keyframe-affordance-truth.md",
+      "status": "Pending",
+      "priority": "Medium",
+      "idealRefs": [
+        "R11 (production readiness per scene)",
+        "R12 (transparency & control)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)",
+        "vision-level preference: easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:10.3",
+        "spec:6.4",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C6"
+      ],
+      "dependsOn": [
+        "027",
+        "149",
+        "194",
+        "196"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "brick-steel",
+        "keyframes",
+        "operator-truth",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "201",
+        "sourcePath": "docs/stories/story-201-keyframe-affordance-truth.md",
+        "recommendedNow": true,
+        "posture": "ready-now",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-201-keyframe-affordance-truth.md",
           "summary": ""
         }
       }
@@ -15164,9 +15238,10 @@
           "id": "ui-product-truth-scouting",
           "status": "active",
           "story_refs": [
-            "196"
+            "196",
+            "201"
           ],
-          "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 is the current Brick & Steel product-truth scrub created from inbox triage."
+          "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 is the current Brick & Steel product-truth scrub created from inbox triage; Story 201 is the focused keyframe-affordance follow-up found during that scrub."
         },
         {
           "id": "scene-generation-completion",
@@ -15191,7 +15266,7 @@
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first scene-generation follow-up, Story 174 closed the bounded compact-previz compare, Story 175 closed the scene-ready prerequisite-collapse follow-up by keeping the honest one-pass previz-prep lane as the shipped route, Story 176 closed the one-pass xAI ship decision at `65514 ms` first playable with `47865 ms` of prerequisites, Story 152 revalidated the warmed regenerate loop at `17869 ms` first playable for `start_from=ai_previz` reuse versus `39325 ms` for full regenerate on the same shipped lane, and Story 177 closed the OTIO narrative-export follow-up that Story 130 explicitly deferred until the shared payload stabilized. The `spec:6` / `spec:7` lane is still runtime-blocking against the fast-previz detector, Story 190 is waiting for a realistic-reference fixture trigger, Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair, Story 192 closed the residual GPT-image design-study lifecycle truth work, Story 193 closed the render-clip planning artifact, Story 194 closed the dependent multi-clip rendering slice, and Story 195 closed the production xAI AI-previz readiness surface. Inbox triage on 2026-04-30 routed the current Brick & Steel notes into Stories 195-199; Story 196 is the recommended next build because the production readiness blocker is closed and the inbox product-truth scrub is now the narrowest active scene-generation truth gap.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 198 remains the sequence-sensitive character-adjudication owner, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -15200,9 +15275,7 @@
               "Pending"
             ],
             "empty_message": "No stories currently fit this lane.",
-            "story_notes": {
-              "196": "Recommended next build: verify the current Brick & Steel desktop/mobile product truth, then separate stale inbox notes from live defects with evidence."
-            }
+            "story_notes": {}
           },
           {
             "id": "in-progress",
@@ -15221,7 +15294,8 @@
             ],
             "empty_message": "No stories currently need the sequence-sensitive lane.",
             "story_notes": {
-              "198": "Build once the scene-generation lane is not blocked by prod readiness, or sooner if character/reference correctness becomes the active surface: reproduce Brick vs Brick Braddock and prove artifact-edit merge/deprecation."
+              "198": "Build once the scene-generation lane is not blocked by prod readiness, or sooner if character/reference correctness becomes the active surface: reproduce Brick vs Brick Braddock and prove artifact-edit merge/deprecation.",
+              "201": "Focused follow-up from Story 196: fix the Render/Previz keyframe warning so missing optional keyframes either have a real route or no longer appear as actionable hidden homework."
             }
           },
           {
@@ -15402,7 +15476,7 @@
             "185",
             "192"
           ],
-          "stories_since_audit": 2,
+          "stories_since_audit": 3,
           "open_findings": [
             "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
           ],

@@ -1,7 +1,7 @@
 ---
 id: "196"
 title: "Brick & Steel Product Truth Scrub"
-status: "Pending"
+status: "Done"
 priority: "High"
 ideal_refs:
   - "vision-level preference: easy, fun, and engaging"
@@ -51,7 +51,7 @@ legacy_system: ""
 # Story 196 - Brick & Steel Product Truth Scrub
 
 **Priority**: High
-**Status**: Pending
+**Status**: Done
 **Ideal Refs**: easy/fun/engaging, R7, R8, R10, R11, R12
 **Spec Refs**: spec:5.3, spec:5.5, spec:5.6, spec:6.3, spec:6.4, spec:7.1, spec:10.3
 **ADR Refs**: ADR-002, ADR-003
@@ -70,12 +70,12 @@ Walk the current Brick & Steel production/local surfaced path and turn the large
 
 ## Acceptance Criteria
 
-- [ ] A report maps every Brick & Steel inbox symptom to current evidence: fixed/stale, still live, intentionally rehomed, or not reproducible with a clear reason.
-- [ ] The normal surfaced Brick & Steel scene path is exercised on desktop and mobile at least across Home, Characters, Scene Workspace Previz, Scene Workspace Render, and relevant artifact/detail links.
-- [ ] The pass specifically checks black-screen recovery, Open/Jump behavior, keyframe/animatic discoverability, GPT-image completion/error truth, exact-dialogue prompt truth, multi-clip previz/render visibility, and final-render/reference truth.
-- [ ] Any still-live defect becomes either a focused story, a work-log addition to an existing open story, or a clearly documented defer/discard decision. Do not leave verified defects only in the report.
-- [ ] `docs/inbox.md` is scrubbed after the notes are routed. It should not keep stale duplicates of story-owned defects.
-- [ ] The report distinguishes product-quality failures from provider/configuration failures and from already-fixed local-code issues.
+- [x] A report maps every Brick & Steel inbox symptom to current evidence: fixed/stale, still live, intentionally rehomed, or not reproducible with a clear reason.
+- [x] The normal surfaced Brick & Steel scene path is exercised on desktop and mobile at least across Home, Characters, Scene Workspace Previz, Scene Workspace Render, and relevant artifact/detail links.
+- [x] The pass specifically checks black-screen recovery, Open/Jump behavior, keyframe/animatic discoverability, GPT-image completion/error truth, exact-dialogue prompt truth, multi-clip previz/render visibility, and final-render/reference truth.
+- [x] Any still-live defect becomes either a focused story, a work-log addition to an existing open story, or a clearly documented defer/discard decision. Do not leave verified defects only in the report.
+- [x] `docs/inbox.md` is scrubbed after the notes are routed. It should not keep stale duplicates of story-owned defects.
+- [x] The report distinguishes product-quality failures from provider/configuration failures and from already-fixed local-code issues.
 
 ## Out of Scope
 
@@ -98,36 +98,36 @@ Walk the current Brick & Steel production/local surfaced path and turn the large
 
 ## Tasks
 
-- [ ] Build a symptom inventory from the pre-triage inbox, grouped by black-screen/recovery, navigation/discoverability, design-study images, previz, render, keyframes, user edits, and eval/test coverage.
-- [ ] Re-check the exact current story/code surfaces for each likely owner before declaring a note fixed.
-- [ ] Run a desktop browser pass through the current Brick & Steel surfaced path and capture screenshots, console/page errors, API status, and route evidence.
-- [ ] Run a mobile spot check for the most relevant Scene Workspace path and any surface that looked risky on desktop.
-- [ ] Inspect current prompt/video/artifact detail for scene 001 where needed, especially final render and AI previz clip artifacts.
-- [ ] Produce `docs/reports/story-196-brick-steel-product-truth-scrub/triage-matrix.md` or equivalent with symptom-by-symptom disposition.
-- [ ] Create focused follow-up stories only for still-live defects that are not already owned. Prefer adding notes to existing stories when the ownership is genuinely the same.
-- [ ] Scrub `docs/inbox.md` once the matrix and stories preserve the routed truth.
-- [ ] Check whether this pass makes any old docs or stale report claims redundant; update them or create a follow-up.
-- [ ] Run required checks for touched scope:
-  - [ ] Backend minimum: `make test-unit PYTHON=.venv/bin/python` if backend code changes
-  - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/` if backend code changes
-  - [ ] UI: `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build` if UI code changes
-- [ ] If story metadata, report indexes, or methodology state changes: `pnpm methodology:compile` and `pnpm methodology:check`
-- [ ] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
-- [ ] Browser verification: desktop and mobile evidence with clean console output or a documented blocker
-- [ ] Search all docs and update any related to what we touched
-- [ ] Verify adherence to Central Tenets (0-5):
-  - [ ] **T0 - Data Safety:** Is the scrub capture-first before deleting inbox text?
-  - [ ] **T1 - AI-Coded:** Is each disposition concrete enough for a future agent?
-  - [ ] **T2 - Architect for 100x:** Did we avoid creating backlog for stale defects?
-  - [ ] **T3 - Fewer Files:** Did follow-ups reuse existing owners where possible?
-  - [ ] **T4 - Verbose Artifacts:** Is the evidence matrix complete?
-  - [ ] **T5 - Ideal vs Today:** Does the current surfaced path feel easier and more honest?
+- [x] Build a symptom inventory from the historical pre-triage inbox at `90a67ec^:docs/inbox.md`, grouped by black-screen/recovery, navigation/discoverability, design-study images, previz, render, keyframes, user edits, and eval/test coverage.
+- [x] Re-check the exact current story/code surfaces for each likely owner before declaring a note fixed.
+- [x] Run a desktop browser pass through the current Brick & Steel surfaced path and capture screenshots, console/page errors, API status, and route evidence.
+- [x] Run a mobile spot check for the most relevant Scene Workspace path and any surface that looked risky on desktop.
+- [x] Inspect current prompt/video/artifact detail for scene 001 where needed, especially final render and AI previz clip artifacts.
+- [x] Produce `docs/reports/story-196-brick-steel-product-truth-scrub/triage-matrix.md` or equivalent with symptom-by-symptom disposition.
+- [x] Create focused follow-up stories only for still-live defects that are not already owned. Prefer adding notes to existing stories when the ownership is genuinely the same.
+- [x] Scrub `docs/inbox.md` only for current notes that this pass routes with preserved evidence; the original Brick & Steel batch was already deleted by the Story 195-199 triage commit and must be captured from Git history instead.
+- [x] Check whether this pass makes any old docs or stale report claims redundant; update them or create a follow-up.
+- [x] Run required checks for touched scope:
+  - [x] Backend minimum: N/A, no backend code changes
+  - [x] Backend lint: N/A, no backend code changes
+  - [x] UI: N/A, no UI code changes
+- [x] If story metadata, report indexes, or methodology state changes: `pnpm methodology:compile` and `pnpm methodology:check`
+- [x] If evals or goldens are changed: N/A, no evals or goldens changed
+- [x] Browser verification: desktop and mobile evidence with clean console output or a documented blocker
+- [x] Search all docs and update any related to what we touched
+- [x] Verify adherence to Central Tenets (0-5):
+  - [x] **T0 - Data Safety:** Is the scrub capture-first before deleting inbox text?
+  - [x] **T1 - AI-Coded:** Is each disposition concrete enough for a future agent?
+  - [x] **T2 - Architect for 100x:** Did we avoid creating backlog for stale defects?
+  - [x] **T3 - Fewer Files:** Did follow-ups reuse existing owners where possible?
+  - [x] **T4 - Verbose Artifacts:** Is the evidence matrix complete?
+  - [x] **T5 - Ideal vs Today:** Does the current surfaced path feel easier and more honest?
 
 ## Workflow Gates
 
-- [ ] Build complete: implementation finished, required checks run, and human summary shared
-- [ ] Validation complete or explicitly skipped by user
-- [ ] Story marked done via `/mark-story-done`
+- [x] Build complete: implementation finished, required checks run, and human summary shared
+- [x] Validation complete or explicitly skipped by user
+- [x] Story marked done via `/mark-story-done`
 
 ## Blocker Summary
 
@@ -170,11 +170,26 @@ N/A
 
 ## Plan
 
-1. Capture the pre-scrub inbox text in the story report so deletion from `docs/inbox.md` is safe.
-2. Walk the real Brick & Steel route and inspect current artifacts.
-3. Build the disposition matrix and create follow-ups only for verified live defects.
-4. Scrub the inbox and regenerate methodology surfaces.
+1. Capture the exact original Brick & Steel inbox batch from `git show 90a67ec^:docs/inbox.md` into `docs/reports/story-196-brick-steel-product-truth-scrub/raw-inbox-90a67ec-parent.md`. Treat current `docs/inbox.md` separately because it now contains only the later UI Plan and xAI image-provider notes.
+2. Launch the worktree API/UI against the existing primary-checkout Brick & Steel artifacts instead of copying output into this worktree. The API should use worktree code with `create_app(workspace_root=Path("/Users/cam/Documents/Projects/cine-forge"), enable_startup_dependency_checks=False)`, and the UI should run from this worktree with `CINE_FORGE_API_URL` pointed at that API.
+3. Produce a route/evidence manifest before judgment: project summary, artifact-group counts, current scene 001 render/previz prompt/video/validation refs, character design-study state for Brick Braddock and Dick Steel, and current inbox contents.
+4. Run the desktop product-truth path through `brick-steel-full-retired`: Home, Characters, Brick Braddock, Dick Steel, Scene Workspace `scene_001?tab=previz`, Scene Workspace `scene_001?tab=render`, and the relevant prompt/video/validation artifact detail links. Capture screenshots, console/page/HTTP errors, and DOM facts for the acceptance checks.
+5. Run a mobile spot check for Home plus Scene Workspace Previz and Render, adding Characters/mobile only if the desktop pass shows a live design-study or navigation risk.
+6. Build `triage-matrix.md` with one row per historical symptom and current note. Classify each as fixed/stale, live, rehomed, provider/config-only, not reproducible, or follow-up-needed, with exact route/artifact evidence.
+7. Route still-live defects conservatively. Add notes to existing owners when ownership is already clear (Story 185 UI structure, Story 197 reference-pack/product-quality, Story 198 duplicate-character adjudication, Story 195 production xAI readiness). Create new stories only for live defects without a current owner. Do not start broad UI ADR work or xAI-image implementation in this story.
+8. Scrub only the currently live inbox notes that the matrix has safely routed. The historical batch is already absent from `docs/inbox.md`, so the closeout is report-backed routing rather than a second deletion of that batch.
+9. Verify according to touched scope: for docs/report/story-only edits run `pnpm methodology:compile`, `pnpm methodology:check`, `git diff --check`, and targeted link/search checks. If implementation code changes unexpectedly, add the relevant unit/lint/UI build checks and restart local services before browser verification.
 
 ## Work Log
 
 20260430-1133 - story-created: created from approved inbox triage as the cleanup owner for stale and current Brick & Steel product notes. Evidence: current inbox batch plus related completed stories 139, 180, 191, 192, 193, and 194. Next step: `/build-story 196`.
+
+20260504-2031 - exploration-plan: completed the build-story planning pass before implementation. Evidence: checkout is clean on `codex/story-196-brick-steel-product-truth-scrub`; Story 196 is still Pending; `make check-size` flags large UI/backend owners but the expected first slice is docs/report/inbox routing only; current `docs/inbox.md` contains only the later UI Plan and xAI image notes, while the original Brick & Steel batch is recoverable from `90a67ec^:docs/inbox.md`; the primary checkout has the representative `output/brick-steel-full-retired` artifacts, while this worktree has no `output/`; the current route owners are `ProjectHome`, `EntityListPage`, `EntityDetailPage`, `SceneWorkspacePage`, `PrevizPanel`, `GeneratedVideoPanel`, and `ArtifactDetail`. Decision: use worktree code against the primary checkout workspace root for browser truth, capture the historical inbox before any routing, and pause at the human implementation gate. Next step: user approval, then promote the story to In Progress and execute the report/browser pass.
+
+20260504-2047 - implementation-start: plan approved. Promoted Story 196 to In Progress. Implementation will capture the historical Brick & Steel inbox, inspect the current primary-checkout Brick & Steel artifact state through this worktree's code, browser-check the surfaced Home/Characters/Scene Workspace/Artifact Detail path on desktop and mobile, and route current notes only after the matrix preserves evidence. Next step: create the report packet before any inbox cleanup.
+
+20260504-2107 - build-complete: completed the product-truth scrub and left the story In Progress for validation. Evidence: captured the historical Brick & Steel inbox from `90a67ec^:docs/inbox.md`, captured the current inbox before routing, wrote `docs/reports/story-196-brick-steel-product-truth-scrub/evidence.md`, `triage-matrix.md`, `artifact-snapshot.json`, and browser screenshots/summary. The build browser pass checked 12 desktop/mobile routes with 0 blank screens, 0 console/page/HTTP errors, and 8 visible AI-previz plus 8 visible render videos on both desktop and mobile Scene Workspace checks. Current artifacts show exact clip-001 dialogue bullets, direct character reference inputs for all 8 render clips, completed Brick/Dick design studies, duplicate character truth still live for Story 198, and no scene-001 keyframe artifact. Routed the current UI Plan note to Story 185, routed the current xAI images note to Story 197, created Story 201 for the live keyframe-affordance warning, scrubbed `docs/inbox.md` to `No live items.`, and refreshed methodology state/generated views. Checks: `pnpm methodology:compile` passed with existing methodology warnings, `pnpm methodology:check` passed with outputs current, `git diff --check` passed, `py_compile` passed for the browser script, and both JSON report files parse. No product backend/UI code changed, so unit/lint/build suites were not run. Next step: `/validate 196`.
+
+20260504-2127 - validation-complete: validated Story 196 and found no material implementation defects after tightening the evidence packet. Evidence reviewed: local diff, story acceptance criteria, ADR-002, ADR-003, `docs/design/decisions.md`, Ideal refs R7/R8/R10/R11/R12, spec refs 5.3/5.5/5.6/6.3/6.4/7.1/10.3, methodology state/graph/stories/build-map, `artifact-snapshot.json`, `triage-matrix.md`, and browser screenshots/summary. Validation reran the browser packet with an added mobile Characters route, producing 13 checked routes with 0 blank screens, 0 console/page/HTTP errors, 0 video-count mismatches, and 8 visible AI-previz plus 8 visible render videos on desktop and mobile Scene Workspace. The rerun also confirmed two non-fatal missing expected-text observations: generated-video detail does not show the literal `scene_render.mp4` filename despite rendering a video, and mobile Home does not expose `Start Scene Work`; the latter is now explicitly routed to Story 185. Fresh checks: `pnpm methodology:check`, `git diff --check`, browser script `py_compile`, and JSON parse checks passed. Backend/unit/lint and UI lint/type/build checks were not run because this diff changes docs/report/story/methodology surfaces only, not product backend/UI code. Recommendation: close now via `/mark-story-done 196`.
+
+20260504-2135 - story-done: marked Story 196 Done after `/finish-and-push` invoked the close-out chain. Evidence: build and validation gates were complete; acceptance criteria and tasks were checked; the report packet captured historical/current inbox truth, 13-route desktop/mobile browser evidence, artifact snapshot, current follow-up owners, and inbox scrub state; no product backend/UI code changed; methodology, diff, JSON, and browser-script checks passed. Close-out also added the Story 196 changelog entry, reran `make test-unit PYTHON=/Users/cam/Documents/Projects/cine-forge/.venv/bin/python` with 852 passed / 183 deselected / 1 known mark warning, and reran `/Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m ruff check src/ tests/` with all checks passed. Remaining work is intentionally outside Story 196: Story 201 owns keyframe affordance truth, Story 198 owns duplicate character adjudication, Story 197 owns reference/image/provider visual fidelity, Story 185 owns UI hierarchy/mobile scene-entry visibility, and Story 199 owns casting/table-read shaping. Next step: `/check-in-diff`.

@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-05-05-02] — Scrub Brick & Steel product truth (Story 196)
+
+### Added
+- Added a Story 196 evidence packet with historical inbox capture, artifact snapshot, browser route summary, and desktop/mobile screenshots for the Brick & Steel surfaced path.
+- Added Story 201 for the live keyframe-affordance warning discovered during the scrub.
+
+### Changed
+- Routed the current UI Plan note to Story 185 and the xAI image-provider note to Story 197, then cleared `docs/inbox.md` after preserving the source notes in the Story 196 report.
+- Updated methodology state and generated planning surfaces so Story 196 is closed and the remaining Brick & Steel product-truth work has focused owners.
+
 ## [2026-05-05-01] — Evaluate Grok 4.3 reasoning slots (Story 200)
 
 ### Added

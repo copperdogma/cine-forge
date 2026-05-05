@@ -102,7 +102,7 @@ Define and measure a coherent reference-pack strategy for characters, locations,
 - [ ] Re-read Stories 029, 056, 186, 190, and 192, plus current design-study and reference transport code.
 - [ ] Inspect current Brick & Steel character and location reference artifacts and classify failures: wrong subject, wrong time of day, too close-cropped, text contamination, police-officer drift, or reference transport loss.
 - [ ] Draft a reference-pack decision brief: required views, optional views, metadata, provenance, lock semantics, and provider-slot curation.
-- [ ] Decide whether the first implementation should replace abstract eval fixtures, generate multi-view packs, improve prompt/provider conditioning, or add selection/curation rules.
+- [ ] Decide whether the first implementation should replace abstract eval fixtures, generate multi-view packs, improve prompt/provider conditioning, add selection/curation rules, or evaluate xAI image generation as a candidate design-study/reference-pack provider.
 - [ ] If implementation starts, define or update schema-first reference-pack metadata before UI/API/module code consumes it.
 - [ ] Add focused tests for pack metadata, view selection, provider reference transport, and no-secret/no-untracked file handling.
 - [ ] Run a bounded eval or fixture comparison before promoting any default or broad workflow change.
@@ -180,3 +180,4 @@ N/A
 ## Work Log
 
 20260430-1133 - story-created: created from approved inbox triage for bad Brick/Dick image generations, location reference framing, multiple-reference needs, and Story 190's realistic-reference-fixture trigger. Status starts Draft because the first move is a decision/eval boundary, not immediate implementation. Next step: refine through `/build-story 197` when this lane becomes active.
+20260504-2120 - routed-current-inbox-note: Story 196 routed the current `xAI images` inbox note here instead of creating a separate provider-support story. Evidence: the note asks whether xAI image generation should become a fast/cheap/style-different third image option; Story 197 already owns the design-study/reference-pack provider-quality decision lane, where xAI can be measured against GPT-image/Imagen before any default or UI support change. Next step: include xAI image discovery in the Story 197 decision brief when this lane is promoted.
